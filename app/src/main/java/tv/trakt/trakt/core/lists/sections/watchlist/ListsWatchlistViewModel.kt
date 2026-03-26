@@ -24,8 +24,8 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -154,9 +154,9 @@ internal class ListsWatchlistViewModel(
 
                 if (localItems.isNotEmpty()) {
                     itemsState.update { localItems }
-                    loadingState.update { DONE }
+                    loadingState.update { Done }
                 } else {
-                    loadingState.update { LOADING }
+                    loadingState.update { Loading }
                 }
 
                 itemsState.update {
@@ -186,7 +186,7 @@ internal class ListsWatchlistViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
                 dataJob = null
             }
         }
@@ -197,7 +197,7 @@ internal class ListsWatchlistViewModel(
             itemsState.update {
                 emptyList<WatchlistItem>().toImmutableList()
             }
-            loadingState.update { DONE }
+            loadingState.update { Done }
             return true
         }
 

@@ -58,7 +58,7 @@ internal fun FavoriteShowContextView(
 
     LaunchedEffect(state.loading) {
         when {
-            state.loading == LoadingState.DONE -> {
+            state.loading == LoadingState.Done -> {
                 onRemovedFromFavorites()
             }
         }

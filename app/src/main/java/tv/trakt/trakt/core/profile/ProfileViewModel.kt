@@ -23,7 +23,7 @@ import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_THIS_MONTH_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.checkin.data.CheckInManager
@@ -94,7 +94,7 @@ internal class ProfileViewModel(
     private fun loadData() {
         viewModelScope.launch {
             try {
-                loadingMonthStatsState.update { LOADING }
+                loadingMonthStatsState.update { Loading }
                 monthStatsState.update {
                     getThisMonthUseCase.getThisMonthStats()
                 }
@@ -103,7 +103,7 @@ internal class ProfileViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingMonthStatsState.update { LoadingState.DONE }
+                loadingMonthStatsState.update { LoadingState.Done }
             }
         }
     }
@@ -111,15 +111,15 @@ internal class ProfileViewModel(
     fun logout() {
         viewModelScope.launch {
             try {
-                logoutLoadingState.update { LOADING }
+                logoutLoadingState.update { Loading }
 
                 logoutUseCase.logoutUser()
                 analytics.logUserLogout()
 
-                logoutLoadingState.update { LoadingState.DONE }
+                logoutLoadingState.update { LoadingState.Done }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    logoutLoadingState.update { LoadingState.IDLE }
+                    logoutLoadingState.update { LoadingState.Idle }
                     Timber.recordError(error)
                 }
             }

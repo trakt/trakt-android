@@ -24,8 +24,8 @@ import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -95,7 +95,7 @@ internal class ShowSeasonsViewModel(
     private fun loadData(ignoreErrors: Boolean = false) {
         viewModelScope.launch {
             try {
-                loadingState.update { LOADING }
+                loadingState.update { Loading }
                 val authenticated = sessionManager.isAuthenticated()
 
                 val watched = when {
@@ -139,7 +139,7 @@ internal class ShowSeasonsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
             }
         }
     }
@@ -225,7 +225,7 @@ internal class ShowSeasonsViewModel(
             }
 
             try {
-                loadingEpisodeState.update { LOADING }
+                loadingEpisodeState.update { Loading }
                 setLoadingEpisode(episode)
 
                 updateEpisodeHistoryUseCase.addToHistory(
@@ -263,7 +263,7 @@ internal class ShowSeasonsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingEpisodeState.update { DONE }
+                loadingEpisodeState.update { Done }
             }
         }
     }
@@ -286,7 +286,7 @@ internal class ShowSeasonsViewModel(
             }
 
             try {
-                loadingSeasonState.update { LOADING }
+                loadingSeasonState.update { Loading }
 
                 val episodesToAdd = season.selectedSeasonEpisodes
                     .filter { !it.isWatched }
@@ -327,7 +327,7 @@ internal class ShowSeasonsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingSeasonState.update { DONE }
+                loadingSeasonState.update { Done }
             }
         }
     }
@@ -347,7 +347,7 @@ internal class ShowSeasonsViewModel(
             }
 
             try {
-                loadingEpisodeState.update { LOADING }
+                loadingEpisodeState.update { Loading }
                 setLoadingEpisode(episode)
 
                 updateEpisodeHistoryUseCase.removeEpisodeFromHistory(episode.ids.trakt.value)
@@ -380,7 +380,7 @@ internal class ShowSeasonsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingEpisodeState.update { DONE }
+                loadingEpisodeState.update { Done }
             }
         }
     }
@@ -400,7 +400,7 @@ internal class ShowSeasonsViewModel(
             }
 
             try {
-                loadingSeasonState.update { LOADING }
+                loadingSeasonState.update { Loading }
 
                 updateEpisodeHistoryUseCase.removeSeasonFromHistory(season.ids.trakt.value)
                 val progress = loadUserProgressUseCase.loadShowsProgress()
@@ -432,7 +432,7 @@ internal class ShowSeasonsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingSeasonState.update { DONE }
+                loadingSeasonState.update { Done }
             }
         }
     }

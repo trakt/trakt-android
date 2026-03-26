@@ -10,6 +10,6 @@ internal data class SettingsState(
     val user: User? = null,
     val notifications: Boolean = false,
     val notificationsDelivery: DeliveryAdjustment? = null,
-    val accountLoading: LoadingState = LoadingState.IDLE,
-    val logoutLoading: LoadingState = LoadingState.IDLE,
+    val accountLoading: LoadingState = LoadingState.Idle,
+    val logoutLoading: LoadingState = LoadingState.Idle,
 )

@@ -36,7 +36,7 @@ import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.customAnnotatedString
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -70,8 +70,8 @@ internal fun WatchlistShowContextView(
 
     LaunchedEffect(state.loadingWatched, state.loadingWatchlist) {
         when {
-            state.loadingWatched == DONE -> onAddWatched(show)
-            state.loadingWatchlist == DONE -> onRemoveWatchlist(show)
+            state.loadingWatched == Done -> onAddWatched(show)
+            state.loadingWatchlist == Done -> onRemoveWatchlist(show)
         }
     }
 

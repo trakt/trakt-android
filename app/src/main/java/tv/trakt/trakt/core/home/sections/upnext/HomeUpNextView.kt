@@ -49,9 +49,9 @@ import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_1
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
@@ -104,7 +104,7 @@ internal fun HomeUpNextView(
         onShowsClick = onShowsClick,
         onShowClick = { onShowClick(it.show.ids.trakt) },
         onMoreClick = {
-            if (state.loading == DONE && !state.items.items.isNullOrEmpty()) {
+            if (state.loading == Done && !state.items.items.isNullOrEmpty()) {
                 onMoreClick()
             }
         },
@@ -195,7 +195,7 @@ internal fun HomeUpNextContent(
     ) {
         TraktSectionHeader(
             title = stringResource(R.string.list_title_up_next),
-            chevron = !state.items.items.isNullOrEmpty() || state.loading != DONE,
+            chevron = !state.items.items.isNullOrEmpty() || state.loading != Done,
             collapsed = state.collapsed ?: false,
             onCollapseClick = {
                 animateCollapse = true
@@ -204,7 +204,7 @@ internal fun HomeUpNextContent(
             },
             modifier = Modifier
                 .padding(headerPadding)
-                .onClick(enabled = state.loading == DONE) {
+                .onClick(enabled = state.loading == Done) {
                     onMoreClick()
                 },
         )
@@ -215,14 +215,14 @@ internal fun HomeUpNextContent(
                 animationSpec = tween(200),
             ) { loading ->
                 when (loading) {
-                    IDLE, LOADING -> {
+                    Idle, Loading -> {
                         ContentLoadingList(
                             visible = loading.isLoading,
                             contentPadding = contentPadding,
                         )
                     }
 
-                    DONE -> {
+                    Done -> {
                         when {
                             state.error != null -> {
                                 Text(
@@ -469,7 +469,7 @@ private fun Preview() {
     TraktTheme {
         HomeUpNextContent(
             state = HomeUpNextState(
-                loading = IDLE,
+                loading = Idle,
             ),
         )
     }
@@ -485,7 +485,7 @@ private fun Preview2() {
     TraktTheme {
         HomeUpNextContent(
             state = HomeUpNextState(
-                loading = LOADING,
+                loading = Loading,
             ),
         )
     }

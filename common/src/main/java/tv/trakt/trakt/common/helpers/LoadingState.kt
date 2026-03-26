@@ -1,17 +1,17 @@
 package tv.trakt.trakt.common.helpers
 
 enum class LoadingState {
-    IDLE,
-    LOADING,
-    DONE,
+    Idle,
+    Loading,
+    Done,
     ;
 
     val isIdle: Boolean
-        get() = this == IDLE
+        get() = this == Idle
 
     val isLoading: Boolean
-        get() = this == LOADING
+        get() = this == Loading
 
     val isDone: Boolean
-        get() = this == DONE
+        get() = this == Done
 }

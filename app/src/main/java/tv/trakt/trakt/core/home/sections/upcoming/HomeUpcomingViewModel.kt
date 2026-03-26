@@ -28,9 +28,9 @@ import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
@@ -142,9 +142,9 @@ internal class HomeUpcomingViewModel(
 
                 if (localItems.isNotEmpty()) {
                     itemsState.update { localItems }
-                    loadingState.update { DONE }
+                    loadingState.update { Done }
                 } else {
-                    loadingState.update { LOADING }
+                    loadingState.update { Loading }
                 }
 
                 itemsState.update {
@@ -163,7 +163,7 @@ internal class HomeUpcomingViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
                 dataJob = null
             }
         }
@@ -174,10 +174,10 @@ internal class HomeUpcomingViewModel(
             itemsState.update {
                 emptyList<HomeUpcomingItem>().toImmutableList()
             }
-            loadingState.update { DONE }
+            loadingState.update { Done }
             return true
         } else {
-            loadingState.update { IDLE }
+            loadingState.update { Idle }
         }
 
         return false

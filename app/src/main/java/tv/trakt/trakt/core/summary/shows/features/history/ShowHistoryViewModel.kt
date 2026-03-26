@@ -19,8 +19,8 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
@@ -74,7 +74,7 @@ internal class ShowHistoryViewModel(
         viewModelScope.launch {
             try {
                 if (itemsState.value == initialState.items) {
-                    loadingState.update { LOADING }
+                    loadingState.update { Loading }
                 }
 
                 itemsState.update {
@@ -88,7 +88,7 @@ internal class ShowHistoryViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
             }
         }
     }

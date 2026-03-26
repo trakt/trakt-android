@@ -20,9 +20,9 @@ import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
@@ -54,7 +54,7 @@ internal class AllActivitySocialViewModel(
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val loadingMoreState = MutableStateFlow(IDLE)
+    private val loadingMoreState = MutableStateFlow(Idle)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var pages: Int = 1
@@ -93,13 +93,13 @@ internal class AllActivitySocialViewModel(
                             selectedUser?.let { items.user == it } ?: true
                         }.toImmutableList()
                     }
-                    loadingState.update { DONE }
+                    loadingState.update { Done }
 
                     if (localOnly) {
                         return@launch
                     }
                 } else {
-                    loadingState.update { LOADING }
+                    loadingState.update { Loading }
                 }
 
                 val remoteItems = getActivityUseCase.getSocialActivity(
@@ -119,7 +119,7 @@ internal class AllActivitySocialViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
                 dataJob = null
             }
         }
@@ -169,11 +169,11 @@ internal class AllActivitySocialViewModel(
             itemsState.update {
                 emptyList<HomeActivityItem>().toImmutableList()
             }
-            loadingState.update { DONE }
+            loadingState.update { Done }
             return true
         } else {
             itemsState.update { null }
-            loadingState.update { IDLE }
+            loadingState.update { Idle }
         }
 
         return false

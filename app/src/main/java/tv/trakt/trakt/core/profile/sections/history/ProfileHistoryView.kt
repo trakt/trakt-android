@@ -36,9 +36,9 @@ import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
 import org.koin.androidx.compose.koinViewModel
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
@@ -154,7 +154,7 @@ internal fun ProfileHistoryContent(
     ) {
         TraktSectionHeader(
             title = stringResource(R.string.list_title_history),
-            chevron = !state.items.isNullOrEmpty() || state.loading != DONE,
+            chevron = !state.items.isNullOrEmpty() || state.loading != Done,
             collapsed = state.collapsed ?: false,
             onCollapseClick = {
                 animateCollapse = true
@@ -163,7 +163,7 @@ internal fun ProfileHistoryContent(
             },
             modifier = Modifier
                 .padding(headerPadding)
-                .onClick(enabled = state.loading == DONE) {
+                .onClick(enabled = state.loading == Done) {
                     onMoreClick()
                 },
         )
@@ -173,14 +173,14 @@ internal fun ProfileHistoryContent(
                 animationSpec = tween(200),
             ) { loading ->
                 when (loading) {
-                    IDLE, LOADING -> {
+                    Idle, Loading -> {
                         ContentLoadingList(
                             visible = loading.isLoading,
                             contentPadding = contentPadding,
                         )
                     }
 
-                    DONE -> {
+                    Done -> {
                         when {
                             state.error != null -> {
                                 Text(
@@ -322,7 +322,7 @@ private fun Preview() {
     TraktTheme {
         ProfileHistoryContent(
             state = ProfileHistoryState(
-                loading = IDLE,
+                loading = Idle,
             ),
         )
     }
@@ -338,7 +338,7 @@ private fun Preview2() {
     TraktTheme {
         ProfileHistoryContent(
             state = ProfileHistoryState(
-                loading = LOADING,
+                loading = Loading,
             ),
         )
     }

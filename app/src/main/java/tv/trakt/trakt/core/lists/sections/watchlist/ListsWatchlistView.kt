@@ -39,9 +39,9 @@ import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_1
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_2
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.MediaType.SHOW
@@ -171,7 +171,7 @@ internal fun ListWatchlistContent(
         TraktSectionHeader(
             title = stringResource(R.string.page_title_watchlist),
             subtitle = stringResource(R.string.text_sort_recently_added),
-            chevron = !state.items.isNullOrEmpty() || state.loading != DONE,
+            chevron = !state.items.isNullOrEmpty() || state.loading != Done,
             collapsed = state.collapsed ?: false,
             onCollapseClick = {
                 animateCollapse = true
@@ -180,7 +180,7 @@ internal fun ListWatchlistContent(
             },
             modifier = Modifier
                 .padding(headerPadding)
-                .onClick(enabled = state.loading == DONE) {
+                .onClick(enabled = state.loading == Done) {
                     onWatchlistClick()
                 },
         )
@@ -191,7 +191,7 @@ internal fun ListWatchlistContent(
                 animationSpec = tween(200),
             ) { loading ->
                 when (loading) {
-                    IDLE, LOADING -> {
+                    Idle, Loading -> {
                         ContentLoadingList(
                             visible = loading.isLoading,
                             contentPadding = contentPadding,
@@ -199,7 +199,7 @@ internal fun ListWatchlistContent(
                         )
                     }
 
-                    DONE -> {
+                    Done -> {
                         when {
                             state.error != null -> {
                                 Text(
@@ -398,7 +398,7 @@ private fun Preview() {
     TraktTheme {
         ListWatchlistContent(
             state = ListsWatchlistState(
-                loading = IDLE,
+                loading = Idle,
             ),
         )
     }
@@ -414,7 +414,7 @@ private fun Preview2() {
     TraktTheme {
         ListWatchlistContent(
             state = ListsWatchlistState(
-                loading = LOADING,
+                loading = Loading,
             ),
         )
     }
@@ -430,7 +430,7 @@ private fun Preview3() {
     TraktTheme {
         ListWatchlistContent(
             state = ListsWatchlistState(
-                loading = DONE,
+                loading = Done,
                 items = emptyList<WatchlistItem>().toImmutableList(),
             ),
         )

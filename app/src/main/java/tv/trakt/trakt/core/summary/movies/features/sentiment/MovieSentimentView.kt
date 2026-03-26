@@ -32,9 +32,9 @@ import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.core.summary.ui.views.DetailsSentiment
 import tv.trakt.trakt.core.summary.ui.views.DetailsSentimentSkeleton
@@ -105,7 +105,7 @@ private fun MovieSentimentContent(
             ) { loading ->
                 val maxWidth = if (windowClass.isAtLeastLarge()) 0.45f else 1f
                 when (loading) {
-                    IDLE, LOADING -> {
+                    Idle, Loading -> {
                         DetailsSentimentSkeleton(
                             modifier = Modifier
                                 .fillMaxWidth(maxWidth)
@@ -113,7 +113,7 @@ private fun MovieSentimentContent(
                         )
                     }
 
-                    DONE -> {
+                    Done -> {
                         if (state.sentiment != null && !state.sentiment.isEmpty) {
                             DetailsSentiment(
                                 sentiments = state.sentiment,
@@ -169,7 +169,7 @@ private fun Preview2() {
             MovieSentimentContent(
                 state = MovieSentimentState(
                     sentiment = Sentiments(),
-                    loading = LOADING,
+                    loading = Loading,
                 ),
             )
         }
@@ -192,7 +192,7 @@ private fun Preview3() {
             MovieSentimentContent(
                 state = MovieSentimentState(
                     sentiment = Sentiments(),
-                    loading = DONE,
+                    loading = Done,
                 ),
             )
         }

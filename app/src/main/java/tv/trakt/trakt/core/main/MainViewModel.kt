@@ -30,7 +30,7 @@ import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
@@ -253,7 +253,7 @@ internal class MainViewModel(
     private fun authorizeUser(code: String) {
         viewModelScope.launch {
             try {
-                loadingUserState.update { LOADING }
+                loadingUserState.update { Loading }
 
                 dismissOnboarding()
                 authorizeUseCase.authorizeByCode(code)
@@ -266,7 +266,7 @@ internal class MainViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingUserState.update { LoadingState.DONE }
+                loadingUserState.update { LoadingState.Done }
             }
         }
     }
@@ -274,14 +274,14 @@ internal class MainViewModel(
     fun logoutUser() {
         viewModelScope.launch {
             try {
-                loadingUserState.update { LOADING }
+                loadingUserState.update { Loading }
                 logoutUseCase.logoutUser()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
                 }
             } finally {
-                loadingUserState.update { LoadingState.DONE }
+                loadingUserState.update { LoadingState.Done }
             }
         }
     }

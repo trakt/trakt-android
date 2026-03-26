@@ -74,22 +74,22 @@ internal fun ListMovieContextView(
         state.loadingList,
     ) {
         when {
-            state.loadingWatched == LoadingState.DONE -> {
+            state.loadingWatched == LoadingState.Done -> {
                 when {
                     !state.isWatched || state.isWatchlist -> onAddWatched(movie)
                     else -> onRemoveWatched(movie)
                 }
             }
-            state.loadingWatchlist == LoadingState.DONE -> {
+            state.loadingWatchlist == LoadingState.Done -> {
                 when {
                     !state.isWatchlist -> onAddWatchlist(movie)
                     else -> onRemoveWatchlist(movie)
                 }
             }
-            state.loadingCheckIn == LoadingState.DONE -> {
+            state.loadingCheckIn == LoadingState.Done -> {
                 onCheckIn()
             }
-            state.loadingList == LoadingState.DONE -> {
+            state.loadingList == LoadingState.Done -> {
                 onRemoveList(movie)
             }
         }

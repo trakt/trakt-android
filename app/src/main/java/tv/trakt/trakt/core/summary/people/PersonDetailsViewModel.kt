@@ -92,7 +92,7 @@ internal class PersonDetailsViewModel(
 
     private fun loadData() {
         viewModelScope.launch {
-            loadingDetailsState.update { LoadingState.LOADING }
+            loadingDetailsState.update { LoadingState.Loading }
 
             val person = getPersonUseCase.getPerson(
                 personId = destination.personId.toTraktId(),
@@ -102,7 +102,7 @@ internal class PersonDetailsViewModel(
                 personDetailsState.update { person }
 
                 loadPersonDetails(person.ids.trakt)
-                loadingDetailsState.update { LoadingState.DONE }
+                loadingDetailsState.update { LoadingState.Done }
 
                 loadPersonCredits(person.ids.trakt)
             }
@@ -128,7 +128,7 @@ internal class PersonDetailsViewModel(
 
     private suspend fun loadPersonCredits(personId: TraktId) {
         try {
-            loadingCreditsState.update { LoadingState.LOADING }
+            loadingCreditsState.update { LoadingState.Loading }
 
             coroutineScope {
                 val showCreditsAsync = async { getPersonCreditsUseCase.getShowCredits(personId) }
@@ -146,7 +146,7 @@ internal class PersonDetailsViewModel(
                 Timber.recordError(error)
             }
         } finally {
-            loadingCreditsState.update { LoadingState.DONE }
+            loadingCreditsState.update { LoadingState.Done }
         }
     }
 

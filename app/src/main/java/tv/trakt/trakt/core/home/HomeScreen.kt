@@ -28,7 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.auth.ConfigAuth
@@ -255,7 +255,7 @@ private fun HomeScreenHeader(
     onVipClick: () -> Unit,
 ) {
     val userState = remember(state.user) {
-        val loadingDone = state.user.loading == DONE
+        val loadingDone = state.user.loading == Done
         val userNotNull = state.user.user != null
         loadingDone to userNotNull
     }

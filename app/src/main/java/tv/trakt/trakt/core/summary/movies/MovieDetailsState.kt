@@ -18,10 +18,10 @@ internal data class MovieDetailsState(
     val movieStudios: ImmutableList<String>? = null,
     val movieProgress: ProgressState? = null,
     val movieCreator: Person? = null,
-    val loading: LoadingState = LoadingState.IDLE,
-    val loadingProgress: LoadingState = LoadingState.IDLE,
-    val loadingLists: LoadingState = LoadingState.IDLE,
-    val loadingFavorite: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
+    val loadingProgress: LoadingState = LoadingState.Idle,
+    val loadingLists: LoadingState = LoadingState.Idle,
+    val loadingFavorite: LoadingState = LoadingState.Idle,
     val info: StringResource? = null,
     val error: Exception? = null,
     val user: User? = null,
@@ -35,6 +35,6 @@ internal data class MovieDetailsState(
 
     data class UserRatingsState(
         val rating: UserRating? = null,
-        val loading: LoadingState = LoadingState.IDLE,
+        val loading: LoadingState = LoadingState.Idle,
     )
 }

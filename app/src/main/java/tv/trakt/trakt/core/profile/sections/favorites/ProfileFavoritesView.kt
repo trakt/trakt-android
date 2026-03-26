@@ -40,9 +40,9 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_1
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_2
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_3
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -102,7 +102,7 @@ internal fun ProfileFavoritesView(
         onShowLongClick = { showContextSheet = it },
         onMovieLongClick = { movieContextSheet = it },
         onFavoritesClick = {
-            if (state.loading == DONE && !state.items.isNullOrEmpty()) {
+            if (state.loading == Done && !state.items.isNullOrEmpty()) {
                 onMoreClick()
             }
         },
@@ -148,7 +148,7 @@ internal fun ProfileFavoritesContent(
         TraktSectionHeader(
             title = stringResource(R.string.list_title_favorites),
             subtitle = stringResource(R.string.text_sort_recently_added),
-            chevron = !state.items.isNullOrEmpty() || state.loading != DONE,
+            chevron = !state.items.isNullOrEmpty() || state.loading != Done,
             collapsed = state.collapsed ?: false,
             onCollapseClick = {
                 animateCollapse = true
@@ -157,7 +157,7 @@ internal fun ProfileFavoritesContent(
             },
             modifier = Modifier
                 .padding(headerPadding)
-                .onClick(enabled = state.loading == DONE) {
+                .onClick(enabled = state.loading == Done) {
                     onFavoritesClick()
                 },
         )
@@ -174,7 +174,7 @@ internal fun ProfileFavoritesContent(
                 animationSpec = tween(200),
             ) { loading ->
                 when (loading) {
-                    IDLE, LOADING -> {
+                    Idle, Loading -> {
                         ContentLoadingList(
                             visible = loading.isLoading,
                             contentPadding = contentPadding,
@@ -182,7 +182,7 @@ internal fun ProfileFavoritesContent(
                         )
                     }
 
-                    DONE -> {
+                    Done -> {
                         when {
                             state.error != null -> {
                                 Text(
@@ -400,7 +400,7 @@ private fun Preview() {
     TraktTheme {
         ProfileFavoritesContent(
             state = ProfileFavoritesState(
-                loading = IDLE,
+                loading = Idle,
             ),
         )
     }
@@ -416,7 +416,7 @@ private fun Preview2() {
     TraktTheme {
         ProfileFavoritesContent(
             state = ProfileFavoritesState(
-                loading = LOADING,
+                loading = Loading,
             ),
         )
     }
@@ -432,7 +432,7 @@ private fun Preview3() {
     TraktTheme {
         ProfileFavoritesContent(
             state = ProfileFavoritesState(
-                loading = DONE,
+                loading = Done,
                 items = emptyList<FavoriteItem>().toImmutableList(),
             ),
         )

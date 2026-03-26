@@ -53,8 +53,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toImmutableMap
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -225,7 +225,7 @@ internal fun PersonDetailsContent(
 
                 item {
                     AnimatedVisibility(
-                        visible = state.loadingDetails == DONE,
+                        visible = state.loadingDetails == Done,
                         enter = fadeIn(),
                         exit = fadeOut(),
                     ) {
@@ -242,7 +242,7 @@ internal fun PersonDetailsContent(
                 if (state.user != null) {
                     item {
                         AnimatedVisibility(
-                            visible = state.loadingCredits != IDLE,
+                            visible = state.loadingCredits != Idle,
                             enter = fadeIn(),
                             exit = fadeOut(),
                         ) {
@@ -267,7 +267,7 @@ internal fun PersonDetailsContent(
 
                 item {
                     AnimatedVisibility(
-                        visible = state.loadingCredits != IDLE,
+                        visible = state.loadingCredits != Idle,
                         enter = fadeIn(),
                         exit = fadeOut(),
                     ) {
@@ -289,7 +289,7 @@ internal fun PersonDetailsContent(
 
                 item {
                     AnimatedVisibility(
-                        visible = state.loadingCredits != IDLE,
+                        visible = state.loadingCredits != Idle,
                         enter = fadeIn(),
                         exit = fadeOut(),
                     ) {
@@ -465,7 +465,7 @@ private fun Preview() {
         PersonDetailsContent(
             state = PersonDetailsState(
                 personDetails = PreviewData.person1,
-                loadingDetails = DONE,
+                loadingDetails = Done,
             ),
         )
     }

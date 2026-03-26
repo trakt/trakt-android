@@ -29,8 +29,8 @@ import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentReactionsUseCase
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.Movie
@@ -119,7 +119,7 @@ internal class MovieCommentsViewModel(
     private fun loadData() {
         viewModelScope.launch {
             try {
-                loadingState.update { LOADING }
+                loadingState.update { Loading }
 
                 loadUser()
                 coroutineScope {
@@ -154,7 +154,7 @@ internal class MovieCommentsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
             }
         }
     }
@@ -226,7 +226,7 @@ internal class MovieCommentsViewModel(
     }
 
     fun setFilter(filter: CommentsFilter) {
-        if (loadingState.value != DONE || filter == state.value.filter) {
+        if (loadingState.value != Done || filter == state.value.filter) {
             return
         }
 

@@ -21,8 +21,8 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -68,7 +68,7 @@ internal class AllLibraryViewModel(
         dataJob = viewModelScope.launch {
             try {
                 page = 1
-                loadingState.update { LOADING }
+                loadingState.update { Loading }
 
                 if (loadEmptyIfNeeded()) {
                     return@launch
@@ -92,7 +92,7 @@ internal class AllLibraryViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
             }
         }
     }
@@ -108,7 +108,7 @@ internal class AllLibraryViewModel(
 
         viewModelScope.launch {
             try {
-                loadingMoreState.update { LOADING }
+                loadingMoreState.update { Loading }
 
                 val nextData = loadLibraryUseCase.loadMedia(
                     page = page + 1,
@@ -131,7 +131,7 @@ internal class AllLibraryViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingMoreState.update { DONE }
+                loadingMoreState.update { Done }
             }
         }
     }
@@ -141,7 +141,7 @@ internal class AllLibraryViewModel(
             itemsState.update {
                 emptyList<LibraryItem>().toImmutableList()
             }
-            loadingState.update { DONE }
+            loadingState.update { Done }
             return true
         }
 

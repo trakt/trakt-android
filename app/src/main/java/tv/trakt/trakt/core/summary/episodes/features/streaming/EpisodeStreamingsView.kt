@@ -42,9 +42,9 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceApp
 import tv.trakt.trakt.common.model.streamings.StreamingService
@@ -128,14 +128,14 @@ private fun EpisodeStreamingsContent(
                 animationSpec = tween(200),
             ) { loading ->
                 when (loading) {
-                    IDLE, LOADING -> {
+                    Idle, Loading -> {
                         ContentLoading(
                             visible = loading.isLoading,
                             contentPadding = contentPadding,
                         )
                     }
 
-                    DONE -> {
+                    Done -> {
                         if (state.items?.streamings?.isEmpty() == true) {
                             ContentEmpty(
                                 contentPadding = headerPadding,

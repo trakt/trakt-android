@@ -39,9 +39,9 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_3
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
@@ -176,14 +176,14 @@ internal fun HomeUpcomingContent(
                 animationSpec = tween(200),
             ) { loading ->
                 when (loading) {
-                    IDLE, LOADING -> {
+                    Idle, Loading -> {
                         ContentLoadingList(
                             visible = loading.isLoading,
                             contentPadding = contentPadding,
                         )
                     }
 
-                    DONE -> {
+                    Done -> {
                         when {
                             state.error != null -> {
                                 Text(
@@ -323,7 +323,7 @@ private fun Preview() {
     TraktTheme {
         HomeUpcomingContent(
             state = HomeUpcomingState(
-                loading = IDLE,
+                loading = Idle,
             ),
         )
     }
@@ -339,7 +339,7 @@ private fun Preview2() {
     TraktTheme {
         HomeUpcomingContent(
             state = HomeUpcomingState(
-                loading = LOADING,
+                loading = Loading,
             ),
         )
     }

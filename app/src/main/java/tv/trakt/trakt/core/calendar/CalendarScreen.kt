@@ -797,7 +797,7 @@ private fun Preview() {
             scope = rememberCoroutineScope(),
             state = CalendarState(
                 selectedStartDay = LocalDate.now().with(MONDAY),
-                loading = LoadingState.LOADING,
+                loading = LoadingState.Loading,
             ),
         )
     }

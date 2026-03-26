@@ -15,8 +15,8 @@ import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.User
@@ -68,7 +68,7 @@ internal class PostReplyViewModel(
         }
         job = viewModelScope.launch {
             try {
-                loadingState.update { LOADING }
+                loadingState.update { Loading }
                 delay(1.seconds)
                 resultState.update {
                     postReplyUseCase.postReply(
@@ -82,7 +82,7 @@ internal class PostReplyViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    loadingState.update { DONE }
+                    loadingState.update { Done }
                     Timber.recordError(error)
                 }
             } finally {

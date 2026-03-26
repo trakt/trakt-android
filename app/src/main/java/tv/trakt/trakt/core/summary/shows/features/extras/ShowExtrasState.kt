@@ -10,7 +10,7 @@ import tv.trakt.trakt.common.model.ExtraVideo
 internal data class ShowExtrasState(
     val items: ImmutableList<ExtraVideo>? = null,
     val filters: FiltersState = FiltersState(),
-    val loading: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
     val collapsed: Boolean? = null,
 ) {

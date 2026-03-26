@@ -19,7 +19,7 @@ internal data class EpisodeCommentsState(
     val filter: CommentsFilter = CommentsFilter.POPULAR,
     val reactions: ImmutableMap<Int, ReactionsSummary>? = null,
     val userReactions: ImmutableMap<Int, Reaction?>? = null,
-    val loading: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
     val user: User? = null,
     val error: Exception? = null,
     val collapsed: Boolean? = null,

@@ -87,13 +87,13 @@ internal class BillingViewModel(
                     handleError(error = error)
                 }
             }
-            loadingState.update { LoadingState.DONE }
+            loadingState.update { LoadingState.Done }
         }
     }
 
     private val billingStateListener = object : BillingClientStateListener {
         override fun onBillingSetupFinished(billingResult: BillingResult) {
-            loadingState.update { LoadingState.DONE }
+            loadingState.update { LoadingState.Done }
             if (billingResult.responseCode == BillingResponseCode.OK) {
                 Timber.d("Billing Client setup finished successfully")
                 checkPurchases()
@@ -162,7 +162,7 @@ internal class BillingViewModel(
             return
         }
 
-        loadingState.update { LoadingState.LOADING }
+        loadingState.update { LoadingState.Loading }
         billingClient.startConnection(billingStateListener)
         Timber.d("Starting Billing Client connection")
     }
@@ -288,14 +288,14 @@ internal class BillingViewModel(
             )
             .build()
 
-        loadingState.update { LoadingState.LOADING }
+        loadingState.update { LoadingState.Loading }
         val billingResult = billingClient.launchBillingFlow(activity, billingFlowParams)
         val responseCode = billingResult.responseCode
 
         if (responseCode != BillingResponseCode.OK) {
             val billingError = VipBillingError.fromBillingResponseCode(responseCode)
             handleError(billingError)
-            loadingState.update { LoadingState.DONE }
+            loadingState.update { LoadingState.Done }
         } else {
             val price = offer?.pricingPhases?.pricingPhaseList?.firstOrNull()
             pendingPurchaseProduct = PendingPurchaseProduct(

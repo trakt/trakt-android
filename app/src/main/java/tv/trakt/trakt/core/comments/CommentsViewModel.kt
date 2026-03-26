@@ -34,8 +34,8 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentReactionsUseCase
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentRepliesUseCase
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.MediaType
@@ -130,7 +130,7 @@ internal class CommentsViewModel(
     private fun loadData() {
         viewModelScope.launch {
             try {
-                loadingState.update { LOADING }
+                loadingState.update { Loading }
 
                 loadUser()
                 coroutineScope {
@@ -159,7 +159,7 @@ internal class CommentsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
             }
         }
     }
@@ -254,7 +254,7 @@ internal class CommentsViewModel(
     }
 
     fun setFilter(filter: CommentsFilter) {
-        if (loadingState.value != DONE || filter == filterState.value) {
+        if (loadingState.value != Done || filter == filterState.value) {
             return
         }
         viewModelScope.launch {

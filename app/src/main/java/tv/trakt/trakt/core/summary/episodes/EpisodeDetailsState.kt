@@ -20,8 +20,8 @@ internal data class EpisodeDetailsState(
     val episodeProgress: ProgressState? = null,
     val episodeCreator: Person? = null,
     val navigateEpisode: Pair<TraktId, Episode>? = null,
-    val loading: LoadingState = LoadingState.IDLE,
-    val loadingProgress: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
+    val loadingProgress: LoadingState = LoadingState.Idle,
     val info: StringResource? = null,
     val error: Exception? = null,
     val user: User? = null,
@@ -36,6 +36,6 @@ internal data class EpisodeDetailsState(
 
     data class UserRatingsState(
         val rating: UserRating? = null,
-        val loading: LoadingState = LoadingState.IDLE,
+        val loading: LoadingState = LoadingState.Idle,
     )
 }

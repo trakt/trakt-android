@@ -25,8 +25,8 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
@@ -130,12 +130,12 @@ internal class ProfileFavoritesViewModel(
                     itemsState.update {
                         localItems.toImmutableList()
                     }
-                    loadingState.update { DONE }
+                    loadingState.update { Done }
                     if (localOnly) {
                         return@launch
                     }
                 } else {
-                    loadingState.update { LOADING }
+                    loadingState.update { Loading }
                 }
 
                 itemsState.update {
@@ -155,7 +155,7 @@ internal class ProfileFavoritesViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
                 loadDataJob = null
             }
         }
@@ -172,7 +172,7 @@ internal class ProfileFavoritesViewModel(
             itemsState.update {
                 emptyList<FavoriteItem>().toImmutableList()
             }
-            loadingState.update { DONE }
+            loadingState.update { Done }
             return true
         }
 

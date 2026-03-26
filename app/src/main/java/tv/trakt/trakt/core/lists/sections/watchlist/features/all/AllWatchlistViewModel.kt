@@ -26,8 +26,8 @@ import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
@@ -148,7 +148,7 @@ internal class AllWatchlistViewModel(
                         // Avoid blinking loading but still show it if loading takes too long
                         delay(100)
                     }
-                    loadingState.update { LOADING }
+                    loadingState.update { Loading }
                 }
 
                 itemsState.update {
@@ -183,7 +183,7 @@ internal class AllWatchlistViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
                 dataJob = null
                 loadingJob?.cancel()
                 loadingJob = null
@@ -203,7 +203,7 @@ internal class AllWatchlistViewModel(
 
         dataJob = viewModelScope.launch {
             try {
-                loadingMoreState.update { LOADING }
+                loadingMoreState.update { Loading }
                 val newItems = when (filterState.value) {
                     MEDIA -> getWatchlistUseCase.getRemoteWatchlist(
                         page = page + 1,
@@ -239,7 +239,7 @@ internal class AllWatchlistViewModel(
                     errorState.update { error }
                 }
             } finally {
-                loadingMoreState.update { DONE }
+                loadingMoreState.update { Done }
                 dataJob = null
             }
         }
@@ -250,7 +250,7 @@ internal class AllWatchlistViewModel(
             itemsState.update {
                 emptyList<WatchlistItem>().toImmutableList()
             }
-            loadingState.update { DONE }
+            loadingState.update { Done }
             return true
         }
 

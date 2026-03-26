@@ -15,7 +15,7 @@ internal data class AllDiscoverState(
     val filter: MediaMode? = null,
     val type: DiscoverSection? = null,
     val collection: UserCollectionState = UserCollectionState.Default,
-    val loading: LoadingState = LoadingState.IDLE,
-    val loadingMore: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
+    val loadingMore: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
 )

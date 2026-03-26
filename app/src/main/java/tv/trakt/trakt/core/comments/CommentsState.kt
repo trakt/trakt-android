@@ -23,7 +23,7 @@ internal data class CommentsState(
     val reactions: ImmutableMap<Int, ReactionsSummary>? = null,
     val userReactions: ImmutableMap<Int, Reaction?>? = null,
     val user: User? = null,
-    val loading: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
     val loadingReplies: ImmutableSet<Int>? = null,
     val error: Exception? = null,
 ) {

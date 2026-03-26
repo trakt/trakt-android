@@ -18,7 +18,7 @@ internal data class HomeHistoryState(
     val navigateShow: TraktId? = null,
     val navigateEpisode: Pair<TraktId, Episode>? = null,
     val navigateMovie: TraktId? = null,
-    val loading: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
     val user: User? = null,
     val error: Exception? = null,
 )

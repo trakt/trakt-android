@@ -45,9 +45,9 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.FilterChip
@@ -119,14 +119,14 @@ private fun ShowExtrasContent(
                 animationSpec = tween(200),
             ) { loading ->
                 when (loading) {
-                    IDLE, LOADING -> {
+                    Idle, Loading -> {
                         ContentLoading(
                             visible = loading.isLoading,
                             contentPadding = contentPadding,
                         )
                     }
 
-                    DONE -> {
+                    Done -> {
                         Column(
                             verticalArrangement = spacedBy(0.dp),
                         ) {
@@ -330,7 +330,7 @@ private fun Preview2() {
             ShowExtrasContent(
                 state = ShowExtrasState(
                     items = emptyList<ExtraVideo>().toImmutableList(),
-                    loading = LOADING,
+                    loading = Loading,
                 ),
             )
         }
@@ -353,7 +353,7 @@ private fun Preview3() {
             ShowExtrasContent(
                 state = ShowExtrasState(
                     items = emptyList<ExtraVideo>().toImmutableList(),
-                    loading = DONE,
+                    loading = Done,
                 ),
             )
         }

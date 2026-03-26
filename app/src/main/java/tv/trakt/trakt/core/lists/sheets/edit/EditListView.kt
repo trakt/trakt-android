@@ -26,8 +26,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
@@ -52,8 +52,8 @@ internal fun EditListView(
 
     LaunchedEffect(state.loadingEdit, state.loadingDelete) {
         when {
-            state.loadingEdit == DONE -> onListEdited()
-            state.loadingDelete == DONE -> onListDeleted()
+            state.loadingEdit == Done -> onListEdited()
+            state.loadingDelete == Done -> onListDeleted()
         }
     }
 
@@ -208,7 +208,7 @@ private fun Preview2() {
         EditListContent(
             initialList = PreviewData.customList1,
             state = EditListState(
-                loadingEdit = LOADING,
+                loadingEdit = Loading,
             ),
         )
     }

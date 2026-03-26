@@ -7,7 +7,7 @@ import tv.trakt.trakt.common.model.Sentiments
 @Immutable
 internal data class MovieSentimentState(
     val sentiment: Sentiments? = null,
-    val loading: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
     val collapsed: Boolean? = null,
     val error: Exception? = null,
 )

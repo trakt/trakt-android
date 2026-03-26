@@ -26,9 +26,9 @@ import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.SeasonEpisode
@@ -70,7 +70,7 @@ internal class AllHomeUpNextViewModel(
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val loadingMoreState = MutableStateFlow(IDLE)
+    private val loadingMoreState = MutableStateFlow(Idle)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -117,9 +117,9 @@ internal class AllHomeUpNextViewModel(
                 )
                 if (localItems.isNotEmpty()) {
                     itemsState.update { localItems }
-                    loadingState.update { DONE }
+                    loadingState.update { Done }
                 } else {
-                    loadingState.update { LOADING }
+                    loadingState.update { Loading }
                 }
 
                 val remoteItems = getUpNextUseCase.getUpNext(
@@ -138,7 +138,7 @@ internal class AllHomeUpNextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
             }
         }
     }
@@ -154,7 +154,7 @@ internal class AllHomeUpNextViewModel(
 
         viewModelScope.launch {
             try {
-                loadingMoreState.update { LOADING }
+                loadingMoreState.update { Loading }
 
                 val nextData = getUpNextUseCase.getUpNext(
                     page = pages + 1,
@@ -177,7 +177,7 @@ internal class AllHomeUpNextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingMoreState.update { DONE }
+                loadingMoreState.update { Done }
             }
         }
     }
@@ -187,11 +187,11 @@ internal class AllHomeUpNextViewModel(
             itemsState.update {
                 emptyList<ProgressShow>().toImmutableList()
             }
-            loadingState.update { DONE }
+            loadingState.update { Done }
             return true
         } else {
             itemsState.update { null }
-            loadingState.update { IDLE }
+            loadingState.update { Idle }
         }
 
         return false

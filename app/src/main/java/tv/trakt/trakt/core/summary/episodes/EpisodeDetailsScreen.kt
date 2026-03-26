@@ -60,7 +60,7 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -393,7 +393,7 @@ internal fun EpisodeDetailsContent(
                 }
 
                 item {
-                    val isLoaded = state.episodeUserRating?.loading == DONE
+                    val isLoaded = state.episodeUserRating?.loading == Done
                     DetailsRating(
                         visible = isWatched && isLoaded,
                         rating = state.episodeUserRating?.rating,

@@ -10,7 +10,7 @@ import tv.trakt.trakt.core.user.UserCollectionState
 internal data class ShowRelatedState(
     val items: ImmutableList<Show>? = null,
     val collection: UserCollectionState = UserCollectionState.Default,
-    val loading: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
     val collapsed: Boolean? = null,
 )

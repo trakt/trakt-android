@@ -24,8 +24,8 @@ import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
@@ -155,7 +155,7 @@ internal class ListDetailsViewModel(
                     return@launch
                 }
 
-                loadingState.update { LOADING }
+                loadingState.update { Loading }
                 itemsState.update {
                     getListItemsUseCase.getItems(
                         listId = destinationList.ids.trakt,
@@ -176,7 +176,7 @@ internal class ListDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
                 dataJob = null
             }
         }
@@ -187,7 +187,7 @@ internal class ListDetailsViewModel(
             itemsState.update {
                 emptyList<CustomListItem>().toImmutableList()
             }
-            loadingState.update { DONE }
+            loadingState.update { Done }
             return true
         }
 
@@ -206,7 +206,7 @@ internal class ListDetailsViewModel(
 
         dataJob = viewModelScope.launch {
             try {
-                loadingMoreState.update { LOADING }
+                loadingMoreState.update { Loading }
                 val newItems = getListItemsUseCase.getItems(
                     listId = destinationList.ids.trakt,
                     type = filterState.value.toMediaTypes(),
@@ -231,7 +231,7 @@ internal class ListDetailsViewModel(
                     errorState.update { error }
                 }
             } finally {
-                loadingMoreState.update { DONE }
+                loadingMoreState.update { Done }
                 dataJob = null
             }
         }

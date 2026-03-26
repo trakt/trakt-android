@@ -97,7 +97,7 @@ internal class YounifyViewModel(
     private fun loadData(info: StringResource? = null) {
         dataJob?.cancel()
         dataJob = viewModelScope.launch {
-            loadingState.update { LoadingState.LOADING }
+            loadingState.update { LoadingState.Loading }
 
             try {
                 userState.update {
@@ -130,7 +130,7 @@ internal class YounifyViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { LoadingState.DONE }
+                loadingState.update { LoadingState.Done }
             }
         }
     }
@@ -191,7 +191,7 @@ internal class YounifyViewModel(
         promptSync: Boolean,
     ) {
         viewModelScope.launch {
-            loadingState.update { LoadingState.LOADING }
+            loadingState.update { LoadingState.Loading }
             try {
                 val resultSuccess = younify.linkService(
                     context = context,
@@ -212,11 +212,11 @@ internal class YounifyViewModel(
                         )
                     }
                 } else {
-                    loadingState.update { LoadingState.DONE }
+                    loadingState.update { LoadingState.Done }
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    loadingState.update { LoadingState.DONE }
+                    loadingState.update { LoadingState.Done }
 
                     if (error is UserConsentRequiredException) {
                         return@rethrowCancellation
@@ -296,7 +296,7 @@ internal class YounifyViewModel(
 
         viewModelScope.launch {
             try {
-                loadingState.update { LoadingState.LOADING }
+                loadingState.update { LoadingState.Loading }
                 younify.manageLinkedService(
                     service = service,
                     context = context,
@@ -309,7 +309,7 @@ internal class YounifyViewModel(
                 )
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    loadingState.update { LoadingState.DONE }
+                    loadingState.update { LoadingState.Done }
                     errorState.update {
                         StaticStringResource(error.message ?: "Unknown error")
                     }
@@ -322,7 +322,7 @@ internal class YounifyViewModel(
     fun onServiceUnlink(service: StreamingService) {
         viewModelScope.launch {
             try {
-                loadingState.update { LoadingState.LOADING }
+                loadingState.update { LoadingState.Loading }
 
                 unlinkYounifyServiceUseCase.unlinkService(service.id)
 
@@ -331,7 +331,7 @@ internal class YounifyViewModel(
                 )
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    loadingState.update { LoadingState.LOADING }
+                    loadingState.update { LoadingState.Loading }
                     errorState.update {
                         StaticStringResource(error.message ?: "Unknown error")
                     }

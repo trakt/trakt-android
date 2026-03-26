@@ -3,7 +3,7 @@ package tv.trakt.trakt.core.lists.sections.personal
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
@@ -22,7 +22,7 @@ internal data class ListsPersonalState(
     val navigateShow: TraktId? = null,
     val navigateMovie: TraktId? = null,
     val navigateEpisode: Pair<TraktId, Episode>? = null,
-    val loading: LoadingState = IDLE,
+    val loading: LoadingState = Idle,
     val collapsed: Boolean? = null,
     val error: Exception? = null,
 )

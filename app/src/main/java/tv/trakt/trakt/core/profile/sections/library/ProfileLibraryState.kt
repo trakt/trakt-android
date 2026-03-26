@@ -12,7 +12,7 @@ internal data class ProfileLibraryState(
     val user: User? = null,
     val items: ImmutableList<LibraryItem>? = null,
     val filter: LibraryFilter? = null,
-    val loading: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
     val collapsed: Boolean? = null,
     val error: Exception? = null,
 )

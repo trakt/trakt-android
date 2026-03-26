@@ -26,9 +26,9 @@ import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
@@ -109,21 +109,21 @@ internal class AllListsViewModel(
                     }
 
                     if (localLists.isNotEmpty() && (localLists.size < ListsConfig.LISTS_PAGE_LIMIT)) {
-                        loadingState.update { DONE }
+                        loadingState.update { Done }
                         hasMorePages = localLists.size >= ListsConfig.LISTS_ALL_PAGE_LIMIT
                         return@launch
                     } else {
                         if (localLists.isEmpty()) {
-                            loadingState.update { LOADING }
+                            loadingState.update { Loading }
                         } else {
-                            loadingState.update { DONE }
-                            loadingMoreState.update { LOADING }
+                            loadingState.update { Done }
+                            loadingMoreState.update { Loading }
                         }
                     }
                 }
 
                 if (reload) {
-                    loadingState.update { LOADING }
+                    loadingState.update { Loading }
                 }
 
                 itemsState.update {
@@ -142,8 +142,8 @@ internal class AllListsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
-                loadingMoreState.update { DONE }
+                loadingState.update { Done }
+                loadingMoreState.update { Done }
             }
         }
     }
@@ -157,7 +157,7 @@ internal class AllListsViewModel(
         dataJob = viewModelScope.launch {
             try {
                 page += 1
-                loadingMoreState.update { LOADING }
+                loadingMoreState.update { Loading }
 
                 val pagination = Pagination(page, ListsConfig.LISTS_ALL_PAGE_LIMIT)
 
@@ -182,7 +182,7 @@ internal class AllListsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingMoreState.update { DONE }
+                loadingMoreState.update { Done }
             }
         }
     }
@@ -190,13 +190,13 @@ internal class AllListsViewModel(
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
             itemsState.update { EmptyImmutableList }
-            loadingState.update { DONE }
-            loadingMoreState.update { DONE }
+            loadingState.update { Done }
+            loadingMoreState.update { Done }
             return true
         } else {
             itemsState.update { null }
-            loadingState.update { IDLE }
-            loadingMoreState.update { IDLE }
+            loadingState.update { Idle }
+            loadingMoreState.update { Idle }
         }
 
         return false
@@ -210,8 +210,8 @@ internal class AllListsViewModel(
         filterState.update { filter }
         itemsState.update { null }
 
-        loadingState.update { IDLE }
-        loadingMoreState.update { IDLE }
+        loadingState.update { Idle }
+        loadingMoreState.update { Idle }
 
         loadData()
     }

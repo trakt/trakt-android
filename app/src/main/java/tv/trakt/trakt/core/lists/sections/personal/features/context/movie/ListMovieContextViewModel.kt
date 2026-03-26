@@ -17,9 +17,9 @@ import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
@@ -78,9 +78,9 @@ internal class ListMovieContextViewModel(
                 return@launch
             }
             try {
-                loadingWatchedState.update { LOADING }
-                loadingWatchlistState.update { LOADING }
-                loadingListState.update { LOADING }
+                loadingWatchedState.update { Loading }
+                loadingWatchlistState.update { Loading }
+                loadingListState.update { Loading }
 
                 coroutineScope {
                     val watchlistMinAsync = async {
@@ -111,9 +111,9 @@ internal class ListMovieContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingWatchedState.update { IDLE }
-                loadingWatchlistState.update { IDLE }
-                loadingListState.update { IDLE }
+                loadingWatchedState.update { Idle }
+                loadingWatchlistState.update { Idle }
+                loadingListState.update { Idle }
             }
         }
     }
@@ -126,7 +126,7 @@ internal class ListMovieContextViewModel(
         viewModelScope.launch {
             clear()
             try {
-                loadingWatchlistState.update { LOADING }
+                loadingWatchlistState.update { Loading }
 
                 updateMovieWatchlistUseCase.addToWatchlist(
                     movieId = movie.ids.trakt,
@@ -156,7 +156,7 @@ internal class ListMovieContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingWatchlistState.update { DONE }
+                loadingWatchlistState.update { Done }
             }
         }
     }
@@ -169,7 +169,7 @@ internal class ListMovieContextViewModel(
         viewModelScope.launch {
             clear()
             try {
-                loadingWatchlistState.update { LOADING }
+                loadingWatchlistState.update { Loading }
 
                 updateMovieWatchlistUseCase.removeFromWatchlist(
                     movieId = movie.ids.trakt,
@@ -193,7 +193,7 @@ internal class ListMovieContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingWatchlistState.update { DONE }
+                loadingWatchlistState.update { Done }
             }
         }
     }
@@ -206,7 +206,7 @@ internal class ListMovieContextViewModel(
         viewModelScope.launch {
             clear()
             try {
-                loadingWatchedState.update { LOADING }
+                loadingWatchedState.update { Loading }
 
                 updateMovieHistoryUseCase.addToWatched(
                     movieId = movie.ids.trakt,
@@ -233,7 +233,7 @@ internal class ListMovieContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingWatchedState.update { DONE }
+                loadingWatchedState.update { Done }
             }
         }
     }
@@ -246,7 +246,7 @@ internal class ListMovieContextViewModel(
         viewModelScope.launch {
             clear()
             try {
-                loadingWatchedState.update { LOADING }
+                loadingWatchedState.update { Loading }
 
                 updateMovieHistoryUseCase.removeAllFromHistory(movie.ids.trakt)
                 userProgressLocalSource.removeMovies(setOf(movie.ids.trakt))
@@ -261,7 +261,7 @@ internal class ListMovieContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingWatchedState.update { DONE }
+                loadingWatchedState.update { Done }
             }
         }
     }
@@ -274,7 +274,7 @@ internal class ListMovieContextViewModel(
         viewModelScope.launch {
             clear()
             try {
-                loadingCheckInState.update { LOADING }
+                loadingCheckInState.update { Loading }
 
                 checkInManager.startMovie(
                     movieId = movie.ids.trakt,
@@ -300,7 +300,7 @@ internal class ListMovieContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingCheckInState.update { DONE }
+                loadingCheckInState.update { Done }
             }
         }
     }
@@ -313,7 +313,7 @@ internal class ListMovieContextViewModel(
         viewModelScope.launch {
             clear()
             try {
-                loadingListState.update { LOADING }
+                loadingListState.update { Loading }
 
                 removeListItemUseCase.removeMovie(
                     listId = list.ids.trakt,
@@ -325,16 +325,16 @@ internal class ListMovieContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingListState.update { DONE }
+                loadingListState.update { Done }
             }
         }
     }
 
     fun clear() {
-        loadingWatchedState.update { IDLE }
-        loadingWatchlistState.update { IDLE }
-        loadingCheckInState.update { IDLE }
-        loadingListState.update { IDLE }
+        loadingWatchedState.update { Idle }
+        loadingWatchlistState.update { Idle }
+        loadingCheckInState.update { Idle }
+        loadingListState.update { Idle }
 
         errorState.update { null }
     }

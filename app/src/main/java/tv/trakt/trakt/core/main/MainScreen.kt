@@ -69,7 +69,7 @@ import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.app.BuildConfig
 import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.MediaType.EPISODE
 import tv.trakt.trakt.common.model.MediaType.MOVIE
@@ -139,7 +139,7 @@ internal fun MainScreen(
     }
 
     LaunchedUpdateEffect(state.user) {
-        if (state.loadingUser == DONE && state.user != null) {
+        if (state.loadingUser == Done && state.user != null) {
             localSnackbar.showSnackbar(
                 message = localRes.getString(R.string.text_info_signed_in),
                 duration = SnackbarDuration.Short,

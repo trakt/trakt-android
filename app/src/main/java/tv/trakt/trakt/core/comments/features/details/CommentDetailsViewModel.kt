@@ -25,8 +25,8 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentReactionsUseCase
 import tv.trakt.trakt.common.core.comments.usecases.GetCommentRepliesUseCase
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.User
@@ -82,7 +82,7 @@ internal class CommentDetailsViewModel(
     private fun loadData() {
         loadingJob = viewModelScope.launch {
             delay(750)
-            loadingState.update { LOADING }
+            loadingState.update { Loading }
         }
 
         viewModelScope.launch {
@@ -115,7 +115,7 @@ internal class CommentDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
                 loadingJob?.cancel()
             }
         }

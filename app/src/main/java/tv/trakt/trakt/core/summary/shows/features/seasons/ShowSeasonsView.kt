@@ -53,9 +53,9 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalSnackbarState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
@@ -379,14 +379,14 @@ private fun ShowSeasonsContent(
                 animationSpec = tween(300),
             ) { loading ->
                 when (loading) {
-                    IDLE, LOADING -> {
+                    Idle, Loading -> {
                         ContentLoading(
                             visible = loading.isLoading,
                             contentPadding = contentPadding,
                         )
                     }
 
-                    DONE -> {
+                    Done -> {
                         if (state.items.seasons.isEmpty()) {
                             ContentEmpty(
                                 contentPadding = headerPadding,
@@ -511,7 +511,7 @@ private fun Preview() {
             ShowSeasonsContent(
                 user = PreviewData.user1,
                 state = ShowSeasonsState(
-                    loading = DONE,
+                    loading = Done,
                     items = ShowSeasons(
                         selectedSeasonEpisodes = listOf(
                             EpisodeItem(PreviewData.episode1),
@@ -554,7 +554,7 @@ private fun Preview2() {
             ShowSeasonsContent(
                 user = PreviewData.user1,
                 state = ShowSeasonsState(
-                    loading = LOADING,
+                    loading = Loading,
                 ),
             )
         }
@@ -577,7 +577,7 @@ private fun Preview3() {
             ShowSeasonsContent(
                 user = PreviewData.user1,
                 state = ShowSeasonsState(
-                    loading = DONE,
+                    loading = Done,
                 ),
             )
         }

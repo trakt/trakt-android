@@ -12,9 +12,9 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.features.all.data.local.AllActivityLocalDataSource
@@ -44,7 +44,7 @@ internal class ActivityItemContextViewModel(
         viewModelScope.launch {
             clear()
             try {
-                loadingRemoveState.update { LOADING }
+                loadingRemoveState.update { Loading }
 
                 when (item) {
                     is MovieItem -> {
@@ -74,7 +74,7 @@ internal class ActivityItemContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingRemoveState.update { DONE }
+                loadingRemoveState.update { Done }
             }
         }
     }
@@ -92,8 +92,8 @@ internal class ActivityItemContextViewModel(
     }
 
     fun clear() {
-        loadingRemoveState.update { IDLE }
-        loadingWatchlistState.update { IDLE }
+        loadingRemoveState.update { Idle }
+        loadingWatchlistState.update { Idle }
         errorState.update { null }
     }
 

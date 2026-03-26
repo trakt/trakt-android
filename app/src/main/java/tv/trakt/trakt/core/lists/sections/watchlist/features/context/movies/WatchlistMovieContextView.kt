@@ -34,7 +34,7 @@ import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
@@ -65,9 +65,9 @@ internal fun WatchlistMovieContextView(
 
     LaunchedEffect(state.loadingWatched, state.loadingWatchlist, state.loadingCheckIn) {
         when {
-            state.loadingWatched == DONE -> onAddWatched(item)
-            state.loadingWatchlist == DONE -> onRemoveWatchlist()
-            state.loadingCheckIn == DONE -> onCheckIn()
+            state.loadingWatched == Done -> onAddWatched(item)
+            state.loadingWatchlist == Done -> onRemoveWatchlist()
+            state.loadingCheckIn == Done -> onCheckIn()
         }
     }
 

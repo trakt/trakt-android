@@ -32,7 +32,7 @@ internal class DeleteCommentViewModel(
     fun deleteComment() {
         if (job?.isActive == true) return
 
-        loadingState.update { LoadingState.LOADING }
+        loadingState.update { LoadingState.Loading }
         errorState.update { null }
 
         job = viewModelScope.launch {
@@ -41,7 +41,7 @@ internal class DeleteCommentViewModel(
                 analytics.comments.logCommentRemove()
                 deletedState.update { true }
             } catch (error: Exception) {
-                loadingState.update { LoadingState.DONE }
+                loadingState.update { LoadingState.Done }
                 errorState.update { error }
             }
         }

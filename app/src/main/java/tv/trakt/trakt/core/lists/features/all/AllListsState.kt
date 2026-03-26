@@ -10,7 +10,7 @@ import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 internal data class AllListsState(
     val items: ImmutableList<CustomList>? = null,
     val filter: PersonalListType? = null,
-    val loading: LoadingState = LoadingState.IDLE,
-    val loadingMore: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
+    val loadingMore: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
 )

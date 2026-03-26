@@ -22,8 +22,8 @@ import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
@@ -122,12 +122,12 @@ internal class AllPersonalListViewModel(
                 page = 1
 
                 if (loadEmptyIfNeeded()) {
-                    loadingState.update { DONE }
+                    loadingState.update { Done }
                     return@launch
                 }
 
                 if (!ignoreLoading) {
-                    loadingState.update { LOADING }
+                    loadingState.update { Loading }
                 }
 
                 itemsState.update {
@@ -151,7 +151,7 @@ internal class AllPersonalListViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
                 dataJob = null
             }
         }
@@ -178,7 +178,7 @@ internal class AllPersonalListViewModel(
 
         dataJob = viewModelScope.launch {
             try {
-                loadingMoreState.update { LOADING }
+                loadingMoreState.update { Loading }
                 val newItems = getListItemsUseCase.getRemoteItems(
                     listId = destination.listId.toTraktId(),
                     type = filterState.value,
@@ -201,7 +201,7 @@ internal class AllPersonalListViewModel(
                     errorState.update { error }
                 }
             } finally {
-                loadingMoreState.update { DONE }
+                loadingMoreState.update { Done }
                 dataJob = null
             }
         }

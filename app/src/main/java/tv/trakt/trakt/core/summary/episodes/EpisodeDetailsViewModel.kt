@@ -27,8 +27,8 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -181,7 +181,7 @@ internal class EpisodeDetailsViewModel(
                 var episode = episodeAsync.await()
 
                 if (episode == null || show == null) {
-                    loadingState.update { LOADING }
+                    loadingState.update { Loading }
                 }
 
                 if (show == null) {
@@ -206,7 +206,7 @@ internal class EpisodeDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
             }
         }
     }
@@ -220,7 +220,7 @@ internal class EpisodeDetailsViewModel(
                 return@launch
             }
             try {
-                loadingProgress.update { LOADING }
+                loadingProgress.update { Loading }
 
                 if (force || !loadProgressUseCase.isShowsLoaded()) {
                     loadProgressUseCase.loadShowsProgress()
@@ -246,7 +246,7 @@ internal class EpisodeDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingProgress.update { DONE }
+                loadingProgress.update { Done }
             }
         }
     }
@@ -281,7 +281,7 @@ internal class EpisodeDetailsViewModel(
             try {
                 episodeUserRatingsState.update {
                     UserRatingsState(
-                        loading = LOADING,
+                        loading = Loading,
                     )
                 }
 
@@ -295,7 +295,7 @@ internal class EpisodeDetailsViewModel(
                 episodeUserRatingsState.update {
                     UserRatingsState(
                         rating = userRating,
-                        loading = DONE,
+                        loading = Done,
                     )
                 }
             } catch (error: Exception) {
@@ -334,7 +334,7 @@ internal class EpisodeDetailsViewModel(
             }
 
             try {
-                loadingProgress.update { LOADING }
+                loadingProgress.update { Loading }
 
                 checkInManager.startEpisode(
                     showId = showId,
@@ -367,7 +367,7 @@ internal class EpisodeDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingProgress.update { DONE }
+                loadingProgress.update { Done }
             }
         }
     }
@@ -383,7 +383,7 @@ internal class EpisodeDetailsViewModel(
                 return@launch
             }
             try {
-                loadingProgress.update { LOADING }
+                loadingProgress.update { Loading }
 
                 val response = updateHistoryUseCase.addToHistory(
                     episodeId = episodeId,
@@ -420,7 +420,7 @@ internal class EpisodeDetailsViewModel(
                     Timber.d(error, "Failed to add movie to history")
                 }
             } finally {
-                loadingProgress.update { DONE }
+                loadingProgress.update { Done }
             }
         }
     }
@@ -434,7 +434,7 @@ internal class EpisodeDetailsViewModel(
                 return@launch
             }
             try {
-                loadingProgress.update { LOADING }
+                loadingProgress.update { Loading }
 
                 updateHistoryUseCase.removeEpisodeFromHistory(episodeId.value)
                 loadProgressUseCase.loadShowsProgress()
@@ -464,7 +464,7 @@ internal class EpisodeDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingProgress.update { DONE }
+                loadingProgress.update { Done }
             }
         }
     }
@@ -478,7 +478,7 @@ internal class EpisodeDetailsViewModel(
                 return@launch
             }
             try {
-                loadingProgress.update { LOADING }
+                loadingProgress.update { Loading }
 
                 updateHistoryUseCase.removePlayFromHistory(playId)
                 val progress = loadProgressUseCase.loadShowsProgress()
@@ -508,7 +508,7 @@ internal class EpisodeDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingProgress.update { DONE }
+                loadingProgress.update { Done }
             }
         }
     }
@@ -529,7 +529,7 @@ internal class EpisodeDetailsViewModel(
                         mediaType = EPISODE,
                         rating = newRating,
                     ),
-                    loading = DONE,
+                    loading = Done,
                 )
             }
 
@@ -562,7 +562,7 @@ internal class EpisodeDetailsViewModel(
                         rating = 0,
                         favorite = it?.rating?.favorite == true,
                     ),
-                    loading = DONE,
+                    loading = Done,
                 )
             }
 

@@ -42,9 +42,9 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
@@ -121,14 +121,14 @@ private fun EpisodeRelatedContent(
                 animationSpec = tween(200),
             ) { loading ->
                 when (loading) {
-                    IDLE, LOADING -> {
+                    Idle, Loading -> {
                         ContentLoading(
                             visible = loading.isLoading,
                             contentPadding = contentPadding,
                         )
                     }
 
-                    DONE -> {
+                    Done -> {
                         if (state.items?.isEmpty() == true) {
                             ContentEmpty(
                                 contentPadding = headerPadding,
@@ -289,7 +289,7 @@ private fun Preview2() {
             EpisodeRelatedContent(
                 state = EpisodeRelatedState(
                     items = emptyList<Show>().toImmutableList(),
-                    loading = LOADING,
+                    loading = Loading,
                 ),
             )
         }
@@ -312,7 +312,7 @@ private fun Preview3() {
             EpisodeRelatedContent(
                 state = EpisodeRelatedState(
                     items = emptyList<Show>().toImmutableList(),
-                    loading = DONE,
+                    loading = Done,
                 ),
             )
         }

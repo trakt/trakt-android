@@ -1,13 +1,13 @@
-package tv.trakt.trakt.common.core.user.data.remote.likedlists
+package tv.trakt.trakt.common.core.user.data.remote.otherlists
 
 import org.openapitools.client.apis.UsersApi
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.networking.LikedListDto
 import tv.trakt.trakt.common.networking.ListDto
 
-class UserLikedListsApiClient(
+class UserOtherListsApiClient(
     private val usersApi: UsersApi,
-) : UserLikedListsRemoteDataSource {
+) : UserOtherListsRemoteDataSource {
     override suspend fun getLikedLists(
         minimal: Boolean,
         pagination: Pagination,

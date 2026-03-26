@@ -14,9 +14,9 @@ import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -75,7 +75,7 @@ internal class WatchlistMovieContextViewModel(
         viewModelScope.launch {
             clear()
             try {
-                loadingWatchedState.update { LOADING }
+                loadingWatchedState.update { Loading }
 
                 updateMovieHistoryUseCase.addToWatched(
                     movieId = movieId,
@@ -97,7 +97,7 @@ internal class WatchlistMovieContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingWatchedState.update { DONE }
+                loadingWatchedState.update { Done }
             }
         }
     }
@@ -107,7 +107,7 @@ internal class WatchlistMovieContextViewModel(
         viewModelScope.launch {
             clear()
             try {
-                loadingWatchlistState.update { LOADING }
+                loadingWatchlistState.update { Loading }
 
                 updateMovieWatchlistUseCase.removeFromWatchlist(movieId = movieId)
                 userWatchlistLocalSource.removeMovies(setOf(movieId))
@@ -118,7 +118,7 @@ internal class WatchlistMovieContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingWatchlistState.update { DONE }
+                loadingWatchlistState.update { Done }
             }
         }
     }
@@ -128,7 +128,7 @@ internal class WatchlistMovieContextViewModel(
         viewModelScope.launch {
             clear()
             try {
-                loadingCheckInState.update { LOADING }
+                loadingCheckInState.update { Loading }
 
                 checkInManager.startMovie(
                     movieId = movieId,
@@ -155,15 +155,15 @@ internal class WatchlistMovieContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingCheckInState.update { DONE }
+                loadingCheckInState.update { Done }
             }
         }
     }
 
     fun clear() {
-        loadingWatchedState.update { IDLE }
-        loadingWatchlistState.update { IDLE }
-        loadingCheckInState.update { IDLE }
+        loadingWatchedState.update { Idle }
+        loadingWatchlistState.update { Idle }
+        loadingCheckInState.update { Idle }
         errorState.update { null }
     }
 

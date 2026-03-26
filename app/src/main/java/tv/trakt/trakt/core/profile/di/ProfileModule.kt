@@ -25,8 +25,8 @@ import tv.trakt.trakt.common.core.user.data.remote.favorites.UserFavoritesApiCli
 import tv.trakt.trakt.common.core.user.data.remote.favorites.UserFavoritesRemoteDataSource
 import tv.trakt.trakt.common.core.user.data.remote.history.UserHistoryApiClient
 import tv.trakt.trakt.common.core.user.data.remote.history.UserHistoryRemoteDataSource
-import tv.trakt.trakt.common.core.user.data.remote.likedlists.UserLikedListsApiClient
-import tv.trakt.trakt.common.core.user.data.remote.likedlists.UserLikedListsRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.remote.otherlists.UserOtherListsApiClient
+import tv.trakt.trakt.common.core.user.data.remote.otherlists.UserOtherListsRemoteDataSource
 import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalListsApiClient
 import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalListsRemoteDataSource
 import tv.trakt.trakt.common.core.user.data.remote.ratings.UserRatingsApiClient
@@ -108,8 +108,8 @@ internal val profileDataModule = module {
         )
     }
 
-    single<UserLikedListsRemoteDataSource> {
-        UserLikedListsApiClient(
+    single<UserOtherListsRemoteDataSource> {
+        UserOtherListsApiClient(
             usersApi = get(),
         )
     }

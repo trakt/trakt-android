@@ -13,7 +13,7 @@ internal data class AllLibraryState(
     val items: ImmutableList<LibraryItem>? = null,
     val navigateShow: TraktId? = null,
     val navigateMovie: TraktId? = null,
-    val loading: LoadingState = LoadingState.IDLE,
-    val loadingMore: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
+    val loadingMore: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
 )

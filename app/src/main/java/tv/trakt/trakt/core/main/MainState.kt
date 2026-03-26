@@ -11,7 +11,7 @@ internal data class MainState(
     val user: User? = null,
     val userVipStatus: Pair<Boolean?, Boolean?>? = null,
     val checkIn: CheckInState? = null,
-    val loadingUser: LoadingState = LoadingState.IDLE,
+    val loadingUser: LoadingState = LoadingState.Idle,
     val welcome: WelcomeState = WelcomeState(),
     val whatsNew: WhatsNew? = null,
     val review: Boolean? = null,

@@ -44,7 +44,7 @@ internal class HomeViewModel(
                 userState.update {
                     UserState(
                         user = user,
-                        loading = LoadingState.DONE,
+                        loading = LoadingState.Done,
                     )
                 }
             }

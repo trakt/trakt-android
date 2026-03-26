@@ -30,8 +30,8 @@ import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableSet
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
@@ -136,12 +136,12 @@ internal class CalendarViewModel(
         dataJob?.cancel()
         dataJob = viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
-                loadingState.update { DONE }
+                loadingState.update { Done }
                 return@launch
             }
 
             try {
-                loadingState.update { LOADING }
+                loadingState.update { Loading }
                 itemsState.update {
                     val currentDay = selectedStartDayState.value
                     getCalendarItemsUseCase.getCalendarItems(currentDay)
@@ -152,7 +152,7 @@ internal class CalendarViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
                 dataJob = null
             }
         }

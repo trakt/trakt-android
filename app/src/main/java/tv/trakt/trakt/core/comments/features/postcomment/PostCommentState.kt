@@ -7,7 +7,7 @@ import tv.trakt.trakt.common.model.User
 
 @Immutable
 internal data class PostCommentState(
-    val loading: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
     val user: User? = null,
     val result: Comment? = null,
     val error: Exception? = null,

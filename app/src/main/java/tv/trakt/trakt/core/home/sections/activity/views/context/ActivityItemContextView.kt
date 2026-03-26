@@ -36,7 +36,7 @@ import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -66,8 +66,8 @@ internal fun ActivityItemContextView(
 
     LaunchedEffect(state.loadingRemove, state.loadingWatchlist) {
         when {
-            state.loadingRemove == DONE -> onPlayRemove()
-            state.loadingWatchlist == DONE -> onAddWatchlist()
+            state.loadingRemove == Done -> onPlayRemove()
+            state.loadingWatchlist == Done -> onAddWatchlist()
         }
     }
 

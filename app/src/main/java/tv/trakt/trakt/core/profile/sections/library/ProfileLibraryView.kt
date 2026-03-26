@@ -40,9 +40,9 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
@@ -96,7 +96,7 @@ internal fun ProfileLibraryView(
             }
         },
         onLibraryClick = {
-            if (state.loading == DONE && !state.items.isNullOrEmpty()) {
+            if (state.loading == Done && !state.items.isNullOrEmpty()) {
                 onMoreClick()
             }
         },
@@ -135,7 +135,7 @@ private fun ProfileLibraryView(
     ) {
         TraktSectionHeader(
             title = stringResource(R.string.list_title_library),
-            chevron = !state.items.isNullOrEmpty() || state.loading != DONE,
+            chevron = !state.items.isNullOrEmpty() || state.loading != Done,
             collapsed = state.collapsed ?: false,
             onCollapseClick = {
                 animateCollapse = true
@@ -144,7 +144,7 @@ private fun ProfileLibraryView(
             },
             modifier = Modifier
                 .padding(headerPadding)
-                .onClick(enabled = state.loading == DONE) {
+                .onClick(enabled = state.loading == Done) {
                     onLibraryClick()
                 },
         )
@@ -161,14 +161,14 @@ private fun ProfileLibraryView(
                 animationSpec = tween(200),
             ) { loading ->
                 when (loading) {
-                    IDLE, LOADING -> {
+                    Idle, Loading -> {
                         ContentLoadingList(
                             visible = loading.isLoading,
                             contentPadding = contentPadding,
                         )
                     }
 
-                    DONE -> {
+                    Done -> {
                         when {
                             state.error != null -> {
                                 Text(
@@ -320,7 +320,7 @@ private fun Preview() {
     TraktTheme {
         ProfileLibraryView(
             state = ProfileLibraryState(
-                loading = IDLE,
+                loading = Idle,
             ),
         )
     }
@@ -336,7 +336,7 @@ private fun Preview2() {
     TraktTheme {
         ProfileLibraryView(
             state = ProfileLibraryState(
-                loading = LOADING,
+                loading = Loading,
             ),
         )
     }

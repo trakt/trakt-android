@@ -12,7 +12,7 @@ internal data class DiscoverState(
 ) {
     data class UserState(
         val user: User? = null,
-        val loading: LoadingState = LoadingState.IDLE,
+        val loading: LoadingState = LoadingState.Idle,
     ) {
         val isAuthenticated: Boolean
             get() = user != null

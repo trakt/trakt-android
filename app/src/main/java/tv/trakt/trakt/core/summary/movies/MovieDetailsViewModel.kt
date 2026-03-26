@@ -31,8 +31,8 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -176,7 +176,7 @@ internal class MovieDetailsViewModel(
             try {
                 var movie = getDetailsUseCase.getLocalMovie(movieId)
                 if (movie == null) {
-                    loadingState.update { LOADING }
+                    loadingState.update { Loading }
                     movie = getDetailsUseCase.getMovie(
                         movieId = movieId,
                     )
@@ -192,7 +192,7 @@ internal class MovieDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
             }
         }
     }
@@ -203,8 +203,8 @@ internal class MovieDetailsViewModel(
                 return@launch
             }
             try {
-                loadingProgress.update { LOADING }
-                loadingLists.update { LOADING }
+                loadingProgress.update { Loading }
+                loadingLists.update { Loading }
 
                 coroutineScope {
                     val progressAsync = async {
@@ -256,8 +256,8 @@ internal class MovieDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingProgress.update { DONE }
-                loadingLists.update { DONE }
+                loadingProgress.update { Done }
+                loadingLists.update { Done }
             }
         }
     }
@@ -270,7 +270,7 @@ internal class MovieDetailsViewModel(
             try {
                 movieUserRatingsState.update {
                     UserRatingsState(
-                        loading = LOADING,
+                        loading = Loading,
                     )
                 }
 
@@ -307,7 +307,7 @@ internal class MovieDetailsViewModel(
                 movieUserRatingsState.update {
                     UserRatingsState(
                         rating = userRating,
-                        loading = DONE,
+                        loading = Done,
                     )
                 }
             } catch (error: Exception) {
@@ -380,7 +380,7 @@ internal class MovieDetailsViewModel(
             }
 
             try {
-                loadingProgress.update { LOADING }
+                loadingProgress.update { Loading }
 
                 checkInManager.startMovie(
                     movieId = movieId,
@@ -405,7 +405,7 @@ internal class MovieDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingProgress.update { DONE }
+                loadingProgress.update { Done }
             }
         }
     }
@@ -427,7 +427,7 @@ internal class MovieDetailsViewModel(
             }
 
             try {
-                loadingProgress.update { LOADING }
+                loadingProgress.update { Loading }
 
                 val response = updateMovieHistoryUseCase.addToWatched(
                     movieId = movieId,
@@ -464,7 +464,7 @@ internal class MovieDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingProgress.update { DONE }
+                loadingProgress.update { Done }
             }
         }
     }
@@ -483,7 +483,7 @@ internal class MovieDetailsViewModel(
                 return@launch
             }
             try {
-                loadingProgress.update { LOADING }
+                loadingProgress.update { Loading }
 
                 updateMovieHistoryUseCase.removeAllFromHistory(movieId)
                 loadProgressUseCase.loadMoviesProgress()
@@ -508,7 +508,7 @@ internal class MovieDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingProgress.update { DONE }
+                loadingProgress.update { Done }
             }
         }
     }
@@ -527,7 +527,7 @@ internal class MovieDetailsViewModel(
                 return@launch
             }
             try {
-                loadingProgress.update { LOADING }
+                loadingProgress.update { Loading }
 
                 updateMovieHistoryUseCase.removePlayFromHistory(playId)
                 loadProgressUseCase.loadMoviesProgress()
@@ -553,7 +553,7 @@ internal class MovieDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingProgress.update { DONE }
+                loadingProgress.update { Done }
             }
         }
     }
@@ -582,7 +582,7 @@ internal class MovieDetailsViewModel(
                 return@launch
             }
             try {
-                loadingLists.update { LOADING }
+                loadingLists.update { Loading }
 
                 updateMovieWatchlistUseCase.addToWatchlist(movieId)
                 userWatchlistLocalSource.addMovies(
@@ -620,7 +620,7 @@ internal class MovieDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingLists.update { DONE }
+                loadingLists.update { Done }
             }
         }
     }
@@ -631,7 +631,7 @@ internal class MovieDetailsViewModel(
                 return@launch
             }
             try {
-                loadingLists.update { LOADING }
+                loadingLists.update { Loading }
 
                 updateMovieWatchlistUseCase.removeFromWatchlist(movieId)
                 userWatchlistLocalSource.removeMovies(ids = setOf(movieId))
@@ -654,7 +654,7 @@ internal class MovieDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingLists.update { DONE }
+                loadingLists.update { Done }
             }
         }
     }
@@ -686,7 +686,7 @@ internal class MovieDetailsViewModel(
                 return@launch
             }
             try {
-                loadingLists.update { LOADING }
+                loadingLists.update { Loading }
 
                 addListItemUseCase.addMovie(
                     listId = listId,
@@ -702,7 +702,7 @@ internal class MovieDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingLists.update { DONE }
+                loadingLists.update { Done }
             }
         }
     }
@@ -713,7 +713,7 @@ internal class MovieDetailsViewModel(
                 return@launch
             }
             try {
-                loadingLists.update { LOADING }
+                loadingLists.update { Loading }
 
                 removeListItemUseCase.removeMovie(
                     listId = listId,
@@ -730,7 +730,7 @@ internal class MovieDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingLists.update { DONE }
+                loadingLists.update { Done }
             }
         }
     }
@@ -774,7 +774,7 @@ internal class MovieDetailsViewModel(
             }
 
             try {
-                loadingFavorite.update { LOADING }
+                loadingFavorite.update { Loading }
 
                 delay(300) // Small delay to allow UI to settle.
                 updateMovieFavoritesUseCase.addToFavorites(movieId)
@@ -816,7 +816,7 @@ internal class MovieDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingFavorite.update { DONE }
+                loadingFavorite.update { Done }
             }
         }
     }
@@ -828,7 +828,7 @@ internal class MovieDetailsViewModel(
             }
 
             try {
-                loadingFavorite.update { LOADING }
+                loadingFavorite.update { Loading }
 
                 delay(300) // Small delay to allow UI to settle.
                 updateMovieFavoritesUseCase.removeFromFavorites(movieId)
@@ -859,7 +859,7 @@ internal class MovieDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingFavorite.update { DONE }
+                loadingFavorite.update { Done }
             }
         }
     }
@@ -881,7 +881,7 @@ internal class MovieDetailsViewModel(
                         rating = newRating,
                         favorite = it?.rating?.favorite == true,
                     ),
-                    loading = DONE,
+                    loading = Done,
                 )
             }
 
@@ -914,7 +914,7 @@ internal class MovieDetailsViewModel(
                         rating = 0,
                         favorite = it?.rating?.favorite == true,
                     ),
-                    loading = DONE,
+                    loading = Done,
                 )
             }
 

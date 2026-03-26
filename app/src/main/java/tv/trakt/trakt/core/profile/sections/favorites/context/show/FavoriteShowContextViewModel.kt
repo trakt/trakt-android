@@ -14,8 +14,8 @@ import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
@@ -66,7 +66,7 @@ internal class FavoriteShowContextViewModel(
                 return@launch
             }
             try {
-                loadingState.update { LOADING }
+                loadingState.update { Loading }
 
                 updateShowFavoritesUseCase.removeFromFavorites(show.ids.trakt)
                 userFavoritesLocalSource.removeShows(setOf(show.ids.trakt))
@@ -77,7 +77,7 @@ internal class FavoriteShowContextViewModel(
                     source = "show_context",
                 )
 
-                loadingState.update { DONE }
+                loadingState.update { Done }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

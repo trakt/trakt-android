@@ -47,7 +47,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
@@ -355,7 +355,7 @@ private fun Preview() {
     TraktTheme {
         AllHomeUpNextContent(
             state = AllHomeUpNextState(
-                loading = LoadingState.DONE,
+                loading = LoadingState.Done,
             ),
         )
     }
@@ -371,7 +371,7 @@ private fun Preview2() {
     TraktTheme {
         AllHomeUpNextContent(
             state = AllHomeUpNextState(
-                loading = LOADING,
+                loading = Loading,
             ),
         )
     }

@@ -47,7 +47,7 @@ internal class ShowDetailsListsViewModel(
                 } ?: return@launch
 
             try {
-                loadingState.update { LoadingState.LOADING }
+                loadingState.update { LoadingState.Loading }
 
                 listsState.update {
                     loadListsUseCase.loadLocalLists()
@@ -68,12 +68,12 @@ internal class ShowDetailsListsViewModel(
                     }.toImmutableList()
                 }
 
-                loadingState.update { LoadingState.DONE }
+                loadingState.update { LoadingState.Done }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
                     Timber.recordError(error)
-                    loadingState.update { LoadingState.IDLE }
+                    loadingState.update { LoadingState.Idle }
                 }
             }
         }

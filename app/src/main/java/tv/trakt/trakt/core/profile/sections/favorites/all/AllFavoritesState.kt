@@ -15,6 +15,6 @@ internal data class AllFavoritesState(
     val items: ImmutableList<FavoriteItem>? = null,
     val navigateShow: TraktId? = null,
     val navigateMovie: TraktId? = null,
-    val loading: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
 )

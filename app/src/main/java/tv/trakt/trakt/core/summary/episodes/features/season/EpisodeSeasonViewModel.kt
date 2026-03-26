@@ -25,8 +25,8 @@ import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -96,7 +96,7 @@ internal class EpisodeSeasonViewModel(
     private fun loadData(ignoreErrors: Boolean = false) {
         viewModelScope.launch {
             try {
-                loadingState.update { LOADING }
+                loadingState.update { Loading }
                 val authenticated = sessionManager.isAuthenticated()
 
                 val episodesAsync = async {
@@ -156,7 +156,7 @@ internal class EpisodeSeasonViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
             }
         }
     }
@@ -175,7 +175,7 @@ internal class EpisodeSeasonViewModel(
             }
 
             try {
-                loadingEpisodeState.update { LOADING }
+                loadingEpisodeState.update { Loading }
                 setLoadingEpisode(episodeToAdd)
 
                 updateEpisodeHistoryUseCase.addToHistory(
@@ -212,7 +212,7 @@ internal class EpisodeSeasonViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingEpisodeState.update { DONE }
+                loadingEpisodeState.update { Done }
             }
         }
     }
@@ -229,7 +229,7 @@ internal class EpisodeSeasonViewModel(
             }
 
             try {
-                loadingEpisodeState.update { LOADING }
+                loadingEpisodeState.update { Loading }
                 setLoadingEpisode(episodeToRemove)
 
                 updateEpisodeHistoryUseCase.removeEpisodeFromHistory(episodeToRemove.ids.trakt.value)
@@ -262,7 +262,7 @@ internal class EpisodeSeasonViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingEpisodeState.update { DONE }
+                loadingEpisodeState.update { Done }
             }
         }
     }

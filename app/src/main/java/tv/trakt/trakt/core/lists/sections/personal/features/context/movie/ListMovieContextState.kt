@@ -2,16 +2,16 @@ package tv.trakt.trakt.core.lists.sections.personal.features.context.movie
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
 
 @Immutable
 internal data class ListMovieContextState(
     val isWatched: Boolean = false,
     val isWatchlist: Boolean = false,
-    val loadingWatched: LoadingState = IDLE,
-    val loadingWatchlist: LoadingState = IDLE,
-    val loadingCheckIn: LoadingState = IDLE,
-    val loadingList: LoadingState = IDLE,
+    val loadingWatched: LoadingState = Idle,
+    val loadingWatchlist: LoadingState = Idle,
+    val loadingCheckIn: LoadingState = Idle,
+    val loadingList: LoadingState = Idle,
     val error: Exception? = null,
 ) {
     val isLoadingOrDone: Boolean

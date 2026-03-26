@@ -17,8 +17,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
@@ -34,7 +34,7 @@ internal fun CreateListView(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(state.loading) {
-        if (state.loading == DONE) {
+        if (state.loading == Done) {
             onListCreated()
         }
     }
@@ -135,7 +135,7 @@ private fun Preview2() {
     TraktTheme {
         CreateListContent(
             state = CreateListState(
-                loading = LOADING,
+                loading = Loading,
             ),
         )
     }

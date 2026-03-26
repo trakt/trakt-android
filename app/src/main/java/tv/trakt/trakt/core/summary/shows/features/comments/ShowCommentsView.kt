@@ -55,9 +55,9 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.MediaType
@@ -182,7 +182,7 @@ private fun ShowCommentsContent(
         ) {
             TraktSectionHeader(
                 title = stringResource(R.string.list_title_comments),
-                chevron = !state.items.isNullOrEmpty() || state.loading != DONE,
+                chevron = !state.items.isNullOrEmpty() || state.loading != Done,
                 collapsed = state.collapsed ?: false,
                 onCollapseClick = {
                     animateCollapse = true
@@ -202,7 +202,7 @@ private fun ShowCommentsContent(
                                         end = 6.dp,
                                     )
                                     .size(18.dp)
-                                    .onClick(enabled = state.loading == DONE) {
+                                    .onClick(enabled = state.loading == Done) {
                                         onAddCommentClick?.invoke()
                                     }
                                     .graphicsLayer {
@@ -217,7 +217,7 @@ private fun ShowCommentsContent(
                 },
                 modifier = Modifier
                     .weight(1f)
-                    .onClick(enabled = state.loading == DONE) {
+                    .onClick(enabled = state.loading == Done) {
                         onMoreClick?.invoke()
                     },
             )
@@ -239,14 +239,14 @@ private fun ShowCommentsContent(
                 animationSpec = tween(200),
             ) { loading ->
                 when (loading) {
-                    IDLE, LOADING -> {
+                    Idle, Loading -> {
                         ContentLoading(
                             visible = loading.isLoading,
                             contentPadding = contentPadding,
                         )
                     }
 
-                    DONE -> {
+                    Done -> {
                         Column(
                             verticalArrangement = spacedBy(0.dp),
                         ) {
@@ -434,7 +434,7 @@ private fun Preview2() {
             ShowCommentsContent(
                 state = ShowCommentsState(
                     items = emptyList<Comment>().toImmutableList(),
-                    loading = LOADING,
+                    loading = Loading,
                 ),
             )
         }
@@ -457,7 +457,7 @@ private fun Preview3() {
             ShowCommentsContent(
                 state = ShowCommentsState(
                     items = emptyList<Comment>().toImmutableList(),
-                    loading = DONE,
+                    loading = Done,
                 ),
             )
         }

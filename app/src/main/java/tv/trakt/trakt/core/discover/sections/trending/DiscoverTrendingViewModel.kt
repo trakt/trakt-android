@@ -20,8 +20,8 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.interleave
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.discover.model.DiscoverItem
@@ -76,7 +76,7 @@ internal class DiscoverTrendingViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
                 dataJob = null
             }
         }
@@ -98,9 +98,9 @@ internal class DiscoverTrendingViewModel(
                         .interleave()
                         .toImmutableList()
                 }
-                loadingState.update { DONE }
+                loadingState.update { Done }
             } else {
-                loadingState.update { LOADING }
+                loadingState.update { Loading }
             }
         }
     }

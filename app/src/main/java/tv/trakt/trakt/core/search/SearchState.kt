@@ -16,7 +16,7 @@ import tv.trakt.trakt.core.user.UserCollectionState
 internal data class SearchState(
     val input: SearchInput = SearchInput(),
     val state: State = State.IDLE,
-    val popularLoading: LoadingState = LoadingState.IDLE,
+    val popularLoading: LoadingState = LoadingState.Idle,
     val popularResults: SearchResult? = null,
     val searchResult: SearchResult? = null,
     val navigateShow: Show? = null,
@@ -30,7 +30,7 @@ internal data class SearchState(
 ) {
     data class UserState(
         val user: User? = null,
-        val loading: LoadingState = LoadingState.IDLE,
+        val loading: LoadingState = LoadingState.Idle,
     ) {
         val isAuthenticated: Boolean
             get() = user != null

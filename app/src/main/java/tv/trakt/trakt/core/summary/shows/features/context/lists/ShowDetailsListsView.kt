@@ -253,7 +253,7 @@ private fun Preview() {
     TraktTheme {
         ShowDetailsListsContent(
             show = PreviewData.show1,
-            loading = LoadingState.DONE,
+            loading = LoadingState.Done,
             inWatchlist = true,
             lists = listOf(PreviewData.customListMinimal1).toImmutableList(),
             showLists = setOf(PreviewData.show1.ids.trakt).toImmutableSet(),
@@ -268,7 +268,7 @@ private fun Preview2() {
     TraktTheme {
         ShowDetailsListsContent(
             show = PreviewData.show1,
-            loading = LoadingState.DONE,
+            loading = LoadingState.Done,
             inWatchlist = false,
             lists = listOf(PreviewData.customListMinimal1).toImmutableList(),
             showLists = emptySet<TraktId>().toImmutableSet(),

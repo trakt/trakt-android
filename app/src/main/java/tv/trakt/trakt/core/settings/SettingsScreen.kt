@@ -56,7 +56,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import timber.log.Timber
 import tv.trakt.trakt.BuildConfig
 import tv.trakt.trakt.common.Config
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -94,7 +94,7 @@ internal fun SettingsScreen(
     var confirmLogout by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.user, state.logoutLoading) {
-        if (state.logoutLoading == DONE && state.user == null) {
+        if (state.logoutLoading == Done && state.user == null) {
             onNavigateHome()
         }
     }

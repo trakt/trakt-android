@@ -428,7 +428,7 @@ internal fun MovieDetailsContent(
                 }
 
                 item {
-                    val isLoaded = state.movieUserRating?.loading == LoadingState.DONE
+                    val isLoaded = state.movieUserRating?.loading == LoadingState.Done
                     DetailsRating(
                         visible = isWatched && isLoaded,
                         rating = state.movieUserRating?.rating,

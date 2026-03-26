@@ -34,9 +34,9 @@ import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -188,9 +188,9 @@ internal class HomeWatchlistViewModel(
                                 .distinctBy { it.key }
                                 .toImmutableList()
                         }
-                        loadingState.update { DONE }
+                        loadingState.update { Done }
                     } else {
-                        loadingState.update { LOADING }
+                        loadingState.update { Loading }
                     }
                 }
 
@@ -227,7 +227,7 @@ internal class HomeWatchlistViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
                 dataJob = null
             }
         }
@@ -517,10 +517,10 @@ internal class HomeWatchlistViewModel(
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
             itemsState.update { EmptyImmutableList }
-            loadingState.update { DONE }
+            loadingState.update { Done }
             return true
         } else {
-            loadingState.update { IDLE }
+            loadingState.update { Idle }
         }
 
         return false

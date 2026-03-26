@@ -10,9 +10,9 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
 internal data class ShowSeasonsState(
     val show: Show? = null,
     val items: ShowSeasons = ShowSeasons(),
-    val loading: LoadingState = LoadingState.IDLE,
-    val loadingEpisode: LoadingState = LoadingState.IDLE,
-    val loadingSeason: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
+    val loadingEpisode: LoadingState = LoadingState.Idle,
+    val loadingSeason: LoadingState = LoadingState.Idle,
     val info: StringResource? = null,
     val error: Exception? = null,
     val collapsed: Boolean? = null,

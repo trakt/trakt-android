@@ -70,12 +70,12 @@ internal fun ShowContextView(
 
     LaunchedEffect(state.loadingWatched, state.loadingWatchlist) {
         when {
-            state.loadingWatched == LoadingState.DONE -> when {
+            state.loadingWatched == LoadingState.Done -> when {
                 !state.isWatched -> onAddWatched(show)
                 else -> onRemoveWatched(show)
             }
 
-            state.loadingWatchlist == LoadingState.DONE -> when {
+            state.loadingWatchlist == LoadingState.Done -> when {
                 !state.isWatchlist -> onAddWatchlist(show)
                 else -> onRemoveWatchlist(show)
             }

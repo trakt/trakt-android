@@ -42,9 +42,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.model.Movie
@@ -151,7 +151,7 @@ internal fun DiscoverTrendingContent(
             },
             modifier = Modifier
                 .padding(headerPadding)
-                .onClick(enabled = state.loading == DONE) {
+                .onClick(enabled = state.loading == Done) {
                     onMoreClick()
                 },
         )
@@ -162,7 +162,7 @@ internal fun DiscoverTrendingContent(
                 animationSpec = tween(200),
             ) { loading ->
                 when (loading) {
-                    IDLE, LOADING -> {
+                    Idle, Loading -> {
                         ContentLoadingList(
                             visible = loading.isLoading,
                             contentPadding = contentPadding,
@@ -170,7 +170,7 @@ internal fun DiscoverTrendingContent(
                         )
                     }
 
-                    DONE -> {
+                    Done -> {
                         if (state.error != null) {
                             Text(
                                 text = "${
@@ -337,7 +337,7 @@ private fun Preview() {
     TraktTheme {
         DiscoverTrendingContent(
             state = DiscoverTrendingState(
-                loading = IDLE,
+                loading = Idle,
             ),
             collectionState = UserCollectionState.Default,
         )
@@ -354,7 +354,7 @@ private fun Preview2() {
     TraktTheme {
         DiscoverTrendingContent(
             state = DiscoverTrendingState(
-                loading = LOADING,
+                loading = Loading,
             ),
             collectionState = UserCollectionState.Default,
         )

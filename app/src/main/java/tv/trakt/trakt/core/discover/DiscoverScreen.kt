@@ -28,7 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.MainActivity
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.discover.sections.anticipated.DiscoverAnticipatedView
 import tv.trakt.trakt.core.discover.sections.popular.DiscoverPopularView
@@ -213,7 +213,7 @@ private fun ScreenHeader(
     onVipClick: () -> Unit,
 ) {
     val userState = remember(state.user) {
-        val loadingDone = state.user.loading == DONE
+        val loadingDone = state.user.loading == Done
         val userNotNull = state.user.user != null
         loadingDone to userNotNull
     }

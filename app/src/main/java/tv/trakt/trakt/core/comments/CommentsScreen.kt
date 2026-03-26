@@ -55,8 +55,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableMap
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableSet
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -459,7 +459,7 @@ private fun Preview() {
     TraktTheme {
         CommentsContent(
             state = CommentsState(
-                loading = DONE,
+                loading = Done,
             ),
         )
     }
@@ -475,7 +475,7 @@ private fun Preview2() {
     TraktTheme {
         CommentsContent(
             state = CommentsState(
-                loading = LOADING,
+                loading = Loading,
             ),
         )
     }

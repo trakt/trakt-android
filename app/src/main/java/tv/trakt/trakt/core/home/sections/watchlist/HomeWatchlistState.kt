@@ -15,7 +15,7 @@ internal data class HomeWatchlistState(
     val collapsed: Boolean? = null,
     val navigateShow: TraktId? = null,
     val navigateMovie: TraktId? = null,
-    val loading: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
     val info: StringResource? = null,
     val error: Exception? = null,
 )

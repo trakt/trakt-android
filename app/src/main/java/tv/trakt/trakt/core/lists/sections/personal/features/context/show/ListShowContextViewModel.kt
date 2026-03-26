@@ -16,9 +16,9 @@ import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
@@ -72,9 +72,9 @@ internal class ListShowContextViewModel(
                 return@launch
             }
             try {
-                loadingWatchedState.update { LOADING }
-                loadingWatchlistState.update { LOADING }
-                loadingListState.update { LOADING }
+                loadingWatchedState.update { Loading }
+                loadingWatchlistState.update { Loading }
+                loadingListState.update { Loading }
 
                 coroutineScope {
                     val watchlistMinAsync = async {
@@ -110,9 +110,9 @@ internal class ListShowContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingWatchedState.update { IDLE }
-                loadingWatchlistState.update { IDLE }
-                loadingListState.update { IDLE }
+                loadingWatchedState.update { Idle }
+                loadingWatchlistState.update { Idle }
+                loadingListState.update { Idle }
             }
         }
     }
@@ -125,7 +125,7 @@ internal class ListShowContextViewModel(
         viewModelScope.launch {
             clear()
             try {
-                loadingWatchlistState.update { LOADING }
+                loadingWatchlistState.update { Loading }
 
                 updateShowWatchlistUseCase.addToWatchlist(
                     showId = show.ids.trakt,
@@ -156,7 +156,7 @@ internal class ListShowContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingWatchlistState.update { DONE }
+                loadingWatchlistState.update { Done }
             }
         }
     }
@@ -169,7 +169,7 @@ internal class ListShowContextViewModel(
         viewModelScope.launch {
             clear()
             try {
-                loadingWatchlistState.update { LOADING }
+                loadingWatchlistState.update { Loading }
 
                 updateShowWatchlistUseCase.removeFromWatchlist(
                     showId = show.ids.trakt,
@@ -190,7 +190,7 @@ internal class ListShowContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingWatchlistState.update { DONE }
+                loadingWatchlistState.update { Done }
             }
         }
     }
@@ -203,7 +203,7 @@ internal class ListShowContextViewModel(
         viewModelScope.launch {
             clear()
             try {
-                loadingWatchedState.update { LOADING }
+                loadingWatchedState.update { Loading }
 
                 updateShowHistoryUseCase.addToWatched(
                     showId = show.ids.trakt,
@@ -226,7 +226,7 @@ internal class ListShowContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingWatchedState.update { DONE }
+                loadingWatchedState.update { Done }
             }
         }
     }
@@ -239,7 +239,7 @@ internal class ListShowContextViewModel(
         viewModelScope.launch {
             clear()
             try {
-                loadingWatchedState.update { LOADING }
+                loadingWatchedState.update { Loading }
 
                 updateShowHistoryUseCase.removeAllFromHistory(show.ids.trakt)
                 userProgressLocalSource.removeShows(setOf(show.ids.trakt))
@@ -254,7 +254,7 @@ internal class ListShowContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingWatchedState.update { DONE }
+                loadingWatchedState.update { Done }
             }
         }
     }
@@ -267,7 +267,7 @@ internal class ListShowContextViewModel(
         viewModelScope.launch {
             clear()
             try {
-                loadingListState.update { LOADING }
+                loadingListState.update { Loading }
 
                 removeListItemUseCase.removeShow(
                     listId = list.ids.trakt,
@@ -279,15 +279,15 @@ internal class ListShowContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingListState.update { DONE }
+                loadingListState.update { Done }
             }
         }
     }
 
     fun clear() {
-        loadingWatchedState.update { IDLE }
-        loadingWatchlistState.update { IDLE }
-        loadingListState.update { IDLE }
+        loadingWatchedState.update { Idle }
+        loadingWatchlistState.update { Idle }
+        loadingListState.update { Idle }
 
         errorState.update { null }
     }

@@ -51,8 +51,8 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_3
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_4
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
@@ -196,7 +196,7 @@ private fun ListsScreenContent(
         }
 
         val listVisible = remember(state.lists?.size, state.listsLoading) {
-            !state.lists.isNullOrEmpty() && state.listsLoading == DONE
+            !state.lists.isNullOrEmpty() && state.listsLoading == Done
         }
 
         val listPadding = PaddingValues(
@@ -382,7 +382,7 @@ private fun ListsScreenContent(
                 }
             }
 
-            if (state.lists.isNullOrEmpty() && state.listsLoading == DONE) {
+            if (state.lists.isNullOrEmpty() && state.listsLoading == Done) {
                 item(key = "empty") {
                     ContentEmptyView(
                         authenticated = state.user.user != null,
@@ -400,7 +400,7 @@ private fun ListsScreenContent(
                             .padding(sectionPadding),
                     )
                 }
-            } else if (state.lists.isNullOrEmpty() && state.listsLoading == LOADING) {
+            } else if (state.lists.isNullOrEmpty() && state.listsLoading == Loading) {
                 item(key = "list_loading") {
                     Column(
                         verticalArrangement = spacedBy(18.dp),
@@ -436,7 +436,7 @@ private fun ListsScreenHeader(
     onVipClick: () -> Unit,
 ) {
     val userState = remember(state.user) {
-        val loadingDone = state.user.loading == DONE
+        val loadingDone = state.user.loading == Done
         val userNotNull = state.user.user != null
         loadingDone to userNotNull
     }
@@ -476,7 +476,7 @@ private fun MyListsHeader(
                 chevron = true,
                 modifier = Modifier
                     .onClick(
-                        enabled = state.listsLoading != LOADING,
+                        enabled = state.listsLoading != Loading,
                         onClick = onHeaderClick,
                     ),
             )

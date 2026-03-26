@@ -16,6 +16,6 @@ internal data class CommentDetailsState(
     val reactions: ImmutableMap<Int, ReactionsSummary>? = null,
     val user: User? = null,
     val userReactions: ImmutableMap<Int, Reaction?>? = null,
-    val loading: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
 )

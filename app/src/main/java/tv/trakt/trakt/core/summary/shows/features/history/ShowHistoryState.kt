@@ -8,7 +8,7 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 @Immutable
 internal data class ShowHistoryState(
     val items: ImmutableList<HomeActivityItem.EpisodeItem>? = null,
-    val loading: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
     val collapsed: Boolean? = null,
 )

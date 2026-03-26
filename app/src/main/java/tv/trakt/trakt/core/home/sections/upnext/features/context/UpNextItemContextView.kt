@@ -34,7 +34,7 @@ import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
@@ -60,8 +60,8 @@ internal fun UpNextItemContextView(
 
     LaunchedEffect(state.loadingWatched, state.loadingDrop) {
         when {
-            state.loadingWatched == DONE -> onAddWatched(item)
-            state.loadingDrop == DONE -> onDropShow(item)
+            state.loadingWatched == Done -> onAddWatched(item)
+            state.loadingDrop == Done -> onDropShow(item)
         }
     }
 

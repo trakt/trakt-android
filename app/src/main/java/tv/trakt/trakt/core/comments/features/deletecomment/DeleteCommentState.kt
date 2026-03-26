@@ -6,7 +6,7 @@ import tv.trakt.trakt.common.model.User
 
 @Immutable
 internal data class DeleteCommentState(
-    val loading: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
     val user: User? = null,
     val deleted: Boolean = false,
     val error: Exception? = null,

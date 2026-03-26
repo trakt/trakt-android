@@ -109,7 +109,7 @@ internal class SearchViewModel(
                     userState.update {
                         UserState(
                             user = user,
-                            loading = LoadingState.DONE,
+                            loading = LoadingState.Done,
                         )
                     }
                 }
@@ -138,7 +138,7 @@ internal class SearchViewModel(
                 error.rethrowCancellation {
                     errorState.update { error }
                     searchingState.update { false }
-                    popularLoadingState.update { LoadingState.DONE }
+                    popularLoadingState.update { LoadingState.Done }
                     Timber.recordError(error)
                 }
             }
@@ -250,7 +250,7 @@ internal class SearchViewModel(
                 return@coroutineScope
             }
 
-            popularLoadingState.update { LoadingState.LOADING }
+            popularLoadingState.update { LoadingState.Loading }
 
             val showsAsync = async {
                 if (getPopularSearchesUseCase.isLocalShowsValid()) {
@@ -350,7 +350,7 @@ internal class SearchViewModel(
             }
 
             popularResultState.update { results }
-            popularLoadingState.update { LoadingState.DONE }
+            popularLoadingState.update { LoadingState.Done }
         }
     }
 

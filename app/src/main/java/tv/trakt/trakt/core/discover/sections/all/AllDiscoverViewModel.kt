@@ -20,8 +20,8 @@ import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.interleave
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.discover.model.DiscoverItem
@@ -107,7 +107,7 @@ internal class AllDiscoverViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
             }
         }
     }
@@ -126,9 +126,9 @@ internal class AllDiscoverViewModel(
                         .interleave()
                         .toImmutableList()
                 }
-                loadingState.update { DONE }
+                loadingState.update { Done }
             } else {
-                loadingState.update { LOADING }
+                loadingState.update { Loading }
             }
         }
     }
@@ -144,7 +144,7 @@ internal class AllDiscoverViewModel(
 
         viewModelScope.launch {
             try {
-                loadingMoreState.update { LOADING }
+                loadingMoreState.update { Loading }
 
                 val showsAsync = async {
                     getShowsUseCase.getShows(
@@ -182,7 +182,7 @@ internal class AllDiscoverViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingMoreState.update { DONE }
+                loadingMoreState.update { Done }
             }
         }
     }

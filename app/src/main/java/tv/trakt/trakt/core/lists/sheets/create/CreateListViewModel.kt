@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_LISTS_LIMIT
 import tv.trakt.trakt.common.helpers.extensions.getHttpErrorCode
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -37,7 +37,7 @@ internal class CreateListViewModel(
 
         viewModelScope.launch {
             try {
-                loadingState.update { LOADING }
+                loadingState.update { Loading }
                 createListUseCase.createList(
                     name = name,
                     description = description,
@@ -46,7 +46,7 @@ internal class CreateListViewModel(
                 // Clear cached lists to force refresh next time lists are accessed.
                 userListsLocalDataSource.clear()
 
-                loadingState.update { DONE }
+                loadingState.update { Done }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     if (error.getHttpErrorCode() == HTTP_ERROR_TRAKT_LISTS_LIMIT) {
@@ -55,7 +55,7 @@ internal class CreateListViewModel(
                         errorState.update { error }
                     }
                 }
-                loadingState.update { IDLE }
+                loadingState.update { Idle }
             }
         }
     }

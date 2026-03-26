@@ -45,7 +45,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -164,7 +164,7 @@ private fun AllListsScreen(
         )
 
         val listVisible = remember(state.items?.size, state.loading) {
-            !state.items.isNullOrEmpty() && state.loading == DONE
+            !state.items.isNullOrEmpty() && state.loading == Done
         }
 
         LazyColumn(

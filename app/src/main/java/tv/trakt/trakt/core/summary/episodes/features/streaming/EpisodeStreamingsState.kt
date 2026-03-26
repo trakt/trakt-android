@@ -7,7 +7,7 @@ import tv.trakt.trakt.core.streamings.model.StreamingsResult
 @Immutable
 internal data class EpisodeStreamingsState(
     val items: StreamingsResult? = null,
-    val loading: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
     val collapsed: Boolean? = null,
 )

@@ -16,9 +16,9 @@ import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Show
@@ -79,8 +79,8 @@ internal class ShowContextViewModel(
             }
 
             try {
-                loadingWatchedState.update { LOADING }
-                loadingWatchlistState.update { LOADING }
+                loadingWatchedState.update { Loading }
+                loadingWatchlistState.update { Loading }
 
                 coroutineScope {
                     val watchlistAsync = async {
@@ -115,8 +115,8 @@ internal class ShowContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingWatchedState.update { IDLE }
-                loadingWatchlistState.update { IDLE }
+                loadingWatchedState.update { Idle }
+                loadingWatchlistState.update { Idle }
             }
         }
     }
@@ -129,7 +129,7 @@ internal class ShowContextViewModel(
         viewModelScope.launch {
             clear()
             try {
-                loadingWatchlistState.update { LOADING }
+                loadingWatchlistState.update { Loading }
 
                 updateWatchlistUseCase.addToWatchlist(showId = show.ids.trakt)
                 userWatchlistLocalSource.addShows(
@@ -157,7 +157,7 @@ internal class ShowContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingWatchlistState.update { DONE }
+                loadingWatchlistState.update { Done }
             }
         }
     }
@@ -170,7 +170,7 @@ internal class ShowContextViewModel(
         viewModelScope.launch {
             clear()
             try {
-                loadingWatchlistState.update { LOADING }
+                loadingWatchlistState.update { Loading }
 
                 updateWatchlistUseCase.removeFromWatchlist(showId = show.ids.trakt)
                 userWatchlistLocalSource.removeShows(
@@ -192,7 +192,7 @@ internal class ShowContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingWatchlistState.update { DONE }
+                loadingWatchlistState.update { Done }
             }
         }
     }
@@ -205,7 +205,7 @@ internal class ShowContextViewModel(
         viewModelScope.launch {
             clear()
             try {
-                loadingWatchedState.update { LOADING }
+                loadingWatchedState.update { Loading }
 
                 updateHistoryUseCase.addToWatched(
                     showId = show.ids.trakt,
@@ -232,7 +232,7 @@ internal class ShowContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingWatchedState.update { DONE }
+                loadingWatchedState.update { Done }
             }
         }
     }
@@ -245,7 +245,7 @@ internal class ShowContextViewModel(
         viewModelScope.launch {
             clear()
             try {
-                loadingWatchedState.update { LOADING }
+                loadingWatchedState.update { Loading }
 
                 updateHistoryUseCase.removeAllFromHistory(show.ids.trakt)
                 userProgressLocalSource.removeShows(
@@ -263,14 +263,14 @@ internal class ShowContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingWatchedState.update { DONE }
+                loadingWatchedState.update { Done }
             }
         }
     }
 
     fun clear() {
-        loadingWatchedState.update { IDLE }
-        loadingWatchlistState.update { IDLE }
+        loadingWatchedState.update { Idle }
+        loadingWatchlistState.update { Idle }
 
         errorState.update { null }
     }

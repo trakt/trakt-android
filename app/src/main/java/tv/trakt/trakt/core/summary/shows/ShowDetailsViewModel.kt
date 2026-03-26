@@ -29,8 +29,8 @@ import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
@@ -176,7 +176,7 @@ internal class ShowDetailsViewModel(
             try {
                 var show = getDetailsUseCase.getLocalShow(showId)
                 if (show == null) {
-                    loadingState.update { LOADING }
+                    loadingState.update { Loading }
                     show = getDetailsUseCase.getShow(
                         showId = showId,
                     )
@@ -192,7 +192,7 @@ internal class ShowDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
             }
         }
     }
@@ -203,8 +203,8 @@ internal class ShowDetailsViewModel(
                 return@launch
             }
             try {
-                loadingProgress.update { LOADING }
-                loadingLists.update { LOADING }
+                loadingProgress.update { Loading }
+                loadingLists.update { Loading }
 
                 coroutineScope {
                     val progressAsync = async {
@@ -262,8 +262,8 @@ internal class ShowDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingProgress.update { DONE }
-                loadingLists.update { DONE }
+                loadingProgress.update { Done }
+                loadingLists.update { Done }
             }
         }
     }
@@ -322,7 +322,7 @@ internal class ShowDetailsViewModel(
             try {
                 showUserRatingsState.update {
                     UserRatingsState(
-                        loading = LOADING,
+                        loading = Loading,
                     )
                 }
 
@@ -359,7 +359,7 @@ internal class ShowDetailsViewModel(
                 showUserRatingsState.update {
                     UserRatingsState(
                         rating = userRating,
-                        loading = DONE,
+                        loading = Done,
                     )
                 }
             } catch (error: Exception) {
@@ -386,7 +386,7 @@ internal class ShowDetailsViewModel(
                 return@launch
             }
             try {
-                loadingProgress.update { LOADING }
+                loadingProgress.update { Loading }
 
                 updateShowHistoryUseCase.addToWatched(
                     showId = showId,
@@ -426,7 +426,7 @@ internal class ShowDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingProgress.update { DONE }
+                loadingProgress.update { Done }
             }
         }
     }
@@ -445,7 +445,7 @@ internal class ShowDetailsViewModel(
                 return@launch
             }
             try {
-                loadingProgress.update { LOADING }
+                loadingProgress.update { Loading }
 
                 updateShowHistoryUseCase.removeAllFromHistory(showId)
                 loadProgressUseCase.loadShowsProgress()
@@ -471,7 +471,7 @@ internal class ShowDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingProgress.update { DONE }
+                loadingProgress.update { Done }
             }
         }
     }
@@ -490,7 +490,7 @@ internal class ShowDetailsViewModel(
                 return@launch
             }
             try {
-                loadingProgress.update { LOADING }
+                loadingProgress.update { Loading }
 
                 updateEpisodeHistoryUseCase.removePlayFromHistory(playId)
                 val progress = loadProgressUseCase.loadShowsProgress()
@@ -519,7 +519,7 @@ internal class ShowDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingProgress.update { DONE }
+                loadingProgress.update { Done }
             }
         }
     }
@@ -566,7 +566,7 @@ internal class ShowDetailsViewModel(
                 return@launch
             }
             try {
-                loadingLists.update { LOADING }
+                loadingLists.update { Loading }
 
                 updateShowWatchlistUseCase.addToWatchlist(showId)
                 userWatchlistLocalSource.addShows(
@@ -604,7 +604,7 @@ internal class ShowDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingLists.update { DONE }
+                loadingLists.update { Done }
             }
         }
     }
@@ -615,7 +615,7 @@ internal class ShowDetailsViewModel(
                 return@launch
             }
             try {
-                loadingLists.update { LOADING }
+                loadingLists.update { Loading }
 
                 updateShowWatchlistUseCase.removeFromWatchlist(showId)
 
@@ -638,7 +638,7 @@ internal class ShowDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingLists.update { DONE }
+                loadingLists.update { Done }
             }
         }
     }
@@ -650,7 +650,7 @@ internal class ShowDetailsViewModel(
                 return@launch
             }
             try {
-                loadingLists.update { LOADING }
+                loadingLists.update { Loading }
 
                 addListItemUseCase.addShow(
                     listId = listId,
@@ -666,7 +666,7 @@ internal class ShowDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingLists.update { DONE }
+                loadingLists.update { Done }
             }
         }
     }
@@ -677,7 +677,7 @@ internal class ShowDetailsViewModel(
                 return@launch
             }
             try {
-                loadingLists.update { LOADING }
+                loadingLists.update { Loading }
 
                 removeListItemUseCase.removeShow(
                     listId = listId,
@@ -694,7 +694,7 @@ internal class ShowDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingLists.update { DONE }
+                loadingLists.update { Done }
             }
         }
     }
@@ -737,7 +737,7 @@ internal class ShowDetailsViewModel(
                 return@launch
             }
             try {
-                loadingFavorite.update { LOADING }
+                loadingFavorite.update { Loading }
 
                 delay(300) // Small delay to allow UI to settle.
                 updateShowFavoritesUseCase.addToFavorites(showId)
@@ -775,7 +775,7 @@ internal class ShowDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingFavorite.update { DONE }
+                loadingFavorite.update { Done }
             }
         }
     }
@@ -786,7 +786,7 @@ internal class ShowDetailsViewModel(
                 return@launch
             }
             try {
-                loadingFavorite.update { LOADING }
+                loadingFavorite.update { Loading }
 
                 delay(300) // Small delay to allow UI to settle.
                 updateShowFavoritesUseCase.removeFromFavorites(showId)
@@ -815,7 +815,7 @@ internal class ShowDetailsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingFavorite.update { DONE }
+                loadingFavorite.update { Done }
             }
         }
     }
@@ -837,7 +837,7 @@ internal class ShowDetailsViewModel(
                         rating = newRating,
                         favorite = it?.rating?.favorite == true,
                     ),
-                    loading = DONE,
+                    loading = Done,
                 )
             }
 
@@ -870,7 +870,7 @@ internal class ShowDetailsViewModel(
                         rating = 0,
                         favorite = it?.rating?.favorite == true,
                     ),
-                    loading = DONE,
+                    loading = Done,
                 )
             }
 

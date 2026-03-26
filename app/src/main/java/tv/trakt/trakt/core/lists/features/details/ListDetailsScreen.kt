@@ -702,7 +702,7 @@ private fun Preview() {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             ListDetailsContent(
                 state = ListDetailsState(
-                    loading = LoadingState.LOADING,
+                    loading = LoadingState.Loading,
                     liked = LikedInfo(
                         liked = false,
                         loading = false,

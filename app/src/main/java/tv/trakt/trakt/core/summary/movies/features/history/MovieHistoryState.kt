@@ -8,6 +8,6 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 @Immutable
 internal data class MovieHistoryState(
     val items: ImmutableList<HomeActivityItem.MovieItem>? = null,
-    val loading: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
 )

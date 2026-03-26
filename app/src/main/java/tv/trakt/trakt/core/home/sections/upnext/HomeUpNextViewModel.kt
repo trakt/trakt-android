@@ -26,9 +26,9 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.SeasonEpisode
@@ -179,14 +179,14 @@ internal class HomeUpNextViewModel(
                             resetScroll = false,
                         )
                     }
-                    loadingState.update { DONE }
+                    loadingState.update { Done }
 
                     if (localOnly) {
                         itemsState.update { it.copy(resetScroll = resetScroll) }
                         return@launch
                     }
                 } else {
-                    loadingState.update { LOADING }
+                    loadingState.update { Loading }
                 }
 
                 itemsState.update {
@@ -208,7 +208,7 @@ internal class HomeUpNextViewModel(
                     Timber.d(error, "Failed to load data")
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
                 dataJob = null
             }
         }
@@ -219,10 +219,10 @@ internal class HomeUpNextViewModel(
             itemsState.update {
                 ItemsState(emptyList<ProgressShow>().toImmutableList())
             }
-            loadingState.update { DONE }
+            loadingState.update { Done }
             return true
         } else {
-            loadingState.update { IDLE }
+            loadingState.update { Idle }
         }
 
         return false

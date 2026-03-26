@@ -33,9 +33,9 @@ import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
@@ -92,7 +92,7 @@ internal class AllActivityPersonalViewModel(
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
 
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val loadingMoreState = MutableStateFlow(IDLE)
+    private val loadingMoreState = MutableStateFlow(Idle)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var pages: Int = 1
@@ -152,9 +152,9 @@ internal class AllActivityPersonalViewModel(
                 )
                 if (localItems.isNotEmpty()) {
                     itemsState.update { localItems }
-                    loadingState.update { DONE }
+                    loadingState.update { Done }
                 } else {
-                    loadingState.update { LOADING }
+                    loadingState.update { Loading }
                 }
 
                 val remoteItems = getActivityUseCase.getPersonalActivity(
@@ -173,7 +173,7 @@ internal class AllActivityPersonalViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingState.update { DONE }
+                loadingState.update { Done }
                 dataJob = null
             }
         }
@@ -190,7 +190,7 @@ internal class AllActivityPersonalViewModel(
 
         viewModelScope.launch {
             try {
-                loadingMoreState.update { LOADING }
+                loadingMoreState.update { Loading }
 
                 val nextData = getActivityUseCase.getPersonalActivity(
                     page = pages + 1,
@@ -213,7 +213,7 @@ internal class AllActivityPersonalViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingMoreState.update { DONE }
+                loadingMoreState.update { Done }
             }
         }
     }
@@ -331,11 +331,11 @@ internal class AllActivityPersonalViewModel(
             itemsState.update {
                 emptyList<HomeActivityItem>().toImmutableList()
             }
-            loadingState.update { DONE }
+            loadingState.update { Done }
             return true
         } else {
             itemsState.update { null }
-            loadingState.update { IDLE }
+            loadingState.update { Idle }
         }
 
         return false

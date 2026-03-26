@@ -55,7 +55,7 @@ internal class DiscoverViewModel(
                 userState.update {
                     UserState(
                         user = user,
-                        loading = LoadingState.DONE,
+                        loading = LoadingState.Done,
                     )
                 }
             }

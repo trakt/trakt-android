@@ -15,6 +15,6 @@ internal data class MovieDetailsListsState(
     val lists: ImmutableList<CustomListMinimal> = EmptyImmutableList,
     val movieLists: ImmutableSet<TraktId> = EmptyImmutableSet,
     val user: User? = null,
-    val loading: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
 )

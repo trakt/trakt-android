@@ -10,8 +10,8 @@ internal data class ProfileState(
     val user: User? = null,
     val monthBackgroundUrl: String? = null,
     val monthStats: ThisMonthStats? = null,
-    val loading: LoadingState = LoadingState.IDLE,
-    val loadingMonthStats: LoadingState = LoadingState.IDLE,
-    val logoutLoading: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
+    val loadingMonthStats: LoadingState = LoadingState.Idle,
+    val logoutLoading: LoadingState = LoadingState.Idle,
     val checkIn: Boolean = false,
 )

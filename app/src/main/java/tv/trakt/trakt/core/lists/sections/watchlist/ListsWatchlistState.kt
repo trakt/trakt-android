@@ -17,7 +17,7 @@ internal data class ListsWatchlistState(
     val collection: UserCollectionState = UserCollectionState.Default,
     val navigateShow: TraktId? = null,
     val navigateMovie: TraktId? = null,
-    val loading: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
     val collapsed: Boolean? = null,
     val error: Exception? = null,
 )

@@ -752,7 +752,7 @@ private fun Preview() {
         BillingScreen(
             state = BillingState(
                 user = PreviewData.user1,
-                loading = LoadingState.IDLE,
+                loading = LoadingState.Idle,
             ),
         )
     }

@@ -19,7 +19,7 @@ import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
@@ -86,14 +86,14 @@ internal class SettingsViewModel(
     fun updateUserLocation(location: String?) {
         viewModelScope.launch {
             try {
-                accountLoadingState.update { LOADING }
+                accountLoadingState.update { Loading }
                 updateSettingsUseCase.updateLocation(location)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
                 }
             } finally {
-                accountLoadingState.update { LoadingState.DONE }
+                accountLoadingState.update { LoadingState.Done }
             }
         }
     }
@@ -101,14 +101,14 @@ internal class SettingsViewModel(
     fun updateUserDisplayName(displayName: String?) {
         viewModelScope.launch {
             try {
-                accountLoadingState.update { LOADING }
+                accountLoadingState.update { Loading }
                 updateSettingsUseCase.updateDisplayName(displayName)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
                 }
             } finally {
-                accountLoadingState.update { LoadingState.DONE }
+                accountLoadingState.update { LoadingState.Done }
             }
         }
     }
@@ -116,14 +116,14 @@ internal class SettingsViewModel(
     fun updateUserAbout(about: String?) {
         viewModelScope.launch {
             try {
-                accountLoadingState.update { LOADING }
+                accountLoadingState.update { Loading }
                 updateSettingsUseCase.updateAbout(about)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
                 }
             } finally {
-                accountLoadingState.update { LoadingState.DONE }
+                accountLoadingState.update { LoadingState.Done }
             }
         }
     }
@@ -131,14 +131,14 @@ internal class SettingsViewModel(
     fun enableMultiplePlays(enable: Boolean) {
         viewModelScope.launch {
             try {
-                accountLoadingState.update { LOADING }
+                accountLoadingState.update { Loading }
                 updateSettingsUseCase.updateMultiplePlays(enable)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
                 }
             } finally {
-                accountLoadingState.update { LoadingState.DONE }
+                accountLoadingState.update { LoadingState.Done }
             }
         }
     }
@@ -184,15 +184,15 @@ internal class SettingsViewModel(
     fun logout() {
         viewModelScope.launch {
             try {
-                logoutLoadingState.update { LOADING }
+                logoutLoadingState.update { Loading }
 
                 logoutUseCase.logoutUser()
                 analytics.logUserLogout()
 
-                logoutLoadingState.update { LoadingState.DONE }
+                logoutLoadingState.update { LoadingState.Done }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    logoutLoadingState.update { LoadingState.IDLE }
+                    logoutLoadingState.update { LoadingState.Idle }
                     Timber.recordError(error)
                 }
             }

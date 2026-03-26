@@ -11,9 +11,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.analytics.crashlytics.recordError
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
@@ -40,7 +40,7 @@ internal class UpNextItemContextViewModel(
         viewModelScope.launch {
             clear()
             try {
-                loadingDropState.update { LOADING }
+                loadingDropState.update { Loading }
                 updateShowHistoryUseCase.dropShow(showId)
 
                 upNextLocalDataSource.removeItems(
@@ -62,7 +62,7 @@ internal class UpNextItemContextViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingDropState.update { DONE }
+                loadingDropState.update { Done }
             }
         }
     }
@@ -80,8 +80,8 @@ internal class UpNextItemContextViewModel(
     }
 
     fun clear() {
-        loadingWatchedState.update { IDLE }
-        loadingDropState.update { IDLE }
+        loadingWatchedState.update { Idle }
+        loadingDropState.update { Idle }
         errorState.update { null }
     }
 

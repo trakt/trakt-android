@@ -10,6 +10,6 @@ import tv.trakt.trakt.common.model.User
 internal data class BillingState(
     val user: User? = null,
     val products: ImmutableList<ProductDetails>? = null,
-    val loading: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
 )

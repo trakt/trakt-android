@@ -55,7 +55,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
+import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -465,7 +465,7 @@ private fun Preview() {
                 CommentDetailsViewContent(
                     state = CommentDetailsState(
                         comment = PreviewData.comment1,
-                        loading = LoadingState.LOADING,
+                        loading = LoadingState.Loading,
                     ),
                 )
 
@@ -476,7 +476,7 @@ private fun Preview() {
                         replies = listOf(
                             PreviewData.comment1,
                         ).toImmutableList(),
-                        loading = DONE,
+                        loading = Done,
                     ),
                 )
             }

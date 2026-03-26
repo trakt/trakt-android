@@ -11,7 +11,7 @@ import tv.trakt.trakt.common.model.TraktId
 internal data class MovieListsState(
     val items: ImmutableList<CustomList>? = null,
     val likedItems: ImmutableSet<TraktId>? = null,
-    val loading: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
     val collapsed: Boolean? = null,
     val error: Exception? = null,
 )

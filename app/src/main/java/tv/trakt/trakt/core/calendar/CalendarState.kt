@@ -21,7 +21,7 @@ internal data class CalendarState(
     val navigateShow: TraktId? = null,
     val navigateMovie: TraktId? = null,
     val navigateEpisode: Pair<TraktId, Episode>? = null,
-    val loading: LoadingState = LoadingState.IDLE,
+    val loading: LoadingState = LoadingState.Idle,
     val info: DynamicStringResource? = null,
     val error: Exception? = null,
 )

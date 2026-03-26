@@ -292,7 +292,7 @@ private fun YounifyScreenContent(
             }
         }
 
-        if (state.loading == LoadingState.LOADING) {
+        if (state.loading == LoadingState.Loading) {
             FilmProgressIndicator(
                 modifier = Modifier
                     .align(Alignment.Center)

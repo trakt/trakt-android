@@ -21,9 +21,9 @@ import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
@@ -81,7 +81,7 @@ internal class ListsViewModel(
                     userState.update {
                         UserState(
                             user = user,
-                            loading = DONE,
+                            loading = Done,
                         )
                     }
                     loadData()
@@ -121,7 +121,7 @@ internal class ListsViewModel(
                 val localLists = when (filterState.value) {
                     Personal -> getPersonalListsUseCase.getLocalLists(pagination)
                     Liked -> getLikedListsUseCase.getLocalLists(pagination)
-                    Collaborations -> getCollaborationsListsUseCase.getLocalLists(pagination)
+                    Collaborations -> getCollaborationsListsUseCase.getLocalLists()
                 }
                 listsState.update { sortLists(localLists) }
             } catch (error: Exception) {
@@ -145,14 +145,14 @@ internal class ListsViewModel(
                 val localLists = when (filterState.value) {
                     Personal -> getPersonalListsUseCase.getLocalLists(pagination)
                     Liked -> getLikedListsUseCase.getLocalLists(pagination)
-                    Collaborations -> getCollaborationsListsUseCase.getLocalLists(pagination)
+                    Collaborations -> getCollaborationsListsUseCase.getLocalLists()
                 }
 
                 if (localLists.isNotEmpty()) {
                     listsState.update { sortLists(localLists) }
-                    listsLoadingState.update { DONE }
+                    listsLoadingState.update { Done }
                 } else {
-                    listsLoadingState.update { LOADING }
+                    listsLoadingState.update { Loading }
                 }
 
                 val lists = when (filterState.value) {
@@ -169,7 +169,7 @@ internal class ListsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                listsLoadingState.update { DONE }
+                listsLoadingState.update { Done }
                 dataJob = null
             }
         }
@@ -182,7 +182,7 @@ internal class ListsViewModel(
 
         filterState.update { filter }
         listsState.update { null }
-        listsLoadingState.update { IDLE }
+        listsLoadingState.update { Idle }
 
         loadData()
     }
@@ -208,11 +208,11 @@ internal class ListsViewModel(
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
             listsState.update { EmptyImmutableList }
-            listsLoadingState.update { DONE }
+            listsLoadingState.update { Done }
             return true
         } else {
             listsState.update { null }
-            listsLoadingState.update { IDLE }
+            listsLoadingState.update { Idle }
         }
 
         return false

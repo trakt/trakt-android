@@ -39,9 +39,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
-import tv.trakt.trakt.common.helpers.LoadingState.DONE
-import tv.trakt.trakt.common.helpers.LoadingState.IDLE
-import tv.trakt.trakt.common.helpers.LoadingState.LOADING
+import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.views.HomeEmptySocialView
 import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter
@@ -91,7 +91,7 @@ internal fun ProfileSocialContent(
     ) {
         TraktSectionHeader(
             title = stringResource(R.string.list_title_social),
-            chevron = !state.items.isNullOrEmpty() || state.loading != DONE,
+            chevron = !state.items.isNullOrEmpty() || state.loading != Done,
             collapsed = state.collapsed ?: false,
             onCollapseClick = {
                 animateCollapse = true
@@ -114,14 +114,14 @@ internal fun ProfileSocialContent(
                 animationSpec = tween(200),
             ) { loading ->
                 when (loading) {
-                    IDLE, LOADING -> {
+                    Idle, Loading -> {
                         ContentLoadingList(
                             visible = loading.isLoading,
                             contentPadding = contentPadding,
                         )
                     }
 
-                    DONE -> {
+                    Done -> {
                         when {
                             state.error != null -> {
                                 Text(
@@ -184,7 +184,7 @@ private fun ContentFilters(
                     )
                 },
                 endContent = {
-                    if (state.loading == DONE && state.filter == filter) {
+                    if (state.loading == Done && state.filter == filter) {
                         Text(
                             text = " • $usersCount",
                             style = TraktTheme.typography.buttonTertiary,
@@ -264,7 +264,7 @@ private fun Preview() {
     TraktTheme {
         ProfileSocialContent(
             state = ProfileSocialState(
-                loading = IDLE,
+                loading = Idle,
             ),
         )
     }
@@ -280,7 +280,7 @@ private fun Preview2() {
     TraktTheme {
         ProfileSocialContent(
             state = ProfileSocialState(
-                loading = LOADING,
+                loading = Loading,
             ),
         )
     }

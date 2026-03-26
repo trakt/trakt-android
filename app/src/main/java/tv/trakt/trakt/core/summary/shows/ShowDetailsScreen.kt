@@ -486,7 +486,7 @@ internal fun ShowDetailsContent(
                 }
 
                 item {
-                    val isLoaded = state.showUserRating?.loading == LoadingState.DONE
+                    val isLoaded = state.showUserRating?.loading == LoadingState.Done
                     DetailsRating(
                         visible = isWatched && isLoaded,
                         rating = state.showUserRating?.rating,
