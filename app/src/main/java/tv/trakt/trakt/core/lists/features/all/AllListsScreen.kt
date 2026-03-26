@@ -29,6 +29,7 @@ import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -51,6 +52,7 @@ import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collaborations
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Personal
 import tv.trakt.trakt.core.lists.sections.personal.ui.ListsFilters
@@ -245,6 +247,20 @@ private fun AllListsScreen(
                                 ),
                         )
                     }
+                    Collaborations if listVisible -> {
+                        CustomListCard(
+                            list = list,
+                            onClick = { onListClick(list) },
+                            modifier = Modifier
+                                .padding(contentHorizontalPadding)
+                                .padding(top = verticalPadding)
+                                .aspectRatio(HorizontalImageAspectRatio)
+                                .animateItem(
+                                    fadeInSpec = null,
+                                    fadeOutSpec = null,
+                                ),
+                        )
+                    }
                     else -> {
                         // Noop
                     }
@@ -273,6 +289,19 @@ private fun AllListsScreen(
                             fadeOutSpec = null,
                         ),
                 )
+            }
+
+            if (state.items?.isEmpty() == true && state.loading == Done) {
+                item {
+                    ContentEmptyView(
+                        modifier = Modifier
+                            .padding(contentHorizontalPadding)
+                            .animateItem(
+                                fadeInSpec = null,
+                                fadeOutSpec = null,
+                            ),
+                    )
+                }
             }
         }
     }
@@ -327,6 +356,16 @@ private fun TitleBar(
             )
         }
     }
+}
+
+@Composable
+private fun ContentEmptyView(modifier: Modifier = Modifier) {
+    Text(
+        text = stringResource(R.string.list_placeholder_empty),
+        color = TraktTheme.colors.textSecondary,
+        style = TraktTheme.typography.heading6,
+        modifier = modifier,
+    )
 }
 
 @DevicePreview

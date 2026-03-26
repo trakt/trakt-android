@@ -49,6 +49,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_2
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_3
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_4
 import tv.trakt.trakt.common.helpers.LoadingState.Done
@@ -107,7 +108,13 @@ internal fun ListsScreen(
 
     ListsScreenContent(
         state = state,
-        onFilterClick = viewModel::setFilter,
+        onFilterClick = {
+            if (state.filter == it) {
+                onNavigateToAllLists(it)
+                return@ListsScreenContent
+            }
+            viewModel.setFilter(it)
+        },
         onProfileClick = {
             if (state.user.user == null) {
                 uriHandler.openUri(ConfigAuth.authCodeUrl)
@@ -391,8 +398,7 @@ private fun ListsScreenContent(
                             null -> onProfileClick
                             else -> when (state.filter) {
                                 Personal -> onCreateListClick
-                                Liked -> onSearchListClick
-                                Collaborations -> onSearchListClick
+                                Liked, Collaborations -> onSearchListClick
                             }
                         },
                         modifier = Modifier
@@ -528,6 +534,7 @@ private fun ContentEmptyView(
             inspection -> null
             filter == Personal -> Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_3).ifBlank { null }
             filter == Liked -> Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_4).ifBlank { null }
+            filter == Collaborations -> Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_2).ifBlank { null }
             else -> null
         }
     }

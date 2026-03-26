@@ -35,10 +35,13 @@ import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.lists.ListsConfig
 import tv.trakt.trakt.core.lists.features.all.navigation.AllListsDestination
+import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsLocalDataSource
+import tv.trakt.trakt.core.lists.sections.collaborations.usecases.GetCollaborationsListsUseCase
 import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedLocalDataSource
 import tv.trakt.trakt.core.lists.sections.liked.usecases.GetLikedListsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collaborations
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Personal
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
@@ -49,8 +52,10 @@ internal class AllListsViewModel(
     private val sessionManager: SessionManager,
     private val getPersonalListsUseCase: GetPersonalListsUseCase,
     private val getLikedListsUseCase: GetLikedListsUseCase,
+    private val getCollaborationsListsUseCase: GetCollaborationsListsUseCase,
     private val localPersonalListsSource: ListsPersonalLocalDataSource,
     private val localLikedListsSource: ListsLikedLocalDataSource,
+    private val localCollaborationsListsSource: ListsCollaborationsLocalDataSource,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<AllListsDestination>()
 
@@ -80,6 +85,7 @@ internal class AllListsViewModel(
         merge(
             localPersonalListsSource.observeUpdates(),
             localLikedListsSource.observeUpdates(),
+            localCollaborationsListsSource.observeUpdates(),
         )
             .distinctUntilChanged()
             .debounce(200)
@@ -103,6 +109,7 @@ internal class AllListsViewModel(
                     val localLists = when (filterState.value) {
                         Personal -> getPersonalListsUseCase.getLocalLists(pagination)
                         Liked -> getLikedListsUseCase.getLocalLists(pagination)
+                        Collaborations -> getCollaborationsListsUseCase.getLocalLists()
                         else -> EmptyImmutableList
                     }.also { items ->
                         itemsState.update { items }
@@ -110,7 +117,8 @@ internal class AllListsViewModel(
 
                     if (localLists.isNotEmpty() && (localLists.size < ListsConfig.LISTS_PAGE_LIMIT)) {
                         loadingState.update { Done }
-                        hasMorePages = localLists.size >= ListsConfig.LISTS_ALL_PAGE_LIMIT
+                        hasMorePages = filterState.value != Collaborations &&
+                            localLists.size >= ListsConfig.LISTS_ALL_PAGE_LIMIT
                         return@launch
                     } else {
                         if (localLists.isEmpty()) {
@@ -131,11 +139,13 @@ internal class AllListsViewModel(
                     when (filterState.value) {
                         Personal -> getPersonalListsUseCase.getLists(pagination, notify = reload)
                         Liked -> getLikedListsUseCase.getLists(pagination)
+                        Collaborations -> getCollaborationsListsUseCase.getLists()
                         else -> EmptyImmutableList
                     }
                 }
 
-                hasMorePages = (itemsState.value?.size ?: 0) >= ListsConfig.LISTS_ALL_PAGE_LIMIT
+                hasMorePages = filterState.value != Collaborations &&
+                    (itemsState.value?.size ?: 0) >= ListsConfig.LISTS_ALL_PAGE_LIMIT
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

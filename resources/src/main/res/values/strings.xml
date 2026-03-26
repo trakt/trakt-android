@@ -209,7 +209,6 @@
   <string name="text_cta_favorites">Your faves. Your story. Spotlight the movies and shows that left a mark.</string>
   <string name="text_cta_favorites_movies">Your faves. Your story. Spotlight the movies that left a mark.</string>
   <string name="text_cta_favorites_shows">Your faves. Your story. Spotlight the shows that left a mark.</string>
-  <string name="text_cta_collab_lists">Lists you help curate. Collaborate with others to track movies and shows together.</string>
   <string name="text_cta_liked_lists">Discover what others love. Explore and save lists from the community.</string>
   <string name="text_cta_personal_lists">Your lists. Your rules. Collect and organize movies and shows your way.</string>
   <string name="text_cta_up_next">Your shows. Your pace. Jump back in exactly where you left off. What are you currently watching?</string>
@@ -358,7 +357,8 @@
   <string name="translated_value_library_plex" translatable="false">Plex</string>
   <string name="link_text_feedback">Feedback</string>
   <string name="button_text_manage_lists">Manage Lists</string>
-  <string name="list_title_collab_lists">Collaborations</string>
+  <string name="list_title_collaborative_lists">Collaborations</string>
+  <string name="text_cta_collab_lists">Lists you help curate. Work with others and track movies and shows together.</string>
 
   <!-- Non Translatable -->
 

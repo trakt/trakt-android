@@ -439,8 +439,10 @@ internal val listsModule = module {
             analytics = get(),
             getPersonalListsUseCase = get(),
             getLikedListsUseCase = get(),
+            getCollaborationsListsUseCase = get(),
             localPersonalListsSource = get(),
             localLikedListsSource = get(),
+            localCollaborationsListsSource = get(),
         )
     }
 }
