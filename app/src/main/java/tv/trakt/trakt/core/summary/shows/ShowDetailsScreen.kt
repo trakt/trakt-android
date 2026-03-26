@@ -212,11 +212,11 @@ internal fun ShowDetailsScreen(
         onWatchlistClick = {
             viewModel.toggleWatchlist()
         },
-        onAddListClick = {
-            viewModel.toggleList(it, true)
+        onAddListClick = { listId, ownerId ->
+            viewModel.toggleList(listId, ownerId, true)
         },
-        onRemoveListClick = {
-            viewModel.toggleList(it, false)
+        onRemoveListClick = { listId, ownerId ->
+            viewModel.toggleList(listId, ownerId, false)
         },
         onDismiss = {
             listsSheet = null

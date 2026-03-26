@@ -23,21 +23,25 @@ interface ListsRemoteDataSource {
     suspend fun deleteList(listId: TraktId)
 
     suspend fun addShowToList(
+        userId: TraktId,
         listId: TraktId,
         showId: TraktId,
     )
 
     suspend fun removeShowFromList(
+        userId: TraktId,
         listId: TraktId,
         showId: TraktId,
     )
 
     suspend fun addMovieToList(
+        userId: TraktId,
         listId: TraktId,
         movieId: TraktId,
     )
 
     suspend fun removeMovieFromList(
+        userId: TraktId,
         listId: TraktId,
         movieId: TraktId,
     )

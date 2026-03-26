@@ -67,11 +67,12 @@ class ListsApiClient(
     }
 
     override suspend fun addShowToList(
+        userId: TraktId,
         listId: TraktId,
         showId: TraktId,
     ) {
         listsApi.postUsersListsListAdd(
-            id = "me",
+            id = userId.value.toString(),
             listId = listId.value.toString(),
             postUsersListsListAddRequest = PostUsersListsListAddRequest(
                 shows = listOf(
@@ -93,11 +94,12 @@ class ListsApiClient(
     }
 
     override suspend fun removeShowFromList(
+        userId: TraktId,
         listId: TraktId,
         showId: TraktId,
     ) {
         listsApi.postUsersListsListRemove(
-            id = "me",
+            id = userId.value.toString(),
             listId = listId.value.toString(),
             postUsersListsListAddRequest = PostUsersListsListAddRequest(
                 shows = listOf(
@@ -119,11 +121,12 @@ class ListsApiClient(
     }
 
     override suspend fun addMovieToList(
+        userId: TraktId,
         listId: TraktId,
         movieId: TraktId,
     ) {
         listsApi.postUsersListsListAdd(
-            id = "me",
+            id = userId.value.toString(),
             listId = listId.value.toString(),
             postUsersListsListAddRequest = PostUsersListsListAddRequest(
                 movies = listOf(
@@ -144,11 +147,12 @@ class ListsApiClient(
     }
 
     override suspend fun removeMovieFromList(
+        userId: TraktId,
         listId: TraktId,
         movieId: TraktId,
     ) {
         listsApi.postUsersListsListRemove(
-            id = "me",
+            id = userId.value.toString(),
             listId = listId.value.toString(),
             postUsersListsListAddRequest = PostUsersListsListAddRequest(
                 movies = listOf(

@@ -271,6 +271,7 @@ internal class ListShowContextViewModel(
 
                 removeListItemUseCase.removeShow(
                     listId = list.ids.trakt,
+                    ownerId = list.user.ids.trakt,
                     showId = show.ids.trakt,
                 )
             } catch (error: Exception) {

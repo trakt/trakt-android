@@ -317,6 +317,7 @@ internal class ListMovieContextViewModel(
 
                 removeListItemUseCase.removeMovie(
                     listId = list.ids.trakt,
+                    ownerId = list.user.ids.trakt,
                     movieId = movie.ids.trakt,
                 )
             } catch (error: Exception) {

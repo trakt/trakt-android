@@ -26,8 +26,8 @@ internal fun MovieDetailsListsSheet(
     movie: Movie?,
     inWatchlist: Boolean,
     onWatchlistClick: (() -> Unit)? = null,
-    onAddListClick: ((TraktId) -> Unit)? = null,
-    onRemoveListClick: ((TraktId) -> Unit)? = null,
+    onAddListClick: ((listId: TraktId, ownerId: TraktId) -> Unit)? = null,
+    onRemoveListClick: ((listId: TraktId, ownerId: TraktId) -> Unit)? = null,
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
@@ -51,15 +51,15 @@ internal fun MovieDetailsListsSheet(
                         onDismiss()
                     }
                 },
-                onAddListClick = { listId: TraktId ->
-                    onAddListClick?.invoke(listId)
+                onAddListClick = { listId, ownerId ->
+                    onAddListClick?.invoke(listId, ownerId)
                     sheetScope.launch {
                         state.hide()
                         onDismiss()
                     }
                 },
-                onRemoveListClick = { listId: TraktId ->
-                    onRemoveListClick?.invoke(listId)
+                onRemoveListClick = { listId, ownerId ->
+                    onRemoveListClick?.invoke(listId, ownerId)
                     sheetScope.launch {
                         state.hide()
                         onDismiss()

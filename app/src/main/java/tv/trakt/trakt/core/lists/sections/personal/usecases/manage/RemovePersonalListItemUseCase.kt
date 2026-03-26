@@ -13,9 +13,11 @@ internal class RemovePersonalListItemUseCase(
 ) {
     suspend fun removeShow(
         listId: TraktId,
+        ownerId: TraktId,
         showId: TraktId,
     ) {
         remoteSource.removeShowFromList(
+            userId = ownerId,
             listId = listId,
             showId = showId,
         )
@@ -33,9 +35,11 @@ internal class RemovePersonalListItemUseCase(
 
     suspend fun removeMovie(
         listId: TraktId,
+        ownerId: TraktId,
         movieId: TraktId,
     ) {
         remoteSource.removeMovieFromList(
+            userId = ownerId,
             listId = listId,
             movieId = movieId,
         )

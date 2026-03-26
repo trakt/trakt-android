@@ -54,8 +54,8 @@ internal fun ShowDetailsListsView(
     inWatchlist: Boolean,
     modifier: Modifier = Modifier,
     onWatchlistClick: (() -> Unit)? = null,
-    onAddListClick: ((TraktId) -> Unit)? = null,
-    onRemoveListClick: ((TraktId) -> Unit)? = null,
+    onAddListClick: ((listId: TraktId, ownerId: TraktId) -> Unit)? = null,
+    onRemoveListClick: ((listId: TraktId, ownerId: TraktId) -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -79,7 +79,7 @@ internal fun ShowDetailsListsView(
             if (viewModel.isListed(it.id)) {
                 confirmRemoveListSheet = it
             } else {
-                onAddListClick?.invoke(it.id)
+                onAddListClick?.invoke(it.id, it.ownerId)
             }
         },
         modifier = modifier,
@@ -103,7 +103,7 @@ internal fun ShowDetailsListsView(
         active = confirmRemoveListSheet != null,
         onYes = {
             confirmRemoveListSheet?.let {
-                onRemoveListClick?.invoke(it.id)
+                onRemoveListClick?.invoke(it.id, it.ownerId)
                 confirmRemoveListSheet = null
             }
         },

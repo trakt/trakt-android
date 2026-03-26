@@ -663,6 +663,7 @@ internal class MovieDetailsViewModel(
 
     fun toggleList(
         listId: TraktId,
+        ownerId: TraktId,
         add: Boolean,
     ) {
         if (movieState.value == null ||
@@ -674,12 +675,15 @@ internal class MovieDetailsViewModel(
         }
 
         when {
-            add -> addToList(listId)
-            else -> removeFromList(listId)
+            add -> addToList(listId, ownerId)
+            else -> removeFromList(listId, ownerId)
         }
     }
 
-    private fun addToList(listId: TraktId) {
+    private fun addToList(
+        listId: TraktId,
+        ownerId: TraktId,
+    ) {
         viewModelScope.launch {
             val movie = movieState.value
             if (!sessionManager.isAuthenticated() || movie == null) {
@@ -690,6 +694,7 @@ internal class MovieDetailsViewModel(
 
                 addListItemUseCase.addMovie(
                     listId = listId,
+                    ownerId = ownerId,
                     movie = movie,
                 )
 
@@ -707,7 +712,10 @@ internal class MovieDetailsViewModel(
         }
     }
 
-    private fun removeFromList(listId: TraktId) {
+    private fun removeFromList(
+        listId: TraktId,
+        ownerId: TraktId,
+    ) {
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
                 return@launch
@@ -717,6 +725,7 @@ internal class MovieDetailsViewModel(
 
                 removeListItemUseCase.removeMovie(
                     listId = listId,
+                    ownerId = ownerId,
                     movieId = movieId,
                 )
 

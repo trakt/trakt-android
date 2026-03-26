@@ -544,6 +544,7 @@ internal class ShowDetailsViewModel(
 
     fun toggleList(
         listId: TraktId,
+        ownerId: TraktId,
         add: Boolean,
     ) {
         if (showState.value == null ||
@@ -555,8 +556,8 @@ internal class ShowDetailsViewModel(
         }
 
         when {
-            add -> addToList(listId)
-            else -> removeFromList(listId)
+            add -> addToList(listId, ownerId)
+            else -> removeFromList(listId, ownerId)
         }
     }
 
@@ -643,7 +644,10 @@ internal class ShowDetailsViewModel(
         }
     }
 
-    private fun addToList(listId: TraktId) {
+    private fun addToList(
+        listId: TraktId,
+        ownerId: TraktId,
+    ) {
         viewModelScope.launch {
             val show = showState.value
             if (!sessionManager.isAuthenticated() || show == null) {
@@ -654,6 +658,7 @@ internal class ShowDetailsViewModel(
 
                 addListItemUseCase.addShow(
                     listId = listId,
+                    ownerId = ownerId,
                     show = show,
                 )
 
@@ -671,7 +676,10 @@ internal class ShowDetailsViewModel(
         }
     }
 
-    private fun removeFromList(listId: TraktId) {
+    private fun removeFromList(
+        listId: TraktId,
+        ownerId: TraktId,
+    ) {
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
                 return@launch
@@ -681,6 +689,7 @@ internal class ShowDetailsViewModel(
 
                 removeListItemUseCase.removeShow(
                     listId = listId,
+                    ownerId = ownerId,
                     showId = showId,
                 )
 

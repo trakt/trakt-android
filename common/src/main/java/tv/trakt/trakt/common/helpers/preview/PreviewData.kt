@@ -194,7 +194,7 @@ object PreviewData {
 
     val customListMinimal1 = CustomListMinimal(
         id = TraktId(1),
-        ownerId = 1,
+        ownerId = TraktId(1),
         name = "My Custom List",
         type = "official",
         itemsCount = 42,

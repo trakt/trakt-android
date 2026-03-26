@@ -42,7 +42,7 @@ internal class LoadUserListsUseCase(
                 .asyncMap {
                     CustomListMinimal(
                         id = it.id.toTraktId(),
-                        ownerId = it.ownerId,
+                        ownerId = it.ownerId.toTraktId(),
                         name = it.name,
                         type = it.type,
                         itemsCount = it.count,

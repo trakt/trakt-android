@@ -13,18 +13,20 @@ internal class AddPersonalListItemUseCase(
     private val listsLocalDataSource: ListsPersonalLocalDataSource,
     private val listsItemsLocalDataSource: ListsPersonalItemsLocalDataSource,
 ) {
-    suspend fun addMovie(
+    suspend fun addShow(
         listId: TraktId,
-        movie: Movie,
+        ownerId: TraktId,
+        show: Show,
     ) {
-        remoteSource.addMovieToList(
+        remoteSource.addShowToList(
+            userId = ownerId,
             listId = listId,
-            movieId = movie.ids.trakt,
+            showId = show.ids.trakt,
         )
 
-        listsItemsLocalDataSource.addMovies(
+        listsItemsLocalDataSource.addShows(
             listId = listId,
-            movies = listOf(movie),
+            shows = listOf(show),
             notify = true,
         )
         listsLocalDataSource.onUpdatedAt(
@@ -33,18 +35,20 @@ internal class AddPersonalListItemUseCase(
         )
     }
 
-    suspend fun addShow(
+    suspend fun addMovie(
         listId: TraktId,
-        show: Show,
+        ownerId: TraktId,
+        movie: Movie,
     ) {
-        remoteSource.addShowToList(
+        remoteSource.addMovieToList(
+            userId = ownerId,
             listId = listId,
-            showId = show.ids.trakt,
+            movieId = movie.ids.trakt,
         )
 
-        listsItemsLocalDataSource.addShows(
+        listsItemsLocalDataSource.addMovies(
             listId = listId,
-            shows = listOf(show),
+            movies = listOf(movie),
             notify = true,
         )
         listsLocalDataSource.onUpdatedAt(
