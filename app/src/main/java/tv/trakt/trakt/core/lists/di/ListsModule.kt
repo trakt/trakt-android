@@ -25,6 +25,13 @@ import tv.trakt.trakt.core.lists.ListsViewModel
 import tv.trakt.trakt.core.lists.features.all.AllListsViewModel
 import tv.trakt.trakt.core.lists.features.details.ListDetailsViewModel
 import tv.trakt.trakt.core.lists.features.details.usecases.GetListItemsUseCase
+import tv.trakt.trakt.core.lists.sections.collaborations.ListsCollaborationsViewModel
+import tv.trakt.trakt.core.lists.sections.collaborations.data.local.items.ListsCollaborationsItemsLocalDataSource
+import tv.trakt.trakt.core.lists.sections.collaborations.data.local.items.ListsCollaborationsItemsStorage
+import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsLocalDataSource
+import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsStorage
+import tv.trakt.trakt.core.lists.sections.collaborations.usecases.GetCollaborationsListItemsUseCase
+import tv.trakt.trakt.core.lists.sections.collaborations.usecases.GetCollaborationsListsUseCase
 import tv.trakt.trakt.core.lists.sections.liked.ListsLikedViewModel
 import tv.trakt.trakt.core.lists.sections.liked.data.local.items.ListsLikedItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.liked.data.local.items.ListsLikedItemsStorage
@@ -85,12 +92,20 @@ internal val listsDataModule = module {
         ListsLikedStorage()
     }
 
+    single<ListsCollaborationsLocalDataSource> {
+        ListsCollaborationsStorage()
+    }
+
     single<ListsPersonalItemsLocalDataSource> {
         ListsPersonalItemsStorage()
     }
 
     single<ListsLikedItemsLocalDataSource> {
         ListsLikedItemsStorage()
+    }
+
+    single<ListsCollaborationsItemsLocalDataSource> {
+        ListsCollaborationsItemsStorage()
     }
 
     single<WatchlistUpdates> {
@@ -135,6 +150,13 @@ internal val listsModule = module {
     }
 
     factory {
+        GetCollaborationsListsUseCase(
+            remoteSource = get(),
+            localSource = get(),
+        )
+    }
+
+    factory {
         GetPersonalListItemsUseCase(
             remoteSource = get(),
             localSource = get(),
@@ -143,6 +165,13 @@ internal val listsModule = module {
 
     factory {
         GetLikedListItemsUseCase(
+            getListItemsUseCase = get(),
+            localSource = get(),
+        )
+    }
+
+    factory {
+        GetCollaborationsListItemsUseCase(
             getListItemsUseCase = get(),
             localSource = get(),
         )
@@ -204,9 +233,11 @@ internal val listsModule = module {
             sessionManager = get(),
             getPersonalListsUseCase = get(),
             getLikedListsUseCase = get(),
+            getCollaborationsListsUseCase = get(),
             localListsSource = get(),
             localListsItemsSource = get(),
             localLikedListsSource = get(),
+            localCollaborationsListsSource = get(),
             analytics = get(),
         )
     }
@@ -268,6 +299,20 @@ internal val listsModule = module {
             modeManager = get(),
             getLikedListUseCase = get(),
             getLikedListItemsUseCase = get(),
+            showLocalDataSource = get(),
+            movieLocalDataSource = get(),
+            episodeLocalDataSource = get(),
+            collectionStateProvider = get(),
+            collapsingManager = get(),
+        )
+    }
+
+    viewModel { (listId: TraktId) ->
+        ListsCollaborationsViewModel(
+            listId = listId,
+            modeManager = get(),
+            getCollaborationsListUseCase = get(),
+            getCollaborationsListItemsUseCase = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
             episodeLocalDataSource = get(),

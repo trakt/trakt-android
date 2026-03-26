@@ -60,9 +60,11 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_FULL_PREVIEW_LIMIT
+import tv.trakt.trakt.core.lists.sections.collaborations.ListsCollaborationsView
 import tv.trakt.trakt.core.lists.sections.liked.ListsLikedView
 import tv.trakt.trakt.core.lists.sections.personal.ListsPersonalView
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collaborations
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Personal
 import tv.trakt.trakt.core.lists.sections.personal.ui.ListsFilters
@@ -343,6 +345,37 @@ private fun ListsScreenContent(
                             )
                         }
                     }
+                    Collaborations if listVisible -> {
+                        if (listFullView) {
+                            ListsCollaborationsView(
+                                viewModel = koinViewModel(
+                                    key = list.ids.trakt.value.toString(),
+                                    parameters = { parametersOf(list.ids.trakt) },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onShowClick = onShowClick,
+                                onMovieClick = onMovieClick,
+                                onEpisodeClick = onEpisodeClick,
+                                onAllClick = { onCustomListClick(list) },
+                                modifier = Modifier.padding(
+                                    top = verticalPadding,
+                                ),
+                            )
+                        } else {
+                            CustomListCard(
+                                list = list,
+                                onClick = { onCustomListClick(list) },
+                                modifier = Modifier
+                                    .padding(
+                                        top = verticalPadding,
+                                        start = TraktTheme.spacing.mainPageHorizontalSpace,
+                                        end = TraktTheme.spacing.mainPageHorizontalSpace,
+                                    )
+                                    .aspectRatio(HorizontalImageAspectRatio),
+                            )
+                        }
+                    }
                     else -> {
                         // Noop
                     }
@@ -359,6 +392,7 @@ private fun ListsScreenContent(
                             else -> when (state.filter) {
                                 Personal -> onCreateListClick
                                 Liked -> onSearchListClick
+                                Collaborations -> onSearchListClick
                             }
                         },
                         modifier = Modifier
@@ -429,10 +463,13 @@ private fun MyListsHeader(
 ) {
     Column(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(sectionPadding),
+            .fillMaxWidth(),
     ) {
-        Box {
+        Box(
+            modifier = Modifier
+                .padding(sectionPadding)
+                .fillMaxWidth(),
+        ) {
             TraktSectionHeader(
                 title = stringResource(R.string.list_title_personal_lists),
                 collapsable = false,
@@ -471,6 +508,7 @@ private fun MyListsHeader(
         ListsFilters(
             selected = state.filter,
             onClick = onFilterClick,
+            paddingHorizontal = sectionPadding,
             paddingVertical = PaddingValues(top = 13.dp, bottom = 0.dp),
         )
     }
@@ -499,6 +537,7 @@ private fun ContentEmptyView(
             !authenticated -> return@remember R.string.button_text_join_trakt
             filter == Personal -> return@remember R.string.button_text_create_list
             filter == Liked -> return@remember R.string.button_text_toggle_search_lists
+            filter == Collaborations -> return@remember R.string.button_text_toggle_search_lists
             else -> R.drawable.ic_trakt_icon
         }
     }
@@ -508,6 +547,7 @@ private fun ContentEmptyView(
             !authenticated -> R.drawable.ic_trakt_icon
             filter == Personal -> R.drawable.ic_plus
             filter == Liked -> R.drawable.ic_search_off
+            filter == Collaborations -> R.drawable.ic_search_off
             else -> R.drawable.ic_trakt_icon
         }
     }
@@ -518,6 +558,7 @@ private fun ContentEmptyView(
             when (filter) {
                 Personal -> R.string.text_cta_personal_lists
                 Liked -> R.string.text_cta_liked_lists
+                Collaborations -> R.string.text_cta_collab_lists
                 else -> R.string.text_cta_personal_lists
             },
         ),

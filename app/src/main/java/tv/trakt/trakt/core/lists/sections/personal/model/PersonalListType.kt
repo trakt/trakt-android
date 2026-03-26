@@ -20,4 +20,8 @@ internal enum class PersonalListType(
         R.string.list_title_liked_lists,
         R.drawable.ic_thumb_up2,
     ),
+    Collaborations(
+        R.string.list_title_collab_lists,
+        R.drawable.ic_person_double,
+    ),
 }

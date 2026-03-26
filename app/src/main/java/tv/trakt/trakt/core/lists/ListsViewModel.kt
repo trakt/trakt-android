@@ -29,11 +29,14 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.lists.ListsState.UserState
+import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsLocalDataSource
+import tv.trakt.trakt.core.lists.sections.collaborations.usecases.GetCollaborationsListsUseCase
 import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedLocalDataSource
 import tv.trakt.trakt.core.lists.sections.liked.usecases.GetLikedListsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collaborations
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Personal
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
@@ -43,9 +46,11 @@ internal class ListsViewModel(
     private val sessionManager: SessionManager,
     private val getPersonalListsUseCase: GetPersonalListsUseCase,
     private val getLikedListsUseCase: GetLikedListsUseCase,
+    private val getCollaborationsListsUseCase: GetCollaborationsListsUseCase,
     private val localListsSource: ListsPersonalLocalDataSource,
     private val localListsItemsSource: ListsPersonalItemsLocalDataSource,
     private val localLikedListsSource: ListsLikedLocalDataSource,
+    private val localCollaborationsListsSource: ListsCollaborationsLocalDataSource,
     analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ListsState()
@@ -96,7 +101,10 @@ internal class ListsViewModel(
             }
             .launchIn(viewModelScope)
 
-        localLikedListsSource.observeUpdates()
+        merge(
+            localLikedListsSource.observeUpdates(),
+            localCollaborationsListsSource.observeUpdates(),
+        )
             .distinctUntilChanged()
             .debounce(200)
             .onEach {
@@ -113,6 +121,7 @@ internal class ListsViewModel(
                 val localLists = when (filterState.value) {
                     Personal -> getPersonalListsUseCase.getLocalLists(pagination)
                     Liked -> getLikedListsUseCase.getLocalLists(pagination)
+                    Collaborations -> getCollaborationsListsUseCase.getLocalLists(pagination)
                 }
                 listsState.update { sortLists(localLists) }
             } catch (error: Exception) {
@@ -136,6 +145,7 @@ internal class ListsViewModel(
                 val localLists = when (filterState.value) {
                     Personal -> getPersonalListsUseCase.getLocalLists(pagination)
                     Liked -> getLikedListsUseCase.getLocalLists(pagination)
+                    Collaborations -> getCollaborationsListsUseCase.getLocalLists(pagination)
                 }
 
                 if (localLists.isNotEmpty()) {
@@ -148,6 +158,7 @@ internal class ListsViewModel(
                 val lists = when (filterState.value) {
                     Personal -> getPersonalListsUseCase.getLists(pagination, notify = false)
                     Liked -> getLikedListsUseCase.getLists(pagination)
+                    Collaborations -> getCollaborationsListsUseCase.getLists()
                 }
                 listsState.update { sortLists(lists) }
 

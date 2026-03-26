@@ -147,14 +147,16 @@ private fun AllListsScreen(
             .background(TraktTheme.colors.backgroundPrimary)
             .nestedScroll(listScrollConnection),
     ) {
-        val contentPadding = PaddingValues(
-            start = TraktTheme.spacing.mainPageHorizontalSpace,
-            end = TraktTheme.spacing.mainPageHorizontalSpace,
+        val contentVerticalPadding = PaddingValues(
             top = WindowInsets.statusBars.asPaddingValues()
                 .calculateTopPadding(),
             bottom = WindowInsets.navigationBars.asPaddingValues()
                 .calculateBottomPadding()
                 .plus(TraktTheme.size.navigationBarHeight * 2),
+        )
+
+        val contentHorizontalPadding = PaddingValues(
+            horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
         )
 
         ScrollableBackdropImage(
@@ -168,7 +170,7 @@ private fun AllListsScreen(
         LazyColumn(
             state = listState,
             verticalArrangement = spacedBy(0.dp),
-            contentPadding = contentPadding,
+            contentPadding = contentVerticalPadding,
             overscrollEffect = null,
             userScrollEnabled = !state.loading.isLoading,
             modifier = modifier,
@@ -178,6 +180,7 @@ private fun AllListsScreen(
                     createListVisible = state.filter == Personal,
                     onCreateListClick = onListCreateClick,
                     modifier = Modifier
+                        .padding(contentHorizontalPadding)
                         .onClick(onClick = onBackClick)
                         .animateItem(
                             fadeInSpec = null,
@@ -189,9 +192,8 @@ private fun AllListsScreen(
             item {
                 ListsFilters(
                     height = 32.dp,
-                    paddingVertical = PaddingValues(
-                        bottom = 20.dp,
-                    ),
+                    paddingHorizontal = contentHorizontalPadding,
+                    paddingVertical = PaddingValues(bottom = 20.dp),
                     selected = state.filter,
                     onClick = onFilterClick,
                     modifier = Modifier.animateItem(
@@ -218,6 +220,7 @@ private fun AllListsScreen(
                             onClick = { onListPersonalClick(list) },
                             onMoreClick = { onListEditClick(list) },
                             modifier = Modifier
+                                .padding(contentHorizontalPadding)
                                 .padding(top = verticalPadding)
                                 .aspectRatio(HorizontalImageAspectRatio)
                                 .animateItem(
@@ -233,6 +236,7 @@ private fun AllListsScreen(
                             likesVisible = true,
                             onClick = { onListClick(list) },
                             modifier = Modifier
+                                .padding(contentHorizontalPadding)
                                 .padding(top = verticalPadding)
                                 .aspectRatio(HorizontalImageAspectRatio)
                                 .animateItem(
@@ -256,6 +260,7 @@ private fun AllListsScreen(
             ) { index ->
                 CustomListSkeletonCard(
                     modifier = Modifier
+                        .padding(contentHorizontalPadding)
                         .padding(
                             top = when (index) {
                                 0 if state.items.isNullOrEmpty() -> 0.dp
