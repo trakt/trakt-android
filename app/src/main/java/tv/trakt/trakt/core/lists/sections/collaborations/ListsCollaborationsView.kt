@@ -74,16 +74,17 @@ internal fun ListsCollaborationsView(
     )
 }
 
-private fun ListsCollaborationsState.asLikedState() = ListsLikedState(
-    user = user,
-    list = list,
-    items = items,
-    filter = filter,
-    collection = collection,
-    navigateShow = navigateShow,
-    navigateMovie = navigateMovie,
-    navigateEpisode = navigateEpisode,
-    loading = loading,
-    collapsed = collapsed,
-    error = error,
-)
+private fun ListsCollaborationsState.asLikedState() =
+    ListsLikedState(
+        user = user,
+        list = list,
+        items = items,
+        filter = filter,
+        collection = collection,
+        navigateShow = navigateShow,
+        navigateMovie = navigateMovie,
+        navigateEpisode = navigateEpisode,
+        loading = loading,
+        collapsed = collapsed,
+        error = error,
+    )
