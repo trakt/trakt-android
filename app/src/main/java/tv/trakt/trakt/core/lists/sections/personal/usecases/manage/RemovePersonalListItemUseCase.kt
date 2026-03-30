@@ -3,13 +3,17 @@ package tv.trakt.trakt.core.lists.sections.personal.usecases.manage
 import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.lists.sections.collaborations.data.local.items.ListsCollaborationsItemsLocalDataSource
+import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 
 internal class RemovePersonalListItemUseCase(
     private val remoteSource: ListsRemoteDataSource,
-    private val listsLocalDataSource: ListsPersonalLocalDataSource,
-    private val listsItemsLocalDataSource: ListsPersonalItemsLocalDataSource,
+    private val personalListsLocalDataSource: ListsPersonalLocalDataSource,
+    private val personalListsItemsLocalDataSource: ListsPersonalItemsLocalDataSource,
+    private val collabListsLocalDataSource: ListsCollaborationsLocalDataSource,
+    private val collabListsItemsLocalDataSource: ListsCollaborationsItemsLocalDataSource,
 ) {
     suspend fun removeShow(
         listId: TraktId,
@@ -22,12 +26,22 @@ internal class RemovePersonalListItemUseCase(
             showId = showId,
         )
 
-        listsItemsLocalDataSource.removeShows(
+        personalListsItemsLocalDataSource.removeShows(
             listId = listId,
             showsIds = listOf(showId),
             notify = true,
         )
-        listsLocalDataSource.onUpdatedAt(
+        collabListsItemsLocalDataSource.removeShows(
+            listId = listId,
+            showsIds = listOf(showId),
+            notify = true,
+        )
+
+        personalListsLocalDataSource.onUpdatedAt(
+            id = listId,
+            updatedAt = nowUtc(),
+        )
+        collabListsLocalDataSource.onUpdatedAt(
             id = listId,
             updatedAt = nowUtc(),
         )
@@ -44,12 +58,22 @@ internal class RemovePersonalListItemUseCase(
             movieId = movieId,
         )
 
-        listsItemsLocalDataSource.removeMovies(
+        personalListsItemsLocalDataSource.removeMovies(
             listId = listId,
             moviesIds = listOf(movieId),
             notify = true,
         )
-        listsLocalDataSource.onUpdatedAt(
+        collabListsItemsLocalDataSource.removeMovies(
+            listId = listId,
+            moviesIds = listOf(movieId),
+            notify = true,
+        )
+
+        personalListsLocalDataSource.onUpdatedAt(
+            id = listId,
+            updatedAt = nowUtc(),
+        )
+        collabListsLocalDataSource.onUpdatedAt(
             id = listId,
             updatedAt = nowUtc(),
         )

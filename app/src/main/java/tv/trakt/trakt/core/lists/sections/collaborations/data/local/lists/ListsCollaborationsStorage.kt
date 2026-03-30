@@ -10,6 +10,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
 import java.time.Instant
+import java.time.ZonedDateTime
 
 internal class ListsCollaborationsStorage : ListsCollaborationsLocalDataSource {
     private val mutex = Mutex()
@@ -29,32 +30,21 @@ internal class ListsCollaborationsStorage : ListsCollaborationsLocalDataSource {
         }
     }
 
-    override suspend fun addLists(items: List<CustomList>) {
-        mutex.withLock {
-            with(storage) {
-                putAll(items.associateBy { it.ids.trakt })
-            }
-        }
-    }
-
     override suspend fun getLists(): List<CustomList> {
         return mutex.withLock {
             storage.values.toList()
         }
     }
 
-    override suspend fun addList(list: CustomList) {
+    override suspend fun onUpdatedAt(
+        id: TraktId,
+        updatedAt: ZonedDateTime,
+    ) {
         mutex.withLock {
-            val existing = storage.toMap()
-            storage.clear()
-            storage[list.ids.trakt] = list
-            storage.putAll(existing - list.ids.trakt)
-        }
-    }
-
-    override suspend fun removeList(listId: TraktId) {
-        mutex.withLock {
-            storage.remove(listId)
+            val existing = storage[id] ?: return
+            storage[id] = existing.copy(
+                updatedAt = updatedAt,
+            )
         }
     }
 

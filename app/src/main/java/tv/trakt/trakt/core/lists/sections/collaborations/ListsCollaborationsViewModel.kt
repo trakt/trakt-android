@@ -8,7 +8,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -29,6 +32,8 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ITEMS_SECTION_LIMIT
 import tv.trakt.trakt.core.lists.model.CustomListItem
+import tv.trakt.trakt.core.lists.sections.collaborations.data.local.items.ListsCollaborationsItemsLocalDataSource
+import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.collaborations.usecases.GetCollaborationsListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.collaborations.usecases.GetCollaborationsListsUseCase
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
@@ -43,6 +48,8 @@ internal class ListsCollaborationsViewModel(
     private val listId: TraktId,
     private val getCollaborationsListUseCase: GetCollaborationsListsUseCase,
     private val getCollaborationsListItemsUseCase: GetCollaborationsListItemsUseCase,
+    private val localListsSource: ListsCollaborationsLocalDataSource,
+    private val localListsItemsSource: ListsCollaborationsItemsLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
@@ -73,6 +80,7 @@ internal class ListsCollaborationsViewModel(
 
         observeMode()
         observeCollection()
+        observeLists()
     }
 
     private fun observeMode() {
@@ -87,6 +95,17 @@ internal class ListsCollaborationsViewModel(
 
     private fun observeCollection() {
         collectionStateProvider
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeLists() {
+        merge(
+            localListsSource.observeUpdates(),
+            localListsItemsSource.observeUpdates(),
+        )
+            .distinctUntilChanged()
+            .debounce(200)
+            .onEach { loadLocalData() }
             .launchIn(viewModelScope)
     }
 
@@ -127,6 +146,26 @@ internal class ListsCollaborationsViewModel(
             } finally {
                 loadingState.update { Done }
                 dataJob = null
+            }
+        }
+    }
+
+    private fun loadLocalData() {
+        viewModelScope.launch {
+            try {
+                listState.update {
+                    getCollaborationsListUseCase.getLocalList(listId)
+                }
+                itemsState.update {
+                    getCollaborationsListItemsUseCase.getLocalItems(
+                        listId = listId,
+                        filter = filterState.value,
+                    )
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                }
             }
         }
     }

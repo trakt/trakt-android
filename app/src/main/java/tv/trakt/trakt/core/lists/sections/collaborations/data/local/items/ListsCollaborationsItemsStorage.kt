@@ -1,14 +1,26 @@
 package tv.trakt.trakt.core.lists.sections.collaborations.data.local.items
 
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.model.CustomListItem
+import java.time.Instant
 
 internal class ListsCollaborationsItemsStorage : ListsCollaborationsItemsLocalDataSource {
     private val mutex = Mutex()
 
     private val storage = mutableMapOf<TraktId, List<CustomListItem>>()
+    private val updatedAt = MutableSharedFlow<Instant?>(
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST,
+    )
 
     override suspend fun setItems(
         listId: TraktId,
@@ -25,7 +37,108 @@ internal class ListsCollaborationsItemsStorage : ListsCollaborationsItemsLocalDa
         }
     }
 
+    override suspend fun addShows(
+        listId: TraktId,
+        shows: List<Show>,
+        notify: Boolean,
+    ) {
+        mutex.withLock {
+            val currentItems = storage[listId] ?: emptyList()
+            val newItems = shows.mapIndexed { index, show ->
+                CustomListItem.ShowItem(
+                    show = show,
+                    rank = Int.MAX_VALUE,
+                    listedAt = nowUtcInstant(),
+                )
+            }
+
+            storage[listId] = (currentItems + newItems)
+                .distinctBy {
+                    if (it is CustomListItem.ShowItem) {
+                        it.key
+                    } else {
+                        null
+                    }
+                }
+        }
+
+        if (notify) {
+            updatedAt.tryEmit(nowUtcInstant())
+        }
+    }
+
+    override suspend fun removeShows(
+        listId: TraktId,
+        showsIds: List<TraktId>,
+        notify: Boolean,
+    ) {
+        mutex.withLock {
+            val currentItems = storage[listId] ?: return
+            storage[listId] = currentItems
+                .filterNot {
+                    it is CustomListItem.ShowItem &&
+                        it.show.ids.trakt in showsIds
+                }
+        }
+        if (notify) {
+            updatedAt.tryEmit(nowUtcInstant())
+        }
+    }
+
+    override suspend fun addMovies(
+        listId: TraktId,
+        movies: List<Movie>,
+        notify: Boolean,
+    ) {
+        mutex.withLock {
+            val currentItems = storage[listId] ?: emptyList()
+            val newItems = movies.mapIndexed { index, movie ->
+                CustomListItem.MovieItem(
+                    movie = movie,
+                    rank = Int.MAX_VALUE,
+                    listedAt = nowUtcInstant(),
+                )
+            }
+
+            storage[listId] = (currentItems + newItems)
+                .distinctBy {
+                    if (it is CustomListItem.MovieItem) {
+                        it.key
+                    } else {
+                        null
+                    }
+                }
+        }
+
+        if (notify) {
+            updatedAt.tryEmit(nowUtcInstant())
+        }
+    }
+
+    override suspend fun removeMovies(
+        listId: TraktId,
+        moviesIds: List<TraktId>,
+        notify: Boolean,
+    ) {
+        mutex.withLock {
+            val currentItems = storage[listId] ?: return
+            storage[listId] = currentItems
+                .filterNot {
+                    it is CustomListItem.MovieItem &&
+                        it.movie.ids.trakt in moviesIds
+                }
+        }
+        if (notify) {
+            updatedAt.tryEmit(nowUtcInstant())
+        }
+    }
+
+    override fun observeUpdates(): Flow<Instant?> {
+        return updatedAt.asSharedFlow()
+    }
+
     override fun clear() {
         storage.clear()
+        updatedAt.tryEmit(null)
     }
 }

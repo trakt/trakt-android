@@ -1,7 +1,11 @@
 package tv.trakt.trakt.core.lists.sections.collaborations.data.local.items
 
+import kotlinx.coroutines.flow.Flow
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.model.CustomListItem
+import java.time.Instant
 
 internal interface ListsCollaborationsItemsLocalDataSource {
     suspend fun setItems(
@@ -10,6 +14,32 @@ internal interface ListsCollaborationsItemsLocalDataSource {
     )
 
     suspend fun getItems(listId: TraktId): List<CustomListItem>
+
+    suspend fun addShows(
+        listId: TraktId,
+        shows: List<Show>,
+        notify: Boolean,
+    )
+
+    suspend fun removeShows(
+        listId: TraktId,
+        showsIds: List<TraktId>,
+        notify: Boolean,
+    )
+
+    suspend fun addMovies(
+        listId: TraktId,
+        movies: List<Movie>,
+        notify: Boolean,
+    )
+
+    suspend fun removeMovies(
+        listId: TraktId,
+        moviesIds: List<TraktId>,
+        notify: Boolean,
+    )
+
+    fun observeUpdates(): Flow<Instant?>
 
     fun clear()
 }
