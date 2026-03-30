@@ -90,7 +90,7 @@ internal fun ListsLikedView(
     var showContextSheet by remember { mutableStateOf<Show?>(null) }
     var movieContextSheet by remember { mutableStateOf<Movie?>(null) }
 
-    ListsPersonalContent(
+    ListsLikedContent(
         state = state,
         list = state.list,
         modifier = modifier,
@@ -135,7 +135,7 @@ internal fun ListsLikedView(
 }
 
 @Composable
-internal fun ListsPersonalContent(
+private fun ListsLikedContent(
     state: ListsLikedState,
     list: CustomList?,
     modifier: Modifier = Modifier,
@@ -368,7 +368,7 @@ private fun PreviewLoadingState() {
 @Composable
 private fun PreviewListState() {
     TraktTheme {
-        ListsPersonalContent(
+        ListsLikedContent(
             state = ListsLikedState(),
             list = PreviewData.customList1.copy(
                 name = "Lorem ipsum dolor sit amet consectetur adipiscing elit",
