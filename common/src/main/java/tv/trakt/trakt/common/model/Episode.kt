@@ -49,14 +49,16 @@ data class Episode(
     }
 
     @Composable
-    fun isPremiere(): Boolean = remember(episodeType) {
-        episodeType?.contains("premiere") == true
-    }
+    fun isPremiere(): Boolean =
+        remember(episodeType) {
+            episodeType?.contains("premiere") == true
+        }
 
     @Composable
-    fun isFinale(): Boolean = remember(episodeType) {
-        episodeType?.contains("finale") == true
-    }
+    fun isFinale(): Boolean =
+        remember(episodeType) {
+            episodeType?.contains("finale") == true
+        }
 }
 
 fun Episode.Companion.fromDto(dto: EpisodeDto): Episode {
