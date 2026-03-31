@@ -73,9 +73,9 @@ import tv.trakt.trakt.core.comments.ui.CommentCard
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.FilterChip
-import tv.trakt.trakt.ui.components.FilterChipGroup
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
+import tv.trakt.trakt.ui.components.chips.FilterChip
+import tv.trakt.trakt.ui.components.chips.FilterChipGroup
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable

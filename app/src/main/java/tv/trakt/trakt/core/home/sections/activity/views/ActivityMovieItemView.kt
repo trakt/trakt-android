@@ -37,7 +37,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.InfoChip
+import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 

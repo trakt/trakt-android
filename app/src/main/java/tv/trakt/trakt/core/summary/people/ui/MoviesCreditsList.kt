@@ -49,9 +49,9 @@ import tv.trakt.trakt.core.summary.people.ListLoadingView
 import tv.trakt.trakt.core.summary.people.model.PersonCreditItem
 import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.FilterChip
-import tv.trakt.trakt.ui.components.FilterChipGroup
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.chips.FilterChip
+import tv.trakt.trakt.ui.components.chips.FilterChipGroup
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 

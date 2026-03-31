@@ -20,7 +20,7 @@ import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.core.library.model.LibraryItem
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.InfoChip
+import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.temporal.ChronoUnit.DAYS

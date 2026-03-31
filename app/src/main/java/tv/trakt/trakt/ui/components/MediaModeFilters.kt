@@ -16,6 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.ui.components.chips.FilterChip
+import tv.trakt.trakt.ui.components.chips.FilterChipGroup
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable

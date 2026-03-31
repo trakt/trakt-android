@@ -16,8 +16,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
-import tv.trakt.trakt.ui.components.FilterChip
-import tv.trakt.trakt.ui.components.FilterChipGroup
+import tv.trakt.trakt.ui.components.chips.FilterChip
+import tv.trakt.trakt.ui.components.chips.FilterChipGroup
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable

@@ -54,9 +54,9 @@ import tv.trakt.trakt.core.profile.sections.favorites.context.movie.FavoriteMovi
 import tv.trakt.trakt.core.profile.sections.favorites.context.show.FavoriteShowContextSheet
 import tv.trakt.trakt.core.profile.sections.library.views.LibraryItemView
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.FilterChip
-import tv.trakt.trakt.ui.components.FilterChipGroup
 import tv.trakt.trakt.ui.components.TraktSectionHeader
+import tv.trakt.trakt.ui.components.chips.FilterChip
+import tv.trakt.trakt.ui.components.chips.FilterChipGroup
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 

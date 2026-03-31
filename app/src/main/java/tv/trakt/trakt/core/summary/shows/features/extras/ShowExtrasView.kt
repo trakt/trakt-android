@@ -50,10 +50,10 @@ import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.FilterChip
-import tv.trakt.trakt.ui.components.FilterChipGroup
-import tv.trakt.trakt.ui.components.FilterChipSkeleton
 import tv.trakt.trakt.ui.components.TraktSectionHeader
+import tv.trakt.trakt.ui.components.chips.FilterChip
+import tv.trakt.trakt.ui.components.chips.FilterChipGroup
+import tv.trakt.trakt.ui.components.chips.FilterChipSkeleton
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.HorizontalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme

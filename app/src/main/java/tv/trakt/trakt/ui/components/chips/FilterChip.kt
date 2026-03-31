@@ -1,4 +1,4 @@
-package tv.trakt.trakt.ui.components
+package tv.trakt.trakt.ui.components.chips
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColor

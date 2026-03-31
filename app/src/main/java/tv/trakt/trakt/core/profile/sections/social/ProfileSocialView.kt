@@ -48,9 +48,9 @@ import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter
 import tv.trakt.trakt.core.profile.sections.social.ui.SocialUserView
 import tv.trakt.trakt.core.profile.sections.social.ui.SocialUserViewSkeleton
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.FilterChip
-import tv.trakt.trakt.ui.components.FilterChipGroup
 import tv.trakt.trakt.ui.components.TraktSectionHeader
+import tv.trakt.trakt.ui.components.chips.FilterChip
+import tv.trakt.trakt.ui.components.chips.FilterChipGroup
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable

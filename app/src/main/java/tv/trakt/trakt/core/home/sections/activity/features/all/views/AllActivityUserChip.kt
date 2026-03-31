@@ -22,7 +22,7 @@ import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.InfoChip
+import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable

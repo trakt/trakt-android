@@ -54,10 +54,10 @@ import tv.trakt.trakt.core.profile.sections.library.all.views.AllLibraryEpisodeV
 import tv.trakt.trakt.core.profile.sections.library.all.views.AllLibraryMovieView
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.FilterChip
-import tv.trakt.trakt.ui.components.FilterChipGroup
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.chips.FilterChip
+import tv.trakt.trakt.ui.components.chips.FilterChipGroup
 import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
