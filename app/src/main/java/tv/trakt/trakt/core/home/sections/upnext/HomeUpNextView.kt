@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
@@ -44,6 +45,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
@@ -65,6 +67,8 @@ import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EpisodeProgressBar
 import tv.trakt.trakt.ui.components.TraktSectionHeader
+import tv.trakt.trakt.ui.components.chips.FinaleChip
+import tv.trakt.trakt.ui.components.chips.PremiereChip
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
@@ -371,13 +375,43 @@ private fun ContentListItem(
                     item.progress.remainingPercent
                 }
 
-                EpisodeProgressBar(
-                    startText = runtime?.durationFormat(),
-                    endText = stringResource(R.string.tag_text_remaining_episodes, remainingEpisodes),
-                    progress = remainingPercent,
-                    modifier = Modifier
-                        .shadow(2.dp, RoundedCornerShape(100)),
-                )
+                Column(
+                    verticalArrangement = spacedBy(3.dp),
+                ) {
+                    val isPremiere = remember(item.progress.nextEpisode.number) {
+                        item.progress.nextEpisode.number == 1
+                    }
+                    val isFinale = remember(item.progress.nextEpisode.episodeType) {
+                        item.progress.nextEpisode.episodeType?.contains("finale") == true
+                    }
+
+                    when {
+                        isPremiere -> PremiereChip(
+                            contentTextStyle = TraktTheme.typography.meta.copy(
+                                fontSize = 10.sp,
+                            ),
+                            modifier = Modifier
+                                .shadow(2.dp, RoundedCornerShape(100))
+                                .height(20.dp),
+                        )
+                        isFinale -> FinaleChip(
+                            contentTextStyle = TraktTheme.typography.meta.copy(
+                                fontSize = 10.sp,
+                            ),
+                            modifier = Modifier
+                                .shadow(2.dp, RoundedCornerShape(100))
+                                .height(20.dp),
+                        )
+                    }
+
+                    EpisodeProgressBar(
+                        startText = runtime?.durationFormat(),
+                        endText = stringResource(R.string.tag_text_remaining_episodes, remainingEpisodes),
+                        progress = remainingPercent,
+                        modifier = Modifier
+                            .shadow(2.dp, RoundedCornerShape(100)),
+                    )
+                }
             }
         },
         footerContent = {

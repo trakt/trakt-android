@@ -2,10 +2,14 @@ package tv.trakt.trakt.core.home.sections.upcoming.views
 
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -18,7 +22,9 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.chips.FinaleChip
 import tv.trakt.trakt.ui.components.chips.InfoChip
+import tv.trakt.trakt.ui.components.chips.PremiereChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
@@ -41,11 +47,31 @@ internal fun EpisodeUpcomingItemView(
             val dateString = remember(item.releasedAt) {
                 item.releasedAt.toLocal().relativeDateTimeString()
             }
-            InfoChip(
-                text = dateString,
-                iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
-                containerColor = TraktTheme.colors.chipContainerOnContent,
-            )
+
+            Row(
+                horizontalArrangement = spacedBy(3.dp),
+                verticalAlignment = CenterVertically,
+            ) {
+                val shadowModifier = Modifier.shadow(2.dp, RoundedCornerShape(100))
+
+                val isPremiere = remember(item.episode.number) {
+                    item.episode.number == 1
+                }
+                val isFinale = remember(item.episode.episodeType) {
+                    item.episode.episodeType?.contains("finale") == true
+                }
+                when {
+                    isPremiere -> PremiereChip(modifier = shadowModifier)
+                    isFinale -> FinaleChip(modifier = shadowModifier)
+                }
+
+                InfoChip(
+                    text = dateString,
+                    iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
+                    containerColor = TraktTheme.colors.chipContainerOnContent,
+                    modifier = shadowModifier,
+                )
+            }
         },
         footerContent = {
             Column(

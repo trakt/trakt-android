@@ -359,6 +359,8 @@
   <string name="button_text_manage_lists">Manage Lists</string>
   <string name="list_title_collaborative_lists">Collaborations</string>
   <string name="text_cta_collab_lists">Lists you help curate. Work with others and track movies and shows together.</string>
+  <string name="text_tag_premiere">Premiere</string>
+  <string name="text_tag_finale">Finale</string>
 
   <!-- Non Translatable -->
 

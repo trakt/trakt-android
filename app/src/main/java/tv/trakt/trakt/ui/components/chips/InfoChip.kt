@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,6 +32,7 @@ internal fun InfoChip(
     iconPainter: Painter? = null,
     iconPadding: Dp = 0.dp,
     containerColor: Color = TraktTheme.colors.chipContainer,
+    contentTextStyle: TextStyle = TraktTheme.typography.meta,
     endPadding: Dp = 0.dp,
 ) {
     val hasIcon = (iconVector != null || iconPainter != null)
@@ -66,7 +68,7 @@ internal fun InfoChip(
         }
         Text(
             text = text,
-            style = TraktTheme.typography.meta,
+            style = contentTextStyle,
             color = TraktTheme.colors.chipContent,
             textAlign = TextAlign.Center,
             maxLines = 1,

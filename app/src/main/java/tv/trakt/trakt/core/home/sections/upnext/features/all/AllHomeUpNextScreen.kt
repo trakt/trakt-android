@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -44,6 +45,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -63,6 +65,8 @@ import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EpisodeProgressBar
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
+import tv.trakt.trakt.ui.components.chips.FinaleChip
+import tv.trakt.trakt.ui.components.chips.PremiereChip
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
@@ -297,9 +301,19 @@ private fun ContentListItem(
     onShowClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val isPremiere = remember(item.progress.nextEpisode.number) {
+        item.progress.nextEpisode.number == 1
+    }
+    val isFinale = remember(item.progress.nextEpisode.episodeType) {
+        item.progress.nextEpisode.episodeType?.contains("finale") == true
+    }
+
     PanelMediaCard(
         title = item.show.title,
-        titleOriginal = item.show.titleOriginal,
+        titleOriginal = when {
+            isPremiere || isFinale -> null
+            else -> item.show.titleOriginal
+        },
         subtitle = item.progress.nextEpisode.seasonEpisodeString(),
         contentImageUrl = item.show.images?.getPosterUrl(),
         containerImageUrl = item.progress.nextEpisode.images?.getScreenshotUrl(THUMB)
@@ -353,32 +367,59 @@ private fun ContentListItem(
                     item.progress.remainingPercent
                 }
 
-                EpisodeProgressBar(
-                    startText = startString,
-                    endText = endString,
-                    progress = remainingPercent,
-                    containerColor = TraktTheme.colors.chipContainer,
-                    modifier = Modifier
-                        .weight(1F, fill = false)
-                        .padding(end = 16.dp),
-                )
-
-                if (item.loading) {
-                    Box(modifier = Modifier.size(18.dp)) {
-                        FilmProgressIndicator(size = 16.dp)
-                    }
-                } else {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_check),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.accent,
-                        modifier = Modifier
-                            .size(18.dp)
-                            .onClickCombined(
-                                onClick = onCheckClick,
-                                onLongClick = onCheckLongClick,
+                Column(
+                    verticalArrangement = spacedBy(4.dp),
+                ) {
+                    when {
+                        isPremiere -> PremiereChip(
+                            contentTextStyle = TraktTheme.typography.meta.copy(
+                                fontSize = 10.sp,
                             ),
-                    )
+                            containerColor = TraktTheme.colors.chipContainer,
+                            modifier = Modifier
+                                .height(20.dp),
+                        )
+                        isFinale -> FinaleChip(
+                            contentTextStyle = TraktTheme.typography.meta.copy(
+                                fontSize = 10.sp,
+                            ),
+                            containerColor = TraktTheme.colors.chipContainer,
+                            modifier = Modifier
+                                .height(20.dp),
+                        )
+                    }
+
+                    Row(
+                        verticalAlignment = CenterVertically,
+                    ) {
+                        EpisodeProgressBar(
+                            startText = startString,
+                            endText = endString,
+                            progress = remainingPercent,
+                            containerColor = TraktTheme.colors.chipContainer,
+                            modifier = Modifier
+                                .weight(1F, fill = false)
+                                .padding(end = 16.dp),
+                        )
+
+                        if (item.loading) {
+                            Box(modifier = Modifier.size(18.dp)) {
+                                FilmProgressIndicator(size = 16.dp)
+                            }
+                        } else {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_check),
+                                contentDescription = null,
+                                tint = TraktTheme.colors.accent,
+                                modifier = Modifier
+                                    .size(18.dp)
+                                    .onClickCombined(
+                                        onClick = onCheckClick,
+                                        onLongClick = onCheckLongClick,
+                                    ),
+                            )
+                        }
+                    }
                 }
             }
         },

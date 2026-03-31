@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,6 +31,8 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.chips.FinaleChip
+import tv.trakt.trakt.ui.components.chips.PremiereChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -56,6 +60,20 @@ internal fun CalendarEpisodeItemView(
         containerImageUrl =
             item.show.images?.getFanartUrl()
                 ?: item.episode.images?.getScreenshotUrl(),
+        cardContent = {
+            val isPremiere = remember(item.episode.number) {
+                item.episode.number == 1
+            }
+            val isFinale = remember(item.episode.episodeType) {
+                item.episode.episodeType?.contains("finale") == true
+            }
+
+            val shadowModifier = Modifier.shadow(2.dp, RoundedCornerShape(100))
+            when {
+                isPremiere -> PremiereChip(modifier = shadowModifier)
+                isFinale -> FinaleChip(modifier = shadowModifier)
+            }
+        },
         footerContent = {
             Row(
                 verticalAlignment = CenterVertically,
