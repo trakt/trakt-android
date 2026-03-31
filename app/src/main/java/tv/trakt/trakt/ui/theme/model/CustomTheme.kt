@@ -3,8 +3,8 @@ package tv.trakt.trakt.ui.theme.model
 import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.toColorInt
 import kotlinx.serialization.Serializable
-import tv.trakt.trakt.ui.theme.colors.DarkColors
-import tv.trakt.trakt.ui.theme.colors.TraktColors
+import tv.trakt.trakt.common.ui.theme.colors.DarkColors
+import tv.trakt.trakt.common.ui.theme.colors.TraktColors
 
 @Serializable
 data class CustomTheme(

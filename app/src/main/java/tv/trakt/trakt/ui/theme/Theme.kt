@@ -6,10 +6,10 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.staticCompositionLocalOf
 import timber.log.Timber
+import tv.trakt.trakt.common.ui.theme.colors.DarkColors
+import tv.trakt.trakt.common.ui.theme.colors.TraktColors
 import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
-import tv.trakt.trakt.ui.theme.colors.DarkColors
-import tv.trakt.trakt.ui.theme.colors.TraktColors
 
 internal val LocalTraktColors = staticCompositionLocalOf { TraktColors() }
 internal val LocalTraktTypography = staticCompositionLocalOf { TraktTypography() }

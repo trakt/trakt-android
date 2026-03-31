@@ -167,7 +167,6 @@ private fun CommentDetailsContent(
 
         if (state.isLoading) {
             FilmProgressIndicator(
-                color = TraktTheme.colors.progressPrimary,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(top = 32.dp),

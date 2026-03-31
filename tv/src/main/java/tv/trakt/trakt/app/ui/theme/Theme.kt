@@ -3,8 +3,8 @@ package tv.trakt.trakt.app.ui.theme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
-import tv.trakt.trakt.app.ui.theme.colors.DarkColors
-import tv.trakt.trakt.app.ui.theme.colors.TraktColors
+import tv.trakt.trakt.common.ui.theme.colors.DarkColors
+import tv.trakt.trakt.common.ui.theme.colors.TraktColors
 
 internal val LocalTraktColors = staticCompositionLocalOf { TraktColors() }
 internal val LocalTraktTypography = staticCompositionLocalOf { TraktTypography() }

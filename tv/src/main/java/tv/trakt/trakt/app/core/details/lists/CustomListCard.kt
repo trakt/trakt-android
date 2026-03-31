@@ -49,6 +49,7 @@ import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.CustomList.Type
+import tv.trakt.trakt.common.ui.theme.colors.Purple900
 import tv.trakt.trakt.resources.R
 
 @Composable
@@ -81,7 +82,7 @@ private fun CustomListCardContent(
 ) {
     val containerColor =
         when (list.type) {
-            Type.OFFICIAL -> TraktTheme.colors.customOfficialListContainer
+            Type.OFFICIAL -> Purple900
             else -> TraktTheme.colors.customListContainer
         }
 

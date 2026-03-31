@@ -88,7 +88,7 @@ internal fun NavigationDrawerContent(
         modifier = modifier
             .fillMaxHeight()
             .background(
-                color = TraktTheme.colors.navigationBackground,
+                color = TraktTheme.colors.navigationContainer,
                 shape = RoundedCornerShape(16.dp),
             )
             .padding(top = 12.dp, bottom = 4.dp)

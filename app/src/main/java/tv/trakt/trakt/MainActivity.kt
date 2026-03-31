@@ -29,6 +29,7 @@ import timber.log.Timber
 import tv.trakt.trakt.app.TvSplashActivity
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_CUSTOM_THEME_ENABLED
 import tv.trakt.trakt.common.helpers.extensions.isTelevision
+import tv.trakt.trakt.common.ui.theme.colors.DarkColors
 import tv.trakt.trakt.core.auth.ConfigAuth.OAUTH_REDIRECT_URI
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
@@ -36,7 +37,6 @@ import tv.trakt.trakt.core.main.MainScreen
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase.CustomThemeConfig
 import tv.trakt.trakt.ui.theme.TraktTheme
-import tv.trakt.trakt.ui.theme.colors.DarkColors
 import tv.trakt.trakt.ui.theme.model.toTraktDarkColors
 
 internal val LocalBottomBarVisibility = compositionLocalOf { mutableStateOf(true) }

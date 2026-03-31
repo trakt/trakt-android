@@ -1,23 +1,9 @@
-package tv.trakt.trakt.ui.theme.colors
+package tv.trakt.trakt.common.ui.theme.colors
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
-import tv.trakt.trakt.common.ui.theme.colors.Purple100
-import tv.trakt.trakt.common.ui.theme.colors.Purple300
-import tv.trakt.trakt.common.ui.theme.colors.Purple500
-import tv.trakt.trakt.common.ui.theme.colors.Purple800
-import tv.trakt.trakt.common.ui.theme.colors.Purple900
-import tv.trakt.trakt.common.ui.theme.colors.Red500
-import tv.trakt.trakt.common.ui.theme.colors.Shade300
-import tv.trakt.trakt.common.ui.theme.colors.Shade600
-import tv.trakt.trakt.common.ui.theme.colors.Shade700
-import tv.trakt.trakt.common.ui.theme.colors.Shade800
-import tv.trakt.trakt.common.ui.theme.colors.Shade900
-import tv.trakt.trakt.common.ui.theme.colors.Shade920
-import tv.trakt.trakt.common.ui.theme.colors.Shade940
-import tv.trakt.trakt.common.ui.theme.colors.White
 
-internal val DarkColors: TraktColors = TraktColors(
+val DarkColors: TraktColors = TraktColors(
     accent = Purple500,
     backgroundPrimary = Shade940,
     textPrimary = White,
@@ -32,6 +18,8 @@ internal val DarkColors: TraktColors = TraktColors(
     navigationHeaderContainer = Shade920.copy(alpha = 0.98F),
     navigationContainer = Shade920.copy(alpha = 0.98F),
     navigationContent = White,
+    navigationItemOn = Purple400,
+    navigationItemOff = Shade300,
     inputContainer = Shade940,
     dialogContainer = Shade920,
     dialogContent = Shade800,
@@ -60,7 +48,7 @@ internal val DarkColors: TraktColors = TraktColors(
 )
 
 @Immutable
-internal data class TraktColors(
+data class TraktColors(
     val accent: Color = Color.Unspecified,
     val backgroundPrimary: Color = Color.Unspecified,
     val textPrimary: Color = Color.Unspecified,
@@ -88,6 +76,8 @@ internal data class TraktColors(
     val navigationHeaderContainer: Color = Color.Unspecified,
     val navigationContainer: Color = Color.Unspecified,
     val navigationContent: Color = Color.Unspecified,
+    val navigationItemOn: Color = Color.Unspecified,
+    val navigationItemOff: Color = Color.Unspecified,
     // Buttons
     val primaryButtonContainer: Color = Color.Unspecified,
     val primaryButtonContainerDisabled: Color = Color.Unspecified,
