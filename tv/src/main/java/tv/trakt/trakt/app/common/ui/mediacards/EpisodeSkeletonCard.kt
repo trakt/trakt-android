@@ -28,7 +28,7 @@ import androidx.tv.material3.Border
 import androidx.tv.material3.Card
 import androidx.tv.material3.CardDefaults
 import androidx.tv.material3.Text
-import tv.trakt.trakt.app.common.ui.InfoChip
+import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 
 @Composable

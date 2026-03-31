@@ -55,7 +55,7 @@ internal fun EpisodeUpcomingItemView(
                 val shadowModifier = Modifier.shadow(2.dp, RoundedCornerShape(100))
 
                 val isPremiere = remember(item.episode.number) {
-                    item.episode.number == 1
+                    item.episode.episodeType?.contains("premiere") == true
                 }
                 val isFinale = remember(item.episode.episodeType) {
                     item.episode.episodeType?.contains("finale") == true

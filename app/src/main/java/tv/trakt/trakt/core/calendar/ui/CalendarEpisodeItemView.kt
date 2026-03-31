@@ -62,7 +62,7 @@ internal fun CalendarEpisodeItemView(
                 ?: item.episode.images?.getScreenshotUrl(),
         cardContent = {
             val isPremiere = remember(item.episode.number) {
-                item.episode.number == 1
+                item.episode.episodeType?.contains("premiere") == true
             }
             val isFinale = remember(item.episode.episodeType) {
                 item.episode.episodeType?.contains("finale") == true

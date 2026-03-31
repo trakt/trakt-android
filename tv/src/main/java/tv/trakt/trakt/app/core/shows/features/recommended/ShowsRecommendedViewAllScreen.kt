@@ -31,7 +31,7 @@ import androidx.tv.material3.Text
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import tv.trakt.trakt.app.common.ui.GenericErrorView
-import tv.trakt.trakt.app.common.ui.InfoChip
+import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
@@ -41,6 +41,7 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun ShowsRecommendedScreen(
@@ -135,7 +136,7 @@ private fun ShowsRecommendedContent(
                         chipContent = {
                             InfoChip(
                                 text = stringResource(
-                                    tv.trakt.trakt.resources.R.string.tag_text_number_of_episodes,
+                                    R.string.tag_text_number_of_episodes,
                                     show.airedEpisodes,
                                 ),
                             )

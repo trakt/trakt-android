@@ -302,7 +302,7 @@ private fun ContentListItem(
     modifier: Modifier = Modifier,
 ) {
     val isPremiere = remember(item.progress.nextEpisode.number) {
-        item.progress.nextEpisode.number == 1
+        item.progress.nextEpisode.episodeType?.contains("premiere") == true
     }
     val isFinale = remember(item.progress.nextEpisode.episodeType) {
         item.progress.nextEpisode.episodeType?.contains("finale") == true

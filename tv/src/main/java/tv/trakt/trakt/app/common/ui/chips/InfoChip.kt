@@ -1,4 +1,4 @@
-package tv.trakt.trakt.app.common.ui
+package tv.trakt.trakt.app.common.ui.chips
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
