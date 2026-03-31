@@ -378,15 +378,8 @@ private fun ContentListItem(
                 Column(
                     verticalArrangement = spacedBy(3.dp),
                 ) {
-                    val isPremiere = remember(item.progress.nextEpisode.number) {
-                        item.progress.nextEpisode.episodeType?.contains("premiere") == true
-                    }
-                    val isFinale = remember(item.progress.nextEpisode.episodeType) {
-                        item.progress.nextEpisode.episodeType?.contains("finale") == true
-                    }
-
                     when {
-                        isPremiere -> PremiereChip(
+                        item.progress.nextEpisode.isPremiere() -> PremiereChip(
                             contentTextStyle = TraktTheme.typography.meta.copy(
                                 fontSize = 10.sp,
                             ),
@@ -394,7 +387,7 @@ private fun ContentListItem(
                                 .shadow(2.dp, RoundedCornerShape(100))
                                 .height(20.dp),
                         )
-                        isFinale -> FinaleChip(
+                        item.progress.nextEpisode.isFinale() -> FinaleChip(
                             contentTextStyle = TraktTheme.typography.meta.copy(
                                 fontSize = 10.sp,
                             ),

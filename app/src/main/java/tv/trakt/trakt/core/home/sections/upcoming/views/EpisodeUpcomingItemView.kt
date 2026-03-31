@@ -53,16 +53,9 @@ internal fun EpisodeUpcomingItemView(
                 verticalAlignment = CenterVertically,
             ) {
                 val shadowModifier = Modifier.shadow(2.dp, RoundedCornerShape(100))
-
-                val isPremiere = remember(item.episode.number) {
-                    item.episode.episodeType?.contains("premiere") == true
-                }
-                val isFinale = remember(item.episode.episodeType) {
-                    item.episode.episodeType?.contains("finale") == true
-                }
                 when {
-                    isPremiere -> PremiereChip(modifier = shadowModifier)
-                    isFinale -> FinaleChip(modifier = shadowModifier)
+                    item.episode.isPremiere() -> PremiereChip(modifier = shadowModifier)
+                    item.episode.isFinale() -> FinaleChip(modifier = shadowModifier)
                 }
 
                 InfoChip(

@@ -301,12 +301,8 @@ private fun ContentListItem(
     onShowClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isPremiere = remember(item.progress.nextEpisode.number) {
-        item.progress.nextEpisode.episodeType?.contains("premiere") == true
-    }
-    val isFinale = remember(item.progress.nextEpisode.episodeType) {
-        item.progress.nextEpisode.episodeType?.contains("finale") == true
-    }
+    val isPremiere = item.progress.nextEpisode.isPremiere()
+    val isFinale = item.progress.nextEpisode.isFinale()
 
     PanelMediaCard(
         title = item.show.title,

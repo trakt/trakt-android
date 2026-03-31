@@ -2,6 +2,7 @@ package tv.trakt.trakt.common.model
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
@@ -45,6 +46,16 @@ data class Episode(
             title.isNotBlank() -> "$string - $title"
             else -> string
         }
+    }
+
+    @Composable
+    fun isPremiere(): Boolean = remember(episodeType) {
+        episodeType?.contains("premiere") == true
+    }
+
+    @Composable
+    fun isFinale(): Boolean = remember(episodeType) {
+        episodeType?.contains("finale") == true
     }
 }
 

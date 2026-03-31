@@ -61,17 +61,10 @@ internal fun CalendarEpisodeItemView(
             item.show.images?.getFanartUrl()
                 ?: item.episode.images?.getScreenshotUrl(),
         cardContent = {
-            val isPremiere = remember(item.episode.number) {
-                item.episode.episodeType?.contains("premiere") == true
-            }
-            val isFinale = remember(item.episode.episodeType) {
-                item.episode.episodeType?.contains("finale") == true
-            }
-
             val shadowModifier = Modifier.shadow(2.dp, RoundedCornerShape(100))
             when {
-                isPremiere -> PremiereChip(modifier = shadowModifier)
-                isFinale -> FinaleChip(modifier = shadowModifier)
+                item.episode.isPremiere() -> PremiereChip(modifier = shadowModifier)
+                item.episode.isFinale() -> FinaleChip(modifier = shadowModifier)
             }
         },
         footerContent = {

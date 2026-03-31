@@ -29,13 +29,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle.Event.ON_CREATE
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import tv.trakt.trakt.app.common.ui.EpisodeProgressBar
 import tv.trakt.trakt.app.common.ui.GenericErrorView
+import tv.trakt.trakt.app.common.ui.chips.FinaleChip
 import tv.trakt.trakt.app.common.ui.chips.InfoChip
+import tv.trakt.trakt.app.common.ui.chips.PremiereChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_NEXT_PAGE_OFFSET
@@ -164,29 +167,49 @@ private fun UpNextViewAllContent(
                             )
                         },
                         cardContent = {
-                            Row(
-                                horizontalArrangement = spacedBy(2.dp),
+                            Column(
+                                verticalArrangement = spacedBy(3.dp),
                             ) {
-                                val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes
-                                if (runtime != null) {
-                                    InfoChip(
-                                        text = runtime.durationFormat(),
-                                        containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
+                                when {
+                                    item.progress.nextEpisode.isPremiere() -> PremiereChip(
+                                        contentTextStyle = TraktTheme.typography.meta.copy(
+                                            fontSize = 10.sp,
+                                        ),
+                                    )
+                                    item.progress.nextEpisode.isFinale() -> FinaleChip(
+                                        contentTextStyle = TraktTheme.typography.meta.copy(
+                                            fontSize = 10.sp,
+                                        ),
                                     )
                                 }
 
-                                val remainingEpisodes = remember(item.progress.completed, item.progress.aired) {
-                                    item.progress.remainingEpisodes
-                                }
-                                val remainingPercent = remember(item.progress.completed, item.progress.aired) {
-                                    item.progress.remainingPercent
-                                }
+                                Row(
+                                    horizontalArrangement = spacedBy(2.dp),
+                                ) {
+                                    val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes
+                                    if (runtime != null) {
+                                        InfoChip(
+                                            text = runtime.durationFormat(),
+                                            containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
+                                        )
+                                    }
 
-                                EpisodeProgressBar(
-                                    startText = stringResource(R.string.tag_text_remaining_episodes, remainingEpisodes),
-                                    containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
-                                    progress = remainingPercent,
-                                )
+                                    val remainingEpisodes = remember(item.progress.completed, item.progress.aired) {
+                                        item.progress.remainingEpisodes
+                                    }
+                                    val remainingPercent = remember(item.progress.completed, item.progress.aired) {
+                                        item.progress.remainingPercent
+                                    }
+
+                                    EpisodeProgressBar(
+                                        startText = stringResource(
+                                            R.string.tag_text_remaining_episodes,
+                                            remainingEpisodes,
+                                        ),
+                                        containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
+                                        progress = remainingPercent,
+                                    )
+                                }
                             }
                         },
                         footerContent = {

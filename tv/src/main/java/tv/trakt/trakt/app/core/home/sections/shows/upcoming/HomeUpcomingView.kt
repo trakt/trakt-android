@@ -22,7 +22,9 @@ import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
+import tv.trakt.trakt.app.common.ui.chips.FinaleChip
 import tv.trakt.trakt.app.common.ui.chips.InfoChip
+import tv.trakt.trakt.app.common.ui.chips.PremiereChip
 import tv.trakt.trakt.app.common.ui.mediacards.EpisodeSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
@@ -187,11 +189,22 @@ private fun ContentListItem(
             val dateString = remember(item.releaseAt) {
                 item.releaseAt?.toLocal()?.relativeDateTimeString()
             }
-            InfoChip(
-                text = dateString ?: "TBA",
-                iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
-                containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
-            )
+            Column(
+                verticalArrangement = spacedBy(2.dp),
+            ) {
+                if (item is HomeUpcomingItem.EpisodeItem) {
+                    when {
+                        item.episode.isPremiere() -> PremiereChip()
+                        item.episode.isFinale() -> FinaleChip()
+                    }
+                }
+
+                InfoChip(
+                    text = dateString ?: "TBA",
+                    iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
+                    containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
+                )
+            }
         },
         footerContent = {
             Column(

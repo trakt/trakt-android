@@ -213,9 +213,9 @@ private fun NavigationDrawerItems(
                     painter = painterResource(if (isSelected) drawerItem.iconOn else drawerItem.iconOff),
                     contentDescription = null,
                     tint = if (isSelected) {
-                        TraktTheme.colors.navigationItemOn
+                        TraktTheme.colors.navigationContentOn
                     } else {
-                        TraktTheme.colors.navigationItemOff
+                        TraktTheme.colors.navigationContentOff
                     },
                     modifier = Modifier
                         .requiredSize(24.dp)
@@ -227,9 +227,9 @@ private fun NavigationDrawerItems(
                         text = stringResource(drawerItem.label).uppercase(),
                         style = TraktTheme.typography.navigationLabel,
                         color = if (isSelected) {
-                            TraktTheme.colors.navigationItemOn
+                            TraktTheme.colors.navigationContentOn
                         } else {
-                            TraktTheme.colors.navigationItemOff
+                            TraktTheme.colors.navigationContentOff
                         },
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -352,7 +352,7 @@ private fun NavigationProfileItem(
                     Text(
                         text = profileText.uppercase(),
                         style = profileTextSize,
-                        color = TraktTheme.colors.navigationItemOff,
+                        color = TraktTheme.colors.navigationContentOff,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         textAlign = TextAlign.Start,
