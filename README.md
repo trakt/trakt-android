@@ -5,9 +5,10 @@
 </div>
 
 <p align="center">
-  <a href="https://github.com/trakt/trakt-android/stargazers"><img src="https://img.shields.io/github/stars/trakt/trakt-android?style=flat" alt="Stars"></a>
   <a href="https://github.com/trakt/trakt-android/releases"><img src="https://img.shields.io/github/v/tag/trakt/trakt-android?label=version&style=flat" alt="Version"></a>
   <a href="https://github.com/trakt/trakt-android/commits"><img src="https://img.shields.io/github/commit-activity/m/trakt/trakt-android?style=flat" alt="Commits"></a>
+  <a href="https://github.com/trakt/trakt-android/stargazers"><img src="https://img.shields.io/github/stars/trakt/trakt-android?style=flat" alt="Stars"></a>
+  <a href="https://github.com/trakt/trakt-android/stargazers"><img src="https://img.shields.io/github/actions/workflow/status/trakt/trakt-android/master.yml?branch=main" alt="Build"></a>
 </p>
 
 <br>
