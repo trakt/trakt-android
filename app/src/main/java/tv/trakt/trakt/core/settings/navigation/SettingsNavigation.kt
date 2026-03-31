@@ -13,7 +13,6 @@ internal data object SettingsDestination
 internal fun NavGraphBuilder.settingsScreen(
     onNavigateHome: () -> Unit,
     onNavigateYounify: () -> Unit,
-    onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     composable<SettingsDestination> {
@@ -21,7 +20,6 @@ internal fun NavGraphBuilder.settingsScreen(
             viewModel = koinViewModel(),
             onNavigateHome = onNavigateHome,
             onNavigateYounify = onNavigateYounify,
-            onNavigateVip = onNavigateVip,
             onNavigateBack = onNavigateBack,
         )
     }

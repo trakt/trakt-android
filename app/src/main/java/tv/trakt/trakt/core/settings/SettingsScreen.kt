@@ -84,7 +84,6 @@ internal fun SettingsScreen(
     viewModel: SettingsViewModel,
     onNavigateHome: () -> Unit,
     onNavigateYounify: () -> Unit,
-    onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
@@ -108,7 +107,9 @@ internal fun SettingsScreen(
         onEnableNotifications = viewModel::enableNotifications,
         onSetDeliveryTime = viewModel::setNotificationDeliveryTime,
         onYounifyClick = onNavigateYounify,
-        onVipClick = onNavigateVip,
+        onGithubClick = {
+            uriHandler.openUri(Config.WEB_SOCIAL_GITHUB_URL)
+        },
         onInstagramClick = {
             uriHandler.openUri(Config.WEB_SOCIAL_INSTAGRAM_URL)
         },
@@ -152,7 +153,7 @@ private fun SettingsScreenContent(
     onEnableNotifications: (Boolean) -> Unit = { },
     onSetDeliveryTime: (DeliveryAdjustment) -> Unit = { },
     onLogoutClick: () -> Unit = { },
-    onVipClick: () -> Unit = { },
+    onGithubClick: () -> Unit = { },
     onInstagramClick: () -> Unit = { },
     onTwitterClick: () -> Unit = { },
     onSubscriptionsClick: () -> Unit = { },
@@ -193,6 +194,7 @@ private fun SettingsScreenContent(
                 .padding(contentPadding),
         ) {
             TitleBar(
+                onGithubClick = onGithubClick,
                 onInstagramClick = onInstagramClick,
                 onTwitterClick = onTwitterClick,
                 modifier = Modifier
@@ -244,7 +246,8 @@ private fun SettingsScreenContent(
 @Composable
 private fun TitleBar(
     modifier: Modifier = Modifier,
-    onInstagramClick: () -> Unit = { },
+    onGithubClick: () -> Unit = {},
+    onInstagramClick: () -> Unit = {},
     onTwitterClick: () -> Unit = {},
 ) {
     Row(
@@ -276,6 +279,16 @@ private fun TitleBar(
             verticalAlignment = CenterVertically,
             horizontalArrangement = spacedBy(14.dp),
         ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_github),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .padding(end = 4.dp)
+                    .size(22.dp)
+                    .onClick(onClick = onGithubClick),
+            )
+
             Icon(
                 painter = painterResource(R.drawable.ic_instagram),
                 contentDescription = null,
@@ -469,7 +482,6 @@ private fun SettingsStreaming(
             enabled = !state.logoutLoading.isLoading,
             vipLocked = false,
             onClick = onAutomaticTrackingClick,
-            onVipClick = { },
         )
     }
 }

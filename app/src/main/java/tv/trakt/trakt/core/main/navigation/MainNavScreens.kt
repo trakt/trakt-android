@@ -398,7 +398,6 @@ internal fun NavGraphBuilder.settingsScreens(controller: NavHostController) {
         settingsScreen(
             onNavigateHome = { navigateToHome() },
             onNavigateYounify = { navigateToYounify() },
-            onNavigateVip = { navigateToBilling() },
             onNavigateBack = { popBackStack() },
         )
 
