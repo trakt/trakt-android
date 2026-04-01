@@ -9,6 +9,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalList
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalWatchlistResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3TriviaResponse
 
 class V3Api(
     private val baseUrl: String,
@@ -29,6 +30,8 @@ class V3Api(
         return shows to movies
     }
 
+    // Lists Management
+
     suspend fun getListsMinimal(): List<V3MinimalList> {
         val response = client.get("${baseUrl}users/me/lists")
         return response.body()
@@ -42,5 +45,17 @@ class V3Api(
     suspend fun getShowMeLists(showId: TraktId): List<Int> {
         val response = client.get("${baseUrl}shows/${showId.value}/me/lists")
         return response.body<List<Int>>()
+    }
+
+    // Trivia
+
+    suspend fun getShowTrivia(showId: TraktId): V3TriviaResponse {
+        val response = client.get("${baseUrl}media/show/${showId.value}/info/5/version/1")
+        return response.body<V3TriviaResponse>()
+    }
+
+    suspend fun getMovieTrivia(movieId: TraktId): V3TriviaResponse {
+        val response = client.get("${baseUrl}media/movie/${movieId.value}/info/5/version/1")
+        return response.body<V3TriviaResponse>()
     }
 }
