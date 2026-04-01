@@ -28,6 +28,8 @@ import tv.trakt.trakt.core.summary.movies.features.sentiment.MovieSentimentViewM
 import tv.trakt.trakt.core.summary.movies.features.sentiment.usecases.GetMovieSentimentUseCase
 import tv.trakt.trakt.core.summary.movies.features.streaming.MovieStreamingsViewModel
 import tv.trakt.trakt.core.summary.movies.features.streaming.usecases.GetMovieStreamingsUseCase
+import tv.trakt.trakt.core.summary.movies.features.trivia.MovieTriviaViewModel
+import tv.trakt.trakt.core.summary.movies.features.trivia.usecases.GetMovieTriviaUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieStreamingUseCase
@@ -131,6 +133,12 @@ internal val movieDetailsModule = module {
         )
     }
 
+    factory {
+        GetMovieTriviaUseCase(
+            v3Api = get(),
+        )
+    }
+
     viewModel {
         MovieDetailsViewModel(
             appContext = androidApplication(),
@@ -220,6 +228,15 @@ internal val movieDetailsModule = module {
             movie = movie,
             getSentimentUseCase = get(),
             collapsingManager = get(),
+        )
+    }
+
+    viewModel { (movie: Movie) ->
+        MovieTriviaViewModel(
+            movie = movie,
+            getTriviaUseCase = get(),
+            collapsingManager = get(),
+            sessionManager = get(),
         )
     }
 
