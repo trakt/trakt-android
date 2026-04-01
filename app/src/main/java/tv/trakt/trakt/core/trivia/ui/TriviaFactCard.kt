@@ -46,7 +46,7 @@ internal fun TriviaFactCard(
                 Text(
                     text = stringResource(R.string.text_spoiler),
                     color = Red500,
-                    style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.4.em),
+                    style = TraktTheme.typography.meta.copy(lineHeight = 1.4.em),
                 )
             }
 
@@ -102,6 +102,7 @@ private fun PreviewSpoiler() {
                 order = 2,
                 spoiler = true,
             ),
+            spoilerVisible = true,
             modifier = Modifier.padding(16.dp),
         )
     }

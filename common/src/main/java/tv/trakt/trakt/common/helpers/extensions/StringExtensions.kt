@@ -152,9 +152,11 @@ fun customAnnotatedString(
 /**
  * Replaces **bold** with <b>bold</b> in the string, converting custom markdown to HTML-like tags.
  * Replaces *text* with <i>text</i> for italics, and __text__ with <u>text</u> for underline.
+ * Replaces bullet list items (lines starting with - or *) with • prefixed lines.
  */
 fun String.replaceMarkdown(): String {
     return this.replace("\\*\\*(.*?)\\*\\*".toRegex(), "<b>$1</b>")
         .replace("\\*(.*?)\\*".toRegex(), "<i>$1</i>")
         .replace("__(.*?)__".toRegex(), "<u>$1</u>")
+        .replace("^[ \\t]*[-*][ \\t]+(.*)".toRegex(RegexOption.MULTILINE), "<br><br>- $1")
 }
