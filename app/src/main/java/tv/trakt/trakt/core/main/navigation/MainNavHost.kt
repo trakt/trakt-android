@@ -41,6 +41,7 @@ internal fun MainNavHost(
         listsScreens(navController)
         profileScreens(navController)
         commentsScreens(navController)
+        triviaScreens(navController)
         peopleScreens(navController)
         searchScreens(
             controller = navController,

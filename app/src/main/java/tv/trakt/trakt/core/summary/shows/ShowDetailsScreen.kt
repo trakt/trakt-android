@@ -117,6 +117,7 @@ internal fun ShowDetailsScreen(
     onCommentsClick: ((Show, CommentsFilter) -> Unit),
     onListClick: ((Show, CustomList) -> Unit),
     onPersonClick: ((Show, Person) -> Unit),
+    onTriviaClick: ((Show) -> Unit)? = null,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -203,6 +204,11 @@ internal fun ShowDetailsScreen(
             )
         },
         onVipClick = onNavigateVip,
+        onTriviaClick = {
+            state.show?.let { show ->
+                onTriviaClick?.invoke(show)
+            }
+        },
         onBackClick = onNavigateBack,
         onMetaCollapse = viewModel::setMetaCollapsed,
     )
@@ -361,6 +367,7 @@ internal fun ShowDetailsContent(
     onRatingRemoveClick: (() -> Unit)? = null,
     onFavoriteClick: (() -> Unit)? = null,
     onVipClick: (() -> Unit)? = null,
+    onTriviaClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
     onMetaCollapse: ((Boolean) -> Unit)? = null,
 ) {
@@ -672,6 +679,7 @@ internal fun ShowDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onVipClick = onVipClick ?: {},
+                            onTriviaClick = onTriviaClick ?: {},
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),

@@ -107,6 +107,7 @@ internal fun MovieDetailsScreen(
     onCommentsClick: ((Movie, CommentsFilter) -> Unit),
     onListClick: ((Movie, CustomList) -> Unit),
     onPersonClick: ((Movie, Person) -> Unit),
+    onTriviaClick: ((Movie) -> Unit)? = null,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -177,6 +178,11 @@ internal fun MovieDetailsScreen(
             )
         },
         onVipClick = onNavigateVip,
+        onTriviaClick = {
+            state.movie?.let { movie ->
+                onTriviaClick?.invoke(movie)
+            }
+        },
         onBackClick = onNavigateBack,
         onMetaCollapseClick = viewModel::setMetaCollapsed,
     )
@@ -305,6 +311,7 @@ internal fun MovieDetailsContent(
     onRatingRemoveClick: (() -> Unit)? = null,
     onFavoriteClick: (() -> Unit)? = null,
     onVipClick: (() -> Unit)? = null,
+    onTriviaClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
     onMetaCollapseClick: ((Boolean) -> Unit)? = null,
 ) {
@@ -596,6 +603,7 @@ internal fun MovieDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onVipClick = onVipClick ?: {},
+                            onTriviaClick = onTriviaClick ?: {},
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),

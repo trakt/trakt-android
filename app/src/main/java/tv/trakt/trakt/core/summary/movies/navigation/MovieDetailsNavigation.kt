@@ -22,6 +22,7 @@ internal fun NavGraphBuilder.movieDetailsScreen(
     onNavigateToComments: (Movie, CommentsFilter) -> Unit,
     onNavigateToPerson: (Movie, Person) -> Unit,
     onNavigateToList: (Movie, CustomList) -> Unit,
+    onNavigateToTrivia: (Movie) -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -34,6 +35,7 @@ internal fun NavGraphBuilder.movieDetailsScreen(
             },
             onListClick = { movie, list -> onNavigateToList(movie, list) },
             onPersonClick = { movie, person -> onNavigateToPerson(movie, person) },
+            onTriviaClick = { movie -> onNavigateToTrivia(movie) },
             onNavigateVip = onNavigateVip,
             onNavigateBack = onNavigateBack,
         )

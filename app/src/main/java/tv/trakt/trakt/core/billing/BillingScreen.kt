@@ -383,6 +383,15 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
                 iconPadding = 2.dp,
             )
 
+            val trivia1 = stringResource(R.string.text_vip_trivia_upsell_1)
+            val trivia2 = stringResource(R.string.text_vip_trivia_upsell_2)
+            VipOfferItem(
+                text = stringResource(R.string.list_title_trivia),
+                description = "$trivia1 $trivia2",
+                icon = painterResource(R.drawable.ic_trivia),
+                iconPadding = 2.dp,
+            )
+
             VipOfferItem(
                 text = stringResource(R.string.vip_feature_title_yir),
                 description = stringResource(R.string.vip_feature_description_yir, nowUtc().year),

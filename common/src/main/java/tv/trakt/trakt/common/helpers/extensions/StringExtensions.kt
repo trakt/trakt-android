@@ -148,3 +148,20 @@ fun customAnnotatedString(
         append(string.substring(lastIndex))
     }
 }
+
+/**
+ * Removes custom markdown (e.g., **bold**) from the string, leaving only the plain text.
+ */
+fun String.removeMarkdown(): String {
+    return this.replace("\\*\\*(.*?)\\*\\*".toRegex(), "$1")
+}
+
+/**
+ * Replaces **bold** with <b>bold</b> in the string, converting custom markdown to HTML-like tags.
+ * Replaces *text* with <i>text</i> for italics, and __text__ with <u>text</u> for underline.
+ */
+fun String.replaceMarkdown(): String {
+    return this.replace("\\*\\*(.*?)\\*\\*".toRegex(), "<b>$1</b>")
+        .replace("\\*(.*?)\\*".toRegex(), "<i>$1</i>")
+        .replace("__(.*?)__".toRegex(), "<u>$1</u>")
+}

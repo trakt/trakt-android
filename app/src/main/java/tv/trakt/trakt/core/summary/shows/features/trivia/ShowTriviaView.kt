@@ -35,6 +35,7 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.core.summary.ui.views.DetailsTrivia
 import tv.trakt.trakt.core.summary.ui.views.DetailsTriviaSkeleton
 import tv.trakt.trakt.resources.R
@@ -47,6 +48,7 @@ internal fun ShowTriviaView(
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     onVipClick: () -> Unit,
+    onTriviaClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -61,6 +63,7 @@ internal fun ShowTriviaView(
             onCollapse = viewModel::setCollapsed,
             onNotAvailable = { visible = false },
             onVipClick = onVipClick,
+            onTriviaClick = onTriviaClick,
         )
     }
 }
@@ -73,6 +76,7 @@ private fun ShowTriviaContent(
     contentPadding: PaddingValues = PaddingValues(),
     onCollapse: (collapsed: Boolean) -> Unit = {},
     onVipClick: () -> Unit = {},
+    onTriviaClick: () -> Unit = {},
     onNotAvailable: (() -> Unit)? = null,
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
@@ -95,7 +99,12 @@ private fun ShowTriviaContent(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(headerPadding),
+                .padding(headerPadding)
+                .onClick {
+                    if (state.user?.isAnyVip == true) {
+                        onTriviaClick()
+                    }
+                },
         )
 
         if (state.collapsed != true) {
@@ -117,7 +126,13 @@ private fun ShowTriviaContent(
                                 items = state.summary,
                                 vip = state.user?.isAnyVip == true,
                                 onVipClick = onVipClick,
-                                modifier = Modifier.padding(contentPadding),
+                                modifier = Modifier
+                                    .padding(contentPadding)
+                                    .onClick {
+                                        if (state.user?.isAnyVip == true) {
+                                            onTriviaClick()
+                                        }
+                                    },
                             )
                         }
                     }

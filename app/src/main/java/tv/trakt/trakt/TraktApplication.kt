@@ -71,6 +71,7 @@ import tv.trakt.trakt.core.summary.people.di.personDetailsModule
 import tv.trakt.trakt.core.summary.shows.di.showDetailsDataModule
 import tv.trakt.trakt.core.summary.shows.di.showDetailsModule
 import tv.trakt.trakt.core.sync.di.syncModule
+import tv.trakt.trakt.core.trivia.di.triviaModule
 import java.util.concurrent.TimeUnit.MINUTES
 
 internal class TraktApplication : Application() {
@@ -155,6 +156,7 @@ internal class TraktApplication : Application() {
                 streamingsDataModule,
                 commentsDataModule,
                 commentsModule,
+                triviaModule,
                 listsModule,
                 listsDataModule,
                 reactionsDataModule,

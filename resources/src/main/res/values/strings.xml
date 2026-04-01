@@ -363,6 +363,8 @@
   <string name="text_tag_finale">Finale</string>
   <string name="list_title_trivia">Trivia</string>
   <string name="trivia_spoiler_reveal">Spoiler — tap to reveal</string>
+  <string name="text_trivia_filter_no_spoilers">No Spoilers</string>
+  <string name="text_trivia_filter_spoilers">Spoilers</string>
 
   <string name="text_vip_trivia_upsell_1">Dive Deeper!</string>
   <string name="text_vip_trivia_upsell_2">Get more trivia and insights about shows and movies you watch.</string>

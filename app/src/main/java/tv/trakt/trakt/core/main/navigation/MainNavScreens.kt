@@ -57,6 +57,8 @@ import tv.trakt.trakt.core.summary.people.navigation.navigateToPerson
 import tv.trakt.trakt.core.summary.people.navigation.personDetailsScreen
 import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
 import tv.trakt.trakt.core.summary.shows.navigation.showDetailsScreen
+import tv.trakt.trakt.core.trivia.navigation.navigateToTrivia
+import tv.trakt.trakt.core.trivia.navigation.triviaScreen
 
 internal fun NavGraphBuilder.homeScreens(
     controller: NavHostController,
@@ -176,6 +178,13 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
                     backdropUrl = show.images?.getFanartUrl(Size.THUMB),
                 )
             },
+            onNavigateToTrivia = { show ->
+                navigateToTrivia(
+                    mediaId = show.ids.trakt,
+                    mediaType = SHOW,
+                    mediaImage = show.images?.getFanartUrl(),
+                )
+            },
             onNavigateVip = { navigateToBilling() },
             onNavigateBack = { popBackStack() },
         )
@@ -238,6 +247,13 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
                     personId = person.ids.trakt,
                     sourceMediaId = movie.ids.trakt,
                     backdropUrl = movie.images?.getFanartUrl(Size.THUMB),
+                )
+            },
+            onNavigateToTrivia = { movie ->
+                navigateToTrivia(
+                    mediaId = movie.ids.trakt,
+                    mediaType = MOVIE,
+                    mediaImage = movie.images?.getFanartUrl(),
                 )
             },
             onNavigateVip = { navigateToBilling() },
@@ -388,6 +404,14 @@ internal fun NavGraphBuilder.peopleScreens(controller: NavHostController) {
 internal fun NavGraphBuilder.commentsScreens(controller: NavHostController) {
     with(controller) {
         commentsScreen(
+            onNavigateBack = { popBackStack() },
+        )
+    }
+}
+
+internal fun NavGraphBuilder.triviaScreens(controller: NavHostController) {
+    with(controller) {
+        triviaScreen(
             onNavigateBack = { popBackStack() },
         )
     }

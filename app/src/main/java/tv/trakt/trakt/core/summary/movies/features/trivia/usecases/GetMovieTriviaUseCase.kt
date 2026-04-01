@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.summary.movies.features.trivia.usecases
 
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.helpers.extensions.replaceMarkdown
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.trivia.Trivia
 import tv.trakt.trakt.common.model.trivia.TriviaFact
@@ -26,7 +27,7 @@ internal class GetMovieTriviaUseCase(
                     TriviaFact(
                         id = it.id,
                         category = it.category,
-                        text = it.text,
+                        text = it.text.replaceMarkdown(),
                         order = it.order,
                         spoiler = it.spoiler,
                     )
