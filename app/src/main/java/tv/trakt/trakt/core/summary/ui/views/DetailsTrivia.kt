@@ -134,9 +134,9 @@ private fun GetVipView(onVipClick: () -> Unit) {
                 color = TraktTheme.colors.textPrimary.copy(alpha = 0.1F),
                 shape = RoundedCornerShape(18.dp),
             )
+            .onClick(onClick = onVipClick)
             .padding(start = 16.dp, end = 14.dp)
-            .padding(vertical = 12.dp)
-            .onClick(onClick = onVipClick),
+            .padding(vertical = 12.dp),
     ) {
         Column(
             verticalArrangement = spacedBy(3.dp),
@@ -160,6 +160,7 @@ private fun GetVipView(onVipClick: () -> Unit) {
 
         VipChip(
             text = stringResource(R.string.badge_text_get_vip),
+            onClick = onVipClick,
         )
     }
 }
