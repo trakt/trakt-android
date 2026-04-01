@@ -21,6 +21,7 @@ internal class GetMovieTriviaUseCase(
         return Trivia(
             summary = summary
                 .take(SUMMARY_LIMIT)
+                .map { it.replaceMarkdown() }
                 .toImmutableList(),
             facts = items
                 .map {
