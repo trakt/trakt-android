@@ -85,6 +85,7 @@ internal enum class CollapsingKey(
     SHOW_RELATED("key_show_related"),
     SHOW_LISTS("key_show_lists"),
     SHOW_HISTORY("key_show_history"),
+    SHOW_TRIVIA("key_show_trivia"),
     SHOW_META("key_show_meta"),
 
     // Profile Screen

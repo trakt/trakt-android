@@ -30,6 +30,8 @@ import tv.trakt.trakt.core.summary.shows.features.sentiment.ShowSentimentViewMod
 import tv.trakt.trakt.core.summary.shows.features.sentiment.usecases.GetShowSentimentUseCase
 import tv.trakt.trakt.core.summary.shows.features.streaming.ShowStreamingsViewModel
 import tv.trakt.trakt.core.summary.shows.features.streaming.usecases.GetShowStreamingsUseCase
+import tv.trakt.trakt.core.summary.shows.features.trivia.ShowTriviaViewModel
+import tv.trakt.trakt.core.summary.shows.features.trivia.usecases.GetShowTriviaUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowRatingsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowStreamingUseCase
@@ -138,6 +140,12 @@ internal val showDetailsModule = module {
     factory {
         GetShowHistoryUseCase(
             remoteSource = get(),
+        )
+    }
+
+    factory {
+        GetShowTriviaUseCase(
+            v3Api = get(),
         )
     }
 
@@ -277,6 +285,15 @@ internal val showDetailsModule = module {
             showDetailsUpdates = get(),
             episodeDetailsUpdates = get(),
             collapsingManager = get<CollapsingManager>(),
+        )
+    }
+
+    viewModel { (show: Show) ->
+        ShowTriviaViewModel(
+            show = show,
+            getTriviaUseCase = get(),
+            collapsingManager = get(),
+            sessionManager = get(),
         )
     }
 }

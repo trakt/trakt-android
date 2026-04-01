@@ -91,6 +91,7 @@ import tv.trakt.trakt.core.summary.shows.features.related.ShowRelatedView
 import tv.trakt.trakt.core.summary.shows.features.seasons.ShowSeasonsView
 import tv.trakt.trakt.core.summary.shows.features.sentiment.ShowSentimentView
 import tv.trakt.trakt.core.summary.shows.features.streaming.ShowStreamingsView
+import tv.trakt.trakt.core.summary.shows.features.trivia.ShowTriviaView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
@@ -661,6 +662,20 @@ internal fun ShowDetailsContent(
                                     .padding(top = 32.dp),
                             )
                         }
+                    }
+
+                    item {
+                        ShowTriviaView(
+                            viewModel = koinViewModel(
+                                parameters = { parametersOf(show) },
+                            ),
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            onVipClick = onVipClick ?: {},
+                            modifier = Modifier
+                                .alpha(ratingAlphaMask)
+                                .padding(top = 32.dp),
+                        )
                     }
 
                     item {
