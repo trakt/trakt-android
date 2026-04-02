@@ -11,7 +11,8 @@
       "mcp__mobile-mcp__mobile_list_elements_on_screen",
       "Bash(git log:*)",
       "Bash(find /Users/michal/Documents/Dev/Android/trakt/trakt-android-2025/app/src/main/java/tv/trakt/trakt/core/summary/movies/features/trivia -type f -name *.kt -o -name *.xml)",
-      "Bash(grep -r TriviaMovieSummaryElement /Users/michal/Documents/Android/trakt/trakt-android-2025 --include=*.kt)"
+      "Bash(grep -r TriviaMovieSummaryElement /Users/michal/Documents/Android/trakt/trakt-android-2025 --include=*.kt)",
+      "Bash(python3:*)"
     ]
   }
 }

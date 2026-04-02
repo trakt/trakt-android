@@ -338,6 +338,11 @@
   <string name="text_vip_trivia_upsell_1">Dive Deeper!</string>
   <string name="text_vip_trivia_upsell_2">Get more trivia and insights about shows and movies you watch.</string>
 
+  <string name="list_placeholder_history_empty">You haven\'t watched \"%s\" yet.</string>
+  <string name="text_stats_plays">Plays</string>
+  <string name="text_stats_watchers">Watchers</string>
+  <string name="text_stats_lists">Lists</string>
+  <string name="text_stats_favorites">Favorites</string>
 
   <!-- Non Translatable -->
 

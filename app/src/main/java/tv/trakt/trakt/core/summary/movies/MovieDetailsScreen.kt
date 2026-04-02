@@ -6,14 +6,11 @@ import android.content.Context
 import android.content.Intent
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.snap
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -53,7 +50,6 @@ import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -79,6 +75,7 @@ import tv.trakt.trakt.core.summary.movies.features.context.lists.MovieDetailsLis
 import tv.trakt.trakt.core.summary.movies.features.context.more.MovieDetailsContextSheet
 import tv.trakt.trakt.core.summary.movies.features.extras.MovieExtrasView
 import tv.trakt.trakt.core.summary.movies.features.history.MovieHistoryView
+import tv.trakt.trakt.core.summary.movies.features.info.MovieInfoSheet
 import tv.trakt.trakt.core.summary.movies.features.lists.MovieListsView
 import tv.trakt.trakt.core.summary.movies.features.related.MovieRelatedView
 import tv.trakt.trakt.core.summary.movies.features.sentiment.MovieSentimentView
@@ -86,15 +83,12 @@ import tv.trakt.trakt.core.summary.movies.features.streaming.MovieStreamingsView
 import tv.trakt.trakt.core.summary.movies.features.trivia.MovieTriviaView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
-import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.vip.VipBanner
-import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -119,6 +113,7 @@ internal fun MovieDetailsScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val scope = rememberCoroutineScope()
+    var detailsSheet by remember { mutableStateOf<Movie?>(null) }
     var contextSheet by remember { mutableStateOf<Movie?>(null) }
     var listsSheet by remember { mutableStateOf<Movie?>(null) }
     var historySheet by remember { mutableStateOf<HomeActivityItem.MovieItem?>(null) }
@@ -130,6 +125,11 @@ internal fun MovieDetailsScreen(
         state = state,
         modifier = modifier,
         onMovieClick = onMovieClick,
+        onInfoClick = {
+            state.movie?.let {
+                detailsSheet = it
+            }
+        },
         onPersonClick = {
             state.movie?.let { movie ->
                 onPersonClick(movie, it)
@@ -184,7 +184,13 @@ internal fun MovieDetailsScreen(
             }
         },
         onBackClick = onNavigateBack,
-        onMetaCollapseClick = viewModel::setMetaCollapsed,
+    )
+
+    MovieInfoSheet(
+        movie = detailsSheet,
+        onDismiss = {
+            detailsSheet = null
+        },
     )
 
     RemoveConfirmationSheet(
@@ -299,6 +305,7 @@ internal fun MovieDetailsContent(
     onMovieClick: ((Movie) -> Unit)? = null,
     onTrackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
+    onInfoClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
     onWatchlistClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
@@ -313,7 +320,6 @@ internal fun MovieDetailsContent(
     onVipClick: (() -> Unit)? = null,
     onTriviaClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
-    onMetaCollapseClick: ((Boolean) -> Unit)? = null,
 ) {
     val previewMode = LocalInspectionMode.current
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
@@ -392,6 +398,7 @@ internal fun MovieDetailsContent(
                         onCreatorClick = onPersonClick ?: {},
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},
+                        onInfoClick = onInfoClick ?: {},
                         modifier = Modifier
                             .align(Alignment.Center)
                             .alpha(ratingAlphaMask),
@@ -609,20 +616,6 @@ internal fun MovieDetailsContent(
                                 .padding(top = 32.dp),
                         )
                     }
-
-                    item {
-                        DetailsMeta(
-                            movie = movie,
-                            movieStudios = state.movieStudios,
-                            collapsed = state.metaCollapsed ?: false,
-                            onCollapseClick = onMetaCollapseClick ?: {},
-                            modifier = Modifier
-                                .alpha(ratingAlphaMask)
-                                .fillMaxWidth()
-                                .padding(top = 32.dp)
-                                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
-                        )
-                    }
                 }
             }
         }
@@ -690,50 +683,6 @@ fun DetailsRating(
                 modifier = Modifier.padding(
                     horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
                 ),
-            )
-        }
-    }
-}
-
-@Composable
-private fun DetailsMeta(
-    modifier: Modifier = Modifier,
-    movie: Movie,
-    movieStudios: ImmutableList<String>?,
-    collapsed: Boolean = false,
-    onCollapseClick: (Boolean) -> Unit = {},
-) {
-    val windowClass = currentWindowAdaptiveInfo().windowSizeClass
-    var animateCollapse by rememberSaveable { mutableStateOf(false) }
-
-    Column(
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = spacedBy(14.dp),
-        modifier = modifier
-            .animateContentSize(animationSpec = if (animateCollapse) spring() else snap()),
-    ) {
-        TraktSectionHeader(
-            title = stringResource(R.string.header_details),
-            chevron = false,
-            collapsed = collapsed,
-            onCollapseClick = {
-                animateCollapse = true
-                onCollapseClick(!collapsed)
-            },
-        )
-
-        if (!collapsed) {
-            DetailsMetaInfo(
-                movie = movie,
-                movieStudios = movieStudios,
-                modifier = Modifier
-                    .fillMaxWidth(
-                        when {
-                            windowClass.isAtLeastLarge() -> 0.4F
-                            windowClass.isAtLeastMedium() -> 0.66F
-                            else -> 1F
-                        },
-                    ),
             )
         }
     }

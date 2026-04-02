@@ -12,6 +12,7 @@ import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.MovieDto
+import tv.trakt.trakt.common.networking.MovieStatsDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.core.movies.data.remote.model.AnticipatedMovieDto
@@ -166,6 +167,14 @@ internal class MoviesApiClient(
         )
 
         return response.body().map { it.name }
+    }
+
+    override suspend fun getStats(movieId: TraktId): MovieStatsDto {
+        val response = moviesApi.getMoviesStats(
+            id = movieId.value.toString(),
+        )
+
+        return response.body()
     }
 
     override suspend fun getStreamings(

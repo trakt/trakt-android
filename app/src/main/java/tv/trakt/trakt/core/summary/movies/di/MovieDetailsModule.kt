@@ -20,6 +20,9 @@ import tv.trakt.trakt.core.summary.movies.features.extras.MovieExtrasViewModel
 import tv.trakt.trakt.core.summary.movies.features.extras.usecases.GetMovieExtrasUseCase
 import tv.trakt.trakt.core.summary.movies.features.history.MovieHistoryViewModel
 import tv.trakt.trakt.core.summary.movies.features.history.usecases.GetMovieHistoryUseCase
+import tv.trakt.trakt.core.summary.movies.features.info.MovieInfoViewModel
+import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieStatsUseCase
+import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieStudiosUseCase
 import tv.trakt.trakt.core.summary.movies.features.lists.MovieListsViewModel
 import tv.trakt.trakt.core.summary.movies.features.lists.usecases.GetMovieListsUseCase
 import tv.trakt.trakt.core.summary.movies.features.related.MovieRelatedViewModel
@@ -33,7 +36,6 @@ import tv.trakt.trakt.core.summary.movies.features.trivia.usecases.GetMovieTrivi
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieStreamingUseCase
-import tv.trakt.trakt.core.summary.movies.usecases.GetMovieStudiosUseCase
 
 internal val movieDetailsDataModule = module {
     single<MovieLocalDataSource> {
@@ -61,6 +63,12 @@ internal val movieDetailsModule = module {
 
     factory {
         GetMovieStudiosUseCase(
+            remoteSource = get(),
+        )
+    }
+
+    factory {
+        GetMovieStatsUseCase(
             remoteSource = get(),
         )
     }
@@ -145,7 +153,6 @@ internal val movieDetailsModule = module {
             savedStateHandle = get(),
             getDetailsUseCase = get(),
             getExternalRatingsUseCase = get(),
-            getMovieStudiosUseCase = get(),
             getMovieDirectorUseCase = get(),
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
@@ -168,7 +175,14 @@ internal val movieDetailsModule = module {
             sessionManager = get(),
             checkInManager = get(),
             analytics = get(),
-            collapsingManager = get(),
+        )
+    }
+
+    viewModel { (movie: Movie) ->
+        MovieInfoViewModel(
+            movie = movie,
+            getStatsUseCase = get(),
+            getStudiosUseCase = get(),
         )
     }
 

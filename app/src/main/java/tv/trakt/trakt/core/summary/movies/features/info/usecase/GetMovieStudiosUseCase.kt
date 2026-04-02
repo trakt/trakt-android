@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.summary.movies.usecases
+package tv.trakt.trakt.core.summary.movies.features.info.usecase
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList

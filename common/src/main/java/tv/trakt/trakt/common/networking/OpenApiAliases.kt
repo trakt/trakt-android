@@ -12,6 +12,7 @@ import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowImage
 import org.openapitools.client.models.GetMoviesPeople200Response
 import org.openapitools.client.models.GetMoviesPeople200ResponseCastInnerPerson
 import org.openapitools.client.models.GetMoviesRatings200Response
+import org.openapitools.client.models.GetMoviesStats200Response
 import org.openapitools.client.models.GetMoviesVideos200ResponseInner
 import org.openapitools.client.models.GetMoviesWatchnow200ResponseValue
 import org.openapitools.client.models.GetMoviesWatchnow200ResponseValueCableInner
@@ -63,6 +64,7 @@ typealias ShowLikesDto = GetUsersLikesComments200ResponseInnerAllOfOneOf1Show
 typealias MovieDto = GetCalendarsMovies200ResponseInnerMovie
 typealias MovieIdsDto = GetCalendarsMovies200ResponseInnerMovieIds
 typealias MovieLikesDto = GetUsersLikesComments200ResponseInnerAllOfOneOfMovie
+typealias MovieStatsDto = GetMoviesStats200Response
 
 typealias EpisodeDto = GetCalendarsShows200ResponseInnerEpisode
 typealias LastEpisodeDto = GetSyncProgressUpNextStandard200ResponseInnerProgressLastEpisode

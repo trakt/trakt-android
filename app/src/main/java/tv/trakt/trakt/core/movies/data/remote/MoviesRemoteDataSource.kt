@@ -8,6 +8,7 @@ import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.MovieDto
+import tv.trakt.trakt.common.networking.MovieStatsDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.core.movies.data.remote.model.AnticipatedMovieDto
@@ -52,6 +53,8 @@ internal interface MoviesRemoteDataSource {
     suspend fun getExternalRatings(movieId: TraktId): ExternalRatingsDto
 
     suspend fun getStudios(movieId: TraktId): List<String>
+
+    suspend fun getStats(movieId: TraktId): MovieStatsDto
 
     suspend fun getStreamings(
         movieId: TraktId,

@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.summary.ui
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -20,6 +21,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.LocalDate
@@ -73,12 +75,12 @@ internal fun DetailsMetaInfo(
         titleOriginal = movie.titleOriginal,
         country = movie.country,
         genres = movie.genres,
-        studios = movieStudios ?: EmptyImmutableList,
+        studios = movieStudios,
     )
 }
 
 @Composable
-internal fun DetailsMetaInfo(
+private fun DetailsMetaInfo(
     modifier: Modifier = Modifier,
     released: LocalDate? = null,
     runtime: Duration? = null,
@@ -87,7 +89,7 @@ internal fun DetailsMetaInfo(
     titleOriginal: String? = null,
     languages: ImmutableList<String> = EmptyImmutableList,
     genres: ImmutableList<String> = EmptyImmutableList,
-    studios: ImmutableList<String> = EmptyImmutableList,
+    studios: ImmutableList<String>? = null,
     episodeRowsOnly: Boolean = false,
 ) {
     val runtimeString = remember(runtime) {
@@ -112,7 +114,7 @@ internal fun DetailsMetaInfo(
     }
 
     Column(
-        verticalArrangement = spacedBy(16.dp),
+        verticalArrangement = spacedBy(18.dp),
         modifier = modifier,
     ) {
         Row(
@@ -169,10 +171,11 @@ internal fun DetailsMetaInfo(
                 horizontalArrangement = spacedBy(16.dp),
             ) {
                 DetailsMeta(
+                    loading = studios == null,
                     title = stringResource(R.string.header_studio),
                     values = studios
-                        .take(5)
-                        .ifEmpty { listOf("N/A") },
+                        ?.take(5)
+                        ?.ifEmpty { listOf("N/A") } ?: EmptyImmutableList,
                     modifier = Modifier.weight(1F),
                 )
                 DetailsMeta(
@@ -188,10 +191,11 @@ internal fun DetailsMetaInfo(
 }
 
 @Composable
-internal fun DetailsMeta(
+private fun DetailsMeta(
     title: String,
     values: List<String>,
     modifier: Modifier = Modifier,
+    loading: Boolean = false,
 ) {
     Column(
         horizontalAlignment = Alignment.Start,
@@ -205,16 +209,26 @@ internal fun DetailsMeta(
             maxLines = 1,
             overflow = Ellipsis,
         )
-        for (value in values) {
-            Text(
-                text = value.replaceFirstChar {
-                    it.titlecase()
-                },
-                style = TraktTheme.typography.paragraphSmaller,
-                color = TraktTheme.colors.textPrimary,
-                maxLines = 1,
-                overflow = Ellipsis,
+        if (loading) {
+            FilmProgressIndicator(
+                size = 12.dp,
+                color = TraktTheme.colors.textSecondary,
+                modifier = Modifier
+                    .align(Alignment.Start)
+                    .padding(vertical = 1.dp),
             )
+        } else {
+            for (value in values) {
+                Text(
+                    text = value.replaceFirstChar {
+                        it.titlecase()
+                    },
+                    style = TraktTheme.typography.paragraphSmaller,
+                    color = TraktTheme.colors.textPrimary,
+                    maxLines = 1,
+                    overflow = Ellipsis,
+                )
+            }
         }
     }
 }
