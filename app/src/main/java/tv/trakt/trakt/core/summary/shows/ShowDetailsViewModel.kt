@@ -5,7 +5,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -58,7 +57,6 @@ import tv.trakt.trakt.core.summary.shows.features.actors.usecases.GetShowCreator
 import tv.trakt.trakt.core.summary.shows.navigation.ShowDetailsDestination
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowRatingsUseCase
-import tv.trakt.trakt.core.summary.shows.usecases.GetShowStudiosUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowFavoritesUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
@@ -73,8 +71,6 @@ import tv.trakt.trakt.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
-import tv.trakt.trakt.helpers.collapsing.CollapsingManager
-import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
@@ -84,7 +80,6 @@ internal class ShowDetailsViewModel(
     private val appContext: Context,
     private val getDetailsUseCase: GetShowDetailsUseCase,
     private val getExternalRatingsUseCase: GetShowRatingsUseCase,
-    private val getShowStudiosUseCase: GetShowStudiosUseCase,
     private val getShowCreatorUseCase: GetShowCreatorUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
@@ -107,7 +102,6 @@ internal class ShowDetailsViewModel(
     private val watchlistUpdates: WatchlistUpdates,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
-    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ShowDetailsDestination>()
     private val showId = destination.showId.toTraktId()
@@ -117,7 +111,6 @@ internal class ShowDetailsViewModel(
     private val showState = MutableStateFlow(initialState.show)
     private val showRatingsState = MutableStateFlow(initialState.showRatings)
     private val showUserRatingsState = MutableStateFlow(initialState.showUserRating)
-    private val showStudiosState = MutableStateFlow(initialState.showStudios)
     private val showCreatorState = MutableStateFlow(initialState.showCreator)
     private val showProgressState = MutableStateFlow(initialState.showProgress)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
@@ -128,10 +121,8 @@ internal class ShowDetailsViewModel(
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
     private val userState = MutableStateFlow(initialState.user)
-    private val metaCollapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.SHOW_META))
 
     private var ratingJob: Job? = null
-    private var metaCollapseJob: Job? = null
 
     init {
         loadUser()
@@ -184,7 +175,6 @@ internal class ShowDetailsViewModel(
                 showState.update { show }
 
                 loadRatings(show)
-                loadStudios()
                 loadCreator()
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -277,20 +267,6 @@ internal class ShowDetailsViewModel(
             try {
                 showRatingsState.update {
                     getExternalRatingsUseCase.getExternalRatings(showId)
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
-    }
-
-    private fun loadStudios() {
-        viewModelScope.launch {
-            try {
-                showStudiosState.update {
-                    getShowStudiosUseCase.getStudios(showId)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -915,17 +891,6 @@ internal class ShowDetailsViewModel(
         }
     }
 
-    fun setMetaCollapsed(collapsed: Boolean) {
-        metaCollapseState.update { collapsed }
-        metaCollapseJob?.cancel()
-        metaCollapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.SHOW_META)
-                else -> collapsingManager.expand(CollapsingKey.SHOW_META)
-            }
-        }
-    }
-
     fun clearInfo() {
         infoState.update { null }
     }
@@ -939,7 +904,6 @@ internal class ShowDetailsViewModel(
         showState,
         showRatingsState,
         showUserRatingsState,
-        showStudiosState,
         showCreatorState,
         showProgressState,
         navigateEpisode,
@@ -950,24 +914,21 @@ internal class ShowDetailsViewModel(
         infoState,
         errorState,
         userState,
-        metaCollapseState,
     ) { state ->
         ShowDetailsState(
             show = state[0] as Show?,
             showRatings = state[1] as ExternalRating?,
             showUserRating = state[2] as UserRatingsState?,
-            showStudios = state[3] as ImmutableList<String>?,
-            showCreator = state[4] as Person?,
-            showProgress = state[5] as ShowDetailsState.ProgressState?,
-            navigateEpisode = state[6] as Pair<TraktId, Episode>?,
-            loading = state[7] as LoadingState,
-            loadingProgress = state[8] as LoadingState,
-            loadingLists = state[9] as LoadingState,
-            loadingFavorite = state[10] as LoadingState,
-            info = state[11] as StringResource?,
-            error = state[12] as Exception?,
-            user = state[13] as User?,
-            metaCollapsed = state[14] as Boolean?,
+            showCreator = state[3] as Person?,
+            showProgress = state[4] as ShowDetailsState.ProgressState?,
+            navigateEpisode = state[5] as Pair<TraktId, Episode>?,
+            loading = state[6] as LoadingState,
+            loadingProgress = state[7] as LoadingState,
+            loadingLists = state[8] as LoadingState,
+            loadingFavorite = state[9] as LoadingState,
+            info = state[10] as StringResource?,
+            error = state[11] as Exception?,
+            user = state[12] as User?,
         )
     }.stateIn(
         scope = viewModelScope,

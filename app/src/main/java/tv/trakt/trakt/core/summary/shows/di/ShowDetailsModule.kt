@@ -20,6 +20,9 @@ import tv.trakt.trakt.core.summary.shows.features.extras.ShowExtrasViewModel
 import tv.trakt.trakt.core.summary.shows.features.extras.usecases.GetShowExtrasUseCase
 import tv.trakt.trakt.core.summary.shows.features.history.ShowHistoryViewModel
 import tv.trakt.trakt.core.summary.shows.features.history.usecases.GetShowHistoryUseCase
+import tv.trakt.trakt.core.summary.shows.features.info.ShowInfoViewModel
+import tv.trakt.trakt.core.summary.shows.features.info.usecase.GetShowStatsUseCase
+import tv.trakt.trakt.core.summary.shows.features.info.usecase.GetShowStudiosUseCase
 import tv.trakt.trakt.core.summary.shows.features.lists.ShowListsViewModel
 import tv.trakt.trakt.core.summary.shows.features.lists.usecases.GetShowListsUseCase
 import tv.trakt.trakt.core.summary.shows.features.related.ShowRelatedViewModel
@@ -35,7 +38,6 @@ import tv.trakt.trakt.core.summary.shows.features.trivia.usecases.GetShowTriviaU
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowRatingsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowStreamingUseCase
-import tv.trakt.trakt.core.summary.shows.usecases.GetShowStudiosUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 
 internal val showDetailsDataModule = module {
@@ -64,6 +66,12 @@ internal val showDetailsModule = module {
 
     factory {
         GetShowStudiosUseCase(
+            remoteSource = get(),
+        )
+    }
+
+    factory {
+        GetShowStatsUseCase(
             remoteSource = get(),
         )
     }
@@ -155,7 +163,6 @@ internal val showDetailsModule = module {
             savedStateHandle = get(),
             getDetailsUseCase = get(),
             getExternalRatingsUseCase = get(),
-            getShowStudiosUseCase = get(),
             getShowCreatorUseCase = get(),
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
@@ -178,7 +185,14 @@ internal val showDetailsModule = module {
             watchlistUpdates = get(),
             sessionManager = get(),
             analytics = get(),
-            collapsingManager = get<CollapsingManager>(),
+        )
+    }
+
+    viewModel { (show: Show) ->
+        ShowInfoViewModel(
+            show = show,
+            getStatsUseCase = get(),
+            getStudiosUseCase = get(),
         )
     }
 

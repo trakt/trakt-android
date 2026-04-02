@@ -14,6 +14,7 @@ import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.SeasonDto
 import tv.trakt.trakt.common.networking.ShowDto
+import tv.trakt.trakt.common.networking.ShowStatsDto
 import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.core.shows.data.remote.model.AnticipatedShowDto
 import tv.trakt.trakt.core.shows.data.remote.model.TrendingShowDto
@@ -194,6 +195,14 @@ internal class ShowsApiClient(
         )
 
         return response.body().map { it.name }
+    }
+
+    override suspend fun getStats(showId: TraktId): ShowStatsDto {
+        val response = showsApi.getShowsStats(
+            id = showId.value.toString(),
+        )
+
+        return response.body()
     }
 
     override suspend fun getStreamings(

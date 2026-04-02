@@ -1,0 +1,133 @@
+package tv.trakt.trakt.core.summary.shows.features.info
+
+import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
+import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
+import tv.trakt.trakt.core.summary.ui.views.info.MetaView
+import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.extensions.isAtLeastLarge
+import tv.trakt.trakt.ui.extensions.isAtLeastMedium
+import tv.trakt.trakt.ui.theme.TraktTheme
+
+@Composable
+internal fun ShowInfoView(
+    viewModel: ShowInfoViewModel,
+    modifier: Modifier = Modifier,
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    ShowInfoView(
+        state = state,
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun ShowInfoView(
+    state: ShowInfoState,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        verticalArrangement = spacedBy(20.dp),
+        modifier = modifier,
+    ) {
+        TraktHeader(
+            title = stringResource(R.string.header_details),
+            subtitle = null,
+            modifier = Modifier.padding(horizontal = 24.dp),
+        )
+
+        state.show?.let {
+            Column(
+                verticalArrangement = spacedBy(24.dp),
+            ) {
+                MetaView(
+                    plays = state.showStats?.plays ?: 0,
+                    watchers = state.showStats?.watchers ?: 0,
+                    lists = state.showStats?.lists ?: 0,
+                    favorites = state.showStats?.favorited ?: 0,
+                    loading = !state.loading.isDone,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 23.dp),
+                )
+
+                DetailsView(
+                    show = it,
+                    showStudios = state.showStudios,
+                    modifier = Modifier.padding(horizontal = 24.dp),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun DetailsView(
+    show: Show,
+    showStudios: ImmutableList<String>?,
+    modifier: Modifier = Modifier,
+) {
+    val windowClass = currentWindowAdaptiveInfo().windowSizeClass
+    DetailsMetaInfo(
+        show = show,
+        showStudios = showStudios,
+        modifier = modifier
+            .fillMaxWidth(
+                when {
+                    windowClass.isAtLeastLarge() -> 0.4F
+                    windowClass.isAtLeastMedium() -> 0.66F
+                    else -> 1F
+                },
+            ),
+    )
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF212427,
+)
+@Composable
+private fun Preview() {
+    TraktTheme {
+        ShowInfoView(
+            state = ShowInfoState(
+                show = PreviewData.show1,
+                loading = LoadingState.Done,
+            ),
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF212427,
+)
+@Composable
+private fun Preview2() {
+    TraktTheme {
+        ShowInfoView(
+            state = ShowInfoState(
+                show = PreviewData.show1,
+                loading = LoadingState.Loading,
+            ),
+        )
+    }
+}

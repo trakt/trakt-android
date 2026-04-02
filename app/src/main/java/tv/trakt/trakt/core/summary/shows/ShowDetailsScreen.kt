@@ -6,14 +6,11 @@ import android.content.Context
 import android.content.Intent
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.snap
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -56,7 +53,6 @@ import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -86,6 +82,7 @@ import tv.trakt.trakt.core.summary.shows.features.context.lists.ShowDetailsLists
 import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextSheet
 import tv.trakt.trakt.core.summary.shows.features.extras.ShowExtrasView
 import tv.trakt.trakt.core.summary.shows.features.history.ShowHistoryView
+import tv.trakt.trakt.core.summary.shows.features.info.ShowInfoSheet
 import tv.trakt.trakt.core.summary.shows.features.lists.ShowListsView
 import tv.trakt.trakt.core.summary.shows.features.related.ShowRelatedView
 import tv.trakt.trakt.core.summary.shows.features.seasons.ShowSeasonsView
@@ -94,16 +91,13 @@ import tv.trakt.trakt.core.summary.shows.features.streaming.ShowStreamingsView
 import tv.trakt.trakt.core.summary.shows.features.trivia.ShowTriviaView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
-import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.vip.VipBanner
-import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -129,6 +123,7 @@ internal fun ShowDetailsScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val scope = rememberCoroutineScope()
+    var detailsSheet by remember { mutableStateOf<Show?>(null) }
     var contextSheet by remember { mutableStateOf<Show?>(null) }
     var listsSheet by remember { mutableStateOf<Show?>(null) }
     var historySheet by remember { mutableStateOf<HomeActivityItem.EpisodeItem?>(null) }
@@ -140,6 +135,11 @@ internal fun ShowDetailsScreen(
     ShowDetailsContent(
         state = state,
         modifier = modifier,
+        onInfoClick = {
+            state.show?.let {
+                detailsSheet = it
+            }
+        },
         onPersonClick = {
             state.show?.let { show ->
                 onPersonClick(show, it)
@@ -210,7 +210,13 @@ internal fun ShowDetailsScreen(
             }
         },
         onBackClick = onNavigateBack,
-        onMetaCollapse = viewModel::setMetaCollapsed,
+    )
+
+    ShowInfoSheet(
+        show = detailsSheet,
+        onDismiss = {
+            detailsSheet = null
+        },
     )
 
     ShowDetailsListsSheet(
@@ -355,6 +361,7 @@ internal fun ShowDetailsContent(
     onEpisodeClick: ((Episode) -> Unit)? = null,
     onTrackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
+    onInfoClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
     onWatchlistClick: (() -> Unit)? = null,
@@ -369,7 +376,6 @@ internal fun ShowDetailsContent(
     onVipClick: (() -> Unit)? = null,
     onTriviaClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
-    onMetaCollapse: ((Boolean) -> Unit)? = null,
 ) {
     val previewMode = LocalInspectionMode.current
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
@@ -448,6 +454,7 @@ internal fun ShowDetailsContent(
                         onCreatorClick = onPersonClick ?: {},
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},
+                        onInfoClick = onInfoClick ?: {},
                         modifier = Modifier
                             .align(Alignment.Center)
                             .alpha(ratingAlphaMask),
@@ -685,20 +692,6 @@ internal fun ShowDetailsContent(
                                 .padding(top = 32.dp),
                         )
                     }
-
-                    item {
-                        DetailsMeta(
-                            show = show,
-                            showStudios = state.showStudios,
-                            collapsed = state.metaCollapsed ?: false,
-                            onCollapse = { onMetaCollapse?.invoke(it) },
-                            modifier = Modifier
-                                .alpha(ratingAlphaMask)
-                                .fillMaxWidth()
-                                .padding(top = 32.dp)
-                                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
-                        )
-                    }
                 }
             }
         }
@@ -768,52 +761,6 @@ private fun DetailsOverview(
                 isCollapsed = !isCollapsed
             },
     )
-}
-
-@Composable
-private fun DetailsMeta(
-    modifier: Modifier = Modifier,
-    show: Show,
-    showStudios: ImmutableList<String>?,
-    collapsed: Boolean = false,
-    onCollapse: ((Boolean) -> Unit)? = null,
-) {
-    val windowClass = currentWindowAdaptiveInfo().windowSizeClass
-    var animateCollapse by rememberSaveable { mutableStateOf(false) }
-
-    Column(
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = spacedBy(14.dp),
-        modifier = modifier
-            .animateContentSize(
-                animationSpec = if (animateCollapse) spring() else snap(),
-            ),
-    ) {
-        TraktSectionHeader(
-            title = stringResource(R.string.header_details),
-            chevron = false,
-            collapsed = collapsed,
-            onCollapseClick = {
-                animateCollapse = true
-                onCollapse?.invoke(!collapsed)
-            },
-        )
-
-        if (!collapsed) {
-            DetailsMetaInfo(
-                show = show,
-                showStudios = showStudios,
-                modifier = Modifier
-                    .fillMaxWidth(
-                        when {
-                            windowClass.isAtLeastLarge() -> 0.4F
-                            windowClass.isAtLeastMedium() -> 0.66F
-                            else -> 1F
-                        },
-                    ),
-            )
-        }
-    }
 }
 
 private fun shareShow(
