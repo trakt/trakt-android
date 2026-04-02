@@ -30,15 +30,18 @@ import kotlinx.serialization.json.Json
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import tv.trakt.trakt.analytics.crashlytics.recordError
+import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source
 import tv.trakt.trakt.core.notifications.TraktNotificationChannel
 import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_EXTRAS
+import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_TRIVIA_EXTRAS
 import tv.trakt.trakt.core.notifications.model.NotificationIntentExtras
 import tv.trakt.trakt.resources.R
 import java.time.Instant
@@ -51,8 +54,9 @@ private const val MAIN_ACTIVITY_PATH = "tv.trakt.trakt.MainActivity"
 
 internal class CheckInService : Service() {
     private val checkInManager: CheckInManager by inject()
+    private val sessionManager: SessionManager by inject()
 
-    private val scope = CoroutineScope(Dispatchers.IO + Job())
+    private val scope = CoroutineScope(Dispatchers.Default)
 
     private var progressTimestamp: Instant = nowUtcInstant()
     private var progressJob: Job? = null
@@ -65,17 +69,19 @@ internal class CheckInService : Service() {
         val bundleData = requireNotNull(intent?.getBundleExtra(EXTRA_DATA)) {
             "Check-in service started without data!"
         }
-
         val serviceData = CheckInServiceData.fromBundle(bundleData)
-        val notification = setNotification(data = serviceData)
 
-        @SuppressLint("InlinedApi")
-        ServiceCompat.startForeground(
-            this@CheckInService,
-            SERVICE_ID,
-            notification,
-            FOREGROUND_SERVICE_TYPE_SPECIAL_USE,
-        )
+        scope.launch {
+            val notification = setNotification(data = serviceData)
+
+            @SuppressLint("InlinedApi")
+            ServiceCompat.startForeground(
+                this@CheckInService,
+                SERVICE_ID,
+                notification,
+                FOREGROUND_SERVICE_TYPE_SPECIAL_USE,
+            )
+        }
 
         scope.launch {
             while (isActive) {
@@ -112,7 +118,7 @@ internal class CheckInService : Service() {
         }
     }
 
-    private fun setNotification(data: CheckInServiceData): Notification {
+    private suspend fun setNotification(data: CheckInServiceData): Notification {
         val now = nowUtcInstant().epochSecond
         val startedAt = data.startedAt.epochSecond
         val expiresAt = data.expiresAt.epochSecond
@@ -143,6 +149,16 @@ internal class CheckInService : Service() {
             .setColor(Purple500.toArgb())
             .setColorized(true)
             .setContentIntent(createNotificationIntent(data))
+
+        if (sessionManager.getProfile()?.isAnyVip == true) {
+            notification.addAction(
+                NotificationCompat.Action(
+                    R.drawable.ic_trivia,
+                    getString(R.string.list_title_trivia),
+                    createTriviaNotificationIntent(data),
+                ),
+            )
+        }
 
         return notification.build()
     }
@@ -175,12 +191,14 @@ internal class CheckInService : Service() {
             return
         }
 
-        NotificationManagerCompat
-            .from(applicationContext)
-            .notify(
-                SERVICE_ID,
-                setNotification(data = serviceData),
-            )
+        scope.launch {
+            NotificationManagerCompat
+                .from(applicationContext)
+                .notify(
+                    SERVICE_ID,
+                    setNotification(data = serviceData),
+                )
+        }
     }
 
     private fun checkPermission(): Boolean {
@@ -215,6 +233,34 @@ internal class CheckInService : Service() {
         return PendingIntent.getActivity(
             applicationContext,
             "${data.mediaType}-${data.mediaId}".hashCode(),
+            notifyIntent,
+            FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT,
+        )
+    }
+
+    private fun createTriviaNotificationIntent(data: CheckInServiceData): PendingIntent {
+        val targetClass = Class.forName(MAIN_ACTIVITY_PATH)
+
+        val triviaMediaId = if (data.mediaType == MediaType.EPISODE) data.extraId ?: data.mediaId else data.mediaId
+        val triviaMediaType = if (data.mediaType == MediaType.EPISODE) MediaType.SHOW else data.mediaType
+
+        val notifyIntent = Intent(applicationContext, targetClass).apply {
+            putExtra(
+                INTENT_NOTIFICATION_TRIVIA_EXTRAS,
+                Json.encodeToString(
+                    NotificationIntentExtras(
+                        mediaId = triviaMediaId,
+                        mediaType = triviaMediaType,
+                        mediaTitle = data.mediaTitle,
+                    ),
+                ),
+            )
+
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
+        return PendingIntent.getActivity(
+            applicationContext,
+            "${data.mediaType}-${data.mediaId}-trivia".hashCode(),
             notifyIntent,
             FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT,
         )

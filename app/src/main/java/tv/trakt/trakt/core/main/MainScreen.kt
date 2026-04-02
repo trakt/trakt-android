@@ -90,12 +90,14 @@ import tv.trakt.trakt.core.main.navigation.navigateToMainDestination
 import tv.trakt.trakt.core.main.ui.checkin.MainCheckInView
 import tv.trakt.trakt.core.main.ui.menubar.TraktMenuBar
 import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_EXTRAS
+import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_TRIVIA_EXTRAS
 import tv.trakt.trakt.core.notifications.model.NotificationIntentExtras
 import tv.trakt.trakt.core.profile.navigation.ProfileDestination
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
 import tv.trakt.trakt.core.search.navigation.navigateToSearch
 import tv.trakt.trakt.core.summary.episodes.navigation.navigateToEpisode
 import tv.trakt.trakt.core.summary.movies.navigation.navigateToMovie
+import tv.trakt.trakt.core.trivia.navigation.navigateToTrivia
 import tv.trakt.trakt.core.welcome.WelcomeScreen
 import tv.trakt.trakt.core.welcome.onboarding.OnboardingScreen
 import tv.trakt.trakt.resources.R
@@ -466,6 +468,26 @@ private fun handleNotificationIntent(
 
     if (intent == null) {
         Timber.d("Intent is null, returning...")
+        return
+    }
+
+    if (extras?.containsKey(INTENT_NOTIFICATION_TRIVIA_EXTRAS) == true) {
+        val extrasJson = extras.getString(INTENT_NOTIFICATION_TRIVIA_EXTRAS)
+        if (extrasJson.isNullOrBlank()) {
+            return
+        }
+
+        val triviaExtras = Json.decodeFromString<NotificationIntentExtras>(extrasJson)
+        if (triviaExtras.mediaId == -1) {
+            return
+        }
+
+        navController.navigateToTrivia(
+            mediaId = triviaExtras.mediaId.toTraktId(),
+            mediaType = triviaExtras.mediaType,
+            mediaImage = null,
+            mediaTitle = triviaExtras.mediaTitle,
+        )
         return
     }
 

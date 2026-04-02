@@ -40,6 +40,7 @@ private const val WORK_ID = "post_notif_work"
 internal const val WORK_NOTIFICATION_TAG = "post_notif_work_tag"
 
 internal const val INTENT_NOTIFICATION_EXTRAS = "NOTIFICATION_INTENT_EXTRAS"
+internal const val INTENT_NOTIFICATION_TRIVIA_EXTRAS = "NOTIFICATION_INTENT_TRIVIA_EXTRAS"
 
 internal class PostNotificationWorker(
     appContext: Context,

@@ -362,6 +362,11 @@ internal class DefaultCheckInManager(
                     ""
                 }
             },
+            mediaTitle = when (state) {
+                is ActiveMovie -> state.movie.title
+                is ActiveEpisode -> state.show.title
+                else -> null
+            },
             startedAt = startedAt,
             expiresAt = expiresAt,
             extraId = episodeState?.show?.ids?.trakt?.value,
