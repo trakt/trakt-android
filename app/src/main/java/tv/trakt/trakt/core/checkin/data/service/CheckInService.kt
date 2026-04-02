@@ -36,6 +36,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source
@@ -43,6 +44,8 @@ import tv.trakt.trakt.core.notifications.TraktNotificationChannel
 import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_EXTRAS
 import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_TRIVIA_EXTRAS
 import tv.trakt.trakt.core.notifications.model.NotificationIntentExtras
+import tv.trakt.trakt.core.summary.movies.features.trivia.usecases.GetMovieTriviaUseCase
+import tv.trakt.trakt.core.summary.shows.features.trivia.usecases.GetShowTriviaUseCase
 import tv.trakt.trakt.resources.R
 import java.time.Instant
 import kotlin.math.roundToLong
@@ -55,6 +58,10 @@ private const val MAIN_ACTIVITY_PATH = "tv.trakt.trakt.MainActivity"
 internal class CheckInService : Service() {
     private val checkInManager: CheckInManager by inject()
     private val sessionManager: SessionManager by inject()
+
+    private val showTriviaUseCase: GetShowTriviaUseCase by inject()
+    private val movieTriviaUseCase: GetMovieTriviaUseCase by inject()
+    private var hasTrivia: Boolean = false
 
     private val scope = CoroutineScope(Dispatchers.Default)
 
@@ -70,18 +77,17 @@ internal class CheckInService : Service() {
             "Check-in service started without data!"
         }
         val serviceData = CheckInServiceData.fromBundle(bundleData)
+        val notification = setNotification(
+            data = serviceData,
+        )
 
-        scope.launch {
-            val notification = setNotification(data = serviceData)
-
-            @SuppressLint("InlinedApi")
-            ServiceCompat.startForeground(
-                this@CheckInService,
-                SERVICE_ID,
-                notification,
-                FOREGROUND_SERVICE_TYPE_SPECIAL_USE,
-            )
-        }
+        @SuppressLint("InlinedApi")
+        ServiceCompat.startForeground(
+            this@CheckInService,
+            SERVICE_ID,
+            notification,
+            FOREGROUND_SERVICE_TYPE_SPECIAL_USE,
+        )
 
         scope.launch {
             while (isActive) {
@@ -94,6 +100,8 @@ internal class CheckInService : Service() {
                 checkActive()
             }
         }
+
+        checkTrivia(serviceData)
 
         Timber.d("Check-in service started.")
         return START_NOT_STICKY
@@ -118,7 +126,7 @@ internal class CheckInService : Service() {
         }
     }
 
-    private suspend fun setNotification(data: CheckInServiceData): Notification {
+    private fun setNotification(data: CheckInServiceData): Notification {
         val now = nowUtcInstant().epochSecond
         val startedAt = data.startedAt.epochSecond
         val expiresAt = data.expiresAt.epochSecond
@@ -150,7 +158,7 @@ internal class CheckInService : Service() {
             .setColorized(true)
             .setContentIntent(createNotificationIntent(data))
 
-        if (sessionManager.getProfile()?.isAnyVip == true) {
+        if (hasTrivia) {
             notification.addAction(
                 NotificationCompat.Action(
                     R.drawable.ic_trivia,
@@ -191,13 +199,42 @@ internal class CheckInService : Service() {
             return
         }
 
+        NotificationManagerCompat
+            .from(applicationContext)
+            .notify(
+                SERVICE_ID,
+                setNotification(
+                    data = serviceData,
+                ),
+            )
+    }
+
+    private fun checkTrivia(serviceData: CheckInServiceData) {
         scope.launch {
-            NotificationManagerCompat
-                .from(applicationContext)
-                .notify(
-                    SERVICE_ID,
-                    setNotification(data = serviceData),
-                )
+            if (sessionManager.getProfile()?.isAnyVip != true) {
+                // User is not VIP, no trivia available.
+                return@launch
+            }
+
+            try {
+                val movieId = serviceData.mediaId.toTraktId()
+                val showId = serviceData.extraId?.toTraktId()
+
+                hasTrivia = when (serviceData.mediaType) {
+                    MediaType.MOVIE -> movieTriviaUseCase.getTrivia(movieId).facts.isNotEmpty()
+                    MediaType.EPISODE if showId != null -> showTriviaUseCase.getTrivia(showId).facts.isNotEmpty()
+                    else -> false
+                }
+            } catch (error: Exception) {
+                // Trivia check failed, log the error but continue without trivia.
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+
+            if (hasTrivia) {
+                updateProgress(serviceData)
+            }
         }
     }
 
