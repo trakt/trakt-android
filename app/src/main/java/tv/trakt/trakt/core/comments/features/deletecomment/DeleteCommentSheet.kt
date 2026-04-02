@@ -9,7 +9,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -37,7 +37,7 @@ internal fun DeleteCommentSheet(
     onDismiss: () -> Unit,
 ) {
     val localSnack = LocalSnackbarState.current
-    val localContext = LocalContext.current
+    val localRes = LocalResources.current
 
     val sheetScope = rememberCoroutineScope()
 
@@ -66,8 +66,8 @@ internal fun DeleteCommentSheet(
                             sheetScope.launch {
                                 val job = sheetScope.launch {
                                     val message = when {
-                                        isReply -> localContext.getString(R.string.text_info_reply_deleted)
-                                        else -> localContext.getString(R.string.text_info_review_deleted)
+                                        isReply -> localRes.getString(R.string.text_info_reply_deleted)
+                                        else -> localRes.getString(R.string.text_info_review_deleted)
                                     }
                                     localSnack.showSnackbar(message)
                                 }

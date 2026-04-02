@@ -1,11 +1,13 @@
 package tv.trakt.trakt.core.lists.sections.personal.model
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.resources.R
 
+@Keep
 @Immutable
 @Serializable
 internal enum class PersonalListType(

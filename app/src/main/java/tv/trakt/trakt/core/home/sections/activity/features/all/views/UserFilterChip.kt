@@ -36,8 +36,8 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun UserFilterChip(
     user: User,
     selected: Boolean,
-    height: Dp = 32.dp,
     modifier: Modifier = Modifier,
+    height: Dp = 32.dp,
     onClick: () -> Unit = {},
 ) {
     Row(

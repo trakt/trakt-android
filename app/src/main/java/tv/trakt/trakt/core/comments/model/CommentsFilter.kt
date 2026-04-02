@@ -1,9 +1,11 @@
 package tv.trakt.trakt.core.comments.model
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import tv.trakt.trakt.resources.R
 
+@Keep
 enum class CommentsFilter(
     @param:StringRes val displayRes: Int,
     @param:DrawableRes val iconRes: Int,

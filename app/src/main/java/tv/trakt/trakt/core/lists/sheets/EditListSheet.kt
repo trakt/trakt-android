@@ -5,7 +5,7 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -30,7 +30,7 @@ internal fun EditListSheet(
     onDismiss: () -> Unit,
 ) {
     val localSnack = LocalSnackbarState.current
-    val localContext = LocalContext.current
+    val localRes = LocalResources.current
 
     val sheetScope = rememberCoroutineScope()
 
@@ -56,7 +56,7 @@ internal fun EditListSheet(
 
                     sheetScope.launch {
                         val job = sheetScope.launch {
-                            localSnack.showSnackbar(localContext.getString(R.string.text_info_list_updated))
+                            localSnack.showSnackbar(localRes.getString(R.string.text_info_list_updated))
                         }
                         delay(SNACK_DURATION_SHORT)
                         job.cancel()
@@ -74,7 +74,7 @@ internal fun EditListSheet(
 
                     sheetScope.launch {
                         val job = sheetScope.launch {
-                            localSnack.showSnackbar(localContext.getString(R.string.text_info_list_deleted))
+                            localSnack.showSnackbar(localRes.getString(R.string.text_info_list_deleted))
                         }
                         delay(SNACK_DURATION_SHORT)
                         job.cancel()
@@ -91,7 +91,7 @@ internal fun EditListSheet(
 
                     sheetScope.launch {
                         val job = sheetScope.launch {
-                            localSnack.showSnackbar(localContext.getString(R.string.error_text_unexpected_error_short))
+                            localSnack.showSnackbar(localRes.getString(R.string.error_text_unexpected_error_short))
                         }
                         delay(SNACK_DURATION_SHORT)
                         job.cancel()

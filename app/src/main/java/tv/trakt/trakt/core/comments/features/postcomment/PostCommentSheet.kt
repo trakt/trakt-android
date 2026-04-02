@@ -9,7 +9,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -38,7 +38,7 @@ internal fun PostCommentSheet(
     onDismiss: () -> Unit,
 ) {
     val localSnack = LocalSnackbarState.current
-    val localContext = LocalContext.current
+    val localRes = LocalResources.current
 
     val sheetScope = rememberCoroutineScope()
 
@@ -62,7 +62,7 @@ internal fun PostCommentSheet(
                         action = {
                             sheetScope.launch {
                                 val job = sheetScope.launch {
-                                    val message = localContext.getString(R.string.text_info_review_added)
+                                    val message = localRes.getString(R.string.text_info_review_added)
                                     localSnack.showSnackbar(message)
                                 }
                                 delay(SNACK_DURATION_SHORT)

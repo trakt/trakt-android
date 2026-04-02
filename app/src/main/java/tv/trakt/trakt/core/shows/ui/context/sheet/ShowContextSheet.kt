@@ -10,7 +10,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -37,7 +37,7 @@ internal fun ShowContextSheet(
 
     if (show != null) {
         val localSnack = LocalSnackbarState.current
-        val localContext = LocalContext.current
+        val localRes = LocalResources.current
 
         TraktBottomSheet(
             sheetState = state,
@@ -54,7 +54,7 @@ internal fun ShowContextSheet(
                         state = state,
                         snackHost = localSnack,
                         onDismiss = onDismiss,
-                        message = localContext.getString(R.string.text_info_history_added),
+                        message = localRes.getString(R.string.text_info_history_added),
                     )
                 },
                 onAddWatchlist = {
@@ -62,7 +62,7 @@ internal fun ShowContextSheet(
                         state = state,
                         snackHost = localSnack,
                         onDismiss = onDismiss,
-                        message = localContext.getString(R.string.text_info_watchlist_added),
+                        message = localRes.getString(R.string.text_info_watchlist_added),
                     )
                 },
                 onRemoveWatched = {
@@ -70,7 +70,7 @@ internal fun ShowContextSheet(
                         state = state,
                         snackHost = localSnack,
                         onDismiss = onDismiss,
-                        message = localContext.getString(R.string.text_info_history_removed),
+                        message = localRes.getString(R.string.text_info_history_removed),
                     )
                 },
                 onRemoveWatchlist = {
@@ -78,7 +78,7 @@ internal fun ShowContextSheet(
                         state = state,
                         snackHost = localSnack,
                         onDismiss = onDismiss,
-                        message = localContext.getString(R.string.text_info_watchlist_removed),
+                        message = localRes.getString(R.string.text_info_watchlist_removed),
                     )
                 },
                 onError = {
@@ -86,7 +86,7 @@ internal fun ShowContextSheet(
                         state = state,
                         snackHost = localSnack,
                         onDismiss = onDismiss,
-                        message = localContext.getString(R.string.error_text_unexpected_error_short),
+                        message = localRes.getString(R.string.error_text_unexpected_error_short),
                     )
                 },
                 modifier = Modifier

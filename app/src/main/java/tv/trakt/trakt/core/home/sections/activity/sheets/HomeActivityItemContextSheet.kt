@@ -9,7 +9,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -32,7 +32,7 @@ internal fun HomeActivityItemSheet(
     onDismiss: () -> Unit,
 ) {
     val localSnack = LocalSnackbarState.current
-    val localContext = LocalContext.current
+    val localRes = LocalResources.current
 
     val sheetScope = rememberCoroutineScope()
 
@@ -57,7 +57,7 @@ internal fun HomeActivityItemSheet(
                             }
                         launch {
                             val job = sheetScope.launch {
-                                localSnack.showSnackbar(localContext.getString(R.string.text_info_history_removed))
+                                localSnack.showSnackbar(localRes.getString(R.string.text_info_history_removed))
                             }
                             delay(SNACK_DURATION_SHORT)
                             job.cancel()
@@ -74,7 +74,7 @@ internal fun HomeActivityItemSheet(
                             }
                         launch {
                             val job = sheetScope.launch {
-                                localSnack.showSnackbar(localContext.getString(R.string.text_info_watchlist_added))
+                                localSnack.showSnackbar(localRes.getString(R.string.text_info_watchlist_added))
                             }
                             delay(SNACK_DURATION_SHORT)
                             job.cancel()
@@ -92,7 +92,7 @@ internal fun HomeActivityItemSheet(
                         launch {
                             val job = sheetScope.launch {
                                 localSnack.showSnackbar(
-                                    localContext.getString(R.string.error_text_unexpected_error_short),
+                                    localRes.getString(R.string.error_text_unexpected_error_short),
                                 )
                             }
                             delay(SNACK_DURATION_SHORT)

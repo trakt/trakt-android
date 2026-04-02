@@ -32,7 +32,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalClipboard
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.toClipEntry
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -70,13 +70,13 @@ internal fun AuthScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    val localContext = LocalContext.current
+    val localRes = LocalResources.current
     val localSnack = LocalSnackbarState.current
 
     LaunchedEffect(state.loadingState) {
         if (state.loadingState == SUCCESS) {
             onAuthorized()
-            localSnack.showSnackbar(localContext.getString(R.string.text_info_signed_in))
+            localSnack.showSnackbar(localRes.getString(R.string.text_info_signed_in))
         }
     }
 
