@@ -72,7 +72,6 @@ internal enum class CollapsingKey(
     EPISODE_ACTORS("key_episode_actors"),
     EPISODE_SEASON("key_episode_season"),
     EPISODE_RELATED("key_episode_related"),
-    EPISODE_META("key_episode_meta"),
 
     // Show Details Screen
     SHOW_WHERE_TO_WATCH("key_show_where_to_watch"),
@@ -85,7 +84,6 @@ internal enum class CollapsingKey(
     SHOW_LISTS("key_show_lists"),
     SHOW_HISTORY("key_show_history"),
     SHOW_TRIVIA("key_show_trivia"),
-    SHOW_META("key_show_meta"),
 
     // Profile Screen
     PROFILE_HISTORY("key_profile_history"),

@@ -6,14 +6,11 @@ import android.content.Context
 import android.content.Intent
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.snap
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -37,7 +34,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.TopCenter
@@ -79,20 +75,18 @@ import tv.trakt.trakt.core.summary.episodes.features.comments.EpisodeCommentsVie
 import tv.trakt.trakt.core.summary.episodes.features.context.history.EpisodeDetailsHistorySheet
 import tv.trakt.trakt.core.summary.episodes.features.context.more.EpisodeDetailsContextSheet
 import tv.trakt.trakt.core.summary.episodes.features.history.EpisodeHistoryView
+import tv.trakt.trakt.core.summary.episodes.features.info.EpisodeInfoSheet
 import tv.trakt.trakt.core.summary.episodes.features.related.EpisodeRelatedView
 import tv.trakt.trakt.core.summary.episodes.features.season.EpisodeSeasonView
 import tv.trakt.trakt.core.summary.episodes.features.streaming.EpisodeStreamingsView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
-import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.vip.VipBanner
-import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -119,6 +113,7 @@ internal fun EpisodeDetailsScreen(
     var historySheet by remember { mutableStateOf<HomeActivityItem.EpisodeItem?>(null) }
     var confirmRemoveWatchedSheet by remember { mutableStateOf(false) }
     var dateSheet by remember { mutableStateOf(false) }
+    var detailsSheet by remember { mutableStateOf<Pair<Show, Episode>?>(null) }
 
     LaunchedEffect(state.navigateEpisode) {
         state.navigateEpisode?.let {
@@ -176,7 +171,13 @@ internal fun EpisodeDetailsScreen(
         },
         onVipClick = onNavigateVip,
         onBackClick = onNavigateBack,
-        onMetaCollapseClick = viewModel::setMetaCollapsed,
+        onInfoClick = {
+            val show = state.show
+            val episode = state.episode
+            if (show != null && episode != null) {
+                detailsSheet = Pair(show, episode)
+            }
+        },
     )
 
     EpisodeDetailsContextSheet(
@@ -238,6 +239,12 @@ internal fun EpisodeDetailsScreen(
         },
     )
 
+    EpisodeInfoSheet(
+        show = detailsSheet?.first,
+        episode = detailsSheet?.second,
+        onDismiss = { detailsSheet = null },
+    )
+
     LaunchedEffect(state.info) {
         if (state.info == null) {
             return@LaunchedEffect
@@ -272,7 +279,7 @@ internal fun EpisodeDetailsContent(
     onRatingRemoveClick: (() -> Unit)? = null,
     onVipClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
-    onMetaCollapseClick: ((Boolean) -> Unit)? = null,
+    onInfoClick: (() -> Unit)? = null,
 ) {
     val previewMode = LocalInspectionMode.current
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
@@ -353,6 +360,7 @@ internal fun EpisodeDetailsContent(
                         onShowClick = onShowClick ?: {},
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},
+                        onInfoClick = onInfoClick ?: {},
                         modifier = Modifier
                             .align(Center)
                             .alpha(ratingAlphaMask),
@@ -534,19 +542,6 @@ internal fun EpisodeDetailsContent(
                             )
                         }
                     }
-
-                    item {
-                        DetailsMeta(
-                            episode = state.episode,
-                            collapsed = state.metaCollapsed ?: false,
-                            onCollapseClick = onMetaCollapseClick ?: {},
-                            modifier = Modifier
-                                .alpha(ratingAlphaMask)
-                                .fillMaxWidth()
-                                .padding(top = 32.dp)
-                                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
-                        )
-                    }
                 }
             }
         }
@@ -612,48 +607,6 @@ private fun DetailsOverview(
                 isCollapsed = !isCollapsed
             },
     )
-}
-
-@Composable
-private fun DetailsMeta(
-    modifier: Modifier = Modifier,
-    episode: Episode,
-    collapsed: Boolean = false,
-    onCollapseClick: (Boolean) -> Unit = {},
-) {
-    val windowClass = currentWindowAdaptiveInfo().windowSizeClass
-    var animateCollapse by rememberSaveable { mutableStateOf(false) }
-
-    Column(
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = spacedBy(14.dp),
-        modifier = modifier
-            .animateContentSize(animationSpec = if (animateCollapse) spring() else snap()),
-    ) {
-        TraktSectionHeader(
-            title = stringResource(R.string.header_details),
-            chevron = false,
-            collapsed = collapsed,
-            onCollapseClick = {
-                animateCollapse = true
-                onCollapseClick(!collapsed)
-            },
-        )
-
-        if (!collapsed) {
-            DetailsMetaInfo(
-                episode = episode,
-                modifier = Modifier
-                    .fillMaxWidth(
-                        when {
-                            windowClass.isAtLeastLarge() -> 0.4F
-                            windowClass.isAtLeastMedium() -> 0.66F
-                            else -> 1F
-                        },
-                    ),
-            )
-        }
-    }
 }
 
 private fun shareEpisode(

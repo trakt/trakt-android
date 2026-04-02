@@ -20,7 +20,7 @@ internal fun MetaView(
     plays: Int,
     watchers: Int,
     lists: Int,
-    favorites: Int,
+    favorites: Int?,
     loading: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -80,21 +80,23 @@ internal fun MetaView(
                 .weight(1F),
         )
 
-        MetaViewItemView(
-            title = favorites.thousandsFormat(),
-            subtitle = stringResource(R.string.text_stats_favorites),
-            icon = {
-                Icon(
-                    painter = painterResource(R.drawable.ic_heart_off),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textSecondary,
-                    modifier = Modifier.size(14.dp),
-                )
-            },
-            loading = loading,
-            modifier = Modifier
-                .weight(1F),
-        )
+        favorites?.let {
+            MetaViewItemView(
+                title = favorites.thousandsFormat(),
+                subtitle = stringResource(R.string.text_stats_favorites),
+                icon = {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_heart_off),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textSecondary,
+                        modifier = Modifier.size(14.dp),
+                    )
+                },
+                loading = loading,
+                modifier = Modifier
+                    .weight(1F),
+            )
+        }
     }
 }
 

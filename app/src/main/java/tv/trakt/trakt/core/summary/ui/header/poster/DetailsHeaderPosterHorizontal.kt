@@ -49,6 +49,7 @@ fun DetailsHeaderPosterHorizontal(
     onBackClick: () -> Unit,
     onShareClick: () -> Unit,
     modifier: Modifier = Modifier,
+    extraRightColumn: @Composable () -> Unit = {},
 ) {
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
 
@@ -93,14 +94,22 @@ fun DetailsHeaderPosterHorizontal(
                     .size(24.dp)
                     .onClick(onClick = onBackClick),
             )
-            Icon(
-                painter = painterResource(R.drawable.ic_share),
-                tint = TraktTheme.colors.textPrimary,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(24.dp)
-                    .onClick(onClick = onShareClick),
-            )
+
+            Row(
+                horizontalArrangement = spacedBy(18.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_share),
+                    tint = TraktTheme.colors.textPrimary,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(22.dp)
+                        .onClick(onClick = onShareClick),
+                )
+
+                extraRightColumn.invoke()
+            }
         }
 
         Box {

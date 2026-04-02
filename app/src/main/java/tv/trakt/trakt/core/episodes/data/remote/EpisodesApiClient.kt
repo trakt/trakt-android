@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.EpisodeDto
+import tv.trakt.trakt.common.networking.EpisodeStatsDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.StreamingDto
 
@@ -112,6 +113,19 @@ internal class EpisodesApiClient(
             season = season,
             episode = episode,
             extended = "cloud9,full",
+        )
+        return response.body()
+    }
+
+    override suspend fun getStats(
+        showId: TraktId,
+        season: Int,
+        episode: Int,
+    ): EpisodeStatsDto {
+        val response = showsApi.getShowsEpisodeStats(
+            id = showId.value.toString(),
+            season = season,
+            episode = episode,
         )
         return response.body()
     }

@@ -104,8 +104,10 @@ internal fun DetailsHeader(
                 playsCount = playsCount,
                 onShareClick = onShareClick,
                 onBackClick = onBackClick,
-                modifier = Modifier
-                    .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+                extraRightColumn = extraRightColumn ?: {},
+                modifier = Modifier.padding(
+                    horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
+                ),
             )
         }
 

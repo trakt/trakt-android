@@ -4,6 +4,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.EpisodeDto
+import tv.trakt.trakt.common.networking.EpisodeStatsDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.StreamingDto
 
@@ -89,4 +90,13 @@ internal interface EpisodesRemoteDataSource {
         season: Int,
         episode: Int,
     ): CastCrewDto
+
+    /**
+     * Retrieves the stats for a specific episode of a show.
+     */
+    suspend fun getStats(
+        showId: TraktId,
+        season: Int,
+        episode: Int,
+    ): EpisodeStatsDto
 }

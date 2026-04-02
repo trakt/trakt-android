@@ -24,6 +24,7 @@ import org.openapitools.client.models.GetSearchQuery200ResponseInner
 import org.openapitools.client.models.GetSearchQuery200ResponseInnerOneOf2Person
 import org.openapitools.client.models.GetSearchQuery200ResponseInnerOneOf3List
 import org.openapitools.client.models.GetSearchTrending200ResponseInner
+import org.openapitools.client.models.GetShowsEpisodeStats200Response
 import org.openapitools.client.models.GetShowsStats200Response
 import org.openapitools.client.models.GetSyncCollectionMedia200ResponseInner
 import org.openapitools.client.models.GetSyncProgressUpNextStandard200ResponseInner
@@ -61,17 +62,18 @@ import org.openapitools.client.models.PostSyncHistoryAdd200Response
 typealias ShowDto = GetCalendarsShows200ResponseInnerShow
 typealias ShowIdsDto = GetCalendarsShows200ResponseInnerShowIds
 typealias ShowLikesDto = GetUsersLikesComments200ResponseInnerAllOfOneOf1Show
+typealias ShowStatsDto = GetShowsStats200Response
 
 typealias MovieDto = GetCalendarsMovies200ResponseInnerMovie
 typealias MovieIdsDto = GetCalendarsMovies200ResponseInnerMovieIds
 typealias MovieLikesDto = GetUsersLikesComments200ResponseInnerAllOfOneOfMovie
 typealias MovieStatsDto = GetMoviesStats200Response
-typealias ShowStatsDto = GetShowsStats200Response
 
 typealias EpisodeDto = GetCalendarsShows200ResponseInnerEpisode
 typealias LastEpisodeDto = GetSyncProgressUpNextStandard200ResponseInnerProgressLastEpisode
 typealias EpisodeIdsDto = GetCalendarsShows200ResponseInnerEpisodeIds
 typealias EpisodeLikesDto = GetUsersLikesComments200ResponseInnerAllOfOneOf2Episode
+typealias EpisodeStatsDto = GetShowsEpisodeStats200Response
 
 typealias ImagesDto = GetCalendarsShows200ResponseInnerShowImages
 typealias ExtraVideoDto = GetMoviesVideos200ResponseInner
