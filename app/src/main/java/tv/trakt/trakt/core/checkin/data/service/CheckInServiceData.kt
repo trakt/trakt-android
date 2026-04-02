@@ -9,6 +9,7 @@ internal data class CheckInServiceData(
     val mediaType: MediaType,
     val title: String,
     val mediaTitle: String?,
+    val mediaImage: String?,
     val startedAt: Instant,
     val expiresAt: Instant,
     val extraId: Int? = null,
@@ -18,6 +19,7 @@ internal data class CheckInServiceData(
     companion object Key {
         const val TITLE = "title"
         const val MEDIA_TITLE = "mediaTitle"
+        const val MEDIA_IMAGE = "mediaImage"
         const val MEDIA_ID = "mediaId"
         const val MEDIA_TYPE = "mediaType"
         const val STARTED_AT = "startedAt"
@@ -30,6 +32,7 @@ internal data class CheckInServiceData(
             return CheckInServiceData(
                 title = bundle.getString(TITLE, "")!!,
                 mediaTitle = bundle.getString(MEDIA_TITLE),
+                mediaImage = bundle.getString(MEDIA_IMAGE),
                 mediaId = bundle.getInt(MEDIA_ID, -1),
                 mediaType = MediaType.valueOf(bundle.getString(MEDIA_TYPE)!!),
                 startedAt = Instant.ofEpochMilli(bundle.getLong(STARTED_AT)),
@@ -45,6 +48,7 @@ internal data class CheckInServiceData(
         return Bundle().apply {
             putString(TITLE, title)
             mediaTitle?.let { putString(MEDIA_TITLE, it) }
+            mediaImage?.let { putString(MEDIA_IMAGE, it) }
             putInt(MEDIA_ID, mediaId)
             putString(MEDIA_TYPE, mediaType.name)
             putLong(STARTED_AT, startedAt.toEpochMilli())

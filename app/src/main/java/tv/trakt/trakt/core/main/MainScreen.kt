@@ -485,7 +485,7 @@ private fun handleNotificationIntent(
         navController.navigateToTrivia(
             mediaId = triviaExtras.mediaId.toTraktId(),
             mediaType = triviaExtras.mediaType,
-            mediaImage = null,
+            mediaImage = triviaExtras.mediaImage,
             mediaTitle = triviaExtras.mediaTitle,
         )
         return

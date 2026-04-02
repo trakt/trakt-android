@@ -11,4 +11,5 @@ internal data class NotificationIntentExtras(
     val extraValue1: Int? = null,
     val extraValue2: Int? = null,
     val mediaTitle: String? = null,
+    val mediaImage: String? = null,
 )

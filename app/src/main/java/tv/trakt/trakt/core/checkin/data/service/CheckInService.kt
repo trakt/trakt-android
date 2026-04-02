@@ -252,6 +252,7 @@ internal class CheckInService : Service() {
                         mediaId = triviaMediaId,
                         mediaType = triviaMediaType,
                         mediaTitle = data.mediaTitle,
+                        mediaImage = data.mediaImage,
                     ),
                 ),
             )

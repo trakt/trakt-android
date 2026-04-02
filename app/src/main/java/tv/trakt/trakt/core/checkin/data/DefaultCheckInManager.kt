@@ -367,6 +367,11 @@ internal class DefaultCheckInManager(
                 is ActiveEpisode -> state.show.title
                 else -> null
             },
+            mediaImage = when (state) {
+                is ActiveMovie -> state.movie.images?.getFanartUrl()
+                is ActiveEpisode -> state.show.images?.getFanartUrl()
+                else -> null
+            },
             startedAt = startedAt,
             expiresAt = expiresAt,
             extraId = episodeState?.show?.ids?.trakt?.value,
