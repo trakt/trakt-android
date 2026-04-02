@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="badge_text_get_vip">Get VIP</string>
-  <string name="button_label_browse_movies">Browse Movies</string>
-  <string name="button_label_browse_shows">Browse Shows</string>
   <string name="button_label_popup_reactions">Reactions</string>
-  <string name="button_label_toggle_search_people">Search for people</string>
   <string name="button_text_add_reply">Add Reply</string>
-  <string name="button_text_add_review">Add Review</string>
+  <string name="button_text_add_review">Add Review</string>z
   <string name="button_text_apply">Apply</string>
   <string name="button_text_cancel">Cancel</string>
   <string name="button_text_checkin">Now watching</string>
@@ -23,10 +20,8 @@
   <string name="button_text_drop_show">Drop show</string>
   <string name="button_text_followers">Followers</string>
   <string name="button_text_following">Following</string>
-  <string name="button_text_hide_details">Hide Details</string>
   <string name="button_text_hold_to_confirm">Hold to Confirm</string>
   <string name="button_text_join_trakt">Join Trakt</string>
-  <string name="button_text_join_trakt_for_free">Join Trakt for Free</string>
   <string name="button_text_login">Login</string>
   <string name="button_text_logout">Log out</string>
   <string name="button_text_long_press_for_more">Long press for more</string>
@@ -35,7 +30,6 @@
   <string name="button_text_mark_as_watched_other_date">Other date</string>
   <string name="button_text_mark_as_watched_release_date">Release date</string>
   <string name="button_text_mark_as_watched_unknown_date">Unknown date</string>
-  <string name="button_text_media">Media</string>
   <string name="button_text_meet_team">Meet the team</string>
   <string name="button_text_movies">Movies</string>
   <string name="button_text_no_services">No services</string>
@@ -47,7 +41,6 @@
   <string name="button_text_retry">Retry</string>
   <string name="button_text_share">Share</string>
   <string name="button_text_shows">Shows</string>
-  <string name="button_text_social">Social</string>
   <string name="button_text_sort_added_date">Date Added</string>
   <string name="button_text_sort_default">Default</string>
   <string name="button_text_sort_rating">Rating</string>
@@ -58,10 +51,8 @@
   <string name="button_text_toggle_search_media">Media</string>
   <string name="button_text_toggle_search_people">People</string>
   <string name="button_text_track">Track</string>
-  <string name="button_text_trailer">Trailer</string>
   <string name="button_text_upgrade_to_vip">Upgrade to VIP</string>
   <string name="button_text_view_all">More</string>
-  <string name="button_text_view_details">View Details</string>
   <string name="button_text_watch_again">Watch again</string>
   <string name="button_text_watchlist">Watchlist</string>
   <string name="button_text_where_to_watch">Where to watch</string>
@@ -86,7 +77,6 @@
   <string name="header_device_auth_try_again">The activation was denied, expired, or something unforeseeable happened. Please try again.</string>
   <string name="header_genre">Genre</string>
   <string name="header_get_notified">Get Notified!</string>
-  <string name="header_height">Height</string>
   <string name="header_landing_discover">Discover</string>
   <string name="header_landing_share">Share</string>
   <string name="header_landing_track">Track</string>
@@ -123,11 +113,7 @@
   <string name="list_placeholder_empty">There is nothing in this list.</string>
   <string name="list_placeholder_personal_list_empty_movies">There are no movies in this list yet.</string>
   <string name="list_placeholder_personal_list_empty_shows">There are no shows in this list yet.</string>
-  <string name="list_placeholder_replies">No replies yet.</string>
-  <string name="list_title_activity">Activity</string>
   <string name="list_title_actors">Actors</string>
-  <string name="list_title_anticipated_movies">Anticipated Movies</string>
-  <string name="list_title_anticipated_shows">Anticipated Shows</string>
   <string name="list_title_birthdays_this_month">Birthdays This Month</string>
   <string name="list_title_comments">Reviews</string>
   <string name="list_title_extras">Extras</string>
@@ -143,15 +129,9 @@
   <string name="list_title_most_popular_searches">Top Searches</string>
   <string name="list_title_personal_lists">My Lists</string>
   <string name="list_title_popular_lists">Popular Lists</string>
-  <string name="list_title_popular_movies">Popular Movies</string>
-  <string name="list_title_popular_shows">Popular Shows</string>
-  <string name="list_title_recently_searched">Recently Searched</string>
   <string name="list_title_recently_searched_movies">Recently Searched Movies</string>
   <string name="list_title_recently_searched_shows">Recently Searched Shows</string>
-  <string name="list_title_recently_watched">Recently Watched</string>
   <string name="list_title_recommended">Recommended</string>
-  <string name="list_title_recommended_movies">Recommended Movies</string>
-  <string name="list_title_recommended_shows">Recommended Shows</string>
   <string name="list_title_related_movies">Related Movies</string>
   <string name="list_title_related_shows">Related Shows</string>
   <string name="list_title_seasons">Seasons</string>
@@ -168,7 +148,6 @@
   <string name="list_title_trending_shows">Trending Shows</string>
   <string name="list_title_up_next">Continue Watching</string>
   <string name="list_title_upcoming_schedule">Upcoming Schedule</string>
-  <string name="list_title_watch_history">Watch History</string>
   <string name="list_title_watchlist_movies">Movies Watchlist</string>
   <string name="list_title_watchlist_shows">Shows Watchlist</string>
   <string name="page_description_create_list">Enter a name and description for your list.</string>
@@ -177,12 +156,10 @@
   <string name="page_title_create_list">Create List</string>
   <string name="page_title_discover">Discover</string>
   <string name="page_title_edit_list">Edit List</string>
-  <string name="page_title_history">History</string>
   <string name="page_title_home">Home</string>
   <string name="page_title_lists">Lists</string>
   <string name="page_title_movies">Movies</string>
   <string name="page_title_profile">Profile</string>
-  <string name="page_title_recently_watched">Recently Watched</string>
   <string name="page_title_search">Search</string>
   <string name="page_title_settings">Settings</string>
   <string name="page_title_shows">Shows</string>
@@ -265,8 +242,6 @@
   <string name="text_onboarding_4_description_2">Join Trakt for free and discover more features waiting for you.</string>
   <string name="text_onboarding_4_title">There\'s more to discover.</string>
   <string name="text_overview_placeholder">Overview is not available.</string>
-  <string name="text_reply_by">Reply by</string>
-  <string name="text_review_by">Review by</string>
   <string name="text_season_episode_number">Season %1$d • Episode %2$d</string>
   <string name="text_season_number">Season %d</string>
   <string name="text_season_specials">Specials</string>
@@ -279,14 +254,10 @@
   <string name="text_settings_notification_time_30_min">30 minutes before</string>
   <string name="text_settings_notification_time_60_min">1 hour before</string>
   <string name="text_settings_notification_time_now">On release</string>
-  <string name="text_share_movie">Just discovered \"%s\" - you need to see this! 🎬</string>
-  <string name="text_share_show">Found this awesome show: %s! 📺</string>
-  <string name="text_shout_by">Shout by</string>
   <string name="text_shows_watched">%d shows</string>
   <string name="text_sort_comments_popular">Popular</string>
   <string name="text_sort_comments_recent">Recent</string>
   <string name="text_sort_recently_added">Recently added</string>
-  <string name="text_sort_recently_updated">Recently updated</string>
   <string name="text_spoiler">Spoiler</string>
   <string name="text_streaming_sync">Streaming Sync</string>
   <string name="text_this_month">This month</string>
@@ -308,7 +279,6 @@
   <string name="translated_value_library_custom">Custom</string>
   <string name="translated_value_position_acting">Acting</string>
   <string name="translated_value_type_movie">Movie</string>
-  <string name="translated_value_type_show">Show</string>
   <string name="vip_feature_description_early_access">Get early access to new versions of Trakt apps and brand new features before anyone else.</string>
   <string name="vip_feature_description_increased_limits">Enjoy higher limits for your lists, ratings, and other features.</string>
   <string name="vip_feature_description_mir">Get a personalized overview of everything you watched and rated each month.</string>
@@ -362,7 +332,6 @@
   <string name="text_tag_premiere">Premiere</string>
   <string name="text_tag_finale">Finale</string>
   <string name="list_title_trivia">Trivia</string>
-  <string name="trivia_spoiler_reveal">Spoiler — tap to reveal</string>
   <string name="text_trivia_filter_no_spoilers">No Spoilers</string>
   <string name="text_trivia_filter_spoilers">Spoilers</string>
 
