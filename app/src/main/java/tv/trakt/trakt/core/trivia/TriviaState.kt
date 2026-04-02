@@ -13,5 +13,6 @@ internal data class TriviaState(
     val filteredItems: ImmutableList<TriviaFact>? = null,
     val filter: TriviaFilter? = TriviaFilter.NoSpoilers,
     val backgroundUrl: String? = null,
+    val mediaTitle: String? = null,
     val error: Exception? = null,
 )

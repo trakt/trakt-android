@@ -183,6 +183,7 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
                     mediaId = show.ids.trakt,
                     mediaType = SHOW,
                     mediaImage = show.images?.getFanartUrl(),
+                    mediaTitle = show.title,
                 )
             },
             onNavigateVip = { navigateToBilling() },
@@ -254,6 +255,7 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
                     mediaId = movie.ids.trakt,
                     mediaType = MOVIE,
                     mediaImage = movie.images?.getFanartUrl(),
+                    mediaTitle = movie.title,
                 )
             },
             onNavigateVip = { navigateToBilling() },

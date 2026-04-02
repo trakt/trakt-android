@@ -1,7 +1,9 @@
 package tv.trakt.trakt.core.trivia
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,22 +22,26 @@ import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaType
-import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.summary.movies.features.trivia.usecases.GetMovieTriviaUseCase
 import tv.trakt.trakt.core.summary.shows.features.trivia.usecases.GetShowTriviaUseCase
 import tv.trakt.trakt.core.trivia.model.TriviaFilter
 import tv.trakt.trakt.core.trivia.model.TriviaFilter.NoSpoilers
 import tv.trakt.trakt.core.trivia.model.TriviaFilter.Spoilers
+import tv.trakt.trakt.core.trivia.navigation.TriviaDestination
 
 internal class TriviaViewModel(
-    backgroundUrl: String?,
-    private val mediaId: TraktId,
-    private val mediaType: MediaType,
+    savedStateHandle: SavedStateHandle,
     private val getMovieTriviaUseCase: GetMovieTriviaUseCase,
     private val getShowTriviaUseCase: GetShowTriviaUseCase,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
-    private val initialState = TriviaState(backgroundUrl = backgroundUrl)
+    private val destination = savedStateHandle.toRoute<TriviaDestination>()
+
+    private val initialState = TriviaState(
+        backgroundUrl = destination.mediaImage,
+        mediaTitle = destination.mediaTitle,
+    )
 
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
@@ -63,10 +69,11 @@ internal class TriviaViewModel(
     }
 
     private fun loadData() {
+        val mediaId = destination.mediaId.toTraktId()
         viewModelScope.launch {
             try {
                 loadUser()
-                val trivia = when (mediaType) {
+                val trivia = when (destination.mediaType) {
                     MediaType.MOVIE -> getMovieTriviaUseCase.getTrivia(mediaId)
                     MediaType.SHOW -> getShowTriviaUseCase.getTrivia(mediaId)
                     else -> return@launch
@@ -114,6 +121,7 @@ internal class TriviaViewModel(
             filteredItems = filteredItems,
             filter = filter,
             backgroundUrl = initialState.backgroundUrl,
+            mediaTitle = initialState.mediaTitle,
             error = error,
         )
     }.stateIn(

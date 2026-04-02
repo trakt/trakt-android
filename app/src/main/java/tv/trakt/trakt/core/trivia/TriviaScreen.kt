@@ -43,6 +43,7 @@ import tv.trakt.trakt.core.trivia.ui.TriviaFactCard
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
+import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.components.chips.FilterChipGroup
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -106,6 +107,7 @@ private fun TriviaContent(
         ) {
             item {
                 TitleBar(
+                    mediaTitle = state.mediaTitle,
                     modifier = Modifier.onClick { onBackClick() },
                 )
             }
@@ -114,7 +116,11 @@ private fun TriviaContent(
                 ContentFilters(
                     selectedFilter = state.filter,
                     onClick = onFilterClick,
-                    modifier = Modifier.padding(bottom = 20.dp),
+                    modifier = Modifier
+                        .padding(
+                            top = 8.dp,
+                            bottom = 20.dp,
+                        ),
                 )
             }
 
@@ -187,7 +193,10 @@ private fun ContentEmpty(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun TitleBar(modifier: Modifier = Modifier) {
+private fun TitleBar(
+    mediaTitle: String?,
+    modifier: Modifier = Modifier,
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -205,10 +214,9 @@ private fun TitleBar(modifier: Modifier = Modifier) {
                 tint = TraktTheme.colors.textPrimary,
                 contentDescription = null,
             )
-            Text(
-                text = stringResource(R.string.list_title_trivia),
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.heading5,
+            TraktHeader(
+                title = stringResource(R.string.list_title_trivia),
+                subtitle = mediaTitle,
             )
         }
     }
