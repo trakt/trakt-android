@@ -156,7 +156,7 @@ fun customAnnotatedString(
  */
 fun String.replaceMarkdown(): String {
     return this.replace("\\*\\*(.*?)\\*\\*".toRegex(), "<b>$1</b>")
-        .replace("\\*(.*?)\\*".toRegex(), "<i>$1</i>")
+        .replace("\\*(.*?)\\*".toRegex(), "<i>$1</i>&nbsp;")
         .replace("__(.*?)__".toRegex(), "<u>$1</u>")
         .replace("^[ \\t]*[-*][ \\t]+(.*)".toRegex(RegexOption.MULTILINE), "<br><br>- $1")
 }
