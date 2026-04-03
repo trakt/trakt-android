@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -41,12 +42,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.RadialGradientShader
+import androidx.compose.ui.graphics.Shader
+import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight.Companion.W600
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -63,6 +72,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Red400
+import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.core.notifications.model.DeliveryAdjustment
 import tv.trakt.trakt.core.settings.features.notifications.AdjustNotificationTimeSheet
 import tv.trakt.trakt.core.settings.ui.SettingsSwitchField
@@ -74,6 +84,7 @@ import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.input.SingleInputSheet
+import tv.trakt.trakt.ui.components.whatsnew.openPlayStore
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val SECTION_SPACING_DP = 12
@@ -653,6 +664,12 @@ private fun SettingsMisc(
             onClick = onLogoutClick,
         )
 
+        RateTraktView(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp),
+        )
+
         Row(
             horizontalArrangement = spacedBy(8.dp),
             verticalAlignment = CenterVertically,
@@ -688,6 +705,74 @@ private fun SettingsMisc(
                 modifier = Modifier.onClick {
                     uriHandler.openUri(Config.WEB_PRIVACY_URL)
                 },
+            )
+        }
+    }
+}
+
+@Composable
+private fun RateTraktView(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+
+    val containerColor = TraktTheme.colors.sentimentsContainer
+    val radialGradient = remember {
+        object : ShaderBrush() {
+            override fun createShader(size: Size): Shader {
+                return RadialGradientShader(
+                    colors = listOf(
+                        containerColor,
+                        Shade920,
+                    ),
+                    center = Offset(size.width / 4, size.height * 1.5F),
+                    radius = size.width * 1.2F,
+                )
+            }
+        }
+    }
+
+    Row(
+        verticalAlignment = CenterVertically,
+        horizontalArrangement = spacedBy(14.dp),
+        modifier = modifier
+            .onClick {
+                openPlayStore(context)
+            }
+            .shadow(
+                elevation = 2.dp,
+                shape = RoundedCornerShape(22.dp),
+                clip = false,
+            )
+            .background(
+                radialGradient,
+                RoundedCornerShape(22.dp),
+            )
+            .padding(horizontal = 16.dp, vertical = 18.dp),
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_mood_face),
+            contentDescription = null,
+            tint = TraktTheme.colors.textPrimary,
+            modifier = Modifier.size(26.dp),
+        )
+
+        Column(
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            Text(
+                text = stringResource(R.string.header_rate_us_1),
+                style = TraktTheme.typography.paragraphSmall.copy(
+                    fontWeight = W600
+                ),
+                color = TraktTheme.colors.textPrimary,
+                textAlign = TextAlign.Start,
+            )
+
+            Text(
+                text = stringResource(R.string.header_rate_us_2),
+                style = TraktTheme.typography.paragraphSmaller,
+                color = TraktTheme.colors.textPrimary,
+                textAlign = TextAlign.Start,
             )
         }
     }
