@@ -21,6 +21,7 @@ import tv.trakt.trakt.core.summary.shows.features.extras.usecases.GetShowExtrasU
 import tv.trakt.trakt.core.summary.shows.features.history.ShowHistoryViewModel
 import tv.trakt.trakt.core.summary.shows.features.history.usecases.GetShowHistoryUseCase
 import tv.trakt.trakt.core.summary.shows.features.info.ShowInfoViewModel
+import tv.trakt.trakt.core.summary.shows.features.info.usecase.GetShowCrewUseCase
 import tv.trakt.trakt.core.summary.shows.features.info.usecase.GetShowStatsUseCase
 import tv.trakt.trakt.core.summary.shows.features.info.usecase.GetShowStudiosUseCase
 import tv.trakt.trakt.core.summary.shows.features.lists.ShowListsViewModel
@@ -78,6 +79,13 @@ internal val showDetailsModule = module {
 
     factory {
         GetShowCreatorUseCase(
+            remoteSource = get(),
+            peopleLocalSource = get(),
+        )
+    }
+
+    factory {
+        GetShowCrewUseCase(
             remoteSource = get(),
             peopleLocalSource = get(),
         )
@@ -193,6 +201,7 @@ internal val showDetailsModule = module {
             show = show,
             getStatsUseCase = get(),
             getStudiosUseCase = get(),
+            getCrewUseCase = get(),
         )
     }
 

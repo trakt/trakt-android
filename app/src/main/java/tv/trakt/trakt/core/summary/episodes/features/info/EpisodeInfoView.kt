@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
 import tv.trakt.trakt.core.summary.ui.views.info.MetaView
 import tv.trakt.trakt.resources.R
@@ -26,11 +27,13 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun EpisodeInfoView(
     viewModel: EpisodeInfoViewModel,
     modifier: Modifier = Modifier,
+    onPersonClick: (person: Person) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     EpisodeInfoView(
         state = state,
+        onPersonClick = onPersonClick,
         modifier = modifier,
     )
 }
@@ -39,6 +42,7 @@ internal fun EpisodeInfoView(
 private fun EpisodeInfoView(
     state: EpisodeInfoState,
     modifier: Modifier = Modifier,
+    onPersonClick: (person: Person) -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(20.dp),
@@ -68,6 +72,9 @@ private fun EpisodeInfoView(
                 val windowClass = currentWindowAdaptiveInfo().windowSizeClass
                 DetailsMetaInfo(
                     episode = episode,
+                    episodeDirectors = state.episodeCrew?.directors,
+                    episodeWriters = state.episodeCrew?.writers,
+                    onPersonClick = onPersonClick,
                     modifier = Modifier
                         .padding(horizontal = 24.dp)
                         .fillMaxWidth(

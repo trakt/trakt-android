@@ -214,6 +214,12 @@ internal fun ShowDetailsScreen(
 
     ShowInfoSheet(
         show = detailsSheet,
+        onPersonClick = {
+            detailsSheet = null
+            state.show?.let { show ->
+                onPersonClick(show, it)
+            }
+        },
         onDismiss = {
             detailsSheet = null
         },

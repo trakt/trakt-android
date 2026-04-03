@@ -15,6 +15,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
 import tv.trakt.trakt.core.summary.ui.views.info.MetaView
@@ -28,11 +29,13 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun ShowInfoView(
     viewModel: ShowInfoViewModel,
     modifier: Modifier = Modifier,
+    onPersonClick: (person: Person) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     ShowInfoView(
         state = state,
+        onPersonClick = onPersonClick,
         modifier = modifier,
     )
 }
@@ -41,6 +44,7 @@ internal fun ShowInfoView(
 private fun ShowInfoView(
     state: ShowInfoState,
     modifier: Modifier = Modifier,
+    onPersonClick: (person: Person) -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(20.dp),
@@ -70,6 +74,9 @@ private fun ShowInfoView(
                 DetailsView(
                     show = it,
                     showStudios = state.showStudios,
+                    showDirectors = state.showCrew?.directors,
+                    showWriters = state.showCrew?.writers,
+                    onPersonClick = onPersonClick,
                     modifier = Modifier.padding(horizontal = 24.dp),
                 )
             }
@@ -81,12 +88,18 @@ private fun ShowInfoView(
 private fun DetailsView(
     show: Show,
     showStudios: ImmutableList<String>?,
+    showDirectors: ImmutableList<Person>?,
+    showWriters: ImmutableList<Person>?,
+    onPersonClick: (person: Person) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
     DetailsMetaInfo(
         show = show,
         showStudios = showStudios,
+        showDirectors = showDirectors,
+        showWriters = showWriters,
+        onPersonClick = onPersonClick,
         modifier = modifier
             .fillMaxWidth(
                 when {

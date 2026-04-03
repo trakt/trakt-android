@@ -35,6 +35,9 @@ internal fun DetailsMetaInfo(
     show: Show,
     modifier: Modifier = Modifier,
     showStudios: ImmutableList<String>? = null,
+    showDirectors: ImmutableList<Person>? = null,
+    showWriters: ImmutableList<Person>? = null,
+    onPersonClick: (person: Person) -> Unit = {},
 ) {
     DetailsMetaInfo(
         modifier = modifier,
@@ -46,6 +49,9 @@ internal fun DetailsMetaInfo(
         country = show.country,
         genres = show.genres,
         studios = showStudios ?: EmptyImmutableList,
+        directors = showDirectors,
+        writers = showWriters,
+        onPersonClick = onPersonClick,
     )
 }
 
@@ -53,12 +59,18 @@ internal fun DetailsMetaInfo(
 internal fun DetailsMetaInfo(
     episode: Episode,
     modifier: Modifier = Modifier,
+    episodeDirectors: ImmutableList<Person>? = null,
+    episodeWriters: ImmutableList<Person>? = null,
+    onPersonClick: (person: Person) -> Unit = {},
 ) {
     DetailsMetaInfo(
         modifier = modifier,
         released = episode.firstAired?.toLocalDate(),
         runtime = episode.runtime,
+        directors = episodeDirectors,
+        writers = episodeWriters,
         episodeRowsOnly = true,
+        onPersonClick = onPersonClick,
     )
 }
 

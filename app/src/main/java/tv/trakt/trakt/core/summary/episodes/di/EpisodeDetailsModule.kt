@@ -19,6 +19,7 @@ import tv.trakt.trakt.core.summary.episodes.features.context.more.EpisodeDetails
 import tv.trakt.trakt.core.summary.episodes.features.history.EpisodeHistoryViewModel
 import tv.trakt.trakt.core.summary.episodes.features.history.usecases.GetEpisodeHistoryUseCase
 import tv.trakt.trakt.core.summary.episodes.features.info.EpisodeInfoViewModel
+import tv.trakt.trakt.core.summary.episodes.features.info.usecase.GetEpisodeCrewUseCase
 import tv.trakt.trakt.core.summary.episodes.features.info.usecase.GetEpisodeStatsUseCase
 import tv.trakt.trakt.core.summary.episodes.features.related.EpisodeRelatedViewModel
 import tv.trakt.trakt.core.summary.episodes.features.related.usecases.GetEpisodeRelatedUseCase
@@ -116,6 +117,13 @@ internal val episodeDetailsModule = module {
         )
     }
 
+    factory {
+        GetEpisodeCrewUseCase(
+            remoteSource = get(),
+            peopleLocalSource = get(),
+        )
+    }
+
     viewModel {
         EpisodeDetailsViewModel(
             appContext = androidApplication(),
@@ -142,6 +150,7 @@ internal val episodeDetailsModule = module {
             show = show,
             episode = episode,
             getStatsUseCase = get(),
+            getCrewUseCase = get(),
         )
     }
 

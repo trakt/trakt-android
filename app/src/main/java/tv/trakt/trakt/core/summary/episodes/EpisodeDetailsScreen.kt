@@ -242,6 +242,14 @@ internal fun EpisodeDetailsScreen(
     EpisodeInfoSheet(
         show = detailsSheet?.first,
         episode = detailsSheet?.second,
+        onPersonClick = {
+            val show = detailsSheet?.first
+            val episode = detailsSheet?.second
+            detailsSheet = null
+            if (show != null && episode != null) {
+                onPersonClick(show, episode, it)
+            }
+        },
         onDismiss = { detailsSheet = null },
     )
 

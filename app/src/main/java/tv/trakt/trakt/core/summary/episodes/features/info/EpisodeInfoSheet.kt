@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import kotlin.random.Random.Default.nextInt
@@ -23,6 +24,7 @@ internal fun EpisodeInfoSheet(
     ),
     show: Show?,
     episode: Episode?,
+    onPersonClick: (person: Person) -> Unit = {},
     onDismiss: () -> Unit,
 ) {
     if (show != null && episode != null) {
@@ -35,6 +37,7 @@ internal fun EpisodeInfoSheet(
                     key = nextInt().toString(),
                     parameters = { parametersOf(show, episode) },
                 ),
+                onPersonClick = onPersonClick,
                 modifier = Modifier
                     .padding(bottom = 24.dp),
             )
