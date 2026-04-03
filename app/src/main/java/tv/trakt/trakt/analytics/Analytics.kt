@@ -10,6 +10,7 @@ interface Analytics {
     val ratings: Ratings
     val comments: Comments
     val progress: Progress
+    val trivia: Trivia
 
     /**
      * Logs a screen view event.
@@ -35,6 +36,13 @@ interface Analytics {
      * Logs the current media mode.
      */
     fun logMediaMode(mode: MediaMode)
+
+    interface Trivia {
+        /**
+         * Logs a screen view event for trivia screens.
+         */
+        fun logScreenView(source: String)
+    }
 
     interface Reactions {
         /**

@@ -487,6 +487,7 @@ private fun handleNotificationIntent(
             mediaType = triviaExtras.mediaType,
             mediaImage = triviaExtras.mediaImage,
             mediaTitle = triviaExtras.mediaTitle,
+            navSource = "check_in_notif",
         )
         return
     }

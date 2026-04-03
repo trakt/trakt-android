@@ -18,6 +18,7 @@ internal data class TriviaDestination(
     val mediaType: MediaType,
     val mediaImage: String?,
     val mediaTitle: String?,
+    val navSource: String,
 )
 
 internal fun NavGraphBuilder.triviaScreen(onNavigateBack: () -> Unit) {
@@ -44,6 +45,7 @@ internal fun NavController.navigateToTrivia(
     mediaType: MediaType,
     mediaImage: String?,
     mediaTitle: String?,
+    navSource: String,
 ) {
     navigate(
         route = TriviaDestination(
@@ -51,6 +53,7 @@ internal fun NavController.navigateToTrivia(
             mediaType = mediaType,
             mediaImage = mediaImage,
             mediaTitle = mediaTitle,
+            navSource = navSource,
         ),
     )
 }

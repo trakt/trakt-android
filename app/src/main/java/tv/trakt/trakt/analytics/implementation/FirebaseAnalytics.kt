@@ -29,6 +29,7 @@ internal class FirebaseAnalytics(
     override val ratings: Analytics.Ratings,
     override val comments: Analytics.Comments,
     override val progress: Analytics.Progress,
+    override val trivia: Analytics.Trivia,
 ) : Analytics {
     companion object Event {
         const val LOGOUT = "logout"
@@ -288,6 +289,23 @@ internal class FirebaseAnalyticsProgress(
             eventName(PROGRESS_WATCHLIST_REMOVE),
             bundleOf(
                 PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
+                PARAMETER_SOURCE to source.lowercase(),
+            ),
+        )
+    }
+}
+
+internal class FirebaseAnalyticsTrivia(
+    private val firebase: FirebaseAnalytics,
+) : Analytics.Trivia {
+    companion object Event {
+        const val TRIVIA_SCREEN = "trivia"
+    }
+
+    override fun logScreenView(source: String) {
+        firebase.logEvent(
+            eventName(TRIVIA_SCREEN),
+            bundleOf(
                 PARAMETER_SOURCE to source.lowercase(),
             ),
         )

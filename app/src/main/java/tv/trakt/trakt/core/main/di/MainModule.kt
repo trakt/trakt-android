@@ -24,11 +24,13 @@ import tv.trakt.trakt.analytics.implementation.DebugAnalyticsComments
 import tv.trakt.trakt.analytics.implementation.DebugAnalyticsProgress
 import tv.trakt.trakt.analytics.implementation.DebugAnalyticsRatings
 import tv.trakt.trakt.analytics.implementation.DebugAnalyticsReactions
+import tv.trakt.trakt.analytics.implementation.DebugAnalyticsTrivia
 import tv.trakt.trakt.analytics.implementation.FirebaseAnalytics
 import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsComments
 import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsProgress
 import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsRatings
 import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsReactions
+import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsTrivia
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.DefaultAppLifecycleProvider
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
@@ -87,6 +89,7 @@ internal val mainModule = module {
                 ratings = DebugAnalyticsRatings(),
                 comments = DebugAnalyticsComments(),
                 progress = DebugAnalyticsProgress(),
+                trivia = DebugAnalyticsTrivia(),
             )
         } else {
             val firebase = Firebase.analytics
@@ -102,6 +105,9 @@ internal val mainModule = module {
                     firebase = firebase,
                 ),
                 progress = FirebaseAnalyticsProgress(
+                    firebase = firebase,
+                ),
+                trivia = FirebaseAnalyticsTrivia(
                     firebase = firebase,
                 ),
             )

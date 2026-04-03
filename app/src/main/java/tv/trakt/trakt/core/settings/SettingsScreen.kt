@@ -762,7 +762,7 @@ private fun RateTraktView(modifier: Modifier = Modifier) {
             Text(
                 text = stringResource(R.string.header_rate_us_1),
                 style = TraktTheme.typography.paragraphSmall.copy(
-                    fontWeight = W600
+                    fontWeight = W600,
                 ),
                 color = TraktTheme.colors.textPrimary,
                 textAlign = TextAlign.Start,

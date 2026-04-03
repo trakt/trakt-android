@@ -9,6 +9,7 @@ internal class DebugAnalytics(
     override val ratings: Analytics.Ratings,
     override val comments: Analytics.Comments,
     override val progress: Analytics.Progress,
+    override val trivia: Analytics.Trivia,
 ) : Analytics {
     override fun logScreenView(screenName: String) {
         Timber.d("logScreenView: screenName=$screenName")
@@ -117,5 +118,11 @@ internal class DebugAnalyticsProgress : Analytics.Progress {
         source: String,
     ) {
         Timber.d("logRemoveWatchedMedia: mediaType=${mediaType.lowercase()}, source=${source.lowercase()}")
+    }
+}
+
+internal class DebugAnalyticsTrivia : Analytics.Trivia {
+    override fun logScreenView(source: String) {
+        Timber.d("logTriviaScreenView: source=$source")
     }
 }

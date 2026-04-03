@@ -11,6 +11,7 @@ internal val triviaModule = module {
             getMovieTriviaUseCase = get(),
             getShowTriviaUseCase = get(),
             sessionManager = get(),
+            analytics = get(),
         )
     }
 }
