@@ -22,6 +22,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.networking.MovieStatsDto
+import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieCrewUseCase
 import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieStatsUseCase
 import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieStudiosUseCase
 
@@ -29,12 +30,14 @@ internal class MovieInfoViewModel(
     private val movie: Movie,
     private val getStatsUseCase: GetMovieStatsUseCase,
     private val getStudiosUseCase: GetMovieStudiosUseCase,
+    private val getCrewUseCase: GetMovieCrewUseCase,
 ) : ViewModel() {
     private val initialState = MovieInfoState()
 
     private val movieState = MutableStateFlow(movie)
     private val movieStatsState = MutableStateFlow(initialState.movieStats)
     private val movieStudiosState = MutableStateFlow(initialState.movieStudios)
+    private val movieCrewState = MutableStateFlow(initialState.movieCrew)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -51,6 +54,7 @@ internal class MovieInfoViewModel(
                     awaitAll(
                         async { loadStats() },
                         async { loadStudios() },
+                        async { loadCrew() },
                     )
                 }
 
@@ -59,18 +63,6 @@ internal class MovieInfoViewModel(
                 error.rethrowCancellation {
                     errorState.update { error }
                 }
-            }
-        }
-    }
-
-    private suspend fun loadStudios() {
-        try {
-            movieStudiosState.update {
-                getStudiosUseCase.getStudios(movie.ids.trakt)
-            }
-        } catch (error: Exception) {
-            error.rethrowCancellation {
-                Timber.recordError(error)
             }
         }
     }
@@ -87,10 +79,38 @@ internal class MovieInfoViewModel(
         }
     }
 
+    private suspend fun loadStudios() {
+        try {
+            movieStudiosState.update {
+                getStudiosUseCase.getStudios(movie.ids.trakt)
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
+            }
+        }
+    }
+
+    private suspend fun loadCrew() {
+        try {
+            movieCrewState.update {
+                getCrewUseCase.getCrew(movie.ids.trakt)
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                movieCrewState.update {
+                    GetMovieCrewUseCase.Result()
+                }
+                Timber.recordError(error)
+            }
+        }
+    }
+
     val state = combine(
         movieState,
         movieStatsState,
         movieStudiosState,
+        movieCrewState,
         loadingState,
         errorState,
     ) { state ->
@@ -98,8 +118,9 @@ internal class MovieInfoViewModel(
             movie = state[0] as Movie?,
             movieStats = state[1] as MovieStatsDto?,
             movieStudios = state[2] as ImmutableList<String>?,
-            loading = state[3] as LoadingState,
-            error = state[4] as Exception?,
+            movieCrew = state[3] as GetMovieCrewUseCase.Result?,
+            loading = state[4] as LoadingState,
+            error = state[5] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

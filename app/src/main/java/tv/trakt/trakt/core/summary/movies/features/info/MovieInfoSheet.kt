@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import kotlin.random.Random.Default.nextInt
 
@@ -21,6 +22,7 @@ internal fun MovieInfoSheet(
         skipPartiallyExpanded = true,
     ),
     movie: Movie?,
+    onPersonClick: (person: Person) -> Unit,
     onDismiss: () -> Unit,
 ) {
     if (movie != null) {
@@ -33,8 +35,9 @@ internal fun MovieInfoSheet(
                     key = nextInt().toString(),
                     parameters = { parametersOf(movie) },
                 ),
+                onPersonClick = onPersonClick,
                 modifier = Modifier
-                    .padding(bottom = 24.dp)
+                    .padding(bottom = 24.dp),
             )
         }
     }

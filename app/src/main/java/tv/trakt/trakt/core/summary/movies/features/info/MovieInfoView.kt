@@ -16,6 +16,7 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
 import tv.trakt.trakt.core.summary.ui.views.info.MetaView
 import tv.trakt.trakt.resources.R
@@ -28,11 +29,13 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun MovieInfoView(
     viewModel: MovieInfoViewModel,
     modifier: Modifier = Modifier,
+    onPersonClick: (person: Person) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     MovieInfoView(
         state = state,
+        onPersonClick = onPersonClick,
         modifier = modifier,
     )
 }
@@ -41,6 +44,7 @@ internal fun MovieInfoView(
 private fun MovieInfoView(
     state: MovieInfoState,
     modifier: Modifier = Modifier,
+    onPersonClick: (person: Person) -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(20.dp),
@@ -70,6 +74,9 @@ private fun MovieInfoView(
                 DetailsView(
                     movie = it,
                     movieStudios = state.movieStudios,
+                    movieDirectors = state.movieCrew?.directors,
+                    movieWriters = state.movieCrew?.writers,
+                    onPersonClick = onPersonClick,
                     modifier = Modifier.padding(horizontal = 24.dp),
                 )
             }
@@ -81,12 +88,18 @@ private fun MovieInfoView(
 private fun DetailsView(
     movie: Movie,
     movieStudios: ImmutableList<String>?,
+    movieDirectors: ImmutableList<Person>?,
+    movieWriters: ImmutableList<Person>?,
+    onPersonClick: (person: Person) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
     DetailsMetaInfo(
         movie = movie,
         movieStudios = movieStudios,
+        movieDirectors = movieDirectors,
+        movieWriters = movieWriters,
+        onPersonClick = onPersonClick,
         modifier = modifier
             .fillMaxWidth(
                 when {

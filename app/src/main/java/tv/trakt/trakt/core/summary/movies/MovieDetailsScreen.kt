@@ -188,6 +188,12 @@ internal fun MovieDetailsScreen(
 
     MovieInfoSheet(
         movie = detailsSheet,
+        onPersonClick = {
+            detailsSheet = null
+            state.movie?.let { movie ->
+                onPersonClick(movie, it)
+            }
+        },
         onDismiss = {
             detailsSheet = null
         },

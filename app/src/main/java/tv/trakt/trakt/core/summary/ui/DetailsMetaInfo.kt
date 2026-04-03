@@ -17,9 +17,11 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
@@ -30,8 +32,8 @@ import kotlin.time.Duration
 
 @Composable
 internal fun DetailsMetaInfo(
-    modifier: Modifier = Modifier,
     show: Show,
+    modifier: Modifier = Modifier,
     showStudios: ImmutableList<String>? = null,
 ) {
     DetailsMetaInfo(
@@ -49,8 +51,8 @@ internal fun DetailsMetaInfo(
 
 @Composable
 internal fun DetailsMetaInfo(
-    modifier: Modifier = Modifier,
     episode: Episode,
+    modifier: Modifier = Modifier,
 ) {
     DetailsMetaInfo(
         modifier = modifier,
@@ -62,9 +64,12 @@ internal fun DetailsMetaInfo(
 
 @Composable
 internal fun DetailsMetaInfo(
-    modifier: Modifier = Modifier,
     movie: Movie,
+    modifier: Modifier = Modifier,
     movieStudios: ImmutableList<String>? = null,
+    movieDirectors: ImmutableList<Person>? = null,
+    movieWriters: ImmutableList<Person>? = null,
+    onPersonClick: (person: Person) -> Unit = {},
 ) {
     DetailsMetaInfo(
         modifier = modifier,
@@ -76,6 +81,9 @@ internal fun DetailsMetaInfo(
         country = movie.country,
         genres = movie.genres,
         studios = movieStudios,
+        directors = movieDirectors,
+        writers = movieWriters,
+        onPersonClick = onPersonClick,
     )
 }
 
@@ -90,7 +98,10 @@ private fun DetailsMetaInfo(
     languages: ImmutableList<String> = EmptyImmutableList,
     genres: ImmutableList<String> = EmptyImmutableList,
     studios: ImmutableList<String>? = null,
+    directors: ImmutableList<Person>? = null,
+    writers: ImmutableList<Person>? = null,
     episodeRowsOnly: Boolean = false,
+    onPersonClick: (person: Person) -> Unit = {},
 ) {
     val runtimeString = remember(runtime) {
         runtime?.inWholeMinutes?.durationFormat()
@@ -128,6 +139,37 @@ private fun DetailsMetaInfo(
             DetailsMeta(
                 title = stringResource(R.string.header_runtime),
                 values = listOf(runtimeString ?: "N/A"),
+                modifier = Modifier.weight(1F),
+            )
+        }
+
+        Row(
+            horizontalArrangement = spacedBy(16.dp),
+        ) {
+            DetailsMeta(
+                title = stringResource(R.string.text_directors),
+                values = (directors ?: EmptyImmutableList)
+                    .map { it.name }
+                    .ifEmpty { listOf("N/A") },
+                loading = directors == null,
+                onValueClick = { name ->
+                    (directors ?: EmptyImmutableList)
+                        .firstOrNull { it.name == name }
+                        ?.let(onPersonClick)
+                },
+                modifier = Modifier.weight(1F),
+            )
+            DetailsMeta(
+                title = stringResource(R.string.text_writers),
+                values = (writers ?: EmptyImmutableList)
+                    .map { it.name }
+                    .ifEmpty { listOf("N/A") },
+                loading = writers == null,
+                onValueClick = { name ->
+                    (writers ?: EmptyImmutableList)
+                        .firstOrNull { it.name == name }
+                        ?.let(onPersonClick)
+                },
                 modifier = Modifier.weight(1F),
             )
         }
@@ -196,6 +238,7 @@ private fun DetailsMeta(
     values: List<String>,
     modifier: Modifier = Modifier,
     loading: Boolean = false,
+    onValueClick: (value: String) -> Unit = {},
 ) {
     Column(
         horizontalAlignment = Alignment.Start,
@@ -227,6 +270,9 @@ private fun DetailsMeta(
                     color = TraktTheme.colors.textPrimary,
                     maxLines = 1,
                     overflow = Ellipsis,
+                    modifier = Modifier.onClick {
+                        onValueClick(value)
+                    },
                 )
             }
         }

@@ -21,6 +21,7 @@ import tv.trakt.trakt.core.summary.movies.features.extras.usecases.GetMovieExtra
 import tv.trakt.trakt.core.summary.movies.features.history.MovieHistoryViewModel
 import tv.trakt.trakt.core.summary.movies.features.history.usecases.GetMovieHistoryUseCase
 import tv.trakt.trakt.core.summary.movies.features.info.MovieInfoViewModel
+import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieCrewUseCase
 import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieStatsUseCase
 import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieStudiosUseCase
 import tv.trakt.trakt.core.summary.movies.features.lists.MovieListsViewModel
@@ -88,6 +89,13 @@ internal val movieDetailsModule = module {
 
     factory {
         GetMovieDirectorUseCase(
+            remoteSource = get(),
+            peopleLocalSource = get(),
+        )
+    }
+
+    factory {
+        GetMovieCrewUseCase(
             remoteSource = get(),
             peopleLocalSource = get(),
         )
@@ -183,6 +191,7 @@ internal val movieDetailsModule = module {
             movie = movie,
             getStatsUseCase = get(),
             getStudiosUseCase = get(),
+            getCrewUseCase = get(),
         )
     }
 
