@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -37,10 +36,10 @@ internal fun MetaViewItemView(
     Column(
         verticalArrangement = Arrangement.spacedBy(3.dp),
         modifier = modifier
-            .shadow(
-                elevation = 1.dp,
-                shape = cornerShape,
-            )
+//            .shadow(
+//                elevation = 1.dp,
+//                shape = cornerShape,
+//            )
             .background(
                 color = TraktTheme.colors.dialogOnContainer,
                 shape = cornerShape,
