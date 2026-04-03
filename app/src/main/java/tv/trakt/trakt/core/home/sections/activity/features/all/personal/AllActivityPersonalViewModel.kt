@@ -37,6 +37,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -57,6 +58,7 @@ import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
+import java.time.LocalDate
 
 @OptIn(FlowPreview::class)
 internal class AllActivityPersonalViewModel(
@@ -151,7 +153,12 @@ internal class AllActivityPersonalViewModel(
                     filter = filterState.value,
                 )
                 if (localItems.isNotEmpty()) {
-                    itemsState.update { localItems }
+                    itemsState.update {
+                        localItems
+                            .groupBy { it.activityAt.toLocalDay() }
+                            .mapValues { it.value.toImmutableList() }
+                            .toImmutableMap()
+                    }
                     loadingState.update { Done }
                 } else {
                     loadingState.update { Loading }
@@ -162,7 +169,12 @@ internal class AllActivityPersonalViewModel(
                     limit = HOME_ALL_LIMIT,
                     filter = filterState.value,
                 )
-                itemsState.update { remoteItems }
+                itemsState.update {
+                    remoteItems
+                        .groupBy { it.activityAt.toLocalDay() }
+                        .mapValues { it.value.toImmutableList() }
+                        .toImmutableMap()
+                }
 
                 hasMoreData = remoteItems.size >= HOME_ALL_LIMIT
             } catch (error: Exception) {
@@ -199,10 +211,14 @@ internal class AllActivityPersonalViewModel(
                 )
 
                 itemsState.update { items ->
-                    items
-                        ?.plus(nextData)
-                        ?.distinctBy { it.id }
-                        ?.toImmutableList()
+                    val currentItems = items ?: emptyMap()
+
+                    val newItems = nextData
+                        .groupBy { it.activityAt.toLocalDay() }
+                        .mapValues { it.value.toImmutableList() }
+
+                    (currentItems + newItems)
+                        .toImmutableMap()
                 }
 
                 pages += 1
@@ -263,16 +279,19 @@ internal class AllActivityPersonalViewModel(
 
     fun removeItem(item: HomeActivityItem) {
         itemsState.update {
-            it?.filterNot { existingItem -> existingItem.id == item.id }
-                ?.toImmutableList()
+            it?.mapValues { entry ->
+                entry.value
+                    .filterNot { existingItem -> existingItem.id == item.id }
+                    .toImmutableList()
+            }
+                ?.filterNot { entry -> entry.value.isEmpty() }
+                ?.toImmutableMap()
         }
     }
 
     fun setFilter(newFilter: MediaMode) {
-        viewModelScope.launch {
-            filterState.update { newFilter }
-            loadData()
-        }
+        filterState.update { newFilter }
+        loadData()
     }
 
     fun navigateToShow(show: Show) {
@@ -329,7 +348,7 @@ internal class AllActivityPersonalViewModel(
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
             itemsState.update {
-                emptyList<HomeActivityItem>().toImmutableList()
+                emptyMap<LocalDate, ImmutableList<HomeActivityItem>>().toImmutableMap()
             }
             loadingState.update { Done }
             return true
@@ -359,7 +378,7 @@ internal class AllActivityPersonalViewModel(
         errorState,
     ) { state ->
         AllActivityState(
-            items = state[0] as ImmutableList<HomeActivityItem>?,
+            items = state[0] as ImmutableMap<LocalDate, ImmutableList<HomeActivityItem>>?,
             itemsRatings = state[1] as? ImmutableMap<String, UserRating>,
             itemsFilter = state[2] as MediaMode?,
             navigateShow = state[3] as TraktId?,

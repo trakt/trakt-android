@@ -3,7 +3,9 @@ package tv.trakt.trakt.core.home.sections.activity.features.all.social
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,6 +26,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -35,6 +38,7 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.model.MediaMode
+import java.time.LocalDate
 
 internal class AllActivitySocialViewModel(
     private val getActivityUseCase: GetSocialActivityUseCase,
@@ -89,9 +93,11 @@ internal class AllActivitySocialViewModel(
                     loadUsersFilter(localItems)
                     itemsState.update {
                         val selectedUser = usersFilterState.value.selectedUser
-                        localItems.filter { items ->
-                            selectedUser?.let { items.user == it } ?: true
-                        }.toImmutableList()
+                        localItems
+                            .filter { items -> selectedUser?.let { items.user == it } ?: true }
+                            .groupBy { it.activityAt.toLocalDay() }
+                            .mapValues { it.value.toImmutableList() }
+                            .toImmutableMap()
                     }
                     loadingState.update { Done }
 
@@ -108,7 +114,12 @@ internal class AllActivitySocialViewModel(
                     filter = itemsFilterState.value,
                 )
                 loadUsersFilter(remoteItems)
-                itemsState.update { remoteItems }
+                itemsState.update {
+                    remoteItems
+                        .groupBy { it.activityAt.toLocalDay() }
+                        .mapValues { it.value.toImmutableList() }
+                        .toImmutableMap()
+                }
 
                 hasMoreData = remoteItems.size >= HOME_ALL_ACTIVITY_LIMIT
             } catch (error: Exception) {
@@ -167,7 +178,7 @@ internal class AllActivitySocialViewModel(
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
             itemsState.update {
-                emptyList<HomeActivityItem>().toImmutableList()
+                emptyMap<LocalDate, ImmutableList<HomeActivityItem>>().toImmutableMap()
             }
             loadingState.update { Done }
             return true
@@ -249,7 +260,7 @@ internal class AllActivitySocialViewModel(
         errorState,
     ) { state ->
         AllActivityState(
-            items = state[0] as ImmutableList<HomeActivityItem>?,
+            items = state[0] as ImmutableMap<LocalDate, ImmutableList<HomeActivityItem>>?,
             itemsFilter = state[1] as MediaMode?,
             usersFilter = state[2] as AllActivityState.UsersFilter,
             navigateShow = state[3] as TraktId?,

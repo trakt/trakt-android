@@ -18,8 +18,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
-import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.ratings.UserRating
@@ -71,7 +71,9 @@ internal fun AllActivityEpisodeItem(
                         modifier = Modifier.size(14.dp),
                     )
                     Text(
-                        text = item.activityAt.toLocal().relativePastDateString(),
+                        text = remember(item.activityAt) {
+                            item.activityAt.toLocal().format(longDateTimeFormat)
+                        },
                         color = TraktTheme.colors.textPrimary,
                         style = TraktTheme.typography.cardSubtitle.copy(
                             fontWeight = W500,

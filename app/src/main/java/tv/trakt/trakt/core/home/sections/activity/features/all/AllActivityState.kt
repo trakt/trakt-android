@@ -12,10 +12,11 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.main.model.MediaMode
+import java.time.LocalDate
 
 @Immutable
 internal data class AllActivityState(
-    val items: ImmutableList<HomeActivityItem>? = null,
+    val items: ImmutableMap<LocalDate, ImmutableList<HomeActivityItem>>? = null,
     val itemsRatings: ImmutableMap<String, UserRating>? = null,
     val itemsFilter: MediaMode? = null,
     val usersFilter: UsersFilter = UsersFilter(),

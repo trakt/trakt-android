@@ -40,11 +40,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.toImmutableMap
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
+import tv.trakt.trakt.common.helpers.extensions.longDateFormat
+import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
@@ -62,9 +67,12 @@ import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
+import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.components.chips.FilterChipGroup
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.time.LocalDate
+import java.time.ZoneId
 
 @Composable
 internal fun AllActivitySocialScreen(
@@ -187,7 +195,9 @@ internal fun AllActivitySocialContent(
 
         ContentList(
             listState = listState,
-            listItems = (state.items ?: emptyList()).toImmutableList(),
+            listItems = remember(state.items) {
+                (state.items ?: emptyMap()).toImmutableMap()
+            },
             listUsersFilters = state.usersFilter,
             listItemsFilters = state.itemsFilter,
             contentPadding = contentPadding,
@@ -205,7 +215,7 @@ internal fun AllActivitySocialContent(
 @Composable
 private fun ContentList(
     modifier: Modifier = Modifier,
-    listItems: ImmutableList<HomeActivityItem>,
+    listItems: ImmutableMap<LocalDate, ImmutableList<HomeActivityItem>>,
     listUsersFilters: AllActivityState.UsersFilter,
     listItemsFilters: MediaMode?,
     listState: LazyListState,
@@ -220,7 +230,9 @@ private fun ContentList(
 ) {
     val isScrolledToBottom by remember(listItems.size) {
         derivedStateOf {
-            listState.firstVisibleItemIndex >= (listItems.size - 5)
+            val layoutInfo = listState.layoutInfo
+            val lastVisibleIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+            lastVisibleIndex >= layoutInfo.totalItemsCount - 5
         }
     }
 
@@ -260,48 +272,76 @@ private fun ContentList(
             )
         }
 
-        items(
-            items = listItems,
-            key = { it.id },
-        ) { item ->
-            when (item) {
-                is MovieItem -> {
-                    AllActivityMovieItem(
-                        item = item,
-                        onClick = {
-                            onMovieClick(item.movie)
-                        },
-                        moreButton = false,
-                        modifier = Modifier
-                            .padding(
-                                start = TraktTheme.spacing.mainPageHorizontalSpace,
-                                end = TraktTheme.spacing.mainPageHorizontalSpace,
-                                bottom = TraktTheme.spacing.mainListVerticalSpace,
-                            )
-                            .animateItem(
-                                fadeInSpec = null,
-                                fadeOutSpec = null,
-                            ),
-                    )
-                }
+        val today = nowLocalDay()
+        listItems.keys.forEachIndexed { index, date ->
+            val itemsForDate = listItems[date] ?: EmptyImmutableList
 
-                is EpisodeItem -> {
-                    AllActivityEpisodeItem(
-                        item = item,
-                        onClick = { onEpisodeClick(item) },
-                        onShowClick = { onShowClick(item) },
-                        moreButton = false,
-                        modifier = Modifier
-                            .padding(
-                                start = TraktTheme.spacing.mainPageHorizontalSpace,
-                                end = TraktTheme.spacing.mainPageHorizontalSpace,
-                                bottom = TraktTheme.spacing.mainListVerticalSpace,
-                            )
-                            .animateItem(
-                                fadeInSpec = null,
-                                fadeOutSpec = null,
-                            ),
-                    )
+            item(key = "header-$date") {
+                TraktHeader(
+                    title = remember(today.dayOfYear) {
+                        if (today == date || today.minusDays(1) == date) {
+                            date.atStartOfDay(ZoneId.systemDefault())
+                                .relativePastDateString()
+                        } else {
+                            date.format(longDateFormat)
+                        }
+                    },
+                    modifier = Modifier
+                        .padding(
+                            top = when (index) {
+                                0 -> 0.dp
+                                else -> 16.dp
+                            },
+                            bottom = 12.dp,
+                            start = TraktTheme.spacing.mainPageHorizontalSpace,
+                            end = TraktTheme.spacing.mainPageHorizontalSpace,
+                        ),
+                )
+            }
+
+            items(
+                items = itemsForDate,
+                key = { it.id },
+            ) { item ->
+                when (item) {
+                    is MovieItem -> {
+                        AllActivityMovieItem(
+                            item = item,
+                            onClick = {
+                                onMovieClick(item.movie)
+                            },
+                            moreButton = false,
+                            modifier = Modifier
+                                .padding(
+                                    start = TraktTheme.spacing.mainPageHorizontalSpace,
+                                    end = TraktTheme.spacing.mainPageHorizontalSpace,
+                                    bottom = TraktTheme.spacing.mainListVerticalSpace,
+                                )
+                                .animateItem(
+                                    fadeInSpec = null,
+                                    fadeOutSpec = null,
+                                ),
+                        )
+                    }
+
+                    is EpisodeItem -> {
+                        AllActivityEpisodeItem(
+                            item = item,
+                            onClick = { onEpisodeClick(item) },
+                            onShowClick = { onShowClick(item) },
+                            moreButton = false,
+                            modifier = Modifier
+                                .padding(
+                                    start = TraktTheme.spacing.mainPageHorizontalSpace,
+                                    end = TraktTheme.spacing.mainPageHorizontalSpace,
+                                    bottom = TraktTheme.spacing.mainListVerticalSpace,
+                                )
+                                .animateItem(
+                                    fadeInSpec = null,
+                                    fadeOutSpec = null,
+                                ),
+                        )
+                    }
                 }
             }
         }
@@ -320,7 +360,7 @@ private fun ContentFilters(
             start = TraktTheme.spacing.mainPageHorizontalSpace,
             end = TraktTheme.spacing.mainPageHorizontalSpace,
         ),
-        paddingVertical = PaddingValues(bottom = 22.dp),
+        paddingVertical = PaddingValues(bottom = 20.dp),
     ) {
         for (filter in MediaMode.entries) {
             FilterChip(
