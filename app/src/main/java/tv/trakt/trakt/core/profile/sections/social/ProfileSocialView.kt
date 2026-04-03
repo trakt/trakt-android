@@ -91,7 +91,7 @@ internal fun ProfileSocialContent(
     ) {
         TraktSectionHeader(
             title = stringResource(R.string.list_title_social),
-            chevron = !state.items.isNullOrEmpty() || state.loading != Done,
+            chevron = false,
             collapsed = state.collapsed ?: false,
             onCollapseClick = {
                 animateCollapse = true
