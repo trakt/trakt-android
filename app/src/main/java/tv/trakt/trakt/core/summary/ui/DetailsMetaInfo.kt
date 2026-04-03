@@ -18,6 +18,7 @@ import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
@@ -41,7 +42,9 @@ internal fun DetailsMetaInfo(
 ) {
     DetailsMetaInfo(
         modifier = modifier,
-        released = show.released?.toLocalDate(),
+        released = remember(show.released) {
+            show.released?.toLocal()?.toLocalDate()
+        },
         runtime = show.runtime,
         status = show.status,
         languages = show.languages,
@@ -65,7 +68,9 @@ internal fun DetailsMetaInfo(
 ) {
     DetailsMetaInfo(
         modifier = modifier,
-        released = episode.firstAired?.toLocalDate(),
+        released = remember(episode.firstAired) {
+            episode.firstAired?.toLocal()?.toLocalDate()
+        },
         runtime = episode.runtime,
         directors = episodeDirectors,
         writers = episodeWriters,
