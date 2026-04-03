@@ -9,7 +9,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -33,6 +32,7 @@ import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source.AllHomeUpNext
@@ -71,6 +71,7 @@ internal class AllHomeUpNextViewModel(
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(Idle)
+    private val userState = MutableStateFlow(initialState.user)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -81,6 +82,7 @@ internal class AllHomeUpNextViewModel(
     private var hasMoreData: Boolean = true
 
     init {
+        loadUser()
         loadData()
         observeData()
 
@@ -102,6 +104,20 @@ internal class AllHomeUpNextViewModel(
             .debounce(200)
             .onEach { loadData(ignoreErrors = true) }
             .launchIn(viewModelScope)
+    }
+
+    private fun loadUser() {
+        viewModelScope.launch {
+            try {
+                userState.update {
+                    sessionManager.getProfile()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
     }
 
     private fun loadData(ignoreErrors: Boolean = false) {
@@ -345,10 +361,11 @@ internal class AllHomeUpNextViewModel(
     }
 
     @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<AllHomeUpNextState> = combine(
+    val state = combine(
         itemsState,
         loadingState,
         loadingMoreState,
+        userState,
         infoState,
         errorState,
     ) { state ->
@@ -356,8 +373,9 @@ internal class AllHomeUpNextViewModel(
             items = state[0] as ImmutableList<ProgressShow>?,
             loading = state[1] as LoadingState,
             loadingMore = state[2] as LoadingState,
-            info = state[3] as StringResource?,
-            error = state[4] as Exception?,
+            user = state[3] as User?,
+            info = state[4] as StringResource?,
+            error = state[5] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

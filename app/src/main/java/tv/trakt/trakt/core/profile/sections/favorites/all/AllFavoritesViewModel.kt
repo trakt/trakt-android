@@ -30,6 +30,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.favorites.FavoritesUpdates
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.CONTEXT_SHEET
@@ -54,6 +55,7 @@ internal class AllFavoritesViewModel(
 ) : ViewModel() {
     private val initialState = AllFavoritesState()
 
+    private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialState.filter)
     private val sortingState = MutableStateFlow(initialState.sorting)
@@ -66,6 +68,7 @@ internal class AllFavoritesViewModel(
     private var processingJob: Job? = null
 
     init {
+        loadUser()
         loadData()
         observeData()
 
@@ -88,6 +91,20 @@ internal class AllFavoritesViewModel(
                 )
             }
             .launchIn(viewModelScope)
+    }
+
+    private fun loadUser() {
+        viewModelScope.launch {
+            try {
+                userState.update {
+                    sessionManager.getProfile()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
     }
 
     fun loadData(
@@ -227,6 +244,7 @@ internal class AllFavoritesViewModel(
         sortingState,
         navigateShow,
         navigateMovie,
+        userState,
         errorState,
     ) { state ->
         AllFavoritesState(
@@ -236,7 +254,8 @@ internal class AllFavoritesViewModel(
             sorting = state[3] as Sorting,
             navigateShow = state[4] as? TraktId,
             navigateMovie = state[5] as? TraktId,
-            error = state[6] as? Exception,
+            user = state[6] as? User,
+            error = state[7] as? Exception,
         )
     }.stateIn(
         scope = viewModelScope,

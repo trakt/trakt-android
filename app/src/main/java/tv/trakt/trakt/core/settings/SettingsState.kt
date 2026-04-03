@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.settings
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.notifications.model.DeliveryAdjustment
 
@@ -12,4 +13,5 @@ internal data class SettingsState(
     val notificationsDelivery: DeliveryAdjustment? = null,
     val accountLoading: LoadingState = LoadingState.Idle,
     val logoutLoading: LoadingState = LoadingState.Idle,
+    val info: StringResource? = null,
 )

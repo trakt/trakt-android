@@ -105,6 +105,7 @@ private fun DiscoverScreen(
     ) {
         ScrollableBackdropImage(
             scrollState = lazyListState,
+            imageUrl = state.user.user?.settings?.coverImage,
         )
 
         val listPadding = PaddingValues(

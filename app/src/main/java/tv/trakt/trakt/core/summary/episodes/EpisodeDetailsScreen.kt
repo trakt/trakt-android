@@ -56,6 +56,7 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
+import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
@@ -63,6 +64,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -70,6 +72,7 @@ import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
+import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
 import tv.trakt.trakt.core.summary.episodes.features.actors.EpisodeActorsView
 import tv.trakt.trakt.core.summary.episodes.features.comments.EpisodeCommentsView
 import tv.trakt.trakt.core.summary.episodes.features.context.history.EpisodeDetailsHistorySheet
@@ -114,6 +117,7 @@ internal fun EpisodeDetailsScreen(
     var confirmRemoveWatchedSheet by remember { mutableStateOf(false) }
     var dateSheet by remember { mutableStateOf(false) }
     var detailsSheet by remember { mutableStateOf<Pair<Show, Episode>?>(null) }
+    var coverImageSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.navigateEpisode) {
         state.navigateEpisode?.let {
@@ -198,6 +202,9 @@ internal fun EpisodeDetailsScreen(
                 context = context,
             )
         },
+        onCoverClick = {
+            coverImageSheet = true
+        },
         onDismiss = {
             contextSheet = false
         },
@@ -251,6 +258,30 @@ internal fun EpisodeDetailsScreen(
             }
         },
         onDismiss = { detailsSheet = null },
+    )
+
+    CoverImageSheet(
+        mediaId = when {
+            coverImageSheet -> state.episode?.ids?.trakt
+            else -> null
+        },
+        mediaTitle = state.show?.title ?: "",
+        mediaType = MediaType.EPISODE,
+        mediaImage = state.episode?.images?.getScreenshotUrl(),
+        onImageSet = {
+            scope.launch {
+                val info = DynamicStringResource(R.string.text_info_cover_set)
+                snack.showSnackbar(info.get(context))
+            }
+            coverImageSheet = false
+        },
+        onVipClick = {
+            onNavigateVip()
+            coverImageSheet = false
+        },
+        onDismiss = {
+            coverImageSheet = false
+        },
     )
 
     LaunchedEffect(state.info) {

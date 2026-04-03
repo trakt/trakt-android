@@ -265,6 +265,7 @@ internal fun AllWatchlistContent(
 
         ScrollableBackdropImage(
             translation = listScrollConnection.resultOffset,
+            imageUrl = state.user?.settings?.coverImage,
         )
 
         ContentList(

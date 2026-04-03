@@ -4,6 +4,7 @@ package tv.trakt.trakt.core.summary.shows.features.context.more
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,6 +48,7 @@ import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContex
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.buttons.WatchNowButton
+import tv.trakt.trakt.ui.components.vip.VipChip
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -59,6 +62,7 @@ internal fun ShowDetailsContextView(
     onRemoveClick: (() -> Unit)? = null,
     onCheckClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
+    onCoverClick: (() -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -71,6 +75,7 @@ internal fun ShowDetailsContextView(
         onRemoveClick = onRemoveClick,
         onCheckClick = onCheckClick,
         onListsClick = onListsClick,
+        onCoverClick = onCoverClick,
         modifier = modifier,
     )
 }
@@ -86,6 +91,7 @@ private fun ShowDetailsContextViewContent(
     onRemoveClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
+    onCoverClick: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
 
@@ -169,10 +175,13 @@ private fun ShowDetailsContextViewContent(
             released = isReleased,
             lists = lists,
             watchOnlyOnce = state.user?.settings?.watchOnlyOnce,
+            coverEnabled = !show.images?.getFanartUrl().isNullOrBlank(),
+            vip = state.user?.isAnyVip == true,
             onCheckClick = onCheckClick ?: {},
             onRemoveClick = onRemoveClick ?: {},
             onShareClick = onShareClick ?: {},
             onListsClick = onListsClick ?: {},
+            onCoverClick = onCoverClick ?: {},
             modifier = Modifier
                 .padding(top = 14.dp),
         )
@@ -224,9 +233,12 @@ private fun ActionButtons(
     released: Boolean,
     lists: Boolean,
     watchOnlyOnce: Boolean?,
+    coverEnabled: Boolean,
+    vip: Boolean,
     modifier: Modifier = Modifier,
     onCheckClick: () -> Unit,
     onShareClick: () -> Unit,
+    onCoverClick: () -> Unit,
     onRemoveClick: () -> Unit,
     onListsClick: () -> Unit,
 ) {
@@ -249,7 +261,7 @@ private fun ActionButtons(
                 },
                 enabled = released,
                 iconSize = 22.dp,
-                iconSpace = 16.dp,
+                iconSpace = 14.dp,
                 onClick = onCheckClick,
                 modifier = Modifier.graphicsLayer {
                     translationX = -4.dp.toPx()
@@ -265,7 +277,7 @@ private fun ActionButtons(
                 iconSpace = 15.5.dp,
                 modifier = Modifier
                     .graphicsLayer {
-                        translationX = -4.dp.toPx()
+                        translationX = -6.dp.toPx()
                     },
                 onClick = onRemoveClick,
             )
@@ -275,8 +287,8 @@ private fun ActionButtons(
             GhostButton(
                 text = stringResource(R.string.button_text_manage_lists),
                 icon = painterResource(R.drawable.ic_lists_off),
-                iconSize = 22.dp,
-                iconSpace = 16.dp,
+                iconSize = 21.dp,
+                iconSpace = 15.dp,
                 modifier = Modifier
                     .graphicsLayer {
                         translationX = -4.dp.toPx()
@@ -285,14 +297,35 @@ private fun ActionButtons(
             )
         }
 
+        Box(
+            contentAlignment = Alignment.CenterEnd,
+            modifier = Modifier
+                .graphicsLayer {
+                    translationX = -5.dp.toPx()
+                },
+        ) {
+            GhostButton(
+                text = stringResource(R.string.button_text_cover_image),
+                icon = painterResource(R.drawable.ic_image),
+                iconSize = 22.dp,
+                iconSpace = 15.dp,
+                enabled = coverEnabled,
+                onClick = onCoverClick,
+            )
+
+            if (!vip) {
+                VipChip()
+            }
+        }
+
         GhostButton(
             text = stringResource(R.string.button_text_share),
             icon = painterResource(R.drawable.ic_share),
             iconSize = 22.dp,
-            iconSpace = 16.dp,
+            iconSpace = 15.dp,
             modifier = Modifier
                 .graphicsLayer {
-                    translationX = -4.dp.toPx()
+                    translationX = -5.dp.toPx()
                 },
             onClick = onShareClick,
         )

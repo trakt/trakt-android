@@ -25,6 +25,7 @@ internal data class AllActivityState(
     val navigateMovie: TraktId? = null,
     val loading: LoadingState = LoadingState.Idle,
     val loadingMore: LoadingState = LoadingState.Idle,
+    val user: User? = null,
     val error: Exception? = null,
 ) {
     data class UsersFilter(

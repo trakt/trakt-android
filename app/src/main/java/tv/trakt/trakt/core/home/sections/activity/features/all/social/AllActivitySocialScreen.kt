@@ -191,6 +191,7 @@ internal fun AllActivitySocialContent(
 
         ScrollableBackdropImage(
             translation = listScrollConnection.resultOffset,
+            imageUrl = state.user?.settings?.coverImage,
         )
 
         ContentList(

@@ -33,6 +33,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
 import tv.trakt.trakt.core.lists.ListsConfig.WATCHLIST_PAGE_LIMIT
@@ -80,6 +81,7 @@ internal class AllWatchlistViewModel(
     private val initialState = AllWatchlistState()
     private val initialMode = modeManager.getMode()
 
+    private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialMode)
     private val sortingState = MutableStateFlow(initialState.sorting)
@@ -98,6 +100,7 @@ internal class AllWatchlistViewModel(
     private var hasMoreData: Boolean = true
 
     init {
+        loadUser()
         loadData()
 
         observeData()
@@ -127,6 +130,20 @@ internal class AllWatchlistViewModel(
     private fun observeCollection() {
         collectionStateProvider
             .launchIn(viewModelScope)
+    }
+
+    fun loadUser() {
+        viewModelScope.launch {
+            try {
+                userState.update {
+                    sessionManager.getProfile()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
     }
 
     fun loadData(ignoreErrors: Boolean = false) {
@@ -402,6 +419,7 @@ internal class AllWatchlistViewModel(
         collectionStateProvider.stateFlow,
         navigateShow,
         navigateMovie,
+        userState,
         infoState,
         errorState,
     ) { state ->
@@ -414,8 +432,9 @@ internal class AllWatchlistViewModel(
             collection = state[5] as UserCollectionState,
             navigateShow = state[6] as? TraktId,
             navigateMovie = state[7] as? TraktId,
-            info = state[8] as? StringResource,
-            error = state[9] as? Exception,
+            user = state[8] as? User,
+            info = state[9] as? StringResource,
+            error = state[10] as? Exception,
         )
     }.stateIn(
         scope = viewModelScope,

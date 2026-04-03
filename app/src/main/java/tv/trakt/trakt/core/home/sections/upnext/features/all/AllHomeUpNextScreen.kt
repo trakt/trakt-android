@@ -202,6 +202,7 @@ internal fun AllHomeUpNextContent(
 
         ScrollableBackdropImage(
             translation = listScrollConnection.resultOffset,
+            imageUrl = state.user?.settings?.coverImage,
         )
 
         ContentList(

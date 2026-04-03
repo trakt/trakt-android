@@ -1,5 +1,7 @@
 package tv.trakt.trakt.common.core.user.data.remote
 
+import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.networking.SyncLibraryMediaDto
 import tv.trakt.trakt.common.networking.UserWatchingDto
@@ -30,4 +32,9 @@ interface UserRemoteDataSource {
     suspend fun updateProfileAbout(about: String?)
 
     suspend fun updateMultiplePlays(enabled: Boolean)
+
+    suspend fun updateCoverImage(
+        mediaId: TraktId?,
+        mediaType: MediaType?,
+    )
 }

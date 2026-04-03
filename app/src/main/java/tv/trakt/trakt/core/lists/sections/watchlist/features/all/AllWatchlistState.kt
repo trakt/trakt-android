@@ -5,6 +5,7 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.main.model.MediaMode
@@ -20,6 +21,7 @@ internal data class AllWatchlistState(
     val navigateMovie: TraktId? = null,
     val loading: LoadingState = LoadingState.Idle,
     val loadingMore: LoadingState = LoadingState.Idle,
+    val user: User? = null,
     val info: StringResource? = null,
     val error: Exception? = null,
 )

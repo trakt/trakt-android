@@ -312,6 +312,7 @@ private fun DetailsMeta(
             color = TraktTheme.colors.textSecondary,
             maxLines = 1,
             overflow = Ellipsis,
+            modifier = Modifier.padding(bottom = 1.dp),
         )
         if (loading) {
             FilmProgressIndicator(

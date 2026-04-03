@@ -200,6 +200,7 @@ private fun ProfileScreen(
     ) {
         ScrollableBackdropImage(
             translation = listScrollConnection.resultOffset,
+            imageUrl = state.user?.settings?.coverImage,
         )
 
         LazyColumn(

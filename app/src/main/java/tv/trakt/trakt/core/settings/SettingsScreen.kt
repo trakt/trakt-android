@@ -31,6 +31,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarDuration.Short
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,8 +45,11 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -59,6 +63,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import timber.log.Timber
 import tv.trakt.trakt.BuildConfig
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -93,6 +98,9 @@ internal fun SettingsScreen(
     onNavigateBack: () -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
+    val snackbar = LocalSnackbarState.current
+    val haptic = LocalHapticFeedback.current
+    val resources = LocalResources.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -104,6 +112,17 @@ internal fun SettingsScreen(
         }
     }
 
+    LaunchedEffect(state.info) {
+        if (state.info != null) {
+            haptic.performHapticFeedback(Confirm)
+            snackbar.showSnackbar(
+                message = resources.getString(R.string.text_info_cover_removed),
+                duration = Short,
+            )
+            viewModel.clearInfo()
+        }
+    }
+
     SettingsScreenContent(
         state = state,
         onSetDisplayName = viewModel::updateUserDisplayName,
@@ -112,6 +131,7 @@ internal fun SettingsScreen(
         onEnableMultiplePlays = viewModel::enableMultiplePlays,
         onEnableNotifications = viewModel::enableNotifications,
         onSetDeliveryTime = viewModel::setNotificationDeliveryTime,
+        onClearCoverImage = viewModel::clearCoverImage,
         onYounifyClick = onNavigateYounify,
         onGithubClick = {
             uriHandler.openUri(Config.WEB_SOCIAL_GITHUB_URL)
@@ -154,6 +174,7 @@ private fun SettingsScreenContent(
     onSetDisplayName: (String?) -> Unit = { },
     onSetLocation: (String?) -> Unit = { },
     onSetAbout: (String?) -> Unit = { },
+    onClearCoverImage: () -> Unit = { },
     onYounifyClick: () -> Unit = { },
     onEnableMultiplePlays: (Boolean) -> Unit = { },
     onEnableNotifications: (Boolean) -> Unit = { },
@@ -189,6 +210,7 @@ private fun SettingsScreenContent(
     ) {
         ScrollableBackdropImage(
             translation = scrollConnection.resultOffset,
+            imageUrl = state.user?.settings?.coverImage,
         )
 
         Column(
@@ -221,6 +243,7 @@ private fun SettingsScreenContent(
                     onSetDisplayName = onSetDisplayName,
                     onSetLocation = onSetLocation,
                     onSetAbout = onSetAbout,
+                    onClearCoverImage = onClearCoverImage,
                 )
 
                 SettingsTracking(
@@ -323,6 +346,7 @@ private fun SettingsAccount(
     onSetDisplayName: (String?) -> Unit = { },
     onSetLocation: (String?) -> Unit = { },
     onSetAbout: (String?) -> Unit = { },
+    onClearCoverImage: () -> Unit = { },
 ) {
     var displayNameSheet by remember { mutableStateOf<String?>(null) }
     var locationSheet by remember { mutableStateOf<String?>(null) }
@@ -379,6 +403,17 @@ private fun SettingsAccount(
                 aboutSheet = state.user?.about
             },
         )
+
+        if (!state.user?.settings?.coverImage.isNullOrBlank()) {
+            SettingsTextField(
+                text = "Clear Cover Image",
+                description = "Clear current cover image and return to the default.",
+                icon = null,
+                enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
+                onClick = onClearCoverImage,
+                modifier = Modifier.padding(top = 8.dp),
+            )
+        }
     }
 
     // Sheets
@@ -772,6 +807,7 @@ private fun Preview() {
                 user = PreviewData.user1.copy(
                     settings = User.Settings(
                         watchOnlyOnce = true,
+                        coverImage = null,
                     ),
                 ),
             ),

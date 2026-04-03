@@ -72,6 +72,7 @@ internal val discoverModule = module {
             savedStateHandle = get(),
             analytics = get(),
             modeManager = get(),
+            sessionManager = get(),
             getShowsUseCase = when {
                 customTheme -> get(named("customAllDiscoverShowsUseCase"))
                 else -> get(named("defaultAllDiscoverShowsUseCase"))

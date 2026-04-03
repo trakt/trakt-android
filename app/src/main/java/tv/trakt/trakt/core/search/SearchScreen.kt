@@ -173,6 +173,7 @@ private fun SearchScreenContent(
     ) {
         ScrollableBackdropImage(
             scrollState = contentGridState,
+            imageUrl = state.user.user?.settings?.coverImage,
         )
 
         ContentList(

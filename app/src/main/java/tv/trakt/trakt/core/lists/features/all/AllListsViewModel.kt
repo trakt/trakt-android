@@ -32,6 +32,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.lists.ListsConfig
 import tv.trakt.trakt.core.lists.features.all.navigation.AllListsDestination
@@ -61,6 +62,7 @@ internal class AllListsViewModel(
 
     private val initialState = AllListsState()
 
+    private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(destination.initialFilter)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -73,8 +75,10 @@ internal class AllListsViewModel(
     private var dataJob: Job? = null
 
     init {
-        observeLists()
+        loadUser()
         loadData()
+
+        observeLists()
 
         analytics.logScreenView(
             screenName = "all_lists",
@@ -91,6 +95,20 @@ internal class AllListsViewModel(
             .debounce(200)
             .onEach { loadData() }
             .launchIn(viewModelScope)
+    }
+
+    fun loadUser() {
+        viewModelScope.launch {
+            try {
+                userState.update {
+                    sessionManager.getProfile()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
     }
 
     fun loadData(reload: Boolean = false) {
@@ -247,6 +265,7 @@ internal class AllListsViewModel(
         filterState,
         loadingState,
         loadingMoreState,
+        userState,
         errorState,
     ) { state ->
         AllListsState(
@@ -254,7 +273,8 @@ internal class AllListsViewModel(
             filter = state[1] as PersonalListType?,
             loading = state[2] as LoadingState,
             loadingMore = state[3] as LoadingState,
-            error = state[4] as Exception?,
+            user = state[4] as User?,
+            error = state[5] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

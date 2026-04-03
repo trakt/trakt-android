@@ -59,6 +59,7 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
+import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.customAnnotatedString
 import tv.trakt.trakt.common.helpers.extensions.ifOrElse
@@ -68,6 +69,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -75,6 +77,7 @@ import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
+import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
 import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsView
 import tv.trakt.trakt.core.summary.shows.features.comments.ShowCommentsView
 import tv.trakt.trakt.core.summary.shows.features.context.history.ShowDetailsHistorySheet
@@ -131,6 +134,7 @@ internal fun ShowDetailsScreen(
     var confirmRemoveWatchedSheet by remember { mutableStateOf(false) }
     var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
     var dateSheet by remember { mutableStateOf(false) }
+    var coverImageSheet by remember { mutableStateOf<Show?>(null) }
 
     ShowDetailsContent(
         state = state,
@@ -258,6 +262,9 @@ internal fun ShowDetailsScreen(
         onListsClick = {
             listsSheet = state.show
         },
+        onCoverClick = {
+            coverImageSheet = state.show
+        },
         onDismiss = {
             contextSheet = null
         },
@@ -331,6 +338,27 @@ internal fun ShowDetailsScreen(
         onResult = viewModel::addToWatched,
         onDismiss = {
             dateSheet = false
+        },
+    )
+
+    CoverImageSheet(
+        mediaId = coverImageSheet?.ids?.trakt,
+        mediaTitle = coverImageSheet?.title ?: "",
+        mediaType = MediaType.SHOW,
+        mediaImage = state.show?.images?.getFanartUrl(),
+        onImageSet = {
+            scope.launch {
+                val info = DynamicStringResource(R.string.text_info_cover_set)
+                snack.showSnackbar(info.get(context))
+            }
+            coverImageSheet = null
+        },
+        onVipClick = {
+            onNavigateVip()
+            coverImageSheet = null
+        },
+        onDismiss = {
+            coverImageSheet = null
         },
     )
 

@@ -2,9 +2,12 @@ package tv.trakt.trakt.common.core.user.data.remote
 
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
+import org.openapitools.client.models.PutUsersCoverRequest
 import org.openapitools.client.models.PutUsersSaveSettingsRequest
 import org.openapitools.client.models.PutUsersSaveSettingsRequestBrowsing
 import org.openapitools.client.models.PutUsersSaveSettingsRequestUser
+import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.networking.SyncLibraryMediaDto
@@ -78,6 +81,37 @@ class UserApiClient(
                 browsing = PutUsersSaveSettingsRequestBrowsing(
                     watchOnlyOnce = !enabled,
                 ),
+            ),
+        )
+
+        cacheMarkerProvider.invalidate()
+    }
+
+    override suspend fun updateCoverImage(
+        mediaId: TraktId?,
+        mediaType: MediaType?,
+    ) {
+        if (mediaId == null || mediaType == null) {
+            // Clear the custom cover image
+            usersApi.putUsersCover(
+                putUsersCoverRequest = PutUsersCoverRequest(
+                    coverId = 0,
+                    coverType = PutUsersCoverRequest.CoverType.SHOW,
+                ),
+            )
+            cacheMarkerProvider.invalidate()
+            return
+        }
+
+        usersApi.putUsersCover(
+            putUsersCoverRequest = PutUsersCoverRequest(
+                coverId = mediaId.value,
+                coverType = when (mediaType) {
+                    MediaType.SHOW -> PutUsersCoverRequest.CoverType.SHOW
+                    MediaType.MOVIE -> PutUsersCoverRequest.CoverType.MOVIE
+                    MediaType.EPISODE -> PutUsersCoverRequest.CoverType.EPISODE
+                    else -> throw IllegalStateException("Unsupported media type for cover image: $mediaType")
+                },
             ),
         )
 

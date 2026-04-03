@@ -56,18 +56,21 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
+import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
+import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
 import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsView
 import tv.trakt.trakt.core.summary.movies.features.comments.MovieCommentsView
 import tv.trakt.trakt.core.summary.movies.features.context.history.MovieDetailsHistorySheet
@@ -120,6 +123,7 @@ internal fun MovieDetailsScreen(
     var confirmRemoveWatchedSheet by remember { mutableStateOf(false) }
     var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
     var dateSheet by remember { mutableStateOf(false) }
+    var coverImageSheet by remember { mutableStateOf<Movie?>(null) }
 
     MovieDetailsContent(
         state = state,
@@ -260,6 +264,9 @@ internal fun MovieDetailsScreen(
         onListsClick = {
             listsSheet = state.movie
         },
+        onCoverClick = {
+            coverImageSheet = state.movie
+        },
         onDismiss = {
             contextSheet = null
         },
@@ -283,6 +290,27 @@ internal fun MovieDetailsScreen(
         onResult = viewModel::addToWatched,
         onDismiss = {
             dateSheet = false
+        },
+    )
+
+    CoverImageSheet(
+        mediaId = coverImageSheet?.ids?.trakt,
+        mediaTitle = coverImageSheet?.title ?: "",
+        mediaType = MediaType.MOVIE,
+        mediaImage = state.movie?.images?.getFanartUrl(),
+        onImageSet = {
+            scope.launch {
+                val info = DynamicStringResource(R.string.text_info_cover_set)
+                snack.showSnackbar(info.get(context))
+            }
+            coverImageSheet = null
+        },
+        onVipClick = {
+            onNavigateVip()
+            coverImageSheet = null
+        },
+        onDismiss = {
+            coverImageSheet = null
         },
     )
 

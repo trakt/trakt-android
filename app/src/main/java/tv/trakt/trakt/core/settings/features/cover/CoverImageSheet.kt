@@ -1,6 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
-package tv.trakt.trakt.core.summary.episodes.features.context.more
+package tv.trakt.trakt.core.settings.features.cover
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,42 +11,53 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
-import tv.trakt.trakt.common.model.Episode
-import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.ui.components.TraktBottomSheet
-import kotlin.random.Random.Default.nextInt
+import kotlin.random.Random
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun EpisodeDetailsContextSheet(
+internal fun CoverImageSheet(
     state: SheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true,
     ),
-    active: Boolean,
-    show: Show?,
-    episode: Episode?,
-    watched: Boolean,
-    onCheckClick: (() -> Unit)? = null,
-    onRemoveClick: (() -> Unit)? = null,
-    onShareClick: (() -> Unit)? = null,
-    onCoverClick: (() -> Unit)? = null,
+    mediaId: TraktId?,
+    mediaTitle: String,
+    mediaType: MediaType,
+    mediaImage: String?,
+    onImageSet: () -> Unit,
     onDismiss: () -> Unit,
+    onVipClick: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
 
-    if (active && show != null && episode != null) {
+    if (mediaId != null) {
         TraktBottomSheet(
             sheetState = state,
             onDismiss = onDismiss,
         ) {
-            EpisodeDetailsContextView(
-                episode = episode,
-                watched = watched,
+            CoverImageView(
                 viewModel = koinViewModel(
-                    key = nextInt().toString(),
-                    parameters = { parametersOf(show, episode) },
+                    key = Random.nextInt().toString(),
+                    parameters = {
+                        parametersOf(
+                            mediaId,
+                            mediaTitle,
+                            mediaType,
+                            mediaImage,
+                        )
+                    },
                 ),
-                onCheckClick = {
-                    onCheckClick?.invoke()
+                onImageSet = {
+                    sheetScope.launch { state.hide() }
+                        .invokeOnCompletion {
+                            if (!state.isVisible) {
+                                onImageSet()
+                            }
+                        }
+                },
+                onDismiss = {
                     sheetScope.launch { state.hide() }
                         .invokeOnCompletion {
                             if (!state.isVisible) {
@@ -56,36 +65,17 @@ internal fun EpisodeDetailsContextSheet(
                             }
                         }
                 },
-                onRemoveClick = {
-                    onRemoveClick?.invoke()
+                onVipClick = {
                     sheetScope.launch { state.hide() }
                         .invokeOnCompletion {
                             if (!state.isVisible) {
-                                onDismiss()
-                            }
-                        }
-                },
-                onShareClick = {
-                    onShareClick?.invoke()
-                    sheetScope.launch { state.hide() }
-                        .invokeOnCompletion {
-                            if (!state.isVisible) {
-                                onDismiss()
-                            }
-                        }
-                },
-                onCoverClick = {
-                    onCoverClick?.invoke()
-                    sheetScope.launch { state.hide() }
-                        .invokeOnCompletion {
-                            if (!state.isVisible) {
-                                onDismiss()
+                                onVipClick()
                             }
                         }
                 },
                 modifier = Modifier
-                    .padding(bottom = 24.dp)
-                    .padding(horizontal = 24.dp),
+                    .padding(horizontal = 24.dp)
+                    .padding(bottom = 24.dp),
             )
         }
     }

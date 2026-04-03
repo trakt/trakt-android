@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -90,10 +91,10 @@ internal class AllHomeWatchlistViewModel(
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
+    private val userState = MutableStateFlow(initialState.user)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
 
-    private var user: User? = null
     private var dataJob: Job? = null
     private var processingJob: Job? = null
 
@@ -107,13 +108,14 @@ internal class AllHomeWatchlistViewModel(
 
     private fun observeUser() {
         viewModelScope.launch {
-            user = sessionManager.getProfile()
+            userState.update { sessionManager.getProfile() }
             sessionManager.observeProfile()
                 .drop(1)
                 .distinctUntilChanged()
                 .debounce(200)
-                .collect {
-                    user = it
+                .onStart { }
+                .collect { user ->
+                    userState.update { user }
                     loadData()
                 }
         }
@@ -545,6 +547,7 @@ internal class AllHomeWatchlistViewModel(
         itemsState,
         filterState,
         loadingState,
+        userState,
         infoState,
         errorState,
         navigateMovie,
@@ -554,10 +557,11 @@ internal class AllHomeWatchlistViewModel(
             items = state[0] as ImmutableList<WatchlistItem>?,
             filter = state[1] as MediaMode,
             loading = state[2] as LoadingState,
-            info = state[3] as StringResource?,
-            error = state[4] as Exception?,
-            navigateMovie = state[5] as TraktId?,
-            navigateShow = state[6] as TraktId?,
+            user = state[3] as User?,
+            info = state[4] as StringResource?,
+            error = state[5] as Exception?,
+            navigateMovie = state[6] as TraktId?,
+            navigateShow = state[7] as TraktId?,
         )
     }.stateIn(
         scope = viewModelScope,

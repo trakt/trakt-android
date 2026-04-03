@@ -42,6 +42,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
@@ -87,6 +88,7 @@ internal class AllActivityPersonalViewModel(
         },
     )
 
+    private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val itemsRatingsState = MutableStateFlow(initialState.itemsRatings)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
@@ -103,6 +105,7 @@ internal class AllActivityPersonalViewModel(
     private var processingJob: Job? = null
 
     init {
+        loadUser()
         loadData()
         loadUserRatingData()
 
@@ -138,6 +141,20 @@ internal class AllActivityPersonalViewModel(
             .onEach {
                 loadUserRatingData(ignoreErrors = true)
             }.launchIn(viewModelScope)
+    }
+
+    private fun loadUser() {
+        viewModelScope.launch {
+            try {
+                userState.update {
+                    sessionManager.getProfile()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
     }
 
     private fun loadData(ignoreErrors: Boolean = false) {
@@ -375,6 +392,7 @@ internal class AllActivityPersonalViewModel(
         navigateMovie,
         loadingState,
         loadingMoreState,
+        userState,
         errorState,
     ) { state ->
         AllActivityState(
@@ -386,7 +404,8 @@ internal class AllActivityPersonalViewModel(
             navigateMovie = state[5] as TraktId?,
             loading = state[6] as LoadingState,
             loadingMore = state[7] as LoadingState,
-            error = state[8] as Exception?,
+            user = state[8] as? User,
+            error = state[9] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -19,11 +19,13 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
+import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.interleave
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.model.DiscoverSection
 import tv.trakt.trakt.core.discover.sections.all.navigation.DiscoverDestination
@@ -38,6 +40,7 @@ import tv.trakt.trakt.core.user.UserCollectionState
 internal class AllDiscoverViewModel(
     savedStateHandle: SavedStateHandle,
     analytics: Analytics,
+    private val sessionManager: SessionManager,
     private val modeManager: MediaModeManager,
     private val getShowsUseCase: GetAllDiscoverShowsUseCase,
     private val getMoviesUseCase: GetAllDiscoverMoviesUseCase,
@@ -48,6 +51,7 @@ internal class AllDiscoverViewModel(
     private val initialState = AllDiscoverState()
     private val initialMode = modeManager.getMode()
 
+    private val userState = MutableStateFlow(initialState.user)
     private val modeState = MutableStateFlow(initialMode)
     private val filterState = MutableStateFlow(initialMode)
     private val typeState = MutableStateFlow(destination.source)
@@ -59,6 +63,7 @@ internal class AllDiscoverViewModel(
     private var currentPage: Int = 1
 
     init {
+        loadUser()
         loadData()
 
         observeMode()
@@ -81,6 +86,20 @@ internal class AllDiscoverViewModel(
     private fun observeData() {
         collectionStateProvider
             .launchIn(viewModelScope)
+    }
+
+    private fun loadUser() {
+        viewModelScope.launch {
+            try {
+                userState.update {
+                    sessionManager.getProfile()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
     }
 
     private fun loadData() {
@@ -200,6 +219,7 @@ internal class AllDiscoverViewModel(
         itemsState,
         loadingState,
         loadingMoreState,
+        userState,
         errorState,
     ) { state ->
         AllDiscoverState(
@@ -210,7 +230,8 @@ internal class AllDiscoverViewModel(
             items = state[4] as ImmutableList<DiscoverItem>?,
             loading = state[5] as LoadingState,
             loadingMore = state[6] as LoadingState,
-            error = state[7] as Exception?,
+            user = state[7] as? User,
+            error = state[8] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

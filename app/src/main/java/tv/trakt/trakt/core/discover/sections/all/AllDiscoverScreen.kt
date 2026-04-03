@@ -125,6 +125,7 @@ private fun AllDiscoverScreenContent(
     ) {
         ScrollableBackdropImage(
             translation = listScrollConnection.resultOffset,
+            imageUrl = state.user?.settings?.coverImage,
         )
 
         AllDiscoverListView(

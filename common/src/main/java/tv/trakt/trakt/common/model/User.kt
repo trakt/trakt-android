@@ -5,7 +5,6 @@ import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.model.User.Companion
 import tv.trakt.trakt.common.networking.UserCommentsDto
-import tv.trakt.trakt.common.networking.UserDto
 import tv.trakt.trakt.common.networking.UserSettingsDto
 
 @Immutable
@@ -28,6 +27,7 @@ data class User(
     @Serializable
     data class Settings(
         val watchOnlyOnce: Boolean,
+        val coverImage: String?,
     )
 
     val isAnyVip: Boolean
@@ -62,30 +62,6 @@ data class User(
     companion object
 }
 
-fun Companion.fromDto(dto: UserDto): User {
-    return User(
-        ids = Ids(
-            trakt = dto.ids.trakt?.toTraktId() ?: TraktId(0),
-            slug = SlugId(dto.ids.slug),
-        ),
-        username = dto.username,
-        name = dto.name ?: "",
-        location = dto.location,
-        isPrivate = dto.private,
-        about = dto.about,
-        isVip = dto.vip,
-        isVipEp = dto.vipEp,
-        isVipOg = dto.vipOg,
-        images = User.Images(
-            avatar = dto.images.avatar.let {
-                User.Image(it.full)
-            },
-        ),
-        streamings = null,
-        settings = null,
-    )
-}
-
 fun Companion.fromDto(dto: UserSettingsDto): User {
     return User(
         ids = Ids(
@@ -114,6 +90,7 @@ fun Companion.fromDto(dto: UserSettingsDto): User {
         },
         settings = User.Settings(
             watchOnlyOnce = dto.browsing?.watchOnlyOnce ?: false,
+            coverImage = dto.user.vipCoverImage,
         ),
     )
 }

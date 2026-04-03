@@ -400,6 +400,13 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
             )
 
             VipOfferItem(
+                text = stringResource(R.string.text_vip_cover_upsell_1),
+                description = stringResource(R.string.text_vip_cover_upsell_2),
+                icon = painterResource(R.drawable.ic_image),
+                iconPadding = 2.dp,
+            )
+
+            VipOfferItem(
                 text = stringResource(R.string.vip_feature_title_early_access),
                 description = stringResource(R.string.vip_feature_description_early_access),
                 icon = painterResource(R.drawable.ic_vip_mobile),
@@ -527,6 +534,7 @@ private fun VipOfferItem(
                 text = text,
                 style = TraktTheme.typography.heading5,
                 color = TraktTheme.colors.textPrimary,
+                maxLines = 2,
             )
             Text(
                 text = description,

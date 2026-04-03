@@ -17,9 +17,12 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.Config.API_BASE_URL
+import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.notifications.usecases.EnableNotificationsUseCase
 import tv.trakt.trakt.core.notifications.usecases.UpdateNotificationsDeliveryUseCase
 import tv.trakt.trakt.core.settings.SettingsViewModel
+import tv.trakt.trakt.core.settings.features.cover.CoverImageViewModel
 import tv.trakt.trakt.core.settings.features.younify.YounifyViewModel
 import tv.trakt.trakt.core.settings.features.younify.data.remote.YounifyApiClient
 import tv.trakt.trakt.core.settings.features.younify.data.remote.YounifyRemoteDataSource
@@ -114,6 +117,24 @@ internal val settingsModule = module {
             refreshYounifyTokensUseCase = get(),
             refreshYounifyDataUseCase = get(),
             unlinkYounifyServiceUseCase = get(),
+        )
+    }
+
+    viewModel {
+        (
+            mediaId: TraktId,
+            mediaTitle: String,
+            mediaType: MediaType,
+            mediaImage: String?,
+        ),
+        ->
+        CoverImageViewModel(
+            mediaId = mediaId,
+            mediaTitle = mediaTitle,
+            mediaType = mediaType,
+            mediaImage = mediaImage,
+            updateUserSettingsUseCase = get(),
+            sessionManager = get(),
         )
     }
 }

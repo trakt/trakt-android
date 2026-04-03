@@ -53,7 +53,7 @@ private const val PARALLAX_RATIO = 0.75F
 internal fun ScrollableBackdropImage(
     modifier: Modifier = Modifier,
     imageUrl: String? = null,
-    imageAlpha: Float = 0.375F,
+    imageAlpha: Float = 0.4F,
     translation: Float,
 ) {
     BackdropImage(
@@ -77,7 +77,7 @@ internal fun ScrollableBackdropImage(
 
     BackdropImage(
         imageUrl = imageUrl,
-        imageAlpha = 0.375F,
+        imageAlpha = 0.4F,
         modifier = modifier.graphicsLayer {
             if (firstItemVisible) {
                 translationY = (-PARALLAX_RATIO * scrollState.firstVisibleItemScrollOffset)
@@ -100,7 +100,7 @@ internal fun ScrollableBackdropImage(
 
     BackdropImage(
         imageUrl = imageUrl,
-        imageAlpha = 0.375F,
+        imageAlpha = 0.4F,
         modifier = modifier.graphicsLayer {
             if (firstItemVisible) {
                 translationY = (-PARALLAX_RATIO * scrollState.firstVisibleItemScrollOffset)
@@ -116,7 +116,7 @@ internal fun ScrollableBackdropImage(
 private fun BackdropImage(
     imageUrl: String?,
     modifier: Modifier = Modifier,
-    imageAlpha: Float = 0.375F,
+    imageAlpha: Float = 0.4F,
 ) {
     val configuration = LocalConfiguration.current
     val activity = LocalActivity.current
@@ -127,18 +127,16 @@ private fun BackdropImage(
     val background = TraktTheme.colors.backgroundPrimary
 
     val imageUrl = remember(imageUrl) {
-        if (imageUrl.isNullOrBlank() && !inspection) {
-            val config = (activity as? MainActivity)?.customThemeConfig
+        val config = (activity as? MainActivity)?.customThemeConfig
 
-            val customThemeEnabled = config?.enabled == true
-            val customThemeBackground = config?.theme?.backgroundImageUrl
+        val customThemeEnabled = config?.enabled == true
+        val customThemeBackground = config?.theme?.backgroundImageUrl
 
-            when {
-                customThemeEnabled && !customThemeBackground.isNullOrBlank() -> customThemeBackground
-                else -> Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL).ifBlank { null }
-            }
-        } else {
-            imageUrl
+        when {
+            inspection -> imageUrl
+            customThemeEnabled && !customThemeBackground.isNullOrBlank() -> customThemeBackground
+            !imageUrl.isNullOrBlank() -> imageUrl
+            else -> Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL).ifBlank { null }
         }
     }
 

@@ -18,8 +18,11 @@ import timber.log.Timber
 import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
@@ -28,6 +31,7 @@ import tv.trakt.trakt.core.notifications.usecases.EnableNotificationsUseCase
 import tv.trakt.trakt.core.notifications.usecases.UpdateNotificationsDeliveryUseCase
 import tv.trakt.trakt.core.settings.usecases.UpdateUserSettingsUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
+import tv.trakt.trakt.resources.R
 
 internal class SettingsViewModel(
     private val appContext: Context,
@@ -45,6 +49,7 @@ internal class SettingsViewModel(
     private val notificationsDeliveryState = MutableStateFlow(initialState.notificationsDelivery)
     private val accountLoadingState = MutableStateFlow(initialState.accountLoading)
     private val logoutLoadingState = MutableStateFlow(initialState.logoutLoading)
+    private val infoState = MutableStateFlow(initialState.info)
 
     init {
         loadUser()
@@ -93,7 +98,7 @@ internal class SettingsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                accountLoadingState.update { LoadingState.Done }
+                accountLoadingState.update { Done }
             }
         }
     }
@@ -108,7 +113,7 @@ internal class SettingsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                accountLoadingState.update { LoadingState.Done }
+                accountLoadingState.update { Done }
             }
         }
     }
@@ -123,7 +128,7 @@ internal class SettingsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                accountLoadingState.update { LoadingState.Done }
+                accountLoadingState.update { Done }
             }
         }
     }
@@ -138,7 +143,7 @@ internal class SettingsViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                accountLoadingState.update { LoadingState.Done }
+                accountLoadingState.update { Done }
             }
         }
     }
@@ -181,6 +186,27 @@ internal class SettingsViewModel(
         }
     }
 
+    fun clearCoverImage() {
+        viewModelScope.launch {
+            try {
+                accountLoadingState.update { Loading }
+                updateSettingsUseCase.updateCoverImage(
+                    mediaId = null,
+                    mediaType = null,
+                )
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_cover_removed)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            } finally {
+                accountLoadingState.update { Done }
+            }
+        }
+    }
+
     fun logout() {
         viewModelScope.launch {
             try {
@@ -189,7 +215,7 @@ internal class SettingsViewModel(
                 logoutUseCase.logoutUser()
                 analytics.logUserLogout()
 
-                logoutLoadingState.update { LoadingState.Done }
+                logoutLoadingState.update { Done }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     logoutLoadingState.update { LoadingState.Idle }
@@ -199,12 +225,17 @@ internal class SettingsViewModel(
         }
     }
 
+    fun clearInfo() {
+        infoState.update { null }
+    }
+
     val state = combine(
         userState,
         notificationsState,
         notificationsDeliveryState,
         accountLoadingState,
         logoutLoadingState,
+        infoState,
     ) { state ->
         SettingsState(
             user = state[0] as User?,
@@ -212,6 +243,7 @@ internal class SettingsViewModel(
             notificationsDelivery = state[2] as DeliveryAdjustment?,
             accountLoading = state[3] as LoadingState,
             logoutLoading = state[4] as LoadingState,
+            info = state[5] as StringResource?,
         )
     }.stateIn(
         scope = viewModelScope,
