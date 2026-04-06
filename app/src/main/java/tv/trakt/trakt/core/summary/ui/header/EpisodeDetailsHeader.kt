@@ -190,7 +190,7 @@ internal fun DetailsHeader(
         onShareClick = onShareClick,
         extraRightColumn = {
             Row(
-                horizontalArrangement = spacedBy(18.dp),
+                horizontalArrangement = spacedBy(20.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(

@@ -96,7 +96,7 @@ fun DetailsHeaderPosterHorizontal(
             )
 
             Row(
-                horizontalArrangement = spacedBy(18.dp),
+                horizontalArrangement = spacedBy(20.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(

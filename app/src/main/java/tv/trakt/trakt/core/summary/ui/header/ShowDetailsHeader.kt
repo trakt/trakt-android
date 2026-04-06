@@ -145,7 +145,7 @@ internal fun DetailsHeader(
                 horizontalAlignment = CenterHorizontally,
                 verticalArrangement = spacedBy(18.dp),
                 modifier = Modifier
-                    .padding(top = 20.dp)
+                    .padding(top = 22.dp)
                     .fillMaxWidth(),
             ) {
                 Icon(
