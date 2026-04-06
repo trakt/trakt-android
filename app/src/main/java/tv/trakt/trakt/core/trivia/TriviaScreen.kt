@@ -141,7 +141,7 @@ private fun TriviaContent(
                             ),
                     )
                 }
-            } else {
+            } else if (state.loading.isDone) {
                 item {
                     ContentEmpty()
                 }
