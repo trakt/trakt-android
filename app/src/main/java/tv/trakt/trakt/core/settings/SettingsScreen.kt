@@ -43,11 +43,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.RadialGradientShader
-import androidx.compose.ui.graphics.Shader
-import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -71,8 +66,8 @@ import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.ui.theme.colors.Purple600
 import tv.trakt.trakt.common.ui.theme.colors.Red400
-import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.core.notifications.model.DeliveryAdjustment
 import tv.trakt.trakt.core.settings.features.notifications.AdjustNotificationTimeSheet
 import tv.trakt.trakt.core.settings.ui.SettingsSwitchField
@@ -675,7 +670,7 @@ private fun SettingsMisc(
             verticalAlignment = CenterVertically,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(top = 8.dp),
+                .padding(top = 12.dp),
         ) {
             Text(
                 text = stringResource(R.string.link_text_terms),
@@ -714,22 +709,6 @@ private fun SettingsMisc(
 private fun RateTraktView(modifier: Modifier = Modifier) {
     val context = LocalContext.current
 
-    val containerColor = TraktTheme.colors.sentimentsContainer
-    val radialGradient = remember {
-        object : ShaderBrush() {
-            override fun createShader(size: Size): Shader {
-                return RadialGradientShader(
-                    colors = listOf(
-                        containerColor,
-                        Shade920,
-                    ),
-                    center = Offset(size.width / 4, size.height * 1.5F),
-                    radius = size.width * 1.2F,
-                )
-            }
-        }
-    }
-
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = spacedBy(14.dp),
@@ -743,8 +722,8 @@ private fun RateTraktView(modifier: Modifier = Modifier) {
                 clip = false,
             )
             .background(
-                radialGradient,
-                RoundedCornerShape(22.dp),
+                color = Purple600,
+                shape = RoundedCornerShape(22.dp),
             )
             .padding(horizontal = 16.dp, vertical = 18.dp),
     ) {

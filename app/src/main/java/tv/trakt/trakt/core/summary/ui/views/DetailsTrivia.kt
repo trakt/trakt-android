@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -21,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -30,6 +33,7 @@ import androidx.compose.ui.graphics.RadialGradientShader
 import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W600
 import androidx.compose.ui.tooling.preview.Preview
@@ -117,6 +121,18 @@ internal fun DetailsTrivia(
         if (!vip) {
             GetVipView(
                 onVipClick = onVipClick,
+            )
+        }
+
+        if (vip) {
+            Icon(
+                painter = painterResource(R.drawable.ic_back_arrow),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .size(20.dp)
+                    .rotate(180F),
             )
         }
     }

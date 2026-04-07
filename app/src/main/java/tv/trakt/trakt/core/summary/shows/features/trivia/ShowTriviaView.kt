@@ -90,7 +90,7 @@ private fun ShowTriviaContent(
     ) {
         TraktSectionHeader(
             title = stringResource(R.string.list_title_trivia),
-            chevron = state.user?.isAnyVip == true,
+            chevron = false,
             collapsed = state.collapsed ?: false,
             onCollapseClick = {
                 animateCollapse = true
