@@ -694,6 +694,10 @@
                             "type": "integer",
                             "nullable": true
                           },
+                          "total_runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
                           "certification": {
                             "type": "string",
                             "nullable": true
@@ -1211,6 +1215,10 @@
                             "nullable": true
                           },
                           "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "total_runtime": {
                             "type": "integer",
                             "nullable": true
                           },
@@ -1734,6 +1742,10 @@
                             "type": "integer",
                             "nullable": true
                           },
+                          "total_runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
                           "certification": {
                             "type": "string",
                             "nullable": true
@@ -2251,6 +2263,10 @@
                             "nullable": true
                           },
                           "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "total_runtime": {
                             "type": "integer",
                             "nullable": true
                           },
@@ -3912,20 +3928,18 @@
                           "type": "object",
                           "properties": {
                             "twitter": {
-                              "type": "boolean"
+                              "type": "boolean",
+                              "nullable": true
                             },
                             "mastodon": {
-                              "type": "boolean"
+                              "type": "boolean",
+                              "nullable": true
                             },
                             "tumblr": {
-                              "type": "boolean"
+                              "type": "boolean",
+                              "nullable": true
                             }
-                          },
-                          "required": [
-                            "twitter",
-                            "mastodon",
-                            "tumblr"
-                          ]
+                          }
                         },
                         "episode": {
                           "type": "object",
@@ -4064,20 +4078,18 @@
                           "type": "object",
                           "properties": {
                             "twitter": {
-                              "type": "boolean"
+                              "type": "boolean",
+                              "nullable": true
                             },
                             "mastodon": {
-                              "type": "boolean"
+                              "type": "boolean",
+                              "nullable": true
                             },
                             "tumblr": {
-                              "type": "boolean"
+                              "type": "boolean",
+                              "nullable": true
                             }
-                          },
-                          "required": [
-                            "twitter",
-                            "mastodon",
-                            "tumblr"
-                          ]
+                          }
                         },
                         "movie": {
                           "type": "object",
@@ -5983,6 +5995,10 @@
                                     "type": "integer",
                                     "nullable": true
                                   },
+                                  "total_runtime": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
                                   "certification": {
                                     "type": "string",
                                     "nullable": true
@@ -6379,6 +6395,10 @@
                                     "type": "integer",
                                     "nullable": true
                                   },
+                                  "total_runtime": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
                                   "certification": {
                                     "type": "string",
                                     "nullable": true
@@ -6531,6 +6551,10 @@
                                   },
                                   "updated_at": {
                                     "type": "string",
+                                    "nullable": true
+                                  },
+                                  "total_runtime": {
+                                    "type": "integer",
                                     "nullable": true
                                   },
                                   "network": {
@@ -7552,6 +7576,10 @@
                                 "nullable": true
                               },
                               "runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "total_runtime": {
                                 "type": "integer",
                                 "nullable": true
                               },
@@ -9068,6 +9096,10 @@
                                 "type": "integer",
                                 "nullable": true
                               },
+                              "total_runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
                               "certification": {
                                 "type": "string",
                                 "nullable": true
@@ -9235,6 +9267,10 @@
                               },
                               "updated_at": {
                                 "type": "string",
+                                "nullable": true
+                              },
+                              "total_runtime": {
+                                "type": "integer",
                                 "nullable": true
                               },
                               "network": {
@@ -10352,6 +10388,10 @@
                               "nullable": true
                             },
                             "runtime": {
+                              "type": "integer",
+                              "nullable": true
+                            },
+                            "total_runtime": {
                               "type": "integer",
                               "nullable": true
                             },
@@ -11960,6 +12000,10 @@
                                   "type": "integer",
                                   "nullable": true
                                 },
+                                "total_runtime": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
                                 "certification": {
                                   "type": "string",
                                   "nullable": true
@@ -12589,6 +12633,10 @@
                                   "nullable": true
                                 },
                                 "runtime": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "total_runtime": {
                                   "type": "integer",
                                   "nullable": true
                                 },
@@ -13773,6 +13821,10 @@
                                   "type": "integer",
                                   "nullable": true
                                 },
+                                "total_runtime": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
                                 "certification": {
                                   "type": "string",
                                   "nullable": true
@@ -14402,6 +14454,10 @@
                                   "nullable": true
                                 },
                                 "runtime": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "total_runtime": {
                                   "type": "integer",
                                   "nullable": true
                                 },
@@ -15617,6 +15673,10 @@
                                 "type": "integer",
                                 "nullable": true
                               },
+                              "total_runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
                               "certification": {
                                 "type": "string",
                                 "nullable": true
@@ -16423,6 +16483,10 @@
                             "type": "integer",
                             "nullable": true
                           },
+                          "total_runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
                           "certification": {
                             "type": "string",
                             "nullable": true
@@ -16902,6 +16966,10 @@
                             "nullable": true
                           },
                           "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "total_runtime": {
                             "type": "integer",
                             "nullable": true
                           },
@@ -17725,6 +17793,10 @@
                             "type": "integer",
                             "nullable": true
                           },
+                          "total_runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
                           "certification": {
                             "type": "string",
                             "nullable": true
@@ -18212,6 +18284,10 @@
                             "nullable": true
                           },
                           "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "total_runtime": {
                             "type": "integer",
                             "nullable": true
                           },
@@ -19096,6 +19172,10 @@
                             "type": "integer",
                             "nullable": true
                           },
+                          "total_runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
                           "certification": {
                             "type": "string",
                             "nullable": true
@@ -19790,6 +19870,10 @@
                                 "nullable": true
                               },
                               "runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "total_runtime": {
                                 "type": "integer",
                                 "nullable": true
                               },
@@ -20720,6 +20804,10 @@
                                 "type": "integer",
                                 "nullable": true
                               },
+                              "total_runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
                               "certification": {
                                 "type": "string",
                                 "nullable": true
@@ -21403,6 +21491,10 @@
                                 "nullable": true
                               },
                               "runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "total_runtime": {
                                 "type": "integer",
                                 "nullable": true
                               },
@@ -22092,6 +22184,10 @@
                                 "type": "integer",
                                 "nullable": true
                               },
+                              "total_runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
                               "certification": {
                                 "type": "string",
                                 "nullable": true
@@ -22206,6 +22302,612 @@
         "operationId": "getUsersRatingsEpisodes"
       }
     },
+    "/users/{id}/favorites/media/{sort}": {
+      "get": {
+        "tags": [
+          "users",
+          "favorites"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug that identifies the user, or \"me\" for the authenticated user."
+          },
+          {
+            "name": "sort",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "extended",
+            "in": "query",
+            "description": "Extended information to include in the response.",
+            "schema": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "description": "The field to sort by",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "sort_how",
+            "in": "query",
+            "description": "The direction to sort in",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page number to retrieve",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of items per page",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "listed_at": {
+                            "type": "string"
+                          },
+                          "notes": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "rank": {
+                            "type": "integer"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "show"
+                            ]
+                          },
+                          "show": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string"
+                              },
+                              "year": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "tvdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "imdb": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "tmdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "plex": {
+                                    "type": "object",
+                                    "properties": {
+                                      "guid": {
+                                        "type": "string",
+                                        "nullable": true
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true
+                                      }
+                                    },
+                                    "nullable": true
+                                  },
+                                  "slug": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "trakt",
+                                  "slug"
+                                ]
+                              },
+                              "images": {
+                                "type": "object",
+                                "properties": {
+                                  "fanart": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "poster": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "logo": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "clearart": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "banner": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "thumb": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "fanart",
+                                  "poster",
+                                  "logo",
+                                  "clearart",
+                                  "banner",
+                                  "thumb"
+                                ],
+                                "nullable": true
+                              },
+                              "aired_episodes": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "tagline": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "overview": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "first_aired": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "airs": {
+                                "type": "object",
+                                "properties": {
+                                  "day": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "time": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "timezone": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "total_runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "certification": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "network": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "country": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "rating": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
+                              "votes": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "comment_count": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "trailer": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "homepage": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "language": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "languages": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "available_translations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "genres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "subgenres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "original_title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "colors": {
+                                "type": "object",
+                                "properties": {
+                                  "poster": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "ids"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "listed_at",
+                          "rank",
+                          "type",
+                          "show"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "listed_at": {
+                            "type": "string"
+                          },
+                          "notes": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "rank": {
+                            "type": "integer"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "movie"
+                            ]
+                          },
+                          "movie": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string"
+                              },
+                              "year": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "slug": {
+                                    "type": "string"
+                                  },
+                                  "imdb": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "tmdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "plex": {
+                                    "type": "object",
+                                    "properties": {
+                                      "guid": {
+                                        "type": "string",
+                                        "nullable": true
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true
+                                      }
+                                    },
+                                    "nullable": true
+                                  }
+                                },
+                                "required": [
+                                  "trakt",
+                                  "slug"
+                                ]
+                              },
+                              "images": {
+                                "type": "object",
+                                "properties": {
+                                  "fanart": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "poster": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "logo": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "clearart": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "banner": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "thumb": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "fanart",
+                                  "poster",
+                                  "logo",
+                                  "clearart",
+                                  "banner",
+                                  "thumb"
+                                ],
+                                "nullable": true
+                              },
+                              "tagline": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "overview": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "released": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "country": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "rating": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
+                              "votes": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "comment_count": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "trailer": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "homepage": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "language": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "languages": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "available_translations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "genres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "subgenres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "certification": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "original_title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "after_credits": {
+                                "type": "boolean",
+                                "nullable": true
+                              },
+                              "during_credits": {
+                                "type": "boolean",
+                                "nullable": true
+                              },
+                              "colors": {
+                                "type": "object",
+                                "properties": {
+                                  "poster": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "ids"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "listed_at",
+                          "rank",
+                          "type",
+                          "movie"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getUsersFavoritesMedia"
+      }
+    },
     "/users/{id}/favorites/movies/{sort}": {
       "get": {
         "tags": [
@@ -22235,6 +22937,28 @@
             "in": "query",
             "description": "Extended information to include in the response.",
             "schema": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "description": "The field to sort by",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "sort_how",
+            "in": "query",
+            "description": "The direction to sort in",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
               "nullable": true
             }
           },
@@ -22549,6 +23273,28 @@
             }
           },
           {
+            "name": "sort_by",
+            "in": "query",
+            "description": "The field to sort by",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "sort_how",
+            "in": "query",
+            "description": "The direction to sort in",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "nullable": true
+            }
+          },
+          {
             "name": "page",
             "in": "query",
             "description": "The page number to retrieve",
@@ -22732,6 +23478,10 @@
                             "nullable": true
                           },
                           "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "total_runtime": {
                             "type": "integer",
                             "nullable": true
                           },
@@ -25230,6 +25980,10 @@
                             "type": "integer",
                             "nullable": true
                           },
+                          "total_runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
                           "certification": {
                             "type": "string",
                             "nullable": true
@@ -25903,6 +26657,10 @@
                                 "nullable": true
                               },
                               "runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "total_runtime": {
                                 "type": "integer",
                                 "nullable": true
                               },
@@ -26584,6 +27342,10 @@
                                 "type": "integer",
                                 "nullable": true
                               },
+                              "total_runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
                               "certification": {
                                 "type": "string",
                                 "nullable": true
@@ -26768,6 +27530,10 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "total_runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
                               "network": {
                                 "type": "string",
                                 "nullable": true
@@ -26937,6 +27703,10 @@
                                 "nullable": true
                               },
                               "runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "total_runtime": {
                                 "type": "integer",
                                 "nullable": true
                               },
@@ -27341,6 +28111,10 @@
                                 "nullable": true
                               },
                               "runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "total_runtime": {
                                 "type": "integer",
                                 "nullable": true
                               },
@@ -33196,6 +33970,10 @@
                             "nullable": true
                           },
                           "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "total_runtime": {
                             "type": "integer",
                             "nullable": true
                           },
@@ -40821,6 +41599,10 @@
                             "type": "integer",
                             "nullable": true
                           },
+                          "total_runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
                           "certification": {
                             "type": "string",
                             "nullable": true
@@ -41448,6 +42230,10 @@
                             "nullable": true
                           },
                           "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "total_runtime": {
                             "type": "integer",
                             "nullable": true
                           },
@@ -49322,6 +50108,10 @@
                             "type": "integer",
                             "nullable": true
                           },
+                          "total_runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
                           "certification": {
                             "type": "string",
                             "nullable": true
@@ -49764,6 +50554,10 @@
                             "nullable": true
                           },
                           "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "total_runtime": {
                             "type": "integer",
                             "nullable": true
                           },
@@ -50407,6 +51201,10 @@
                                 "type": "integer",
                                 "nullable": true
                               },
+                              "total_runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
                               "certification": {
                                 "type": "string",
                                 "nullable": true
@@ -50792,6 +51590,10 @@
                                 "nullable": true
                               },
                               "runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "total_runtime": {
                                 "type": "integer",
                                 "nullable": true
                               },
@@ -51943,6 +52745,10 @@
                         "type": "integer",
                         "nullable": true
                       },
+                      "total_runtime": {
+                        "type": "integer",
+                        "nullable": true
+                      },
                       "certification": {
                         "type": "string",
                         "nullable": true
@@ -53028,6 +53834,10 @@
                         "type": "integer",
                         "nullable": true
                       },
+                      "total_runtime": {
+                        "type": "integer",
+                        "nullable": true
+                      },
                       "certification": {
                         "type": "string",
                         "nullable": true
@@ -53869,6 +54679,10 @@
                                 "type": "integer",
                                 "nullable": true
                               },
+                              "total_runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
                               "certification": {
                                 "type": "string",
                                 "nullable": true
@@ -54494,6 +55308,10 @@
                                 "type": "integer",
                                 "nullable": true
                               },
+                              "total_runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
                               "certification": {
                                 "type": "string",
                                 "nullable": true
@@ -55098,6 +55916,10 @@
                             "nullable": true
                           },
                           "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "total_runtime": {
                             "type": "integer",
                             "nullable": true
                           },
@@ -60198,6 +61020,10 @@
                       "type": "integer",
                       "nullable": true
                     },
+                    "total_runtime": {
+                      "type": "integer",
+                      "nullable": true
+                    },
                     "certification": {
                       "type": "string",
                       "nullable": true
@@ -61350,6 +62176,10 @@
                         "nullable": true
                       },
                       "runtime": {
+                        "type": "integer",
+                        "nullable": true
+                      },
+                      "total_runtime": {
                         "type": "integer",
                         "nullable": true
                       },
@@ -62617,6 +63447,10 @@
                       },
                       "updated_at": {
                         "type": "string",
+                        "nullable": true
+                      },
+                      "total_runtime": {
+                        "type": "integer",
                         "nullable": true
                       },
                       "network": {
@@ -65845,6 +66679,10 @@
                             "type": "integer",
                             "nullable": true
                           },
+                          "total_runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
                           "certification": {
                             "type": "string",
                             "nullable": true
@@ -66265,6 +67103,10 @@
                             "type": "integer",
                             "nullable": true
                           },
+                          "total_runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
                           "certification": {
                             "type": "string",
                             "nullable": true
@@ -66664,6 +67506,10 @@
                             "type": "integer",
                             "nullable": true
                           },
+                          "total_runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
                           "certification": {
                             "type": "string",
                             "nullable": true
@@ -67060,6 +67906,10 @@
                             "type": "integer",
                             "nullable": true
                           },
+                          "total_runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
                           "certification": {
                             "type": "string",
                             "nullable": true
@@ -67447,6 +68297,10 @@
                         "nullable": true
                       },
                       "runtime": {
+                        "type": "integer",
+                        "nullable": true
+                      },
+                      "total_runtime": {
                         "type": "integer",
                         "nullable": true
                       },
@@ -67854,6 +68708,10 @@
                             "nullable": true
                           },
                           "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "total_runtime": {
                             "type": "integer",
                             "nullable": true
                           },
@@ -68423,6 +69281,10 @@
                                 "nullable": true
                               },
                               "runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "total_runtime": {
                                 "type": "integer",
                                 "nullable": true
                               },
@@ -69355,6 +70217,10 @@
                                 "type": "integer",
                                 "nullable": true
                               },
+                              "total_runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
                               "certification": {
                                 "type": "string",
                                 "nullable": true
@@ -70279,6 +71145,10 @@
                                 "nullable": true
                               },
                               "runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "total_runtime": {
                                 "type": "integer",
                                 "nullable": true
                               },
@@ -71482,6 +72352,10 @@
                                 "type": "integer",
                                 "nullable": true
                               },
+                              "total_runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
                               "certification": {
                                 "type": "string",
                                 "nullable": true
@@ -71747,6 +72621,10 @@
                                   "nullable": true
                                 },
                                 "runtime": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "total_runtime": {
                                   "type": "integer",
                                   "nullable": true
                                 },
@@ -74210,6 +75088,10 @@
                             "type": "integer",
                             "nullable": true
                           },
+                          "total_runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
                           "certification": {
                             "type": "string",
                             "nullable": true
@@ -74873,6 +75755,10 @@
                                 "nullable": true
                               },
                               "runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "total_runtime": {
                                 "type": "integer",
                                 "nullable": true
                               },
@@ -75544,6 +76430,10 @@
                                 "type": "integer",
                                 "nullable": true
                               },
+                              "total_runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
                               "certification": {
                                 "type": "string",
                                 "nullable": true
@@ -75728,6 +76618,10 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "total_runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
                               "network": {
                                 "type": "string",
                                 "nullable": true
@@ -75897,6 +76791,10 @@
                                 "nullable": true
                               },
                               "runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "total_runtime": {
                                 "type": "integer",
                                 "nullable": true
                               },
@@ -76301,6 +77199,10 @@
                                 "nullable": true
                               },
                               "runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "total_runtime": {
                                 "type": "integer",
                                 "nullable": true
                               },
@@ -78744,6 +79646,10 @@
                           "type": "integer",
                           "nullable": true
                         },
+                        "total_runtime": {
+                          "type": "integer",
+                          "nullable": true
+                        },
                         "certification": {
                           "type": "string",
                           "nullable": true
@@ -79224,6 +80130,10 @@
                           "type": "integer",
                           "nullable": true
                         },
+                        "total_runtime": {
+                          "type": "integer",
+                          "nullable": true
+                        },
                         "certification": {
                           "type": "string",
                           "nullable": true
@@ -79701,6 +80611,10 @@
                           "nullable": true
                         },
                         "runtime": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "total_runtime": {
                           "type": "integer",
                           "nullable": true
                         },

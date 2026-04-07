@@ -17,6 +17,8 @@ class UserFavoritesApiClient(
             sort = sort ?: "rank",
             page = 1,
             limit = 1000,
+            sortBy = null,
+            sortHow = null,
         )
 
         return response.body()
@@ -32,6 +34,8 @@ class UserFavoritesApiClient(
             sort = sort ?: "rank",
             page = 1,
             limit = 1000,
+            sortBy = null,
+            sortHow = null,
         )
 
         return response.body()

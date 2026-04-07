@@ -346,6 +346,8 @@
 
   <string name="text_directors">Director</string>
   <string name="text_writers">Writer</string>
+  <string name="header_network">Network</string>
+  <string name="header_total_runtime">Total Runtime</string>
 
   <!-- Non Translatable -->
 

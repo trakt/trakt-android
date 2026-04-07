@@ -115,6 +115,8 @@ internal class ProfileApiClient(
             extended = "full,cloud9,colors,streaming_ids",
             page = page,
             limit = limit,
+            sortHow = null,
+            sortBy = null,
         )
         return response.body()
     }
@@ -129,6 +131,8 @@ internal class ProfileApiClient(
             extended = "full,cloud9,colors,streaming_ids",
             page = page,
             limit = limit,
+            sortHow = null,
+            sortBy = null,
         )
         return response.body()
     }

@@ -17,9 +17,9 @@ import tv.trakt.trakt.core.search.data.local.model.PopularListEntity
 import tv.trakt.trakt.core.search.data.local.model.PopularMovieEntity
 import tv.trakt.trakt.core.search.data.local.model.PopularShowEntity
 
-private val KEY_POPULAR_SEARCH_SHOWS = byteArrayPreferencesKey("key_popular_search_shows")
-private val KEY_POPULAR_SEARCH_MOVIES = byteArrayPreferencesKey("key_popular_search_movies")
-private val KEY_POPULAR_SEARCH_LISTS = byteArrayPreferencesKey("key_popular_search_lists")
+private val KEY_POPULAR_SEARCH_SHOWS = byteArrayPreferencesKey("key_popular_search_shows_2")
+private val KEY_POPULAR_SEARCH_MOVIES = byteArrayPreferencesKey("key_popular_search_movies_2")
+private val KEY_POPULAR_SEARCH_LISTS = byteArrayPreferencesKey("key_popular_search_lists_2")
 
 @OptIn(ExperimentalSerializationApi::class)
 internal class PopularSearchStorage(

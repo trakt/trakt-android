@@ -52,10 +52,12 @@ object PreviewData {
         ),
         certification = "PG-18",
         runtime = 90.minutes,
+        totalRuntime = 1800.minutes,
         trailer = "https://youtube.com/watch?v=abcdefg",
         status = "Canceled",
         airedEpisodes = 28,
         country = "pl",
+        network = "Amazon",
         languages = listOf("en", "de").toImmutableList(),
     )
 

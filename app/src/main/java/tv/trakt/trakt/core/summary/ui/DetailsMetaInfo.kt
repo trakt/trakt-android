@@ -46,14 +46,17 @@ internal fun DetailsMetaInfo(
             show.released?.toLocal()?.toLocalDate()
         },
         runtime = show.runtime,
+        totalRuntime = show.totalRuntime,
         status = show.status,
         languages = show.languages,
         titleOriginal = show.titleOriginal,
         country = show.country,
         genres = show.genres,
+        network = show.network,
         studios = showStudios ?: EmptyImmutableList,
         directors = showDirectors,
         writers = showWriters,
+        episodesCount = show.airedEpisodes,
         onPersonClick = onPersonClick,
     )
 }
@@ -109,9 +112,12 @@ private fun DetailsMetaInfo(
     modifier: Modifier = Modifier,
     released: LocalDate? = null,
     runtime: Duration? = null,
+    totalRuntime: Duration? = null,
     status: String? = null,
     country: String? = null,
+    network: String? = null,
     titleOriginal: String? = null,
+    episodesCount: Int? = null,
     languages: ImmutableList<String> = EmptyImmutableList,
     genres: ImmutableList<String> = EmptyImmutableList,
     studios: ImmutableList<String>? = null,
@@ -122,6 +128,10 @@ private fun DetailsMetaInfo(
 ) {
     val runtimeString = remember(runtime) {
         runtime?.inWholeMinutes?.durationFormat()
+    }
+
+    val totalRuntimeString = remember(totalRuntime) {
+        totalRuntime?.inWholeMinutes?.durationFormat() ?: "N/A"
     }
 
     val languagesStrings = remember(languages) {
@@ -145,19 +155,53 @@ private fun DetailsMetaInfo(
         verticalArrangement = spacedBy(18.dp),
         modifier = modifier,
     ) {
-        Row(
-            horizontalArrangement = spacedBy(16.dp),
-        ) {
-            DetailsMeta(
-                title = stringResource(R.string.header_premiered),
-                values = listOf(released?.format(longDateFormat) ?: "N/A"),
-                modifier = Modifier.weight(1F),
-            )
-            DetailsMeta(
-                title = stringResource(R.string.header_runtime),
-                values = listOf(runtimeString ?: "N/A"),
-                modifier = Modifier.weight(1F),
-            )
+        if (!network.isNullOrBlank() && totalRuntime != null) {
+            Row(
+                horizontalArrangement = spacedBy(16.dp),
+            ) {
+                DetailsMeta(
+                    title = stringResource(R.string.header_premiered),
+                    values = listOf(released?.format(longDateFormat) ?: "N/A"),
+                    modifier = Modifier.weight(1F),
+                )
+                DetailsMeta(
+                    title = stringResource(R.string.header_network),
+                    values = listOf(network ?: "N/A"),
+                    modifier = Modifier.weight(1F),
+                )
+            }
+
+            Row(
+                horizontalArrangement = spacedBy(16.dp),
+            ) {
+                DetailsMeta(
+                    title = stringResource(R.string.header_runtime),
+                    values = listOf(runtimeString ?: "N/A"),
+                    modifier = Modifier.weight(1F),
+                )
+
+                val episodesCount = stringResource(R.string.tag_text_number_of_episodes, episodesCount ?: 0)
+                DetailsMeta(
+                    title = stringResource(R.string.header_total_runtime),
+                    values = listOf("$totalRuntimeString ($episodesCount)"),
+                    modifier = Modifier.weight(1F),
+                )
+            }
+        } else {
+            Row(
+                horizontalArrangement = spacedBy(16.dp),
+            ) {
+                DetailsMeta(
+                    title = stringResource(R.string.header_premiered),
+                    values = listOf(released?.format(longDateFormat) ?: "N/A"),
+                    modifier = Modifier.weight(1F),
+                )
+                DetailsMeta(
+                    title = stringResource(R.string.header_runtime),
+                    values = listOf(runtimeString ?: "N/A"),
+                    modifier = Modifier.weight(1F),
+                )
+            }
         }
 
         Row(

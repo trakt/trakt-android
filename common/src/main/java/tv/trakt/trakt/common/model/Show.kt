@@ -24,6 +24,7 @@ data class Show(
     val title: String,
     val titleOriginal: String?,
     val overview: String?,
+    val network: String?,
     val status: String?,
     @Serializable(ZonedDateTimeSerializer::class)
     val released: ZonedDateTime?,
@@ -36,6 +37,7 @@ data class Show(
     val certification: String?,
     val trailer: String?,
     val runtime: Duration?,
+    val totalRuntime: Duration?,
     val airedEpisodes: Int,
     val country: String?,
     @Serializable(ImmutableListSerializer::class)
@@ -69,9 +71,11 @@ fun Companion.fromDto(dto: ShowDto): Show {
             votes = dto.votes ?: 0,
         ),
         runtime = dto.runtime?.minutes,
+        totalRuntime = dto.totalRuntime?.minutes,
         trailer = dto.trailer,
         airedEpisodes = dto.airedEpisodes ?: 0,
         country = dto.country,
+        network = dto.network,
         languages = (dto.languages ?: emptyList()).toImmutableList(),
     )
 }
@@ -100,10 +104,12 @@ fun Companion.fromDto(dto: RecommendedShowDto): Show {
             votes = dto.votes ?: 0,
         ),
         runtime = dto.runtime?.minutes,
+        totalRuntime = dto.totalRuntime?.minutes,
         status = dto.status,
         trailer = dto.trailer,
         airedEpisodes = dto.airedEpisodes ?: 0,
         country = dto.country,
+        network = dto.network,
         languages = (dto.languages ?: emptyList()).toImmutableList(),
     )
 }
@@ -132,10 +138,12 @@ fun Companion.fromDto(dto: ShowLikesDto): Show {
             votes = dto.votes ?: 0,
         ),
         runtime = dto.runtime?.minutes,
+        totalRuntime = dto.totalRuntime?.minutes,
         status = dto.status,
         trailer = dto.trailer,
         airedEpisodes = dto.airedEpisodes ?: 0,
         country = dto.country,
+        network = dto.network,
         languages = (dto.languages ?: emptyList()).toImmutableList(),
     )
 }
