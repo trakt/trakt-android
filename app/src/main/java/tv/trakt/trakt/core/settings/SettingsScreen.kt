@@ -210,7 +210,6 @@ private fun SettingsScreenContent(
     ) {
         ScrollableBackdropImage(
             translation = scrollConnection.resultOffset,
-            imageUrl = state.user?.settings?.coverImage,
         )
 
         Column(

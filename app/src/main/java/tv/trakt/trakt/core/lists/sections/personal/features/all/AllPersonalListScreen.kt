@@ -256,7 +256,6 @@ internal fun AllPersonalListContent(
 
         ScrollableBackdropImage(
             translation = listScrollConnection.resultOffset,
-            imageUrl = state.user?.settings?.coverImage,
         )
 
         ContentList(

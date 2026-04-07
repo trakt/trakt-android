@@ -163,7 +163,6 @@ private fun AllListsScreen(
 
         ScrollableBackdropImage(
             translation = listScrollConnection.resultOffset,
-            imageUrl = state.user?.settings?.coverImage,
         )
 
         val listVisible = remember(state.items?.size, state.loading) {

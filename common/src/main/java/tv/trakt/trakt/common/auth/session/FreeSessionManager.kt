@@ -17,6 +17,7 @@ import tv.trakt.trakt.common.model.User
 private const val KEY_VERSION = 2
 
 private val KEY_USER_PROFILE = stringPreferencesKey("key_user_profile_$KEY_VERSION")
+private val KEY_USER_PROFILE_IMAGE = stringPreferencesKey("key_user_profile_image_$KEY_VERSION")
 
 // Non VIP session manager that doesn't store any VIP-related information and always returns false for VIP status.
 // Used only for some internal testing.
@@ -43,6 +44,7 @@ internal class FreeSessionManager(
         )
         dataStore.edit {
             it[KEY_USER_PROFILE] = userData
+            it[KEY_USER_PROFILE_IMAGE] = user.settings?.coverImage ?: ""
         }
     }
 
@@ -60,6 +62,14 @@ internal class FreeSessionManager(
         return decodedUserData.getOrElse {
             clear()
             null
+        }
+    }
+
+    override suspend fun getProfileImage(): String? {
+        val value = dataStore.data.first()[KEY_USER_PROFILE_IMAGE]
+        return when {
+            value.isNullOrBlank() -> null
+            else -> value
         }
     }
 

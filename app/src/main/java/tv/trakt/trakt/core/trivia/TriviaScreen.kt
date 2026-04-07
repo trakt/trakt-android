@@ -95,8 +95,8 @@ private fun TriviaContent(
             .nestedScroll(listScrollConnection),
     ) {
         ScrollableBackdropImage(
-            imageUrl = state.backgroundUrl,
             translation = listScrollConnection.resultOffset,
+            imageUrl = state.backgroundUrl,
         )
 
         LazyColumn(

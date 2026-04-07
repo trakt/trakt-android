@@ -141,17 +141,21 @@ internal fun MainScreen(
     }
 
     LaunchedUpdateEffect(state.user) {
-        if (state.loadingUser == Done && state.user != null) {
-            localSnackbar.showSnackbar(
-                message = localRes.getString(R.string.text_info_signed_in),
-                duration = SnackbarDuration.Short,
-            )
-        } else if (state.user == null) {
-            navController.navigateToMainDestination(HomeDestination)
-            localSnackbar.showSnackbar(
-                message = localRes.getString(R.string.text_info_signed_out),
-                duration = SnackbarDuration.Short,
-            )
+        when {
+            state.user != null && state.loadingUser == Done -> {
+                viewModel.clearLoadingUser()
+                localSnackbar.showSnackbar(
+                    message = localRes.getString(R.string.text_info_signed_in),
+                    duration = SnackbarDuration.Short,
+                )
+            }
+            state.user == null -> {
+                navController.navigateToMainDestination(HomeDestination)
+                localSnackbar.showSnackbar(
+                    message = localRes.getString(R.string.text_info_signed_out),
+                    duration = SnackbarDuration.Short,
+                )
+            }
         }
     }
 

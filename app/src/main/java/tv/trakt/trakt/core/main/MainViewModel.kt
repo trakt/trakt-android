@@ -101,9 +101,7 @@ internal class MainViewModel(
                 val currentUser = userState.value
 
                 userState.update { user }
-                userVipState.update {
-                    currentUser?.isVip to user?.isVip
-                }
+                userVipState.update { currentUser?.isVip to user?.isVip }
 
                 Timber.d("Observed user change: $user")
             }
@@ -323,6 +321,10 @@ internal class MainViewModel(
 
     fun dismissInAppReview() {
         reviewState.update { null }
+    }
+
+    fun clearLoadingUser() {
+        loadingUserState.update { LoadingState.Idle }
     }
 
     private fun dismissOnboarding() {

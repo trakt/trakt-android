@@ -8,6 +8,8 @@ interface SessionManager {
 
     suspend fun getProfile(): User?
 
+    suspend fun getProfileImage(): String?
+
     fun observeProfile(): Flow<User?>
 
     suspend fun isAuthenticated(): Boolean

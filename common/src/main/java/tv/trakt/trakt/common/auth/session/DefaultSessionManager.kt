@@ -17,6 +17,7 @@ import tv.trakt.trakt.common.model.User
 private const val KEY_VERSION = 3
 
 private val KEY_USER_PROFILE = stringPreferencesKey("key_user_profile_$KEY_VERSION")
+private val KEY_USER_PROFILE_IMAGE = stringPreferencesKey("key_user_profile_image_$KEY_VERSION")
 
 internal class DefaultSessionManager(
     private val tokenProvider: TokenProvider,
@@ -35,6 +36,7 @@ internal class DefaultSessionManager(
         val userData = Json.encodeToString(user)
         dataStore.edit {
             it[KEY_USER_PROFILE] = userData
+            it[KEY_USER_PROFILE_IMAGE] = user.settings?.coverImage ?: ""
         }
     }
 
@@ -48,6 +50,14 @@ internal class DefaultSessionManager(
         return decodedUserData.getOrElse {
             clear()
             null
+        }
+    }
+
+    override suspend fun getProfileImage(): String? {
+        val value = dataStore.data.first()[KEY_USER_PROFILE_IMAGE]
+        return when {
+            value.isNullOrBlank() -> null
+            else -> value
         }
     }
 

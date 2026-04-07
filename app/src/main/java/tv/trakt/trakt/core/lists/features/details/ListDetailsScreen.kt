@@ -300,7 +300,6 @@ internal fun ListDetailsContent(
 
         ScrollableBackdropImage(
             translation = listScrollConnection.resultOffset,
-            imageUrl = state.user?.settings?.coverImage,
         )
 
         val userId = state.user?.ids?.trakt

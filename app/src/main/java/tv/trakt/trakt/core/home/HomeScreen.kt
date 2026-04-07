@@ -154,7 +154,6 @@ private fun HomeScreenContent(
     ) {
         ScrollableBackdropImage(
             scrollState = lazyListState,
-            imageUrl = state.user.user?.settings?.coverImage,
         )
 
         LazyColumn(

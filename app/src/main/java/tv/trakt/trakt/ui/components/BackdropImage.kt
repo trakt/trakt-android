@@ -14,9 +14,13 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -41,7 +45,10 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 import tv.trakt.trakt.MainActivity
+import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
@@ -115,27 +122,35 @@ internal fun ScrollableBackdropImage(
 @Composable
 private fun BackdropImage(
     imageUrl: String?,
+    imageAlpha: Float,
     modifier: Modifier = Modifier,
-    imageAlpha: Float = 0.4F,
 ) {
     val configuration = LocalConfiguration.current
     val activity = LocalActivity.current
     val inspection = LocalInspectionMode.current
-    val windowClass = currentWindowAdaptiveInfo().windowSizeClass
 
-    val screenWidth = configuration.screenWidthDp.dp
-    val background = TraktTheme.colors.backgroundPrimary
+    val sessionManager = koinInject<SessionManager>()
+    var userImageUrl by remember { mutableStateOf<String?>(null) }
 
-    val imageUrl = remember(imageUrl) {
+    val scope = rememberCoroutineScope()
+    LaunchedEffect(imageUrl) {
+        scope.launch {
+            userImageUrl = sessionManager.getProfileImage().orEmpty()
+        }
+    }
+
+    val imageUrl = remember(imageUrl, userImageUrl) {
         val config = (activity as? MainActivity)?.customThemeConfig
 
         val customThemeEnabled = config?.enabled == true
         val customThemeBackground = config?.theme?.backgroundImageUrl
 
         when {
-            inspection -> imageUrl
+            inspection -> imageUrl // For preview.
             customThemeEnabled && !customThemeBackground.isNullOrBlank() -> customThemeBackground
             !imageUrl.isNullOrBlank() -> imageUrl
+            userImageUrl == null -> null // Show nothing while loading the user image.
+            !userImageUrl.isNullOrBlank() -> userImageUrl
             else -> Firebase.remoteConfig.getString(MOBILE_BACKGROUND_IMAGE_URL).ifBlank { null }
         }
     }
@@ -148,6 +163,7 @@ private fun BackdropImage(
         )
     }
 
+    val background = TraktTheme.colors.backgroundPrimary
     val linearGradient = remember {
         Brush.verticalGradient(
             colors = listOf(
@@ -158,9 +174,10 @@ private fun BackdropImage(
         )
     }
 
+    val windowClass = currentWindowAdaptiveInfo().windowSizeClass
     Box(
         modifier = modifier
-            .width(screenWidth)
+            .width(configuration.screenWidthDp.dp)
             .aspectRatio(
                 when {
                     windowClass.isAtLeastLarge() -> HorizontalImageAspectRatio * 2.5F
@@ -213,6 +230,7 @@ private fun BackdropImagePreview() {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             BackdropImage(
                 imageUrl = "https://trakt.tv/assets/placeholders/thumb/fanart-96d5731216f272365311029c1d1a9388.png",
+                imageAlpha = 0.4F,
             )
         }
     }
