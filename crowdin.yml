@@ -1,4 +1,4 @@
-base_path: 'resources/src/main/res'
+base_path: './resources/src/main/res'
 
 pull_request_title: 'feat(l10n): localization updates'
 pull_request_assignees:
