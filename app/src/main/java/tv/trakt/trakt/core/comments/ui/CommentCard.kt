@@ -62,8 +62,9 @@ import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.Config.webUserUrl
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
-import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
+import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.User
@@ -353,7 +354,9 @@ private fun CommentHeader(
             }
 
             Text(
-                text = comment.createdAt.format(longDateTimeFormat),
+                text = remember(comment.createdAt) {
+                    comment.createdAt.toLocal().format(longDateFormat)
+                },
                 style = TraktTheme.typography.meta,
                 color = TraktTheme.colors.textSecondary
                     .copy(alpha = 0.66f),

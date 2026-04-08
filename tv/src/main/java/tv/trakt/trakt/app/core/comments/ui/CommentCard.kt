@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -45,7 +46,8 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.app.common.ui.TvVipChip
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
+import tv.trakt.trakt.common.helpers.extensions.longDateFormat
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.ui.theme.colors.Shade500
@@ -196,7 +198,9 @@ private fun CommentHeader(
                 }
             }
             Text(
-                text = comment.createdAt.format(longDateTimeFormat),
+                text = remember(comment.createdAt) {
+                    comment.createdAt.toLocal().format(longDateFormat)
+                },
                 style = TraktTheme.typography.paragraphSmall,
                 color = TraktTheme.colors.textSecondary,
                 maxLines = 1,
