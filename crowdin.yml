@@ -1,3 +1,2 @@
 bundles:
-  - id: 2
-    export_path: "resources/src/main/res/%original_path%/%original_file_name%"
+  - 2
