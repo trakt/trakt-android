@@ -1,5 +1,7 @@
 pull_request_title: 'feat(l10n): localization updates'
-commit_message: 'feat(l10n): {{language}} localization updates'
-append_commit_message: 
+pull_request_assignees:
+  - 'michaldrabik'
+commit_message: 'feat(l10n): %language% localization updates'
+append_commit_message: false
 bundles:
   - 2
