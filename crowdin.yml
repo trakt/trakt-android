@@ -1,5 +1,5 @@
 pull_request_title: 'feat(l10n): localization updates'
 commit_message: 'feat(l10n): {{language}} localization updates'
-append_commit_message: false
+append_commit_message: 
 bundles:
   - 2
