@@ -1,5 +1,3 @@
-"pull_request_title": "feat(l10n): localization updates"
-#commit_message: "feat(l10n): localization updates"
-#append_commit_message: false
+pull_request_title: 'feat(l10n): localization updates'
 bundles:
   - 2
