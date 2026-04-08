@@ -20,8 +20,8 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
+import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
@@ -31,6 +31,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
+import java.time.format.DateTimeFormatter
 
 @Composable
 internal fun AllActivityMovieItem(
@@ -38,6 +39,7 @@ internal fun AllActivityMovieItem(
     modifier: Modifier = Modifier,
     itemRating: UserRating? = null,
     moreButton: Boolean = false,
+    dateFormat: DateTimeFormatter? = null,
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
 ) {
@@ -73,8 +75,12 @@ internal fun AllActivityMovieItem(
                         modifier = Modifier.size(14.dp),
                     )
                     Text(
-                        text = remember(item.activityAt) {
-                            item.activityAt.toLocal().format(longDateTimeFormat)
+                        text = remember(item.activityAt, dateFormat) {
+                            val localDate = item.activityAt.toLocal()
+                            when (dateFormat) {
+                                null -> localDate.relativePastDateString()
+                                else -> localDate.format(dateFormat)
+                            }
                         },
                         color = TraktTheme.colors.textPrimary,
                         style = TraktTheme.typography.cardSubtitle.copy(

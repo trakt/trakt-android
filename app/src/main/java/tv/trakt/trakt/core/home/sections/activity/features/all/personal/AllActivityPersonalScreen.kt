@@ -49,6 +49,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
+import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
@@ -327,6 +328,7 @@ private fun ContentList(
                             },
                             onLongClick = { onLongClick(item) },
                             moreButton = true,
+                            dateFormat = longDateTimeFormat,
                             modifier = Modifier
                                 .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                                 .animateItem(
@@ -344,6 +346,7 @@ private fun ContentList(
                             onShowClick = { onShowClick(item) },
                             onLongClick = { onLongClick(item) },
                             moreButton = true,
+                            dateFormat = longDateTimeFormat,
                             modifier = Modifier
                                 .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                                 .animateItem(
