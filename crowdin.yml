@@ -1,11 +1,8 @@
-base_path: './resources/src/main/res'
-
+base_path: ./resources/src/main/res
 pull_request_title: 'feat(l10n): localization updates'
 pull_request_assignees:
   - michaldrabik
-
 commit_message: 'feat(l10n): update %original_file_name%'
 append_commit_message: 
-
 bundles:
   - 2
