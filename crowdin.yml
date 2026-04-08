@@ -1,12 +1,9 @@
 pull_request_title: 'feat(l10n): localization updates'
 pull_request_assignees:
   - michaldrabik
-
 commit_message: 'feat(l10n): update %original_file_name%'
-append_commit_message:
-
+append_commit_message: 
 files:
   - translation: /resources/src/main/res
-
 bundles:
   - 2
