@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="list_title_upcoming_schedule">Nadchodzące</string>
+  <string name="header_profile_banner_greeting">Cześć, %s</string>
+  <string name="list_title_up_next">Oglądaj dalej</string>
+  <string name="tag_text_remaining_episodes">Pozostało %d</string>
+</resources>
