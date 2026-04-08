@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="list_title_upcoming_schedule">Nadchodzące</string>
+  <string name="header_profile_banner_greeting">Cześć, %s</string>
+</resources>
