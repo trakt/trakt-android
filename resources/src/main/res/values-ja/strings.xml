@@ -91,7 +91,7 @@
   <string name="header_original_title">原題</string>
   <string name="header_post_credits">ポストクレジット</string>
   <string name="header_premiered">初公開</string>
-  <string name="header_profile_banner_greeting">ようこそ、%sさん</string>
+  <string name="header_profile_banner_greeting">こんにちは、%sさん</string>
   <string name="header_runtime">上映時間</string>
   <string name="header_settings_notifications">通知</string>
   <string name="header_settings_tracking">トラッキング</string>
