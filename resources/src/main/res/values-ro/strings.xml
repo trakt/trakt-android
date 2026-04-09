@@ -91,7 +91,7 @@
   <string name="header_original_title">Titlu original</string>
   <string name="header_post_credits">După credite</string>
   <string name="header_premiered">Lansat</string>
-  <string name="header_profile_banner_greeting">Bun venit, %s</string>
+  <string name="header_profile_banner_greeting">Salut, %s</string>
   <string name="header_runtime">Durată</string>
   <string name="header_settings_notifications">Notificări</string>
   <string name="header_settings_tracking">Urmărire</string>
