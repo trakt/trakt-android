@@ -91,7 +91,7 @@
   <string name="header_original_title">Original Title</string>
   <string name="header_post_credits">Post Credits</string>
   <string name="header_premiered">Premiered</string>
-  <string name="header_profile_banner_greeting">Welcome, %s</string>
+  <string name="header_profile_banner_greeting">Hi, %s</string>
   <string name="header_runtime">Runtime</string>
   <string name="header_settings_notifications">Notifications</string>
   <string name="header_settings_tracking">Tracking</string>
