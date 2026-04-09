@@ -13,7 +13,8 @@
       "Bash(find /Users/michal/Documents/Dev/Android/trakt/trakt-android-2025/app/src/main/java/tv/trakt/trakt/core/summary/movies/features/trivia -type f -name *.kt -o -name *.xml)",
       "Bash(grep -r TriviaMovieSummaryElement /Users/michal/Documents/Android/trakt/trakt-android-2025 --include=*.kt)",
       "Bash(python3:*)",
-      "Bash(find /Users/michal/Documents/Android/trakt/trakt-android-2025/app -name EpisodesRemoteDataSource.kt -o -name *Episode*Remote*.kt)"
+      "Bash(find /Users/michal/Documents/Android/trakt/trakt-android-2025/app -name EpisodesRemoteDataSource.kt -o -name *Episode*Remote*.kt)",
+      "Bash(node:*)"
     ]
   }
 }
