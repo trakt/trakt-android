@@ -91,7 +91,7 @@
   <string name="header_original_title">Originele titel</string>
   <string name="header_post_credits">Na de aftiteling</string>
   <string name="header_premiered">In première</string>
-  <string name="header_profile_banner_greeting">Welkom, %s</string>
+  <string name="header_profile_banner_greeting">Hoi, %s</string>
   <string name="header_runtime">Speelduur</string>
   <string name="header_settings_notifications">Meldingen</string>
   <string name="header_settings_tracking">Bijhouden</string>
