@@ -77,7 +77,9 @@ private fun MovieInfoView(
                     movieDirectors = state.movieCrew?.directors,
                     movieWriters = state.movieCrew?.writers,
                     onPersonClick = onPersonClick,
-                    modifier = Modifier.padding(horizontal = 24.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
                 )
             }
         }

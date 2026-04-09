@@ -77,7 +77,9 @@ private fun ShowInfoView(
                     showDirectors = state.showCrew?.directors,
                     showWriters = state.showCrew?.writers,
                     onPersonClick = onPersonClick,
-                    modifier = Modifier.padding(horizontal = 24.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
                 )
             }
         }
