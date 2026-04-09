@@ -91,7 +91,7 @@
   <string name="header_original_title">Originaltitel</string>
   <string name="header_post_credits">Eftertexter</string>
   <string name="header_premiered">Premiär</string>
-  <string name="header_profile_banner_greeting">Välkommen, %s</string>
+  <string name="header_profile_banner_greeting">Hej, %s</string>
   <string name="header_runtime">Speltid</string>
   <string name="header_settings_notifications">Aviseringar</string>
   <string name="header_settings_tracking">Spårning</string>
