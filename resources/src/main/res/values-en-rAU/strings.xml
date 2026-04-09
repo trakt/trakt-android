@@ -235,12 +235,12 @@
   <string name="text_info_watchlist_removed">Removed from Watchlist.</string>
   <string name="text_info_younify_service_linked">Streaming service has been linked.</string>
   <string name="text_info_younify_service_unlinked">Streaming service has been unlinked.</string>
-  <string name="text_landing_discover">Movies and shows you\'ll love, and where they\'re streaming right now.</string>
+  <string name="text_landing_discover">movies and shows you\'ll love, and where they\'re streaming right now.</string>
   <string name="text_landing_numbers_1">years of watching together</string>
   <string name="text_landing_numbers_2">mil. shows &amp; movies lovers</string>
   <string name="text_landing_numbers_3">mil. titles tracked weekly</string>
-  <string name="text_landing_share">Opinions, ratings, and lists that others will love to follow.</string>
-  <string name="text_landing_track">Every movie, episode, and season you\'ve seen, all in one place.</string>
+  <string name="text_landing_share">opinions, ratings, and lists that others will love to follow.</string>
+  <string name="text_landing_track">every movie, episode, and season you\'ve seen, all in one place.</string>
   <string name="text_location">Location</string>
   <string name="text_movies_watched">%d movies</string>
   <string name="text_notification_episode_release">S%1$d • E%2$d is now available.</string>
