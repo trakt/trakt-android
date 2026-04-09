@@ -128,7 +128,7 @@ internal fun DetailsTrivia(
             Icon(
                 painter = painterResource(R.drawable.ic_back_arrow),
                 contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
+                tint = TraktTheme.colors.triviaAccent,
                 modifier = Modifier
                     .align(Alignment.End)
                     .size(20.dp)
