@@ -91,7 +91,7 @@
   <string name="header_original_title">Оригінальна назва</string>
   <string name="header_post_credits">Після титрів</string>
   <string name="header_premiered">Прем\'єра відбулася</string>
-  <string name="header_profile_banner_greeting">Вітаємо, %s</string>
+  <string name="header_profile_banner_greeting">Привіт, %s</string>
   <string name="header_runtime">Тривалість</string>
   <string name="header_settings_notifications">Сповіщення</string>
   <string name="header_settings_tracking">Відстеження</string>
