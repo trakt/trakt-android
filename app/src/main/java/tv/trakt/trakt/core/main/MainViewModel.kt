@@ -193,11 +193,12 @@ internal class MainViewModel(
 
     fun loadData() {
         if (lastLoadTime != null && nowUtcInstant().minus(1, MINUTES) < lastLoadTime) {
-            Timber.d("Skipping...")
+            Timber.d("loadData(): skipping...")
             return
         }
 
         viewModelScope.launch {
+            Timber.d("loadData(): loading data...")
             try {
                 if (!sessionManager.isAuthenticated()) {
                     return@launch
@@ -216,12 +217,12 @@ internal class MainViewModel(
                         ratingsAsync,
                     )
                 }
-
-                lastLoadTime = nowUtcInstant()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
                 }
+            } finally {
+                lastLoadTime = nowUtcInstant()
             }
         }
     }

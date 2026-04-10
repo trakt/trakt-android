@@ -75,6 +75,7 @@ internal fun DetailsHeader(
     onImdbClick: () -> Unit,
     onRottenClick: (link: String) -> Unit,
     onShareClick: () -> Unit,
+    onInfoClick: (() -> Unit)? = null,
     onBackClick: () -> Unit,
 ) {
     Column(
@@ -168,7 +169,10 @@ internal fun DetailsHeader(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = spacedBy(0.dp),
                 modifier = Modifier
-                    .padding(top = 5.dp),
+                    .padding(top = 5.dp)
+                    .onClick {
+                        onInfoClick?.invoke()
+                    },
             ) {
                 date?.let {
                     date()
@@ -213,6 +217,20 @@ internal fun DetailsHeader(
                     maxLines = 1,
                     overflow = Ellipsis,
                 )
+
+                if (onInfoClick != null) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_info),
+                        tint = TraktTheme.colors.textPrimary,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(start = 5.5.dp)
+                            .size(16.dp)
+                            .graphicsLayer {
+                                translationY = 0.4.dp.toPx()
+                            },
+                    )
+                }
             }
 
             status?.let {
@@ -427,6 +445,7 @@ private fun Preview() {
             onBackClick = {},
             onImdbClick = {},
             onRottenClick = {},
+            onInfoClick = {},
         )
     }
 }
@@ -494,6 +513,7 @@ private fun Preview2() {
             onBackClick = {},
             onImdbClick = {},
             onRottenClick = {},
+            onInfoClick = {},
         )
     }
 }
