@@ -128,8 +128,8 @@
   <string name="list_title_coming_soon">Wkrótce</string>
   <string name="list_title_comments">Recenzje</string>
   <string name="list_title_extras">Dodatki</string>
-  <string name="list_title_favorite_movies">Ulubione Filmy</string>
-  <string name="list_title_favorite_shows">Ulubione Seriale</string>
+  <string name="list_title_favorite_movies">Ulubione filmy</string>
+  <string name="list_title_favorite_shows">Ulubione seriale</string>
   <string name="list_title_favorites">Ulubione</string>
   <string name="list_title_from_my_history">Z Mojej Historii</string>
   <string name="list_title_history">Historyczny</string>
