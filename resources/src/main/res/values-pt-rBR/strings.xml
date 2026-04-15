@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="text_billing_already_vip">Você agora é um VIP do Trakt!\nObrigado(a) pelo seu apoio e aproveite.</string>
+  <string name="text_some_new_string">Como você está hoje?</string>
 </resources>
