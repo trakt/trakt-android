@@ -3,4 +3,5 @@
   <string name="list_title_up_next">Oglądaj dalej</string>
   <string name="list_title_upcoming_schedule">Nadchodzące</string>
   <string name="tag_text_number_of_episodes">%d odc.</string>
+  <string name="text_some_new_string">Jak się masz dzisiaj?</string>
 </resources>
