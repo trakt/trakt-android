@@ -38,7 +38,7 @@
   <string name="button_text_no_services">Sem serviços</string>
   <string name="button_text_personal">Pessoal</string>
   <string name="button_text_remove_from_favorites">Remover dos Favoritos</string>
-  <string name="button_text_remove_from_history">Remover do Assistido</string>
+  <string name="button_text_remove_from_history">Remover do Histórico</string>
   <string name="button_text_remove_from_list">Remover da lista</string>
   <string name="button_text_reset_calendar_period">Hoje</string>
   <string name="button_text_retry">Tentar novamente</string>
@@ -86,7 +86,7 @@
   <string name="header_landing_share">Compartilhar</string>
   <string name="header_landing_track">Acompanhar</string>
   <string name="header_language">Idioma</string>
-  <string name="header_network">Rede</string>
+  <string name="header_network">Canal</string>
   <string name="header_notifications_rationale">Ative as notificações para ficar por dentro dos lançamentos de sua mídia e da sua atividade de visualização atual.</string>
   <string name="header_original_title">Título Original</string>
   <string name="header_post_credits">Pós-créditos</string>
@@ -132,7 +132,7 @@
   <string name="list_title_favorite_shows">Séries Favoritas</string>
   <string name="list_title_favorites">Favoritos</string>
   <string name="list_title_from_my_history">Do Meu Histórico</string>
-  <string name="list_title_history">História</string>
+  <string name="list_title_history">Histórico</string>
   <string name="list_title_library">Biblioteca</string>
   <string name="list_title_liked_lists">Curtidas</string>
   <string name="list_title_most_anticipated">Mais Aguardados</string>
@@ -301,7 +301,7 @@
   <string name="text_stats_streak_week">%s semana</string>
   <string name="text_stats_streak_weeks">%s semanas</string>
   <string name="text_stats_watch_today">Assista hoje</string>
-  <string name="text_stats_watching_streak">sequência de visualização</string>
+  <string name="text_stats_watching_streak">em sequência</string>
   <string name="text_streaming_sync">Sincronização de Streaming</string>
   <string name="text_this_month">Este mês</string>
   <string name="text_vip_built_to_last">Feito para durar</string>
