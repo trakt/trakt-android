@@ -208,7 +208,7 @@
   <string name="text_cta_up_next">Suas séries. No seu ritmo. Retome exatamente de onde parou. O que você está assistindo agora?</string>
   <string name="text_cta_upcoming">Sua linha do tempo. Veja o que está por vir com uma lista completa de próximos episódios que você se importa.</string>
   <string name="text_cta_watchlist_released">Veja. Salve. Assista depois. Comece a organizar sua fila pessoal de filmes.</string>
-  <string name="text_cta_watchlist_unreleased">Luzes, câmera... nada? Adicione títulos à sua Minha Lista e deixe a maratona começar.</string>
+  <string name="text_cta_watchlist_unreleased">Luzes, câmera... nada? Adicione títulos à sua Lista e deixe a maratona começar.</string>
   <string name="text_directed_by_short">Dirigido por</string>
   <string name="text_display_name">Nome de exibição</string>
   <string name="text_episodes_watched">%d episódios</string>
@@ -349,7 +349,7 @@
   <string name="warning_prompt_remove_from_liked_lists">Tem certeza de que deseja remover \"%s\" das suas listas curtidas?</string>
   <string name="warning_prompt_remove_from_personal_list">Tem certeza que deseja remover \"%1$s\" da %2$s?</string>
   <string name="warning_prompt_remove_from_watched">Tem certeza que deseja remover \"%s\" da sua lista de Assistidos? Todas as reproduções serão removidas.</string>
-  <string name="warning_prompt_remove_from_watchlist">Tem certeza que deseja remover \"%s\" da sua Minha Lista?</string>
+  <string name="warning_prompt_remove_from_watchlist">Tem certeza que deseja remover \"%s\" da Minha Lista?</string>
   <string name="warning_prompt_remove_single_watched">Tem certeza que deseja remover esta reprodução de \"%s\" da sua lista de Assistidos?</string>
   <string name="warning_prompt_stop_checkin">Tem certeza que deseja parar de assistir \"%s\"?</string>
   <string name="warning_prompt_younify_unlink">Tem certeza que deseja desvincular %s?</string>
