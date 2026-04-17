@@ -140,8 +140,8 @@ internal fun EpisodeActionButtons(
             containerColor = if (!isWatched) Purple50 else Purple500,
             contentColor = if (!isWatched) Purple500 else Color.White,
             borderColor = if (!isWatched) Purple500 else Color.White,
-            enabled = !detailsState.isLoading,
-            loading = detailsState.isLoading,
+            enabled = !detailsState.episodeHistory.isLoading,
+            loading = detailsState.episodeHistory.isLoading,
         )
     }
 }
