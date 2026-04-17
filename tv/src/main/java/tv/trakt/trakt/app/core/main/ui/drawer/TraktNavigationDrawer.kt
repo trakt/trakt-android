@@ -133,7 +133,9 @@ internal fun NavigationDrawerContent(
             profile = profile,
             isOpen = isOpen,
             onProfileSelected = {
-                if (currentDestination?.hasRoute<AuthDestination>() == true) {
+                if (currentDestination?.hasRoute<AuthDestination>() == true ||
+                    currentDestination?.hasRoute<ProfileDestination>() == true
+                ) {
                     onReselected()
                 } else {
                     onProfileSelected()
