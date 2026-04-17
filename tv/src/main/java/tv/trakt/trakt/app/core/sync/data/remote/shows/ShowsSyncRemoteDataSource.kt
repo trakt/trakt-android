@@ -34,7 +34,7 @@ internal interface ShowsSyncRemoteDataSource {
 //
 //    suspend fun removeFromHistory(showId: TraktId)
 
-    suspend fun getShowsPlexCollection(): Map<TraktId, Map<TraktId, TraktId>>
+    suspend fun getShowsPlexCollection(): Map<TraktId, Map<TraktId, Map<TraktId, String>>>
 
     suspend fun getEpisodesPlexCollection(): Map<TraktId, String>
 }

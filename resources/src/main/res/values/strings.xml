@@ -24,7 +24,6 @@
   <string name="button_text_join_trakt">Join Trakt</string>
   <string name="button_text_login">Login</string>
   <string name="button_text_logout">Log out</string>
-  <string name="button_text_long_press_for_more">Long press for more</string>
   <string name="button_text_mark_as_watched">Mark as Watched</string>
   <string name="button_text_mark_as_watched_now">Just now</string>
   <string name="button_text_mark_as_watched_other_date">Other date</string>
@@ -46,7 +45,6 @@
   <string name="button_text_sort_rating">Rating</string>
   <string name="button_text_sort_release_date">Release Date</string>
   <string name="button_text_sort_runtime">Runtime</string>
-  <string name="button_text_stream_on">Stream on</string>
   <string name="button_text_toggle_search_lists">Lists</string>
   <string name="button_text_toggle_search_media">Media</string>
   <string name="button_text_toggle_search_people">People</string>
@@ -367,6 +365,7 @@
   <string name="button_text_subtitles_unavailable">Unavailable</string>
   <string name="button_text_audio_default">Default</string>
   <string name="button_text_audio_unavailable">Unavailable</string>
+  <string name="button_text_stream_on">Stream</string>
 
   <string name="list_title_plex_library">Plex Library</string>
   <string name="list_subtitle_plex_library">Enable Trakt Plex Sync to access your Plex server media library.</string>

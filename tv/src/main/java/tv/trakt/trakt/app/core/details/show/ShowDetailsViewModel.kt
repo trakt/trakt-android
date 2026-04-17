@@ -302,15 +302,7 @@ internal class ShowDetailsViewModel(
                             plex = true,
                             slug = plexService.plexSlug,
                             loading = false,
-                            info = when {
-                                !tutorialsManager.get(TutorialKey.WATCH_NOW_MORE) -> {
-                                    DynamicStringResource(R.string.button_text_long_press_for_more)
-                                }
-
-                                else -> {
-                                    null
-                                }
-                            },
+                            info = null,
                         )
                     }
                     return@launch
@@ -327,15 +319,7 @@ internal class ShowDetailsViewModel(
                         loading = false,
                         service = streamingService.streamingService,
                         noServices = streamingService.noServices,
-                        info = when {
-                            !tutorialsManager.get(TutorialKey.WATCH_NOW_MORE) -> {
-                                DynamicStringResource(R.string.button_text_long_press_for_more)
-                            }
-
-                            else -> {
-                                null
-                            }
-                        },
+                        info = null,
                     )
                 }
             } catch (error: Exception) {

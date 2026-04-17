@@ -157,17 +157,21 @@ internal class ShowsSyncApiClient(
      *     }
      * }
      */
-    override suspend fun getShowsPlexCollection(): Map<TraktId, Map<TraktId, TraktId>> {
+    override suspend fun getShowsPlexCollection(): Map<TraktId, Map<TraktId, Map<TraktId, String>>> {
         val response = collectionApi.getSyncCollectionMinimalShows(
             availableOn = "plex",
         )
+
         return response.body()
             .map {
                 val showId = it.key.toInt().toTraktId()
-                showId to it.value.map { entry ->
-                    val seasonId = entry.key.toInt().toTraktId()
-                    val episodeId = entry.value.toInt().toTraktId()
-                    seasonId to episodeId
+                showId to it.value.map { season ->
+                    val seasonId = season.key.toInt().toTraktId()
+                    val episodes = season.value.map { episode ->
+                        val episodeId = episode.key.toInt().toTraktId()
+                        episodeId to episode.value
+                    }.toMap()
+                    seasonId to episodes
                 }.toMap()
             }
             .toMap()
