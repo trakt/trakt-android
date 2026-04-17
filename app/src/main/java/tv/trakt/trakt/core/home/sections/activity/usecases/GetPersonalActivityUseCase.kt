@@ -2,7 +2,6 @@ package tv.trakt.trakt.core.home.sections.activity.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.core.user.data.remote.history.UserHistoryRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -45,14 +44,10 @@ internal class GetPersonalActivityUseCase(
         filter: MediaMode,
     ): ImmutableList<HomeActivityItem> {
         return coroutineScope {
-            val remoteEpisodesAsync = async {
-                remoteUserSource.getEpisodesHistory(page, limit)
-            }
-            val remoteMoviesAsync = async {
-                remoteUserSource.getMoviesHistory(page, limit)
-            }
+            val remoteEpisodesAsync = remoteUserSource.getEpisodesHistory(page, limit)
+            val remoteMoviesAsync = remoteUserSource.getMoviesHistory(page, limit)
 
-            val remoteEpisodes = remoteEpisodesAsync.await()
+            val remoteEpisodes = remoteEpisodesAsync
                 .asyncMap {
                     HomeActivityItem.EpisodeItem(
                         id = it.id,
@@ -72,7 +67,7 @@ internal class GetPersonalActivityUseCase(
                     )
                 }
 
-            val remoteMovies = remoteMoviesAsync.await()
+            val remoteMovies = remoteMoviesAsync
                 .asyncMap {
                     HomeActivityItem.MovieItem(
                         id = it.id,

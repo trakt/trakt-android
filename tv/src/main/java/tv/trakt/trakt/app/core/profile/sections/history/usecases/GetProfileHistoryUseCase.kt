@@ -2,7 +2,6 @@ package tv.trakt.trakt.app.core.profile.sections.history.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.app.common.model.SyncHistoryItem
 import tv.trakt.trakt.app.core.profile.data.remote.ProfileRemoteDataSource
@@ -26,14 +25,10 @@ internal class GetProfileHistoryUseCase(
         limit: Int,
     ): ImmutableList<SyncHistoryItem> {
         return coroutineScope {
-            val remoteEpisodesAsync = async {
-                remoteUserSource.getUserEpisodesHistory(page, limit)
-            }
-            val remoteMoviesAsync = async {
-                remoteUserSource.getUserMoviesHistory(page, limit)
-            }
+            val remoteEpisodesAsync = remoteUserSource.getUserEpisodesHistory(page, limit)
+            val remoteMoviesAsync = remoteUserSource.getUserMoviesHistory(page, limit)
 
-            val remoteEpisodes = remoteEpisodesAsync.await()
+            val remoteEpisodes = remoteEpisodesAsync
                 .asyncMap {
                     SyncHistoryItem(
                         id = it.id,
@@ -47,7 +42,7 @@ internal class GetProfileHistoryUseCase(
                     localEpisodesSource.upsertEpisodes(episodes.filterNotNull())
                 }
 
-            val remoteMovies = remoteMoviesAsync.await()
+            val remoteMovies = remoteMoviesAsync
                 .asyncMap {
                     SyncHistoryItem(
                         id = it.id,
