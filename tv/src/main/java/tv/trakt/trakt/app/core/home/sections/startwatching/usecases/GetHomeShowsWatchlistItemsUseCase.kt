@@ -1,6 +1,6 @@
 package tv.trakt.trakt.app.core.home.sections.startwatching.usecases
 
-import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.Progress
+import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressShow
 import tv.trakt.trakt.app.core.home.sections.startwatching.model.WatchlistItem
 import tv.trakt.trakt.app.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
@@ -33,12 +33,12 @@ internal class GetHomeShowsWatchlistItemsUseCase(
         }.asyncMap { item ->
             WatchlistItem.ShowItem(
                 show = Show.fromDto(item.show),
-                progress = Progress(
+                progress = ProgressShow.Progress(
                     lastWatchedAt = item.progress.lastWatchedAt?.toZonedDateTime(),
                     aired = item.progress.aired,
                     completed = item.progress.completed,
                     stats = item.progress.stats?.let {
-                        Progress.Stats(
+                        ProgressShow.Progress.Stats(
                             playCount = it.playCount,
                             minutesWatched = it.minutesWatched,
                             minutesLeft = it.minutesLeft,

@@ -17,6 +17,7 @@ import tv.trakt.trakt.common.networking.SocialActivityItemDto
 import tv.trakt.trakt.common.networking.SyncFavoriteMovieDto
 import tv.trakt.trakt.common.networking.SyncFavoriteShowDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
+import tv.trakt.trakt.common.networking.SyncHistoryItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
 import java.time.LocalDate
 
@@ -71,6 +72,21 @@ internal class ProfileApiClient(
             startDate2 = null,
             endDate = null,
             runtimes = null,
+        )
+        return response.body()
+    }
+
+    override suspend fun getUserHistory(
+        page: Int,
+        limit: Int,
+    ): List<SyncHistoryItemDto> {
+        val response = historyApi.getUsersHistoryAll(
+            id = "me",
+            extended = "full,cloud9,streaming_ids",
+            startAt = null,
+            endAt = null,
+            page = page,
+            limit = limit,
         )
         return response.body()
     }

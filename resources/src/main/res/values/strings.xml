@@ -356,6 +356,7 @@
   <string name="page_description_cover_image">Use \"%s\" as your profile background image?</string>
   <string name="text_vip_upsell_default_description_2">No hype, just features.</string>
   <string name="button_text_play_now">Play Now</string>
+  <string name="button_text_resume_now">Resume</string>
 
   <string name="header_subtitles">Subtitles</string>
   <string name="header_subtitles_size">Size</string>
@@ -366,6 +367,8 @@
   <string name="button_text_audio_default">Default</string>
   <string name="button_text_audio_unavailable">Unavailable</string>
   <string name="button_text_stream_on">Stream</string>
+  <string name="button_text_drop_movie">Drop movie</string>
+  <string name="button_text_drop_episode">Drop episode</string>
 
   <string name="list_title_plex_library">Plex Library</string>
   <string name="list_subtitle_plex_library">Enable Trakt Plex Sync to access your Plex server media library.</string>

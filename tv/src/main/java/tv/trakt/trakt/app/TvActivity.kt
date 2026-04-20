@@ -14,6 +14,7 @@ import com.google.firebase.remoteconfig.remoteConfig
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.compose.koinViewModel
+import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
 import timber.log.Timber
 import tv.trakt.trakt.app.core.auth.di.authDataModule
@@ -98,6 +99,9 @@ class TvActivity : ComponentActivity() {
             startKoin {
                 androidContext(context.applicationContext)
                 androidLogger()
+
+                workManagerFactory()
+
                 modules(
                     networkingModule,
                     networkingApiModule,

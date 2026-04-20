@@ -161,7 +161,7 @@ private fun ProfileLibraryViewAllContent(
                     key = { index -> state.items[index].key },
                 ) { index ->
                     val item = state.items[index]
-                    val focusRequester = remember {
+                    val focusRequester = remember(item.key) {
                         focusRequesters.getOrPut(item.key) {
                             FocusRequester()
                         }

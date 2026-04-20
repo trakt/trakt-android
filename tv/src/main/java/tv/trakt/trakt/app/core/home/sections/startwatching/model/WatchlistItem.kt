@@ -1,7 +1,7 @@
 package tv.trakt.trakt.app.core.home.sections.startwatching.model
 
 import androidx.compose.runtime.Immutable
-import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.Progress
+import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressShow
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -26,7 +26,7 @@ internal sealed class WatchlistItem(
         override val rank: Int,
         override val listedAt: ZonedDateTime,
         val show: Show,
-        val progress: Progress? = null,
+        val progress: ProgressShow.Progress? = null,
     ) : WatchlistItem(rank, listedAt)
 
     val id: TraktId

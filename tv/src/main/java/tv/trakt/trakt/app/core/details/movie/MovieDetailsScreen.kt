@@ -117,6 +117,7 @@ internal fun MovieDetailsScreen(
         },
         onWatchlistClick = viewModel::toggleWatchlist,
         onHistoryClick = viewModel::toggleHistory,
+        onDropMovieClick = viewModel::dropMoviePlayback,
     )
 
     LaunchedEffect(state.snackMessage) {
@@ -161,6 +162,7 @@ private fun MovieDetailsScreenContent(
     onNavigateToStreamings: (showId: TraktId) -> Unit,
     onHistoryClick: () -> Unit,
     onWatchlistClick: () -> Unit,
+    onDropMovieClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val drawerVisibility = LocalDrawerVisibility.current
@@ -261,6 +263,7 @@ private fun MovieDetailsScreenContent(
                     onVideoClick = onNavigateToVideo,
                     onHistoryClick = onHistoryClick,
                     onWatchlistClick = onWatchlistClick,
+                    onDropMovieClick = onDropMovieClick,
                     onStreamingsClick = {
                         onNavigateToStreamings(state.movieDetails.ids.trakt)
                     },
@@ -290,6 +293,7 @@ private fun MainContent(
     onHistoryClick: () -> Unit,
     onWatchlistClick: () -> Unit,
     onStreamingsClick: () -> Unit,
+    onDropMovieClick: () -> Unit,
     focusRequesters: Map<String, FocusRequester>,
     scrollState: ScrollState,
 ) {
@@ -324,6 +328,7 @@ private fun MainContent(
                     onHistoryClick = onHistoryClick,
                     onWatchlistClick = onWatchlistClick,
                     onStreamingLongClick = onStreamingsClick,
+                    onDropMovieClick = onDropMovieClick,
                     modifier = Modifier
                         .focusGroup()
                         .focusRequester(focusRequesters.getValue("buttons"))
@@ -536,6 +541,7 @@ private fun Preview() {
             onHistoryClick = {},
             onWatchlistClick = {},
             onNavigateToStreamings = {},
+            onDropMovieClick = {},
         )
     }
 }

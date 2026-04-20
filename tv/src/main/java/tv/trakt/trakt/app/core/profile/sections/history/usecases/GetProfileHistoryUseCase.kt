@@ -19,43 +19,31 @@ internal class GetProfileHistoryUseCase(
     private val localMoviesSource: MovieLocalDataSource,
     private val localEpisodesSource: EpisodeLocalDataSource,
 ) {
-    // TODO This should not be split. Use single history once API is fixed.
     suspend fun getHistory(
         page: Int = 1,
         limit: Int,
     ): ImmutableList<SyncHistoryItem> {
         return coroutineScope {
-            val remoteEpisodesAsync = remoteUserSource.getUserEpisodesHistory(page, limit)
-            val remoteMoviesAsync = remoteUserSource.getUserMoviesHistory(page, limit)
+            val remoteHistory = remoteUserSource.getUserHistory(page, limit)
 
-            val remoteEpisodes = remoteEpisodesAsync
+            return@coroutineScope remoteHistory
                 .asyncMap {
                     SyncHistoryItem(
                         id = it.id,
                         watchedAt = it.watchedAt.toZonedDateTime(),
                         type = it.type.value,
-                        show = Show.fromDto(it.show),
-                        episode = Episode.fromDto(it.episode),
+                        show = it.show?.let { s -> Show.fromDto(s) },
+                        episode = it.episode?.let { e -> Episode.fromDto(e) },
+                        movie = it.movie?.let { m -> Movie.fromDto(m) },
                     )
-                }.also {
-                    val episodes = it.asyncMap { e -> e.episode }
-                    localEpisodesSource.upsertEpisodes(episodes.filterNotNull())
                 }
+                .also {
+                    val episodes = it.mapNotNull { item -> item.episode }
+                    val movies = it.mapNotNull { item -> item.movie }
 
-            val remoteMovies = remoteMoviesAsync
-                .asyncMap {
-                    SyncHistoryItem(
-                        id = it.id,
-                        watchedAt = it.watchedAt.toZonedDateTime(),
-                        type = it.type.value,
-                        movie = Movie.fromDto(it.movie),
-                    )
-                }.also {
-                    val movies = it.asyncMap { m -> m.movie }
-                    localMoviesSource.upsertMovies(movies.filterNotNull())
+                    localEpisodesSource.upsertEpisodes(episodes)
+                    localMoviesSource.upsertMovies(movies)
                 }
-
-            return@coroutineScope (remoteEpisodes + remoteMovies)
                 .sortedByDescending { it.watchedAt }
                 .toImmutableList()
         }

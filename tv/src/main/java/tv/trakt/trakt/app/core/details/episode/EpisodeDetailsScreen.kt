@@ -116,6 +116,7 @@ internal fun EpisodeDetailsScreen(
         },
         onAddHistoryClick = viewModel::addToHistory,
         onRemoveHistoryClick = { historyConfirmationDialog = it },
+        onDropEpisodeClick = viewModel::dropEpisodePlayback,
     )
 
     if (historyConfirmationDialog != null) {
@@ -169,6 +170,7 @@ private fun EpisodeDetailsScreenContent(
     onNavigateToStreamings: (showId: TraktId, episode: Episode) -> Unit,
     onAddHistoryClick: () -> Unit,
     onRemoveHistoryClick: (id: Long) -> Unit,
+    onDropEpisodeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val drawerVisibility = LocalDrawerVisibility.current
@@ -283,6 +285,7 @@ private fun EpisodeDetailsScreenContent(
                             state.episodeDetails,
                         )
                     },
+                    onDropEpisodeClick = onDropEpisodeClick,
                     focusRequesters = focusRequesters,
                     scrollState = scrollState,
                 )
@@ -310,6 +313,7 @@ private fun MainContent(
     onStreamingsClick: () -> Unit,
     onAddHistoryClick: () -> Unit,
     onRemoveHistoryClick: (id: Long) -> Unit,
+    onDropEpisodeClick: () -> Unit,
     focusRequesters: Map<String, FocusRequester>,
     scrollState: ScrollState,
 ) {
@@ -343,6 +347,7 @@ private fun MainContent(
                     detailsState = state,
                     onHistoryClick = onAddHistoryClick,
                     onStreamingLongClick = onStreamingsClick,
+                    onDropClick = onDropEpisodeClick,
                     modifier = Modifier
                         .focusGroup()
                         .focusRequester(focusRequesters.getValue("buttons"))
@@ -564,6 +569,7 @@ private fun Preview() {
             onAddHistoryClick = {},
             onNavigateToStreamings = { _, _ -> },
             onRemoveHistoryClick = {},
+            onDropEpisodeClick = {},
         )
     }
 }

@@ -15,6 +15,7 @@ import tv.trakt.trakt.app.core.details.movie.usecases.collection.ChangeWatchlist
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.GetCollectionUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.streamings.GetPlexUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.streamings.GetStreamingsUseCase
+import tv.trakt.trakt.app.core.plex.usecase.DropPlaybackUseCase
 
 internal val movieDetailsModule = module {
     factory {
@@ -81,6 +82,15 @@ internal val movieDetailsModule = module {
     }
 
     factory {
+        DropPlaybackUseCase(
+            remoteMovieSyncSource = get(),
+            remoteEpisodeSyncSource = get(),
+            remoteScrobbleSource = get(),
+            cacheMarkerProvider = get(),
+        )
+    }
+
+    factory {
         GetCollectionUseCase(
             remoteSource = get(),
             syncLocalSource = get(),
@@ -114,9 +124,11 @@ internal val movieDetailsModule = module {
             getStreamingsUseCase = get(),
             getPlexUseCase = get(),
             getCollectionUseCase = get(),
+            dropPlaybackUseCase = get(),
             watchlistUseCase = get(),
             historyUseCase = get(),
             appReviewUseCase = get(),
+            scrobbleUpdates = get(),
             sessionManager = get(),
             tutorialsManager = get(),
         )

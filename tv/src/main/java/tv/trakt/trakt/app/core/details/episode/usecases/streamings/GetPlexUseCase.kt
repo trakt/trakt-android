@@ -2,9 +2,11 @@ package tv.trakt.trakt.app.core.details.episode.usecases.streamings
 
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import io.ktor.utils.io.CancellationException
 import timber.log.Timber
 import tv.trakt.trakt.app.core.plex.data.PlexRemoteDataSource
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
+import tv.trakt.trakt.app.core.sync.data.remote.episodes.EpisodesSyncRemoteDataSource
 import tv.trakt.trakt.app.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.PLEX_PLAY_ENABLED
@@ -17,6 +19,7 @@ import tv.trakt.trakt.common.model.fromDto
 
 internal class GetPlexUseCase(
     private val remoteSyncSource: ShowsSyncRemoteDataSource,
+    private val remoteEpisodeSyncSource: EpisodesSyncRemoteDataSource,
     private val remoteShowSource: ShowsRemoteDataSource,
     private val remotePlexSource: PlexRemoteDataSource,
     private val localShowSource: ShowLocalDataSource,
@@ -41,7 +44,10 @@ internal class GetPlexUseCase(
         )
     }
 
-    suspend fun getPlexStreamUrl(traktId: TraktId): PlexStreamResult? {
+    suspend fun getPlexStreamUrl(
+        episodeTraktId: TraktId,
+        showTraktId: TraktId,
+    ): PlexStreamResult? {
         val isEnabled = Firebase.remoteConfig.getBoolean(PLEX_PLAY_ENABLED)
         if (!isEnabled) {
             Timber.d("Plex play is disabled via remote config.")
@@ -50,10 +56,26 @@ internal class GetPlexUseCase(
 
         return try {
             val result = remotePlexSource.getPlexStream(
-                id = traktId.value.toString(),
+                id = episodeTraktId.value.toString(),
                 type = MediaType.EPISODE,
             )
+
             result.streamUrl?.let { primaryUrl ->
+                val playback = runCatching {
+                    remoteEpisodeSyncSource.getPlaybackProgress(
+                        page = 1,
+                        limit = 100,
+                    )
+                }.getOrNull()
+
+                val episodeProgress = playback
+                    ?.firstOrNull {
+                        it.show.ids.trakt == showTraktId.value &&
+                            it.episode.ids.trakt == episodeTraktId.value
+                    }
+                    ?.progress
+                    ?: 0F
+
                 val baseUrl = primaryUrl.substringBefore("/library/")
                 PlexStreamResult(
                     primaryUrl = primaryUrl,
@@ -63,14 +85,17 @@ internal class GetPlexUseCase(
                             // Replace the base URL in the stream URL with the conn's URI.
                             primaryUrl.replace(baseUrl, conn.uri)
                         }.orEmpty(),
+                    progress = episodeProgress,
                 )
             }
         } catch (error: Exception) {
             if (error.getHttpErrorCode() == 404) {
-                Timber.w("Plex stream not found for slug: $traktId")
+                Timber.w("Plex stream not found for slug: $episodeTraktId")
                 return null
             }
-            Timber.e(error, "Error fetching Plex stream for slug: ${traktId.value}")
+            if (error !is CancellationException) {
+                Timber.e(error, "Error fetching Plex stream for slug: ${episodeTraktId.value}")
+            }
             throw error
         }
     }
@@ -83,5 +108,6 @@ internal class GetPlexUseCase(
     data class PlexStreamResult(
         val primaryUrl: String,
         val secondaryUrls: List<String>,
+        val progress: Float,
     )
 }

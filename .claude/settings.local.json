@@ -14,7 +14,15 @@
       "Bash(grep -r TriviaMovieSummaryElement /Users/michal/Documents/Android/trakt/trakt-android-2025 --include=*.kt)",
       "Bash(python3:*)",
       "Bash(find /Users/michal/Documents/Android/trakt/trakt-android-2025/app -name EpisodesRemoteDataSource.kt -o -name *Episode*Remote*.kt)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Read(//private/tmp/**)",
+      "Bash(jar xf:*)",
+      "Read(//tmp/io/ktor/client/plugins/cache/**)",
+      "Bash(mkdir -p /tmp/ktor-src)",
+      "Read(//tmp/**)",
+      "Bash(jar tf:*)",
+      "Bash(xargs -I{} sh -c 'jar tf \"{}\" 2>/dev/null | grep -q \"FileStorage\" && echo \"{}\"')",
+      "Bash(cat /tmp/io/ktor/client/plugins/cache/storage/CacheStorage.kt)"
     ]
   }
 }

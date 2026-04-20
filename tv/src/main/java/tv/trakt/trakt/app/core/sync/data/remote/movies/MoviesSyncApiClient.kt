@@ -10,6 +10,7 @@ import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.common.networking.ProgressMovieDto
 import tv.trakt.trakt.common.networking.WatchlistMovieDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import java.time.ZonedDateTime
@@ -22,6 +23,20 @@ internal class MoviesSyncApiClient(
     private val collectionApi: CollectionApi,
     private val cacheMarkerProvider: CacheMarkerProvider,
 ) : MoviesSyncRemoteDataSource {
+    override suspend fun getPlaybackProgress(
+        limit: Int,
+        page: Int,
+    ): List<ProgressMovieDto> {
+        val response = syncApi.getSyncProgressMovies(
+            extended = "full,cloud9",
+            page = page,
+            limit = limit,
+            startAt = null,
+            endAt = null,
+        )
+        return response.body()
+    }
+
     override suspend fun addToWatchlist(movieId: TraktId) {
         val request = PostUsersListsListAddRequest(
             movies = listOf(

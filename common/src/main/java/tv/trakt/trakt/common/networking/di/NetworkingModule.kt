@@ -2,6 +2,8 @@ package tv.trakt.trakt.common.networking.di
 
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.plugins.cache.storage.CacheStorage
+import io.ktor.client.plugins.cache.storage.FileStorage
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -19,6 +21,7 @@ import org.openapitools.client.apis.PeopleApi
 import org.openapitools.client.apis.RatingsApi
 import org.openapitools.client.apis.ReactionsApi
 import org.openapitools.client.apis.RecommendationsApi
+import org.openapitools.client.apis.ScrobbleApi
 import org.openapitools.client.apis.SearchApi
 import org.openapitools.client.apis.ShowsApi
 import org.openapitools.client.apis.SyncApi
@@ -26,17 +29,26 @@ import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.apis.WatchedApi
 import tv.trakt.trakt.common.Config.API_BASE_URL
 import tv.trakt.trakt.common.Config.API_V3_BASE_URL
+import tv.trakt.trakt.common.networking.api.scrobble.ScrobbleExtrasApi
 import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.common.networking.client.KtorClientFactory
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import tv.trakt.trakt.common.networking.helpers.DefaultCacheMarkerProvider
+import java.nio.file.Files
 
 val networkingModule = module {
+    single<CacheStorage> {
+        val cacheDir = androidContext().cacheDir.resolve("ktor")
+        val cacheFile = Files.createDirectories(cacheDir.toPath()).toFile()
+        FileStorage(cacheFile)
+    }
+
     single<KtorClientFactory> {
         KtorClientFactory(
             cacheMarkerProvider = get(),
             tokenProvider = get(),
             sessionManager = get(),
+            fileStorage = get(),
         )
     }
 
@@ -47,12 +59,12 @@ val networkingModule = module {
 
     single<(HttpClientConfig<*>) -> Unit>(named("clientConfig")) {
         val factory = get<KtorClientFactory>()
-        factory.createClientConfig(androidContext())
+        factory.createClientConfig()
     }
 
     single<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")) {
         val factory = get<KtorClientFactory>()
-        factory.createAuthorizedClientConfig(androidContext())
+        factory.createAuthorizedClientConfig()
     }
 
     single<CacheMarkerProvider> {
@@ -82,15 +94,33 @@ val networkingApiModule = module {
             get<SearchApi>(named("authorizedSearchApi")),
             get<ShowsApi>(),
             get<SyncApi>(),
+            get<ScrobbleApi>(),
             get<UsersApi>(),
             get<WatchedApi>(),
             get<V3Api>(),
+            get<ScrobbleExtrasApi>(),
         )
     }
 
     single<V3Api> {
         V3Api(
             baseUrl = API_V3_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
+        )
+    }
+
+    single<ScrobbleExtrasApi> {
+        ScrobbleExtrasApi(
+            baseUrl = API_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
+        )
+    }
+
+    single<ScrobbleApi> {
+        ScrobbleApi(
+            baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
         )

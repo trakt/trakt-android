@@ -1,6 +1,12 @@
 package tv.trakt.trakt.app.core.sync.di
 
+import org.koin.android.ext.koin.androidApplication
+import org.koin.androidx.workmanager.dsl.worker
 import org.koin.dsl.module
+import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates
+import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdatesStorage
+import tv.trakt.trakt.app.core.scrobble.data.work.PostScrobbleStartWorker
+import tv.trakt.trakt.app.core.scrobble.data.work.PostScrobbleStopWorker
 import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalDataSource
 import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncStorage
 import tv.trakt.trakt.app.core.sync.data.local.movies.MoviesSyncLocalDataSource
@@ -38,6 +44,7 @@ internal val syncModule = module {
     single<EpisodesSyncRemoteDataSource> {
         EpisodesSyncApiClient(
             syncApi = get(),
+            scrobbleExtrasApi = get(),
             cacheMarkerProvider = get(),
         )
     }
@@ -52,5 +59,33 @@ internal val syncModule = module {
 
     single<EpisodesSyncLocalDataSource> {
         EpisodesSyncStorage()
+    }
+
+    single<ScrobbleUpdates> {
+        ScrobbleUpdatesStorage()
+    }
+
+    worker {
+        PostScrobbleStartWorker(
+            appContext = androidApplication(),
+            workerParams = get(),
+            sessionManager = get(),
+            scrobbleExtrasApi = get(),
+            scrobbleApi = get(),
+            scrobbleUpdates = get(),
+            cacheMarker = get(),
+        )
+    }
+
+    worker {
+        PostScrobbleStopWorker(
+            appContext = androidApplication(),
+            workerParams = get(),
+            sessionManager = get(),
+            scrobbleExtrasApi = get(),
+            scrobbleApi = get(),
+            scrobbleUpdates = get(),
+            cacheMarker = get(),
+        )
     }
 }

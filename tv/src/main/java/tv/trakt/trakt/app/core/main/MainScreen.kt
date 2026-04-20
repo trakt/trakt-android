@@ -262,6 +262,7 @@ private fun MainNavHost(
                 onNavigateToHistory = { navigateToProfileHistoryViewAll() },
             )
             homeUpNextScreen(
+                onNavigateToMovie = { navigateToMovie(it) },
                 onNavigateToEpisode = { showId, episode ->
                     navigateToEpisode(showId, episode)
                 },

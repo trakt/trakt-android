@@ -71,9 +71,13 @@ import tv.trakt.trakt.app.core.player.plex.audio.TvPlexPlayerAudioDialog
 import tv.trakt.trakt.app.core.player.plex.controls.TvPlexPlayerControls
 import tv.trakt.trakt.app.core.player.plex.subtitles.TvPlexPlayerSubtitlesDialog
 import tv.trakt.trakt.app.core.player.plex.subtitles.model.SubtitleSize
+import tv.trakt.trakt.app.core.scrobble.data.work.PostScrobbleStartWorker
+import tv.trakt.trakt.app.core.scrobble.data.work.PostScrobbleStopWorker
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.TraktId
 import java.lang.System.currentTimeMillis
 import kotlin.time.Duration.Companion.seconds
 
@@ -84,8 +88,12 @@ internal fun TvPlexPlayerScreen(
     secondaryVideoUrls: List<String>,
     videoTitle: String,
     videoSubtitle: String?,
+    videoProgress: Float,
+    mediaId: TraktId,
+    mediaType: MediaType,
 ) {
     val activity = LocalActivity.current
+    val appContext = activity!!.applicationContext
 
     val player = retain {
         ExoPlayer
@@ -144,14 +152,37 @@ internal fun TvPlexPlayerScreen(
     }
 
     RetainedEffect(player) {
+        var initialSeekDone = false
+        var scrobbleStartScheduled = false
+
         val listener = object : Player.Listener {
             override fun onIsPlayingChanged(isPlayingNow: Boolean) {
                 isPlaying.value = isPlayingNow
+
+                if (isPlayingNow && !scrobbleStartScheduled) {
+                    scrobbleStartScheduled = true
+                    PostScrobbleStartWorker.scheduleOneTime(
+                        appContext = appContext,
+                        mediaId = mediaId,
+                        mediaType = mediaType,
+                        progress = if (player.duration > 0) {
+                            (player.currentPosition.toFloat() / player.duration.toFloat() * 100f).coerceIn(0f, 100f)
+                        } else {
+                            0f
+                        },
+                    )
+                }
             }
 
             override fun onPlaybackStateChanged(playbackState: Int) {
                 super.onPlaybackStateChanged(playbackState)
                 isBuffering.value = playbackState == Player.STATE_BUFFERING
+
+                if (!initialSeekDone && playbackState == Player.STATE_READY && videoProgress > 0f) {
+                    initialSeekDone = true
+                    val seekPositionMs = (videoProgress / 100f * player.duration).toLong()
+                    player.seekTo(seekPositionMs)
+                }
             }
 
             override fun onPlayerError(error: PlaybackException) {
@@ -219,6 +250,17 @@ internal fun TvPlexPlayerScreen(
         onRetire {
             player.removeListener(listener)
             player.release()
+
+            PostScrobbleStopWorker.scheduleOneTime(
+                appContext = appContext,
+                mediaId = mediaId,
+                mediaType = mediaType,
+                progress = if (player.duration > 0) {
+                    (player.currentPosition.toFloat() / player.duration.toFloat() * 100f).coerceIn(0f, 100f)
+                } else {
+                    0f
+                },
+            )
         }
     }
 
@@ -611,6 +653,9 @@ fun Preview() {
             secondaryVideoUrls = emptyList(),
             videoTitle = "The Matrix (2023)",
             videoSubtitle = "S01E01 - Pilot",
+            videoProgress = 33f,
+            mediaId = TraktId(0),
+            mediaType = MediaType.MOVIE,
         )
     }
 }

@@ -43,12 +43,15 @@ import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_PAGE_LIMIT
+import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressItem
+import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressMovie
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressShow
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.model.Episode
-import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.Images.Size.FULL
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
@@ -58,6 +61,7 @@ import tv.trakt.trakt.resources.R
 internal fun UpNextViewAllScreen(
     viewModel: UpNextViewAllViewModel,
     onNavigateToEpisode: (TraktId, Episode) -> Unit,
+    onNavigateToMovie: (TraktId) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -67,8 +71,11 @@ internal fun UpNextViewAllScreen(
 
     UpNextViewAllContent(
         state = state,
-        onItemClick = { show, episode ->
+        onShowClick = { show, episode ->
             onNavigateToEpisode(show.ids.trakt, episode)
+        },
+        onMovieClick = {
+            onNavigateToMovie(it.ids.trakt)
         },
         onLoadNextPage = {
             viewModel.loadNextDataPage()
@@ -80,10 +87,11 @@ internal fun UpNextViewAllScreen(
 private fun UpNextViewAllContent(
     state: UpNextViewAllState,
     modifier: Modifier = Modifier,
-    onItemClick: (Show, Episode) -> Unit,
+    onShowClick: (Show, Episode) -> Unit,
+    onMovieClick: (Movie) -> Unit,
     onLoadNextPage: () -> Unit,
 ) {
-    var focusedItem by remember { mutableStateOf<ProgressShow?>(null) }
+    var focusedItem by remember { mutableStateOf<ProgressItem?>(null) }
     var focusedItemId by rememberSaveable { mutableStateOf<Int?>(null) }
     val focusRequesters = remember { mutableMapOf<Int, FocusRequester>() }
 
@@ -108,7 +116,11 @@ private fun UpNextViewAllContent(
             },
     ) {
         BackdropImage(
-            imageUrl = focusedItem?.show?.images?.getFanartUrl(Images.Size.FULL),
+            imageUrl = when (val item = focusedItem) {
+                is ProgressShow -> item.progress.nextEpisode.images?.getScreenshotUrl(FULL)
+                is ProgressMovie -> item.movie.images?.getFanartUrl(FULL)
+                else -> null
+            },
             saturation = 0F,
             crossfade = true,
         )
@@ -151,103 +163,175 @@ private fun UpNextViewAllContent(
                     key = { index -> state.items[index].key },
                 ) { index ->
                     val item = state.items[index]
-                    val focusRequester = focusRequesters.getOrPut(item.id.value) {
-                        FocusRequester()
+
+                    val focusRequester = remember {
+                        focusRequesters.getOrPut(item.id.value) {
+                            FocusRequester()
+                        }
                     }
 
-                    HorizontalMediaCard(
-                        title = "",
-                        containerImageUrl =
-                            item.show.images?.getFanartUrl()
-                                ?: item.progress.nextEpisode.images?.getScreenshotUrl(),
-                        onClick = {
-                            onItemClick(
-                                item.show,
-                                item.progress.nextEpisode,
-                            )
-                        },
-                        cardContent = {
-                            Column(
-                                verticalArrangement = spacedBy(3.dp),
-                            ) {
-                                when {
-                                    item.progress.nextEpisode.isPremiere() -> PremiereChip(
-                                        contentTextStyle = TraktTheme.typography.meta.copy(
-                                            fontSize = 10.sp,
-                                        ),
-                                    )
-                                    item.progress.nextEpisode.isFinale() -> FinaleChip(
-                                        contentTextStyle = TraktTheme.typography.meta.copy(
-                                            fontSize = 10.sp,
-                                        ),
-                                    )
-                                }
-
-                                Row(
-                                    horizontalArrangement = spacedBy(2.dp),
+                    if (item is ProgressMovie) {
+                        HorizontalMediaCard(
+                            title = "",
+                            containerImageUrl = item.movie.images?.getFanartUrl(),
+                            onClick = { onMovieClick(item.movie) },
+                            cardContent = {
+                                Column(
+                                    verticalArrangement = spacedBy(3.dp),
                                 ) {
-                                    val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes
-                                    if (runtime != null) {
-                                        InfoChip(
-                                            text = runtime.durationFormat(),
+                                    Row(
+                                        horizontalArrangement = spacedBy(2.dp),
+                                    ) {
+                                        val remainingTime = remember(item.progress.progress) {
+                                            item.remainingTimeText
+                                        }
+
+                                        val remainingPercent = remember(item.progress.progress) {
+                                            (100F - item.progress.progress) / 100F
+                                        }
+
+                                        EpisodeProgressBar(
+                                            startText = stringResource(
+                                                R.string.tag_text_remaining_duration,
+                                                remainingTime ?: "?",
+                                            ),
                                             containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
+                                            progress = (1F - remainingPercent).coerceIn(0F, 0.99F),
                                         )
                                     }
-
-                                    val remainingEpisodes = remember(item.progress.completed, item.progress.aired) {
-                                        item.progress.remainingEpisodes
-                                    }
-                                    val remainingPercent = remember(item.progress.completed, item.progress.aired) {
-                                        item.progress.remainingPercent
-                                    }
-
-                                    EpisodeProgressBar(
-                                        startText = stringResource(
-                                            R.string.tag_text_remaining_episodes,
-                                            remainingEpisodes,
-                                        ),
-                                        containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
-                                        progress = remainingPercent,
-                                    )
                                 }
-                            }
-                        },
-                        footerContent = {
-                            Column(
-                                verticalArrangement = spacedBy(1.dp),
-                            ) {
-                                Text(
-                                    text = item.show.title,
-                                    style = TraktTheme.typography.cardTitle,
-                                    color = TraktTheme.colors.textPrimary,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                )
+                            },
+                            footerContent = {
+                                Column(
+                                    verticalArrangement = spacedBy(1.dp),
+                                ) {
+                                    Text(
+                                        text = item.movie.title,
+                                        style = TraktTheme.typography.cardTitle,
+                                        color = TraktTheme.colors.textPrimary,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                    )
 
-                                Text(
-                                    text = item.progress.nextEpisode.seasonEpisodeString(),
-                                    style = TraktTheme.typography.cardSubtitle,
-                                    color = TraktTheme.colors.textSecondary,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                )
-                            }
-                        },
-                        modifier = Modifier
-                            .focusRequester(focusRequester)
-                            .onFocusChanged {
-                                if (it.isFocused) {
-                                    focusedItem = item
-                                    focusedItemId = item.id.value
-
-                                    loadNextPageIfNeeded(
-                                        size = state.items.size,
-                                        index = index,
-                                        onLoadNextPage = onLoadNextPage,
+                                    Text(
+                                        text = item.movie.runtime?.inWholeMinutes?.durationFormat() ?: "N/A",
+                                        style = TraktTheme.typography.cardSubtitle,
+                                        color = TraktTheme.colors.textSecondary,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
                                     )
                                 }
                             },
-                    )
+                            modifier = Modifier
+                                .focusRequester(focusRequester)
+                                .onFocusChanged {
+                                    if (it.isFocused) {
+                                        focusedItem = item
+                                        focusedItemId = item.id.value
+
+                                        loadNextPageIfNeeded(
+                                            size = state.items.size,
+                                            index = index,
+                                            onLoadNextPage = onLoadNextPage,
+                                        )
+                                    }
+                                },
+                        )
+                    } else if (item is ProgressShow) {
+                        HorizontalMediaCard(
+                            title = "",
+                            containerImageUrl =
+                                item.show.images?.getFanartUrl()
+                                    ?: item.progress.nextEpisode.images?.getScreenshotUrl(),
+                            onClick = {
+                                onShowClick(
+                                    item.show,
+                                    item.progress.nextEpisode,
+                                )
+                            },
+                            cardContent = {
+                                Column(
+                                    verticalArrangement = spacedBy(3.dp),
+                                ) {
+                                    when {
+                                        item.progress.nextEpisode.isPremiere() -> PremiereChip(
+                                            contentTextStyle = TraktTheme.typography.meta.copy(
+                                                fontSize = 10.sp,
+                                            ),
+                                        )
+                                        item.progress.nextEpisode.isFinale() -> FinaleChip(
+                                            contentTextStyle = TraktTheme.typography.meta.copy(
+                                                fontSize = 10.sp,
+                                            ),
+                                        )
+                                    }
+
+                                    Row(
+                                        horizontalArrangement = spacedBy(2.dp),
+                                    ) {
+                                        val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes
+                                        if (runtime != null) {
+                                            InfoChip(
+                                                text = runtime.durationFormat(),
+                                                containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
+                                            )
+                                        }
+
+                                        val remainingEpisodes = remember(item.progress.completed, item.progress.aired) {
+                                            item.progress.remainingEpisodes
+                                        }
+                                        val remainingPercent = remember(item.progress.completed, item.progress.aired) {
+                                            item.progress.remainingPercent
+                                        }
+
+                                        EpisodeProgressBar(
+                                            startText = stringResource(
+                                                R.string.tag_text_remaining_episodes,
+                                                remainingEpisodes,
+                                            ),
+                                            containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
+                                            progress = remainingPercent,
+                                        )
+                                    }
+                                }
+                            },
+                            footerContent = {
+                                Column(
+                                    verticalArrangement = spacedBy(1.dp),
+                                ) {
+                                    Text(
+                                        text = item.show.title,
+                                        style = TraktTheme.typography.cardTitle,
+                                        color = TraktTheme.colors.textPrimary,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                    )
+
+                                    Text(
+                                        text = item.progress.nextEpisode.seasonEpisodeString(),
+                                        style = TraktTheme.typography.cardSubtitle,
+                                        color = TraktTheme.colors.textSecondary,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                    )
+                                }
+                            },
+                            modifier = Modifier
+                                .focusRequester(focusRequester)
+                                .onFocusChanged {
+                                    if (it.isFocused) {
+                                        focusedItem = item
+                                        focusedItemId = item.id.value
+
+                                        loadNextPageIfNeeded(
+                                            size = state.items.size,
+                                            index = index,
+                                            onLoadNextPage = onLoadNextPage,
+                                        )
+                                    }
+                                },
+                        )
+                    }
                 }
             }
 
@@ -295,7 +379,8 @@ private fun Preview() {
     TraktTheme {
         UpNextViewAllContent(
             state = UpNextViewAllState(),
-            onItemClick = { _, _ -> },
+            onShowClick = { _, _ -> },
+            onMovieClick = {},
             onLoadNextPage = {},
         )
     }

@@ -7,7 +7,8 @@ import tv.trakt.trakt.app.core.home.sections.history.HomeHistoryViewModel
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.HomeUpcomingViewModel
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.HomeUpNextViewModel
-import tv.trakt.trakt.app.core.home.sections.shows.upnext.usecases.GetUpNextUseCase
+import tv.trakt.trakt.app.core.home.sections.shows.upnext.usecases.GetMoviesUpNextUseCase
+import tv.trakt.trakt.app.core.home.sections.shows.upnext.usecases.GetShowsUpNextUseCase
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.viewall.UpNextViewAllViewModel
 import tv.trakt.trakt.app.core.home.sections.social.HomeSocialViewModel
 import tv.trakt.trakt.app.core.home.sections.social.usecases.GetSocialActivityUseCase
@@ -42,10 +43,17 @@ internal val homeModule = module {
     }
 
     factory {
-        GetUpNextUseCase(
+        GetShowsUpNextUseCase(
             remoteShowsSource = get(),
             localShowSource = get(),
             localEpisodeSource = get(),
+        )
+    }
+
+    factory {
+        GetMoviesUpNextUseCase(
+            remoteMoviesSource = get(),
+            localMovieSource = get(),
         )
     }
 
@@ -83,7 +91,8 @@ internal val homeModule = module {
 
     viewModel {
         HomeUpNextViewModel(
-            getUpNextUseCase = get(),
+            getShowsUpNextUseCase = get(),
+            getMoviesUpNextUseCase = get(),
             localShowsSyncSource = get(),
             localEpisodesSyncSource = get(),
             appLifecycleProvider = get(),
@@ -98,7 +107,8 @@ internal val homeModule = module {
 
     viewModel {
         UpNextViewAllViewModel(
-            getUpNextUseCase = get(),
+            getShowsUpNextUseCase = get(),
+            getMoviesUpNextUseCase = get(),
             localShowsSyncSource = get(),
             localEpisodesSyncSource = get(),
         )

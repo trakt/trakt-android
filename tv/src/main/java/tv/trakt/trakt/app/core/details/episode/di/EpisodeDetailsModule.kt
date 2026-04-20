@@ -40,6 +40,7 @@ internal val episodeDetailsModule = module {
     factory {
         GetPlexUseCase(
             remoteSyncSource = get(),
+            remoteEpisodeSyncSource = get(),
             remoteShowSource = get(),
             remotePlexSource = get(),
             localShowSource = get(),
@@ -96,6 +97,8 @@ internal val episodeDetailsModule = module {
             getHistoryUseCase = get(),
             changeHistoryUseCase = get(),
             appReviewUseCase = get(),
+            dropPlaybackUseCase = get(),
+            scrobbleUpdates = get(),
         )
     }
 }

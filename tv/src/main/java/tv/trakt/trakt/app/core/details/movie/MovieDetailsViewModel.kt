@@ -6,12 +6,18 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -31,6 +37,9 @@ import tv.trakt.trakt.app.core.details.movie.usecases.collection.ChangeWatchlist
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.GetCollectionUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.streamings.GetPlexUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.streamings.GetStreamingsUseCase
+import tv.trakt.trakt.app.core.plex.usecase.DropPlaybackUseCase
+import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates
+import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates.Source.SCROBBLE_STOP_WORKER
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.tutorials.TutorialsManager
 import tv.trakt.trakt.common.core.tutorials.model.TutorialKey
@@ -62,10 +71,12 @@ internal class MovieDetailsViewModel(
     private val getListsUseCase: GetCustomListsUseCase,
     private val getStreamingsUseCase: GetStreamingsUseCase,
     private val getPlexUseCase: GetPlexUseCase,
+    private val dropPlaybackUseCase: DropPlaybackUseCase,
     private val getCollectionUseCase: GetCollectionUseCase,
     private val watchlistUseCase: ChangeWatchlistUseCase,
     private val historyUseCase: ChangeHistoryUseCase,
     private val appReviewUseCase: RequestAppReviewUseCase,
+    private val scrobbleUpdates: ScrobbleUpdates,
     private val sessionManager: SessionManager,
     private val tutorialsManager: TutorialsManager,
 ) : ViewModel() {
@@ -89,6 +100,7 @@ internal class MovieDetailsViewModel(
 
     init {
         loadData(TraktId(movie.movieId))
+        observeData()
     }
 
     private fun loadData(movieId: TraktId) {
@@ -117,6 +129,24 @@ internal class MovieDetailsViewModel(
                 }
             }
         }
+    }
+
+    @OptIn(FlowPreview::class)
+    private fun observeData() {
+        merge(
+            scrobbleUpdates.observeUpdates(SCROBBLE_STOP_WORKER),
+        )
+            .distinctUntilChanged()
+            .debounce(250)
+            .onEach {
+                val movie = movieDetailsState.value ?: return@onEach
+                val user = userState.value ?: return@onEach
+                loadStreamings(
+                    movieIds = movie.ids,
+                    user = user,
+                )
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun loadExternalRatings(movieId: TraktId) {
@@ -362,6 +392,28 @@ internal class MovieDetailsViewModel(
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
                     Timber.e("Error toggling watchlist: ${error.message}")
+                }
+            }
+        }
+    }
+
+    fun dropMoviePlayback() {
+        viewModelScope.launch {
+            try {
+                val movieIds = movieDetailsState.value?.ids ?: return@launch
+                val user = userState.value ?: return@launch
+
+                movieStreamingsState.update { it.copy(loading = true) }
+                dropPlaybackUseCase.dropMoviePlayback(movieIds.trakt)
+
+                loadStreamings(
+                    movieIds = movieIds,
+                    user = user,
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    movieStreamingsState.update { it.copy(loading = false) }
+                    Timber.e("Error dropping movie playback: ${error.message}")
                 }
             }
         }

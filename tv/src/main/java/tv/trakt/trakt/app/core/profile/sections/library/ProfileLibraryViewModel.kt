@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.app.Config.REFRESH_DATA_THRESHOLD_MINUTES
 import tv.trakt.trakt.app.core.profile.ProfileConfig.PROFILE_LIBRARY_SECTION_LIMIT
-import tv.trakt.trakt.app.core.profile.sections.history.usecases.GetProfileLibraryUseCase
+import tv.trakt.trakt.app.core.profile.sections.library.usecases.GetProfileLibraryUseCase
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider

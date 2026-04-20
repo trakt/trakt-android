@@ -5,12 +5,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -29,6 +35,9 @@ import tv.trakt.trakt.app.core.details.episode.usecases.streamings.GetPlexUseCas
 import tv.trakt.trakt.app.core.details.episode.usecases.streamings.GetStreamingsUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.GetRelatedShowsUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.GetShowDetailsUseCase
+import tv.trakt.trakt.app.core.plex.usecase.DropPlaybackUseCase
+import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates
+import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates.Source.SCROBBLE_STOP_WORKER
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.tutorials.TutorialsManager
 import tv.trakt.trakt.common.core.tutorials.model.TutorialKey
@@ -59,6 +68,7 @@ internal class EpisodeDetailsViewModel(
     private val getExternalRatingsUseCase: GetExternalRatingsUseCase,
     private val getStreamingsUseCase: GetStreamingsUseCase,
     private val getPlexUseCase: GetPlexUseCase,
+    private val dropPlaybackUseCase: DropPlaybackUseCase,
     private val getCastCrewUseCase: GetCastCrewUseCase,
     private val getCommentsUseCase: GetCommentsUseCase,
     private val getRelatedShowsUseCase: GetRelatedShowsUseCase,
@@ -66,6 +76,7 @@ internal class EpisodeDetailsViewModel(
     private val getHistoryUseCase: GetEpisodeHistoryUseCase,
     private val changeHistoryUseCase: ChangeHistoryUseCase,
     private val appReviewUseCase: RequestAppReviewUseCase,
+    private val scrobbleUpdates: ScrobbleUpdates,
 ) : ViewModel() {
     private val initialState = EpisodeDetailsState()
 
@@ -94,6 +105,7 @@ internal class EpisodeDetailsViewModel(
                 episode = destination.episode,
             ),
         )
+        observeData()
     }
 
     private fun loadData(
@@ -143,6 +155,26 @@ internal class EpisodeDetailsViewModel(
         }
     }
 
+    @OptIn(FlowPreview::class)
+    private fun observeData() {
+        merge(
+            scrobbleUpdates.observeUpdates(SCROBBLE_STOP_WORKER),
+        )
+            .distinctUntilChanged()
+            .debounce(250)
+            .onEach {
+                val show = showDetailsState.value ?: return@onEach
+                val episode = episodeDetailsState.value ?: return@onEach
+                val user = userState.value ?: return@onEach
+                loadStreamings(
+                    showIds = show.ids,
+                    episode = episode,
+                    user = user,
+                )
+            }
+            .launchIn(viewModelScope)
+    }
+
     private fun loadExternalRatings(
         showId: TraktId,
         seasonEpisode: SeasonEpisode,
@@ -181,7 +213,12 @@ internal class EpisodeDetailsViewModel(
                 )
                 if (plexService.isPlex) {
                     val plexStream = plexService.plexSlug
-                        ?.let { getPlexUseCase.getPlexStreamUrl(episode.ids.trakt) }
+                        ?.let {
+                            getPlexUseCase.getPlexStreamUrl(
+                                episodeTraktId = episode.ids.trakt,
+                                showTraktId = showIds.trakt,
+                            )
+                        }
 
                     episodeStreamingsState.update {
                         it.copy(
@@ -370,6 +407,33 @@ internal class EpisodeDetailsViewModel(
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
                     Timber.e("Error removing history: ${error.message}")
+                }
+            }
+        }
+    }
+
+    fun dropEpisodePlayback() {
+        viewModelScope.launch {
+            try {
+                val showIds = showDetailsState.value?.ids ?: return@launch
+                val episode = episodeDetailsState.value ?: return@launch
+                val user = userState.value ?: return@launch
+
+                episodeStreamingsState.update { it.copy(loading = true) }
+                dropPlaybackUseCase.dropEpisodePlayback(
+                    showId = showIds.trakt,
+                    episodeId = episode.ids.trakt,
+                )
+
+                loadStreamings(
+                    showIds = showIds,
+                    episode = episode,
+                    user = user,
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    episodeStreamingsState.update { it.copy(loading = false) }
+                    Timber.e("Error dropping playback: ${error.message}")
                 }
             }
         }

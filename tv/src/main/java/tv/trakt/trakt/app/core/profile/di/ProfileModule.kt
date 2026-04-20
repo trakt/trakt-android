@@ -15,10 +15,10 @@ import tv.trakt.trakt.app.core.profile.sections.favorites.shows.usecases.GetFavo
 import tv.trakt.trakt.app.core.profile.sections.favorites.shows.viewall.ProfileFavoriteShowsViewAllViewModel
 import tv.trakt.trakt.app.core.profile.sections.history.ProfileHistoryViewModel
 import tv.trakt.trakt.app.core.profile.sections.history.usecases.GetProfileHistoryUseCase
-import tv.trakt.trakt.app.core.profile.sections.history.usecases.GetProfileLibraryUseCase
 import tv.trakt.trakt.app.core.profile.sections.history.usecases.SyncProfileHistoryUseCase
 import tv.trakt.trakt.app.core.profile.sections.history.viewall.ProfileHistoryViewAllViewModel
 import tv.trakt.trakt.app.core.profile.sections.library.ProfileLibraryViewModel
+import tv.trakt.trakt.app.core.profile.sections.library.usecases.GetProfileLibraryUseCase
 import tv.trakt.trakt.app.core.profile.sections.library.viewall.ProfileLibraryViewAllViewModel
 import tv.trakt.trakt.app.core.profile.usecases.LogoutProfileUseCase
 import tv.trakt.trakt.common.core.user.data.local.liked.UserLikedListsLocalDataSource

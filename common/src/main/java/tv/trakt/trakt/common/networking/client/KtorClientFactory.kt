@@ -1,9 +1,9 @@
 package tv.trakt.trakt.common.networking.client
 
-import android.content.Context
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.plugins.cache.storage.CacheStorage
 import tv.trakt.trakt.common.auth.TokenProvider
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
@@ -12,20 +12,21 @@ internal class KtorClientFactory(
     private val cacheMarkerProvider: CacheMarkerProvider,
     private val tokenProvider: TokenProvider,
     private val sessionManager: SessionManager,
+    private val fileStorage: CacheStorage,
 ) {
-    fun createClientConfig(context: Context): (HttpClientConfig<*>) -> Unit {
+    fun createClientConfig(): (HttpClientConfig<*>) -> Unit {
         return {
             it.applyConfig(
-                context = context,
+                fileStorage = fileStorage,
                 cacheMarkerProvider = cacheMarkerProvider,
             )
         }
     }
 
-    fun createAuthorizedClientConfig(context: Context): (HttpClientConfig<*>) -> Unit {
+    fun createAuthorizedClientConfig(): (HttpClientConfig<*>) -> Unit {
         return {
             it.applyConfig(
-                context = context,
+                fileStorage = fileStorage,
                 cacheMarkerProvider = cacheMarkerProvider,
             )
             it.applyAuthorizationConfig(

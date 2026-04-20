@@ -2,6 +2,7 @@ package tv.trakt.trakt.app.core.details.movie.usecases.streamings
 
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import io.ktor.utils.io.CancellationException
 import timber.log.Timber
 import tv.trakt.trakt.app.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.app.core.plex.data.PlexRemoteDataSource
@@ -51,6 +52,18 @@ internal class GetPlexUseCase(
                 type = MediaType.MOVIE,
             )
             result.streamUrl?.let { primaryUrl ->
+                val playback = runCatching {
+                    remoteSyncSource.getPlaybackProgress(
+                        page = 1,
+                        limit = 100,
+                    )
+                }.getOrNull()
+
+                val movieProgress = playback
+                    ?.firstOrNull { it.movie.ids.trakt == traktId.value }
+                    ?.progress
+                    ?: 0F
+
                 val baseUrl = primaryUrl.substringBefore("/library/")
                 PlexStreamResult(
                     primaryUrl = primaryUrl,
@@ -60,6 +73,7 @@ internal class GetPlexUseCase(
                             // Replace the base URL in the stream URL with the conn's URI.
                             primaryUrl.replace(baseUrl, conn.uri)
                         }.orEmpty(),
+                    progress = movieProgress,
                 )
             }
         } catch (error: Exception) {
@@ -67,7 +81,9 @@ internal class GetPlexUseCase(
                 Timber.w("Plex stream not found for slug: ${traktId.value}")
                 return null
             }
-            Timber.e(error, "Error fetching Plex stream for slug: ${traktId.value}")
+            if (error !is CancellationException) {
+                Timber.e(error, "Error fetching Plex stream for slug: ${traktId.value}")
+            }
             throw error
         }
     }
@@ -80,5 +96,6 @@ internal class GetPlexUseCase(
     data class PlexStreamResult(
         val primaryUrl: String,
         val secondaryUrls: List<String>,
+        val progress: Float,
     )
 }

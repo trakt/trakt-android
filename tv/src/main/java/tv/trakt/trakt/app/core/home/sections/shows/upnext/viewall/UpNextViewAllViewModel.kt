@@ -3,7 +3,11 @@ package tv.trakt.trakt.app.core.home.sections.shows.upnext.viewall
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.plus
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -12,7 +16,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_PAGE_LIMIT
-import tv.trakt.trakt.app.core.home.sections.shows.upnext.usecases.GetUpNextUseCase
+import tv.trakt.trakt.app.core.home.sections.shows.upnext.usecases.GetMoviesUpNextUseCase
+import tv.trakt.trakt.app.core.home.sections.shows.upnext.usecases.GetShowsUpNextUseCase
 import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalDataSource
 import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
@@ -20,7 +25,8 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import java.time.ZonedDateTime
 
 internal class UpNextViewAllViewModel(
-    private val getUpNextUseCase: GetUpNextUseCase,
+    private val getShowsUpNextUseCase: GetShowsUpNextUseCase,
+    private val getMoviesUpNextUseCase: GetMoviesUpNextUseCase,
     private val localShowsSyncSource: ShowsSyncLocalDataSource,
     private val localEpisodesSyncSource: EpisodesSyncLocalDataSource,
 ) : ViewModel() {
@@ -53,11 +59,28 @@ internal class UpNextViewAllViewModel(
                     loadingState.update { true }
                 }
 
-                val items = getUpNextUseCase.getUpNext(
-                    limit = HOME_PAGE_LIMIT,
-                    page = 1,
-                )
-                itemsState.update { items }
+                coroutineScope {
+                    val showsAsync = async {
+                        getShowsUpNextUseCase.getShowsUpNext(
+                            limit = HOME_PAGE_LIMIT,
+                            page = 1,
+                        )
+                    }
+                    val moviesAsync = async {
+                        getMoviesUpNextUseCase.getMoviesUpNext(
+                            limit = HOME_PAGE_LIMIT,
+                            page = 1,
+                        )
+                    }
+
+                    val items = awaitAll(showsAsync, moviesAsync)
+                        .flatten()
+                        .sortedByDescending { it.sortKey }
+
+                    itemsState.update {
+                        items.toImmutableList()
+                    }
+                }
 
                 nextDataPage += 1
                 loadedAt = nowUtc()
@@ -80,16 +103,31 @@ internal class UpNextViewAllViewModel(
             try {
                 loadingPageState.update { true }
 
-                val items = getUpNextUseCase.getUpNext(
-                    limit = HOME_PAGE_LIMIT,
-                    page = nextDataPage,
-                )
+                coroutineScope {
+                    val showsAsync = async {
+                        getShowsUpNextUseCase.getShowsUpNext(
+                            limit = HOME_PAGE_LIMIT,
+                            page = nextDataPage,
+                        )
+                    }
+                    val moviesAsync = async {
+                        getMoviesUpNextUseCase.getMoviesUpNext(
+                            limit = HOME_PAGE_LIMIT,
+                            page = nextDataPage,
+                        )
+                    }
 
-                itemsState.update {
-                    it?.toPersistentList()?.plus(items)
+                    val items = awaitAll(showsAsync, moviesAsync)
+                        .flatten()
+                        .sortedByDescending { it.sortKey }
+
+                    itemsState.update {
+                        it?.toPersistentList()?.plus(items)
+                    }
+
+                    hasMoreData = (items.size >= HOME_PAGE_LIMIT)
                 }
 
-                hasMoreData = (items.size >= HOME_PAGE_LIMIT)
                 nextDataPage += 1
                 loadedAt = nowUtc()
             } catch (error: Exception) {

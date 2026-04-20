@@ -156,6 +156,7 @@ private fun HomeScreenContent(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onNavigateToEpisode = onNavigateToEpisode,
+                    onNavigateToMovie = onNavigateToMovie,
                     onNavigateToViewAll = onNavigateToUpNext,
                     onLoaded = {
                         if (!focusedInitial) {
@@ -163,9 +164,9 @@ private fun HomeScreenContent(
                             focusRequesters["upNext"]?.requestSafeFocus()
                         }
                     },
-                    onFocused = { show ->
+                    onFocused = { images ->
                         focusedSection = "upNext"
-                        focusedImageUrl = show?.images?.getFanartUrl(Size.FULL)
+                        focusedImageUrl = images?.getFanartUrl(Size.FULL)
                     },
                     modifier = Modifier
                         .focusRequester(focusRequesters.getValue("upNext")),

@@ -9,8 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -82,7 +82,6 @@ internal fun HomeSocialContent(
             state.isLoading -> {
                 ContentLoadingList(
                     contentPadding = contentPadding,
-                    onFocused = { onFocused(null) },
                 )
             }
 
@@ -169,17 +168,16 @@ private fun ContentList(
 @Composable
 private fun ContentLoadingList(
     contentPadding: PaddingValues,
-    onFocused: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     PositionFocusLazyRow(
         contentPadding = contentPadding,
+        modifier = modifier,
     ) {
         items(count = 10) {
             EpisodeSkeletonCard(
-                modifier = Modifier.onFocusChanged {
-                    if (it.isFocused) {
-                        onFocused()
-                    }
+                modifier = Modifier.focusProperties {
+                    canFocus = false
                 },
             )
         }

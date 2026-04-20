@@ -1,4 +1,4 @@
-package tv.trakt.trakt.app.core.profile.sections.history.usecases
+package tv.trakt.trakt.app.core.profile.sections.library.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -39,7 +39,7 @@ internal class GetProfileLibraryUseCase(
             }.asyncMap { item ->
                 item.movie?.let {
                     LibraryItem.MovieItem(
-                        movie = Movie.fromDto(it),
+                        movie = Movie.Companion.fromDto(it),
                         collectedAt = item.collectedAt.toInstant(),
                         updatedAt = item.updatedAt.toInstant(),
                         availableOn = item.availableOn
@@ -49,8 +49,8 @@ internal class GetProfileLibraryUseCase(
                     )
                 } ?: item.episode?.let {
                     LibraryItem.EpisodeItem(
-                        episode = Episode.fromDto(it),
-                        show = Show.fromDto(item.show!!),
+                        episode = Episode.Companion.fromDto(it),
+                        show = Show.Companion.fromDto(item.show!!),
                         collectedAt = item.collectedAt.toInstant(),
                         updatedAt = item.updatedAt.toInstant(),
                         availableOn = item.availableOn

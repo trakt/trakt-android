@@ -43,6 +43,7 @@ import tv.trakt.trakt.app.core.player.plex.TvPlexPlayerActivity
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.openPlexLink
 import tv.trakt.trakt.common.helpers.extensions.openWatchNowLink
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.ui.theme.colors.Purple50
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.resources.R
@@ -53,6 +54,7 @@ internal fun EpisodeActionButtons(
     detailsState: EpisodeDetailsState,
     onHistoryClick: () -> Unit,
     onStreamingLongClick: () -> Unit,
+    onDropClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -84,10 +86,13 @@ internal fun EpisodeActionButtons(
                         if (!streamingState.plexStream?.primaryUrl.isNullOrBlank()) {
                             val intent = TvPlexPlayerActivity.createIntent(
                                 context = context,
+                                mediaId = detailsState.episodeDetails?.ids?.trakt ?: return@WatchButton,
+                                mediaType = MediaType.EPISODE,
                                 primaryVideoUrl = streamingState.plexStream.primaryUrl,
                                 secondaryVideoUrls = streamingState.plexStream.secondaryUrls,
                                 videoTitle = detailsState.showDetails?.title ?: "",
                                 videoSubtitle = seString,
+                                videoProgress = streamingState.plexStream.progress,
                             )
                             context.startActivity(intent)
                         } else {
@@ -114,6 +119,7 @@ internal fun EpisodeActionButtons(
                 !streamingState.service?.linkDirect.isNullOrBlank()
             ) {
                 DropDownButton(
+                    enabled = !streamingState.loading,
                     streamingState = streamingState,
                     onStreamOnPlexClick = {
                         openPlexLink(
@@ -124,6 +130,7 @@ internal fun EpisodeActionButtons(
                         )
                     },
                     onWhereToWatchClick = onStreamingLongClick,
+                    onDropClick = onDropClick,
                 )
             }
         }
@@ -158,13 +165,17 @@ private fun WatchButton(
 
     val plex = streamingState.plex
     val plexStream = !streamingState.plexStream?.primaryUrl.isNullOrBlank()
+    val plexStreamProgress = streamingState.plexStream?.progress ?: 0F
     val service = streamingState.service
     val loading = streamingState.loading
     val directLink = service?.linkDirect
 
     WatchNowButton(
         text = when {
-            plex && plexStream -> stringResource(R.string.button_text_play_now)
+            plex && plexStream -> when {
+                plexStreamProgress > 0F -> stringResource(R.string.button_text_resume_now)
+                else -> stringResource(R.string.button_text_play_now)
+            }
             loading || !directLink.isNullOrBlank() || plex -> stringResource(R.string.button_text_stream_on)
             streamingState.noServices -> stringResource(R.string.button_text_no_services)
             else -> stringResource(R.string.button_text_where_to_watch)
@@ -173,7 +184,6 @@ private fun WatchButton(
             !loading && (plex || directLink != null) && streamingState.info != null -> {
                 streamingState.info.get(context)
             }
-
             else -> {
                 null
             }
@@ -216,6 +226,8 @@ private fun DropDownButton(
     streamingState: StreamingsState,
     onStreamOnPlexClick: () -> Unit,
     onWhereToWatchClick: () -> Unit,
+    onDropClick: () -> Unit,
+    enabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val plex = streamingState.plex
@@ -239,6 +251,7 @@ private fun DropDownButton(
             containerColor = Color.Transparent,
             contentColor = TraktTheme.colors.primaryButtonContent,
             borderColor = Color.White,
+            enabled = enabled,
             modifier = Modifier.height(42.dp),
         )
 
@@ -329,6 +342,48 @@ private fun DropDownButton(
                         }
                     },
             )
+
+            if ((streamingState.plexStream?.progress ?: 0F) > 0F) {
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = stringResource(R.string.button_text_drop_episode).uppercase(),
+                            textAlign = TextAlign.Start,
+                            style = TraktTheme.typography.buttonPrimary,
+                            color = when {
+                                focusedIndex == 2 -> TraktTheme.colors.textPrimary
+                                else -> TraktTheme.colors.textSecondary
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 8.dp)
+                                .border(
+                                    width = 3.dp,
+                                    color = when {
+                                        focusedIndex == 2 -> Color.White
+                                        else -> Color.Transparent
+                                    },
+                                    shape = RoundedCornerShape(12.dp),
+                                )
+                                .padding(horizontal = 20.dp, vertical = 16.dp),
+                        )
+                    },
+                    colors = MenuDefaults.selectableItemColors(
+                        containerColor = Color.Transparent,
+                    ),
+                    contentPadding = PaddingValues.Zero,
+                    onClick = {
+                        menuVisible.value = false
+                        onDropClick()
+                    },
+                    modifier = Modifier
+                        .onFocusChanged {
+                            if (it.isFocused) {
+                                focusedIndex = 2
+                            }
+                        },
+                )
+            }
         }
     }
 }

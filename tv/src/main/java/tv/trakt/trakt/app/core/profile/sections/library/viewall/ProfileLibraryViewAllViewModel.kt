@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.app.core.profile.ProfileConfig.LIBRARY_ALL_PAGE_LIMIT
-import tv.trakt.trakt.app.core.profile.sections.history.usecases.GetProfileLibraryUseCase
+import tv.trakt.trakt.app.core.profile.sections.library.usecases.GetProfileLibraryUseCase
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 
 internal class ProfileLibraryViewAllViewModel(

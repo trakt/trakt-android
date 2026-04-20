@@ -1,10 +1,16 @@
 package tv.trakt.trakt.app.core.sync.data.remote.movies
 
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.networking.ProgressMovieDto
 import tv.trakt.trakt.common.networking.WatchlistMovieDto
 import java.time.ZonedDateTime
 
 internal interface MoviesSyncRemoteDataSource {
+    suspend fun getPlaybackProgress(
+        limit: Int,
+        page: Int,
+    ): List<ProgressMovieDto>
+
     suspend fun getWatchlist(
         sort: String = "rank",
         page: Int? = null,

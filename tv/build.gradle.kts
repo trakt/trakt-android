@@ -1,8 +1,4 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import org.codehaus.groovy.runtime.ArrayTypeUtils.dimension
-import org.gradle.kotlin.dsl.android
-import org.gradle.kotlin.dsl.kotlin
-import org.gradle.kotlin.dsl.libs
 
 plugins {
     alias(libs.plugins.android.library)
@@ -71,6 +67,7 @@ dependencies {
     implementation(libs.androidx.datastore)
     implementation(libs.androidx.app.review)
     implementation(libs.bundles.androidx.media3)
+    implementation(libs.androidx.work)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)
@@ -91,6 +88,7 @@ dependencies {
     implementation(project.dependencies.platform(libs.koin.bom))
     implementation(libs.koin.core)
     implementation(libs.koin.android.compose)
+    implementation(libs.koin.android.work)
 
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.kotlinx.serialization.proto)

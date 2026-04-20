@@ -61,7 +61,7 @@ internal class HomeHistoryViewModel(
                 }
 
                 itemsState.update {
-                    getHistoryCase.getHistory(limit = HOME_SECTION_LIMIT / 2)
+                    getHistoryCase.getHistory(limit = HOME_SECTION_LIMIT)
                 }
 
                 loadedAt = nowUtc()

@@ -2,6 +2,10 @@ package tv.trakt.trakt.app.core.home.sections.shows.upnext
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +18,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.app.Config.REFRESH_DATA_THRESHOLD_MINUTES
-import tv.trakt.trakt.app.core.home.sections.shows.upnext.usecases.GetUpNextUseCase
+import tv.trakt.trakt.app.core.home.sections.shows.upnext.usecases.GetMoviesUpNextUseCase
+import tv.trakt.trakt.app.core.home.sections.shows.upnext.usecases.GetShowsUpNextUseCase
 import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalDataSource
 import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
@@ -24,7 +29,8 @@ import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider.State.FOREGR
 import java.time.ZonedDateTime
 
 internal class HomeUpNextViewModel(
-    private val getUpNextUseCase: GetUpNextUseCase,
+    private val getShowsUpNextUseCase: GetShowsUpNextUseCase,
+    private val getMoviesUpNextUseCase: GetMoviesUpNextUseCase,
     private val localShowsSyncSource: ShowsSyncLocalDataSource,
     private val localEpisodesSyncSource: EpisodesSyncLocalDataSource,
     private val appLifecycleProvider: AppLifecycleProvider,
@@ -61,8 +67,18 @@ internal class HomeUpNextViewModel(
                     loadingState.update { true }
                 }
 
-                val items = getUpNextUseCase.getUpNext()
-                itemsState.update { items }
+                coroutineScope {
+                    val showsAsync = async { getShowsUpNextUseCase.getShowsUpNext() }
+                    val moviesAsync = async { getMoviesUpNextUseCase.getMoviesUpNext() }
+
+                    val items = awaitAll(showsAsync, moviesAsync)
+                        .flatten()
+                        .sortedByDescending { it.sortKey }
+
+                    itemsState.update {
+                        items.toImmutableList()
+                    }
+                }
 
                 loadedAt = nowUtc()
             } catch (error: Exception) {
@@ -84,14 +100,6 @@ internal class HomeUpNextViewModel(
                     Timber.d("Data not loaded yet, skipping update")
                     return@launch
                 }
-
-//                val shouldRefreshData = nowUtc().minusSeconds(5).isAfter(loadedAt)
-//                if (shouldRefreshData) {
-//                    loadData(showLoading = false)
-//                    Timber.d("Refreshing up next shows after 1 minute")
-//                } else {
-//                    Timber.d("Data loaded recently, skipping refresh")
-//                }
 
                 val localWatchlistUpdatedAt = localShowsSyncSource.getWatchlistUpdatedAt()
                 val localWatchedUpdatedAt = localShowsSyncSource.getWatchedUpdatedAt()

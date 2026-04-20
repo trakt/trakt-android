@@ -23,7 +23,6 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.app.common.ui.EpisodeProgressBar
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
@@ -34,11 +33,16 @@ import tv.trakt.trakt.app.common.ui.mediacards.EpisodeSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalViewAllCard
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_SECTION_LIMIT
+import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressItem
+import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressMovie
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressShow
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.resources.R
@@ -54,9 +58,10 @@ internal fun HomeUpNextView(
     viewModel: HomeUpNextViewModel = koinViewModel(),
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onFocused: (Show?) -> Unit = {},
+    onFocused: (Images?) -> Unit = {},
     onLoaded: () -> Unit = {},
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
+    onNavigateToMovie: (movieId: TraktId) -> Unit,
     onNavigateToViewAll: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -86,6 +91,7 @@ internal fun HomeUpNextView(
         focusRequesters = focusRequesters,
         onFocused = onFocused,
         onNavigateToEpisode = onNavigateToEpisode,
+        onNavigateToMovie = onNavigateToMovie,
         onViewAllClick = onNavigateToViewAll,
     )
 }
@@ -97,8 +103,9 @@ internal fun HomeUpNextContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     focusRequesters: Map<String, FocusRequester> = emptyMap(),
-    onFocused: (Show?) -> Unit = {},
+    onFocused: (Images?) -> Unit = {},
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
+    onNavigateToMovie: (movieId: TraktId) -> Unit = {},
     onViewAllClick: () -> Unit = {},
 ) {
     Column(
@@ -132,10 +139,13 @@ internal fun HomeUpNextContent(
 
             else -> {
                 ContentList(
-                    listItems = { state.items ?: emptyList<ProgressShow>().toImmutableList() },
+                    listItems = { state.items ?: EmptyImmutableList },
                     onFocused = onFocused,
-                    onClick = { show, episode ->
+                    onShowClick = { show, episode ->
                         onNavigateToEpisode(show.ids.trakt, episode)
+                    },
+                    onMovieClick = {
+                        onNavigateToMovie(it.ids.trakt)
                     },
                     onViewAllClick = onViewAllClick,
                     contentPadding = contentPadding,
@@ -148,9 +158,10 @@ internal fun HomeUpNextContent(
 
 @Composable
 private fun ContentList(
-    listItems: () -> ImmutableList<ProgressShow>,
-    onFocused: (Show) -> Unit,
-    onClick: (Show, Episode) -> Unit,
+    listItems: () -> ImmutableList<ProgressItem>,
+    onFocused: (Images?) -> Unit,
+    onShowClick: (Show, Episode) -> Unit,
+    onMovieClick: (Movie) -> Unit,
     onViewAllClick: () -> Unit,
     contentPadding: PaddingValues,
     focusRequesters: Map<String, FocusRequester> = emptyMap(),
@@ -162,13 +173,21 @@ private fun ContentList(
     ) {
         items(
             items = listItems(),
-            key = { it.progress.nextEpisode.ids.trakt.value },
+            key = { it.key },
         ) { item ->
-            ContentListItem(
-                item = item,
-                onClick = onClick,
-                onFocused = onFocused,
-            )
+            if (item is ProgressShow) {
+                ContentShowListItem(
+                    item = item,
+                    onClick = onShowClick,
+                    onFocused = onFocused,
+                )
+            } else if (item is ProgressMovie) {
+                ContentMovieListItem(
+                    item = item,
+                    onClick = onMovieClick,
+                    onFocused = onFocused,
+                )
+            }
         }
 
         if (listItems().size >= HOME_SECTION_LIMIT) {
@@ -184,10 +203,10 @@ private fun ContentList(
 }
 
 @Composable
-private fun ContentListItem(
+private fun ContentShowListItem(
     item: ProgressShow,
     onClick: (Show, Episode) -> Unit,
-    onFocused: (Show) -> Unit,
+    onFocused: (Images?) -> Unit,
 ) {
     HorizontalMediaCard(
         title = "",
@@ -258,7 +277,68 @@ private fun ContentListItem(
         },
         modifier = Modifier
             .onFocusChanged {
-                if (it.isFocused) onFocused(item.show)
+                if (it.isFocused) onFocused(item.show.images)
+            },
+    )
+}
+
+@Composable
+private fun ContentMovieListItem(
+    item: ProgressMovie,
+    onClick: (Movie) -> Unit,
+    onFocused: (Images?) -> Unit,
+) {
+    HorizontalMediaCard(
+        title = "",
+        containerImageUrl = item.movie.images?.getFanartUrl(),
+        onClick = { onClick(item.movie) },
+        cardContent = {
+            Column(
+                verticalArrangement = spacedBy(3.dp),
+            ) {
+                Row(
+                    horizontalArrangement = spacedBy(2.dp),
+                ) {
+                    val remainingTime = remember(item.progress.progress) {
+                        item.remainingTimeText
+                    }
+
+                    val remainingPercent = remember(item.progress.progress) {
+                        (100F - item.progress.progress) / 100F
+                    }
+
+                    EpisodeProgressBar(
+                        startText = stringResource(R.string.tag_text_remaining_duration, remainingTime ?: "?"),
+                        containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
+                        progress = (1F - remainingPercent).coerceIn(0F, 0.99F),
+                    )
+                }
+            }
+        },
+        footerContent = {
+            Column(
+                verticalArrangement = spacedBy(1.dp),
+            ) {
+                Text(
+                    text = item.movie.title,
+                    style = TraktTheme.typography.cardTitle,
+                    color = TraktTheme.colors.textPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+
+                Text(
+                    text = item.movie.runtime?.inWholeMinutes?.durationFormat() ?: "N/A",
+                    style = TraktTheme.typography.cardSubtitle,
+                    color = TraktTheme.colors.textSecondary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        },
+        modifier = Modifier
+            .onFocusChanged {
+                if (it.isFocused) onFocused(item.movie.images)
             },
     )
 }

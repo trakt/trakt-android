@@ -12,11 +12,15 @@ import tv.trakt.trakt.common.model.TraktId
 @Serializable
 internal data object HomeUpNextDestination
 
-internal fun NavGraphBuilder.homeUpNextScreen(onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit) {
+internal fun NavGraphBuilder.homeUpNextScreen(
+    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
+    onNavigateToMovie: (TraktId) -> Unit,
+) {
     composable<HomeUpNextDestination> {
         UpNextViewAllScreen(
             viewModel = koinViewModel(),
             onNavigateToEpisode = onNavigateToEpisode,
+            onNavigateToMovie = onNavigateToMovie,
         )
     }
 }

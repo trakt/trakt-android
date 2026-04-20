@@ -13,6 +13,7 @@ import tv.trakt.trakt.common.networking.SocialActivityItemDto
 import tv.trakt.trakt.common.networking.SyncFavoriteMovieDto
 import tv.trakt.trakt.common.networking.SyncFavoriteShowDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
+import tv.trakt.trakt.common.networking.SyncHistoryItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
 import java.time.LocalDate
 
@@ -28,6 +29,11 @@ internal interface ProfileRemoteDataSource {
         startDate: LocalDate,
         days: Int,
     ): List<CalendarMovieDto>
+
+    suspend fun getUserHistory(
+        page: Int = 1,
+        limit: Int,
+    ): List<SyncHistoryItemDto>
 
     suspend fun getUserEpisodesHistory(
         page: Int = 1,
