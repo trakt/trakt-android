@@ -2,6 +2,7 @@ package tv.trakt.trakt.app.core.details.movie
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
+import tv.trakt.trakt.app.core.details.movie.usecases.streamings.GetPlexUseCase
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Comment
@@ -35,7 +36,7 @@ internal data class MovieDetailsState(
         val service: StreamingService? = null,
         val noServices: Boolean = false,
         val plex: Boolean = false,
-        val plexStreamUrl: String? = null,
+        val plexStream: GetPlexUseCase.PlexStreamResult? = null,
         val loading: Boolean = false,
         val info: StringResource? = null,
     )

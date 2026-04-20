@@ -84,7 +84,8 @@ internal fun EpisodeActionButtons(
                         if (!streamingState.plexStreamUrl.isNullOrBlank()) {
                             val intent = TvPlexPlayerActivity.createIntent(
                                 context = context,
-                                videoUrl = streamingState.plexStreamUrl,
+                                primaryVideoUrl = streamingState.plexStreamUrl,
+                                secondaryVideoUrls = emptyList(), // TODO
                                 videoTitle = detailsState.showDetails?.title ?: "",
                                 videoSubtitle = seString,
                             )

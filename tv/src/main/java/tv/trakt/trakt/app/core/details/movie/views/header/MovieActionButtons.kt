@@ -43,6 +43,7 @@ import tv.trakt.trakt.app.common.ui.buttons.WatchNowButton
 import tv.trakt.trakt.app.core.details.movie.MovieDetailsState
 import tv.trakt.trakt.app.core.details.movie.MovieDetailsState.CollectionState
 import tv.trakt.trakt.app.core.details.movie.MovieDetailsState.StreamingsState
+import tv.trakt.trakt.app.core.details.movie.usecases.streamings.GetPlexUseCase
 import tv.trakt.trakt.app.core.player.plex.TvPlexPlayerActivity
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.openPlexLink
@@ -83,7 +84,7 @@ internal fun MovieActionButtons(
                 onLongClick = onStreamingLongClick,
                 onClick = {
                     if (streamingState.plex) {
-                        if (streamingState.plexStreamUrl.isNullOrBlank()) {
+                        if (streamingState.plexStream?.primaryUrl.isNullOrBlank()) {
                             openPlexLink(
                                 uriHandler = uriHandler,
                                 slug = streamingState.slug?.value,
@@ -92,7 +93,8 @@ internal fun MovieActionButtons(
                         } else {
                             val intent = TvPlexPlayerActivity.createIntent(
                                 context = context,
-                                videoUrl = streamingState.plexStreamUrl,
+                                primaryVideoUrl = streamingState.plexStream.primaryUrl,
+                                secondaryVideoUrls = streamingState.plexStream.secondaryUrls,
                                 videoTitle = movieState.movieDetails?.title ?: "",
                                 videoSubtitle = movieState.movieDetails?.yearString,
                             )
@@ -110,7 +112,7 @@ internal fun MovieActionButtons(
             )
 
             if (streamingState.plex ||
-                !streamingState.plexStreamUrl.isNullOrBlank() ||
+                !streamingState.plexStream?.primaryUrl.isNullOrBlank() ||
                 !streamingState.service?.linkDirect.isNullOrBlank()
             ) {
                 DropDownButton(
@@ -167,7 +169,7 @@ private fun WatchButton(
     val context = LocalContext.current
 
     val plex = streamingState.plex
-    val plexStream = !streamingState.plexStreamUrl.isNullOrBlank()
+    val plexStream = !streamingState.plexStream?.primaryUrl.isNullOrBlank()
     val service = streamingState.service
     val loading = streamingState.loading
     val directLink = service?.linkDirect
@@ -229,7 +231,7 @@ private fun DropDownButton(
     modifier: Modifier = Modifier,
 ) {
     val plex = streamingState.plex
-    val plexStream = !streamingState.plexStreamUrl.isNullOrBlank()
+    val plexStream = !streamingState.plexStream?.primaryUrl.isNullOrBlank()
 
     Box(
         contentAlignment = Alignment.Center,
@@ -355,7 +357,10 @@ private fun Preview1() {
                 ),
                 movieStreamings = StreamingsState(
                     plex = true,
-                    plexStreamUrl = "https://example.com/stream",
+                    plexStream = GetPlexUseCase.PlexStreamResult(
+                        primaryUrl = "https://example.com/stream",
+                        secondaryUrls = listOf("https://example.com/stream2"),
+                    ),
                 ),
             ),
             onHistoryClick = {},
@@ -376,7 +381,7 @@ private fun Preview2(
                 movieCollection = collectionState,
                 movieStreamings = StreamingsState(
                     plex = true,
-                    plexStreamUrl = null,
+                    plexStream = null,
                 ),
             ),
             onHistoryClick = {},

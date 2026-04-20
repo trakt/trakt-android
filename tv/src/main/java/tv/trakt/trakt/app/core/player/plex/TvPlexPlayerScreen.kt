@@ -79,6 +79,7 @@ import kotlin.time.Duration.Companion.seconds
 @Composable
 internal fun TvPlexPlayerScreen(
     videoUrl: String,
+    secondaryVideoUrls: List<String>,
     videoTitle: String,
     videoSubtitle: String?,
 ) {
@@ -582,6 +583,7 @@ fun Preview() {
     TraktTheme {
         TvPlexPlayerScreen(
             videoUrl = "",
+            secondaryVideoUrls = emptyList(),
             videoTitle = "The Matrix (2023)",
             videoSubtitle = "S01E01 - Pilot",
         )

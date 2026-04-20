@@ -223,13 +223,13 @@ internal class MovieDetailsViewModel(
 
                 val plexService = getPlexUseCase.getPlexStatus(movieIds.trakt)
                 if (plexService.isPlex) {
-                    val plexStreamUrl = plexService.plexSlug
+                    val plexStream = plexService.plexSlug
                         ?.let { getPlexUseCase.getPlexStreamUrl(movieIds.trakt) }
 
                     movieStreamingsState.update {
                         it.copy(
                             plex = true,
-                            plexStreamUrl = plexStreamUrl,
+                            plexStream = plexStream,
                             slug = plexService.plexSlug,
                             loading = false,
                             info = null,
