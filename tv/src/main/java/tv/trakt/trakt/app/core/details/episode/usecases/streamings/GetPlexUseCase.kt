@@ -41,7 +41,7 @@ internal class GetPlexUseCase(
         )
     }
 
-    suspend fun getPlexStreamUrl(traktId: TraktId): String? {
+    suspend fun getPlexStreamUrl(traktId: TraktId): PlexStreamResult? {
         val isEnabled = Firebase.remoteConfig.getBoolean(PLEX_PLAY_ENABLED)
         if (!isEnabled) {
             Timber.d("Plex play is disabled via remote config.")
@@ -53,7 +53,18 @@ internal class GetPlexUseCase(
                 id = traktId.value.toString(),
                 type = MediaType.EPISODE,
             )
-            result.streamUrl
+            result.streamUrl?.let { primaryUrl ->
+                val baseUrl = primaryUrl.substringBefore("/library/")
+                PlexStreamResult(
+                    primaryUrl = primaryUrl,
+                    secondaryUrls = result.connections
+                        ?.filter { it.uri != baseUrl }
+                        ?.map { conn ->
+                            // Replace the base URL in the stream URL with the conn's URI.
+                            primaryUrl.replace(baseUrl, conn.uri)
+                        }.orEmpty(),
+                )
+            }
         } catch (error: Exception) {
             if (error.getHttpErrorCode() == 404) {
                 Timber.w("Plex stream not found for slug: $traktId")
@@ -67,5 +78,10 @@ internal class GetPlexUseCase(
     data class Result(
         val isPlex: Boolean,
         val plexSlug: SlugId?,
+    )
+
+    data class PlexStreamResult(
+        val primaryUrl: String,
+        val secondaryUrls: List<String>,
     )
 }

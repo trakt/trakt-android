@@ -3,6 +3,7 @@ package tv.trakt.trakt.app.core.details.episode
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.app.common.model.SyncHistoryEpisodeItem
+import tv.trakt.trakt.app.core.details.episode.usecases.streamings.GetPlexUseCase
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Comment
@@ -35,7 +36,7 @@ internal data class EpisodeDetailsState(
         val service: StreamingService? = null,
         val noServices: Boolean = false,
         val plex: Boolean = false,
-        val plexStreamUrl: String? = null,
+        val plexStream: GetPlexUseCase.PlexStreamResult? = null,
         val loading: Boolean = false,
         val info: StringResource? = null,
     )

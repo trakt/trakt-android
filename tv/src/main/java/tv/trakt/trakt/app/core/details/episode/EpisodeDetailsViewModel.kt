@@ -180,13 +180,13 @@ internal class EpisodeDetailsViewModel(
                     episodeId = episode.ids.trakt,
                 )
                 if (plexService.isPlex) {
-                    val plexStreamUrl = plexService.plexSlug
+                    val plexStream = plexService.plexSlug
                         ?.let { getPlexUseCase.getPlexStreamUrl(episode.ids.trakt) }
 
                     episodeStreamingsState.update {
                         it.copy(
                             plex = true,
-                            plexStreamUrl = plexStreamUrl,
+                            plexStream = plexStream,
                             slug = plexService.plexSlug,
                             loading = false,
                             info = null,

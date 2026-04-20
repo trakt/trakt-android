@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,6 +53,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
+import androidx.media3.common.PlaybackException.ERROR_CODE_IO_BAD_HTTP_STATUS
 import androidx.media3.common.Player
 import androidx.media3.common.TrackSelectionOverride
 import androidx.media3.common.Tracks
@@ -94,6 +96,9 @@ internal fun TvPlexPlayerScreen(
     var playersCues by retain {
         mutableStateOf(CueGroup.EMPTY_TIME_ZERO)
     }
+
+    val allUrls = remember { listOf(videoUrl) + secondaryVideoUrls }
+    val currentUrlIndex = retain { mutableIntStateOf(0) }
 
     val isPlaying = retain { mutableStateOf(false) }
     val isBuffering = retain { mutableStateOf(true) }
@@ -151,7 +156,27 @@ internal fun TvPlexPlayerScreen(
 
             override fun onPlayerError(error: PlaybackException) {
                 Timber.e(error, "Plex Player Error")
-                isError.value = error
+
+                // If the error is a bad HTTP status, it likely means the URL is invalid or expired.
+                // In this case, we want to try secondary urls without showing an error message.
+                if (error.errorCode != ERROR_CODE_IO_BAD_HTTP_STATUS) {
+                    isError.value = error
+                    super.onPlayerError(error)
+                    return
+                }
+
+                val nextIndex = currentUrlIndex.intValue + 1
+                if (nextIndex < allUrls.size) {
+                    Timber.d("Primary URL failed, retrying with secondary URL [$nextIndex]: ${allUrls[nextIndex]}")
+                    currentUrlIndex.intValue = nextIndex
+
+                    player.setMediaItem(MediaItem.fromUri(allUrls[nextIndex]))
+                    player.prepare()
+                    player.play()
+                } else {
+                    isError.value = error
+                }
+
                 super.onPlayerError(error)
             }
 

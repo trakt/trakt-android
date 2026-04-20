@@ -81,11 +81,11 @@ internal fun EpisodeActionButtons(
                 onLongClick = onStreamingLongClick,
                 onClick = {
                     if (streamingState.plex) {
-                        if (!streamingState.plexStreamUrl.isNullOrBlank()) {
+                        if (!streamingState.plexStream?.primaryUrl.isNullOrBlank()) {
                             val intent = TvPlexPlayerActivity.createIntent(
                                 context = context,
-                                primaryVideoUrl = streamingState.plexStreamUrl,
-                                secondaryVideoUrls = emptyList(), // TODO
+                                primaryVideoUrl = streamingState.plexStream.primaryUrl,
+                                secondaryVideoUrls = streamingState.plexStream.secondaryUrls,
                                 videoTitle = detailsState.showDetails?.title ?: "",
                                 videoSubtitle = seString,
                             )
@@ -110,7 +110,7 @@ internal fun EpisodeActionButtons(
             )
 
             if (streamingState.plex ||
-                !streamingState.plexStreamUrl.isNullOrBlank() ||
+                !streamingState.plexStream?.primaryUrl.isNullOrBlank() ||
                 !streamingState.service?.linkDirect.isNullOrBlank()
             ) {
                 DropDownButton(
@@ -157,7 +157,7 @@ private fun WatchButton(
     val context = LocalContext.current
 
     val plex = streamingState.plex
-    val plexStream = !streamingState.plexStreamUrl.isNullOrBlank()
+    val plexStream = !streamingState.plexStream?.primaryUrl.isNullOrBlank()
     val service = streamingState.service
     val loading = streamingState.loading
     val directLink = service?.linkDirect
@@ -219,7 +219,7 @@ private fun DropDownButton(
     modifier: Modifier = Modifier,
 ) {
     val plex = streamingState.plex
-    val plexStream = !streamingState.plexStreamUrl.isNullOrBlank()
+    val plexStream = !streamingState.plexStream?.primaryUrl.isNullOrBlank()
 
     Box(
         contentAlignment = Alignment.Center,
