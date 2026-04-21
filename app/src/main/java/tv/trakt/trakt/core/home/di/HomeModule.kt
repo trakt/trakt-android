@@ -91,9 +91,11 @@ internal val homeModule = module {
 
     factory {
         GetUpNextUseCase(
-            remoteSyncSource = get(),
+            remoteShowsSyncSource = get(),
+            remoteMoviesSyncSource = get(),
             localDataSource = get(),
             localShowSource = get(),
+            localMovieSource = get(),
             localEpisodeSource = get(),
         )
     }

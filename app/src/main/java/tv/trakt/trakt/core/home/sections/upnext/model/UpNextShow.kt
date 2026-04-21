@@ -5,19 +5,23 @@ import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import java.time.Instant
 import java.time.ZonedDateTime
 
 @Immutable
-internal data class ProgressShow(
+internal data class UpNextShow(
     val progress: Progress,
     val show: Show,
-    val loading: Boolean = false,
-) {
-    val id: TraktId
+    override val loading: Boolean = false,
+) : UpNextItem {
+    override val id: TraktId
         get() = progress.nextEpisode.ids.trakt
 
-    val key: String
-        get() = "up_next_${id.value}_${show.ids.trakt.value}"
+    override val key: String
+        get() = "up_next_show-${show.ids.trakt.value}-${id.value}"
+
+    override val sortKey: Instant
+        get() = progress.lastWatchedAt?.toInstant() ?: Instant.MAX
 }
 
 @Immutable

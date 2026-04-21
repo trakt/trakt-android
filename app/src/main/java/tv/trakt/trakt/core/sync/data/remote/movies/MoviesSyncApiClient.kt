@@ -9,12 +9,27 @@ import org.openapitools.client.models.PostSyncRatingsRemoveRequestMoviesInner
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.networking.ProgressMovieDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
 internal class MoviesSyncApiClient(
     private val syncApi: SyncApi,
     private val cacheMarker: CacheMarkerProvider,
 ) : MoviesSyncRemoteDataSource {
+    override suspend fun getPlaybackProgress(
+        limit: Int,
+        page: Int,
+    ): List<ProgressMovieDto> {
+        val response = syncApi.getSyncProgressMovies(
+            extended = "full,cloud9,colors",
+            page = page,
+            limit = limit,
+            startAt = null,
+            endAt = null,
+        )
+        return response.body()
+    }
+
     override suspend fun addToWatched(
         movieId: TraktId,
         watchedAt: String,

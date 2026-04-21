@@ -4,10 +4,8 @@ package tv.trakt.trakt.core.home.sections.upnext.features.all
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -17,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -45,31 +42,27 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.model.Episode
-import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.core.home.sections.upnext.features.all.ui.AllUpNextMovieView
+import tv.trakt.trakt.core.home.sections.upnext.features.all.ui.AllUpNextShowView
 import tv.trakt.trakt.core.home.sections.upnext.features.context.sheets.UpNextItemContextSheet
-import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
+import tv.trakt.trakt.core.home.sections.upnext.model.UpNextItem
+import tv.trakt.trakt.core.home.sections.upnext.model.UpNextMovie
+import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.EpisodeProgressBar
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
-import tv.trakt.trakt.ui.components.chips.FinaleChip
-import tv.trakt.trakt.ui.components.chips.PremiereChip
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
-import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -77,14 +70,15 @@ internal fun AllHomeUpNextScreen(
     modifier: Modifier = Modifier,
     viewModel: AllHomeUpNextViewModel = koinViewModel(),
     onNavigateToShow: (TraktId) -> Unit,
+    onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val haptic = LocalHapticFeedback.current
 
-    var contextSheet by remember { mutableStateOf<ProgressShow?>(null) }
-    var dateSheet by remember { mutableStateOf<ProgressShow?>(null) }
+    var contextSheet by remember { mutableStateOf<UpNextShow?>(null) }
+    var dateSheet by remember { mutableStateOf<UpNextShow?>(null) }
 
     LaunchedEffect(state.info) {
         if (state.info != null) {
@@ -98,15 +92,19 @@ internal fun AllHomeUpNextScreen(
         modifier = modifier,
         onLoadMore = { viewModel.loadMoreData() },
         onClick = {
-            if (!it.loading) {
+            if (!it.loading && it is UpNextShow) {
                 onNavigateToEpisode(
                     it.show.ids.trakt,
                     it.progress.nextEpisode,
                 )
             }
+
+            if (!it.loading && it is UpNextMovie) {
+                onNavigateToMovie(it.movie.ids.trakt)
+            }
         },
         onLongClick = {
-            if (!it.loading) {
+            if (!it.loading && it is UpNextShow) {
                 contextSheet = it
             }
         },
@@ -114,7 +112,9 @@ internal fun AllHomeUpNextScreen(
             viewModel.addToHistory(it.id)
         },
         onCheckLongClick = {
-            dateSheet = it
+            if (!it.loading && it is UpNextShow) {
+                dateSheet = it
+            }
         },
         onShowClick = {
             if (!it.loading) {
@@ -165,11 +165,12 @@ internal fun AllHomeUpNextScreen(
 internal fun AllHomeUpNextContent(
     state: AllHomeUpNextState,
     modifier: Modifier = Modifier,
-    onClick: (ProgressShow) -> Unit = {},
-    onLongClick: (ProgressShow) -> Unit = {},
-    onCheckClick: (ProgressShow) -> Unit = {},
-    onCheckLongClick: (ProgressShow) -> Unit = {},
-    onShowClick: (ProgressShow) -> Unit = {},
+    onClick: (UpNextItem) -> Unit = {},
+    onLongClick: (UpNextItem) -> Unit = {},
+    onCheckClick: (UpNextItem) -> Unit = {},
+    onCheckLongClick: (UpNextItem) -> Unit = {},
+    onShowClick: (UpNextShow) -> Unit = {},
+    onMovieClick: (UpNextMovie) -> Unit = {},
     onBackClick: () -> Unit = {},
     onLoadMore: () -> Unit = {},
 ) {
@@ -215,6 +216,7 @@ internal fun AllHomeUpNextContent(
             onCheckClick = onCheckClick,
             onCheckLongClick = onCheckLongClick,
             onShowClick = onShowClick,
+            onMovieClick = onMovieClick,
             onBackClick = onBackClick,
         )
     }
@@ -223,16 +225,17 @@ internal fun AllHomeUpNextContent(
 @Composable
 private fun ContentList(
     modifier: Modifier = Modifier,
-    listItems: ImmutableList<ProgressShow>,
+    listItems: ImmutableList<UpNextItem>,
     listState: LazyListState,
     contentPadding: PaddingValues,
     loadingMore: Boolean,
     onEndOfList: () -> Unit,
-    onClick: (ProgressShow) -> Unit,
-    onLongClick: (ProgressShow) -> Unit,
-    onCheckClick: (ProgressShow) -> Unit,
-    onCheckLongClick: (ProgressShow) -> Unit,
-    onShowClick: (ProgressShow) -> Unit,
+    onClick: (UpNextItem) -> Unit,
+    onLongClick: (UpNextItem) -> Unit,
+    onCheckClick: (UpNextItem) -> Unit,
+    onCheckLongClick: (UpNextItem) -> Unit,
+    onShowClick: (UpNextShow) -> Unit,
+    onMovieClick: (UpNextMovie) -> Unit,
     onBackClick: () -> Unit,
 ) {
     val isScrolledToBottom by remember(listItems.size) {
@@ -266,18 +269,33 @@ private fun ContentList(
             items = listItems,
             key = { it.key },
         ) { item ->
-            ContentListItem(
-                item = item,
-                onClick = { onClick(item) },
-                onLongClick = { onLongClick(item) },
-                onCheckClick = { onCheckClick(item) },
-                onCheckLongClick = { onCheckLongClick(item) },
-                onShowClick = { onShowClick(item) },
-                modifier = Modifier.animateItem(
-                    fadeInSpec = null,
-                    fadeOutSpec = null,
-                ),
-            )
+            if (item is UpNextShow) {
+                AllUpNextShowView(
+                    item = item,
+                    onClick = { onClick(item) },
+                    onLongClick = { onLongClick(item) },
+                    onCheckClick = { onCheckClick(item) },
+                    onCheckLongClick = { onCheckLongClick(item) },
+                    onShowClick = { onShowClick(item) },
+                    modifier = Modifier.animateItem(
+                        fadeInSpec = null,
+                        fadeOutSpec = null,
+                    ),
+                )
+            } else if (item is UpNextMovie) {
+                AllUpNextMovieView(
+                    item = item,
+                    onClick = { onClick(item) },
+                    onLongClick = { onLongClick(item) },
+                    onCheckClick = { onCheckClick(item) },
+                    onCheckLongClick = { onCheckLongClick(item) },
+                    onMovieClick = { onMovieClick(item) },
+                    modifier = Modifier.animateItem(
+                        fadeInSpec = null,
+                        fadeOutSpec = null,
+                    ),
+                )
+            }
         }
 
         if (loadingMore) {
@@ -289,139 +307,6 @@ private fun ContentList(
             }
         }
     }
-}
-
-@Composable
-private fun ContentListItem(
-    item: ProgressShow,
-    onClick: () -> Unit,
-    onLongClick: () -> Unit,
-    onCheckClick: () -> Unit,
-    onCheckLongClick: () -> Unit,
-    onShowClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val isPremiere = item.progress.nextEpisode.isPremiere()
-    val isFinale = item.progress.nextEpisode.isFinale()
-
-    PanelMediaCard(
-        title = item.show.title,
-        titleOriginal = when {
-            isPremiere || isFinale -> null
-            else -> item.show.titleOriginal
-        },
-        subtitle = item.progress.nextEpisode.seasonEpisodeString(),
-        contentImageUrl = item.show.images?.getPosterUrl(),
-        containerImageUrl = item.progress.nextEpisode.images?.getScreenshotUrl(THUMB)
-            ?: item.show.images?.getFanartUrl(THUMB),
-        onClick = onClick,
-        onLongClick = onLongClick,
-        onImageClick = onShowClick,
-        footerContent = {
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = CenterVertically,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                val startString = remember {
-                    buildString {
-                        val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes
-                            ?: item.show.runtime?.inWholeMinutes
-
-                        if (runtime != null) {
-                            append(runtime.durationFormat())
-                        }
-                    }
-                }
-
-                val remainingEpisodesString = stringResource(
-                    R.string.tag_text_remaining_episodes,
-                    item.progress.remainingEpisodes,
-                )
-
-                val endString = remember {
-                    val separator = "  •  "
-                    buildString {
-                        val remainingEpisodes = item.progress.remainingEpisodes
-                        if (remainingEpisodes > 0) {
-                            append(remainingEpisodesString)
-                        }
-
-                        append(separator)
-
-                        val remainingTime = item.progress.remainingMinutesString
-                        if (remainingTime != null) {
-                            append(remainingTime)
-                        }
-                    }
-                }
-
-                val remainingPercent = remember(
-                    item.progress.completed,
-                    item.progress.aired,
-                ) {
-                    item.progress.remainingPercent
-                }
-
-                Column(
-                    verticalArrangement = spacedBy(4.dp),
-                ) {
-                    when {
-                        isPremiere -> PremiereChip(
-                            contentTextStyle = TraktTheme.typography.meta.copy(
-                                fontSize = 10.sp,
-                            ),
-                            containerColor = TraktTheme.colors.chipContainer,
-                            modifier = Modifier
-                                .height(20.dp),
-                        )
-                        isFinale -> FinaleChip(
-                            contentTextStyle = TraktTheme.typography.meta.copy(
-                                fontSize = 10.sp,
-                            ),
-                            containerColor = TraktTheme.colors.chipContainer,
-                            modifier = Modifier
-                                .height(20.dp),
-                        )
-                    }
-
-                    Row(
-                        verticalAlignment = CenterVertically,
-                    ) {
-                        EpisodeProgressBar(
-                            startText = startString,
-                            endText = endString,
-                            progress = remainingPercent,
-                            containerColor = TraktTheme.colors.chipContainer,
-                            modifier = Modifier
-                                .weight(1F, fill = false)
-                                .padding(end = 16.dp),
-                        )
-
-                        if (item.loading) {
-                            Box(modifier = Modifier.size(18.dp)) {
-                                FilmProgressIndicator(size = 16.dp)
-                            }
-                        } else {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_check),
-                                contentDescription = null,
-                                tint = TraktTheme.colors.accent,
-                                modifier = Modifier
-                                    .size(18.dp)
-                                    .onClickCombined(
-                                        onClick = onCheckClick,
-                                        onLongClick = onCheckLongClick,
-                                    ),
-                            )
-                        }
-                    }
-                }
-            }
-        },
-        modifier = modifier
-            .padding(bottom = TraktTheme.spacing.mainListVerticalSpace),
-    )
 }
 
 @Composable
@@ -450,7 +335,7 @@ private fun TitleBar(modifier: Modifier = Modifier) {
 
 @Composable
 private fun HomeDateSelectionSheet(
-    item: ProgressShow?,
+    item: UpNextShow?,
     onDateSelected: (DateSelectionResult?) -> Unit,
     onCheckIn: () -> Unit,
     onDismiss: () -> Unit,

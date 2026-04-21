@@ -14,6 +14,7 @@ internal data object HomeUpNextDestination
 
 internal fun NavGraphBuilder.homeUpNextScreen(
     onNavigateToShow: (TraktId) -> Unit,
+    onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -21,6 +22,7 @@ internal fun NavGraphBuilder.homeUpNextScreen(
         AllHomeUpNextScreen(
             viewModel = koinViewModel(),
             onNavigateToShow = onNavigateToShow,
+            onNavigateToMovie = onNavigateToMovie,
             onNavigateToEpisode = onNavigateToEpisode,
             onNavigateBack = onNavigateBack,
         )

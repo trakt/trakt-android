@@ -38,7 +38,7 @@ import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source.AllHomeUpNext
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
-import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
+import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
@@ -144,7 +144,7 @@ internal class AllHomeUpNextViewModel(
                 )
                 itemsState.update { remoteItems }
 
-                itemsOrder = itemsState.value?.map { it.show.ids.trakt.value }
+                itemsOrder = itemsState.value?.map { it.id.value }
                 hasMoreData = remoteItems.size >= HOME_ALL_LIMIT
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -185,7 +185,7 @@ internal class AllHomeUpNextViewModel(
                 }
 
                 pages += 1
-                itemsOrder = itemsState.value?.map { it.show.ids.trakt.value }
+                itemsOrder = itemsState.value?.map { it.id.value }
                 hasMoreData = nextData.size >= HOME_ALL_LIMIT
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -201,7 +201,7 @@ internal class AllHomeUpNextViewModel(
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
             itemsState.update {
-                emptyList<ProgressShow>().toImmutableList()
+                emptyList<UpNextShow>().toImmutableList()
             }
             loadingState.update { Done }
             return true
@@ -225,7 +225,7 @@ internal class AllHomeUpNextViewModel(
                 val currentItems = itemsState.value?.toMutableList() ?: return@launch
 
                 val itemIndex = currentItems.indexOfFirst { it.id == episodeId }
-                val itemLoading = currentItems[itemIndex].copy(loading = true)
+                val itemLoading = (currentItems[itemIndex] as UpNextShow).copy(loading = true)
                 currentItems[itemIndex] = itemLoading
 
                 itemsState.update {
@@ -250,7 +250,7 @@ internal class AllHomeUpNextViewModel(
                     )
                     itemsOrder?.let { order ->
                         items
-                            .sortedBy { order.indexOf(it.show.ids.trakt.value) }
+                            .sortedBy { order.indexOf(it.id.value) }
                             .toImmutableList()
                     } ?: items
                 }
@@ -259,7 +259,7 @@ internal class AllHomeUpNextViewModel(
                 loadUserProgress()
 
                 infoState.update { DynamicStringResource(R.string.text_info_history_added) }
-                itemsOrder = itemsState.value?.map { it.show.ids.trakt.value }
+                itemsOrder = itemsState.value?.map { it.id.value }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -284,7 +284,7 @@ internal class AllHomeUpNextViewModel(
                 val currentItems = itemsState.value?.toMutableList() ?: return@launch
 
                 val itemIndex = currentItems.indexOfFirst { it.id == episodeId }
-                val itemLoading = currentItems[itemIndex].copy(loading = true)
+                val itemLoading = (currentItems[itemIndex] as UpNextShow).copy(loading = true)
                 currentItems[itemIndex] = itemLoading
 
                 itemsState.update {
@@ -311,12 +311,12 @@ internal class AllHomeUpNextViewModel(
                     )
                     itemsOrder?.let { order ->
                         items
-                            .sortedBy { order.indexOf(it.show.ids.trakt.value) }
+                            .sortedBy { order.indexOf(it.id.value) }
                             .toImmutableList()
                     } ?: items
                 }
 
-                itemsOrder = itemsState.value?.map { it.show.ids.trakt.value }
+                itemsOrder = itemsState.value?.map { it.id.value }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -343,11 +343,11 @@ internal class AllHomeUpNextViewModel(
     fun removeShow(showId: TraktId) {
         itemsState.update { items ->
             items
-                ?.filter { it.show.ids.trakt != showId }
+                ?.filter { it.id != showId || it !is UpNextShow }
                 ?.toImmutableList()
         }
         itemsOrder = itemsState.value?.map {
-            it.show.ids.trakt.value
+            it.id.value
         }
     }
 
@@ -370,7 +370,7 @@ internal class AllHomeUpNextViewModel(
         errorState,
     ) { state ->
         AllHomeUpNextState(
-            items = state[0] as ImmutableList<ProgressShow>?,
+            items = state[0] as ImmutableList<UpNextShow>?,
             loading = state[1] as LoadingState,
             loadingMore = state[2] as LoadingState,
             user = state[3] as User?,

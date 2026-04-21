@@ -28,7 +28,7 @@ internal class MoviesSyncApiClient(
         page: Int,
     ): List<ProgressMovieDto> {
         val response = syncApi.getSyncProgressMovies(
-            extended = "full,cloud9",
+            extended = "full,cloud9,colors",
             page = page,
             limit = limit,
             startAt = null,

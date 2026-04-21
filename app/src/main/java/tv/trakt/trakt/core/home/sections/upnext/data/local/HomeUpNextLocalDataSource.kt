@@ -2,15 +2,15 @@ package tv.trakt.trakt.core.home.sections.upnext.data.local
 
 import kotlinx.coroutines.flow.Flow
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
+import tv.trakt.trakt.core.home.sections.upnext.model.UpNextItem
 import java.time.Instant
 
 internal interface HomeUpNextLocalDataSource {
-    suspend fun addItems(items: List<ProgressShow>)
+    suspend fun addItems(items: List<UpNextItem>)
 
-    suspend fun setItems(items: List<ProgressShow>)
+    suspend fun setItems(items: List<UpNextItem>)
 
-    suspend fun getItems(): List<ProgressShow>
+    suspend fun getItems(): List<UpNextItem>
 
     suspend fun removeItems(showIds: List<TraktId>)
 

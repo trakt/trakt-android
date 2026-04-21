@@ -42,7 +42,7 @@ import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePerson
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
-import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
+import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.model.MediaMode
@@ -199,7 +199,7 @@ internal class HomeUpNextViewModel(
                     )
                 }
 
-                itemsOrder = itemsState.value.items?.map { it.show.ids.trakt.value }
+                itemsOrder = itemsState.value.items?.map { it.id.value }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     if (!ignoreErrors) {
@@ -217,7 +217,7 @@ internal class HomeUpNextViewModel(
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
             itemsState.update {
-                ItemsState(emptyList<ProgressShow>().toImmutableList())
+                ItemsState(emptyList<UpNextShow>().toImmutableList())
             }
             loadingState.update { Done }
             return true
@@ -240,7 +240,7 @@ internal class HomeUpNextViewModel(
                 val currentItems = itemsState.value.items?.toMutableList() ?: return@launch
 
                 val itemIndex = currentItems.indexOfFirst { it.id == episodeId }
-                val itemLoading = currentItems[itemIndex].copy(loading = true)
+                val itemLoading = (currentItems[itemIndex] as UpNextShow).copy(loading = true)
                 currentItems[itemIndex] = itemLoading
 
                 itemsState.update {
@@ -270,7 +270,7 @@ internal class HomeUpNextViewModel(
                         items = itemsOrder?.let { order ->
                             items
                                 .sortedBy {
-                                    order.indexOf(it.show.ids.trakt.value).run {
+                                    order.indexOf(it.id.value).run {
                                         // Items not in the list are placed at the end.
                                         if (this < 0) Int.MAX_VALUE else this
                                     }
@@ -288,7 +288,7 @@ internal class HomeUpNextViewModel(
                     DynamicStringResource(R.string.text_info_history_added)
                 }
 
-                itemsOrder = itemsState.value.items?.map { it.show.ids.trakt.value }
+                itemsOrder = itemsState.value.items?.map { it.id.value }
                 appReviewUseCase.incrementCount()
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -315,7 +315,7 @@ internal class HomeUpNextViewModel(
                 val currentItems = itemsState.value.items?.toMutableList() ?: return@launch
 
                 val itemIndex = currentItems.indexOfFirst { it.id == episodeId }
-                val itemLoading = currentItems[itemIndex].copy(loading = true)
+                val itemLoading = (currentItems[itemIndex] as UpNextShow).copy(loading = true)
                 currentItems[itemIndex] = itemLoading
 
                 itemsState.update {
@@ -347,7 +347,7 @@ internal class HomeUpNextViewModel(
                         items = itemsOrder?.let { order ->
                             items
                                 .sortedBy {
-                                    order.indexOf(it.show.ids.trakt.value).run {
+                                    order.indexOf(it.id.value).run {
                                         // Items not in the list are placed at the end.
                                         if (this < 0) Int.MAX_VALUE else this
                                     }
@@ -358,7 +358,7 @@ internal class HomeUpNextViewModel(
                     )
                 }
 
-                itemsOrder = itemsState.value.items?.map { it.show.ids.trakt.value }
+                itemsOrder = itemsState.value.items?.map { it.id.value }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

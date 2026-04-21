@@ -168,6 +168,7 @@ private fun HomeScreenContent(
                         headerPadding = sectionPadding,
                         contentPadding = sectionPadding,
                         onShowClick = onShowClick,
+                        onMovieClick = onMovieClick,
                         onShowsClick = onShowsClick,
                         onEpisodeClick = onEpisodeClick,
                         onMoreClick = onMoreUpNextClick,

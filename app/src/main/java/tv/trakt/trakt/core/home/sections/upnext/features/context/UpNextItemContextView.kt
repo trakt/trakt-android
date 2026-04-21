@@ -39,7 +39,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.core.home.sections.upnext.model.Progress
-import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
+import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
@@ -47,11 +47,11 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun UpNextItemContextView(
-    item: ProgressShow,
+    item: UpNextShow,
     viewModel: UpNextItemContextViewModel,
     modifier: Modifier = Modifier,
-    onAddWatched: (ProgressShow) -> Unit,
-    onDropShow: (ProgressShow) -> Unit,
+    onAddWatched: (UpNextShow) -> Unit,
+    onDropShow: (UpNextShow) -> Unit,
     onError: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -100,7 +100,7 @@ internal fun UpNextItemContextView(
 
 @Composable
 private fun UpNextItemContextViewContent(
-    item: ProgressShow,
+    item: UpNextShow,
     state: UpNextItemContextState,
     modifier: Modifier = Modifier,
     onAddWatched: () -> Unit = {},
@@ -195,7 +195,7 @@ private fun Preview() {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             UpNextItemContextViewContent(
                 state = UpNextItemContextState(),
-                item = ProgressShow(
+                item = UpNextShow(
                     progress = Progress(
                         lastWatchedAt = nowUtc(),
                         aired = 12,

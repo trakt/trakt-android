@@ -7,23 +7,16 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,19 +26,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
@@ -54,24 +40,21 @@ import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAG
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
 import tv.trakt.trakt.core.home.sections.upnext.features.context.sheets.UpNextItemContextSheet
-import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
+import tv.trakt.trakt.core.home.sections.upnext.model.UpNextItem
+import tv.trakt.trakt.core.home.sections.upnext.model.UpNextMovie
+import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
+import tv.trakt.trakt.core.home.sections.upnext.ui.HomeUpNextMovieView
+import tv.trakt.trakt.core.home.sections.upnext.ui.HomeUpNextShowView
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.EpisodeProgressBar
 import tv.trakt.trakt.ui.components.TraktSectionHeader
-import tv.trakt.trakt.ui.components.chips.FinaleChip
-import tv.trakt.trakt.ui.components.chips.PremiereChip
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
-import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -83,14 +66,15 @@ internal fun HomeUpNextView(
     contentPadding: PaddingValues,
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     onShowClick: (TraktId) -> Unit,
+    onMovieClick: (TraktId) -> Unit,
     onShowsClick: () -> Unit,
     onMoreClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val haptic = LocalHapticFeedback.current
 
-    var contextSheet by remember { mutableStateOf<ProgressShow?>(null) }
-    var dateSheet by remember { mutableStateOf<ProgressShow?>(null) }
+    var contextSheet by remember { mutableStateOf<UpNextShow?>(null) }
+    var dateSheet by remember { mutableStateOf<UpNextShow?>(null) }
 
     LaunchedEffect(state.info) {
         if (state.info != null) {
@@ -107,21 +91,21 @@ internal fun HomeUpNextView(
         onCollapse = viewModel::setCollapsed,
         onShowsClick = onShowsClick,
         onShowClick = { onShowClick(it.show.ids.trakt) },
+        onMovieClick = { onMovieClick(it.movie.ids.trakt) },
         onMoreClick = {
             if (state.loading == Done && !state.items.items.isNullOrEmpty()) {
                 onMoreClick()
             }
         },
         onClick = {
-            if (!it.loading) {
-                onEpisodeClick(
-                    it.show.ids.trakt,
-                    it.progress.nextEpisode,
-                )
+            if (it.loading) return@HomeUpNextContent
+            when (it) {
+                is UpNextShow -> onEpisodeClick(it.show.ids.trakt, it.progress.nextEpisode)
+                is UpNextMovie -> onMovieClick(it.movie.ids.trakt)
             }
         },
         onLongClick = {
-            if (!it.loading) {
+            if (!it.loading && it is UpNextShow) {
                 contextSheet = it
             }
         },
@@ -129,7 +113,9 @@ internal fun HomeUpNextView(
             viewModel.addToHistory(it.id)
         },
         onCheckLongClick = {
-            dateSheet = it
+            if (!it.loading && it is UpNextShow) {
+                dateSheet = it
+            }
         },
     )
 
@@ -181,11 +167,12 @@ internal fun HomeUpNextContent(
     contentPadding: PaddingValues = PaddingValues(),
     onMoreClick: () -> Unit = {},
     onShowsClick: () -> Unit = {},
-    onShowClick: (ProgressShow) -> Unit = {},
-    onClick: (ProgressShow) -> Unit = {},
-    onLongClick: (ProgressShow) -> Unit = {},
-    onCheckClick: (ProgressShow) -> Unit = {},
-    onCheckLongClick: (ProgressShow) -> Unit = {},
+    onShowClick: (UpNextShow) -> Unit = {},
+    onMovieClick: (UpNextMovie) -> Unit = {},
+    onClick: (UpNextItem) -> Unit = {},
+    onLongClick: (UpNextItem) -> Unit = {},
+    onCheckClick: (UpNextItem) -> Unit = {},
+    onCheckLongClick: (UpNextItem) -> Unit = {},
     onCollapse: (collapsed: Boolean) -> Unit = {},
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
@@ -267,6 +254,7 @@ internal fun HomeUpNextContent(
                                     onCheckClick = onCheckClick,
                                     onCheckLongClick = onCheckLongClick,
                                     onShowClick = onShowClick,
+                                    onMovieClick = onMovieClick,
                                 )
                             }
                         }
@@ -301,11 +289,12 @@ private fun ContentList(
     listItems: ItemsState,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
-    onClick: (ProgressShow) -> Unit,
-    onLongClick: (ProgressShow) -> Unit,
-    onCheckClick: (ProgressShow) -> Unit,
-    onCheckLongClick: (ProgressShow) -> Unit,
-    onShowClick: (ProgressShow) -> Unit,
+    onClick: (UpNextItem) -> Unit,
+    onLongClick: (UpNextItem) -> Unit,
+    onCheckClick: (UpNextItem) -> Unit,
+    onCheckLongClick: (UpNextItem) -> Unit,
+    onShowClick: (UpNextShow) -> Unit,
+    onMovieClick: (UpNextMovie) -> Unit,
 ) {
     val listHash = rememberSaveable { mutableIntStateOf(listItems.items.hashCode()) }
 
@@ -329,145 +318,40 @@ private fun ContentList(
             items = listItems.items ?: emptyList(),
             key = { it.key },
         ) { item ->
-            ContentListItem(
-                item = item,
-                onClick = { onClick(item) },
-                onLongClick = { onLongClick(item) },
-                onCheckClick = { onCheckClick(item) },
-                onCheckLongClick = { onCheckLongClick(item) },
-                onShowClick = { onShowClick(item) },
-                modifier = Modifier.animateItem(
-                    fadeInSpec = null,
-                    fadeOutSpec = null,
-                ),
-            )
+            if (item is UpNextShow) {
+                HomeUpNextShowView(
+                    item = item,
+                    onClick = { onClick(item) },
+                    onLongClick = { onLongClick(item) },
+                    onCheckClick = { onCheckClick(item) },
+                    onCheckLongClick = { onCheckLongClick(item) },
+                    onShowClick = { onShowClick(item) },
+                    modifier = Modifier.animateItem(
+                        fadeInSpec = null,
+                        fadeOutSpec = null,
+                    ),
+                )
+            } else if (item is UpNextMovie) {
+                HomeUpNextMovieView(
+                    item = item,
+                    onClick = { onClick(item) },
+                    onLongClick = { onLongClick(item) },
+                    onCheckClick = { onCheckClick(item) },
+                    onCheckLongClick = { onCheckLongClick(item) },
+                    onMovieClick = { onMovieClick(item) },
+                    modifier = Modifier.animateItem(
+                        fadeInSpec = null,
+                        fadeOutSpec = null,
+                    ),
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun ContentListItem(
-    item: ProgressShow,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-    onLongClick: () -> Unit,
-    onCheckClick: () -> Unit,
-    onCheckLongClick: () -> Unit,
-    onShowClick: () -> Unit,
-) {
-    HorizontalMediaCard(
-        title = "",
-        onClick = onClick,
-        onLongClick = onLongClick,
-        containerImageUrl =
-            item.show.images?.getFanartUrl()
-                ?: item.progress.nextEpisode.images?.getScreenshotUrl(),
-        cardContent = {
-            Row {
-                val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes
-                    ?: item.show.runtime?.inWholeMinutes
-
-                val remainingEpisodes = remember(item.progress.completed, item.progress.aired) {
-                    item.progress.remainingEpisodes
-                }
-
-                val remainingPercent = remember(item.progress.completed, item.progress.aired) {
-                    item.progress.remainingPercent
-                }
-
-                Column(
-                    verticalArrangement = spacedBy(3.dp),
-                ) {
-                    when {
-                        item.progress.nextEpisode.isPremiere() -> PremiereChip(
-                            contentTextStyle = TraktTheme.typography.meta.copy(
-                                fontSize = 10.sp,
-                            ),
-                            modifier = Modifier
-                                .shadow(2.dp, RoundedCornerShape(100))
-                                .height(20.dp),
-                        )
-                        item.progress.nextEpisode.isFinale() -> FinaleChip(
-                            contentTextStyle = TraktTheme.typography.meta.copy(
-                                fontSize = 10.sp,
-                            ),
-                            modifier = Modifier
-                                .shadow(2.dp, RoundedCornerShape(100))
-                                .height(20.dp),
-                        )
-                    }
-
-                    EpisodeProgressBar(
-                        startText = runtime?.durationFormat(),
-                        endText = stringResource(R.string.tag_text_remaining_episodes, remainingEpisodes),
-                        progress = remainingPercent,
-                        modifier = Modifier
-                            .shadow(2.dp, RoundedCornerShape(100)),
-                    )
-                }
-            }
-        },
-        footerContent = {
-            Row(
-                verticalAlignment = CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Column(
-                    verticalArrangement = spacedBy(1.dp),
-                    modifier = Modifier
-                        .onClick(onClick = onShowClick)
-                        .weight(1F, fill = false),
-                ) {
-                    Text(
-                        text = item.show.title,
-                        style = TraktTheme.typography.cardTitle,
-                        color = TraktTheme.colors.textPrimary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-
-                    Text(
-                        text = item.progress.nextEpisode.seasonEpisodeString(),
-                        style = TraktTheme.typography.cardSubtitle,
-                        color = TraktTheme.colors.textSecondary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
-
-                val checkSize = 20.dp
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .padding(start = 12.dp, end = 4.dp)
-                        .size(checkSize),
-                ) {
-                    if (item.loading) {
-                        FilmProgressIndicator(size = checkSize - 3.dp)
-                    } else {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_check),
-                            contentDescription = null,
-                            tint = TraktTheme.colors.accent,
-                            modifier = Modifier
-                                .size(checkSize)
-                                .onClickCombined(
-                                    onClick = onCheckClick,
-                                    onLongClick = onCheckLongClick,
-                                ),
-                        )
-                    }
-                }
-            }
-        },
-        modifier = modifier,
-    )
-}
-
-@Composable
 private fun HomeDateSelectionSheet(
-    item: ProgressShow?,
+    item: UpNextShow?,
     onDateSelected: (DateSelectionResult?) -> Unit,
     onCheckIn: () -> Unit,
     onDismiss: () -> Unit,

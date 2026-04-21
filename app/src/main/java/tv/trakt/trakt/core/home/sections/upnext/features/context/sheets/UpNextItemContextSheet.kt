@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.core.home.sections.upnext.features.context.UpNextItemContextView
-import tv.trakt.trakt.core.home.sections.upnext.model.ProgressShow
+import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
@@ -27,9 +27,9 @@ internal fun UpNextItemContextSheet(
     state: SheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true,
     ),
-    sheetItem: ProgressShow?,
-    onAddWatched: (ProgressShow) -> Unit,
-    onDropShow: (ProgressShow) -> Unit,
+    sheetItem: UpNextShow?,
+    onAddWatched: (UpNextShow) -> Unit,
+    onDropShow: (UpNextShow) -> Unit,
     onDismiss: () -> Unit,
 ) {
     val localSnack = LocalSnackbarState.current

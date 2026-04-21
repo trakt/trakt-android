@@ -83,6 +83,7 @@ internal fun NavGraphBuilder.homeScreens(
 
         homeUpNextScreen(
             onNavigateToShow = { navigateToShow(it) },
+            onNavigateToMovie = { navigateToMovie(it) },
             onNavigateToEpisode = { showId, episode ->
                 navigateToEpisode(showId, episode)
             },
