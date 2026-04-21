@@ -457,15 +457,13 @@ private fun ContentListShowItem(
                         overflow = TextOverflow.Ellipsis,
                     )
 
-                    item.progress?.let {
-                        Text(
-                            text = item.progress.nextEpisode.seasonEpisodeString(),
-                            style = TraktTheme.typography.cardSubtitle,
-                            color = TraktTheme.colors.textSecondary,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
+                    Text(
+                        text = stringResource(R.string.episode_footer_season_episode, 1, 1),
+                        style = TraktTheme.typography.cardSubtitle,
+                        color = TraktTheme.colors.textSecondary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                 }
 
                 ContentItemCheck(

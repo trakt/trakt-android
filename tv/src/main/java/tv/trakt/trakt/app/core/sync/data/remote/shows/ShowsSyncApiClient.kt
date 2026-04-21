@@ -69,6 +69,7 @@ internal class ShowsSyncApiClient(
         page: Int?,
         limit: Int?,
         extended: String?,
+        hide: String?,
     ): List<WatchlistShowDto> {
         val response = usersApi.getUsersWatchlistShows(
             id = "me",
@@ -83,7 +84,7 @@ internal class ShowsSyncApiClient(
             startDate = null,
             endDate = null,
             subgenres = null,
-            hide = null,
+            hide = hide,
             sortBy = null,
             sortHow = null,
             runtimes = null,

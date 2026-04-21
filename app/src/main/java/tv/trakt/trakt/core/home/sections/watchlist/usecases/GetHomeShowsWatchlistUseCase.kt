@@ -2,20 +2,20 @@ package tv.trakt.trakt.core.home.sections.watchlist.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.user.data.remote.watchlist.UserWatchlistRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
-import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
-import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
-import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
-import tv.trakt.trakt.common.networking.ProgressShowDto
-import tv.trakt.trakt.core.home.sections.upnext.model.Progress
+import tv.trakt.trakt.common.model.sorting.SortOrder
+import tv.trakt.trakt.common.model.sorting.SortTypeList
+import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.common.networking.WatchlistShowDto
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
-import tv.trakt.trakt.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 
 internal class GetHomeShowsWatchlistUseCase(
-    private val remoteShowsSyncSource: ShowsSyncRemoteDataSource,
+    private val userRemoteSource: UserWatchlistRemoteDataSource,
     private val homeWatchlistLocalSource: HomeWatchlistLocalDataSource,
 ) {
     suspend fun getLocalWatchlist(limit: Int? = null): ImmutableList<WatchlistItem> {
@@ -25,10 +25,15 @@ internal class GetHomeShowsWatchlistUseCase(
     }
 
     suspend fun getWatchlist(limit: Int): ImmutableList<WatchlistItem> {
-        return remoteShowsSyncSource.getUpNext(
-            limit = limit,
+        return userRemoteSource.getWatchlistShows(
             page = 1,
-            intent = "start",
+            limit = limit,
+            extended = "full,cloud9,colors",
+            sorting = Sorting(
+                type = SortTypeList.RELEASED,
+                order = SortOrder.DESCENDING,
+            ),
+            hide = "unreleased",
         ).asyncMap {
             mapShowItem(it)
         }.also {
@@ -38,27 +43,11 @@ internal class GetHomeShowsWatchlistUseCase(
             .toImmutableList()
     }
 
-    private fun mapShowItem(item: ProgressShowDto): WatchlistItem.ShowItem {
+    private fun mapShowItem(item: WatchlistShowDto): WatchlistItem.ShowItem {
         return WatchlistItem.ShowItem(
             show = Show.fromDto(item.show),
-            progress = Progress(
-                lastWatchedAt = item.progress.lastWatchedAt?.toZonedDateTime(),
-                aired = item.progress.aired,
-                completed = item.progress.completed,
-                stats = item.progress.stats?.let {
-                    Progress.Stats(
-                        playCount = it.playCount,
-                        minutesWatched = it.minutesWatched,
-                        minutesLeft = it.minutesLeft,
-                    )
-                },
-                lastEpisode = item.progress.lastEpisode?.let {
-                    Episode.fromDto(it)
-                },
-                nextEpisode = Episode.fromDto(item.progress.nextEpisode),
-            ),
-            rank = 0,
-            listedAt = nowUtcInstant(),
+            rank = item.rank,
+            listedAt = item.listedAt.toInstant(),
         )
     }
 }

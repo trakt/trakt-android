@@ -19,6 +19,7 @@ internal interface ShowsSyncRemoteDataSource {
         page: Int? = null,
         limit: Int? = null,
         extended: String? = null,
+        hide: String? = null,
     ): List<WatchlistShowDto>
 
     suspend fun getWatched(extended: String? = null): List<WatchedShowDto>

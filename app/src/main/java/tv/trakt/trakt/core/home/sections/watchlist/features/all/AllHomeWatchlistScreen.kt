@@ -47,7 +47,7 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.lists.sections.watchlist.features.all.views.AllWatchlistEpisodeView
+import tv.trakt.trakt.core.home.sections.watchlist.features.all.ui.AllHomeWatchlistEpisodeView
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.views.AllWatchlistMovieView
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.sheets.WatchlistMovieSheet
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.shows.sheets.WatchlistShowSheet
@@ -334,7 +334,7 @@ private fun ContentList(
             key = { it.key },
         ) { item ->
             when (item) {
-                is ShowItem -> AllWatchlistEpisodeView(
+                is ShowItem -> AllHomeWatchlistEpisodeView(
                     item = item,
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },

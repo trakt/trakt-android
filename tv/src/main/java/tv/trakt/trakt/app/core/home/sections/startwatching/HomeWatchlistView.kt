@@ -155,7 +155,7 @@ private fun ContentList(
                 chipContent = {
                     val subtitle = when (item) {
                         is ShowItem -> {
-                            item.progress?.nextEpisode?.seasonEpisodeString()
+                            stringResource(R.string.episode_footer_season_episode, 1, 1)
                         }
                         is MovieItem -> {
                             item.movie.runtime?.inWholeMinutes?.durationFormat()

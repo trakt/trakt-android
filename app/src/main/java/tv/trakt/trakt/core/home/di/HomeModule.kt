@@ -102,7 +102,7 @@ internal val homeModule = module {
 
     factory {
         GetHomeShowsWatchlistUseCase(
-            remoteShowsSyncSource = get(),
+            userRemoteSource = get(),
             homeWatchlistLocalSource = get(),
         )
     }

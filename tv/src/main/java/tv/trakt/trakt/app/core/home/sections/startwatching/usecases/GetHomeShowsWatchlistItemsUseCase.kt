@@ -1,14 +1,11 @@
 package tv.trakt.trakt.app.core.home.sections.startwatching.usecases
 
-import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressShow
 import tv.trakt.trakt.app.core.home.sections.startwatching.model.WatchlistItem
 import tv.trakt.trakt.app.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
-import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
-import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.pagination.Pagination
@@ -24,31 +21,19 @@ internal class GetHomeShowsWatchlistItemsUseCase(
     suspend fun getItems(pagination: Pagination): List<WatchlistItem> {
         val nowDay = nowLocal().toString()
 
-        val response = remoteSyncSource.getUpNextProgress(
+        val response = remoteSyncSource.getWatchlist(
             page = pagination.page,
             limit = pagination.limit,
-            intent = "start",
+            extended = "full,cloud9,colors,streaming_ids",
+            sort = "released",
+            hide = "unreleased",
         ).filter {
             !it.show.firstAired.isNullOrBlank() && it.show.firstAired!! <= nowDay
         }.asyncMap { item ->
             WatchlistItem.ShowItem(
                 show = Show.fromDto(item.show),
-                progress = ProgressShow.Progress(
-                    lastWatchedAt = item.progress.lastWatchedAt?.toZonedDateTime(),
-                    aired = item.progress.aired,
-                    completed = item.progress.completed,
-                    stats = item.progress.stats?.let {
-                        ProgressShow.Progress.Stats(
-                            playCount = it.playCount,
-                            minutesWatched = it.minutesWatched,
-                            minutesLeft = it.minutesLeft,
-                        )
-                    },
-                    nextEpisode = Episode.fromDto(item.progress.nextEpisode),
-                    lastEpisode = null,
-                ),
-                rank = 0,
-                listedAt = nowUtc(),
+                rank = item.rank,
+                listedAt = item.listedAt.toZonedDateTime(),
             )
         }.sortedWith(SortComparator)
 
