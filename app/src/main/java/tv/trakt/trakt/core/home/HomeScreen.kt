@@ -162,18 +162,17 @@ private fun HomeScreenContent(
             verticalArrangement = spacedBy(TraktTheme.spacing.mainSectionVerticalSpace),
             contentPadding = listPadding,
         ) {
-            if (state.mode == null || state.mode.isMediaOrShows) {
-                item {
-                    HomeUpNextView(
-                        headerPadding = sectionPadding,
-                        contentPadding = sectionPadding,
-                        onShowClick = onShowClick,
-                        onMovieClick = onMovieClick,
-                        onShowsClick = onShowsClick,
-                        onEpisodeClick = onEpisodeClick,
-                        onMoreClick = onMoreUpNextClick,
-                    )
-                }
+            item {
+                HomeUpNextView(
+                    headerPadding = sectionPadding,
+                    contentPadding = sectionPadding,
+                    onShowClick = onShowClick,
+                    onMovieClick = onMovieClick,
+                    onShowsClick = onShowsClick,
+                    onMoviesClick = onMoviesClick,
+                    onEpisodeClick = onEpisodeClick,
+                    onMoreClick = onMoreUpNextClick,
+                )
             }
 
             item {

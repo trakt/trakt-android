@@ -187,6 +187,7 @@ internal val homeModule = module {
             movieUpdates = get(),
             checkInUpdates = get(),
             checkInManager = get(),
+            modeManager = get(),
             sessionManager = get(),
             analytics = get(),
         )

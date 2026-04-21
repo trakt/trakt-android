@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package tv.trakt.trakt.core.home.sections.upnext
 
 import android.content.Context
@@ -42,6 +44,7 @@ import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePerson
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
+import tv.trakt.trakt.core.home.sections.upnext.model.UpNextMovie
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
@@ -107,9 +110,11 @@ internal class HomeUpNextViewModel(
 
     private fun observeMode() {
         modeManager.observeMode()
+            .distinctUntilChanged()
             .onEach { value ->
                 modeState.update { value }
                 collapseState.update { isCollapsed() }
+                loadData(localOnly = true)
             }
             .launchIn(viewModelScope)
     }
@@ -174,6 +179,15 @@ internal class HomeUpNextViewModel(
                 val localItems = getUpNextUseCase.getLocalUpNext(
                     limit = HOME_SECTION_LIMIT,
                 )
+                    .filter {
+                        when (modeState.value) {
+                            MediaMode.SHOWS -> it is UpNextShow
+                            MediaMode.MOVIES -> it is UpNextMovie
+                            else -> true
+                        }
+                    }
+                    .toImmutableList()
+
                 if (localItems.isNotEmpty()) {
                     itemsState.update {
                         ItemsState(
@@ -196,7 +210,15 @@ internal class HomeUpNextViewModel(
                         items = getUpNextUseCase.getUpNext(
                             page = 1,
                             limit = HOME_SECTION_LIMIT,
-                        ),
+                        )
+                            .filter {
+                                when (modeState.value) {
+                                    MediaMode.SHOWS -> it is UpNextShow
+                                    MediaMode.MOVIES -> it is UpNextMovie
+                                    else -> true
+                                }
+                            }
+                            .toImmutableList(),
                         resetScroll = resetScroll,
                     )
                 }
@@ -421,6 +443,7 @@ internal class HomeUpNextViewModel(
         itemsState,
         infoState,
         errorState,
+        modeState,
     ) { state ->
         HomeUpNextState(
             loading = state[0] as LoadingState,
@@ -428,6 +451,7 @@ internal class HomeUpNextViewModel(
             items = state[2] as ItemsState,
             info = state[3] as StringResource?,
             error = state[4] as Exception?,
+            filter = state[5] as MediaMode,
         )
     }.stateIn(
         scope = viewModelScope,

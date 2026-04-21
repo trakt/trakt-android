@@ -51,6 +51,7 @@ import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
 import tv.trakt.trakt.core.home.sections.upnext.ui.HomeUpNextMovieView
 import tv.trakt.trakt.core.home.sections.upnext.ui.HomeUpNextShowView
 import tv.trakt.trakt.core.home.views.HomeEmptyView
+import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
@@ -68,6 +69,7 @@ internal fun HomeUpNextView(
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onShowsClick: () -> Unit,
+    onMoviesClick: () -> Unit,
     onMoreClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -90,6 +92,7 @@ internal fun HomeUpNextView(
         contentPadding = contentPadding,
         onCollapse = viewModel::setCollapsed,
         onShowsClick = onShowsClick,
+        onMoviesClick = onMoviesClick,
         onShowClick = { onShowClick(it.show.ids.trakt) },
         onMovieClick = { onMovieClick(it.movie.ids.trakt) },
         onMoreClick = {
@@ -167,6 +170,7 @@ internal fun HomeUpNextContent(
     contentPadding: PaddingValues = PaddingValues(),
     onMoreClick: () -> Unit = {},
     onShowsClick: () -> Unit = {},
+    onMoviesClick: () -> Unit = {},
     onShowClick: (UpNextShow) -> Unit = {},
     onMovieClick: (UpNextMovie) -> Unit = {},
     onClick: (UpNextItem) -> Unit = {},
@@ -237,16 +241,25 @@ internal fun HomeUpNextContent(
                                 HomeEmptyView(
                                     text = stringResource(R.string.text_cta_up_next),
                                     icon = R.drawable.ic_empty_upnext,
-                                    buttonText = stringResource(R.string.link_text_discover_shows),
+                                    buttonText = when (state.filter) {
+                                        MediaMode.MOVIES -> stringResource(R.string.link_text_discover_movies)
+                                        else -> stringResource(R.string.link_text_discover_shows)
+                                    },
                                     backgroundImageUrl = imageUrl,
                                     backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
                                     modifier = Modifier.padding(contentPadding),
-                                    onClick = onShowsClick,
+                                    onClick = {
+                                        when (state.filter) {
+                                            MediaMode.MOVIES -> onMoviesClick()
+                                            else -> onShowsClick()
+                                        }
+                                    },
                                 )
                             }
 
                             else -> {
                                 ContentList(
+                                    listFilter = state.filter,
                                     listItems = state.items,
                                     contentPadding = contentPadding,
                                     onClick = onClick,
@@ -286,6 +299,7 @@ private fun ContentLoadingList(
 
 @Composable
 private fun ContentList(
+    listFilter: MediaMode?,
     listItems: ItemsState,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
@@ -296,7 +310,15 @@ private fun ContentList(
     onShowClick: (UpNextShow) -> Unit,
     onMovieClick: (UpNextMovie) -> Unit,
 ) {
+    val currentFilter = remember { mutableStateOf(listFilter) }
     val listHash = rememberSaveable { mutableIntStateOf(listItems.items.hashCode()) }
+
+    LaunchedEffect(listFilter) {
+        if (currentFilter.value != listFilter) {
+            currentFilter.value = listFilter
+            listState.animateScrollToItem(0)
+        }
+    }
 
     LaunchedEffect(listItems.items, listItems.resetScroll) {
         val hash = listItems.hashCode()

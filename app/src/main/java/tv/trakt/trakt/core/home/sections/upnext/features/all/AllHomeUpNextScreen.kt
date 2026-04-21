@@ -58,8 +58,10 @@ import tv.trakt.trakt.core.home.sections.upnext.features.context.sheets.UpNextIt
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextItem
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextMovie
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
+import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
@@ -91,6 +93,7 @@ internal fun AllHomeUpNextScreen(
         state = state,
         modifier = modifier,
         onLoadMore = { viewModel.loadMoreData() },
+        onFilterClick = viewModel::setFilter,
         onClick = {
             if (!it.loading && it is UpNextShow) {
                 onNavigateToEpisode(
@@ -171,6 +174,7 @@ internal fun AllHomeUpNextContent(
     onCheckLongClick: (UpNextItem) -> Unit = {},
     onShowClick: (UpNextShow) -> Unit = {},
     onMovieClick: (UpNextMovie) -> Unit = {},
+    onFilterClick: (MediaMode) -> Unit = {},
     onBackClick: () -> Unit = {},
     onLoadMore: () -> Unit = {},
 ) {
@@ -208,9 +212,12 @@ internal fun AllHomeUpNextContent(
         ContentList(
             listState = listState,
             listItems = (state.items ?: emptyList()).toImmutableList(),
+            listFilter = state.filter,
+            loading = state.loading.isLoading,
             contentPadding = contentPadding,
             loadingMore = state.loadingMore.isLoading,
             onEndOfList = onLoadMore,
+            onFilterClick = onFilterClick,
             onClick = onClick,
             onLongClick = onLongClick,
             onCheckClick = onCheckClick,
@@ -227,9 +234,12 @@ private fun ContentList(
     modifier: Modifier = Modifier,
     listItems: ImmutableList<UpNextItem>,
     listState: LazyListState,
+    listFilter: MediaMode?,
+    loading: Boolean,
     contentPadding: PaddingValues,
     loadingMore: Boolean,
     onEndOfList: () -> Unit,
+    onFilterClick: (MediaMode) -> Unit,
     onClick: (UpNextItem) -> Unit,
     onLongClick: (UpNextItem) -> Unit,
     onCheckClick: (UpNextItem) -> Unit,
@@ -263,6 +273,15 @@ private fun ContentList(
                     .padding(bottom = 2.dp)
                     .onClick { onBackClick() },
             )
+        }
+
+        if (listFilter != null && !loading) {
+            item {
+                ContentFilters(
+                    upNextFilter = listFilter,
+                    onFilterClick = onFilterClick,
+                )
+            }
         }
 
         items(
@@ -307,6 +326,22 @@ private fun ContentList(
             }
         }
     }
+}
+
+@Composable
+private fun ContentFilters(
+    upNextFilter: MediaMode,
+    onFilterClick: (MediaMode) -> Unit,
+) {
+    MediaModeFilters(
+        selected = upNextFilter,
+        onClick = onFilterClick,
+        height = 32.dp,
+        paddingVertical = PaddingValues(
+            top = 0.dp,
+            bottom = 19.dp,
+        ),
+    )
 }
 
 @Composable

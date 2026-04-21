@@ -38,8 +38,11 @@ import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source.AllHomeUpNext
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
+import tv.trakt.trakt.core.home.sections.upnext.model.UpNextMovie
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
+import tv.trakt.trakt.core.main.helpers.MediaModeManager
+import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
@@ -63,6 +66,7 @@ internal class AllHomeUpNextViewModel(
     private val movieUpdates: MovieDetailsUpdates,
     private val checkInUpdates: CheckInUpdates,
     private val checkInManager: CheckInManager,
+    private val modeManager: MediaModeManager,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -71,6 +75,7 @@ internal class AllHomeUpNextViewModel(
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(Idle)
+    private val filterState = MutableStateFlow(modeManager.getMode())
     private val userState = MutableStateFlow(initialState.user)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
@@ -85,10 +90,21 @@ internal class AllHomeUpNextViewModel(
         loadUser()
         loadData()
         observeData()
+        observeMode()
 
         analytics.logScreenView(
             screenName = "all_up_next",
         )
+    }
+
+    private fun observeMode() {
+        modeManager.observeMode()
+            .distinctUntilChanged()
+            .onEach { value ->
+                filterState.update { value }
+                loadData(localOnly = true)
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun observeData() {
@@ -120,20 +136,36 @@ internal class AllHomeUpNextViewModel(
         }
     }
 
-    private fun loadData(ignoreErrors: Boolean = false) {
-        clear()
+    private fun loadData(
+        ignoreErrors: Boolean = false,
+        localOnly: Boolean = false,
+    ) {
+        if (!localOnly) {
+            clear()
+        }
+
         viewModelScope.launch {
             if (loadEmptyIfNeeded()) {
                 return@launch
             }
 
             try {
-                val localItems = getUpNextUseCase.getLocalUpNext(
-                    limit = HOME_ALL_LIMIT,
-                )
+                val localItems = getUpNextUseCase.getLocalUpNext(limit = HOME_ALL_LIMIT)
+                    .filter {
+                        when (filterState.value) {
+                            MediaMode.SHOWS -> it is UpNextShow
+                            MediaMode.MOVIES -> it is UpNextMovie
+                            else -> true
+                        }
+                    }.toImmutableList()
+
                 if (localItems.isNotEmpty()) {
                     itemsState.update { localItems }
                     loadingState.update { Done }
+                    if (localOnly) {
+                        itemsOrder = itemsState.value?.map { it.id.value }
+                        return@launch
+                    }
                 } else {
                     loadingState.update { Loading }
                 }
@@ -141,7 +173,14 @@ internal class AllHomeUpNextViewModel(
                 val remoteItems = getUpNextUseCase.getUpNext(
                     page = 1,
                     limit = HOME_ALL_LIMIT,
-                )
+                ).filter {
+                    when (filterState.value) {
+                        MediaMode.SHOWS -> it is UpNextShow
+                        MediaMode.MOVIES -> it is UpNextMovie
+                        else -> true
+                    }
+                }.toImmutableList()
+
                 itemsState.update { remoteItems }
 
                 itemsOrder = itemsState.value?.map { it.id.value }
@@ -179,7 +218,15 @@ internal class AllHomeUpNextViewModel(
 
                 itemsState.update { items ->
                     items
-                        ?.plus(nextData)
+                        ?.plus(
+                            nextData.filter {
+                                when (filterState.value) {
+                                    MediaMode.SHOWS -> it is UpNextShow
+                                    MediaMode.MOVIES -> it is UpNextMovie
+                                    else -> true
+                                }
+                            },
+                        )
                         ?.distinctBy { it.key }
                         ?.toImmutableList()
                 }
@@ -340,6 +387,16 @@ internal class AllHomeUpNextViewModel(
         }
     }
 
+    fun setFilter(newFilter: MediaMode) {
+        if (newFilter == filterState.value || loadingState.value.isLoading) {
+            return
+        }
+        viewModelScope.launch {
+            filterState.update { newFilter }
+            loadData(localOnly = true)
+        }
+    }
+
     fun removeShow(showId: TraktId) {
         itemsState.update { items ->
             items
@@ -365,6 +422,7 @@ internal class AllHomeUpNextViewModel(
         itemsState,
         loadingState,
         loadingMoreState,
+        filterState,
         userState,
         infoState,
         errorState,
@@ -373,9 +431,10 @@ internal class AllHomeUpNextViewModel(
             items = state[0] as ImmutableList<UpNextShow>?,
             loading = state[1] as LoadingState,
             loadingMore = state[2] as LoadingState,
-            user = state[3] as User?,
-            info = state[4] as StringResource?,
-            error = state[5] as Exception?,
+            filter = state[3] as MediaMode,
+            user = state[4] as User?,
+            info = state[5] as StringResource?,
+            error = state[6] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,
