@@ -284,7 +284,10 @@ internal class DefaultCheckInManager(
         try {
             checkInRemoteDataSource.deleteAll()
             cacheMarkerProvider.invalidate()
-            checkInUpdates.notifyUpdate(source)
+
+            if (currentState != CheckInState.Idle) {
+                checkInUpdates.notifyUpdate(source)
+            }
             CheckInService.stop(context.applicationContext)
 
             loadProgressIfNeeded(currentState)

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -54,7 +55,7 @@ internal fun HomeUpNextMovieView(
                     modifier = Modifier
                         .shadow(
                             2.dp,
-                            androidx.compose.foundation.shape.RoundedCornerShape(100),
+                            RoundedCornerShape(100),
                         ),
                 )
             }

@@ -143,7 +143,9 @@ internal class HomeUpNextViewModel(
         )
             .distinctUntilChanged()
             .debounce(200)
-            .onEach { loadData(ignoreErrors = true) }
+            .onEach {
+                loadData(ignoreErrors = true)
+            }
             .launchIn(viewModelScope)
 
         upNextUpdates.observeUpdates()

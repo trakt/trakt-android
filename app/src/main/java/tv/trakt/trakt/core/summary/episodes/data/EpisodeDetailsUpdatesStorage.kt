@@ -11,7 +11,7 @@ import java.time.Instant
 internal class EpisodeDetailsUpdatesStorage : EpisodeDetailsUpdates {
     private val updatesMaps = Source.entries.associateWith {
         MutableSharedFlow<Instant?>(
-            replay = 1,
+            extraBufferCapacity = 1,
             onBufferOverflow = BufferOverflow.DROP_OLDEST,
         )
     }

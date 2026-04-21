@@ -15,7 +15,7 @@ internal class HomePersonalStorage : HomePersonalLocalDataSource {
 
     private val storage = mutableMapOf<Long, HomeActivityItem>()
     private val updatedAt = MutableSharedFlow<Instant?>(
-        replay = 1,
+        extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
 
