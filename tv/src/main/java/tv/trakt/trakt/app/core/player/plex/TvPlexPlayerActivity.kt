@@ -3,6 +3,7 @@ package tv.trakt.trakt.app.core.player.plex
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import tv.trakt.trakt.app.ui.theme.TraktTheme
@@ -66,6 +67,9 @@ class TvPlexPlayerActivity : ComponentActivity() {
             finish()
             return
         }
+
+        // Keep TV screen on while playing video
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         setContent {
             TraktTheme {
