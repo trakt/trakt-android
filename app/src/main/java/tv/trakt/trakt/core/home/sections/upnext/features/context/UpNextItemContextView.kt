@@ -48,7 +48,7 @@ internal fun UpNextItemContextView(
     viewModel: UpNextItemContextViewModel,
     modifier: Modifier = Modifier,
     onAddWatched: (UpNextItem) -> Unit,
-    onDropShow: (UpNextItem) -> Unit,
+    onDropped: (UpNextItem) -> Unit,
     onError: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -58,7 +58,7 @@ internal fun UpNextItemContextView(
     LaunchedEffect(state.loadingWatched, state.loadingDrop) {
         when {
             state.loadingWatched == Done -> onAddWatched(item)
-            state.loadingDrop == Done -> onDropShow(item)
+            state.loadingDrop == Done -> onDropped(item)
         }
     }
 

@@ -17,6 +17,8 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.core.home.sections.upnext.features.context.UpNextItemContextView
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextItem
+import tv.trakt.trakt.core.home.sections.upnext.model.UpNextMovie
+import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
@@ -58,8 +60,8 @@ internal fun UpNextItemContextSheet(
                             }
                     }
                 },
-                onDropShow = {
-                    onDropped(it)
+                onDropped = { item ->
+                    onDropped(item)
                     sheetScope.run {
                         launch { state.hide() }
                             .invokeOnCompletion {
@@ -69,7 +71,14 @@ internal fun UpNextItemContextSheet(
                             }
                         launch {
                             val job = sheetScope.launch {
-                                localSnack.showSnackbar(localRes.getString(R.string.text_info_show_dropped))
+                                localSnack.showSnackbar(
+                                    localRes.getString(
+                                        when (item) {
+                                            is UpNextMovie -> R.string.text_info_movie_dropped
+                                            is UpNextShow -> R.string.text_info_movie_dropped
+                                        },
+                                    ),
+                                )
                             }
                             delay(SNACK_DURATION_SHORT)
                             job.cancel()

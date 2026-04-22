@@ -374,6 +374,7 @@
   <string name="list_subtitle_plex_library">Enable Trakt Plex Sync to access your Plex server media library.</string>
   <string name="warning_prompt_drop_movie">Are you sure you want to drop \"%s\"? This will remove it from your \"Continue Watching\" list.</string>
   <string name="text_cta_up_next_movies">Your movies. Your pace. Jump back in exactly where you left off. What are you currently watching?</string>
+  <string name="text_info_movie_dropped">Movie has been dropped.</string>
 
   <!-- Non Translatable -->
 
