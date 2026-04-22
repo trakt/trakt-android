@@ -16,7 +16,7 @@ class UserFavoritesApiClient(
             extended = extended,
             sort = sort ?: "rank",
             page = 1,
-            limit = 1000,
+            limit = 250,
             sortBy = null,
             sortHow = null,
         )
@@ -33,7 +33,7 @@ class UserFavoritesApiClient(
             extended = extended,
             sort = sort ?: "rank",
             page = 1,
-            limit = 1000,
+            limit = 250,
             sortBy = null,
             sortHow = null,
         )
