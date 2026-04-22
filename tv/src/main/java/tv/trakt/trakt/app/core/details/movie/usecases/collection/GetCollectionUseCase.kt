@@ -12,9 +12,12 @@ internal class GetCollectionUseCase(
     private val remoteSource: MoviesSyncRemoteDataSource,
     private val syncLocalSource: MoviesSyncLocalDataSource,
 ) {
-    suspend fun getWatchedMovie(movieId: TraktId): WatchedMovie? {
+    suspend fun getWatchedMovie(
+        movieId: TraktId,
+        force: Boolean,
+    ): WatchedMovie? {
         var localWatched = syncLocalSource.getWatched()
-        if (localWatched == null) {
+        if (localWatched == null || force) {
             val remoteWatched = remoteSource
                 .getWatched()
                 .map { (movieId, plays) ->
@@ -32,10 +35,13 @@ internal class GetCollectionUseCase(
         return localWatched[movieId]
     }
 
-    suspend fun getWatchlistMovie(movieId: TraktId): TraktId? {
+    suspend fun getWatchlistMovie(
+        movieId: TraktId,
+        force: Boolean,
+    ): TraktId? {
         var localWatchlist = syncLocalSource.getWatchlist()
 
-        if (localWatchlist == null) {
+        if (localWatchlist == null || force) {
             val remoteWatchlist = remoteSource
                 .getWatchlist(sort = "added")
                 .asyncMap { it.movie.ids.trakt.toTraktId() }

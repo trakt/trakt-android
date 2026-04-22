@@ -75,6 +75,7 @@ internal val homeModule = module {
             getShowsUseCase = get(),
             localMoviesSyncSource = get(),
             localShowsSyncSource = get(),
+            scrobbleUpdates = get(),
             appLifecycleProvider = get(),
         )
     }
@@ -95,6 +96,7 @@ internal val homeModule = module {
             getMoviesUpNextUseCase = get(),
             localShowsSyncSource = get(),
             localEpisodesSyncSource = get(),
+            scrobbleUpdates = get(),
             appLifecycleProvider = get(),
         )
     }
@@ -133,6 +135,7 @@ internal val homeModule = module {
         HomeHistoryViewModel(
             getHistoryCase = get(),
             syncHistoryCase = get(),
+            scrobbleUpdates = get(),
             appLifecycleProvider = get(),
         )
     }

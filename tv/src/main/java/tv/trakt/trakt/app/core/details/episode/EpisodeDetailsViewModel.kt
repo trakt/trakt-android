@@ -7,6 +7,7 @@ import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -97,6 +98,7 @@ internal class EpisodeDetailsViewModel(
     private val destination = savedStateHandle.toRoute<EpisodeDestination>()
 
     init {
+        observeData()
         loadData(
             showId = destination.showId.toTraktId(),
             episodeId = destination.episodeId.toTraktId(),
@@ -105,7 +107,6 @@ internal class EpisodeDetailsViewModel(
                 episode = destination.episode,
             ),
         )
-        observeData()
     }
 
     private fun loadData(
@@ -137,8 +138,11 @@ internal class EpisodeDetailsViewModel(
                     showDetailsState.update { show }
                     episodeDetailsState.update { episode }
 
-                    loadStreamings(show.ids, episode, user)
-                    loadHistory(episode.ids.trakt)
+                    viewModelScope.launch {
+                        val historyAsync = async { loadHistory(episode.ids.trakt) }
+                        val streamingsAsync = async { loadStreamings(show.ids, episode, user) }
+                        awaitAll(historyAsync, streamingsAsync)
+                    }
 
                     loadExternalRatings(showId, episode.seasonEpisode)
                     loadCastCrew(showId, episode.seasonEpisode)
@@ -166,11 +170,12 @@ internal class EpisodeDetailsViewModel(
                 val show = showDetailsState.value ?: return@onEach
                 val episode = episodeDetailsState.value ?: return@onEach
                 val user = userState.value ?: return@onEach
-                loadStreamings(
-                    showIds = show.ids,
-                    episode = episode,
-                    user = user,
-                )
+
+                viewModelScope.launch {
+                    val historyAsync = async { loadHistory(episode.ids.trakt) }
+                    val streamingsAsync = async { loadStreamings(show.ids, episode, user) }
+                    awaitAll(historyAsync, streamingsAsync)
+                }
             }
             .launchIn(viewModelScope)
     }
@@ -195,64 +200,62 @@ internal class EpisodeDetailsViewModel(
         }
     }
 
-    private fun loadStreamings(
+    private suspend fun loadStreamings(
         showIds: Ids,
         episode: Episode,
         user: User?,
     ) {
-        viewModelScope.launch {
-            try {
-                if (!sessionManager.isAuthenticated() || user == null) {
-                    return@launch
-                }
-                episodeStreamingsState.update { it.copy(loading = true) }
+        try {
+            if (!sessionManager.isAuthenticated() || user == null) {
+                return
+            }
+            episodeStreamingsState.update { it.copy(loading = true) }
 
-                val plexService = getPlexUseCase.getPlexStatus(
-                    showId = showIds.trakt,
-                    episodeId = episode.ids.trakt,
-                )
-                if (plexService.isPlex) {
-                    val plexStream = plexService.plexSlug
-                        ?.let {
-                            getPlexUseCase.getPlexStreamUrl(
-                                episodeTraktId = episode.ids.trakt,
-                                showTraktId = showIds.trakt,
-                            )
-                        }
-
-                    episodeStreamingsState.update {
-                        it.copy(
-                            plex = true,
-                            plexStream = plexStream,
-                            slug = plexService.plexSlug,
-                            loading = false,
-                            info = null,
+            val plexService = getPlexUseCase.getPlexStatus(
+                showId = showIds.trakt,
+                episodeId = episode.ids.trakt,
+            )
+            if (plexService.isPlex) {
+                val plexStream = plexService.plexSlug
+                    ?.let {
+                        getPlexUseCase.getPlexStreamUrl(
+                            episodeTraktId = episode.ids.trakt,
+                            showTraktId = showIds.trakt,
                         )
                     }
-                    return@launch
-                }
-
-                val streamingService = getStreamingsUseCase.getStreamingService(
-                    user = user,
-                    showId = showIds.trakt,
-                    episode = episode,
-                )
 
                 episodeStreamingsState.update {
                     it.copy(
-                        slug = showIds.plex,
+                        plex = true,
+                        plexStream = plexStream,
+                        slug = plexService.plexSlug,
                         loading = false,
-                        service = streamingService.streamingService,
-                        noServices = streamingService.noServices,
                         info = null,
                     )
                 }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    showSnackMessage(StaticStringResource(error.toString()))
-                    Timber.e("Error loading streaming services: ${error.message}")
-                    episodeStreamingsState.update { StreamingsState() }
-                }
+                return
+            }
+
+            val streamingService = getStreamingsUseCase.getStreamingService(
+                user = user,
+                showId = showIds.trakt,
+                episode = episode,
+            )
+
+            episodeStreamingsState.update {
+                it.copy(
+                    slug = showIds.plex,
+                    loading = false,
+                    service = streamingService.streamingService,
+                    noServices = streamingService.noServices,
+                    info = null,
+                )
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                showSnackMessage(StaticStringResource(error.toString()))
+                Timber.e("Error loading streaming services: ${error.message}")
+                episodeStreamingsState.update { StreamingsState() }
             }
         }
     }
@@ -291,33 +294,32 @@ internal class EpisodeDetailsViewModel(
         }
     }
 
-    private fun loadHistory(episodeId: TraktId) {
-        viewModelScope.launch {
-            if (!sessionManager.isAuthenticated()) {
-                return@launch
+    private suspend fun loadHistory(episodeId: TraktId) {
+        if (!sessionManager.isAuthenticated()) {
+            return
+        }
+
+        try {
+            episodeHistoryState.update {
+                HistoryState(
+                    isLoading = true,
+                    episodes = it.episodes,
+                )
             }
-            try {
-                episodeHistoryState.update {
-                    HistoryState(
-                        isLoading = true,
-                        episodes = it.episodes,
-                    )
-                }
 
-                val episodes = getHistoryUseCase.getEpisodeHistory(episodeId, null)
+            val episodes = getHistoryUseCase.getEpisodeHistory(episodeId, null)
 
-                episodeHistoryState.update {
-                    HistoryState(
-                        isLoading = false,
-                        episodes = episodes,
-                    )
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    showSnackMessage(StaticStringResource(error.toString()))
-                    episodeHistoryState.update { HistoryState() }
-                    Timber.e("Error loading history: ${error.message}")
-                }
+            episodeHistoryState.update {
+                HistoryState(
+                    isLoading = false,
+                    episodes = episodes,
+                )
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                showSnackMessage(StaticStringResource(error.toString()))
+                episodeHistoryState.update { HistoryState() }
+                Timber.e("Error loading history: ${error.message}")
             }
         }
     }

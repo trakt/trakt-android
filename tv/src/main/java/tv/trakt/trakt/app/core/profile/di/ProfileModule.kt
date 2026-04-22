@@ -185,6 +185,7 @@ internal val profileModule = module {
         ProfileHistoryViewModel(
             getHistoryCase = get(),
             syncHistoryCase = get(),
+            scrobbleUpdates = get(),
             appLifecycleProvider = get(),
         )
     }

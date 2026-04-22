@@ -2,12 +2,17 @@ package tv.trakt.trakt.app.core.profile.sections.history
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -17,6 +22,8 @@ import tv.trakt.trakt.app.Config.REFRESH_DATA_THRESHOLD_MINUTES
 import tv.trakt.trakt.app.core.profile.ProfileConfig.PROFILE_SECTION_LIMIT
 import tv.trakt.trakt.app.core.profile.sections.history.usecases.GetProfileHistoryUseCase
 import tv.trakt.trakt.app.core.profile.sections.history.usecases.SyncProfileHistoryUseCase
+import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates
+import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates.Source.SCROBBLE_STOP_WORKER
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
@@ -26,6 +33,7 @@ import java.time.ZonedDateTime
 internal class ProfileHistoryViewModel(
     private val getHistoryCase: GetProfileHistoryUseCase,
     private val syncHistoryCase: SyncProfileHistoryUseCase,
+    private val scrobbleUpdates: ScrobbleUpdates,
     private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = ProfileHistoryState()
@@ -35,10 +43,12 @@ internal class ProfileHistoryViewModel(
     private val errorState = MutableStateFlow(initialState.error)
 
     private var loadedAt: ZonedDateTime? = null
+    private var dataJob: Job? = null
 
     init {
         loadData()
         observeApp()
+        observeData()
     }
 
     private fun observeApp() {
@@ -53,8 +63,22 @@ internal class ProfileHistoryViewModel(
             .launchIn(viewModelScope)
     }
 
+    @OptIn(FlowPreview::class)
+    private fun observeData() {
+        merge(
+            scrobbleUpdates.observeUpdates(SCROBBLE_STOP_WORKER),
+        )
+            .distinctUntilChanged()
+            .debounce(250)
+            .onEach {
+                loadData(showLoading = false)
+            }
+            .launchIn(viewModelScope)
+    }
+
     private fun loadData(showLoading: Boolean = true) {
-        viewModelScope.launch {
+        dataJob?.cancel()
+        dataJob = viewModelScope.launch {
             try {
                 if (showLoading) {
                     loadingState.update { true }

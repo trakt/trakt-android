@@ -8,6 +8,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -112,8 +113,11 @@ internal class MovieDetailsViewModel(
                     userState.update { user }
                     movieDetailsState.update { movie }
 
-                    loadCollection(movieId)
-                    loadStreamings(it.ids, user)
+                    viewModelScope.launch {
+                        val collectionAsync = async { loadCollection(movieId, force = false) }
+                        val streamingsAsync = async { loadStreamings(it.ids, user) }
+                        awaitAll(collectionAsync, streamingsAsync)
+                    }
 
                     loadExternalRatings(movieId)
                     loadExtraVideos(movieId)
@@ -141,10 +145,11 @@ internal class MovieDetailsViewModel(
             .onEach {
                 val movie = movieDetailsState.value ?: return@onEach
                 val user = userState.value ?: return@onEach
-                loadStreamings(
-                    movieIds = movie.ids,
-                    user = user,
-                )
+                viewModelScope.launch {
+                    val collectionAsync = async { loadCollection(movie.ids.trakt, force = true) }
+                    val streamingsAsync = async { loadStreamings(movieIds = movie.ids, user = user) }
+                    awaitAll(collectionAsync, streamingsAsync)
+                }
             }
             .launchIn(viewModelScope)
     }
@@ -240,95 +245,94 @@ internal class MovieDetailsViewModel(
         }
     }
 
-    private fun loadStreamings(
+    private suspend fun loadStreamings(
         movieIds: Ids,
         user: User?,
     ) {
-        viewModelScope.launch {
-            try {
-                if (!sessionManager.isAuthenticated() || user == null) {
-                    return@launch
-                }
-                movieStreamingsState.update { it.copy(loading = true) }
+        try {
+            if (!sessionManager.isAuthenticated() || user == null) {
+                return
+            }
+            movieStreamingsState.update { it.copy(loading = true) }
 
-                val plexService = getPlexUseCase.getPlexStatus(movieIds.trakt)
-                if (plexService.isPlex) {
-                    val plexStream = plexService.plexSlug
-                        ?.let { getPlexUseCase.getPlexStreamUrl(movieIds.trakt) }
-
-                    movieStreamingsState.update {
-                        it.copy(
-                            plex = true,
-                            plexStream = plexStream,
-                            slug = plexService.plexSlug,
-                            loading = false,
-                            info = null,
-                        )
-                    }
-                    return@launch
-                }
-
-                val streamingService = getStreamingsUseCase.getStreamingService(
-                    user = user,
-                    movieId = movieIds.trakt,
-                )
+            val plexService = getPlexUseCase.getPlexStatus(movieIds.trakt)
+            if (plexService.isPlex) {
+                val plexStream = plexService.plexSlug
+                    ?.let { getPlexUseCase.getPlexStreamUrl(movieIds.trakt) }
 
                 movieStreamingsState.update {
                     it.copy(
-                        slug = movieIds.plex,
+                        plex = true,
+                        plexStream = plexStream,
+                        slug = plexService.plexSlug,
                         loading = false,
-                        service = streamingService.streamingService,
-                        noServices = streamingService.noServices,
                         info = null,
                     )
                 }
-            } catch (e: Exception) {
-                e.rethrowCancellation {
-                    showSnackMessage(StaticStringResource(e.toString()))
-                    movieStreamingsState.update { StreamingsState() }
-                    Timber.e("Error loading streaming services: ${e.message}")
-                }
+                return
+            }
+
+            val streamingService = getStreamingsUseCase.getStreamingService(
+                user = user,
+                movieId = movieIds.trakt,
+            )
+
+            movieStreamingsState.update {
+                it.copy(
+                    slug = movieIds.plex,
+                    loading = false,
+                    service = streamingService.streamingService,
+                    noServices = streamingService.noServices,
+                    info = null,
+                )
+            }
+        } catch (e: Exception) {
+            e.rethrowCancellation {
+                showSnackMessage(StaticStringResource(e.toString()))
+                movieStreamingsState.update { StreamingsState() }
+                Timber.e("Error loading streaming services: ${e.message}")
             }
         }
     }
 
-    private fun loadCollection(movieId: TraktId) {
-        viewModelScope.launch {
-            if (!sessionManager.isAuthenticated()) {
-                return@launch
+    private suspend fun loadCollection(
+        movieId: TraktId,
+        force: Boolean,
+    ) {
+        if (!sessionManager.isAuthenticated()) {
+            return
+        }
+
+        try {
+            movieCollectionState.update {
+                it.copy(
+                    isHistoryLoading = true,
+                    isWatchlistLoading = true,
+                )
             }
 
-            try {
+            coroutineScope {
+                val watchedAsync = async { getCollectionUseCase.getWatchedMovie(movieId, force) }
+                val watchlistAsync = async { getCollectionUseCase.getWatchlistMovie(movieId, force) }
+
+                val watched = watchedAsync.await()
+                val watchlist = watchlistAsync.await()
+
                 movieCollectionState.update {
                     it.copy(
-                        isHistoryLoading = true,
-                        isWatchlistLoading = true,
+                        isHistoryLoading = false,
+                        isWatchlistLoading = false,
+                        isHistory = watched != null,
+                        isWatchlist = watchlist != null,
+                        historyCount = watched?.plays ?: 0,
                     )
                 }
-
-                coroutineScope {
-                    val watchedAsync = async { getCollectionUseCase.getWatchedMovie(movieId) }
-                    val watchlistAsync = async { getCollectionUseCase.getWatchlistMovie(movieId) }
-
-                    val watched = watchedAsync.await()
-                    val watchlist = watchlistAsync.await()
-
-                    movieCollectionState.update {
-                        it.copy(
-                            isHistoryLoading = false,
-                            isWatchlistLoading = false,
-                            isHistory = watched != null,
-                            isWatchlist = watchlist != null,
-                            historyCount = watched?.plays ?: 0,
-                        )
-                    }
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    showSnackMessage(StaticStringResource(error.toString()))
-                    movieCollectionState.update { CollectionState() }
-                    Timber.e("Error loading history: ${error.message}")
-                }
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                showSnackMessage(StaticStringResource(error.toString()))
+                movieCollectionState.update { CollectionState() }
+                Timber.e("Error loading history: ${error.message}")
             }
         }
     }
