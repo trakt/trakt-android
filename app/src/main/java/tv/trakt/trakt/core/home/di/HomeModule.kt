@@ -40,6 +40,7 @@ import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextViewMo
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdatesStorage
 import tv.trakt.trakt.core.home.sections.upnext.features.context.UpNextItemContextViewModel
+import tv.trakt.trakt.core.home.sections.upnext.usecases.DropPlaybackUseCase
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.HomeWatchlistViewModel
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
@@ -97,6 +98,14 @@ internal val homeModule = module {
             localShowSource = get(),
             localMovieSource = get(),
             localEpisodeSource = get(),
+        )
+    }
+
+    factory {
+        DropPlaybackUseCase(
+            remoteMovieSyncSource = get(),
+            remoteScrobbleSource = get(),
+            cacheMarkerProvider = get(),
         )
     }
 
@@ -328,6 +337,7 @@ internal val homeModule = module {
     viewModel {
         UpNextItemContextViewModel(
             updateShowHistoryUseCase = get(),
+            dropPlaybackUseCase = get(),
             upNextLocalDataSource = get(),
             upNextUpdates = get(),
             upcomingLocalDataSource = get(),

@@ -12,7 +12,9 @@ internal interface HomeUpNextLocalDataSource {
 
     suspend fun getItems(): List<UpNextItem>
 
-    suspend fun removeItems(showIds: List<TraktId>)
+    suspend fun removeShowItems(ids: List<TraktId>)
+
+    suspend fun removeMovieItems(ids: List<TraktId>)
 
     fun notifyUpdate()
 

@@ -2,6 +2,8 @@ package tv.trakt.trakt.core.home.sections.upnext.model
 
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import java.time.Instant
@@ -11,6 +13,7 @@ import kotlin.math.ceil
 internal data class UpNextMovie(
     val movie: Movie,
     val progress: Progress,
+    override val type: MediaType = MOVIE,
     override val loading: Boolean = false,
 ) : UpNextItem {
     override val id: TraktId

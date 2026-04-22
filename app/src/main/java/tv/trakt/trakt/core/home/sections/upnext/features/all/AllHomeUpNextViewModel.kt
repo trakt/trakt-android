@@ -408,6 +408,17 @@ internal class AllHomeUpNextViewModel(
         }
     }
 
+    fun removeMovie(movieId: TraktId) {
+        itemsState.update { items ->
+            items
+                ?.filter { it.id != movieId || it !is UpNextMovie }
+                ?.toImmutableList()
+        }
+        itemsOrder = itemsState.value?.map {
+            it.id.value
+        }
+    }
+
     fun clearInfo() {
         infoState.update { null }
     }

@@ -19,11 +19,13 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
+import tv.trakt.trakt.core.home.sections.upnext.usecases.DropPlaybackUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 
 internal class UpNextItemContextViewModel(
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
+    private val dropPlaybackUseCase: DropPlaybackUseCase,
     private val upNextUpdates: UpNextUpdates,
     private val upNextLocalDataSource: HomeUpNextLocalDataSource,
     private val upcomingLocalDataSource: HomeUpcomingLocalDataSource,
@@ -43,8 +45,8 @@ internal class UpNextItemContextViewModel(
                 loadingDropState.update { Loading }
                 updateShowHistoryUseCase.dropShow(showId)
 
-                upNextLocalDataSource.removeItems(
-                    showIds = listOf(showId),
+                upNextLocalDataSource.removeShowItems(
+                    ids = listOf(showId),
                 )
 
                 upcomingLocalDataSource.removeShowItems(
@@ -55,7 +57,7 @@ internal class UpNextItemContextViewModel(
                 upNextLocalDataSource.notifyUpdate()
                 upNextUpdates.notifyUpdate()
 
-                loadUserProgress()
+                loadUserShowsProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -67,10 +69,49 @@ internal class UpNextItemContextViewModel(
         }
     }
 
-    fun loadUserProgress() {
+    fun dropMovie(movieId: TraktId) {
+        if (isLoading()) return
+        viewModelScope.launch {
+            clear()
+            try {
+                loadingDropState.update { Loading }
+                dropPlaybackUseCase.dropMoviePlayback(movieId)
+
+                upNextLocalDataSource.removeMovieItems(
+                    ids = listOf(movieId),
+                )
+
+                upNextLocalDataSource.notifyUpdate()
+                upNextUpdates.notifyUpdate()
+
+                loadUserMoviesProgress()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                loadingDropState.update { Done }
+            }
+        }
+    }
+
+    fun loadUserShowsProgress() {
         viewModelScope.launch {
             try {
                 loadUserProgressUseCase.loadShowsProgress()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    fun loadUserMoviesProgress() {
+        viewModelScope.launch {
+            try {
+                loadUserProgressUseCase.loadMoviesProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)

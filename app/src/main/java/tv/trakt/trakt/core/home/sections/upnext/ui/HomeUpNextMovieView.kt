@@ -34,7 +34,6 @@ internal fun HomeUpNextMovieView(
 ) {
     HorizontalMediaCard(
         title = "",
-        more = false,
         onClick = onClick,
         onLongClick = onLongClick,
         containerImageUrl = item.movie.images?.getFanartUrl(),

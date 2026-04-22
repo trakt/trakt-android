@@ -79,7 +79,7 @@ internal fun AllHomeUpNextScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val haptic = LocalHapticFeedback.current
 
-    var contextSheet by remember { mutableStateOf<UpNextShow?>(null) }
+    var contextSheet by remember { mutableStateOf<UpNextItem?>(null) }
     var dateSheet by remember { mutableStateOf<UpNextShow?>(null) }
 
     LaunchedEffect(state.info) {
@@ -107,7 +107,7 @@ internal fun AllHomeUpNextScreen(
             }
         },
         onLongClick = {
-            if (!it.loading && it is UpNextShow) {
+            if (!it.loading) {
                 contextSheet = it
             }
         },
@@ -131,10 +131,13 @@ internal fun AllHomeUpNextScreen(
         sheetItem = contextSheet,
         onDismiss = { contextSheet = null },
         onAddWatched = {
-            dateSheet = contextSheet
+            dateSheet = contextSheet as UpNextShow
         },
-        onDropShow = {
-            viewModel.removeShow(it.show.ids.trakt)
+        onDropped = {
+            when (it) {
+                is UpNextShow -> viewModel.removeShow(it.show.ids.trakt)
+                is UpNextMovie -> viewModel.removeMovie(it.movie.ids.trakt)
+            }
         },
     )
 
@@ -213,7 +216,6 @@ internal fun AllHomeUpNextContent(
             listState = listState,
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listFilter = state.filter,
-            loading = state.loading.isLoading,
             contentPadding = contentPadding,
             loadingMore = state.loadingMore.isLoading,
             onEndOfList = onLoadMore,
@@ -235,7 +237,6 @@ private fun ContentList(
     listItems: ImmutableList<UpNextItem>,
     listState: LazyListState,
     listFilter: MediaMode?,
-    loading: Boolean,
     contentPadding: PaddingValues,
     loadingMore: Boolean,
     onEndOfList: () -> Unit,
@@ -275,7 +276,7 @@ private fun ContentList(
             )
         }
 
-        if (listFilter != null && !loading) {
+        if (listFilter != null) {
             item {
                 ContentFilters(
                     upNextFilter = listFilter,

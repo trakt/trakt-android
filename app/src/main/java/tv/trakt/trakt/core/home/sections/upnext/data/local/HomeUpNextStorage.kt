@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextItem
 import java.time.Instant
@@ -14,7 +15,7 @@ import java.time.Instant
 internal class HomeUpNextStorage : HomeUpNextLocalDataSource {
     private val mutex = Mutex()
 
-    private val storage = mutableMapOf<TraktId, UpNextItem>()
+    private val storage = mutableMapOf<String, UpNextItem>()
     private val updatedAt = MutableSharedFlow<Instant?>(
         extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
@@ -23,7 +24,11 @@ internal class HomeUpNextStorage : HomeUpNextLocalDataSource {
     override suspend fun addItems(items: List<UpNextItem>) {
         mutex.withLock {
             with(storage) {
-                putAll(items.associateBy { it.id })
+                putAll(
+                    items.associateBy {
+                        getKey(it.id, it.type.value)
+                    },
+                )
             }
         }
     }
@@ -32,15 +37,27 @@ internal class HomeUpNextStorage : HomeUpNextLocalDataSource {
         mutex.withLock {
             with(storage) {
                 clear()
-                putAll(items.associateBy { it.id })
+                putAll(
+                    items.associateBy {
+                        getKey(it.id, it.type.value)
+                    },
+                )
             }
         }
     }
 
-    override suspend fun removeItems(showIds: List<TraktId>) {
+    override suspend fun removeShowItems(ids: List<TraktId>) {
         mutex.withLock {
-            showIds.forEach { id ->
-                storage.remove(id)
+            ids.forEach { id ->
+                storage.remove(getKey(id, MediaType.SHOW.value))
+            }
+        }
+    }
+
+    override suspend fun removeMovieItems(ids: List<TraktId>) {
+        mutex.withLock {
+            ids.forEach { id ->
+                storage.remove(getKey(id, MediaType.MOVIE.value))
             }
         }
     }
@@ -62,5 +79,12 @@ internal class HomeUpNextStorage : HomeUpNextLocalDataSource {
     override fun clear() {
         storage.clear()
         updatedAt.tryEmit(null)
+    }
+
+    private fun getKey(
+        id: TraktId,
+        type: String,
+    ): String {
+        return "$type-$id"
     }
 }

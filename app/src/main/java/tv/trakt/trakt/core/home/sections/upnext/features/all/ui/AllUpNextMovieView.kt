@@ -33,7 +33,6 @@ internal fun AllUpNextMovieView(
         title = item.movie.title,
         titleOriginal = item.movie.titleOriginal,
         subtitle = item.movie.runtime?.inWholeMinutes?.durationFormat() ?: "N/A",
-        more = false,
         contentImageUrl = item.movie.images?.getPosterUrl(),
         containerImageUrl = item.movie.images?.getFanartUrl(Images.Size.THUMB),
         onClick = onClick,

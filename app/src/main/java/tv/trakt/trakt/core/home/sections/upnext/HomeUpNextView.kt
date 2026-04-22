@@ -75,7 +75,7 @@ internal fun HomeUpNextView(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val haptic = LocalHapticFeedback.current
 
-    var contextSheet by remember { mutableStateOf<UpNextShow?>(null) }
+    var contextSheet by remember { mutableStateOf<UpNextItem?>(null) }
     var dateSheet by remember { mutableStateOf<UpNextShow?>(null) }
 
     LaunchedEffect(state.info) {
@@ -108,7 +108,7 @@ internal fun HomeUpNextView(
             }
         },
         onLongClick = {
-            if (!it.loading && it is UpNextShow) {
+            if (!it.loading) {
                 contextSheet = it
             }
         },
@@ -126,9 +126,9 @@ internal fun HomeUpNextView(
         sheetItem = contextSheet,
         onDismiss = { contextSheet = null },
         onAddWatched = {
-            dateSheet = it
+            dateSheet = it as UpNextShow
         },
-        onDropShow = {
+        onDropped = {
             viewModel.loadData(
                 resetScroll = false,
                 ignoreErrors = false,
@@ -239,7 +239,12 @@ internal fun HomeUpNextContent(
                                     Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_1).ifBlank { null }
                                 }
                                 HomeEmptyView(
-                                    text = stringResource(R.string.text_cta_up_next),
+                                    text = stringResource(
+                                        when (state.filter) {
+                                            MediaMode.MOVIES -> R.string.text_cta_up_next_movies
+                                            else -> R.string.text_cta_up_next
+                                        },
+                                    ),
                                     icon = R.drawable.ic_empty_upnext,
                                     buttonText = when (state.filter) {
                                         MediaMode.MOVIES -> stringResource(R.string.link_text_discover_movies)
