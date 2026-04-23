@@ -517,6 +517,12 @@ internal class EpisodeDetailsViewModel(
                 return@launch
             }
 
+            val episodeRating = episodeUserRatingsState.value?.rating?.rating
+            if (episodeRating == newRating) {
+                Timber.d("Rating is already $newRating, skipping update")
+                return@launch
+            }
+
             episodeUserRatingsState.update {
                 UserRatingsState(
                     rating = UserRating(

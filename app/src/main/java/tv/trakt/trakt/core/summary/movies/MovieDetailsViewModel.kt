@@ -122,7 +122,6 @@ internal class MovieDetailsViewModel(
     private val userState = MutableStateFlow(initialState.user)
 
     private var ratingJob: Job? = null
-    private var metaCollapseJob: Job? = null
 
     init {
         loadUser()
@@ -856,6 +855,12 @@ internal class MovieDetailsViewModel(
         ratingJob?.cancel()
         ratingJob = viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
+                return@launch
+            }
+
+            val currentRating = movieUserRatingsState.value?.rating?.rating
+            if (currentRating == newRating) {
+                Timber.d("Rating is already $newRating, skipping update")
                 return@launch
             }
 

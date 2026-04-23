@@ -43,6 +43,8 @@ import tv.trakt.trakt.core.checkin.model.CheckInState
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
 import tv.trakt.trakt.core.main.usecases.LoadWhatsNewUseCase
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
+import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
+import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState
 import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserListsUseCase
@@ -57,6 +59,7 @@ internal class MainViewModel(
     private val appContext: Context,
     private val sessionManager: SessionManager,
     private val checkInManager: CheckInManager,
+    private val ratePromptManager: RatePromptManager,
     private val authorizePreferences: DataStore<Preferences>,
     private val authorizeUseCase: AuthorizeUserUseCase,
     private val loadWhatsNewUseCase: LoadWhatsNewUseCase,
@@ -75,6 +78,7 @@ internal class MainViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val userVipState = MutableStateFlow(initialState.userVipStatus)
     private val checkInState = MutableStateFlow(initialState.checkIn)
+    private val ratePromptState = MutableStateFlow(initialState.ratePrompt)
     private val loadingUserState = MutableStateFlow(initialState.loadingUser)
     private val welcomeState = MutableStateFlow(initialState.welcome)
     private val whatsNewState = MutableStateFlow(initialState.whatsNew)
@@ -90,6 +94,7 @@ internal class MainViewModel(
         observeUser()
         observeAuthCode()
         observeCheckIn()
+        observeRatePrompt()
         observeInAppReview()
     }
 
@@ -125,6 +130,16 @@ internal class MainViewModel(
             .debounce(200)
             .onEach { state ->
                 checkInState.update { state }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeRatePrompt() {
+        ratePromptManager.observe()
+            .distinctUntilChanged()
+            .debounce(50)
+            .onEach { state ->
+                ratePromptState.update { state }
             }
             .launchIn(viewModelScope)
     }
@@ -217,6 +232,8 @@ internal class MainViewModel(
                         ratingsAsync,
                     )
                 }
+
+                loadRatePrompt()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
@@ -241,6 +258,18 @@ internal class MainViewModel(
                     return@launch
                 }
                 checkInManager.checkActive(appContext)
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    private fun loadRatePrompt() {
+        viewModelScope.launch {
+            try {
+                ratePromptManager.checkMovies()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
@@ -324,10 +353,6 @@ internal class MainViewModel(
         reviewState.update { null }
     }
 
-    fun clearLoadingUser() {
-        loadingUserState.update { LoadingState.Idle }
-    }
-
     private fun dismissOnboarding() {
         viewModelScope.launch {
             welcomeState.update { it.copy(onboarding = false) }
@@ -335,10 +360,31 @@ internal class MainViewModel(
         }
     }
 
+    fun clearLoadingUser() {
+        loadingUserState.update { LoadingState.Idle }
+    }
+
+    fun clearRatePrompt() {
+        ratePromptState.update { null }
+    }
+
+    fun suppressRatePrompt() {
+        viewModelScope.launch {
+            try {
+                ratePromptManager.onUserSuppress()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
     val state = combine(
         userState,
         userVipState,
         checkInState,
+        ratePromptState,
         loadingUserState,
         welcomeState,
         whatsNewState,
@@ -348,10 +394,11 @@ internal class MainViewModel(
             user = state[0] as User?,
             userVipStatus = state[1] as Pair<Boolean?, Boolean?>?,
             checkIn = state[2] as CheckInState?,
-            loadingUser = state[3] as LoadingState,
-            welcome = state[4] as MainState.WelcomeState,
-            whatsNew = state[5] as WhatsNew?,
-            review = state[6] as Boolean?,
+            ratePrompt = state[3] as RatePromptState?,
+            loadingUser = state[4] as LoadingState,
+            welcome = state[5] as MainState.WelcomeState,
+            whatsNew = state[6] as WhatsNew?,
+            review = state[7] as Boolean?,
         )
     }.stateIn(
         scope = viewModelScope,

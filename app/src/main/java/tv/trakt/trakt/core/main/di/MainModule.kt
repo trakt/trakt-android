@@ -75,6 +75,7 @@ internal val mainModule = module {
             appContext = androidApplication(),
             sessionManager = get(),
             checkInManager = get(),
+            ratePromptManager = get(),
             loadUserProgressUseCase = get(),
             loadUserWatchlistUseCase = get(),
             loadUserListsUseCase = get(),

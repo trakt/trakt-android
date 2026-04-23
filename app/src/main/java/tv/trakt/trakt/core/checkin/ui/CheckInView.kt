@@ -354,7 +354,7 @@ private fun ExpandedView(
                 contentDescription = null,
                 tint = TraktTheme.colors.textPrimary,
                 modifier = Modifier
-                    .size(20.dp)
+                    .size(21.dp)
                     .onClick(onClick = onCollapseClick),
             )
 
@@ -363,7 +363,7 @@ private fun ExpandedView(
                 contentDescription = null,
                 tint = TraktTheme.colors.textPrimary,
                 modifier = Modifier
-                    .size(20.dp)
+                    .size(21.dp)
                     .onClick(onClick = onCloseClick),
             )
         }
@@ -474,7 +474,7 @@ private fun CollapsedView(
                 contentDescription = null,
                 tint = TraktTheme.colors.textPrimary,
                 modifier = Modifier
-                    .size(20.dp)
+                    .size(21.dp)
                     .rotate(180F)
                     .onClick(onClick = onExpandClick),
             )
@@ -484,7 +484,7 @@ private fun CollapsedView(
                 contentDescription = null,
                 tint = TraktTheme.colors.textPrimary,
                 modifier = Modifier
-                    .size(20.dp)
+                    .size(21.dp)
                     .onClick(onClick = onCloseClick),
             )
         }

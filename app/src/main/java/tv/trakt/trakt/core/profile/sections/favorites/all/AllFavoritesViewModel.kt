@@ -35,6 +35,7 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.favorites.FavoritesUpdates
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.CONTEXT_SHEET
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
+import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.RATE_PROMPT
 import tv.trakt.trakt.core.favorites.model.FavoriteItem
 import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
@@ -81,6 +82,7 @@ internal class AllFavoritesViewModel(
         merge(
             favoritesUpdates.observeUpdates(DETAILS),
             favoritesUpdates.observeUpdates(CONTEXT_SHEET),
+            favoritesUpdates.observeUpdates(RATE_PROMPT),
         )
             .distinctUntilChanged()
             .debounce(200)

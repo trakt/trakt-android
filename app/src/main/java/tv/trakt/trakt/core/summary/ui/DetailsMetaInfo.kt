@@ -166,7 +166,7 @@ private fun DetailsMetaInfo(
                 )
                 DetailsMeta(
                     title = stringResource(R.string.header_network),
-                    values = listOf(network ?: "N/A"),
+                    values = listOf(network),
                     modifier = Modifier.weight(1F),
                 )
             }

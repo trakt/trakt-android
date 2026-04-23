@@ -376,6 +376,13 @@
   <string name="text_cta_up_next_movies">Your movies. Your pace. Jump back in exactly where you left off. What are you currently watching?</string>
   <string name="text_info_movie_dropped">Movie has been dropped.</string>
 
+  <string name="text_rate_prompt_title_1">How did you like it?</string>
+  <string name="text_rate_prompt_title_2">Worth the watch?</string>
+  <string name="text_rate_prompt_title_3">Your verdict?</string>
+
+  <string name="warning_prompt_stop_rate_prompt">Do you want to stop being asked to rate what you recently watched?</string>
+  <string name="button_text_stop_ask">Stop asking</string>
+
   <!-- Non Translatable -->
 
   <string name="header_whats_new" translatable="false">What\'s New</string>

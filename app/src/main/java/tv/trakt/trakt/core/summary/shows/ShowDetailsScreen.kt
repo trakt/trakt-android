@@ -27,6 +27,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -57,6 +58,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
+import tv.trakt.trakt.LocalRatePromptVisibility
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.DynamicStringResource
@@ -122,6 +124,7 @@ internal fun ShowDetailsScreen(
     val uriHandler = LocalUriHandler.current
     val haptic = LocalHapticFeedback.current
     val snack = LocalSnackbarState.current
+    val localRateVisibility = LocalRatePromptVisibility.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -135,6 +138,14 @@ internal fun ShowDetailsScreen(
     var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
     var dateSheet by remember { mutableStateOf(false) }
     var coverImageSheet by remember { mutableStateOf<Show?>(null) }
+
+    DisposableEffect(Unit) {
+        localRateVisibility.value = false
+
+        onDispose {
+            localRateVisibility.value = true
+        }
+    }
 
     ShowDetailsContent(
         state = state,
@@ -442,7 +453,7 @@ internal fun ShowDetailsContent(
     var ratingAlphaMaskActive by remember { mutableStateOf(false) }
     val ratingAlphaMask: Float by animateFloatAsState(
         targetValue = if (ratingAlphaMaskActive) 0.1F else 1F,
-        animationSpec = tween(200),
+        animationSpec = tween(150),
         label = "alpha",
     )
 
@@ -759,7 +770,7 @@ fun DetailsRating(
     ) {
         if (visible) {
             UserRatingBar(
-                rating = rating,
+                rating = rating?.rating,
                 favoriteLoading = loading,
                 favoriteVisible = true,
                 favorite = rating?.favorite == true,

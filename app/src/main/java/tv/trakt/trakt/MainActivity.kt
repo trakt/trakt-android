@@ -41,6 +41,7 @@ import tv.trakt.trakt.ui.theme.model.toTraktDarkColors
 
 internal val LocalBottomBarVisibility = compositionLocalOf { mutableStateOf(true) }
 internal val LocalCheckInVisibility = compositionLocalOf { mutableStateOf(true) }
+internal val LocalRatePromptVisibility = compositionLocalOf { mutableStateOf(true) }
 internal val LocalSnackbarState = compositionLocalOf { SnackbarHostState() }
 
 internal class MainActivity : ComponentActivity() {
@@ -74,6 +75,7 @@ internal class MainActivity : ComponentActivity() {
         setContent {
             val bottomBarVisibility = remember { mutableStateOf(true) }
             val checkInVisibility = remember { mutableStateOf(true) }
+            val ratePromptVisibility = remember { mutableStateOf(true) }
             val snackbarState = remember { SnackbarHostState() }
             val customThemeState = remember {
                 getCustomThemeConfig().also {
@@ -96,6 +98,7 @@ internal class MainActivity : ComponentActivity() {
                 CompositionLocalProvider(
                     LocalBottomBarVisibility provides bottomBarVisibility,
                     LocalCheckInVisibility provides checkInVisibility,
+                    LocalRatePromptVisibility provides ratePromptVisibility,
                     LocalSnackbarState provides snackbarState,
                 ) {
                     MainScreen(

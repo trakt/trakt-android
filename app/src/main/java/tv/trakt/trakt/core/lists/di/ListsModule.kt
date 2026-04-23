@@ -277,6 +277,7 @@ internal val listsModule = module {
             collectionStateProvider = get(),
             modeManager = get(),
             sessionManager = get(),
+            ratePromptManager = get(),
             analytics = get(),
         )
     }
@@ -366,6 +367,7 @@ internal val listsModule = module {
             loadProgressUseCase = get(),
             sessionManager = get(),
             checkInManager = get(),
+            ratePromptManager = get(),
             analytics = get(),
             watchlistUpdates = get(),
         )
@@ -401,6 +403,7 @@ internal val listsModule = module {
             watchlistUpdates = get(),
             sessionManager = get(),
             checkInManager = get(),
+            ratePromptManager = get(),
             analytics = get(),
         )
     }

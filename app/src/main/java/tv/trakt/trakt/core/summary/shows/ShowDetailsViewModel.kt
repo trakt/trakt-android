@@ -814,6 +814,12 @@ internal class ShowDetailsViewModel(
                 return@launch
             }
 
+            val currentRating = showUserRatingsState.value?.rating?.rating
+            if (currentRating == newRating) {
+                Timber.d("Rating is already $newRating, skipping update")
+                return@launch
+            }
+
             showUserRatingsState.update {
                 UserRatingsState(
                     rating = UserRating(

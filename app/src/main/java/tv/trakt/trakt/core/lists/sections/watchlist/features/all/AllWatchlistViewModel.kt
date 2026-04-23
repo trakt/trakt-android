@@ -47,6 +47,7 @@ import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
 import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
 import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
+import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
@@ -76,6 +77,7 @@ internal class AllWatchlistViewModel(
     private val movieDetailsUpdates: MovieDetailsUpdates,
     private val watchlistUpdates: WatchlistUpdates,
     private val sessionManager: SessionManager,
+    private val ratePromptManager: RatePromptManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = AllWatchlistState()
@@ -321,6 +323,7 @@ internal class AllWatchlistViewModel(
                     customDate = customDate,
                 )
                 removeItem(currentItems[itemIndex])
+
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
                     source = "all_watchlist",
@@ -362,6 +365,7 @@ internal class AllWatchlistViewModel(
         viewModelScope.launch {
             try {
                 loadUserProgressUseCase.loadMoviesProgress()
+                ratePromptManager.checkMovies()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)

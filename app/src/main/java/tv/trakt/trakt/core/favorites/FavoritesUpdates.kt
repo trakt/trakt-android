@@ -11,5 +11,6 @@ internal interface FavoritesUpdates {
     enum class Source {
         DETAILS,
         CONTEXT_SHEET,
+        RATE_PROMPT,
     }
 }

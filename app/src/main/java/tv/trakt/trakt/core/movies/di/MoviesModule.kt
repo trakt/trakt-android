@@ -180,6 +180,7 @@ internal val moviesModule = module {
             loadWatchlistUseCase = get(),
             sessionManager = get(),
             checkInManager = get(),
+            ratePromptManager = get(),
             analytics = get(),
             watchlistUpdates = get(),
         )

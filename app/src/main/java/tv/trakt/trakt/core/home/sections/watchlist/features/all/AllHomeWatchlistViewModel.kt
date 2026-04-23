@@ -57,6 +57,7 @@ import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieIte
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.ShowItem
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.user.data.local.watchlist.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
 import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
@@ -81,6 +82,7 @@ internal class AllHomeWatchlistViewModel(
     private val watchlistUpdates: WatchlistUpdates,
     private val checkInManager: CheckInManager,
     private val sessionManager: SessionManager,
+    private val ratePromptManager: RatePromptManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = AllHomeWatchlistState()
@@ -488,6 +490,7 @@ internal class AllHomeWatchlistViewModel(
         viewModelScope.launch {
             try {
                 loadUserProgressUseCase.loadMoviesProgress()
+                ratePromptManager.checkMovies()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)

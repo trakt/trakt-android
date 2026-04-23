@@ -13,6 +13,7 @@ internal const val HorizontalCheckInImageAspectRatio = 4f / 3
 internal val Size: TraktSize = TraktSize(
     titleBarHeight = 56.dp,
     navigationBarHeight = 80.dp,
+    navigationPromptHeight = 94.dp,
     navigationBarRatio = 1F,
     navigationHeaderHeight = 64.dp,
     verticalMediaCardSize = 130.dp,
@@ -49,6 +50,7 @@ internal val LargeSize: TraktSize = Size.copy(
 @Immutable
 internal data class TraktSize(
     val titleBarHeight: Dp = Dp.Unspecified,
+    val navigationPromptHeight: Dp = Dp.Unspecified,
     val navigationBarHeight: Dp = Dp.Unspecified,
     val navigationBarRatio: Float = 1F,
     val navigationHeaderHeight: Dp = Dp.Unspecified,

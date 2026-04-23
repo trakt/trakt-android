@@ -28,6 +28,7 @@ import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source.MovieContext
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
+import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
@@ -54,6 +55,7 @@ internal class ListMovieContextViewModel(
     private val watchlistUpdates: WatchlistUpdates,
     private val sessionManager: SessionManager,
     private val checkInManager: CheckInManager,
+    private val ratePromptManager: RatePromptManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ListMovieContextState()
@@ -221,6 +223,7 @@ internal class ListMovieContextViewModel(
                     ids = setOf(movie.ids.trakt),
                 )
                 watchlistUpdates.notifyUpdate(Source.Default)
+                ratePromptManager.checkMovies()
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",

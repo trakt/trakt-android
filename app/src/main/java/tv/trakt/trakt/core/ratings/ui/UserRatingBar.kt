@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,12 +44,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
+import tv.trakt.trakt.common.core.tutorials.StubTutorialsManager
 import tv.trakt.trakt.common.core.tutorials.TutorialsManager
-import tv.trakt.trakt.common.core.tutorials.model.TutorialKey.RATING_BAR_SWIPE
+import tv.trakt.trakt.common.core.tutorials.model.TutorialKey
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.model.MediaType
-import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.resources.R
@@ -58,11 +58,13 @@ import kotlin.math.abs
 @Composable
 internal fun UserRatingBar(
     modifier: Modifier = Modifier,
-    rating: UserRating? = null,
+    rating: Int? = null,
     favorite: Boolean = false,
     favoriteVisible: Boolean = true,
     favoriteLoading: Boolean = false,
     size: Dp = 23.dp,
+    spacing: Dp = 8.dp,
+    textSpacing: Dp = 44.dp,
     onRatingDrag: (Boolean) -> Unit = {},
     onRatingClick: (Int) -> Unit = {},
     onRatingRemoveClick: () -> Unit = {},
@@ -70,10 +72,13 @@ internal fun UserRatingBar(
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalResources.current
-    val tutorials = koinInject<TutorialsManager>()
+    val tutorials = when {
+        LocalInspectionMode.current -> StubTutorialsManager()
+        else -> koinInject<TutorialsManager>()
+    }
 
     val stars = remember(rating) {
-        rating?.rating?.div(2f) ?: 0f
+        rating?.div(2f) ?: 0f
     }
 
     var isDragging by remember { mutableStateOf(false) }
@@ -108,12 +113,12 @@ internal fun UserRatingBar(
     var ratingAlphaMaskActive by remember { mutableStateOf(false) }
     val ratingAlphaMask: Float by animateFloatAsState(
         targetValue = if (ratingAlphaMaskActive) 0.05F else 1F,
-        animationSpec = tween(200),
+        animationSpec = tween(150),
         label = "alpha",
     )
 
     LaunchedEffect(Unit) {
-        tutorialDone = tutorials.get(RATING_BAR_SWIPE)
+        tutorialDone = tutorials.get(TutorialKey.RATING_BAR_SWIPE)
     }
 
     Box(
@@ -127,6 +132,7 @@ internal fun UserRatingBar(
                 val slugText = UserRating.getSlug(dragStars, context)
                 "$numText • $slugText"
             }
+
             Text(
                 text = ratingText,
                 textAlign = TextAlign.Center,
@@ -140,7 +146,7 @@ internal fun UserRatingBar(
                         if (favoriteVisible) {
                             translationX = -16.dp.toPx()
                         }
-                        translationY = -44.dp.toPx()
+                        translationY = -textSpacing.toPx()
                     },
             )
         }
@@ -152,7 +158,7 @@ internal fun UserRatingBar(
             Box {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = spacedBy(8.dp, CenterHorizontally),
+                    horizontalArrangement = spacedBy(spacing, CenterHorizontally),
                     modifier = Modifier
                         .pointerInput(Unit) {
                             val starUnit = starSizePx + spacingPx
@@ -262,7 +268,7 @@ internal fun UserRatingBar(
                                 if (!tutorialDone) {
                                     tutorialDone = true
                                     scope.launch {
-                                        tutorials.acknowledge(RATING_BAR_SWIPE)
+                                        tutorials.acknowledge(TutorialKey.RATING_BAR_SWIPE)
                                     }
                                 }
 
@@ -423,11 +429,7 @@ private fun Preview() {
 private fun Preview2() {
     TraktTheme {
         UserRatingBar(
-            rating = UserRating(
-                mediaId = TraktId(1),
-                mediaType = MediaType.MOVIE,
-                rating = 7,
-            ),
+            rating = 7,
         )
     }
 }
@@ -439,11 +441,7 @@ private fun Preview3() {
         UserRatingBar(
             favoriteVisible = true,
             favoriteLoading = true,
-            rating = UserRating(
-                mediaId = TraktId(1),
-                mediaType = MediaType.MOVIE,
-                rating = 7,
-            ),
+            rating = 7,
         )
     }
 }

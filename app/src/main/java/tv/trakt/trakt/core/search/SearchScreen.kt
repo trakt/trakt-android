@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.LocalCheckInVisibility
+import tv.trakt.trakt.LocalRatePromptVisibility
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
@@ -76,6 +77,7 @@ internal fun SearchScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val localCheckInVisibility = LocalCheckInVisibility.current
+    val localRateVisibility = LocalRatePromptVisibility.current
 
     val contentGridState = rememberLazyGridState(
         cacheWindow = LazyLayoutCacheWindow(
@@ -89,9 +91,11 @@ internal fun SearchScreen(
 
     DisposableEffect(Unit) {
         localCheckInVisibility.value = false
+        localRateVisibility.value = false
 
         onDispose {
             localCheckInVisibility.value = true
+            localRateVisibility.value = true
         }
     }
 

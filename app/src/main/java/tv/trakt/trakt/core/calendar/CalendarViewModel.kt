@@ -41,6 +41,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarItemsUseCase
+import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.CALENDAR
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
@@ -60,6 +61,7 @@ import java.time.LocalDate
 @Suppress("UNCHECKED_CAST")
 internal class CalendarViewModel(
     private val sessionManager: SessionManager,
+    private val ratePromptManager: RatePromptManager,
     private val getCalendarItemsUseCase: GetCalendarItemsUseCase,
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
@@ -286,6 +288,8 @@ internal class CalendarViewModel(
                     source = "calendar",
                     date = customDate?.analyticsStrings,
                 )
+
+                ratePromptManager.checkMovies()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

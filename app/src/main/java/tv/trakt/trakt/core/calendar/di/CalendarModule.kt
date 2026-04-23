@@ -27,6 +27,7 @@ internal val calendarModule = module {
             episodeUpdates = get(),
             movieUpdates = get(),
             sessionManager = get(),
+            ratePromptManager = get(),
             analytics = get(),
         )
     }

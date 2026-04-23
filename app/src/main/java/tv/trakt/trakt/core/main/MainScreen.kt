@@ -51,6 +51,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.compose.LifecycleEventEffect
@@ -89,11 +90,13 @@ import tv.trakt.trakt.core.main.navigation.isStartDestination
 import tv.trakt.trakt.core.main.navigation.navigateToMainDestination
 import tv.trakt.trakt.core.main.ui.checkin.MainCheckInView
 import tv.trakt.trakt.core.main.ui.menubar.TraktMenuBar
+import tv.trakt.trakt.core.main.ui.rateprompt.MainRatePromptView
 import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_EXTRAS
 import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_TRIVIA_EXTRAS
 import tv.trakt.trakt.core.notifications.model.NotificationIntentExtras
 import tv.trakt.trakt.core.profile.navigation.ProfileDestination
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
+import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState.AskSuppress
 import tv.trakt.trakt.core.search.navigation.navigateToSearch
 import tv.trakt.trakt.core.summary.episodes.navigation.navigateToEpisode
 import tv.trakt.trakt.core.summary.movies.navigation.navigateToMovie
@@ -101,6 +104,7 @@ import tv.trakt.trakt.core.trivia.navigation.navigateToTrivia
 import tv.trakt.trakt.core.welcome.WelcomeScreen
 import tv.trakt.trakt.core.welcome.onboarding.OnboardingScreen
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.whatsnew.WhatsNewSheet
 import tv.trakt.trakt.ui.snackbar.MainSnackbarHost
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -129,6 +133,7 @@ internal fun MainScreen(
 
     val searchState = rememberSearchState(currentDestination.value?.destination)
     var whatsNewState by remember { mutableStateOf<WhatsNew?>(null) }
+    var stopRatePromptSheet by remember { mutableStateOf(false) }
 
     val customThemeConfig = remember {
         (localActivity as? MainActivity)?.customThemeConfig
@@ -216,6 +221,13 @@ internal fun MainScreen(
         }
     }
 
+    LaunchedEffect(state.ratePrompt) {
+        if (state.ratePrompt is AskSuppress) {
+            stopRatePromptSheet = true
+            viewModel.clearRatePrompt()
+        }
+    }
+
     WhatsNewSheet(
         data = whatsNewState,
         onDismiss = {
@@ -223,6 +235,19 @@ internal fun MainScreen(
                 viewModel.dismissWhatsNew(id)
                 whatsNewState = null
             }
+        },
+    )
+
+    RemoveConfirmationSheet(
+        active = stopRatePromptSheet,
+        title = stringResource(R.string.button_text_stop_ask),
+        message = stringResource(R.string.warning_prompt_stop_rate_prompt),
+        onYes = {
+            stopRatePromptSheet = false
+            viewModel.suppressRatePrompt()
+        },
+        onNo = {
+            stopRatePromptSheet = false
         },
     )
 
@@ -284,6 +309,15 @@ internal fun MainScreen(
                                 .fillMaxWidth(TraktTheme.size.navigationBarRatio)
                                 .background(bottomGradient),
                         ) {
+                            MainRatePromptView(
+                                state = state,
+                                onMediaClick = {
+                                    navController.navigateToMovie(
+                                        movieId = it.movie.ids.trakt,
+                                    )
+                                },
+                            )
+
                             MainCheckInView(
                                 state = state,
                                 onMediaClick = {
@@ -359,6 +393,8 @@ internal fun MainScreen(
 
                     MainSnackbarHost(
                         snackbarHostState = localSnackbar,
+                        checkInVisible = state.checkIn?.isActive() == true,
+                        ratePromptVisible = state.ratePrompt?.isActive() == true,
                     )
                 }
             }
