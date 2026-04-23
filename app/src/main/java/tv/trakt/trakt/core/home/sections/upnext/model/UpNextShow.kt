@@ -26,8 +26,8 @@ internal data class UpNextShow(
     override val key: String
         get() = "up_next_show-${show.ids.trakt.value}-${id.value}"
 
-    override val sortKey: Instant
-        get() = progress.lastWatchedAt?.toInstant() ?: Instant.MAX
+    override val sortKey: String
+        get() = "${(progress.lastWatchedAt?.toInstant() ?: Instant.MAX)}-${show.title}"
 }
 
 @Immutable

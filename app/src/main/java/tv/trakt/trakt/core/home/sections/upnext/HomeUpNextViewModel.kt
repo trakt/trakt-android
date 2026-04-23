@@ -183,15 +183,13 @@ internal class HomeUpNextViewModel(
             try {
                 val localItems = getUpNextUseCase.getLocalUpNext(
                     limit = HOME_SECTION_LIMIT,
-                )
-                    .filter {
-                        when (modeState.value) {
-                            SHOWS -> it is UpNextShow
-                            MOVIES -> it is UpNextMovie
-                            else -> true
-                        }
+                ).filter {
+                    when (modeState.value) {
+                        SHOWS -> it is UpNextShow
+                        MOVIES -> it is UpNextMovie
+                        else -> true
                     }
-                    .toImmutableList()
+                }.toImmutableList()
 
                 if (localItems.isNotEmpty()) {
                     itemsState.update {

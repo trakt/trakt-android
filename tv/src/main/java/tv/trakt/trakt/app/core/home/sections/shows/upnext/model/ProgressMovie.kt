@@ -18,8 +18,8 @@ internal data class ProgressMovie(
     override val key: String
         get() = "${movie.ids.trakt.value}-movie"
 
-    override val sortKey: Instant
-        get() = progress.pausedAt
+    override val sortKey: String
+        get() = "${progress.pausedAt}-${movie.title}"
 
     val remainingTimeText: String?
         get() {

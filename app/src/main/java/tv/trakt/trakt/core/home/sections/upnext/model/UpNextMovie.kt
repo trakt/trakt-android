@@ -25,8 +25,8 @@ internal data class UpNextMovie(
     override val key: String
         get() = "up_next_movie-${movie.ids.trakt.value}"
 
-    override val sortKey: Instant
-        get() = progress.pausedAt
+    override val sortKey: String
+        get() = "${progress.pausedAt}-${movie.title}"
 
     val remainingTimeText: String?
         get() {
