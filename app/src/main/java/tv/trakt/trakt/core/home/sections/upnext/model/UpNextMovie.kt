@@ -19,6 +19,9 @@ internal data class UpNextMovie(
     override val id: TraktId
         get() = movie.ids.trakt
 
+    override val mediaId: TraktId
+        get() = movie.ids.trakt
+
     override val key: String
         get() = "up_next_movie-${movie.ids.trakt.value}"
 

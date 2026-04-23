@@ -140,6 +140,7 @@ internal class AllHomeUpNextViewModel(
         ignoreErrors: Boolean = false,
         localOnly: Boolean = false,
     ) {
+        if (processingJob?.isActive == true) return
         if (!localOnly) {
             clear()
         }
@@ -163,7 +164,7 @@ internal class AllHomeUpNextViewModel(
                     itemsState.update { localItems }
                     loadingState.update { Done }
                     if (localOnly) {
-                        itemsOrder = itemsState.value?.map { it.id.value }
+                        itemsOrder = itemsState.value?.map { it.mediaId.value }
                         return@launch
                     }
                 } else {
@@ -183,7 +184,7 @@ internal class AllHomeUpNextViewModel(
 
                 itemsState.update { remoteItems }
 
-                itemsOrder = itemsState.value?.map { it.id.value }
+                itemsOrder = itemsState.value?.map { it.mediaId.value }
                 hasMoreData = remoteItems.size >= HOME_ALL_LIMIT
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -232,7 +233,7 @@ internal class AllHomeUpNextViewModel(
                 }
 
                 pages += 1
-                itemsOrder = itemsState.value?.map { it.id.value }
+                itemsOrder = itemsState.value?.map { it.mediaId.value }
                 hasMoreData = nextData.size >= HOME_ALL_LIMIT
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -297,7 +298,7 @@ internal class AllHomeUpNextViewModel(
                     )
                     itemsOrder?.let { order ->
                         items
-                            .sortedBy { order.indexOf(it.id.value) }
+                            .sortedBy { order.indexOf(it.mediaId.value) }
                             .toImmutableList()
                     } ?: items
                 }
@@ -306,7 +307,7 @@ internal class AllHomeUpNextViewModel(
                 loadUserProgress()
 
                 infoState.update { DynamicStringResource(R.string.text_info_history_added) }
-                itemsOrder = itemsState.value?.map { it.id.value }
+                itemsOrder = itemsState.value?.map { it.mediaId.value }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -358,12 +359,12 @@ internal class AllHomeUpNextViewModel(
                     )
                     itemsOrder?.let { order ->
                         items
-                            .sortedBy { order.indexOf(it.id.value) }
+                            .sortedBy { order.indexOf(it.mediaId.value) }
                             .toImmutableList()
                     } ?: items
                 }
 
-                itemsOrder = itemsState.value?.map { it.id.value }
+                itemsOrder = itemsState.value?.map { it.mediaId.value }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -400,22 +401,22 @@ internal class AllHomeUpNextViewModel(
     fun removeShow(showId: TraktId) {
         itemsState.update { items ->
             items
-                ?.filter { it.id != showId || it !is UpNextShow }
+                ?.filter { it.mediaId != showId || it !is UpNextShow }
                 ?.toImmutableList()
         }
         itemsOrder = itemsState.value?.map {
-            it.id.value
+            it.mediaId.value
         }
     }
 
     fun removeMovie(movieId: TraktId) {
         itemsState.update { items ->
             items
-                ?.filter { it.id != movieId || it !is UpNextMovie }
+                ?.filter { it.mediaId != movieId || it !is UpNextMovie }
                 ?.toImmutableList()
         }
         itemsOrder = itemsState.value?.map {
-            it.id.value
+            it.mediaId.value
         }
     }
 

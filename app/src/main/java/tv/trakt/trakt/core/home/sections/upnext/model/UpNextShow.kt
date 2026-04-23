@@ -20,6 +20,9 @@ internal data class UpNextShow(
     override val id: TraktId
         get() = progress.nextEpisode.ids.trakt
 
+    override val mediaId: TraktId
+        get() = show.ids.trakt
+
     override val key: String
         get() = "up_next_show-${show.ids.trakt.value}-${id.value}"
 

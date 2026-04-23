@@ -33,6 +33,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -49,6 +50,8 @@ import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
+import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.CALENDAR
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.HOME
@@ -95,7 +98,7 @@ internal class HomeUpNextViewModel(
     private val errorState = MutableStateFlow(initialState.error)
 
     private var user: User? = null
-    private var itemsOrder: List<Int>? = null
+    private var itemsOrder: List<String>? = null
     private var dataJob: Job? = null
     private var processingJob: Job? = null
     private var collapseJob: Job? = null
@@ -169,7 +172,9 @@ internal class HomeUpNextViewModel(
         ignoreErrors: Boolean = false,
         localOnly: Boolean = false,
     ) {
+        if (processingJob?.isActive == true) return
         if (dataJob?.isActive == true) return
+
         dataJob = viewModelScope.launch {
             if (loadEmptyIfNeeded()) {
                 return@launch
@@ -181,8 +186,8 @@ internal class HomeUpNextViewModel(
                 )
                     .filter {
                         when (modeState.value) {
-                            MediaMode.SHOWS -> it is UpNextShow
-                            MediaMode.MOVIES -> it is UpNextMovie
+                            SHOWS -> it is UpNextShow
+                            MOVIES -> it is UpNextMovie
                             else -> true
                         }
                     }
@@ -210,20 +215,18 @@ internal class HomeUpNextViewModel(
                         items = getUpNextUseCase.getUpNext(
                             page = 1,
                             limit = HOME_SECTION_LIMIT,
-                        )
-                            .filter {
-                                when (modeState.value) {
-                                    MediaMode.SHOWS -> it is UpNextShow
-                                    MediaMode.MOVIES -> it is UpNextMovie
-                                    else -> true
-                                }
+                        ).filter {
+                            when (modeState.value) {
+                                SHOWS -> it is UpNextShow
+                                MOVIES -> it is UpNextMovie
+                                else -> true
                             }
-                            .toImmutableList(),
+                        }.toImmutableList(),
                         resetScroll = resetScroll,
                     )
                 }
 
-                itemsOrder = itemsState.value.items?.map { it.id.value }
+                itemsOrder = itemsState.value.items?.map { "${it.mediaId}-${it.type}" }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     if (!ignoreErrors) {
@@ -263,7 +266,7 @@ internal class HomeUpNextViewModel(
             try {
                 val currentItems = itemsState.value.items?.toMutableList() ?: return@launch
 
-                val itemIndex = currentItems.indexOfFirst { it.id == episodeId }
+                val itemIndex = currentItems.indexOfFirst { it.type == SHOW && it.id == episodeId }
                 val itemLoading = (currentItems[itemIndex] as UpNextShow).copy(loading = true)
                 currentItems[itemIndex] = itemLoading
 
@@ -294,7 +297,7 @@ internal class HomeUpNextViewModel(
                         items = itemsOrder?.let { order ->
                             items
                                 .sortedBy {
-                                    order.indexOf(it.id.value).run {
+                                    order.indexOf("${it.mediaId}-${it.type}").run {
                                         // Items not in the list are placed at the end.
                                         if (this < 0) Int.MAX_VALUE else this
                                     }
@@ -312,7 +315,7 @@ internal class HomeUpNextViewModel(
                     DynamicStringResource(R.string.text_info_history_added)
                 }
 
-                itemsOrder = itemsState.value.items?.map { it.id.value }
+                itemsOrder = itemsState.value.items?.map { "${it.mediaId}-${it.type}" }
                 appReviewUseCase.incrementCount()
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -338,7 +341,7 @@ internal class HomeUpNextViewModel(
             try {
                 val currentItems = itemsState.value.items?.toMutableList() ?: return@launch
 
-                val itemIndex = currentItems.indexOfFirst { it.id == episodeId }
+                val itemIndex = currentItems.indexOfFirst { it.type == SHOW && it.id == episodeId }
                 val itemLoading = (currentItems[itemIndex] as UpNextShow).copy(loading = true)
                 currentItems[itemIndex] = itemLoading
 
@@ -371,7 +374,7 @@ internal class HomeUpNextViewModel(
                         items = itemsOrder?.let { order ->
                             items
                                 .sortedBy {
-                                    order.indexOf(it.id.value).run {
+                                    order.indexOf("${it.mediaId}-${it.type}").run {
                                         // Items not in the list are placed at the end.
                                         if (this < 0) Int.MAX_VALUE else this
                                     }
@@ -382,7 +385,7 @@ internal class HomeUpNextViewModel(
                     )
                 }
 
-                itemsOrder = itemsState.value.items?.map { it.id.value }
+                itemsOrder = itemsState.value.items?.map { "${it.mediaId}-${it.type}" }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -413,8 +416,8 @@ internal class HomeUpNextViewModel(
         collapseJob = viewModelScope.launch {
             val key = when (modeState.value) {
                 MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_UP_NEXT
-                MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_UP_NEXT
-                MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_UP_NEXT
+                SHOWS -> CollapsingKey.HOME_SHOWS_UP_NEXT
+                MOVIES -> CollapsingKey.HOME_MOVIES_UP_NEXT
             }
             when {
                 collapsed -> collapsingManager.collapse(key)
@@ -427,8 +430,8 @@ internal class HomeUpNextViewModel(
         return collapsingManager.isCollapsed(
             key = when (modeState.value) {
                 MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_UP_NEXT
-                MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_UP_NEXT
-                MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_UP_NEXT
+                SHOWS -> CollapsingKey.HOME_SHOWS_UP_NEXT
+                MOVIES -> CollapsingKey.HOME_MOVIES_UP_NEXT
             },
         )
     }
