@@ -67,6 +67,7 @@ import androidx.media3.ui.compose.ContentFrame
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
+import org.koin.compose.koinInject
 import timber.log.Timber
 import tv.trakt.trakt.app.core.player.plex.audio.TvPlexPlayerAudioDialog
 import tv.trakt.trakt.app.core.player.plex.controls.TvPlexPlayerControls
@@ -75,6 +76,7 @@ import tv.trakt.trakt.app.core.player.plex.subtitles.model.SubtitleSize
 import tv.trakt.trakt.app.core.scrobble.data.work.PostScrobbleStartWorker
 import tv.trakt.trakt.app.core.scrobble.data.work.PostScrobbleStopWorker
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.MediaType
@@ -95,6 +97,7 @@ internal fun TvPlexPlayerScreen(
 ) {
     val activity = LocalActivity.current
     val appContext = LocalContext.current.applicationContext
+    val analytics = koinInject<Analytics>()
 
     val player = retain {
         ExoPlayer
@@ -162,6 +165,7 @@ internal fun TvPlexPlayerScreen(
 
                 if (isPlayingNow && !scrobbleStartScheduled) {
                     scrobbleStartScheduled = true
+
                     PostScrobbleStartWorker.scheduleOneTime(
                         appContext = appContext,
                         mediaId = mediaId,
@@ -172,6 +176,8 @@ internal fun TvPlexPlayerScreen(
                             0f
                         },
                     )
+
+                    analytics.playback.logPlaybackStart(mediaType = mediaType.name)
                 }
             }
 
@@ -262,6 +268,10 @@ internal fun TvPlexPlayerScreen(
                     0f
                 },
             )
+
+            if (isError.value == null) {
+                analytics.playback.logPlaybackStop(mediaType = mediaType.name)
+            }
         }
     }
 
