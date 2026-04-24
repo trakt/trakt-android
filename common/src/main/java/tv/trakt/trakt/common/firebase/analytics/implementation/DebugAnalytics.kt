@@ -1,8 +1,7 @@
-package tv.trakt.trakt.analytics.implementation
+package tv.trakt.trakt.common.firebase.analytics.implementation
 
 import timber.log.Timber
-import tv.trakt.trakt.analytics.Analytics
-import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 
 internal class DebugAnalytics(
     override val reactions: Analytics.Reactions,
@@ -10,6 +9,7 @@ internal class DebugAnalytics(
     override val comments: Analytics.Comments,
     override val progress: Analytics.Progress,
     override val trivia: Analytics.Trivia,
+    override val playback: Analytics.Playback,
 ) : Analytics {
     override fun logScreenView(screenName: String) {
         Timber.d("logScreenView: screenName=$screenName")
@@ -23,12 +23,12 @@ internal class DebugAnalytics(
         Timber.d("logUserLogout")
     }
 
-    override fun logMediaMode(mode: MediaMode) {
-        Timber.d("logMediaMode: mode=${mode.name.lowercase()}")
+    override fun logMediaMode(mode: String) {
+        Timber.d("logMediaMode: mode=${mode.lowercase()}")
     }
 
-    override fun logMediaModeClick(mode: MediaMode) {
-        Timber.d("logMediaModeClick: mode=${mode.name.lowercase()}")
+    override fun logMediaModeClick(mode: String) {
+        Timber.d("logMediaModeClick: mode=${mode.lowercase()}")
     }
 }
 
@@ -124,5 +124,15 @@ internal class DebugAnalyticsProgress : Analytics.Progress {
 internal class DebugAnalyticsTrivia : Analytics.Trivia {
     override fun logScreenView(source: String) {
         Timber.d("logTriviaScreenView: source=$source")
+    }
+}
+
+internal class DebugAnalyticsPlayback : Analytics.Playback {
+    override fun logPlaybackStart(mediaType: String) {
+        Timber.d("logPlaybackStart: mediaType=${mediaType.lowercase()}")
+    }
+
+    override fun logPlaybackStop(mediaType: String) {
+        Timber.d("logPlaybackStop: mediaType=${mediaType.lowercase()}")
     }
 }

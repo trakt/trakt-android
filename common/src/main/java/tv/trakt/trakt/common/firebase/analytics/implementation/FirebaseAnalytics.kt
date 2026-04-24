@@ -1,13 +1,11 @@
-package tv.trakt.trakt.analytics.implementation
+package tv.trakt.trakt.common.firebase.analytics.implementation
 
 import androidx.core.os.bundleOf
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.FirebaseAnalytics.Event.LOGIN
 import com.google.firebase.analytics.FirebaseAnalytics.Event.SCREEN_VIEW
 import com.google.firebase.analytics.FirebaseAnalytics.Param
-import tv.trakt.trakt.analytics.Analytics
-import tv.trakt.trakt.core.main.model.MediaMode
-import tv.trakt.trakt.ui.components.dateselection.Now
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 
 // Android V3 events identifier
 private const val EVENT_NAME_PREFIX = "av3_"
@@ -30,6 +28,7 @@ internal class FirebaseAnalytics(
     override val comments: Analytics.Comments,
     override val progress: Analytics.Progress,
     override val trivia: Analytics.Trivia,
+    override val playback: Analytics.Playback,
 ) : Analytics {
     companion object Event {
         const val LOGOUT = "logout"
@@ -62,20 +61,20 @@ internal class FirebaseAnalytics(
         )
     }
 
-    override fun logMediaModeClick(mode: MediaMode) {
+    override fun logMediaModeClick(mode: String) {
         firebase.logEvent(
             eventName(MEDIA_MODE_CLICK),
             bundleOf(
-                PARAMETER_MEDIA_TYPE to mode.name.lowercase(),
+                PARAMETER_MEDIA_TYPE to mode.lowercase(),
             ),
         )
     }
 
-    override fun logMediaMode(mode: MediaMode) {
+    override fun logMediaMode(mode: String) {
         firebase.logEvent(
             eventName(MEDIA_MODE),
             bundleOf(
-                PARAMETER_MEDIA_TYPE to mode.name.lowercase(),
+                PARAMETER_MEDIA_TYPE to mode.lowercase(),
             ),
         )
     }
@@ -250,7 +249,7 @@ internal class FirebaseAnalyticsProgress(
             bundleOf(
                 PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
                 PARAMETER_SOURCE to source.lowercase(),
-                PARAMETER_DATE to (date ?: Now.analyticsStrings).lowercase(),
+                PARAMETER_DATE to (date ?: "now").lowercase(),
             ),
         )
     }
@@ -307,6 +306,33 @@ internal class FirebaseAnalyticsTrivia(
             eventName(TRIVIA_SCREEN),
             bundleOf(
                 PARAMETER_SOURCE to source.lowercase(),
+            ),
+        )
+    }
+}
+
+internal class FirebaseAnalyticsPlayback(
+    private val firebase: FirebaseAnalytics,
+) : Analytics.Playback {
+    companion object Event {
+        const val PLEX_PLAY_START = "plex_play_start"
+        const val PLEX_PLAY_STOP = "plex_play_stop"
+    }
+
+    override fun logPlaybackStart(mediaType: String) {
+        firebase.logEvent(
+            eventName(PLEX_PLAY_START),
+            bundleOf(
+                PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
+            ),
+        )
+    }
+
+    override fun logPlaybackStop(mediaType: String) {
+        firebase.logEvent(
+            eventName(PLEX_PLAY_STOP),
+            bundleOf(
+                PARAMETER_MEDIA_TYPE to mediaType.lowercase(),
             ),
         )
     }

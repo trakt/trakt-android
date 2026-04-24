@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import tv.trakt.trakt.analytics.Analytics
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.core.home.HomeState.UserState
 import tv.trakt.trakt.core.main.helpers.MediaModeManager
@@ -34,7 +34,7 @@ internal class HomeViewModel(
         observeMode()
 
         analytics.logScreenView(screenName = "home")
-        analytics.logMediaMode(mode = initialMode)
+        analytics.logMediaMode(mode = initialMode.name)
     }
 
     private fun observeUser() {

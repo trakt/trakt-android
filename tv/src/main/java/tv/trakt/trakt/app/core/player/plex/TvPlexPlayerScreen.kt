@@ -47,6 +47,7 @@ import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -93,7 +94,7 @@ internal fun TvPlexPlayerScreen(
     mediaType: MediaType,
 ) {
     val activity = LocalActivity.current
-    val appContext = activity!!.applicationContext
+    val appContext = LocalContext.current.applicationContext
 
     val player = retain {
         ExoPlayer

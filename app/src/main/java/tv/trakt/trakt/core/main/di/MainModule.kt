@@ -8,8 +8,6 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import com.google.firebase.Firebase
-import com.google.firebase.analytics.analytics
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -17,20 +15,6 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import tv.trakt.trakt.BuildConfig
-import tv.trakt.trakt.analytics.Analytics
-import tv.trakt.trakt.analytics.implementation.DebugAnalytics
-import tv.trakt.trakt.analytics.implementation.DebugAnalyticsComments
-import tv.trakt.trakt.analytics.implementation.DebugAnalyticsProgress
-import tv.trakt.trakt.analytics.implementation.DebugAnalyticsRatings
-import tv.trakt.trakt.analytics.implementation.DebugAnalyticsReactions
-import tv.trakt.trakt.analytics.implementation.DebugAnalyticsTrivia
-import tv.trakt.trakt.analytics.implementation.FirebaseAnalytics
-import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsComments
-import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsProgress
-import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsRatings
-import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsReactions
-import tv.trakt.trakt.analytics.implementation.FirebaseAnalyticsTrivia
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.DefaultAppLifecycleProvider
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
@@ -80,38 +64,6 @@ internal val mainModule = module {
         DefaultCollapsingManager(
             dataStore = get(named(COLLAPSING_PREFERENCES)),
         )
-    }
-
-    single<Analytics> {
-        if (BuildConfig.DEBUG) {
-            DebugAnalytics(
-                reactions = DebugAnalyticsReactions(),
-                ratings = DebugAnalyticsRatings(),
-                comments = DebugAnalyticsComments(),
-                progress = DebugAnalyticsProgress(),
-                trivia = DebugAnalyticsTrivia(),
-            )
-        } else {
-            val firebase = Firebase.analytics
-            FirebaseAnalytics(
-                firebase = firebase,
-                reactions = FirebaseAnalyticsReactions(
-                    firebase = firebase,
-                ),
-                ratings = FirebaseAnalyticsRatings(
-                    firebase = firebase,
-                ),
-                comments = FirebaseAnalyticsComments(
-                    firebase = firebase,
-                ),
-                progress = FirebaseAnalyticsProgress(
-                    firebase = firebase,
-                ),
-                trivia = FirebaseAnalyticsTrivia(
-                    firebase = firebase,
-                ),
-            )
-        }
     }
 
     single<AppLifecycleProvider> {
