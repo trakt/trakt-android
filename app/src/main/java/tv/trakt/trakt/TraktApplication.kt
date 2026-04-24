@@ -74,6 +74,7 @@ import tv.trakt.trakt.core.summary.shows.di.showDetailsModule
 import tv.trakt.trakt.core.sync.di.syncModule
 import tv.trakt.trakt.core.trivia.di.triviaModule
 import java.util.concurrent.TimeUnit.MINUTES
+import tv.trakt.trakt.common.R as RCommon
 
 internal class TraktApplication : Application() {
     private val appLifecycleProvider by lazy {
@@ -102,12 +103,12 @@ internal class TraktApplication : Application() {
 
     fun setupFirebaseConfig() {
         with(Firebase.remoteConfig) {
-            setDefaultsAsync(R.xml.remote_config_defaults)
+            setDefaultsAsync(RCommon.xml.remote_config_defaults)
             setConfigSettingsAsync(
                 remoteConfigSettings {
                     minimumFetchIntervalInSeconds = when {
                         BuildConfig.DEBUG -> 0
-                        else -> MINUTES.toSeconds(10)
+                        else -> MINUTES.toSeconds(5)
                     }
                 },
             )
