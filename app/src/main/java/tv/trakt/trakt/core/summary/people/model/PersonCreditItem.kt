@@ -24,6 +24,7 @@ internal sealed class PersonCreditItem(
     @Immutable
     internal data class ShowItem(
         val show: Show,
+        val episodesCount: Int,
         override val credit: String?,
     ) : PersonCreditItem(credit)
 

@@ -148,9 +148,9 @@ internal fun ShowsCreditsList(
                                         onLongClick = { onLongClick?.invoke(item.show) },
                                         chipSpacing = 10.dp,
                                         chipContent = { modifier ->
-                                            val airedEpisodes = stringResource(
+                                            val episodesCount = stringResource(
                                                 R.string.tag_text_number_of_episodes,
-                                                item.show.airedEpisodes,
+                                                item.episodesCount,
                                             )
 
                                             val footerText = remember {
@@ -159,9 +159,9 @@ internal fun ShowsCreditsList(
                                                         append(it.year.toString())
                                                     } ?: append("TBA")
 
-                                                    if (item.show.airedEpisodes > 0) {
+                                                    if (item.episodesCount > 0) {
                                                         append(" • ")
-                                                        append(airedEpisodes)
+                                                        append(episodesCount)
                                                     }
                                                 }
                                             }

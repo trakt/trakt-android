@@ -32,6 +32,7 @@ internal class GetPersonCreditsUseCase(
                 val show = PersonCreditItem.ShowItem(
                     show = Show.fromDto(it.show),
                     credit = it.character,
+                    episodesCount = it.episodeCount,
                 )
 
                 val isSelf = it.character.contains("self", ignoreCase = true)
@@ -70,6 +71,7 @@ internal class GetPersonCreditsUseCase(
                         PersonCreditItem.ShowItem(
                             show = Show.fromDto(it.show),
                             credit = entry.value.firstOrNull()?.job ?: entry.key,
+                            episodesCount = entry.value.firstOrNull()?.episodeCount ?: 0,
                         )
                     }
                     .sortedByDescending { it.released }
