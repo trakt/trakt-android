@@ -1,10 +1,10 @@
 [versions]
-versionCode = "364"
-versionName = "3.7.0"
+versionCode = "365"
+versionName = "3.8.0"
 
 minSdk = "28"
-compileSdk = "36"
-targetSdk = "36"
+compileSdk = "37"
+targetSdk = "37"
 
 # Libraries
 
@@ -32,7 +32,7 @@ kotlinxSerialization = "1.11.0"
 ktor = "3.4.3"
 material = "1.13.0"
 material3 = "1.5.0-alpha18"
-material3Adaptive = "1.3.0-alpha09"
+material3Adaptive = "1.3.0-alpha10"
 openapi = "7.21.0"
 media3 = "1.10.0"
 phoenix = "3.0.0"
