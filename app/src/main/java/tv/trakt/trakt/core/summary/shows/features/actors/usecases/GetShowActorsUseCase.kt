@@ -23,6 +23,7 @@ internal class GetShowActorsUseCase(
                 CastPerson(
                     characters = person.characters,
                     person = Person.fromDto(person.person),
+                    episodesCount = person.episodeCount ?: 0,
                 )
             }
 

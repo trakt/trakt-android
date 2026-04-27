@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 data class CastPerson(
-    val characters: List<String>,
     val person: Person,
+    val characters: List<String>,
+    val episodesCount: Int = 0,
 )

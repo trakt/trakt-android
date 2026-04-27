@@ -48,6 +48,7 @@ import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
+import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -165,6 +166,14 @@ private fun ContentList(
                 imageUrl = item.person.images?.getHeadshotUrl(),
                 onClick = { onPersonClick?.invoke(item.person) },
                 more = false,
+                cardContent = {
+                    if (item.episodesCount > 0) {
+                        InfoChip(
+                            text = stringResource(R.string.tag_text_number_of_episodes, item.episodesCount),
+                            containerColor = TraktTheme.colors.chipContainerOnContent,
+                        )
+                    }
+                },
                 chipContent = {
                     Column(
                         verticalArrangement = Arrangement.Absolute.spacedBy(1.dp),
@@ -178,7 +187,7 @@ private fun ContentList(
                         )
 
                         Text(
-                            text = item.characters.firstOrNull() ?: "—",
+                            text = item.characters.firstOrNull() ?: "N/A",
                             style = TraktTheme.typography.cardSubtitle,
                             color = TraktTheme.colors.textSecondary,
                             maxLines = 1,
