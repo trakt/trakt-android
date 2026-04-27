@@ -39,8 +39,8 @@ internal fun AllUpNextShowView(
     onShowClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isPremiere = item.progress.nextEpisode.isPremiere()
-    val isFinale = item.progress.nextEpisode.isFinale()
+    val isPremiere = item.progress.nextEpisode?.isPremiere() == true
+    val isFinale = item.progress.nextEpisode?.isFinale() == true
 
     PanelMediaCard(
         title = item.show.title,
@@ -48,9 +48,9 @@ internal fun AllUpNextShowView(
             isPremiere || isFinale -> null
             else -> item.show.titleOriginal
         },
-        subtitle = item.progress.nextEpisode.seasonEpisodeString(),
+        subtitle = item.progress.nextEpisode?.seasonEpisodeString() ?: "N/A",
         contentImageUrl = item.show.images?.getPosterUrl(),
-        containerImageUrl = item.progress.nextEpisode.images?.getScreenshotUrl(Images.Size.THUMB)
+        containerImageUrl = item.progress.nextEpisode?.images?.getScreenshotUrl(Images.Size.THUMB)
             ?: item.show.images?.getFanartUrl(Images.Size.THUMB),
         onClick = onClick,
         onLongClick = onLongClick,
@@ -63,7 +63,7 @@ internal fun AllUpNextShowView(
             ) {
                 val startString = remember {
                     buildString {
-                        val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes
+                        val runtime = item.progress.nextEpisode?.runtime?.inWholeMinutes
                             ?: item.show.runtime?.inWholeMinutes
 
                         if (runtime != null) {

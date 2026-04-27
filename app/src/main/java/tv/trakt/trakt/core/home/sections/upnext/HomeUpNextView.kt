@@ -101,9 +101,13 @@ internal fun HomeUpNextView(
             }
         },
         onClick = {
-            if (it.loading) return@HomeUpNextContent
+            if (it.loading) {
+                return@HomeUpNextContent
+            }
             when (it) {
-                is UpNextShow -> onEpisodeClick(it.show.ids.trakt, it.progress.nextEpisode)
+                is UpNextShow -> it.progress.nextEpisode?.let { episode ->
+                    onEpisodeClick(it.show.ids.trakt, episode)
+                }
                 is UpNextMovie -> onMovieClick(it.movie.ids.trakt)
             }
         },
@@ -149,7 +153,7 @@ internal fun HomeUpNextView(
         },
         onCheckIn = {
             val item = dateSheet ?: return@HomeDateSelectionSheet
-            val episode = item.progress.nextEpisode
+            val episode = item.progress.nextEpisode ?: return@HomeDateSelectionSheet
             viewModel.addEpisodeCheckIn(
                 showId = item.show.ids.trakt,
                 episodeId = episode.ids.trakt,

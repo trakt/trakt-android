@@ -71,6 +71,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.core.profile.sections.favorites.ProfileFavoritesView
 import tv.trakt.trakt.core.profile.sections.history.ProfileHistoryView
 import tv.trakt.trakt.core.profile.sections.library.ProfileLibraryView
+import tv.trakt.trakt.core.profile.sections.progress.ProfileProgressView
 import tv.trakt.trakt.core.profile.sections.social.ProfileSocialView
 import tv.trakt.trakt.core.profile.sections.thismonth.ThisMonthCard
 import tv.trakt.trakt.helpers.SimpleScrollConnection
@@ -90,6 +91,7 @@ internal fun ProfileScreen(
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToHistory: () -> Unit,
     onNavigateToFavorites: () -> Unit,
+    onNavigateToProgress: () -> Unit,
     onNavigateToLibrary: () -> Unit,
     onNavigateToDiscover: () -> Unit,
     onNavigateToSettings: () -> Unit,
@@ -115,6 +117,7 @@ internal fun ProfileScreen(
         onNavigateToEpisode = onNavigateToEpisode,
         onNavigateToHistory = onNavigateToHistory,
         onNavigateToFavorites = onNavigateToFavorites,
+        onNavigateToProgress = onNavigateToProgress,
         onNavigateToLibrary = onNavigateToLibrary,
         onNavigateToShows = onNavigateToDiscover,
         onNavigateToMovies = onNavigateToDiscover,
@@ -155,6 +158,7 @@ private fun ProfileScreen(
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
     onNavigateToHistory: () -> Unit = {},
     onNavigateToFavorites: () -> Unit = {},
+    onNavigateToProgress: () -> Unit = {},
     onNavigateToLibrary: () -> Unit = {},
     onNavigateToShows: () -> Unit = {},
     onNavigateToMovies: () -> Unit = {},
@@ -304,6 +308,17 @@ private fun ProfileScreen(
                     }
 
                     item {
+                        ProfileProgressView(
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            onShowClick = onNavigateToShow,
+                            onMoreClick = onNavigateToProgress,
+                            modifier = Modifier
+                                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+                        )
+                    }
+
+                    item {
                         ProfileFavoritesView(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
@@ -311,7 +326,6 @@ private fun ProfileScreen(
                             onMovieClick = onNavigateToMovie,
                             onMoreClick = onNavigateToFavorites,
                             onShowsClick = onNavigateToShows,
-                            onMoviesClick = onNavigateToMovies,
                             modifier = Modifier
                                 .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
                         )

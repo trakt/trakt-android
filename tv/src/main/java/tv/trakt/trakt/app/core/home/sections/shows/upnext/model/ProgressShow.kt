@@ -1,10 +1,10 @@
 package tv.trakt.trakt.app.core.home.sections.shows.upnext.model
 
 import androidx.compose.runtime.Immutable
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.toTraktId
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -14,10 +14,10 @@ internal data class ProgressShow(
     val show: Show,
 ) : ProgressItem {
     override val id: TraktId
-        get() = progress.nextEpisode.ids.trakt
+        get() = progress.nextEpisode?.ids?.trakt ?: 0.toTraktId()
 
     override val key: String
-        get() = "${show.ids.trakt.value}-${progress.nextEpisode.ids.trakt}"
+        get() = "${show.ids.trakt.value}-${progress.nextEpisode?.ids?.trakt}"
 
     override val sortKey: String
         get() = "${(progress.lastWatchedAt?.toInstant() ?: Instant.MAX)}-${show.title}"
@@ -28,7 +28,7 @@ internal data class ProgressShow(
         val aired: Int,
         val completed: Int,
         val stats: Stats?,
-        val nextEpisode: Episode,
+        val nextEpisode: Episode?,
         val lastEpisode: Episode?,
     ) {
         @Immutable
@@ -47,11 +47,6 @@ internal data class ProgressShow(
             get() {
                 if (aired == 0) return 0F
                 return completed.toFloat() / aired.toFloat()
-            }
-
-        val remainingMinutesString: String?
-            get() {
-                return stats?.minutesLeft?.toLong()?.durationFormat()
             }
     }
 }

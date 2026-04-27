@@ -142,7 +142,7 @@ private fun UpNextItemContextViewContent(
 
             Text(
                 text = when (item) {
-                    is UpNextShow -> item.progress.nextEpisode.seasonEpisodeString()
+                    is UpNextShow -> item.progress.nextEpisode?.seasonEpisodeString() ?: ""
                     is UpNextMovie -> item.movie.runtime?.inWholeMinutes?.durationFormat() ?: ""
                 },
                 color = TraktTheme.colors.textSecondary,

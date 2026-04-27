@@ -95,7 +95,7 @@ internal fun AllHomeUpNextScreen(
         onLoadMore = { viewModel.loadMoreData() },
         onFilterClick = viewModel::setFilter,
         onClick = {
-            if (!it.loading && it is UpNextShow) {
+            if (!it.loading && it is UpNextShow && it.progress.nextEpisode != null) {
                 onNavigateToEpisode(
                     it.show.ids.trakt,
                     it.progress.nextEpisode,
@@ -154,7 +154,7 @@ internal fun AllHomeUpNextScreen(
         },
         onCheckIn = {
             val item = dateSheet ?: return@HomeDateSelectionSheet
-            val episode = item.progress.nextEpisode
+            val episode = item.progress.nextEpisode ?: return@HomeDateSelectionSheet
             viewModel.addEpisodeCheckIn(
                 showId = item.show.ids.trakt,
                 episodeId = episode.ids.trakt,

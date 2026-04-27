@@ -10,6 +10,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.networking.DroppedItemDto
 import tv.trakt.trakt.common.networking.SyncLibraryMediaDto
 import tv.trakt.trakt.common.networking.UserWatchingDto
 import tv.trakt.trakt.common.networking.WatchedShowDto
@@ -150,6 +151,18 @@ class UserApiClient(
             availableOn = availableOn,
             page = page,
             limit = limit,
+        )
+        return response.body()
+    }
+
+    override suspend fun getDroppedShows(
+        page: Int,
+        limit: Int,
+    ): List<DroppedItemDto> {
+        val response = usersApi.getUsersHiddenDropped(
+            page = page,
+            limit = limit,
+            extended = "full,cloud9,colors",
         )
         return response.body()
     }

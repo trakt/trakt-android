@@ -57,7 +57,7 @@ internal class GetUpNextUseCase(
 
                 localShowSource.upsertShows(shows)
                 localMovieSource.upsertMovies(movies)
-                localEpisodeSource.upsertEpisodes(episodes)
+                localEpisodeSource.upsertEpisodes(episodes.filterNotNull())
             }
     }
 
@@ -69,6 +69,8 @@ internal class GetUpNextUseCase(
             limit = limit,
             page = page,
             intent = "continue",
+            sortHow = null,
+            sortBy = null,
         )
 
         return remoteItems
@@ -89,7 +91,9 @@ internal class GetUpNextUseCase(
                         lastEpisode = item.progress.lastEpisode?.let {
                             Episode.fromDto(it)
                         },
-                        nextEpisode = Episode.fromDto(item.progress.nextEpisode),
+                        nextEpisode = item.progress.nextEpisode?.let {
+                            Episode.fromDto(it)
+                        },
                     ),
                 )
             }

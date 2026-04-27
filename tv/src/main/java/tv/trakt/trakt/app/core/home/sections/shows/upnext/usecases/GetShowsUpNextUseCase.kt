@@ -27,6 +27,8 @@ internal class GetShowsUpNextUseCase(
             limit = limit,
             page = page,
             intent = "continue",
+            sortHow = null,
+            sortBy = null,
         )
         return remoteItems
             .asyncMap { item ->
@@ -46,14 +48,18 @@ internal class GetShowsUpNextUseCase(
                         lastEpisode = item.progress.lastEpisode?.let {
                             Episode.fromDto(it)
                         },
-                        nextEpisode = Episode.fromDto(item.progress.nextEpisode),
+                        nextEpisode = item.progress.nextEpisode?.let {
+                            Episode.fromDto(it)
+                        },
                     ),
                 )
             }
             .toImmutableList()
             .also {
                 val shows = it.asyncMap { item -> item.show }
-                val episodes = it.asyncMap { item -> item.progress.nextEpisode }
+                val episodes = it
+                    .asyncMap { item -> item.progress.nextEpisode }
+                    .filterNotNull()
 
                 localShowSource.upsertShows(shows)
                 localEpisodeSource.upsertEpisodes(episodes)

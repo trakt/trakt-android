@@ -7,9 +7,9 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -39,11 +39,6 @@ import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.RATE_PROMPT
 import tv.trakt.trakt.core.favorites.model.FavoriteItem
 import tv.trakt.trakt.core.lists.ListsConfig.FAVORITES_SECTION_LIMIT
-import tv.trakt.trakt.core.main.model.MediaMode
-import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
-import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
-import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
-import tv.trakt.trakt.core.profile.sections.favorites.filters.GetFavoritesFilterUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
@@ -51,7 +46,6 @@ import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 @OptIn(FlowPreview::class)
 internal class ProfileFavoritesViewModel(
     private val loadFavoritesUseCase: LoadUserFavoritesUseCase,
-    private val getFilterUseCase: GetFavoritesFilterUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val favoritesUpdates: FavoritesUpdates,
@@ -62,7 +56,6 @@ internal class ProfileFavoritesViewModel(
 
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
-    private val filterState = MutableStateFlow(initialState.filter)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -106,27 +99,18 @@ internal class ProfileFavoritesViewModel(
                     return@launch
                 }
 
-                val filter = loadFilter()
-                val localItems = when (filter) {
-                    MEDIA -> {
-                        val showsLoadedAsync = async { loadFavoritesUseCase.isShowsLoaded() }
-                        val moviesLoadedAsync = async { loadFavoritesUseCase.isMoviesLoaded() }
+                val localItems = coroutineScope {
+                    val showsLoadedAsync = async { loadFavoritesUseCase.isShowsLoaded() }
+                    val moviesLoadedAsync = async { loadFavoritesUseCase.isMoviesLoaded() }
 
-                        if (showsLoadedAsync.await() && moviesLoadedAsync.await()) {
-                            loadFavoritesUseCase.loadLocalAll()
-                        } else {
-                            EmptyImmutableList
-                        }
+                    if (showsLoadedAsync.await() && moviesLoadedAsync.await()) {
+                        loadFavoritesUseCase
+                            .loadLocalAll()
+                            .take(FAVORITES_SECTION_LIMIT)
+                    } else {
+                        EmptyImmutableList
                     }
-
-                    SHOWS -> {
-                        loadFavoritesUseCase.loadLocalShows()
-                    }
-
-                    MOVIES -> {
-                        loadFavoritesUseCase.loadLocalMovies()
-                    }
-                }.take(FAVORITES_SECTION_LIMIT)
+                }
 
                 if (localItems.isNotEmpty()) {
                     itemsState.update {
@@ -141,11 +125,7 @@ internal class ProfileFavoritesViewModel(
                 }
 
                 itemsState.update {
-                    when (filter) {
-                        MEDIA -> loadFavoritesUseCase.loadAll()
-                        SHOWS -> loadFavoritesUseCase.loadShows()
-                        MOVIES -> loadFavoritesUseCase.loadMovies()
-                    }
+                    loadFavoritesUseCase.loadAll()
                         .take(FAVORITES_SECTION_LIMIT)
                         .toImmutableList()
                 }
@@ -163,12 +143,6 @@ internal class ProfileFavoritesViewModel(
         }
     }
 
-    private suspend fun loadFilter(): MediaMode {
-        val filter = getFilterUseCase.getFilter()
-        filterState.update { filter }
-        return filter
-    }
-
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
             itemsState.update {
@@ -179,17 +153,6 @@ internal class ProfileFavoritesViewModel(
         }
 
         return false
-    }
-
-    fun setFilter(newFilter: MediaMode) {
-        if (newFilter == filterState.value || loadingState.value.isLoading) {
-            return
-        }
-        viewModelScope.launch {
-            getFilterUseCase.setFilter(newFilter)
-            loadFilter()
-            loadData()
-        }
     }
 
     fun navigateToShow(show: Show) {
@@ -234,10 +197,9 @@ internal class ProfileFavoritesViewModel(
     }
 
     @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<ProfileFavoritesState> = combine(
+    val state = combine(
         loadingState,
         itemsState,
-        filterState,
         navigateShow,
         navigateMovie,
         collapseState,
@@ -247,12 +209,11 @@ internal class ProfileFavoritesViewModel(
         ProfileFavoritesState(
             loading = states[0] as LoadingState,
             items = states[1] as ImmutableList<FavoriteItem>?,
-            filter = states[2] as MediaMode?,
-            navigateShow = states[3] as TraktId?,
-            navigateMovie = states[4] as TraktId?,
-            collapsed = states[5] as Boolean,
-            error = states[6] as Exception?,
-            user = states[7] as User?,
+            navigateShow = states[2] as TraktId?,
+            navigateMovie = states[3] as TraktId?,
+            collapsed = states[4] as Boolean,
+            error = states[5] as Exception?,
+            user = states[6] as User?,
         )
     }.stateIn(
         scope = viewModelScope,

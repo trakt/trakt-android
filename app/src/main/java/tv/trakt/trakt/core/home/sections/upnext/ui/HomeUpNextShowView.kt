@@ -49,10 +49,10 @@ internal fun HomeUpNextShowView(
         onLongClick = onLongClick,
         containerImageUrl =
             item.show.images?.getFanartUrl()
-                ?: item.progress.nextEpisode.images?.getScreenshotUrl(),
+                ?: item.progress.nextEpisode?.images?.getScreenshotUrl(),
         cardContent = {
             Row {
-                val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes
+                val runtime = item.progress.nextEpisode?.runtime?.inWholeMinutes
                     ?: item.show.runtime?.inWholeMinutes
 
                 val remainingEpisodes = remember(item.progress.completed, item.progress.aired) {
@@ -67,19 +67,19 @@ internal fun HomeUpNextShowView(
                     verticalArrangement = Arrangement.spacedBy(3.dp),
                 ) {
                     when {
-                        item.progress.nextEpisode.isPremiere() -> PremiereChip(
+                        item.progress.nextEpisode?.isPremiere() == true -> PremiereChip(
                             contentTextStyle = TraktTheme.typography.meta.copy(
                                 fontSize = 10.sp,
                             ),
-                            modifier = Modifier.Companion
+                            modifier = Modifier
                                 .shadow(2.dp, RoundedCornerShape(100))
                                 .height(20.dp),
                         )
-                        item.progress.nextEpisode.isFinale() -> FinaleChip(
+                        item.progress.nextEpisode?.isFinale() == true -> FinaleChip(
                             contentTextStyle = TraktTheme.typography.meta.copy(
                                 fontSize = 10.sp,
                             ),
-                            modifier = Modifier.Companion
+                            modifier = Modifier
                                 .shadow(
                                     2.dp,
                                     androidx.compose.foundation.shape.RoundedCornerShape(100),
@@ -95,7 +95,7 @@ internal fun HomeUpNextShowView(
                             remainingEpisodes,
                         ),
                         progress = remainingPercent,
-                        modifier = Modifier.Companion
+                        modifier = Modifier
                             .shadow(
                                 2.dp,
                                 androidx.compose.foundation.shape.RoundedCornerShape(100),
@@ -106,13 +106,13 @@ internal fun HomeUpNextShowView(
         },
         footerContent = {
             Row(
-                verticalAlignment = Alignment.Companion.CenterVertically,
+                verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.Companion.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(1.dp),
-                    modifier = Modifier.Companion
+                    modifier = Modifier
                         .onClick(onClick = onShowClick)
                         .weight(1F, fill = false),
                 ) {
@@ -121,22 +121,22 @@ internal fun HomeUpNextShowView(
                         style = TraktTheme.typography.cardTitle,
                         color = TraktTheme.colors.textPrimary,
                         maxLines = 1,
-                        overflow = TextOverflow.Companion.Ellipsis,
+                        overflow = TextOverflow.Ellipsis,
                     )
 
                     Text(
-                        text = item.progress.nextEpisode.seasonEpisodeString(),
+                        text = item.progress.nextEpisode?.seasonEpisodeString() ?: "N/A",
                         style = TraktTheme.typography.cardSubtitle,
                         color = TraktTheme.colors.textSecondary,
                         maxLines = 1,
-                        overflow = TextOverflow.Companion.Ellipsis,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
 
                 val checkSize = 20.dp
                 Box(
-                    contentAlignment = Alignment.Companion.Center,
-                    modifier = Modifier.Companion
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
                         .padding(start = 12.dp, end = 4.dp)
                         .size(checkSize),
                 ) {
@@ -147,7 +147,7 @@ internal fun HomeUpNextShowView(
                             painter = painterResource(R.drawable.ic_check),
                             contentDescription = null,
                             tint = TraktTheme.colors.accent,
-                            modifier = Modifier.Companion
+                            modifier = Modifier
                                 .size(checkSize)
                                 .onClickCombined(
                                     onClick = onCheckClick,

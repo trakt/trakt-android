@@ -41,13 +41,11 @@ import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
 import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
 import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
-import tv.trakt.trakt.core.profile.sections.favorites.filters.GetFavoritesFilterUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserFavoritesUseCase
 
 @OptIn(FlowPreview::class)
 internal class AllFavoritesViewModel(
     private val loadFavoritesUseCase: LoadUserFavoritesUseCase,
-    private val getFilterUseCase: GetFavoritesFilterUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val favoritesUpdates: FavoritesUpdates,
@@ -120,7 +118,7 @@ internal class AllFavoritesViewModel(
                     return@launch
                 }
 
-                val filter = loadFilter()
+                val filter = filterState.value ?: MEDIA
                 val sorting = sortingState.value
 
                 val localItems = when (filter) {
@@ -159,12 +157,6 @@ internal class AllFavoritesViewModel(
         }
     }
 
-    private suspend fun loadFilter(): MediaMode {
-        val filter = getFilterUseCase.getFilter()
-        filterState.update { filter }
-        return filter
-    }
-
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
             itemsState.update {
@@ -182,8 +174,7 @@ internal class AllFavoritesViewModel(
             return
         }
         viewModelScope.launch {
-            getFilterUseCase.setFilter(newFilter)
-            loadFilter()
+            filterState.update { newFilter }
             loadData(localOnly = true)
         }
     }

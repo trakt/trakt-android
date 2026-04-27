@@ -212,26 +212,25 @@ private fun ContentShowListItem(
         title = "",
         containerImageUrl =
             item.show.images?.getFanartUrl()
-                ?: item.progress.nextEpisode.images?.getScreenshotUrl(),
+                ?: item.progress.nextEpisode?.images?.getScreenshotUrl(),
         onClick = {
-            onClick(
-                item.show,
-                item.progress.nextEpisode,
-            )
+            item.progress.nextEpisode?.let {
+                onClick(item.show, it)
+            }
         },
         cardContent = {
             Column(
                 verticalArrangement = spacedBy(3.dp),
             ) {
                 when {
-                    item.progress.nextEpisode.isPremiere() -> PremiereChip()
-                    item.progress.nextEpisode.isFinale() -> FinaleChip()
+                    item.progress.nextEpisode?.isPremiere() == true -> PremiereChip()
+                    item.progress.nextEpisode?.isFinale() == true -> FinaleChip()
                 }
 
                 Row(
                     horizontalArrangement = spacedBy(2.dp),
                 ) {
-                    val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes
+                    val runtime = item.progress.nextEpisode?.runtime?.inWholeMinutes
                     if (runtime != null) {
                         InfoChip(
                             text = runtime.durationFormat(),
@@ -267,7 +266,7 @@ private fun ContentShowListItem(
                 )
 
                 Text(
-                    text = item.progress.nextEpisode.seasonEpisodeString(),
+                    text = item.progress.nextEpisode?.seasonEpisodeString() ?: "N/A",
                     style = TraktTheme.typography.cardSubtitle,
                     color = TraktTheme.colors.textSecondary,
                     maxLines = 1,

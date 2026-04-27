@@ -117,7 +117,7 @@ private fun UpNextViewAllContent(
     ) {
         BackdropImage(
             imageUrl = when (val item = focusedItem) {
-                is ProgressShow -> item.progress.nextEpisode.images?.getScreenshotUrl(FULL)
+                is ProgressShow -> item.progress.nextEpisode?.images?.getScreenshotUrl(FULL)
                 is ProgressMovie -> item.movie.images?.getFanartUrl(FULL)
                 else -> null
             },
@@ -242,34 +242,37 @@ private fun UpNextViewAllContent(
                             title = "",
                             containerImageUrl =
                                 item.show.images?.getFanartUrl()
-                                    ?: item.progress.nextEpisode.images?.getScreenshotUrl(),
+                                    ?: item.progress.nextEpisode?.images?.getScreenshotUrl(),
                             onClick = {
-                                onShowClick(
-                                    item.show,
-                                    item.progress.nextEpisode,
-                                )
+                                item.progress.nextEpisode?.let {
+                                    onShowClick(item.show, it)
+                                }
                             },
                             cardContent = {
                                 Column(
                                     verticalArrangement = spacedBy(3.dp),
                                 ) {
                                     when {
-                                        item.progress.nextEpisode.isPremiere() -> PremiereChip(
-                                            contentTextStyle = TraktTheme.typography.meta.copy(
-                                                fontSize = 10.sp,
-                                            ),
-                                        )
-                                        item.progress.nextEpisode.isFinale() -> FinaleChip(
-                                            contentTextStyle = TraktTheme.typography.meta.copy(
-                                                fontSize = 10.sp,
-                                            ),
-                                        )
+                                        item.progress.nextEpisode?.isPremiere() == true -> {
+                                            PremiereChip(
+                                                contentTextStyle = TraktTheme.typography.meta.copy(
+                                                    fontSize = 10.sp,
+                                                ),
+                                            )
+                                        }
+                                        item.progress.nextEpisode?.isFinale() == true -> {
+                                            FinaleChip(
+                                                contentTextStyle = TraktTheme.typography.meta.copy(
+                                                    fontSize = 10.sp,
+                                                ),
+                                            )
+                                        }
                                     }
 
                                     Row(
                                         horizontalArrangement = spacedBy(2.dp),
                                     ) {
-                                        val runtime = item.progress.nextEpisode.runtime?.inWholeMinutes
+                                        val runtime = item.progress.nextEpisode?.runtime?.inWholeMinutes
                                         if (runtime != null) {
                                             InfoChip(
                                                 text = runtime.durationFormat(),
@@ -308,7 +311,7 @@ private fun UpNextViewAllContent(
                                     )
 
                                     Text(
-                                        text = item.progress.nextEpisode.seasonEpisodeString(),
+                                        text = item.progress.nextEpisode?.seasonEpisodeString() ?: "N/A",
                                         style = TraktTheme.typography.cardSubtitle,
                                         color = TraktTheme.colors.textSecondary,
                                         maxLines = 1,

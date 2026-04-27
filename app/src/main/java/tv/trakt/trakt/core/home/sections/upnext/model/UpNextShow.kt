@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.toTraktId
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -18,7 +19,7 @@ internal data class UpNextShow(
     override val loading: Boolean = false,
 ) : UpNextItem {
     override val id: TraktId
-        get() = progress.nextEpisode.ids.trakt
+        get() = progress.nextEpisode?.ids?.trakt ?: 0.toTraktId()
 
     override val mediaId: TraktId
         get() = show.ids.trakt
@@ -36,7 +37,7 @@ internal data class Progress(
     val aired: Int,
     val completed: Int,
     val stats: Stats?,
-    val nextEpisode: Episode,
+    val nextEpisode: Episode?,
     val lastEpisode: Episode?,
 ) {
     @Immutable

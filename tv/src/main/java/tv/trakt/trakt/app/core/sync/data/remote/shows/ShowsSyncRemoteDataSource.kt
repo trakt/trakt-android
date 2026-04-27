@@ -12,6 +12,8 @@ internal interface ShowsSyncRemoteDataSource {
         limit: Int,
         page: Int,
         intent: String,
+        sortBy: String?,
+        sortHow: String?,
     ): List<ProgressShowDto>
 
     suspend fun getWatchlist(

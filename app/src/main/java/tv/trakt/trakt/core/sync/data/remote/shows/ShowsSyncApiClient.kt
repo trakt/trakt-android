@@ -23,11 +23,15 @@ internal class ShowsSyncApiClient(
         limit: Int,
         page: Int,
         intent: String,
+        sortBy: String?,
+        sortHow: String?,
     ): List<ProgressShowDto> {
         val response = syncApi.getSyncProgressUpNextNitro(
             page = page,
             limit = limit,
             intent = intent,
+            sortBy = sortBy,
+            sortHow = sortHow,
         )
         return response.body()
     }

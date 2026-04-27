@@ -44,10 +44,21 @@ import tv.trakt.trakt.core.profile.sections.favorites.ProfileFavoritesViewModel
 import tv.trakt.trakt.core.profile.sections.favorites.all.AllFavoritesViewModel
 import tv.trakt.trakt.core.profile.sections.favorites.context.movie.FavoriteMovieContextViewModel
 import tv.trakt.trakt.core.profile.sections.favorites.context.show.FavoriteShowContextViewModel
-import tv.trakt.trakt.core.profile.sections.favorites.filters.GetFavoritesFilterUseCase
 import tv.trakt.trakt.core.profile.sections.history.ProfileHistoryViewModel
 import tv.trakt.trakt.core.profile.sections.library.ProfileLibraryViewModel
 import tv.trakt.trakt.core.profile.sections.library.all.AllLibraryViewModel
+import tv.trakt.trakt.core.profile.sections.progress.ProfileProgressViewModel
+import tv.trakt.trakt.core.profile.sections.progress.all.AllProgressViewModel
+import tv.trakt.trakt.core.profile.sections.progress.data.local.completed.ProgressCompletedLocalDataSource
+import tv.trakt.trakt.core.profile.sections.progress.data.local.completed.ProgressCompletedStorage
+import tv.trakt.trakt.core.profile.sections.progress.data.local.dropped.ProgressDroppedLocalDataSource
+import tv.trakt.trakt.core.profile.sections.progress.data.local.dropped.ProgressDroppedStorage
+import tv.trakt.trakt.core.profile.sections.progress.data.local.watching.ProgressWatchingLocalDataSource
+import tv.trakt.trakt.core.profile.sections.progress.data.local.watching.ProgressWatchingStorage
+import tv.trakt.trakt.core.profile.sections.progress.filters.GetProgressFilterUseCase
+import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressCompleteUseCase
+import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressDroppedUseCase
+import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressWatchingUseCase
 import tv.trakt.trakt.core.profile.sections.social.ProfileSocialViewModel
 import tv.trakt.trakt.core.profile.sections.social.usecases.GetSocialFilterUseCase
 import tv.trakt.trakt.core.profile.sections.thismonth.usecases.GetThisMonthUseCase
@@ -177,6 +188,18 @@ internal val profileDataModule = module {
         UserRatingsStorage()
     }
 
+    single<ProgressCompletedLocalDataSource> {
+        ProgressCompletedStorage()
+    }
+
+    single<ProgressWatchingLocalDataSource> {
+        ProgressWatchingStorage()
+    }
+
+    single<ProgressDroppedLocalDataSource> {
+        ProgressDroppedStorage()
+    }
+
     single<DataStore<Preferences>>(named(PROFILE_PREFERENCES)) {
         createStore(
             context = androidApplication(),
@@ -193,7 +216,28 @@ internal val profileModule = module {
     }
 
     factory {
-        GetFavoritesFilterUseCase(
+        GetProgressDroppedUseCase(
+            remoteUserSource = get(),
+            localDataSource = get(),
+        )
+    }
+
+    factory {
+        GetProgressWatchingUseCase(
+            remoteShowsSyncSource = get(),
+            localDataSource = get(),
+        )
+    }
+
+    factory {
+        GetProgressCompleteUseCase(
+            remoteShowsSyncSource = get(),
+            localDataSource = get(),
+        )
+    }
+
+    factory {
+        GetProgressFilterUseCase(
             dataStore = get(named(PROFILE_PREFERENCES)),
         )
     }
@@ -272,6 +316,7 @@ internal val profileModule = module {
             localSource = get(),
         )
     }
+
     factory {
         LoadUserRatingsUseCase(
             remoteSource = get(),
@@ -310,6 +355,9 @@ internal val profileModule = module {
             localUserLibrary = get(),
             localUserReactions = get(),
             localUserRatings = get(),
+            localProfileDropped = get(),
+            localProfileWatching = get(),
+            localProfileCompleted = get(),
             appReviewUseCase = get(),
         )
     }
@@ -345,7 +393,6 @@ internal val profileModule = module {
     viewModel {
         ProfileFavoritesViewModel(
             loadFavoritesUseCase = get(),
-            getFilterUseCase = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
             favoritesUpdates = get(),
@@ -374,10 +421,34 @@ internal val profileModule = module {
     }
 
     viewModel {
+        ProfileProgressViewModel(
+            getFilterUseCase = get(),
+            getCompletedUseCase = get(),
+            getDroppedUseCase = get(),
+            getWatchingUseCase = get(),
+            localShowSource = get(),
+            collapsingManager = get(),
+            episodeUpdates = get(),
+            showUpdates = get(),
+        )
+    }
+
+    viewModel {
+        AllProgressViewModel(
+            getFilterUseCase = get(),
+            getCompletedUseCase = get(),
+            getDroppedUseCase = get(),
+            getWatchingUseCase = get(),
+            localShowSource = get(),
+            episodeUpdates = get(),
+            showUpdates = get(),
+        )
+    }
+
+    viewModel {
         AllFavoritesViewModel(
             sessionManager = get(),
             loadFavoritesUseCase = get(),
-            getFilterUseCase = get(),
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
             favoritesUpdates = get(),

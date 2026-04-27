@@ -383,6 +383,11 @@
   <string name="warning_prompt_stop_rate_prompt">Do you want to stop being asked to rate what you recently watched?</string>
   <string name="button_text_stop_ask">Stop asking</string>
 
+  <string name="list_title_progress">Progress</string>
+  <string name="button_text_in_progress">In Progress</string>
+  <string name="button_text_completed">Completed</string>
+  <string name="button_text_dropped">Dropped</string>
+
   <!-- Non Translatable -->
 
   <string name="header_whats_new" translatable="false">What\'s New</string>

@@ -36,6 +36,7 @@ import org.openapitools.client.models.GetUsersComments200ResponseInnerOneOf2Seas
 import org.openapitools.client.models.GetUsersComments200ResponseInnerOneOfComment
 import org.openapitools.client.models.GetUsersFavoritesMedia200ResponseInnerOneOf
 import org.openapitools.client.models.GetUsersFavoritesMedia200ResponseInnerOneOf1
+import org.openapitools.client.models.GetUsersHiddenGet200ResponseInner
 import org.openapitools.client.models.GetUsersHistoryAll200ResponseInner
 import org.openapitools.client.models.GetUsersHistoryAll200ResponseInnerOneOf
 import org.openapitools.client.models.GetUsersHistoryAll200ResponseInnerOneOf1
@@ -123,6 +124,7 @@ typealias SearchItemDto = GetSearchQuery200ResponseInner
 typealias SearchListDto = GetSearchQuery200ResponseInnerOneOf3List
 typealias SocialActivityItemDto = GetUsersActivities200ResponseInner
 typealias UserRatingDto = GetUsersRatingsMovies200ResponseInner
+typealias DroppedItemDto = GetUsersHiddenGet200ResponseInner
 
 // typealias CheckInMovieResponseDto = PostCheckinMovie200Response
 typealias UserWatchingDto = GetUsersWatching200Response

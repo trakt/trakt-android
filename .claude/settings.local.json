@@ -22,7 +22,8 @@
       "Read(//tmp/**)",
       "Bash(jar tf:*)",
       "Bash(xargs -I{} sh -c 'jar tf \"{}\" 2>/dev/null | grep -q \"FileStorage\" && echo \"{}\"')",
-      "Bash(cat /tmp/io/ktor/client/plugins/cache/storage/CacheStorage.kt)"
+      "Bash(cat /tmp/io/ktor/client/plugins/cache/storage/CacheStorage.kt)",
+      "Bash(find /Users/michal/Documents/Dev/Android/trakt/trakt-android-2025 -name \"TraktSectionHeader.kt\" -exec grep -n \"fun TraktSectionHeader\" {} \\\\;)"
     ]
   }
 }

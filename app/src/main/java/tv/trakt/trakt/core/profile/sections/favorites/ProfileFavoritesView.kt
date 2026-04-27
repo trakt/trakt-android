@@ -49,15 +49,10 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.favorites.model.FavoriteItem
 import tv.trakt.trakt.core.home.views.HomeEmptyView
-import tv.trakt.trakt.core.main.model.MediaMode
-import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
-import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
-import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 import tv.trakt.trakt.core.profile.sections.favorites.context.movie.FavoriteMovieContextSheet
 import tv.trakt.trakt.core.profile.sections.favorites.context.show.FavoriteShowContextSheet
 import tv.trakt.trakt.core.profile.sections.favorites.views.FavoriteItemView
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -72,7 +67,6 @@ internal fun ProfileFavoritesView(
     onMovieClick: (TraktId) -> Unit,
     onMoreClick: () -> Unit,
     onShowsClick: () -> Unit,
-    onMoviesClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -96,7 +90,6 @@ internal fun ProfileFavoritesView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onCollapse = viewModel::setCollapsed,
-        onFilterClick = viewModel::setFilter,
         onShowClick = { viewModel.navigateToShow(it) },
         onMovieClick = { viewModel.navigateToMovie(it) },
         onShowLongClick = { showContextSheet = it },
@@ -107,7 +100,6 @@ internal fun ProfileFavoritesView(
             }
         },
         onShowsClick = onShowsClick,
-        onMoviesClick = onMoviesClick,
     )
 
     FavoriteShowContextSheet(
@@ -128,18 +120,17 @@ internal fun ProfileFavoritesContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onCollapse: (collapsed: Boolean) -> Unit = {},
-    onFilterClick: (MediaMode) -> Unit = {},
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
     onShowLongClick: (Show) -> Unit = {},
     onMovieLongClick: (Movie) -> Unit = {},
     onFavoritesClick: () -> Unit = {},
     onShowsClick: () -> Unit = {},
-    onMoviesClick: () -> Unit = {},
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
 
     Column(
+        verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
         modifier = modifier
             .animateContentSize(
                 animationSpec = if (animateCollapse) spring() else snap(),
@@ -163,12 +154,6 @@ internal fun ProfileFavoritesContent(
         )
 
         if (state.collapsed != true) {
-            ContentFilters(
-                state = state,
-                headerPadding = headerPadding,
-                onFilterClick = onFilterClick,
-            )
-
             Crossfade(
                 targetState = state.loading,
                 animationSpec = tween(200),
@@ -201,16 +186,13 @@ internal fun ProfileFavoritesContent(
 
                             state.items?.isEmpty() == true -> {
                                 ContentEmptyView(
-                                    filter = state.filter,
                                     onShowsClick = onShowsClick,
-                                    onMoviesClick = onMoviesClick,
                                     modifier = Modifier.padding(contentPadding),
                                 )
                             }
 
                             else -> {
                                 ContentList(
-                                    filter = state.filter,
                                     listItems = (state.items ?: emptyList()).toImmutableList(),
                                     contentPadding = contentPadding,
                                     onShowClick = onShowClick,
@@ -225,20 +207,6 @@ internal fun ProfileFavoritesContent(
             }
         }
     }
-}
-
-@Composable
-private fun ContentFilters(
-    headerPadding: PaddingValues,
-    state: ProfileFavoritesState,
-    onFilterClick: (MediaMode) -> Unit,
-) {
-    MediaModeFilters(
-        selected = state.filter,
-        onClick = onFilterClick,
-        paddingHorizontal = headerPadding,
-        paddingVertical = PaddingValues(top = 13.dp, bottom = 15.dp),
-    )
 }
 
 @Composable
@@ -265,7 +233,6 @@ private fun ContentLoadingList(
 private fun ContentList(
     listItems: ImmutableList<FavoriteItem>,
     listState: LazyListState = rememberLazyListState(),
-    filter: MediaMode?,
     contentPadding: PaddingValues,
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
@@ -294,7 +261,7 @@ private fun ContentList(
         ) { item ->
             FavoriteItemView(
                 item = item,
-                showMediaIcon = (filter == MEDIA),
+                showMediaIcon = true,
                 onShowClick = {
                     if (item is FavoriteItem.ShowItem && !item.loading) {
                         onShowClick(item.show)
@@ -326,10 +293,8 @@ private fun ContentList(
 
 @Composable
 private fun ContentEmptyView(
-    filter: MediaMode?,
     modifier: Modifier = Modifier,
     onShowsClick: () -> Unit,
-    onMoviesClick: () -> Unit,
 ) {
     val height = 219.dp
 
@@ -342,50 +307,16 @@ private fun ContentEmptyView(
         }
     }
 
-    when (filter) {
-        MEDIA -> {
-            HomeEmptyView(
-                text = stringResource(R.string.text_cta_favorites),
-                icon = R.drawable.ic_empty_watchlist,
-                height = height,
-                buttonText = stringResource(R.string.link_text_discover_shows),
-                backgroundImageUrl = imageUrls.getOrNull(0),
-                backgroundImage = if (imageUrls.getOrNull(0) == null) R.drawable.ic_splash_background else null,
-                onClick = onShowsClick,
-                modifier = modifier,
-            )
-        }
-
-        SHOWS -> {
-            HomeEmptyView(
-                text = stringResource(R.string.text_cta_favorites_shows),
-                icon = R.drawable.ic_empty_watchlist,
-                height = height,
-                buttonText = stringResource(R.string.link_text_discover_shows),
-                backgroundImageUrl = imageUrls.getOrNull(2),
-                backgroundImage = if (imageUrls.getOrNull(2) == null) R.drawable.ic_splash_background_2 else null,
-                onClick = onShowsClick,
-                modifier = modifier,
-            )
-        }
-
-        MOVIES -> {
-            HomeEmptyView(
-                text = stringResource(R.string.text_cta_favorites_movies),
-                icon = R.drawable.ic_empty_watchlist,
-                height = height,
-                buttonText = stringResource(R.string.link_text_discover_movies),
-                backgroundImageUrl = imageUrls.getOrNull(1),
-                backgroundImage = if (imageUrls.getOrNull(1) == null) R.drawable.ic_splash_background_2 else null,
-                onClick = onMoviesClick,
-                modifier = modifier,
-            )
-        }
-
-        else -> {
-            Unit
-        }
-    }
+    HomeEmptyView(
+        text = stringResource(R.string.text_cta_favorites),
+        icon = R.drawable.ic_empty_watchlist,
+        height = height,
+        buttonText = stringResource(R.string.link_text_discover_shows),
+        backgroundImageUrl = imageUrls.getOrNull(0),
+        backgroundImage = if (imageUrls.getOrNull(0) == null) R.drawable.ic_splash_background else null,
+        onClick = onShowsClick,
+        modifier = modifier,
+    )
 }
 
 // Previews

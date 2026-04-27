@@ -3,6 +3,7 @@ package tv.trakt.trakt.common.core.user.data.remote
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.networking.DroppedItemDto
 import tv.trakt.trakt.common.networking.SyncLibraryMediaDto
 import tv.trakt.trakt.common.networking.UserWatchingDto
 import tv.trakt.trakt.common.networking.WatchedShowDto
@@ -20,6 +21,11 @@ interface UserRemoteDataSource {
         page: Int,
         limit: Int,
     ): List<SyncLibraryMediaDto>
+
+    suspend fun getDroppedShows(
+        page: Int,
+        limit: Int,
+    ): List<DroppedItemDto>
 
     // Profile & Settings
 
