@@ -108,7 +108,7 @@ internal fun ProfileProgressContent(
             },
             modifier = Modifier
                 .padding(headerPadding)
-                .onClick(enabled = state.loading == Done) {
+                .onClick(enabled = state.loading == Done && !state.items.isNullOrEmpty()) {
                     onProgressClick()
                 },
         )
