@@ -25,7 +25,6 @@ import org.openapitools.client.models.GetSearchQuery200ResponseInnerOneOf2Person
 import org.openapitools.client.models.GetSearchQuery200ResponseInnerOneOf3List
 import org.openapitools.client.models.GetSearchTrending200ResponseInner
 import org.openapitools.client.models.GetShowsEpisodeStats200Response
-import org.openapitools.client.models.GetShowsStats200Response
 import org.openapitools.client.models.GetSyncCollectionMedia200ResponseInner
 import org.openapitools.client.models.GetSyncProgressEpisodesResponse
 import org.openapitools.client.models.GetSyncProgressMovies200ResponseInner
@@ -65,7 +64,7 @@ import org.openapitools.client.models.PostSyncHistoryAdd200Response
 typealias ShowDto = GetCalendarsShows200ResponseInnerShow
 typealias ShowIdsDto = GetCalendarsShows200ResponseInnerShowIds
 typealias ShowLikesDto = GetUsersLikesComments200ResponseInnerAllOfOneOf1Show
-typealias ShowStatsDto = GetShowsStats200Response
+typealias ShowStatsDto = GetMoviesStats200Response
 
 typealias MovieDto = GetCalendarsMovies200ResponseInnerMovie
 typealias MovieIdsDto = GetCalendarsMovies200ResponseInnerMovieIds

@@ -7308,6 +7308,148 @@
         "operationId": "putUsersCover"
       }
     },
+    "/users/blocked": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "blocked_at": {
+                        "type": "string"
+                      },
+                      "user": {
+                        "type": "object",
+                        "properties": {
+                          "username": {
+                            "type": "string"
+                          },
+                          "private": {
+                            "type": "boolean"
+                          },
+                          "deleted": {
+                            "type": "boolean"
+                          },
+                          "name": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "vip": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "vip_ep": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "director": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "slug": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "trakt": {
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "trakt"
+                            ]
+                          },
+                          "joined_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "location": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "about": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "gender": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "age": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "avatar": {
+                                "type": "object",
+                                "properties": {
+                                  "full": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "full"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "avatar"
+                            ],
+                            "nullable": true
+                          },
+                          "vip_og": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "vip_years": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "vip_cover_image": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "username",
+                          "private",
+                          "deleted",
+                          "ids"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "blocked_at",
+                      "user"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktOAuth": []
+          },
+          {}
+        ],
+        "operationId": "getUsersBlocked"
+      }
+    },
     "/users/{id}/": {
       "get": {
         "tags": [
@@ -11230,6 +11372,170 @@
           {}
         ],
         "operationId": "deleteUsersUnfollow"
+      }
+    },
+    "/users/{id}/block": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug that identifies the user, or \"me\" for the authenticated user."
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "409": {
+            "description": "409",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktOAuth": []
+          },
+          {}
+        ],
+        "operationId": "postUsersBlock"
+      },
+      "delete": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug that identifies the user, or \"me\" for the authenticated user."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "204",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktOAuth": []
+          },
+          {}
+        ],
+        "operationId": "deleteUsersUnblock"
+      }
+    },
+    "/users/{id}/report": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug that identifies the user, or \"me\" for the authenticated user."
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "enum": [
+                      "spam",
+                      "adult",
+                      "language",
+                      "other"
+                    ],
+                    "description": "Reason this item is being reported for moderator review."
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Optional additional context for the report."
+                  }
+                },
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "409": {
+            "description": "409",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktOAuth": []
+          },
+          {}
+        ],
+        "operationId": "postUsersReport"
       }
     },
     "/users/{id}/followers": {
@@ -44956,7 +45262,8 @@
                       "progress": {
                         "type": "number",
                         "minimum": 0,
-                        "maximum": 100
+                        "maximum": 100,
+                        "format": "float"
                       },
                       "paused_at": {
                         "type": "string"
@@ -62242,6 +62549,92 @@
         "operationId": "getMoviesSentiments"
       }
     },
+    "/movies/{id}/report": {
+      "post": {
+        "tags": [
+          "movies"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug of the resource."
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "enum": [
+                      "duplicate",
+                      "remove",
+                      "data_refresh",
+                      "metadata",
+                      "adult",
+                      "runtime",
+                      "language",
+                      "spam",
+                      "tmdb",
+                      "other"
+                    ],
+                    "description": "Reason this item is being reported for moderator review."
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Optional additional context for the report."
+                  }
+                },
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "409": {
+            "description": "409",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktOAuth": []
+          },
+          {}
+        ],
+        "operationId": "postMoviesReport"
+      }
+    },
     "/movies/trending": {
       "get": {
         "tags": [
@@ -65161,9 +65554,6 @@
                     },
                     "recommended": {
                       "type": "integer"
-                    },
-                    "collected_episodes": {
-                      "type": "integer"
                     }
                   },
                   "required": [
@@ -65174,8 +65564,7 @@
                     "lists",
                     "votes",
                     "favorited",
-                    "recommended",
-                    "collected_episodes"
+                    "recommended"
                   ]
                 }
               }
@@ -67731,6 +68120,103 @@
         "operationId": "getShowsSeasonJustwatchLink"
       }
     },
+    "/shows/{id}/seasons/{season}/report": {
+      "post": {
+        "tags": [
+          "shows",
+          "season"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug of the resource."
+          },
+          {
+            "name": "season",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "description": "Season number"
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "enum": [
+                      "duplicate",
+                      "remove",
+                      "data_refresh",
+                      "metadata",
+                      "adult",
+                      "runtime",
+                      "language",
+                      "spam",
+                      "tmdb",
+                      "other"
+                    ],
+                    "description": "Reason this item is being reported for moderator review."
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Optional additional context for the report."
+                  }
+                },
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "409": {
+            "description": "409",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktOAuth": []
+          },
+          {}
+        ],
+        "operationId": "postShowsSeasonReport"
+      }
+    },
     "/shows/{id}/videos": {
       "get": {
         "tags": [
@@ -68454,6 +68940,92 @@
           {}
         ],
         "operationId": "getShowsSentiments"
+      }
+    },
+    "/shows/{id}/report": {
+      "post": {
+        "tags": [
+          "shows"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug of the resource."
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "enum": [
+                      "duplicate",
+                      "remove",
+                      "data_refresh",
+                      "metadata",
+                      "adult",
+                      "runtime",
+                      "language",
+                      "spam",
+                      "tmdb",
+                      "other"
+                    ],
+                    "description": "Reason this item is being reported for moderator review."
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Optional additional context for the report."
+                  }
+                },
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "409": {
+            "description": "409",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktOAuth": []
+          },
+          {}
+        ],
+        "operationId": "postShowsReport"
       }
     },
     "/shows/{id}/seasons/{season}/episodes/{episode}": {
@@ -70385,6 +70957,113 @@
           {}
         ],
         "operationId": "getShowsEpisodeWatchnow"
+      }
+    },
+    "/shows/{id}/seasons/{season}/episodes/{episode}/report": {
+      "post": {
+        "tags": [
+          "shows",
+          "episode"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug of the resource."
+          },
+          {
+            "name": "season",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "description": "Season number"
+          },
+          {
+            "name": "episode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "description": "Episode number"
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "enum": [
+                      "duplicate",
+                      "remove",
+                      "data_refresh",
+                      "metadata",
+                      "adult",
+                      "runtime",
+                      "language",
+                      "spam",
+                      "tmdb",
+                      "other"
+                    ],
+                    "description": "Reason this item is being reported for moderator review."
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Optional additional context for the report."
+                  }
+                },
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "409": {
+            "description": "409",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktOAuth": []
+          },
+          {}
+        ],
+        "operationId": "postShowsEpisodeReport"
       }
     },
     "/shows/trending": {
@@ -77186,6 +77865,91 @@
         "operationId": "getPeopleShows"
       }
     },
+    "/people/{id}/report": {
+      "post": {
+        "tags": [
+          "people"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug of the resource."
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "enum": [
+                      "duplicate",
+                      "remove",
+                      "data_refresh",
+                      "metadata",
+                      "adult",
+                      "language",
+                      "spam",
+                      "tmdb",
+                      "other"
+                    ],
+                    "description": "Reason this item is being reported for moderator review."
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Optional additional context for the report."
+                  }
+                },
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "409": {
+            "description": "409",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktOAuth": []
+          },
+          {}
+        ],
+        "operationId": "postPeopleReport"
+      }
+    },
     "/watchnow/sources": {
       "get": {
         "tags": [
@@ -77359,6 +78123,92 @@
           {}
         ],
         "operationId": "getWatchnowSourcesCountry"
+      }
+    },
+    "/seasons/{id}/report": {
+      "post": {
+        "tags": [
+          "seasons"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug of the resource."
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "enum": [
+                      "duplicate",
+                      "remove",
+                      "data_refresh",
+                      "metadata",
+                      "adult",
+                      "runtime",
+                      "language",
+                      "spam",
+                      "tmdb",
+                      "other"
+                    ],
+                    "description": "Reason this item is being reported for moderator review."
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Optional additional context for the report."
+                  }
+                },
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "409": {
+            "description": "409",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktOAuth": []
+          },
+          {}
+        ],
+        "operationId": "postSeasonsReport"
       }
     },
     "/episodes/{id}/watchnow/{country}": {
@@ -77837,6 +78687,92 @@
           {}
         ],
         "operationId": "getEpisodesWatchnow"
+      }
+    },
+    "/episodes/{id}/report": {
+      "post": {
+        "tags": [
+          "episodes"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug of the resource."
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "enum": [
+                      "duplicate",
+                      "remove",
+                      "data_refresh",
+                      "metadata",
+                      "adult",
+                      "runtime",
+                      "language",
+                      "spam",
+                      "tmdb",
+                      "other"
+                    ],
+                    "description": "Reason this item is being reported for moderator review."
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Optional additional context for the report."
+                  }
+                },
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "409": {
+            "description": "409",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktOAuth": []
+          },
+          {}
+        ],
+        "operationId": "postEpisodesReport"
       }
     },
     "/lists/trending": {
@@ -82249,6 +83185,89 @@
         "operationId": "deleteListsUnlike"
       }
     },
+    "/lists/{id}/report": {
+      "post": {
+        "tags": [
+          "lists"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug of the resource."
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "enum": [
+                      "duplicate",
+                      "remove",
+                      "metadata",
+                      "adult",
+                      "language",
+                      "spam",
+                      "other"
+                    ],
+                    "description": "Reason this item is being reported for moderator review."
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Optional additional context for the report."
+                  }
+                },
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "409": {
+            "description": "409",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktOAuth": []
+          },
+          {}
+        ],
+        "operationId": "postListsReport"
+      }
+    },
     "/comments/{id}/likes": {
       "get": {
         "tags": [
@@ -82493,6 +83512,93 @@
           {}
         ],
         "operationId": "deleteCommentsUnlike"
+      }
+    },
+    "/comments/{id}/report": {
+      "post": {
+        "tags": [
+          "comments"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug of the resource."
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "enum": [
+                      "spoilers",
+                      "language",
+                      "abusive",
+                      "spam",
+                      "bigotry",
+                      "political",
+                      "offtopic",
+                      "support",
+                      "duplicate",
+                      "too_short",
+                      "other"
+                    ],
+                    "description": "Reason this item is being reported for moderator review."
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Optional additional context for the report."
+                  }
+                },
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "409": {
+            "description": "409",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktOAuth": []
+          },
+          {}
+        ],
+        "operationId": "postCommentsReport"
       }
     },
     "/comments/{id}/replies": {
