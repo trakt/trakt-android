@@ -75,7 +75,7 @@ internal fun UpNextItemContextSheet(
                                     localRes.getString(
                                         when (item) {
                                             is UpNextMovie -> R.string.text_info_movie_dropped
-                                            is UpNextShow -> R.string.text_info_movie_dropped
+                                            is UpNextShow -> R.string.text_info_show_dropped
                                         },
                                     ),
                                 )

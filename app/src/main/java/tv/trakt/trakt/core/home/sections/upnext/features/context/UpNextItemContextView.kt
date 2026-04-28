@@ -85,8 +85,8 @@ internal fun UpNextItemContextView(
         onYes = {
             confirmDropSheet = false
             when (item) {
-                is UpNextShow -> viewModel.dropShow(item.id)
-                is UpNextMovie -> viewModel.dropMovie(item.id)
+                is UpNextShow -> viewModel.dropShow(item.mediaId)
+                is UpNextMovie -> viewModel.dropMovie(item.mediaId)
             }
         },
         onNo = { confirmDropSheet = false },
