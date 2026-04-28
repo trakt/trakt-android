@@ -36,6 +36,7 @@ import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.core.summary.episodes.features.season.ui.EpisodeSeasonList
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
@@ -53,6 +54,7 @@ internal fun EpisodeSeasonView(
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     onEpisodeClick: (episode: Episode) -> Unit,
+    onAllSeasonsClick: (Int?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -71,6 +73,7 @@ internal fun EpisodeSeasonView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onCollapse = viewModel::setCollapsed,
+        onAllSeasonsClick = onAllSeasonsClick,
         onEpisodeClick = { onEpisodeClick(it.episode) },
         onCheckClick = {
             viewModel.addToWatched(it.episode)
@@ -147,6 +150,7 @@ private fun EpisodeSeasonContent(
     onCheckClick: ((EpisodeItem) -> Unit)? = null,
     onCheckLongClick: ((EpisodeItem) -> Unit)? = null,
     onRemoveClick: ((EpisodeItem) -> Unit)? = null,
+    onAllSeasonsClick: ((Int?) -> Unit)? = null,
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
 
@@ -164,7 +168,7 @@ private fun EpisodeSeasonContent(
 
         TraktSectionHeader(
             title = headerText ?: stringResource(R.string.list_title_seasons),
-            chevron = false,
+            chevron = state.collapsed != true && state.episodes.isNotEmpty() && !state.loading.isLoading,
             collapsed = state.collapsed ?: false,
             onCollapseClick = {
                 animateCollapse = true
@@ -173,7 +177,10 @@ private fun EpisodeSeasonContent(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(headerPadding),
+                .padding(headerPadding)
+                .onClick {
+                    onAllSeasonsClick?.invoke(state.episode?.season)
+                },
         )
 
         if (state.collapsed != true) {

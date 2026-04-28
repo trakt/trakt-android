@@ -72,7 +72,6 @@ data class Images(
                 append(it)
             }
                 .replace(imageSizeRegex, "/${size.value}/")
-//                .replace("walter-r2.trakt.tv", "media.trakt.tv")
         }
     }
 

@@ -10,6 +10,7 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
+import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
 
 internal class GetShowSeasonsUseCase(
@@ -21,19 +22,23 @@ internal class GetShowSeasonsUseCase(
         initialSeason: Int,
     ): ShowSeasons {
         val remoteSeasons = remoteShowsSource.getSeasons(showId)
-            .asyncMap { Season.fromDto(it) }
-            .filter { (it.episodeCount ?: 0) > 0 }
-            .sortedBy { it.number }
+            .asyncMap {
+                SeasonItem(
+                    season = Season.fromDto(it),
+                )
+            }
+            .filter { (it.season.episodeCount ?: 0) > 0 }
+            .sortedBy { it.season.number }
 
         val selectedSeason = remoteSeasons
             .firstOrNull {
-                !it.isSpecial && (initialSeason == it.number)
+                !it.season.isSpecial && (initialSeason == it.season.number)
             } ?: remoteSeasons.firstOrNull()
 
         if (selectedSeason != null) {
             val episodes = remoteEpisodesSource.getSeason(
                 showId = showId,
-                season = selectedSeason.number,
+                season = selectedSeason.season.number,
             ).asyncMap {
                 EpisodeItem(
                     episode = Episode.fromDto(it),
@@ -42,7 +47,7 @@ internal class GetShowSeasonsUseCase(
 
             return ShowSeasons(
                 seasons = remoteSeasons.toImmutableList(),
-                selectedSeason = selectedSeason,
+                selectedSeason = selectedSeason.season,
                 selectedSeasonEpisodes = episodes.toImmutableList(),
             )
         }

@@ -326,7 +326,7 @@ private fun PosterChip(
                 painter = it,
                 tint = Color.Black,
                 contentDescription = null,
-                modifier = Modifier.size(12.dp),
+                modifier = Modifier.size(13.dp),
             )
         }
         if (text.isNotBlank()) {

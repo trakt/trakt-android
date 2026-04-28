@@ -251,7 +251,7 @@ internal fun VerticalMediaCard(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .graphicsLayer {
-                            translationY = 7.dp.toPx()
+                            translationY = 6.5.dp.toPx()
                         },
                 ) {
                     if (watched) {
@@ -264,7 +264,7 @@ internal fun VerticalMediaCard(
                     if (watchlist) {
                         CollectionChip(
                             iconRes = R.drawable.ic_bookmark_on,
-                            iconSize = 9.5.dp,
+                            iconSize = 11.5.dp,
                         )
                     }
                 }

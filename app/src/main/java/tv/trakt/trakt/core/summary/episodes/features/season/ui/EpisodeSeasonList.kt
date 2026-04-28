@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
-import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.model.Show
@@ -92,10 +91,16 @@ internal fun EpisodeSeasonList(
 
             HorizontalMediaCard(
                 title = "",
-                more = false,
+                more = item.isWatched,
+                watched = item.isWatched,
                 containerImageUrl = item.episode.images?.getScreenshotUrl()
                     ?: show?.images?.getFanartUrl(),
                 onClick = { onEpisodeClick(item) },
+                onLongClick = {
+                    if (item.isWatched) {
+                        onRemoveClick(item)
+                    }
+                },
                 cardContent = {
                     if (!isReleased) {
                         InfoChip(
@@ -149,28 +154,14 @@ internal fun EpisodeSeasonList(
                             when {
                                 item.isLoading -> {
                                     FilmProgressIndicator(
-                                        size = 19.dp,
+                                        size = 18.dp,
                                         modifier = Modifier
                                             .graphicsLayer {
                                                 translationX = 2.dp.toPx()
                                             },
                                     )
                                 }
-
-                                item.isWatched -> {
-                                    Icon(
-                                        painter = painterResource(R.drawable.ic_check_double),
-                                        contentDescription = null,
-                                        tint = TraktTheme.colors.textPrimary,
-                                        modifier = Modifier
-                                            .size(19.dp)
-                                            .onClick {
-                                                onRemoveClick(item)
-                                            },
-                                    )
-                                }
-
-                                isReleased && item.isCheckable -> {
+                                isReleased && !item.isWatched && item.isCheckable -> {
                                     Icon(
                                         painter = painterResource(R.drawable.ic_check),
                                         contentDescription = null,
@@ -178,8 +169,12 @@ internal fun EpisodeSeasonList(
                                         modifier = Modifier
                                             .size(19.dp)
                                             .onClickCombined(
-                                                onClick = { onCheckClick(item) },
-                                                onLongClick = { onCheckLongClick(item) },
+                                                onClick = {
+                                                    onCheckClick(item)
+                                                },
+                                                onLongClick = {
+                                                    onCheckLongClick(item)
+                                                },
                                             ),
                                     )
                                 }

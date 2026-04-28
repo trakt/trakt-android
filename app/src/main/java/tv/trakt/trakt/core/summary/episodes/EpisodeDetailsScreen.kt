@@ -104,6 +104,7 @@ internal fun EpisodeDetailsScreen(
     onEpisodeClick: ((TraktId, Episode) -> Unit),
     onCommentsClick: ((Show, Episode, CommentsFilter) -> Unit),
     onPersonClick: ((Show, Episode, Person) -> Unit),
+    onAllSeasonsClick: (Show, Int?) -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -184,6 +185,7 @@ internal fun EpisodeDetailsScreen(
             viewModel.removeRating()
             haptic.performHapticFeedback(Confirm)
         },
+        onAllSeasonsClick = onAllSeasonsClick,
         onVipClick = onNavigateVip,
         onBackClick = onNavigateBack,
         onInfoClick = {
@@ -327,6 +329,7 @@ internal fun EpisodeDetailsContent(
     onPersonClick: ((Person) -> Unit)? = null,
     onRatingClick: ((Int) -> Unit)? = null,
     onRatingRemoveClick: (() -> Unit)? = null,
+    onAllSeasonsClick: ((Show, Int?) -> Unit)? = null,
     onVipClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
     onInfoClick: (() -> Unit)? = null,
@@ -552,6 +555,9 @@ internal fun EpisodeDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onEpisodeClick = onEpisodeClick ?: {},
+                            onAllSeasonsClick = { season ->
+                                onAllSeasonsClick?.invoke(state.show, season)
+                            },
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),

@@ -343,6 +343,7 @@
   <string name="text_stats_watchers">Watchers</string>
   <string name="text_stats_lists">Lists</string>
   <string name="text_stats_favorites">Favorites</string>
+  <string name="header_episodes">Episodes</string>
 
   <string name="text_directors">Director</string>
   <string name="text_writers">Writer</string>

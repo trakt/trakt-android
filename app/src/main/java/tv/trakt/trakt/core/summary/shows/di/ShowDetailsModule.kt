@@ -29,6 +29,7 @@ import tv.trakt.trakt.core.summary.shows.features.lists.usecases.GetShowListsUse
 import tv.trakt.trakt.core.summary.shows.features.related.ShowRelatedViewModel
 import tv.trakt.trakt.core.summary.shows.features.related.usecases.GetShowRelatedUseCase
 import tv.trakt.trakt.core.summary.shows.features.seasons.ShowSeasonsViewModel
+import tv.trakt.trakt.core.summary.shows.features.seasons.all.AllShowSeasonsViewModel
 import tv.trakt.trakt.core.summary.shows.features.seasons.usecases.GetShowSeasonsUseCase
 import tv.trakt.trakt.core.summary.shows.features.sentiment.ShowSentimentViewModel
 import tv.trakt.trakt.core.summary.shows.features.sentiment.usecases.GetShowSentimentUseCase
@@ -233,6 +234,21 @@ internal val showDetailsModule = module {
             sessionManager = get(),
             analytics = get(),
             collapsingManager = get(),
+        )
+    }
+
+    viewModel {
+        AllShowSeasonsViewModel(
+            savedStateHandle = get(),
+            getShowDetailsUseCase = get(),
+            getSeasonsUseCase = get(),
+            loadUserProgressUseCase = get(),
+            updateEpisodeHistoryUseCase = get(),
+            showDetailsUpdates = get(),
+            episodeDetailsUpdates = get(),
+            episodeLocalDataSource = get(),
+            sessionManager = get(),
+            analytics = get(),
         )
     }
 

@@ -8,6 +8,7 @@ import androidx.compose.ui.unit.dp
 
 internal const val VerticalImageAspectRatio = 2f / 3
 internal const val HorizontalImageAspectRatio = 16f / 9
+internal const val HorizontalEpisodeImageAspectRatio = 16f / 10
 internal const val HorizontalCheckInImageAspectRatio = 4f / 3
 
 internal val Size: TraktSize = TraktSize(
@@ -21,6 +22,7 @@ internal val Size: TraktSize = TraktSize(
     verticalSmallMediaCardSize = 72.dp,
     horizontalMediaCardSize = 200.dp,
     horizontalSmallMediaCardSize = 128.dp,
+    horizontalMediumMediaCardSize = 148.dp,
     mainGridColumns = 3,
     calendarGridColumns = 2,
     commentCardSize = 192.dp,
@@ -56,6 +58,7 @@ internal data class TraktSize(
     val navigationHeaderHeight: Dp = Dp.Unspecified,
     val horizontalMediaCardSize: Dp = Dp.Unspecified,
     val horizontalSmallMediaCardSize: Dp = Dp.Unspecified,
+    val horizontalMediumMediaCardSize: Dp = Dp.Unspecified,
     val verticalMediaCardSize: Dp = Dp.Unspecified,
     val verticalMediumMediaCardSize: Dp = Dp.Unspecified,
     val verticalSmallMediaCardSize: Dp = Dp.Unspecified,

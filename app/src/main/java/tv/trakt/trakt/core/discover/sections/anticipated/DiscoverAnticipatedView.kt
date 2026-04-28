@@ -315,13 +315,16 @@ private fun ContentListItem(
                     painter = painterResource(R.drawable.ic_bookmark_off),
                     contentDescription = null,
                     tint = TraktTheme.colors.chipContent,
-                    modifier = Modifier.size(12.dp),
+                    modifier = Modifier.size(14.dp),
                 )
                 Text(
                     text = item.count.thousandsFormat(),
                     style = TraktTheme.typography.cardTitle,
                     color = TraktTheme.colors.textPrimary,
                     textAlign = TextAlign.Center,
+                    modifier = Modifier.graphicsLayer {
+                        translationX = (-2).dp.toPx()
+                    },
                 )
             }
         },

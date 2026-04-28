@@ -25,6 +25,7 @@ internal fun NavGraphBuilder.showDetailsScreen(
     onNavigateToPerson: (Show, Person) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToTrivia: (Show) -> Unit,
+    onNavigateToAllSeasons: (Show, Int?) -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -39,6 +40,7 @@ internal fun NavGraphBuilder.showDetailsScreen(
             onListClick = { show, list -> onNavigateToList(show, list) },
             onPersonClick = { show, person -> onNavigateToPerson(show, person) },
             onTriviaClick = { show -> onNavigateToTrivia(show) },
+            onAllSeasonsClick = onNavigateToAllSeasons,
             onNavigateVip = onNavigateVip,
             onNavigateBack = onNavigateBack,
         )

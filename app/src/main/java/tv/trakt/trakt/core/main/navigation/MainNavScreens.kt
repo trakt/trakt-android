@@ -57,6 +57,8 @@ import tv.trakt.trakt.core.summary.movies.navigation.movieDetailsScreen
 import tv.trakt.trakt.core.summary.movies.navigation.navigateToMovie
 import tv.trakt.trakt.core.summary.people.navigation.navigateToPerson
 import tv.trakt.trakt.core.summary.people.navigation.personDetailsScreen
+import tv.trakt.trakt.core.summary.shows.features.seasons.all.navigation.allShowSeasonsScreen
+import tv.trakt.trakt.core.summary.shows.features.seasons.all.navigation.navigateToAllShowSeasons
 import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
 import tv.trakt.trakt.core.summary.shows.navigation.showDetailsScreen
 import tv.trakt.trakt.core.trivia.navigation.navigateToTrivia
@@ -190,6 +192,13 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
                     navSource = "show_summary",
                 )
             },
+            onNavigateToAllSeasons = { show, initialSeason ->
+                navigateToAllShowSeasons(
+                    showId = show.ids.trakt,
+                    initialSeason = initialSeason,
+                    backgroundUrl = show.images?.getFanartUrl(),
+                )
+            },
             onNavigateVip = { navigateToBilling() },
             onNavigateBack = { popBackStack() },
         )
@@ -219,6 +228,13 @@ internal fun NavGraphBuilder.episodesScreens(controller: NavHostController) {
                     personId = person.ids.trakt,
                     sourceMediaId = show.ids.trakt,
                     backdropUrl = show.images?.getFanartUrl(Size.THUMB),
+                )
+            },
+            onAllSeasonsClick = { show, season ->
+                navigateToAllShowSeasons(
+                    showId = show.ids.trakt,
+                    initialSeason = season,
+                    backgroundUrl = show.images?.getFanartUrl(),
                 )
             },
             onNavigateVip = { navigateToBilling() },
@@ -417,6 +433,17 @@ internal fun NavGraphBuilder.peopleScreens(controller: NavHostController) {
 internal fun NavGraphBuilder.commentsScreens(controller: NavHostController) {
     with(controller) {
         commentsScreen(
+            onNavigateBack = { popBackStack() },
+        )
+    }
+}
+
+internal fun NavGraphBuilder.allShowSeasonsScreens(controller: NavHostController) {
+    with(controller) {
+        allShowSeasonsScreen(
+            onNavigateToEpisode = { showId, episode ->
+                navigateToEpisode(showId, episode)
+            },
             onNavigateBack = { popBackStack() },
         )
     }

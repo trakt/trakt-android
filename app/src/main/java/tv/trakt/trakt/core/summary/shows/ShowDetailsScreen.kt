@@ -117,6 +117,7 @@ internal fun ShowDetailsScreen(
     onListClick: ((Show, CustomList) -> Unit),
     onPersonClick: ((Show, Person) -> Unit),
     onTriviaClick: ((Show) -> Unit)? = null,
+    onAllSeasonsClick: (Show, Int?) -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -218,12 +219,13 @@ internal fun ShowDetailsScreen(
                 state.showUserRating?.rating?.favorite != true,
             )
         },
-        onVipClick = onNavigateVip,
         onTriviaClick = {
             state.show?.let { show ->
                 onTriviaClick?.invoke(show)
             }
         },
+        onAllSeasonsClick = onAllSeasonsClick,
+        onVipClick = onNavigateVip,
         onBackClick = onNavigateBack,
     )
 
@@ -418,8 +420,9 @@ internal fun ShowDetailsContent(
     onRatingClick: ((Int) -> Unit)? = null,
     onRatingRemoveClick: (() -> Unit)? = null,
     onFavoriteClick: (() -> Unit)? = null,
-    onVipClick: (() -> Unit)? = null,
     onTriviaClick: (() -> Unit)? = null,
+    onAllSeasonsClick: ((Show, Int?) -> Unit)? = null,
+    onVipClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val previewMode = LocalInspectionMode.current
@@ -659,6 +662,7 @@ internal fun ShowDetailsContent(
                             contentPadding = sectionPadding,
                             user = state.user,
                             onEpisodeClick = onEpisodeClick ?: {},
+                            onAllSeasonsClick = { onAllSeasonsClick?.invoke(show, it) },
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),

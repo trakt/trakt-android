@@ -125,7 +125,7 @@ internal fun DetailsActions(
                             onClick = onSecondaryClick,
                             onLongClick = onSecondaryLongClick,
                         )
-                        .size(19.dp),
+                        .size(24.dp),
                 )
 
                 Icon(

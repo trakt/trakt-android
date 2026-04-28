@@ -11,5 +11,6 @@ internal interface ShowDetailsUpdates {
     enum class Source {
         PROGRESS,
         SEASONS,
+        ALL_SEASONS,
     }
 }

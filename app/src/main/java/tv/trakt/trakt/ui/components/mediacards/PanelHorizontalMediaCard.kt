@@ -61,13 +61,12 @@ import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.ui.theme.colors.Shade940
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.InfoChip
+import tv.trakt.trakt.ui.theme.HorizontalEpisodeImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
-import tv.trakt.trakt.ui.theme.VerticalImageAspectRatio
 
 @Composable
-internal fun PanelMediaCard(
+internal fun PanelHorizontalMediaCard(
     title: String,
-    titleOriginal: String?,
     subtitle: String,
     contentImageUrl: String?,
     containerImageUrl: String?,
@@ -105,7 +104,7 @@ internal fun PanelMediaCard(
             }
             .alpha(if (enabled) 1F else 0.33F)
             .background(containerColor, RoundedCornerShape(corner))
-            .height(TraktTheme.size.verticalMediumMediaCardSize / VerticalImageAspectRatio)
+            .height(TraktTheme.size.horizontalMediumMediaCardSize / HorizontalEpisodeImageAspectRatio)
             .onClickCombined(
                 enabled = enabled,
                 onClick = onClick,
@@ -113,9 +112,8 @@ internal fun PanelMediaCard(
             ),
     ) {
         Box(
-            contentAlignment = Alignment.Center,
             modifier = Modifier
-                .width(TraktTheme.size.verticalMediumMediaCardSize),
+                .width(TraktTheme.size.horizontalMediumMediaCardSize),
         ) {
             if (!contentImageUrl.isNullOrBlank() && !isPosterError) {
                 AsyncImage(
@@ -126,10 +124,10 @@ internal fun PanelMediaCard(
                     contentDescription = "Card image",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .padding(start = 4.dp)
-                        .padding(vertical = 4.dp)
-                        .aspectRatio(VerticalImageAspectRatio)
-                        .width(TraktTheme.size.verticalMediumMediaCardSize)
+                        .padding(start = 5.dp)
+                        .padding(vertical = 4.5.dp)
+                        .aspectRatio(HorizontalEpisodeImageAspectRatio)
+                        .width(TraktTheme.size.horizontalMediumMediaCardSize)
                         .clip(RoundedCornerShape(corner - 3.dp))
                         .onClick(
                             enabled = enabled,
@@ -139,21 +137,25 @@ internal fun PanelMediaCard(
             } else {
                 Box(
                     modifier = Modifier
-                        .padding(start = 4.dp)
-                        .padding(vertical = 4.dp)
-                        .aspectRatio(VerticalImageAspectRatio)
-                        .width(TraktTheme.size.verticalMediumMediaCardSize)
+                        .padding(start = 5.dp)
+                        .padding(vertical = 4.5.dp)
+                        .aspectRatio(HorizontalEpisodeImageAspectRatio)
+                        .width(TraktTheme.size.horizontalMediumMediaCardSize)
                         .clip(RoundedCornerShape(corner - 3.dp))
                         .background(TraktTheme.colors.placeholderContainer)
                         .onClick(onClick = onImageClick ?: {}),
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.ic_placeholder_vertical_border),
+                        painter = painterResource(R.drawable.ic_placeholder_horizontal_border),
                         contentDescription = null,
                         contentScale = ContentScale.Fit,
                         colorFilter = ColorFilter.tint(TraktTheme.colors.placeholderContent),
-                        modifier = Modifier.padding(6.dp),
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(4.dp)
+                            .padding(bottom = 7.dp),
                     )
+
                     Icon(
                         painter = painterResource(R.drawable.ic_placeholder_trakt),
                         contentDescription = null,
@@ -162,8 +164,8 @@ internal fun PanelMediaCard(
                             .size(54.dp)
                             .align(Alignment.TopEnd)
                             .graphicsLayer {
-                                translationX = 4.dp.toPx()
-                                translationY = -4.dp.toPx()
+                                translationX = -24.dp.toPx()
+                                translationY = -12.dp.toPx()
                             },
                     )
                     Icon(
@@ -174,9 +176,10 @@ internal fun PanelMediaCard(
                             .size(38.dp)
                             .align(Alignment.Center)
                             .graphicsLayer {
-                                translationY = 10.dp.toPx()
+                                translationY = 12.dp.toPx()
                             },
                     )
+
                     Box(
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
@@ -202,9 +205,9 @@ internal fun PanelMediaCard(
                     horizontalArrangement = Arrangement.spacedBy(3.dp),
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
-                        .padding(start = 4.dp)
                         .graphicsLayer {
                             clip = false
+                            translationX = -3.dp.toPx()
                             translationY = 5.dp.toPx()
                         },
                 ) {
@@ -272,7 +275,7 @@ internal fun PanelMediaCard(
                     contentScale = ContentScale.Crop,
                     onError = { isContainerError = true },
                     modifier = Modifier
-                        .padding(start = TraktTheme.size.verticalMediumMediaCardSize / 1.25F)
+                        .padding(start = TraktTheme.size.horizontalMediumMediaCardSize / 2F)
                         .fillMaxSize()
                         .drawWithContent {
                             drawContent()
@@ -295,7 +298,6 @@ internal fun PanelMediaCard(
                 verticalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .padding(vertical = 10.dp)
-                    .padding(start = 12.dp)
                     .padding(end = 12.dp)
                     .fillMaxSize(),
             ) {
@@ -304,31 +306,20 @@ internal fun PanelMediaCard(
                     verticalAlignment = Alignment.Top,
                 ) {
                     Column(
-                        verticalArrangement = Arrangement.spacedBy(3.dp),
+                        verticalArrangement = Arrangement.spacedBy(2.dp),
                         modifier = Modifier.weight(1F),
                     ) {
                         Text(
                             text = title,
-                            style = TraktTheme.typography.cardTitle.copy(fontSize = 16.sp),
+                            style = TraktTheme.typography.cardTitle.copy(fontSize = 14.sp),
                             color = TraktTheme.colors.textPrimary,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )
 
-                        if (!titleOriginal.isNullOrBlank() && !titleOriginal.equals(title, ignoreCase = true)) {
-                            Text(
-                                text = "($titleOriginal)",
-                                style = TraktTheme.typography.cardSubtitle.copy(fontSize = 12.sp),
-                                color = TraktTheme.colors.textSecondary,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                modifier = Modifier.padding(bottom = 3.dp),
-                            )
-                        }
-
                         Text(
                             text = subtitle,
-                            style = TraktTheme.typography.cardSubtitle.copy(fontSize = 12.sp),
+                            style = TraktTheme.typography.cardSubtitle.copy(fontSize = 11.sp),
                             color = TraktTheme.colors.textSecondary,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
@@ -341,7 +332,7 @@ internal fun PanelMediaCard(
                             contentDescription = null,
                             tint = Color.White,
                             modifier = Modifier
-                                .padding(top = 2.dp)
+                                .padding(top = 1.5.dp)
                                 .graphicsLayer {
                                     translationX = 5.dp.toPx()
                                 }
@@ -366,9 +357,8 @@ private fun PosterPreview() {
             ColorImage(Color.Blue.toArgb())
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            PanelMediaCard(
+            PanelHorizontalMediaCard(
                 title = "Lorem",
-                titleOriginal = null,
                 subtitle = "Action, Adventure",
                 contentImageUrl = null,
                 containerImageUrl = null,
@@ -382,9 +372,8 @@ private fun PosterPreview() {
 @Composable
 private fun PosterPreviewPlaceholder() {
     TraktTheme {
-        PanelMediaCard(
+        PanelHorizontalMediaCard(
             title = "Lorem",
-            titleOriginal = "Original Lorem",
             subtitle = "Action, Adventure",
             contentImageUrl = null,
             containerImageUrl = null,
@@ -398,9 +387,8 @@ private fun PosterPreviewPlaceholder() {
 @Composable
 private fun PosterPreviewChipPlaceholder() {
     TraktTheme {
-        PanelMediaCard(
+        PanelHorizontalMediaCard(
             title = "Lorem",
-            titleOriginal = null,
             subtitle = "Action, Adventure",
             contentImageUrl = null,
             containerImageUrl = null,

@@ -10,7 +10,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -30,7 +29,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -58,7 +56,6 @@ import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Ids
@@ -70,6 +67,7 @@ import tv.trakt.trakt.common.model.toSlugId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
+import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
 import tv.trakt.trakt.core.summary.shows.features.seasons.ui.ShowEpisodesList
 import tv.trakt.trakt.core.summary.shows.features.seasons.ui.ShowSeasonsList
@@ -90,6 +88,7 @@ internal fun ShowSeasonsView(
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     onEpisodeClick: (episode: Episode) -> Unit,
+    onAllSeasonsClick: (Int?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -108,13 +107,19 @@ internal fun ShowSeasonsView(
     var seasonDateSheet by remember { mutableStateOf(false) }
 
     ShowSeasonsContent(
-        state = state,
         user = user,
+        state = state,
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onEpisodeClick = { onEpisodeClick(it.episode) },
-        onSeasonClick = viewModel::loadSeason,
+        onSeasonClick = {
+            if (it.season.number == state.items.selectedSeason?.number) {
+                onAllSeasonsClick(it.season.number)
+            } else {
+                viewModel.loadSeason(it)
+            }
+        },
         onCheckEpisodeClick = {
             viewModel.addToWatched(it.episode)
         },
@@ -129,6 +134,9 @@ internal fun ShowSeasonsView(
         },
         onRemoveSeasonClick = {
             confirmRemoveSeasonSheet = true
+        },
+        onAllSeasonsClick = {
+            onAllSeasonsClick(state.items.selectedSeason?.number)
         },
         onCollapse = viewModel::setCollapsed,
     )
@@ -240,12 +248,13 @@ private fun ShowSeasonsContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onEpisodeClick: ((EpisodeItem) -> Unit)? = null,
-    onSeasonClick: ((Season) -> Unit)? = null,
+    onSeasonClick: ((SeasonItem) -> Unit)? = null,
     onCheckEpisodeClick: ((EpisodeItem) -> Unit)? = null,
     onCheckEpisodeLongClick: ((EpisodeItem) -> Unit)? = null,
     onRemoveEpisodeClick: ((EpisodeItem) -> Unit)? = null,
     onCheckSeasonClick: (() -> Unit)? = null,
     onRemoveSeasonClick: (() -> Unit)? = null,
+    onAllSeasonsClick: (() -> Unit)? = null,
     onCollapse: (collapsed: Boolean) -> Unit = {},
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
@@ -275,16 +284,22 @@ private fun ShowSeasonsContent(
             Row(
                 horizontalArrangement = spacedBy(5.dp),
                 verticalAlignment = CenterVertically,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .onClick(enabled = !state.loading.isLoading && state.collapsed != true) {
+                        onAllSeasonsClick?.invoke()
+                    },
             ) {
                 TraktHeader(
                     title = headerSeasons,
                     titleColor = when {
                         !state.loading.isLoading && state.items.seasons.isEmpty() -> TraktTheme.colors.textPrimary
+                        state.collapsed == true -> TraktTheme.colors.textPrimary
                         else -> TraktTheme.colors.textSecondary
                     },
                 )
-                if (state.items.selectedSeason != null) {
+
+                if (state.items.selectedSeason != null && state.collapsed != true) {
                     TraktHeader(
                         title = "/",
                         titleColor = TraktTheme.colors.textSecondary,
@@ -295,82 +310,61 @@ private fun ShowSeasonsContent(
                 }
 
                 if (user != null && state.collapsed != true && state.items.isSelectedSeasonReleased) {
-                    val checkSize = 18.dp
-                    Box(
-                        contentAlignment = Alignment.Center,
+                    Icon(
+                        painter = painterResource(R.drawable.ic_more_vertical),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
                         modifier = Modifier
-                            .padding(start = 8.dp)
-                            .size(checkSize),
-                    ) {
-                        if (state.loadingSeason.isLoading) {
-                            FilmProgressIndicator(size = checkSize - 3.dp)
-                        } else {
-                            val isLoading =
-                                state.items.isSeasonLoading ||
-                                    state.loadingSeason.isLoading
+                            .padding(start = 10.dp)
+                            .size(14.dp)
+                            .onClick(enabled = !state.loadingSeason.isLoading) {
+                                if (state.items.isSelectedSeasonWatched) {
+                                    onRemoveSeasonClick?.invoke()
+                                } else {
+                                    onCheckSeasonClick?.invoke()
+                                }
+                            },
+                    )
+                }
 
-                            if (state.items.isSelectedSeasonWatched) {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_check_double),
-                                    contentDescription = null,
-                                    tint = TraktTheme.colors.textPrimary,
-                                    modifier = Modifier
-                                        .size(checkSize)
-                                        .onClickCombined(
-                                            enabled = !isLoading,
-                                            onClick = {
-                                                state.items.selectedSeason?.let {
-                                                    onRemoveSeasonClick?.invoke()
-                                                }
-                                            },
-                                            onLongClick = {
-                                                state.items.selectedSeason?.let {
-                                                    onRemoveSeasonClick?.invoke()
-                                                }
-                                            },
-                                        ),
-                                )
-                            } else {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_check),
-                                    contentDescription = null,
-                                    tint = TraktTheme.colors.accent,
-                                    modifier = Modifier
-                                        .size(checkSize)
-                                        .onClickCombined(
-                                            enabled = !isLoading,
-                                            onClick = {
-                                                state.items.selectedSeason?.let {
-                                                    onCheckSeasonClick?.invoke()
-                                                }
-                                            },
-                                            onLongClick = {
-                                                state.items.selectedSeason?.let {
-                                                    onCheckSeasonClick?.invoke()
-                                                }
-                                            },
-                                        ),
-                                )
-                            }
-                        }
-                    }
+                if (user != null && state.collapsed != true && !state.loading.isLoading) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_chevron_right),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .padding(start = 5.dp)
+                            .size(18.dp)
+                            .onClick(enabled = !state.loadingSeason.isLoading) {
+                                onAllSeasonsClick?.invoke()
+                            },
+                    )
                 }
             }
 
-            Icon(
-                painter = painterResource(R.drawable.ic_arrow_dropdown),
-                contentDescription = null,
-                tint = TraktTheme.colors.textSecondary,
-                modifier = Modifier
-                    .padding(start = 4.dp)
-                    .rotate(if (state.collapsed == true) -180F else 0F)
-                    .size(16.dp)
-                    .onClick {
-                        animateCollapse = true
-                        val current = (state.collapsed ?: false)
-                        onCollapse(!current)
-                    },
-            )
+            Row(
+                horizontalArrangement = spacedBy(8.dp),
+                verticalAlignment = CenterVertically,
+            ) {
+                if (state.loadingSeason.isLoading) {
+                    FilmProgressIndicator(size = 16.dp)
+                }
+
+                Icon(
+                    painter = painterResource(R.drawable.ic_arrow_dropdown),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textSecondary,
+                    modifier = Modifier
+                        .padding(start = 4.dp)
+                        .rotate(if (state.collapsed == true) -180F else 0F)
+                        .size(16.dp)
+                        .onClick {
+                            animateCollapse = true
+                            val current = (state.collapsed ?: false)
+                            onCollapse(!current)
+                        },
+                )
+            }
         }
 
         if (state.collapsed != true) {
@@ -415,7 +409,7 @@ private fun ContentList(
     show: Show?,
     seasons: ShowSeasons,
     contentPadding: PaddingValues,
-    onSeasonClick: ((Season) -> Unit)? = null,
+    onSeasonClick: ((SeasonItem) -> Unit)? = null,
     onEpisodeClick: ((EpisodeItem) -> Unit)? = null,
     onCheckEpisodeClick: ((EpisodeItem) -> Unit)? = null,
     onCheckEpisodeLongClick: ((EpisodeItem) -> Unit)? = null,

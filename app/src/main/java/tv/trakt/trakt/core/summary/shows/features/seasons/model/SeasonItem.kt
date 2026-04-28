@@ -1,0 +1,12 @@
+package tv.trakt.trakt.core.summary.shows.features.seasons.model
+
+import androidx.compose.runtime.Immutable
+import tv.trakt.trakt.common.model.Season
+
+@Immutable
+internal data class SeasonItem(
+    val season: Season,
+    val isWatched: Boolean = false,
+    val unwatchedEpisodes: Int = 0,
+    val watchedEpisodes: Int = 0,
+)

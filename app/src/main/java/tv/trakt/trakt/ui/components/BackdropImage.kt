@@ -63,13 +63,16 @@ internal fun ScrollableBackdropImage(
     imageAlpha: Float = 0.4F,
     translation: Float,
 ) {
-    BackdropImage(
-        imageUrl = imageUrl,
-        imageAlpha = imageAlpha,
-        modifier = modifier.graphicsLayer {
-            translationY = translation * PARALLAX_RATIO
-        },
-    )
+    val localPreview = LocalInspectionMode.current
+    if (!localPreview) {
+        BackdropImage(
+            imageUrl = imageUrl,
+            imageAlpha = imageAlpha,
+            modifier = modifier.graphicsLayer {
+                translationY = translation * PARALLAX_RATIO
+            },
+        )
+    }
 }
 
 @Composable
@@ -78,21 +81,25 @@ internal fun ScrollableBackdropImage(
     modifier: Modifier = Modifier,
     imageUrl: String? = null,
 ) {
+    val localPreview = LocalInspectionMode.current
+
     val firstItemVisible by remember {
         derivedStateOf { scrollState.firstVisibleItemIndex == 0 }
     }
 
-    BackdropImage(
-        imageUrl = imageUrl,
-        imageAlpha = 0.4F,
-        modifier = modifier.graphicsLayer {
-            if (firstItemVisible) {
-                translationY = (-PARALLAX_RATIO * scrollState.firstVisibleItemScrollOffset)
-            } else {
-                alpha = 0F
-            }
-        },
-    )
+    if (!localPreview) {
+        BackdropImage(
+            imageUrl = imageUrl,
+            imageAlpha = 0.4F,
+            modifier = modifier.graphicsLayer {
+                if (firstItemVisible) {
+                    translationY = (-PARALLAX_RATIO * scrollState.firstVisibleItemScrollOffset)
+                } else {
+                    alpha = 0F
+                }
+            },
+        )
+    }
 }
 
 @Composable

@@ -1,6 +1,7 @@
 package tv.trakt.trakt.ui.components.mediacards
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -30,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush.Companion.verticalGradient
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -68,6 +70,7 @@ internal fun HorizontalMediaCard(
     width: Dp = TraktTheme.size.horizontalMediaCardSize,
     corner: Dp = 15.dp,
     more: Boolean = true,
+    watched: Boolean = false,
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
     footerContent: @Composable (() -> Unit)? = null,
@@ -82,170 +85,188 @@ internal fun HorizontalMediaCard(
         modifier = modifier
             .sizeIn(maxWidth = TraktTheme.size.horizontalMediaCardSize),
     ) {
-        Card(
-            modifier = Modifier
-                .width(width)
-                .aspectRatio(HorizontalImageAspectRatio),
-            shape = RoundedCornerShape(corner),
-            colors = cardColors(
-                containerColor = TraktTheme.colors.placeholderContainer,
-            ),
-            content = {
-                Box(
+        Box {
+            Card(
+                modifier = Modifier
+                    .width(width)
+                    .aspectRatio(HorizontalImageAspectRatio),
+                shape = RoundedCornerShape(corner),
+                colors = cardColors(
+                    containerColor = TraktTheme.colors.placeholderContainer,
+                ),
+                content = {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .onClickCombined(
+                                onClick = onClick,
+                                onLongClick = onLongClick,
+                            ),
+                    ) {
+                        val isErrorContainer = containerImageUrl == null || isContainerError
+                        val isErrorContent = contentImageUrl == null || isContentError
+
+                        if (!isErrorContainer) {
+                            AsyncImage(
+                                model = ImageRequest.Builder(LocalContext.current)
+                                    .data(containerImageUrl)
+                                    .crossfade(true)
+                                    .build(),
+                                contentDescription = title,
+                                contentScale = ContentScale.Crop,
+                                onError = { isContainerError = true },
+                                modifier = Modifier
+                                    .align(Alignment.Center)
+                                    .fillMaxSize(),
+                            )
+                        } else {
+                            Image(
+                                painter = painterResource(R.drawable.ic_placeholder_horizontal_border),
+                                contentDescription = title,
+                                contentScale = ContentScale.Fit,
+                                colorFilter = ColorFilter.tint(TraktTheme.colors.placeholderContent),
+                                modifier = Modifier
+                                    .padding(5.dp)
+                                    .align(Alignment.Center),
+                            )
+                            Icon(
+                                painter = painterResource(R.drawable.ic_placeholder_trakt),
+                                contentDescription = title,
+                                tint = TraktTheme.colors.placeholderContent,
+                                modifier = Modifier
+                                    .size(80.dp)
+                                    .align(Alignment.TopEnd)
+                                    .graphicsLayer {
+                                        translationX = -22.dp.toPx()
+                                        translationY = -18.dp.toPx()
+                                    },
+                            )
+                        }
+
+                        if (isErrorContent && title.isNotBlank()) {
+                            Box(
+                                modifier = Modifier
+                                    .align(Alignment.BottomCenter)
+                                    .fillMaxWidth()
+                                    .fillMaxHeight(0.66F)
+                                    .drawWithCache {
+                                        onDrawBehind {
+                                            drawRect(
+                                                brush = verticalGradient(
+                                                    0f to Color.Transparent,
+                                                    1f to Color(0xFA212427),
+                                                ),
+                                            )
+                                        }
+                                    },
+                            )
+                        }
+
+                        if (paletteColor != null && !isErrorContainer) {
+                            Box(
+                                modifier = Modifier
+                                    .align(Alignment.BottomCenter)
+                                    .fillMaxWidth()
+                                    .fillMaxHeight(0.66F)
+                                    .drawWithCache {
+                                        onDrawBehind {
+                                            drawRect(
+                                                brush = verticalGradient(
+                                                    0f to Color.Transparent,
+                                                    1f to paletteColor.copy(alpha = 0.9F),
+                                                ),
+                                            )
+                                        }
+                                    },
+                            )
+                        }
+
+                        if (contentImageUrl != null && !isContentError) {
+                            AsyncImage(
+                                model = ImageRequest.Builder(LocalContext.current)
+                                    .data(contentImageUrl)
+                                    .crossfade(true)
+                                    .build(),
+                                contentDescription = title,
+                                contentScale = ContentScale.Fit,
+                                onError = { isContentError = true },
+                                modifier = Modifier
+                                    .align(Alignment.BottomCenter)
+                                    .padding(bottom = 4.dp)
+                                    .widthIn(max = 110.dp),
+                            )
+                        } else {
+                            Text(
+                                text = title.uppercase(),
+                                style = TraktTheme.typography.buttonTertiary,
+                                color = TraktTheme.colors.textPrimary,
+                                textAlign = TextAlign.Center,
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier
+                                    .align(Alignment.BottomCenter)
+                                    .padding(
+                                        horizontal = 13.dp,
+                                        vertical = if (containerImageUrl == null || isContainerError) 14.dp else 8.dp,
+                                    ),
+                            )
+                        }
+
+                        cardContent?.let {
+                            Box(
+                                modifier = Modifier
+                                    .padding(6.dp)
+                                    .align(Alignment.BottomStart),
+                            ) {
+                                cardContent()
+                            }
+                        }
+
+                        cardTopContent?.let {
+                            Box(
+                                modifier = Modifier
+                                    .padding(6.dp)
+                                    .align(Alignment.TopEnd),
+                            ) {
+                                cardTopContent()
+                            }
+                        }
+
+                        if (more) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_more_vertical),
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier
+                                    .padding(
+                                        horizontal = 5.dp,
+                                        vertical = 10.dp,
+                                    )
+                                    .size(14.dp)
+                                    .align(Alignment.TopEnd)
+                                    .onClick(onClick = onLongClick ?: {}),
+                            )
+                        }
+                    }
+                },
+            )
+
+            if (watched) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
                     modifier = Modifier
-                        .fillMaxSize()
-                        .onClickCombined(
-                            onClick = onClick,
-                            onLongClick = onLongClick,
-                        ),
+                        .align(Alignment.BottomCenter)
+                        .graphicsLayer {
+                            translationY = 6.dp.toPx()
+                        },
                 ) {
-                    val isErrorContainer = containerImageUrl == null || isContainerError
-                    val isErrorContent = contentImageUrl == null || isContentError
-
-                    if (!isErrorContainer) {
-                        AsyncImage(
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(containerImageUrl)
-                                .crossfade(true)
-                                .build(),
-                            contentDescription = title,
-                            contentScale = ContentScale.Crop,
-                            onError = { isContainerError = true },
-                            modifier = Modifier
-                                .align(Alignment.Center)
-                                .fillMaxSize(),
-                        )
-                    } else {
-                        Image(
-                            painter = painterResource(R.drawable.ic_placeholder_horizontal_border),
-                            contentDescription = title,
-                            contentScale = ContentScale.Fit,
-                            colorFilter = ColorFilter.tint(TraktTheme.colors.placeholderContent),
-                            modifier = Modifier
-                                .padding(5.dp)
-                                .align(Alignment.Center),
-                        )
-                        Icon(
-                            painter = painterResource(R.drawable.ic_placeholder_trakt),
-                            contentDescription = title,
-                            tint = TraktTheme.colors.placeholderContent,
-                            modifier = Modifier
-                                .size(80.dp)
-                                .align(Alignment.TopEnd)
-                                .graphicsLayer {
-                                    translationX = -22.dp.toPx()
-                                    translationY = -18.dp.toPx()
-                                },
-                        )
-                    }
-
-                    if (isErrorContent && title.isNotBlank()) {
-                        Box(
-                            modifier = Modifier
-                                .align(Alignment.BottomCenter)
-                                .fillMaxWidth()
-                                .fillMaxHeight(0.66F)
-                                .drawWithCache {
-                                    onDrawBehind {
-                                        drawRect(
-                                            brush = verticalGradient(
-                                                0f to Color.Transparent,
-                                                1f to Color(0xFA212427),
-                                            ),
-                                        )
-                                    }
-                                },
-                        )
-                    }
-
-                    if (paletteColor != null && !isErrorContainer) {
-                        Box(
-                            modifier = Modifier
-                                .align(Alignment.BottomCenter)
-                                .fillMaxWidth()
-                                .fillMaxHeight(0.66F)
-                                .drawWithCache {
-                                    onDrawBehind {
-                                        drawRect(
-                                            brush = verticalGradient(
-                                                0f to Color.Transparent,
-                                                1f to paletteColor.copy(alpha = 0.9F),
-                                            ),
-                                        )
-                                    }
-                                },
-                        )
-                    }
-
-                    if (contentImageUrl != null && !isContentError) {
-                        AsyncImage(
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(contentImageUrl)
-                                .crossfade(true)
-                                .build(),
-                            contentDescription = title,
-                            contentScale = ContentScale.Fit,
-                            onError = { isContentError = true },
-                            modifier = Modifier
-                                .align(Alignment.BottomCenter)
-                                .padding(bottom = 4.dp)
-                                .widthIn(max = 110.dp),
-                        )
-                    } else {
-                        Text(
-                            text = title.uppercase(),
-                            style = TraktTheme.typography.buttonTertiary,
-                            color = TraktTheme.colors.textPrimary,
-                            textAlign = TextAlign.Center,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier
-                                .align(Alignment.BottomCenter)
-                                .padding(
-                                    horizontal = 13.dp,
-                                    vertical = if (containerImageUrl == null || isContainerError) 14.dp else 8.dp,
-                                ),
-                        )
-                    }
-
-                    cardContent?.let {
-                        Box(
-                            modifier = Modifier
-                                .padding(6.dp)
-                                .align(Alignment.BottomStart),
-                        ) {
-                            cardContent()
-                        }
-                    }
-
-                    cardTopContent?.let {
-                        Box(
-                            modifier = Modifier
-                                .padding(6.dp)
-                                .align(Alignment.TopEnd),
-                        ) {
-                            cardTopContent()
-                        }
-                    }
-
-                    if (more) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_more_vertical),
-                            contentDescription = null,
-                            tint = Color.White,
-                            modifier = Modifier
-                                .padding(
-                                    horizontal = 5.dp,
-                                    vertical = 10.dp,
-                                )
-                                .size(14.dp)
-                                .align(Alignment.TopEnd)
-                                .onClick(onClick = onLongClick ?: {}),
-                        )
-                    }
+                    CollectionChip(
+                        iconRes = R.drawable.ic_check_double,
+                        iconSize = 11.5.dp,
+                    )
                 }
-            },
-        )
+            }
+        }
 
         footerContent?.let {
             Column(
@@ -254,6 +275,31 @@ internal fun HorizontalMediaCard(
                 footerContent()
             }
         }
+    }
+}
+
+@Composable
+private fun CollectionChip(
+    iconRes: Int,
+    iconSize: Dp,
+) {
+    val shape = RoundedCornerShape(100)
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .size(
+                width = 24.dp,
+                height = 16.dp,
+            )
+            .shadow(1.5.dp, shape)
+            .background(TraktTheme.colors.chipContainer, shape),
+    ) {
+        Icon(
+            painter = painterResource(iconRes),
+            tint = Color.White,
+            contentDescription = null,
+            modifier = Modifier.size(iconSize),
+        )
     }
 }
 
@@ -338,6 +384,7 @@ private fun Preview() {
 
                 HorizontalMediaCard(
                     title = "The Last of Us",
+                    watched = true,
                     footerContent = {
                         Row(
                             verticalAlignment = CenterVertically,
