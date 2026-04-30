@@ -3,7 +3,7 @@ package tv.trakt.trakt.common.ui.theme.colors
 import androidx.compose.ui.graphics.Color
 
 val White = Color(0xFFFEFEFE)
-val Black = Color(0x00000000)
+val Black = Color(0xFF000000)
 
 // Shades
 val Shade10 = Color(0xFFFEFEFE)

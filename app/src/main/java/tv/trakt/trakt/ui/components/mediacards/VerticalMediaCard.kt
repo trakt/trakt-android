@@ -291,11 +291,11 @@ private fun CollectionChip(
                 height = 16.dp,
             )
             .shadow(1.5.dp, shape)
-            .background(TraktTheme.colors.chipContainer, shape),
+            .background(TraktTheme.colors.tagChipContainer, shape),
     ) {
         Icon(
             painter = painterResource(iconRes),
-            tint = Color.White,
+            tint = TraktTheme.colors.tagChipContent,
             contentDescription = null,
             modifier = Modifier.size(iconSize),
         )

@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
@@ -207,6 +208,9 @@ private fun ActionButtons(
             checked = inWatchlist,
             modifier = Modifier
                 .fillMaxWidth()
+                .graphicsLayer {
+                    translationX = -4.dp.toPx()
+                }
                 .onClick {
                     onWatchlistClick?.invoke()
                 },

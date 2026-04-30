@@ -217,11 +217,11 @@ internal fun PanelMediaCard(
                                     height = 16.dp,
                                 )
                                 .shadow(1.dp, shape)
-                                .background(TraktTheme.colors.chipContainer, shape),
+                                .background(TraktTheme.colors.tagChipContainer, shape),
                         ) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_check_double),
-                                tint = Color.White,
+                                tint = TraktTheme.colors.tagChipContent,
                                 contentDescription = null,
                                 modifier = Modifier
                                     .size(10.dp),
@@ -238,11 +238,11 @@ internal fun PanelMediaCard(
                                     height = 16.dp,
                                 )
                                 .shadow(1.dp, shape)
-                                .background(TraktTheme.colors.chipContainer, shape),
+                                .background(TraktTheme.colors.tagChipContainer, shape),
                         ) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_bookmark_on),
-                                tint = Color.White,
+                                tint = TraktTheme.colors.tagChipContent,
                                 contentDescription = null,
                                 modifier = Modifier.size(11.dp),
                             )
