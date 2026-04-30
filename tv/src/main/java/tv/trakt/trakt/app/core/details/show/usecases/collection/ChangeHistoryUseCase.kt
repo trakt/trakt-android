@@ -29,7 +29,7 @@ internal class ChangeHistoryUseCase(
                     WatchedShow(
                         showId = showId,
                         episodesPlays = episodesPlays + response.added.episodes,
-                        episodesAiredCount = episodesAiredCount,
+                        episodesAired = episodesAiredCount,
                         lastWatchedAt = watchedAt,
                     ),
                 ),

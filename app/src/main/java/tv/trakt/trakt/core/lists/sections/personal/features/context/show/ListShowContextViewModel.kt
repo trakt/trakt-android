@@ -98,8 +98,8 @@ internal class ListShowContextViewModel(
                     isWatchedState.update {
                         val containsShow = userProgressLocalSource.containsShow(show.ids.trakt)
                         if (containsShow) {
-                            val show = userProgressLocalSource.getShows(setOf(show.ids.trakt)).firstOrNull()
-                            return@update show?.isCompleted == true
+                            val progress = userProgressLocalSource.getShows(setOf(show.ids.trakt)).firstOrNull()
+                            return@update progress?.isCompleted(show) == true
                         }
                         return@update false
                     }

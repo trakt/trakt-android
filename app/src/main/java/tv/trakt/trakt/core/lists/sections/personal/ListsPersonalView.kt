@@ -362,7 +362,7 @@ private fun ContentList(
                 item = item,
                 showMediaIcon = listFilter == MediaMode.MEDIA,
                 showMoreIcon = true,
-                watched = collectionState.isWatched(item.id, item.type),
+                watched = collectionState.isWatched(item.id, item.type, item.airedEpisodes),
                 watchlist = collectionState.isWatchlist(item.id, item.type),
                 onMovieClick = onMovieClick,
                 onShowClick = onShowClick,

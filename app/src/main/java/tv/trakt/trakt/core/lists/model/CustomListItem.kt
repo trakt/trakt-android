@@ -106,4 +106,10 @@ internal sealed class CustomListItem(
             is SeasonItem -> season.firstAired
             is EpisodeItem -> episode.firstAired
         }
+
+    val airedEpisodes: Int?
+        get() = when (this) {
+            is ShowItem -> show.airedEpisodes
+            else -> null
+        }
 }

@@ -320,7 +320,7 @@ private fun LazyGridScope.popularSearchesContent(
                 SearchGridItem(
                     item = item,
                     filter = state.input.filter,
-                    watched = state.collection.isWatched(item.id, item.type),
+                    watched = state.collection.isWatched(item.id, item.type, item.airedEpisodes),
                     watchlist = state.collection.isWatchlist(item.id, item.type),
                     onShowClick = onShowClick,
                     onShowLongClick = onShowLongClick,
@@ -383,7 +383,7 @@ private fun LazyGridScope.searchingContent(
                 SearchGridItem(
                     item = item,
                     filter = state.input.filter,
-                    watched = state.collection.isWatched(item.id, item.type),
+                    watched = state.collection.isWatched(item.id, item.type, item.airedEpisodes),
                     watchlist = state.collection.isWatchlist(item.id, item.type),
                     onShowClick = onShowClick,
                     onShowLongClick = onShowLongClick,

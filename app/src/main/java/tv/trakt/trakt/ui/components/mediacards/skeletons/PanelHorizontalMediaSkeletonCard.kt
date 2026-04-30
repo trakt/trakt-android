@@ -35,7 +35,7 @@ import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
-import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
+import tv.trakt.trakt.ui.theme.HorizontalEpisodeImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -62,13 +62,13 @@ internal fun PanelHorizontalMediaSkeletonCard(
             .fillMaxWidth()
             .clip(RoundedCornerShape(corner))
             .background(shimmerTransition)
-            .height(TraktTheme.size.horizontalMediumMediaCardSize / HorizontalImageAspectRatio),
+            .height(TraktTheme.size.horizontalMediumMediaCardSize / HorizontalEpisodeImageAspectRatio),
     ) {
         Box(
             modifier = Modifier
                 .padding(start = 8.dp)
                 .padding(vertical = 8.dp)
-                .aspectRatio(HorizontalImageAspectRatio)
+                .aspectRatio(HorizontalEpisodeImageAspectRatio)
                 .width(TraktTheme.size.horizontalMediumMediaCardSize)
                 .clip(RoundedCornerShape(corner - 2.dp))
                 .background(TraktTheme.colors.skeletonShimmer),

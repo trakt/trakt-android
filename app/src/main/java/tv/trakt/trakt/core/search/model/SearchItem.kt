@@ -69,4 +69,10 @@ internal sealed class SearchItem(
             is Person -> person.images
             is List -> list.images
         }
+
+    val airedEpisodes: Int?
+        get() = when (this) {
+            is Show -> show.airedEpisodes
+            else -> null
+        }
 }

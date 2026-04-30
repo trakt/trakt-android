@@ -126,7 +126,7 @@ internal class EpisodeSeasonViewModel(
                                 loadUserProgressUseCase.loadShowsProgress()
                             }
                         }.firstOrNull {
-                            it.show.ids.trakt == show.ids.trakt
+                            it.showId == show.ids.trakt
                         }
                     } catch (error: Exception) {
                         error.rethrowCancellation {
@@ -184,14 +184,14 @@ internal class EpisodeSeasonViewModel(
                 )
                 val progress = loadUserProgressUseCase.loadShowsProgress()
                     .firstOrNull {
-                        it.show.ids.trakt == show.ids.trakt
+                        it.showId == show.ids.trakt
                     }
 
                 episodesState.update {
                     markWatchedEpisodes(
                         inputEpisodes = episodesState.value,
                         progress = progress?.seasons
-                            ?.firstOrNull { s -> s.number == episode.season }
+                            ?.firstOrNull { season -> season.number == episode.season }
                             ?.episodes,
                         checkable = true,
                     )
@@ -235,14 +235,14 @@ internal class EpisodeSeasonViewModel(
                 updateEpisodeHistoryUseCase.removeEpisodeFromHistory(episodeToRemove.ids.trakt.value)
                 val progress = loadUserProgressUseCase.loadShowsProgress()
                     .firstOrNull {
-                        it.show.ids.trakt == show.ids.trakt
+                        it.showId == show.ids.trakt
                     }
 
                 episodesState.update {
                     markWatchedEpisodes(
                         inputEpisodes = episodesState.value,
                         progress = progress?.seasons
-                            ?.firstOrNull { s -> s.number == episode.season }
+                            ?.firstOrNull { season -> season.number == episode.season }
                             ?.episodes,
                         checkable = true,
                     )
@@ -288,7 +288,7 @@ internal class EpisodeSeasonViewModel(
                     isLoading = false,
                     isCheckable = checkable,
                     isWatched = progress
-                        ?.any { episodeProgress -> episodeProgress.number == item.episode.number } == true,
+                        ?.any { ep -> ep.id == item.episode.ids.trakt } == true,
                 )
             }.toImmutableList()
     }

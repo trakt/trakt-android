@@ -252,6 +252,7 @@ private fun MainNavHost(
             )
             homeScreen(
                 onNavigateToAuth = { navigateToAuth() },
+                onNavigateToShow = { navigateToShow(it) },
                 onNavigateToMovie = { navigateToMovie(it) },
                 onNavigateToEpisode = { showId, episodeId ->
                     navigateToEpisode(showId, episodeId)

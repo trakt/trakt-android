@@ -115,8 +115,8 @@ internal fun ListsWatchlistView(
     WatchlistShowSheet(
         addLocally = true,
         show = showContextSheet,
-        watched = showContextSheet?.ids?.trakt?.let {
-            state.collection.isWatched(it, SHOW)
+        watched = showContextSheet?.let {
+            state.collection.isWatched(it.ids.trakt, SHOW, it.airedEpisodes)
         } ?: false,
         onDismiss = { showContextSheet = null },
         onRemoveWatchlist = {
@@ -131,7 +131,7 @@ internal fun ListsWatchlistView(
         addLocally = true,
         movie = movieContextSheet,
         watched = movieContextSheet?.ids?.trakt?.let {
-            state.collection.isWatched(it, MOVIE)
+            state.collection.isWatched(it, MOVIE, null)
         } ?: false,
         onDismiss = { movieContextSheet = null },
         onRemoveWatchlist = {
@@ -311,7 +311,7 @@ private fun ContentList(
             ListsWatchlistItemView(
                 item = item,
                 showMediaIcon = (filter == MEDIA),
-                watched = collection.isWatched(item.id, item.type),
+                watched = collection.isWatched(item.id, item.type, item.airedEpisodes),
                 onShowClick = {
                     if (item is WatchlistItem.ShowItem && !item.loading) {
                         onShowClick(item.show)

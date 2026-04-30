@@ -80,7 +80,7 @@ internal class GetCalendarItemsUseCase(
             val moviesData = moviesDataAsync.await()
 
             val showsProgress = showsProgressAsync.await()
-                .associateBy { it.show.ids.trakt }
+                .associateBy { it.showId }
             val moviesProgress = moviesProgressAsync.await()
                 .associateBy { it.movie.ids.trakt }
 
@@ -113,8 +113,8 @@ internal class GetCalendarItemsUseCase(
                     val showId = it.show.ids.trakt.toTraktId()
                     CalendarItem.EpisodeItem(
                         watched = showsProgress[showId]?.isEpisodeWatched(
-                            season = it.episode.season,
-                            episode = it.episode.number,
+                            seasonNumber = it.episode.season,
+                            episodeId = it.episode.ids.trakt.toTraktId(),
                         ) == true,
                         episode = Episode.fromDto(it.episode),
                         show = Show.fromDto(it.show),

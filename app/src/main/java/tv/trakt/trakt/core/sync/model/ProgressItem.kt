@@ -2,10 +2,10 @@ package tv.trakt.trakt.core.sync.model
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
-import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.MovieProgress
 import tv.trakt.trakt.common.model.TraktId
 import java.time.Instant
+import tv.trakt.trakt.common.model.Show as ShowCommon
 
 @Immutable
 internal sealed class ProgressItem(
@@ -21,60 +21,71 @@ internal sealed class ProgressItem(
 
     @Immutable
     internal data class ShowItem(
-        val show: Show,
+        val showId: TraktId,
         val seasons: ImmutableList<Season>,
-        val progress: Progress,
-        val lastWatchedAt: Instant,
         override val loading: Boolean = false,
     ) : ProgressItem(loading) {
-        data class Show(
-            val ids: Ids,
-            val title: String,
-        )
+        val plays: Int
+            get() = seasons
+                .flatMap { it.episodes }
+                .sumOf { it.plays }
+
+        val playsDistinct: Int
+            get() = seasons
+                .flatMap { it.episodes }
+                .sumOf { it.playsDistinct }
+
+        val lastWatchedAt: Instant
+            get() = seasons
+                .flatMap { it.episodes }
+                .maxBy { it.lastWatchedAt }
+                .lastWatchedAt
 
         data class Season(
+            val id: TraktId,
             val number: Int,
             val episodes: ImmutableList<Episode>,
         )
 
         data class Episode(
-            val number: Int,
+            val id: TraktId,
             val plays: Int,
+            val playsDistinct: Int,
             val lastWatchedAt: Instant,
         )
 
-        data class Progress(
-            val aired: Int,
-            val plays: Int,
-            val lastWatchedAt: Instant?,
-            val resetAt: Instant?,
-        )
-
         fun isEpisodeWatched(
-            season: Int,
-            episode: Int,
+            seasonNumber: Int,
+            episodeId: TraktId,
         ): Boolean {
             return seasons
-                .firstOrNull { it.number == season }
+                .firstOrNull { it.number == seasonNumber }
                 ?.episodes
-                ?.firstOrNull { it.number == episode }
+                ?.firstOrNull { it.id == episodeId }
                 ?.let { it.plays > 0 }
                 ?: false
         }
 
-        val isCompleted: Boolean
-            get() = progress.plays >= progress.aired
+        fun isCompleted(show: ShowCommon): Boolean {
+            val airedEpisodes = show.airedEpisodes
+
+            val watchedEpisodes = seasons
+                .flatMap { it.episodes }
+                .filter { it.plays > 0 }
+
+            return watchedEpisodes.size >= airedEpisodes
+        }
     }
 
     val mediaId: TraktId
         get() = when (this) {
-            is ShowItem -> show.ids.trakt
+            is ShowItem -> showId
             is MovieItem -> movie.ids.trakt
         }
 
     val key: String
         get() = when (this) {
-            is ShowItem -> "${show.ids.trakt.value}-progress-show"
+            is ShowItem -> "${showId.value}-progress-show"
             is MovieItem -> "${movie.ids.trakt.value}-progress-movie"
         }
 }

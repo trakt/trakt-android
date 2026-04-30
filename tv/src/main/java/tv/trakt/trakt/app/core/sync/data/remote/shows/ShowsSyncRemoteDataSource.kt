@@ -3,7 +3,6 @@ package tv.trakt.trakt.app.core.sync.data.remote.shows
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.ProgressShowDto
 import tv.trakt.trakt.common.networking.SyncAddHistoryResponseDto
-import tv.trakt.trakt.common.networking.WatchedShowDto
 import tv.trakt.trakt.common.networking.WatchlistShowDto
 import java.time.ZonedDateTime
 
@@ -24,7 +23,7 @@ internal interface ShowsSyncRemoteDataSource {
         hide: String? = null,
     ): List<WatchlistShowDto>
 
-    suspend fun getWatched(extended: String? = null): List<WatchedShowDto>
+    suspend fun getWatched(): Map<String, Map<String, Map<String, List<String>>>>
 
     suspend fun addToWatchlist(showId: TraktId)
 

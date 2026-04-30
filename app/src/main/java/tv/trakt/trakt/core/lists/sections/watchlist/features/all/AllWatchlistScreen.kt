@@ -157,7 +157,7 @@ internal fun AllWatchlistScreen(
         movie = contextMovieSheet?.movie,
         addLocally = true,
         watched = contextMovieSheet?.movie?.ids?.trakt?.let {
-            state.collection.isWatched(it, MOVIE)
+            state.collection.isWatched(it, MOVIE, null)
         } ?: false,
         onDismiss = { contextMovieSheet = null },
         onRemoveWatchlist = {
@@ -171,8 +171,8 @@ internal fun AllWatchlistScreen(
     WatchlistShowSheet(
         show = contextShowSheet?.show,
         addLocally = true,
-        watched = contextShowSheet?.show?.ids?.trakt?.let {
-            state.collection.isWatched(it, SHOW)
+        watched = contextShowSheet?.show?.let {
+            state.collection.isWatched(it.ids.trakt, SHOW, it.airedEpisodes)
         } ?: false,
         onDismiss = { contextShowSheet = null },
         onRemoveWatchlist = {
@@ -378,7 +378,7 @@ private fun ContentList(
                 is ShowItem -> AllWatchlistShowView(
                     item = item,
                     enabled = !loading,
-                    watched = collection.isWatched(item.id, SHOW),
+                    watched = collection.isWatched(item.id, SHOW, item.airedEpisodes),
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     modifier = Modifier
@@ -392,7 +392,7 @@ private fun ContentList(
                 is MovieItem -> AllWatchlistMovieView(
                     item = item,
                     enabled = !loading,
-                    watched = collection.isWatched(item.id, MOVIE),
+                    watched = collection.isWatched(item.id, MOVIE, null),
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     onCheckClick = { onCheckClick(item) },

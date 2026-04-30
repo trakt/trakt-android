@@ -180,7 +180,7 @@ private fun ContentList(
             VerticalMediaCard(
                 title = item.title,
                 imageUrl = item.images?.getPosterUrl(),
-                watched = collection.isWatched(item.ids.trakt, MediaType.SHOW),
+                watched = collection.isWatched(item.ids.trakt, MediaType.SHOW, item.airedEpisodes),
                 watchlist = collection.isWatchlist(item.ids.trakt, MediaType.SHOW),
                 onClick = { onClick?.invoke(item) },
                 onLongClick = { onLongClick?.invoke(item) },

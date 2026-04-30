@@ -63,7 +63,11 @@
             }
           }
         },
-        "security": [],
+        "security": [
+          {
+            "traktAPI": []
+          }
+        ],
         "operationId": "postOauthDeviceCode"
       }
     },
@@ -151,7 +155,11 @@
             }
           }
         },
-        "security": [],
+        "security": [
+          {
+            "traktAPI": []
+          }
+        ],
         "operationId": "postOauthDeviceToken"
       }
     },
@@ -284,7 +292,11 @@
             }
           }
         },
-        "security": [],
+        "security": [
+          {
+            "traktAPI": []
+          }
+        ],
         "operationId": "postOauthToken"
       }
     },
@@ -841,9 +853,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getCalendarsShows"
       }
@@ -1401,9 +1416,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getCalendarsNewShows"
       }
@@ -1961,9 +1979,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getCalendarsSeasonPremieres"
       }
@@ -2521,9 +2542,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getCalendarsFinales"
       }
@@ -2909,9 +2933,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getCalendarsMovies"
       }
@@ -3297,9 +3324,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getCalendarsDvdReleases"
       }
@@ -4382,9 +4412,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "postCheckinStart"
       },
@@ -4405,9 +4435,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "deleteCheckinDelete"
       }
@@ -5208,9 +5238,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersSettings"
       },
@@ -5359,9 +5392,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "putUsersSaveSettings"
       }
@@ -5619,9 +5655,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersReactionsComments"
       }
@@ -6910,9 +6949,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersLikesComments"
       }
@@ -7182,9 +7224,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersLikesLists"
       }
@@ -7241,9 +7286,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "putUsersAvatar"
       }
@@ -7301,9 +7349,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "putUsersCover"
       }
@@ -7443,9 +7494,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersBlocked"
       }
@@ -7588,9 +7642,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersProfile"
       }
@@ -8574,9 +8631,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersActivities"
       }
@@ -8809,9 +8869,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersStats"
       }
@@ -10419,9 +10482,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersComments"
       }
@@ -11169,9 +11235,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersWatching"
       }
@@ -11334,9 +11403,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postUsersFollow"
       },
@@ -11367,9 +11439,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "deleteUsersUnfollow"
       }
@@ -11418,9 +11493,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postUsersBlock"
       },
@@ -11451,9 +11529,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "deleteUsersUnblock"
       }
@@ -11531,9 +11612,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postUsersReport"
       }
@@ -11691,9 +11775,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersFollowers"
       }
@@ -11851,9 +11938,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersFollowing"
       }
@@ -12011,9 +12101,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersFriends"
       }
@@ -13950,9 +14043,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersMonth_in_review"
       }
@@ -15881,9 +15977,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersYear_in_review"
       }
@@ -15937,9 +16036,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersWatchedMinimalMovies"
       }
@@ -15948,7 +16050,8 @@
       "get": {
         "tags": [
           "users",
-          "watched"
+          "watched",
+          "minimal"
         ],
         "parameters": [
           {
@@ -15957,23 +16060,18 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "The slug that identifies the user, or \"me\" for the authenticated user."
           },
           {
             "name": "extended",
             "in": "query",
-            "description": "Extended information to include in the response.",
+            "required": true,
             "schema": {
-              "nullable": true
-            }
-          },
-          {
-            "name": "hidden",
-            "in": "query",
-            "description": "Whether to include any hidden seasons",
-            "schema": {
-              "type": "boolean",
-              "nullable": true
+              "type": "string",
+              "enum": [
+                "min"
+              ]
             }
           },
           {
@@ -15986,9 +16084,8 @@
             }
           },
           {
-            "name": "count_specials",
+            "name": "season_numbers",
             "in": "query",
-            "description": "Whether to count specials in the overall stats (only applies if specials are included).",
             "schema": {
               "type": "boolean",
               "nullable": true
@@ -16001,129 +16098,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
+                  "type": "object",
+                  "additionalProperties": {
                     "type": "object",
-                    "properties": {
-                      "plays": {
-                        "type": "integer"
-                      },
-                      "last_watched_at": {
-                        "type": "string"
-                      },
-                      "last_updated_at": {
-                        "type": "string"
-                      },
-                      "reset_at": {
-                        "type": "string",
-                        "nullable": true
-                      },
-                      "show": {
-                        "type": "object",
-                        "properties": {
-                          "aired_episodes": {
-                            "type": "integer"
-                          },
-                          "title": {
-                            "type": "string"
-                          },
-                          "year": {
-                            "type": "integer",
-                            "nullable": true
-                          },
-                          "ids": {
-                            "type": "object",
-                            "properties": {
-                              "trakt": {
-                                "type": "integer"
-                              },
-                              "tvdb": {
-                                "type": "integer",
-                                "nullable": true
-                              },
-                              "imdb": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "tmdb": {
-                                "type": "integer",
-                                "nullable": true
-                              },
-                              "plex": {
-                                "type": "object",
-                                "properties": {
-                                  "guid": {
-                                    "type": "string",
-                                    "nullable": true
-                                  },
-                                  "slug": {
-                                    "type": "string",
-                                    "nullable": true
-                                  }
-                                },
-                                "nullable": true
-                              },
-                              "slug": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "trakt",
-                              "slug"
-                            ]
-                          }
-                        },
-                        "required": [
-                          "aired_episodes",
-                          "title",
-                          "ids"
-                        ]
-                      },
-                      "seasons": {
+                    "additionalProperties": {
+                      "type": "object",
+                      "additionalProperties": {
                         "type": "array",
                         "items": {
-                          "type": "object",
-                          "properties": {
-                            "number": {
-                              "type": "integer"
-                            },
-                            "episodes": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "number": {
-                                    "type": "integer"
-                                  },
-                                  "plays": {
-                                    "type": "integer"
-                                  },
-                                  "last_watched_at": {
-                                    "type": "string"
-                                  }
-                                },
-                                "required": [
-                                  "number",
-                                  "plays",
-                                  "last_watched_at"
-                                ]
-                              }
-                            }
-                          },
-                          "required": [
-                            "number",
-                            "episodes"
-                          ]
-                        },
-                        "nullable": true
+                          "type": "string"
+                        }
                       }
-                    },
-                    "required": [
-                      "plays",
-                      "last_watched_at",
-                      "last_updated_at",
-                      "show"
-                    ]
+                    }
                   }
                 }
               }
@@ -16132,11 +16118,14 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
-        "operationId": "getUsersWatchedShows"
+        "operationId": "getUsersWatchedMinimalShows"
       }
     },
     "/users/{id}/history/": {
@@ -16929,9 +16918,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersHistoryAll"
       }
@@ -17279,9 +17271,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersHistoryMovies"
       }
@@ -17801,9 +17796,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersHistoryShows"
       }
@@ -18323,9 +18321,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersHistoryEpisodes"
       }
@@ -18681,9 +18682,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersHistoryMovie"
       }
@@ -19211,9 +19215,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersHistoryShow"
       }
@@ -19741,9 +19748,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersHistoryEpisode"
       }
@@ -20198,9 +20208,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersWatchlistMovies"
       }
@@ -20681,9 +20694,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersWatchlistShows"
       }
@@ -21434,9 +21450,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersWatchlistAll"
       }
@@ -21680,9 +21699,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersWatchlistComments"
       }
@@ -22420,9 +22442,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersRatingsMovies"
       }
@@ -23160,9 +23185,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersRatingsShows"
       }
@@ -23900,9 +23928,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersRatingsEpisodes"
       }
@@ -24556,9 +24587,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersFavoritesMedia"
       }
@@ -24916,9 +24950,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersFavoritesMovies"
       }
@@ -25302,9 +25339,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersFavoritesShows"
       }
@@ -25548,9 +25588,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersFavoritesComments"
       }
@@ -25814,9 +25857,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersListsPersonal"
       },
@@ -26088,9 +26134,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postUsersListsCreate"
       }
@@ -26336,9 +26385,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersListsCollaborations"
       }
@@ -26409,9 +26461,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postUsersListsReorder"
       }
@@ -26663,9 +26718,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersListsListSummary"
       },
@@ -26956,9 +27014,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "putUsersListsListUpdate"
       },
@@ -27007,9 +27068,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "deleteUsersListsListDelete"
       }
@@ -27443,9 +27507,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersListsListItemsMovie"
       }
@@ -27905,9 +27972,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersListsListItemsShow"
       }
@@ -28637,9 +28707,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersListsListItemsMedia"
       }
@@ -30193,9 +30266,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersListsListItemsAll"
       }
@@ -31901,9 +31977,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postUsersListsListAdd"
       }
@@ -33577,9 +33656,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postUsersListsListRemove"
       }
@@ -33676,9 +33758,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postUsersListsListReorder"
       }
@@ -33856,9 +33941,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersListsListLikes"
       }
@@ -34111,9 +34199,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersListsListComments"
       }
@@ -35766,9 +35857,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postUsersHiddenAdd"
       }
@@ -36112,9 +36206,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersHiddenGet"
       }
@@ -36447,9 +36544,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersHiddenDropped"
       }
@@ -38082,9 +38182,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postUsersHiddenRemoveProgress"
       }
@@ -39717,9 +39820,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postUsersHiddenRemoveCalendar"
       }
@@ -39873,9 +39979,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersRequestsFollow"
       }
@@ -40029,9 +40138,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersRequestsFollowing"
       }
@@ -40202,9 +40314,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postUsersRequestsApprove"
       },
@@ -40243,9 +40358,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "deleteUsersRequestsDeny"
       }
@@ -40345,9 +40463,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getUsersFiltersSaved"
       }
@@ -40466,9 +40587,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postUsersFiltersAdd"
       }
@@ -40517,9 +40641,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "deleteUsersFiltersDelete"
       }
@@ -42167,9 +42294,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "postSyncHistoryAdd"
       }
@@ -43809,9 +43936,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "postSyncHistoryRemove"
       }
@@ -44513,9 +44640,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "getSyncProgressUpNextStandard"
       }
@@ -45192,9 +45319,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "getSyncProgressUpNextNitro"
       }
@@ -45529,9 +45656,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "getSyncProgressMovies"
       }
@@ -45573,9 +45700,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "deleteSyncProgressDropMovie"
       }
@@ -46281,9 +46408,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "getSyncProgressWatched"
       }
@@ -47963,9 +48090,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "postSyncWatchlistAdd"
       }
@@ -49621,9 +49748,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "postSyncWatchlistRemove"
       }
@@ -50579,9 +50706,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "postSyncRatingsAdd"
       }
@@ -51513,9 +51640,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "postSyncRatingsRemove"
       }
@@ -52193,9 +52320,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "postSyncFavoritesAdd"
       }
@@ -52857,9 +52984,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "postSyncFavoritesRemove"
       }
@@ -53193,9 +53320,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "getSyncCollectionMovies"
       }
@@ -53571,9 +53698,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "getSyncCollectionShows"
       }
@@ -54079,9 +54206,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "getSyncCollectionEpisodes"
       }
@@ -55197,9 +55324,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "getSyncCollectionMedia"
       }
@@ -55238,9 +55365,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "getSyncCollectionMinimalMovies"
       }
@@ -55285,9 +55412,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "getSyncCollectionMinimalShows"
       }
@@ -55326,9 +55453,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "getSyncCollectionMinimalEpisodes"
       }
@@ -55941,9 +56068,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "getRecommendationsMoviesRecommend"
       }
@@ -55984,9 +56111,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "deleteRecommendationsMoviesHide"
       }
@@ -56625,9 +56752,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "getRecommendationsShowsRecommend"
       }
@@ -56668,9 +56795,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "deleteRecommendationsShowsHide"
       }
@@ -57209,9 +57336,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getSocial_recommendationsMoviesRecommend"
       }
@@ -57776,9 +57906,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getSocial_recommendationsShowsRecommend"
       }
@@ -58455,9 +58588,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMediaTrending"
       }
@@ -59134,9 +59270,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMediaAnticipated"
       }
@@ -59789,9 +59928,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMediaPopular"
       }
@@ -60066,9 +60208,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMoviesSummary"
       }
@@ -60269,9 +60414,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMoviesRatings"
       }
@@ -60342,9 +60490,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMoviesStats"
       }
@@ -60415,9 +60566,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMoviesTranslations"
       }
@@ -60713,9 +60867,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMoviesRelated"
       }
@@ -60861,9 +61018,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMoviesWatching"
       }
@@ -60933,9 +61093,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMoviesStudios"
       }
@@ -61404,9 +61567,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMoviesWatchnow"
       }
@@ -61453,9 +61619,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMoviesJustwatchLink"
       }
@@ -61817,9 +61986,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMoviesPeople"
       }
@@ -61897,9 +62069,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMoviesVideos"
       }
@@ -62193,9 +62368,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMoviesLists"
       }
@@ -62449,9 +62627,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMoviesComments"
       }
@@ -62542,9 +62723,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMoviesSentiments"
       }
@@ -62628,9 +62812,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postMoviesReport"
       }
@@ -63030,9 +63217,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMoviesTrending"
       }
@@ -63381,9 +63571,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMoviesWatched"
       }
@@ -63783,9 +63976,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMoviesAnticipated"
       }
@@ -64185,9 +64381,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMoviesHot"
       }
@@ -64575,9 +64774,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMoviesPopular"
       }
@@ -64994,9 +65196,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getMoviesStreaming"
       }
@@ -65297,9 +65502,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsSummary"
       }
@@ -65500,9 +65708,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsRatings"
       }
@@ -65573,9 +65784,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsStats"
       }
@@ -66124,9 +66338,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsProgressWatched"
       }
@@ -66197,9 +66414,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsTranslations"
       }
@@ -66521,9 +66741,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsRelated"
       }
@@ -66669,9 +66892,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsWatching"
       }
@@ -66741,9 +66967,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsStudios"
       }
@@ -67212,9 +67441,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsWatchnow"
       }
@@ -67261,9 +67493,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsJustwatchLink"
       }
@@ -67625,9 +67860,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsPeople"
       }
@@ -67763,9 +68001,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsSeasons"
       }
@@ -67964,9 +68205,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsSeasonEpisodes"
       }
@@ -68055,9 +68299,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsSeasonVideos"
       }
@@ -68113,9 +68360,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsSeasonJustwatchLink"
       }
@@ -68210,9 +68460,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postShowsSeasonReport"
       }
@@ -68290,9 +68543,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsVideos"
       }
@@ -68586,9 +68842,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsLists"
       }
@@ -68842,9 +69101,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsComments"
       }
@@ -68935,9 +69197,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsSentiments"
       }
@@ -69021,9 +69286,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postShowsReport"
       }
@@ -69229,9 +69497,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsEpisodeSummary"
       }
@@ -69319,9 +69590,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsEpisodeTranslations"
       }
@@ -69405,9 +69679,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsEpisodeStats"
       }
@@ -69629,9 +69906,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsEpisodeRatings"
       }
@@ -69798,9 +70078,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsEpisodeWatching"
       }
@@ -70075,9 +70358,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsEpisodeComments"
       }
@@ -70460,9 +70746,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsEpisodePeople"
       }
@@ -70952,9 +71241,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsEpisodeWatchnow"
       }
@@ -71059,9 +71351,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postShowsEpisodeReport"
       }
@@ -71487,9 +71782,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsTrending"
       }
@@ -71942,9 +72240,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsWatched"
       }
@@ -72370,9 +72671,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsAnticipated"
       }
@@ -72798,9 +73102,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsHot"
       }
@@ -73214,9 +73521,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsPopular"
       }
@@ -73659,9 +73969,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getShowsStreaming"
       }
@@ -74642,9 +74955,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getSearchQuery"
       }
@@ -75625,9 +75941,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getSearchExact"
       }
@@ -76389,9 +76708,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getSearchTrending"
       }
@@ -76447,9 +76769,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postSearchRecentAdd"
       }
@@ -76505,9 +76830,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postSearchRecentRemove"
       }
@@ -76662,9 +76990,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getPeopleSummary"
       }
@@ -77228,9 +77559,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getPeopleMovies"
       }
@@ -77858,9 +78192,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getPeopleShows"
       }
@@ -77943,9 +78280,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postPeopleReport"
       }
@@ -78026,9 +78366,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getWatchnowSourcesAll"
       }
@@ -78118,9 +78461,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getWatchnowSourcesCountry"
       }
@@ -78204,9 +78550,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postSeasonsReport"
       }
@@ -78682,9 +79031,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getEpisodesWatchnow"
       }
@@ -78768,9 +79120,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postEpisodesReport"
       }
@@ -79114,9 +79469,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getListsTrending"
       }
@@ -79460,9 +79818,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getListsPopular"
       }
@@ -79778,9 +80139,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getListsSummary"
       }
@@ -80204,9 +80568,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getListsItemsMovie"
       }
@@ -80656,9 +81023,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getListsItemsShow"
       }
@@ -81378,9 +81748,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getListsItemsMedia"
       }
@@ -82924,9 +83297,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getListsItemsAll"
       }
@@ -83102,9 +83478,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getListsLikes"
       }
@@ -83145,9 +83524,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postListsLike"
       },
@@ -83178,9 +83560,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "deleteListsUnlike"
       }
@@ -83261,9 +83646,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postListsReport"
       }
@@ -83431,9 +83819,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getCommentsLikes"
       }
@@ -83474,9 +83865,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postCommentsLike"
       },
@@ -83507,9 +83901,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "deleteCommentsUnlike"
       }
@@ -83594,9 +83991,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postCommentsReport"
       }
@@ -83832,9 +84232,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getCommentsReplies"
       },
@@ -84061,9 +84464,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postCommentsReply"
       }
@@ -84292,9 +84698,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "putCommentsEdit"
       },
@@ -84325,9 +84734,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "deleteCommentsDelete"
       }
@@ -84381,9 +84793,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getCommentsReactionsSummary"
       }
@@ -84580,9 +84995,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getCommentsReactionsAll"
       }
@@ -84640,9 +85058,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postCommentsReactionsAdd"
       },
@@ -84690,9 +85111,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "deleteCommentsReactionsRemove"
       }
@@ -85044,9 +85468,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "postCommentsPost"
       }
@@ -85098,9 +85525,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getCertificationsShows"
       }
@@ -85152,9 +85582,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getCertificationsMovies"
       }
@@ -85672,9 +86105,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "postScrobbleEpisodeStart"
       }
@@ -86192,9 +86625,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "postScrobbleEpisodePause"
       }
@@ -86712,9 +87145,9 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
-          },
-          {}
+          }
         ],
         "operationId": "postScrobbleEpisodeStop"
       }
@@ -86859,9 +87292,12 @@
         },
         "security": [
           {
+            "traktAPI": [],
             "traktOAuth": []
           },
-          {}
+          {
+            "traktAPI": []
+          }
         ],
         "operationId": "getTeamMembers"
       }
@@ -86871,13 +87307,32 @@
     "title": "Trakt API",
     "version": "2.0.0"
   },
+  "servers": [
+    {
+      "url": "https://api.trakt.tv",
+      "description": "Production"
+    },
+    {
+      "url": "https://api-staging.trakt.tv",
+      "description": "Staging"
+    },
+    {
+      "url": "https://apiz.trakt.tv",
+      "description": "Private production"
+    }
+  ],
   "components": {
     "securitySchemes": {
+      "traktAPI": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "trakt-api-key"
+      },
       "traktOAuth": {
         "type": "oauth2",
         "flows": {
           "authorizationCode": {
-            "authorizationUrl": "https://api.trakt.tv/oauth/authorize",
+            "authorizationUrl": "https://trakt.tv/oauth/authorize",
             "tokenUrl": "https://api.trakt.tv/oauth/token",
             "scopes": {
               "public": "Access public data"
@@ -86886,5 +87341,17 @@
         }
       }
     }
+  },
+  "x-readme": {
+    "headers": [
+      {
+        "key": "User-Agent",
+        "value": "readme/1.0"
+      },
+      {
+        "key": "trakt-api-version",
+        "value": "2"
+      }
+    ]
   }
 }

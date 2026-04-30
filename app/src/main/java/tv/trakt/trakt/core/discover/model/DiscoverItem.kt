@@ -63,4 +63,10 @@ internal sealed class DiscoverItem {
             is ShowItem -> show.images
             is MovieItem -> movie.images
         }
+
+    val airedEpisodes: Int?
+        get() = when (this) {
+            is ShowItem -> show.airedEpisodes
+            is MovieItem -> null
+        }
 }

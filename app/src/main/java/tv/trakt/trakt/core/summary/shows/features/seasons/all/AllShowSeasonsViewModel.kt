@@ -132,7 +132,7 @@ internal class AllShowSeasonsViewModel(
                             isLoaded -> loadUserProgressUseCase.loadLocalShows()
                             else -> loadUserProgressUseCase.loadShowsProgress()
                         }.firstOrNull {
-                            it.show.ids.trakt == showId
+                            it.showId == showId
                         }
                     }
                     else -> {
@@ -194,7 +194,7 @@ internal class AllShowSeasonsViewModel(
                     userState.isNotNull() -> when {
                         loadUserProgressUseCase.isShowsLoaded() -> loadUserProgressUseCase.loadLocalShows()
                         else -> loadUserProgressUseCase.loadShowsProgress()
-                    }.firstOrNull { it.show.ids.trakt == showId }
+                    }.firstOrNull { it.showId == showId }
 
                     else -> null
                 }
@@ -249,7 +249,7 @@ internal class AllShowSeasonsViewModel(
                     customDate = customDate,
                 )
                 val progress = loadUserProgressUseCase.loadShowsProgress()
-                    .firstOrNull { it.show.ids.trakt == showId }
+                    .firstOrNull { it.showId == showId }
 
                 itemsState.update {
                     it.copy(
@@ -311,7 +311,7 @@ internal class AllShowSeasonsViewModel(
                     customDate = customDate,
                 )
                 val progress = loadUserProgressUseCase.loadShowsProgress()
-                    .firstOrNull { it.show.ids.trakt == showId }
+                    .firstOrNull { it.showId == showId }
 
                 itemsState.update {
                     it.copy(
@@ -364,7 +364,7 @@ internal class AllShowSeasonsViewModel(
 
                 updateEpisodeHistoryUseCase.removeEpisodeFromHistory(episode.ids.trakt.value)
                 val progress = loadUserProgressUseCase.loadShowsProgress()
-                    .firstOrNull { it.show.ids.trakt == showId }
+                    .firstOrNull { it.showId == showId }
 
                 itemsState.update {
                     it.copy(
@@ -415,7 +415,7 @@ internal class AllShowSeasonsViewModel(
 
                 updateEpisodeHistoryUseCase.removeSeasonFromHistory(season.ids.trakt.value)
                 val progress = loadUserProgressUseCase.loadShowsProgress()
-                    .firstOrNull { it.show.ids.trakt == showId }
+                    .firstOrNull { it.showId == showId }
 
                 itemsState.update {
                     it.copy(

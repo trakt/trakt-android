@@ -111,7 +111,7 @@ internal class ShowSeasonsViewModel(
                             loadUserProgressUseCase.loadShowsProgress()
                         }
                     }.firstOrNull {
-                        it.show.ids.trakt == show.ids.trakt
+                        it.showId == show.ids.trakt
                     }
                 }
 
@@ -181,7 +181,7 @@ internal class ShowSeasonsViewModel(
                             loadUserProgressUseCase.loadShowsProgress()
                         }
                     }.firstOrNull {
-                        it.show.ids.trakt == show.ids.trakt
+                        it.showId == show.ids.trakt
                     }
 
                     else -> null
@@ -239,7 +239,7 @@ internal class ShowSeasonsViewModel(
                 )
                 val progress = loadUserProgressUseCase.loadShowsProgress()
                     .firstOrNull {
-                        it.show.ids.trakt == show.ids.trakt
+                        it.showId == show.ids.trakt
                     }
 
                 itemsState.update {
@@ -307,7 +307,7 @@ internal class ShowSeasonsViewModel(
                 )
                 val progress = loadUserProgressUseCase.loadShowsProgress()
                     .firstOrNull {
-                        it.show.ids.trakt == show.ids.trakt
+                        it.showId == show.ids.trakt
                     }
 
                 itemsState.update {
@@ -366,7 +366,7 @@ internal class ShowSeasonsViewModel(
                 updateEpisodeHistoryUseCase.removeEpisodeFromHistory(episode.ids.trakt.value)
                 val progress = loadUserProgressUseCase.loadShowsProgress()
                     .firstOrNull {
-                        it.show.ids.trakt == show.ids.trakt
+                        it.showId == show.ids.trakt
                     }
 
                 itemsState.update {
@@ -422,7 +422,7 @@ internal class ShowSeasonsViewModel(
                 updateEpisodeHistoryUseCase.removeSeasonFromHistory(season.ids.trakt.value)
                 val progress = loadUserProgressUseCase.loadShowsProgress()
                     .firstOrNull {
-                        it.show.ids.trakt == show.ids.trakt
+                        it.showId == show.ids.trakt
                     }
 
                 itemsState.update {

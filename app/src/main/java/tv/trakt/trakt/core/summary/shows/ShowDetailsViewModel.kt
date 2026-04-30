@@ -224,7 +224,7 @@ internal class ShowDetailsViewModel(
                     val progressAsync = async {
                         loadProgressUseCase.loadLocalShows()
                             .firstOrNull {
-                                it.show.ids.trakt == showId
+                                it.showId == showId
                             }
                     }
 
@@ -237,8 +237,8 @@ internal class ShowDetailsViewModel(
 
                     showProgressState.update {
                         ShowDetailsState.ProgressState(
-                            aired = progress?.progress?.aired ?: 0,
-                            plays = progress?.progress?.plays,
+                            aired = showState.value?.airedEpisodes ?: 0,
+                            plays = progress?.plays,
                             inWatchlist = watchlist.contains(showId),
                             inLists = lists.isNotEmpty(),
                         )
@@ -370,7 +370,7 @@ internal class ShowDetailsViewModel(
                 )
                 val progress = loadProgressUseCase.loadShowsProgress()
                     .firstOrNull {
-                        it.show.ids.trakt == showId
+                        it.showId == showId
                     }
 
                 userWatchlistLocalSource.removeShows(ids = setOf(showId))
@@ -380,8 +380,8 @@ internal class ShowDetailsViewModel(
 
                 showProgressState.update {
                     it?.copy(
-                        aired = progress?.progress?.aired ?: 0,
-                        plays = progress?.progress?.plays ?: 0,
+                        aired = showState.value?.airedEpisodes ?: 0,
+                        plays = progress?.plays,
                         inWatchlist = false,
                     )
                 }
@@ -426,7 +426,7 @@ internal class ShowDetailsViewModel(
                 updateShowHistoryUseCase.removeAllFromHistory(showId)
                 loadProgressUseCase.loadShowsProgress()
                     .firstOrNull {
-                        it.show.ids.trakt == showId
+                        it.showId == showId
                     }
 
                 showProgressState.update {
@@ -470,14 +470,12 @@ internal class ShowDetailsViewModel(
 
                 updateEpisodeHistoryUseCase.removePlayFromHistory(playId)
                 val progress = loadProgressUseCase.loadShowsProgress()
-                    .firstOrNull {
-                        it.show.ids.trakt == showId
-                    }
+                    .firstOrNull { it.showId == showId }
 
                 showProgressState.update {
                     it?.copy(
-                        aired = progress?.progress?.aired ?: 0,
-                        plays = progress?.progress?.plays ?: 0,
+                        aired = showState.value?.airedEpisodes ?: 0,
+                        plays = progress?.plays,
                     )
                 }
 

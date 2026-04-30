@@ -83,4 +83,10 @@ internal sealed class WatchlistItem(
             is ShowItem -> show.released
             is MovieItem -> movie.released?.atStartOfDay(UTC)
         }
+
+    val airedEpisodes: Int?
+        get() = when (this) {
+            is ShowItem -> show.airedEpisodes
+            is MovieItem -> null
+        }
 }

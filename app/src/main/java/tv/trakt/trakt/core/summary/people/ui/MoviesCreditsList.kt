@@ -144,7 +144,7 @@ internal fun MoviesCreditsList(
                                     VerticalMediaCard(
                                         title = item.title,
                                         imageUrl = item.images?.getPosterUrl(),
-                                        watched = userCollection.isWatched(item.id, MOVIE),
+                                        watched = userCollection.isWatched(item.id, MOVIE, null),
                                         watchlist = userCollection.isWatchlist(item.id, MOVIE),
                                         onClick = { onClick?.invoke(item.movie) },
                                         onLongClick = { onLongClick?.invoke(item.movie) },

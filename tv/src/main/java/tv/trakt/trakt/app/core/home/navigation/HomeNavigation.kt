@@ -16,6 +16,7 @@ internal data object HomeDestination
 internal fun NavGraphBuilder.homeScreen(
     onNavigateToAuth: () -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToShow: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToUpNext: () -> Unit,
     onNavigateToWatchlist: () -> Unit,
@@ -27,6 +28,7 @@ internal fun NavGraphBuilder.homeScreen(
             viewModel = koinViewModel(),
             onNavigateToAuth = onNavigateToAuth,
             onNavigateToMovie = onNavigateToMovie,
+            onNavigateToShow = onNavigateToShow,
             onNavigateToEpisode = onNavigateToEpisode,
             onNavigateToUpNext = onNavigateToUpNext,
             onNavigateToWatchlist = onNavigateToWatchlist,

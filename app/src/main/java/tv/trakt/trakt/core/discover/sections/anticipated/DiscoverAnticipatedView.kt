@@ -255,7 +255,7 @@ private fun ContentList(
             ContentListItem(
                 item = item,
                 mode = mode,
-                watched = collection.isWatched(item.id, item.type),
+                watched = collection.isWatched(item.id, item.type, item.airedEpisodes),
                 watchlist = collection.isWatchlist(item.id, item.type),
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,

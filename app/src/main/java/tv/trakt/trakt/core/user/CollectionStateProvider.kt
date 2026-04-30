@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.user
 
+import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
@@ -98,10 +99,11 @@ internal class CollectionStateProvider(
 
                 _stateFlow.update { state ->
                     state.copy(
-                        watchedShows = progressShows
-                            .filter { it.isCompleted }
-                            .asyncMap { it.mediaId }
-                            .toImmutableSet(),
+                        watchedShowsPlays = progressShows
+                            .associateBy(
+                                keySelector = { it.showId },
+                                valueTransform = { it.playsDistinct },
+                            ).toImmutableMap(),
                         watchedMovies = progressMovies
                             .asyncMap { it.mediaId }
                             .toImmutableSet(),

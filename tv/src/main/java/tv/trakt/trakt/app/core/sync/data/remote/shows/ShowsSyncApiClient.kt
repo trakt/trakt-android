@@ -11,7 +11,6 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.ProgressShowDto
 import tv.trakt.trakt.common.networking.SyncAddHistoryResponseDto
-import tv.trakt.trakt.common.networking.WatchedShowDto
 import tv.trakt.trakt.common.networking.WatchlistShowDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import java.time.ZonedDateTime
@@ -136,14 +135,14 @@ internal class ShowsSyncApiClient(
         return result.body()
     }
 
-    override suspend fun getWatched(extended: String?): List<WatchedShowDto> {
-        val response = watchedApi.getUsersWatchedShows(
+    override suspend fun getWatched(): Map<String, Map<String, Map<String, List<String>>>> {
+        val response = usersApi.getUsersWatchedMinimalShows(
             id = "me",
-            extended = extended,
-            hidden = null,
+            extended = "min",
             specials = true,
-            countSpecials = null,
+            seasonNumbers = true,
         )
+
         return response.body()
     }
 

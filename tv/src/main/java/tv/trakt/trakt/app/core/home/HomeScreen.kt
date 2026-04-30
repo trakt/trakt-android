@@ -54,6 +54,7 @@ internal fun HomeScreen(
     viewModel: HomeViewModel,
     onNavigateToAuth: () -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToShow: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToUpNext: () -> Unit,
     onNavigateToWatchlist: () -> Unit,
@@ -73,6 +74,7 @@ internal fun HomeScreen(
             state = state,
             onNavigateToMovie = onNavigateToMovie,
             onNavigateToEpisode = onNavigateToEpisode,
+            onNavigateToShow = onNavigateToShow,
             onNavigateToUpNext = onNavigateToUpNext,
             onNavigateToWatchlist = onNavigateToWatchlist,
             onNavigateToSocialActivity = onNavigateToSocialActivity,
@@ -87,6 +89,7 @@ private fun HomeScreenContent(
     state: HomeState,
     modifier: Modifier = Modifier,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToShow: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToUpNext: () -> Unit,
     onNavigateToWatchlist: () -> Unit,
@@ -178,7 +181,7 @@ private fun HomeScreenContent(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onNavigateToMovie = onNavigateToMovie,
-                    onNavigateToEpisode = onNavigateToEpisode,
+                    onNavigateToShow = onNavigateToShow,
                     onNavigateToViewAll = onNavigateToWatchlist,
                     onFocused = { item ->
                         focusedSection = "watchlist"
@@ -250,6 +253,7 @@ private fun MainScreenPreview() {
         HomeScreenContent(
             state = HomeState(),
             onNavigateToMovie = {},
+            onNavigateToShow = {},
             onNavigateToEpisode = { _, _ -> },
             onNavigateToUpNext = {},
             onNavigateToWatchlist = {},

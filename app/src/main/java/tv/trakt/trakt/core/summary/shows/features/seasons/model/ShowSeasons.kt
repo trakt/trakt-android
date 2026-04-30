@@ -33,7 +33,7 @@ internal data class ShowSeasons(
             checkable: Boolean,
         ): ImmutableList<EpisodeItem> {
             val watchedBySeasonNumber = progress?.associate { season ->
-                season.number to season.episodes.mapTo(hashSetOf()) { it.number }
+                season.number to season.episodes.mapTo(hashSetOf()) { it.id }
             }
             return inputEpisodes
                 .map {
@@ -42,7 +42,7 @@ internal data class ShowSeasons(
                         isCheckable = checkable,
                         isWatched = watchedBySeasonNumber
                             ?.get(it.episode.season)
-                            ?.contains(it.episode.number) == true,
+                            ?.contains(it.episode.ids.trakt) == true,
                     )
                 }.toImmutableList()
         }

@@ -32,7 +32,6 @@ import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
-import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -45,7 +44,7 @@ internal fun HomeWatchlistView(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onFocused: (WatchlistItem?) -> Unit = {},
-    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
+    onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToViewAll: () -> Unit,
 ) {
@@ -61,7 +60,7 @@ internal fun HomeWatchlistView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onFocused = onFocused,
-        onNavigateToEpisode = onNavigateToEpisode,
+        onNavigateToShow = onNavigateToShow,
         onNavigateToMovie = onNavigateToMovie,
         onNavigateToViewAll = onNavigateToViewAll,
     )
@@ -74,7 +73,7 @@ internal fun HomeWatchlistContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onFocused: (WatchlistItem?) -> Unit = {},
-    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
+    onNavigateToShow: (TraktId) -> Unit = {},
     onNavigateToMovie: (TraktId) -> Unit = {},
     onNavigateToViewAll: () -> Unit = {},
 ) {
@@ -111,9 +110,7 @@ internal fun HomeWatchlistContent(
                 ContentList(
                     listItems = state.items ?: EmptyImmutableList,
                     onFocused = onFocused,
-                    onEpisodeClick = { show, episode ->
-                        onNavigateToEpisode(show.ids.trakt, episode)
-                    },
+                    onShowClick = { onNavigateToShow(it.ids.trakt) },
                     onMovieClick = { onNavigateToMovie(it.ids.trakt) },
                     onViewAllClick = onNavigateToViewAll,
                     contentPadding = contentPadding,
@@ -127,7 +124,7 @@ internal fun HomeWatchlistContent(
 private fun ContentList(
     listItems: ImmutableList<WatchlistItem>,
     onFocused: (WatchlistItem) -> Unit,
-    onEpisodeClick: (Show, Episode) -> Unit,
+    onShowClick: (Show) -> Unit,
     onMovieClick: (Movie) -> Unit,
     onViewAllClick: () -> Unit,
     contentPadding: PaddingValues,
@@ -145,10 +142,7 @@ private fun ContentList(
                 imageUrl = item.posterImage,
                 onClick = {
                     when (item) {
-                        is ShowItem -> onEpisodeClick(
-                            item.show,
-                            item.progress?.nextEpisode ?: return@VerticalMediaCard,
-                        )
+                        is ShowItem -> onShowClick(item.show)
                         is MovieItem -> onMovieClick(item.movie)
                     }
                 },
@@ -174,7 +168,7 @@ private fun ContentList(
                             overflow = TextOverflow.Ellipsis,
                         )
                         Text(
-                            text = subtitle ?: "",
+                            text = subtitle,
                             style = TraktTheme.typography.cardSubtitle,
                             color = TraktTheme.colors.textSecondary,
                             maxLines = 1,

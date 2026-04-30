@@ -6,14 +6,13 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.networking.DroppedItemDto
 import tv.trakt.trakt.common.networking.SyncLibraryMediaDto
 import tv.trakt.trakt.common.networking.UserWatchingDto
-import tv.trakt.trakt.common.networking.WatchedShowDto
 
 interface UserRemoteDataSource {
     suspend fun getWatchingNow(): UserWatchingDto?
 
     suspend fun getWatchedMovies(): Map<String, List<String>>
 
-    suspend fun getWatchedShows(): List<WatchedShowDto>
+    suspend fun getWatchedShows(): Map<String, Map<String, Map<String, List<String>>>>
 
     suspend fun getLibrary(
         extended: String? = null,

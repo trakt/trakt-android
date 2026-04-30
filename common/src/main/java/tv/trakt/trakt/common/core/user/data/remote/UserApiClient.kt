@@ -13,7 +13,6 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.networking.DroppedItemDto
 import tv.trakt.trakt.common.networking.SyncLibraryMediaDto
 import tv.trakt.trakt.common.networking.UserWatchingDto
-import tv.trakt.trakt.common.networking.WatchedShowDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
 class UserApiClient(
@@ -128,13 +127,12 @@ class UserApiClient(
         return response.body()
     }
 
-    override suspend fun getWatchedShows(): List<WatchedShowDto> {
-        val response = usersApi.getUsersWatchedShows(
+    override suspend fun getWatchedShows(): Map<String, Map<String, Map<String, List<String>>>> {
+        val response = usersApi.getUsersWatchedMinimalShows(
             id = "me",
-            extended = null,
-            hidden = null,
+            extended = "min",
             specials = true,
-            countSpecials = null,
+            seasonNumbers = true,
         )
 
         return response.body()

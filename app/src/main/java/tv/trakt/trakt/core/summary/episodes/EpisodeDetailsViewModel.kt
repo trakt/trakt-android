@@ -87,6 +87,7 @@ internal class EpisodeDetailsViewModel(
 
     private val showId = destination.showId.toTraktId()
     private val episodeId = destination.episodeId.toTraktId()
+
     private val seasonEpisode = SeasonEpisode(
         season = destination.season,
         episode = destination.episode,
@@ -223,11 +224,11 @@ internal class EpisodeDetailsViewModel(
 
                 val progress = loadProgressUseCase.loadLocalShows()
                     .firstOrNull {
-                        it.show.ids.trakt == showId
+                        it.showId == showId
                     }?.seasons?.firstOrNull {
                         it.number == seasonEpisode.season
                     }?.episodes?.firstOrNull {
-                        it.number == seasonEpisode.episode
+                        it.id == episodeId
                     }
 
                 episodeProgressState.update {
@@ -340,11 +341,11 @@ internal class EpisodeDetailsViewModel(
 
                 val progress = loadProgressUseCase.loadShowsProgress()
                     .firstOrNull {
-                        it.show.ids.trakt == showId
+                        it.showId == showId
                     }?.seasons?.firstOrNull {
                         it.number == seasonEpisode.season
                     }?.episodes?.firstOrNull {
-                        it.number == seasonEpisode.episode
+                        it.id == episodeId
                     }
 
                 episodeProgressState.update { state ->
@@ -387,11 +388,11 @@ internal class EpisodeDetailsViewModel(
 
                 val progress = loadProgressUseCase.loadShowsProgress()
                     .firstOrNull {
-                        it.show.ids.trakt == showId
+                        it.showId == showId
                     }?.seasons?.firstOrNull {
                         it.number == seasonEpisode.season
                     }?.episodes?.firstOrNull {
-                        it.number == seasonEpisode.episode
+                        it.id == episodeId
                     }
 
                 episodeProgressState.update { state ->
@@ -434,11 +435,11 @@ internal class EpisodeDetailsViewModel(
                 updateHistoryUseCase.removeEpisodeFromHistory(episodeId.value)
                 loadProgressUseCase.loadShowsProgress()
                     .firstOrNull {
-                        it.show.ids.trakt == showId
+                        it.showId == showId
                     }?.seasons?.firstOrNull {
                         it.number == seasonEpisode.season
                     }?.episodes?.firstOrNull {
-                        it.number == seasonEpisode.episode
+                        it.id == episodeId
                     }
 
                 episodeProgressState.update { state ->
@@ -478,11 +479,11 @@ internal class EpisodeDetailsViewModel(
                 updateHistoryUseCase.removePlayFromHistory(playId)
                 val progress = loadProgressUseCase.loadShowsProgress()
                     .firstOrNull {
-                        it.show.ids.trakt == showId
+                        it.showId == showId
                     }?.seasons?.firstOrNull {
                         it.number == seasonEpisode.season
                     }?.episodes?.firstOrNull {
-                        it.number == seasonEpisode.episode
+                        it.id == episodeId
                     }
 
                 episodeProgressState.update { state ->

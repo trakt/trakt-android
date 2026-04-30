@@ -347,7 +347,11 @@ internal class ShowDetailsViewModel(
                 }
 
                 coroutineScope {
-                    val watchedAsync = async { getCollectionUseCase.getWatchedShow(showId) }
+                    val show = checkNotNull(showDetailsState.value) {
+                        "Show details must be loaded before loading collection"
+                    }
+
+                    val watchedAsync = async { getCollectionUseCase.getWatchedShow(show) }
                     val watchlistAsync = async { getCollectionUseCase.getWatchlistShow(showId) }
 
                     val watched = watchedAsync.await()
@@ -360,7 +364,7 @@ internal class ShowDetailsViewModel(
                             isWatchlist = watchlist != null,
                             isWatched = watched != null,
                             episodesPlays = watched?.episodesPlays ?: 0,
-                            episodesAiredCount = watched?.episodesAiredCount ?: 0,
+                            episodesAiredCount = watched?.episodesAired ?: 0,
                         )
                     }
                 }

@@ -76,11 +76,11 @@ internal fun HistoryCreditsList(
         personMovieCredits?.size,
     ) {
         val shows = personShowCredits?.values?.flatten()
-            ?.filter { userCollection.isWatched(it.id, it.type) }
+            ?.filter { userCollection.isWatched(it.id, it.type, it.airedEpisodes) }
             ?: EmptyImmutableList
 
         val movies = personMovieCredits?.values?.flatten()
-            ?.filter { userCollection.isWatched(it.id, it.type) }
+            ?.filter { userCollection.isWatched(it.id, it.type, null) }
             ?: EmptyImmutableList
 
         (shows + movies)
