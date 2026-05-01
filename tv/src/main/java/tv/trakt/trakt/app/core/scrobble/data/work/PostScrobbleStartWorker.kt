@@ -10,8 +10,10 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.CancellationException
 import org.openapitools.client.apis.ScrobbleApi
-import org.openapitools.client.models.PostScrobbleEpisodeStartRequest
-import org.openapitools.client.models.PostSyncRatingsRemoveRequestEpisodesInner
+import org.openapitools.client.models.PostCheckinStartRequestOneOf1MovieIds
+import org.openapitools.client.models.PostScrobbleStartRequest
+import org.openapitools.client.models.PostScrobbleStartRequestOneOf1Episode
+import org.openapitools.client.models.PostScrobbleStartRequestOneOfMovie
 import org.openapitools.client.models.PostUsersListsListAddRequestEpisodesInnerIds
 import timber.log.Timber
 import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates
@@ -19,8 +21,6 @@ import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates.Source.SCROBB
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.common.networking.api.scrobble.ScrobbleExtrasApi
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import java.util.concurrent.TimeUnit.SECONDS
 
@@ -30,7 +30,6 @@ internal class PostScrobbleStartWorker(
     appContext: Context,
     workerParams: WorkerParameters,
     private val sessionManager: SessionManager,
-    private val scrobbleExtrasApi: ScrobbleExtrasApi,
     private val scrobbleApi: ScrobbleApi,
     private val scrobbleUpdates: ScrobbleUpdates,
     private val cacheMarker: CacheMarkerProvider,
@@ -93,9 +92,20 @@ internal class PostScrobbleStartWorker(
 
             if (mediaType == MediaType.MOVIE) {
                 Timber.d("Posting scrobble start for movie ID $mediaId with progress $progress")
-                scrobbleExtrasApi.postScrobbleMovieStart(
-                    movieId = mediaId.toTraktId(),
-                    progress = progress.coerceIn(0f, 100f),
+                scrobbleApi.postScrobbleStart(
+                    postScrobbleStartRequest = PostScrobbleStartRequest(
+                        progress = progress.coerceIn(0f, 100f),
+                        movie = PostScrobbleStartRequestOneOfMovie(
+                            ids = PostCheckinStartRequestOneOf1MovieIds(
+                                trakt = mediaId,
+                                tmdb = 0,
+                                imdb = null,
+                                slug = null,
+                            ),
+                            title = "",
+                            year = 0,
+                        ),
+                    ),
                 )
                 cacheMarker.invalidate()
                 scrobbleUpdates.notifyUpdate(SCROBBLE_START_WORKER)
@@ -103,11 +113,10 @@ internal class PostScrobbleStartWorker(
 
             if (mediaType == MediaType.EPISODE) {
                 Timber.d("Posting scrobble start for episode ID $mediaId with progress $progress")
-                scrobbleApi.postScrobbleEpisodeStart(
-                    extended = null,
-                    postScrobbleEpisodeStartRequest = PostScrobbleEpisodeStartRequest(
+                scrobbleApi.postScrobbleStart(
+                    postScrobbleStartRequest = PostScrobbleStartRequest(
                         progress = progress.coerceIn(0f, 100f),
-                        episode = PostSyncRatingsRemoveRequestEpisodesInner(
+                        episode = PostScrobbleStartRequestOneOf1Episode(
                             ids = PostUsersListsListAddRequestEpisodesInnerIds(
                                 trakt = mediaId,
                                 tvdb = 0,
