@@ -26,6 +26,8 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_NOT_FOUND
+import tv.trakt.trakt.common.helpers.extensions.getHttpErrorCode
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.User
@@ -105,8 +107,11 @@ internal class TriviaViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.recordError(error)
+                    // Ignore 404 errors, as they simply mean no trivia is available.
+                    if (error.getHttpErrorCode() != HTTP_ERROR_NOT_FOUND) {
+                        errorState.update { error }
+                        Timber.recordError(error)
+                    }
                 }
             } finally {
                 loadingState.update { Done }

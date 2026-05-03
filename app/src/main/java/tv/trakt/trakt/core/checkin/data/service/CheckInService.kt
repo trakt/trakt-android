@@ -31,7 +31,9 @@ import org.koin.android.ext.android.inject
 import timber.log.Timber
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_NOT_FOUND
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.getHttpErrorCode
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
@@ -228,7 +230,10 @@ internal class CheckInService : Service() {
             } catch (error: Exception) {
                 // Trivia check failed, log the error but continue without trivia.
                 error.rethrowCancellation {
-                    Timber.recordError(error)
+                    // Ignore 404 errors, as they simply mean no trivia is available.
+                    if (error.getHttpErrorCode() != HTTP_ERROR_NOT_FOUND) {
+                        Timber.recordError(error)
+                    }
                 }
             }
 

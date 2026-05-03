@@ -4,6 +4,7 @@ import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ResponseException
 import kotlin.coroutines.cancellation.CancellationException
 
+const val HTTP_ERROR_NOT_FOUND = 404
 const val HTTP_ERROR_TRAKT_VIP_ONLY = 426
 const val HTTP_ERROR_TRAKT_LISTS_LIMIT = 420
 
