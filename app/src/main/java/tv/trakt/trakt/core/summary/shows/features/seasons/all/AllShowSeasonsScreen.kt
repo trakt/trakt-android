@@ -26,6 +26,9 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -48,6 +51,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -259,6 +263,7 @@ private fun AllShowSeasonsContent(
         ) {
             item {
                 TitleBar(
+                    state = state,
                     title = state.items.selectedSeason?.number?.let {
                         when (it) {
                             0 -> stringResource(R.string.text_season_specials)
@@ -268,6 +273,9 @@ private fun AllShowSeasonsContent(
                     subtitle = state.show?.title,
                     loading = state.loadingSeason.isLoading,
                     more = state.items.isSelectedSeasonReleased,
+                    onSeasonClick = {
+                        onSeasonClick?.invoke(it)
+                    },
                     onIconClick = {
                         when {
                             state.loadingSeason.isLoading -> return@TitleBar
@@ -275,10 +283,12 @@ private fun AllShowSeasonsContent(
                             else -> onCheckSeasonClick?.invoke()
                         }
                     },
+                    onBackClick = {
+                        onBackClick?.invoke()
+                    },
                     modifier = Modifier
                         .padding(contentPadding)
-                        .padding(bottom = 8.dp)
-                        .onClick { onBackClick?.invoke() },
+                        .padding(bottom = 8.dp),
                 )
             }
 
@@ -359,16 +369,21 @@ private fun AllShowSeasonsContent(
 
 @Composable
 private fun TitleBar(
+    state: AllShowSeasonsState,
     title: String?,
     subtitle: String?,
     loading: Boolean,
     more: Boolean,
+    onSeasonClick: (SeasonItem) -> Unit,
     onIconClick: () -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val seasonsMenuVisible = remember { mutableStateOf(false) }
+
     Row(
         verticalAlignment = CenterVertically,
-        horizontalArrangement = spacedBy(12.dp),
+        horizontalArrangement = spacedBy(16.dp),
         modifier = modifier
             .fillMaxWidth()
             .height(TraktTheme.size.titleBarHeight)
@@ -378,12 +393,64 @@ private fun TitleBar(
             painter = painterResource(R.drawable.ic_back_arrow),
             tint = TraktTheme.colors.textPrimary,
             contentDescription = null,
+            modifier = Modifier.onClick { onBackClick() },
         )
 
-        TraktHeader(
-            title = title ?: stringResource(R.string.list_title_seasons),
-            subtitle = subtitle ?: "",
-        )
+        Row(
+            horizontalArrangement = spacedBy(8.dp),
+            verticalAlignment = CenterVertically,
+            modifier = Modifier.onClick {
+                seasonsMenuVisible.value = true
+            },
+        ) {
+            TraktHeader(
+                title = title ?: stringResource(R.string.list_title_seasons),
+                subtitle = subtitle ?: "",
+            )
+
+            Box {
+                Icon(
+                    painter = painterResource(R.drawable.ic_cheveron_down),
+                    tint = TraktTheme.colors.textPrimary,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp),
+                )
+
+                DropdownMenu(
+                    containerColor = TraktTheme.colors.dialogContainer,
+                    shape = RoundedCornerShape(20.dp),
+                    expanded = seasonsMenuVisible.value,
+                    onDismissRequest = {
+                        seasonsMenuVisible.value = false
+                    },
+                ) {
+                    for (season in state.items.seasons) {
+                        val seasonTitle = when (season.season.number) {
+                            0 -> stringResource(R.string.text_season_specials)
+                            else -> stringResource(R.string.text_season_number, season.season.number)
+                        }
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = seasonTitle,
+                                    style = TraktTheme.typography.buttonTertiary,
+                                    color = when (season.season.number) {
+                                        state.items.selectedSeason?.number -> TraktTheme.colors.textPrimary
+                                        else -> TraktTheme.colors.textSecondary
+                                    },
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier.fillMaxWidth(),
+                                )
+                            },
+                            onClick = {
+                                seasonsMenuVisible.value = false
+                                onSeasonClick(season)
+                            },
+                        )
+                    }
+                }
+            }
+        }
 
         Spacer(modifier = Modifier.weight(1f))
 
