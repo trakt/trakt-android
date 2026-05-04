@@ -26,6 +26,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -47,6 +48,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -313,25 +315,13 @@ private fun AllShowSeasonsContent(
                             overscrollEffect = null,
                             itemWidth = SEASON_ITEM_WIDTH_DP.dp,
                             itemSpacing = SEASON_ITEM_SPACING_DP.dp,
+                            snapScrollEnabled = true,
                             onSeasonClick = onSeasonClick ?: {},
                             modifier = Modifier.fillMaxWidth(),
                         )
                     }
                 }
             }
-
-//            item {
-//                TraktHeader(
-//                    title = stringResource(R.string.header_episodes),
-//                    subtitle = stringResource(
-//                        R.string.tag_text_number_of_episodes,
-//                        state.items.selectedSeasonEpisodes.count(),
-//                    ),
-//                    modifier = Modifier
-//                        .padding(contentPadding)
-//                        .padding(bottom = 16.dp),
-//                )
-//            }
 
             when {
                 state.loading.isLoading || state.items.isSeasonLoading -> {
@@ -380,6 +370,20 @@ private fun TitleBar(
     modifier: Modifier = Modifier,
 ) {
     val seasonsMenuVisible = remember { mutableStateOf(false) }
+    val dropdownScrollState = rememberScrollState()
+    val density = LocalDensity.current
+
+    LaunchedEffect(seasonsMenuVisible.value) {
+        if (seasonsMenuVisible.value) {
+            val index = state.items.seasons
+                .indexOfFirst { it.season.number == state.items.selectedSeason?.number }
+                .coerceAtLeast(0)
+            if (index > 0) {
+                val itemHeightPx = with(density) { 48.dp.roundToPx() }
+                dropdownScrollState.scrollTo(index * itemHeightPx)
+            }
+        }
+    }
 
     Row(
         verticalAlignment = CenterVertically,
@@ -420,6 +424,7 @@ private fun TitleBar(
                     containerColor = TraktTheme.colors.dialogContainer,
                     shape = RoundedCornerShape(20.dp),
                     expanded = seasonsMenuVisible.value,
+                    scrollState = dropdownScrollState,
                     onDismissRequest = {
                         seasonsMenuVisible.value = false
                     },

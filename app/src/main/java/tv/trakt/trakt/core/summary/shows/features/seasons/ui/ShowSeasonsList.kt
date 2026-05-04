@@ -42,6 +42,7 @@ internal fun ShowSeasonsList(
     itemWidth: Dp = Dp.Unspecified,
     itemSpacing: Dp = TraktTheme.spacing.mainRowSpace,
     overscrollEffect: OverscrollEffect? = rememberOverscrollEffect(),
+    snapScrollEnabled: Boolean = false,
     onSeasonClick: (SeasonItem) -> Unit,
 ) {
     val listState = rememberLazyListState(
@@ -52,13 +53,18 @@ internal fun ShowSeasonsList(
     )
 
     var initialScrolled by rememberSaveable { mutableStateOf(false) }
-    LaunchedEffect(Unit) {
-        if (!initialScrolled && (selectedSeason ?: 0) > 1) {
+    LaunchedEffect(selectedSeason) {
+        val index = seasons
+            .indexOfFirst { it.season.number == selectedSeason }
+            .coerceAtLeast(0)
+
+        if (!initialScrolled) {
             initialScrolled = true
-            val index = seasons
-                .indexOfFirst { it.season.number == selectedSeason }
-                .coerceAtLeast(0)
-            listState.scrollToItem(index)
+            if ((selectedSeason ?: 0) > 1) {
+                listState.scrollToItem(index)
+            }
+        } else if (snapScrollEnabled) {
+            listState.animateScrollToItem(index)
         }
     }
 
