@@ -372,7 +372,11 @@ internal class AllHomeWatchlistViewModel(
                     source = Source.AllHomeWatchlist,
                     context = appContext,
                 )
-                removeItem(currentItems[itemIndex], notify = false)
+
+                removeItem(
+                    item = currentItems[itemIndex],
+                    notify = false,
+                )
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",

@@ -46,6 +46,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.watchlist.features.all.ui.AllHomeWatchlistEpisodeView
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.views.AllWatchlistMovieView
@@ -197,10 +198,9 @@ internal fun AllHomeWatchlistScreen(
                     viewModel.addMovieCheckIn(item.id)
                 }
                 is ShowItem -> {
-                    val episode = item.progress?.nextEpisode ?: return@AllHomeDateSelectionSheet
                     viewModel.addEpisodeCheckIn(
                         showId = item.id,
-                        seasonEpisode = episode.seasonEpisode,
+                        seasonEpisode = SeasonEpisode(1, 1),
                     )
                 }
             }

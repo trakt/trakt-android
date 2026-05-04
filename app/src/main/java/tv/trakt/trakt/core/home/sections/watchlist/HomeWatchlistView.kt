@@ -55,6 +55,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
+import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.views.HomeEmptyView
@@ -212,10 +213,9 @@ internal fun HomeWatchlistView(
                     viewModel.addMovieCheckIn(item.id)
                 }
                 is ShowItem -> {
-                    val episode = item.progress?.nextEpisode ?: return@HomeDateSelectionSheet
                     viewModel.addEpisodeCheckIn(
                         showId = item.id,
-                        seasonEpisode = episode.seasonEpisode,
+                        seasonEpisode = SeasonEpisode(1, 1),
                     )
                 }
             }

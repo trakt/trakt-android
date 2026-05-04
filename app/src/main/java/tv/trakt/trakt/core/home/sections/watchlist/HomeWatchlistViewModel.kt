@@ -412,12 +412,16 @@ internal class HomeWatchlistViewModel(
                     currentItems.toImmutableList()
                 }
 
-                removeItem(currentItems[itemIndex], notify = false)
                 checkInManager.startEpisode(
                     showId = showId,
                     seasonEpisode = seasonEpisode,
                     source = Source.HomeWatchlist,
                     context = appContext,
+                )
+
+                removeItem(
+                    item = currentItems[itemIndex],
+                    notify = false,
                 )
 
                 analytics.progress.logAddWatchedMedia(
