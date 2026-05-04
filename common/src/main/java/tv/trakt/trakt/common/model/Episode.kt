@@ -5,6 +5,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.networking.EpisodeDto
 import tv.trakt.trakt.common.networking.EpisodeLikesDto
@@ -32,6 +33,9 @@ data class Episode(
     val updatedAt: ZonedDateTime?,
 ) {
     companion object
+
+    val isReleased: Boolean
+        get() = firstAired?.isBefore(nowUtc()) == true
 
     val seasonEpisode: SeasonEpisode
         get() = SeasonEpisode(

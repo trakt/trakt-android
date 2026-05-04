@@ -44,6 +44,7 @@ internal fun ShowSeasonsList(
     overscrollEffect: OverscrollEffect? = rememberOverscrollEffect(),
     snapScrollEnabled: Boolean = false,
     onSeasonClick: (SeasonItem) -> Unit,
+    onSeasonLongClick: (SeasonItem) -> Unit,
 ) {
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
@@ -82,15 +83,22 @@ internal fun ShowSeasonsList(
             val seasonPosterUrl = item.season.images?.getPosterUrl()
             val showPosterUrl = show?.images?.getPosterUrl()
 
+            val isSelected = item.season.number == selectedSeason
+
             VerticalMediaCard(
                 title = "",
                 width = itemWidth,
                 imageUrl = seasonPosterUrl ?: showPosterUrl,
-                blackWhite = (item.season.number != selectedSeason),
-                more = false,
+                blackWhite = !isSelected,
+                more = isSelected,
                 watched = item.isWatched,
                 onClick = {
                     onSeasonClick(item)
+                },
+                onLongClick = {
+                    if (isSelected) {
+                        onSeasonLongClick(item)
+                    }
                 },
                 chipContent = {
                     Column(

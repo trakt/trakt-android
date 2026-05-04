@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -155,7 +154,7 @@ internal fun AllShowSeasonsScreen(
         title = stringResource(R.string.button_text_track),
         message = stringResource(
             R.string.warning_prompt_mark_as_watched_multiple_episodes,
-            state.items.selectedSeasonEpisodes.count { !it.isWatched },
+            state.items.selectedSeasonEpisodes.count { !it.isWatched && it.episode.isReleased },
         ),
     )
 
@@ -181,7 +180,10 @@ internal fun AllShowSeasonsScreen(
         title = state.show?.title ?: "",
         onResult = { result ->
             episodeDateSheet?.let {
-                viewModel.addToWatched(episode = it.episode, customDate = result)
+                viewModel.addToWatched(
+                    episode = it.episode,
+                    customDate = result,
+                )
             }
         },
         onDismiss = { episodeDateSheet = null },
@@ -278,13 +280,6 @@ private fun AllShowSeasonsContent(
                     onSeasonClick = {
                         onSeasonClick?.invoke(it)
                     },
-                    onIconClick = {
-                        when {
-                            state.loadingSeason.isLoading -> return@TitleBar
-                            state.items.isSelectedSeasonWatched -> onRemoveSeasonClick?.invoke()
-                            else -> onCheckSeasonClick?.invoke()
-                        }
-                    },
                     onBackClick = {
                         onBackClick?.invoke()
                     },
@@ -317,6 +312,13 @@ private fun AllShowSeasonsContent(
                             itemSpacing = SEASON_ITEM_SPACING_DP.dp,
                             snapScrollEnabled = true,
                             onSeasonClick = onSeasonClick ?: {},
+                            onSeasonLongClick = {
+                                when {
+                                    state.loadingSeason.isLoading -> return@ShowSeasonsList
+                                    state.items.isSelectedSeasonWatched -> onRemoveSeasonClick?.invoke()
+                                    else -> onCheckSeasonClick?.invoke()
+                                }
+                            },
                             modifier = Modifier.fillMaxWidth(),
                         )
                     }
@@ -365,7 +367,6 @@ private fun TitleBar(
     loading: Boolean,
     more: Boolean,
     onSeasonClick: (SeasonItem) -> Unit,
-    onIconClick: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -414,7 +415,7 @@ private fun TitleBar(
 
             Box {
                 Icon(
-                    painter = painterResource(R.drawable.ic_cheveron_down),
+                    painter = painterResource(R.drawable.ic_chevron_all),
                     tint = TraktTheme.colors.textPrimary,
                     contentDescription = null,
                     modifier = Modifier.size(16.dp),
@@ -456,92 +457,8 @@ private fun TitleBar(
                 }
             }
         }
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        Box(
-            modifier = Modifier
-                .size(18.dp)
-                .onClick(
-                    enabled = !loading && more,
-                    onClick = onIconClick,
-                ),
-        ) {
-            if (loading) {
-                FilmProgressIndicator(size = 18.dp)
-            } else if (more) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_more_vertical),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .size(18.dp)
-                        .graphicsLayer { translationX = 5.dp.toPx() },
-                )
-            }
-        }
     }
 }
-
-// @Composable
-// private fun SeasonHeader(
-//    state: AllShowSeasonsState,
-//    modifier: Modifier = Modifier,
-// ) {
-//    val selectedSeason = state.items.selectedSeason
-//    val headerCurrentSeason = selectedSeason?.let {
-//        when {
-//            it.isSpecial -> stringResource(R.string.text_season_specials)
-//            else -> stringResource(R.string.text_season_number, it.number)
-//        }
-//    }
-//
-//    Row(
-//        modifier = modifier
-//            .fillMaxWidth()
-//            .padding(vertical = 12.dp),
-//        horizontalArrangement = Arrangement.SpaceBetween,
-//        verticalAlignment = CenterVertically,
-//    ) {
-//        Row(
-//            horizontalArrangement = spacedBy(5.dp),
-//            verticalAlignment = CenterVertically,
-//            modifier = Modifier.weight(1f),
-//        ) {
-//            TraktHeader(
-//                title = stringResource(R.string.list_title_seasons),
-//                titleColor = TraktTheme.colors.textSecondary,
-//            )
-//
-//            if (selectedSeason != null) {
-//                TraktHeader(title = "/", titleColor = TraktTheme.colors.textSecondary)
-//                TraktHeader(title = headerCurrentSeason ?: "")
-//            }
-//
-//            if (state.user != null && state.items.isSelectedSeasonReleased) {
-//                Icon(
-//                    painter = painterResource(R.drawable.ic_more_vertical),
-//                    contentDescription = null,
-//                    tint = TraktTheme.colors.textPrimary,
-//                    modifier = Modifier
-//                        .padding(start = 8.dp)
-//                        .size(14.dp)
-//                        .onClick(enabled = !state.loadingSeason.isLoading) {
-//                            if (state.items.isSelectedSeasonWatched) {
-//                                onRemoveSeasonClick?.invoke()
-//                            } else {
-//                                onCheckSeasonClick?.invoke()
-//                            }
-//                        },
-//                )
-//            }
-//        }
-//
-//        if (state.loadingSeason.isLoading) {
-//            FilmProgressIndicator(size = 16.dp)
-//        }
-//    }
-// }
 
 @Composable
 private fun EpisodeListItem(

@@ -10,6 +10,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -29,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -37,9 +43,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -167,7 +175,7 @@ internal fun ShowSeasonsView(
         title = stringResource(R.string.button_text_track),
         message = stringResource(
             R.string.warning_prompt_mark_as_watched_multiple_episodes,
-            state.items.selectedSeasonEpisodes.count { !it.isWatched },
+            state.items.selectedSeasonEpisodes.count { !it.isWatched && it.episode.isReleased },
         ),
     )
 
@@ -309,21 +317,10 @@ private fun ShowSeasonsContent(
                     )
                 }
 
-                if (user != null && state.collapsed != true && state.items.isSelectedSeasonReleased) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_more_vertical),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier
-                            .padding(start = 10.dp)
-                            .size(14.dp)
-                            .onClick(enabled = !state.loadingSeason.isLoading) {
-                                if (state.items.isSelectedSeasonWatched) {
-                                    onRemoveSeasonClick?.invoke()
-                                } else {
-                                    onCheckSeasonClick?.invoke()
-                                }
-                            },
+                if (state.items.selectedSeason != null && state.collapsed != true) {
+                    AllSeasonsDropdown(
+                        state = state,
+                        onSeasonClick = onSeasonClick,
                     )
                 }
 
@@ -333,7 +330,7 @@ private fun ShowSeasonsContent(
                         contentDescription = null,
                         tint = TraktTheme.colors.textPrimary,
                         modifier = Modifier
-                            .padding(start = 5.dp)
+                            .padding(start = 7.dp)
                             .size(18.dp)
                             .onClick(enabled = !state.loadingSeason.isLoading) {
                                 onAllSeasonsClick?.invoke()
@@ -392,6 +389,15 @@ private fun ShowSeasonsContent(
                                 contentPadding = contentPadding,
                                 onEpisodeClick = onEpisodeClick,
                                 onSeasonClick = onSeasonClick,
+                                onSeasonLongClick = {
+                                    if (state.loadingSeason.isLoading) {
+                                        return@ContentList
+                                    }
+                                    when (state.items.isSelectedSeasonWatched) {
+                                        true -> onRemoveSeasonClick?.invoke()
+                                        else -> onCheckSeasonClick?.invoke()
+                                    }
+                                },
                                 onCheckEpisodeClick = onCheckEpisodeClick,
                                 onCheckEpisodeLongClick = onCheckEpisodeLongClick,
                                 onRemoveEpisodeClick = onRemoveEpisodeClick,
@@ -405,11 +411,87 @@ private fun ShowSeasonsContent(
 }
 
 @Composable
+private fun AllSeasonsDropdown(
+    state: ShowSeasonsState,
+    onSeasonClick: ((SeasonItem) -> Unit)?,
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .padding(start = 12.dp)
+            .size(16.dp),
+    ) {
+        val seasonsMenuVisible = remember { mutableStateOf(false) }
+        val dropdownScrollState = rememberScrollState()
+        val density = LocalDensity.current
+
+        LaunchedEffect(seasonsMenuVisible.value) {
+            if (seasonsMenuVisible.value) {
+                val index = state.items.seasons
+                    .indexOfFirst { it.season.number == state.items.selectedSeason?.number }
+                    .coerceAtLeast(0)
+                if (index > 0) {
+                    val itemHeightPx = with(density) { 48.dp.roundToPx() }
+                    dropdownScrollState.scrollTo(index * itemHeightPx)
+                }
+            }
+        }
+
+        Icon(
+            painter = painterResource(R.drawable.ic_chevron_all),
+            contentDescription = null,
+            tint = TraktTheme.colors.textPrimary,
+            modifier = Modifier
+                .size(16.dp)
+                .onClick {
+                    seasonsMenuVisible.value = true
+                },
+        )
+
+        DropdownMenu(
+            containerColor = TraktTheme.colors.dialogContainer,
+            shape = RoundedCornerShape(20.dp),
+            expanded = seasonsMenuVisible.value,
+            scrollState = dropdownScrollState,
+            onDismissRequest = {
+                seasonsMenuVisible.value = false
+            },
+        ) {
+            for (season in state.items.seasons) {
+                val seasonTitle = when (season.season.number) {
+                    0 -> stringResource(R.string.text_season_specials)
+                    else -> stringResource(R.string.text_season_number, season.season.number)
+                }
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = seasonTitle,
+                            style = TraktTheme.typography.buttonTertiary,
+                            color = when (season.season.number) {
+                                state.items.selectedSeason?.number -> TraktTheme.colors.textPrimary
+                                else -> TraktTheme.colors.textSecondary
+                            },
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    },
+                    onClick = {
+                        seasonsMenuVisible.value = false
+                        onSeasonClick?.invoke(season)
+                    },
+                )
+            }
+        }
+    }
+}
+
+@Composable
 private fun ContentList(
     show: Show?,
     seasons: ShowSeasons,
     contentPadding: PaddingValues,
     onSeasonClick: ((SeasonItem) -> Unit)? = null,
+    onSeasonLongClick: ((SeasonItem) -> Unit)? = null,
     onEpisodeClick: ((EpisodeItem) -> Unit)? = null,
     onCheckEpisodeClick: ((EpisodeItem) -> Unit)? = null,
     onCheckEpisodeLongClick: ((EpisodeItem) -> Unit)? = null,
@@ -422,7 +504,9 @@ private fun ContentList(
             show = show,
             seasons = seasons.seasons,
             selectedSeason = seasons.selectedSeason?.number,
+            snapScrollEnabled = true,
             onSeasonClick = onSeasonClick ?: {},
+            onSeasonLongClick = onSeasonLongClick ?: {},
             contentPadding = contentPadding,
             modifier = Modifier.fillMaxWidth(),
         )
