@@ -34,6 +34,10 @@ val longDateTimeFormat: DateTimeFormatter = DateTimeFormatter
     .ofLocalizedDateTime(FormatStyle.LONG, FormatStyle.SHORT)
     .withLocale(Locale.US)
 
+val timeFormat: DateTimeFormatter = DateTimeFormatter
+    .ofLocalizedTime(FormatStyle.SHORT)
+    .withLocale(Locale.US)
+
 // UTC time functions
 
 fun nowUtc(): ZonedDateTime = ZonedDateTime.now(UTC)

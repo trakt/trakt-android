@@ -27,11 +27,14 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
+import tv.trakt.trakt.common.helpers.extensions.timeFormat
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.FinaleChip
+import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.chips.PremiereChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -62,9 +65,26 @@ internal fun CalendarEpisodeItemView(
                 ?: item.episode.images?.getScreenshotUrl(),
         cardContent = {
             val shadowModifier = Modifier.shadow(2.dp, RoundedCornerShape(100))
-            when {
-                item.episode.isPremiere() -> PremiereChip(modifier = shadowModifier)
-                item.episode.isFinale() -> FinaleChip(modifier = shadowModifier)
+            Row(
+                horizontalArrangement = spacedBy(3.dp),
+                verticalAlignment = CenterVertically,
+            ) {
+                val timeString = remember(item.releasedAt) {
+                    item.releasedAt?.toLocal()?.format(timeFormat)
+                }
+
+                when {
+                    item.episode.isPremiere() -> PremiereChip(modifier = shadowModifier)
+                    item.episode.isFinale() -> FinaleChip(modifier = shadowModifier)
+                }
+
+                timeString?.let {
+                    InfoChip(
+                        text = timeString,
+                        containerColor = TraktTheme.colors.chipContainerOnContent,
+                        modifier = shadowModifier,
+                    )
+                }
             }
         },
         footerContent = {
