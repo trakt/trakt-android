@@ -216,23 +216,25 @@ private fun ActionButtons(
                 },
         )
 
-        Row(
-            verticalAlignment = CenterVertically,
-            horizontalArrangement = spacedBy(6.dp),
-            modifier = Modifier
-                .padding(top = 8.dp, bottom = 8.dp),
-        ) {
-            Text(
-                text = stringResource(R.string.list_title_personal_lists),
-                color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.heading5.copy(
-                    fontSize = 16.sp,
-                ),
-                maxLines = 1,
-                overflow = Ellipsis,
-                textAlign = TextAlign.Start,
-                modifier = Modifier,
-            )
+        if (lists.isNotEmpty() || loading) {
+            Row(
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = spacedBy(6.dp),
+                modifier = Modifier
+                    .padding(top = 8.dp, bottom = 8.dp),
+            ) {
+                Text(
+                    text = stringResource(R.string.list_title_personal_lists),
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.heading5.copy(
+                        fontSize = 16.sp,
+                    ),
+                    maxLines = 1,
+                    overflow = Ellipsis,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier,
+                )
+            }
         }
 
         for (list in lists) {
