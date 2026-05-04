@@ -521,6 +521,7 @@ internal fun ShowDetailsContent(
                             !state.loadingLists.isLoading,
                         loading = state.loadingProgress.isLoading ||
                             state.loadingLists.isLoading,
+                        watched = isWatched,
                         watchlist = state.showProgress?.inWatchlist,
                         trailer = !show.trailer.isNullOrBlank(),
                         onPrimaryClick = onTrackClick,

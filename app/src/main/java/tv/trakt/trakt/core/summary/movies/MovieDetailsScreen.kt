@@ -462,6 +462,7 @@ internal fun MovieDetailsContent(
                             !state.loadingLists.isLoading,
                         loading = state.loadingProgress.isLoading ||
                             state.loadingLists.isLoading,
+                        watched = isWatched,
                         watchlist = state.movieProgress?.inWatchlist,
                         trailer = !movie.trailer.isNullOrBlank(),
                         onTrailerClick = onTrailerClick,

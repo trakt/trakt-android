@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.summary.ui
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -18,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.DefaultShadowColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,6 +39,7 @@ internal fun DetailsActions(
     primaryEnabled: Boolean = true,
     secondaryVisible: Boolean = true,
     loading: Boolean = false,
+    watched: Boolean = false,
     watchlist: Boolean? = false,
     trailer: Boolean = false,
     primaryIcon: Int = R.drawable.ic_check,
@@ -83,11 +86,27 @@ internal fun DetailsActions(
                 ),
                 shape = RoundedCornerShape(12.dp),
                 colors = buttonColors(
-                    containerColor = TraktTheme.colors.primaryButtonContainer,
-                    contentColor = TraktTheme.colors.primaryButtonContent,
+                    containerColor = when (watched) {
+                        true -> TraktTheme.colors.primaryButtonContainer
+                        else -> Color.Transparent
+                    },
+                    contentColor = when (watched) {
+                        true -> TraktTheme.colors.primaryButtonContainer
+                        else -> TraktTheme.colors.accent
+                    },
                     disabledContainerColor = TraktTheme.colors.primaryButtonContainerDisabled,
                     disabledContentColor = TraktTheme.colors.primaryButtonContentDisabled,
                 ),
+                border = when (watched) {
+                    true -> null
+                    else -> when (enabled && primaryEnabled) {
+                        true -> BorderStroke(
+                            width = 1.5.dp,
+                            color = TraktTheme.colors.primaryButtonContainer,
+                        )
+                        else -> null
+                    }
+                },
                 enabled = enabled && primaryEnabled,
                 onClick = onPrimaryClick ?: {},
             ) {
@@ -176,9 +195,12 @@ private fun Preview() {
             verticalArrangement = spacedBy(16.dp),
             modifier = Modifier.padding(16.dp),
         ) {
-            DetailsActions()
+            DetailsActions(
+                watched = true,
+            )
 
             DetailsActions(
+                watched = false,
                 watchlist = true,
             )
 

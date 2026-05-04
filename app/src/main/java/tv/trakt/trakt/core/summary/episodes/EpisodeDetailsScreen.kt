@@ -428,6 +428,7 @@ internal fun EpisodeDetailsContent(
                             else -> R.drawable.ic_check
                         },
                         secondaryVisible = false,
+                        watched = isWatched,
                         enabled = state.user != null &&
                             !state.loadingProgress.isLoading,
                         loading = state.loadingProgress.isLoading,
