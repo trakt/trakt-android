@@ -159,14 +159,14 @@ private fun GetVipView(onVipClick: () -> Unit) {
             modifier = Modifier.weight(1f),
         ) {
             Text(
-                text = stringResource(R.string.text_vip_trivia_upsell_1),
+                text = stringResource(R.string.text_vip_upsell_dive_deeper),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.paragraphSmall.copy(
                     fontWeight = W600,
                 ),
             )
             Text(
-                text = stringResource(R.string.text_vip_trivia_upsell_2),
+                text = stringResource(R.string.vip_feature_description_trivia),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.paragraphSmaller.copy(
                     fontSize = 12.sp,

@@ -208,7 +208,7 @@ private fun DetailsMetaInfo(
             horizontalArrangement = spacedBy(16.dp),
         ) {
             DetailsMeta(
-                title = stringResource(R.string.text_directors),
+                title = stringResource(R.string.header_director),
                 values = (directors ?: EmptyImmutableList)
                     .map { it.name }
                     .ifEmpty { listOf("N/A") },
@@ -221,7 +221,7 @@ private fun DetailsMetaInfo(
                 modifier = Modifier.weight(1F),
             )
             DetailsMeta(
-                title = stringResource(R.string.text_writers),
+                title = stringResource(R.string.header_writer),
                 values = (writers ?: EmptyImmutableList)
                     .map { it.name }
                     .ifEmpty { listOf("N/A") },

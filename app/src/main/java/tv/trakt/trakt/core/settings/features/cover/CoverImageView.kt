@@ -85,8 +85,8 @@ private fun CoverImageContent(
         modifier = modifier,
     ) {
         TraktHeader(
-            title = stringResource(R.string.button_text_cover_image),
-            subtitle = stringResource(R.string.page_description_cover_image, state.mediaTitle),
+            title = stringResource(R.string.button_text_set_cover_image),
+            subtitle = stringResource(R.string.warning_prompt_set_cover_image, state.mediaTitle),
         )
 
         Box(
@@ -198,7 +198,7 @@ private fun GetVipView(onVipClick: () -> Unit) {
             modifier = Modifier.weight(1f),
         ) {
             Text(
-                text = stringResource(R.string.text_vip_cover_upsell_2),
+                text = stringResource(R.string.vip_feature_description_profile_customisation),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.paragraphSmaller.copy(
                     fontSize = 12.sp,

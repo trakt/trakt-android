@@ -30,7 +30,7 @@ internal fun MetaView(
     ) {
         MetaViewItemView(
             title = plays.thousandsFormat(),
-            subtitle = stringResource(R.string.text_stats_plays),
+            subtitle = stringResource(R.string.stat_text_plays),
             icon = {
                 Icon(
                     painter = painterResource(R.drawable.ic_play),
@@ -50,7 +50,7 @@ internal fun MetaView(
 
         MetaViewItemView(
             title = watchers.thousandsFormat(),
-            subtitle = stringResource(R.string.text_stats_watchers),
+            subtitle = stringResource(R.string.stat_text_watchers),
             icon = {
                 Icon(
                     painter = painterResource(R.drawable.ic_person_double),
@@ -66,7 +66,7 @@ internal fun MetaView(
 
         MetaViewItemView(
             title = lists.thousandsFormat(),
-            subtitle = stringResource(R.string.text_stats_lists),
+            subtitle = stringResource(R.string.stat_text_lists),
             icon = {
                 Icon(
                     painter = painterResource(R.drawable.ic_lists_off),
@@ -83,7 +83,7 @@ internal fun MetaView(
         favorites?.let {
             MetaViewItemView(
                 title = favorites.thousandsFormat(),
-                subtitle = stringResource(R.string.text_stats_favorites),
+                subtitle = stringResource(R.string.stat_text_favorited),
                 icon = {
                     Icon(
                         painter = painterResource(R.drawable.ic_heart_off),

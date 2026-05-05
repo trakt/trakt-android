@@ -33,7 +33,7 @@ internal fun FinaleChip(
     containerColor: Color = TraktTheme.colors.chipContainerOnContent,
 ) {
     StatusChip(
-        text = stringResource(R.string.text_tag_finale),
+        text = stringResource(R.string.tag_text_finale),
         dotColor = Red500,
         contentTextStyle = contentTextStyle,
         containerColor = containerColor,
@@ -48,7 +48,7 @@ internal fun PremiereChip(
     containerColor: Color = TraktTheme.colors.chipContainerOnContent,
 ) {
     StatusChip(
-        text = stringResource(R.string.text_tag_premiere),
+        text = stringResource(R.string.tag_text_premiere),
         dotColor = Green600,
         contentTextStyle = contentTextStyle,
         containerColor = containerColor,

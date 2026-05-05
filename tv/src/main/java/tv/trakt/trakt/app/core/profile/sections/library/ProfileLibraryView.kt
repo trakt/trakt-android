@@ -96,13 +96,13 @@ internal fun ProfileLibraryContent(
             modifier = Modifier.padding(headerPadding),
         ) {
             Text(
-                text = stringResource(R.string.list_title_plex_library),
+                text = stringResource(R.string.translated_value_library_plex),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading5,
             )
             if (!state.isLoading && state.items?.isEmpty() == true) {
                 Text(
-                    text = stringResource(R.string.list_subtitle_plex_library),
+                    text = stringResource(R.string.text_plex_tv_library_description),
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.meta.copy(fontWeight = W400),
                 )

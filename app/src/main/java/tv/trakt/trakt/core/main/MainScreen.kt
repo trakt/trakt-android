@@ -240,8 +240,8 @@ internal fun MainScreen(
 
     RemoveConfirmationSheet(
         active = stopRatePromptSheet,
-        title = stringResource(R.string.button_text_stop_ask),
-        message = stringResource(R.string.warning_prompt_stop_rate_prompt),
+        title = stringResource(R.string.button_text_stop_asking),
+        message = stringResource(R.string.warning_prompt_suppress_ratings_toast),
         onYes = {
             stopRatePromptSheet = false
             viewModel.suppressRatePrompt()

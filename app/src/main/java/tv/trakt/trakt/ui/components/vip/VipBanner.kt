@@ -82,7 +82,7 @@ internal fun VipBanner(
             )
 
             Text(
-                text = stringResource(R.string.text_vip_upsell_default_description_2),
+                text = stringResource(R.string.text_vip_features_tagline),
                 style = TraktTheme.typography.paragraphSmaller.copy(
                     lineHeight = 1.4.em,
                 ),
