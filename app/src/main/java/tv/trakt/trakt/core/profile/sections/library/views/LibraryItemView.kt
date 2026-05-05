@@ -11,11 +11,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.core.library.model.LibraryItem
@@ -41,7 +42,7 @@ internal fun LibraryItemView(
                 onClick = onEpisodeClick,
                 cardContent = {
                     InfoChip(
-                        text = item.collectedAt.toLocal().format(mediumDateFormat),
+                        text = item.collectedAt.toLocal().format(mediumDateFormat()),
                         iconPainter = painterResource(R.drawable.ic_library_check),
                         iconPadding = 1.dp,
                         containerColor = TraktTheme.colors.chipContainerOnContent,
@@ -82,7 +83,7 @@ internal fun LibraryItemView(
                 more = false,
                 cardContent = {
                     InfoChip(
-                        text = item.collectedAt.toLocal().format(mediumDateFormat),
+                        text = item.collectedAt.toLocal().format(mediumDateFormat()).capitalize(),
                         iconPainter = painterResource(R.drawable.ic_library_check),
                         iconPadding = 1.dp,
                         containerColor = TraktTheme.colors.chipContainerOnContent,
@@ -105,7 +106,7 @@ internal fun LibraryItemView(
                         )
 
                         Text(
-                            text = item.movie.runtime?.inWholeMinutes?.durationFormat() ?: "TBA",
+                            text = rememberDurationFormat(item.movie.runtime?.inWholeMinutes),
                             style = TraktTheme.typography.cardSubtitle,
                             color = TraktTheme.colors.textSecondary,
                         )

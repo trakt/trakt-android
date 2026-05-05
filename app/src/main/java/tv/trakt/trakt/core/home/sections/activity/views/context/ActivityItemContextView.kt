@@ -37,6 +37,7 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -193,8 +194,9 @@ private fun ActivityItemContextViewContent(
                         translationX = -1.75.dp.toPx()
                     },
             ) {
+                val dateFormat = longDateTimeFormat()
                 val dateText = remember(item.activityAt) {
-                    item.activityAt.toLocal().format(longDateTimeFormat)
+                    item.activityAt.toLocal().format(dateFormat).capitalize()
                 }
                 Icon(
                     painter = painterResource(R.drawable.ic_calendar_check),

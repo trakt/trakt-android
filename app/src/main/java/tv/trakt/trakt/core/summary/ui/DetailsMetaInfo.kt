@@ -15,9 +15,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
@@ -126,13 +126,8 @@ private fun DetailsMetaInfo(
     episodeRowsOnly: Boolean = false,
     onPersonClick: (person: Person) -> Unit = {},
 ) {
-    val runtimeString = remember(runtime) {
-        runtime?.inWholeMinutes?.durationFormat()
-    }
-
-    val totalRuntimeString = remember(totalRuntime) {
-        totalRuntime?.inWholeMinutes?.durationFormat() ?: "N/A"
-    }
+    val runtimeString = rememberDurationFormat(runtime?.inWholeMinutes)
+    val totalRuntimeString = rememberDurationFormat(totalRuntime?.inWholeMinutes)
 
     val languagesStrings = remember(languages) {
         languages.mapNotNull {
@@ -161,7 +156,7 @@ private fun DetailsMetaInfo(
             ) {
                 DetailsMeta(
                     title = stringResource(R.string.header_premiered),
-                    values = listOf(released?.format(longDateFormat) ?: "N/A"),
+                    values = listOf(released?.format(longDateFormat()) ?: "N/A"),
                     modifier = Modifier.weight(1F),
                 )
                 DetailsMeta(
@@ -176,7 +171,7 @@ private fun DetailsMetaInfo(
             ) {
                 DetailsMeta(
                     title = stringResource(R.string.header_runtime),
-                    values = listOf(runtimeString ?: "N/A"),
+                    values = listOf(runtimeString),
                     modifier = Modifier.weight(1F),
                 )
 
@@ -193,12 +188,12 @@ private fun DetailsMetaInfo(
             ) {
                 DetailsMeta(
                     title = stringResource(R.string.header_premiered),
-                    values = listOf(released?.format(longDateFormat) ?: "N/A"),
+                    values = listOf(released?.format(longDateFormat()) ?: "N/A"),
                     modifier = Modifier.weight(1F),
                 )
                 DetailsMeta(
                     title = stringResource(R.string.header_runtime),
-                    values = listOf(runtimeString ?: "N/A"),
+                    values = listOf(runtimeString),
                     modifier = Modifier.weight(1F),
                 )
             }

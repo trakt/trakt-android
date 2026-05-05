@@ -21,9 +21,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
 import tv.trakt.trakt.resources.R
@@ -89,7 +89,7 @@ internal fun HomeUpNextShowView(
                     }
 
                     EpisodeProgressBar(
-                        startText = runtime?.durationFormat(),
+                        startText = rememberDurationFormat(runtime),
                         endText = stringResource(
                             R.string.tag_text_remaining_episodes,
                             remainingEpisodes,

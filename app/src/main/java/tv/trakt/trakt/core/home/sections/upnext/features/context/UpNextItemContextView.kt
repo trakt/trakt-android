@@ -28,9 +28,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.common.helpers.LoadingState.Done
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.core.home.sections.upnext.model.Progress
@@ -143,7 +143,7 @@ private fun UpNextItemContextViewContent(
             Text(
                 text = when (item) {
                     is UpNextShow -> item.progress.nextEpisode?.seasonEpisodeString() ?: ""
-                    is UpNextMovie -> item.movie.runtime?.inWholeMinutes?.durationFormat() ?: ""
+                    is UpNextMovie -> rememberDurationFormat(item.movie.runtime?.inWholeMinutes)
                 },
                 color = TraktTheme.colors.textSecondary,
                 style = TraktTheme.typography.paragraphSmall,

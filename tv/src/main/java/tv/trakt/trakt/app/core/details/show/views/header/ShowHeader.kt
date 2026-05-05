@@ -48,10 +48,11 @@ import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.core.details.show.ShowDetailsState.CollectionState
 import tv.trakt.trakt.app.core.details.ui.PosterImage
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Images.Size.MEDIUM
 import tv.trakt.trakt.common.model.Show
@@ -142,7 +143,7 @@ internal fun ShowHeader(
                             modifier = Modifier.size(18.dp),
                         )
                         Text(
-                            text = releaseDate.format(longDateFormat),
+                            text = releaseDate.format(longDateFormat()).capitalize(),
                             color = TraktTheme.colors.textSecondary,
                             style = TraktTheme.typography.heading6,
                             maxLines = 1,
@@ -232,7 +233,7 @@ internal fun ShowHeader(
                                     modifier = Modifier.size(12.5.dp),
                                 )
                                 Text(
-                                    text = show.rating.votes.thousandsFormat(),
+                                    text = rememberThousandsFormat(show.rating.votes),
                                     color = TraktTheme.colors.textSecondary,
                                     style = TraktTheme.typography.ratingLabel.copy(fontSize = 12.sp),
                                 )

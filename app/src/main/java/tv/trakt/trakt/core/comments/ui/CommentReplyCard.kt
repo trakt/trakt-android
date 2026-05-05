@@ -51,6 +51,7 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.Config.webUserUrl
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.highlightMentions
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -263,7 +264,7 @@ private fun CommentHeader(
                 )
             }
             Text(
-                text = comment.createdAt.format(longDateTimeFormat),
+                text = comment.createdAt.format(longDateTimeFormat()).capitalize(),
                 style = TraktTheme.typography.meta,
                 color = TraktTheme.colors.textSecondary
                     .copy(alpha = 0.66f),

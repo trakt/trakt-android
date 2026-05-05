@@ -36,7 +36,7 @@ import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.profile.ProfileConfig.FAVORITES_ALL_PAGE_LIMIT
 import tv.trakt.trakt.app.core.profile.ProfileConfig.FAVORITES_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
@@ -154,7 +154,7 @@ private fun ProfileFavoriteMoviesViewAllContent(
                             val runtime = movie.runtime?.inWholeMinutes
                             if (runtime != null) {
                                 InfoChip(
-                                    text = runtime.durationFormat(),
+                                    text = rememberDurationFormat(runtime),
                                 )
                             }
                         },

@@ -50,7 +50,7 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.CustomList.Type
@@ -337,7 +337,7 @@ private fun CustomListHeader(
                 )
                 list.likes?.let {
                     Text(
-                        text = it.thousandsFormat(),
+                        text = rememberThousandsFormat(it),
                         style = TraktTheme.typography.meta,
                         color = TraktTheme.colors.textSecondary,
                         maxLines = 1,

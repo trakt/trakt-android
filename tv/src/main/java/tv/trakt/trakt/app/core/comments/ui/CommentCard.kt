@@ -46,6 +46,7 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.app.common.ui.TvVipChip
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -197,9 +198,11 @@ private fun CommentHeader(
                     TvVipChip()
                 }
             }
+
+            val dateFormat = longDateFormat()
             Text(
                 text = remember(comment.createdAt) {
-                    comment.createdAt.toLocal().format(longDateFormat)
+                    comment.createdAt.toLocal().format(dateFormat).capitalize()
                 },
                 style = TraktTheme.typography.paragraphSmall,
                 color = TraktTheme.colors.textSecondary,

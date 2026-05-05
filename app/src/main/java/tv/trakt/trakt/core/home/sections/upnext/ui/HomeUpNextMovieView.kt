@@ -14,8 +14,8 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextMovie
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EpisodeProgressBar
@@ -28,8 +28,6 @@ internal fun HomeUpNextMovieView(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
-    onCheckClick: () -> Unit,
-    onCheckLongClick: () -> Unit,
     onMovieClick: () -> Unit,
 ) {
     HorizontalMediaCard(
@@ -39,23 +37,16 @@ internal fun HomeUpNextMovieView(
         containerImageUrl = item.movie.images?.getFanartUrl(),
         cardContent = {
             Row {
-                val remainingTime = remember(item.progress.progress) {
-                    item.remainingTimeText
-                }
-
                 val remainingPercent = remember(item.progress.progress) {
                     (100F - item.progress.progress) / 100F
                 }
 
                 EpisodeProgressBar(
-                    startText = stringResource(R.string.tag_text_remaining_duration, remainingTime ?: "?"),
+                    startText = stringResource(R.string.tag_text_remaining_duration, item.remainingTimeText() ?: "?"),
                     containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
                     progress = (1F - remainingPercent).coerceIn(0F, 0.99F),
                     modifier = Modifier
-                        .shadow(
-                            2.dp,
-                            RoundedCornerShape(100),
-                        ),
+                        .shadow(2.dp, RoundedCornerShape(100)),
                 )
             }
         },
@@ -80,37 +71,13 @@ internal fun HomeUpNextMovieView(
                     )
 
                     Text(
-                        text = item.movie.runtime?.inWholeMinutes?.durationFormat() ?: "N/A",
+                        text = rememberDurationFormat(item.movie.runtime?.inWholeMinutes),
                         style = TraktTheme.typography.cardSubtitle,
                         color = TraktTheme.colors.textSecondary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
                 }
-
-//                val checkSize = 20.dp
-//                Box(
-//                    contentAlignment = Alignment.Center,
-//                    modifier = Modifier
-//                        .padding(start = 12.dp, end = 4.dp)
-//                        .size(checkSize),
-//                ) {
-//                    if (item.loading) {
-//                        FilmProgressIndicator(size = checkSize - 3.dp)
-//                    } else {
-//                        Icon(
-//                            painter = painterResource(R.drawable.ic_check),
-//                            contentDescription = null,
-//                            tint = TraktTheme.colors.accent,
-//                            modifier = Modifier
-//                                .size(checkSize)
-//                                .onClickCombined(
-//                                    onClick = onCheckClick,
-//                                    onLongClick = onCheckLongClick,
-//                                ),
-//                        )
-//                    }
-//                }
             }
         },
         modifier = modifier,

@@ -24,7 +24,7 @@ import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_SECTION_LIMIT
 import tv.trakt.trakt.app.core.lists.ListsContentLoading
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.resources.R
 
@@ -108,7 +108,7 @@ private fun ContentList(
                 footerContent = {
                     item.runtime?.let {
                         InfoChip(
-                            text = it.inWholeMinutes.durationFormat(),
+                            text = rememberDurationFormat(it.inWholeMinutes),
                         )
                     }
                 },

@@ -59,6 +59,7 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.app.common.ui.TvVipChip
 import tv.trakt.trakt.app.core.comments.ui.CommentReplyCard
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -268,7 +269,7 @@ private fun CommentHeader(
                 }
             }
             Text(
-                text = comment.createdAt.format(longDateTimeFormat),
+                text = comment.createdAt.format(longDateTimeFormat()).capitalize(),
                 style = TraktTheme.typography.paragraphSmall,
                 color = TraktTheme.colors.textSecondary,
                 maxLines = 1,

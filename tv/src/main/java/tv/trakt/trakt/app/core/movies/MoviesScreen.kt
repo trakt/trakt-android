@@ -42,8 +42,8 @@ import tv.trakt.trakt.app.core.movies.model.AnticipatedMovie
 import tv.trakt.trakt.app.core.movies.model.TrendingMovie
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
-import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.Movie
@@ -283,7 +283,7 @@ private fun TrendingMoviesList(
                         paletteColor = movie.colors?.colors?.second,
                         footerContent = {
                             InfoChip(
-                                text = watchers.thousandsFormat(),
+                                text = rememberThousandsFormat(watchers),
                                 iconPainter = painterResource(R.drawable.ic_person),
                             )
                         },
@@ -356,7 +356,7 @@ private fun StandardMoviesList(
                             val runtime = movie.runtime?.inWholeMinutes
                             if (runtime != null) {
                                 InfoChip(
-                                    text = runtime.durationFormat(),
+                                    text = rememberDurationFormat(runtime),
                                 )
                             }
                         },
@@ -427,7 +427,7 @@ private fun AnticipatedMoviesList(
                         paletteColor = movie.colors?.colors?.second,
                         footerContent = {
                             InfoChip(
-                                text = listCount.thousandsFormat(),
+                                text = rememberThousandsFormat(listCount),
                                 iconPainter = painterResource(R.drawable.ic_star),
                             )
                         },

@@ -38,7 +38,7 @@ import tv.trakt.trakt.app.core.profile.ProfileConfig.LIBRARY_ALL_PAGE_LIMIT
 import tv.trakt.trakt.app.core.profile.ProfileConfig.LIBRARY_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.core.profile.sections.library.model.LibraryItem
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.TraktId
@@ -204,11 +204,8 @@ private fun ProfileLibraryViewAllContent(
                                 }
 
                                 if (item is LibraryItem.MovieItem) {
-                                    val durationText = remember(item.movie.runtime) {
-                                        item.movie.runtime?.inWholeMinutes?.durationFormat() ?: ""
-                                    }
                                     Text(
-                                        text = durationText,
+                                        text = rememberDurationFormat(item.movie.runtime?.inWholeMinutes),
                                         style = TraktTheme.typography.cardSubtitle,
                                         color = TraktTheme.colors.textSecondary,
                                         maxLines = 1,

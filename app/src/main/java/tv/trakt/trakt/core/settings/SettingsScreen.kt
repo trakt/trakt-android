@@ -5,9 +5,13 @@ package tv.trakt.trakt.core.settings
 import android.Manifest.permission.POST_NOTIFICATIONS
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.net.Uri
 import android.os.Build
+import android.os.Build.VERSION_CODES.TIRAMISU
+import android.provider.Settings.ACTION_APP_LOCALE_SETTINGS
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +33,8 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarDuration.Short
@@ -38,6 +44,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -60,7 +67,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.BuildConfig
 import tv.trakt.trakt.LocalSnackbarState
@@ -86,6 +97,7 @@ import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.input.SingleInputSheet
 import tv.trakt.trakt.ui.components.whatsnew.openPlayStore
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.util.Locale
 
 private const val SECTION_SPACING_DP = 12
 internal const val SECTION_ITEM_HEIGHT_DP = 32
@@ -261,6 +273,10 @@ private fun SettingsScreenContent(
                     onSetDeliveryTime = onSetDeliveryTime,
                 )
 
+                SettingsAppearance(
+                    state = state,
+                )
+
                 SettingsMisc(
                     state = state,
                     onSubscriptionsClick = onSubscriptionsClick,
@@ -405,8 +421,8 @@ private fun SettingsAccount(
 
         if (!state.user?.settings?.coverImage.isNullOrBlank()) {
             SettingsTextField(
-                text = "Clear Cover Image",
-                description = "Clear current cover image and return to the default.",
+                text = stringResource(R.string.header_settings_clear_cover),
+                description = stringResource(R.string.text_settings_clear_cover),
                 icon = null,
                 enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
                 onClick = onClearCoverImage,
@@ -527,6 +543,104 @@ private fun SettingsStreaming(
 }
 
 @Composable
+private fun SettingsAppearance(
+    state: SettingsState,
+    modifier: Modifier = Modifier,
+) {
+    val context = LocalContext.current
+    val config = LocalResources.current.configuration
+    val scope = rememberCoroutineScope()
+
+    val appLocale = remember(config) {
+        AppCompatDelegate.getApplicationLocales().toLanguageTags()
+    }
+
+    val appLocaleDisplay = remember(config, appLocale) {
+        Locale.forLanguageTag(appLocale).getDisplayName(Locale.forLanguageTag(appLocale))
+            .ifBlank { "System" }
+            .replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
+            }
+    }
+
+    val allLocales = remember(config) {
+        BuildConfig.SUPPORTED_LOCALES
+            .map {
+                val locale = Locale.forLanguageTag(it)
+                val displayLabel = locale.getDisplayName(Locale.forLanguageTag(it))
+                    .replaceFirstChar { char ->
+                        if (char.isLowerCase()) char.titlecase(Locale.ROOT) else char.toString()
+                    }
+                it to displayLabel
+            }
+    }
+
+    Column(
+        verticalArrangement = spacedBy(SECTION_SPACING_DP.dp),
+        modifier = modifier,
+    ) {
+        TraktHeader(
+            title = stringResource(R.string.header_appearance).uppercase(),
+            titleColor = TraktTheme.colors.textSecondary,
+            titleStyle = TraktTheme.typography.heading6,
+        )
+
+        Box {
+            val menuVisible = remember(config) { mutableStateOf(false) }
+
+            SettingsValueField(
+                text = stringResource(R.string.text_language),
+                value = appLocaleDisplay,
+                enabled = !state.logoutLoading.isLoading,
+                onClick = {
+                    if (Build.VERSION.SDK_INT >= TIRAMISU) {
+                        val intent = Intent(ACTION_APP_LOCALE_SETTINGS).apply {
+                            data = Uri.fromParts("package", context.packageName, null)
+                        }
+                        context.startActivity(intent)
+                    } else {
+                        menuVisible.value = true
+                    }
+                },
+            )
+
+            Box(
+                modifier = Modifier.align(Alignment.BottomEnd),
+            ) {
+                DropdownMenu(
+                    expanded = menuVisible.value,
+                    containerColor = TraktTheme.colors.dialogContainer,
+                    shape = RoundedCornerShape(16.dp),
+                    onDismissRequest = {
+                        menuVisible.value = false
+                    },
+                ) {
+                    allLocales.forEach { (locale, displayName) ->
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = displayName,
+                                    style = TraktTheme.typography.buttonTertiary,
+                                    color = TraktTheme.colors.textPrimary,
+                                    modifier = Modifier.fillMaxWidth(),
+                                )
+                            },
+                            onClick = {
+                                menuVisible.value = false
+                                scope.launch(Dispatchers.Main) {
+                                    delay(350)
+                                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(locale))
+                                }
+                            },
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
 private fun SettingsNotifications(
     state: SettingsState,
     modifier: Modifier = Modifier,
@@ -536,7 +650,7 @@ private fun SettingsNotifications(
     val context = LocalContext.current
 
     val hasPermission = remember(context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        if (Build.VERSION.SDK_INT >= TIRAMISU) {
             ContextCompat.checkSelfPermission(context, POST_NOTIFICATIONS) == PERMISSION_GRANTED
         } else {
             // On Android 12 and below, notification permission is granted by default
@@ -578,7 +692,7 @@ private fun SettingsNotifications(
             onClick = {
                 if (state.notifications) {
                     onEnableNotifications(false)
-                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                } else if (Build.VERSION.SDK_INT >= TIRAMISU) {
                     if (!hasPermission) {
                         permissionLauncher.launch(POST_NOTIFICATIONS)
                     } else {

@@ -46,7 +46,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
@@ -187,10 +187,10 @@ private fun ContentList(
                 onLongClick = { onLongClick?.invoke(item) },
                 chipSpacing = 10.dp,
                 chipContent = { chipModifier ->
+                    val runtime = rememberDurationFormat(item.runtime?.inWholeMinutes)
                     val footerText = remember {
-                        val runtime = item.runtime?.inWholeMinutes
-                        if (runtime != null) {
-                            "${item.released?.year ?: item.year} • ${runtime.durationFormat()}"
+                        if (runtime != "N/A") {
+                            "${item.released?.year ?: item.year} • $runtime"
                         } else {
                             "${item.released?.year ?: item.year}"
                         }

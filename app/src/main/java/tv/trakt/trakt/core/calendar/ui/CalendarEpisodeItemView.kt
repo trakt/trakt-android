@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -69,8 +70,9 @@ internal fun CalendarEpisodeItemView(
                 horizontalArrangement = spacedBy(3.dp),
                 verticalAlignment = CenterVertically,
             ) {
+                val timeFormat = timeFormat()
                 val timeString = remember(item.releasedAt) {
-                    item.releasedAt?.toLocal()?.format(timeFormat)
+                    item.releasedAt?.toLocal()?.format(timeFormat)?.capitalize()
                 }
 
                 when {

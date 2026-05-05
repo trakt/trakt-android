@@ -36,7 +36,7 @@ import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_PAGE_LIMIT
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Images
@@ -142,7 +142,7 @@ private fun MoviesWatchlistContent(
                             val runtime = movie.runtime?.inWholeMinutes
                             if (runtime != null) {
                                 InfoChip(
-                                    text = runtime.durationFormat(),
+                                    text = rememberDurationFormat(runtime),
                                 )
                             }
                         },

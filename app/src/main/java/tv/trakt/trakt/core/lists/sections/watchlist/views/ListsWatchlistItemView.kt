@@ -16,11 +16,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.relativeDateString
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.resources.R
@@ -153,11 +153,11 @@ internal fun ListsWatchlistItemView(
                                 )
                             }
 
+                            val runtime = rememberDurationFormat(item.movie.runtime?.inWholeMinutes)
                             Text(
                                 text = remember {
-                                    val runtime = item.movie.runtime?.inWholeMinutes
-                                    if (runtime != null) {
-                                        "${item.movie.year} • ${runtime.durationFormat()}"
+                                    if (runtime != "N/A") {
+                                        "${item.movie.year} • $runtime"
                                     } else {
                                         item.movie.year.toString()
                                     }

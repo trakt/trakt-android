@@ -44,8 +44,8 @@ import tv.trakt.trakt.app.core.details.lists.details.CustomListDetailsConfig.CUS
 import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
-import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Images
@@ -157,7 +157,7 @@ private fun CustomListMediaContent(
                     )
 
                     LikeButton(
-                        text = state.like.likesCount.thousandsFormat(),
+                        text = rememberThousandsFormat(state.like.likesCount),
                         liked = state.like.isLiked,
                         loading = state.like.isLoading,
                         enabled = !state.like.isLoading,
@@ -208,7 +208,7 @@ private fun CustomListMediaContent(
                                     val runtime = item.movie.runtime?.inWholeMinutes
                                     if (runtime != null) {
                                         InfoChip(
-                                            text = runtime.durationFormat(),
+                                            text = rememberDurationFormat(runtime),
                                         )
                                     }
                                 }

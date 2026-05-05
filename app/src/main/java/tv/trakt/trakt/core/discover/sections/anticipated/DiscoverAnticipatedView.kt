@@ -46,7 +46,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -318,7 +318,7 @@ private fun ContentListItem(
                     modifier = Modifier.size(14.dp),
                 )
                 Text(
-                    text = item.count.thousandsFormat(),
+                    text = rememberThousandsFormat(item.count),
                     style = TraktTheme.typography.cardTitle,
                     color = TraktTheme.colors.textPrimary,
                     textAlign = TextAlign.Center,

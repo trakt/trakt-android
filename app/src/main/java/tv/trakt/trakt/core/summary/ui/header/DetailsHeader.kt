@@ -33,9 +33,9 @@ import androidx.core.net.toUri
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.Config.webImdbPersonUrl
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.ImdbId
 import tv.trakt.trakt.common.ui.theme.colors.Red500
@@ -190,7 +190,7 @@ internal fun DetailsHeader(
                     DotSeparator()
                 } else if (runtime != null) {
                     Text(
-                        text = runtime.inWholeMinutes.durationFormat(),
+                        text = rememberDurationFormat(runtime.inWholeMinutes),
                         color = TraktTheme.colors.textSecondary,
                         style = TraktTheme.typography.paragraphSmaller,
                         maxLines = 1,

@@ -63,11 +63,11 @@ import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size
@@ -517,7 +517,7 @@ private fun EpisodeListItem(
                     val runtime = episode.episode.runtime?.inWholeMinutes
                     if (runtime != null) {
                         Text(
-                            text = runtime.durationFormat(),
+                            text = rememberDurationFormat(runtime),
                             color = TraktTheme.colors.textPrimary,
                             style = TraktTheme.typography.cardSubtitle.copy(
                                 fontSize = 11.sp,

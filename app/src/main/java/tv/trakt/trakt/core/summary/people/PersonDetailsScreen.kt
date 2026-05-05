@@ -55,6 +55,7 @@ import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -334,7 +335,7 @@ private fun DetailsBirthday(
                 color = TraktTheme.colors.textSecondary.copy(alpha = 0.7f),
             )
             Text(
-                text = birthday?.format(longDateFormat) ?: "-",
+                text = birthday?.format(longDateFormat())?.capitalize() ?: "N/A",
                 style = TraktTheme.typography.paragraphSmall,
                 color = TraktTheme.colors.textPrimary,
                 textAlign = TextAlign.Start,

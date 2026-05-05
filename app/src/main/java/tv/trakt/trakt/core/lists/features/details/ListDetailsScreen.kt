@@ -69,7 +69,7 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.extensions.toAnnotatedString
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
@@ -417,7 +417,7 @@ private fun TitleBar(
                         )
                         likesCount?.let {
                             Text(
-                                text = it.thousandsFormat(),
+                                text = rememberThousandsFormat(it),
                                 style = TraktTheme.typography.buttonTertiary.copy(
                                     fontSize = 12.sp,
                                 ),

@@ -40,7 +40,7 @@ import tv.trakt.trakt.app.core.movies.MoviesConfig.MOVIES_PAGE_LIMIT
 import tv.trakt.trakt.app.core.movies.model.TrendingMovie
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
@@ -146,7 +146,7 @@ private fun MoviesTrendingContent(
                         },
                         chipContent = {
                             InfoChip(
-                                text = trendingMovie.watchers.thousandsFormat(),
+                                text = rememberThousandsFormat(trendingMovie.watchers),
                                 iconPainter = painterResource(R.drawable.ic_person),
                             )
                         },

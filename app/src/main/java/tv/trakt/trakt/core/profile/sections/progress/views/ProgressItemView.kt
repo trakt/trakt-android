@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toLocal
@@ -41,7 +42,7 @@ internal fun ProgressItemView(
                 cardContent = {
                     item.hiddenAt?.let {
                         InfoChip(
-                            text = it.toLocal().format(mediumDateFormat),
+                            text = it.toLocal().format(mediumDateFormat()).capitalize(),
                             iconPainter = painterResource(R.drawable.ic_drop),
                             iconPadding = 1.dp,
                             containerColor = TraktTheme.colors.chipContainerOnContent,

@@ -364,7 +364,7 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
                 .padding(top = 48.dp),
         ) {
             VipOfferItem(
-                text = stringResource(R.string.vip_feature_title_increased_limits),
+                text = stringResource(R.string.vip_text_vip_go_beyond_limits),
                 description = stringResource(R.string.vip_feature_description_increased_limits),
                 icon = painterResource(R.drawable.ic_vip_lists),
             )
@@ -481,10 +481,10 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
                     .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
             ) {
                 val moreTexts = listOf(
-                    stringResource(R.string.text_vip_costs_independence),
-                    stringResource(R.string.text_vip_costs_team),
-                    stringResource(R.string.text_vip_costs_moderation),
+                    stringResource(R.string.text_vip_costs_metadata),
                     stringResource(R.string.text_vip_costs_infrastructure),
+                    stringResource(R.string.text_vip_costs_clients),
+                    stringResource(R.string.text_vip_costs_team),
                 )
 
                 for (text in moreTexts) {

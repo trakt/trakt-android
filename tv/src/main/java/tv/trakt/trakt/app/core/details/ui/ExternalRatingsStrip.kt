@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.resources.R
 
@@ -72,7 +72,7 @@ internal fun ExternalRatingsStrip(
                         modifier = Modifier.size(12.5.dp),
                     )
                     Text(
-                        text = imdbVotes.thousandsFormat(),
+                        text = rememberThousandsFormat(imdbVotes),
                         color = TraktTheme.colors.textSecondary,
                         style = TraktTheme.typography.ratingLabel.copy(fontSize = 12.sp),
                     )

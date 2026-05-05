@@ -56,6 +56,7 @@ import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -329,7 +330,7 @@ private fun CommentHeader(
                 )
             }
             Text(
-                text = comment.createdAt.format(longDateTimeFormat),
+                text = comment.createdAt.format(longDateTimeFormat()).capitalize(),
                 style = TraktTheme.typography.meta,
                 color = TraktTheme.colors.textSecondary
                     .copy(alpha = 0.66f),

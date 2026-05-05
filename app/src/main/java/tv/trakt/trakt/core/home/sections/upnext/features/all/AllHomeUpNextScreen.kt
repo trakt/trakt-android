@@ -307,8 +307,6 @@ private fun ContentList(
                     item = item,
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
-                    onCheckClick = { onCheckClick(item) },
-                    onCheckLongClick = { onCheckLongClick(item) },
                     onMovieClick = { onMovieClick(item) },
                     modifier = Modifier.animateItem(
                         fadeInSpec = null,

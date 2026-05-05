@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.model.Person
@@ -70,7 +71,7 @@ internal fun SearchPersonGridItem(
                                 )
                             }
                             Text(
-                                text = "${date.format(mediumDateFormat)} ($age)",
+                                text = "${date.format(mediumDateFormat()).capitalize()} ($age)",
                                 style = TraktTheme.typography.cardSubtitle,
                                 color = TraktTheme.colors.textSecondary,
                                 maxLines = 1,

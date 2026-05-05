@@ -1,151 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+  xmlns:tools="http://schemas.android.com/tools"
+  >
+
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.VIBRATE" />
+  <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+  <uses-permission android:name="android.permission.POST_PROMOTED_NOTIFICATIONS" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+
+  <!-- Required for the app to run on Android TV -->
+  <uses-feature
+    android:name="android.hardware.touchscreen"
+    android:required="false"
+    />
+
+  <!-- Required for the app to run on Android TV -->
+  <uses-feature
+    android:name="android.software.leanback"
+    android:required="false"
+    />
+
+  <application
+    android:name=".TraktApplication"
+    android:allowBackup="true"
+    android:banner="@mipmap/ic_banner"
+    android:dataExtractionRules="@xml/data_extraction_rules"
+    android:fullBackupContent="@xml/backup_rules"
+    android:icon="@mipmap/ic_launcher"
+    android:label="${applicationName}"
+    android:supportsRtl="true"
+    android:theme="@style/Theme.Trakt"
     >
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.POST_PROMOTED_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
-
-    <!-- Required for the app to run on Android TV -->
-    <uses-feature
-        android:name="android.hardware.touchscreen"
-        android:required="false"
+    <service
+      android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+      android:enabled="false"
+      android:exported="false"
+      >
+      <meta-data
+        android:name="autoStoreLocales"
+        android:value="true"
         />
+    </service>
 
-    <!-- Required for the app to run on Android TV -->
-    <uses-feature
-        android:name="android.software.leanback"
-        android:required="false"
+    <service
+      android:name=".core.checkin.data.service.CheckInService"
+      android:exported="false"
+      android:foregroundServiceType="specialUse"
+      >
+      <property
+        android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+        android:value="User triggered action of checking in to movie or episode watching. When user checks in, they expect immediate feedback from the app and be able to track their watching status in real time even if app is closed."
         />
+    </service>
 
-    <application
-        android:name=".TraktApplication"
-        android:allowBackup="true"
-        android:banner="@mipmap/ic_banner"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
-        android:label="${applicationName}"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.Trakt"
-        >
+    <activity
+      android:name=".MainActivity"
+      android:exported="true"
+      android:launchMode="singleTop"
+      android:windowSoftInputMode="adjustResize"
+      >
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
 
-        <service
-            android:name=".core.checkin.data.service.CheckInService"
-            android:exported="false"
-            android:foregroundServiceType="specialUse"
-            >
-            <property
-                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="User triggered action of checking in to movie or episode watching. When user checks in, they expect immediate feedback from the app and be able to track their watching status in real time even if app is closed."
-                />
-        </service>
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
 
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustResize"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
 
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+        <data
+          android:host="auth"
+          android:scheme="trakt"
+          />
+      </intent-filter>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+      <meta-data
+        android:name="android.app.shortcuts"
+        android:resource="@xml/shortcuts"
+        />
+    </activity>
 
-                <data
-                    android:host="auth"
-                    android:scheme="trakt"
-                    />
-            </intent-filter>
+    <activity
+      android:name=".app.TvSplashActivity"
+      android:exported="true"
+      android:theme="@style/SplashScreenTheme"
+      >
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+      </intent-filter>
+    </activity>
 
-            <meta-data
-                android:name="android.app.shortcuts"
-                android:resource="@xml/shortcuts"
-                />
-        </activity>
+    <activity
+      android:name=".app.TvActivity"
+      android:exported="true"
+      android:launchMode="singleTask"
+      android:theme="@style/Theme.TraktTv"
+      />
 
-        <activity
-            android:name=".app.TvSplashActivity"
-            android:exported="true"
-            android:theme="@style/SplashScreenTheme"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
-            </intent-filter>
-        </activity>
+    <provider
+      android:name="androidx.startup.InitializationProvider"
+      android:authorities="${applicationId}.androidx-startup"
+      android:exported="false"
+      tools:node="merge"
+      >
+      <meta-data
+        android:name="androidx.work.WorkManagerInitializer"
+        android:value="androidx.startup"
+        tools:node="remove"
+        />
+    </provider>
 
-        <activity
-            android:name=".app.TvActivity"
-            android:exported="true"
-            android:launchMode="singleTask"
-            android:theme="@style/Theme.TraktTv"
-            />
+  </application>
 
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            android:exported="false"
-            tools:node="merge"
-            >
-            <meta-data
-                android:name="androidx.work.WorkManagerInitializer"
-                android:value="androidx.startup"
-                tools:node="remove"
-                />
-        </provider>
+  <queries>
+    <!-- Streaming Apps -->
+    <package android:name="com.amazon.avod.thirdpartyclient" />
+    <package android:name="com.netflix.mediaclient" />
+    <package android:name="com.apple.atve.androidtv.appletv" />
+    <package android:name="com.wbd.stream" />
+    <package android:name="com.hulu.plus" />
+    <package android:name="com.disney.disneyplus" />
+    <package android:name="com.peacocktv.peacockandroid" />
+    <package android:name="com.cbs.app" />
+    <package android:name="com.espn.score_center" />
+    <package android:name="com.amcplus.amcfullepisodes" />
+    <package android:name="tv.wuaki" />
+    <package android:name="com.bydeluxe.d3.android.program.starz" />
+    <package android:name="com.google.android.apps.youtube.unplugged" />
+    <package android:name="com.sling" />
+    <package android:name="com.discovery.discoveryplus.mobile" />
+    <package android:name="com.britbox.us" />
+    <package android:name="tv.fubo.mobile" />
+    <package android:name="com.batanga.vix" />
+    <package android:name="com.curiosity.curiositystream" />
+    <package android:name="com.dazn" />
+    <package android:name="com.crunchyroll.crunchyroid" />
+    <package android:name="com.tubitv" />
+    <package android:name="tv.pluto.android" />
+    <package android:name="com.roku.web.trc" />
+    <package android:name="com.amazon.imdb.tv" />
+    <package android:name="com.dramafever.shudder" />
+    <package android:name="com.acorn.tv" />
+    <package android:name="com.philo.philo.google" />
+    <package android:name="com.kanopy" />
+    <package android:name="com.feeln.android" />
+    <package android:name="air.com.vudu.air.DownloaderTablet" />
+    <package android:name="com.plexapp.android" />
+    <package android:name="com.turner.tnt.android.networkapp" />
 
-    </application>
-
-    <queries>
-        <!-- Streaming Apps -->
-        <package android:name="com.amazon.avod.thirdpartyclient" />
-        <package android:name="com.netflix.mediaclient" />
-        <package android:name="com.apple.atve.androidtv.appletv" />
-        <package android:name="com.wbd.stream" />
-        <package android:name="com.hulu.plus" />
-        <package android:name="com.disney.disneyplus" />
-        <package android:name="com.peacocktv.peacockandroid" />
-        <package android:name="com.cbs.app" />
-        <package android:name="com.espn.score_center" />
-        <package android:name="com.amcplus.amcfullepisodes" />
-        <package android:name="tv.wuaki" />
-        <package android:name="com.bydeluxe.d3.android.program.starz" />
-        <package android:name="com.google.android.apps.youtube.unplugged" />
-        <package android:name="com.sling" />
-        <package android:name="com.discovery.discoveryplus.mobile" />
-        <package android:name="com.britbox.us" />
-        <package android:name="tv.fubo.mobile" />
-        <package android:name="com.batanga.vix" />
-        <package android:name="com.curiosity.curiositystream" />
-        <package android:name="com.dazn" />
-        <package android:name="com.crunchyroll.crunchyroid" />
-        <package android:name="com.tubitv" />
-        <package android:name="tv.pluto.android" />
-        <package android:name="com.roku.web.trc" />
-        <package android:name="com.amazon.imdb.tv" />
-        <package android:name="com.dramafever.shudder" />
-        <package android:name="com.acorn.tv" />
-        <package android:name="com.philo.philo.google" />
-        <package android:name="com.kanopy" />
-        <package android:name="com.feeln.android" />
-        <package android:name="air.com.vudu.air.DownloaderTablet" />
-        <package android:name="com.plexapp.android" />
-        <package android:name="com.turner.tnt.android.networkapp" />
-
-        <!-- Misc. Apps -->
-        <package android:name="com.imdb.mobile" />
-        <package android:name="com.justwatch.justwatch" />
-        <package android:name="com.rottentomatoes.android" />
-    </queries>
+    <!-- Misc. Apps -->
+    <package android:name="com.imdb.mobile" />
+    <package android:name="com.justwatch.justwatch" />
+    <package android:name="com.rottentomatoes.android" />
+  </queries>
 
 </manifest>

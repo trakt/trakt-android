@@ -37,7 +37,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -267,11 +267,12 @@ private fun MovieItemCard(
                             },
                     )
 
+                    val footerRuntime = rememberDurationFormat(item.movie.runtime?.inWholeMinutes)
                     Text(
                         text = remember {
                             val runtime = item.movie.runtime?.inWholeMinutes
                             if (runtime != null) {
-                                "${item.movie.year} • ${runtime.durationFormat()}"
+                                "${item.movie.year} • $footerRuntime"
                             } else {
                                 item.movie.year.toString()
                             }

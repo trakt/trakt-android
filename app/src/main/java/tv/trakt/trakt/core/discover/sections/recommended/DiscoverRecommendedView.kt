@@ -46,8 +46,8 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -291,10 +291,10 @@ private fun ContentListItem(
         chipContent = { chipModifier ->
             val footerText = when (item) {
                 is MovieItem -> {
+                    val runtime = rememberDurationFormat(item.movie.runtime?.inWholeMinutes)
                     remember {
-                        val runtime = item.movie.runtime?.inWholeMinutes
-                        if (runtime != null) {
-                            "${item.movie.released?.year ?: item.movie.year}  •  ${runtime.durationFormat()}"
+                        if (runtime != "N/A") {
+                            "${item.movie.released?.year ?: item.movie.year}  •  $runtime"
                         } else {
                             "${item.movie.released?.year ?: item.movie.year}"
                         }

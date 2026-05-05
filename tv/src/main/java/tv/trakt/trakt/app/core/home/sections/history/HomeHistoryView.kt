@@ -38,10 +38,11 @@ import tv.trakt.trakt.app.common.ui.mediacards.HorizontalViewAllCard
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.resources.R
 
@@ -235,10 +236,12 @@ private fun ContentListItem(
                 )
 
                 val seString = item.episode?.seasonEpisodeString() ?: ""
+                val durationString = rememberDurationFormat(item.movie?.runtime?.inWholeMinutes)
+
                 val subtext = remember(item.type) {
                     when (item.type) {
-                        "episode" -> seString
-                        "movie" -> item.movie?.runtime?.inWholeMinutes?.durationFormat() ?: ""
+                        MediaType.EPISODE.value -> seString
+                        MediaType.MOVIE.value -> durationString
                         else -> ""
                     }
                 }

@@ -60,10 +60,10 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import kotlinx.coroutines.delay
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onEmptyClick
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Shade300
@@ -304,8 +304,8 @@ private fun ExpandedView(
                         }
 
                         val durationText = when {
-                            durationSeconds() > 60 -> durationMinutes().durationFormat()
-                            else -> "<${1L.durationFormat()}"
+                            durationSeconds() > 60 -> rememberDurationFormat(durationMinutes())
+                            else -> "<${rememberDurationFormat(1)}"
                         }
 
                         Text(

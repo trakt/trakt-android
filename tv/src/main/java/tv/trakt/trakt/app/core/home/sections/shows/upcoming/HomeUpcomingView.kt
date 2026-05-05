@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
@@ -31,8 +30,8 @@ import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingIt
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
@@ -186,9 +185,6 @@ private fun ContentListItem(
         containerImageUrl = item.images?.getFanartUrl(),
         onClick = { onClick(item) },
         cardContent = {
-            val dateString = remember(item.releaseAt) {
-                item.releaseAt?.toLocal()?.relativeDateTimeString()
-            }
             Column(
                 verticalArrangement = spacedBy(2.dp),
             ) {
@@ -200,7 +196,7 @@ private fun ContentListItem(
                 }
 
                 InfoChip(
-                    text = dateString ?: "TBA",
+                    text = item.releaseAt?.toLocal()?.relativeDateTimeString() ?: "TBA",
                     iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
                     containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
                 )
@@ -229,7 +225,7 @@ private fun ContentListItem(
                         }
                     }
                     is HomeUpcomingItem.MovieItem -> {
-                        item.movie.runtime?.inWholeMinutes?.durationFormat() ?: ""
+                        rememberDurationFormat(item.movie.runtime?.inWholeMinutes)
                     }
                 }
 

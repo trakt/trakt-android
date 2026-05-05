@@ -19,10 +19,10 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativeDateString
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
@@ -47,6 +47,7 @@ fun MovieMetaFooter(
     onCheckClick: (() -> Unit)? = null,
     onCheckLongClick: (() -> Unit)? = null,
 ) {
+    val runtime = rememberDurationFormat(movie.runtime?.inWholeMinutes)
     val metaString = remember {
         buildString {
             movie.released?.let {
@@ -54,7 +55,7 @@ fun MovieMetaFooter(
             }
             movie.runtime?.let {
                 if (isNotEmpty()) append(SEPARATOR)
-                append(it.inWholeMinutes.durationFormat())
+                append(runtime)
             }
             if (!movie.certification.isNullOrBlank()) {
                 if (isNotEmpty()) append(SEPARATOR)

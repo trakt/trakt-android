@@ -32,10 +32,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
@@ -112,7 +112,7 @@ internal fun EpisodeSeasonList(
                         val runtime = item.episode.runtime?.inWholeMinutes
                         if (runtime != null) {
                             InfoChip(
-                                text = runtime.durationFormat(),
+                                text = rememberDurationFormat(runtime),
                                 containerColor = TraktTheme.colors.chipContainerOnContent,
                             )
                         }

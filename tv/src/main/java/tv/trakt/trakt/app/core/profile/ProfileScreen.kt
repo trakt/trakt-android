@@ -277,17 +277,13 @@ private fun ProfileHeader(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
     ) {
-        val headerName = remember(state.user) {
-            state.user?.displayName
-        }
-
         ProfileAvatar(
             profile = state.user,
         )
 
         Column {
             Text(
-                text = stringResource(R.string.header_profile_banner_greeting, headerName ?: ""),
+                text = state.user?.displayName.orEmpty(),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading4,
             )

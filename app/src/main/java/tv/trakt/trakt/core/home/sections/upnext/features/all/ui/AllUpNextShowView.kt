@@ -17,8 +17,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
@@ -61,13 +61,15 @@ internal fun AllUpNextShowView(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth(),
             ) {
+                val runtime = rememberDurationFormat(
+                    item.progress.nextEpisode?.runtime?.inWholeMinutes
+                        ?: item.show.runtime?.inWholeMinutes,
+                )
+
                 val startString = remember {
                     buildString {
-                        val runtime = item.progress.nextEpisode?.runtime?.inWholeMinutes
-                            ?: item.show.runtime?.inWholeMinutes
-
-                        if (runtime != null) {
-                            append(runtime.durationFormat())
+                        if (runtime != "N/A") {
+                            append(runtime)
                         }
                     }
                 }
@@ -76,6 +78,7 @@ internal fun AllUpNextShowView(
                     R.string.tag_text_remaining_episodes,
                     item.progress.remainingEpisodes,
                 )
+                val remainingMinutesString = rememberDurationFormat(item.progress.remainingMinutes)
 
                 val endString = remember {
                     val separator = "  •  "
@@ -87,9 +90,9 @@ internal fun AllUpNextShowView(
 
                         append(separator)
 
-                        val remainingTime = item.progress.remainingMinutesString
+                        val remainingTime = item.progress.remainingMinutes
                         if (remainingTime != null) {
-                            append(remainingTime)
+                            append(remainingMinutesString)
                         }
                     }
                 }

@@ -75,12 +75,9 @@ internal fun AllActivityMovieItem(
                         modifier = Modifier.size(14.dp),
                     )
                     Text(
-                        text = remember(item.activityAt, dateFormat) {
-                            val localDate = item.activityAt.toLocal()
-                            when (dateFormat) {
-                                null -> localDate.relativePastDateString()
-                                else -> localDate.format(dateFormat)
-                            }
+                        text = when (dateFormat) {
+                            null -> item.activityAt.toLocal().relativePastDateString()
+                            else -> item.activityAt.toLocal().format(dateFormat)
                         },
                         color = TraktTheme.colors.textPrimary,
                         style = TraktTheme.typography.cardSubtitle.copy(

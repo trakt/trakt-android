@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.calendar.ui.controls
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -26,6 +27,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W800
@@ -36,6 +38,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
@@ -186,6 +189,11 @@ private fun DayRowItem(
     onDayClick: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val configuration = LocalConfiguration.current
+    val configurationLocale = remember(configuration) {
+        AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+    }
+
     val isToday = remember(itemDate) {
         itemDate == LocalDate.now()
     }
@@ -238,7 +246,8 @@ private fun DayRowItem(
         ) {
             Text(
                 text = itemDate.dayOfWeek
-                    .getDisplayName(TextStyle.SHORT, Locale.US),
+                    .getDisplayName(TextStyle.SHORT_STANDALONE, configurationLocale)
+                    .capitalize(),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.meta.copy(
                     fontSize = 12.sp,
@@ -263,7 +272,8 @@ private fun DayRowItem(
 
         Text(
             text = itemDate.month
-                .getDisplayName(TextStyle.SHORT, Locale.US),
+                .getDisplayName(TextStyle.SHORT_STANDALONE, configurationLocale)
+                .capitalize(),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.meta.copy(
                 fontSize = 12.sp,

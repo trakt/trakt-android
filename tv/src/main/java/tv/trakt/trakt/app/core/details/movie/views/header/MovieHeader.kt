@@ -48,10 +48,11 @@ import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.core.details.movie.MovieDetailsState.CollectionState
 import tv.trakt.trakt.app.core.details.ui.PosterImage
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Images.Size.MEDIUM
 import tv.trakt.trakt.common.model.Movie
@@ -142,7 +143,7 @@ internal fun MovieHeader(
                             modifier = Modifier.size(16.dp),
                         )
                         Text(
-                            text = releaseDate.format(longDateFormat),
+                            text = releaseDate.format(longDateFormat()).capitalize(),
                             color = TraktTheme.colors.textSecondary,
                             style = TraktTheme.typography.heading6,
                             maxLines = 1,
@@ -232,7 +233,7 @@ internal fun MovieHeader(
                                     modifier = Modifier.size(12.5.dp),
                                 )
                                 Text(
-                                    text = movie.rating.votes.thousandsFormat(),
+                                    text = rememberThousandsFormat(movie.rating.votes),
                                     color = TraktTheme.colors.textSecondary,
                                     style = TraktTheme.typography.ratingLabel.copy(fontSize = 12.sp),
                                 )

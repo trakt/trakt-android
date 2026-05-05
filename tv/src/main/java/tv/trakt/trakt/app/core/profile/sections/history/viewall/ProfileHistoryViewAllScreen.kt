@@ -41,8 +41,8 @@ import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.profile.ProfileConfig.HISTORY_ALL_PAGE_LIMIT
 import tv.trakt.trakt.app.core.profile.ProfileConfig.HISTORY_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
@@ -190,10 +190,12 @@ private fun ProfileHistoryViewAllContent(
                                 )
 
                                 val seString = item.episode?.seasonEpisodeString() ?: ""
+                                val durationString = rememberDurationFormat(item.movie?.runtime?.inWholeMinutes)
+
                                 val subtext = remember(item.type) {
                                     when (item.type) {
                                         "episode" -> seString
-                                        "movie" -> item.movie?.runtime?.inWholeMinutes?.durationFormat() ?: ""
+                                        "movie" -> durationString
                                         else -> ""
                                     }
                                 }
