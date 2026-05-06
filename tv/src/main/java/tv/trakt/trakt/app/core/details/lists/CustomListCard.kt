@@ -45,7 +45,7 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.CustomList.Type
@@ -288,7 +288,7 @@ private fun CustomListHeader(
                     modifier = Modifier.size(16.dp),
                 )
                 Text(
-                    text = list.likes?.thousandsFormat() ?: "0",
+                    text = list.likes?.let { rememberThousandsFormat(it) } ?: "0",
                     style = TraktTheme.typography.meta.copy(
                         fontSize = 11.sp,
                     ),

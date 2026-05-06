@@ -1,6 +1,7 @@
 package tv.trakt.trakt.common.helpers.extensions
 
 import android.graphics.Typeface
+import android.icu.text.CompactDecimalFormat
 import android.icu.text.MeasureFormat
 import android.icu.text.MeasureFormat.FormatWidth
 import android.icu.util.Measure
@@ -9,7 +10,11 @@ import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.text.style.UnderlineSpan
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -19,22 +24,36 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import java.util.Locale
-import java.util.Locale.ROOT
 
-fun Int.thousandsFormat(): String {
-    return if (this >= 1_000_000) {
-        String.format(ROOT, "%.1fM", this / 1_000_000F).replace(".0M", "M")
-    } else if (this >= 1000) {
-        String.format(ROOT, "%.1fK", this / 1000F).replace(".0K", "K")
-    } else {
-        this.toString()
+/**
+ * Formats an integer into a compact string representation using thousands (e.g., 1.2K for 1200).
+ */
+private fun Int.thousandsFormat(
+    locale: Locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault(),
+): String {
+    if (this < 1000) return this.toString()
+    val fmt = CompactDecimalFormat.getInstance(locale, CompactDecimalFormat.CompactStyle.SHORT)
+    return fmt.format(this)
+}
+
+/**
+ * Composable function that formats an integer into a compact string representation using thousands and remembers the result.
+ */
+@Composable
+fun rememberThousandsFormat(count: Int): String {
+    val configuration = LocalConfiguration.current
+    return remember(count, configuration) {
+        val configurationLocale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+        count.thousandsFormat(configurationLocale)
     }
 }
 
 /**
  * Formats a duration in minutes into a human-readable string.
  */
-fun Long.durationFormat(locale: Locale = Locale.US): String {
+fun Long.durationFormat(
+    locale: Locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault(),
+): String {
     val days = this / (60 * 24)
     val hours = (this % (60 * 24)) / 60
     val minutes = this % 60
@@ -51,7 +70,21 @@ fun Long.durationFormat(locale: Locale = Locale.US): String {
     }
 
     val format = MeasureFormat.getInstance(locale, FormatWidth.NARROW)
-    return format.formatMeasures(*measures.toTypedArray())
+    return format.formatMeasures(*measures.toTypedArray()).capitalize()
+}
+
+/**
+ * Composable function that formats a duration in minutes into a human-readable string and remembers the result.
+ * If the duration is null, it returns "N/A".
+ */
+@Composable
+fun rememberDurationFormat(duration: Long?): String {
+    if (duration == null) return "N/A"
+    val configuration = LocalConfiguration.current
+    return remember(duration, configuration) {
+        val configurationLocale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+        duration.durationFormat(configurationLocale)
+    }
 }
 
 /**
@@ -159,4 +192,12 @@ fun String.replaceMarkdown(): String {
         .replace("\\*(.*?)\\*".toRegex(), "<i>$1</i>&nbsp;")
         .replace("__(.*?)__".toRegex(), "<u>$1</u>")
         .replace("^[ \\t]*[-*][ \\t]+(.*)".toRegex(RegexOption.MULTILINE), "<br><br>- $1")
+}
+
+/**
+ * Capitalizes the first letter of the string, leaving the rest unchanged.
+ * For example, "hello world" becomes "Hello world".
+ */
+fun String.capitalize(): String {
+    return this.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
 }

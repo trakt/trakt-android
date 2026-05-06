@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -44,10 +43,6 @@ internal fun EpisodeUpcomingItemView(
             item.show.images?.getFanartUrl()
                 ?: item.episode.images?.getScreenshotUrl(),
         cardContent = {
-            val dateString = remember(item.releasedAt) {
-                item.releasedAt.toLocal().relativeDateTimeString()
-            }
-
             Row(
                 horizontalArrangement = spacedBy(3.dp),
                 verticalAlignment = CenterVertically,
@@ -59,7 +54,7 @@ internal fun EpisodeUpcomingItemView(
                 }
 
                 InfoChip(
-                    text = dateString,
+                    text = item.releasedAt.toLocal().relativeDateTimeString(),
                     iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
                     containerColor = TraktTheme.colors.chipContainerOnContent,
                     modifier = shadowModifier,

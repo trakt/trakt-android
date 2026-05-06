@@ -63,6 +63,14 @@ Upload version to PlayStore Closed Beta Track
 
 Promote PlayStore Closed Beta Track to Production
 
+### android playstore_promote_internal_to_production
+
+```sh
+[bundle exec] fastlane android playstore_promote_internal_to_production
+```
+
+Promote PlayStore Internal Track to Production
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.

@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import tv.trakt.trakt.common.Config.webImdbMediaUrl
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -149,7 +150,7 @@ internal fun DetailsHeader(
             Text(
                 text = when {
                     isReleased -> (episode.firstAired?.year ?: show.year).toString()
-                    else -> episode.firstAired?.format(mediumDateFormat) ?: show.year.toString()
+                    else -> episode.firstAired?.format(mediumDateFormat())?.capitalize() ?: show.year.toString()
                 },
                 color = when {
                     isReleased -> TraktTheme.colors.textSecondary

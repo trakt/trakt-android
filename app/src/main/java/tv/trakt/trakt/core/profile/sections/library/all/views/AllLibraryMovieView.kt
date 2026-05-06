@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Images
@@ -58,7 +59,7 @@ internal fun AllLibraryMovieView(
                     modifier = Modifier.size(14.dp),
                 )
                 Text(
-                    text = item.collectedAt.toLocal().format(mediumDateFormat),
+                    text = item.collectedAt.toLocal().format(mediumDateFormat()).capitalize(),
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.cardSubtitle.copy(
                         fontWeight = W500,

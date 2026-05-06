@@ -39,7 +39,7 @@ import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONA
 import tv.trakt.trakt.app.core.lists.details.personal.model.PersonalListItem
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
@@ -190,7 +190,7 @@ private fun PersonalListContent(
                             },
                             chipContent = {
                                 movie.runtime?.inWholeMinutes?.let {
-                                    InfoChip(text = it.durationFormat())
+                                    InfoChip(text = rememberDurationFormat(it))
                                 }
                             },
                             modifier = Modifier

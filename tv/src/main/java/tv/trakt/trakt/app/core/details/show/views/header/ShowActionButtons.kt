@@ -130,7 +130,7 @@ private fun WatchButton(
 
     WatchNowButton(
         text = when {
-            loading || !directLink.isNullOrBlank() || plex -> stringResource(R.string.button_text_stream_on)
+            loading || !directLink.isNullOrBlank() || plex -> stringResource(R.string.button_text_stream)
             streamingState.noServices -> stringResource(R.string.button_text_no_services)
             else -> stringResource(R.string.button_text_where_to_watch)
         },

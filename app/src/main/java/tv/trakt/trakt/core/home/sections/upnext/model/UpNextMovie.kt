@@ -1,7 +1,8 @@
 package tv.trakt.trakt.core.home.sections.upnext.model
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.Movie
@@ -28,13 +29,13 @@ internal data class UpNextMovie(
     override val sortKey: String
         get() = "${progress.pausedAt}-${movie.title}"
 
-    val remainingTimeText: String?
-        get() {
-            val runtime = movie.runtime?.inWholeMinutes ?: return null
-            val progressPercent = progress.progress / 100F
-            val remainingMinutes = ceil((1F - progressPercent) * runtime).toLong()
-            return remainingMinutes.durationFormat()
-        }
+    @Composable
+    fun remainingTimeText(): String? {
+        val runtime = movie.runtime?.inWholeMinutes ?: return null
+        val progressPercent = progress.progress / 100F
+        val remainingMinutes = ceil((1F - progressPercent) * runtime).toLong()
+        return rememberDurationFormat(remainingMinutes)
+    }
 
     @Immutable
     internal data class Progress(

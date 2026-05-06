@@ -2,6 +2,7 @@
 
 package tv.trakt.trakt.core.profile.sections.thismonth
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -34,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
@@ -200,7 +202,7 @@ internal fun ThisMonthCard(
 
             Row(
                 verticalAlignment = CenterVertically,
-                horizontalArrangement = spacedBy(8.dp),
+                horizontalArrangement = spacedBy(7.dp),
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .onClick {
@@ -213,17 +215,22 @@ internal fun ThisMonthCard(
                         )
                     },
             ) {
+                val configuration = LocalConfiguration.current
+                val appLocale = remember(configuration) {
+                    AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+                }
+
                 Icon(
-                    painter = painterResource(R.drawable.ic_external),
+                    painter = painterResource(R.drawable.ic_history),
                     contentDescription = null,
                     tint = TraktTheme.colors.textPrimary,
                     modifier = Modifier
-                        .size(16.dp),
+                        .size(20.dp),
                 )
                 Text(
                     text = previousMonth.month.getDisplayName(
-                        TextStyle.FULL,
-                        Locale.US,
+                        TextStyle.FULL_STANDALONE,
+                        appLocale,
                     ).uppercase(),
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading6,

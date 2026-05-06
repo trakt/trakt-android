@@ -1,7 +1,6 @@
 package tv.trakt.trakt.core.home.sections.upnext.model
 
 import androidx.compose.runtime.Immutable
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.MediaType.SHOW
@@ -58,8 +57,8 @@ internal data class Progress(
             return completed.toFloat() / aired.toFloat()
         }
 
-    val remainingMinutesString: String?
+    val remainingMinutes: Long?
         get() {
-            return stats?.minutesLeft?.toLong()?.durationFormat()
+            return stats?.minutesLeft?.toLong()
         }
 }

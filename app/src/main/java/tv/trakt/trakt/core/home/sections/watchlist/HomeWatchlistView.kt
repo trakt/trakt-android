@@ -52,9 +52,9 @@ import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAG
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
@@ -498,9 +498,9 @@ private fun ContentListMovieItem(
                 horizontalArrangement = SpaceBetween,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                val runtimeText = remember {
-                    val runtime = item.movie.runtime?.inWholeMinutes?.durationFormat()
-                    runtime ?: "TBA"
+                val runtimeText = when {
+                    item.runtime != null -> rememberDurationFormat(item.runtime?.inWholeMinutes)
+                    else -> "TBA"
                 }
 
                 Column(

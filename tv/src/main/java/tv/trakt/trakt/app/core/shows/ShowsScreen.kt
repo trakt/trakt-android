@@ -43,7 +43,7 @@ import tv.trakt.trakt.app.core.shows.model.AnticipatedShow
 import tv.trakt.trakt.app.core.shows.model.TrendingShow
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Show
@@ -274,7 +274,7 @@ private fun TrendingShowsList(
                         paletteColor = show.colors?.colors?.second,
                         footerContent = {
                             InfoChip(
-                                text = watchers.thousandsFormat(),
+                                text = rememberThousandsFormat(watchers),
                                 iconPainter = painterResource(R.drawable.ic_person),
                             )
                         },
@@ -415,7 +415,7 @@ private fun AnticipatedShowsList(
                         paletteColor = show.colors?.colors?.second,
                         footerContent = {
                             InfoChip(
-                                text = listCount.thousandsFormat(),
+                                text = rememberThousandsFormat(listCount),
                                 iconPainter = painterResource(R.drawable.ic_star),
                             )
                         },

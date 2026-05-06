@@ -364,7 +364,7 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
                 .padding(top = 48.dp),
         ) {
             VipOfferItem(
-                text = stringResource(R.string.vip_feature_title_increased_limits),
+                text = stringResource(R.string.vip_text_vip_go_beyond_limits),
                 description = stringResource(R.string.vip_feature_description_increased_limits),
                 icon = painterResource(R.drawable.ic_vip_lists),
             )
@@ -383,8 +383,8 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
                 iconPadding = 2.dp,
             )
 
-            val trivia1 = stringResource(R.string.text_vip_trivia_upsell_1)
-            val trivia2 = stringResource(R.string.text_vip_trivia_upsell_2)
+            val trivia1 = stringResource(R.string.text_vip_upsell_dive_deeper)
+            val trivia2 = stringResource(R.string.vip_feature_description_trivia)
             VipOfferItem(
                 text = stringResource(R.string.list_title_trivia),
                 description = "$trivia1 $trivia2",
@@ -400,8 +400,8 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
             )
 
             VipOfferItem(
-                text = stringResource(R.string.text_vip_cover_upsell_1),
-                description = stringResource(R.string.text_vip_cover_upsell_2),
+                text = stringResource(R.string.vip_feature_title_profile_customisation),
+                description = stringResource(R.string.vip_feature_description_profile_customisation),
                 icon = painterResource(R.drawable.ic_image),
                 iconPadding = 2.dp,
             )
@@ -481,10 +481,10 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
                     .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
             ) {
                 val moreTexts = listOf(
-                    stringResource(R.string.text_vip_costs_independence),
-                    stringResource(R.string.text_vip_costs_team),
-                    stringResource(R.string.text_vip_costs_moderation),
+                    stringResource(R.string.text_vip_costs_metadata),
                     stringResource(R.string.text_vip_costs_infrastructure),
+                    stringResource(R.string.text_vip_costs_clients),
+                    stringResource(R.string.text_vip_costs_team),
                 )
 
                 for (text in moreTexts) {

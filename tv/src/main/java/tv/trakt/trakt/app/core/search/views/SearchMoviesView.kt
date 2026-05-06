@@ -29,7 +29,7 @@ import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.Movie
 
 @Composable
@@ -113,7 +113,7 @@ private fun ContentList(
                 footerContent = {
                     item.runtime?.let {
                         InfoChip(
-                            text = it.inWholeMinutes.durationFormat(),
+                            text = rememberDurationFormat(it.inWholeMinutes),
                         )
                     }
                 },

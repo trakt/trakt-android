@@ -19,11 +19,11 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
@@ -48,6 +48,7 @@ fun EpisodeMetaFooter(
     onCheckClick: (() -> Unit)? = null,
     onCheckLongClick: (() -> Unit)? = null,
 ) {
+    val runtime = rememberDurationFormat(episode.runtime?.inWholeMinutes)
     val metaString = remember {
         buildString {
             episode.firstAired?.let {
@@ -55,7 +56,7 @@ fun EpisodeMetaFooter(
             }
             episode.runtime?.let {
                 if (isNotEmpty()) append(SEPARATOR)
-                append(it.inWholeMinutes.durationFormat())
+                append(runtime)
             }
         }
     }

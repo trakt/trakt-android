@@ -28,7 +28,7 @@ import tv.trakt.trakt.app.common.ui.mediacards.HorizontalViewAllCard
 import tv.trakt.trakt.app.core.profile.ProfileConfig.PROFILE_FAVORITES_SECTION_LIMIT
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.resources.R
@@ -179,7 +179,7 @@ private fun ContentListItem(
         footerContent = {
             item.runtime?.let {
                 InfoChip(
-                    text = it.inWholeMinutes.durationFormat(),
+                    text = rememberDurationFormat(it.inWholeMinutes),
                 )
             }
         },

@@ -11,7 +11,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -29,8 +29,8 @@ internal fun MetaView(
         modifier = modifier,
     ) {
         MetaViewItemView(
-            title = plays.thousandsFormat(),
-            subtitle = stringResource(R.string.text_stats_plays),
+            title = rememberThousandsFormat(plays),
+            subtitle = stringResource(R.string.stat_text_plays),
             icon = {
                 Icon(
                     painter = painterResource(R.drawable.ic_play),
@@ -49,8 +49,8 @@ internal fun MetaView(
         )
 
         MetaViewItemView(
-            title = watchers.thousandsFormat(),
-            subtitle = stringResource(R.string.text_stats_watchers),
+            title = rememberThousandsFormat(watchers),
+            subtitle = stringResource(R.string.stat_text_watchers),
             icon = {
                 Icon(
                     painter = painterResource(R.drawable.ic_person_double),
@@ -65,8 +65,8 @@ internal fun MetaView(
         )
 
         MetaViewItemView(
-            title = lists.thousandsFormat(),
-            subtitle = stringResource(R.string.text_stats_lists),
+            title = rememberThousandsFormat(lists),
+            subtitle = stringResource(R.string.stat_text_lists),
             icon = {
                 Icon(
                     painter = painterResource(R.drawable.ic_lists_off),
@@ -82,8 +82,8 @@ internal fun MetaView(
 
         favorites?.let {
             MetaViewItemView(
-                title = favorites.thousandsFormat(),
-                subtitle = stringResource(R.string.text_stats_favorites),
+                title = rememberThousandsFormat(favorites),
+                subtitle = stringResource(R.string.stat_text_favorited),
                 icon = {
                     Icon(
                         painter = painterResource(R.drawable.ic_heart_off),

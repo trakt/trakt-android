@@ -48,6 +48,7 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
@@ -295,13 +296,10 @@ private fun ContentList(
 
             item(key = "header-$date") {
                 TraktHeader(
-                    title = remember(today.dayOfYear) {
-                        if (today == date || today.minusDays(1) == date) {
-                            date.atStartOfDay(ZoneId.systemDefault())
-                                .relativePastDateString()
-                        } else {
-                            date.format(longDateFormat)
-                        }
+                    title = if (today == date || today.minusDays(1) == date) {
+                        date.atStartOfDay(ZoneId.systemDefault()).relativePastDateString()
+                    } else {
+                        date.format(longDateFormat()).capitalize()
                     },
                     modifier = Modifier
                         .padding(
@@ -318,6 +316,7 @@ private fun ContentList(
                 items = itemsForDate,
                 key = { it.id },
             ) { item ->
+                val dateFormat = longDateTimeFormat()
                 when (item) {
                     is MovieItem -> {
                         AllActivityMovieItem(
@@ -328,7 +327,7 @@ private fun ContentList(
                             },
                             onLongClick = { onLongClick(item) },
                             moreButton = true,
-                            dateFormat = longDateTimeFormat,
+                            dateFormat = dateFormat,
                             modifier = Modifier
                                 .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                                 .animateItem(
@@ -346,7 +345,7 @@ private fun ContentList(
                             onShowClick = { onShowClick(item) },
                             onLongClick = { onLongClick(item) },
                             moreButton = true,
-                            dateFormat = longDateTimeFormat,
+                            dateFormat = dateFormat,
                             modifier = Modifier
                                 .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
                                 .animateItem(

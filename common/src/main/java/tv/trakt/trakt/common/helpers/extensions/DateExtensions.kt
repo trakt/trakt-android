@@ -1,6 +1,10 @@
 package tv.trakt.trakt.common.helpers.extensions
 
 import android.icu.text.RelativeDateTimeFormatter
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalConfiguration
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDate
@@ -14,29 +18,75 @@ import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters
 import java.util.Locale
 
-val mediumDateFormat: DateTimeFormatter = DateTimeFormatter
-    .ofLocalizedDate(FormatStyle.MEDIUM)
-    .withLocale(Locale.US)
+@Composable
+fun mediumDateFormat(): DateTimeFormatter {
+    val configuration = LocalConfiguration.current
+    val appLocale = remember(configuration) {
+        AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+    }
 
-val longDateFormat: DateTimeFormatter = DateTimeFormatter
-    .ofLocalizedDate(FormatStyle.LONG)
-    .withLocale(Locale.US)
+    return remember(appLocale) {
+        DateTimeFormatter
+            .ofLocalizedDate(FormatStyle.MEDIUM)
+            .withLocale(appLocale)
+    }
+}
 
-val fullDateFormat: DateTimeFormatter = DateTimeFormatter
-    .ofLocalizedDate(FormatStyle.FULL)
-    .withLocale(Locale.US)
+@Composable
+fun longDateFormat(): DateTimeFormatter {
+    val configuration = LocalConfiguration.current
+    val appLocale = remember(configuration) {
+        AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+    }
 
-val fullDayFormat: DateTimeFormatter = DateTimeFormatter
-    .ofPattern("EEEE,  d MMM")
-    .withLocale(Locale.US)
+    return remember(appLocale) {
+        DateTimeFormatter
+            .ofLocalizedDate(FormatStyle.LONG)
+            .withLocale(appLocale)
+    }
+}
 
-val longDateTimeFormat: DateTimeFormatter = DateTimeFormatter
-    .ofLocalizedDateTime(FormatStyle.LONG, FormatStyle.SHORT)
-    .withLocale(Locale.US)
+@Composable
+fun fullDayFormat(): DateTimeFormatter {
+    val configuration = LocalConfiguration.current
+    val appLocale = remember(configuration) {
+        AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+    }
 
-val timeFormat: DateTimeFormatter = DateTimeFormatter
-    .ofLocalizedTime(FormatStyle.SHORT)
-    .withLocale(Locale.US)
+    return remember(appLocale) {
+        DateTimeFormatter
+            .ofPattern("EEEE,  d MMM")
+            .withLocale(appLocale)
+    }
+}
+
+@Composable
+fun longDateTimeFormat(): DateTimeFormatter {
+    val configuration = LocalConfiguration.current
+    val appLocale = remember(configuration) {
+        AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+    }
+
+    return remember(appLocale) {
+        DateTimeFormatter
+            .ofLocalizedDateTime(FormatStyle.LONG, FormatStyle.SHORT)
+            .withLocale(appLocale)
+    }
+}
+
+@Composable
+fun timeFormat(): DateTimeFormatter {
+    val configuration = LocalConfiguration.current
+    val appLocale = remember(configuration) {
+        AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+    }
+
+    return remember(appLocale) {
+        DateTimeFormatter
+            .ofLocalizedTime(FormatStyle.SHORT)
+            .withLocale(appLocale)
+    }
+}
 
 // UTC time functions
 
@@ -84,179 +134,203 @@ fun String.toZonedDateTime(): ZonedDateTime {
     }
 }
 
-fun LocalDate.relativeDateString(locale: Locale = Locale.US): String {
-    val today = nowLocal().toLocalDate()
-    val formatter = RelativeDateTimeFormatter.getInstance(locale)
+@Composable
+fun LocalDate.relativeDateString(): String {
+    val configuration = LocalConfiguration.current
 
-    val monthsBetween = ChronoUnit.MONTHS.between(
-        today.withDayOfMonth(1),
-        this.withDayOfMonth(1),
-    )
+    val appLocale = remember(configuration) {
+        AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+    }
 
-    val weeksBetween = ChronoUnit.WEEKS.between(
-        today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)),
-        this.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)),
-    )
+    return remember(appLocale) {
+        val today = nowLocal().toLocalDate()
+        val formatter = RelativeDateTimeFormatter.getInstance(appLocale)
 
-    val daysBetween = ChronoUnit.DAYS.between(today, this)
-
-    return when {
-        daysBetween == 0L -> formatter.format(
-            RelativeDateTimeFormatter.Direction.THIS,
-            RelativeDateTimeFormatter.AbsoluteUnit.DAY,
+        val monthsBetween = ChronoUnit.MONTHS.between(
+            today.withDayOfMonth(1),
+            this.withDayOfMonth(1),
         )
 
-        daysBetween == 1L -> formatter.format(
-            RelativeDateTimeFormatter.Direction.NEXT,
-            RelativeDateTimeFormatter.AbsoluteUnit.DAY,
+        val weeksBetween = ChronoUnit.WEEKS.between(
+            today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)),
+            this.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)),
         )
 
-        daysBetween <= 6L -> formatter.format(
-            daysBetween.toDouble(),
-            RelativeDateTimeFormatter.Direction.NEXT,
-            RelativeDateTimeFormatter.RelativeUnit.DAYS,
-        )
+        val daysBetween = ChronoUnit.DAYS.between(today, this)
 
-        weeksBetween == 1L -> formatter.format(
-            RelativeDateTimeFormatter.Direction.NEXT,
-            RelativeDateTimeFormatter.AbsoluteUnit.WEEK,
-        )
+        when {
+            daysBetween == 0L -> formatter.format(
+                RelativeDateTimeFormatter.Direction.THIS,
+                RelativeDateTimeFormatter.AbsoluteUnit.DAY,
+            )
 
-        weeksBetween <= 4L -> formatter.format(
-            weeksBetween.toDouble(),
-            RelativeDateTimeFormatter.Direction.NEXT,
-            RelativeDateTimeFormatter.RelativeUnit.WEEKS,
-        )
+            daysBetween == 1L -> formatter.format(
+                RelativeDateTimeFormatter.Direction.NEXT,
+                RelativeDateTimeFormatter.AbsoluteUnit.DAY,
+            )
 
-        monthsBetween == 1L -> formatter.format(
-            RelativeDateTimeFormatter.Direction.NEXT,
-            RelativeDateTimeFormatter.AbsoluteUnit.MONTH,
-        )
+            daysBetween <= 6L -> formatter.format(
+                daysBetween.toDouble(),
+                RelativeDateTimeFormatter.Direction.NEXT,
+                RelativeDateTimeFormatter.RelativeUnit.DAYS,
+            )
 
-        monthsBetween <= 6L -> formatter.format(
-            monthsBetween.toDouble(),
-            RelativeDateTimeFormatter.Direction.NEXT,
-            RelativeDateTimeFormatter.RelativeUnit.MONTHS,
-        )
+            weeksBetween == 1L -> formatter.format(
+                RelativeDateTimeFormatter.Direction.NEXT,
+                RelativeDateTimeFormatter.AbsoluteUnit.WEEK,
+            )
 
-        else -> this.year.toString()
-    }.replaceFirstChar {
-        it.titlecase(locale)
+            weeksBetween <= 4L -> formatter.format(
+                weeksBetween.toDouble(),
+                RelativeDateTimeFormatter.Direction.NEXT,
+                RelativeDateTimeFormatter.RelativeUnit.WEEKS,
+            )
+
+            monthsBetween == 1L -> formatter.format(
+                RelativeDateTimeFormatter.Direction.NEXT,
+                RelativeDateTimeFormatter.AbsoluteUnit.MONTH,
+            )
+
+            monthsBetween <= 6L -> formatter.format(
+                monthsBetween.toDouble(),
+                RelativeDateTimeFormatter.Direction.NEXT,
+                RelativeDateTimeFormatter.RelativeUnit.MONTHS,
+            )
+
+            else -> this.year.toString()
+        }.capitalize()
     }
 }
 
-fun ZonedDateTime.relativeDateTimeString(locale: Locale = Locale.US): String {
-    val formatter = RelativeDateTimeFormatter.getInstance(locale)
-    val now = ZonedDateTime.now()
+@Composable
+fun ZonedDateTime.relativeDateTimeString(): String {
+    val configuration = LocalConfiguration.current
 
-    val minutesBetween = ChronoUnit.MINUTES.between(now, this)
-    val hoursBetween = ChronoUnit.HOURS.between(now, this)
-    val daysBetween = ChronoUnit.DAYS.between(now.toLocalDate(), this.toLocalDate())
+    val appLocale = remember(configuration) {
+        AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+    }
 
-    val weeksBetween = ChronoUnit.WEEKS.between(
-        now.toLocalDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)),
-        this.toLocalDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)),
-    )
+    return remember(appLocale) {
+        val formatter = RelativeDateTimeFormatter.getInstance(appLocale)
+        val now = ZonedDateTime.now()
 
-    val monthsBetween = ChronoUnit.MONTHS.between(
-        now.toLocalDate().withDayOfMonth(1),
-        this.toLocalDate().withDayOfMonth(1),
-    )
+        val minutesBetween = ChronoUnit.MINUTES.between(now, this)
+        val hoursBetween = ChronoUnit.HOURS.between(now, this)
+        val daysBetween = ChronoUnit.DAYS.between(now.toLocalDate(), this.toLocalDate())
 
-    return when {
-        minutesBetween <= 1 -> formatter.format(
-            RelativeDateTimeFormatter.Direction.PLAIN,
-            RelativeDateTimeFormatter.AbsoluteUnit.NOW,
+        val weeksBetween = ChronoUnit.WEEKS.between(
+            now.toLocalDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)),
+            this.toLocalDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)),
         )
 
-        minutesBetween <= 59 -> formatter.format(
-            minutesBetween.toDouble(),
-            RelativeDateTimeFormatter.Direction.NEXT,
-            RelativeDateTimeFormatter.RelativeUnit.MINUTES,
+        val monthsBetween = ChronoUnit.MONTHS.between(
+            now.toLocalDate().withDayOfMonth(1),
+            this.toLocalDate().withDayOfMonth(1),
         )
 
-        hoursBetween <= 11 -> formatter.format(
-            hoursBetween.toDouble(),
-            RelativeDateTimeFormatter.Direction.NEXT,
-            RelativeDateTimeFormatter.RelativeUnit.HOURS,
-        )
+        when {
+            minutesBetween <= 1 -> formatter.format(
+                RelativeDateTimeFormatter.Direction.PLAIN,
+                RelativeDateTimeFormatter.AbsoluteUnit.NOW,
+            )
 
-        daysBetween == 0L -> formatter.format(
-            RelativeDateTimeFormatter.Direction.THIS,
-            RelativeDateTimeFormatter.AbsoluteUnit.DAY,
-        )
+            minutesBetween <= 59 -> formatter.format(
+                minutesBetween.toDouble(),
+                RelativeDateTimeFormatter.Direction.NEXT,
+                RelativeDateTimeFormatter.RelativeUnit.MINUTES,
+            )
 
-        daysBetween == 1L -> formatter.format(
-            RelativeDateTimeFormatter.Direction.NEXT,
-            RelativeDateTimeFormatter.AbsoluteUnit.DAY,
-        )
+            hoursBetween <= 11 -> formatter.format(
+                hoursBetween.toDouble(),
+                RelativeDateTimeFormatter.Direction.NEXT,
+                RelativeDateTimeFormatter.RelativeUnit.HOURS,
+            )
 
-        daysBetween <= 6L -> formatter.format(
-            daysBetween.toDouble(),
-            RelativeDateTimeFormatter.Direction.NEXT,
-            RelativeDateTimeFormatter.RelativeUnit.DAYS,
-        )
+            daysBetween == 0L -> formatter.format(
+                RelativeDateTimeFormatter.Direction.THIS,
+                RelativeDateTimeFormatter.AbsoluteUnit.DAY,
+            )
 
-        weeksBetween == 1L -> formatter.format(
-            RelativeDateTimeFormatter.Direction.NEXT,
-            RelativeDateTimeFormatter.AbsoluteUnit.WEEK,
-        )
+            daysBetween == 1L -> formatter.format(
+                RelativeDateTimeFormatter.Direction.NEXT,
+                RelativeDateTimeFormatter.AbsoluteUnit.DAY,
+            )
 
-        weeksBetween <= 4L -> formatter.format(
-            weeksBetween.toDouble(),
-            RelativeDateTimeFormatter.Direction.NEXT,
-            RelativeDateTimeFormatter.RelativeUnit.WEEKS,
-        )
+            daysBetween <= 6L -> formatter.format(
+                daysBetween.toDouble(),
+                RelativeDateTimeFormatter.Direction.NEXT,
+                RelativeDateTimeFormatter.RelativeUnit.DAYS,
+            )
 
-        monthsBetween == 1L -> formatter.format(
-            RelativeDateTimeFormatter.Direction.NEXT,
-            RelativeDateTimeFormatter.AbsoluteUnit.MONTH,
-        )
+            weeksBetween == 1L -> formatter.format(
+                RelativeDateTimeFormatter.Direction.NEXT,
+                RelativeDateTimeFormatter.AbsoluteUnit.WEEK,
+            )
 
-        monthsBetween <= 6 -> formatter.format(
-            monthsBetween.toDouble(),
-            RelativeDateTimeFormatter.Direction.NEXT,
-            RelativeDateTimeFormatter.RelativeUnit.MONTHS,
-        )
+            weeksBetween <= 4L -> formatter.format(
+                weeksBetween.toDouble(),
+                RelativeDateTimeFormatter.Direction.NEXT,
+                RelativeDateTimeFormatter.RelativeUnit.WEEKS,
+            )
 
-        else -> this.year.toString()
-    }.replaceFirstChar {
-        it.titlecase(locale)
+            monthsBetween == 1L -> formatter.format(
+                RelativeDateTimeFormatter.Direction.NEXT,
+                RelativeDateTimeFormatter.AbsoluteUnit.MONTH,
+            )
+
+            monthsBetween <= 6 -> formatter.format(
+                monthsBetween.toDouble(),
+                RelativeDateTimeFormatter.Direction.NEXT,
+                RelativeDateTimeFormatter.RelativeUnit.MONTHS,
+            )
+
+            else -> this.year.toString()
+        }.capitalize()
     }
 }
 
-fun ZonedDateTime.relativePastDateString(locale: Locale = Locale.US): String {
-    if (year == 1970 && monthValue == 1 && dayOfMonth == 1) {
-        return "Unknown Date"
+@Composable
+fun ZonedDateTime.relativePastDateString(): String {
+    val configuration = LocalConfiguration.current
+
+    val appLocale = remember(configuration) {
+        AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
     }
 
-    val formatter = RelativeDateTimeFormatter.getInstance(locale)
-    val now = ZonedDateTime.now()
+    return remember(appLocale) {
+        if (year == 1970 && monthValue == 1 && dayOfMonth == 1) {
+            return@remember "N/A"
+        }
 
-    val daysBetween = ChronoUnit.DAYS.between(
-        this.toLocalDate(),
-        now.toLocalDate(),
-    )
+        val formatter = RelativeDateTimeFormatter.getInstance(appLocale)
+        val defaultFormat = DateTimeFormatter
+            .ofLocalizedDate(FormatStyle.LONG)
+            .withLocale(Locale.getDefault())
 
-    return when {
-        daysBetween == 0L -> formatter.format(
-            RelativeDateTimeFormatter.Direction.THIS,
-            RelativeDateTimeFormatter.AbsoluteUnit.DAY,
+        val now = ZonedDateTime.now()
+        val daysBetween = ChronoUnit.DAYS.between(
+            this.toLocalDate(),
+            now.toLocalDate(),
         )
 
-        daysBetween == 1L -> formatter.format(
-            RelativeDateTimeFormatter.Direction.LAST,
-            RelativeDateTimeFormatter.AbsoluteUnit.DAY,
-        )
+        when {
+            daysBetween == 0L -> formatter.format(
+                RelativeDateTimeFormatter.Direction.THIS,
+                RelativeDateTimeFormatter.AbsoluteUnit.DAY,
+            )
 
-        daysBetween <= 3L -> formatter.format(
-            daysBetween.toDouble(),
-            RelativeDateTimeFormatter.Direction.LAST,
-            RelativeDateTimeFormatter.RelativeUnit.DAYS,
-        )
+            daysBetween == 1L -> formatter.format(
+                RelativeDateTimeFormatter.Direction.LAST,
+                RelativeDateTimeFormatter.AbsoluteUnit.DAY,
+            )
 
-        else -> this.format(longDateFormat)
-    }.replaceFirstChar {
-        it.titlecase(locale)
+            daysBetween <= 3L -> formatter.format(
+                daysBetween.toDouble(),
+                RelativeDateTimeFormatter.Direction.LAST,
+                RelativeDateTimeFormatter.RelativeUnit.DAYS,
+            )
+
+            else -> this.format(defaultFormat)
+        }.capitalize()
     }
 }

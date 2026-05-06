@@ -196,7 +196,7 @@ private fun WatchButton(
 
     WatchNowButton(
         text = when {
-            streamingState.loading -> stringResource(R.string.button_text_stream_on)
+            streamingState.loading -> stringResource(R.string.button_text_stream)
             streamingState.noServices -> stringResource(R.string.button_text_no_services)
             directLink != null -> service.name
             else -> ""
@@ -301,7 +301,7 @@ private fun ActionButtons(
                 },
         ) {
             GhostButton(
-                text = stringResource(R.string.button_text_cover_image),
+                text = stringResource(R.string.button_text_set_cover_image),
                 icon = painterResource(R.drawable.ic_image),
                 iconSize = 22.dp,
                 iconSpace = 15.dp,

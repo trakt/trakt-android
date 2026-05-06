@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
@@ -59,10 +58,6 @@ internal fun EpisodeRecentlyWatchedList(
                     onClick = { onClicked(item.id) },
                     containerImageUrl = item.episode.images?.getScreenshotUrl(),
                     footerContent = {
-                        val watchedAtString = remember(item.watchedAt) {
-                            item.watchedAt.toLocal().relativePastDateString()
-                        }
-
                         Column(
                             verticalArrangement = Arrangement.spacedBy(1.dp),
                         ) {
@@ -75,7 +70,7 @@ internal fun EpisodeRecentlyWatchedList(
                             )
 
                             Text(
-                                text = watchedAtString,
+                                text = item.watchedAt.toLocal().relativePastDateString(),
                                 style = TraktTheme.typography.cardSubtitle,
                                 color = TraktTheme.colors.textSecondary,
                                 maxLines = 1,

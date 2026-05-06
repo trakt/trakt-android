@@ -38,7 +38,7 @@ import tv.trakt.trakt.app.core.profile.ProfileConfig.LIBRARY_ALL_PAGE_LIMIT
 import tv.trakt.trakt.app.core.profile.ProfileConfig.LIBRARY_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.core.profile.sections.library.model.LibraryItem
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.TraktId
@@ -132,14 +132,14 @@ private fun ProfileLibraryViewAllContent(
                         .focusable(),
                 ) {
                     Text(
-                        text = stringResource(R.string.list_title_plex_library),
+                        text = stringResource(R.string.translated_value_library_plex),
                         color = TraktTheme.colors.textPrimary,
                         style = TraktTheme.typography.heading4,
                         overflow = TextOverflow.Ellipsis,
                     )
                     if (!state.isLoading && state.items?.isEmpty() == true) {
                         Text(
-                            text = stringResource(R.string.list_subtitle_plex_library),
+                            text = stringResource(R.string.text_plex_tv_library_description),
                             color = TraktTheme.colors.textSecondary,
                             style = TraktTheme.typography.meta.copy(fontWeight = W400),
                             overflow = TextOverflow.Ellipsis,
@@ -204,11 +204,8 @@ private fun ProfileLibraryViewAllContent(
                                 }
 
                                 if (item is LibraryItem.MovieItem) {
-                                    val durationText = remember(item.movie.runtime) {
-                                        item.movie.runtime?.inWholeMinutes?.durationFormat() ?: ""
-                                    }
                                     Text(
-                                        text = durationText,
+                                        text = rememberDurationFormat(item.movie.runtime?.inWholeMinutes),
                                         style = TraktTheme.typography.cardSubtitle,
                                         color = TraktTheme.colors.textSecondary,
                                         maxLines = 1,

@@ -79,6 +79,7 @@ import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.fullDayFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -590,7 +591,7 @@ private fun ContentItemsGrid(
                         )
                     }
                     TraktHeader(
-                        title = remember { date.format(fullDayFormat) },
+                        title = date.format(fullDayFormat()).capitalize(),
                         titleColor = when {
                             gridItems.isNotEmpty() -> TraktTheme.colors.textPrimary
                             else -> TraktTheme.colors.textSecondary

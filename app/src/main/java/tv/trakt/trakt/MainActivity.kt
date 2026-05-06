@@ -6,10 +6,10 @@ import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
@@ -44,7 +44,7 @@ internal val LocalCheckInVisibility = compositionLocalOf { mutableStateOf(true) 
 internal val LocalRatePromptVisibility = compositionLocalOf { mutableStateOf(true) }
 internal val LocalSnackbarState = compositionLocalOf { SnackbarHostState() }
 
-internal class MainActivity : ComponentActivity() {
+internal class MainActivity : AppCompatActivity() {
     private val authPreferences: DataStore<Preferences> by lazy {
         inject<DataStore<Preferences>>(named(AUTH_PREFERENCES)).value
     }

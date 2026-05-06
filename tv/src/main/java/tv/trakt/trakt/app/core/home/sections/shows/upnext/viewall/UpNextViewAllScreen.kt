@@ -48,7 +48,7 @@ import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressMovie
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.model.ProgressShow
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size.FULL
 import tv.trakt.trakt.common.model.Movie
@@ -182,10 +182,6 @@ private fun UpNextViewAllContent(
                                     Row(
                                         horizontalArrangement = spacedBy(2.dp),
                                     ) {
-                                        val remainingTime = remember(item.progress.progress) {
-                                            item.remainingTimeText
-                                        }
-
                                         val remainingPercent = remember(item.progress.progress) {
                                             (100F - item.progress.progress) / 100F
                                         }
@@ -193,7 +189,7 @@ private fun UpNextViewAllContent(
                                         EpisodeProgressBar(
                                             startText = stringResource(
                                                 R.string.tag_text_remaining_duration,
-                                                remainingTime ?: "?",
+                                                item.remainingTimeText() ?: "?",
                                             ),
                                             containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
                                             progress = (1F - remainingPercent).coerceIn(0F, 0.99F),
@@ -214,7 +210,7 @@ private fun UpNextViewAllContent(
                                     )
 
                                     Text(
-                                        text = item.movie.runtime?.inWholeMinutes?.durationFormat() ?: "N/A",
+                                        text = rememberDurationFormat(item.movie.runtime?.inWholeMinutes),
                                         style = TraktTheme.typography.cardSubtitle,
                                         color = TraktTheme.colors.textSecondary,
                                         maxLines = 1,
@@ -275,7 +271,7 @@ private fun UpNextViewAllContent(
                                         val runtime = item.progress.nextEpisode?.runtime?.inWholeMinutes
                                         if (runtime != null) {
                                             InfoChip(
-                                                text = runtime.durationFormat(),
+                                                text = rememberDurationFormat(runtime),
                                                 containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
                                             )
                                         }

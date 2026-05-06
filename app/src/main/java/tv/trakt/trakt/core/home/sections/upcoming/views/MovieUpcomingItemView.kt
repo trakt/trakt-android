@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -35,11 +34,8 @@ internal fun MovieUpcomingItemView(
         containerImageUrl = item.movie.images?.getFanartUrl(),
         onClick = { onClick(item.movie.ids.trakt) },
         cardContent = {
-            val dateString = remember(item.releasedAt) {
-                item.releasedAt.toLocal().relativeDateTimeString()
-            }
             InfoChip(
-                text = dateString,
+                text = item.releasedAt.toLocal().relativeDateTimeString(),
                 iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
                 containerColor = TraktTheme.colors.chipContainerOnContent,
             )

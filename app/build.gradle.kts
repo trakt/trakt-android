@@ -1,4 +1,5 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -9,6 +10,17 @@ plugins {
 }
 
 private val localProperties = gradleLocalProperties(rootDir, providers)
+private val resourcesProperties = Properties().apply {
+    load(file("src/main/res/resources.properties").inputStream())
+}
+
+private val supportedLocales = resourcesProperties.getProperty("supportedLocales", "")
+    .split(",")
+    .map { it.trim() }
+    .filter { it.isNotEmpty() }
+
+private val supportedLocalesBuildConfig = supportedLocales
+    .joinToString(prefix = "{", postfix = "}") { "\"$it\"" }
 
 android {
     namespace = "tv.trakt.trakt"
@@ -31,6 +43,7 @@ android {
         buildConfigField("String", "YOUNIFY_API_KEY", localProperties.getProperty("YOUNIFY_API_KEY"))
         buildConfigField("int", "VERSION_CODE", versionCode.toString())
         buildConfigField("String", "VERSION_NAME", "\"${versionName}\"")
+        buildConfigField("String[]", "SUPPORTED_LOCALES", supportedLocalesBuildConfig)
 
         ndk {
             debugSymbolLevel = "SYMBOL_TABLE"
@@ -78,6 +91,10 @@ android {
     buildFeatures {
         buildConfig = true
         compose = true
+    }
+
+    androidResources {
+        generateLocaleConfig = true
     }
 
     kotlin {

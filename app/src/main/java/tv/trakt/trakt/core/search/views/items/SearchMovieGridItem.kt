@@ -18,7 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.search.model.SearchFilter
 import tv.trakt.trakt.core.search.model.SearchItem
@@ -69,12 +69,12 @@ internal fun SearchMovieGridItem(
                     )
                 }
 
+                val runtime = rememberDurationFormat(item.movie.runtime?.inWholeMinutes)
                 Text(
                     text = remember {
-                        val runtime = item.movie.runtime?.inWholeMinutes
                         val year = item.movie.year?.toString() ?: "TBA"
-                        if (runtime != null) {
-                            "$year • ${runtime.durationFormat()}"
+                        if (runtime != "N/A") {
+                            "$year • $runtime"
                         } else {
                             year
                         }

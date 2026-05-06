@@ -31,7 +31,7 @@ import tv.trakt.trakt.app.core.home.sections.startwatching.model.WatchlistItem.S
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -152,8 +152,7 @@ private fun ContentList(
                             stringResource(R.string.episode_footer_season_episode, 1, 1)
                         }
                         is MovieItem -> {
-                            item.movie.runtime?.inWholeMinutes?.durationFormat()
-                                ?: stringResource(R.string.translated_value_type_movie)
+                            rememberDurationFormat(item.movie.runtime?.inWholeMinutes)
                         }
                     }
 

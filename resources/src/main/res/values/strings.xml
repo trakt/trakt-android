@@ -3,7 +3,7 @@
   <string name="badge_text_get_vip">Get VIP</string>
   <string name="button_label_popup_reactions">Reactions</string>
   <string name="button_text_add_reply">Add Reply</string>
-  <string name="button_text_add_review">Add Review</string>z
+  <string name="button_text_add_review">Add Review</string>
   <string name="button_text_apply">Apply</string>
   <string name="button_text_cancel">Cancel</string>
   <string name="button_text_checkin">Now watching</string>
@@ -17,6 +17,8 @@
   <string name="button_text_delete_comment">Delete Review</string>
   <string name="button_text_delete_list">Delete</string>
   <string name="button_text_delete_reply">Delete Reply</string>
+  <string name="button_text_drop_episode">Drop episode</string>
+  <string name="button_text_drop_movie">Drop movie</string>
   <string name="button_text_drop_show">Drop show</string>
   <string name="button_text_followers">Followers</string>
   <string name="button_text_following">Following</string>
@@ -24,6 +26,7 @@
   <string name="button_text_join_trakt">Join Trakt</string>
   <string name="button_text_login">Login</string>
   <string name="button_text_logout">Log out</string>
+  <string name="button_text_manage_lists">Manage lists</string>
   <string name="button_text_mark_as_watched">Mark as Watched</string>
   <string name="button_text_mark_as_watched_now">Just now</string>
   <string name="button_text_mark_as_watched_other_date">Other date</string>
@@ -33,11 +36,19 @@
   <string name="button_text_movies">Movies</string>
   <string name="button_text_no_services">No services</string>
   <string name="button_text_personal">Personal</string>
+  <string name="button_text_player_audio_default">Default</string>
+  <string name="button_text_player_play_now">Play Now</string>
+  <string name="button_text_player_resume">Resume</string>
+  <string name="button_text_player_subtitles_off">Off</string>
+  <string name="button_text_progress_completed">Completed</string>
+  <string name="button_text_progress_dropped">Dropped</string>
+  <string name="button_text_progress_in_progress">In Progress</string>
   <string name="button_text_remove_from_favorites">Remove from Favorites</string>
   <string name="button_text_remove_from_history">Remove from Watched</string>
   <string name="button_text_remove_from_list">Remove from list</string>
   <string name="button_text_reset_calendar_period">Today</string>
   <string name="button_text_retry">Retry</string>
+  <string name="button_text_set_cover_image">Set as cover image</string>
   <string name="button_text_share">Share</string>
   <string name="button_text_shows">Shows</string>
   <string name="button_text_sort_added_date">Date Added</string>
@@ -45,10 +56,14 @@
   <string name="button_text_sort_rating">Rating</string>
   <string name="button_text_sort_release_date">Release Date</string>
   <string name="button_text_sort_runtime">Runtime</string>
+  <string name="button_text_stop_asking">Stop asking</string>
+  <string name="button_text_stream">Stream</string>
   <string name="button_text_toggle_search_lists">Lists</string>
   <string name="button_text_toggle_search_media">Media</string>
   <string name="button_text_toggle_search_people">People</string>
   <string name="button_text_track">Track</string>
+  <string name="button_text_trivia_no_spoilers">No spoilers</string>
+  <string name="button_text_trivia_spoilers">Spoilers</string>
   <string name="button_text_upgrade_to_vip">Upgrade to VIP</string>
   <string name="button_text_view_all">More</string>
   <string name="button_text_watch_again">Watch again</string>
@@ -66,6 +81,7 @@
   <string name="error_text_unexpected_error_short">Uh oh… this wasn\'t planned. If this keeps happening, please contact Trakt support.</string>
   <string name="header_account_details">Account details</string>
   <string name="header_age">Age</string>
+  <string name="header_appearance">Appearance</string>
   <string name="header_birthday">Birthday</string>
   <string name="header_community_sentiment">Sentiment</string>
   <string name="header_country">Country</string>
@@ -73,22 +89,30 @@
   <string name="header_device_auth_code_instruction">and enter the following code:</string>
   <string name="header_device_auth_qr_instruction">Scan the QR code, or sign in at:</string>
   <string name="header_device_auth_try_again">The activation was denied, expired, or something unforeseeable happened. Please try again.</string>
+  <string name="header_director">Director</string>
   <string name="header_genre">Genre</string>
   <string name="header_get_notified">Get Notified!</string>
   <string name="header_landing_discover">Discover</string>
   <string name="header_landing_share">Share</string>
   <string name="header_landing_track">Track</string>
   <string name="header_language">Language</string>
+  <string name="header_network">Network</string>
   <string name="header_notifications_rationale">Enable notifications to stay on top of your media releases and current watching activity.</string>
   <string name="header_original_title">Original Title</string>
+  <string name="header_player_audio">Audio</string>
+  <string name="header_player_subtitle">Subtitles</string>
+  <string name="header_player_subtitle_language">Language</string>
+  <string name="header_player_subtitle_size">Size</string>
   <string name="header_post_credits">Post Credits</string>
   <string name="header_premiered">Premiered</string>
-  <string name="header_profile_banner_greeting">Hello, %s</string>
   <string name="header_runtime">Runtime</string>
+  <string name="header_settings_clear_cover">Clear Cover Image</string>
   <string name="header_settings_notifications">Notifications</string>
   <string name="header_settings_tracking">Tracking</string>
   <string name="header_status">Status</string>
   <string name="header_studio">Studio</string>
+  <string name="header_total_runtime">Total Runtime</string>
+  <string name="header_writer">Writer</string>
   <string name="input_placeholder_lists_description">Description (optional)</string>
   <string name="input_placeholder_lists_name">Name</string>
   <string name="input_placeholder_search">Search shows &amp; movies…</string>
@@ -101,18 +125,21 @@
   <string name="input_prompt_location">Where are you located?</string>
   <string name="link_text_discover_movies">Discover movies</string>
   <string name="link_text_discover_shows">Discover shows</string>
+  <string name="link_text_feedback">Feedback</string>
   <string name="link_text_forums">Forums</string>
   <string name="link_text_general_settings">General</string>
-  <string name="link_text_policy">Privacy</string>
+  <string name="link_text_policy">Privacy Policy</string>
   <string name="link_text_support">Support</string>
   <string name="link_text_terms">Terms</string>
   <string name="link_text_view_profile">View profile</string>
   <string name="list_placeholder_comments">No reviews yet.</string>
   <string name="list_placeholder_empty">There is nothing in this list.</string>
+  <string name="list_placeholder_media_history">You haven\'t watched \"%s\" yet</string>
   <string name="list_placeholder_personal_list_empty_movies">There are no movies in this list yet.</string>
   <string name="list_placeholder_personal_list_empty_shows">There are no shows in this list yet.</string>
   <string name="list_title_actors">Actors</string>
   <string name="list_title_birthdays_this_month">Birthdays This Month</string>
+  <string name="list_title_collaborative_lists">Collaborations</string>
   <string name="list_title_comments">Reviews</string>
   <string name="list_title_extras">Extras</string>
   <string name="list_title_favorite_movies">Favorite Movies</string>
@@ -127,11 +154,13 @@
   <string name="list_title_most_popular_searches">Top Searches</string>
   <string name="list_title_personal_lists">My Lists</string>
   <string name="list_title_popular_lists">Popular Lists</string>
+  <string name="list_title_progress">Progress</string>
   <string name="list_title_recently_searched_movies">Recently Searched Movies</string>
   <string name="list_title_recently_searched_shows">Recently Searched Shows</string>
   <string name="list_title_recommended">Recommended</string>
   <string name="list_title_related_movies">Related Movies</string>
   <string name="list_title_related_shows">Related Shows</string>
+  <string name="list_title_replies">Replies</string>
   <string name="list_title_seasons">Seasons</string>
   <string name="list_title_social">Social</string>
   <string name="list_title_social_activity">Social Activity</string>
@@ -144,6 +173,7 @@
   <string name="list_title_trending">Trending</string>
   <string name="list_title_trending_movies">Trending Movies</string>
   <string name="list_title_trending_shows">Trending Shows</string>
+  <string name="list_title_trivia">Trivia</string>
   <string name="list_title_up_next">Continue Watching</string>
   <string name="list_title_upcoming_schedule">Upcoming Schedule</string>
   <string name="list_title_watchlist_movies">Movies Watchlist</string>
@@ -164,9 +194,15 @@
   <string name="page_title_unexpected_error">Something went wrong</string>
   <string name="page_title_watchlist">Watchlist</string>
   <string name="page_title_where_to_watch">Where to Watch</string>
+  <string name="stat_text_favorited">Favorites</string>
+  <string name="stat_text_lists">Lists</string>
+  <string name="stat_text_plays">Plays</string>
+  <string name="stat_text_watchers">Watchers</string>
+  <string name="tag_text_finale">Finale</string>
   <string name="tag_text_number_of_episodes">%d eps.</string>
-  <string name="tag_text_remaining_duration">%s remaining</string>
-  <string name="tag_text_remaining_episodes">%d remaining</string>
+  <string name="tag_text_premiere">Premiere</string>
+  <string name="tag_text_remaining_duration">%s left</string>
+  <string name="tag_text_remaining_episodes">%d left</string>
   <string name="tag_text_watch_count">Watch count</string>
   <string name="tag_text_watched">Watched</string>
   <string name="text_about">About me</string>
@@ -181,18 +217,22 @@
   <string name="text_by">by</string>
   <string name="text_created_by_short">Created by</string>
   <string name="text_cta_activity_list">Start making friends quickly by following the Trakt Team and explore what they are watching.</string>
+  <string name="text_cta_collab_lists">Lists you help curate. Work with others and track movies and shows together.</string>
   <string name="text_cta_favorites">Your faves. Your story. Spotlight the movies and shows that left a mark.</string>
   <string name="text_cta_favorites_movies">Your faves. Your story. Spotlight the movies that left a mark.</string>
   <string name="text_cta_favorites_shows">Your faves. Your story. Spotlight the shows that left a mark.</string>
   <string name="text_cta_liked_lists">Discover what others love. Explore and save lists from the community.</string>
   <string name="text_cta_personal_lists">Your lists. Your rules. Collect and organize movies and shows your way.</string>
   <string name="text_cta_up_next">Your shows. Your pace. Jump back in exactly where you left off. What are you currently watching?</string>
+  <string name="text_cta_up_next_movies">Your movies. Your pace. Jump back in exactly where you left off. What are you currently watching?</string>
   <string name="text_cta_upcoming">Your timeline. See what\'s dropping next with a full list of upcoming episodes you care about.</string>
   <string name="text_cta_watchlist_released">See it. Save it. Watch it later. Start curating your personal movie queue.</string>
   <string name="text_cta_watchlist_unreleased">Lights, camera… nothing? Add titles to your watchlist and let the binge begin.</string>
   <string name="text_directed_by_short">Directed by</string>
   <string name="text_display_name">Display name</string>
   <string name="text_episodes_watched">%d episodes</string>
+  <string name="text_info_cover_removed">Cover image has been cleared.</string>
+  <string name="text_info_cover_set">Cover image has been set.</string>
   <string name="text_info_favorites_added">Added to favorites.</string>
   <string name="text_info_favorites_removed">Removed from favorites.</string>
   <string name="text_info_history_added">Added to watched history.</string>
@@ -204,6 +244,7 @@
   <string name="text_info_list_deleted">List has been deleted.</string>
   <string name="text_info_list_removed">Removed from list.</string>
   <string name="text_info_list_updated">List has been updated.</string>
+  <string name="text_info_movie_dropped">Movie has been dropped.</string>
   <string name="text_info_reply_added">Reply has been added.</string>
   <string name="text_info_reply_deleted">Reply has been deleted.</string>
   <string name="text_info_review_added">Review has been added.</string>
@@ -221,8 +262,10 @@
   <string name="text_landing_numbers_3">mil. titles tracked weekly</string>
   <string name="text_landing_share">opinions, ratings, and lists that others will love to follow.</string>
   <string name="text_landing_track">every movie, episode, and season you\'ve seen, all in one place.</string>
+  <string name="text_language">Language</string>
   <string name="text_location">Location</string>
   <string name="text_movies_watched">%d movies</string>
+  <string name="text_no_rating">No rating</string>
   <string name="text_notification_episode_release">S%1$d • E%2$d is now available.</string>
   <string name="text_notification_episodes_release">S%1$d • E%2$d-%3$d are now available.</string>
   <string name="text_notification_movie_release">The movie is now available.</string>
@@ -240,11 +283,26 @@
   <string name="text_onboarding_4_description_2">Join Trakt for free and discover more features waiting for you.</string>
   <string name="text_onboarding_4_title">There\'s more to discover.</string>
   <string name="text_overview_placeholder">Overview is not available.</string>
+  <string name="text_plex_tv_library_description">Enable Trakt Plex Sync to access your Plex server media library.</string>
+  <string name="text_rate_prompt_1">How did you like it?</string>
+  <string name="text_rate_prompt_2">Your verdict?</string>
+  <string name="text_rate_prompt_3">Worth the watch?</string>
+  <string name="text_rating_1">Weak</string>
+  <string name="text_rating_10">Absolute Cinema!</string>
+  <string name="text_rating_2">Terrible</string>
+  <string name="text_rating_3">Bad</string>
+  <string name="text_rating_4">Poor</string>
+  <string name="text_rating_5">Meh</string>
+  <string name="text_rating_6">Fair</string>
+  <string name="text_rating_7">Good</string>
+  <string name="text_rating_8">Great</string>
+  <string name="text_rating_9">Superb</string>
   <string name="text_season_episode_number">Season %1$d • Episode %2$d</string>
   <string name="text_season_number">Season %d</string>
   <string name="text_season_specials">Specials</string>
   <string name="text_settings_adjust_delivery">Notification Time</string>
   <string name="text_settings_adjust_delivery_description">Choose when to be notified.</string>
+  <string name="text_settings_clear_cover">Clear current cover image and return to the default.</string>
   <string name="text_settings_enable_multiple_plays">Enable Multiple Plays</string>
   <string name="text_settings_enable_multiple_plays_description">Allow more than 1 play for movies and episodes.</string>
   <string name="text_settings_enable_notifications">Enable Notifications</string>
@@ -259,14 +317,19 @@
   <string name="text_spoiler">Spoiler</string>
   <string name="text_streaming_sync">Streaming Sync</string>
   <string name="text_this_month">This month</string>
-  <string name="text_vip_costs">VIP helps cover the real costs of running Trakt.</string>
-  <string name="text_vip_costs_independence">Keeping Trakt independent, sustainable, and focused on users.</string>
-  <string name="text_vip_costs_infrastructure">Servers and infrastructure that keep Trakt fast and reliable.</string>
-  <string name="text_vip_costs_moderation">Moderation and tooling to keep the community safe and welcoming.</string>
-  <string name="text_vip_costs_team">The team building and maintaining the platform.</string>
+  <string name="text_unavailable">Unavailable</string>
+  <string name="text_vip_built_to_last">Built to last</string>
+  <string name="text_vip_costs">VIP helps cover the real costs of running Trakt, including:</string>
+  <string name="text_vip_costs_clients">Support for all first and third party Trakt clients</string>
+  <string name="text_vip_costs_infrastructure">Custom API infrastructure for a massive global user base</string>
+  <string name="text_vip_costs_metadata">Up-to-date metadata, images, and subtitles</string>
+  <string name="text_vip_costs_team">The team that keeps it all running</string>
+  <string name="text_vip_features_tagline">No hype, just features.</string>
   <string name="text_vip_upsell_default">Enhance your Trakt experience</string>
   <string name="text_vip_upsell_default_2">Upgrade to VIP!</string>
   <string name="text_vip_upsell_default_description">Upgrade to VIP and unlock the full Trakt experience, packed with features built for TV Shows and Movies lovers.</string>
+  <string name="text_vip_upsell_default_description_2">Year in Review &amp; more.</string>
+  <string name="text_vip_upsell_dive_deeper">Dive deeper.</string>
   <string name="text_younify_status_broken">Broken</string>
   <string name="text_younify_status_linked">Linked</string>
   <string name="text_younify_status_unlinked">Not linked</string>
@@ -280,127 +343,38 @@
   <string name="vip_feature_description_increased_limits">Enjoy higher limits for your lists, ratings, and other features.</string>
   <string name="vip_feature_description_mir">Get a personalized overview of everything you watched and rated each month.</string>
   <string name="vip_feature_description_more_to_come">We\'re constantly building new features exclusively for VIP members, with exciting updates already on the way.</string>
+  <string name="vip_feature_description_profile_customisation">Personalize your profile with custom headers and make your Trakt presence uniquely yours.</string>
   <string name="vip_feature_description_streaming_sync">Automatically sync your watched history and ratings from all your favorite streaming services.</string>
+  <string name="vip_feature_description_trivia">Get more trivia and insights about the movies and shows you watch.</string>
   <string name="vip_feature_description_vip_status">Show off your VIP status throughout the apps and website.</string>
   <string name="vip_feature_description_yir">Lots of stats for every year you\'ve been a member.</string>
   <string name="vip_feature_title_early_access">Early Access</string>
-  <string name="vip_feature_title_increased_limits">Increased Limits</string>
   <string name="vip_feature_title_mir">Month in Review</string>
   <string name="vip_feature_title_more_to_come">More to Come</string>
+  <string name="vip_feature_title_profile_customisation">More Customisation: Profile Header</string>
   <string name="vip_feature_title_streaming_sync">Streaming Sync</string>
   <string name="vip_feature_title_unlock">Unlock full potential with</string>
   <string name="vip_feature_title_vip_status">VIP Status</string>
   <string name="vip_feature_title_yir">Year in Review</string>
+  <string name="vip_text_vip_go_beyond_limits">Go beyond your limits</string>
   <string name="warning_prompt_delete_comment">Are you sure you want to delete your review?</string>
   <string name="warning_prompt_delete_list">Are you sure you want to delete the list %s?</string>
   <string name="warning_prompt_delete_reply">Are you sure you want to delete your reply?</string>
-  <string name="warning_prompt_drop_show">Are you sure you want to drop \"%s\" show? This will remove it from your Continue Watching list.</string>
+  <string name="warning_prompt_drop_movie">Are you sure you want to drop \"%s\"? This will remove it from your \"Continue Watching\" list.</string>
+  <string name="warning_prompt_drop_show">Are you sure you want to drop \"%s\"? This will remove it from your Continue Watching list.</string>
+  <string name="warning_prompt_hide_recommendation">Are you sure you want to hide \"%s\" from your recommendations?</string>
   <string name="warning_prompt_log_out">Are you sure you want to log out?</string>
   <string name="warning_prompt_mark_as_watched_multiple_episodes">Are you sure you want to mark %d episodes as watched?</string>
+  <string name="warning_prompt_mark_as_watched_show">Are you sure you want to mark \"%s\" as watched? This will mark all episodes as watched.</string>
   <string name="warning_prompt_mark_as_watched_show_android">Are you sure you want to mark **all %1$d episodes** of \"%2$s\" as watched?</string>
   <string name="warning_prompt_remove_from_favorites">Are you sure you want to remove \"%s\" from your Favorites?</string>
   <string name="warning_prompt_remove_from_liked_lists">Are you sure you want to remove \"%s\" from your liked lists?</string>
   <string name="warning_prompt_remove_from_personal_list">Are you sure you want to remove \"%1$s\" from %2$s?</string>
-  <string name="warning_prompt_remove_from_watched">Are you sure you want to remove \"%s\" from your Watched list? All plays will be removed.</string>
+  <string name="warning_prompt_remove_from_watched">Are you sure you want to remove \"%s\" from your Watched history? All plays will be removed.</string>
   <string name="warning_prompt_remove_from_watchlist">Are you sure you want to remove \"%s\" from your Watchlist?</string>
-  <string name="warning_prompt_remove_single_watched">Are you sure you want to remove this play of \"%s\" from your Watched list?</string>
+  <string name="warning_prompt_remove_single_watched">Are you sure you want to remove this play of \"%s\" from your Watched history?</string>
+  <string name="warning_prompt_set_cover_image">Use \"%s\" as your profile background image?</string>
   <string name="warning_prompt_stop_checkin">Are you sure you want to stop watching \"%s\"?</string>
+  <string name="warning_prompt_suppress_ratings_toast">Do you want to stop being asked to rate what you recently watched?</string>
   <string name="warning_prompt_younify_unlink">Are you sure you want to unlink %s?</string>
-
-  <!-- TODO -->
-
-  <string name="text_no_rating">No rating</string>
-  <string name="text_rating_1">Weak</string>
-  <string name="text_rating_2">Terrible</string>
-  <string name="text_rating_3">Bad</string>
-  <string name="text_rating_4">Poor</string>
-  <string name="text_rating_5">Meh</string>
-  <string name="text_rating_6">Fair</string>
-  <string name="text_rating_7">Good</string>
-  <string name="text_rating_8">Great</string>
-  <string name="text_rating_9">Superb</string>
-  <string name="text_rating_10">Absolute Cinema!</string>
-
-  <string name="translated_value_library_plex" translatable="false">Plex</string>
-  <string name="link_text_feedback">Feedback</string>
-  <string name="button_text_manage_lists">Manage Lists</string>
-  <string name="list_title_collaborative_lists">Collaborations</string>
-  <string name="text_cta_collab_lists">Lists you help curate. Work with others and track movies and shows together.</string>
-  <string name="text_tag_premiere">Premiere</string>
-  <string name="text_tag_finale">Finale</string>
-  <string name="list_title_trivia">Trivia</string>
-  <string name="text_trivia_filter_no_spoilers">No Spoilers</string>
-  <string name="text_trivia_filter_spoilers">Spoilers</string>
-
-  <string name="text_vip_trivia_upsell_1">Dive Deeper!</string>
-  <string name="text_vip_trivia_upsell_2">Get more trivia and insights about shows and movies you watch.</string>
-
-  <string name="text_vip_cover_upsell_1">More Customisation: Profile Header</string>
-  <string name="text_vip_cover_upsell_2">Personalize your profile with custom headers and make your Trakt presence uniquely yours.</string>
-
-  <string name="list_placeholder_history_empty">You haven\'t watched \"%s\" yet.</string>
-  <string name="text_stats_plays">Plays</string>
-  <string name="text_stats_watchers">Watchers</string>
-  <string name="text_stats_lists">Lists</string>
-  <string name="text_stats_favorites">Favorites</string>
-  <string name="header_episodes">Episodes</string>
-
-  <string name="text_directors">Director</string>
-  <string name="text_writers">Writer</string>
-  <string name="header_network">Network</string>
-  <string name="header_total_runtime">Total Runtime</string>
-
-  <string name="text_replies">Replies</string>
-  <string name="text_info_cover_set">Cover image has been set.</string>
-  <string name="text_info_cover_removed">Cover image has been cleared.</string>
-  <string name="button_text_cover_image">Set as cover image</string>
-  <string name="page_description_cover_image">Use \"%s\" as your profile background image?</string>
-  <string name="text_vip_upsell_default_description_2">No hype, just features.</string>
-  <string name="button_text_play_now">Play Now</string>
-  <string name="button_text_resume_now">Resume</string>
-
-  <string name="header_subtitles">Subtitles</string>
-  <string name="header_subtitles_size">Size</string>
-  <string name="header_subtitles_language">Language</string>
-  <string name="header_audio_tracks">Audio</string>
-  <string name="button_text_subtitles_off">Off</string>
-  <string name="button_text_subtitles_unavailable">Unavailable</string>
-  <string name="button_text_audio_default">Default</string>
-  <string name="button_text_audio_unavailable">Unavailable</string>
-  <string name="button_text_stream_on">Stream</string>
-  <string name="button_text_drop_movie">Drop movie</string>
-  <string name="button_text_drop_episode">Drop episode</string>
-
-  <string name="list_title_plex_library">Plex Library</string>
-  <string name="list_subtitle_plex_library">Enable Trakt Plex Sync to access your Plex server media library.</string>
-  <string name="warning_prompt_drop_movie">Are you sure you want to drop \"%s\"? This will remove it from your \"Continue Watching\" list.</string>
-  <string name="text_cta_up_next_movies">Your movies. Your pace. Jump back in exactly where you left off. What are you currently watching?</string>
-  <string name="text_info_movie_dropped">Movie has been dropped.</string>
-
-  <string name="text_rate_prompt_title_1">How did you like it?</string>
-  <string name="text_rate_prompt_title_2">Worth the watch?</string>
-  <string name="text_rate_prompt_title_3">Your verdict?</string>
-
-  <string name="warning_prompt_stop_rate_prompt">Do you want to stop being asked to rate what you recently watched?</string>
-  <string name="button_text_stop_ask">Stop asking</string>
-
-  <string name="list_title_progress">Progress</string>
-  <string name="button_text_in_progress">In Progress</string>
-  <string name="button_text_completed">Completed</string>
-  <string name="button_text_dropped">Dropped</string>
-
-  <!-- Non Translatable -->
-
-  <string name="header_whats_new" translatable="false">What\'s New</string>
-  <string name="header_rate_us_1" translatable="false">Loving Trakt so far?</string>
-  <string name="header_rate_us_2" translatable="false">Tap here to rate us 5 🌟 on the Play Store. Thank you!</string>
-
-  <string name="error_text_vip_only_feature" translatable="false">This feature can be accessed only by VIP users. Upgrade your account to VIP and unlock the full Trakt experience!</string>
-  <string name="error_text_payment_pending" translatable="false">There\'s already a pending payment. Please wait and try again later.</string>
-  <string name="error_text_payment_feature_not_supported" translatable="false">Google Play Billing is not available on this device. Please try again or contact support if needed.</string>
-  <string name="error_text_payment_canceled" translatable="false">Payment has been canceled. Please try again.</string>
-  <string name="error_text_payment_already_owned" translatable="false">You already own this item or its currently being processed.</string>
-  <string name="error_text_payment_item_unavailable" translatable="false">Products are currently not available. Please wait and try again later.</string>
-  <string name="error_text_payment_other" translatable="false">There was an error while processing your payment. Please try again or contact support if needed.</string>
-
 </resources>

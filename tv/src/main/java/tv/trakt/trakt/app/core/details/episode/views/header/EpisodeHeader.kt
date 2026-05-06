@@ -47,10 +47,11 @@ import kotlinx.coroutines.launch
 import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.core.details.ui.PosterImage
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExternalRating
@@ -179,7 +180,7 @@ internal fun EpisodeHeader(
                             modifier = Modifier.size(18.dp),
                         )
                         Text(
-                            text = it.toLocal().format(longDateTimeFormat),
+                            text = it.toLocal().format(longDateTimeFormat()).capitalize(),
                             color = TraktTheme.colors.textSecondary,
                             style = TraktTheme.typography.heading6,
                             maxLines = 1,
@@ -251,7 +252,7 @@ internal fun EpisodeHeader(
                                     modifier = Modifier.size(12.5.dp),
                                 )
                                 Text(
-                                    text = episode.rating.votes.thousandsFormat(),
+                                    text = rememberThousandsFormat(episode.rating.votes),
                                     color = TraktTheme.colors.textSecondary,
                                     style = TraktTheme.typography.ratingLabel.copy(fontSize = 12.sp),
                                 )

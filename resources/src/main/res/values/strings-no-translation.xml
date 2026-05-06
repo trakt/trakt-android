@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="translated_value_library_plex" translatable="false">Plex</string>
+  <string name="header_whats_new" translatable="false">What\'s New</string>
+  <string name="header_rate_us_1" translatable="false">Loving Trakt so far?</string>
+  <string name="header_rate_us_2" translatable="false">Tap here to rate us 5 🌟 on the Play Store. Thank you!</string>
+
+  <string name="error_text_vip_only_feature" translatable="false">This feature can be accessed only by VIP users. Upgrade your account to VIP and unlock the full Trakt experience!</string>
+  <string name="error_text_payment_pending" translatable="false">There\'s already a pending payment. Please wait and try again later.</string>
+  <string name="error_text_payment_feature_not_supported" translatable="false">Google Play Billing is not available on this device. Please try again or contact support if needed.</string>
+  <string name="error_text_payment_canceled" translatable="false">Payment has been canceled. Please try again.</string>
+  <string name="error_text_payment_already_owned" translatable="false">You already own this item or its currently being processed.</string>
+  <string name="error_text_payment_item_unavailable" translatable="false">Products are currently not available. Please wait and try again later.</string>
+  <string name="error_text_payment_other" translatable="false">There was an error while processing your payment. Please try again or contact support if needed.</string>
+
+</resources>

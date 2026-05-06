@@ -101,7 +101,7 @@ private fun TvPlexPlayerSubtitlesContent(
             .padding(horizontal = 20.dp),
     ) {
         Text(
-            text = stringResource(R.string.header_subtitles),
+            text = stringResource(R.string.header_player_subtitle),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading4,
             modifier = Modifier
@@ -110,7 +110,7 @@ private fun TvPlexPlayerSubtitlesContent(
         )
 
         Text(
-            text = stringResource(R.string.header_subtitles_size).uppercase(),
+            text = stringResource(R.string.header_player_subtitle_size).uppercase(),
             color = TraktTheme.colors.textSecondary,
             style = TraktTheme.typography.heading6,
             modifier = Modifier
@@ -160,7 +160,7 @@ private fun TvPlexPlayerSubtitlesContent(
         }
 
         Text(
-            text = stringResource(R.string.header_subtitles_language).uppercase(),
+            text = stringResource(R.string.header_player_subtitle_language).uppercase(),
             color = TraktTheme.colors.textSecondary,
             style = TraktTheme.typography.heading6,
             modifier = Modifier
@@ -181,8 +181,8 @@ private fun TvPlexPlayerSubtitlesContent(
             PrimaryButton(
                 text = stringResource(
                     when {
-                        tracks.isNullOrEmpty() -> R.string.button_text_subtitles_unavailable
-                        else -> R.string.button_text_subtitles_off
+                        tracks.isNullOrEmpty() -> R.string.text_unavailable
+                        else -> R.string.button_text_player_subtitles_off
                     },
                 ),
                 onClick = { onTrackSelect(null) },

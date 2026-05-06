@@ -93,7 +93,7 @@ private fun TvPlexPlayerAudioContent(
             .padding(horizontal = 20.dp),
     ) {
         Text(
-            text = stringResource(R.string.header_audio_tracks),
+            text = stringResource(R.string.header_player_audio),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading4,
             modifier = Modifier

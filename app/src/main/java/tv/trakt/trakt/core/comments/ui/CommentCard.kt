@@ -62,6 +62,7 @@ import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.Config.webUserUrl
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toLocal
@@ -353,9 +354,10 @@ private fun CommentHeader(
                 )
             }
 
+            val dateFormat = longDateFormat()
             Text(
                 text = remember(comment.createdAt) {
-                    comment.createdAt.toLocal().format(longDateFormat)
+                    comment.createdAt.toLocal().format(dateFormat).capitalize()
                 },
                 style = TraktTheme.typography.meta,
                 color = TraktTheme.colors.textSecondary

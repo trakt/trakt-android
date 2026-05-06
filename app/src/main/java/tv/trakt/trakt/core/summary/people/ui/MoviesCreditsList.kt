@@ -39,7 +39,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.Movie
@@ -150,6 +150,7 @@ internal fun MoviesCreditsList(
                                         onLongClick = { onLongClick?.invoke(item.movie) },
                                         chipSpacing = 10.dp,
                                         chipContent = { modifier ->
+                                            val footerRuntime = rememberDurationFormat(item.runtime?.inWholeMinutes)
                                             val footerText = remember {
                                                 val runtime = item.runtime?.inWholeMinutes
                                                 val year = item.released?.year
@@ -157,7 +158,7 @@ internal fun MoviesCreditsList(
                                                     ?: "TBA"
 
                                                 if (runtime != null) {
-                                                    "$year • ${runtime.durationFormat()}"
+                                                    "$year • $footerRuntime"
                                                 } else {
                                                     "$year"
                                                 }

@@ -30,7 +30,7 @@ import tv.trakt.trakt.app.core.profile.ProfileConfig.PROFILE_LIBRARY_SECTION_LIM
 import tv.trakt.trakt.app.core.profile.sections.library.model.LibraryItem
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.resources.R
@@ -96,13 +96,13 @@ internal fun ProfileLibraryContent(
             modifier = Modifier.padding(headerPadding),
         ) {
             Text(
-                text = stringResource(R.string.list_title_plex_library),
+                text = stringResource(R.string.translated_value_library_plex),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading5,
             )
             if (!state.isLoading && state.items?.isEmpty() == true) {
                 Text(
-                    text = stringResource(R.string.list_subtitle_plex_library),
+                    text = stringResource(R.string.text_plex_tv_library_description),
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.meta.copy(fontWeight = W400),
                 )
@@ -226,11 +226,8 @@ private fun ContentListItem(
                 }
 
                 if (item is LibraryItem.MovieItem) {
-                    val durationText = remember(item.movie.runtime) {
-                        item.movie.runtime?.inWholeMinutes?.durationFormat() ?: ""
-                    }
                     Text(
-                        text = durationText,
+                        text = rememberDurationFormat(item.movie.runtime?.inWholeMinutes),
                         style = TraktTheme.typography.cardSubtitle,
                         color = TraktTheme.colors.textSecondary,
                         maxLines = 1,

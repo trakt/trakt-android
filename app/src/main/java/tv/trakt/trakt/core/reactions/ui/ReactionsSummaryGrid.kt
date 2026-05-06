@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.toImmutableMap
-import tv.trakt.trakt.common.helpers.extensions.thousandsFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.ui.theme.colors.Shade700
@@ -150,7 +150,7 @@ fun ReactionItem(
         )
 
         Text(
-            text = reaction.second.thousandsFormat(),
+            text = rememberThousandsFormat(reaction.second),
             style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
             color = TraktTheme.colors.textPrimary,
         )

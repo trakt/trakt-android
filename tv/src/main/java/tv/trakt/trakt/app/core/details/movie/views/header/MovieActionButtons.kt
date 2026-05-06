@@ -185,10 +185,10 @@ private fun WatchButton(
     WatchNowButton(
         text = when {
             plex && plexStream -> when {
-                plexStreamProgress > 0F -> stringResource(R.string.button_text_resume_now)
-                else -> stringResource(R.string.button_text_play_now)
+                plexStreamProgress > 0F -> stringResource(R.string.button_text_player_resume)
+                else -> stringResource(R.string.button_text_player_play_now)
             }
-            loading || !directLink.isNullOrBlank() || plex -> stringResource(R.string.button_text_stream_on)
+            loading || !directLink.isNullOrBlank() || plex -> stringResource(R.string.button_text_stream)
             streamingState.noServices -> stringResource(R.string.button_text_no_services)
             else -> stringResource(R.string.button_text_where_to_watch)
         },
@@ -278,7 +278,7 @@ private fun DropDownButton(
             DropdownMenuItem(
                 text = {
                     Text(
-                        text = "${stringResource(R.string.button_text_stream_on)} Plex".uppercase(),
+                        text = "${stringResource(R.string.button_text_stream)} Plex".uppercase(),
                         textAlign = TextAlign.Start,
                         style = TraktTheme.typography.buttonPrimary,
                         color = when {

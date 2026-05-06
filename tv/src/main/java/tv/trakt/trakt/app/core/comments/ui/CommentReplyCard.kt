@@ -43,6 +43,7 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import tv.trakt.trakt.app.common.ui.TvVipChip
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
@@ -195,7 +196,7 @@ private fun CommentHeader(comment: Comment) {
                 }
             }
             Text(
-                text = comment.createdAt.format(longDateTimeFormat),
+                text = comment.createdAt.format(longDateTimeFormat()).capitalize(),
                 style = TraktTheme.typography.paragraphSmall,
                 color = TraktTheme.colors.textSecondary,
                 maxLines = 1,

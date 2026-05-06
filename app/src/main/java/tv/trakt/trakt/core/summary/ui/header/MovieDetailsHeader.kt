@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import tv.trakt.trakt.common.Config.webImdbMediaUrl
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
@@ -52,7 +53,7 @@ internal fun DetailsHeader(
             Text(
                 text = when {
                     isReleased -> movie.yearString
-                    else -> movie.released?.format(mediumDateFormat) ?: movie.yearString
+                    else -> movie.released?.format(mediumDateFormat())?.capitalize() ?: movie.yearString
                 },
                 color = when {
                     isReleased -> TraktTheme.colors.textSecondary

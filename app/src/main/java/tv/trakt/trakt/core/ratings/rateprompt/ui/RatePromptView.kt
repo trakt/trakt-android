@@ -120,9 +120,9 @@ internal fun RatePromptView(
             subtitle = stringResource(
                 remember(media.movie.ids.trakt) {
                     listOf(
-                        R.string.text_rate_prompt_title_1,
-                        R.string.text_rate_prompt_title_2,
-                        R.string.text_rate_prompt_title_3,
+                        R.string.text_rate_prompt_1,
+                        R.string.text_rate_prompt_2,
+                        R.string.text_rate_prompt_3,
                     ).random()
                 },
             ),
