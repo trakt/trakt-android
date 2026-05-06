@@ -66,7 +66,7 @@ internal fun AllUpNextShowView(
                         ?: item.show.runtime?.inWholeMinutes,
                 )
 
-                val startString = remember {
+                val startString = remember(runtime) {
                     buildString {
                         if (runtime != "N/A") {
                             append(runtime)
