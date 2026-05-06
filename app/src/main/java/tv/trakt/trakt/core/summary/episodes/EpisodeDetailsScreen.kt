@@ -660,7 +660,6 @@ private fun DetailsOverview(
     Crossfade(
         targetState = overviewTranslation,
         animationSpec = tween(250),
-        label = "title_translation_crossfade",
         modifier = modifier
             .fillMaxWidth()
             .onClick { isCollapsed = !isCollapsed },

@@ -122,7 +122,6 @@ internal fun ShowHeader(
             Crossfade(
                 targetState = showTranslation?.title,
                 animationSpec = tween(250),
-                label = "title_translation_crossfade",
             ) { translation ->
                 Text(
                     text = if (!translation.isNullOrBlank()) translation else show.title,

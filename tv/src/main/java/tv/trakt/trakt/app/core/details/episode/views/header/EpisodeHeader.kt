@@ -124,7 +124,6 @@ internal fun EpisodeHeader(
             Crossfade(
                 targetState = episodeTranslation?.title,
                 animationSpec = tween(250),
-                label = "title_translation_crossfade",
             ) { translation ->
                 Text(
                     text = if (!translation.isNullOrBlank()) translation else episode.title,

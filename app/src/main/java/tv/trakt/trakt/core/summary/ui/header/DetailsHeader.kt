@@ -155,7 +155,6 @@ internal fun DetailsHeader(
             Crossfade(
                 targetState = titleTranslation,
                 animationSpec = tween(250),
-                label = "title_translation_crossfade",
                 modifier = Modifier
                     .fillMaxWidth(),
             ) { translation ->
