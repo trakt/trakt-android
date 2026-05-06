@@ -4,6 +4,7 @@ package tv.trakt.trakt.core.summary.episodes
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -405,6 +406,7 @@ internal fun EpisodeDetailsContent(
                     DetailsHeader(
                         episode = state.episode,
                         show = state.show,
+                        episodeTranslation = state.episodeTranslation,
                         ratings = state.episodeRatings,
                         creator = state.episodeCreator,
                         playsCount = state.episodeProgress?.plays ?: 0,
@@ -468,6 +470,7 @@ internal fun EpisodeDetailsContent(
                 item {
                     DetailsOverview(
                         overview = state.episode.overview,
+                        overviewTranslation = state.episodeTranslation?.overview,
                         modifier = Modifier
                             .alpha(ratingAlphaMask)
                             .fillMaxWidth()
@@ -650,20 +653,31 @@ fun DetailsRating(
 private fun DetailsOverview(
     modifier: Modifier = Modifier,
     overview: String? = null,
+    overviewTranslation: String? = null,
 ) {
     var isCollapsed by remember { mutableStateOf(true) }
-    Text(
-        text = overview ?: stringResource(R.string.text_overview_placeholder),
-        style = TraktTheme.typography.paragraphSmall,
-        color = TraktTheme.colors.textSecondary,
-        maxLines = if (isCollapsed) 6 else Int.MAX_VALUE,
-        textAlign = TextAlign.Start,
-        overflow = Ellipsis,
+
+    Crossfade(
+        targetState = overviewTranslation,
+        animationSpec = tween(250),
+        label = "title_translation_crossfade",
         modifier = modifier
-            .onClick {
-                isCollapsed = !isCollapsed
+            .fillMaxWidth()
+            .onClick { isCollapsed = !isCollapsed },
+    ) { translation ->
+        Text(
+            text = when {
+                !translation.isNullOrBlank() -> translation
+                overview.isNullOrBlank() -> stringResource(R.string.text_overview_placeholder)
+                else -> overview
             },
-    )
+            style = TraktTheme.typography.paragraphSmall,
+            color = TraktTheme.colors.textSecondary,
+            maxLines = if (isCollapsed) 6 else Int.MAX_VALUE,
+            textAlign = TextAlign.Start,
+            overflow = Ellipsis,
+        )
+    }
 }
 
 private fun shareEpisode(

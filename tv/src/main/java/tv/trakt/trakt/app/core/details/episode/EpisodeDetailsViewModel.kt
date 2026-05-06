@@ -1,5 +1,6 @@
 package tv.trakt.trakt.app.core.details.episode
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -40,6 +41,8 @@ import tv.trakt.trakt.app.core.plex.usecase.DropPlaybackUseCase
 import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates
 import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates.Source.SCROBBLE_STOP_WORKER
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.translations.model.MediaTranslation
+import tv.trakt.trakt.common.core.translations.usecase.GetEpisodeTranslationsUseCase
 import tv.trakt.trakt.common.core.tutorials.TutorialsManager
 import tv.trakt.trakt.common.core.tutorials.model.TutorialKey
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
@@ -59,6 +62,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.resources.R
+import java.util.Locale
 
 internal class EpisodeDetailsViewModel(
     savedStateHandle: SavedStateHandle,
@@ -76,6 +80,7 @@ internal class EpisodeDetailsViewModel(
     private val getSeasonUseCase: GetEpisodeSeasonUseCase,
     private val getHistoryUseCase: GetEpisodeHistoryUseCase,
     private val changeHistoryUseCase: ChangeHistoryUseCase,
+    private val getTranslationsUseCase: GetEpisodeTranslationsUseCase,
     private val appReviewUseCase: RequestAppReviewUseCase,
     private val scrobbleUpdates: ScrobbleUpdates,
 ) : ViewModel() {
@@ -91,6 +96,7 @@ internal class EpisodeDetailsViewModel(
     private val episodeCommentsState = MutableStateFlow(initialState.episodeComments)
     private val episodeSeasonState = MutableStateFlow(initialState.episodeSeason)
     private val episodeHistoryState = MutableStateFlow(initialState.episodeHistory)
+    private val episodeTranslationState = MutableStateFlow(initialState.episodeTranslation)
     private val loadingState = MutableStateFlow(initialState.isLoading)
     private val reviewState = MutableStateFlow(initialState.isReviewRequest)
     private val snackMessageState = MutableStateFlow(initialState.snackMessage)
@@ -138,6 +144,8 @@ internal class EpisodeDetailsViewModel(
                     showDetailsState.update { show }
                     episodeDetailsState.update { episode }
 
+                    loadTranslations(showId, seasonEpisode)
+
                     viewModelScope.launch {
                         val historyAsync = async { loadHistory(episode.ids.trakt) }
                         val streamingsAsync = async { loadStreamings(show.ids, episode, user) }
@@ -178,6 +186,20 @@ internal class EpisodeDetailsViewModel(
                 }
             }
             .launchIn(viewModelScope)
+    }
+
+    private fun loadTranslations(
+        showId: TraktId,
+        seasonEpisode: SeasonEpisode,
+    ) {
+        viewModelScope.launch {
+            val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+            episodeTranslationState.value = getTranslationsUseCase.getEpisodeTranslations(
+                showId = showId,
+                seasonEpisode = seasonEpisode,
+                locale = locale,
+            )
+        }
     }
 
     private fun loadExternalRatings(
@@ -479,6 +501,7 @@ internal class EpisodeDetailsViewModel(
         episodeCommentsState,
         episodeSeasonState,
         episodeHistoryState,
+        episodeTranslationState,
         loadingState,
         snackMessageState,
         reviewState,
@@ -494,9 +517,10 @@ internal class EpisodeDetailsViewModel(
             episodeComments = states[7] as ImmutableList<Comment>?,
             episodeSeason = states[8] as ImmutableList<Episode>?,
             episodeHistory = states[9] as HistoryState,
-            isLoading = states[10] as Boolean,
-            snackMessage = states[11] as StringResource?,
-            isReviewRequest = states[12] as Boolean,
+            episodeTranslation = states[10] as MediaTranslation?,
+            isLoading = states[11] as Boolean,
+            snackMessage = states[12] as StringResource?,
+            isReviewRequest = states[13] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -1,5 +1,7 @@
 package tv.trakt.trakt.core.summary.ui.header
 
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -25,6 +27,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,6 +56,7 @@ internal fun DetailsHeader(
     titleHeader: @Composable (() -> Unit)? = null,
     titleFooter: @Composable (() -> Unit)? = null,
     title: String,
+    titleTranslation: String? = null,
     genres: ImmutableList<String>,
     date: @Composable (() -> Unit)?,
     imageUrl: String?,
@@ -148,18 +152,32 @@ internal fun DetailsHeader(
                 titleHeader()
             }
 
-            Text(
-                text = title,
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.heading2,
-                maxLines = 1,
-                overflow = Ellipsis,
-                autoSize = TextAutoSize.StepBased(
-                    maxFontSize = TraktTheme.typography.heading2.fontSize,
-                    minFontSize = 16.sp,
-                    stepSize = 2.sp,
-                ),
-            )
+            Crossfade(
+                targetState = titleTranslation,
+                animationSpec = tween(250),
+                label = "title_translation_crossfade",
+                modifier = Modifier
+                    .fillMaxWidth(),
+            ) { translation ->
+                Text(
+                    text = when {
+                        !translation.isNullOrBlank() -> translation
+                        else -> title
+                    },
+                    textAlign = TextAlign.Center,
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.heading2,
+                    maxLines = 1,
+                    overflow = Ellipsis,
+                    autoSize = TextAutoSize.StepBased(
+                        maxFontSize = TraktTheme.typography.heading2.fontSize,
+                        minFontSize = 16.sp,
+                        stepSize = 2.sp,
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                )
+            }
 
             if (titleFooter != null) {
                 titleFooter()

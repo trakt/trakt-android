@@ -1,5 +1,6 @@
 package tv.trakt.trakt.app.core.details.show
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -36,6 +37,8 @@ import tv.trakt.trakt.app.core.details.show.usecases.collection.GetCollectionUse
 import tv.trakt.trakt.app.core.details.show.usecases.streamings.GetPlexUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.streamings.GetStreamingsUseCase
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.translations.model.MediaTranslation
+import tv.trakt.trakt.common.core.translations.usecase.GetShowTranslationsUseCase
 import tv.trakt.trakt.common.core.tutorials.TutorialsManager
 import tv.trakt.trakt.common.core.tutorials.model.TutorialKey
 import tv.trakt.trakt.common.helpers.DynamicStringResource
@@ -54,10 +57,12 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.resources.R
+import java.util.Locale
 
 internal class ShowDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val getDetailsUseCase: GetShowDetailsUseCase,
+    private val getTranslationsUseCase: GetShowTranslationsUseCase,
     private val getExternalRatingsUseCase: GetExternalRatingsUseCase,
     private val getExtraVideosUseCase: GetExtraVideosUseCase,
     private val getCastCrewUseCase: GetCastCrewUseCase,
@@ -86,6 +91,7 @@ internal class ShowDetailsViewModel(
     private val showStreamingsState = MutableStateFlow(initialState.showStreamings)
     private val showSeasonsState = MutableStateFlow(initialState.showSeasons)
     private val showCollectionState = MutableStateFlow(initialState.showCollection)
+    private val showTranslationState = MutableStateFlow(initialState.showTranslation)
     private val userState = MutableStateFlow(initialState.user)
     private val snackMessageState = MutableStateFlow(initialState.snackMessage)
 
@@ -106,6 +112,7 @@ internal class ShowDetailsViewModel(
                     showDetailsState.update { show }
 
                     loadCollection(showId)
+                    loadTranslations(showId)
                     loadStreamings(it.ids, user)
 
                     loadExternalRatings(showId)
@@ -120,6 +127,24 @@ internal class ShowDetailsViewModel(
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
                     Timber.e("Error loading show details: ${error.message}")
+                }
+            }
+        }
+    }
+
+    private fun loadTranslations(showId: TraktId) {
+        viewModelScope.launch {
+            try {
+                val locale = AppCompatDelegate.getApplicationLocales().toLanguageTags()
+                showTranslationState.update {
+                    getTranslationsUseCase.getShowTranslations(
+                        showId = showId,
+                        locale = Locale.forLanguageTag(locale),
+                    )
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.e("Error loading translations: ${error.message}")
                 }
             }
         }
@@ -473,6 +498,7 @@ internal class ShowDetailsViewModel(
         showSeasonsState,
         userState,
         snackMessageState,
+        showTranslationState,
     ) { states ->
         ShowDetailsState(
             isLoading = states[0] as Boolean,
@@ -488,6 +514,7 @@ internal class ShowDetailsViewModel(
             showSeasons = states[10] as ShowSeasons,
             user = states[11] as User?,
             snackMessage = states[12] as StringResource?,
+            showTranslation = states[13] as MediaTranslation?,
         )
     }.stateIn(
         scope = viewModelScope,

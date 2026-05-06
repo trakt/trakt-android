@@ -3,6 +3,7 @@ package tv.trakt.trakt.app.core.details.show
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.app.core.details.show.models.ShowSeasons
+import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Comment
@@ -18,6 +19,7 @@ import tv.trakt.trakt.common.model.streamings.StreamingService
 internal data class ShowDetailsState(
     val user: User? = null,
     val showDetails: Show? = null,
+    val showTranslation: MediaTranslation? = null,
     val showRatings: ExternalRating? = null,
     val showVideos: ImmutableList<ExtraVideo>? = null,
     val showCast: ImmutableList<CastPerson>? = null,

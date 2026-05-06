@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.summary.movies
 
 import androidx.compose.runtime.Immutable
+import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.model.ExternalRating
@@ -16,6 +17,7 @@ internal data class MovieDetailsState(
     val movieUserRating: UserRatingsState? = null,
     val movieProgress: ProgressState? = null,
     val movieCreator: Person? = null,
+    val movieTranslation: MediaTranslation? = null,
     val loading: LoadingState = LoadingState.Idle,
     val loadingProgress: LoadingState = LoadingState.Idle,
     val loadingLists: LoadingState = LoadingState.Idle,

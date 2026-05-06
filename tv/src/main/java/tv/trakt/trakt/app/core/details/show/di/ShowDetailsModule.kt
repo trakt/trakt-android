@@ -112,6 +112,7 @@ internal val showDetailsModule = module {
         ShowDetailsViewModel(
             savedStateHandle = get(),
             getDetailsUseCase = get(),
+            getTranslationsUseCase = get(),
             getExternalRatingsUseCase = get(),
             getExtraVideosUseCase = get(),
             getCastCrewUseCase = get(),

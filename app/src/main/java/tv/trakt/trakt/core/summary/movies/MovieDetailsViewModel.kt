@@ -3,6 +3,7 @@
 package tv.trakt.trakt.core.summary.movies
 
 import android.content.Context
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,6 +27,8 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.translations.model.MediaTranslation
+import tv.trakt.trakt.common.core.translations.usecase.GetMovieTranslationsUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
@@ -74,6 +77,7 @@ import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
+import java.util.Locale
 
 internal class MovieDetailsViewModel(
     savedStateHandle: SavedStateHandle,
@@ -81,6 +85,7 @@ internal class MovieDetailsViewModel(
     private val getDetailsUseCase: GetMovieDetailsUseCase,
     private val getExternalRatingsUseCase: GetMovieRatingsUseCase,
     private val getMovieDirectorUseCase: GetMovieDirectorUseCase,
+    private val getMovieTranslationsUseCase: GetMovieTranslationsUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
     private val loadListsUseCase: LoadUserListsUseCase,
@@ -113,6 +118,7 @@ internal class MovieDetailsViewModel(
     private val movieUserRatingsState = MutableStateFlow(initialState.movieUserRating)
     private val movieCreatorState = MutableStateFlow(initialState.movieCreator)
     private val movieProgressState = MutableStateFlow(initialState.movieProgress)
+    private val movieTranslationState = MutableStateFlow(initialState.movieTranslation)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingProgress = MutableStateFlow(initialState.loadingProgress)
     private val loadingLists = MutableStateFlow(initialState.loadingLists)
@@ -174,6 +180,7 @@ internal class MovieDetailsViewModel(
                 }
                 movieState.update { movie }
 
+                loadTranslations()
                 loadRatings(movie)
                 loadCreator()
             } catch (error: Exception) {
@@ -183,6 +190,24 @@ internal class MovieDetailsViewModel(
                 }
             } finally {
                 loadingState.update { Done }
+            }
+        }
+    }
+
+    private fun loadTranslations() {
+        viewModelScope.launch {
+            try {
+                val locale = AppCompatDelegate.getApplicationLocales().toLanguageTags()
+                movieTranslationState.update {
+                    getMovieTranslationsUseCase.getMovieTranslations(
+                        movieId = movieId,
+                        locale = Locale.forLanguageTag(locale),
+                    )
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
             }
         }
     }
@@ -931,6 +956,7 @@ internal class MovieDetailsViewModel(
         movieCreatorState,
         movieProgressState,
         movieUserRatingsState,
+        movieTranslationState,
         loadingState,
         loadingProgress,
         loadingLists,
@@ -945,13 +971,14 @@ internal class MovieDetailsViewModel(
             movieCreator = state[2] as Person?,
             movieProgress = state[3] as MovieDetailsState.ProgressState?,
             movieUserRating = state[4] as UserRatingsState?,
-            loading = state[5] as LoadingState,
-            loadingProgress = state[6] as LoadingState,
-            loadingLists = state[7] as LoadingState,
-            loadingFavorite = state[8] as LoadingState,
-            info = state[9] as StringResource?,
-            error = state[10] as Exception?,
-            user = state[11] as User?,
+            movieTranslation = state[5] as MediaTranslation?,
+            loading = state[6] as LoadingState,
+            loadingProgress = state[7] as LoadingState,
+            loadingLists = state[8] as LoadingState,
+            loadingFavorite = state[9] as LoadingState,
+            info = state[10] as StringResource?,
+            error = state[11] as Exception?,
+            user = state[12] as User?,
         )
     }.stateIn(
         scope = viewModelScope,

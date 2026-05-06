@@ -1,5 +1,6 @@
 package tv.trakt.trakt.app.core.details.movie
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -42,6 +43,8 @@ import tv.trakt.trakt.app.core.plex.usecase.DropPlaybackUseCase
 import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates
 import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates.Source.SCROBBLE_STOP_WORKER
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.translations.model.MediaTranslation
+import tv.trakt.trakt.common.core.translations.usecase.GetMovieTranslationsUseCase
 import tv.trakt.trakt.common.core.tutorials.TutorialsManager
 import tv.trakt.trakt.common.core.tutorials.model.TutorialKey
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
@@ -60,6 +63,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.resources.R
+import java.util.Locale
 
 internal class MovieDetailsViewModel(
     savedStateHandle: SavedStateHandle,
@@ -77,6 +81,7 @@ internal class MovieDetailsViewModel(
     private val watchlistUseCase: ChangeWatchlistUseCase,
     private val historyUseCase: ChangeHistoryUseCase,
     private val appReviewUseCase: RequestAppReviewUseCase,
+    private val getTranslationsUseCase: GetMovieTranslationsUseCase,
     private val scrobbleUpdates: ScrobbleUpdates,
     private val sessionManager: SessionManager,
     private val tutorialsManager: TutorialsManager,
@@ -92,6 +97,7 @@ internal class MovieDetailsViewModel(
     private val movieListsState = MutableStateFlow(initialState.movieLists)
     private val movieStreamingsState = MutableStateFlow(initialState.movieStreamings)
     private val movieCollectionState = MutableStateFlow(initialState.movieCollection)
+    private val movieTranslationState = MutableStateFlow(initialState.movieTranslation)
     private val userState = MutableStateFlow(initialState.user)
     private val loadingState = MutableStateFlow(initialState.isLoading)
     private val reviewState = MutableStateFlow(initialState.isReviewRequest)
@@ -112,6 +118,8 @@ internal class MovieDetailsViewModel(
                 movie?.let {
                     userState.update { user }
                     movieDetailsState.update { movie }
+
+                    loadTranslations(movieId)
 
                     viewModelScope.launch {
                         val collectionAsync = async { loadCollection(movieId, force = false) }
@@ -152,6 +160,13 @@ internal class MovieDetailsViewModel(
                 }
             }
             .launchIn(viewModelScope)
+    }
+
+    private fun loadTranslations(movieId: TraktId) {
+        viewModelScope.launch {
+            val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+            movieTranslationState.value = getTranslationsUseCase.getMovieTranslations(movieId, locale)
+        }
     }
 
     private fun loadExternalRatings(movieId: TraktId) {
@@ -460,6 +475,7 @@ internal class MovieDetailsViewModel(
         movieListsState,
         movieStreamingsState,
         movieCollectionState,
+        movieTranslationState,
         userState,
         snackMessageState,
         reviewState,
@@ -476,9 +492,10 @@ internal class MovieDetailsViewModel(
             movieLists = states[7] as ImmutableList<CustomList>?,
             movieStreamings = states[8] as StreamingsState,
             movieCollection = states[9] as CollectionState,
-            user = states[10] as User?,
-            snackMessage = states[11] as StringResource?,
-            isReviewRequest = states[12] as Boolean,
+            movieTranslation = states[10] as MediaTranslation?,
+            user = states[11] as User?,
+            snackMessage = states[12] as StringResource?,
+            isReviewRequest = states[13] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

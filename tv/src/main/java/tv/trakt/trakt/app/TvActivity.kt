@@ -46,6 +46,8 @@ import tv.trakt.trakt.app.core.streamings.di.streamingsModule
 import tv.trakt.trakt.app.core.sync.di.syncModule
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.auth.di.commonAuthModule
+import tv.trakt.trakt.common.core.translations.di.translationsDataModule
+import tv.trakt.trakt.common.core.translations.di.translationsModule
 import tv.trakt.trakt.common.core.tutorials.di.tutorialsModule
 import tv.trakt.trakt.common.firebase.analytics.di.analyticsModule
 import tv.trakt.trakt.common.firebase.inappreview.di.inAppReviewModule
@@ -136,6 +138,8 @@ class TvActivity : ComponentActivity() {
                     syncModule,
                     inAppReviewModule,
                     analyticsModule,
+                    translationsDataModule,
+                    translationsModule,
                 )
             }
         }

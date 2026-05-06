@@ -2,6 +2,8 @@ package tv.trakt.trakt.app.core.details.episode.views.header
 
 import ExternalRatingsStrip
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
@@ -47,6 +49,7 @@ import kotlinx.coroutines.launch
 import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.core.details.ui.PosterImage
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
@@ -65,6 +68,7 @@ internal fun EpisodeHeader(
     show: Show,
     episode: Episode,
     episodePlays: Int,
+    episodeTranslation: MediaTranslation?,
     externalRating: ExternalRating?,
     modifier: Modifier = Modifier,
     focusRequester: FocusRequester,
@@ -117,14 +121,20 @@ internal fun EpisodeHeader(
         )
 
         Column {
-            Text(
-                text = episode.title,
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.heading3,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.padding(end = TraktTheme.spacing.mainContentEndSpace),
-            )
+            Crossfade(
+                targetState = episodeTranslation?.title,
+                animationSpec = tween(250),
+                label = "title_translation_crossfade",
+            ) { translation ->
+                Text(
+                    text = if (!translation.isNullOrBlank()) translation else episode.title,
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.heading3,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(end = TraktTheme.spacing.mainContentEndSpace),
+                )
+            }
 
             Text(
                 text = show.title,
