@@ -197,11 +197,11 @@ internal class MovieDetailsViewModel(
     private fun loadTranslations() {
         viewModelScope.launch {
             try {
-                val locale = AppCompatDelegate.getApplicationLocales().toLanguageTags()
+                val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
                 movieTranslationState.update {
                     getMovieTranslationsUseCase.getMovieTranslations(
                         movieId = movieId,
-                        locale = Locale.forLanguageTag(locale),
+                        locale = locale,
                     )
                 }
             } catch (error: Exception) {

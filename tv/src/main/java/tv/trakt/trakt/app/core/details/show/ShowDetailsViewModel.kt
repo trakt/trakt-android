@@ -135,11 +135,11 @@ internal class ShowDetailsViewModel(
     private fun loadTranslations(showId: TraktId) {
         viewModelScope.launch {
             try {
-                val locale = AppCompatDelegate.getApplicationLocales().toLanguageTags()
+                val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
                 showTranslationState.update {
                     getTranslationsUseCase.getShowTranslations(
                         showId = showId,
-                        locale = Locale.forLanguageTag(locale),
+                        locale = locale,
                     )
                 }
             } catch (error: Exception) {
