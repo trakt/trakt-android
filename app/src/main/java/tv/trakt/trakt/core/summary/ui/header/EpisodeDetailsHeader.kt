@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import tv.trakt.trakt.common.Config.webImdbMediaUrl
+import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
@@ -37,6 +38,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun DetailsHeader(
     episode: Episode,
     show: Show,
+    episodeTranslation: MediaTranslation?,
     ratings: ExternalRating?,
     creator: Person?,
     playsCount: Int?,
@@ -56,6 +58,7 @@ internal fun DetailsHeader(
 
     DetailsHeader(
         title = episode.title,
+        titleTranslation = episodeTranslation?.title,
         titleHeader = {
             Row(
                 verticalAlignment = Alignment.CenterVertically,

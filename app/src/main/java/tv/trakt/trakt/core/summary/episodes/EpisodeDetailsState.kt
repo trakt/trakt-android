@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.summary.episodes
 
 import androidx.compose.runtime.Immutable
+import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.model.Episode
@@ -19,6 +20,7 @@ internal data class EpisodeDetailsState(
     val episodeUserRating: UserRatingsState? = null,
     val episodeProgress: ProgressState? = null,
     val episodeCreator: Person? = null,
+    val episodeTranslation: MediaTranslation? = null,
     val navigateEpisode: Pair<TraktId, Episode>? = null,
     val loading: LoadingState = LoadingState.Idle,
     val loadingProgress: LoadingState = LoadingState.Idle,

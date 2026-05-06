@@ -3,6 +3,7 @@ package tv.trakt.trakt.app.core.details.movie
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.app.core.details.movie.usecases.streamings.GetPlexUseCase
+import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Comment
@@ -26,6 +27,7 @@ internal data class MovieDetailsState(
     val movieLists: ImmutableList<CustomList>? = null,
     val movieStreamings: StreamingsState = StreamingsState(),
     val movieCollection: CollectionState = CollectionState(),
+    val movieTranslation: MediaTranslation? = null,
     val isLoading: Boolean = false,
     val isReviewRequest: Boolean = false,
     val snackMessage: StringResource? = null,

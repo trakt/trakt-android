@@ -131,6 +131,7 @@ internal val episodeDetailsModule = module {
             getShowDetailsUseCase = get(),
             getEpisodeDetailsUseCase = get(),
             getEpisodeDirectorUseCase = get(),
+            getEpisodeTranslationsUseCase = get(),
             getRatingsUseCase = get(),
             loadProgressUseCase = get(),
             loadRatingUseCase = get(),

@@ -162,6 +162,7 @@ internal val movieDetailsModule = module {
             getDetailsUseCase = get(),
             getExternalRatingsUseCase = get(),
             getMovieDirectorUseCase = get(),
+            getMovieTranslationsUseCase = get(),
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
             loadListsUseCase = get(),

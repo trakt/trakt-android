@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import tv.trakt.trakt.common.Config.webImdbMediaUrl
+import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
@@ -33,6 +34,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun DetailsHeader(
     show: Show,
+    showTranslation: MediaTranslation?,
     ratings: ExternalRating?,
     creator: Person?,
     airedCount: Int,
@@ -59,6 +61,7 @@ internal fun DetailsHeader(
 
     DetailsHeader(
         title = show.title,
+        titleTranslation = showTranslation?.title,
         status = show.status,
         date = {
             Text(

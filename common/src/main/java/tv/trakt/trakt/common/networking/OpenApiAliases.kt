@@ -13,6 +13,7 @@ import org.openapitools.client.models.GetMoviesPeople200Response
 import org.openapitools.client.models.GetMoviesPeople200ResponseCastInnerPerson
 import org.openapitools.client.models.GetMoviesRatings200Response
 import org.openapitools.client.models.GetMoviesStats200Response
+import org.openapitools.client.models.GetMoviesTranslations200ResponseInner
 import org.openapitools.client.models.GetMoviesVideos200ResponseInner
 import org.openapitools.client.models.GetMoviesWatchnow200ResponseValue
 import org.openapitools.client.models.GetMoviesWatchnow200ResponseValueCableInner
@@ -25,6 +26,7 @@ import org.openapitools.client.models.GetSearchQuery200ResponseInnerOneOf2Person
 import org.openapitools.client.models.GetSearchQuery200ResponseInnerOneOf3List
 import org.openapitools.client.models.GetSearchTrending200ResponseInner
 import org.openapitools.client.models.GetShowsEpisodeStats200Response
+import org.openapitools.client.models.GetShowsEpisodeTranslations200ResponseInner
 import org.openapitools.client.models.GetSyncCollectionMedia200ResponseInner
 import org.openapitools.client.models.GetSyncProgressEpisodesResponse
 import org.openapitools.client.models.GetSyncProgressMovies200ResponseInner
@@ -122,6 +124,8 @@ typealias SearchListDto = GetSearchQuery200ResponseInnerOneOf3List
 typealias SocialActivityItemDto = GetUsersActivities200ResponseInner
 typealias UserRatingDto = GetUsersRatingsMovies200ResponseInner
 typealias DroppedItemDto = GetUsersHiddenGet200ResponseInner
+typealias TranslationDto = GetMoviesTranslations200ResponseInner
+typealias EpisodeTranslationDto = GetShowsEpisodeTranslations200ResponseInner
 
 // typealias CheckInMovieResponseDto = PostCheckinMovie200Response
 typealias UserWatchingDto = GetUsersWatching200Response

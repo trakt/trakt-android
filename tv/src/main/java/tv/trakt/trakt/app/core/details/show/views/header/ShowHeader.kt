@@ -2,6 +2,8 @@ package tv.trakt.trakt.app.core.details.show.views.header
 
 import ExternalRatingsStrip
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
@@ -48,6 +50,7 @@ import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.core.details.show.ShowDetailsState.CollectionState
 import tv.trakt.trakt.app.core.details.ui.PosterImage
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
@@ -63,6 +66,7 @@ import tv.trakt.trakt.resources.R
 internal fun ShowHeader(
     show: Show,
     showCollection: CollectionState,
+    showTranslation: MediaTranslation?,
     externalRating: ExternalRating?,
     modifier: Modifier = Modifier,
     focusRequester: FocusRequester,
@@ -115,14 +119,19 @@ internal fun ShowHeader(
         )
 
         Column {
-            Text(
-                text = show.title,
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.heading3,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.padding(end = TraktTheme.spacing.mainContentEndSpace),
-            )
+            Crossfade(
+                targetState = showTranslation?.title,
+                animationSpec = tween(250),
+            ) { translation ->
+                Text(
+                    text = if (!translation.isNullOrBlank()) translation else show.title,
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.heading3,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(end = TraktTheme.spacing.mainContentEndSpace),
+                )
+            }
 
             Row(
                 horizontalArrangement = spacedBy(16.dp),

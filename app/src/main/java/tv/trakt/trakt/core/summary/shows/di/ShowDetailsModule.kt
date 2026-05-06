@@ -173,6 +173,7 @@ internal val showDetailsModule = module {
             getDetailsUseCase = get(),
             getExternalRatingsUseCase = get(),
             getShowCreatorUseCase = get(),
+            getShowTranslationsUseCase = get(),
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
             loadListsUseCase = get(),

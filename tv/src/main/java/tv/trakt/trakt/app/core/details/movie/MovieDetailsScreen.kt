@@ -236,6 +236,7 @@ private fun MovieDetailsScreenContent(
                 MovieHeader(
                     movie = state.movieDetails,
                     movieCollection = state.movieCollection,
+                    movieTranslation = state.movieTranslation,
                     externalRating = state.movieRatings,
                     focusRequester = focusRequesters.getValue("poster"),
                     onFocused = { focusedSection = it },
@@ -339,7 +340,8 @@ private fun MainContent(
             }
 
             Text(
-                text = state.movieDetails?.overview ?: stringResource(R.string.text_overview_placeholder),
+                text = state.movieTranslation?.overview ?: state.movieDetails?.overview
+                    ?: stringResource(R.string.text_overview_placeholder),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.paragraphLarge,
                 maxLines = 5,

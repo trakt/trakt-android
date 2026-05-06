@@ -246,6 +246,7 @@ private fun EpisodeDetailsScreenContent(
                     show = state.showDetails,
                     episode = state.episodeDetails,
                     episodePlays = state.episodeHistory.episodesPlays,
+                    episodeTranslation = state.episodeTranslation,
                     externalRating = state.episodeRatings,
                     focusRequester = focusRequesters.getValue("poster"),
                     onFocused = { focusedSection = it },
@@ -360,7 +361,8 @@ private fun MainContent(
             }
 
             Text(
-                text = state.episodeDetails?.overview ?: stringResource(R.string.text_overview_placeholder),
+                text = state.episodeTranslation?.overview ?: state.episodeDetails?.overview
+                    ?: stringResource(R.string.text_overview_placeholder),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.paragraphLarge,
                 maxLines = 5,
