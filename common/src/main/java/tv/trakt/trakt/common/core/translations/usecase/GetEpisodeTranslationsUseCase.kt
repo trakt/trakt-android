@@ -1,6 +1,7 @@
 package tv.trakt.trakt.common.core.translations.usecase
 
 import androidx.appcompat.app.AppCompatDelegate
+import tv.trakt.trakt.common.core.translations.data.local.TranslationsLocalDataSource
 import tv.trakt.trakt.common.core.translations.data.remote.TranslationsRemoteDataSource
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.core.translations.model.fromDto
@@ -14,6 +15,7 @@ private const val DEFAULT_LANGUAGE = "en"
 
 class GetEpisodeTranslationsUseCase(
     private val remoteSource: TranslationsRemoteDataSource,
+    private val localSource: TranslationsLocalDataSource,
 ) {
     suspend fun getEpisodeTranslations(
         showId: TraktId,
@@ -26,14 +28,20 @@ class GetEpisodeTranslationsUseCase(
             return null
         }
 
+        val effectiveLocale = locale.takeIf { it.language.isNotEmpty() } ?: currentLocale
+        localSource.getEpisodeTranslation(showId, seasonEpisode, effectiveLocale)?.let { return it }
+
         try {
-            // Try to fetch translations for the current locale first.
             val remoteResult = remoteSource.getEpisodeTranslations(
                 showId = showId,
                 seasonEpisode = seasonEpisode,
-                locale = locale.takeIf { it.language.isNotEmpty() } ?: currentLocale,
+                locale = effectiveLocale,
             )
-            return remoteResult?.let { MediaTranslation.fromDto(it) }
+            return remoteResult?.let { dto ->
+                MediaTranslation.fromDto(dto).also {
+                    localSource.upsertEpisodeTranslation(showId, seasonEpisode, effectiveLocale, it)
+                }
+            }
         } catch (error: Exception) {
             if (error.getHttpErrorCode() == HTTP_ERROR_NOT_FOUND) {
                 return null
