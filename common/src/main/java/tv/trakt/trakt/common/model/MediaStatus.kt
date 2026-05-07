@@ -28,6 +28,6 @@ enum class MediaStatus(
     ;
 
     companion object {
-fun fromSlug(value: String?): MediaStatus? = entries.firstOrNull { it.slug.equals(value, ignoreCase = true) }
+        fun fromSlug(value: String?): MediaStatus? = entries.firstOrNull { it.slug.equals(value, ignoreCase = true) }
     }
 }
