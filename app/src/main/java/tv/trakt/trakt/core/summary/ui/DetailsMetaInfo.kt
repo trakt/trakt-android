@@ -22,6 +22,7 @@ import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaGenre
+import tv.trakt.trakt.common.model.MediaStatus
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
@@ -114,7 +115,7 @@ private fun DetailsMetaInfo(
     released: LocalDate? = null,
     runtime: Duration? = null,
     totalRuntime: Duration? = null,
-    status: String? = null,
+    status: MediaStatus? = null,
     country: String? = null,
     network: String? = null,
     titleOriginal: String? = null,
@@ -237,7 +238,9 @@ private fun DetailsMetaInfo(
             ) {
                 DetailsMeta(
                     title = stringResource(R.string.header_status),
-                    values = listOf(status ?: "N/A"),
+                    values = listOf(
+                        status?.let { stringResource(it.displayStringRes) } ?: "N/A",
+                    ),
                     modifier = Modifier.weight(1F),
                 )
                 DetailsMeta(

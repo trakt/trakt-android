@@ -25,7 +25,7 @@ data class Show(
     val titleOriginal: String?,
     val overview: String?,
     val network: String?,
-    val status: String?,
+    val status: MediaStatus?,
     @Serializable(ZonedDateTimeSerializer::class)
     val released: ZonedDateTime?,
     val year: Int?,
@@ -53,7 +53,7 @@ fun Companion.fromDto(dto: ShowDto): Show {
         titleOriginal = dto.originalTitle,
         overview = dto.overview,
         year = dto.year,
-        status = dto.status,
+        status = MediaStatus.fromSlug(dto.status),
         released = dto.firstAired?.toZonedDateTime(),
         genres = (dto.genres ?: listOf())
             .mapNotNull { MediaGenre.fromSlug(it) }
@@ -109,7 +109,7 @@ fun Companion.fromDto(dto: RecommendedShowDto): Show {
         ),
         runtime = dto.runtime?.minutes,
         totalRuntime = dto.totalRuntime?.minutes,
-        status = dto.status,
+        status = MediaStatus.fromSlug(dto.status),
         trailer = dto.trailer,
         airedEpisodes = dto.airedEpisodes ?: 0,
         country = dto.country,
@@ -145,7 +145,7 @@ fun Companion.fromDto(dto: ShowLikesDto): Show {
         ),
         runtime = dto.runtime?.minutes,
         totalRuntime = dto.totalRuntime?.minutes,
-        status = dto.status,
+        status = MediaStatus.fromSlug(dto.status),
         trailer = dto.trailer,
         airedEpisodes = dto.airedEpisodes ?: 0,
         country = dto.country,

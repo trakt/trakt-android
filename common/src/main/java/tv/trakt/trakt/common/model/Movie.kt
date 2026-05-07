@@ -34,7 +34,7 @@ data class Movie(
     val colors: MediaColors?,
     val rating: Rating,
     val certification: String?,
-    val status: String?,
+    val status: MediaStatus?,
     val runtime: Duration?,
     val credits: Int?,
     val country: String?,
@@ -46,7 +46,7 @@ data class Movie(
     // Considered released if status is "released" or released date is today or before
     val isReleased: Boolean
         get() {
-            if (status.equals("released", ignoreCase = true)) {
+            if (status == MediaStatus.Released) {
                 return true
             }
             return released?.isTodayOrBefore() == true
@@ -81,7 +81,7 @@ fun Companion.fromDto(dto: MovieDto): Movie {
             rating = dto.rating ?: 0F,
             votes = dto.votes ?: 0,
         ),
-        status = dto.status,
+        status = MediaStatus.fromSlug(dto.status),
         runtime = dto.runtime?.minutes,
         trailer = dto.trailer,
         credits = when {
@@ -119,7 +119,7 @@ fun Companion.fromDto(dto: RecommendedMovieDto): Movie {
             rating = dto.rating ?: 0F,
             votes = dto.votes ?: 0,
         ),
-        status = dto.status,
+        status = MediaStatus.fromSlug(dto.status),
         trailer = dto.trailer,
         runtime = dto.runtime?.minutes,
         languages = (dto.languages ?: emptyList()).toImmutableList(),
@@ -157,7 +157,7 @@ fun Companion.fromDto(dto: MovieLikesDto): Movie {
             rating = dto.rating ?: 0F,
             votes = dto.votes ?: 0,
         ),
-        status = dto.status,
+        status = MediaStatus.fromSlug(dto.status),
         runtime = dto.runtime?.minutes,
         trailer = dto.trailer,
         languages = (dto.languages ?: emptyList()).toImmutableList(),

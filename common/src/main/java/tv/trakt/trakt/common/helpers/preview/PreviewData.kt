@@ -11,6 +11,7 @@ import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.ImdbId
 import tv.trakt.trakt.common.model.MediaGenre
+import tv.trakt.trakt.common.model.MediaStatus
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Rating
@@ -55,7 +56,7 @@ object PreviewData {
         runtime = 90.minutes,
         totalRuntime = 1800.minutes,
         trailer = "https://youtube.com/watch?v=abcdefg",
-        status = "Canceled",
+        status = MediaStatus.Canceled,
         airedEpisodes = 28,
         country = "pl",
         network = "Amazon",
@@ -97,7 +98,7 @@ object PreviewData {
         certification = "PG-18",
         runtime = 90.minutes,
         trailer = "https://youtube.com/watch?v=abcdefg",
-        status = "Canceled",
+        status = MediaStatus.Canceled,
         credits = 2,
         country = "us",
         languages = listOf("en", "de").toImmutableList(),
