@@ -794,7 +794,7 @@ private fun SettingsMisc(
         )
 
         SettingsTextField(
-            text = stringResource(R.string.text_play_subscriptions),
+            text = stringResource(R.string.text_settings_play_subscriptions),
             enabled = !state.logoutLoading.isLoading,
             onClick = onSubscriptionsClick,
         )
