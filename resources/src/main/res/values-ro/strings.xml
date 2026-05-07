@@ -109,6 +109,7 @@
   <string name="header_settings_clear_cover">Șterge Imaginea de Copertă</string>
   <string name="header_settings_notifications">Notificări</string>
   <string name="header_settings_tracking">Urmărire</string>
+  <string name="header_settings_translations">Traduceri</string>
   <string name="header_status">Stare</string>
   <string name="header_studio">Studio</string>
   <string name="header_total_runtime">Durată totală</string>
@@ -310,6 +311,8 @@
   <string name="text_settings_notification_time_30_min">Cu 30 de minute înainte</string>
   <string name="text_settings_notification_time_60_min">Cu 1 oră înainte</string>
   <string name="text_settings_notification_time_now">La lansare</string>
+  <string name="text_settings_play_subscriptions">Abonamente Google Play</string>
+  <string name="text_settings_translations">Ajută la traducerea aplicației și corectează greșelile pentru limba ta.</string>
   <string name="text_shows_watched">%d seriale</string>
   <string name="text_sort_comments_popular">Populare</string>
   <string name="text_sort_comments_recent">Recente</string>

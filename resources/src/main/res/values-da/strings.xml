@@ -109,6 +109,7 @@
   <string name="header_settings_clear_cover">Ryd Coverbillede</string>
   <string name="header_settings_notifications">Notifikationer</string>
   <string name="header_settings_tracking">Sporing</string>
+  <string name="header_settings_translations">Oversættelser</string>
   <string name="header_status">Status</string>
   <string name="header_studio">Studie</string>
   <string name="header_total_runtime">Samlet spilletid</string>
@@ -310,6 +311,8 @@
   <string name="text_settings_notification_time_30_min">30 minutter før</string>
   <string name="text_settings_notification_time_60_min">1 time før</string>
   <string name="text_settings_notification_time_now">Ved udgivelse</string>
+  <string name="text_settings_play_subscriptions">Google Play-abonnementer</string>
+  <string name="text_settings_translations">Hjælp med at oversætte appen og ret fejl for dit sprog.</string>
   <string name="text_shows_watched">%d serier</string>
   <string name="text_sort_comments_popular">Populære</string>
   <string name="text_sort_comments_recent">Seneste</string>

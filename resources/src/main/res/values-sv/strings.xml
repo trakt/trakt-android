@@ -109,6 +109,7 @@
   <string name="header_settings_clear_cover">Rensa omslagsbild</string>
   <string name="header_settings_notifications">Aviseringar</string>
   <string name="header_settings_tracking">Spårning</string>
+  <string name="header_settings_translations">Översättningar</string>
   <string name="header_status">Status</string>
   <string name="header_studio">Studio</string>
   <string name="header_total_runtime">Total speltid</string>
@@ -310,6 +311,8 @@
   <string name="text_settings_notification_time_30_min">30 minuter innan</string>
   <string name="text_settings_notification_time_60_min">1 timme innan</string>
   <string name="text_settings_notification_time_now">Vid släpp</string>
+  <string name="text_settings_play_subscriptions">Google Play-prenumerationer</string>
+  <string name="text_settings_translations">Hjälp till att översätta appen och korrigera fel för ditt språk.</string>
   <string name="text_shows_watched">%d serier</string>
   <string name="text_sort_comments_popular">Populärt</string>
   <string name="text_sort_comments_recent">Senaste</string>

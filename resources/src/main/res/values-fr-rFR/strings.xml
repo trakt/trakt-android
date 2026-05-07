@@ -109,6 +109,7 @@
   <string name="header_settings_clear_cover">Effacer l\'image de couverture</string>
   <string name="header_settings_notifications">Notifications</string>
   <string name="header_settings_tracking">Suivi</string>
+  <string name="header_settings_translations">Traductions</string>
   <string name="header_status">Statut</string>
   <string name="header_studio">Studio</string>
   <string name="header_total_runtime">Durée totale</string>
@@ -310,6 +311,8 @@
   <string name="text_settings_notification_time_30_min">30 minutes avant</string>
   <string name="text_settings_notification_time_60_min">1 heure avant</string>
   <string name="text_settings_notification_time_now">À la sortie</string>
+  <string name="text_settings_play_subscriptions">Abonnements Google Play</string>
+  <string name="text_settings_translations">Aidez à traduire l\'application et à corriger les erreurs pour votre langue.</string>
   <string name="text_shows_watched">%d séries</string>
   <string name="text_sort_comments_popular">Populaires</string>
   <string name="text_sort_comments_recent">Récents</string>

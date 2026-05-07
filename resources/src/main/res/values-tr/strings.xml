@@ -109,6 +109,7 @@
   <string name="header_settings_clear_cover">Kapak Resmini Temizle</string>
   <string name="header_settings_notifications">Bildirimler</string>
   <string name="header_settings_tracking">Takip</string>
+  <string name="header_settings_translations">Çeviriler</string>
   <string name="header_status">Durum</string>
   <string name="header_studio">Stüdyo</string>
   <string name="header_total_runtime">Toplam Süre</string>
@@ -310,6 +311,8 @@
   <string name="text_settings_notification_time_30_min">30 dakika önce</string>
   <string name="text_settings_notification_time_60_min">1 saat önce</string>
   <string name="text_settings_notification_time_now">Yayınlandığında</string>
+  <string name="text_settings_play_subscriptions">Google Play Abonelikleri</string>
+  <string name="text_settings_translations">Uygulamayı çevirmeye ve dilinizdeki hataları düzeltmeye yardımcı olun.</string>
   <string name="text_shows_watched">%d dizi</string>
   <string name="text_sort_comments_popular">Popüler</string>
   <string name="text_sort_comments_recent">En Yeni</string>

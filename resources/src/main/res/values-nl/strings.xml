@@ -109,6 +109,7 @@
   <string name="header_settings_clear_cover">Omslagafbeelding wissen</string>
   <string name="header_settings_notifications">Meldingen</string>
   <string name="header_settings_tracking">Bijhouden</string>
+  <string name="header_settings_translations">Vertalingen</string>
   <string name="header_status">Status</string>
   <string name="header_studio">Studio</string>
   <string name="header_total_runtime">Totale speelduur</string>
@@ -310,6 +311,8 @@
   <string name="text_settings_notification_time_30_min">30 minuten eerder</string>
   <string name="text_settings_notification_time_60_min">1 uur eerder</string>
   <string name="text_settings_notification_time_now">Bij release</string>
+  <string name="text_settings_play_subscriptions">Google Play-abonnementen</string>
+  <string name="text_settings_translations">Help mee de app te vertalen en fouten voor je taal te herstellen.</string>
   <string name="text_shows_watched">%d series</string>
   <string name="text_sort_comments_popular">Populair</string>
   <string name="text_sort_comments_recent">Recent</string>

@@ -109,6 +109,7 @@
   <string name="header_settings_clear_cover">清除封面图片</string>
   <string name="header_settings_notifications">通知</string>
   <string name="header_settings_tracking">追踪</string>
+  <string name="header_settings_translations">翻译</string>
   <string name="header_status">状态</string>
   <string name="header_studio">制片公司</string>
   <string name="header_total_runtime">总时长</string>
@@ -310,6 +311,8 @@
   <string name="text_settings_notification_time_30_min">提前 30 分钟</string>
   <string name="text_settings_notification_time_60_min">提前 1 小时</string>
   <string name="text_settings_notification_time_now">发布时</string>
+  <string name="text_settings_play_subscriptions">Google Play 订阅</string>
+  <string name="text_settings_translations">帮助翻译应用并修正您语言的错误。</string>
   <string name="text_shows_watched">%d 个剧集</string>
   <string name="text_sort_comments_popular">流行</string>
   <string name="text_sort_comments_recent">最新</string>

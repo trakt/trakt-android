@@ -109,6 +109,7 @@
   <string name="header_settings_clear_cover">Очистить обложку</string>
   <string name="header_settings_notifications">Уведомления</string>
   <string name="header_settings_tracking">Отслеживание</string>
+  <string name="header_settings_translations">Переводы</string>
   <string name="header_status">Статус</string>
   <string name="header_studio">Студия</string>
   <string name="header_total_runtime">Общая продолжительность</string>
@@ -310,6 +311,8 @@
   <string name="text_settings_notification_time_30_min">За 30 минут до</string>
   <string name="text_settings_notification_time_60_min">За 1 час до</string>
   <string name="text_settings_notification_time_now">В момент выхода</string>
+  <string name="text_settings_play_subscriptions">Подписки Google Play</string>
+  <string name="text_settings_translations">Помогите перевести приложение и исправить ошибки для вашего языка.</string>
   <string name="text_shows_watched">%d сериалов</string>
   <string name="text_sort_comments_popular">Популярное</string>
   <string name="text_sort_comments_recent">Недавние</string>

@@ -109,6 +109,7 @@
   <string name="header_settings_clear_cover">Fjern forsidebilde</string>
   <string name="header_settings_notifications">Varsler</string>
   <string name="header_settings_tracking">Sporing</string>
+  <string name="header_settings_translations">Oversettelser</string>
   <string name="header_status">Status</string>
   <string name="header_studio">Studio</string>
   <string name="header_total_runtime">Total spilletid</string>
@@ -310,6 +311,8 @@
   <string name="text_settings_notification_time_30_min">30 minutter før</string>
   <string name="text_settings_notification_time_60_min">1 time før</string>
   <string name="text_settings_notification_time_now">Ved utgivelse</string>
+  <string name="text_settings_play_subscriptions">Google Play-abonnementer</string>
+  <string name="text_settings_translations">Hjelp til med å oversette appen og rette feil i språket ditt.</string>
   <string name="text_shows_watched">%d serier</string>
   <string name="text_sort_comments_popular">Populært</string>
   <string name="text_sort_comments_recent">Nyeste</string>
