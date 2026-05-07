@@ -549,6 +549,8 @@ private fun SettingsAppearance(
 ) {
     val context = LocalContext.current
     val config = LocalResources.current.configuration
+    val uriHandler = LocalUriHandler.current
+
     val scope = rememberCoroutineScope()
 
     val appLocale = remember(config) {
@@ -637,6 +639,16 @@ private fun SettingsAppearance(
                 }
             }
         }
+
+        SettingsTextField(
+            text = stringResource(R.string.header_settings_translations),
+            description = stringResource(R.string.text_settings_translations),
+            icon = R.drawable.ic_translate,
+            iconSize = 17.dp,
+            onClick = {
+                uriHandler.openUri(Config.WEB_TRANSLATE_URL)
+            },
+        )
     }
 }
 
@@ -782,7 +794,7 @@ private fun SettingsMisc(
         )
 
         SettingsTextField(
-            text = "Google Play Subscriptions",
+            text = stringResource(R.string.text_play_subscriptions),
             enabled = !state.logoutLoading.isLoading,
             onClick = onSubscriptionsClick,
         )

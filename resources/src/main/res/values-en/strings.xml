@@ -426,4 +426,11 @@
   <string name="warning_prompt_stop_checkin">Are you sure you want to stop watching \"%s\"?</string>
   <string name="warning_prompt_suppress_ratings_toast">Do you want to stop being asked to rate what you recently watched?</string>
   <string name="warning_prompt_younify_unlink">Are you sure you want to unlink %s?</string>
+
+  <!-- TODO -->
+  <string name="header_settings_translations">Translations</string>
+  <string name="text_settings_translations">Help translate the app and fix mistakes in your language.</string>
+  <string name="text_play_subscriptions">Google Play Subscriptions</string>
+
+
 </resources>
