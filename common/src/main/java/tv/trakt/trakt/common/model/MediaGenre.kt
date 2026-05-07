@@ -53,6 +53,6 @@ enum class MediaGenre(
     ;
 
     companion object {
-        fun fromSlug(value: String): MediaGenre? = entries.firstOrNull { it.slug == value }
+fun fromSlug(value: String?): MediaGenre? = entries.firstOrNull { it.slug.equals(value, ignoreCase = true) }
     }
 }
