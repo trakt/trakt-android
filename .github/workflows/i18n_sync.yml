@@ -40,7 +40,7 @@ jobs:
           upload_translations: false
           download_translations: false
           # Bundle ID refers to our 'Android' export bundle in CrowdIn
-          download_bundle: 6
+          download_bundle: 2
           skip_untranslated_strings: true
           export_only_approved: true
           localization_branch_name: i18n_crowdin_updates
