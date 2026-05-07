@@ -14,6 +14,12 @@
 <br>
 <img width="2277" height="1200" alt="images" src="https://github.com/user-attachments/assets/565977dc-ee6e-4d9d-8d71-5a28f1217dba" />
 
+## Supported Form Factors
+
+- Mobile
+- Android TV
+- Tablets
+
 ## Getting Started
 
 1. Download and install the latest stable Android Studio:
@@ -39,8 +45,9 @@ KEYSTORE_KEY_PASSWORD = PUT_YOUR_VALUE_HERE
 
 You are all set!
 
-## Supported Form Factors
+## Localisation 🌐
 
-- Mobile
-- Android TV
-- Tablets
+Want to help translating Trakt into your native language?
+Have you spotted a mistake or an improvement?
+
+Join the CrowdIn project: [Translate Trakt](https://crwd.in/trakt-poc/3857d5ea667dd425fbd0cb2e4e80dc192749600)
