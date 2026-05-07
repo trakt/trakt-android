@@ -11,6 +11,10 @@ internal class DebugAnalytics(
     override val trivia: Analytics.Trivia,
     override val playback: Analytics.Playback,
 ) : Analytics {
+    override fun setUserId(userId: String) {
+        Timber.d("setUserId")
+    }
+
     override fun logScreenView(screenName: String) {
         Timber.d("logScreenView: screenName=$screenName")
     }

@@ -12,6 +12,11 @@ interface Analytics {
     val playback: Playback
 
     /**
+     * Sets the user ID for analytics.
+     */
+    fun setUserId(userId: String)
+
+    /**
      * Logs a screen view event.
      */
     fun logScreenView(screenName: String)

@@ -40,6 +40,10 @@ internal class FirebaseAnalytics(
         require(eventName(LOGOUT).length <= EVENT_NAME_LIMIT) { EVENT_NAME_ERROR }
     }
 
+    override fun setUserId(userId: String) {
+        firebase.setUserId(userId)
+    }
+
     override fun logScreenView(screenName: String) {
         firebase.logEvent(
             eventName(SCREEN_VIEW),

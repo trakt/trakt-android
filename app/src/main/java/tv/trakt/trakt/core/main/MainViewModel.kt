@@ -30,6 +30,7 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -161,7 +162,9 @@ internal class MainViewModel(
         viewModelScope.launch {
             try {
                 delay(500)
-                getUserUseCase.loadUserProfile()
+                getUserUseCase.loadUserProfile()?.let {
+                    analytics.setUserId(it.ids.trakt.value.toString())
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.e(error)
@@ -284,17 +287,19 @@ internal class MainViewModel(
                 loadingUserState.update { Loading }
 
                 dismissOnboarding()
-                authorizeUseCase.authorizeByCode(code)
-                getUserUseCase.loadUserProfile()
 
-                analytics.logUserLogin()
+                authorizeUseCase.authorizeByCode(code)
+                getUserUseCase.loadUserProfile()?.let {
+                    analytics.setUserId(it.ids.trakt.value.toString())
+                    analytics.logUserLogin()
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     logoutUser()
                     Timber.recordError(error)
                 }
             } finally {
-                loadingUserState.update { LoadingState.Done }
+                loadingUserState.update { Done }
             }
         }
     }
@@ -309,7 +314,7 @@ internal class MainViewModel(
                     Timber.recordError(error)
                 }
             } finally {
-                loadingUserState.update { LoadingState.Done }
+                loadingUserState.update { Done }
             }
         }
     }
