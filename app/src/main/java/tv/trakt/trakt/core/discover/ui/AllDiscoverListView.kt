@@ -19,6 +19,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
@@ -157,13 +158,9 @@ private fun ShowListItem(
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
 ) {
-    val genresText = remember(item.show.genres) {
-        item.show.genres.take(2).joinToString(", ") { genre ->
-            genre.replaceFirstChar {
-                it.uppercaseChar()
-            }
-        }
-    }
+    val genresText = item.show.genres.take(2)
+        .map { stringResource(it.displayStringRes) }
+        .joinToString(", ")
 
     PanelMediaCard(
         title = item.show.title,
@@ -196,13 +193,9 @@ private fun MovieListItem(
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
 ) {
-    val genresText = remember(item.movie.genres) {
-        item.movie.genres.take(2).joinToString(", ") { genre ->
-            genre.replaceFirstChar {
-                it.uppercaseChar()
-            }
-        }
-    }
+    val genresText = item.movie.genres.take(2)
+        .map { stringResource(it.displayStringRes) }
+        .joinToString(", ")
 
     PanelMediaCard(
         title = item.movie.title,

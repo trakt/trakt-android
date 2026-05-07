@@ -173,10 +173,9 @@ internal fun MovieHeader(
                         modifier = Modifier.size(14.dp),
                     )
                     Text(
-                        text = movie.genres.take(5)
-                            .joinToString(" / ") { genre ->
-                                genre.replaceFirstChar { it.uppercaseChar() }
-                            },
+                        text = movie.genres.take(2)
+                            .map { stringResource(it.displayStringRes) }
+                            .joinToString(" / "),
                         color = TraktTheme.colors.textSecondary,
                         style = TraktTheme.typography.heading6,
                         maxLines = 1,

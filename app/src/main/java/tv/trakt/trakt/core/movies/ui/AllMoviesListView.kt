@@ -19,6 +19,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
@@ -115,13 +116,9 @@ private fun LazyListScope.listItems(
         items = items,
         key = { it.ids.trakt.value },
     ) { item ->
-        val genresText = remember(item.genres) {
-            item.genres.take(2).joinToString(", ") { genre ->
-                genre.replaceFirstChar {
-                    it.uppercaseChar()
-                }
-            }
-        }
+        val genresText = item.genres.take(2)
+            .map { stringResource(it.displayStringRes) }
+            .joinToString(", ")
 
         PanelMediaCard(
             title = item.title,

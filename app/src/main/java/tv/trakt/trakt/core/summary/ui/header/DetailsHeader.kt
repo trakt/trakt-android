@@ -17,7 +17,6 @@ import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -41,6 +40,7 @@ import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.ImdbId
+import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.summary.ui.DetailsRatings
 import tv.trakt.trakt.core.summary.ui.header.poster.DetailsHeaderPoster
@@ -57,7 +57,7 @@ internal fun DetailsHeader(
     titleFooter: @Composable (() -> Unit)? = null,
     title: String,
     titleTranslation: String? = null,
-    genres: ImmutableList<String>,
+    genres: ImmutableList<MediaGenre>,
     date: @Composable (() -> Unit)?,
     imageUrl: String?,
     imagePlaceholderUrl: String?,
@@ -140,13 +140,9 @@ internal fun DetailsHeader(
                     end = TraktTheme.spacing.mainPageHorizontalSpace,
                 ),
         ) {
-            val genresText = remember(genres) {
-                genres.take(2).joinToString(" / ") { genre ->
-                    genre.replaceFirstChar {
-                        it.uppercaseChar()
-                    }
-                }
-            }
+            val genresText = genres.take(2)
+                .map { stringResource(it.displayStringRes) }
+                .joinToString(", ")
 
             if (titleHeader != null) {
                 titleHeader()
@@ -424,7 +420,7 @@ private fun Preview() {
                     )
                 }
             },
-            genres = listOf("Action", "Adventure", "Sci-Fi").toImmutableList(),
+            genres = listOf(MediaGenre.Action, MediaGenre.Comedy).toImmutableList(),
             date = null,
             imageUrl = null,
             imagePlaceholderUrl = null,
@@ -492,7 +488,7 @@ private fun Preview2() {
                     ),
                 )
             },
-            genres = listOf("Action", "Adventure", "Sci-Fi").toImmutableList(),
+            genres = listOf(MediaGenre.Action, MediaGenre.Comedy).toImmutableList(),
             date = null,
             runtime = 45.minutes,
             imageUrl = null,

@@ -1,8 +1,8 @@
 package tv.trakt.trakt.core.lists.features.details.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.TraktId
@@ -22,13 +22,9 @@ internal fun ListDetailsMovieView(
     onClick: (TraktId) -> Unit = { },
     onLongClick: () -> Unit,
 ) {
-    val genresText = remember(item.movie.genres) {
-        item.movie.genres.take(2).joinToString(", ") { genre ->
-            genre.replaceFirstChar {
-                it.uppercaseChar()
-            }
-        }
-    }
+    val genresText = item.movie.genres.take(2)
+        .map { stringResource(it.displayStringRes) }
+        .joinToString(", ")
 
     PanelMediaCard(
         modifier = modifier,

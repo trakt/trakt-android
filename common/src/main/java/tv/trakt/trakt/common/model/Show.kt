@@ -30,7 +30,7 @@ data class Show(
     val released: ZonedDateTime?,
     val year: Int?,
     @Serializable(ImmutableListSerializer::class)
-    val genres: ImmutableList<String>,
+    val genres: ImmutableList<MediaGenre>,
     val images: Images?,
     val colors: MediaColors?,
     val rating: Rating,
@@ -55,7 +55,9 @@ fun Companion.fromDto(dto: ShowDto): Show {
         year = dto.year,
         status = dto.status,
         released = dto.firstAired?.toZonedDateTime(),
-        genres = (dto.genres ?: listOf()).toImmutableList(),
+        genres = (dto.genres ?: listOf())
+            .mapNotNull { MediaGenre.fromSlug(it) }
+            .toImmutableList(),
         images = dto.images?.let { Images.fromDto(it) },
         colors = dto.colors?.poster?.let {
             MediaColors(
@@ -88,7 +90,9 @@ fun Companion.fromDto(dto: RecommendedShowDto): Show {
         overview = dto.overview,
         year = dto.year,
         released = dto.firstAired?.toZonedDateTime(),
-        genres = (dto.genres ?: listOf()).toImmutableList(),
+        genres = (dto.genres ?: listOf())
+            .mapNotNull { MediaGenre.fromSlug(it) }
+            .toImmutableList(),
         images = dto.images?.let { Images.fromDto(it) },
         colors = dto.colors?.poster?.let {
             MediaColors(
@@ -122,7 +126,9 @@ fun Companion.fromDto(dto: ShowLikesDto): Show {
         overview = dto.overview,
         year = dto.year,
         released = dto.firstAired?.toZonedDateTime(),
-        genres = (dto.genres ?: listOf()).toImmutableList(),
+        genres = (dto.genres ?: listOf())
+            .mapNotNull { MediaGenre.fromSlug(it) }
+            .toImmutableList(),
         images = dto.images?.let { Images.fromDto(it) },
         colors = dto.colors?.poster?.let {
             MediaColors(

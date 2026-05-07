@@ -1,8 +1,8 @@
 package tv.trakt.trakt.core.home.sections.watchlist.features.all.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.shows.ui.ShowMetaFooter
@@ -18,13 +18,9 @@ internal fun AllHomeWatchlistEpisodeView(
     onCheckClick: () -> Unit,
     onCheckLongClick: () -> Unit,
 ) {
-    val genresText = remember(item.show.genres) {
-        item.show.genres.take(2).joinToString(", ") { genre ->
-            genre.replaceFirstChar {
-                it.uppercaseChar()
-            }
-        }
-    }
+    val genresText = item.show.genres.take(2)
+        .map { stringResource(it.displayStringRes) }
+        .joinToString(", ")
 
     PanelMediaCard(
         modifier = modifier,

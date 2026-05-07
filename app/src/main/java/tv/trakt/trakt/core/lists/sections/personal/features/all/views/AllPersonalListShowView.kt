@@ -1,8 +1,8 @@
 package tv.trakt.trakt.core.lists.sections.personal.features.all.views
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.model.CustomListItem
@@ -20,13 +20,9 @@ internal fun AllPersonalListShowView(
     onClick: (TraktId) -> Unit,
     onLongClick: () -> Unit,
 ) {
-    val genresText = remember(item.show.genres) {
-        item.show.genres.take(2).joinToString(", ") { genre ->
-            genre.replaceFirstChar {
-                it.uppercaseChar()
-            }
-        }
-    }
+    val genresText = item.show.genres.take(2)
+        .map { stringResource(it.displayStringRes) }
+        .joinToString(", ")
 
     PanelMediaCard(
         modifier = modifier,
