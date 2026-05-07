@@ -109,6 +109,7 @@
   <string name="header_settings_clear_cover">Изчисти корицата</string>
   <string name="header_settings_notifications">Известия</string>
   <string name="header_settings_tracking">Проследяване</string>
+  <string name="header_settings_translations">Преводи</string>
   <string name="header_status">Статус</string>
   <string name="header_studio">Студио</string>
   <string name="header_total_runtime">Общо времетраене</string>
@@ -310,6 +311,8 @@
   <string name="text_settings_notification_time_30_min">30 минути преди</string>
   <string name="text_settings_notification_time_60_min">1 час преди</string>
   <string name="text_settings_notification_time_now">При излизане</string>
+  <string name="text_settings_play_subscriptions">Абонаменти в Google Play</string>
+  <string name="text_settings_translations">Помогнете да преведете приложението и да коригирате грешки за вашия език.</string>
   <string name="text_shows_watched">%d сериала</string>
   <string name="text_sort_comments_popular">Популярни</string>
   <string name="text_sort_comments_recent">Скорошни</string>

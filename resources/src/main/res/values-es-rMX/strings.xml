@@ -109,6 +109,7 @@
   <string name="header_settings_clear_cover">Borrar imagen de portada</string>
   <string name="header_settings_notifications">Notificaciones</string>
   <string name="header_settings_tracking">Seguimiento</string>
+  <string name="header_settings_translations">Traducciones</string>
   <string name="header_status">Estado</string>
   <string name="header_studio">Estudio</string>
   <string name="header_total_runtime">Duración total</string>
@@ -310,6 +311,8 @@
   <string name="text_settings_notification_time_30_min">30 minutos antes</string>
   <string name="text_settings_notification_time_60_min">1 hora antes</string>
   <string name="text_settings_notification_time_now">En el lanzamiento</string>
+  <string name="text_settings_play_subscriptions">Suscripciones de Google Play</string>
+  <string name="text_settings_translations">Ayuda a traducir la app y a corregir errores en tu idioma.</string>
   <string name="text_shows_watched">%d series</string>
   <string name="text_sort_comments_popular">Popular</string>
   <string name="text_sort_comments_recent">Reciente</string>
