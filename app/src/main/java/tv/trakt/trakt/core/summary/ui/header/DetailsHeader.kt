@@ -17,7 +17,6 @@ import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -41,6 +40,10 @@ import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.ImdbId
+import tv.trakt.trakt.common.model.MediaGenre
+import tv.trakt.trakt.common.model.MediaStatus
+import tv.trakt.trakt.common.model.MediaStatus.Canceled
+import tv.trakt.trakt.common.model.MediaStatus.Ended
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.summary.ui.DetailsRatings
 import tv.trakt.trakt.core.summary.ui.header.poster.DetailsHeaderPoster
@@ -57,12 +60,12 @@ internal fun DetailsHeader(
     titleFooter: @Composable (() -> Unit)? = null,
     title: String,
     titleTranslation: String? = null,
-    genres: ImmutableList<String>,
+    genres: ImmutableList<MediaGenre>,
     date: @Composable (() -> Unit)?,
     imageUrl: String?,
     imagePlaceholderUrl: String?,
     imageHorizontal: Boolean,
-    status: String?,
+    status: MediaStatus?,
     certification: String?,
     runtime: Duration?,
     accentColor: Color?,
@@ -140,13 +143,9 @@ internal fun DetailsHeader(
                     end = TraktTheme.spacing.mainPageHorizontalSpace,
                 ),
         ) {
-            val genresText = remember(genres) {
-                genres.take(2).joinToString(" / ") { genre ->
-                    genre.replaceFirstChar {
-                        it.uppercaseChar()
-                    }
-                }
-            }
+            val genresText = genres.take(2)
+                .map { stringResource(it.displayStringRes) }
+                .joinToString(", ")
 
             if (titleHeader != null) {
                 titleHeader()
@@ -258,10 +257,10 @@ internal fun DetailsHeader(
                         .padding(top = 4.dp),
                 ) {
                     Text(
-                        text = it.uppercase(),
-                        color = when (it.lowercase()) {
-                            "canceled" -> Red500
-                            "ended" -> TraktTheme.colors.detailsStatus2
+                        text = stringResource(it.displayStringRes).uppercase(),
+                        color = when (it) {
+                            Canceled -> Red500
+                            Ended -> TraktTheme.colors.detailsStatus2
                             else -> TraktTheme.colors.detailsStatus1
                         },
                         style = TraktTheme.typography.meta,
@@ -424,12 +423,12 @@ private fun Preview() {
                     )
                 }
             },
-            genres = listOf("Action", "Adventure", "Sci-Fi").toImmutableList(),
+            genres = listOf(MediaGenre.Action, MediaGenre.Comedy).toImmutableList(),
             date = null,
             imageUrl = null,
             imagePlaceholderUrl = null,
             imageHorizontal = false,
-            status = "Released",
+            status = MediaStatus.Released,
             certification = "PG-13",
             accentColor = null,
             traktRatings = 72,
@@ -492,13 +491,13 @@ private fun Preview2() {
                     ),
                 )
             },
-            genres = listOf("Action", "Adventure", "Sci-Fi").toImmutableList(),
+            genres = listOf(MediaGenre.Action, MediaGenre.Comedy).toImmutableList(),
             date = null,
             runtime = 45.minutes,
             imageUrl = null,
             imagePlaceholderUrl = null,
             imageHorizontal = true,
-            status = "Released",
+            status = MediaStatus.Released,
             certification = "PG-13",
             accentColor = null,
             traktRatings = 72,

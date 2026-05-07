@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -30,13 +29,9 @@ internal fun AllProgressShowView(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
 ) {
-    val genresText = remember(item.show.genres) {
-        item.show.genres.take(2).joinToString(", ") { genre ->
-            genre.replaceFirstChar {
-                it.uppercaseChar()
-            }
-        }
-    }
+    val genresText = item.show.genres.take(2)
+        .map { stringResource(it.displayStringRes) }
+        .joinToString(", ")
 
     PanelMediaCard(
         modifier = modifier,

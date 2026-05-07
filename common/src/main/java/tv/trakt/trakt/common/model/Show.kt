@@ -25,12 +25,12 @@ data class Show(
     val titleOriginal: String?,
     val overview: String?,
     val network: String?,
-    val status: String?,
+    val status: MediaStatus?,
     @Serializable(ZonedDateTimeSerializer::class)
     val released: ZonedDateTime?,
     val year: Int?,
     @Serializable(ImmutableListSerializer::class)
-    val genres: ImmutableList<String>,
+    val genres: ImmutableList<MediaGenre>,
     val images: Images?,
     val colors: MediaColors?,
     val rating: Rating,
@@ -53,9 +53,11 @@ fun Companion.fromDto(dto: ShowDto): Show {
         titleOriginal = dto.originalTitle,
         overview = dto.overview,
         year = dto.year,
-        status = dto.status,
+        status = MediaStatus.fromSlug(dto.status),
         released = dto.firstAired?.toZonedDateTime(),
-        genres = (dto.genres ?: listOf()).toImmutableList(),
+        genres = (dto.genres ?: listOf())
+            .mapNotNull { MediaGenre.fromSlug(it) }
+            .toImmutableList(),
         images = dto.images?.let { Images.fromDto(it) },
         colors = dto.colors?.poster?.let {
             MediaColors(
@@ -88,7 +90,9 @@ fun Companion.fromDto(dto: RecommendedShowDto): Show {
         overview = dto.overview,
         year = dto.year,
         released = dto.firstAired?.toZonedDateTime(),
-        genres = (dto.genres ?: listOf()).toImmutableList(),
+        genres = (dto.genres ?: listOf())
+            .mapNotNull { MediaGenre.fromSlug(it) }
+            .toImmutableList(),
         images = dto.images?.let { Images.fromDto(it) },
         colors = dto.colors?.poster?.let {
             MediaColors(
@@ -105,7 +109,7 @@ fun Companion.fromDto(dto: RecommendedShowDto): Show {
         ),
         runtime = dto.runtime?.minutes,
         totalRuntime = dto.totalRuntime?.minutes,
-        status = dto.status,
+        status = MediaStatus.fromSlug(dto.status),
         trailer = dto.trailer,
         airedEpisodes = dto.airedEpisodes ?: 0,
         country = dto.country,
@@ -122,7 +126,9 @@ fun Companion.fromDto(dto: ShowLikesDto): Show {
         overview = dto.overview,
         year = dto.year,
         released = dto.firstAired?.toZonedDateTime(),
-        genres = (dto.genres ?: listOf()).toImmutableList(),
+        genres = (dto.genres ?: listOf())
+            .mapNotNull { MediaGenre.fromSlug(it) }
+            .toImmutableList(),
         images = dto.images?.let { Images.fromDto(it) },
         colors = dto.colors?.poster?.let {
             MediaColors(
@@ -139,7 +145,7 @@ fun Companion.fromDto(dto: ShowLikesDto): Show {
         ),
         runtime = dto.runtime?.minutes,
         totalRuntime = dto.totalRuntime?.minutes,
-        status = dto.status,
+        status = MediaStatus.fromSlug(dto.status),
         trailer = dto.trailer,
         airedEpisodes = dto.airedEpisodes ?: 0,
         country = dto.country,

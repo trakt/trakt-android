@@ -99,13 +99,9 @@ private fun ShowDetailsContextViewContent(
         show.released?.isNowOrBefore() ?: false
     }
 
-    val genresText = remember(show.genres) {
-        show.genres.take(2).joinToString(" / ") { genre ->
-            genre.replaceFirstChar {
-                it.uppercaseChar()
-            }
-        }
-    }
+    val genresText = show.genres.take(2)
+        .map { stringResource(it.displayStringRes) }
+        .joinToString(", ")
 
     Column(
         verticalArrangement = spacedBy(0.dp),

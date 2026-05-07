@@ -95,13 +95,9 @@ private fun MovieDetailsContextViewContent(
     val context = LocalContext.current
 
     val isReleased = remember { movie.isReleased }
-    val genresText = remember(movie.genres) {
-        movie.genres.take(2).joinToString(" / ") { genre ->
-            genre.replaceFirstChar {
-                it.uppercaseChar()
-            }
-        }
-    }
+    val genresText = movie.genres.take(2)
+        .map { stringResource(it.displayStringRes) }
+        .joinToString(", ")
 
     Column(
         verticalArrangement = spacedBy(0.dp),

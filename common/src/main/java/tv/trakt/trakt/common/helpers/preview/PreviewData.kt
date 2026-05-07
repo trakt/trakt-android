@@ -10,6 +10,8 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.ImdbId
+import tv.trakt.trakt.common.model.MediaGenre
+import tv.trakt.trakt.common.model.MediaStatus
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Rating
@@ -36,7 +38,7 @@ object PreviewData {
             "and main themes. It is intended to give viewers an idea of what to expect without revealing too much.",
         year = 2024,
         released = ZonedDateTime.now().plusDays(5),
-        genres = listOf("Comedy", "Drama").toImmutableList(),
+        genres = listOf<MediaGenre>().toImmutableList(),
         images = Images(
             fanart = listOf(
                 "walter-r2.trakt.tv/images/shows/000/142/611/fanarts/medium/5248d0dfec.jpg.webp",
@@ -54,7 +56,7 @@ object PreviewData {
         runtime = 90.minutes,
         totalRuntime = 1800.minutes,
         trailer = "https://youtube.com/watch?v=abcdefg",
-        status = "Canceled",
+        status = MediaStatus.Canceled,
         airedEpisodes = 28,
         country = "pl",
         network = "Amazon",
@@ -79,7 +81,7 @@ object PreviewData {
             "and main themes. It is intended to give viewers an idea of what to expect without revealing too much.",
         year = 2024,
         released = nowLocalDay(),
-        genres = listOf("Comedy", "Drama").toImmutableList(),
+        genres = listOf(MediaGenre.Comedy).toImmutableList(),
         images = Images(
             poster = listOf(
                 "walter-r2.trakt.tv/images/movies/000/142/611/fanarts/medium/5248d0dfec.jpg.webp",
@@ -96,7 +98,7 @@ object PreviewData {
         certification = "PG-18",
         runtime = 90.minutes,
         trailer = "https://youtube.com/watch?v=abcdefg",
-        status = "Canceled",
+        status = MediaStatus.Canceled,
         credits = 2,
         country = "us",
         languages = listOf("en", "de").toImmutableList(),

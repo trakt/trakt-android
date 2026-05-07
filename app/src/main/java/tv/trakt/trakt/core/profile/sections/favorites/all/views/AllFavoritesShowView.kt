@@ -1,8 +1,8 @@
 package tv.trakt.trakt.core.profile.sections.favorites.all.views
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.core.favorites.model.FavoriteItem
 import tv.trakt.trakt.core.shows.ui.ShowMetaFooter
@@ -16,13 +16,9 @@ internal fun AllFavoritesShowView(
     onClick: () -> Unit,
     onLongClick: () -> Unit,
 ) {
-    val genresText = remember(item.show.genres) {
-        item.show.genres.take(2).joinToString(", ") { genre ->
-            genre.replaceFirstChar {
-                it.uppercaseChar()
-            }
-        }
-    }
+    val genresText = item.show.genres.take(2)
+        .map { stringResource(it.displayStringRes) }
+        .joinToString(", ")
 
     PanelMediaCard(
         modifier = modifier,
