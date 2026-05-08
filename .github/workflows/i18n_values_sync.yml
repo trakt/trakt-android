@@ -1,0 +1,42 @@
+name: Sync strings to default
+
+on:
+  pull_request:
+    types: [opened]
+    paths:
+      - 'resources/src/main/res/values-en/strings.xml'
+
+permissions:
+  contents: read
+
+jobs:
+  sync-en-strings:
+    name: Sync EN strings to values/
+    runs-on: ubuntu-latest
+    if: github.head_ref == 'i18n_crowdin_updates'
+
+    steps:
+      - name: Summoning the GitHub App Token
+        uses: actions/create-github-app-token@v2
+        id: generate-token
+        with:
+          app-id: ${{ secrets.GH_APP_ID }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          permission-contents: write
+
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ steps.generate-token.outputs.token }}
+
+      - name: Copy values-en/strings.xml to values/
+        run: cp resources/src/main/res/values-en/strings.xml resources/src/main/res/values/strings.xml
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add resources/src/main/res/values/strings.xml
+          git diff --staged --quiet || git commit -m "chore(i18n): sync values-en/strings.xml to values/"
+          git push
