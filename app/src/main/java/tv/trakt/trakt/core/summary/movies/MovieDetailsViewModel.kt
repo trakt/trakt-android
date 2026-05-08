@@ -36,6 +36,9 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
+import tv.trakt.trakt.common.helpers.errors.GlobalErrorListener
+import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
+import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.ExternalRating
@@ -106,6 +109,7 @@ internal class MovieDetailsViewModel(
     private val checkInUpdates: CheckInUpdates,
     private val sessionManager: SessionManager,
     private val checkInManager: CheckInManager,
+    private val globalErrors: GlobalErrorListener,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<MovieDetailsDestination>()
@@ -612,13 +616,21 @@ internal class MovieDetailsViewModel(
                     mediaType = "movie",
                     source = "movie_details",
                 )
+
                 infoState.update {
                     DynamicStringResource(R.string.text_info_watchlist_added)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.recordError(error)
+                    when (error.getHttpCode()) {
+                        HTTP_ERROR_TRAKT_VIP_LIMIT -> {
+                            globalErrors.tryEmit(error)
+                        }
+                        else -> {
+                            errorState.update { error }
+                            Timber.recordError(error)
+                        }
+                    }
                 }
             } finally {
                 loadingLists.update { Done }

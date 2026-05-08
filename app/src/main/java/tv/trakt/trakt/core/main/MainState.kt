@@ -17,6 +17,7 @@ internal data class MainState(
     val welcome: WelcomeState = WelcomeState(),
     val whatsNew: WhatsNew? = null,
     val review: Boolean? = null,
+    val error: Exception? = null,
 ) {
     @Immutable
     data class WelcomeState(

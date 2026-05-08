@@ -32,6 +32,7 @@ import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.errors.GlobalErrorListener
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
@@ -72,6 +73,7 @@ internal class MainViewModel(
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
     private val dismissWelcomeUseCase: DismissWelcomeUseCase,
     private val inAppReviewUseCase: RequestAppReviewUseCase,
+    private val globalErrors: GlobalErrorListener,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = MainState()
@@ -84,6 +86,7 @@ internal class MainViewModel(
     private val welcomeState = MutableStateFlow(initialState.welcome)
     private val whatsNewState = MutableStateFlow(initialState.whatsNew)
     private val reviewState = MutableStateFlow(initialState.review)
+    private val errorState = MutableStateFlow(initialState.error)
 
     private var lastLoadTime: Instant? = null
 
@@ -97,6 +100,7 @@ internal class MainViewModel(
         observeCheckIn()
         observeRatePrompt()
         observeInAppReview()
+        observeErrors()
     }
 
     private fun observeUser() {
@@ -154,6 +158,14 @@ internal class MainViewModel(
                 reviewState.update {
                     inAppReviewUseCase.shouldRequest()
                 }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeErrors() {
+        globalErrors.observe()
+            .onEach { error ->
+                errorState.update { error }
             }
             .launchIn(viewModelScope)
     }
@@ -365,6 +377,10 @@ internal class MainViewModel(
         }
     }
 
+    fun clearError() {
+        errorState.update { null }
+    }
+
     fun clearLoadingUser() {
         loadingUserState.update { LoadingState.Idle }
     }
@@ -394,6 +410,7 @@ internal class MainViewModel(
         welcomeState,
         whatsNewState,
         reviewState,
+        errorState,
     ) { state ->
         MainState(
             user = state[0] as User?,
@@ -404,6 +421,7 @@ internal class MainViewModel(
             welcome = state[5] as MainState.WelcomeState,
             whatsNew = state[6] as WhatsNew?,
             review = state[7] as Boolean?,
+            error = state[8] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

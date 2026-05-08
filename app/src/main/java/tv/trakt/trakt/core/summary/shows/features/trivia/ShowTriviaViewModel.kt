@@ -21,7 +21,7 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
-import tv.trakt.trakt.common.helpers.extensions.getHttpErrorCode
+import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
@@ -83,7 +83,7 @@ internal class ShowTriviaViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     // Ignore 404 errors, as they simply mean no trivia is available.
-                    if (error.getHttpErrorCode() != 404) {
+                    if (error.getHttpCode() != 404) {
                         errorState.update { error }
                         Timber.recordError(error)
                     }
