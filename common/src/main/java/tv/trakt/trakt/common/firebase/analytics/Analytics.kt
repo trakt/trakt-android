@@ -14,7 +14,7 @@ interface Analytics {
     /**
      * Sets the user ID for analytics.
      */
-    fun setUserId(userId: String)
+    fun setUserId(userId: String?)
 
     /**
      * Logs a screen view event.

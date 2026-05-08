@@ -359,6 +359,7 @@ internal val profileModule = module {
             localProfileWatching = get(),
             localProfileCompleted = get(),
             appReviewUseCase = get(),
+            analytics = get(),
         )
     }
 

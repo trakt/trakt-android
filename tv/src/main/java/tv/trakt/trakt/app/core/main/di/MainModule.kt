@@ -38,6 +38,7 @@ internal val mainModule = module {
             sessionManager = get(),
             mainDataStore = get(named(MAIN_PREFERENCES)),
             loadUserProfileUseCase = get(),
+            analytics = get(),
         )
     }
 }

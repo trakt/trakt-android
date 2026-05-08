@@ -7,6 +7,7 @@ import tv.trakt.trakt.app.core.search.data.local.RecentSearchLocalDataSource
 import tv.trakt.trakt.app.core.sync.data.local.episodes.EpisodesSyncLocalDataSource
 import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 
 internal class LogoutProfileUseCase(
     private val apiClients: Array<ApiClient>,
@@ -15,9 +16,11 @@ internal class LogoutProfileUseCase(
     private val moviesSyncLocalDataSource: ShowsSyncLocalDataSource,
     private val episodesSyncLocalDataSource: EpisodesSyncLocalDataSource,
     private val recentSearchLocalDataSource: RecentSearchLocalDataSource,
+    private val analytics: Analytics,
 ) {
     suspend fun logoutUser() {
         sessionManager.clear()
+        analytics.setUserId(null)
 
         apiClients
             .forEach { api ->

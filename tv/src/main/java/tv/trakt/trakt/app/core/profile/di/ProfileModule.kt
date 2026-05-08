@@ -121,6 +121,7 @@ internal val profileModule = module {
         LogoutProfileUseCase(
             apiClients = get(named("apiClients")),
             sessionManager = get(),
+            analytics = get(),
             showsSyncLocalDataSource = get(),
             moviesSyncLocalDataSource = get(),
             episodesSyncLocalDataSource = get(),

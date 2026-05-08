@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.app.core.auth.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 
 private val KEY_SHOW_SPLASH = booleanPreferencesKey("key_show_splash")
@@ -25,6 +26,7 @@ internal class MainViewModel(
     private val sessionManager: SessionManager,
     private val mainDataStore: DataStore<Preferences>,
     private val loadUserProfileUseCase: LoadUserProfileUseCase,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = MainState()
 
@@ -65,7 +67,8 @@ internal class MainViewModel(
     private fun loadProfile() {
         viewModelScope.launch {
             try {
-                loadUserProfileUseCase.loadUserProfile()
+                val user = loadUserProfileUseCase.loadUserProfile()
+                user?.let { analytics.setUserId(user.ids.trakt.value.toString()) }
             } catch (error: Exception) {
                 error.rethrowCancellation()
                 Timber.e(error, "Failed to load user profile")

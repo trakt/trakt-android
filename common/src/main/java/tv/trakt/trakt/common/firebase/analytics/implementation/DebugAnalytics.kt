@@ -11,7 +11,7 @@ internal class DebugAnalytics(
     override val trivia: Analytics.Trivia,
     override val playback: Analytics.Playback,
 ) : Analytics {
-    override fun setUserId(userId: String) {
+    override fun setUserId(userId: String?) {
         Timber.d("setUserId")
     }
 

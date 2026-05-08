@@ -52,6 +52,7 @@ internal val authModule = module {
             getDeviceTokenUseCase = get(),
             loadUserProfileUseCase = get(),
             sessionManager = get(),
+            analytics = get(),
         )
     }
 }

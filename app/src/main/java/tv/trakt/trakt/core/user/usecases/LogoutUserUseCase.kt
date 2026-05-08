@@ -7,6 +7,7 @@ import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.data.local.liked.UserLikedListsLocalDataSource
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.core.billing.data.remote.BillingRemoteDataSource
 import tv.trakt.trakt.core.checkin.data.CheckInManager
@@ -73,6 +74,7 @@ internal class LogoutUserUseCase(
     private val localProfileWatching: ProgressWatchingLocalDataSource,
     private val localProfileDropped: ProgressDroppedLocalDataSource,
     private val appReviewUseCase: RequestAppReviewUseCase,
+    private val analytics: Analytics,
 ) {
     suspend fun logoutUser() {
         sessionManager.clear()
@@ -118,6 +120,7 @@ internal class LogoutUserUseCase(
         localRecommendedMovies.clear()
 
         appReviewUseCase.clear()
+        analytics.setUserId(null)
         ScheduleNotificationsWorker.clear(appContext)
         WorkManager.getInstance(appContext).cancelAllWork()
     }

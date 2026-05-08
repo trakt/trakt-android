@@ -27,6 +27,7 @@ import tv.trakt.trakt.app.core.auth.usecases.GetDeviceTokenUseCase
 import tv.trakt.trakt.app.core.auth.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.BACKGROUND_IMAGE_URL
+import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import kotlin.time.Duration
@@ -36,6 +37,7 @@ internal class AuthViewModel(
     private val getDeviceTokenUseCase: GetDeviceTokenUseCase,
     private val loadUserProfileUseCase: LoadUserProfileUseCase,
     private val sessionManager: SessionManager,
+    private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = AuthState()
 
@@ -94,7 +96,8 @@ internal class AuthViewModel(
             try {
                 when (val state = getDeviceTokenUseCase.getDeviceToken(deviceCode)) {
                     is Success -> {
-                        loadUserProfileUseCase.loadUserProfile()
+                        val user = loadUserProfileUseCase.loadUserProfile()
+                        user?.let { analytics.setUserId(user.ids.trakt.value.toString()) }
                         deviceCodeState.update { null }
                         loadingState.update { SUCCESS }
                         Timber.i("Device token received successfully")
