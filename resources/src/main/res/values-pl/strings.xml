@@ -46,7 +46,7 @@
   <string name="button_text_remove_from_favorites">Usuń z ulubionych</string>
   <string name="button_text_remove_from_history">Usuń z historii</string>
   <string name="button_text_remove_from_list">Usuń z listy</string>
-  <string name="button_text_reset_calendar_period">Dziś</string>
+  <string name="button_text_reset_calendar_period">Dzisiaj</string>
   <string name="button_text_retry">Spróbuj ponownie</string>
   <string name="button_text_set_cover_image">Ustaw jako obraz tła</string>
   <string name="button_text_share">Udostępnij</string>
@@ -59,7 +59,7 @@
   <string name="button_text_stop_asking">Przestań pytać</string>
   <string name="button_text_stream">Stream</string>
   <string name="button_text_toggle_search_lists">Listy</string>
-  <string name="button_text_toggle_search_media">Multimedia</string>
+  <string name="button_text_toggle_search_media">Media</string>
   <string name="button_text_toggle_search_people">Osoby</string>
   <string name="button_text_track">Śledź</string>
   <string name="button_text_trivia_no_spoilers">Bez spoilerów</string>
@@ -121,8 +121,8 @@
   <string name="input_placeholder_search_movies">Szukaj filmów…</string>
   <string name="input_placeholder_search_people">Szukaj osób…</string>
   <string name="input_placeholder_search_shows">Szukaj seriali…</string>
-  <string name="input_prompt_about">Opowiedz nam coś o sobie.</string>
-  <string name="input_prompt_display_name">Jaką nazwę wyświetlaną chcesz mieć?</string>
+  <string name="input_prompt_about">Powiedz nam coś o sobie.</string>
+  <string name="input_prompt_display_name">Jaka powinna być twoja nazwa widoczna w aplikacji?</string>
   <string name="input_prompt_location">Gdzie się znajdujesz?</string>
   <string name="link_text_discover_movies">Odkryj filmy</string>
   <string name="link_text_discover_shows">Odkryj seriale</string>
@@ -136,8 +136,8 @@
   <string name="list_placeholder_comments">Brak recenzji.</string>
   <string name="list_placeholder_empty">Lista jest pusta.</string>
   <string name="list_placeholder_media_history">Nie oglądałeś jeszcze \"%s\"</string>
-  <string name="list_placeholder_personal_list_empty_movies">Na tej liście jeszcze nie ma filmów.</string>
-  <string name="list_placeholder_personal_list_empty_shows">Na tej liście jeszcze nie ma seriali.</string>
+  <string name="list_placeholder_personal_list_empty_movies">Lista nie zawiera żadnych filmów.</string>
+  <string name="list_placeholder_personal_list_empty_shows">Lista nie zawiera żadnych seriali.</string>
   <string name="list_title_actors">Aktorzy</string>
   <string name="list_title_birthdays_this_month">Urodziny w Tym Miesiącu</string>
   <string name="list_title_collaborative_lists">Współprace</string>
@@ -180,11 +180,11 @@
   <string name="list_title_watchlist_movies">Obserwowane filmy</string>
   <string name="list_title_watchlist_shows">Obserwowane seriale</string>
   <string name="page_description_create_list">Wprowadź nazwę i opis listy.</string>
-  <string name="page_description_edit_list">Edytuj szczegóły swojej listy.</string>
+  <string name="page_description_edit_list">Edytuj szczegóły listy.</string>
   <string name="page_title_calendar">Kalendarz</string>
   <string name="page_title_create_list">Utwórz Listę</string>
   <string name="page_title_discover">Odkrywaj</string>
-  <string name="page_title_edit_list">Edytuj Listę</string>
+  <string name="page_title_edit_list">Edycja listy</string>
   <string name="page_title_home">Strona główna</string>
   <string name="page_title_lists">Listy</string>
   <string name="page_title_movies">Filmy</string>
@@ -207,8 +207,8 @@
   <string name="tag_text_watch_count">Liczba obejrzeń</string>
   <string name="tag_text_watched">Obejrzane</string>
   <string name="text_about">O mnie</string>
-  <string name="text_all_settings">Wszystkie Ustawienia</string>
-  <string name="text_automatic_tracking">Automatyczne Śledzenie</string>
+  <string name="text_all_settings">Wszystkie ustawienia</string>
+  <string name="text_automatic_tracking">Automatyczne śledzenie</string>
   <string name="text_billing_already_vip">Jesteś teraz Trakt VIP!\nDziękujemy za wsparcie i życzymy miłego korzystania.</string>
   <string name="text_billing_disclaimer">Płatność rozpoczyna się po zakończeniu okresu próbnego. Subskrypcja odnawia się automatycznie i jest rozliczana co %s do momentu anulowania. Anuluj w dowolnym momencie za pośrednictwem Centrum Subskrypcji Google Play.</string>
   <string name="text_billing_month_for_free">Wypróbuj 1 miesiąc za darmo, a następnie:</string>
@@ -230,7 +230,7 @@
   <string name="text_cta_watchlist_released">Odkryj. Zapisz. Obejrzyj. Zacznij tworzyć swoją osobistą kolejkę filmów.</string>
   <string name="text_cta_watchlist_unreleased">Światła, kamera… i nic? Dodaj tytuły do listy obserwowanych i rozpocznij oglądanie.</string>
   <string name="text_directed_by_short">Reżyseria</string>
-  <string name="text_display_name">Nazwa wyświetlana</string>
+  <string name="text_display_name">Wyświetlana nazwa</string>
   <string name="text_episodes_watched">%d odcinków</string>
   <string name="text_info_cover_removed">Obraz w tle został usunięty.</string>
   <string name="text_info_cover_set">Obraz w tle został ustawiony.</string>
@@ -318,7 +318,7 @@
   <string name="text_sort_comments_recent">Najnowsze</string>
   <string name="text_sort_recently_added">Ostatnio dodane</string>
   <string name="text_spoiler">Spoiler</string>
-  <string name="text_streaming_sync">Synchronizacja Streamingu</string>
+  <string name="text_streaming_sync">Synchronizacja streamingu</string>
   <string name="text_this_month">W tym miesiącu</string>
   <string name="text_unavailable">Niedostępne</string>
   <string name="text_vip_built_to_last">Stworzony, by trwać</string>
@@ -404,7 +404,7 @@
   <string name="vip_feature_title_mir">Podsumowanie Miesiąca</string>
   <string name="vip_feature_title_more_to_come">Więcej w Drodze</string>
   <string name="vip_feature_title_profile_customisation">Więcej Dostosowania: Nagłówek Profilu</string>
-  <string name="vip_feature_title_streaming_sync">Synchronizacja Streamingu</string>
+  <string name="vip_feature_title_streaming_sync">Synchronizacja streamingu</string>
   <string name="vip_feature_title_unlock">Odblokuj pełny potencjał z</string>
   <string name="vip_feature_title_vip_status">Status VIP</string>
   <string name="vip_feature_title_yir">Podsumowanie Roku</string>
