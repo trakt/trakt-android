@@ -1,10 +1,10 @@
 package tv.trakt.trakt.common.helpers.errors
 
-import io.ktor.utils.io.CancellationException
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filter
+import kotlin.coroutines.cancellation.CancellationException
 
 class DefaultGlobalErrorsManager : GlobalErrorsManager {
     private val flow = MutableSharedFlow<Exception?>(

@@ -2,7 +2,6 @@ package tv.trakt.trakt.app.core.details.movie.usecases.streamings
 
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
-import io.ktor.utils.io.CancellationException
 import timber.log.Timber
 import tv.trakt.trakt.app.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.app.core.plex.data.PlexRemoteDataSource
@@ -16,6 +15,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
+import kotlin.coroutines.cancellation.CancellationException
 
 internal class GetPlexUseCase(
     private val remoteSyncSource: MoviesSyncRemoteDataSource,
