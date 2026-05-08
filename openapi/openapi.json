@@ -196,7 +196,7 @@
                       },
                       "grant_type": {
                         "type": "string",
-                        "description": "Defines how an access token is obtained."
+                        "description": "Defines how a token is obtained."
                       }
                     },
                     "required": [
