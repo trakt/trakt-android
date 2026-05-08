@@ -5,9 +5,9 @@ import kotlinx.coroutines.flow.Flow
 /**
  * A listener for global errors that can be emitted and observed across the application.
  */
-interface GlobalErrorListener {
+interface GlobalErrorsManager {
     /**
-     * Emits a global error to be observed by listeners. The error can be null to indicate that there are no errors.
+     * Emits a global error to be observed by listeners.
      */
     fun tryEmit(error: Exception)
 

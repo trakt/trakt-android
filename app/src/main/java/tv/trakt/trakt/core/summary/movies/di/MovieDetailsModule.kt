@@ -183,7 +183,7 @@ internal val movieDetailsModule = module {
             watchlistUpdates = get(),
             sessionManager = get(),
             checkInManager = get(),
-            globalErrors = get(),
+            errorsManager = get(),
             analytics = get(),
         )
     }

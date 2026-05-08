@@ -404,7 +404,7 @@ internal val listsModule = module {
             sessionManager = get(),
             checkInManager = get(),
             ratePromptManager = get(),
-            globalErrors = get(),
+            errorsManager = get(),
             analytics = get(),
         )
     }

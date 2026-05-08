@@ -34,9 +34,10 @@ import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
-import tv.trakt.trakt.common.helpers.errors.GlobalErrorListener
+import tv.trakt.trakt.common.helpers.errors.GlobalErrorsManager
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
@@ -109,7 +110,7 @@ internal class MovieDetailsViewModel(
     private val checkInUpdates: CheckInUpdates,
     private val sessionManager: SessionManager,
     private val checkInManager: CheckInManager,
-    private val globalErrors: GlobalErrorListener,
+    private val errorsManager: GlobalErrorsManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<MovieDetailsDestination>()
@@ -624,7 +625,7 @@ internal class MovieDetailsViewModel(
                 error.rethrowCancellation {
                     when (error.getHttpCode()) {
                         HTTP_ERROR_TRAKT_VIP_LIMIT -> {
-                            globalErrors.tryEmit(error)
+                            errorsManager.tryEmit(error)
                         }
                         else -> {
                             errorState.update { error }
@@ -714,13 +715,21 @@ internal class MovieDetailsViewModel(
                 infoState.update {
                     DynamicStringResource(R.string.text_info_list_added)
                 }
+
+                loadingLists.update { Done }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.recordError(error)
+                    when (error.getHttpCode()) {
+                        HTTP_ERROR_TRAKT_VIP_LIMIT -> {
+                            errorsManager.tryEmit(error)
+                        }
+                        else -> {
+                            errorState.update { error }
+                            Timber.recordError(error)
+                        }
+                    }
+                    loadingLists.update { Idle }
                 }
-            } finally {
-                loadingLists.update { Done }
             }
         }
     }

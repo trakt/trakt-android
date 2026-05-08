@@ -194,6 +194,7 @@ internal val showDetailsModule = module {
             favoritesUpdates = get(),
             watchlistUpdates = get(),
             sessionManager = get(),
+            errorsManager = get(),
             analytics = get(),
         )
     }

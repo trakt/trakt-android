@@ -182,7 +182,7 @@ internal val moviesModule = module {
             checkInManager = get(),
             ratePromptManager = get(),
             analytics = get(),
-            globalErrors = get(),
+            errorsManager = get(),
             watchlistUpdates = get(),
         )
     }

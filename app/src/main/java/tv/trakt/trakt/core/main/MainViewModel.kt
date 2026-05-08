@@ -32,7 +32,7 @@ import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
-import tv.trakt.trakt.common.helpers.errors.GlobalErrorListener
+import tv.trakt.trakt.common.helpers.errors.GlobalErrorsManager
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
@@ -73,7 +73,7 @@ internal class MainViewModel(
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
     private val dismissWelcomeUseCase: DismissWelcomeUseCase,
     private val inAppReviewUseCase: RequestAppReviewUseCase,
-    private val globalErrors: GlobalErrorListener,
+    private val errorsManager: GlobalErrorsManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = MainState()
@@ -163,7 +163,7 @@ internal class MainViewModel(
     }
 
     private fun observeErrors() {
-        globalErrors.observe()
+        errorsManager.observe()
             .onEach { error ->
                 errorState.update { error }
             }
@@ -378,7 +378,7 @@ internal class MainViewModel(
     }
 
     fun clearError() {
-        errorState.update { null }
+        errorsManager.clear()
     }
 
     fun clearLoadingUser() {

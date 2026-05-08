@@ -20,7 +20,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
-import tv.trakt.trakt.common.helpers.errors.GlobalErrorListener
+import tv.trakt.trakt.common.helpers.errors.GlobalErrorsManager
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
@@ -59,7 +59,7 @@ internal class ListMovieContextViewModel(
     private val sessionManager: SessionManager,
     private val checkInManager: CheckInManager,
     private val ratePromptManager: RatePromptManager,
-    private val globalErrors: GlobalErrorListener,
+    private val errorsManager: GlobalErrorsManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ListMovieContextState()
@@ -161,7 +161,7 @@ internal class ListMovieContextViewModel(
                 error.rethrowCancellation {
                     when (error.getHttpCode()) {
                         HTTP_ERROR_TRAKT_VIP_LIMIT -> {
-                            globalErrors.tryEmit(error)
+                            errorsManager.tryEmit(error)
                         }
                         else -> {
                             errorState.update { error }

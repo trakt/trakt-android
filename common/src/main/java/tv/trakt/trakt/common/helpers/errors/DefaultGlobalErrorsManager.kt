@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filter
 
-class DefaultGlobalErrorListener : GlobalErrorListener {
+class DefaultGlobalErrorsManager : GlobalErrorsManager {
     private val flow = MutableSharedFlow<Exception?>(
         extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
