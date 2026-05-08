@@ -23,6 +23,11 @@ jobs:
           repositories: trakt-android
           permission-pull-requests: write
 
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+
       - name: Create PR
         run: |
           gh pr create \
