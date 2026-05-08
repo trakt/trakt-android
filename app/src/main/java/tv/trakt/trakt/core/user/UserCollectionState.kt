@@ -40,6 +40,7 @@ internal data class UserCollectionState(
         return when (type) {
             SHOW -> {
                 check(airedEpisodes != null) { "Aired episodes count must be provided for shows" }
+                if (airedEpisodes == 0) return false
                 watchedShowsPlays.getOrDefault(traktId, 0) >= airedEpisodes
             }
             MOVIE -> {
