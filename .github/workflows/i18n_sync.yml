@@ -1,4 +1,4 @@
-name: The CrowdIn Sync
+name: CrowdIn Sync
 
 # Schedule the workflow to run every day at 14:00 UTC.
 # The workflow can also be triggered manually if needed too.
