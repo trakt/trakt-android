@@ -30,7 +30,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.StaticStringResource
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_ONLY
-import tv.trakt.trakt.common.helpers.extensions.getHttpErrorCode
+import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.settings.features.younify.model.LinkStatus
@@ -116,7 +116,7 @@ internal class YounifyViewModel(
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    if (error.getHttpErrorCode() == HTTP_ERROR_TRAKT_VIP_ONLY) {
+                    if (error.getHttpCode() == HTTP_ERROR_TRAKT_VIP_ONLY) {
                         errorState.update {
                             DynamicStringResource(R.string.error_text_vip_only_feature)
                         }

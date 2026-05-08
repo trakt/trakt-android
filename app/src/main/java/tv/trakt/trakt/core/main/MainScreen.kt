@@ -71,12 +71,15 @@ import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.app.BuildConfig
 import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
 import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
+import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.MediaType.EPISODE
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.WhatsNew
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.auth.ConfigAuth
+import tv.trakt.trakt.core.billing.navigation.navigateToBilling
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveEpisode
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveMovie
 import tv.trakt.trakt.core.discover.navigation.navigateToDiscover
@@ -225,6 +228,15 @@ internal fun MainScreen(
         if (state.ratePrompt is AskSuppress) {
             stopRatePromptSheet = true
             viewModel.clearRatePrompt()
+        }
+    }
+
+    LaunchedEffect(state.error) {
+        state.error?.let {
+            if (it.getHttpCode() == HTTP_ERROR_TRAKT_VIP_LIMIT) {
+                navController.navigateToBilling()
+            }
+            viewModel.clearError()
         }
     }
 

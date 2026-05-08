@@ -6,7 +6,7 @@ import tv.trakt.trakt.common.core.translations.data.remote.TranslationsRemoteDat
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.core.translations.model.fromDto
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_NOT_FOUND
-import tv.trakt.trakt.common.helpers.extensions.getHttpErrorCode
+import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import java.util.Locale
@@ -43,7 +43,7 @@ class GetEpisodeTranslationsUseCase(
                 }
             }
         } catch (error: Exception) {
-            if (error.getHttpErrorCode() == HTTP_ERROR_NOT_FOUND) {
+            if (error.getHttpCode() == HTTP_ERROR_NOT_FOUND) {
                 return null
             } else {
                 throw error

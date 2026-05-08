@@ -11,8 +11,8 @@ import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
-import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_LISTS_LIMIT
-import tv.trakt.trakt.common.helpers.extensions.getHttpErrorCode
+import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
+import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.lists.sheets.create.usecases.CreateListUseCase
 import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
@@ -49,7 +49,7 @@ internal class CreateListViewModel(
                 loadingState.update { Done }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    if (error.getHttpErrorCode() == HTTP_ERROR_TRAKT_LISTS_LIMIT) {
+                    if (error.getHttpCode() == HTTP_ERROR_TRAKT_VIP_LIMIT) {
                         limitErrorState.update { error }
                     } else {
                         errorState.update { error }

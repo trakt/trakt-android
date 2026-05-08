@@ -15,6 +15,8 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import tv.trakt.trakt.common.helpers.errors.DefaultGlobalErrorsManager
+import tv.trakt.trakt.common.helpers.errors.GlobalErrorsManager
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.DefaultAppLifecycleProvider
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
@@ -70,6 +72,10 @@ internal val mainModule = module {
         DefaultAppLifecycleProvider()
     }
 
+    single<GlobalErrorsManager> {
+        DefaultGlobalErrorsManager()
+    }
+
     viewModel {
         MainViewModel(
             appContext = androidApplication(),
@@ -87,6 +93,7 @@ internal val mainModule = module {
             dismissWelcomeUseCase = get(),
             loadWhatsNewUseCase = get(),
             inAppReviewUseCase = get(),
+            errorsManager = get(),
             analytics = get(),
         )
     }

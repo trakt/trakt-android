@@ -11,7 +11,7 @@ import tv.trakt.trakt.app.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 import tv.trakt.trakt.common.BuildConfig
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.PLEX_PLAY_ENABLED
-import tv.trakt.trakt.common.helpers.extensions.getHttpErrorCode
+import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId
@@ -90,7 +90,7 @@ internal class GetPlexUseCase(
                 )
             }
         } catch (error: Exception) {
-            if (error.getHttpErrorCode() == 404) {
+            if (error.getHttpCode() == 404) {
                 Timber.w("Plex stream not found for slug: $episodeTraktId")
                 return null
             }
