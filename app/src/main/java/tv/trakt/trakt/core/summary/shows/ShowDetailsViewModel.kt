@@ -32,6 +32,7 @@ import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.errors.GlobalErrorsManager
@@ -671,16 +672,18 @@ internal class ShowDetailsViewModel(
 
                 loadingLists.update { Done }
             } catch (error: Exception) {
-                when (error.getHttpCode()) {
-                    HTTP_ERROR_TRAKT_VIP_LIMIT -> {
-                        errorsManager.tryEmit(error)
+                error.rethrowCancellation {
+                    when (error.getHttpCode()) {
+                        HTTP_ERROR_TRAKT_VIP_LIMIT -> {
+                            errorsManager.tryEmit(error)
+                        }
+                        else -> {
+                            errorState.update { error }
+                            Timber.recordError(error)
+                        }
                     }
-                    else -> {
-                        errorState.update { error }
-                        Timber.recordError(error)
-                    }
+                    loadingLists.update { Idle }
                 }
-                loadingLists.update { Done }
             }
         }
     }
