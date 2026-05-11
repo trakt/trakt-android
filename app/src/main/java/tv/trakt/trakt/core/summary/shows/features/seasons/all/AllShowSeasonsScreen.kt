@@ -484,7 +484,7 @@ private fun EpisodeListItem(
         ),
         contentImageUrl = episode.episode.images?.getScreenshotUrl(Size.THUMB)
             ?: show.images?.getFanartUrl(Size.THUMB),
-        containerImageUrl = episode.episode.images?.getScreenshotUrl(Size.THUMB),
+        containerImageUrl = null,
         more = episode.isWatched && !episode.isLoading,
         watched = episode.isWatched,
         footerContent = {
