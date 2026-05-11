@@ -37,6 +37,7 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -47,6 +48,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.children
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.FullscreenListener
@@ -66,24 +68,32 @@ internal fun YouTubePlayerScreen(
     viewModel: YouTubePlayerViewModel = koinViewModel(),
     onNavigateBack: () -> Unit,
 ) {
-    val localBottomBarVisibility = LocalBottomBarVisibility.current
-    val localActivity = LocalActivity.current
+    val activity = LocalActivity.current
+    val uriHandler = LocalUriHandler.current
+    val bottomBarVisibility = LocalBottomBarVisibility.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     YouTubePlayerScreen(
         state = state,
+        onError = {
+            // Fall back to opening the video outside.
+            state.videoUrl?.let {
+                uriHandler.openUri(it)
+                onNavigateBack()
+            }
+        },
         onBackClick = onNavigateBack,
         modifier = modifier,
     )
 
     DisposableEffect(Unit) {
-        localBottomBarVisibility.value = false
-        localActivity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        bottomBarVisibility.value = false
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
 
         onDispose {
-            localBottomBarVisibility.value = true
-            localActivity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            bottomBarVisibility.value = true
+            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
     }
 }
@@ -91,6 +101,7 @@ internal fun YouTubePlayerScreen(
 @Composable
 internal fun YouTubePlayerScreen(
     state: YouTubePlayerState,
+    onError: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -121,6 +132,7 @@ internal fun YouTubePlayerScreen(
         state.videoId?.let {
             TvVideoPlayer(
                 videoId = it,
+                onError = onError,
                 modifier = Modifier
                     .align(Alignment.Center)
                     .background(Color.Black)
@@ -160,6 +172,7 @@ private fun TitleBar(modifier: Modifier = Modifier) {
 private fun TvVideoPlayer(
     videoId: String,
     modifier: Modifier = Modifier,
+    onError: () -> Unit,
 ) {
     val activity = LocalActivity.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -201,6 +214,14 @@ private fun TvVideoPlayer(
                 val listener = object : AbstractYouTubePlayerListener() {
                     override fun onReady(youTubePlayer: YouTubePlayer) {
                         player = youTubePlayer
+                    }
+
+                    override fun onError(
+                        youTubePlayer: YouTubePlayer,
+                        error: PlayerConstants.PlayerError,
+                    ) {
+                        onError()
+                        super.onError(youTubePlayer, error)
                     }
                 }
 
@@ -270,6 +291,7 @@ private fun PreviewScreen() {
             state = YouTubePlayerState(
                 videoId = "dQw4w9WgXcQ",
             ),
+            onError = {},
             onBackClick = {},
         )
     }

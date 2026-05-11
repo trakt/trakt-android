@@ -15,20 +15,22 @@ import tv.trakt.trakt.helpers.player.navigation.YouTubePlayerDestination
 internal class YouTubePlayerViewModel(
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val initialState = YouTubePlayerState()
     private val destination = savedStateHandle.toRoute<YouTubePlayerDestination>()
 
-    private val videoState = MutableStateFlow(destination.videoUrl.substringAfterLast("v="))
+    private val videoUrlState = MutableStateFlow(destination.videoUrl)
+    private val videoIdState = MutableStateFlow(destination.videoUrl.substringAfterLast("v="))
 
     val state = combine(
-        videoState,
+        videoUrlState,
+        videoIdState,
     ) { state ->
         YouTubePlayerState(
-            videoId = state[0] as String?,
+            videoUrl = state[0] as String?,
+            videoId = state[1] as String?,
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = initialState,
+        initialValue = YouTubePlayerState(),
     )
 }
