@@ -39,6 +39,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.children
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -201,7 +204,14 @@ private fun TvVideoPlayer(
                         fullscreenView: View,
                         exitFullscreen: () -> Unit,
                     ) {
-                        val decor = activity?.window?.decorView as? ViewGroup ?: return
+                        val window = activity?.window ?: return
+                        val decor = window.decorView as? ViewGroup ?: return
+
+                        WindowCompat.getInsetsController(window, decor).apply {
+                            hide(WindowInsetsCompat.Type.systemBars())
+                            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                        }
+
                         decor.addView(
                             fullscreenView,
                             ViewGroup.LayoutParams(
@@ -213,7 +223,12 @@ private fun TvVideoPlayer(
                     }
 
                     override fun onExitFullscreen() {
-                        val decor = activity?.window?.decorView as? ViewGroup ?: return
+                        val window = activity?.window ?: return
+                        val decor = window.decorView as? ViewGroup ?: return
+
+                        WindowCompat.getInsetsController(window, decor)
+                            .show(WindowInsetsCompat.Type.systemBars())
+
                         fullScreenView?.let { decor.removeView(it) }
                         fullScreenView = null
                     }
