@@ -63,6 +63,8 @@ import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
 import tv.trakt.trakt.core.summary.shows.navigation.showDetailsScreen
 import tv.trakt.trakt.core.trivia.navigation.navigateToTrivia
 import tv.trakt.trakt.core.trivia.navigation.triviaScreen
+import tv.trakt.trakt.helpers.player.navigation.navigateToYouTubePlayer
+import tv.trakt.trakt.helpers.player.navigation.youTubePlayerScreen
 
 internal fun NavGraphBuilder.homeScreens(
     controller: NavHostController,
@@ -279,6 +281,7 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
                     navSource = "movie_summary",
                 )
             },
+            onNavigateToTrailer = { navigateToYouTubePlayer(it) },
             onNavigateVip = { navigateToBilling() },
             onNavigateBack = { popBackStack() },
         )
@@ -488,6 +491,14 @@ internal fun NavGraphBuilder.calendarScreens(controller: NavHostController) {
 internal fun NavGraphBuilder.billingScreens(controller: NavHostController) {
     with(controller) {
         billingScreen(
+            onNavigateBack = { popBackStack() },
+        )
+    }
+}
+
+internal fun NavGraphBuilder.youTubePlayerScreens(controller: NavHostController) {
+    with(controller) {
+        youTubePlayerScreen(
             onNavigateBack = { popBackStack() },
         )
     }

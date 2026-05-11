@@ -33,7 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
@@ -65,8 +65,7 @@ internal fun MovieExtrasView(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
-    val uriHandler = LocalUriHandler.current
-
+    val context = LocalContext.current
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     MovieExtrasContent(
@@ -75,7 +74,9 @@ internal fun MovieExtrasView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onCollapse = viewModel::setCollapsed,
-        onClick = { uriHandler.openUri(it.url) },
+        onClick = {
+            // TODO
+        },
         onFilterClick = { viewModel.toggleFilter(it) },
     )
 }
