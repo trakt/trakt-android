@@ -106,6 +106,8 @@ internal class MoviesSyncApiClient(
         val response = watchedApi.getUsersWatchedMinimalMovies(
             id = "me",
             extended = "min",
+            page = null,
+            limit = null,
         )
         return response.body()
     }

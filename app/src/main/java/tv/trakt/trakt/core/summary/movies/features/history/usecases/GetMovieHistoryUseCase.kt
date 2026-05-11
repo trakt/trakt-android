@@ -21,6 +21,7 @@ internal class GetMovieHistoryUseCase(
             HomeActivityItem.MovieItem(
                 id = it.id,
                 user = null,
+                userRating = null,
                 activity = it.action.value,
                 activityAt = it.watchedAt.toInstant(),
                 movie = Movie.fromDto(

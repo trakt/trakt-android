@@ -7832,6 +7832,10 @@
                               "ids"
                             ]
                           },
+                          "user_rating": {
+                            "type": "integer",
+                            "nullable": true
+                          },
                           "type": {
                             "type": "string",
                             "enum": [
@@ -8370,6 +8374,10 @@
                               "deleted",
                               "ids"
                             ]
+                          },
+                          "user_rating": {
+                            "type": "integer",
+                            "nullable": true
                           },
                           "type": {
                             "type": "string",
@@ -16276,6 +16284,24 @@
                 "min"
               ]
             }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page number to retrieve",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of items per page",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -16334,6 +16360,24 @@
               "enum": [
                 "min"
               ]
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page number to retrieve",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of items per page",
+            "schema": {
+              "type": "integer",
+              "nullable": true
             }
           },
           {
@@ -86121,7 +86165,7 @@
                       "type": "object",
                       "properties": {
                         "id": {
-                          "type": "integer",
+                          "type": "number",
                           "format": "int64"
                         },
                         "progress": {
@@ -86378,7 +86422,7 @@
                       "type": "object",
                       "properties": {
                         "id": {
-                          "type": "integer",
+                          "type": "number",
                           "format": "int64"
                         },
                         "progress": {
@@ -87040,7 +87084,7 @@
                       "type": "object",
                       "properties": {
                         "id": {
-                          "type": "integer",
+                          "type": "number",
                           "format": "int64"
                         },
                         "progress": {
@@ -87297,7 +87341,7 @@
                       "type": "object",
                       "properties": {
                         "id": {
-                          "type": "integer",
+                          "type": "number",
                           "format": "int64"
                         },
                         "progress": {
@@ -87959,7 +88003,7 @@
                       "type": "object",
                       "properties": {
                         "id": {
-                          "type": "integer",
+                          "type": "number",
                           "format": "int64"
                         },
                         "progress": {
@@ -88216,7 +88260,7 @@
                       "type": "object",
                       "properties": {
                         "id": {
-                          "type": "integer",
+                          "type": "number",
                           "format": "int64"
                         },
                         "progress": {

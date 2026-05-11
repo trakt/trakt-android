@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.ratings.UserRating
 import java.time.Instant
 import kotlin.time.Duration
 
@@ -14,6 +15,7 @@ import kotlin.time.Duration
 internal sealed class HomeActivityItem(
     open val id: Long,
     open val user: User?,
+    open val userRating: UserRating?,
     open val activity: String,
     open val activityAt: Instant,
 ) {
@@ -21,20 +23,22 @@ internal sealed class HomeActivityItem(
     internal data class MovieItem(
         override val id: Long,
         override val user: User?,
+        override val userRating: UserRating?,
         override val activity: String,
         override val activityAt: Instant,
         val movie: Movie,
-    ) : HomeActivityItem(id, user, activity, activityAt)
+    ) : HomeActivityItem(id, user, userRating, activity, activityAt)
 
     @Immutable
     internal data class EpisodeItem(
         override val id: Long,
         override val user: User?,
+        override val userRating: UserRating?,
         override val activity: String,
         override val activityAt: Instant,
         val episode: Episode,
         val show: Show,
-    ) : HomeActivityItem(id, user, activity, activityAt)
+    ) : HomeActivityItem(id, user, userRating, activity, activityAt)
 
     val key: String
         get() = when (this) {

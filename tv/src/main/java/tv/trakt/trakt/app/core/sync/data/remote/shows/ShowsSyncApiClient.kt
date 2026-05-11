@@ -141,6 +141,8 @@ internal class ShowsSyncApiClient(
             extended = "min",
             specials = true,
             seasonNumbers = true,
+            page = null,
+            limit = null,
         )
 
         return response.body()
