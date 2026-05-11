@@ -191,7 +191,10 @@ private fun TvVideoPlayer(
             val decor = activity?.window?.decorView as? ViewGroup
             fullScreenView?.let { decor?.removeView(it) }
             fullScreenView = null
-            playerView?.release()
+            playerView?.let {
+                lifecycleOwner.lifecycle.removeObserver(it)
+                it.release()
+            }
             playerView = null
         }
     }
@@ -263,7 +266,7 @@ private fun TvVideoPlayer(
                 })
 
                 playerView = this
-                playerView?.disableWebViewsBackground()
+                disableWebViewsBackground()
             }
         },
     )

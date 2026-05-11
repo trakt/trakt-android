@@ -4,14 +4,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import tv.trakt.trakt.helpers.player.navigation.YouTubePlayerDestination
 
-@OptIn(FlowPreview::class)
 internal class YouTubePlayerViewModel(
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -23,10 +21,10 @@ internal class YouTubePlayerViewModel(
     val state = combine(
         videoUrlState,
         videoIdState,
-    ) { state ->
+    ) { url, id ->
         YouTubePlayerState(
-            videoUrl = state[0] as String?,
-            videoId = state[1] as String?,
+            videoUrl = url,
+            videoId = id,
         )
     }.stateIn(
         scope = viewModelScope,
