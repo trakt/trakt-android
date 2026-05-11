@@ -102,14 +102,27 @@ internal class MoviesSyncApiClient(
         cacheMarkerProvider.invalidate()
     }
 
-    override suspend fun getWatched(extended: String?): Map<String, List<String>> {
-        val response = watchedApi.getUsersWatchedMinimalMovies(
-            id = "me",
-            extended = "min",
-            page = null,
-            limit = null,
-        )
-        return response.body()
+    override suspend fun getWatched(): Map<String, List<String>> {
+        val result = mutableMapOf<String, List<String>>()
+        var page = 1
+
+        while (true) {
+            val pageResponse = watchedApi.getUsersWatchedMinimalMovies(
+                id = "me",
+                extended = "min",
+                page = page,
+                limit = 100,
+            ).body()
+
+            if (pageResponse.isEmpty()) {
+                break
+            }
+
+            result.putAll(pageResponse)
+            page++
+        }
+
+        return result
     }
 
     override suspend fun getWatchlist(

@@ -8,6 +8,7 @@ import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.MovieProgress
+import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.toSlugId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.sync.model.ProgressItem
@@ -40,7 +41,19 @@ internal class LoadUserProgressUseCase(
     }
 
     suspend fun loadMoviesProgress(): ImmutableList<ProgressItem.MovieItem> {
-        val response = remoteSource.getWatchedMovies()
+        val progress = mutableMapOf<String, List<String>>()
+        var page = 1
+
+        while (true) {
+            val pageResponse = remoteSource.getWatchedMovies(Pagination(page = page, limit = 100))
+            if (pageResponse.isEmpty()) {
+                break
+            }
+            progress.putAll(pageResponse)
+            page++
+        }
+
+        val response = progress
             .map { (movieId, plays) ->
                 ProgressItem.MovieItem(
                     plays = plays.size,
@@ -68,7 +81,17 @@ internal class LoadUserProgressUseCase(
     }
 
     suspend fun loadShowsProgress(): ImmutableList<ProgressItem.ShowItem> {
-        val response = remoteSource.getWatchedShows()
+        val progress = mutableMapOf<String, Map<String, Map<String, List<String>>>>()
+        var page = 1
+
+        while (true) {
+            val pageResponse = remoteSource.getWatchedShows(Pagination(page = page, limit = 100))
+            if (pageResponse.isEmpty()) break
+            progress.putAll(pageResponse)
+            page++
+        }
+
+        val response = progress
             .map { entry ->
                 val showId = entry.key.toInt().toTraktId()
                 val seasons = entry.value.map { seasonKey ->

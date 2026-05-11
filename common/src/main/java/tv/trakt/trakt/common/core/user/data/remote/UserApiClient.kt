@@ -10,6 +10,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.networking.DroppedItemDto
 import tv.trakt.trakt.common.networking.SyncLibraryMediaDto
 import tv.trakt.trakt.common.networking.UserWatchingDto
@@ -118,25 +119,25 @@ class UserApiClient(
         cacheMarkerProvider.invalidate()
     }
 
-    override suspend fun getWatchedMovies(): Map<String, List<String>> {
+    override suspend fun getWatchedMovies(pagination: Pagination): Map<String, List<String>> {
         val response = usersApi.getUsersWatchedMinimalMovies(
             id = "me",
             extended = "min",
-            page = null,
-            limit = null,
+            page = pagination.page,
+            limit = pagination.limit,
         )
 
         return response.body()
     }
 
-    override suspend fun getWatchedShows(): Map<String, Map<String, Map<String, List<String>>>> {
+    override suspend fun getWatchedShows(pagination: Pagination): Map<String, Map<String, Map<String, List<String>>>> {
         val response = usersApi.getUsersWatchedMinimalShows(
             id = "me",
             extended = "min",
             specials = true,
             seasonNumbers = true,
-            page = null,
-            limit = null,
+            page = pagination.page,
+            limit = pagination.limit,
         )
 
         return response.body()

@@ -19,7 +19,7 @@ internal interface MoviesSyncRemoteDataSource {
         hide: String? = null,
     ): List<WatchlistMovieDto>
 
-    suspend fun getWatched(extended: String? = null): Map<String, List<String>>
+    suspend fun getWatched(): Map<String, List<String>>
 
     suspend fun addToWatchlist(movieId: TraktId)
 

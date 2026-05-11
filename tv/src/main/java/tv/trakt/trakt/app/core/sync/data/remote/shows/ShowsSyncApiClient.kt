@@ -136,33 +136,30 @@ internal class ShowsSyncApiClient(
     }
 
     override suspend fun getWatched(): Map<String, Map<String, Map<String, List<String>>>> {
-        val response = usersApi.getUsersWatchedMinimalShows(
-            id = "me",
-            extended = "min",
-            specials = true,
-            seasonNumbers = true,
-            page = null,
-            limit = null,
-        )
+        val result = mutableMapOf<String, Map<String, Map<String, List<String>>>>()
+        var page = 1
 
-        return response.body()
+        while (true) {
+            val pageResponse = usersApi.getUsersWatchedMinimalShows(
+                id = "me",
+                extended = "min",
+                specials = true,
+                seasonNumbers = true,
+                page = page,
+                limit = 100,
+            ).body()
+
+            if (pageResponse.isEmpty()) {
+                break
+            }
+
+            result.putAll(pageResponse)
+            page++
+        }
+
+        return result
     }
 
-    /** Example (shows -> seasons -> episodes):
-     * {
-     *     "150469": {
-     *         "462717": {
-     *             "13101183": "2025-09-01T10:58:10.000Z"
-     *         }
-     *     },
-     *     "249647": {
-     *         "404720": {
-     *             "12142723": "2025-09-01T10:57:43.000Z",
-     *             "12853592": "2025-09-01T10:57:43.000Z",
-     *         }
-     *     }
-     * }
-     */
     override suspend fun getShowsPlexCollection(): Map<TraktId, Map<TraktId, Map<TraktId, String>>> {
         val response = collectionApi.getSyncCollectionMinimalShows(
             availableOn = "plex",
@@ -183,12 +180,6 @@ internal class ShowsSyncApiClient(
             .toMap()
     }
 
-    /** Example:
-     * {
-     *     "12142723": "2025-09-01T10:57:43.000Z",
-     *     "12853592": "2025-09-01T10:57:43.000Z",
-     * }
-     */
     override suspend fun getEpisodesPlexCollection(): Map<TraktId, String> {
         val response = collectionApi.getSyncCollectionMinimalEpisodes(
             availableOn = "plex",
