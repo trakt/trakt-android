@@ -147,7 +147,7 @@ internal fun DetailsHeader(
                 )
             }
         },
-        status = show.status,
+        status = null,
         certification = show.certification,
         date = {
             Text(
