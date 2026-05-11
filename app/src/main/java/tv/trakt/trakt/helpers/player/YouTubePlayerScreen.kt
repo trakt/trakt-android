@@ -2,6 +2,8 @@
 
 package tv.trakt.trakt.helpers.player
 
+import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
@@ -57,6 +59,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
+@SuppressLint("SourceLockedOrientationActivity")
 @Composable
 internal fun YouTubePlayerScreen(
     modifier: Modifier = Modifier,
@@ -64,6 +67,8 @@ internal fun YouTubePlayerScreen(
     onNavigateBack: () -> Unit,
 ) {
     val localBottomBarVisibility = LocalBottomBarVisibility.current
+    val localActivity = LocalActivity.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     YouTubePlayerScreen(
@@ -74,9 +79,11 @@ internal fun YouTubePlayerScreen(
 
     DisposableEffect(Unit) {
         localBottomBarVisibility.value = false
+        localActivity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
 
         onDispose {
             localBottomBarVisibility.value = true
+            localActivity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
     }
 }
@@ -206,7 +213,7 @@ private fun TvVideoPlayer(
                     ) {
                         val window = activity?.window ?: return
                         val decor = window.decorView as? ViewGroup ?: return
-
+                        activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
                         WindowCompat.getInsetsController(window, decor).apply {
                             hide(WindowInsetsCompat.Type.systemBars())
                             systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
@@ -225,7 +232,7 @@ private fun TvVideoPlayer(
                     override fun onExitFullscreen() {
                         val window = activity?.window ?: return
                         val decor = window.decorView as? ViewGroup ?: return
-
+                        activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
                         WindowCompat.getInsetsController(window, decor)
                             .show(WindowInsetsCompat.Type.systemBars())
 
