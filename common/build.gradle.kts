@@ -99,5 +99,8 @@ dependencies {
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.timber)
 
+    api(libs.youtube.player)
+    api(libs.youtube.player.ui)
+
     debugImplementation(libs.androidx.compose.tooling)
 }

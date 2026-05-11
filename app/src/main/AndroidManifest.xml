@@ -102,6 +102,11 @@
       android:theme="@style/Theme.TraktTv"
       />
 
+    <activity
+      android:name=".helpers.player.YouTubePlayerActivity"
+      android:hardwareAccelerated="true"
+      />
+
     <provider
       android:name="androidx.startup.InitializationProvider"
       android:authorities="${applicationId}.androidx-startup"
