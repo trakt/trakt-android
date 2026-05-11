@@ -248,6 +248,7 @@ private fun ContentList(
                 is HomeActivityItem.MovieItem -> {
                     ActivityMovieItemView(
                         item = item,
+                        itemRating = item.userRating,
                         onClick = { onMovieClick(item.movie) },
                         modifier = Modifier
                             .animateItem(
@@ -260,6 +261,7 @@ private fun ContentList(
                 is HomeActivityItem.EpisodeItem -> {
                     ActivityEpisodeItemView(
                         item = item,
+                        itemRating = item.userRating,
                         onClick = { onEpisodeClick(item) },
                         onShowClick = { onShowClick(item) },
                         modifier = Modifier

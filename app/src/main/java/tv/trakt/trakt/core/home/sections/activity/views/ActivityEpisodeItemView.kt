@@ -202,6 +202,11 @@ private fun EpisodeSocialItemViewPreview() {
                 activity = "watch",
                 activityAt = Instant.now(),
                 user = PreviewData.user1,
+                userRating = UserRating(
+                    mediaId = PreviewData.episode1.ids.trakt,
+                    mediaType = tv.trakt.trakt.common.model.MediaType.EPISODE,
+                    rating = 8,
+                ),
                 show = PreviewData.show1,
                 episode = PreviewData.episode1,
             ),

@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.home.sections.activity.features.all.views
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -10,6 +11,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Bottom
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -25,7 +27,9 @@ import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.ratings.UserRating
+import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
@@ -47,6 +51,10 @@ internal fun AllActivityMovieItem(
         !item.activityAt.isAfter(nowUtcInstant())
     }
 
+    val rating = remember(itemRating, item.userRating) {
+        itemRating ?: item.userRating
+    }
+
     PanelMediaCard(
         title = item.title,
         titleOriginal = null,
@@ -66,7 +74,9 @@ internal fun AllActivityMovieItem(
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(3.dp),
                     verticalAlignment = CenterVertically,
-                    modifier = Modifier.alpha(if (isPast) 1.0f else 0f),
+                    modifier = Modifier
+                        .weight(1F)
+                        .alpha(if (isPast) 1.0f else 0f),
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_calendar_check),
@@ -86,30 +96,32 @@ internal fun AllActivityMovieItem(
                     )
                 }
 
-                item.user?.let { user ->
-                    AllActivityUserChip(
-                        user = user,
-                        modifier = Modifier.padding(start = 12.dp),
-                    )
-                }
+                Column(
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = spacedBy(8.dp),
+                    modifier = Modifier.padding(start = 12.dp),
+                ) {
+                    rating?.let {
+                        Row(
+                            verticalAlignment = CenterVertically,
+                            horizontalArrangement = spacedBy(2.dp),
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_star_trakt_on),
+                                contentDescription = null,
+                                modifier = Modifier.size(13.dp),
+                                tint = TraktTheme.colors.textPrimary,
+                            )
+                            Text(
+                                text = it.rating5Scale,
+                                color = TraktTheme.colors.textPrimary,
+                                style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
+                            )
+                        }
+                    }
 
-                itemRating?.let {
-                    Row(
-                        verticalAlignment = CenterVertically,
-                        horizontalArrangement = spacedBy(2.dp),
-                        modifier = Modifier.padding(start = 12.dp),
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_star_trakt_on),
-                            contentDescription = null,
-                            modifier = Modifier.size(13.dp),
-                            tint = TraktTheme.colors.textPrimary,
-                        )
-                        Text(
-                            text = it.rating5Scale,
-                            color = TraktTheme.colors.textPrimary,
-                            style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
-                        )
+                    item.user?.let { user ->
+                        AllActivityUserChip(user = user)
                     }
                 }
             }
@@ -130,6 +142,11 @@ private fun AllActivityMovieItemPreview() {
                 activity = "watched",
                 activityAt = Instant.now(),
                 user = PreviewData.user1,
+                userRating = UserRating(
+                    mediaId = 1.toTraktId(),
+                    mediaType = MediaType.MOVIE,
+                    rating = 8,
+                ),
                 movie = PreviewData.movie1,
             ),
             modifier = Modifier.fillMaxWidth(),

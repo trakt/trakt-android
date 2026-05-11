@@ -21,6 +21,7 @@ internal class GetEpisodeHistoryUseCase(
             HomeActivityItem.EpisodeItem(
                 id = it.id,
                 user = null,
+                userRating = null,
                 activity = it.action.value,
                 activityAt = it.watchedAt.toInstant(),
                 episode = Episode.fromDto(

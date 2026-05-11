@@ -259,6 +259,7 @@ private fun Preview() {
                 item = EpisodeItem(
                     id = 1L,
                     user = PreviewData.user1,
+                    userRating = null,
                     activity = "watched",
                     activityAt = Instant.now(),
                     episode = PreviewData.episode1,
@@ -287,6 +288,7 @@ private fun Preview2() {
                 item = MovieItem(
                     id = 1L,
                     user = PreviewData.user1,
+                    userRating = null,
                     activity = "watched",
                     activityAt = Instant.now(),
                     movie = PreviewData.movie1,

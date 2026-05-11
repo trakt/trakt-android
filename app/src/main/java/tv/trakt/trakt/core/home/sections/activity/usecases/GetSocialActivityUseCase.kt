@@ -8,10 +8,14 @@ import tv.trakt.trakt.common.core.user.data.remote.social.UserSocialRemoteDataSo
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.ratings.UserRating
+import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.main.model.MediaMode
@@ -59,6 +63,13 @@ internal class GetSocialActivityUseCase(
                         HomeActivityItem.MovieItem(
                             id = it.id,
                             user = User.fromDto(it.user),
+                            userRating = it.userRating?.let { rating ->
+                                UserRating(
+                                    mediaId = it.movie?.ids?.trakt?.toTraktId() ?: TraktId(0),
+                                    mediaType = MediaType.MOVIE,
+                                    rating = rating,
+                                )
+                            },
                             activity = it.action,
                             activityAt = it.activityAt.toInstant(),
                             movie = Movie.fromDto(
@@ -73,6 +84,13 @@ internal class GetSocialActivityUseCase(
                         HomeActivityItem.EpisodeItem(
                             id = it.id,
                             user = User.fromDto(it.user),
+                            userRating = it.userRating?.let { rating ->
+                                UserRating(
+                                    mediaId = it.episode?.ids?.trakt?.toTraktId() ?: TraktId(0),
+                                    mediaType = MediaType.EPISODE,
+                                    rating = rating,
+                                )
+                            },
                             activity = it.action,
                             activityAt = it.activityAt.toInstant(),
                             episode = Episode.fromDto(

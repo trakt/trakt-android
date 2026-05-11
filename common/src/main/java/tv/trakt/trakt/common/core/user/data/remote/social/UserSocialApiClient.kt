@@ -19,7 +19,7 @@ class UserSocialApiClient(
             type = type,
             page = page,
             limit = limit,
-            extended = "full,cloud9,colors",
+            extended = "full,cloud9,colors,rating",
         ).body()
 
         return response
