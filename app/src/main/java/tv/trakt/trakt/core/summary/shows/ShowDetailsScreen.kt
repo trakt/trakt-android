@@ -46,7 +46,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -71,6 +70,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Person
@@ -118,12 +118,13 @@ internal fun ShowDetailsScreen(
     onListClick: ((Show, CustomList) -> Unit),
     onPersonClick: ((Show, Person) -> Unit),
     onTriviaClick: ((Show) -> Unit)? = null,
+    onTrailerClick: (String) -> Unit,
+    onExtraClick: (ExtraVideo) -> Unit,
     onAllSeasonsClick: (Show, Int?) -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
-    val uriHandler = LocalUriHandler.current
     val haptic = LocalHapticFeedback.current
     val snack = LocalSnackbarState.current
     val localRateVisibility = LocalRatePromptVisibility.current
@@ -184,7 +185,10 @@ internal fun ShowDetailsScreen(
             state.show?.let { shareShow(it, context) }
         },
         onTrailerClick = {
-            state.show?.trailer?.let { uriHandler.openUri(it) }
+            state.show?.trailer?.let { url -> onTrailerClick(url) }
+        },
+        onExtraClick = { extra ->
+            onExtraClick(extra)
         },
         onWatchlistClick = {
             if (state.showProgress?.inWatchlist == true) {
@@ -411,6 +415,7 @@ internal fun ShowDetailsContent(
     onShareClick: (() -> Unit)? = null,
     onInfoClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
+    onExtraClick: ((ExtraVideo) -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
     onWatchlistClick: (() -> Unit)? = null,
     onHistoryClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
@@ -680,6 +685,7 @@ internal fun ShowDetailsContent(
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
+                            onVideoClick = onExtraClick ?: {},
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),

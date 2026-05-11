@@ -33,7 +33,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
@@ -63,10 +62,9 @@ internal fun ShowExtrasView(
     viewModel: ShowExtrasViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    onVideoClick: (ExtraVideo) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val uriHandler = LocalUriHandler.current
-
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     ShowExtrasContent(
@@ -74,7 +72,7 @@ internal fun ShowExtrasView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onClick = { uriHandler.openUri(it.url) },
+        onClick = onVideoClick,
         onFilterClick = { viewModel.toggleFilter(it) },
         onCollapse = viewModel::setCollapsed,
     )

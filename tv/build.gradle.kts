@@ -95,8 +95,6 @@ dependencies {
     implementation(libs.kotlinx.datetime)
     implementation(libs.qr.compose)
 
-    implementation(libs.youtube.player)
-    implementation(libs.youtube.player.ui)
     implementation(libs.flagkit)
     implementation(libs.timber)
 

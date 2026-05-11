@@ -33,7 +33,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
@@ -64,9 +63,8 @@ internal fun MovieExtrasView(
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
+    onVideoClick: (ExtraVideo) -> Unit,
 ) {
-    val uriHandler = LocalUriHandler.current
-
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     MovieExtrasContent(
@@ -75,7 +73,7 @@ internal fun MovieExtrasView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onCollapse = viewModel::setCollapsed,
-        onClick = { uriHandler.openUri(it.url) },
+        onVideoClick = onVideoClick,
         onFilterClick = { viewModel.toggleFilter(it) },
     )
 }
@@ -87,7 +85,7 @@ private fun MovieExtrasContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onCollapse: (collapsed: Boolean) -> Unit = {},
-    onClick: ((ExtraVideo) -> Unit)? = null,
+    onVideoClick: ((ExtraVideo) -> Unit)? = null,
     onFilterClick: ((String) -> Unit)? = null,
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
@@ -145,7 +143,7 @@ private fun MovieExtrasContent(
                                 ContentList(
                                     listItems = (state.items ?: emptyList()).toImmutableList(),
                                     contentPadding = contentPadding,
-                                    onClick = onClick,
+                                    onClick = onVideoClick,
                                 )
                             }
                         }

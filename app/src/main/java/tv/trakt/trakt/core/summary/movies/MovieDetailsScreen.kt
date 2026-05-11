@@ -45,7 +45,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
@@ -65,6 +64,7 @@ import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
@@ -107,12 +107,13 @@ internal fun MovieDetailsScreen(
     onCommentsClick: ((Movie, CommentsFilter) -> Unit),
     onListClick: ((Movie, CustomList) -> Unit),
     onPersonClick: ((Movie, Person) -> Unit),
-    onTriviaClick: ((Movie) -> Unit)? = null,
+    onTriviaClick: (Movie) -> Unit,
+    onTrailerClick: (String) -> Unit,
+    onExtraClick: (ExtraVideo) -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
-    val uriHandler = LocalUriHandler.current
     val haptic = LocalHapticFeedback.current
     val snack = LocalSnackbarState.current
     val localRateVisibility = LocalRatePromptVisibility.current
@@ -164,7 +165,14 @@ internal fun MovieDetailsScreen(
             }
         },
         onShareClick = { state.movie?.let { shareMovie(it, context) } },
-        onTrailerClick = { state.movie?.trailer?.let { uriHandler.openUri(it) } },
+        onTrailerClick = {
+            state.movie?.trailer?.let { url ->
+                onTrailerClick(url)
+            }
+        },
+        onExtraClick = { extra ->
+            onExtraClick(extra)
+        },
         onWatchlistClick = {
             if (state.movieProgress?.inWatchlist == true) {
                 confirmRemoveWatchlistSheet = true
@@ -196,7 +204,7 @@ internal fun MovieDetailsScreen(
         onVipClick = onNavigateVip,
         onTriviaClick = {
             state.movie?.let { movie ->
-                onTriviaClick?.invoke(movie)
+                onTriviaClick(movie)
             }
         },
         onBackClick = onNavigateBack,
@@ -353,6 +361,7 @@ internal fun MovieDetailsContent(
     onShareClick: (() -> Unit)? = null,
     onInfoClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
+    onExtraClick: ((ExtraVideo) -> Unit)? = null,
     onWatchlistClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
     onHistoryClick: ((HomeActivityItem.MovieItem) -> Unit)? = null,
@@ -601,6 +610,7 @@ internal fun MovieDetailsContent(
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
+                            onVideoClick = onExtraClick ?: {},
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),
