@@ -52,6 +52,7 @@ internal val ratingsDataModule = module {
         DefaultRatePromptManager(
             dataStore = get(named(RATINGS_PREFERENCES)),
             sessionManager = get(),
+            checkInManager = get(),
             userRatingsUseCase = get(),
             userFavoritesUseCase = get(),
             userHistoryDataSource = get(),

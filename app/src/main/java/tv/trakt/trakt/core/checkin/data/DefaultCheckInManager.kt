@@ -184,6 +184,10 @@ internal class DefaultCheckInManager(
         }
     }
 
+    override fun isActiveMovie(): ActiveMovie? {
+        return state.value as? ActiveMovie
+    }
+
     override suspend fun checkActive(context: Context) {
         if (!sessionManager.isAuthenticated()) {
             Timber.d("Not authenticated, skipping check-in stop.")

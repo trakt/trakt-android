@@ -28,6 +28,7 @@ import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.favorites.model.FavoriteItem
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia
@@ -55,6 +56,7 @@ private val KEY_DISMISSED_MOVIES = stringSetPreferencesKey("key_dismissed_movies
  */
 internal class DefaultRatePromptManager(
     private val sessionManager: SessionManager,
+    private val checkInManager: CheckInManager,
     private val dataStore: DataStore<Preferences>,
     private val userRatingsUseCase: LoadUserRatingsUseCase,
     private val userFavoritesUseCase: LoadUserFavoritesUseCase,
@@ -121,6 +123,7 @@ internal class DefaultRatePromptManager(
             }.filter {
                 !moviesRatings.contains(it.movie.ids.trakt) &&
                     !moviesDismissed.contains(it.movie.ids.trakt.value.toString()) &&
+                    checkInManager.isActiveMovie()?.movie?.ids?.trakt != it.movie.ids.trakt &&
                     it.activityAt >= durationWindow
             }.take(UNRATED_MOVIES_LIMIT)
 

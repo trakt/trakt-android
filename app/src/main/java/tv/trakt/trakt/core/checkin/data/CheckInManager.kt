@@ -25,6 +25,8 @@ internal interface CheckInManager {
 
     fun isActive(): Boolean
 
+    fun isActiveMovie(): CheckInState.ActiveMovie?
+
     fun observe(): Flow<CheckInState>
 
     suspend fun stop(
