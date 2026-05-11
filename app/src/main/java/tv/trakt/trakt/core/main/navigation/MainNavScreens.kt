@@ -282,6 +282,7 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
                 )
             },
             onNavigateToTrailer = { navigateToYouTubePlayer(it) },
+            onNavigateToExtra = { navigateToYouTubePlayer(it.url) },
             onNavigateVip = { navigateToBilling() },
             onNavigateBack = { popBackStack() },
         )

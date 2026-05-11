@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
@@ -24,6 +25,7 @@ internal fun NavGraphBuilder.movieDetailsScreen(
     onNavigateToList: (Movie, CustomList) -> Unit,
     onNavigateToTrivia: (Movie) -> Unit,
     onNavigateToTrailer: (String) -> Unit,
+    onNavigateToExtra: (ExtraVideo) -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -38,6 +40,7 @@ internal fun NavGraphBuilder.movieDetailsScreen(
             onPersonClick = { movie, person -> onNavigateToPerson(movie, person) },
             onTriviaClick = { movie -> onNavigateToTrivia(movie) },
             onTrailerClick = { url -> onNavigateToTrailer(url) },
+            onExtraClick = { extra -> onNavigateToExtra(extra) },
             onNavigateVip = onNavigateVip,
             onNavigateBack = onNavigateBack,
         )

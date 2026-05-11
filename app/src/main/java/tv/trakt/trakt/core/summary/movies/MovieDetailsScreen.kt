@@ -64,6 +64,7 @@ import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
@@ -108,6 +109,7 @@ internal fun MovieDetailsScreen(
     onPersonClick: ((Movie, Person) -> Unit),
     onTriviaClick: (Movie) -> Unit,
     onTrailerClick: (String) -> Unit,
+    onExtraClick: (ExtraVideo) -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -167,6 +169,9 @@ internal fun MovieDetailsScreen(
             state.movie?.trailer?.let { url ->
                 onTrailerClick(url)
             }
+        },
+        onExtraClick = { extra ->
+            onExtraClick(extra)
         },
         onWatchlistClick = {
             if (state.movieProgress?.inWatchlist == true) {
@@ -356,6 +361,7 @@ internal fun MovieDetailsContent(
     onShareClick: (() -> Unit)? = null,
     onInfoClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
+    onExtraClick: ((ExtraVideo) -> Unit)? = null,
     onWatchlistClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
     onHistoryClick: ((HomeActivityItem.MovieItem) -> Unit)? = null,
@@ -604,6 +610,7 @@ internal fun MovieDetailsContent(
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
+                            onVideoClick = onExtraClick ?: {},
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),
