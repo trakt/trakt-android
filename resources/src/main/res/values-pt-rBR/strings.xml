@@ -38,7 +38,7 @@
   <string name="button_text_personal">Pessoal</string>
   <string name="button_text_player_audio_default">Padrão</string>
   <string name="button_text_player_play_now">Reproduzir Agora</string>
-  <string name="button_text_player_resume">Retomar</string>
+  <string name="button_text_player_resume">Continuar</string>
   <string name="button_text_player_subtitles_off">Desativado</string>
   <string name="button_text_progress_completed">Concluído</string>
   <string name="button_text_progress_dropped">Abandonado</string>
@@ -218,7 +218,7 @@
   <string name="text_by">por</string>
   <string name="text_created_by_short">Criado por</string>
   <string name="text_cta_activity_list">Comece a fazer amigos rapidamente seguindo a Equipe Trakt e explore o que eles estão assistindo.</string>
-  <string name="text_cta_collab_lists">Listas que você ajuda a curar. Trabalhe com outros e acompanhe filmes e séries juntos.</string>
+  <string name="text_cta_collab_lists">Listas que você colaborou. Trabalhe com outros e acompanhe filmes e séries juntos.</string>
   <string name="text_cta_favorites">Seus favoritos. Sua história. Destaque os filmes e séries que deixaram sua marca.</string>
   <string name="text_cta_favorites_movies">Seus favoritos. Sua história. Destaque os filmes que deixaram sua marca.</string>
   <string name="text_cta_favorites_shows">Seus favoritos. Sua história. Destaque as séries que deixaram sua marca.</string>
@@ -259,8 +259,8 @@
   <string name="text_info_younify_service_unlinked">Serviço de streaming desvinculado.</string>
   <string name="text_landing_discover">filmes e séries que você vai amar e onde estão disponíveis para streaming agora mesmo.</string>
   <string name="text_landing_numbers_1">anos assistindo juntos</string>
-  <string name="text_landing_numbers_2">mil. amantes de séries e filmes</string>
-  <string name="text_landing_numbers_3">mil. títulos acompanhados semanalmente</string>
+  <string name="text_landing_numbers_2">mil. de amantes de séries e filmes</string>
+  <string name="text_landing_numbers_3">mil. de títulos acompanhados semanalmente</string>
   <string name="text_landing_share">opiniões, avaliações e listas que outros vão adorar seguir.</string>
   <string name="text_landing_track">cada filme, episódio e temporada que você assistiu, tudo em um só lugar.</string>
   <string name="text_language">Idioma</string>
