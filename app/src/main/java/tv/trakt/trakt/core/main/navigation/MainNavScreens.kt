@@ -194,6 +194,8 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
                     navSource = "show_summary",
                 )
             },
+            onNavigateToTrailer = { navigateToYouTubePlayer(it) },
+            onNavigateToExtra = { navigateToYouTubePlayer(it.url) },
             onNavigateToAllSeasons = { show, initialSeason ->
                 navigateToAllShowSeasons(
                     showId = show.ids.trakt,
