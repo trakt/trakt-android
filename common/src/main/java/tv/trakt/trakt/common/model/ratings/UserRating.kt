@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.resources.R
+import java.util.Locale
 
 /**
  * User rating for a media item.
@@ -21,8 +22,9 @@ data class UserRating(
 
     val rating5Scale: String
         get() = "%.1f"
-            .format(rating / 2f)
+            .format(Locale.US, rating / 2f)
             .removeSuffix(".0")
+            .removeSuffix(",0")
 
     companion object {
         fun scaleTo10(rating: Float): Int {

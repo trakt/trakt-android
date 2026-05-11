@@ -32,7 +32,7 @@ internal class GetPersonCreditsUseCase(
                 val show = PersonCreditItem.ShowItem(
                     show = Show.fromDto(it.show),
                     credit = it.character,
-                    episodesCount = it.episodeCount,
+                    episodesCount = it.episodeCount ?: 0,
                 )
 
                 val isSelf = it.character.contains("self", ignoreCase = true)
