@@ -8,7 +8,7 @@ plugins {
 }
 
 openApiGenerate {
-    inputSpec = "$rootDir/openapi/openapi.json"
+    inputSpec.set("$rootDir/openapi/openapi.json")
     generatorName = "kotlin"
     validateSpec = true
     cleanupOutput = true
