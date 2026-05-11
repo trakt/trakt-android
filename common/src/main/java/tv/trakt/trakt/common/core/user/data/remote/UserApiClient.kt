@@ -122,6 +122,8 @@ class UserApiClient(
         val response = usersApi.getUsersWatchedMinimalMovies(
             id = "me",
             extended = "min",
+            page = null,
+            limit = null,
         )
 
         return response.body()
@@ -133,6 +135,8 @@ class UserApiClient(
             extended = "min",
             specials = true,
             seasonNumbers = true,
+            page = null,
+            limit = null,
         )
 
         return response.body()
