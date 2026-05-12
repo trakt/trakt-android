@@ -43,6 +43,7 @@ internal class GetUpNextUseCase(
         val movies = getMoviesUpNext(page, limit)
 
         return (shows + movies)
+            .distinctBy { it.key }
             .sortedByDescending { it.sortKey }
             .toImmutableList()
             .also {

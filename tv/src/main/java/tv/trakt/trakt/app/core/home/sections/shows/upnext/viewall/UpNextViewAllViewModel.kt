@@ -75,6 +75,7 @@ internal class UpNextViewAllViewModel(
 
                     val items = awaitAll(showsAsync, moviesAsync)
                         .flatten()
+                        .distinctBy { it.key }
                         .sortedByDescending { it.sortKey }
 
                     itemsState.update {
@@ -121,8 +122,12 @@ internal class UpNextViewAllViewModel(
                         .flatten()
                         .sortedByDescending { it.sortKey }
 
-                    itemsState.update {
-                        it?.toPersistentList()?.plus(items)
+                    itemsState.update { current ->
+                        current
+                            ?.toPersistentList()
+                            ?.plus(items)
+                            ?.distinctBy { it.key }
+                            ?.toImmutableList()
                     }
 
                     hasMoreData = (items.size >= HOME_PAGE_LIMIT)

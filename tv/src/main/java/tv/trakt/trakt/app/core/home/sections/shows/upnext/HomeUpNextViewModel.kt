@@ -97,6 +97,7 @@ internal class HomeUpNextViewModel(
 
                     val items = awaitAll(showsAsync, moviesAsync)
                         .flatten()
+                        .distinctBy { it.key }
                         .sortedByDescending { it.sortKey }
 
                     itemsState.update {

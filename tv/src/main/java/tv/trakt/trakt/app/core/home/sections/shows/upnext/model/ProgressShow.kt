@@ -17,7 +17,7 @@ internal data class ProgressShow(
         get() = progress.nextEpisode?.ids?.trakt ?: 0.toTraktId()
 
     override val key: String
-        get() = "${show.ids.trakt.value}-${progress.nextEpisode?.ids?.trakt}"
+        get() = "${show.ids.trakt.value}-${progress.nextEpisode?.ids?.trakt}-show"
 
     override val sortKey: String
         get() = "${(progress.lastWatchedAt?.toInstant() ?: Instant.MAX)}-${show.title}"
