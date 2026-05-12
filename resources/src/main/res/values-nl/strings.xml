@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="badge_text_get_vip">VIP</string>
+  <string name="badge_text_get_vip">Word VIP</string>
   <string name="button_label_popup_reactions">Reacties</string>
   <string name="button_text_add_reply">Reactie toevoegen</string>
   <string name="button_text_add_review">Recensie toevoegen</string>
@@ -43,8 +43,8 @@
   <string name="button_text_progress_completed">Voltooid</string>
   <string name="button_text_progress_dropped">Gestopt</string>
   <string name="button_text_progress_in_progress">Bezig</string>
-  <string name="button_text_remove_from_favorites">Verwijderen uit favorieten</string>
-  <string name="button_text_remove_from_history">Verwijder uit bekeken</string>
+  <string name="button_text_remove_from_favorites">Uit favorieten verwijderen</string>
+  <string name="button_text_remove_from_history">Uit bekeken verwijderen</string>
   <string name="button_text_remove_from_list">Verwijderen uit lijst</string>
   <string name="button_text_reset_calendar_period">Vandaag</string>
   <string name="button_text_retry">Opnieuw proberen</string>
@@ -113,7 +113,7 @@
   <string name="header_status">Status</string>
   <string name="header_studio">Studio</string>
   <string name="header_total_runtime">Totale speelduur</string>
-  <string name="header_writer">Scenarist</string>
+  <string name="header_writer">Schrijver</string>
   <string name="input_placeholder_lists_description">Beschrijving (optioneel)</string>
   <string name="input_placeholder_lists_name">Naam</string>
   <string name="input_placeholder_search">Series &amp; films zoeken…</string>
@@ -149,7 +149,7 @@
   <string name="list_title_from_my_history">Uit mijn geschiedenis</string>
   <string name="list_title_history">Geschiedenis</string>
   <string name="list_title_library">Bibliotheek</string>
-  <string name="list_title_liked_lists">Gelikte</string>
+  <string name="list_title_liked_lists">Vind ik leuk</string>
   <string name="list_title_most_anticipated">Verwacht</string>
   <string name="list_title_most_popular">Populair</string>
   <string name="list_title_most_popular_searches">Top zoekopdrachten</string>
@@ -177,8 +177,8 @@
   <string name="list_title_trivia">Trivia</string>
   <string name="list_title_up_next">Verder kijken</string>
   <string name="list_title_upcoming_schedule">Aankomend programma</string>
-  <string name="list_title_watchlist_movies">Kijklijst films</string>
-  <string name="list_title_watchlist_shows">Kijklijst series</string>
+  <string name="list_title_watchlist_movies">Films kijklijst</string>
+  <string name="list_title_watchlist_shows">Series kijklijst</string>
   <string name="page_description_create_list">Voer een naam en beschrijving in voor je lijst.</string>
   <string name="page_description_edit_list">Bewerk de details van je lijst.</string>
   <string name="page_title_calendar">Kalender</string>
@@ -422,9 +422,9 @@
   <string name="warning_prompt_remove_from_favorites">Weet je zeker dat je \"%s\" uit je favorieten wilt verwijderen?</string>
   <string name="warning_prompt_remove_from_liked_lists">Weet u zeker dat u \"%s\" wilt verwijderen uit uw favoriete lijsten?</string>
   <string name="warning_prompt_remove_from_personal_list">Weet je zeker dat je \"%1$s\" uit %2$s wilt verwijderen?</string>
-  <string name="warning_prompt_remove_from_watched">Weet je zeker dat je \"%s\" uit je bekeken geschiedenis wilt verwijderen? Alle weergaven worden verwijderd.</string>
+  <string name="warning_prompt_remove_from_watched">Weet je zeker dat je \"%s\" uit je kijkgeschiedenis wilt verwijderen? Alle weergaven worden verwijderd.</string>
   <string name="warning_prompt_remove_from_watchlist">Weet je zeker dat je \"%s\" van je kijklijst wilt verwijderen?</string>
-  <string name="warning_prompt_remove_single_watched">Weet je zeker dat je deze weergave van \"%s\" uit je bekeken geschiedenis wilt verwijderen?</string>
+  <string name="warning_prompt_remove_single_watched">Weet je zeker dat je \"%s\" uit je kijkgeschiedenis wilt verwijderen?</string>
   <string name="warning_prompt_set_cover_image">Gebruik \"%s\" als je profielachtergrondafbeelding?</string>
   <string name="warning_prompt_stop_checkin">Weet je zeker dat je wilt stoppen met het kijken naar \"%s\"?</string>
   <string name="warning_prompt_suppress_ratings_toast">Wil je niet meer gevraagd worden om te beoordelen wat je onlangs hebt bekeken?</string>
