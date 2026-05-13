@@ -418,7 +418,7 @@
   <string name="warning_prompt_log_out">Çıkış yapmak istediğinizden emin misiniz?</string>
   <string name="warning_prompt_mark_as_watched_multiple_episodes">%d bölümü izlendi olarak işaretlemek istediğinizden emin misiniz?</string>
   <string name="warning_prompt_mark_as_watched_show">\"%s\" öğesini izlendi olarak işaretlemek istediğinizden emin misiniz? Bu, tüm bölümleri izlendi olarak işaretleyecektir.</string>
-  <string name="warning_prompt_mark_as_watched_show_android">\"%1$s\" dizisinin **tüm %2$d bölümünü** izlendi olarak işaretlemek istediğinizden emin misiniz?</string>
+  <string name="warning_prompt_mark_as_watched_show_android">Tüm %1$d bölümüyle birlikte %2$s dizisini izlendi olarak işaretlemek istediğinizden emin misiniz?</string>
   <string name="warning_prompt_remove_from_favorites">\"%s\" Favorilerinizden kaldırmak istediğinizden emin misiniz?</string>
   <string name="warning_prompt_remove_from_liked_lists">\"%s\" listesini beğenilen listelerinizden kaldırmak istediğinizden emin misiniz?</string>
   <string name="warning_prompt_remove_from_personal_list">\"%1$s\" öğesini %2$s listesinden kaldırmak istediğinizden emin misiniz?</string>
