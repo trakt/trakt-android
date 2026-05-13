@@ -37,11 +37,3 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 }
-
-// The strings.xml file is used as the source of truth for all translations.
-// This task copies the English version to the values dir, which is used as default.
-copy {
-    from("src/main/res/values-en/strings.xml")
-    into("src/main/res/values")
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-}
