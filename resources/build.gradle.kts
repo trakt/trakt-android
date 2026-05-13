@@ -37,3 +37,11 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 }
+
+val validateStringPlaceholders = tasks.register<ValidateStringPlaceholdersTask>("validateStringPlaceholders") {
+    resDir.from(layout.projectDirectory.dir("src/main/res"))
+}
+
+tasks.named("preBuild") {
+    dependsOn(validateStringPlaceholders)
+}
