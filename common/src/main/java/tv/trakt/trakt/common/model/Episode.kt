@@ -40,8 +40,8 @@ data class Episode(
 
     val isReleased: Boolean
         get() {
-            val now = nowUtcInstant()
-            return releasedAt == now || releasedAt?.isBefore(now) == true
+            if (releasedAt == null) return false
+            return releasedAt?.isAfter(nowUtcInstant()) != true
         }
 
     val seasonEpisode: SeasonEpisode

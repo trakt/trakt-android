@@ -52,7 +52,6 @@ import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
-import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
@@ -209,11 +208,7 @@ internal fun EpisodeHeader(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.horizontalScroll(rememberScrollState()),
                 ) {
-                    val hidden = remember(episode.releasedAt) {
-                        val firstAired = episode.releasedAt
-                        firstAired == null || firstAired.isAfter(nowUtcInstant())
-                    }
-
+                    val hidden = !episode.rememberReleased()
                     Row(
                         horizontalArrangement = spacedBy(2.dp),
                         verticalAlignment = Alignment.CenterVertically,

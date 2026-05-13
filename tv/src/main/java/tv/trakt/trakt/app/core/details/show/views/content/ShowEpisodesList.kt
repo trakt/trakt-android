@@ -75,8 +75,7 @@ internal fun ShowEpisodesList(
                             ?: show?.images?.getFanartUrl(),
                         onClick = { onEpisodeClick(episode) },
                         cardContent = {
-                            val isReleased = episode.rememberReleased()
-                            if (isReleased) {
+                            if (!episode.rememberReleased()) {
                                 InfoChip(
                                     text = episode.releasedAt?.toLocal()?.relativeDateTimeString() ?: "",
                                     iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
