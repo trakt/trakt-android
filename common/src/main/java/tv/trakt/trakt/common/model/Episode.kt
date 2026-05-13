@@ -39,10 +39,7 @@ data class Episode(
         get() = effectiveReleaseDate ?: firstAired
 
     val isReleased: Boolean
-        get() {
-            if (releasedAt == null) return false
-            return releasedAt?.isAfter(nowUtcInstant()) != true
-        }
+        get() = releasedAt?.let { !it.isAfter(nowUtcInstant()) } ?: false
 
     val seasonEpisode: SeasonEpisode
         get() = SeasonEpisode(
