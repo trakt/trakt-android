@@ -37,7 +37,7 @@
   <string name="button_text_no_services">Brak serwisów</string>
   <string name="button_text_personal">Osobiste</string>
   <string name="button_text_player_audio_default">Domyślne</string>
-  <string name="button_text_player_play_now">Odtwórz teraz</string>
+  <string name="button_text_player_play_now">Odtwórz</string>
   <string name="button_text_player_resume">Wznów</string>
   <string name="button_text_player_subtitles_off">Wyłączone</string>
   <string name="button_text_progress_completed">Ukończone</string>

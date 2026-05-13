@@ -418,7 +418,7 @@
   <string name="warning_prompt_log_out">ログアウトしてもよろしいですか？</string>
   <string name="warning_prompt_mark_as_watched_multiple_episodes">%dエピソードを視聴済みにしますか？</string>
   <string name="warning_prompt_mark_as_watched_show">「%s」を視聴済みにしますか？これにより、全エピソードが視聴済みになります。</string>
-  <string name="warning_prompt_mark_as_watched_show_android">「%1$s」の**全%2$dエピソード**を視聴済みとしてマークしてもよろしいですか？</string>
+  <string name="warning_prompt_mark_as_watched_show_android">%1$dエピソードすべてを含む「%2$s」を視聴済みとしてマークしてもよろしいですか？</string>
   <string name="warning_prompt_remove_from_favorites">「%s」をお気に入りから削除してもよろしいですか？</string>
   <string name="warning_prompt_remove_from_liked_lists">「%s」をいいねしたリストから削除してもよろしいですか？</string>
   <string name="warning_prompt_remove_from_personal_list">「%1$s」を%2$sから削除してもよろしいですか？</string>

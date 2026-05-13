@@ -418,7 +418,7 @@
   <string name="warning_prompt_log_out">你确定要登出吗？</string>
   <string name="warning_prompt_mark_as_watched_multiple_episodes">你确定要将 %d 集标记为已观看吗？</string>
   <string name="warning_prompt_mark_as_watched_show">你确定要将“%s”标记为已观看吗？这会将所有剧集标记为已观看。</string>
-  <string name="warning_prompt_mark_as_watched_show_android">您确定要将“%1$s”的**所有 %2$d 集**标记为已观看吗？</string>
+  <string name="warning_prompt_mark_as_watched_show_android">您确定要将 %1$d 集全部标记为已观看，包括 %2$s 的所有剧集吗?</string>
   <string name="warning_prompt_remove_from_favorites">你确定要将“%s”从你的最爱中移除吗？</string>
   <string name="warning_prompt_remove_from_liked_lists">您确定要从您喜欢的列表中移除“%s”吗？</string>
   <string name="warning_prompt_remove_from_personal_list">你确定要从 %1$s 中移除“%2$s”吗？</string>
