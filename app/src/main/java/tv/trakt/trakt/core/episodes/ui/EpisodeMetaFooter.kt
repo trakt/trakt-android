@@ -19,17 +19,18 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
-import tv.trakt.trakt.common.helpers.extensions.nowUtc
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.time.temporal.ChronoUnit.DAYS
 
 private const val SEPARATOR = "  •  "
 
@@ -48,21 +49,19 @@ fun EpisodeMetaFooter(
     onCheckClick: (() -> Unit)? = null,
     onCheckLongClick: (() -> Unit)? = null,
 ) {
+    val isReleased = episode.rememberReleased()
     val runtime = rememberDurationFormat(episode.runtime?.inWholeMinutes)
+
     val metaString = remember {
         buildString {
-            episode.firstAired?.let {
-                append(it.year)
+            episode.releasedAt?.let {
+                append(it.toLocal().year)
             }
             episode.runtime?.let {
                 if (isNotEmpty()) append(SEPARATOR)
                 append(runtime)
             }
         }
-    }
-
-    val isReleased = remember(episode.firstAired) {
-        episode.firstAired?.isNowOrBefore() ?: false
     }
 
     Row(
@@ -114,7 +113,7 @@ fun EpisodeMetaFooter(
                     modifier = Modifier.size(14.dp),
                 )
                 Text(
-                    text = episode.firstAired?.relativeDateTimeString() ?: "TBA",
+                    text = episode.releasedAt?.toLocal()?.relativeDateTimeString() ?: "TBA",
                     color = textColor,
                     style = textStyle,
                 )
@@ -181,7 +180,7 @@ private fun Preview2() {
     TraktTheme {
         EpisodeMetaFooter(
             episode = PreviewData.episode1.copy(
-                firstAired = nowUtc().minusDays(3),
+                firstAired = nowUtcInstant().minus(3, DAYS),
             ),
             rating = false,
         )
@@ -194,7 +193,7 @@ private fun Preview3() {
     TraktTheme {
         EpisodeMetaFooter(
             episode = PreviewData.episode1.copy(
-                firstAired = nowUtc().minusDays(3),
+                firstAired = nowUtcInstant().minus(3, DAYS),
             ),
             rating = false,
             check = true,
@@ -208,7 +207,7 @@ private fun Preview4() {
     TraktTheme {
         EpisodeMetaFooter(
             episode = PreviewData.episode1.copy(
-                firstAired = nowUtc().minusDays(3),
+                firstAired = nowUtcInstant().minus(3, DAYS),
             ),
             rating = true,
             check = true,
@@ -224,7 +223,7 @@ private fun Preview5() {
     TraktTheme {
         EpisodeMetaFooter(
             episode = PreviewData.episode1.copy(
-                firstAired = nowUtc().minusDays(3),
+                firstAired = nowUtcInstant().minus(3, DAYS),
             ),
             rating = false,
             check = true,

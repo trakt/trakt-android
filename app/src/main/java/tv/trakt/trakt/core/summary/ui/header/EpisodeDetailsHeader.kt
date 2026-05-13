@@ -9,7 +9,6 @@ import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -23,10 +22,10 @@ import androidx.core.net.toUri
 import tv.trakt.trakt.common.Config.webImdbMediaUrl
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.helpers.extensions.capitalize
-import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Person
@@ -51,10 +50,7 @@ internal fun DetailsHeader(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-
-    val isReleased = remember {
-        episode.firstAired?.isNowOrBefore() ?: false
-    }
+    val isReleased = episode.rememberReleased()
 
     DetailsHeader(
         title = episode.title,
@@ -152,8 +148,11 @@ internal fun DetailsHeader(
         date = {
             Text(
                 text = when {
-                    isReleased -> (episode.firstAired?.year ?: show.year).toString()
-                    else -> episode.firstAired?.format(mediumDateFormat())?.capitalize() ?: show.year.toString()
+                    isReleased -> (episode.releasedAt?.toLocal()?.year ?: show.year).toString()
+                    else -> episode.releasedAt?.toLocal()
+                        ?.format(mediumDateFormat())
+                        ?.capitalize()
+                        ?: show.year.toString()
                 },
                 color = when {
                     isReleased -> TraktTheme.colors.textSecondary

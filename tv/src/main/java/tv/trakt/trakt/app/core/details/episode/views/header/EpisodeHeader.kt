@@ -52,7 +52,7 @@ import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
-import tv.trakt.trakt.common.helpers.extensions.nowUtc
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
@@ -177,7 +177,7 @@ internal fun EpisodeHeader(
                 }
 
                 // Release date
-                episode.firstAired?.let {
+                episode.releasedAt?.let {
                     Row(
                         horizontalArrangement = spacedBy(4.dp),
                         verticalAlignment = Alignment.CenterVertically,
@@ -209,9 +209,9 @@ internal fun EpisodeHeader(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.horizontalScroll(rememberScrollState()),
                 ) {
-                    val hidden = remember(episode.firstAired) {
-                        val firstAired = episode.firstAired
-                        firstAired == null || firstAired.isAfter(nowUtc())
+                    val hidden = remember(episode.releasedAt) {
+                        val firstAired = episode.releasedAt
+                        firstAired == null || firstAired.isAfter(nowUtcInstant())
                     }
 
                     Row(
@@ -282,7 +282,7 @@ internal fun EpisodeHeader(
                 }
 
                 // Info chips
-                if (show.certification != null || episode.firstAired != null) {
+                if (show.certification != null || episode.releasedAt != null) {
                     Row(
                         horizontalArrangement = spacedBy(6.dp),
                         verticalAlignment = Alignment.CenterVertically,
@@ -296,8 +296,8 @@ internal fun EpisodeHeader(
                         show.certification?.let {
                             InfoChip(text = it)
                         }
-                        episode.firstAired?.let {
-                            InfoChip(text = it.year.toString())
+                        episode.releasedAt?.let {
+                            InfoChip(text = it.toLocal().year.toString())
                         }
                     }
                 }

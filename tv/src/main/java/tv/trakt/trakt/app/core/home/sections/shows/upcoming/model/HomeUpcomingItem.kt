@@ -49,6 +49,6 @@ internal sealed interface HomeUpcomingItem {
     val releaseAt: ZonedDateTime?
         get() = when (this) {
             is MovieItem -> movie.released?.atStartOfDay(UTC)
-            is EpisodeItem -> episode.firstAired
+            is EpisodeItem -> episode.releasedAt?.atZone(UTC)
         }
 }

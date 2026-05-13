@@ -104,7 +104,7 @@ internal sealed class CustomListItem(
             is ShowItem -> show.released
             is MovieItem -> movie.released?.atStartOfDay(UTC)
             is SeasonItem -> season.firstAired
-            is EpisodeItem -> episode.firstAired
+            is EpisodeItem -> episode.releasedAt?.atZone(UTC)
         }
 
     val airedEpisodes: Int?

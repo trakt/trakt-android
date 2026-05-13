@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
@@ -21,9 +20,9 @@ import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.resources.R
@@ -76,13 +75,9 @@ internal fun EpisodeSeasonEpisodesList(
                         ?: show?.images?.getFanartUrl(),
                     onClick = { onClicked(episode) },
                     cardContent = {
-                        val isReleased = remember(episode.firstAired) {
-                            val firstAired = episode.firstAired
-                            firstAired != null && !firstAired.isBefore(nowUtc())
-                        }
-                        if (isReleased) {
+                        if (episode.rememberReleased()) {
                             InfoChip(
-                                text = episode.firstAired?.relativeDateTimeString() ?: "",
+                                text = episode.releasedAt?.toLocal()?.relativeDateTimeString() ?: "",
                                 iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
                                 containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
                             )

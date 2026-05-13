@@ -73,8 +73,8 @@ internal fun DetailsMetaInfo(
 ) {
     DetailsMetaInfo(
         modifier = modifier,
-        released = remember(episode.firstAired) {
-            episode.firstAired?.toLocal()?.toLocalDate()
+        released = remember(episode.releasedAt) {
+            episode.releasedAt?.toLocal()?.toLocalDate()
         },
         runtime = episode.runtime,
         directors = episodeDirectors,

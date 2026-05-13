@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -37,7 +36,6 @@ import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
-import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceApp
@@ -88,10 +86,7 @@ private fun EpisodeDetailsContextViewContent(
     onCoverClick: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
-
-    val isReleased = remember {
-        episode.firstAired?.isNowOrBefore() ?: false
-    }
+    val isReleased = episode.rememberReleased()
 
     Column(
         verticalArrangement = spacedBy(0.dp),

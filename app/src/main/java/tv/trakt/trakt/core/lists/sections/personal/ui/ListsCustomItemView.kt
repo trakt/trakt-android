@@ -21,6 +21,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.relativeDateString
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
@@ -349,9 +350,7 @@ private fun EpisodeItemView(
     onEpisodeClick: (EpisodeItem) -> Unit,
     modifier: Modifier,
 ) {
-    val isReleased = remember(item.episode.firstAired) {
-        item.episode.firstAired?.isBefore(nowUtc()) ?: false
-    }
+    val isReleased = item.episode.rememberReleased()
     VerticalMediaCard(
         title = item.show.title,
         watched = false,
@@ -397,7 +396,7 @@ private fun EpisodeItemView(
                         modifier = Modifier.size(13.dp),
                     )
                     Text(
-                        text = item.episode.firstAired?.relativeDateTimeString() ?: "",
+                        text = item.episode.releasedAt?.toLocal()?.relativeDateTimeString() ?: "",
                         style = TraktTheme.typography.cardTitle,
                         color = TraktTheme.colors.textPrimary,
                         textAlign = TextAlign.Center,

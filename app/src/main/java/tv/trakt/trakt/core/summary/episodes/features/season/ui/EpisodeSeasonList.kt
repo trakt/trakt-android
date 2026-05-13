@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -32,10 +31,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
-import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
@@ -84,11 +83,7 @@ internal fun EpisodeSeasonList(
             items = episodes,
             key = { item -> item.episode.ids.trakt.value },
         ) { item ->
-            val isReleased = remember(item.episode.firstAired) {
-                val firstAired = item.episode.firstAired
-                firstAired != null && firstAired.isBefore(nowUtc())
-            }
-
+            val isReleased = item.episode.rememberReleased()
             HorizontalMediaCard(
                 title = "",
                 more = item.isWatched,
@@ -104,7 +99,7 @@ internal fun EpisodeSeasonList(
                 cardContent = {
                     if (!isReleased) {
                         InfoChip(
-                            text = item.episode.firstAired?.relativeDateTimeString() ?: "TBA",
+                            text = item.episode.releasedAt?.toLocal()?.relativeDateTimeString() ?: "TBA",
                             iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
                             containerColor = TraktTheme.colors.chipContainerOnContent,
                         )

@@ -4,7 +4,6 @@ import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
-import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.core.sync.model.ProgressItem.ShowItem
 
@@ -16,11 +15,8 @@ internal data class ShowSeasons(
     val isSeasonLoading: Boolean = false,
 ) {
     val isSelectedSeasonReleased: Boolean
-        get() {
-            val now = nowUtc()
-            return selectedSeasonEpisodes.isNotEmpty() &&
-                selectedSeasonEpisodes.none { it.episode.firstAired?.isAfter(now) == true }
-        }
+        get() = selectedSeasonEpisodes.isNotEmpty() &&
+            selectedSeasonEpisodes.all { it.episode.isReleased }
 
     val isSelectedSeasonWatched: Boolean
         get() = selectedSeasonEpisodes.isNotEmpty() &&

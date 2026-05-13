@@ -2,6 +2,7 @@ package tv.trakt.trakt.common.helpers.preview
 
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.CustomList.Type
@@ -153,8 +154,9 @@ object PreviewData {
                 "walter-r2.trakt.tv/images/movies/000/142/611/fanarts/medium/5248d0dfec.jpg.webp",
             ).toImmutableList(),
         ),
-        firstAired = ZonedDateTime.now(),
-        updatedAt = ZonedDateTime.now(),
+        firstAired = nowUtcInstant(),
+        effectiveReleaseDate = nowUtcInstant(),
+        updatedAt = nowUtcInstant(),
     )
 
     val season1 = Season(

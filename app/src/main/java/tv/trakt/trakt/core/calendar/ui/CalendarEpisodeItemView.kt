@@ -24,7 +24,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.capitalize
-import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
@@ -39,6 +38,7 @@ import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.chips.PremiereChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.time.temporal.ChronoUnit.DAYS
 
 @Composable
 internal fun CalendarEpisodeItemView(
@@ -203,7 +203,7 @@ private fun Preview() {
                     watched = false,
                     show = PreviewData.show1,
                     episode = PreviewData.episode1.copy(
-                        firstAired = nowUtc().minusDays(3),
+                        firstAired = nowUtcInstant().minus(3, DAYS),
                     ),
                 ),
                 onClick = {},
