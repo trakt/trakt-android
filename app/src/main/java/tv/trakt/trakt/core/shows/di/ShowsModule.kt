@@ -187,6 +187,7 @@ internal val showsModule = module {
             loadWatchlistUseCase = get(),
             sessionManager = get(),
             analytics = get(),
+            errorsManager = get(),
             watchlistUpdates = get(),
         )
     }

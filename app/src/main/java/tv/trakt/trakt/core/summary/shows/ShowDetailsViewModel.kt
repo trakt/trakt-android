@@ -605,8 +605,15 @@ internal class ShowDetailsViewModel(
                 )
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.recordError(error)
+                    when (error.getHttpCode()) {
+                        HTTP_ERROR_TRAKT_VIP_LIMIT -> {
+                            errorsManager.tryEmit(error)
+                        }
+                        else -> {
+                            errorState.update { error }
+                            Timber.recordError(error)
+                        }
+                    }
                 }
             } finally {
                 loadingLists.update { Done }

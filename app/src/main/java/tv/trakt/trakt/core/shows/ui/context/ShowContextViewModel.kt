@@ -19,6 +19,9 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.errors.GlobalErrorsManager
+import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
+import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Show
@@ -46,6 +49,7 @@ internal class ShowContextViewModel(
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
     private val watchlistUpdates: WatchlistUpdates,
     private val sessionManager: SessionManager,
+    private val errorsManager: GlobalErrorsManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ShowContextState()
@@ -151,13 +155,21 @@ internal class ShowContextViewModel(
                     mediaType = "show",
                     source = "show_context",
                 )
+
+                loadingWatchlistState.update { Done }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.recordError(error)
+                    when (error.getHttpCode()) {
+                        HTTP_ERROR_TRAKT_VIP_LIMIT -> {
+                            errorsManager.tryEmit(error)
+                        }
+                        else -> {
+                            errorState.update { error }
+                            Timber.recordError(error)
+                        }
+                    }
+                    loadingWatchlistState.update { Idle }
                 }
-            } finally {
-                loadingWatchlistState.update { Done }
             }
         }
     }

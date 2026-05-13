@@ -423,6 +423,7 @@ internal val listsModule = module {
             loadWatchlistMinUseCase = get(),
             watchlistUpdates = get(),
             sessionManager = get(),
+            errorsManager = get(),
             analytics = get(),
         )
     }

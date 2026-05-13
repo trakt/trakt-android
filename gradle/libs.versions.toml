@@ -1,5 +1,5 @@
 [versions]
-versionCode = "381"
+versionCode = "382"
 versionName = "3.9.0"
 
 minSdk = "28"
