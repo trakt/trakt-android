@@ -44,6 +44,7 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.resources.R
@@ -177,6 +178,7 @@ private fun ContentList(
                 chipContent = {
                     Column(
                         verticalArrangement = Arrangement.Absolute.spacedBy(1.dp),
+                        modifier = Modifier.onClick { onPersonClick?.invoke(item.person) },
                     ) {
                         Text(
                             text = item.person.name,
