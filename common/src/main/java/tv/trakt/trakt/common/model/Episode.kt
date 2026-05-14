@@ -5,13 +5,13 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.helpers.extensions.nowUtc
-import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
+import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.networking.EpisodeDto
 import tv.trakt.trakt.common.networking.EpisodeLikesDto
 import tv.trakt.trakt.common.networking.LastEpisodeDto
 import tv.trakt.trakt.resources.R
-import java.time.ZonedDateTime
+import java.time.Instant
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
@@ -29,19 +29,30 @@ data class Episode(
     val episodeType: String?,
     val originalTitle: String,
     val images: Images?,
-    val firstAired: ZonedDateTime?,
-    val updatedAt: ZonedDateTime?,
+    val updatedAt: Instant?,
+    private val firstAired: Instant?,
+    private val effectiveReleaseDate: Instant?,
 ) {
     companion object
 
+    val releasedAt: Instant?
+        get() = effectiveReleaseDate ?: firstAired
+
     val isReleased: Boolean
-        get() = firstAired?.isBefore(nowUtc()) == true
+        get() = releasedAt?.let { !it.isAfter(nowUtcInstant()) } ?: false
 
     val seasonEpisode: SeasonEpisode
         get() = SeasonEpisode(
             season = season,
             episode = number,
         )
+
+    @Composable
+    fun rememberReleased(): Boolean {
+        return remember(firstAired, effectiveReleaseDate) {
+            isReleased
+        }
+    }
 
     @Composable
     fun seasonEpisodeString(): String {
@@ -84,8 +95,9 @@ fun Episode.Companion.fromDto(dto: EpisodeDto): Episode {
         images = Images(
             screenshot = (dto.images?.screenshot ?: emptyList()).toImmutableList(),
         ),
-        firstAired = dto.firstAired?.toZonedDateTime(),
-        updatedAt = dto.updatedAt?.toZonedDateTime(),
+        firstAired = dto.firstAired?.toInstant(),
+        effectiveReleaseDate = dto.effectiveReleaseDate?.toInstant(),
+        updatedAt = dto.updatedAt?.toInstant(),
     )
 }
 
@@ -108,8 +120,9 @@ fun Episode.Companion.fromDto(dto: LastEpisodeDto): Episode {
         images = Images(
             screenshot = (dto.images?.screenshot ?: emptyList()).toImmutableList(),
         ),
-        firstAired = dto.firstAired?.toZonedDateTime(),
-        updatedAt = dto.updatedAt?.toZonedDateTime(),
+        firstAired = dto.firstAired?.toInstant(),
+        effectiveReleaseDate = dto.effectiveReleaseDate?.toInstant(),
+        updatedAt = dto.updatedAt?.toInstant(),
     )
 }
 
@@ -132,7 +145,8 @@ fun Episode.Companion.fromDto(dto: EpisodeLikesDto): Episode {
         images = Images(
             screenshot = (dto.images?.screenshot ?: emptyList()).toImmutableList(),
         ),
-        firstAired = dto.firstAired?.toZonedDateTime(),
-        updatedAt = dto.updatedAt?.toZonedDateTime(),
+        firstAired = dto.firstAired?.toInstant(),
+        effectiveReleaseDate = dto.effectiveReleaseDate?.toInstant(),
+        updatedAt = dto.updatedAt?.toInstant(),
     )
 }

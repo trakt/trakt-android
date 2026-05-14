@@ -7,7 +7,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import java.time.Instant
-import java.time.ZoneOffset
+import java.time.ZoneOffset.UTC
 
 @Immutable
 internal sealed class CalendarItem(
@@ -41,8 +41,8 @@ internal sealed class CalendarItem(
 
     val releasedAt: Instant?
         get() = when (this) {
-            is MovieItem -> movie.released?.atStartOfDay(ZoneOffset.UTC)?.toInstant()
-            is EpisodeItem -> episode.firstAired?.toInstant()
+            is MovieItem -> movie.released?.atStartOfDay(UTC)?.toInstant()
+            is EpisodeItem -> episode.releasedAt
         }
 
     val images: Images?

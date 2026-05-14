@@ -62,7 +62,6 @@ import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.ifOrElse
-import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
@@ -387,9 +386,7 @@ internal fun EpisodeDetailsContent(
         }
 
         if (state.show != null && state.episode != null) {
-            val isReleased = remember {
-                state.episode.firstAired?.isNowOrBefore() ?: false
-            }
+            val isReleased = state.episode.rememberReleased()
 
             val isWatched = remember(state.episodeProgress?.plays) {
                 state.episodeProgress?.watched == true

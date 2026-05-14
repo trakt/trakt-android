@@ -63,11 +63,11 @@ import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
-import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size
@@ -470,10 +470,7 @@ private fun EpisodeListItem(
     onRemoveClick: ((EpisodeItem) -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
-    val isReleased = remember(episode.episode.firstAired) {
-        val firstAired = episode.episode.firstAired
-        firstAired != null && firstAired.isBefore(nowUtc())
-    }
+    val isReleased = episode.episode.rememberReleased()
 
     PanelHorizontalMediaCard(
         title = episode.episode.title,
@@ -505,7 +502,7 @@ private fun EpisodeListItem(
                             modifier = Modifier.size(13.dp),
                         )
                         Text(
-                            text = episode.episode.firstAired?.relativeDateTimeString() ?: "TBA",
+                            text = episode.episode.releasedAt?.toLocal()?.relativeDateTimeString() ?: "TBA",
                             color = TraktTheme.colors.textPrimary,
                             style = TraktTheme.typography.cardSubtitle.copy(
                                 fontSize = 11.sp,

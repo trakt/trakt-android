@@ -33,7 +33,6 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
-import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExternalRating
@@ -274,7 +273,7 @@ internal class EpisodeDetailsViewModel(
     }
 
     private fun loadRatings(episode: Episode?) {
-        if (episode?.firstAired?.isNowOrBefore() != true) {
+        if (episode?.isReleased != true) {
             // Don't load ratings for unreleased episodes
             return
         }
