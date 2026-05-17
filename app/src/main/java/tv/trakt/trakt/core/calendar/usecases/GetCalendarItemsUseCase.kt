@@ -11,7 +11,6 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.data.remote.calendar.UserCalendarRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
-import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
@@ -85,7 +84,8 @@ internal class GetCalendarItemsUseCase(
                 .associateBy { it.movie.ids.trakt }
 
             val weekShowsData = showsData.filter {
-                val localDate = it.firstAired.toInstant().toLocal().toLocalDate()
+                val date = it.episode.effectiveReleaseDate ?: it.firstAired
+                val localDate = date.toInstant().toLocalDay()
                 localDate in weekStart..weekEnd
             }
 
