@@ -1,7 +1,6 @@
 package tv.trakt.trakt.common.helpers.serializers
 
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -27,11 +26,6 @@ object InstantSerializer : KSerializer<Instant> {
     }
 
     override fun deserialize(decoder: Decoder): Instant {
-        val dateMillis = decoder.decodeLong()
-        return try {
-            Instant.ofEpochMilli(dateMillis)
-        } catch (e: Exception) {
-            throw SerializationException("Failed to parse Instant from: $dateMillis", e)
-        }
+        return Instant.ofEpochMilli(decoder.decodeLong())
     }
 }

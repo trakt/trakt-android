@@ -184,7 +184,7 @@ private fun Preview2() {
     TraktTheme {
         ShowMetaFooter(
             show = PreviewData.show1.copy(
-                firstAired = nowUtcInstant().minus(3, DAYS),
+                releasedAt = nowUtcInstant().minus(3, DAYS),
             ),
             rating = false,
         )
@@ -197,7 +197,7 @@ private fun Preview3() {
     TraktTheme {
         ShowMetaFooter(
             show = PreviewData.show1.copy(
-                firstAired = nowUtcInstant().minus(3, DAYS),
+                releasedAt = nowUtcInstant().minus(3, DAYS),
             ),
             rating = false,
             check = true,
@@ -211,7 +211,7 @@ private fun Preview4() {
     TraktTheme {
         ShowMetaFooter(
             show = PreviewData.show1.copy(
-                firstAired = nowUtcInstant().minus(3, DAYS),
+                releasedAt = nowUtcInstant().minus(3, DAYS),
             ),
             rating = true,
             check = true,
@@ -227,7 +227,7 @@ private fun Preview5() {
     TraktTheme {
         ShowMetaFooter(
             show = PreviewData.show1.copy(
-                firstAired = nowUtcInstant().minus(3, DAYS),
+                releasedAt = nowUtcInstant().minus(3, DAYS),
             ),
             rating = false,
             check = true,

@@ -45,20 +45,17 @@ data class Show(
     @Serializable(ImmutableListSerializer::class)
     val languages: ImmutableList<String>,
     @Serializable(InstantSerializer::class)
-    private val firstAired: Instant?,
+    val releasedAt: Instant?,
 ) {
     companion object
 
-    val releasedAt: Instant?
-        get() = firstAired
-
     val isReleased: Boolean
         get() = status == Released ||
-            firstAired?.let { !it.isAfter(nowUtcInstant()) } ?: false
+            releasedAt?.let { !it.isAfter(nowUtcInstant()) } ?: false
 
     @Composable
     fun rememberReleased(): Boolean {
-        return remember(firstAired, status) {
+        return remember(releasedAt, status) {
             isReleased
         }
     }
@@ -72,7 +69,7 @@ fun Companion.fromDto(dto: ShowDto): Show {
         overview = dto.overview,
         year = dto.year,
         status = MediaStatus.fromSlug(dto.status),
-        firstAired = dto.firstAired?.toInstant(),
+        releasedAt = dto.firstAired?.toInstant(),
         genres = (dto.genres ?: listOf())
             .mapNotNull { MediaGenre.fromSlug(it) }
             .toImmutableList(),
@@ -107,7 +104,7 @@ fun Companion.fromDto(dto: RecommendedShowDto): Show {
         titleOriginal = dto.originalTitle,
         overview = dto.overview,
         year = dto.year,
-        firstAired = dto.firstAired?.toInstant(),
+        releasedAt = dto.firstAired?.toInstant(),
         genres = (dto.genres ?: listOf())
             .mapNotNull { MediaGenre.fromSlug(it) }
             .toImmutableList(),
@@ -143,7 +140,7 @@ fun Companion.fromDto(dto: ShowLikesDto): Show {
         titleOriginal = dto.originalTitle,
         overview = dto.overview,
         year = dto.year,
-        firstAired = dto.firstAired?.toInstant(),
+        releasedAt = dto.firstAired?.toInstant(),
         genres = (dto.genres ?: listOf())
             .mapNotNull { MediaGenre.fromSlug(it) }
             .toImmutableList(),

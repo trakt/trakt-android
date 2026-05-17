@@ -226,7 +226,7 @@ private fun Preview2() {
             FavoriteItemView(
                 item = FavoriteItem.ShowItem(
                     show = PreviewData.show1.copy(
-                        firstAired = nowUtcInstant().minus(5, DAYS),
+                        releasedAt = nowUtcInstant().minus(5, DAYS),
                     ),
                     rank = 0,
                     listedAt = nowUtcInstant().minus(3, DAYS),

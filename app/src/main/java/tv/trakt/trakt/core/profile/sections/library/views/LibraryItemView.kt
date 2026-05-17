@@ -152,7 +152,7 @@ private fun Preview2() {
             LibraryItemView(
                 item = LibraryItem.EpisodeItem(
                     show = PreviewData.show1.copy(
-                        firstAired = nowUtcInstant().minus(5, DAYS),
+                        releasedAt = nowUtcInstant().minus(5, DAYS),
                     ),
                     episode = PreviewData.episode1,
                     collectedAt = nowUtcInstant().minus(3, DAYS),
