@@ -66,7 +66,7 @@ private fun MovieInfoView(
                     lists = state.movieStats?.lists ?: 0,
                     favorites = state.movieStats?.favorited ?: 0,
                     loading = !state.loading.isDone,
-                    isReleased = it.isReleased,
+                    released = it.isReleased,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 23.dp),

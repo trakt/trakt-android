@@ -17,23 +17,20 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun MetaView(
+    released: Boolean,
     plays: Int,
     watchers: Int,
     lists: Int,
     favorites: Int?,
     loading: Boolean,
     modifier: Modifier = Modifier,
-    isReleased: Boolean = true,
 ) {
-    val displayedPlays = if (isReleased) plays else 0
-    val displayedWatchers = if (isReleased) watchers else 0
-    val displayedFavorites = favorites?.let { if (isReleased) it else 0 }
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier,
     ) {
         MetaViewItemView(
-            title = rememberThousandsFormat(displayedPlays),
+            title = rememberThousandsFormat(if (released) plays else 0),
             subtitle = stringResource(R.string.stat_text_plays),
             icon = {
                 Icon(
@@ -53,7 +50,7 @@ internal fun MetaView(
         )
 
         MetaViewItemView(
-            title = rememberThousandsFormat(displayedWatchers),
+            title = rememberThousandsFormat(if (released) watchers else 0),
             subtitle = stringResource(R.string.stat_text_watchers),
             icon = {
                 Icon(
@@ -84,9 +81,9 @@ internal fun MetaView(
                 .weight(1F),
         )
 
-        displayedFavorites?.let { favoritesValue ->
+        favorites?.let {
             MetaViewItemView(
-                title = rememberThousandsFormat(favoritesValue),
+                title = rememberThousandsFormat(if (released) it else 0),
                 subtitle = stringResource(R.string.stat_text_favorited),
                 icon = {
                     Icon(
@@ -118,6 +115,7 @@ private fun Preview() {
             lists = 321,
             favorites = 987,
             loading = false,
+            released = true,
         )
     }
 }
@@ -136,6 +134,7 @@ private fun PreviewLoading() {
             lists = 0,
             favorites = 0,
             loading = true,
+            released = true,
         )
     }
 }

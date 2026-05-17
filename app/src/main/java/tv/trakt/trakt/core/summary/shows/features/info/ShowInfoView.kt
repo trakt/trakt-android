@@ -66,7 +66,7 @@ private fun ShowInfoView(
                     lists = state.showStats?.lists ?: 0,
                     favorites = state.showStats?.favorited ?: 0,
                     loading = !state.loading.isDone,
-                    isReleased = it.isReleased,
+                    released = it.isReleased,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 23.dp),
