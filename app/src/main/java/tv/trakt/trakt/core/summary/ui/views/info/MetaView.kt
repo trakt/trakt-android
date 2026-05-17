@@ -23,13 +23,17 @@ internal fun MetaView(
     favorites: Int?,
     loading: Boolean,
     modifier: Modifier = Modifier,
+    isReleased: Boolean = true,
 ) {
+    val displayedPlays = if (isReleased) plays else 0
+    val displayedWatchers = if (isReleased) watchers else 0
+    val displayedFavorites = favorites?.let { if (isReleased) it else 0 }
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier,
     ) {
         MetaViewItemView(
-            title = rememberThousandsFormat(plays),
+            title = rememberThousandsFormat(displayedPlays),
             subtitle = stringResource(R.string.stat_text_plays),
             icon = {
                 Icon(
@@ -49,7 +53,7 @@ internal fun MetaView(
         )
 
         MetaViewItemView(
-            title = rememberThousandsFormat(watchers),
+            title = rememberThousandsFormat(displayedWatchers),
             subtitle = stringResource(R.string.stat_text_watchers),
             icon = {
                 Icon(
@@ -80,9 +84,9 @@ internal fun MetaView(
                 .weight(1F),
         )
 
-        favorites?.let {
+        displayedFavorites?.let { favoritesValue ->
             MetaViewItemView(
-                title = rememberThousandsFormat(favorites),
+                title = rememberThousandsFormat(favoritesValue),
                 subtitle = stringResource(R.string.stat_text_favorited),
                 icon = {
                     Icon(
