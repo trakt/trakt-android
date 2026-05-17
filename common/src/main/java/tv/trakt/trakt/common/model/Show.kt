@@ -6,9 +6,11 @@ import androidx.core.graphics.toColorInt
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
+import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.helpers.serializers.ImmutableListSerializer
 import tv.trakt.trakt.common.helpers.serializers.ZonedDateTimeSerializer
+import tv.trakt.trakt.common.model.MediaStatus.Released
 import tv.trakt.trakt.common.model.Show.Companion
 import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.ShowDto
@@ -44,6 +46,10 @@ data class Show(
     val languages: ImmutableList<String>,
 ) {
     companion object
+
+    // Considered released if status is "released" or release date is today or before
+    val isReleased: Boolean
+        get() = status == Released || released?.isNowOrBefore() == true
 }
 
 fun Companion.fromDto(dto: ShowDto): Show {

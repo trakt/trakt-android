@@ -64,6 +64,7 @@ private fun EpisodeInfoView(
                     lists = state.episodeStats?.lists ?: 0,
                     favorites = null,
                     loading = !state.loading.isDone,
+                    released = episode.isReleased,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 23.dp),

@@ -17,6 +17,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
 internal fun MetaView(
+    released: Boolean,
     plays: Int,
     watchers: Int,
     lists: Int,
@@ -29,7 +30,7 @@ internal fun MetaView(
         modifier = modifier,
     ) {
         MetaViewItemView(
-            title = rememberThousandsFormat(plays),
+            title = rememberThousandsFormat(if (released) plays else 0),
             subtitle = stringResource(R.string.stat_text_plays),
             icon = {
                 Icon(
@@ -49,7 +50,7 @@ internal fun MetaView(
         )
 
         MetaViewItemView(
-            title = rememberThousandsFormat(watchers),
+            title = rememberThousandsFormat(if (released) watchers else 0),
             subtitle = stringResource(R.string.stat_text_watchers),
             icon = {
                 Icon(
@@ -82,7 +83,7 @@ internal fun MetaView(
 
         favorites?.let {
             MetaViewItemView(
-                title = rememberThousandsFormat(favorites),
+                title = rememberThousandsFormat(if (released) it else 0),
                 subtitle = stringResource(R.string.stat_text_favorited),
                 icon = {
                     Icon(
@@ -114,6 +115,7 @@ private fun Preview() {
             lists = 321,
             favorites = 987,
             loading = false,
+            released = true,
         )
     }
 }
@@ -132,6 +134,7 @@ private fun PreviewLoading() {
             lists = 0,
             favorites = 0,
             loading = true,
+            released = true,
         )
     }
 }
