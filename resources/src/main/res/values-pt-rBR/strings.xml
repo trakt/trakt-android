@@ -61,13 +61,13 @@
   <string name="button_text_toggle_search_lists">Listas</string>
   <string name="button_text_toggle_search_media">Mídia</string>
   <string name="button_text_toggle_search_people">Pessoas</string>
-  <string name="button_text_track">Acompanhar</string>
+  <string name="button_text_track">Marcar</string>
   <string name="button_text_trivia_no_spoilers">Sem spoilers</string>
   <string name="button_text_trivia_spoilers">Com spoilers</string>
   <string name="button_text_upgrade_to_vip">Fazer upgrade para VIP</string>
   <string name="button_text_view_all">Mais</string>
   <string name="button_text_watch_again">Assistir novamente</string>
-  <string name="button_text_watchlist">Minha Lista</string>
+  <string name="button_text_watchlist">Lista para Assistir</string>
   <string name="button_text_where_to_watch">Onde assistir</string>
   <string name="button_text_yes">Sim</string>
   <string name="button_text_younify_fix">Corrigir</string>
@@ -94,7 +94,7 @@
   <string name="header_get_notified">Seja Notificado!</string>
   <string name="header_landing_discover">Descobrir</string>
   <string name="header_landing_share">Compartilhar</string>
-  <string name="header_landing_track">Acompanhar</string>
+  <string name="header_landing_track">Marcar</string>
   <string name="header_language">Idioma</string>
   <string name="header_network">Canal</string>
   <string name="header_notifications_rationale">Ative as notificações para ficar por dentro dos lançamentos de sua mídia e da sua atividade de visualização atual.</string>
@@ -176,7 +176,7 @@
   <string name="list_title_trending_shows">Séries em Alta</string>
   <string name="list_title_trivia">Curiosidades</string>
   <string name="list_title_up_next">Continuar Assistindo</string>
-  <string name="list_title_upcoming_schedule">Próximos Lançamentos</string>
+  <string name="list_title_upcoming_schedule">Calendário</string>
   <string name="list_title_watchlist_movies">Minha Lista de Filmes</string>
   <string name="list_title_watchlist_shows">Minha Lista de Séries</string>
   <string name="page_description_create_list">Insira um nome e descrição para sua lista.</string>
@@ -193,7 +193,7 @@
   <string name="page_title_settings">Configurações</string>
   <string name="page_title_shows">Séries</string>
   <string name="page_title_unexpected_error">Algo deu errado</string>
-  <string name="page_title_watchlist">Minha Lista</string>
+  <string name="page_title_watchlist">Lista para Assistir</string>
   <string name="page_title_where_to_watch">Onde Assistir</string>
   <string name="stat_text_favorited">Favoritos</string>
   <string name="stat_text_lists">Listas</string>
@@ -253,8 +253,8 @@
   <string name="text_info_show_dropped">Série abandonada.</string>
   <string name="text_info_signed_in">Você foi conectado.</string>
   <string name="text_info_signed_out">Você foi desconectado.</string>
-  <string name="text_info_watchlist_added">Adicionado à Minha Lista.</string>
-  <string name="text_info_watchlist_removed">Removido da Minha Lista.</string>
+  <string name="text_info_watchlist_added">Adicionado à Lista para Assistir.</string>
+  <string name="text_info_watchlist_removed">Removido da Lista para Assistir.</string>
   <string name="text_info_younify_service_linked">Serviço de streaming vinculado.</string>
   <string name="text_info_younify_service_unlinked">Serviço de streaming desvinculado.</string>
   <string name="text_landing_discover">filmes e séries que você vai amar e onde estão disponíveis para streaming agora mesmo.</string>
@@ -375,7 +375,7 @@
   <string name="translated_value_genre_talk_show">Talk Show</string>
   <string name="translated_value_genre_thriller">Thriller</string>
   <string name="translated_value_genre_war">Guerra</string>
-  <string name="translated_value_genre_western">Western</string>
+  <string name="translated_value_genre_western">Faroeste</string>
   <string name="translated_value_library_custom">Personalizado</string>
   <string name="translated_value_position_acting">Atuação</string>
   <string name="translated_value_status_canceled">Cancelado</string>
@@ -423,7 +423,7 @@
   <string name="warning_prompt_remove_from_liked_lists">Tem certeza de que deseja remover \"%s\" das suas listas curtidas?</string>
   <string name="warning_prompt_remove_from_personal_list">Tem certeza que deseja remover \"%1$s\" da %2$s?</string>
   <string name="warning_prompt_remove_from_watched">Tem certeza que deseja remover \"%s\" do seu histórico de Assistidos? Todas as reproduções serão removidas.</string>
-  <string name="warning_prompt_remove_from_watchlist">Tem certeza que deseja remover \"%s\" da Minha Lista?</string>
+  <string name="warning_prompt_remove_from_watchlist">Tem certeza que deseja remover \"%s\" da Lista para Assistir?</string>
   <string name="warning_prompt_remove_single_watched">Tem certeza que deseja remover esta reprodução de \"%s\" do seu histórico de Assistidos?</string>
   <string name="warning_prompt_set_cover_image">Usar \"%s\" como imagem de fundo do seu perfil?</string>
   <string name="warning_prompt_stop_checkin">Tem certeza que deseja parar de assistir \"%s\"?</string>

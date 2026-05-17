@@ -176,7 +176,7 @@
   <string name="list_title_trending_shows">Популярные сериалы</string>
   <string name="list_title_trivia">Интересные факты</string>
   <string name="list_title_up_next">Смотреть дальше</string>
-  <string name="list_title_upcoming_schedule">Предстоящие</string>
+  <string name="list_title_upcoming_schedule">Календарь</string>
   <string name="list_title_watchlist_movies">Список фильмов</string>
   <string name="list_title_watchlist_shows">Список сериалов</string>
   <string name="page_description_create_list">Введите название и описание для вашего списка.</string>
