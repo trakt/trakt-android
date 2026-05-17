@@ -20,10 +20,10 @@ import androidx.core.net.toUri
 import tv.trakt.trakt.common.Config.webImdbMediaUrl
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.helpers.extensions.capitalize
-import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.Person
@@ -48,9 +48,7 @@ internal fun DetailsHeader(
 ) {
     val context = LocalContext.current
 
-    val isReleased = remember {
-        show.released?.isNowOrBefore() ?: false
-    }
+    val isReleased = show.rememberReleased()
 
     val playsCount = remember(airedCount, playsCount) {
         if (airedCount == 0) {
@@ -66,8 +64,9 @@ internal fun DetailsHeader(
         date = {
             Text(
                 text = when {
-                    isReleased -> (show.released?.year ?: show.year).toString()
-                    else -> show.released?.format(mediumDateFormat())?.capitalize() ?: show.year.toString()
+                    isReleased -> (show.releasedAt?.toLocal()?.year ?: show.year).toString()
+                    else -> show.releasedAt?.toLocal()?.format(mediumDateFormat())?.capitalize()
+                        ?: show.year.toString()
                 },
                 color = when {
                     isReleased -> TraktTheme.colors.textSecondary

@@ -38,7 +38,6 @@ import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.errors.GlobalErrorsManager
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
-import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
@@ -271,7 +270,7 @@ internal class ShowDetailsViewModel(
     }
 
     private fun loadRatings(show: Show?) {
-        if (show?.released?.isNowOrBefore() != true) {
+        if (show?.isReleased != true) {
             // Don't load ratings for unreleased shows
             return
         }

@@ -1,21 +1,23 @@
 package tv.trakt.trakt.common.model
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.toColorInt
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
-import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
-import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
+import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.helpers.serializers.ImmutableListSerializer
-import tv.trakt.trakt.common.helpers.serializers.ZonedDateTimeSerializer
+import tv.trakt.trakt.common.helpers.serializers.InstantSerializer
 import tv.trakt.trakt.common.model.MediaStatus.Released
 import tv.trakt.trakt.common.model.Show.Companion
 import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.ShowDto
 import tv.trakt.trakt.common.networking.ShowLikesDto
-import java.time.ZonedDateTime
+import java.time.Instant
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
@@ -28,8 +30,6 @@ data class Show(
     val overview: String?,
     val network: String?,
     val status: MediaStatus?,
-    @Serializable(ZonedDateTimeSerializer::class)
-    val released: ZonedDateTime?,
     val year: Int?,
     @Serializable(ImmutableListSerializer::class)
     val genres: ImmutableList<MediaGenre>,
@@ -44,12 +44,24 @@ data class Show(
     val country: String?,
     @Serializable(ImmutableListSerializer::class)
     val languages: ImmutableList<String>,
+    @Serializable(InstantSerializer::class)
+    private val firstAired: Instant?,
 ) {
     companion object
 
-    // Considered released if status is "released" or release date is today or before
+    val releasedAt: Instant?
+        get() = firstAired
+
     val isReleased: Boolean
-        get() = status == Released || released?.isNowOrBefore() == true
+        get() = status == Released ||
+            firstAired?.let { !it.isAfter(nowUtcInstant()) } ?: false
+
+    @Composable
+    fun rememberReleased(): Boolean {
+        return remember(firstAired, status) {
+            isReleased
+        }
+    }
 }
 
 fun Companion.fromDto(dto: ShowDto): Show {
@@ -60,7 +72,7 @@ fun Companion.fromDto(dto: ShowDto): Show {
         overview = dto.overview,
         year = dto.year,
         status = MediaStatus.fromSlug(dto.status),
-        released = dto.firstAired?.toZonedDateTime(),
+        firstAired = dto.firstAired?.toInstant(),
         genres = (dto.genres ?: listOf())
             .mapNotNull { MediaGenre.fromSlug(it) }
             .toImmutableList(),
@@ -95,7 +107,7 @@ fun Companion.fromDto(dto: RecommendedShowDto): Show {
         titleOriginal = dto.originalTitle,
         overview = dto.overview,
         year = dto.year,
-        released = dto.firstAired?.toZonedDateTime(),
+        firstAired = dto.firstAired?.toInstant(),
         genres = (dto.genres ?: listOf())
             .mapNotNull { MediaGenre.fromSlug(it) }
             .toImmutableList(),
@@ -131,7 +143,7 @@ fun Companion.fromDto(dto: ShowLikesDto): Show {
         titleOriginal = dto.originalTitle,
         overview = dto.overview,
         year = dto.year,
-        released = dto.firstAired?.toZonedDateTime(),
+        firstAired = dto.firstAired?.toInstant(),
         genres = (dto.genres ?: listOf())
             .mapNotNull { MediaGenre.fromSlug(it) }
             .toImmutableList(),

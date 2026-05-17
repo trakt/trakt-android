@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
-import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
@@ -153,7 +152,7 @@ private fun Preview2() {
             LibraryItemView(
                 item = LibraryItem.EpisodeItem(
                     show = PreviewData.show1.copy(
-                        released = nowUtc().minusDays(5),
+                        firstAired = nowUtcInstant().minus(5, DAYS),
                     ),
                     episode = PreviewData.episode1,
                     collectedAt = nowUtcInstant().minus(3, DAYS),

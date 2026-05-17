@@ -37,6 +37,7 @@ import kotlinx.collections.immutable.toImmutableSet
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomListMinimal
 import tv.trakt.trakt.common.model.Show
@@ -150,8 +151,12 @@ private fun ShowDetailsListsContent(
             ),
         )
 
+        val yearText = remember(show.releasedAt) {
+            show.releasedAt?.toLocal()?.year ?: show.year
+        }
+
         Text(
-            text = "${show.released?.year ?: show.year}  •  $genresText",
+            text = "$yearText  •  $genresText",
             color = TraktTheme.colors.textSecondary,
             style = TraktTheme.typography.paragraphSmaller,
             maxLines = 1,

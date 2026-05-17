@@ -20,16 +20,17 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
-import tv.trakt.trakt.common.helpers.extensions.nowUtc
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.time.temporal.ChronoUnit.DAYS
 
 private const val SEPARATOR = "  •  "
 
@@ -51,8 +52,8 @@ fun ShowMetaFooter(
     val epsString = stringResource(R.string.tag_text_number_of_episodes, show.airedEpisodes)
     val metaString = remember {
         buildString {
-            show.released?.let {
-                append(it.year)
+            show.releasedAt?.let {
+                append(it.toLocal().year)
             }
             if (show.airedEpisodes > 0) {
                 if (isNotEmpty()) append(SEPARATOR)
@@ -65,9 +66,7 @@ fun ShowMetaFooter(
         }
     }
 
-    val isReleased = remember(show.released) {
-        show.released?.isNowOrBefore() ?: false
-    }
+    val isReleased = show.rememberReleased()
 
     Row(
         horizontalArrangement = SpaceBetween,
@@ -118,7 +117,7 @@ fun ShowMetaFooter(
                     modifier = Modifier.size(14.dp),
                 )
                 Text(
-                    text = show.released?.relativeDateTimeString() ?: "TBA",
+                    text = show.releasedAt?.toLocal()?.relativeDateTimeString() ?: "TBA",
                     color = textColor,
                     style = textStyle,
                 )
@@ -185,7 +184,7 @@ private fun Preview2() {
     TraktTheme {
         ShowMetaFooter(
             show = PreviewData.show1.copy(
-                released = nowUtc().minusDays(3),
+                firstAired = nowUtcInstant().minus(3, DAYS),
             ),
             rating = false,
         )
@@ -198,7 +197,7 @@ private fun Preview3() {
     TraktTheme {
         ShowMetaFooter(
             show = PreviewData.show1.copy(
-                released = nowUtc().minusDays(3),
+                firstAired = nowUtcInstant().minus(3, DAYS),
             ),
             rating = false,
             check = true,
@@ -212,7 +211,7 @@ private fun Preview4() {
     TraktTheme {
         ShowMetaFooter(
             show = PreviewData.show1.copy(
-                released = nowUtc().minusDays(3),
+                firstAired = nowUtcInstant().minus(3, DAYS),
             ),
             rating = true,
             check = true,
@@ -228,7 +227,7 @@ private fun Preview5() {
     TraktTheme {
         ShowMetaFooter(
             show = PreviewData.show1.copy(
-                released = nowUtc().minusDays(3),
+                firstAired = nowUtcInstant().minus(3, DAYS),
             ),
             rating = false,
             check = true,

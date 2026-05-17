@@ -23,6 +23,7 @@ import tv.trakt.trakt.common.model.TmdbId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit.DAYS
 import kotlin.time.Duration.Companion.minutes
 
 object PreviewData {
@@ -38,7 +39,7 @@ object PreviewData {
         overview = "This is a sample movie overview that provides a brief description of the movie's plot " +
             "and main themes. It is intended to give viewers an idea of what to expect without revealing too much.",
         year = 2024,
-        released = ZonedDateTime.now().plusDays(5),
+        firstAired = nowUtcInstant().plus(5, DAYS),
         genres = listOf<MediaGenre>().toImmutableList(),
         images = Images(
             fanart = listOf(

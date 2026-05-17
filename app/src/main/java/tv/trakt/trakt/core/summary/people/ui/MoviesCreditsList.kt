@@ -40,6 +40,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.Movie
@@ -153,7 +154,7 @@ internal fun MoviesCreditsList(
                                             val footerRuntime = rememberDurationFormat(item.runtime?.inWholeMinutes)
                                             val footerText = remember {
                                                 val runtime = item.runtime?.inWholeMinutes
-                                                val year = item.released?.year
+                                                val year = item.released?.toLocal()?.year
                                                     ?: item.movie.year
                                                     ?: "TBA"
 

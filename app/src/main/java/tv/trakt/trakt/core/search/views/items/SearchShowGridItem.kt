@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.search.model.SearchFilter
 import tv.trakt.trakt.core.search.model.SearchItem
@@ -72,8 +73,8 @@ internal fun SearchShowGridItem(
 
                 val footerText = remember {
                     buildString {
-                        item.show.released?.let {
-                            append(it.year.toString())
+                        item.show.releasedAt?.let {
+                            append(it.toLocal().year.toString())
                         } ?: append("TBA")
 
                         if (item.show.airedEpisodes > 0) {

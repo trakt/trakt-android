@@ -46,6 +46,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
@@ -190,8 +191,8 @@ private fun ContentList(
 
                     val footerText = remember {
                         buildString {
-                            item.released?.let {
-                                append(it.year.toString())
+                            item.releasedAt?.let {
+                                append(it.toLocal().year.toString())
                             } ?: append("TBA")
 
                             if (item.airedEpisodes > 0) {

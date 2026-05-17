@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import java.time.Instant
 import java.time.ZoneOffset.UTC
 import java.time.ZonedDateTime
 
@@ -59,9 +60,9 @@ internal sealed class WatchlistItem(
             is MovieItem -> movie.images?.getFanartUrl(Images.Size.FULL)
         }
 
-    val released: ZonedDateTime?
+    val released: Instant?
         get() = when (this) {
-            is ShowItem -> show.released
-            is MovieItem -> movie.released?.atStartOfDay(UTC)
+            is ShowItem -> show.releasedAt
+            is MovieItem -> movie.released?.atStartOfDay(UTC)?.toInstant()
         }
 }

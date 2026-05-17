@@ -53,9 +53,9 @@ import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
-import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Images.Size.MEDIUM
 import tv.trakt.trakt.common.model.Show
@@ -139,8 +139,7 @@ internal fun ShowHeader(
                 modifier = Modifier.padding(top = 4.dp),
             ) {
                 // Release date
-                val releaseDate = show.released
-                if (releaseDate != null) {
+                show.releasedAt?.let { releasedAt ->
                     Row(
                         horizontalArrangement = spacedBy(4.dp),
                         verticalAlignment = Alignment.CenterVertically,
@@ -152,7 +151,7 @@ internal fun ShowHeader(
                             modifier = Modifier.size(18.dp),
                         )
                         Text(
-                            text = releaseDate.format(longDateFormat()).capitalize(),
+                            text = releasedAt.toLocal().format(longDateFormat()).capitalize(),
                             color = TraktTheme.colors.textSecondary,
                             style = TraktTheme.typography.heading6,
                             maxLines = 1,
@@ -194,10 +193,7 @@ internal fun ShowHeader(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.horizontalScroll(rememberScrollState()),
                 ) {
-                    val hidden = remember(show.released) {
-                        show.released == null || show.released?.isAfter(nowUtc()) == true
-                    }
-
+                    val hidden = !show.rememberReleased()
                     Row(
                         horizontalArrangement = spacedBy(2.dp),
                         verticalAlignment = Alignment.CenterVertically,
@@ -262,7 +258,7 @@ internal fun ShowHeader(
                 }
 
                 // Info chips
-                if (show.certification != null || show.released != null) {
+                if (show.certification != null || show.releasedAt != null) {
                     Row(
                         horizontalArrangement = spacedBy(6.dp),
                         verticalAlignment = Alignment.CenterVertically,
@@ -280,8 +276,8 @@ internal fun ShowHeader(
                         show.certification?.let {
                             InfoChip(text = it)
                         }
-                        show.released?.let {
-                            InfoChip(text = it.year.toString())
+                        show.releasedAt?.let {
+                            InfoChip(text = it.toLocal().year.toString())
                         }
                     }
                 }

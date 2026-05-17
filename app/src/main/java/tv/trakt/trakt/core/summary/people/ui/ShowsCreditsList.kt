@@ -38,6 +38,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.common.model.Person
@@ -156,7 +157,7 @@ internal fun ShowsCreditsList(
                                             val footerText = remember {
                                                 buildString {
                                                     item.released?.let {
-                                                        append(it.year.toString())
+                                                        append(it.toLocal().year.toString())
                                                     } ?: append("TBA")
 
                                                     if (item.episodesCount > 0) {
