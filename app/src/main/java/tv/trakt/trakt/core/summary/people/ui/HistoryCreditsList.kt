@@ -38,6 +38,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -198,8 +199,8 @@ private fun ShowItemCard(
 
                     val footerText = remember {
                         buildString {
-                            item.show.released?.let {
-                                append(it.year.toString())
+                            item.show.releasedAt?.let {
+                                append(it.toLocal().year.toString())
                             } ?: append("TBA")
 
                             if (item.show.airedEpisodes > 0) {

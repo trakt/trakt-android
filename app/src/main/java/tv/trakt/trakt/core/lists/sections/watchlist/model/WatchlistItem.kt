@@ -10,7 +10,6 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.upnext.model.Progress
 import java.time.Instant
 import java.time.ZoneOffset.UTC
-import java.time.ZonedDateTime
 import kotlin.time.Duration
 
 @Immutable
@@ -78,10 +77,10 @@ internal sealed class WatchlistItem(
             is MovieItem -> movie.runtime
         }
 
-    val released: ZonedDateTime?
+    val released: Instant?
         get() = when (this) {
-            is ShowItem -> show.released
-            is MovieItem -> movie.released?.atStartOfDay(UTC)
+            is ShowItem -> show.releasedAt
+            is MovieItem -> movie.released?.atStartOfDay(UTC)?.toInstant()
         }
 
     val airedEpisodes: Int?

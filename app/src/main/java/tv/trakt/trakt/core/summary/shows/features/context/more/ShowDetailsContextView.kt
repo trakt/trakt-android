@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -37,8 +36,8 @@ import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
-import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceApp
 import tv.trakt.trakt.common.model.Show
@@ -95,9 +94,7 @@ private fun ShowDetailsContextViewContent(
 ) {
     val context = LocalContext.current
 
-    val isReleased = remember {
-        show.released?.isNowOrBefore() ?: false
-    }
+    val isReleased = show.rememberReleased()
 
     val genresText = show.genres.take(2)
         .map { stringResource(it.displayStringRes) }
@@ -130,7 +127,7 @@ private fun ShowDetailsContextViewContent(
                 )
 
                 Text(
-                    text = "${show.released?.year ?: show.year}  •  $genresText",
+                    text = "${show.releasedAt?.toLocal()?.year ?: show.year}  •  $genresText",
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.paragraphSmaller,
                     maxLines = 1,

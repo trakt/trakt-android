@@ -65,7 +65,6 @@ import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.customAnnotatedString
 import tv.trakt.trakt.common.helpers.extensions.ifOrElse
-import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
@@ -474,10 +473,7 @@ internal fun ShowDetailsContent(
             .nestedScroll(listScrollConnection),
     ) {
         state.show?.let { show ->
-            val isReleased = remember {
-                show.released?.isNowOrBefore() ?: false
-            }
-
+            val isReleased = show.rememberReleased()
             val isWatched = remember(state.showProgress?.plays) {
                 state.showProgress?.isWatched == true
             }

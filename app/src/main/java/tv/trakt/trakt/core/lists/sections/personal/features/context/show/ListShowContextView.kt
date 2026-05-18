@@ -38,7 +38,6 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.customAnnotatedString
-import tv.trakt.trakt.common.helpers.extensions.isNowOrBefore
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Show
@@ -264,10 +263,6 @@ private fun ActionButtons(
     onWatchlistClick: () -> Unit,
     onRemoveListClick: () -> Unit,
 ) {
-    val isReleased = remember {
-        show.released?.isNowOrBefore() ?: false
-    }
-
     val isLoadingOrDone =
         state.loadingWatched.isLoading ||
             state.loadingWatchlist.isLoading ||
@@ -280,7 +275,7 @@ private fun ActionButtons(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
         modifier = Modifier.padding(top = 14.dp),
     ) {
-        if (isReleased) {
+        if (show.rememberReleased()) {
             if (state.isWatched && !state.isWatchlist) {
                 GhostButton(
                     enabled = !isLoadingOrDone,

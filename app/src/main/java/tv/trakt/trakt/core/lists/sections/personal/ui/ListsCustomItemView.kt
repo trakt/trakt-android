@@ -107,9 +107,7 @@ private fun ShowItemView(
     showMediaIcon: Boolean,
     modifier: Modifier,
 ) {
-    val isReleased = remember(item.show.released) {
-        item.show.released?.isBefore(nowUtc()) ?: false
-    }
+    val isReleased = item.show.rememberReleased()
     VerticalMediaCard(
         title = item.show.title,
         watched = watched,
@@ -143,8 +141,8 @@ private fun ShowItemView(
 
                     val footerText = remember {
                         buildString {
-                            item.show.released?.let {
-                                append(it.year.toString())
+                            item.show.releasedAt?.let {
+                                append(it.toLocal().year.toString())
                             } ?: append("TBA")
 
                             if (item.show.airedEpisodes > 0) {
@@ -176,7 +174,7 @@ private fun ShowItemView(
                         modifier = Modifier.size(13.dp),
                     )
                     Text(
-                        text = item.show.released?.relativeDateTimeString() ?: "",
+                        text = item.show.releasedAt?.toLocal()?.relativeDateTimeString() ?: "",
                         style = TraktTheme.typography.cardTitle,
                         color = TraktTheme.colors.textPrimary,
                         textAlign = TextAlign.Center,

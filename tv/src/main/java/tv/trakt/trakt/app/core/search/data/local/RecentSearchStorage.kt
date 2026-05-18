@@ -19,8 +19,8 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import java.time.Instant
 
-private val KEY_RECENT_SEARCH_SHOWS = byteArrayPreferencesKey("key_recent_search_shows_v2")
-private val KEY_RECENT_SEARCH_MOVIES = byteArrayPreferencesKey("key_recent_search_movies_v2")
+private val KEY_RECENT_SEARCH_SHOWS = byteArrayPreferencesKey("key_recent_search_shows_v3")
+private val KEY_RECENT_SEARCH_MOVIES = byteArrayPreferencesKey("key_recent_search_movies_v3")
 
 @OptIn(ExperimentalSerializationApi::class)
 internal class RecentSearchStorage(

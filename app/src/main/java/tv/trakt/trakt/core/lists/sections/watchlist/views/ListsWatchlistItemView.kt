@@ -16,11 +16,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.relativeDateString
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.resources.R
@@ -41,9 +41,7 @@ internal fun ListsWatchlistItemView(
 ) {
     when (item) {
         is WatchlistItem.ShowItem -> {
-            val isReleased = remember(item.show.released) {
-                item.show.released?.isBefore(nowUtc()) ?: false
-            }
+            val isReleased = item.show.rememberReleased()
             VerticalMediaCard(
                 title = item.show.title,
                 imageUrl = item.images?.getPosterUrl(),
@@ -76,7 +74,7 @@ internal fun ListsWatchlistItemView(
                             val footerText = remember {
                                 buildString {
                                     item.released?.let {
-                                        append(it.year.toString())
+                                        append(it.toLocal().year.toString())
                                     } ?: append("TBA")
 
                                     if (item.show.airedEpisodes > 0) {
@@ -108,7 +106,7 @@ internal fun ListsWatchlistItemView(
                                 modifier = Modifier.size(13.dp),
                             )
                             Text(
-                                text = item.show.released?.relativeDateTimeString() ?: "",
+                                text = item.show.releasedAt?.toLocal()?.relativeDateTimeString() ?: "",
                                 style = TraktTheme.typography.cardTitle,
                                 color = TraktTheme.colors.textPrimary,
                                 textAlign = TextAlign.Center,
@@ -230,7 +228,7 @@ private fun Preview2() {
             ListsWatchlistItemView(
                 item = WatchlistItem.ShowItem(
                     show = PreviewData.show1.copy(
-                        released = nowUtc().minusDays(5),
+                        releasedAt = nowUtcInstant().minus(5, DAYS),
                     ),
                     rank = 0,
                     listedAt = nowUtcInstant().minus(3, DAYS),

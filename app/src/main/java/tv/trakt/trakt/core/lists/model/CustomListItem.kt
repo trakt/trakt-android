@@ -11,7 +11,6 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import java.time.Instant
 import java.time.ZoneOffset.UTC
-import java.time.ZonedDateTime
 import kotlin.time.Duration
 
 @Immutable
@@ -99,12 +98,12 @@ internal sealed class CustomListItem(
             is EpisodeItem -> episode.runtime
         }
 
-    val released: ZonedDateTime?
+    val released: Instant?
         get() = when (this) {
-            is ShowItem -> show.released
-            is MovieItem -> movie.released?.atStartOfDay(UTC)
-            is SeasonItem -> season.firstAired
-            is EpisodeItem -> episode.releasedAt?.atZone(UTC)
+            is ShowItem -> show.releasedAt
+            is MovieItem -> movie.released?.atStartOfDay(UTC)?.toInstant()
+            is SeasonItem -> season.firstAired?.toInstant()
+            is EpisodeItem -> episode.releasedAt
         }
 
     val airedEpisodes: Int?

@@ -44,8 +44,8 @@ internal fun DetailsMetaInfo(
 ) {
     DetailsMetaInfo(
         modifier = modifier,
-        released = remember(show.released) {
-            show.released?.toLocal()?.toLocalDate()
+        released = remember(show.releasedAt) {
+            show.releasedAt?.toLocal()?.toLocalDate()
         },
         runtime = show.runtime,
         totalRuntime = show.totalRuntime,
