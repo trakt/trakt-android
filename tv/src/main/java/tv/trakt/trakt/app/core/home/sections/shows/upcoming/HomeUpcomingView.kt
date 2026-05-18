@@ -195,9 +195,17 @@ private fun ContentListItem(
                     }
                 }
 
+                val isReleased = when (item) {
+                    is HomeUpcomingItem.EpisodeItem -> item.episode.isReleased
+                    is HomeUpcomingItem.MovieItem -> item.movie.isReleased
+                }
+
                 InfoChip(
                     text = item.releaseAt?.toLocal()?.relativeDateTimeString() ?: "TBA",
-                    iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
+                    iconPainter = when {
+                        isReleased -> painterResource(R.drawable.ic_calendar_check)
+                        else -> painterResource(R.drawable.ic_calendar_upcoming)
+                    },
                     containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
                 )
             }

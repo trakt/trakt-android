@@ -23,6 +23,7 @@ import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
 import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.temporal.ChronoUnit.DAYS
 
 private const val DAYS_OFFSET = 1L
 private const val DAYS_RANGE = 14
@@ -93,7 +94,7 @@ internal class GetUpcomingUseCase(
                 return@filter episodes.size > 1 && isSeasonPremiere && isSeasonFinale
             }
 
-        val now = nowLocal()
+        val now = nowLocal().truncatedTo(DAYS)
         val showsList = remoteShows
             .asyncMap {
                 val releaseAt = (it.episode.effectiveReleaseDate ?: it.episode.firstAired)
@@ -132,18 +133,17 @@ internal class GetUpcomingUseCase(
             days = DAYS_RANGE,
         )
 
-        val now = nowLocalDay()
+        val today = nowLocalDay()
         val moviesList = remoteMovies
             .asyncMap {
-                val releaseAt = LocalDate.parse(it.released)
-
-                if (releaseAt.isBefore(now)) {
+                val releaseDay = LocalDate.parse(it.released)
+                if (releaseDay.isBefore(today)) {
                     return@asyncMap null
                 }
 
                 HomeUpcomingItem.MovieItem(
                     id = it.movie.ids.trakt.toTraktId(),
-                    releasedAt = releaseAt.atStartOfDay(ZoneId.systemDefault()).toInstant(),
+                    releasedAt = releaseDay.atStartOfDay(ZoneId.systemDefault()).toInstant(),
                     movie = Movie.fromDto(it.movie),
                 )
             }
