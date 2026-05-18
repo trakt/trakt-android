@@ -13,13 +13,15 @@ import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.toInstant
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
-import java.time.Instant
 import java.time.LocalDate
-import java.time.ZoneId
+
+private const val DAYS_OFFSET = 1L
+private const val DAYS_RANGE = 14
 
 private val premiereValues = listOf("season_premiere", "series_premiere")
 private val finaleValues = listOf("season_finale", "series_finale")
@@ -58,8 +60,8 @@ internal class GetUpcomingUseCase(
 
     private suspend fun getShows(): List<HomeUpcomingItem.EpisodeItem> {
         val remoteShows = remoteUserSource.getUserShowsCalendar(
-            startDate = nowLocalDay().minusDays(1),
-            days = 14,
+            startDate = nowLocalDay().minusDays(DAYS_OFFSET),
+            days = DAYS_RANGE,
         )
 
         val fullSeasonItems = remoteShows
@@ -76,10 +78,18 @@ internal class GetUpcomingUseCase(
                 return@filter episodes.size > 1 && isSeasonPremiere && isSeasonFinale
             }
 
+        val now = nowLocal()
         val showsList = remoteShows
             .asyncMap {
-                val releaseAt = it.firstAired.toInstant()
-                if (releaseAt.isBefore(Instant.now())) {
+                val releaseAt = (it.episode.effectiveReleaseDate ?: it.episode.firstAired)
+                    ?.toInstant()
+                    ?.toLocal()
+
+                if (releaseAt == null) {
+                    return@asyncMap null
+                }
+
+                if (releaseAt.isBefore(now)) {
                     return@asyncMap null
                 }
 
@@ -101,17 +111,15 @@ internal class GetUpcomingUseCase(
 
     private suspend fun getMovies(): List<HomeUpcomingItem.MovieItem> {
         val remoteMovies = remoteUserSource.getUserMoviesCalendar(
-            startDate = nowLocal().toLocalDate().minusDays(1),
-            days = 14,
+            startDate = nowLocalDay().minusDays(DAYS_OFFSET),
+            days = DAYS_RANGE,
         )
 
+        val now = nowLocalDay()
         val moviesList = remoteMovies
             .asyncMap {
                 val releaseAt = LocalDate.parse(it.released)
-                    .atStartOfDay(ZoneId.of("UTC"))
-                    .toInstant()
-
-                if (releaseAt.isBefore(Instant.now())) {
+                if (releaseAt.isBefore(now)) {
                     return@asyncMap null
                 }
 
