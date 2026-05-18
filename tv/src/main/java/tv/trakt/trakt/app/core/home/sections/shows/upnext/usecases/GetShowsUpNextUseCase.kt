@@ -13,6 +13,7 @@ import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.isLatestAiredEpisode
 
 internal class GetShowsUpNextUseCase(
     private val remoteShowsSource: ShowsSyncRemoteDataSource,
@@ -32,6 +33,8 @@ internal class GetShowsUpNextUseCase(
         )
         return remoteItems
             .asyncMap { item ->
+                val nextEpisode = item.progress.nextEpisode?.let { Episode.fromDto(it) }
+                val lastEpisode = item.progress.lastEpisode?.let { Episode.fromDto(it) }
                 ProgressShow(
                     show = Show.fromDto(item.show),
                     progress = Progress(
@@ -45,12 +48,12 @@ internal class GetShowsUpNextUseCase(
                                 minutesLeft = it.minutesLeft,
                             )
                         },
-                        lastEpisode = item.progress.lastEpisode?.let {
-                            Episode.fromDto(it)
-                        },
-                        nextEpisode = item.progress.nextEpisode?.let {
-                            Episode.fromDto(it)
-                        },
+                        lastEpisode = lastEpisode,
+                        nextEpisode = nextEpisode,
+                        isLatestAired = isLatestAiredEpisode(
+                            episode = nextEpisode?.seasonEpisode,
+                            latest = lastEpisode?.seasonEpisode,
+                        ),
                     ),
                 )
             }

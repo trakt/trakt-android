@@ -67,7 +67,7 @@ internal fun HomeUpNextShowView(
                     verticalArrangement = Arrangement.spacedBy(3.dp),
                 ) {
                     when {
-                        item.progress.nextEpisode?.isPremiere() == true -> PremiereChip(
+                        item.progress.nextEpisode?.isPremiere(item.progress.isLatestAired) == true -> PremiereChip(
                             contentTextStyle = TraktTheme.typography.meta.copy(
                                 fontSize = 10.sp,
                             ),
@@ -75,7 +75,7 @@ internal fun HomeUpNextShowView(
                                 .shadow(2.dp, RoundedCornerShape(100))
                                 .height(20.dp),
                         )
-                        item.progress.nextEpisode?.isFinale() == true -> FinaleChip(
+                        item.progress.nextEpisode?.isFinale(item.progress.isLatestAired) == true -> FinaleChip(
                             contentTextStyle = TraktTheme.typography.meta.copy(
                                 fontSize = 10.sp,
                             ),

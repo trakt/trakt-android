@@ -249,14 +249,14 @@ private fun UpNextViewAllContent(
                                     verticalArrangement = spacedBy(3.dp),
                                 ) {
                                     when {
-                                        item.progress.nextEpisode?.isPremiere() == true -> {
+                                        item.progress.nextEpisode?.isPremiere(item.progress.isLatestAired) == true -> {
                                             PremiereChip(
                                                 contentTextStyle = TraktTheme.typography.meta.copy(
                                                     fontSize = 10.sp,
                                                 ),
                                             )
                                         }
-                                        item.progress.nextEpisode?.isFinale() == true -> {
+                                        item.progress.nextEpisode?.isFinale(item.progress.isLatestAired) == true -> {
                                             FinaleChip(
                                                 contentTextStyle = TraktTheme.typography.meta.copy(
                                                     fontSize = 10.sp,

@@ -223,8 +223,8 @@ private fun ContentShowListItem(
                 verticalArrangement = spacedBy(3.dp),
             ) {
                 when {
-                    item.progress.nextEpisode?.isPremiere() == true -> PremiereChip()
-                    item.progress.nextEpisode?.isFinale() == true -> FinaleChip()
+                    item.progress.nextEpisode?.isPremiere(item.progress.isLatestAired) == true -> PremiereChip()
+                    item.progress.nextEpisode?.isFinale(item.progress.isLatestAired) == true -> FinaleChip()
                 }
 
                 Row(

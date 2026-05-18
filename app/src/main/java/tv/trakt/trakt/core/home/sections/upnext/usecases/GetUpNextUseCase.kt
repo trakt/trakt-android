@@ -12,6 +12,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.isLatestAiredEpisode
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.model.Progress
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextItem
@@ -76,6 +77,8 @@ internal class GetUpNextUseCase(
 
         return remoteItems
             .asyncMap { item ->
+                val nextEpisode = item.progress.nextEpisode?.let { Episode.fromDto(it) }
+                val lastEpisode = item.progress.lastEpisode?.let { Episode.fromDto(it) }
                 UpNextShow(
                     show = Show.fromDto(item.show),
                     progress = Progress(
@@ -89,12 +92,12 @@ internal class GetUpNextUseCase(
                                 minutesLeft = it.minutesLeft,
                             )
                         },
-                        lastEpisode = item.progress.lastEpisode?.let {
-                            Episode.fromDto(it)
-                        },
-                        nextEpisode = item.progress.nextEpisode?.let {
-                            Episode.fromDto(it)
-                        },
+                        lastEpisode = lastEpisode,
+                        nextEpisode = nextEpisode,
+                        isLatestAired = isLatestAiredEpisode(
+                            episode = nextEpisode?.seasonEpisode,
+                            latest = lastEpisode?.seasonEpisode,
+                        ),
                     ),
                 )
             }

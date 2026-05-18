@@ -64,16 +64,23 @@ data class Episode(
     }
 
     @Composable
-    fun isPremiere(): Boolean =
-        remember(episodeType) {
-            episodeType?.contains("premiere") == true
+    fun isPremiere(isLatestAired: Boolean? = null): Boolean =
+        remember(episodeType, isLatestAired) {
+            val premiere = episodeType?.contains("premiere") == true
+            premiere && !isMidSeasonHidden(isLatestAired)
         }
 
     @Composable
-    fun isFinale(): Boolean =
-        remember(episodeType) {
-            episodeType?.contains("finale") == true
+    fun isFinale(isLatestAired: Boolean? = null): Boolean =
+        remember(episodeType, isLatestAired) {
+            val finale = episodeType?.contains("finale") == true
+            finale && !isMidSeasonHidden(isLatestAired)
         }
+
+    private fun isMidSeasonHidden(isLatestAired: Boolean?): Boolean {
+        if (isLatestAired != false) return false
+        return episodeType?.contains("mid_season") == true
+    }
 }
 
 fun Episode.Companion.fromDto(dto: EpisodeDto): Episode {
