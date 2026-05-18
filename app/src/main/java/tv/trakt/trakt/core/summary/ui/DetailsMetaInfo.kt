@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.summary.ui
 
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -77,6 +78,7 @@ internal fun DetailsMetaInfo(
             episode.releasedAt?.toLocal()?.toLocalDate()
         },
         runtime = episode.runtime,
+        episodeTypeRes = episode.episodeTypeStringRes,
         directors = episodeDirectors,
         writers = episodeWriters,
         episodeRowsOnly = true,
@@ -120,6 +122,7 @@ private fun DetailsMetaInfo(
     network: String? = null,
     titleOriginal: String? = null,
     episodesCount: Int? = null,
+    episodeTypeRes: Int? = null,
     languages: ImmutableList<String> = EmptyImmutableList,
     genres: ImmutableList<MediaGenre> = EmptyImmutableList,
     studios: ImmutableList<String>? = null,
@@ -198,6 +201,19 @@ private fun DetailsMetaInfo(
                     values = listOf(runtimeString),
                     modifier = Modifier.weight(1F),
                 )
+            }
+        }
+
+        if (episodeTypeRes != null) {
+            Row(
+                horizontalArrangement = spacedBy(16.dp),
+            ) {
+                DetailsMeta(
+                    title = stringResource(R.string.header_episode_type),
+                    values = listOf(stringResource(episodeTypeRes)),
+                    modifier = Modifier.weight(1F),
+                )
+                Box(modifier = Modifier.weight(1F))
             }
         }
 

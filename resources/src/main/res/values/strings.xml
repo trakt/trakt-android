@@ -90,6 +90,7 @@
   <string name="header_device_auth_qr_instruction">Scan the QR code, or sign in at:</string>
   <string name="header_device_auth_try_again">The activation was denied, expired, or something unforeseeable happened. Please try again.</string>
   <string name="header_director">Director</string>
+  <string name="header_episode_type">Type</string>
   <string name="header_genre">Genre</string>
   <string name="header_get_notified">Get Notified!</string>
   <string name="header_landing_discover">Discover</string>
@@ -200,8 +201,14 @@
   <string name="stat_text_plays">Plays</string>
   <string name="stat_text_watchers">Watchers</string>
   <string name="tag_text_finale">Finale</string>
+  <string name="tag_text_mid_season_finale">Mid-Season Finale</string>
+  <string name="tag_text_mid_season_premiere">Mid-Season Premiere</string>
   <string name="tag_text_number_of_episodes">%d eps.</string>
   <string name="tag_text_premiere">Premiere</string>
+  <string name="tag_text_season_finale">Season Finale</string>
+  <string name="tag_text_season_premiere">Season Premiere</string>
+  <string name="tag_text_series_finale">Series Finale</string>
+  <string name="tag_text_series_premiere">Series Premiere</string>
   <string name="tag_text_remaining_duration">%s left</string>
   <string name="tag_text_remaining_episodes">%d left</string>
   <string name="tag_text_watch_count">Watch count</string>

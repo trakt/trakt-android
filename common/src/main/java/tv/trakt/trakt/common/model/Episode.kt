@@ -81,6 +81,17 @@ data class Episode(
         if (isLatestAired != false) return false
         return episodeType?.contains("mid_season") == true
     }
+
+    val episodeTypeStringRes: Int?
+        get() = when (episodeType) {
+            "series_premiere" -> R.string.tag_text_series_premiere
+            "season_premiere" -> R.string.tag_text_season_premiere
+            "mid_season_premiere" -> R.string.tag_text_mid_season_premiere
+            "series_finale" -> R.string.tag_text_series_finale
+            "season_finale" -> R.string.tag_text_season_finale
+            "mid_season_finale" -> R.string.tag_text_mid_season_finale
+            else -> null
+        }
 }
 
 fun Episode.Companion.fromDto(dto: EpisodeDto): Episode {
