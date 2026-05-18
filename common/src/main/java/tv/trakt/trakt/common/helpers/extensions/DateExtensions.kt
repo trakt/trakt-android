@@ -229,7 +229,7 @@ fun ZonedDateTime.relativeDateTimeString(): String {
         )
 
         when {
-            minutesBetween < 0 -> formatter.format(
+            minutesBetween < 0 && daysBetween == 0L -> formatter.format(
                 RelativeDateTimeFormatter.Direction.THIS,
                 RelativeDateTimeFormatter.AbsoluteUnit.DAY,
             )
