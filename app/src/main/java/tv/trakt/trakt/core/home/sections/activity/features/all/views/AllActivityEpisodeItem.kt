@@ -35,6 +35,7 @@ import java.time.format.DateTimeFormatter
 internal fun AllActivityEpisodeItem(
     item: HomeActivityItem.EpisodeItem,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     itemRating: UserRating? = null,
     moreButton: Boolean = false,
     dateFormat: DateTimeFormatter? = null,
@@ -51,6 +52,7 @@ internal fun AllActivityEpisodeItem(
     }
 
     PanelMediaCard(
+        enabled = enabled,
         title = item.show.title,
         titleOriginal = null,
         subtitle = item.episode.seasonEpisodeString(),

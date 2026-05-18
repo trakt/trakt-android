@@ -42,6 +42,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
 import tv.trakt.trakt.core.home.sections.upnext.features.context.sheets.UpNextItemContextSheet
@@ -51,7 +52,6 @@ import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
 import tv.trakt.trakt.core.home.sections.upnext.ui.HomeUpNextMovieView
 import tv.trakt.trakt.core.home.sections.upnext.ui.HomeUpNextShowView
 import tv.trakt.trakt.core.home.views.HomeEmptyView
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
@@ -244,13 +244,13 @@ internal fun HomeUpNextContent(
                                 }
                                 HomeEmptyView(
                                     text = stringResource(
-                                        when (state.filter) {
+                                        when (state.filter?.mode) {
                                             MediaMode.MOVIES -> R.string.text_cta_up_next_movies
                                             else -> R.string.text_cta_up_next
                                         },
                                     ),
                                     icon = R.drawable.ic_empty_upnext,
-                                    buttonText = when (state.filter) {
+                                    buttonText = when (state.filter?.mode) {
                                         MediaMode.MOVIES -> stringResource(R.string.link_text_discover_movies)
                                         else -> stringResource(R.string.link_text_discover_shows)
                                     },
@@ -258,7 +258,7 @@ internal fun HomeUpNextContent(
                                     backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
                                     modifier = Modifier.padding(contentPadding),
                                     onClick = {
-                                        when (state.filter) {
+                                        when (state.filter?.mode) {
                                             MediaMode.MOVIES -> onMoviesClick()
                                             else -> onShowsClick()
                                         }
@@ -268,7 +268,7 @@ internal fun HomeUpNextContent(
 
                             else -> {
                                 ContentList(
-                                    listFilter = state.filter,
+                                    listFilter = state.filter?.mode,
                                     listItems = state.items,
                                     contentPadding = contentPadding,
                                     onClick = onClick,

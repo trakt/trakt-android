@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.sync.data.remote.shows
 
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.ProgressShowDto
 
 internal interface ShowsSyncRemoteDataSource {
@@ -10,6 +11,7 @@ internal interface ShowsSyncRemoteDataSource {
         intent: String,
         sortBy: String?,
         sortHow: String?,
+        filters: GlobalFilter?,
     ): List<ProgressShowDto>
 
     suspend fun addToWatched(

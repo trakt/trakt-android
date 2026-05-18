@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.shows.data.remote
 
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
@@ -20,35 +21,25 @@ internal interface ShowsRemoteDataSource {
     suspend fun getTrending(
         page: Int = 1,
         limit: Int,
-        years: String? = null,
-        genres: List<String>? = null,
-        subgenres: List<String>? = null,
+        filters: GlobalFilter,
     ): List<TrendingShowDto>
-
-    suspend fun getHot(limit: Int): List<TrendingShowDto>
 
     suspend fun getPopular(
         page: Int = 1,
         limit: Int,
-        years: String? = null,
-        genres: List<String>? = null,
-        subgenres: List<String>? = null,
+        filters: GlobalFilter,
     ): List<ShowDto>
 
     suspend fun getRecommended(
         limit: Int,
-        years: String? = null,
-        genres: List<String>? = null,
-        subgenres: List<String>? = null,
+        filters: GlobalFilter,
     ): List<RecommendedShowDto>
 
     suspend fun getAnticipated(
         page: Int = 1,
         limit: Int,
-        years: String? = null,
         endDate: Instant? = null,
-        genres: List<String>? = null,
-        subgenres: List<String>? = null,
+        filters: GlobalFilter,
     ): List<AnticipatedShowDto>
 
     suspend fun getShowDetails(showId: TraktId): ShowDto

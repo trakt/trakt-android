@@ -59,6 +59,7 @@ import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.auth.ConfigAuth
+import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_FULL_PREVIEW_LIMIT
 import tv.trakt.trakt.core.lists.sections.collaborations.ListsCollaborationsView
@@ -105,6 +106,7 @@ internal fun ListsScreen(
 
     var createListSheet by remember { mutableStateOf(false) }
     var editListSheet by remember { mutableStateOf<CustomList?>(null) }
+    var filtersSheet by remember { mutableStateOf(false) }
 
     ListsScreenContent(
         state = state,
@@ -135,6 +137,9 @@ internal fun ListsScreen(
         onCustomListClick = onNavigateToCustomList,
         onAllListsClick = { onNavigateToAllLists(state.filter) },
         onVipClick = onNavigateToVip,
+        onFiltersClick = {
+            filtersSheet = true
+        },
     )
 
     CreateListSheet(
@@ -147,6 +152,13 @@ internal fun ListsScreen(
         active = editListSheet != null,
         list = editListSheet,
         onDismiss = { editListSheet = null },
+    )
+
+    GlobalFiltersSheet(
+        active = filtersSheet,
+        onDismiss = {
+            filtersSheet = false
+        },
     )
 }
 
@@ -170,6 +182,7 @@ private fun ListsScreenContent(
     onCustomListClick: (CustomList) -> Unit = { _ -> },
     onAllListsClick: () -> Unit = { },
     onVipClick: () -> Unit = {},
+    onFiltersClick: () -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
     val lazyListState = rememberLazyListState(
@@ -430,6 +443,7 @@ private fun ListsScreenContent(
             headerState = headerState,
             isScrolledToTop = isScrolledToTop,
             onVipClick = onVipClick,
+            onFiltersClick = onFiltersClick,
         )
     }
 }
@@ -440,6 +454,7 @@ private fun ListsScreenHeader(
     headerState: ScreenHeaderState,
     isScrolledToTop: Boolean,
     onVipClick: () -> Unit,
+    onFiltersClick: () -> Unit,
 ) {
     val userState = remember(state.user) {
         val loadingDone = state.user.loading == Done
@@ -451,7 +466,9 @@ private fun ListsScreenHeader(
         containerAlpha = if (headerState.scrolled && !isScrolledToTop) 0.98F else 0F,
         showLogin = userState.first && !userState.second,
         showVip = userState.second && state.user.user?.isVip == false,
+        showFilters = true,
         onVipClick = onVipClick,
+        onFilterClick = onFiltersClick,
         modifier = Modifier.offset {
             IntOffset(0, headerState.connection.barOffset.fastRoundToInt())
         },

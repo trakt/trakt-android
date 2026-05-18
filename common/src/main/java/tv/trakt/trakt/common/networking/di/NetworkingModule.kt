@@ -162,7 +162,7 @@ val networkingApiModule = module {
         ShowsApi(
             baseUrl = API_BASE_URL,
             httpClientEngine = get(),
-            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
         )
     }
 
@@ -170,7 +170,7 @@ val networkingApiModule = module {
         MoviesApi(
             baseUrl = API_BASE_URL,
             httpClientEngine = get(),
-            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
         )
     }
 

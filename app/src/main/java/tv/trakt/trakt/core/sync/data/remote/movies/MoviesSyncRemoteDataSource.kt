@@ -2,12 +2,14 @@ package tv.trakt.trakt.core.sync.data.remote.movies
 
 import org.openapitools.client.models.PostSyncHistoryAdd200Response
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.ProgressMovieDto
 
 internal interface MoviesSyncRemoteDataSource {
     suspend fun getPlaybackProgress(
         limit: Int,
         page: Int,
+        filters: GlobalFilter?,
     ): List<ProgressMovieDto>
 
     suspend fun addToWatched(

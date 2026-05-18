@@ -6,8 +6,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -23,6 +25,7 @@ import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -32,22 +35,22 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ITEMS_ALL_LIMIT
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.ListsPersonalDestination
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
-import tv.trakt.trakt.core.main.helpers.MediaModeManager
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.user.UserCollectionState
 
 @OptIn(FlowPreview::class)
 internal class AllPersonalListViewModel(
     savedStateHandle: SavedStateHandle,
-    modeManager: MediaModeManager,
+    filterManager: GlobalFilterManager,
     analytics: Analytics,
     private val getListUseCase: GetPersonalListsUseCase,
     private val getListItemsUseCase: GetPersonalListItemsUseCase,
@@ -61,7 +64,7 @@ internal class AllPersonalListViewModel(
 
     private val initialState = AllPersonalListState()
 
-    private val filterState = MutableStateFlow(modeManager.getMode())
+    private val filterState = MutableStateFlow(filterManager.getFilter())
     private val userState = MutableStateFlow(initialState.user)
     private val sortingState = MutableStateFlow(initialState.sorting)
     private val listState = MutableStateFlow(initialState.list)
@@ -75,13 +78,14 @@ internal class AllPersonalListViewModel(
 
     private var dataJob: Job? = null
     private var processingJob: Job? = null
+    private var loadingJob: Job? = null
 
     private var page: Int = 1
-    private var hasMoreData: Boolean = true
+    private var hasMoreData: Boolean = false
 
     init {
         loadDetails()
-        loadData()
+        loadInitialData()
         loadUser()
 
         observeCollection()
@@ -112,37 +116,67 @@ internal class AllPersonalListViewModel(
         }
     }
 
-    private fun loadData(
-        ignoreErrors: Boolean = false,
-        ignoreLoading: Boolean = false,
-    ) {
+    private fun loadInitialData() {
         dataJob?.cancel()
         dataJob = viewModelScope.launch {
             try {
+                if (loadEmptyIfNeeded()) return@launch
+                loadingIfNeeded()
+
+                val items = getListItemsUseCase.getRemoteItems(
+                    listId = destination.listId.toTraktId(),
+                    page = 1,
+                    limit = LISTS_ITEMS_ALL_LIMIT,
+                    filter = filterState.value,
+                    sorting = sortingState.value,
+                )
+                    .distinctBy { it.key }
+                    .toImmutableList()
+
+                itemsState
+                    .update { items }
+                    .also {
+                        hasMoreData = items.size >= LISTS_ITEMS_ALL_LIMIT
+                    }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                loadingState.update { Done }
+                dataJob = null
+
+                loadingJob?.cancel()
+                loadingJob = null
+            }
+        }
+    }
+
+    private fun loadData(ignoreErrors: Boolean = false) {
+        dataJob?.cancel()
+        dataJob = viewModelScope.launch {
+            try {
+                loadingState.update { Loading }
+
                 page = 1
+                hasMoreData = false
 
-                if (loadEmptyIfNeeded()) {
-                    loadingState.update { Done }
-                    return@launch
-                }
+                val items = getListItemsUseCase.getRemoteItems(
+                    listId = destination.listId.toTraktId(),
+                    page = 1,
+                    limit = LISTS_ITEMS_ALL_LIMIT,
+                    sorting = sortingState.value,
+                    filter = filterState.value,
+                )
+                    .distinctBy { it.key }
+                    .toImmutableList()
 
-                if (!ignoreLoading) {
-                    loadingState.update { Loading }
-                }
-
-                itemsState.update {
-                    getListItemsUseCase.getRemoteItems(
-                        listId = destination.listId.toTraktId(),
-                        type = filterState.value,
-                        sorting = sortingState.value,
-                        page = 1,
-                        limit = LISTS_ITEMS_ALL_LIMIT,
-                    )
-                        .distinctBy { it.key }
-                        .toImmutableList()
-                }
-
-                hasMoreData = (itemsState.value?.size ?: 0) >= LISTS_ITEMS_ALL_LIMIT
+                itemsState
+                    .update { items }
+                    .also {
+                        hasMoreData = items.size >= LISTS_ITEMS_ALL_LIMIT
+                    }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     if (!ignoreErrors) {
@@ -153,49 +187,43 @@ internal class AllPersonalListViewModel(
             } finally {
                 loadingState.update { Done }
                 dataJob = null
+
+                loadingJob?.cancel()
+                loadingJob = null
             }
         }
     }
 
-    private suspend fun loadEmptyIfNeeded(): Boolean {
-        if (!sessionManager.isAuthenticated()) {
-            itemsState.update { EmptyImmutableList }
-            return true
-        }
-
-        return false
-    }
-
     fun loadMoreData() {
-        if (loadingState.value.isLoading ||
-            loadingMoreState.value.isLoading ||
-            dataJob?.isActive == true ||
-            !hasMoreData ||
-            itemsState.value.isNullOrEmpty()
-        ) {
+        if (itemsState.value.isNullOrEmpty() || !hasMoreData) {
+            return
+        }
+        if (loadingMoreState.value.isLoading || loadingState.value.isLoading) {
             return
         }
 
         dataJob = viewModelScope.launch {
             try {
                 loadingMoreState.update { Loading }
-                val newItems = getListItemsUseCase.getRemoteItems(
+
+                val nextPage = page + 1
+                val nextItems = getListItemsUseCase.getRemoteItems(
                     listId = destination.listId.toTraktId(),
-                    type = filterState.value,
+                    filter = filterState.value,
                     sorting = sortingState.value,
-                    page = page + 1,
+                    page = nextPage,
                     limit = LISTS_ITEMS_ALL_LIMIT,
                 )
 
                 itemsState.update { items ->
                     items
-                        ?.plus(newItems)
+                        ?.plus(nextItems)
                         ?.distinctBy { it.key }
                         ?.toImmutableList()
                 }
 
-                page += 1
-                hasMoreData = (newItems.size >= LISTS_ITEMS_ALL_LIMIT)
+                page = nextPage
+                hasMoreData = (nextItems.size >= LISTS_ITEMS_ALL_LIMIT)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -207,17 +235,35 @@ internal class AllPersonalListViewModel(
         }
     }
 
-    fun setFilter(newFilter: MediaMode) {
-        if (newFilter == filterState.value ||
-            loadingState.value.isLoading ||
-            loadingMoreState.value.isLoading
-        ) {
+    private suspend fun loadEmptyIfNeeded(): Boolean {
+        if (!sessionManager.isAuthenticated()) {
+            itemsState.update { EmptyImmutableList }
+            loadingState.update { Done }
+            return true
+        } else {
+            itemsState.update { null }
+            loadingState.update { Idle }
+        }
+
+        return false
+    }
+
+    private fun CoroutineScope.loadingIfNeeded() {
+        loadingJob = launch {
+            if (itemsState.value?.isNotEmpty() == true) {
+                // Avoid blinking loading but still show it if loading takes too long
+                delay(100)
+            }
+            loadingState.update { Loading }
+        }
+    }
+
+    fun setFilter(newFilter: GlobalFilter) {
+        if (newFilter == filterState.value) {
             return
         }
-        viewModelScope.launch {
-            filterState.update { newFilter }
-            loadData()
-        }
+        filterState.update { newFilter }
+        loadData()
     }
 
     fun setSorting(newSorting: Sorting) {
@@ -315,7 +361,7 @@ internal class AllPersonalListViewModel(
             loading = state[0] as LoadingState,
             loadingMore = state[1] as LoadingState,
             user = state[2] as User?,
-            filter = state[3] as MediaMode?,
+            filter = state[3] as GlobalFilter?,
             sorting = state[4] as Sorting,
             list = state[5] as? CustomList,
             items = state[6] as? ImmutableList<CustomListItem>,

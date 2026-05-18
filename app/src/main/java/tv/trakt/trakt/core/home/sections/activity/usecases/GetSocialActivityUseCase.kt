@@ -8,20 +8,21 @@ import tv.trakt.trakt.common.core.user.data.remote.social.UserSocialRemoteDataSo
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.MediaMode.MEDIA
+import tv.trakt.trakt.common.model.MediaMode.MOVIES
+import tv.trakt.trakt.common.model.MediaMode.SHOWS
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
-import tv.trakt.trakt.core.main.model.MediaMode
-import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
-import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
-import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 
 internal class GetSocialActivityUseCase(
     private val remoteSource: UserSocialRemoteDataSource,
@@ -50,11 +51,13 @@ internal class GetSocialActivityUseCase(
     suspend fun getSocialActivity(
         page: Int,
         limit: Int,
-        filter: MediaMode,
+        filters: GlobalFilter,
+        skipLocal: Boolean = false,
     ): ImmutableList<HomeActivityItem> {
         val items = remoteSource.getSocialActivity(
             limit = limit,
             type = "following",
+            filters = filters,
         )
         return items
             .asyncMap {
@@ -112,13 +115,15 @@ internal class GetSocialActivityUseCase(
                     .thenByDescending { it.sortId },
             )
             .also {
-                when (page) {
-                    1 -> localDataSource.setItems(it)
-                    else -> localDataSource.addItems(it)
+                if (!skipLocal) {
+                    when (page) {
+                        1 -> localDataSource.setItems(it)
+                        else -> localDataSource.addItems(it)
+                    }
                 }
             }
             .filter {
-                when (filter) {
+                when (filters.mode) {
                     MEDIA -> true
                     MOVIES -> it is HomeActivityItem.MovieItem
                     SHOWS -> it is HomeActivityItem.EpisodeItem

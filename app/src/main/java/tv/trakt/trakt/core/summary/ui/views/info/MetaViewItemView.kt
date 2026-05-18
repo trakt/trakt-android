@@ -36,10 +36,6 @@ internal fun MetaViewItemView(
     Column(
         verticalArrangement = Arrangement.spacedBy(3.dp),
         modifier = modifier
-//            .shadow(
-//                elevation = 1.dp,
-//                shape = cornerShape,
-//            )
             .background(
                 color = TraktTheme.colors.dialogOnContainer,
                 shape = cornerShape,

@@ -29,20 +29,22 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source.AllHomeUpNext
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextMovie
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
-import tv.trakt.trakt.core.main.helpers.MediaModeManager
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
@@ -66,7 +68,7 @@ internal class AllHomeUpNextViewModel(
     private val movieUpdates: MovieDetailsUpdates,
     private val checkInUpdates: CheckInUpdates,
     private val checkInManager: CheckInManager,
-    private val modeManager: MediaModeManager,
+    private val filterManager: GlobalFilterManager,
     private val sessionManager: SessionManager,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -75,34 +77,36 @@ internal class AllHomeUpNextViewModel(
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(Idle)
-    private val filterState = MutableStateFlow(modeManager.getMode())
+    private val filterState = MutableStateFlow(filterManager.getFilter())
     private val userState = MutableStateFlow(initialState.user)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
 
-    private var itemsOrder: List<Int>? = null
+    private var dataJob: Job? = null
     private var processingJob: Job? = null
 
     private var pages: Int = 1
     private var hasMoreData: Boolean = true
+    private var itemsOrder: List<Int>? = null
 
     init {
         loadUser()
-        loadData()
+        loadInitialData()
+
         observeData()
-        observeMode()
+        observeFilter()
 
         analytics.logScreenView(
             screenName = "all_up_next",
         )
     }
 
-    private fun observeMode() {
-        modeManager.observeMode()
+    private fun observeFilter() {
+        filterManager.observeFilter()
             .distinctUntilChanged()
             .onEach { value ->
                 filterState.update { value }
-                loadData(localOnly = true)
+                loadData()
             }
             .launchIn(viewModelScope)
     }
@@ -136,56 +140,92 @@ internal class AllHomeUpNextViewModel(
         }
     }
 
-    private fun loadData(
-        ignoreErrors: Boolean = false,
-        localOnly: Boolean = false,
-    ) {
-        if (processingJob?.isActive == true) return
-        if (!localOnly) {
-            clear()
-        }
-
-        viewModelScope.launch {
-            if (loadEmptyIfNeeded()) {
-                return@launch
-            }
-
+    private fun loadInitialData() {
+        dataJob?.cancel()
+        dataJob = viewModelScope.launch {
             try {
+                if (loadEmptyIfNeeded()) return@launch
+
                 val localItems = getUpNextUseCase.getLocalUpNext(limit = HOME_ALL_LIMIT)
                     .filter {
-                        when (filterState.value) {
+                        when (filterState.value.mode) {
                             MediaMode.SHOWS -> it is UpNextShow
                             MediaMode.MOVIES -> it is UpNextMovie
                             else -> true
                         }
                     }.toImmutableList()
 
-                if (localItems.isNotEmpty()) {
-                    itemsState.update { localItems }
-                    loadingState.update { Done }
-                    if (localOnly) {
-                        itemsOrder = itemsState.value?.map { it.mediaId.value }
-                        return@launch
+                itemsState
+                    .update { localItems }
+                    .also {
+                        if (localItems.isEmpty()) {
+                            loadingState.update { Loading }
+                        }
                     }
-                } else {
-                    loadingState.update { Loading }
-                }
 
                 val remoteItems = getUpNextUseCase.getUpNext(
                     page = 1,
                     limit = HOME_ALL_LIMIT,
+                    filters = filterState.value,
+                    skipLocal = true,
                 ).filter {
-                    when (filterState.value) {
+                    when (filterState.value.mode) {
                         MediaMode.SHOWS -> it is UpNextShow
                         MediaMode.MOVIES -> it is UpNextMovie
                         else -> true
                     }
                 }.toImmutableList()
 
-                itemsState.update { remoteItems }
+                itemsState
+                    .update { remoteItems }
+                    .also {
+                        itemsOrder = itemsState.value?.map { it.mediaId.value }
+                        hasMoreData = remoteItems.size >= HOME_ALL_LIMIT
+                    }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                loadingState.update { Done }
+                dataJob = null
+            }
+        }
+    }
 
-                itemsOrder = itemsState.value?.map { it.mediaId.value }
-                hasMoreData = remoteItems.size >= HOME_ALL_LIMIT
+    private fun loadData(ignoreErrors: Boolean = false) {
+        if (processingJob?.isActive == true) {
+            return
+        }
+
+        pages = 1
+        hasMoreData = true
+
+        dataJob?.cancel()
+        dataJob = viewModelScope.launch {
+            try {
+                loadingState.update { Loading }
+
+                val remoteItems = getUpNextUseCase.getUpNext(
+                    page = 1,
+                    limit = HOME_ALL_LIMIT,
+                    filters = filterState.value,
+                    skipLocal = true,
+                ).filter {
+                    when (filterState.value.mode) {
+                        MediaMode.SHOWS -> it is UpNextShow
+                        MediaMode.MOVIES -> it is UpNextMovie
+                        else -> true
+                    }
+                }.toImmutableList()
+
+                itemsState
+                    .update { remoteItems }
+                    .also {
+                        itemsOrder = itemsState.value?.map { it.mediaId.value }
+                        hasMoreData = remoteItems.size >= HOME_ALL_LIMIT
+                    }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     if (!ignoreErrors) {
@@ -195,6 +235,7 @@ internal class AllHomeUpNextViewModel(
                 }
             } finally {
                 loadingState.update { Done }
+                dataJob = null
             }
         }
     }
@@ -203,7 +244,6 @@ internal class AllHomeUpNextViewModel(
         if (itemsState.value.isNullOrEmpty() || !hasMoreData) {
             return
         }
-
         if (loadingMoreState.value.isLoading || loadingState.value.isLoading) {
             return
         }
@@ -215,13 +255,15 @@ internal class AllHomeUpNextViewModel(
                 val nextData = getUpNextUseCase.getUpNext(
                     page = pages + 1,
                     limit = HOME_ALL_LIMIT,
+                    filters = filterState.value,
+                    skipLocal = true,
                 )
 
                 itemsState.update { items ->
                     items
                         ?.plus(
                             nextData.filter {
-                                when (filterState.value) {
+                                when (filterState.value.mode) {
                                     MediaMode.SHOWS -> it is UpNextShow
                                     MediaMode.MOVIES -> it is UpNextMovie
                                     else -> true
@@ -233,8 +275,9 @@ internal class AllHomeUpNextViewModel(
                 }
 
                 pages += 1
-                itemsOrder = itemsState.value?.map { it.mediaId.value }
                 hasMoreData = nextData.size >= HOME_ALL_LIMIT
+
+                itemsOrder = itemsState.value?.map { it.mediaId.value }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -248,9 +291,7 @@ internal class AllHomeUpNextViewModel(
 
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
-            itemsState.update {
-                emptyList<UpNextShow>().toImmutableList()
-            }
+            itemsState.update { EmptyImmutableList }
             loadingState.update { Done }
             return true
         } else {
@@ -295,6 +336,8 @@ internal class AllHomeUpNextViewModel(
                     val items = getUpNextUseCase.getUpNext(
                         page = 1,
                         limit = HOME_ALL_LIMIT,
+                        filters = filterState.value,
+                        skipLocal = true,
                     )
                     itemsOrder?.let { order ->
                         items
@@ -356,6 +399,8 @@ internal class AllHomeUpNextViewModel(
                     val items = getUpNextUseCase.getUpNext(
                         page = 1,
                         limit = HOME_ALL_LIMIT,
+                        filters = filterState.value,
+                        skipLocal = true,
                     )
                     itemsOrder?.let { order ->
                         items
@@ -388,14 +433,12 @@ internal class AllHomeUpNextViewModel(
         }
     }
 
-    fun setFilter(newFilter: MediaMode) {
-        if (newFilter == filterState.value || loadingState.value.isLoading) {
+    fun setFilter(newFilter: GlobalFilter) {
+        if (newFilter == filterState.value) {
             return
         }
-        viewModelScope.launch {
-            filterState.update { newFilter }
-            loadData(localOnly = true)
-        }
+        filterState.update { newFilter }
+        loadData()
     }
 
     fun removeShow(showId: TraktId) {
@@ -404,9 +447,9 @@ internal class AllHomeUpNextViewModel(
                 ?.filter { it.mediaId != showId || it !is UpNextShow }
                 ?.toImmutableList()
         }
-        itemsOrder = itemsState.value?.map {
-            it.mediaId.value
-        }
+
+        itemsOrder = itemsState.value
+            ?.map { it.mediaId.value }
     }
 
     fun removeMovie(movieId: TraktId) {
@@ -415,18 +458,13 @@ internal class AllHomeUpNextViewModel(
                 ?.filter { it.mediaId != movieId || it !is UpNextMovie }
                 ?.toImmutableList()
         }
-        itemsOrder = itemsState.value?.map {
-            it.mediaId.value
-        }
+
+        itemsOrder = itemsState.value
+            ?.map { it.mediaId.value }
     }
 
     fun clearInfo() {
         infoState.update { null }
-    }
-
-    private fun clear() {
-        pages = 1
-        hasMoreData = true
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -443,7 +481,7 @@ internal class AllHomeUpNextViewModel(
             items = state[0] as ImmutableList<UpNextShow>?,
             loading = state[1] as LoadingState,
             loadingMore = state[2] as LoadingState,
-            filter = state[3] as MediaMode,
+            filter = state[3] as GlobalFilter,
             user = state[4] as User?,
             info = state[5] as StringResource?,
             error = state[6] as Exception?,

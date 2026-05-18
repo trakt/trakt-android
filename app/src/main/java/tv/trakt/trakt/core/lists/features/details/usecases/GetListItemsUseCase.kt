@@ -5,6 +5,8 @@ import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode.MOVIES
+import tv.trakt.trakt.common.model.MediaMode.SHOWS
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.MediaType.EPISODE
 import tv.trakt.trakt.common.model.MediaType.MOVIE
@@ -15,6 +17,7 @@ import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.model.CustomListItem
@@ -27,6 +30,7 @@ internal class GetListItemsUseCase(
         type: List<MediaType>,
         sorting: Sorting,
         pagination: Pagination,
+        filters: GlobalFilter?,
     ): List<CustomListItem> {
         if (type.size == 1 && type[0] == MOVIE) {
             return remoteSource.getMovieListItems(
@@ -34,6 +38,7 @@ internal class GetListItemsUseCase(
                 extended = "full,cloud9,colors",
                 sorting = sorting,
                 pagination = pagination,
+                filters = filters?.copy(mode = MOVIES),
             ).asyncMap {
                 CustomListItem.MovieItem(
                     rank = it.rank,
@@ -49,6 +54,7 @@ internal class GetListItemsUseCase(
                 extended = "full,cloud9,colors",
                 sorting = sorting,
                 pagination = pagination,
+                filters = filters?.copy(mode = SHOWS),
             ).asyncMap {
                 CustomListItem.ShowItem(
                     rank = it.rank,
@@ -64,6 +70,7 @@ internal class GetListItemsUseCase(
                 extended = "full,cloud9,colors",
                 sorting = sorting,
                 pagination = pagination,
+                filters = filters,
             ).asyncMap {
                 when (it.type.value) {
                     MOVIE.value -> CustomListItem.MovieItem(

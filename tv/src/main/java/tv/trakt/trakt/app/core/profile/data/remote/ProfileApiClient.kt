@@ -51,6 +51,11 @@ internal class ProfileApiClient(
             startDate2 = null,
             endDate = null,
             runtimes = null,
+            countries = null,
+            certifications = null,
+            ignoreWatched = null,
+            ignoreWatchlisted = null,
+            ignoreCollected = null,
         )
         return response.body()
     }
@@ -72,6 +77,11 @@ internal class ProfileApiClient(
             startDate2 = null,
             endDate = null,
             runtimes = null,
+            countries = null,
+            certifications = null,
+            ignoreWatched = null,
+            ignoreWatchlisted = null,
+            ignoreCollected = null,
         )
         return response.body()
     }
@@ -102,6 +112,16 @@ internal class ProfileApiClient(
             endAt = null,
             page = page,
             limit = limit,
+            watchnow = null,
+            genres = null,
+            subgenres = null,
+            years = null,
+            ratings = null,
+            startDate = null,
+            endDate = null,
+            runtimes = null,
+            countries = null,
+            certifications = null,
         )
         return response.body()
     }
@@ -117,6 +137,16 @@ internal class ProfileApiClient(
             endAt = null,
             page = page,
             limit = limit,
+            watchnow = null,
+            genres = null,
+            subgenres = null,
+            years = null,
+            ratings = null,
+            startDate = null,
+            endDate = null,
+            runtimes = null,
+            countries = null,
+            certifications = null,
         )
         return response.body()
     }
@@ -200,6 +230,11 @@ internal class ProfileApiClient(
             endDate = null,
             subgenres = null,
             runtimes = null,
+            countries = null,
+            certifications = null,
+            ignoreWatched = null,
+            ignoreWatchlisted = null,
+            ignoreCollected = null,
         )
         return response.body()
     }
@@ -226,6 +261,11 @@ internal class ProfileApiClient(
             endDate = null,
             subgenres = null,
             runtimes = null,
+            countries = null,
+            certifications = null,
+            ignoreWatched = null,
+            ignoreWatchlisted = null,
+            ignoreCollected = null,
         )
         return response.body()
     }
@@ -240,6 +280,19 @@ internal class ProfileApiClient(
             extended = "full,cloud9,streaming_ids",
             page = 1,
             limit = limit,
+            watchnow = null,
+            genres = null,
+            subgenres = null,
+            years = null,
+            ratings = null,
+            startDate = null,
+            endDate = null,
+            runtimes = null,
+            countries = null,
+            certifications = null,
+            ignoreWatched = null,
+            ignoreWatchlisted = null,
+            ignoreCollected = null,
         )
         return response.body()
     }

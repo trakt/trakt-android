@@ -1,3 +1,5 @@
+@file:OptIn(FlowPreview::class)
+
 package tv.trakt.trakt.core.lists.sections.watchlist
 
 import androidx.lifecycle.ViewModel
@@ -27,21 +29,21 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaMode.MEDIA
+import tv.trakt.trakt.common.model.MediaMode.MOVIES
+import tv.trakt.trakt.common.model.MediaMode.SHOWS
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.lists.ListsConfig.WATCHLIST_SECTION_LIMIT
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetWatchlistUseCase
-import tv.trakt.trakt.core.main.helpers.MediaModeManager
-import tv.trakt.trakt.core.main.model.MediaMode
-import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
-import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
-import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 import tv.trakt.trakt.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
@@ -51,7 +53,7 @@ import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class ListsWatchlistViewModel(
-    private val modeManager: MediaModeManager,
+    private val filterManager: GlobalFilterManager,
     private val getWatchlistUseCase: GetWatchlistUseCase,
     private val getShowsWatchlistUseCase: GetShowsWatchlistUseCase,
     private val getMoviesWatchlistUseCase: GetMoviesWatchlistUseCase,
@@ -66,7 +68,7 @@ internal class ListsWatchlistViewModel(
 
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
-    private val filterState = MutableStateFlow(modeManager.getMode())
+    private val filterState = MutableStateFlow(filterManager.getFilter())
     private val collapseState = MutableStateFlow(isCollapsed())
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
@@ -80,14 +82,14 @@ internal class ListsWatchlistViewModel(
     init {
         loadData()
 
-        observeMode()
+        observeFilter()
         observeUser()
         observeWatchlist()
         observeCollection()
     }
 
-    private fun observeMode() {
-        modeManager.observeMode()
+    private fun observeFilter() {
+        filterManager.observeFilter()
             .onEach { value ->
                 filterState.update { value }
                 collapseState.update { isCollapsed() }
@@ -96,7 +98,6 @@ internal class ListsWatchlistViewModel(
             .launchIn(viewModelScope)
     }
 
-    @OptIn(FlowPreview::class)
     private fun observeUser() {
         viewModelScope.launch {
             userState.update { sessionManager.getProfile() }
@@ -137,7 +138,7 @@ internal class ListsWatchlistViewModel(
                     return@launch
                 }
 
-                val localItems = when (filterState.value) {
+                val localItems = when (filterState.value.mode) {
                     MEDIA -> getWatchlistUseCase.getLocalWatchlist(
                         limit = WATCHLIST_SECTION_LIMIT,
                         sort = Sorting.RecentlyAdded,
@@ -160,20 +161,23 @@ internal class ListsWatchlistViewModel(
                 }
 
                 itemsState.update {
-                    when (filterState.value) {
+                    when (filterState.value.mode) {
                         MEDIA -> getWatchlistUseCase.getRemoteWatchlist(
                             page = 1,
                             limit = WATCHLIST_SECTION_LIMIT,
+                            filters = filterState.value,
                             sorting = Sorting.RecentlyAdded,
                         )
                         SHOWS -> getShowsWatchlistUseCase.getRemoteWatchlist(
                             page = 1,
                             limit = WATCHLIST_SECTION_LIMIT,
+                            filters = filterState.value,
                             sorting = Sorting.RecentlyAdded,
                         )
                         MOVIES -> getMoviesWatchlistUseCase.getRemoteWatchlist(
                             page = 1,
                             limit = WATCHLIST_SECTION_LIMIT,
+                            filters = filterState.value,
                             sorting = Sorting.RecentlyAdded,
                         )
                     }
@@ -234,7 +238,7 @@ internal class ListsWatchlistViewModel(
 
         collapseJob?.cancel()
         collapseJob = viewModelScope.launch {
-            val key = when (filterState.value) {
+            val key = when (filterState.value.mode) {
                 MEDIA -> CollapsingKey.LISTS_MEDIA_WATCHLIST
                 SHOWS -> CollapsingKey.LISTS_SHOWS_WATCHLIST
                 MOVIES -> CollapsingKey.LISTS_MOVIES_WATCHLIST
@@ -248,7 +252,7 @@ internal class ListsWatchlistViewModel(
 
     private fun isCollapsed(): Boolean {
         return collapsingManager.isCollapsed(
-            key = when (filterState.value) {
+            key = when (filterState.value.mode) {
                 MEDIA -> CollapsingKey.LISTS_MEDIA_WATCHLIST
                 SHOWS -> CollapsingKey.LISTS_SHOWS_WATCHLIST
                 MOVIES -> CollapsingKey.LISTS_MOVIES_WATCHLIST
@@ -271,7 +275,7 @@ internal class ListsWatchlistViewModel(
         ListsWatchlistState(
             loading = states[0] as LoadingState,
             items = states[1] as ImmutableList<WatchlistItem>?,
-            filter = states[2] as MediaMode,
+            filter = states[2] as GlobalFilter,
             collapsed = states[3] as Boolean,
             collection = states[4] as UserCollectionState,
             navigateShow = states[5] as TraktId?,

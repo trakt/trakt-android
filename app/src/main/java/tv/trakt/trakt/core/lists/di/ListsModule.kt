@@ -254,7 +254,7 @@ internal val listsModule = module {
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
             collectionStateProvider = get(),
-            modeManager = get(),
+            filterManager = get(),
             sessionManager = get(),
             collapsingManager = get(),
             watchlistUpdates = get(),
@@ -275,7 +275,7 @@ internal val listsModule = module {
             movieDetailsUpdates = get(),
             watchlistUpdates = get(),
             collectionStateProvider = get(),
-            modeManager = get(),
+            filterManager = get(),
             sessionManager = get(),
             ratePromptManager = get(),
             analytics = get(),
@@ -285,7 +285,7 @@ internal val listsModule = module {
     viewModel { (listId: TraktId) ->
         ListsPersonalViewModel(
             listId = listId,
-            modeManager = get(),
+            filterManager = get(),
             getListUseCase = get(),
             getListItemsUseCase = get(),
             localListsSource = get(),
@@ -301,7 +301,7 @@ internal val listsModule = module {
     viewModel { (listId: TraktId) ->
         ListsLikedViewModel(
             listId = listId,
-            modeManager = get(),
+            filterManager = get(),
             getLikedListUseCase = get(),
             getLikedListItemsUseCase = get(),
             showLocalDataSource = get(),
@@ -315,7 +315,7 @@ internal val listsModule = module {
     viewModel { (listId: TraktId) ->
         ListsCollaborationsViewModel(
             listId = listId,
-            modeManager = get(),
+            filterManager = get(),
             getCollaborationsListUseCase = get(),
             getCollaborationsListItemsUseCase = get(),
             localListsItemsSource = get(),
@@ -338,7 +338,7 @@ internal val listsModule = module {
             episodeLocalDataSource = get(),
             collectionStateProvider = get(),
             sessionManager = get(),
-            modeManager = get(),
+            filterManager = get(),
             analytics = get(),
         )
     }
@@ -439,6 +439,7 @@ internal val listsModule = module {
             movieLocalDataSource = get(),
             episodeLocalDataSource = get(),
             collectionStateProvider = get(),
+            filtersManager = get(),
             sessionManager = get(),
         )
     }

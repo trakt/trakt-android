@@ -77,7 +77,7 @@ internal val Typography: TraktTypography = TraktTypography(
         fontFamily = SplineFamily,
         fontWeight = FontWeight.W600,
         fontSize = 13.sp,
-        letterSpacing = 0.04.em,
+        letterSpacing = 0.035.em,
     ),
     paragraph = TextStyle(
         fontFamily = SplineFamily,

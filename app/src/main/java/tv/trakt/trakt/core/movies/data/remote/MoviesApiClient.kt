@@ -6,6 +6,7 @@ import org.openapitools.client.apis.MoviesApi
 import org.openapitools.client.apis.RecommendationsApi
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
@@ -26,25 +27,26 @@ internal class MoviesApiClient(
     override suspend fun getTrending(
         page: Int,
         limit: Int,
-        genres: List<String>?,
+        filters: GlobalFilter,
         subgenres: List<String>?,
-        years: String?,
     ): List<TrendingMovieDto> {
         val response = moviesApi.getMoviesTrending(
             extended = "full,streaming_ids,cloud9,colors",
             page = page,
             limit = limit,
-            watchnow = null,
+            watchnow = filters.availability?.joinToString(",") { it.slug },
+            genres = filters.genre?.joinToString(",") { it.slug },
             subgenres = subgenres?.joinToString(","),
-            genres = genres?.joinToString(","),
-            years = years,
-            ratings = null,
-            ignoreWatched = null,
+            years = filters.years?.let { "${it.first}-${it.second}" },
+            ratings = filters.rating?.let { "${it.first}-${it.second}" },
+            runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
+            certifications = filters.certification?.joinToString(",") { it.slug },
+            ignoreWatched = filters.hideWatched,
+            ignoreWatchlisted = filters.hideWatchlist,
             ignoreCollected = null,
-            ignoreWatchlisted = null,
             startDate = null,
             endDate = null,
-            runtimes = null,
+            countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
         )
 
         return response.body()
@@ -59,25 +61,25 @@ internal class MoviesApiClient(
     override suspend fun getPopular(
         page: Int,
         limit: Int,
-        years: String?,
-        genres: List<String>?,
-        subgenres: List<String>?,
+        filters: GlobalFilter,
     ): List<MovieDto> {
         val response = moviesApi.getMoviesPopular(
             extended = "full,streaming_ids,cloud9,colors",
             page = page,
             limit = limit,
-            years = years,
-            watchnow = null,
-            subgenres = subgenres?.joinToString(","),
-            genres = genres?.joinToString(","),
-            ratings = null,
-            ignoreWatched = null,
+            watchnow = filters.availability?.joinToString(",") { it.slug },
+            genres = filters.genre?.joinToString(",") { it.slug },
+            subgenres = filters.subgenre?.joinToString(","),
+            years = filters.years?.let { "${it.first}-${it.second}" },
+            ratings = filters.rating?.let { "${it.first}-${it.second}" },
+            runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
+            certifications = filters.certification?.joinToString(",") { it.slug },
+            ignoreWatched = filters.hideWatched,
+            ignoreWatchlisted = filters.hideWatchlist,
             ignoreCollected = null,
-            ignoreWatchlisted = null,
             startDate = null,
             endDate = null,
-            runtimes = null,
+            countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
         )
 
         return response.body()
@@ -85,25 +87,25 @@ internal class MoviesApiClient(
 
     override suspend fun getRecommended(
         limit: Int,
-        years: String?,
-        genres: List<String>?,
-        subgenres: List<String>?,
+        filters: GlobalFilter,
     ): List<RecommendedMovieDto> {
         val response = recommendationsApi.getRecommendationsMoviesRecommend(
             extended = "full,streaming_ids,cloud9,colors",
             limit = limit,
-            ignoreWatched = true,
-            ignoreWatchlisted = true,
-            ignoreCollected = true,
             watchWindow = 25,
-            watchnow = null,
-            subgenres = subgenres?.joinToString(","),
-            genres = genres?.joinToString(","),
-            years = years,
-            ratings = null,
+            watchnow = filters.availability?.joinToString(",") { it.slug },
+            genres = filters.genre?.joinToString(",") { it.slug },
+            subgenres = filters.subgenre?.joinToString(","),
+            years = filters.years?.let { "${it.first}-${it.second}" },
+            ratings = filters.rating?.let { "${it.first}-${it.second}" },
+            runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
+            certifications = filters.certification?.joinToString(",") { it.slug },
+            ignoreWatched = filters.hideWatched,
+            ignoreWatchlisted = filters.hideWatchlist,
+            ignoreCollected = null,
             startDate = null,
             endDate = null,
-            runtimes = null,
+            countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
         )
 
         return response.body()
@@ -113,25 +115,25 @@ internal class MoviesApiClient(
         page: Int,
         limit: Int,
         endDate: Instant?,
-        genres: List<String>?,
-        subgenres: List<String>?,
-        years: String?,
+        filters: GlobalFilter,
     ): List<AnticipatedMovieDto> {
         val response = moviesApi.getMoviesAnticipated(
             extended = "full,streaming_ids,cloud9,colors",
             page = page,
             limit = limit,
-            watchnow = null,
-            subgenres = subgenres?.joinToString(","),
-            genres = genres?.joinToString(","),
-            years = years,
-            ratings = null,
-            ignoreWatched = null,
+            watchnow = filters.availability?.joinToString(",") { it.slug },
+            genres = filters.genre?.joinToString(",") { it.slug },
+            subgenres = filters.subgenre?.joinToString(","),
+            years = filters.years?.let { "${it.first}-${it.second}" },
+            ratings = filters.rating?.let { "${it.first}-${it.second}" },
+            runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
+            certifications = filters.certification?.joinToString(",") { it.slug },
+            ignoreWatched = filters.hideWatched,
+            ignoreWatchlisted = filters.hideWatchlist,
             ignoreCollected = null,
-            ignoreWatchlisted = null,
             startDate = null,
             endDate = endDate?.toString(),
-            runtimes = null,
+            countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
         )
 
         return response.body()

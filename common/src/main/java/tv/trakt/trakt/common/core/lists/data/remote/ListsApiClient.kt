@@ -9,6 +9,7 @@ import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
 import org.openapitools.client.models.PutUsersListsListUpdateRequest
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.ListItemDto
@@ -177,22 +178,28 @@ class ListsApiClient(
         extended: String?,
         sorting: Sorting,
         pagination: Pagination,
+        filters: GlobalFilter?,
     ): List<ListItemDto> {
         val response = listsApi.getListsItemsAll(
             id = listId.value.toString(),
             extended = extended,
-            watchnow = null,
-            genres = null,
-            subgenres = null,
-            years = null,
-            ratings = null,
+            watchnow = filters?.availability?.joinToString(",") { it.slug },
+            genres = filters?.genre?.joinToString(",") { it.slug },
+            subgenres = filters?.subgenre?.joinToString(","),
+            years = filters?.years?.let { "${it.first}-${it.second}" },
+            ratings = filters?.rating?.let { "${it.first}-${it.second}" },
             startDate = null,
             endDate = null,
             page = pagination.page,
             limit = pagination.limit.toString(),
             sortBy = sorting.type.value,
             sortHow = sorting.order.value,
-            runtimes = null,
+            runtimes = filters?.runtime?.let { "${it.first}-${it.second}" },
+            countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
+            certifications = filters?.certification?.joinToString(",") { it.slug },
+            ignoreWatched = filters?.hideWatched,
+            ignoreWatchlisted = filters?.hideWatchlist,
+            ignoreCollected = false,
         )
         return response.body()
     }
@@ -202,22 +209,28 @@ class ListsApiClient(
         extended: String?,
         sorting: Sorting,
         pagination: Pagination,
+        filters: GlobalFilter?,
     ): List<ListMediaItemDto> {
         val response = listsApi.getListsItemsMedia(
             id = listId.value.toString(),
             extended = extended,
-            watchnow = null,
-            genres = null,
-            subgenres = null,
-            years = null,
-            ratings = null,
+            watchnow = filters?.availability?.joinToString(",") { it.slug },
+            genres = filters?.genre?.joinToString(",") { it.slug },
+            subgenres = filters?.subgenre?.joinToString(","),
+            years = filters?.years?.let { "${it.first}-${it.second}" },
+            ratings = filters?.rating?.let { "${it.first}-${it.second}" },
             startDate = null,
             endDate = null,
             page = pagination.page,
             limit = pagination.limit.toString(),
             sortBy = sorting.type.value,
             sortHow = sorting.order.value,
-            runtimes = null,
+            runtimes = filters?.runtime?.let { "${it.first}-${it.second}" },
+            countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
+            certifications = filters?.certification?.joinToString(",") { it.slug },
+            ignoreWatched = filters?.hideWatched,
+            ignoreWatchlisted = filters?.hideWatchlist,
+            ignoreCollected = false,
         )
         return response.body()
     }
@@ -227,22 +240,28 @@ class ListsApiClient(
         extended: String?,
         sorting: Sorting,
         pagination: Pagination,
+        filters: GlobalFilter?,
     ): List<ListShowItemDto> {
         val response = listsApi.getListsItemsShow(
             id = listId.value.toString(),
             extended = extended,
-            watchnow = null,
-            genres = null,
-            subgenres = null,
-            years = null,
-            ratings = null,
+            watchnow = filters?.availability?.joinToString(",") { it.slug },
+            genres = filters?.genre?.joinToString(",") { it.slug },
+            subgenres = filters?.subgenre?.joinToString(","),
+            years = filters?.years?.let { "${it.first}-${it.second}" },
+            ratings = filters?.rating?.let { "${it.first}-${it.second}" },
             startDate = null,
             endDate = null,
             page = pagination.page,
             limit = pagination.limit.toString(),
             sortBy = sorting.type.value,
             sortHow = sorting.order.value,
-            runtimes = null,
+            runtimes = filters?.runtime?.let { "${it.first}-${it.second}" },
+            countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
+            certifications = filters?.certification?.joinToString(",") { it.slug },
+            ignoreWatched = filters?.hideWatched,
+            ignoreWatchlisted = filters?.hideWatchlist,
+            ignoreCollected = false,
         )
         return response.body()
     }
@@ -252,22 +271,28 @@ class ListsApiClient(
         extended: String?,
         sorting: Sorting,
         pagination: Pagination,
+        filters: GlobalFilter?,
     ): List<ListMovieItemDto> {
         val response = listsApi.getListsItemsMovie(
             id = listId.value.toString(),
             extended = extended,
-            watchnow = null,
-            genres = null,
-            years = null,
-            ratings = null,
+            watchnow = filters?.availability?.joinToString(",") { it.slug },
+            genres = filters?.genre?.joinToString(",") { it.slug },
+            years = filters?.years?.let { "${it.first}-${it.second}" },
+            ratings = filters?.rating?.let { "${it.first}-${it.second}" },
             startDate = null,
             endDate = null,
-            subgenres = null,
+            subgenres = filters?.subgenre?.joinToString(","),
             page = pagination.page,
             limit = pagination.limit.toString(),
             sortBy = sorting.type.value,
             sortHow = sorting.order.value,
-            runtimes = null,
+            runtimes = filters?.runtime?.let { "${it.first}-${it.second}" },
+            countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
+            certifications = filters?.certification?.joinToString(",") { it.slug },
+            ignoreWatched = filters?.hideWatched,
+            ignoreWatchlisted = filters?.hideWatchlist,
+            ignoreCollected = false,
         )
         return response.body()
     }

@@ -6,6 +6,7 @@ import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.ShowsApi
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
@@ -27,25 +28,25 @@ internal class ShowsApiClient(
     override suspend fun getTrending(
         page: Int,
         limit: Int,
-        years: String?,
-        genres: List<String>?,
-        subgenres: List<String>?,
+        filters: GlobalFilter,
     ): List<TrendingShowDto> {
         val response = showsApi.getShowsTrending(
             extended = "full,streaming_ids,cloud9,colors",
-            limit = limit,
-            watchnow = null,
-            genres = genres?.joinToString(","),
-            subgenres = subgenres?.joinToString(","),
-            years = years,
-            ratings = null,
             page = page,
-            ignoreWatched = null,
+            limit = limit,
+            watchnow = filters.availability?.joinToString(",") { it.slug },
+            genres = filters.genre?.joinToString(",") { it.slug },
+            subgenres = filters.subgenre?.joinToString(","),
+            years = filters.years?.let { "${it.first}-${it.second}" },
+            ratings = filters.rating?.let { "${it.first}-${it.second}" },
+            runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
+            certifications = filters.certification?.joinToString(",") { it.slug },
+            countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
+            ignoreWatched = filters.hideWatched,
+            ignoreWatchlisted = filters.hideWatchlist,
             ignoreCollected = null,
-            ignoreWatchlisted = null,
             startDate = null,
             endDate = null,
-            runtimes = null,
         )
 
         return response.body()
@@ -57,55 +58,28 @@ internal class ShowsApiClient(
             }
     }
 
-    override suspend fun getHot(limit: Int): List<TrendingShowDto> {
-        val response = showsApi.getShowsHot(
-            extended = "full,streaming_ids,cloud9,colors",
-            limit = limit,
-            watchnow = null,
-            genres = null,
-            subgenres = null,
-            years = null,
-            ratings = null,
-            page = null,
-            ignoreWatched = null,
-            ignoreCollected = null,
-            ignoreWatchlisted = null,
-            startDate = "lastmonth",
-            endDate = null,
-            runtimes = null,
-        )
-
-        return response.body()
-            .map {
-                TrendingShowDto(
-                    watchers = it.listCount,
-                    show = it.show,
-                )
-            }
-    }
-
     override suspend fun getPopular(
         page: Int,
         limit: Int,
-        years: String?,
-        genres: List<String>?,
-        subgenres: List<String>?,
+        filters: GlobalFilter,
     ): List<ShowDto> {
         val response = showsApi.getShowsPopular(
             extended = "full,streaming_ids,cloud9,colors",
-            limit = limit,
-            watchnow = null,
-            genres = genres?.joinToString(","),
-            subgenres = subgenres?.joinToString(","),
-            years = years,
-            ratings = null,
             page = page,
-            ignoreWatched = null,
+            limit = limit,
+            watchnow = filters.availability?.joinToString(",") { it.slug },
+            genres = filters.genre?.joinToString(",") { it.slug },
+            subgenres = filters.subgenre?.joinToString(","),
+            years = filters.years?.let { "${it.first}-${it.second}" },
+            ratings = filters.rating?.let { "${it.first}-${it.second}" },
+            runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
+            certifications = filters.certification?.joinToString(",") { it.slug },
+            countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
+            ignoreWatched = filters.hideWatched,
+            ignoreWatchlisted = filters.hideWatchlist,
             ignoreCollected = null,
-            ignoreWatchlisted = null,
             startDate = null,
             endDate = null,
-            runtimes = null,
         )
 
         return response.body()
@@ -113,25 +87,25 @@ internal class ShowsApiClient(
 
     override suspend fun getRecommended(
         limit: Int,
-        years: String?,
-        genres: List<String>?,
-        subgenres: List<String>?,
+        filters: GlobalFilter,
     ): List<RecommendedShowDto> {
         val response = recommendationsApi.getRecommendationsShowsRecommend(
             extended = "full,streaming_ids,cloud9,colors",
             limit = limit,
-            ignoreWatched = true,
-            ignoreWatchlisted = true,
-            ignoreCollected = true,
             watchWindow = 25,
-            watchnow = null,
-            genres = genres?.joinToString(","),
-            subgenres = subgenres?.joinToString(","),
-            years = years,
-            ratings = null,
+            watchnow = filters.availability?.joinToString(",") { it.slug },
+            genres = filters.genre?.joinToString(",") { it.slug },
+            subgenres = filters.subgenre?.joinToString(","),
+            years = filters.years?.let { "${it.first}-${it.second}" },
+            ratings = filters.rating?.let { "${it.first}-${it.second}" },
+            runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
+            certifications = filters.certification?.joinToString(",") { it.slug },
+            countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
+            ignoreWatched = filters.hideWatched,
+            ignoreWatchlisted = filters.hideWatchlist,
+            ignoreCollected = null,
             startDate = null,
             endDate = null,
-            runtimes = null,
         )
 
         return response.body()
@@ -140,26 +114,26 @@ internal class ShowsApiClient(
     override suspend fun getAnticipated(
         page: Int,
         limit: Int,
-        years: String?,
         endDate: Instant?,
-        genres: List<String>?,
-        subgenres: List<String>?,
+        filters: GlobalFilter,
     ): List<AnticipatedShowDto> {
         val response = showsApi.getShowsAnticipated(
             extended = "full,streaming_ids,cloud9,colors",
-            limit = limit,
-            watchnow = null,
-            genres = genres?.joinToString(","),
-            subgenres = subgenres?.joinToString(","),
-            years = years,
-            ratings = null,
             page = page,
-            ignoreWatched = null,
+            limit = limit,
+            watchnow = filters.availability?.joinToString(",") { it.slug },
+            genres = filters.genre?.joinToString(",") { it.slug },
+            subgenres = filters.subgenre?.joinToString(","),
+            years = filters.years?.let { "${it.first}-${it.second}" },
+            ratings = filters.rating?.let { "${it.first}-${it.second}" },
+            runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
+            certifications = filters.certification?.joinToString(",") { it.slug },
+            countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
+            ignoreWatched = filters.hideWatched,
+            ignoreWatchlisted = filters.hideWatchlist,
             ignoreCollected = null,
-            ignoreWatchlisted = null,
             startDate = null,
             endDate = endDate?.toString(),
-            runtimes = null,
         )
 
         return response.body()

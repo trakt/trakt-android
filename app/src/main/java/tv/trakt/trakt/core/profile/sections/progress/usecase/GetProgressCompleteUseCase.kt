@@ -30,6 +30,7 @@ internal class GetProgressCompleteUseCase(
             intent = "completed",
             sortHow = null,
             sortBy = null,
+            filters = null,
         )
 
         return remoteItems

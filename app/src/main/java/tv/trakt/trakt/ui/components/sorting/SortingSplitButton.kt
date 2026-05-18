@@ -38,7 +38,7 @@ internal fun SortingSplitButton(
     onTrailingClick: () -> Unit = {},
 ) {
     SplitButtonLayout(
-        spacing = 3.dp,
+        spacing = 2.dp,
         leadingButton = {
             SplitButtonDefaults.LeadingButton(
                 enabled = enabled,

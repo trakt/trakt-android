@@ -73,9 +73,13 @@ import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.extensions.toAnnotatedString
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.sorting.SortTypeList
 import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.core.filters.GlobalFiltersSheet
+import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.core.lists.features.details.ListDetailsState.LikedInfo
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsEpisodeView
 import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsMovieView
@@ -86,12 +90,12 @@ import tv.trakt.trakt.core.lists.model.CustomListItem.EpisodeItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.SeasonItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -160,6 +164,7 @@ internal fun ListDetailsScreen(
     var movieContextSheet by remember { mutableStateOf<MovieItem?>(null) }
     var sortSheet by remember { mutableStateOf<SortTypeList?>(null) }
     var confirmRemoveLikeSheet by remember { mutableStateOf(false) }
+    var filtersSheet by remember { mutableStateOf(false) }
 
     ListDetailsContent(
         state = state,
@@ -185,7 +190,14 @@ internal fun ListDetailsScreen(
                 is SeasonItem, is EpisodeItem -> Unit
             }
         },
-        onFilterClick = viewModel::setFilter,
+        onModeClick = { mode ->
+            state.filter?.let {
+                viewModel.setFilter(it.copy(mode = mode))
+            }
+        },
+        onFiltersClick = {
+            filtersSheet = true
+        },
         onSortTypeClick = {
             if (!state.loading.isLoading) {
                 sortSheet = state.sorting.type
@@ -256,6 +268,18 @@ internal fun ListDetailsScreen(
             state.list?.list?.name ?: "",
         ),
     )
+
+    GlobalFiltersSheet(
+        active = filtersSheet,
+        options = GlobalFiltersOptions(
+            global = false,
+            initial = state.filter,
+        ),
+        onUpdate = viewModel::setFilter,
+        onDismiss = {
+            filtersSheet = false
+        },
+    )
 }
 
 @Composable
@@ -264,7 +288,8 @@ internal fun ListDetailsContent(
     modifier: Modifier = Modifier,
     onClick: (CustomListItem) -> Unit = {},
     onLongClick: (CustomListItem) -> Unit = {},
-    onFilterClick: (MediaMode) -> Unit = {},
+    onModeClick: (MediaMode) -> Unit = {},
+    onFiltersClick: () -> Unit = {},
     onSortTypeClick: () -> Unit = {},
     onSortOrderClick: () -> Unit = {},
     onLikeClick: () -> Unit = {},
@@ -324,7 +349,8 @@ internal fun ListDetailsContent(
             onEndOfList = onLoadMoreData,
             onClick = onClick,
             onLongClick = onLongClick,
-            onFilterClick = onFilterClick,
+            onModeClick = onModeClick,
+            onFiltersClick = onFiltersClick,
             onSortTypeClick = onSortTypeClick,
             onSortOrderClick = onSortOrderClick,
             onLikeClick = onLikeClick,
@@ -335,14 +361,17 @@ internal fun ListDetailsContent(
 
 @Composable
 private fun TitleBar(
+    enabled: Boolean,
     title: String,
     subtitle: String?,
     subtitleVisible: Boolean,
     liked: LikedInfo?,
     likesCount: Int?,
+    filters: GlobalFilter?,
     modifier: Modifier = Modifier,
     onLikeClick: () -> Unit,
     onBackClick: () -> Unit,
+    onFiltersClick: () -> Unit,
 ) {
     Row(
         verticalAlignment = CenterVertically,
@@ -428,6 +457,16 @@ private fun TitleBar(
                 }
             }
         }
+
+        filters?.let {
+            MediaFilterIcon(
+                active = it.isActive,
+                enabled = enabled,
+                onClick = onFiltersClick,
+                modifier = Modifier
+                    .padding(start = 12.dp),
+            )
+        }
     }
 }
 
@@ -439,7 +478,7 @@ private fun ContentList(
     subtitle: String?,
     listState: LazyListState,
     listItems: ImmutableList<CustomListItem>,
-    listFilter: MediaMode?,
+    listFilter: GlobalFilter?,
     listSorting: Sorting?,
     listLiked: LikedInfo?,
     listLikes: Int?,
@@ -448,7 +487,8 @@ private fun ContentList(
     loadingMore: Boolean,
     onClick: (CustomListItem) -> Unit,
     onLongClick: (CustomListItem) -> Unit,
-    onFilterClick: (MediaMode) -> Unit,
+    onModeClick: (MediaMode) -> Unit,
+    onFiltersClick: () -> Unit,
     onSortTypeClick: () -> Unit,
     onSortOrderClick: () -> Unit,
     onLikeClick: () -> Unit,
@@ -488,14 +528,29 @@ private fun ContentList(
     ) {
         item {
             TitleBar(
+                enabled = !loading,
                 title = title,
                 subtitle = subtitle,
                 subtitleVisible = subtitleVisible,
                 liked = listLiked,
                 likesCount = listLikes,
+                filters = listFilter,
                 onLikeClick = onLikeClick,
                 onBackClick = onBackClick,
+                onFiltersClick = onFiltersClick,
             )
+        }
+
+        if (listSorting != null) {
+            item {
+                ContentFilters(
+                    filter = listFilter,
+                    sorting = listSorting,
+                    onFilterClick = onModeClick,
+                    onSortTypeClick = onSortTypeClick,
+                    onSortOrderClick = onSortOrderClick,
+                )
+            }
         }
 
         if (!subtitleVisible) {
@@ -513,23 +568,10 @@ private fun ContentList(
                     },
                     overflow = Ellipsis,
                     modifier = Modifier
-                        .padding(bottom = 10.dp)
+                        .padding(bottom = 18.dp)
                         .onClick {
                             subtitleCollapsed = !subtitleCollapsed
                         },
-                )
-            }
-        }
-
-        if (listSorting != null) {
-            item {
-                ContentFilters(
-                    subtitle = !subtitle.isNullOrEmpty(),
-                    filter = listFilter,
-                    sorting = listSorting,
-                    onFilterClick = onFilterClick,
-                    onSortTypeClick = onSortTypeClick,
-                    onSortOrderClick = onSortOrderClick,
                 )
             }
         }
@@ -627,7 +669,7 @@ private fun ContentList(
             }
         } else if (listItems.isEmpty()) {
             item {
-                ContentEmpty(filter = listFilter)
+                ContentEmpty(filter = listFilter?.mode)
             }
         }
     }
@@ -635,8 +677,7 @@ private fun ContentList(
 
 @Composable
 private fun ContentFilters(
-    subtitle: Boolean,
-    filter: MediaMode?,
+    filter: GlobalFilter?,
     sorting: Sorting,
     onFilterClick: (MediaMode) -> Unit,
     onSortTypeClick: () -> Unit,
@@ -648,13 +689,12 @@ private fun ContentFilters(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                top = if (subtitle) 8.dp else 0.dp,
                 bottom = 19.dp,
             ),
     ) {
         if (filter != null) {
             MediaModeFilters(
-                selected = filter,
+                selected = filter.mode,
                 onClick = onFilterClick,
                 height = 32.dp,
                 unselectedTextVisible = false,

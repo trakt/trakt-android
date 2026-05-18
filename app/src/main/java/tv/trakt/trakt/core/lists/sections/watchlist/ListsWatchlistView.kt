@@ -43,6 +43,10 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.MediaMode.MEDIA
+import tv.trakt.trakt.common.model.MediaMode.MOVIES
+import tv.trakt.trakt.common.model.MediaMode.SHOWS
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.common.model.Movie
@@ -53,10 +57,6 @@ import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.shee
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.shows.sheets.WatchlistShowSheet
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.views.ListsWatchlistItemView
-import tv.trakt.trakt.core.main.model.MediaMode
-import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
-import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
-import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
@@ -219,7 +219,7 @@ internal fun ListWatchlistContent(
                             state.items?.isEmpty() == true -> {
                                 ContentEmptyView(
                                     authenticated = (state.user != null),
-                                    filter = state.filter,
+                                    filter = state.filter.mode,
                                     onActionClick = {
                                         if (state.user == null) {
                                             onProfileClick()
@@ -236,7 +236,7 @@ internal fun ListWatchlistContent(
 
                             else -> {
                                 ContentList(
-                                    filter = state.filter,
+                                    filter = state.filter.mode,
                                     listItems = (state.items ?: emptyList()).toImmutableList(),
                                     collection = state.collection,
                                     contentPadding = contentPadding,

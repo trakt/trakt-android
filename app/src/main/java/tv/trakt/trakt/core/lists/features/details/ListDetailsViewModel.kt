@@ -25,19 +25,24 @@ import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ITEMS_ALL_LIMIT
 import tv.trakt.trakt.core.lists.features.details.ListDetailsState.LikedInfo
 import tv.trakt.trakt.core.lists.features.details.ListDetailsState.ListDetails
@@ -46,7 +51,6 @@ import tv.trakt.trakt.core.lists.features.details.usecases.GetListItemsUseCase
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.liked.usecases.manage.AddLikedListUseCase
 import tv.trakt.trakt.core.lists.sections.liked.usecases.manage.RemoveLikedListUseCase
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.resources.R
@@ -56,6 +60,7 @@ private const val PAGE_LIMIT = LISTS_ITEMS_ALL_LIMIT
 @OptIn(FlowPreview::class)
 internal class ListDetailsViewModel(
     savedStateHandle: SavedStateHandle,
+    filtersManager: GlobalFilterManager,
     private val getListItemsUseCase: GetListItemsUseCase,
     private val getListLikedUseCase: LoadUserLikedListsUseCase,
     private val addLikedListUseCase: AddLikedListUseCase,
@@ -72,7 +77,6 @@ internal class ListDetailsViewModel(
     private val showFilters = destination.mediaType.size > 1
 
     private val initialState = ListDetailsState()
-
     private val listState = MutableStateFlow(
         ListDetails(
             list = destinationList,
@@ -81,7 +85,12 @@ internal class ListDetailsViewModel(
     )
     private val itemsState = MutableStateFlow(initialState.items)
     private val likedState = MutableStateFlow(initialState.liked)
-    private val filterState = MutableStateFlow(if (showFilters) MediaMode.MEDIA else null)
+    private val filterState = MutableStateFlow(
+        when {
+            showFilters -> filtersManager.getFilter()
+            else -> null
+        },
+    )
     private val sortingState = MutableStateFlow(initialState.sorting)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
@@ -96,11 +105,11 @@ internal class ListDetailsViewModel(
     private var processingJob: Job? = null
 
     private var page: Int = 1
-    private var hasMoreData: Boolean = true
+    private var hasMoreData: Boolean = false
 
     init {
         loadUser()
-        loadData()
+        loadInitialData()
         loadLikedData()
 
         observeCollection()
@@ -144,6 +153,40 @@ internal class ListDetailsViewModel(
         }
     }
 
+    fun loadInitialData() {
+        dataJob?.cancel()
+        dataJob = viewModelScope.launch {
+            try {
+                if (loadEmptyIfNeeded()) return@launch
+                loadingState.update { Loading }
+
+                val items = getListItemsUseCase.getItems(
+                    listId = destinationList.ids.trakt,
+                    type = filterState.value?.mode.toMediaTypes(),
+                    sorting = sortingState.value,
+                    pagination = Pagination(1, PAGE_LIMIT),
+                    filters = filterState.value,
+                )
+                    .distinctBy { it.key }
+                    .toImmutableList()
+
+                itemsState
+                    .update { items }
+                    .also {
+                        hasMoreData = items.size >= PAGE_LIMIT
+                    }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                loadingState.update { Done }
+                dataJob = null
+            }
+        }
+    }
+
     fun loadData(ignoreErrors: Boolean = false) {
         dataJob?.cancel()
         dataJob = viewModelScope.launch {
@@ -151,23 +194,23 @@ internal class ListDetailsViewModel(
                 page = 1
                 hasMoreData = true
 
-                if (loadEmptyIfNeeded()) {
-                    return@launch
-                }
-
                 loadingState.update { Loading }
-                itemsState.update {
-                    getListItemsUseCase.getItems(
-                        listId = destinationList.ids.trakt,
-                        type = filterState.value.toMediaTypes(),
-                        sorting = sortingState.value,
-                        pagination = Pagination(1, PAGE_LIMIT),
-                    )
-                        .distinctBy { it.key }
-                        .toImmutableList()
-                }
 
-                hasMoreData = (itemsState.value?.size ?: 0) >= PAGE_LIMIT
+                val items = getListItemsUseCase.getItems(
+                    listId = destinationList.ids.trakt,
+                    type = filterState.value?.mode.toMediaTypes(),
+                    sorting = sortingState.value,
+                    pagination = Pagination(1, PAGE_LIMIT),
+                    filters = filterState.value,
+                )
+                    .distinctBy { it.key }
+                    .toImmutableList()
+
+                itemsState.update {
+                    items
+                }.also {
+                    hasMoreData = items.size >= PAGE_LIMIT
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     if (!ignoreErrors) {
@@ -184,48 +227,47 @@ internal class ListDetailsViewModel(
 
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
-            itemsState.update {
-                emptyList<CustomListItem>().toImmutableList()
-            }
+            itemsState.update { EmptyImmutableList }
             loadingState.update { Done }
             return true
+        } else {
+            itemsState.update { null }
+            loadingState.update { Idle }
         }
 
         return false
     }
 
     fun loadMoreData() {
-        if (loadingState.value.isLoading ||
-            loadingMoreState.value.isLoading ||
-            dataJob?.isActive == true ||
-            !hasMoreData ||
-            (itemsState.value?.size ?: 0) < PAGE_LIMIT
-        ) {
+        if (itemsState.value.isNullOrEmpty() || !hasMoreData) {
+            return
+        }
+        if (loadingMoreState.value.isLoading || loadingState.value.isLoading) {
             return
         }
 
         dataJob = viewModelScope.launch {
             try {
                 loadingMoreState.update { Loading }
-                val newItems = getListItemsUseCase.getItems(
+
+                val nextPage = page + 1
+                val nextItems = getListItemsUseCase.getItems(
                     listId = destinationList.ids.trakt,
-                    type = filterState.value.toMediaTypes(),
+                    type = filterState.value?.mode.toMediaTypes(),
+                    filters = filterState.value,
                     sorting = sortingState.value,
-                    pagination = Pagination(
-                        page + 1,
-                        PAGE_LIMIT,
-                    ),
+                    pagination = Pagination(nextPage, PAGE_LIMIT),
                 )
 
                 itemsState.update { items ->
                     items
-                        ?.plus(newItems)
+                        ?.plus(nextItems)
                         ?.distinctBy { it.key }
                         ?.toImmutableList()
                 }
 
-                page += 1
-                hasMoreData = (newItems.size >= PAGE_LIMIT)
+                page = nextPage
+                hasMoreData = (nextItems.size >= PAGE_LIMIT)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -252,11 +294,10 @@ internal class ListDetailsViewModel(
         loadData()
     }
 
-    fun setFilter(newFilter: MediaMode) {
-        if (newFilter == filterState.value || loadingState.value.isLoading) {
+    fun setFilter(newFilter: GlobalFilter) {
+        if (newFilter == filterState.value) {
             return
         }
-
         filterState.update { newFilter }
         loadData()
     }
@@ -373,7 +414,7 @@ internal class ListDetailsViewModel(
             loadingMore = state[1] as LoadingState,
             list = state[2] as ListDetails,
             items = state[3] as ImmutableList<CustomListItem>?,
-            filter = state[4] as MediaMode?,
+            filter = state[4] as GlobalFilter?,
             sorting = state[5] as Sorting,
             liked = state[6] as LikedInfo?,
             collection = state[7] as UserCollectionState,

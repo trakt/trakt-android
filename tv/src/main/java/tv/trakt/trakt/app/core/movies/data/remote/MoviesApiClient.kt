@@ -38,6 +38,8 @@ internal class MoviesApiClient(
             ignoreCollected = false,
             ignoreWatchlisted = false,
             runtimes = null,
+            countries = null,
+            certifications = null,
         )
 
         return response.body()
@@ -69,6 +71,8 @@ internal class MoviesApiClient(
             startDate = null,
             endDate = null,
             runtimes = null,
+            countries = null,
+            certifications = null,
         )
 
         return response.body()
@@ -94,6 +98,8 @@ internal class MoviesApiClient(
             startDate = null,
             endDate = endDate.toString(),
             runtimes = null,
+            countries = null,
+            certifications = null,
         )
 
         return response.body()
@@ -124,6 +130,8 @@ internal class MoviesApiClient(
             startDate = null,
             endDate = null,
             runtimes = null,
+            countries = null,
+            certifications = null,
         )
 
         return response.body()

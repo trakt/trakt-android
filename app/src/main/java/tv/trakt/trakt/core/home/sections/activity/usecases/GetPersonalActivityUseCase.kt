@@ -7,15 +7,16 @@ import tv.trakt.trakt.common.core.user.data.remote.history.UserHistoryRemoteData
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.MediaMode.MEDIA
+import tv.trakt.trakt.common.model.MediaMode.MOVIES
+import tv.trakt.trakt.common.model.MediaMode.SHOWS
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
-import tv.trakt.trakt.core.main.model.MediaMode
-import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
-import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
-import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 
 internal class GetPersonalActivityUseCase(
     private val remoteUserSource: UserHistoryRemoteDataSource,
@@ -41,11 +42,12 @@ internal class GetPersonalActivityUseCase(
     suspend fun getPersonalActivity(
         page: Int = 1,
         limit: Int,
-        filter: MediaMode,
+        filter: GlobalFilter,
+        skipLocal: Boolean = false,
     ): ImmutableList<HomeActivityItem> {
         return coroutineScope {
-            val remoteEpisodesAsync = remoteUserSource.getEpisodesHistory(page, limit)
-            val remoteMoviesAsync = remoteUserSource.getMoviesHistory(page, limit)
+            val remoteEpisodesAsync = remoteUserSource.getEpisodesHistory(page, limit, filter)
+            val remoteMoviesAsync = remoteUserSource.getMoviesHistory(page, limit, filter)
 
             val remoteEpisodes = remoteEpisodesAsync
                 .asyncMap {
@@ -86,20 +88,22 @@ internal class GetPersonalActivityUseCase(
 
             return@coroutineScope (remoteEpisodes + remoteMovies)
                 .also {
-                    if (page == 1) {
-                        localDataSource.setItems(
-                            items = it,
-                            notify = false,
-                        )
-                    } else {
-                        localDataSource.addItems(
-                            items = it,
-                            notify = false,
-                        )
+                    if (!skipLocal) {
+                        if (page == 1) {
+                            localDataSource.setItems(
+                                items = it,
+                                notify = false,
+                            )
+                        } else {
+                            localDataSource.addItems(
+                                items = it,
+                                notify = false,
+                            )
+                        }
                     }
                 }
                 .filter {
-                    when (filter) {
+                    when (filter.mode) {
                         SHOWS -> it is HomeActivityItem.EpisodeItem
                         MOVIES -> it is HomeActivityItem.MovieItem
                         MEDIA -> true

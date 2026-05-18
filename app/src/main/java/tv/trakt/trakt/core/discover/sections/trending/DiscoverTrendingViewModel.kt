@@ -24,23 +24,26 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.interleave
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaMode.MEDIA
+import tv.trakt.trakt.common.model.MediaMode.MOVIES
+import tv.trakt.trakt.common.model.MediaMode.SHOWS
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingShowsUseCase
-import tv.trakt.trakt.core.main.helpers.MediaModeManager
-import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class DiscoverTrendingViewModel(
-    private val modeManager: MediaModeManager,
+    private val filterManager: GlobalFilterManager,
     private val getTrendingShowsUseCase: GetTrendingShowsUseCase,
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = DiscoverTrendingState()
 
-    private val modeState = MutableStateFlow(modeManager.getMode())
+    private val filterState = MutableStateFlow(filterManager.getFilter())
     private val collapseState = MutableStateFlow(isCollapsed())
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -55,9 +58,9 @@ internal class DiscoverTrendingViewModel(
     }
 
     private fun observeMode() {
-        modeManager.observeMode()
+        filterManager.observeFilter()
             .onEach { value ->
-                modeState.update { value }
+                filterState.update { value }
                 collapseState.update { isCollapsed() }
                 loadData()
             }
@@ -80,8 +83,6 @@ internal class DiscoverTrendingViewModel(
                 dataJob = null
             }
         }
-
-        Timber.d("Loading trending data for mode: ${modeState.value}")
     }
 
     private suspend fun loadLocalData() {
@@ -89,8 +90,8 @@ internal class DiscoverTrendingViewModel(
             val localShowsAsync = async { getTrendingShowsUseCase.getLocalShows() }
             val localMoviesAsync = async { getTrendingMoviesUseCase.getLocalMovies() }
 
-            val localShows = if (modeState.value.isMediaOrShows) localShowsAsync.await() else emptyList()
-            val localMovies = if (modeState.value.isMediaOrMovies) localMoviesAsync.await() else emptyList()
+            val localShows = if (filterState.value.mode.isMediaOrShows) localShowsAsync.await() else emptyList()
+            val localMovies = if (filterState.value.mode.isMediaOrMovies) localMoviesAsync.await() else emptyList()
 
             if (localShows.isNotEmpty() || localMovies.isNotEmpty()) {
                 itemsState.update {
@@ -107,11 +108,11 @@ internal class DiscoverTrendingViewModel(
 
     private suspend fun loadRemoteData() {
         return coroutineScope {
-            val showsAsync = async { getTrendingShowsUseCase.getShows() }
-            val moviesAsync = async { getTrendingMoviesUseCase.getMovies() }
+            val showsAsync = async { getTrendingShowsUseCase.getShows(filters = filterState.value) }
+            val moviesAsync = async { getTrendingMoviesUseCase.getMovies(filters = filterState.value) }
 
-            val shows = if (modeState.value.isMediaOrShows) showsAsync.await() else emptyList()
-            val movies = if (modeState.value.isMediaOrMovies) moviesAsync.await() else emptyList()
+            val shows = if (filterState.value.mode.isMediaOrShows) showsAsync.await() else emptyList()
+            val movies = if (filterState.value.mode.isMediaOrMovies) moviesAsync.await() else emptyList()
 
             itemsState.update {
                 listOf(shows, movies)
@@ -126,10 +127,10 @@ internal class DiscoverTrendingViewModel(
 
         collapseJob?.cancel()
         collapseJob = viewModelScope.launch {
-            val key = when (modeState.value) {
-                MediaMode.MEDIA -> CollapsingKey.DISCOVER_MEDIA_TRENDING
-                MediaMode.SHOWS -> CollapsingKey.DISCOVER_SHOWS_TRENDING
-                MediaMode.MOVIES -> CollapsingKey.DISCOVER_MOVIES_TRENDING
+            val key = when (filterState.value.mode) {
+                MEDIA -> CollapsingKey.DISCOVER_MEDIA_TRENDING
+                SHOWS -> CollapsingKey.DISCOVER_SHOWS_TRENDING
+                MOVIES -> CollapsingKey.DISCOVER_MOVIES_TRENDING
             }
             when {
                 collapsed -> collapsingManager.collapse(key)
@@ -140,24 +141,24 @@ internal class DiscoverTrendingViewModel(
 
     private fun isCollapsed(): Boolean {
         return collapsingManager.isCollapsed(
-            key = when (modeState.value) {
-                MediaMode.MEDIA -> CollapsingKey.DISCOVER_MEDIA_TRENDING
-                MediaMode.SHOWS -> CollapsingKey.DISCOVER_SHOWS_TRENDING
-                MediaMode.MOVIES -> CollapsingKey.DISCOVER_MOVIES_TRENDING
+            key = when (filterState.value.mode) {
+                MEDIA -> CollapsingKey.DISCOVER_MEDIA_TRENDING
+                SHOWS -> CollapsingKey.DISCOVER_SHOWS_TRENDING
+                MOVIES -> CollapsingKey.DISCOVER_MOVIES_TRENDING
             },
         )
     }
 
     val state = combine(
         itemsState,
-        modeState,
+        filterState,
         collapseState,
         loadingState,
         errorState,
     ) { state ->
         DiscoverTrendingState(
             items = state[0] as ImmutableList<DiscoverItem>?,
-            mode = state[1] as MediaMode?,
+            filter = state[1] as GlobalFilter?,
             collapsed = state[2] as Boolean,
             loading = state[3] as LoadingState,
             error = state[4] as Exception?,

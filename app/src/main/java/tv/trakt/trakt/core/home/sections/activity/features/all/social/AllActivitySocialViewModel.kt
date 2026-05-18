@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.collections.immutable.toImmutableSet
@@ -32,12 +33,12 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_ACTIVITY_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.features.all.AllActivityState
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
-import tv.trakt.trakt.core.main.helpers.MediaModeManager
-import tv.trakt.trakt.core.main.model.MediaMode
 import java.time.LocalDate
 
 internal class AllActivitySocialViewModel(
@@ -47,13 +48,13 @@ internal class AllActivitySocialViewModel(
     private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
     analytics: Analytics,
-    modeManager: MediaModeManager,
+    filterManager: GlobalFilterManager,
 ) : ViewModel() {
     private val initialState = AllActivityState()
 
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
-    private val itemsFilterState = MutableStateFlow(modeManager.getMode())
+    private val itemsFilterState = MutableStateFlow(filterManager.getFilter())
     private val usersFilterState = MutableStateFlow(initialState.usersFilter)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
@@ -62,14 +63,12 @@ internal class AllActivitySocialViewModel(
     private val loadingMoreState = MutableStateFlow(Idle)
     private val errorState = MutableStateFlow(initialState.error)
 
-    private var pages: Int = 1
-    private var hasMoreData: Boolean = false
     private var dataJob: Job? = null
     private var processingJob: Job? = null
 
     init {
         loadUser()
-        loadData()
+        loadInitialData()
 
         analytics.logScreenView(
             screenName = "all_activity_social",
@@ -90,54 +89,87 @@ internal class AllActivitySocialViewModel(
         }
     }
 
-    private fun loadData(
-        ignoreErrors: Boolean = false,
-        localOnly: Boolean = false,
-    ) {
-        clear()
+    private fun loadInitialData() {
         dataJob = viewModelScope.launch {
-            if (loadEmptyIfNeeded()) {
-                return@launch
-            }
+            if (loadEmptyIfNeeded()) return@launch
 
             try {
                 val localItems = getActivityUseCase.getLocalSocialActivity(
                     limit = HOME_ALL_ACTIVITY_LIMIT,
-                    filter = itemsFilterState.value,
-                )
-                if (localItems.isNotEmpty()) {
-                    loadUsersFilter(localItems)
-                    itemsState.update {
+                    filter = itemsFilterState.value.mode,
+                ).also {
+                    loadUsersFilter(it)
+                }
+
+                itemsState
+                    .update {
                         val selectedUser = usersFilterState.value.selectedUser
                         localItems
                             .filter { items -> selectedUser?.let { items.user == it } ?: true }
                             .groupBy { it.activityAt.toLocalDay() }
                             .mapValues { it.value.toImmutableList() }
                             .toImmutableMap()
+                    }.also {
+                        if (localItems.isEmpty()) {
+                            loadingState.update { Loading }
+                        }
                     }
-                    loadingState.update { Done }
-
-                    if (localOnly) {
-                        return@launch
-                    }
-                } else {
-                    loadingState.update { Loading }
-                }
 
                 val remoteItems = getActivityUseCase.getSocialActivity(
                     page = 1,
                     limit = HOME_ALL_ACTIVITY_LIMIT,
-                    filter = itemsFilterState.value,
+                    filters = itemsFilterState.value,
+                    skipLocal = true,
                 )
+
                 loadUsersFilter(remoteItems)
-                itemsState.update {
-                    remoteItems
-                        .groupBy { it.activityAt.toLocalDay() }
-                        .mapValues { it.value.toImmutableList() }
-                        .toImmutableMap()
+                itemsState
+                    .update {
+                        remoteItems
+                            .groupBy { it.activityAt.toLocalDay() }
+                            .mapValues { it.value.toImmutableList() }
+                            .toImmutableMap()
+                    }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                loadingState.update { Done }
+                dataJob = null
+            }
+        }
+    }
+
+    private fun loadData(ignoreErrors: Boolean = false) {
+        if (processingJob?.isActive == true) {
+            return
+        }
+
+        dataJob?.cancel()
+        dataJob = viewModelScope.launch {
+            try {
+                loadingState.update { Loading }
+
+                val remoteItems = getActivityUseCase.getSocialActivity(
+                    page = 1,
+                    limit = HOME_ALL_ACTIVITY_LIMIT,
+                    filters = itemsFilterState.value,
+                    skipLocal = true,
+                ).also {
+                    loadUsersFilter(it)
                 }
 
-                hasMoreData = remoteItems.size >= HOME_ALL_ACTIVITY_LIMIT
+                itemsState
+                    .update {
+                        val selectedUser = usersFilterState.value.selectedUser
+                        remoteItems
+                            .filter { items -> selectedUser?.let { items.user == it } ?: true }
+                            .groupBy { it.activityAt.toLocalDay() }
+                            .mapValues { it.value.toImmutableList() }
+                            .toImmutableMap()
+                    }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     if (!ignoreErrors) {
@@ -163,10 +195,6 @@ internal class AllActivitySocialViewModel(
             .mapNotNull { it.first }
             .take(10)
 
-        if (users.size <= 1) {
-            return
-        }
-
         usersFilterState.update {
             AllActivityState.UsersFilter(
                 users = it.users.plus(users).toImmutableSet(),
@@ -183,19 +211,20 @@ internal class AllActivitySocialViewModel(
         }
 
         usersFilterState.update { newFilter }
-        loadData(localOnly = true)
+        loadData()
     }
 
-    fun setItemsFilter(newFilter: MediaMode) {
+    fun setFilter(newFilter: GlobalFilter) {
+        if (newFilter == itemsFilterState.value) {
+            return
+        }
         itemsFilterState.update { newFilter }
-        loadData(localOnly = true)
+        loadData()
     }
 
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
-            itemsState.update {
-                emptyMap<LocalDate, ImmutableList<HomeActivityItem>>().toImmutableMap()
-            }
+            itemsState.update { persistentMapOf() }
             loadingState.update { Done }
             return true
         } else {
@@ -204,12 +233,6 @@ internal class AllActivitySocialViewModel(
         }
 
         return false
-    }
-
-    private fun clear() {
-        pages = 1
-        hasMoreData = true
-        dataJob?.cancel()
     }
 
     fun navigateToShow(show: Show) {
@@ -278,7 +301,7 @@ internal class AllActivitySocialViewModel(
     ) { state ->
         AllActivityState(
             items = state[0] as ImmutableMap<LocalDate, ImmutableList<HomeActivityItem>>?,
-            itemsFilter = state[1] as MediaMode?,
+            itemsFilter = state[1] as GlobalFilter?,
             usersFilter = state[2] as AllActivityState.UsersFilter,
             navigateShow = state[3] as TraktId?,
             navigateEpisode = state[4] as Pair<TraktId, Episode>?,

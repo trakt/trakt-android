@@ -34,7 +34,6 @@ import tv.trakt.trakt.core.discover.sections.recommended.usecase.movies.DefaultG
 import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.TrendingMoviesLocalDataSource
 import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.TrendingMoviesStorage
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingMoviesUseCase
-import tv.trakt.trakt.core.discover.sections.trending.usecases.movies.CustomGetTrendingMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.trending.usecases.movies.DefaultGetTrendingMoviesUseCase
 import tv.trakt.trakt.core.movies.data.remote.MoviesApiClient
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
@@ -93,16 +92,16 @@ internal val moviesModule = module {
         )
     }
 
-    factory<GetTrendingMoviesUseCase>(
-        qualifier = named("customTrendingMoviesUseCase"),
-    ) {
-        CustomGetTrendingMoviesUseCase(
-            remoteSource = get(),
-            localTrendingSource = get(),
-            localMovieSource = get(),
-            customThemeUseCase = get(),
-        )
-    }
+//    factory<GetTrendingMoviesUseCase>(
+//        qualifier = named("customTrendingMoviesUseCase"),
+//    ) {
+//        CustomGetTrendingMoviesUseCase(
+//            remoteSource = get(),
+//            localTrendingSource = get(),
+//            localMovieSource = get(),
+//            customThemeUseCase = get(),
+//        )
+//    }
 
     factory<GetPopularMoviesUseCase>(
         qualifier = named("defaultPopularMoviesUseCase"),

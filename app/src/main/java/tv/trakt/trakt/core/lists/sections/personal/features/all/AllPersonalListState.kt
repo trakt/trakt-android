@@ -7,16 +7,16 @@ import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.model.CustomListItem
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.UserCollectionState
 
 @Immutable
 internal data class AllPersonalListState(
     val user: User? = null,
     val list: CustomList? = null,
-    val filter: MediaMode? = null,
+    val filter: GlobalFilter? = null,
     val sorting: Sorting = Sorting.Default,
     val items: ImmutableList<CustomListItem>? = null,
     val collection: UserCollectionState = UserCollectionState.Default,

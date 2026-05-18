@@ -6,6 +6,10 @@ import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalLis
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.MediaMode.MEDIA
+import tv.trakt.trakt.common.model.MediaMode.MOVIES
+import tv.trakt.trakt.common.model.MediaMode.SHOWS
 import tv.trakt.trakt.common.model.MediaType.EPISODE
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.MediaType.SEASON
@@ -15,14 +19,11 @@ import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
-import tv.trakt.trakt.core.main.model.MediaMode
-import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
-import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
-import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 
 internal class GetPersonalListItemsUseCase(
     private val remoteSource: UserPersonalListsRemoteDataSource,
@@ -31,7 +32,7 @@ internal class GetPersonalListItemsUseCase(
     suspend fun getItems(
         listId: TraktId,
         limit: Int,
-        filter: MediaMode,
+        filter: GlobalFilter,
         sorting: Sorting,
     ): ImmutableList<CustomListItem> {
         return remoteSource.getPersonalListItems(
@@ -40,6 +41,7 @@ internal class GetPersonalListItemsUseCase(
             page = 1,
             extended = "full,cloud9,colors",
             sorting = sorting,
+            filters = filter,
         )
             .asyncMap(::mapListItem)
             .distinctBy { it.key }
@@ -49,7 +51,7 @@ internal class GetPersonalListItemsUseCase(
                     items = it,
                 )
             }.filter {
-                when (filter) {
+                when (filter.mode) {
                     MEDIA -> true
                     SHOWS -> it is CustomListItem.ShowItem
                     MOVIES -> it is CustomListItem.MovieItem
@@ -77,14 +79,15 @@ internal class GetPersonalListItemsUseCase(
         listId: TraktId,
         page: Int,
         limit: Int,
-        type: MediaMode,
+        filter: GlobalFilter,
         sorting: Sorting,
     ): ImmutableList<CustomListItem> {
-        return when (type) {
+        return when (filter.mode) {
             MEDIA -> getRemoteAllItems(
                 listId = listId,
                 page = page,
                 limit = limit,
+                filter = filter,
                 sorting = sorting,
             )
 
@@ -92,6 +95,7 @@ internal class GetPersonalListItemsUseCase(
                 listId = listId,
                 page = page,
                 limit = limit,
+                filter = filter,
                 sorting = sorting,
             )
 
@@ -99,6 +103,7 @@ internal class GetPersonalListItemsUseCase(
                 listId = listId,
                 page = page,
                 limit = limit,
+                filter = filter,
                 sorting = sorting,
             )
         }
@@ -108,6 +113,7 @@ internal class GetPersonalListItemsUseCase(
         listId: TraktId,
         page: Int,
         limit: Int,
+        filter: GlobalFilter,
         sorting: Sorting,
     ): ImmutableList<CustomListItem> {
         return remoteSource.getPersonalListMovieItems(
@@ -116,6 +122,7 @@ internal class GetPersonalListItemsUseCase(
             page = page,
             extended = "full,cloud9,colors",
             sorting = sorting,
+            filters = filter,
         ).asyncMap {
             val listedAt = it.listedAt.toInstant()
             CustomListItem.MovieItem(
@@ -130,6 +137,7 @@ internal class GetPersonalListItemsUseCase(
         listId: TraktId,
         page: Int,
         limit: Int,
+        filter: GlobalFilter,
         sorting: Sorting,
     ): ImmutableList<CustomListItem> {
         return remoteSource.getPersonalListShowItems(
@@ -138,6 +146,7 @@ internal class GetPersonalListItemsUseCase(
             page = page,
             extended = "full,cloud9,colors",
             sorting = sorting,
+            filters = filter,
         ).asyncMap {
             val listedAt = it.listedAt.toInstant()
             CustomListItem.ShowItem(
@@ -152,6 +161,7 @@ internal class GetPersonalListItemsUseCase(
         listId: TraktId,
         page: Int,
         limit: Int,
+        filter: GlobalFilter,
         sorting: Sorting,
     ): ImmutableList<CustomListItem> {
         return remoteSource.getPersonalListItems(
@@ -160,6 +170,7 @@ internal class GetPersonalListItemsUseCase(
             page = page,
             extended = "full,cloud9,colors",
             sorting = sorting,
+            filters = filter,
         )
             .asyncMap(::mapListItem)
             .toImmutableList()

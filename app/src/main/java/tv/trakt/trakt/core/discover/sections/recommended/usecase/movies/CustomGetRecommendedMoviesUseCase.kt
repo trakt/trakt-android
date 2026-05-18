@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.recommended.data.local.movies.RecommendedMoviesLocalDataSource
@@ -32,28 +33,11 @@ internal class CustomGetRecommendedMoviesUseCase(
     override suspend fun getMovies(
         limit: Int,
         skipLocal: Boolean,
+        filters: GlobalFilter,
     ): ImmutableList<DiscoverItem.MovieItem> {
-        val config = customThemeUseCase.getConfig()
-
-        val customGenres = when {
-            config.enabled -> config.theme?.filters?.movies?.recommended?.genres
-            else -> null
-        }
-        val customSubgenres = when {
-            config.enabled -> config.theme?.filters?.movies?.recommended?.subgenres
-            else -> null
-        }
-
-        val customYears = when {
-            config.enabled -> config.theme?.filters?.movies?.recommended?.years?.toString()
-            else -> null
-        }
-
         return remoteSource.getRecommended(
             limit = limit,
-            genres = customGenres,
-            subgenres = customSubgenres,
-            years = customYears,
+            filters = filters,
         )
             .asyncMap {
                 DiscoverItem.MovieItem(

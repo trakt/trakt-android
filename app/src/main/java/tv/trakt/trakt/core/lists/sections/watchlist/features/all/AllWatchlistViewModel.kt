@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -27,14 +28,21 @@ import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaMode.MEDIA
+import tv.trakt.trakt.common.model.MediaMode.MOVIES
+import tv.trakt.trakt.common.model.MediaMode.SHOWS
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
 import tv.trakt.trakt.core.lists.ListsConfig.WATCHLIST_PAGE_LIMIT
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
@@ -42,11 +50,6 @@ import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieIte
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetWatchlistUseCase
-import tv.trakt.trakt.core.main.helpers.MediaModeManager
-import tv.trakt.trakt.core.main.model.MediaMode
-import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
-import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
-import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
@@ -63,7 +66,7 @@ import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
 @OptIn(FlowPreview::class)
 internal class AllWatchlistViewModel(
-    modeManager: MediaModeManager,
+    filterManager: GlobalFilterManager,
     private val getWatchlistUseCase: GetWatchlistUseCase,
     private val getShowsWatchlistUseCase: GetShowsWatchlistUseCase,
     private val getMoviesWatchlistUseCase: GetMoviesWatchlistUseCase,
@@ -81,7 +84,7 @@ internal class AllWatchlistViewModel(
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = AllWatchlistState()
-    private val initialMode = modeManager.getMode()
+    private val initialMode = filterManager.getFilter()
 
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
@@ -99,11 +102,11 @@ internal class AllWatchlistViewModel(
     private var loadingJob: Job? = null
 
     private var page: Int = 1
-    private var hasMoreData: Boolean = true
+    private var hasMoreData: Boolean = false
 
     init {
         loadUser()
-        loadData()
+        loadInitialData()
 
         observeData()
         observeCollection()
@@ -148,52 +151,95 @@ internal class AllWatchlistViewModel(
         }
     }
 
-    fun loadData(ignoreErrors: Boolean = false) {
+    private fun loadInitialData() {
         dataJob?.cancel()
         dataJob = viewModelScope.launch {
             try {
+                if (loadEmptyIfNeeded()) return@launch
+                loadingIfNeeded()
+
+                val items = when (filterState.value.mode) {
+                    MEDIA -> getWatchlistUseCase.getRemoteWatchlist(
+                        page = page,
+                        limit = WATCHLIST_PAGE_LIMIT,
+                        filters = filterState.value,
+                        sorting = sortingState.value,
+                        skipLocal = true,
+                    )
+                    SHOWS -> getShowsWatchlistUseCase.getRemoteWatchlist(
+                        page = page,
+                        limit = WATCHLIST_PAGE_LIMIT,
+                        filters = filterState.value,
+                        sorting = sortingState.value,
+                        skipLocal = true,
+                    )
+                    MOVIES -> getMoviesWatchlistUseCase.getRemoteWatchlist(
+                        page = page,
+                        limit = WATCHLIST_PAGE_LIMIT,
+                        filters = filterState.value,
+                        sorting = sortingState.value,
+                        skipLocal = true,
+                    )
+                }
+
+                itemsState
+                    .update { items }
+                    .also {
+                        hasMoreData = items.size >= WATCHLIST_PAGE_LIMIT
+                    }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                loadingState.update { Done }
+                dataJob = null
+
+                loadingJob?.cancel()
+                loadingJob = null
+            }
+        }
+    }
+
+    private fun loadData(ignoreErrors: Boolean = false) {
+        dataJob?.cancel()
+        dataJob = viewModelScope.launch {
+            try {
+                loadingIfNeeded()
+
                 page = 1
-                hasMoreData = true
+                hasMoreData = false
 
-                if (loadEmptyIfNeeded()) {
-                    return@launch
+                val items = when (filterState.value.mode) {
+                    MEDIA -> getWatchlistUseCase.getRemoteWatchlist(
+                        page = page,
+                        limit = WATCHLIST_PAGE_LIMIT,
+                        filters = filterState.value,
+                        sorting = sortingState.value,
+                        skipLocal = true,
+                    )
+                    SHOWS -> getShowsWatchlistUseCase.getRemoteWatchlist(
+                        page = page,
+                        limit = WATCHLIST_PAGE_LIMIT,
+                        filters = filterState.value,
+                        sorting = sortingState.value,
+                        skipLocal = true,
+                    )
+                    MOVIES -> getMoviesWatchlistUseCase.getRemoteWatchlist(
+                        page = page,
+                        limit = WATCHLIST_PAGE_LIMIT,
+                        filters = filterState.value,
+                        sorting = sortingState.value,
+                        skipLocal = true,
+                    )
                 }
 
-                val filter = filterState.value
-                val sorting = sortingState.value
-
-                loadingJob = launch {
-                    if (itemsState.value?.isNotEmpty() == true) {
-                        // Avoid blinking loading but still show it if loading takes too long
-                        delay(100)
+                itemsState
+                    .update { items }
+                    .also {
+                        hasMoreData = items.size >= WATCHLIST_PAGE_LIMIT
                     }
-                    loadingState.update { Loading }
-                }
-
-                itemsState.update {
-                    when (filter) {
-                        MEDIA -> getWatchlistUseCase.getRemoteWatchlist(
-                            page = page,
-                            limit = WATCHLIST_PAGE_LIMIT,
-                            sorting = sorting,
-                            skipLocal = true,
-                        )
-                        SHOWS -> getShowsWatchlistUseCase.getRemoteWatchlist(
-                            page = page,
-                            limit = WATCHLIST_PAGE_LIMIT,
-                            sorting = sorting,
-                            skipLocal = true,
-                        )
-                        MOVIES -> getMoviesWatchlistUseCase.getRemoteWatchlist(
-                            page = page,
-                            limit = WATCHLIST_PAGE_LIMIT,
-                            sorting = sorting,
-                            skipLocal = true,
-                        )
-                    }
-                }
-
-                hasMoreData = (itemsState.value?.size ?: 0) >= WATCHLIST_PAGE_LIMIT
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     if (!ignoreErrors) {
@@ -204,6 +250,7 @@ internal class AllWatchlistViewModel(
             } finally {
                 loadingState.update { Done }
                 dataJob = null
+
                 loadingJob?.cancel()
                 loadingJob = null
             }
@@ -211,34 +258,37 @@ internal class AllWatchlistViewModel(
     }
 
     fun loadMoreData() {
-        if (loadingState.value.isLoading ||
-            loadingMoreState.value.isLoading ||
-            dataJob?.isActive == true ||
-            !hasMoreData ||
-            (itemsState.value?.size ?: 0) < WATCHLIST_PAGE_LIMIT
-        ) {
+        if (itemsState.value.isNullOrEmpty() || !hasMoreData) {
+            return
+        }
+        if (loadingMoreState.value.isLoading || loadingState.value.isLoading) {
             return
         }
 
         dataJob = viewModelScope.launch {
             try {
                 loadingMoreState.update { Loading }
-                val newItems = when (filterState.value) {
+
+                val nextPage = page + 1
+                val nextItems = when (filterState.value.mode) {
                     MEDIA -> getWatchlistUseCase.getRemoteWatchlist(
-                        page = page + 1,
+                        page = nextPage,
                         limit = WATCHLIST_PAGE_LIMIT,
+                        filters = filterState.value,
                         sorting = sortingState.value,
                         skipLocal = true,
                     )
                     SHOWS -> getShowsWatchlistUseCase.getRemoteWatchlist(
-                        page = page + 1,
+                        page = nextPage,
                         limit = WATCHLIST_PAGE_LIMIT,
+                        filters = filterState.value,
                         sorting = sortingState.value,
                         skipLocal = true,
                     )
                     MOVIES -> getMoviesWatchlistUseCase.getRemoteWatchlist(
-                        page = page + 1,
+                        page = nextPage,
                         limit = WATCHLIST_PAGE_LIMIT,
+                        filters = filterState.value,
                         sorting = sortingState.value,
                         skipLocal = true,
                     )
@@ -246,13 +296,13 @@ internal class AllWatchlistViewModel(
 
                 itemsState.update { items ->
                     items
-                        ?.plus(newItems)
+                        ?.plus(nextItems)
                         ?.distinctBy { it.key }
                         ?.toImmutableList()
                 }
 
-                page += 1
-                hasMoreData = (newItems.size >= WATCHLIST_PAGE_LIMIT)
+                page = nextPage
+                hasMoreData = (nextItems.size >= WATCHLIST_PAGE_LIMIT)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -266,18 +316,29 @@ internal class AllWatchlistViewModel(
 
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
-            itemsState.update {
-                emptyList<WatchlistItem>().toImmutableList()
-            }
+            itemsState.update { EmptyImmutableList }
             loadingState.update { Done }
             return true
+        } else {
+            itemsState.update { null }
+            loadingState.update { Idle }
         }
 
         return false
     }
 
-    fun setFilter(newFilter: MediaMode) {
-        if (newFilter == filterState.value || loadingState.value.isLoading) {
+    private fun CoroutineScope.loadingIfNeeded() {
+        loadingJob = launch {
+            if (itemsState.value?.isNotEmpty() == true) {
+                // Avoid blinking loading but still show it if loading takes too long
+                delay(100)
+            }
+            loadingState.update { Loading }
+        }
+    }
+
+    fun setFilter(newFilter: GlobalFilter) {
+        if (newFilter == filterState.value) {
             return
         }
         filterState.update { newFilter }
@@ -431,7 +492,7 @@ internal class AllWatchlistViewModel(
             loading = state[0] as LoadingState,
             loadingMore = state[1] as LoadingState,
             items = state[2] as? ImmutableList<WatchlistItem>,
-            filter = state[3] as? MediaMode,
+            filter = state[3] as? GlobalFilter,
             sorting = state[4] as Sorting,
             collection = state[5] as UserCollectionState,
             navigateShow = state[6] as? TraktId,

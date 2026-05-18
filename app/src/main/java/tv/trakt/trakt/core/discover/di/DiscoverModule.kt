@@ -61,7 +61,6 @@ internal val discoverModule = module {
     viewModel {
         DiscoverViewModel(
             sessionManager = get(),
-            modeManager = get(),
             analytics = get(),
             collectionStateProvider = get(),
         )
@@ -71,7 +70,7 @@ internal val discoverModule = module {
         AllDiscoverViewModel(
             savedStateHandle = get(),
             analytics = get(),
-            modeManager = get(),
+            filterManager = get(),
             sessionManager = get(),
             getShowsUseCase = when {
                 customTheme -> get(named("customAllDiscoverShowsUseCase"))
@@ -87,7 +86,7 @@ internal val discoverModule = module {
 
     viewModel { (customTheme: Boolean) ->
         DiscoverTrendingViewModel(
-            modeManager = get(),
+            filterManager = get(),
             collapsingManager = get(),
             getTrendingShowsUseCase = when {
                 customTheme -> get(named("customTrendingShowsUseCase"))
@@ -102,7 +101,7 @@ internal val discoverModule = module {
 
     viewModel { (customTheme: Boolean) ->
         DiscoverAnticipatedViewModel(
-            modeManager = get(),
+            filterManager = get(),
             collapsingManager = get(),
             getAnticipatedShowsUseCase = when {
                 customTheme -> get(named("customAnticipatedShowsUseCase"))
@@ -117,7 +116,7 @@ internal val discoverModule = module {
 
     viewModel { (customTheme: Boolean) ->
         DiscoverPopularViewModel(
-            modeManager = get(),
+            filterManager = get(),
             collapsingManager = get(),
             getPopularShowsUseCase = when {
                 customTheme -> get(named("customPopularShowsUseCase"))
@@ -132,7 +131,7 @@ internal val discoverModule = module {
 
     viewModel { (customTheme: Boolean) ->
         DiscoverRecommendedViewModel(
-            modeManager = get(),
+            filterManager = get(),
             collapsingManager = get(),
             getRecommendedShowsUseCase = when {
                 customTheme -> get(named("customRecommendedShowsUseCase"))

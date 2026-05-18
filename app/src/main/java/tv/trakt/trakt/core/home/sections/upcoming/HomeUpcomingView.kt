@@ -40,13 +40,13 @@ import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.core.home.sections.upcoming.views.EpisodeUpcomingItemView
 import tv.trakt.trakt.core.home.sections.upcoming.views.MovieUpcomingItemView
 import tv.trakt.trakt.core.home.views.HomeEmptyView
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
@@ -94,7 +94,7 @@ internal fun HomeUpcomingView(
         onCollapse = viewModel::setCollapsed,
         onCalendarClick = onCalendarClick,
         onEmptyClick = {
-            when (state.filter) {
+            when (state.filter?.mode) {
                 MediaMode.MOVIES -> onMoviesClick()
                 else -> onShowsClick()
             }
@@ -187,7 +187,7 @@ internal fun HomeUpcomingContent(
                                     text = stringResource(R.string.text_cta_upcoming),
                                     icon = R.drawable.ic_empty_upcoming,
                                     buttonText = stringResource(
-                                        when (state.filter) {
+                                        when (state.filter?.mode) {
                                             MediaMode.MOVIES -> R.string.link_text_discover_movies
                                             else -> R.string.link_text_discover_shows
                                         },
