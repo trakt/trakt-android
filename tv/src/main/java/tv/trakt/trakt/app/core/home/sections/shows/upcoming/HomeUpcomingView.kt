@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
@@ -196,11 +195,9 @@ private fun ContentListItem(
                     }
                 }
 
-                val isReleased = remember {
-                    when (item) {
-                        is HomeUpcomingItem.EpisodeItem -> item.episode.isReleased
-                        is HomeUpcomingItem.MovieItem -> item.movie.isReleased
-                    }
+                val isReleased = when (item) {
+                    is HomeUpcomingItem.EpisodeItem -> item.episode.isReleased
+                    is HomeUpcomingItem.MovieItem -> item.movie.isReleased
                 }
 
                 InfoChip(
