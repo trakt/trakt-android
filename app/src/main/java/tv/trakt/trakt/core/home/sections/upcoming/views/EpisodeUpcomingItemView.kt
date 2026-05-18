@@ -55,7 +55,10 @@ internal fun EpisodeUpcomingItemView(
 
                 InfoChip(
                     text = item.releasedAt.toLocal().relativeDateTimeString(),
-                    iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
+                    iconPainter = when {
+                        item.episode.isReleased -> painterResource(R.drawable.ic_calendar_check)
+                        else -> painterResource(R.drawable.ic_calendar_upcoming)
+                    },
                     containerColor = TraktTheme.colors.chipContainerOnContent,
                     modifier = shadowModifier,
                 )

@@ -36,7 +36,10 @@ internal fun MovieUpcomingItemView(
         cardContent = {
             InfoChip(
                 text = item.releasedAt.toLocal().relativeDateTimeString(),
-                iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
+                iconPainter = when {
+                    item.movie.isReleased -> painterResource(R.drawable.ic_calendar_check)
+                    else -> painterResource(R.drawable.ic_calendar_upcoming)
+                },
                 containerColor = TraktTheme.colors.chipContainerOnContent,
             )
         },
