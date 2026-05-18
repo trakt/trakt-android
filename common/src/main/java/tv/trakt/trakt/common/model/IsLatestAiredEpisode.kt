@@ -6,5 +6,8 @@ fun isLatestAiredEpisode(
 ): Boolean {
     if (episode == null) return false
     if (latest == null) return true
-    return episode.id >= latest.id
+
+    if (episode.season > latest.season) return true
+    if (episode.season < latest.season) return false
+    return episode.episode >= latest.episode
 }
