@@ -12,7 +12,6 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
-import tv.trakt.trakt.common.model.isLatestAiredEpisode
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.model.Progress
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextItem
@@ -94,10 +93,12 @@ internal class GetUpNextUseCase(
                         },
                         lastEpisode = lastEpisode,
                         nextEpisode = nextEpisode,
-                        isLatestAired = isLatestAiredEpisode(
-                            episode = nextEpisode?.seasonEpisode,
-                            latest = lastEpisode?.seasonEpisode,
-                        ),
+                        // FIXME: progress.last_episode is the user's furthest watched episode, not the
+                        //  show's latest aired episode, so we can't compare directly. As a proxy, treat
+                        //  the next episode as the latest aired when remaining (aired - completed) is 1
+                        //  or less - i.e. no further aired episode exists beyond the displayed one.
+                        //  Replace once the API surfaces an absolute "latest aired episode" reference.
+                        isLatestAired = (item.progress.aired - item.progress.completed) <= 1,
                     ),
                 )
             }

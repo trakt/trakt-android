@@ -13,7 +13,6 @@ import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
-import tv.trakt.trakt.common.model.isLatestAiredEpisode
 
 internal class GetShowsUpNextUseCase(
     private val remoteShowsSource: ShowsSyncRemoteDataSource,
@@ -50,10 +49,12 @@ internal class GetShowsUpNextUseCase(
                         },
                         lastEpisode = lastEpisode,
                         nextEpisode = nextEpisode,
-                        isLatestAired = isLatestAiredEpisode(
-                            episode = nextEpisode?.seasonEpisode,
-                            latest = lastEpisode?.seasonEpisode,
-                        ),
+                        // FIXME: progress.last_episode is the user's furthest watched episode, not the
+                        //  show's latest aired episode, so we can't compare directly. As a proxy, treat
+                        //  the next episode as the latest aired when remaining (aired - completed) is 1
+                        //  or less - i.e. no further aired episode exists beyond the displayed one.
+                        //  Replace once the API surfaces an absolute "latest aired episode" reference.
+                        isLatestAired = (item.progress.aired - item.progress.completed) <= 1,
                     ),
                 )
             }
