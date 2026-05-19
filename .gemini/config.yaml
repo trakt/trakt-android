@@ -10,7 +10,18 @@ code_review:
     summary: true
     code_review: true
     include_drafts: true
-ignore_patterns: [
-  'build/**',
-  '.gradle/**'
-]
+ignore_patterns:
+  - 'build/**'
+  - '.gradle/**'
+  - '.kotlin/**'
+  - '.idea/**'
+  - 'external/**'
+  - '**/generated/**'
+  - '**/build/generate-resources/**'
+  - 'resources/src/main/res/values-*/strings.xml'
+  - '**/*.pb'
+  - '**/*.proto'
+  - 'gradle/wrapper/**'
+  - '**/Package.resolved'
+  - 'fastlane/metadata/**'
+  - 'fastlane/screenshots/**'
