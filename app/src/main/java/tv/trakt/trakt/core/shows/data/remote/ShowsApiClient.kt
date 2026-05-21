@@ -4,6 +4,7 @@ import io.ktor.http.HttpStatusCode
 import kotlinx.collections.immutable.toImmutableList
 import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.ShowsApi
+import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
@@ -232,11 +233,17 @@ internal class ShowsApiClient(
     }
 
     override suspend fun getCastCrew(showId: TraktId): CastCrewDto {
-        val response = showsApi.getShowsPeople(
-            id = showId.value.toString(),
-            extended = "cloud9,full",
-        )
-        return response.body()
+        return try {
+            showsApi.getShowsPeople(
+                id = showId.value.toString(),
+                extended = "cloud9,full",
+            ).body()
+        } catch (error: Exception) {
+            if (error.getHttpCode() == 204) {
+                return CastCrewDto()
+            }
+            throw error
+        }
     }
 
     override suspend fun getSentiments(showId: TraktId): Sentiments {

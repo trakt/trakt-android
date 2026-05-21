@@ -4,6 +4,7 @@ import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.ShowsApi
 import tv.trakt.trakt.app.core.shows.data.remote.model.response.AnticipatedShowDto
 import tv.trakt.trakt.app.core.shows.data.remote.model.response.TrendingShowDto
+import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
@@ -158,11 +159,19 @@ internal class ShowsApiClient(
     }
 
     override suspend fun getShowCastCrew(showId: TraktId): CastCrewDto {
-        val response = api.getShowsPeople(
-            id = showId.value.toString(),
-            extended = "cloud9",
-        )
-        return response.body()
+        return try {
+            api.getShowsPeople(
+                id = showId.value.toString(),
+                extended = "cloud9",
+            ).body()
+        } catch (error: Exception) {
+            if (error.getHttpCode() == 204) {
+                // The API returns a 204 No Content status code
+                // when there are no cast and crew information for the show.
+                return CastCrewDto()
+            }
+            throw error
+        }
     }
 
     override suspend fun getShowComments(showId: TraktId): List<CommentDto> {

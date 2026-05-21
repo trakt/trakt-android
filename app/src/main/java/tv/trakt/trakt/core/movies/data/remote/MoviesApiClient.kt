@@ -4,6 +4,7 @@ import io.ktor.http.HttpStatusCode
 import kotlinx.collections.immutable.toImmutableList
 import org.openapitools.client.apis.MoviesApi
 import org.openapitools.client.apis.RecommendationsApi
+import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
@@ -211,11 +212,17 @@ internal class MoviesApiClient(
     }
 
     override suspend fun getCastCrew(movieId: TraktId): CastCrewDto {
-        val response = moviesApi.getMoviesPeople(
-            id = movieId.value.toString(),
-            extended = "cloud9",
-        )
-        return response.body()
+        return try {
+            moviesApi.getMoviesPeople(
+                id = movieId.value.toString(),
+                extended = "cloud9",
+            ).body()
+        } catch (error: Exception) {
+            if (error.getHttpCode() == 204) {
+                return CastCrewDto()
+            }
+            throw error
+        }
     }
 
     override suspend fun getRelated(movieId: TraktId): List<MovieDto> {

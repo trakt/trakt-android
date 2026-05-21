@@ -4,6 +4,7 @@ import org.openapitools.client.apis.MoviesApi
 import org.openapitools.client.apis.RecommendationsApi
 import tv.trakt.trakt.app.core.movies.data.remote.model.response.AnticipatedMovieDto
 import tv.trakt.trakt.app.core.movies.data.remote.model.response.TrendingMovieDto
+import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
@@ -157,11 +158,17 @@ internal class MoviesApiClient(
     }
 
     override suspend fun getMovieCastCrew(movieId: TraktId): CastCrewDto {
-        val response = api.getMoviesPeople(
-            id = movieId.value.toString(),
-            extended = "cloud9",
-        )
-        return response.body()
+        return try {
+            api.getMoviesPeople(
+                id = movieId.value.toString(),
+                extended = "cloud9",
+            ).body()
+        } catch (error: Exception) {
+            if (error.getHttpCode() == 204) {
+                return CastCrewDto()
+            }
+            throw error
+        }
     }
 
     override suspend fun getMovieComments(movieId: TraktId): List<CommentDto> {
