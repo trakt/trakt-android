@@ -34,7 +34,10 @@ internal class CollapsingBarConnection(
         available: Offset,
         source: NestedScrollSource,
     ): Offset {
-        val delta = consumed.y
+        val delta = when {
+            consumed.y > 0 && scrolledUp -> consumed.y * 2F
+            else -> consumed.y
+        }
 
         val newBarOffset = barOffset + delta
         barOffset = newBarOffset.coerceIn(-barMaxHeight, 0F)
