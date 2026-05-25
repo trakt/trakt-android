@@ -102,7 +102,7 @@ internal fun GlobalFiltersView(
         },
         onNo = { confirmationSheet = false },
         title = stringResource(R.string.header_filters),
-        message = stringResource(R.string.warning_prompt_filters),
+        message = stringResource(R.string.warning_prompt_simple_filters),
     )
 }
 

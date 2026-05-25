@@ -54,35 +54,35 @@ data class GlobalFilter(
         val slug: String,
         @param:StringRes val displayStringRes: Int,
     ) {
-        MyFavorites("favorites", R.string.text_availability_my_favorites),
-        StreamingNow("subscriptions", R.string.text_availability_streaming_now),
-        AllDigitalReleases("any", R.string.text_availability_all_digital),
+        MyFavorites("favorites", R.string.option_text_my_favorites),
+        StreamingNow("subscriptions", R.string.option_text_streaming_now),
+        AllDigitalReleases("any", R.string.option_text_all_digital_releases),
     }
 
     enum class Certification(
         val slug: String,
         @param:StringRes val displayStringRes: Int,
     ) {
-        ParentalGuidance("pg,tv-pg", R.string.text_certification_parental),
-        Teens("pg-13,tv-14", R.string.text_certification_teens),
-        Mature("r,tv-ma", R.string.text_certification_mature),
-        Unrated("nr", R.string.text_certification_unrated),
+        ParentalGuidance("pg,tv-pg", R.string.option_text_certification_parental_guidance),
+        Teens("pg-13,tv-14", R.string.option_text_certification_teens),
+        Mature("r,tv-ma", R.string.option_text_certification_mature),
+        Unrated("nr", R.string.option_text_certification_unrated),
     }
 
     enum class Region(
         val slug: String,
         @param:StringRes val displayStringRes: Int,
     ) {
-        NorthAmerica("us,ca", R.string.text_region_north_america),
+        NorthAmerica("us,ca", R.string.option_text_north_america),
         Europe(
             "gb,fr,de,it,es,dk,ie,se,be,ru,no,pl,su,nl,at,fi,ro,gr,rs,hu,is,yu,ch,bg,cz,ee,ua",
-            R.string.text_region_europe,
+            R.string.option_text_europe,
         ),
-        Asia("in,jp,kr,hk,cn,th,tw,bd,id", R.string.text_region_asia),
-        MiddleEast("tr,ir,il,eg", R.string.text_region_middle_east),
-        Oceania("au,nz", R.string.text_region_oceania),
-        LatinAmerica("mx,br,ar,cl,co", R.string.text_region_latin_america),
-        Africa("za", R.string.text_region_africa),
+        Asia("in,jp,kr,hk,cn,th,tw,bd,id", R.string.option_text_asia),
+        MiddleEast("tr,ir,il,eg", R.string.option_text_middle_east),
+        Oceania("au,nz", R.string.option_text_oceania),
+        LatinAmerica("mx,br,ar,cl,co", R.string.option_text_latin_america),
+        Africa("za", R.string.option_text_africa),
         ;
 
         companion object {

@@ -83,7 +83,7 @@ internal fun GlobalFiltersAdvancedView(
             ) {
                 if (state.filter.isActive) {
                     Text(
-                        text = stringResource(R.string.text_reset_all),
+                        text = stringResource(R.string.button_text_reset_all_filters),
                         color = Red400,
                         style = TraktTheme.typography.buttonTertiary,
                         modifier = Modifier.clickable(onClick = onResetFilter),
@@ -194,7 +194,7 @@ private fun GenreFilter(
             null -> listOf(
                 DropdownOption(
                     raw = null,
-                    displayString = stringResource(R.string.text_all),
+                    displayString = stringResource(R.string.option_text_all),
                 ),
             )
             else -> genres.map {
@@ -206,7 +206,7 @@ private fun GenreFilter(
         }
 
     val genresOptions = buildList<DropdownOption<MediaGenre?>> {
-        add(DropdownOption(null, stringResource(R.string.text_all)))
+        add(DropdownOption(null, stringResource(R.string.option_text_all)))
         addAll(
             MediaGenre.entries
                 .map {
@@ -251,7 +251,7 @@ private fun AvailabilityFilter(
             null -> listOf(
                 DropdownOption(
                     raw = null,
-                    displayString = stringResource(R.string.text_all),
+                    displayString = stringResource(R.string.option_text_all),
                 ),
             )
             else -> availability.map {
@@ -263,7 +263,7 @@ private fun AvailabilityFilter(
         }
 
     val availabilityOptions = buildList<DropdownOption<Availability?>> {
-        add(DropdownOption(null, stringResource(R.string.text_all)))
+        add(DropdownOption(null, stringResource(R.string.option_text_all)))
         addAll(
             Availability.entries
                 .map {
@@ -276,7 +276,7 @@ private fun AvailabilityFilter(
     }.toImmutableList()
 
     DropdownMultiView(
-        header = stringResource(R.string.header_availability),
+        header = stringResource(R.string.header_streaming),
         active = !state.filter.availability.isNullOrEmpty(),
         values = remember(state.filter.availability) {
             availabilityValues.toImmutableList()
@@ -308,7 +308,7 @@ private fun CertificationFilter(
             null -> listOf(
                 DropdownOption(
                     raw = null,
-                    displayString = stringResource(R.string.text_all),
+                    displayString = stringResource(R.string.option_text_all),
                 ),
             )
             else -> certification.map {
@@ -320,7 +320,7 @@ private fun CertificationFilter(
         }
 
     val certificationOptions = buildList<DropdownOption<Certification?>> {
-        add(DropdownOption(null, stringResource(R.string.text_all)))
+        add(DropdownOption(null, stringResource(R.string.option_text_all)))
         addAll(
             Certification.entries
                 .map {
@@ -365,7 +365,7 @@ private fun RegionFilter(
             null -> listOf(
                 DropdownOption(
                     raw = null,
-                    displayString = stringResource(R.string.text_all),
+                    displayString = stringResource(R.string.option_text_all),
                 ),
             )
             else -> countries.map { code ->
@@ -377,7 +377,7 @@ private fun RegionFilter(
         }
 
     val regionOptions = buildList<DropdownOption<String?>> {
-        add(DropdownOption(null, stringResource(R.string.text_all)))
+        add(DropdownOption(null, stringResource(R.string.option_text_all)))
         addAll(
             Region.AllLocales.map { locale ->
                 DropdownOption(
@@ -431,7 +431,7 @@ private fun YearsFilter(
 
         Text(
             text = stringResource(
-                R.string.text_released_year_of,
+                R.string.filter_label_ratings,
                 rangeYearsValue.value.start.toInt(),
                 rangeYearsValue.value.endInclusive.toInt(),
             ),
@@ -527,7 +527,7 @@ private fun RuntimeFilter(
 
         Text(
             text = stringResource(
-                R.string.text_runtime_of,
+                R.string.advanced_filter_label_runtime,
                 rangeRuntimeValue.value.start.toInt(),
                 rangeRuntimeValue.value.endInclusive.toInt(),
             ),
@@ -623,7 +623,7 @@ private fun RatingFilter(
 
         Text(
             text = stringResource(
-                R.string.text_trakt_rating_of,
+                R.string.filter_label_ratings,
                 rangeRatingValue.value.start.toInt(),
                 rangeRatingValue.value.endInclusive.toInt(),
             ),
@@ -726,7 +726,7 @@ private fun SwitchesFilter(
                 onCheckedChange = onCheckedChange,
             )
             Text(
-                text = stringResource(R.string.text_hide_watched),
+                text = stringResource(R.string.header_hide_watched),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.buttonTertiary,
                 maxLines = 2,
@@ -758,7 +758,7 @@ private fun SwitchesFilter(
                 onCheckedChange = onCheckedChange,
             )
             Text(
-                text = stringResource(R.string.text_hide_watchlist),
+                text = stringResource(R.string.header_hide_watchlisted),
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.buttonTertiary,
                 maxLines = 2,
