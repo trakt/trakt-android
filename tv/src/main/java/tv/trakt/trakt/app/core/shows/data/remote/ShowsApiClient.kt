@@ -40,6 +40,8 @@ internal class ShowsApiClient(
             startDate = null,
             endDate = null,
             runtimes = null,
+            countries = null,
+            certifications = null,
         )
 
         return response.body()
@@ -71,6 +73,8 @@ internal class ShowsApiClient(
             startDate = null,
             endDate = null,
             runtimes = null,
+            countries = null,
+            certifications = null,
         )
 
         return response.body()
@@ -96,6 +100,8 @@ internal class ShowsApiClient(
             startDate = null,
             endDate = endDate.toString(),
             runtimes = null,
+            countries = null,
+            certifications = null,
         )
 
         return response.body()
@@ -126,6 +132,8 @@ internal class ShowsApiClient(
             startDate = null,
             endDate = null,
             runtimes = null,
+            countries = null,
+            certifications = null,
         )
 
         return response.body()

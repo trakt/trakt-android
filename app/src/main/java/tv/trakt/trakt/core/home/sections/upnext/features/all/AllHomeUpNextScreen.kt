@@ -4,6 +4,7 @@ package tv.trakt.trakt.core.home.sections.upnext.features.all
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -50,21 +51,25 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.core.filters.GlobalFiltersSheet
+import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.core.home.sections.upnext.features.all.ui.AllUpNextMovieView
 import tv.trakt.trakt.core.home.sections.upnext.features.all.ui.AllUpNextShowView
 import tv.trakt.trakt.core.home.sections.upnext.features.context.sheets.UpNextItemContextSheet
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextItem
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextMovie
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
+import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -81,6 +86,7 @@ internal fun AllHomeUpNextScreen(
 
     var contextSheet by remember { mutableStateOf<UpNextItem?>(null) }
     var dateSheet by remember { mutableStateOf<UpNextShow?>(null) }
+    var filtersSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.info) {
         if (state.info != null) {
@@ -92,8 +98,15 @@ internal fun AllHomeUpNextScreen(
     AllHomeUpNextContent(
         state = state,
         modifier = modifier,
-        onLoadMore = { viewModel.loadMoreData() },
-        onFilterClick = viewModel::setFilter,
+        onLoadMore = viewModel::loadMoreData,
+        onModeClick = { mode ->
+            state.filter?.let {
+                viewModel.setFilter(it.copy(mode = mode))
+            }
+        },
+        onFiltersClick = {
+            filtersSheet = true
+        },
         onClick = {
             if (!it.loading && it is UpNextShow && it.progress.nextEpisode != null) {
                 onNavigateToEpisode(
@@ -141,6 +154,18 @@ internal fun AllHomeUpNextScreen(
         },
     )
 
+    GlobalFiltersSheet(
+        active = filtersSheet,
+        options = GlobalFiltersOptions(
+            global = false,
+            initial = state.filter,
+        ),
+        onUpdate = viewModel::setFilter,
+        onDismiss = {
+            filtersSheet = false
+        },
+    )
+
     HomeDateSelectionSheet(
         item = dateSheet,
         onDateSelected = { date ->
@@ -177,7 +202,8 @@ internal fun AllHomeUpNextContent(
     onCheckLongClick: (UpNextItem) -> Unit = {},
     onShowClick: (UpNextShow) -> Unit = {},
     onMovieClick: (UpNextMovie) -> Unit = {},
-    onFilterClick: (MediaMode) -> Unit = {},
+    onModeClick: (MediaMode) -> Unit = {},
+    onFiltersClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
     onLoadMore: () -> Unit = {},
 ) {
@@ -217,9 +243,11 @@ internal fun AllHomeUpNextContent(
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listFilter = state.filter,
             contentPadding = contentPadding,
+            loading = state.loading.isLoading,
             loadingMore = state.loadingMore.isLoading,
             onEndOfList = onLoadMore,
-            onFilterClick = onFilterClick,
+            onFilterClick = onModeClick,
+            onFiltersClick = onFiltersClick,
             onClick = onClick,
             onLongClick = onLongClick,
             onCheckClick = onCheckClick,
@@ -236,11 +264,13 @@ private fun ContentList(
     modifier: Modifier = Modifier,
     listItems: ImmutableList<UpNextItem>,
     listState: LazyListState,
-    listFilter: MediaMode?,
+    listFilter: GlobalFilter?,
     contentPadding: PaddingValues,
+    loading: Boolean,
     loadingMore: Boolean,
     onEndOfList: () -> Unit,
     onFilterClick: (MediaMode) -> Unit,
+    onFiltersClick: () -> Unit,
     onClick: (UpNextItem) -> Unit,
     onLongClick: (UpNextItem) -> Unit,
     onCheckClick: (UpNextItem) -> Unit,
@@ -279,8 +309,10 @@ private fun ContentList(
         if (listFilter != null) {
             item {
                 ContentFilters(
-                    upNextFilter = listFilter,
+                    filters = listFilter,
+                    enabled = !loading,
                     onFilterClick = onFilterClick,
+                    onFiltersClick = onFiltersClick,
                 )
             }
         }
@@ -292,6 +324,7 @@ private fun ContentList(
             if (item is UpNextShow) {
                 AllUpNextShowView(
                     item = item,
+                    enabled = !loading,
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     onCheckClick = { onCheckClick(item) },
@@ -305,6 +338,7 @@ private fun ContentList(
             } else if (item is UpNextMovie) {
                 AllUpNextMovieView(
                     item = item,
+                    enabled = !loading,
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     onMovieClick = { onMovieClick(item) },
@@ -316,11 +350,38 @@ private fun ContentList(
             }
         }
 
-        if (loadingMore) {
+        if (loading && listItems.isEmpty()) {
+            items(5) {
+                PanelMediaSkeletonCard(
+                    modifier = Modifier
+                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                )
+            }
+        } else if (loadingMore) {
             item {
-                FilmProgressIndicator(
-                    size = 32.dp,
-                    modifier = Modifier.fillMaxWidth(),
+                PanelMediaSkeletonCard(
+                    modifier = Modifier
+                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                )
+            }
+        }
+
+        if (listItems.isEmpty() && !loading) {
+            item {
+                ContentEmptyView(
+                    modifier = Modifier
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
                 )
             }
         }
@@ -329,17 +390,38 @@ private fun ContentList(
 
 @Composable
 private fun ContentFilters(
-    upNextFilter: MediaMode,
+    filters: GlobalFilter,
+    enabled: Boolean,
     onFilterClick: (MediaMode) -> Unit,
+    onFiltersClick: () -> Unit,
 ) {
-    MediaModeFilters(
-        selected = upNextFilter,
-        onClick = onFilterClick,
-        height = 32.dp,
-        paddingVertical = PaddingValues(
-            top = 0.dp,
-            bottom = 19.dp,
-        ),
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 19.dp),
+    ) {
+        MediaModeFilters(
+            selected = filters.mode,
+            height = 32.dp,
+            onClick = onFilterClick,
+        )
+        MediaFilterIcon(
+            active = filters.isActive,
+            enabled = enabled,
+            onClick = onFiltersClick,
+        )
+    }
+}
+
+@Composable
+private fun ContentEmptyView(modifier: Modifier = Modifier) {
+    Text(
+        text = stringResource(R.string.list_placeholder_empty),
+        color = TraktTheme.colors.textSecondary,
+        style = TraktTheme.typography.heading6,
+        modifier = modifier,
     )
 }
 

@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.recommended.data.local.movies.RecommendedMoviesLocalDataSource
@@ -30,8 +31,9 @@ internal class DefaultGetRecommendedMoviesUseCase(
     override suspend fun getMovies(
         limit: Int,
         skipLocal: Boolean,
+        filters: GlobalFilter,
     ): ImmutableList<DiscoverItem.MovieItem> {
-        return remoteSource.getRecommended(limit = limit)
+        return remoteSource.getRecommended(limit = limit, filters = filters)
             .asyncMap {
                 DiscoverItem.MovieItem(
                     movie = Movie.fromDto(it),

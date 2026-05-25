@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package tv.trakt.trakt.core.discover
 
 import androidx.activity.compose.LocalActivity
@@ -14,11 +16,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,6 +39,7 @@ import tv.trakt.trakt.core.discover.sections.anticipated.DiscoverAnticipatedView
 import tv.trakt.trakt.core.discover.sections.popular.DiscoverPopularView
 import tv.trakt.trakt.core.discover.sections.recommended.DiscoverRecommendedView
 import tv.trakt.trakt.core.discover.sections.trending.DiscoverTrendingView
+import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -54,6 +60,8 @@ internal fun DiscoverScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    var filtersSheet by remember { mutableStateOf(false) }
+
     DiscoverScreen(
         state = state,
         onShowClick = onNavigateToShow,
@@ -63,6 +71,16 @@ internal fun DiscoverScreen(
         onMoreAnticipatedClick = onNavigateToAllAnticipated,
         onMoreRecommendedClick = onNavigateToAllRecommended,
         onVipClick = onNavigateToVip,
+        onFiltersClick = {
+            filtersSheet = true
+        },
+    )
+
+    GlobalFiltersSheet(
+        active = filtersSheet,
+        onDismiss = {
+            filtersSheet = false
+        },
     )
 }
 
@@ -77,6 +95,7 @@ private fun DiscoverScreen(
     onMoreAnticipatedClick: () -> Unit = {},
     onMoreRecommendedClick: () -> Unit = {},
     onVipClick: () -> Unit = {},
+    onFiltersClick: () -> Unit = {},
 ) {
     val activity = LocalActivity.current
     val customThemeEnabled = (activity as? MainActivity)?.customThemeConfig?.enabled == true
@@ -201,6 +220,7 @@ private fun DiscoverScreen(
             headerState = headerState,
             isScrolledToTop = isScrolledToTop,
             onVipClick = onVipClick,
+            onFiltersClick = onFiltersClick,
         )
     }
 }
@@ -211,6 +231,7 @@ private fun ScreenHeader(
     headerState: ScreenHeaderState,
     isScrolledToTop: Boolean,
     onVipClick: () -> Unit,
+    onFiltersClick: () -> Unit,
 ) {
     val userState = remember(state.user) {
         val loadingDone = state.user.loading == Done
@@ -222,7 +243,9 @@ private fun ScreenHeader(
         containerAlpha = if (headerState.scrolled && !isScrolledToTop) 0.98F else 0F,
         showLogin = userState.first && !userState.second,
         showVip = userState.second && state.user.user?.isVip == false,
+        showFilters = true,
         onVipClick = onVipClick,
+        onFilterClick = onFiltersClick,
         modifier = Modifier.offset {
             IntOffset(0, headerState.connection.barOffset.fastRoundToInt())
         },

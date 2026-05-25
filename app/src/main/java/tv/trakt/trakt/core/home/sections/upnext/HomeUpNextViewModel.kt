@@ -33,13 +33,18 @@ import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.MediaMode.MOVIES
+import tv.trakt.trakt.common.model.MediaMode.SHOWS
 import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source.HomeUpNext
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
@@ -48,10 +53,6 @@ import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUp
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextMovie
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
-import tv.trakt.trakt.core.main.helpers.MediaModeManager
-import tv.trakt.trakt.core.main.model.MediaMode
-import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
-import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.CALENDAR
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.HOME
@@ -83,14 +84,14 @@ internal class HomeUpNextViewModel(
     private val episodeUpdates: EpisodeDetailsUpdates,
     private val checkInUpdates: CheckInUpdates,
     private val checkInManager: CheckInManager,
-    private val modeManager: MediaModeManager,
+    private val filterManager: GlobalFilterManager,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = HomeUpNextState()
 
-    private val modeState = MutableStateFlow(modeManager.getMode())
+    private val filterState = MutableStateFlow(filterManager.getFilter())
     private val collapseState = MutableStateFlow(isCollapsed())
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -112,12 +113,12 @@ internal class HomeUpNextViewModel(
     }
 
     private fun observeMode() {
-        modeManager.observeMode()
+        filterManager.observeFilter()
             .distinctUntilChanged()
             .onEach { value ->
-                modeState.update { value }
+                filterState.update { value }
                 collapseState.update { isCollapsed() }
-                loadData(localOnly = true)
+                loadData()
             }
             .launchIn(viewModelScope)
     }
@@ -160,10 +161,7 @@ internal class HomeUpNextViewModel(
             .distinctUntilChanged()
             .debounce(200)
             .onEach {
-                loadData(
-                    ignoreErrors = true,
-                    localOnly = true,
-                )
+                loadData(ignoreErrors = true)
             }.launchIn(viewModelScope)
     }
 
@@ -184,7 +182,7 @@ internal class HomeUpNextViewModel(
                 val localItems = getUpNextUseCase.getLocalUpNext(
                     limit = HOME_SECTION_LIMIT,
                 ).filter {
-                    when (modeState.value) {
+                    when (filterState.value.mode) {
                         SHOWS -> it is UpNextShow
                         MOVIES -> it is UpNextMovie
                         else -> true
@@ -213,8 +211,9 @@ internal class HomeUpNextViewModel(
                         items = getUpNextUseCase.getUpNext(
                             page = 1,
                             limit = HOME_SECTION_LIMIT,
+                            filters = filterState.value,
                         ).filter {
-                            when (modeState.value) {
+                            when (filterState.value.mode) {
                                 SHOWS -> it is UpNextShow
                                 MOVIES -> it is UpNextMovie
                                 else -> true
@@ -290,6 +289,7 @@ internal class HomeUpNextViewModel(
                     val items = getUpNextUseCase.getUpNext(
                         page = 1,
                         limit = HOME_SECTION_LIMIT,
+                        filters = filterState.value,
                     )
                     ItemsState(
                         items = itemsOrder?.let { order ->
@@ -367,6 +367,7 @@ internal class HomeUpNextViewModel(
                     val items = getUpNextUseCase.getUpNext(
                         page = 1,
                         limit = HOME_SECTION_LIMIT,
+                        filters = filterState.value,
                     )
                     ItemsState(
                         items = itemsOrder?.let { order ->
@@ -412,7 +413,7 @@ internal class HomeUpNextViewModel(
 
         collapseJob?.cancel()
         collapseJob = viewModelScope.launch {
-            val key = when (modeState.value) {
+            val key = when (filterState.value.mode) {
                 MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_UP_NEXT
                 SHOWS -> CollapsingKey.HOME_SHOWS_UP_NEXT
                 MOVIES -> CollapsingKey.HOME_MOVIES_UP_NEXT
@@ -426,7 +427,7 @@ internal class HomeUpNextViewModel(
 
     private fun isCollapsed(): Boolean {
         return collapsingManager.isCollapsed(
-            key = when (modeState.value) {
+            key = when (filterState.value.mode) {
                 MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_UP_NEXT
                 SHOWS -> CollapsingKey.HOME_SHOWS_UP_NEXT
                 MOVIES -> CollapsingKey.HOME_MOVIES_UP_NEXT
@@ -444,7 +445,7 @@ internal class HomeUpNextViewModel(
         itemsState,
         infoState,
         errorState,
-        modeState,
+        filterState,
     ) { state ->
         HomeUpNextState(
             loading = state[0] as LoadingState,
@@ -452,7 +453,7 @@ internal class HomeUpNextViewModel(
             items = state[2] as ItemsState,
             info = state[3] as StringResource?,
             error = state[4] as Exception?,
-            filter = state[5] as MediaMode,
+            filter = state[5] as GlobalFilter,
         )
     }.stateIn(
         scope = viewModelScope,

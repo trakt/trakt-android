@@ -31,6 +31,7 @@ internal class GetProgressWatchingUseCase(
             intent = "continue",
             sortBy = "remaining",
             sortHow = "asc",
+            filters = null,
         )
 
         return remoteItems

@@ -8,7 +8,7 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-internal class ImmutableListSerializer<T>(
+class ImmutableListSerializer<T>(
     private val dataSerializer: KSerializer<T>,
 ) : KSerializer<ImmutableList<T>> {
     override val descriptor: SerialDescriptor = ListSerializer(dataSerializer).descriptor

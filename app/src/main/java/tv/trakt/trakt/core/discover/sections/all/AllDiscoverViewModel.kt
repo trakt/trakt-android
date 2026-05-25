@@ -26,13 +26,13 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.interleave
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.model.DiscoverSection
 import tv.trakt.trakt.core.discover.sections.all.navigation.DiscoverDestination
 import tv.trakt.trakt.core.discover.sections.all.usecases.GetAllDiscoverMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.all.usecases.GetAllDiscoverShowsUseCase
-import tv.trakt.trakt.core.main.helpers.MediaModeManager
-import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.user.UserCollectionState
 
@@ -41,32 +41,30 @@ internal class AllDiscoverViewModel(
     savedStateHandle: SavedStateHandle,
     analytics: Analytics,
     private val sessionManager: SessionManager,
-    private val modeManager: MediaModeManager,
+    private val filterManager: GlobalFilterManager,
     private val getShowsUseCase: GetAllDiscoverShowsUseCase,
     private val getMoviesUseCase: GetAllDiscoverMoviesUseCase,
     private val collectionStateProvider: CollectionStateProvider,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<DiscoverDestination>()
-
     private val initialState = AllDiscoverState()
-    private val initialMode = modeManager.getMode()
 
     private val userState = MutableStateFlow(initialState.user)
-    private val modeState = MutableStateFlow(initialMode)
-    private val filterState = MutableStateFlow(initialMode)
+    private val filterState = MutableStateFlow(filterManager.getFilter())
     private val typeState = MutableStateFlow(destination.source)
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(initialState.loadingMore)
     private val errorState = MutableStateFlow(initialState.error)
 
-    private var currentPage: Int = 1
+    private var pages = 1
+    private var hasMoreData = false
 
     init {
         loadUser()
-        loadData()
+        loadInitialData()
 
-        observeMode()
+        observeFilters()
         observeData()
 
         analytics.logScreenView(
@@ -74,10 +72,10 @@ internal class AllDiscoverViewModel(
         )
     }
 
-    private fun observeMode() {
-        modeManager.observeMode()
+    private fun observeFilters() {
+        filterManager.observeFilter()
             .onEach { value ->
-                modeState.update { value }
+                filterState.update { value }
                 loadData()
             }
             .launchIn(viewModelScope)
@@ -102,17 +100,77 @@ internal class AllDiscoverViewModel(
         }
     }
 
-    private fun loadData() {
+    private fun loadInitialData() {
         viewModelScope.launch {
             try {
                 loadLocalData()
 
                 coroutineScope {
-                    val showsAsync = async { getShowsUseCase.getShows(destination.source) }
-                    val moviesAsync = async { getMoviesUseCase.getMovies(destination.source) }
+                    val showsAsync = async {
+                        getShowsUseCase.getShows(
+                            source = destination.source,
+                            filters = filterState.value,
+                            skipLocal = true,
+                        )
+                    }
+                    val moviesAsync = async {
+                        getMoviesUseCase.getMovies(
+                            source = destination.source,
+                            filters = filterState.value,
+                            skipLocal = true,
+                        )
+                    }
 
-                    val shows = if (filterState.value.isMediaOrShows) showsAsync.await() else emptyList()
-                    val movies = if (filterState.value.isMediaOrMovies) moviesAsync.await() else emptyList()
+                    val shows = if (filterState.value.mode.isMediaOrShows) showsAsync.await() else emptyList()
+                    val movies = if (filterState.value.mode.isMediaOrMovies) moviesAsync.await() else emptyList()
+
+                    val initialData = listOf(shows, movies)
+                        .interleave()
+
+                    itemsState
+                        .update {
+                            initialData.toImmutableList()
+                        }.also {
+                            hasMoreData = initialData.isNotEmpty()
+                        }
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            } finally {
+                loadingState.update { Done }
+            }
+        }
+    }
+
+    private fun loadData() {
+        viewModelScope.launch {
+            try {
+                loadingState.update { Loading }
+
+                pages = 1
+                hasMoreData = false
+
+                coroutineScope {
+                    val showsAsync = async {
+                        getShowsUseCase.getShows(
+                            source = destination.source,
+                            filters = filterState.value,
+                            skipLocal = true,
+                        )
+                    }
+                    val moviesAsync = async {
+                        getMoviesUseCase.getMovies(
+                            source = destination.source,
+                            filters = filterState.value,
+                            skipLocal = true,
+                        )
+                    }
+
+                    val shows = if (filterState.value.mode.isMediaOrShows) showsAsync.await() else emptyList()
+                    val movies = if (filterState.value.mode.isMediaOrMovies) moviesAsync.await() else emptyList()
 
                     itemsState.update {
                         listOf(shows, movies)
@@ -136,28 +194,27 @@ internal class AllDiscoverViewModel(
             val localShowsAsync = async { getShowsUseCase.getLocalShows(destination.source) }
             val localMoviesAsync = async { getMoviesUseCase.getLocalMovies(destination.source) }
 
-            val localShows = if (filterState.value.isMediaOrShows) localShowsAsync.await() else emptyList()
-            val localMovies = if (filterState.value.isMediaOrMovies) localMoviesAsync.await() else emptyList()
+            val localShows = if (filterState.value.mode.isMediaOrShows) localShowsAsync.await() else emptyList()
+            val localMovies = if (filterState.value.mode.isMediaOrMovies) localMoviesAsync.await() else emptyList()
 
-            if (localShows.isNotEmpty() || localMovies.isNotEmpty()) {
-                itemsState.update {
+            itemsState
+                .update {
                     listOf(localShows, localMovies)
                         .interleave()
                         .toImmutableList()
+                }.also {
+                    if (localShows.isEmpty() && localMovies.isEmpty()) {
+                        loadingState.update { Loading }
+                    }
                 }
-                loadingState.update { Done }
-            } else {
-                loadingState.update { Loading }
-            }
         }
     }
 
     fun loadMoreData() {
-        if (
-            itemsState.value.isNullOrEmpty() ||
-            loadingState.value.isLoading ||
-            loadingMoreState.value.isLoading
-        ) {
+        if (itemsState.value.isNullOrEmpty() || !hasMoreData) {
+            return
+        }
+        if (loadingMoreState.value.isLoading || loadingState.value.isLoading) {
             return
         }
 
@@ -168,7 +225,8 @@ internal class AllDiscoverViewModel(
                 val showsAsync = async {
                     getShowsUseCase.getShows(
                         source = destination.source,
-                        page = currentPage + 1,
+                        page = pages + 1,
+                        filters = filterState.value,
                         skipLocal = true,
                     )
                 }
@@ -176,13 +234,14 @@ internal class AllDiscoverViewModel(
                 val moviesAsync = async {
                     getMoviesUseCase.getMovies(
                         source = destination.source,
-                        page = currentPage + 1,
+                        page = pages + 1,
+                        filters = filterState.value,
                         skipLocal = true,
                     )
                 }
 
-                val shows = if (filterState.value.isMediaOrShows) showsAsync.await() else emptyList()
-                val movies = if (filterState.value.isMediaOrMovies) moviesAsync.await() else emptyList()
+                val shows = if (filterState.value.mode.isMediaOrShows) showsAsync.await() else emptyList()
+                val movies = if (filterState.value.mode.isMediaOrMovies) moviesAsync.await() else emptyList()
 
                 val nextData = listOf(shows, movies)
                     .interleave()
@@ -194,7 +253,8 @@ internal class AllDiscoverViewModel(
                         ?.toImmutableList()
                 }
 
-                currentPage += 1
+                pages += 1
+                hasMoreData = nextData.isNotEmpty()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -206,13 +266,12 @@ internal class AllDiscoverViewModel(
         }
     }
 
-    fun setFilter(filter: MediaMode) {
+    fun setFilter(filter: GlobalFilter) {
         filterState.update { filter }
         loadData()
     }
 
     val state = combine(
-        modeState,
         typeState,
         filterState,
         collectionStateProvider.stateFlow,
@@ -223,15 +282,14 @@ internal class AllDiscoverViewModel(
         errorState,
     ) { state ->
         AllDiscoverState(
-            mode = state[0] as MediaMode,
-            type = state[1] as DiscoverSection,
-            filter = state[2] as MediaMode,
-            collection = state[3] as UserCollectionState,
-            items = state[4] as ImmutableList<DiscoverItem>?,
-            loading = state[5] as LoadingState,
-            loadingMore = state[6] as LoadingState,
-            user = state[7] as? User,
-            error = state[8] as Exception?,
+            type = state[0] as DiscoverSection,
+            filter = state[1] as GlobalFilter,
+            collection = state[2] as UserCollectionState,
+            items = state[3] as ImmutableList<DiscoverItem>?,
+            loading = state[4] as LoadingState,
+            loadingMore = state[5] as LoadingState,
+            user = state[6] as? User,
+            error = state[7] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

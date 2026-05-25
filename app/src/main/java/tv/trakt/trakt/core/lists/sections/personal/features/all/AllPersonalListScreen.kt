@@ -58,10 +58,14 @@ import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.sorting.SortTypeList
 import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.core.filters.GlobalFiltersSheet
+import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.EpisodeItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
@@ -74,10 +78,10 @@ import tv.trakt.trakt.core.lists.sections.personal.features.all.views.AllPersona
 import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.sheet.ListMovieContextSheet
 import tv.trakt.trakt.core.lists.sections.personal.features.context.show.sheet.ListShowContextSheet
 import tv.trakt.trakt.core.lists.sheets.EditListSheet
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -119,6 +123,7 @@ internal fun AllPersonalListScreen(
     var movieContextSheet by remember { mutableStateOf<MovieItem?>(null) }
     var editListSheet by remember { mutableStateOf<CustomList?>(null) }
     var sortSheet by remember { mutableStateOf<SortTypeList?>(null) }
+    var filtersSheet by remember { mutableStateOf(false) }
 
     AllPersonalListContent(
         state = state,
@@ -140,7 +145,14 @@ internal fun AllPersonalListScreen(
                 is EpisodeItem -> Unit
             }
         },
-        onFilterClick = viewModel::setFilter,
+        onModeClick = { mode ->
+            state.filter?.let {
+                viewModel.setFilter(it.copy(mode = mode))
+            }
+        },
+        onFiltersClick = {
+            filtersSheet = true
+        },
         onSortTypeClick = {
             if (!state.loading.isLoading && !state.loadingMore.isLoading) {
                 sortSheet = state.sorting.type
@@ -211,6 +223,18 @@ internal fun AllPersonalListScreen(
             sortSheet = null
         },
     )
+
+    GlobalFiltersSheet(
+        active = filtersSheet,
+        options = GlobalFiltersOptions(
+            global = false,
+            initial = state.filter,
+        ),
+        onUpdate = viewModel::setFilter,
+        onDismiss = {
+            filtersSheet = false
+        },
+    )
 }
 
 @Composable
@@ -220,7 +244,8 @@ internal fun AllPersonalListContent(
     onLoadMoreData: () -> Unit = {},
     onClick: (CustomListItem) -> Unit = {},
     onLongClick: (CustomListItem) -> Unit = {},
-    onFilterClick: (MediaMode) -> Unit = {},
+    onModeClick: (MediaMode) -> Unit = {},
+    onFiltersClick: () -> Unit = {},
     onSortTypeClick: () -> Unit = {},
     onSortOrderClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
@@ -271,7 +296,8 @@ internal fun AllPersonalListContent(
             contentPadding = contentPadding,
             onClick = onClick,
             onLongClick = onLongClick,
-            onFilterClick = onFilterClick,
+            onModeClick = onModeClick,
+            onFiltersClick = onFiltersClick,
             onSortTypeClick = onSortTypeClick,
             onSortOrderClick = onSortOrderClick,
             onBackClick = onBackClick,
@@ -284,12 +310,15 @@ internal fun AllPersonalListContent(
 
 @Composable
 private fun TitleBar(
+    enabled: Boolean,
     title: String,
     subtitle: String?,
     subtitleVisible: Boolean,
+    filters: GlobalFilter?,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
+    onFiltersClick: () -> Unit = {},
     onMoreClick: () -> Unit = {},
 ) {
     Row(
@@ -325,73 +354,89 @@ private fun TitleBar(
             )
         }
 
-        Box(
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(20.dp),
             modifier = Modifier.padding(start = 16.dp),
         ) {
-            var showMenu by remember { mutableStateOf(false) }
+            filters?.let {
+                MediaFilterIcon(
+                    active = it.isActive,
+                    enabled = enabled,
+                    onClick = onFiltersClick,
+                    modifier = Modifier
+                        .graphicsLayer {
+                            translationX = 2.dp.toPx()
+                        },
+                )
+            }
 
-            Icon(
-                painter = painterResource(R.drawable.ic_more_vertical),
-                contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
-                modifier = Modifier
-                    .size(18.dp)
-                    .onClick {
-                        showMenu = true
-                    },
-            )
+            Box {
+                var showMenu by remember { mutableStateOf(false) }
 
-            DropdownMenu(
-                expanded = showMenu,
-                containerColor = TraktTheme.colors.dialogContainer,
-                shape = RoundedCornerShape(16.dp),
-                onDismissRequest = {
-                    showMenu = false
-                },
-            ) {
-                DropdownMenuItem(
-                    text = {
-                        Text(
-                            text = stringResource(R.string.page_title_edit_list),
-                            style = TraktTheme.typography.buttonTertiary,
-                            color = TraktTheme.colors.textPrimary,
-                        )
-                    },
-                    onClick = {
-                        onMoreClick()
-                        showMenu = false
-                    },
-                    leadingIcon = {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_edit),
-                            contentDescription = null,
-                            tint = TraktTheme.colors.textPrimary,
-                            modifier = Modifier.size(22.dp),
-                        )
-                    },
+                Icon(
+                    painter = painterResource(R.drawable.ic_more_vertical),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .size(18.dp)
+                        .onClick {
+                            showMenu = true
+                        },
                 )
 
-                DropdownMenuItem(
-                    text = {
-                        Text(
-                            text = stringResource(R.string.button_text_share),
-                            style = TraktTheme.typography.buttonTertiary,
-                            color = TraktTheme.colors.textPrimary,
-                        )
-                    },
-                    onClick = {
-                        onShareClick()
+                DropdownMenu(
+                    expanded = showMenu,
+                    containerColor = TraktTheme.colors.dialogContainer,
+                    shape = RoundedCornerShape(16.dp),
+                    onDismissRequest = {
                         showMenu = false
                     },
-                    leadingIcon = {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_share),
-                            contentDescription = null,
-                            tint = TraktTheme.colors.textPrimary,
-                            modifier = Modifier.size(22.dp),
-                        )
-                    },
-                )
+                ) {
+                    DropdownMenuItem(
+                        text = {
+                            Text(
+                                text = stringResource(R.string.page_title_edit_list),
+                                style = TraktTheme.typography.buttonTertiary,
+                                color = TraktTheme.colors.textPrimary,
+                            )
+                        },
+                        onClick = {
+                            onMoreClick()
+                            showMenu = false
+                        },
+                        leadingIcon = {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_edit),
+                                contentDescription = null,
+                                tint = TraktTheme.colors.textPrimary,
+                                modifier = Modifier.size(22.dp),
+                            )
+                        },
+                    )
+
+                    DropdownMenuItem(
+                        text = {
+                            Text(
+                                text = stringResource(R.string.button_text_share),
+                                style = TraktTheme.typography.buttonTertiary,
+                                color = TraktTheme.colors.textPrimary,
+                            )
+                        },
+                        onClick = {
+                            onShareClick()
+                            showMenu = false
+                        },
+                        leadingIcon = {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_share),
+                                contentDescription = null,
+                                tint = TraktTheme.colors.textPrimary,
+                                modifier = Modifier.size(22.dp),
+                            )
+                        },
+                    )
+                }
             }
         }
     }
@@ -400,7 +445,7 @@ private fun TitleBar(
 @Composable
 private fun ContentFilters(
     hasSubtitle: Boolean,
-    watchlistFilter: MediaMode,
+    watchlistFilter: GlobalFilter,
     watchlistSort: Sorting,
     onSortTypeClick: () -> Unit,
     onSortOrderClick: () -> Unit,
@@ -417,7 +462,7 @@ private fun ContentFilters(
             ),
     ) {
         MediaModeFilters(
-            selected = watchlistFilter,
+            selected = watchlistFilter.mode,
             onClick = onFilterClick,
             height = 32.dp,
             unselectedTextVisible = false,
@@ -442,13 +487,14 @@ private fun ContentList(
     loadingMore: Boolean,
     listState: LazyListState,
     listItems: ImmutableList<CustomListItem>,
-    listFilter: MediaMode?,
+    listFilter: GlobalFilter?,
     listSorting: Sorting?,
     collection: UserCollectionState,
     contentPadding: PaddingValues,
     onClick: (CustomListItem) -> Unit,
     onLongClick: (CustomListItem) -> Unit,
-    onFilterClick: (MediaMode) -> Unit,
+    onModeClick: (MediaMode) -> Unit,
+    onFiltersClick: () -> Unit,
     onSortTypeClick: () -> Unit,
     onSortOrderClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -481,12 +527,15 @@ private fun ContentList(
     ) {
         item {
             TitleBar(
+                enabled = !loading,
                 title = title,
                 subtitle = subtitle,
                 subtitleVisible = subtitleVisible,
+                filters = listFilter,
                 onBackClick = onBackClick,
                 onShareClick = onShareClick,
                 onMoreClick = onMoreClick,
+                onFiltersClick = onFiltersClick,
             )
         }
 
@@ -520,7 +569,7 @@ private fun ContentList(
                     hasSubtitle = !subtitle.isNullOrEmpty(),
                     watchlistFilter = listFilter,
                     watchlistSort = listSorting,
-                    onFilterClick = onFilterClick,
+                    onFilterClick = onModeClick,
                     onSortTypeClick = onSortTypeClick,
                     onSortOrderClick = onSortOrderClick,
                 )
@@ -614,7 +663,7 @@ private fun ContentList(
             }
         } else if (listItems.isEmpty()) {
             item {
-                ContentEmpty(filter = listFilter)
+                ContentEmpty(filter = listFilter?.mode)
             }
         }
     }

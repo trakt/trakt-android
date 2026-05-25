@@ -32,7 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val Options = MediaMode.entries
@@ -44,7 +44,7 @@ internal fun MediaModeButtons(
     mode: MediaMode? = null,
     onModeSelect: (MediaMode) -> Unit = { _ -> },
 ) {
-    var selectedMode by remember { mutableStateOf(mode) }
+    var selectedMode by remember(mode) { mutableStateOf(mode) }
 
     AnimatedVisibility(
         visible = selectedMode != null,

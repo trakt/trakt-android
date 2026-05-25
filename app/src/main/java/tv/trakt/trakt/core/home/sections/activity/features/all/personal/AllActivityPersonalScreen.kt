@@ -4,6 +4,7 @@ package tv.trakt.trakt.core.home.sections.activity.features.all.personal
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -55,10 +56,13 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.ratings.UserRating
-import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.core.filters.GlobalFiltersSheet
+import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.core.home.sections.activity.features.all.AllActivityState
 import tv.trakt.trakt.core.home.sections.activity.features.all.views.AllActivityEpisodeItem
 import tv.trakt.trakt.core.home.sections.activity.features.all.views.AllActivityMovieItem
@@ -68,12 +72,13 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieIt
 import tv.trakt.trakt.core.home.sections.activity.sheets.HomeActivityItemSheet
 import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextContent
 import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextState
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.LocalDate
 import java.time.ZoneId
@@ -109,6 +114,7 @@ internal fun AllActivityPersonalScreen(
     }
 
     var contextSheet by remember { mutableStateOf<HomeActivityItem?>(null) }
+    var filtersSheet by remember { mutableStateOf(false) }
 
     AllActivityPersonalContent(
         state = state,
@@ -134,13 +140,28 @@ internal fun AllActivityPersonalScreen(
         onMovieClick = { movie ->
             viewModel.navigateToMovie(movie)
         },
-        onFilterClick = viewModel::setFilter,
+        onModeClick = { mode ->
+            state.itemsFilter?.let {
+                viewModel.setFilter(it.copy(mode = mode))
+            }
+        },
+        onFiltersClick = { filtersSheet = true },
     )
 
     HomeActivityItemSheet(
         sheetItem = contextSheet,
         onDismiss = { contextSheet = null },
         onPlayRemoved = { viewModel.removeItem(it) },
+    )
+
+    GlobalFiltersSheet(
+        active = filtersSheet,
+        options = GlobalFiltersOptions(
+            global = false,
+            initial = state.itemsFilter,
+        ),
+        onUpdate = viewModel::setFilter,
+        onDismiss = { filtersSheet = false },
     )
 }
 
@@ -178,7 +199,8 @@ internal fun AllActivityPersonalContent(
     onShowClick: (EpisodeItem) -> Unit = {},
     onEpisodeClick: (EpisodeItem) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
-    onFilterClick: (MediaMode) -> Unit,
+    onModeClick: (MediaMode) -> Unit = {},
+    onFiltersClick: () -> Unit = {},
 ) {
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
@@ -221,6 +243,7 @@ internal fun AllActivityPersonalContent(
                 (state.itemsRatings ?: emptyMap()).toImmutableMap()
             },
             contentPadding = contentPadding,
+            loading = state.loading.isLoading,
             loadingMore = state.loadingMore.isLoading,
             onEndOfList = onLoadMore,
             onLongClick = onLongClick,
@@ -228,7 +251,8 @@ internal fun AllActivityPersonalContent(
             onShowClick = onShowClick,
             onEpisodeClick = onEpisodeClick,
             onMovieClick = onMovieClick,
-            onFilterClick = onFilterClick,
+            onModeClick = onModeClick,
+            onFiltersClick = onFiltersClick,
         )
     }
 }
@@ -239,13 +263,15 @@ private fun ContentList(
     listItems: ImmutableMap<LocalDate, ImmutableList<HomeActivityItem>>,
     listRatings: ImmutableMap<String, UserRating>,
     listState: LazyListState,
-    listFilter: MediaMode?,
+    listFilter: GlobalFilter?,
     contentPadding: PaddingValues,
+    loading: Boolean,
     loadingMore: Boolean,
     onEndOfList: () -> Unit,
     onLongClick: (HomeActivityItem) -> Unit,
     onBackClick: () -> Unit,
-    onFilterClick: (MediaMode) -> Unit,
+    onModeClick: (MediaMode) -> Unit,
+    onFiltersClick: () -> Unit,
     onShowClick: (EpisodeItem) -> Unit,
     onEpisodeClick: (EpisodeItem) -> Unit,
     onMovieClick: (Movie) -> Unit,
@@ -284,8 +310,9 @@ private fun ContentList(
         if (listFilter != null) {
             item {
                 ContentFilters(
-                    selectedFilter = listFilter,
-                    onFilterClick = onFilterClick,
+                    filters = listFilter,
+                    onModeClick = onModeClick,
+                    onFiltersClick = onFiltersClick,
                 )
             }
         }
@@ -321,6 +348,7 @@ private fun ContentList(
                     is MovieItem -> {
                         AllActivityMovieItem(
                             item = item,
+                            enabled = !loading,
                             itemRating = listRatings[item.key],
                             onClick = {
                                 onMovieClick(item.movie)
@@ -340,6 +368,7 @@ private fun ContentList(
                     is EpisodeItem -> {
                         AllActivityEpisodeItem(
                             item = item,
+                            enabled = !loading,
                             itemRating = listRatings[item.key],
                             onClick = { onEpisodeClick(item) },
                             onShowClick = { onShowClick(item) },
@@ -358,11 +387,38 @@ private fun ContentList(
             }
         }
 
-        if (loadingMore) {
+        if (loading && listItems.isEmpty()) {
+            items(5) {
+                PanelMediaSkeletonCard(
+                    modifier = Modifier
+                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                )
+            }
+        } else if (loadingMore) {
             item {
-                FilmProgressIndicator(
-                    size = 32.dp,
-                    modifier = Modifier.fillMaxWidth(),
+                PanelMediaSkeletonCard(
+                    modifier = Modifier
+                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                )
+            }
+        }
+
+        if (listItems.isEmpty() && !loading) {
+            item {
+                ContentEmptyView(
+                    modifier = Modifier
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
                 )
             }
         }
@@ -371,17 +427,36 @@ private fun ContentList(
 
 @Composable
 private fun ContentFilters(
-    selectedFilter: MediaMode,
-    onFilterClick: (MediaMode) -> Unit,
+    filters: GlobalFilter,
+    onModeClick: (MediaMode) -> Unit,
+    onFiltersClick: () -> Unit,
 ) {
-    MediaModeFilters(
-        selected = selectedFilter,
-        onClick = onFilterClick,
-        height = 32.dp,
-        paddingVertical = PaddingValues(
-            top = 0.dp,
-            bottom = 20.dp,
-        ),
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 20.dp),
+    ) {
+        MediaModeFilters(
+            selected = filters.mode,
+            height = 32.dp,
+            onClick = onModeClick,
+        )
+        MediaFilterIcon(
+            active = filters.isActive,
+            onClick = onFiltersClick,
+        )
+    }
+}
+
+@Composable
+private fun ContentEmptyView(modifier: Modifier = Modifier) {
+    Text(
+        text = stringResource(R.string.list_placeholder_empty),
+        color = TraktTheme.colors.textSecondary,
+        style = TraktTheme.typography.heading6,
+        modifier = modifier,
     )
 }
 

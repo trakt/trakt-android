@@ -33,6 +33,16 @@ internal class MoviesSyncApiClient(
             limit = limit,
             startAt = null,
             endAt = null,
+            watchnow = null,
+            genres = null,
+            subgenres = null,
+            years = null,
+            ratings = null,
+            startDate = null,
+            endDate = null,
+            runtimes = null,
+            countries = null,
+            certifications = null,
         )
         return response.body()
     }
@@ -149,6 +159,8 @@ internal class MoviesSyncApiClient(
             runtimes = null,
             sortBy = null,
             sortHow = null,
+            countries = null,
+            certifications = null,
         )
 
         return response.body()

@@ -1,6 +1,7 @@
 package tv.trakt.trakt.common.core.user.data.remote.history
 
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
 
@@ -8,11 +9,13 @@ interface UserHistoryRemoteDataSource {
     suspend fun getEpisodesHistory(
         page: Int = 1,
         limit: Int,
+        filters: GlobalFilter?,
     ): List<SyncHistoryEpisodeItemDto>
 
     suspend fun getMoviesHistory(
         page: Int = 1,
         limit: Int,
+        filters: GlobalFilter?,
     ): List<SyncHistoryMovieItemDto>
 
     suspend fun getMovieHistory(

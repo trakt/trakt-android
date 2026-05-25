@@ -2,6 +2,7 @@ package tv.trakt.trakt.common.core.user.data.remote.history
 
 import org.openapitools.client.apis.HistoryApi
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
 
@@ -11,6 +12,7 @@ class UserHistoryApiClient(
     override suspend fun getEpisodesHistory(
         page: Int,
         limit: Int,
+        filters: GlobalFilter?,
     ): List<SyncHistoryEpisodeItemDto> {
         val response = historyApi.getUsersHistoryEpisodes(
             id = "me",
@@ -19,6 +21,16 @@ class UserHistoryApiClient(
             endAt = null,
             page = page,
             limit = limit,
+            watchnow = filters?.availability?.joinToString(",") { it.slug },
+            genres = filters?.genre?.joinToString(",") { it.slug },
+            subgenres = filters?.subgenre?.joinToString(","),
+            years = filters?.years?.let { "${it.first}-${it.second}" },
+            ratings = filters?.rating?.let { "${it.first}-${it.second}" },
+            startDate = null,
+            endDate = null,
+            runtimes = filters?.runtime?.let { "${it.first}-${it.second}" },
+            countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
+            certifications = filters?.certification?.joinToString(",") { it.slug },
         )
         return response.body()
     }
@@ -26,6 +38,7 @@ class UserHistoryApiClient(
     override suspend fun getMoviesHistory(
         page: Int,
         limit: Int,
+        filters: GlobalFilter?,
     ): List<SyncHistoryMovieItemDto> {
         val response = historyApi.getUsersHistoryMovies(
             id = "me",
@@ -34,6 +47,16 @@ class UserHistoryApiClient(
             endAt = null,
             page = page,
             limit = limit,
+            watchnow = filters?.availability?.joinToString(",") { it.slug },
+            genres = filters?.genre?.joinToString(",") { it.slug },
+            subgenres = filters?.subgenre?.joinToString(","),
+            years = filters?.years?.let { "${it.first}-${it.second}" },
+            ratings = filters?.rating?.let { "${it.first}-${it.second}" },
+            startDate = null,
+            endDate = null,
+            runtimes = filters?.runtime?.let { "${it.first}-${it.second}" },
+            countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
+            certifications = filters?.certification?.joinToString(",") { it.slug },
         )
         return response.body()
     }

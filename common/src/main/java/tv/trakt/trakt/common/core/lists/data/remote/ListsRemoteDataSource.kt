@@ -1,6 +1,7 @@
 package tv.trakt.trakt.common.core.lists.data.remote
 
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.ListItemDto
@@ -51,6 +52,7 @@ interface ListsRemoteDataSource {
         extended: String?,
         sorting: Sorting,
         pagination: Pagination,
+        filters: GlobalFilter?,
     ): List<ListItemDto>
 
     suspend fun getMediaListItems(
@@ -58,6 +60,7 @@ interface ListsRemoteDataSource {
         extended: String?,
         sorting: Sorting,
         pagination: Pagination,
+        filters: GlobalFilter?,
     ): List<ListMediaItemDto>
 
     suspend fun getShowListItems(
@@ -65,6 +68,7 @@ interface ListsRemoteDataSource {
         extended: String?,
         sorting: Sorting,
         pagination: Pagination,
+        filters: GlobalFilter?,
     ): List<ListShowItemDto>
 
     suspend fun getMovieListItems(
@@ -72,6 +76,7 @@ interface ListsRemoteDataSource {
         extended: String?,
         sorting: Sorting,
         pagination: Pagination,
+        filters: GlobalFilter?,
     ): List<ListMovieItemDto>
 
     suspend fun addLikedList(listId: TraktId)

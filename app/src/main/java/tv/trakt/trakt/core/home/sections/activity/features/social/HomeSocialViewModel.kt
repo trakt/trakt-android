@@ -31,15 +31,15 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
-import tv.trakt.trakt.core.main.helpers.MediaModeManager
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -49,11 +49,11 @@ internal class HomeSocialViewModel(
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val sessionManager: SessionManager,
-    private val modeManager: MediaModeManager,
+    private val filterManager: GlobalFilterManager,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = HomeSocialState()
-    private val initialMode = modeManager.getMode()
+    private val initialMode = filterManager.getFilter()
 
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
@@ -90,7 +90,7 @@ internal class HomeSocialViewModel(
     }
 
     private fun observeMode() {
-        modeManager.observeMode()
+        filterManager.observeFilter()
             .distinctUntilChanged()
             .onEach { value ->
                 filterState.update { value }
@@ -110,7 +110,7 @@ internal class HomeSocialViewModel(
 
                 val localItems = getSocialActivityUseCase.getLocalSocialActivity(
                     limit = HOME_SECTION_LIMIT,
-                    filter = filterState.value,
+                    filter = filterState.value.mode,
                 )
 
                 if (localItems.isNotEmpty()) {
@@ -124,7 +124,7 @@ internal class HomeSocialViewModel(
                     getSocialActivityUseCase.getSocialActivity(
                         page = 1,
                         limit = HOME_SECTION_LIMIT,
-                        filter = filterState.value,
+                        filters = filterState.value,
                     )
                 }
             } catch (error: Exception) {
@@ -199,7 +199,7 @@ internal class HomeSocialViewModel(
 
         collapseJob?.cancel()
         collapseJob = viewModelScope.launch {
-            val key = when (filterState.value) {
+            val key = when (filterState.value.mode) {
                 MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_SOCIAL
                 MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_SOCIAL
                 MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_SOCIAL
@@ -213,7 +213,7 @@ internal class HomeSocialViewModel(
 
     private fun isCollapsed(): Boolean {
         return collapsingManager.isCollapsed(
-            key = when (filterState.value) {
+            key = when (filterState.value.mode) {
                 MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_SOCIAL
                 MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_SOCIAL
                 MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_SOCIAL

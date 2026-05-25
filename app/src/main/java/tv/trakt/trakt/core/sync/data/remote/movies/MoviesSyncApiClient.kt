@@ -9,6 +9,7 @@ import org.openapitools.client.models.PostSyncRatingsRemoveRequestMoviesInner
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.ProgressMovieDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
@@ -19,6 +20,7 @@ internal class MoviesSyncApiClient(
     override suspend fun getPlaybackProgress(
         limit: Int,
         page: Int,
+        filters: GlobalFilter?,
     ): List<ProgressMovieDto> {
         val response = syncApi.getSyncProgressMovies(
             extended = "full,cloud9,colors",
@@ -26,6 +28,16 @@ internal class MoviesSyncApiClient(
             limit = limit,
             startAt = null,
             endAt = null,
+            watchnow = filters?.availability?.joinToString(",") { it.slug },
+            genres = filters?.genre?.joinToString(",") { it.slug },
+            subgenres = filters?.subgenre?.joinToString(","),
+            years = filters?.years?.let { "${it.first}-${it.second}" },
+            ratings = filters?.rating?.let { "${it.first}-${it.second}" },
+            startDate = null,
+            endDate = null,
+            runtimes = filters?.runtime?.let { "${it.first}-${it.second}" },
+            countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
+            certifications = filters?.certification?.joinToString(",") { it.slug },
         )
         return response.body()
     }

@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.anticipated.data.local.shows.AnticipatedShowsLocalDataSource
@@ -34,11 +35,13 @@ internal class DefaultGetAnticipatedShowsUseCase(
         limit: Int,
         page: Int,
         skipLocal: Boolean,
+        filters: GlobalFilter,
     ): ImmutableList<DiscoverItem.ShowItem> {
         return remoteSource.getAnticipated(
             page = page,
             limit = limit,
             endDate = nowUtcInstant().plus(365, DAYS).truncatedTo(DAYS),
+            filters = filters,
         )
             .asyncMap {
                 DiscoverItem.ShowItem(

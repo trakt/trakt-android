@@ -15,11 +15,11 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem.EpisodeItem
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem.MovieItem
 import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.notifications.TraktNotificationChannel
 import tv.trakt.trakt.core.notifications.model.DeliveryAdjustment
 import tv.trakt.trakt.core.notifications.model.PostNotificationData
@@ -86,10 +86,10 @@ internal class ScheduleNotificationsWorker(
             }
 
             delay(3.seconds)
-            var upcomingItems = getUpcomingUseCase.getLocalUpcoming(MediaMode.MEDIA)
+            var upcomingItems = getUpcomingUseCase.getLocalUpcoming(GlobalFilter.Default)
             if (upcomingItems.isEmpty() || forceRemote) {
                 try {
-                    upcomingItems = getUpcomingUseCase.getUpcoming(MediaMode.MEDIA)
+                    upcomingItems = getUpcomingUseCase.getUpcoming(GlobalFilter.Default)
                 } catch (error: Exception) {
                     Timber.recordError(error)
                 }

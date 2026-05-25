@@ -2,6 +2,7 @@ package tv.trakt.trakt.common.core.user.data.remote.social
 
 import org.openapitools.client.apis.UsersApi
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.SocialActivityItemDto
 import tv.trakt.trakt.common.networking.UserCommentsDto
 import java.time.ZonedDateTime
@@ -13,6 +14,7 @@ class UserSocialApiClient(
         page: Int?,
         limit: Int,
         type: String,
+        filters: GlobalFilter?,
     ): List<SocialActivityItemDto> {
         val response = usersApi.getUsersActivities(
             id = "me",
@@ -20,6 +22,19 @@ class UserSocialApiClient(
             page = page,
             limit = limit,
             extended = "full,cloud9,colors,rating",
+            watchnow = filters?.availability?.joinToString(",") { it.slug },
+            genres = filters?.genre?.joinToString(",") { it.slug },
+            subgenres = filters?.subgenre?.joinToString(","),
+            years = filters?.years?.let { "${it.first}-${it.second}" },
+            ratings = filters?.rating?.let { "${it.first}-${it.second}" },
+            runtimes = filters?.runtime?.let { "${it.first}-${it.second}" },
+            countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
+            certifications = filters?.certification?.joinToString(",") { it.slug },
+            startDate = null,
+            endDate = null,
+            ignoreWatched = filters?.hideWatched,
+            ignoreWatchlisted = filters?.hideWatchlist,
+            ignoreCollected = null,
         ).body()
 
         return response

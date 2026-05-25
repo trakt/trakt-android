@@ -107,6 +107,7 @@ internal class DefaultRatePromptManager(
             val movies = userHistoryDataSource.getMoviesHistory(
                 page = 1,
                 limit = 10,
+                filters = null,
             ).asyncMap {
                 HomeActivityItem.MovieItem(
                     id = it.id,

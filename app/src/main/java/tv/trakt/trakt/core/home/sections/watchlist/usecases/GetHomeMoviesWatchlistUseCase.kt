@@ -8,6 +8,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.sorting.SortOrder
 import tv.trakt.trakt.common.model.sorting.SortTypeList
 import tv.trakt.trakt.common.model.sorting.Sorting
@@ -24,7 +25,11 @@ internal class GetHomeMoviesWatchlistUseCase(
             .toImmutableList()
     }
 
-    suspend fun getWatchlist(limit: Int): ImmutableList<WatchlistItem> {
+    suspend fun getWatchlist(
+        limit: Int,
+        filters: GlobalFilter? = null,
+        skipLocal: Boolean = false,
+    ): ImmutableList<WatchlistItem> {
         val nowDay = nowLocalDay()
         return userRemoteSource.getWatchlistMovies(
             page = 1,
@@ -35,6 +40,7 @@ internal class GetHomeMoviesWatchlistUseCase(
                 order = SortOrder.DESCENDING,
             ),
             hide = "unreleased",
+            filters = filters,
         )
             .asyncMap {
                 WatchlistItem.MovieItem(
@@ -48,7 +54,9 @@ internal class GetHomeMoviesWatchlistUseCase(
                     it.movie.released!! <= nowDay
             }
             .also {
-                homeWatchlistLocalSource.setMovieItems(items = it)
+                if (!skipLocal) {
+                    homeWatchlistLocalSource.setMovieItems(items = it)
+                }
             }
             .toImmutableList()
     }

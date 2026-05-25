@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.sorting.SortOrder
 import tv.trakt.trakt.common.model.sorting.SortTypeList
 import tv.trakt.trakt.common.model.sorting.Sorting
@@ -24,7 +25,11 @@ internal class GetHomeShowsWatchlistUseCase(
             .toImmutableList()
     }
 
-    suspend fun getWatchlist(limit: Int): ImmutableList<WatchlistItem> {
+    suspend fun getWatchlist(
+        limit: Int,
+        filters: GlobalFilter? = null,
+        skipLocal: Boolean = false,
+    ): ImmutableList<WatchlistItem> {
         return userRemoteSource.getWatchlistShows(
             page = 1,
             limit = limit,
@@ -34,10 +39,13 @@ internal class GetHomeShowsWatchlistUseCase(
                 order = SortOrder.DESCENDING,
             ),
             hide = "unreleased",
+            filters = filters,
         ).asyncMap {
             mapShowItem(it)
         }.also {
-            homeWatchlistLocalSource.setShowItems(items = it)
+            if (!skipLocal) {
+                homeWatchlistLocalSource.setShowItems(items = it)
+            }
         }
             .take(limit)
             .toImmutableList()

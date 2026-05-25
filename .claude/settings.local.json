@@ -25,7 +25,8 @@
       "Bash(cat /tmp/io/ktor/client/plugins/cache/storage/CacheStorage.kt)",
       "Bash(find /Users/michal/Documents/Dev/Android/trakt/trakt-android-2025 -name \"TraktSectionHeader.kt\" -exec grep -n \"fun TraktSectionHeader\" {} \\\\;)",
       "Bash(grep -o '%[0-9]\\\\+\\\\$[a-zA-Z]' /Users/michal/Documents/Android/trakt/trakt-android-2025/resources/src/main/res/values/strings.xml)",
-      "Skill(update-config)"
+      "Skill(update-config)",
+      "Bash(grep -v \"^.*//.*$\")"
     ]
   }
 }

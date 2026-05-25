@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.discover.sections.all.usecases
 
 import kotlinx.collections.immutable.ImmutableList
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_ALL_LIMIT
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.model.DiscoverSection
@@ -23,29 +24,34 @@ internal class GetAllDiscoverMoviesUseCase(
         source: DiscoverSection,
         page: Int = 1,
         skipLocal: Boolean = false,
+        filters: GlobalFilter,
     ): ImmutableList<DiscoverItem> {
         return when (source) {
             TRENDING -> getTrendingMoviesUseCase.getMovies(
                 page = page,
                 limit = DEFAULT_ALL_LIMIT,
                 skipLocal = skipLocal,
+                filters = filters,
             )
 
             ANTICIPATED -> getAnticipatedMoviesUseCase.getMovies(
                 page = page,
                 limit = DEFAULT_ALL_LIMIT,
                 skipLocal = skipLocal,
+                filters = filters,
             )
 
             POPULAR -> getPopularMoviesUseCase.getMovies(
                 page = page,
                 limit = DEFAULT_ALL_LIMIT,
                 skipLocal = skipLocal,
+                filters = filters,
             )
 
             RECOMMENDED -> getRecommendedMoviesUseCase.getMovies(
                 limit = DEFAULT_ALL_LIMIT,
                 skipLocal = skipLocal,
+                filters = filters,
             )
         }
     }

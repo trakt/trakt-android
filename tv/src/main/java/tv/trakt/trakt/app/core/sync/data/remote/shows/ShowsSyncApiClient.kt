@@ -3,7 +3,6 @@ package tv.trakt.trakt.app.core.sync.data.remote.shows
 import org.openapitools.client.apis.CollectionApi
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
-import org.openapitools.client.apis.WatchedApi
 import org.openapitools.client.models.PostCheckinStartRequestOneOfOneOfEpisodeIds
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
@@ -19,7 +18,6 @@ import java.time.format.DateTimeFormatter.ISO_INSTANT
 internal class ShowsSyncApiClient(
     private val usersApi: UsersApi,
     private val syncApi: SyncApi,
-    private val watchedApi: WatchedApi,
     private val collectionApi: CollectionApi,
     private val cacheMarkerProvider: CacheMarkerProvider,
 ) : ShowsSyncRemoteDataSource {
@@ -87,6 +85,8 @@ internal class ShowsSyncApiClient(
             sortBy = null,
             sortHow = null,
             runtimes = null,
+            countries = null,
+            certifications = null,
         )
 
         return response.body()
@@ -105,6 +105,16 @@ internal class ShowsSyncApiClient(
             sortBy = sortBy,
             sortHow = sortHow,
             intent = intent,
+            watchnow = null,
+            genres = null,
+            subgenres = null,
+            years = null,
+            ratings = null,
+            startDate = null,
+            endDate = null,
+            runtimes = null,
+            countries = null,
+            certifications = null,
         )
         return response.body()
     }

@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.movies.data.remote
 
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
@@ -19,33 +20,26 @@ internal interface MoviesRemoteDataSource {
     suspend fun getTrending(
         page: Int = 1,
         limit: Int,
-        genres: List<String>? = null,
+        filters: GlobalFilter,
         subgenres: List<String>? = null,
-        years: String? = null,
     ): List<TrendingMovieDto>
 
     suspend fun getPopular(
         page: Int = 1,
         limit: Int,
-        years: String? = null,
-        genres: List<String>? = null,
-        subgenres: List<String>? = null,
+        filters: GlobalFilter,
     ): List<MovieDto>
 
     suspend fun getRecommended(
         limit: Int,
-        years: String? = null,
-        genres: List<String>? = null,
-        subgenres: List<String>? = null,
+        filters: GlobalFilter,
     ): List<RecommendedMovieDto>
 
     suspend fun getAnticipated(
         page: Int = 1,
         limit: Int,
         endDate: Instant? = null,
-        genres: List<String>? = null,
-        subgenres: List<String>? = null,
-        years: String? = null,
+        filters: GlobalFilter,
     ): List<AnticipatedMovieDto>
 
     suspend fun getDetails(movieId: TraktId): MovieDto

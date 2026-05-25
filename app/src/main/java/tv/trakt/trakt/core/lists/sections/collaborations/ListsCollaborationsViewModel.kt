@@ -25,19 +25,20 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ITEMS_SECTION_LIMIT
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.collaborations.data.local.items.ListsCollaborationsItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.collaborations.usecases.GetCollaborationsListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.collaborations.usecases.GetCollaborationsListsUseCase
-import tv.trakt.trakt.core.main.helpers.MediaModeManager
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
@@ -54,11 +55,11 @@ internal class ListsCollaborationsViewModel(
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val collectionStateProvider: CollectionStateProvider,
-    private val modeManager: MediaModeManager,
+    private val filterManager: GlobalFilterManager,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = ListsCollaborationsState()
-    private val initialMode = modeManager.getMode()
+    private val initialMode = filterManager.getFilter()
 
     private val userState = MutableStateFlow(initialState.user)
     private val filterState = MutableStateFlow(initialMode)
@@ -84,7 +85,7 @@ internal class ListsCollaborationsViewModel(
     }
 
     private fun observeMode() {
-        modeManager.observeMode()
+        filterManager.observeFilter()
             .onEach { value ->
                 filterState.update { value }
                 collapseState.update { isCollapsed() }
@@ -119,7 +120,7 @@ internal class ListsCollaborationsViewModel(
 
                 val localItems = getCollaborationsListItemsUseCase.getLocalItems(
                     listId = listId,
-                    filter = filterState.value,
+                    filter = filterState.value.mode,
                 )
 
                 if (localItems.isNotEmpty()) {
@@ -133,7 +134,7 @@ internal class ListsCollaborationsViewModel(
                     getCollaborationsListItemsUseCase.getItems(
                         listId = listId,
                         limit = LISTS_ITEMS_SECTION_LIMIT,
-                        filter = filterState.value,
+                        filter = filterState.value.mode,
                         sorting = Sorting.Default,
                     )
                 }
@@ -159,7 +160,7 @@ internal class ListsCollaborationsViewModel(
                 itemsState.update {
                     getCollaborationsListItemsUseCase.getLocalItems(
                         listId = listId,
-                        filter = filterState.value,
+                        filter = filterState.value.mode,
                     )
                 }
             } catch (error: Exception) {
@@ -218,7 +219,7 @@ internal class ListsCollaborationsViewModel(
 
         collapseJob?.cancel()
         collapseJob = viewModelScope.launch {
-            val key = when (filterState.value) {
+            val key = when (filterState.value.mode) {
                 MediaMode.MEDIA -> CollapsingKey.LISTS_MEDIA_COLLABORATIONS
                 MediaMode.SHOWS -> CollapsingKey.LISTS_SHOWS_COLLABORATIONS
                 MediaMode.MOVIES -> CollapsingKey.LISTS_MOVIES_COLLABORATIONS
@@ -231,7 +232,7 @@ internal class ListsCollaborationsViewModel(
     }
 
     private fun isCollapsed(): Boolean {
-        val key = when (filterState.value) {
+        val key = when (filterState.value.mode) {
             MediaMode.MEDIA -> CollapsingKey.LISTS_MEDIA_COLLABORATIONS
             MediaMode.SHOWS -> CollapsingKey.LISTS_SHOWS_COLLABORATIONS
             MediaMode.MOVIES -> CollapsingKey.LISTS_MOVIES_COLLABORATIONS
@@ -258,7 +259,7 @@ internal class ListsCollaborationsViewModel(
             list = states[0] as CustomList?,
             user = states[1] as User?,
             items = states[2] as ImmutableList<CustomListItem>?,
-            filter = states[3] as MediaMode?,
+            filter = states[3] as GlobalFilter?,
             collapsed = states[4] as Boolean,
             collection = states[5] as UserCollectionState,
             navigateShow = states[6] as TraktId?,

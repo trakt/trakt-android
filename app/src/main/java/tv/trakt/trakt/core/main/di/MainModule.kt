@@ -21,8 +21,6 @@ import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.DefaultAppLifecycleProvider
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.main.MainViewModel
-import tv.trakt.trakt.core.main.helpers.DefaultMediaModeManager
-import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
 import tv.trakt.trakt.core.main.usecases.LoadWhatsNewUseCase
@@ -52,13 +50,6 @@ internal val mainModule = module {
         createStore(
             context = androidApplication(),
             file = WHATS_NEW_PREFERENCES,
-        )
-    }
-
-    single<MediaModeManager> {
-        DefaultMediaModeManager(
-            dataStore = get(named(MAIN_PREFERENCES)),
-            analytics = get(),
         )
     }
 

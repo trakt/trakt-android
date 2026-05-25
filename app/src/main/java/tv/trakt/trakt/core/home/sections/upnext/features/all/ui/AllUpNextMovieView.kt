@@ -22,12 +22,14 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun AllUpNextMovieView(
     item: UpNextMovie,
+    enabled: Boolean,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
     onMovieClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     PanelMediaCard(
+        enabled = enabled,
         title = item.movie.title,
         titleOriginal = item.movie.titleOriginal,
         subtitle = rememberDurationFormat(item.movie.runtime?.inWholeMinutes),

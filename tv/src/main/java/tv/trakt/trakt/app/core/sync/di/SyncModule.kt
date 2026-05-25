@@ -25,7 +25,6 @@ internal val syncModule = module {
         ShowsSyncApiClient(
             usersApi = get(),
             syncApi = get(),
-            watchedApi = get(),
             collectionApi = get(),
             cacheMarkerProvider = get(),
         )

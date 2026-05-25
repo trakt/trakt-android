@@ -42,6 +42,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -49,7 +50,6 @@ import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.sheet.ListMovieContextSheet
 import tv.trakt.trakt.core.lists.sections.personal.features.context.show.sheet.ListShowContextSheet
 import tv.trakt.trakt.core.lists.sections.personal.ui.ListsCustomItemView
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
@@ -208,7 +208,7 @@ private fun ListsCollaborationsContent(
 
                             state.items?.isEmpty() == true -> {
                                 ContentEmptyList(
-                                    filter = state.filter,
+                                    filter = state.filter?.mode,
                                     contentPadding = contentPadding,
                                     modifier = Modifier.padding(bottom = 3.75.dp),
                                 )
@@ -217,7 +217,7 @@ private fun ListsCollaborationsContent(
                             else -> {
                                 ContentList(
                                     listItems = (state.items ?: emptyList()).toImmutableList(),
-                                    listFilter = state.filter,
+                                    listFilter = state.filter?.mode,
                                     collectionState = state.collection,
                                     contentPadding = contentPadding,
                                     onMovieClick = onMovieClick,

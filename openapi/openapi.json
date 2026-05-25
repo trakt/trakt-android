@@ -418,6 +418,49 @@
               "type": "string",
               "nullable": true
             }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watched",
+            "in": "query",
+            "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_collected",
+            "in": "query",
+            "description": "Ignore collected items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watchlisted",
+            "in": "query",
+            "description": "Ignore watchlisted items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -979,6 +1022,49 @@
             "in": "query",
             "schema": {
               "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watched",
+            "in": "query",
+            "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_collected",
+            "in": "query",
+            "description": "Ignore collected items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watchlisted",
+            "in": "query",
+            "description": "Ignore watchlisted items.",
+            "schema": {
+              "type": "boolean",
               "nullable": true
             }
           }
@@ -1544,6 +1630,49 @@
               "type": "string",
               "nullable": true
             }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watched",
+            "in": "query",
+            "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_collected",
+            "in": "query",
+            "description": "Ignore collected items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watchlisted",
+            "in": "query",
+            "description": "Ignore watchlisted items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -2105,6 +2234,49 @@
             "in": "query",
             "schema": {
               "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watched",
+            "in": "query",
+            "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_collected",
+            "in": "query",
+            "description": "Ignore collected items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watchlisted",
+            "in": "query",
+            "description": "Ignore watchlisted items.",
+            "schema": {
+              "type": "boolean",
               "nullable": true
             }
           }
@@ -2670,6 +2842,49 @@
               "type": "string",
               "nullable": true
             }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watched",
+            "in": "query",
+            "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_collected",
+            "in": "query",
+            "description": "Ignore collected items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watchlisted",
+            "in": "query",
+            "description": "Ignore watchlisted items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -3059,6 +3274,49 @@
             "in": "query",
             "schema": {
               "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watched",
+            "in": "query",
+            "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_collected",
+            "in": "query",
+            "description": "Ignore collected items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watchlisted",
+            "in": "query",
+            "description": "Ignore watchlisted items.",
+            "schema": {
+              "type": "boolean",
               "nullable": true
             }
           }
@@ -7685,6 +7943,123 @@
             "in": "query",
             "description": "Extended information to include in the response.",
             "schema": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "watchnow",
+            "in": "query",
+            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "favorites",
+                "any",
+                "any_all",
+                "free",
+                "free_all",
+                "subscriptions",
+                "subscriptions_all"
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "genres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "subgenres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ratings",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "runtimes",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watched",
+            "in": "query",
+            "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_collected",
+            "in": "query",
+            "description": "Ignore collected items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watchlisted",
+            "in": "query",
+            "description": "Ignore watchlisted items.",
+            "schema": {
+              "type": "boolean",
               "nullable": true
             }
           },
@@ -17256,6 +17631,96 @@
             }
           },
           {
+            "name": "watchnow",
+            "in": "query",
+            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "favorites",
+                "any",
+                "any_all",
+                "free",
+                "free_all",
+                "subscriptions",
+                "subscriptions_all"
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "genres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "subgenres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ratings",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "runtimes",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "start_at",
             "in": "query",
             "description": "Start date for the range. Must be formatted as \"YYYY-MM-DD\".",
@@ -17605,6 +18070,96 @@
             "in": "query",
             "description": "Extended information to include in the response.",
             "schema": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "watchnow",
+            "in": "query",
+            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "favorites",
+                "any",
+                "any_all",
+                "free",
+                "free_all",
+                "subscriptions",
+                "subscriptions_all"
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "genres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "subgenres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ratings",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "runtimes",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
               "nullable": true
             }
           },
@@ -18130,6 +18685,96 @@
             "in": "query",
             "description": "Extended information to include in the response.",
             "schema": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "watchnow",
+            "in": "query",
+            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "favorites",
+                "any",
+                "any_all",
+                "free",
+                "free_all",
+                "subscriptions",
+                "subscriptions_all"
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "genres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "subgenres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ratings",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "runtimes",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
               "nullable": true
             }
           },
@@ -20208,6 +20853,22 @@
             }
           },
           {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "hide",
             "in": "query",
             "schema": {
@@ -20661,6 +21322,22 @@
           },
           {
             "name": "runtimes",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
             "in": "query",
             "schema": {
               "type": "string",
@@ -21147,6 +21824,22 @@
           },
           {
             "name": "runtimes",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
             "in": "query",
             "schema": {
               "type": "string",
@@ -27512,6 +28205,49 @@
             }
           },
           {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watched",
+            "in": "query",
+            "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_collected",
+            "in": "query",
+            "description": "Ignore collected items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watchlisted",
+            "in": "query",
+            "description": "Ignore watchlisted items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
             "name": "page",
             "in": "query",
             "description": "The page number to retrieve",
@@ -27947,6 +28683,49 @@
             "in": "query",
             "schema": {
               "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watched",
+            "in": "query",
+            "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_collected",
+            "in": "query",
+            "description": "Ignore collected items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watchlisted",
+            "in": "query",
+            "description": "Ignore watchlisted items.",
+            "schema": {
+              "type": "boolean",
               "nullable": true
             }
           },
@@ -28412,6 +29191,49 @@
             "in": "query",
             "schema": {
               "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watched",
+            "in": "query",
+            "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_collected",
+            "in": "query",
+            "description": "Ignore collected items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watchlisted",
+            "in": "query",
+            "description": "Ignore watchlisted items.",
+            "schema": {
+              "type": "boolean",
               "nullable": true
             }
           },
@@ -29147,6 +29969,49 @@
             "in": "query",
             "schema": {
               "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watched",
+            "in": "query",
+            "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_collected",
+            "in": "query",
+            "description": "Ignore collected items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watchlisted",
+            "in": "query",
+            "description": "Ignore watchlisted items.",
+            "schema": {
+              "type": "boolean",
               "nullable": true
             }
           },
@@ -36226,7 +37091,8 @@
                     "type": "object",
                     "properties": {
                       "hidden_at": {
-                        "type": "string"
+                        "type": "string",
+                        "nullable": true
                       },
                       "type": {
                         "type": "string",
@@ -36497,7 +37363,6 @@
                       }
                     },
                     "required": [
-                      "hidden_at",
                       "type",
                       "show"
                     ]
@@ -36564,7 +37429,8 @@
                     "type": "object",
                     "properties": {
                       "hidden_at": {
-                        "type": "string"
+                        "type": "string",
+                        "nullable": true
                       },
                       "type": {
                         "type": "string",
@@ -36835,7 +37701,6 @@
                       }
                     },
                     "required": [
-                      "hidden_at",
                       "type",
                       "show"
                     ]
@@ -44980,6 +45845,96 @@
             }
           },
           {
+            "name": "watchnow",
+            "in": "query",
+            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "favorites",
+                "any",
+                "any_all",
+                "free",
+                "free_all",
+                "subscriptions",
+                "subscriptions_all"
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "genres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "subgenres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ratings",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "runtimes",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "sort_by",
             "in": "query",
             "description": "The field to sort by",
@@ -45676,6 +46631,96 @@
             "in": "query",
             "description": "Extended information to include in the response.",
             "schema": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "watchnow",
+            "in": "query",
+            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "favorites",
+                "any",
+                "any_all",
+                "free",
+                "free_all",
+                "subscriptions",
+                "subscriptions_all"
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "genres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "subgenres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ratings",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "runtimes",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
               "nullable": true
             }
           },
@@ -55934,6 +56979,22 @@
               "type": "string",
               "nullable": true
             }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -56587,6 +57648,22 @@
           },
           {
             "name": "runtimes",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
             "in": "query",
             "schema": {
               "type": "string",
@@ -58346,6 +59423,22 @@
             }
           },
           {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "page",
             "in": "query",
             "description": "The page number to retrieve",
@@ -59028,6 +60121,22 @@
             }
           },
           {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "page",
             "in": "query",
             "description": "The page number to retrieve",
@@ -59703,6 +60812,22 @@
           },
           {
             "name": "runtimes",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
             "in": "query",
             "schema": {
               "type": "string",
@@ -60892,12 +62017,12 @@
                         "type": "string"
                       },
                       "country": {
-                        "type": "string"
+                        "type": "string",
+                        "nullable": true
                       }
                     },
                     "required": [
-                      "language",
-                      "country"
+                      "language"
                     ]
                   }
                 }
@@ -63014,12 +64139,12 @@
                             "type": "array",
                             "items": {
                               "type": "integer"
-                            }
+                            },
+                            "nullable": true
                           }
                         },
                         "required": [
-                          "sentiment",
-                          "comment_ids"
+                          "sentiment"
                         ]
                       }
                     },
@@ -63035,12 +64160,12 @@
                             "type": "array",
                             "items": {
                               "type": "integer"
-                            }
+                            },
+                            "nullable": true
                           }
                         },
                         "required": [
-                          "sentiment",
-                          "comment_ids"
+                          "sentiment"
                         ]
                       }
                     },
@@ -63245,6 +64370,22 @@
           },
           {
             "name": "runtimes",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
             "in": "query",
             "schema": {
               "type": "string",
@@ -64011,6 +65152,22 @@
             }
           },
           {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "page",
             "in": "query",
             "description": "The page number to retrieve",
@@ -64409,6 +65566,22 @@
           },
           {
             "name": "runtimes",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
             "in": "query",
             "schema": {
               "type": "string",
@@ -64821,6 +65994,22 @@
             }
           },
           {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "page",
             "in": "query",
             "description": "The page number to retrieve",
@@ -65220,6 +66409,22 @@
           },
           {
             "name": "runtimes",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
             "in": "query",
             "schema": {
               "type": "string",
@@ -66750,12 +67955,12 @@
                         "type": "string"
                       },
                       "country": {
-                        "type": "string"
+                        "type": "string",
+                        "nullable": true
                       }
                     },
                     "required": [
-                      "language",
-                      "country"
+                      "language"
                     ]
                   }
                 }
@@ -69498,12 +70703,12 @@
                             "type": "array",
                             "items": {
                               "type": "integer"
-                            }
+                            },
+                            "nullable": true
                           }
                         },
                         "required": [
-                          "sentiment",
-                          "comment_ids"
+                          "sentiment"
                         ]
                       }
                     },
@@ -69519,12 +70724,12 @@
                             "type": "array",
                             "items": {
                               "type": "integer"
-                            }
+                            },
+                            "nullable": true
                           }
                         },
                         "required": [
-                          "sentiment",
-                          "comment_ids"
+                          "sentiment"
                         ]
                       }
                     },
@@ -71801,6 +73006,22 @@
             }
           },
           {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "page",
             "in": "query",
             "description": "The page number to retrieve",
@@ -72240,6 +73461,22 @@
           },
           {
             "name": "runtimes",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
             "in": "query",
             "schema": {
               "type": "string",
@@ -72690,6 +73927,22 @@
             }
           },
           {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "page",
             "in": "query",
             "description": "The page number to retrieve",
@@ -73114,6 +74367,22 @@
           },
           {
             "name": "runtimes",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
             "in": "query",
             "schema": {
               "type": "string",
@@ -73552,6 +74821,22 @@
             }
           },
           {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
             "name": "page",
             "in": "query",
             "description": "The page number to retrieve",
@@ -73977,6 +75262,22 @@
           },
           {
             "name": "runtimes",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
             "in": "query",
             "schema": {
               "type": "string",
@@ -78219,7 +79520,8 @@
                             ]
                           },
                           "episode_count": {
-                            "type": "integer"
+                            "type": "integer",
+                            "nullable": true
                           },
                           "series_regular": {
                             "type": "boolean"
@@ -78236,7 +79538,6 @@
                         },
                         "required": [
                           "show",
-                          "episode_count",
                           "series_regular",
                           "character",
                           "characters"
@@ -78513,7 +79814,8 @@
                               ]
                             },
                             "episode_count": {
-                              "type": "integer"
+                              "type": "integer",
+                              "nullable": true
                             },
                             "job": {
                               "type": "string"
@@ -78527,7 +79829,6 @@
                           },
                           "required": [
                             "show",
-                            "episode_count",
                             "job",
                             "jobs"
                           ]
@@ -79586,6 +80887,22 @@
               "type": "string",
               "nullable": true
             }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -79935,6 +81252,22 @@
               "type": "string",
               "nullable": true
             }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -80273,6 +81606,49 @@
             "in": "query",
             "schema": {
               "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watched",
+            "in": "query",
+            "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_collected",
+            "in": "query",
+            "description": "Ignore collected items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watchlisted",
+            "in": "query",
+            "description": "Ignore watchlisted items.",
+            "schema": {
+              "type": "boolean",
               "nullable": true
             }
           }
@@ -80617,6 +81993,49 @@
             "in": "query",
             "schema": {
               "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watched",
+            "in": "query",
+            "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_collected",
+            "in": "query",
+            "description": "Ignore collected items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watchlisted",
+            "in": "query",
+            "description": "Ignore watchlisted items.",
+            "schema": {
+              "type": "boolean",
               "nullable": true
             }
           },
@@ -81046,6 +82465,49 @@
             "in": "query",
             "schema": {
               "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watched",
+            "in": "query",
+            "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_collected",
+            "in": "query",
+            "description": "Ignore collected items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watchlisted",
+            "in": "query",
+            "description": "Ignore watchlisted items.",
+            "schema": {
+              "type": "boolean",
               "nullable": true
             }
           },
@@ -81501,6 +82963,49 @@
             "in": "query",
             "schema": {
               "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watched",
+            "in": "query",
+            "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_collected",
+            "in": "query",
+            "description": "Ignore collected items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watchlisted",
+            "in": "query",
+            "description": "Ignore watchlisted items.",
+            "schema": {
+              "type": "boolean",
               "nullable": true
             }
           },
@@ -82226,6 +83731,49 @@
             "in": "query",
             "schema": {
               "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watched",
+            "in": "query",
+            "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_collected",
+            "in": "query",
+            "description": "Ignore collected items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watchlisted",
+            "in": "query",
+            "description": "Ignore watchlisted items.",
+            "schema": {
+              "type": "boolean",
               "nullable": true
             }
           },

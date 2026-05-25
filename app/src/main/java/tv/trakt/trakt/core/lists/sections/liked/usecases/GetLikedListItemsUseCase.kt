@@ -2,6 +2,10 @@ package tv.trakt.trakt.core.lists.sections.liked.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.MediaMode.MEDIA
+import tv.trakt.trakt.common.model.MediaMode.MOVIES
+import tv.trakt.trakt.common.model.MediaMode.SHOWS
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
@@ -9,10 +13,6 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.features.details.usecases.GetListItemsUseCase
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.liked.data.local.items.ListsLikedItemsLocalDataSource
-import tv.trakt.trakt.core.main.model.MediaMode
-import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
-import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
-import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 
 internal class GetLikedListItemsUseCase(
     private val getListItemsUseCase: GetListItemsUseCase,
@@ -33,6 +33,7 @@ internal class GetLikedListItemsUseCase(
             },
             sorting = sorting,
             pagination = Pagination(page = 1, limit = limit),
+            filters = null,
         ).distinctBy {
             it.key
         }.also {

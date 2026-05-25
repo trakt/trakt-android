@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
@@ -13,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -26,15 +26,16 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images.Size.THUMB
-import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.model.DiscoverItem.MovieItem
 import tv.trakt.trakt.core.discover.model.DiscoverItem.ShowItem
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.movies.ui.MovieMetaFooter
 import tv.trakt.trakt.core.shows.ui.ShowMetaFooter
 import tv.trakt.trakt.core.user.UserCollectionState
+import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
+import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -46,7 +47,8 @@ internal fun AllDiscoverListView(
     items: ImmutableList<DiscoverItem>,
     modifier: Modifier = Modifier,
     title: @Composable (() -> Unit)? = null,
-    loading: Boolean = false,
+    loading: Boolean,
+    loadingMore: Boolean,
     onItemClick: (DiscoverItem) -> Unit = {},
     onItemLongClick: (DiscoverItem) -> Unit = {},
     onEndOfList: () -> Unit = {},
@@ -86,17 +88,45 @@ internal fun AllDiscoverListView(
 
         listItems(
             items = items,
+            loading = loading,
             collectionState = collectionState,
             mediaIcon = (filter == MediaMode.MEDIA),
             onClick = onItemClick,
             onLongClick = onItemLongClick,
         )
 
-        if (loading) {
+        if (loading && items.isEmpty()) {
+            items(5) {
+                PanelMediaSkeletonCard(
+                    modifier = Modifier
+                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                )
+            }
+        } else if (loadingMore) {
             item {
-                FilmProgressIndicator(
-                    size = 32.dp,
-                    modifier = Modifier.fillMaxWidth(),
+                PanelMediaSkeletonCard(
+                    modifier = Modifier
+                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                )
+            }
+        }
+
+        if (items.isEmpty() && !loading) {
+            item {
+                ContentEmptyView(
+                    modifier = Modifier
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
                 )
             }
         }
@@ -107,6 +137,7 @@ private fun LazyListScope.listItems(
     items: ImmutableList<DiscoverItem>,
     collectionState: UserCollectionState,
     mediaIcon: Boolean,
+    loading: Boolean,
     onClick: ((DiscoverItem) -> Unit)? = null,
     onLongClick: ((DiscoverItem) -> Unit)? = null,
 ) {
@@ -117,6 +148,7 @@ private fun LazyListScope.listItems(
         when (item) {
             is ShowItem -> ShowListItem(
                 item = item,
+                enabled = !loading,
                 watched = collectionState.isWatched(item.id, item.type, item.airedEpisodes),
                 watchlist = collectionState.isWatchlist(item.id, item.type),
                 mediaIcon = mediaIcon,
@@ -132,6 +164,7 @@ private fun LazyListScope.listItems(
 
             is MovieItem -> MovieListItem(
                 item = item,
+                enabled = !loading,
                 watched = collectionState.isWatched(item.id, item.type, item.airedEpisodes),
                 watchlist = collectionState.isWatchlist(item.id, item.type),
                 mediaIcon = mediaIcon,
@@ -151,6 +184,7 @@ private fun LazyListScope.listItems(
 @Composable
 private fun ShowListItem(
     item: ShowItem,
+    enabled: Boolean,
     watched: Boolean,
     watchlist: Boolean,
     modifier: Modifier = Modifier,
@@ -163,6 +197,7 @@ private fun ShowListItem(
         .joinToString(", ")
 
     PanelMediaCard(
+        enabled = enabled,
         title = item.show.title,
         titleOriginal = item.show.titleOriginal,
         subtitle = genresText,
@@ -186,6 +221,7 @@ private fun ShowListItem(
 @Composable
 private fun MovieListItem(
     item: MovieItem,
+    enabled: Boolean,
     modifier: Modifier = Modifier,
     mediaIcon: Boolean,
     watched: Boolean,
@@ -198,6 +234,7 @@ private fun MovieListItem(
         .joinToString(", ")
 
     PanelMediaCard(
+        enabled = enabled,
         title = item.movie.title,
         titleOriginal = item.movie.titleOriginal,
         subtitle = genresText,
@@ -218,6 +255,16 @@ private fun MovieListItem(
     )
 }
 
+@Composable
+private fun ContentEmptyView(modifier: Modifier = Modifier) {
+    Text(
+        text = stringResource(R.string.list_placeholder_empty),
+        color = TraktTheme.colors.textSecondary,
+        style = TraktTheme.typography.heading6,
+        modifier = modifier,
+    )
+}
+
 @Preview(
     device = "id:pixel_5",
     showBackground = true,
@@ -230,6 +277,8 @@ private fun AllDiscoverListViewPreview() {
             state = LazyListState(),
             collectionState = UserCollectionState.Default,
             filter = MediaMode.MEDIA,
+            loading = false,
+            loadingMore = false,
             items = listOf(
                 ShowItem(
                     show = PreviewData.show1,

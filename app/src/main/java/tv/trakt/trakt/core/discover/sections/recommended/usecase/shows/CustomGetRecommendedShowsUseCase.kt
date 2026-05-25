@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.recommended.data.local.shows.RecommendedShowsLocalDataSource
@@ -31,28 +32,11 @@ internal class CustomGetRecommendedShowsUseCase(
     override suspend fun getShows(
         limit: Int,
         skipLocal: Boolean,
+        filters: GlobalFilter,
     ): ImmutableList<DiscoverItem.ShowItem> {
-        val config = customThemeUseCase.getConfig()
-
-        val customGenres = when {
-            config.enabled -> config.theme?.filters?.shows?.recommended?.genres
-            else -> null
-        }
-        val customSubgenres = when {
-            config.enabled -> config.theme?.filters?.shows?.recommended?.subgenres
-            else -> null
-        }
-
-        val customYears = when {
-            config.enabled -> config.theme?.filters?.shows?.recommended?.years?.toString()
-            else -> null
-        }
-
         return remoteSource.getRecommended(
             limit = limit,
-            years = customYears,
-            genres = customGenres,
-            subgenres = customSubgenres,
+            filters = filters,
         )
             .asyncMap {
                 DiscoverItem.ShowItem(

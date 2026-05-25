@@ -31,6 +31,7 @@ internal class GetListItemsUseCase(
             extended = "full,cloud9,streaming_ids",
             pagination = Pagination(page, CUSTOM_LIST_PAGE_LIMIT),
             sorting = Sorting.Default,
+            filters = null,
         )
 
         val shows = mutableListOf<Show>()
@@ -67,6 +68,7 @@ internal class GetListItemsUseCase(
             extended = "full,cloud9,streaming_ids",
             pagination = Pagination(page, CUSTOM_LIST_PAGE_LIMIT),
             sorting = Sorting.Default,
+            filters = null,
         )
             .map {
                 val show = Show.fromDto(it.show)
@@ -88,6 +90,7 @@ internal class GetListItemsUseCase(
             extended = "full,cloud9,streaming_ids",
             pagination = Pagination(page, CUSTOM_LIST_PAGE_LIMIT),
             sorting = Sorting.Default,
+            filters = null,
         )
             .map {
                 val movie = Movie.fromDto(it.movie)

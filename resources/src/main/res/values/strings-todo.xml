@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="text_all">All</string>
+  <string name="text_availability_my_favorites">My Favorites</string>
+  <string name="text_availability_streaming_now">Streaming Now</string>
+  <string name="text_availability_all_digital">All Digital Releases</string>
+  <string name="header_availability">Availability</string>
+  <string name="header_decade">Decade</string>
+  <string name="header_filters">Filters</string>
+  <string name="text_this_year">This Year</string>
+  <string name="text_simple">Simple</string>
+  <string name="text_advanced">Advanced</string>
+  <string name="header_certification">Certification</string>
+  <string name="header_region">Region</string>
+  <string name="text_region_north_america">North America</string>
+  <string name="text_region_europe">Europe</string>
+  <string name="text_region_asia">Asia</string>
+  <string name="text_region_middle_east">Middle East</string>
+  <string name="text_region_oceania">Oceania</string>
+  <string name="text_region_latin_america">Latin America</string>
+  <string name="text_region_africa">Africa</string>
+  <string name="text_certification_parental">Parental Guidance</string>
+  <string name="text_certification_teens">Teens</string>
+  <string name="text_certification_mature">Mature</string>
+  <string name="text_certification_unrated">Unrated</string>
+  <string name="text_hide_watched">Hide Watched</string>
+  <string name="text_hide_watchlist">Hide Watchlisted</string>
+  <string name="text_reset_all">Reset All</string>
+  <string name="text_trakt_rating_of">Trakt Rating of %d%% to %d%%</string>
+  <string name="text_released_year_of">Released %d to %d</string>
+  <string name="text_runtime_of">Runtime %d to %d min</string>
+
+  <string name="warning_prompt_filters">Switching to simple filters will reset all your current filters. Are you sure you want to proceed?</string>
+
+</resources>

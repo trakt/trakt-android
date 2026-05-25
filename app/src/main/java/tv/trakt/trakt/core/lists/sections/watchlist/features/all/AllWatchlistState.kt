@@ -6,14 +6,14 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.UserCollectionState
 
 @Immutable
 internal data class AllWatchlistState(
-    val filter: MediaMode? = null,
+    val filter: GlobalFilter? = null,
     val sorting: Sorting = Sorting.RecentlyAdded,
     val items: ImmutableList<WatchlistItem>? = null,
     val collection: UserCollectionState = UserCollectionState.Default,

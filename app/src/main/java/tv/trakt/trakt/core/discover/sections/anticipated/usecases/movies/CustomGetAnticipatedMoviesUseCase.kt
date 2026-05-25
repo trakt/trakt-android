@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.anticipated.data.local.movies.AnticipatedMoviesLocalDataSource
@@ -34,30 +35,12 @@ internal class CustomGetAnticipatedMoviesUseCase(
         limit: Int,
         page: Int,
         skipLocal: Boolean,
+        filters: GlobalFilter,
     ): ImmutableList<DiscoverItem.MovieItem> {
-        val config = customThemeUseCase.getConfig()
-        val filters = config.theme?.filters
-
-        val customGenres = when {
-            config.enabled -> filters?.movies?.anticipated?.genres
-            else -> null
-        }
-        val customSubgenres = when {
-            config.enabled -> filters?.movies?.anticipated?.subgenres
-            else -> null
-        }
-
-        val customYears = when {
-            config.enabled -> filters?.movies?.anticipated?.years?.toString()
-            else -> null
-        }
-
         return remoteSource.getAnticipated(
             page = page,
             limit = limit,
-            genres = customGenres,
-            subgenres = customSubgenres,
-            years = customYears,
+            filters = filters,
         )
             .asyncMap {
                 DiscoverItem.MovieItem(
