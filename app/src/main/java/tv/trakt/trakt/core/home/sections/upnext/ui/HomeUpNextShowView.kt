@@ -66,26 +66,31 @@ internal fun HomeUpNextShowView(
                 Column(
                     verticalArrangement = Arrangement.spacedBy(3.dp),
                 ) {
+                    val isLatestAired = item.progress.isLatestAired
                     when {
-                        item.progress.nextEpisode?.isPremiere() == true -> PremiereChip(
-                            contentTextStyle = TraktTheme.typography.meta.copy(
-                                fontSize = 10.sp,
-                            ),
-                            modifier = Modifier
-                                .shadow(2.dp, RoundedCornerShape(100))
-                                .height(20.dp),
-                        )
-                        item.progress.nextEpisode?.isFinale() == true -> FinaleChip(
-                            contentTextStyle = TraktTheme.typography.meta.copy(
-                                fontSize = 10.sp,
-                            ),
-                            modifier = Modifier
-                                .shadow(
-                                    2.dp,
-                                    androidx.compose.foundation.shape.RoundedCornerShape(100),
-                                )
-                                .height(20.dp),
-                        )
+                        item.progress.nextEpisode?.isPremiere(isLatestAired) == true -> {
+                            PremiereChip(
+                                contentTextStyle = TraktTheme.typography.meta.copy(
+                                    fontSize = 10.sp,
+                                ),
+                                modifier = Modifier
+                                    .shadow(2.dp, RoundedCornerShape(100))
+                                    .height(20.dp),
+                            )
+                        }
+                        item.progress.nextEpisode?.isFinale(isLatestAired) == true -> {
+                            FinaleChip(
+                                contentTextStyle = TraktTheme.typography.meta.copy(
+                                    fontSize = 10.sp,
+                                ),
+                                modifier = Modifier
+                                    .shadow(
+                                        2.dp,
+                                        androidx.compose.foundation.shape.RoundedCornerShape(100),
+                                    )
+                                    .height(20.dp),
+                            )
+                        }
                     }
 
                     EpisodeProgressBar(

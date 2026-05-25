@@ -40,8 +40,8 @@ internal fun AllUpNextShowView(
     onShowClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isPremiere = item.progress.nextEpisode?.isPremiere() == true
-    val isFinale = item.progress.nextEpisode?.isFinale() == true
+    val isPremiere = item.progress.nextEpisode?.isPremiere(item.progress.isLatestAired) == true
+    val isFinale = item.progress.nextEpisode?.isFinale(item.progress.isLatestAired) == true
 
     PanelMediaCard(
         enabled = enabled,

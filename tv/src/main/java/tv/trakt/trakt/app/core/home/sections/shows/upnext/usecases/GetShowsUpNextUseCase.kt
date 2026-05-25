@@ -32,6 +32,8 @@ internal class GetShowsUpNextUseCase(
         )
         return remoteItems
             .asyncMap { item ->
+                val nextEpisode = item.progress.nextEpisode?.let { Episode.fromDto(it) }
+                val lastEpisode = item.progress.lastEpisode?.let { Episode.fromDto(it) }
                 ProgressShow(
                     show = Show.fromDto(item.show),
                     progress = Progress(
@@ -45,12 +47,14 @@ internal class GetShowsUpNextUseCase(
                                 minutesLeft = it.minutesLeft,
                             )
                         },
-                        lastEpisode = item.progress.lastEpisode?.let {
-                            Episode.fromDto(it)
-                        },
-                        nextEpisode = item.progress.nextEpisode?.let {
-                            Episode.fromDto(it)
-                        },
+                        lastEpisode = lastEpisode,
+                        nextEpisode = nextEpisode,
+                        // FIXME: progress.last_episode is the user's furthest watched episode, not the
+                        //  show's latest aired episode, so we can't compare directly. As a proxy, treat
+                        //  the next episode as the latest aired when remaining (aired - completed) is 1
+                        //  or less - i.e. no further aired episode exists beyond the displayed one.
+                        //  Replace once the API surfaces an absolute "latest aired episode" reference.
+                        isLatestAired = (item.progress.aired - item.progress.completed) <= 1,
                     ),
                 )
             }
