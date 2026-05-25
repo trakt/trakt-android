@@ -9,16 +9,16 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
-import tv.trakt.trakt.core.main.model.MediaMode
 import java.time.LocalDate
 
 @Immutable
 internal data class AllActivityState(
     val items: ImmutableMap<LocalDate, ImmutableList<HomeActivityItem>>? = null,
     val itemsRatings: ImmutableMap<String, UserRating>? = null,
-    val itemsFilter: MediaMode? = null,
+    val itemsFilter: GlobalFilter? = null,
     val usersFilter: UsersFilter = UsersFilter(),
     val navigateShow: TraktId? = null,
     val navigateEpisode: Pair<TraktId, Episode>? = null,

@@ -116,7 +116,7 @@ private fun CreateListContent(
 @Preview(
     device = "id:pixel_5",
     showBackground = true,
-    backgroundColor = 0xFF131517,
+    backgroundColor = 0xFF212427,
 )
 @Composable
 private fun Preview() {
@@ -128,7 +128,7 @@ private fun Preview() {
 @Preview(
     device = "id:pixel_5",
     showBackground = true,
-    backgroundColor = 0xFF131517,
+    backgroundColor = 0xFF212427,
 )
 @Composable
 private fun Preview2() {

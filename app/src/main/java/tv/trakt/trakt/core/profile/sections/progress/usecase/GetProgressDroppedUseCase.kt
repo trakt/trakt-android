@@ -37,7 +37,7 @@ internal class GetProgressDroppedUseCase(
             .asyncMap {
                 ShowItem(
                     show = Show.fromDto(it.show),
-                    hiddenAt = it.hiddenAt.toInstant(),
+                    hiddenAt = it.hiddenAt?.toInstant(),
                 )
             }
             .also {

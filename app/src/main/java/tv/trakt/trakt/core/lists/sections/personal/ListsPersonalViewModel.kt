@@ -25,19 +25,20 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ITEMS_SECTION_LIMIT
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
-import tv.trakt.trakt.core.main.helpers.MediaModeManager
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
@@ -54,14 +55,13 @@ internal class ListsPersonalViewModel(
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val collectionStateProvider: CollectionStateProvider,
-    private val modeManager: MediaModeManager,
+    private val filterManager: GlobalFilterManager,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = ListsPersonalState()
-    private val initialMode = modeManager.getMode()
 
     private val userState = MutableStateFlow(initialState.user)
-    private val filterState = MutableStateFlow(initialMode)
+    private val filterState = MutableStateFlow(filterManager.getFilter())
     private val collapseState = MutableStateFlow(isCollapsed())
     private val listState = MutableStateFlow(initialState.list)
     private val itemsState = MutableStateFlow(initialState.items)
@@ -84,7 +84,7 @@ internal class ListsPersonalViewModel(
     }
 
     private fun observeMode() {
-        modeManager.observeMode()
+        filterManager.observeFilter()
             .onEach { value ->
                 filterState.update { value }
                 collapseState.update { isCollapsed() }
@@ -118,7 +118,7 @@ internal class ListsPersonalViewModel(
                 itemsState.update {
                     getListItemsUseCase.getLocalItems(
                         listId = listId,
-                        filter = filterState.value,
+                        filter = filterState.value.mode,
                     )
                 }
             } catch (error: Exception) {
@@ -139,7 +139,7 @@ internal class ListsPersonalViewModel(
 
                 val localItems = getListItemsUseCase.getLocalItems(
                     listId = listId,
-                    filter = filterState.value,
+                    filter = filterState.value.mode,
                 )
 
                 if (localItems.isNotEmpty()) {
@@ -218,7 +218,7 @@ internal class ListsPersonalViewModel(
 
         collapseJob?.cancel()
         collapseJob = viewModelScope.launch {
-            val key = when (filterState.value) {
+            val key = when (filterState.value.mode) {
                 MediaMode.MEDIA -> CollapsingKey.LISTS_MEDIA_PERSONAL
                 MediaMode.SHOWS -> CollapsingKey.LISTS_SHOWS_PERSONAL
                 MediaMode.MOVIES -> CollapsingKey.LISTS_MOVIES_PERSONAL
@@ -231,7 +231,7 @@ internal class ListsPersonalViewModel(
     }
 
     private fun isCollapsed(): Boolean {
-        val key = when (filterState.value) {
+        val key = when (filterState.value.mode) {
             MediaMode.MEDIA -> CollapsingKey.LISTS_MEDIA_PERSONAL
             MediaMode.SHOWS -> CollapsingKey.LISTS_SHOWS_PERSONAL
             MediaMode.MOVIES -> CollapsingKey.LISTS_MOVIES_PERSONAL
@@ -258,7 +258,7 @@ internal class ListsPersonalViewModel(
             list = states[0] as CustomList?,
             user = states[1] as User?,
             items = states[2] as ImmutableList<CustomListItem>?,
-            filter = states[3] as MediaMode?,
+            filter = states[3] as GlobalFilter?,
             collapsed = states[4] as Boolean,
             collection = states[5] as UserCollectionState,
             navigateShow = states[6] as TraktId?,

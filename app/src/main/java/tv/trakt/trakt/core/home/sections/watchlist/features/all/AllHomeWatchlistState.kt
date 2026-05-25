@@ -6,12 +6,12 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
-import tv.trakt.trakt.core.main.model.MediaMode
 
 @Immutable
 internal data class AllHomeWatchlistState(
-    val filter: MediaMode? = null,
+    val filter: GlobalFilter? = null,
     val items: ImmutableList<WatchlistItem>? = null,
     val navigateShow: TraktId? = null,
     val navigateMovie: TraktId? = null,

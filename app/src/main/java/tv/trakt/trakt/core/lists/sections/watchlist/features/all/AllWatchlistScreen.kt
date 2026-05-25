@@ -52,11 +52,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.sorting.SortTypeList
 import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.core.filters.GlobalFiltersSheet
+import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.views.AllWatchlistMovieView
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.views.AllWatchlistShowView
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.sheets.WatchlistMovieSheet
@@ -64,10 +68,10 @@ import tv.trakt.trakt.core.lists.sections.watchlist.features.context.shows.sheet
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.ShowItem
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -93,6 +97,7 @@ internal fun AllWatchlistScreen(
     var contextShowSheet by remember { mutableStateOf<ShowItem?>(null) }
     var dateSheet by remember { mutableStateOf<WatchlistItem?>(null) }
     var sortSheet by remember { mutableStateOf<SortTypeList?>(null) }
+    var filtersSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(state) {
         state.navigateShow?.let {
@@ -138,7 +143,14 @@ internal fun AllWatchlistScreen(
                 dateSheet = it
             }
         },
-        onFilterClick = { viewModel.setFilter(it) },
+        onModeClick = { mode ->
+            state.filter?.let {
+                viewModel.setFilter(it.copy(mode = mode))
+            }
+        },
+        onFiltersClick = {
+            filtersSheet = true
+        },
         onSortTypeClick = {
             sortSheet = state.sorting.type
         },
@@ -220,6 +232,18 @@ internal fun AllWatchlistScreen(
             sortSheet = null
         },
     )
+
+    GlobalFiltersSheet(
+        active = filtersSheet,
+        options = GlobalFiltersOptions(
+            global = false,
+            initial = state.filter,
+        ),
+        onUpdate = viewModel::setFilter,
+        onDismiss = {
+            filtersSheet = false
+        },
+    )
 }
 
 @Composable
@@ -230,7 +254,8 @@ internal fun AllWatchlistContent(
     onCheckClick: (WatchlistItem) -> Unit = {},
     onCheckLongClick: (WatchlistItem) -> Unit = {},
     onLongClick: (WatchlistItem) -> Unit = {},
-    onFilterClick: (MediaMode) -> Unit = {},
+    onModeClick: (MediaMode) -> Unit = {},
+    onFiltersClick: () -> Unit = {},
     onSortTypeClick: () -> Unit = {},
     onSortOrderClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
@@ -276,7 +301,8 @@ internal fun AllWatchlistContent(
             loading = state.loading.isLoading,
             loadingMore = state.loadingMore.isLoading,
             contentPadding = contentPadding,
-            onFilterClick = onFilterClick,
+            onModeClick = onModeClick,
+            onFiltersClick = onFiltersClick,
             onSortTypeClick = onSortTypeClick,
             onSortOrderClick = onSortOrderClick,
             onClick = onClick,
@@ -290,24 +316,47 @@ internal fun AllWatchlistContent(
 }
 
 @Composable
-private fun TitleBar(modifier: Modifier = Modifier) {
+private fun TitleBar(
+    enabled: Boolean,
+    filters: GlobalFilter?,
+    onFiltersClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Row(
         verticalAlignment = CenterVertically,
-        horizontalArrangement = spacedBy(12.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
             .height(TraktTheme.size.titleBarHeight)
             .graphicsLayer {
                 translationX = -2.dp.toPx()
+                translationY = 2.dp.toPx()
             },
     ) {
-        Icon(
-            painter = painterResource(R.drawable.ic_back_arrow),
-            tint = TraktTheme.colors.textPrimary,
-            contentDescription = null,
-        )
-        TraktHeader(
-            title = stringResource(R.string.page_title_watchlist),
-        )
+        Row(
+            horizontalArrangement = spacedBy(12.dp),
+            verticalAlignment = CenterVertically,
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_back_arrow),
+                tint = TraktTheme.colors.textPrimary,
+                contentDescription = null,
+            )
+            TraktHeader(
+                title = stringResource(R.string.page_title_watchlist),
+            )
+        }
+
+        filters?.let {
+            MediaFilterIcon(
+                active = it.isActive,
+                enabled = enabled,
+                onClick = onFiltersClick,
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = 2.dp.toPx()
+                    },
+            )
+        }
     }
 }
 
@@ -316,7 +365,7 @@ private fun ContentList(
     modifier: Modifier = Modifier,
     listState: LazyListState,
     listItems: ImmutableList<WatchlistItem>,
-    listFilter: MediaMode?,
+    listFilter: GlobalFilter?,
     listSorting: Sorting?,
     collection: UserCollectionState,
     loading: Boolean,
@@ -326,7 +375,8 @@ private fun ContentList(
     onCheckClick: (WatchlistItem) -> Unit,
     onCheckLongClick: (WatchlistItem) -> Unit,
     onLongClick: (WatchlistItem) -> Unit,
-    onFilterClick: (MediaMode) -> Unit,
+    onModeClick: (MediaMode) -> Unit,
+    onFiltersClick: () -> Unit,
     onSortTypeClick: () -> Unit,
     onSortOrderClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -353,7 +403,11 @@ private fun ContentList(
     ) {
         item {
             TitleBar(
+                enabled = !loading,
+                filters = listFilter,
+                onFiltersClick = onFiltersClick,
                 modifier = Modifier
+                    .fillMaxWidth()
                     .onClick { onBackClick() },
             )
         }
@@ -361,9 +415,9 @@ private fun ContentList(
         if (listFilter != null && listSorting != null) {
             item {
                 ContentFilters(
-                    watchlistFilter = listFilter,
-                    watchlistSort = listSorting,
-                    onFilterClick = onFilterClick,
+                    filters = listFilter,
+                    sorting = listSorting,
+                    onModeClick = onModeClick,
                     onSortTypeClick = onSortTypeClick,
                     onSortOrderClick = onSortOrderClick,
                 )
@@ -431,7 +485,7 @@ private fun ContentList(
             }
         } else if (listItems.isEmpty()) {
             item {
-                ContentEmpty(filter = listFilter)
+                ContentEmpty(mode = listFilter?.mode)
             }
         }
     }
@@ -439,29 +493,32 @@ private fun ContentList(
 
 @Composable
 private fun ContentFilters(
-    watchlistFilter: MediaMode,
-    watchlistSort: Sorting,
+    filters: GlobalFilter,
+    sorting: Sorting,
     onSortTypeClick: () -> Unit,
     onSortOrderClick: () -> Unit,
-    onFilterClick: (MediaMode) -> Unit,
+    onModeClick: (MediaMode) -> Unit,
 ) {
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 19.dp),
+            .padding(
+                top = 2.dp,
+                bottom = 19.dp,
+            ),
     ) {
         MediaModeFilters(
-            selected = watchlistFilter,
-            onClick = onFilterClick,
+            selected = filters.mode,
+            onClick = onModeClick,
             height = 32.dp,
             unselectedTextVisible = false,
         )
 
         SortingSplitButton(
-            text = stringResource(watchlistSort.type.displayStringRes),
-            order = watchlistSort.order,
+            text = stringResource(sorting.type.displayStringRes),
+            order = sorting.order,
             height = 32.dp,
             onLeadingClick = onSortTypeClick,
             onTrailingClick = onSortOrderClick,
@@ -470,10 +527,10 @@ private fun ContentFilters(
 }
 
 @Composable
-private fun ContentEmpty(filter: MediaMode?) {
+private fun ContentEmpty(mode: MediaMode?) {
     Text(
         text = stringResource(
-            when (filter) {
+            when (mode) {
                 MediaMode.MOVIES -> R.string.list_placeholder_personal_list_empty_movies
                 MediaMode.SHOWS -> R.string.list_placeholder_personal_list_empty_shows
                 else -> R.string.list_placeholder_empty

@@ -27,6 +27,10 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.MediaMode.MEDIA
+import tv.trakt.trakt.common.model.MediaMode.MOVIES
+import tv.trakt.trakt.common.model.MediaMode.SHOWS
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -37,10 +41,6 @@ import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.CONTEXT_SHEET
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.RATE_PROMPT
 import tv.trakt.trakt.core.favorites.model.FavoriteItem
-import tv.trakt.trakt.core.main.model.MediaMode
-import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
-import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
-import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserFavoritesUseCase
 
 @OptIn(FlowPreview::class)

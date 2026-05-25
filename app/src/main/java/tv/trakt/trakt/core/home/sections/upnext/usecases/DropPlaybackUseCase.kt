@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.home.sections.upnext.usecases
 import timber.log.Timber
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.api.scrobble.ScrobbleExtrasApi
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import tv.trakt.trakt.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
@@ -17,6 +18,7 @@ internal class DropPlaybackUseCase(
             val items = remoteMovieSyncSource.getPlaybackProgress(
                 page = 1,
                 limit = 100,
+                filters = GlobalFilter.Default,
             )
             val playbackId = items.firstOrNull { it.movie.ids.trakt == movieId.value }?.id
             playbackId?.let {

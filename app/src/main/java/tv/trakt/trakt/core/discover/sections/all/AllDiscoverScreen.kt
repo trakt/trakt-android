@@ -4,12 +4,13 @@ package tv.trakt.trakt.core.discover.sections.all
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
@@ -34,19 +35,23 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.model.DiscoverItem.MovieItem
 import tv.trakt.trakt.core.discover.model.DiscoverItem.ShowItem
 import tv.trakt.trakt.core.discover.model.DiscoverSection
 import tv.trakt.trakt.core.discover.ui.AllDiscoverListView
-import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.filters.GlobalFiltersSheet
+import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -62,6 +67,8 @@ internal fun AllDiscoverScreen(
 
     var contextShowSheet by remember { mutableStateOf<Show?>(null) }
     var contextMovieSheet by remember { mutableStateOf<Movie?>(null) }
+
+    var filtersSheet by remember { mutableStateOf(false) }
 
     AllDiscoverScreenContent(
         state = state,
@@ -81,7 +88,14 @@ internal fun AllDiscoverScreen(
                 is MovieItem -> contextMovieSheet = it.movie
             }
         },
-        onFilterClick = viewModel::setFilter,
+        onModeClick = { mode ->
+            state.filter?.let {
+                viewModel.setFilter(it.copy(mode = mode))
+            }
+        },
+        onFiltersClick = {
+            filtersSheet = true
+        },
         onBackClick = onNavigateBack,
     )
 
@@ -94,6 +108,18 @@ internal fun AllDiscoverScreen(
         movie = contextMovieSheet,
         onDismiss = { contextMovieSheet = null },
     )
+
+    GlobalFiltersSheet(
+        active = filtersSheet,
+        options = GlobalFiltersOptions(
+            global = false,
+            initial = state.filter,
+        ),
+        onUpdate = viewModel::setFilter,
+        onDismiss = {
+            filtersSheet = false
+        },
+    )
 }
 
 @Composable
@@ -103,7 +129,8 @@ private fun AllDiscoverScreenContent(
     onLoadMoreData: () -> Unit = {},
     onItemClick: (DiscoverItem) -> Unit = {},
     onItemLongClick: (DiscoverItem) -> Unit = {},
-    onFilterClick: (MediaMode) -> Unit = {},
+    onModeClick: (MediaMode) -> Unit = {},
+    onFiltersClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val listState = rememberLazyListState(
@@ -130,34 +157,61 @@ private fun AllDiscoverScreenContent(
         AllDiscoverListView(
             state = listState,
             collectionState = state.collection,
-            filter = state.filter ?: MediaMode.MEDIA,
+            filter = state.filter?.mode ?: MediaMode.MEDIA,
             items = state.items ?: EmptyImmutableList,
-            loading = state.loadingMore.isLoading || state.loading.isLoading,
+            loading = state.loading.isLoading,
+            loadingMore = state.loadingMore.isLoading,
             title = {
                 Column {
                     TitleBar(
-                        mode = state.mode,
+                        mode = state.filter?.mode,
                         type = state.type,
                         modifier = Modifier
                             .padding(bottom = 2.dp)
                             .onClick { onBackClick() },
                     )
 
-                    MediaModeFilters(
-                        selected = state.filter,
-                        height = 32.dp,
-                        paddingVertical = PaddingValues(
-                            top = 0.dp,
-                            bottom = 20.dp,
-                        ),
-                        onClick = onFilterClick,
-                    )
+                    if (state.filter != null) {
+                        ContentFilters(
+                            filters = state.filter,
+                            enabled = !state.loading.isLoading,
+                            onFilterClick = onModeClick,
+                            onFiltersClick = onFiltersClick,
+                        )
+                    }
                 }
             },
             onItemClick = onItemClick,
             onItemLongClick = onItemLongClick,
             onEndOfList = { onLoadMoreData() },
             modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
+@Composable
+private fun ContentFilters(
+    filters: GlobalFilter,
+    enabled: Boolean,
+    onFilterClick: (MediaMode) -> Unit,
+    onFiltersClick: () -> Unit,
+) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 19.dp),
+    ) {
+        MediaModeFilters(
+            selected = filters.mode,
+            height = 32.dp,
+            onClick = onFilterClick,
+        )
+        MediaFilterIcon(
+            active = filters.isActive,
+            enabled = enabled,
+            onClick = onFiltersClick,
         )
     }
 }

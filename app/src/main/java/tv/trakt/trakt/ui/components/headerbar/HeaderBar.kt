@@ -28,14 +28,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import tv.trakt.trakt.MainActivity
+import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.auth.ConfigAuth
-import tv.trakt.trakt.core.main.helpers.MediaModeManager
-import tv.trakt.trakt.core.main.model.MediaMode
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.MediaModeButtons
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.switch.TraktThemeSwitch
@@ -48,37 +51,43 @@ internal fun HeaderBar(
     modifier: Modifier = Modifier,
     containerColor: Color = TraktTheme.colors.navigationHeaderContainer,
     containerAlpha: Float = 0.98F,
+    showFilters: Boolean = false,
     showLogin: Boolean = false,
     showVip: Boolean = false,
     userLoading: Boolean = false,
     onVipClick: () -> Unit = {},
+    onFilterClick: () -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
     val localActivity = LocalActivity.current
-
-    val mediaMode: MediaModeManager = koinInject()
-    val currentMediaMode = remember { mediaMode.getMode() }
 
     val customThemeConfig = remember {
         (localActivity as? MainActivity)?.customThemeConfig
     }
 
+    val filterManager: GlobalFilterManager = koinInject()
+    val currentFilter = filterManager
+        .observeFilter()
+        .collectAsStateWithLifecycle(filterManager.getFilter())
+
     HeaderBar(
         modifier = modifier,
         containerColor = containerColor,
         containerAlpha = containerAlpha,
+        filter = currentFilter.value,
         showLogin = showLogin,
         showVip = showVip,
+        showFilters = showFilters,
         userLoading = userLoading,
-        mediaMode = currentMediaMode,
         customTheme = customThemeConfig,
         onVipClick = onVipClick,
+        onFilterClick = onFilterClick,
         onCustomThemeChange = {
             (localActivity as? MainActivity)?.toggleCustomTheme(it)
         },
         onMediaModeSelect = { mode ->
             scope.launch {
-                mediaMode.setMode(mode)
+                filterManager.setFilter(currentFilter.value.copy(mode = mode))
             }
         },
     )
@@ -89,14 +98,16 @@ private fun HeaderBar(
     modifier: Modifier = Modifier,
     containerColor: Color = TraktTheme.colors.navigationHeaderContainer,
     containerAlpha: Float = 0.98F,
+    filter: GlobalFilter,
     showLogin: Boolean = false,
     showVip: Boolean = false,
+    showFilters: Boolean = false,
     userLoading: Boolean = false,
     customTheme: CustomThemeUseCase.CustomThemeConfig? = null,
-    mediaMode: MediaMode,
     onMediaModeSelect: (MediaMode) -> Unit = {},
     onCustomThemeChange: (Boolean) -> Unit = {},
     onVipClick: () -> Unit = {},
+    onFilterClick: () -> Unit = {},
 ) {
     val uriHandler = LocalUriHandler.current
 
@@ -136,7 +147,7 @@ private fun HeaderBar(
         ) {
             if (!showLogin) {
                 MediaModeButtons(
-                    mode = mediaMode,
+                    mode = filter.mode,
                     height = contentHeight,
                     onModeSelect = onMediaModeSelect,
                 )
@@ -166,6 +177,13 @@ private fun HeaderBar(
                     onClick = onVipClick,
                 )
             }
+
+            if (showFilters) {
+                MediaFilterIcon(
+                    active = filter.isActive,
+                    onClick = onFilterClick,
+                )
+            }
         }
     }
 }
@@ -175,7 +193,7 @@ private fun HeaderBar(
 private fun Preview() {
     TraktTheme {
         HeaderBar(
-            mediaMode = MediaMode.MEDIA,
+            filter = GlobalFilter.Default,
             showVip = true,
         )
     }
@@ -187,7 +205,7 @@ private fun Preview2() {
     TraktTheme {
         HeaderBar(
             showLogin = true,
-            mediaMode = MediaMode.SHOWS,
+            filter = GlobalFilter.Default,
         )
     }
 }
@@ -197,7 +215,7 @@ private fun Preview2() {
 private fun Preview3() {
     TraktTheme {
         HeaderBar(
-            mediaMode = MediaMode.MEDIA,
+            filter = GlobalFilter.Default.copy(mode = MediaMode.SHOWS),
             customTheme = CustomThemeUseCase.CustomThemeConfig(
                 theme = CustomTheme(
                     id = "christmas25",
@@ -210,6 +228,20 @@ private fun Preview3() {
                 visible = true,
                 overlayVisible = false,
             ),
+        )
+    }
+}
+
+@Preview(widthDp = 400)
+@Composable
+private fun Preview4() {
+    TraktTheme {
+        HeaderBar(
+            filter = GlobalFilter.Default.copy(
+                hideWatched = true,
+            ),
+            showVip = true,
+            showFilters = true,
         )
     }
 }

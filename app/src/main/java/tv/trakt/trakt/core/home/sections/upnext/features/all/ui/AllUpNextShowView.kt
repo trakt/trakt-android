@@ -32,6 +32,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun AllUpNextShowView(
     item: UpNextShow,
+    enabled: Boolean,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
     onCheckClick: () -> Unit,
@@ -43,6 +44,7 @@ internal fun AllUpNextShowView(
     val isFinale = item.progress.nextEpisode?.isFinale(item.progress.isLatestAired) == true
 
     PanelMediaCard(
+        enabled = enabled,
         title = item.show.title,
         titleOriginal = when {
             isPremiere || isFinale -> null

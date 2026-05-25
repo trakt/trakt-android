@@ -11,6 +11,7 @@ import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 @Composable
 internal fun AllHomeWatchlistEpisodeView(
     item: WatchlistItem.ShowItem,
+    enabled: Boolean,
     modifier: Modifier = Modifier,
     showCheck: Boolean = true,
     onClick: () -> Unit,
@@ -24,9 +25,9 @@ internal fun AllHomeWatchlistEpisodeView(
 
     PanelMediaCard(
         modifier = modifier,
+        enabled = enabled,
         title = item.show.title,
         titleOriginal = item.show.titleOriginal,
-//        subtitle = stringResource(R.string.episode_footer_season_episode, 1, 1),
         subtitle = genresText,
         contentImageUrl = item.show.images?.getPosterUrl(),
         containerImageUrl = item.images?.getFanartUrl(THUMB),

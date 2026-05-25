@@ -34,7 +34,6 @@ import tv.trakt.trakt.core.discover.sections.recommended.usecase.shows.DefaultGe
 import tv.trakt.trakt.core.discover.sections.trending.data.local.shows.TrendingShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.trending.data.local.shows.TrendingShowsStorage
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingShowsUseCase
-import tv.trakt.trakt.core.discover.sections.trending.usecases.shows.CustomGetTrendingShowsUseCase
 import tv.trakt.trakt.core.discover.sections.trending.usecases.shows.DefaultGetTrendingShowsUseCase
 import tv.trakt.trakt.core.episodes.data.remote.EpisodesApiClient
 import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
@@ -101,16 +100,16 @@ internal val showsModule = module {
         )
     }
 
-    factory<GetTrendingShowsUseCase>(
-        qualifier = named("customTrendingShowsUseCase"),
-    ) {
-        CustomGetTrendingShowsUseCase(
-            remoteSource = get(),
-            localTrendingSource = get(),
-            localShowSource = get(),
-            customThemeUseCase = get(),
-        )
-    }
+//    factory<GetTrendingShowsUseCase>(
+//        qualifier = named("customTrendingShowsUseCase"),
+//    ) {
+//        CustomGetTrendingShowsUseCase(
+//            remoteSource = get(),
+//            localTrendingSource = get(),
+//            localShowSource = get(),
+//            customThemeUseCase = get(),
+//        )
+//    }
 
     factory<GetPopularShowsUseCase>(
         qualifier = named("defaultPopularShowsUseCase"),

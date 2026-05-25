@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package tv.trakt.trakt.core.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -16,11 +18,14 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalUriHandler
@@ -32,6 +37,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.auth.ConfigAuth
+import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.home.sections.activity.features.history.HomeHistoryView
 import tv.trakt.trakt.core.home.sections.activity.features.social.HomeSocialView
 import tv.trakt.trakt.core.home.sections.upcoming.HomeUpcomingView
@@ -63,6 +69,8 @@ internal fun HomeScreen(
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    var filtersSheet by remember { mutableStateOf(false) }
+
     HomeScreenContent(
         state = state,
         userLoading = userLoading,
@@ -89,6 +97,16 @@ internal fun HomeScreen(
         onMoreSocialClick = onNavigateToAllSocial,
         onCalendarClick = onNavigateToCalendar,
         onVipClick = onNavigateToVip,
+        onFiltersClick = {
+            filtersSheet = true
+        },
+    )
+
+    GlobalFiltersSheet(
+        active = filtersSheet,
+        onDismiss = {
+            filtersSheet = false
+        },
     )
 }
 
@@ -109,6 +127,7 @@ private fun HomeScreenContent(
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
     onVipClick: () -> Unit = {},
     onCalendarClick: () -> Unit = {},
+    onFiltersClick: () -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
     val lazyListState = rememberLazyListState(
@@ -242,6 +261,7 @@ private fun HomeScreenContent(
             userLoading = userLoading,
             isScrolledToTop = isScrolledToTop,
             onVipClick = onVipClick,
+            onFiltersClick = onFiltersClick,
         )
     }
 }
@@ -253,6 +273,7 @@ private fun HomeScreenHeader(
     userLoading: Boolean,
     isScrolledToTop: Boolean,
     onVipClick: () -> Unit,
+    onFiltersClick: () -> Unit,
 ) {
     val userState = remember(state.user) {
         val loadingDone = state.user.loading == Done
@@ -264,8 +285,10 @@ private fun HomeScreenHeader(
         containerAlpha = if (headerState.scrolled && !isScrolledToTop) 0.98F else 0F,
         showLogin = userState.first && !userState.second,
         showVip = userState.second && state.user.user?.isVip == false,
+        showFilters = true,
         userLoading = userLoading,
         onVipClick = onVipClick,
+        onFilterClick = onFiltersClick,
         modifier = Modifier.offset {
             IntOffset(0, headerState.connection.barOffset.fastRoundToInt())
         },

@@ -12,6 +12,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.model.Progress
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextItem
@@ -38,18 +39,22 @@ internal class GetUpNextUseCase(
     suspend fun getUpNext(
         page: Int,
         limit: Int,
+        filters: GlobalFilter?,
+        skipLocal: Boolean = false,
     ): ImmutableList<UpNextItem> {
-        val shows = getUpNextShows(page, limit)
-        val movies = getMoviesUpNext(page, limit)
+        val shows = getRemoteShows(page, limit, filters)
+        val movies = getRemoteMovies(page, limit, filters)
 
         return (shows + movies)
             .distinctBy { it.key }
             .sortedByDescending { it.sortKey }
             .toImmutableList()
             .also {
-                when (page) {
-                    1 -> localDataSource.setItems(items = it)
-                    else -> localDataSource.addItems(items = it)
+                if (!skipLocal) {
+                    when (page) {
+                        1 -> localDataSource.setItems(items = it)
+                        else -> localDataSource.addItems(items = it)
+                    }
                 }
 
                 val shows = it.filterIsInstance<UpNextShow>().asyncMap { item -> item.show }
@@ -62,9 +67,10 @@ internal class GetUpNextUseCase(
             }
     }
 
-    private suspend fun getUpNextShows(
+    private suspend fun getRemoteShows(
         page: Int,
         limit: Int,
+        filters: GlobalFilter?,
     ): List<UpNextShow> {
         val remoteItems = remoteShowsSyncSource.getUpNext(
             limit = limit,
@@ -72,6 +78,7 @@ internal class GetUpNextUseCase(
             intent = "continue",
             sortHow = null,
             sortBy = null,
+            filters = filters,
         )
 
         return remoteItems
@@ -104,13 +111,15 @@ internal class GetUpNextUseCase(
             }
     }
 
-    private suspend fun getMoviesUpNext(
+    private suspend fun getRemoteMovies(
         page: Int,
         limit: Int,
+        filters: GlobalFilter?,
     ): List<UpNextMovie> {
         val remoteItems = remoteMoviesSyncSource.getPlaybackProgress(
             limit = limit,
             page = page,
+            filters = filters,
         )
 
         return remoteItems

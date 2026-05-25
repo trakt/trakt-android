@@ -33,15 +33,16 @@ import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
-import tv.trakt.trakt.core.main.helpers.MediaModeManager
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.CALENDAR
@@ -54,7 +55,7 @@ import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 @OptIn(FlowPreview::class)
 internal class HomeUpcomingViewModel(
     private val appContext: Context,
-    private val modeManager: MediaModeManager,
+    private val filterManager: GlobalFilterManager,
     private val getUpcomingUseCase: GetUpcomingUseCase,
     private val homeUpNextSource: HomeUpNextLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
@@ -66,7 +67,7 @@ internal class HomeUpcomingViewModel(
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = HomeUpcomingState()
-    private val initialMode = modeManager.getMode()
+    private val initialMode = filterManager.getFilter()
 
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
@@ -84,13 +85,14 @@ internal class HomeUpcomingViewModel(
 
     init {
         loadData()
+
         observeUser()
         observeUpdates()
-        observeMode()
+        observeFilter()
     }
 
-    private fun observeMode() {
-        modeManager.observeMode()
+    private fun observeFilter() {
+        filterManager.observeFilter()
             .distinctUntilChanged()
             .onEach { value ->
                 filterState.update { value }
@@ -225,7 +227,7 @@ internal class HomeUpcomingViewModel(
 
         collapseJob?.cancel()
         collapseJob = viewModelScope.launch {
-            val key = when (filterState.value) {
+            val key = when (filterState.value.mode) {
                 MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_UPCOMING
                 MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_UPCOMING
                 MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_UPCOMING
@@ -239,7 +241,7 @@ internal class HomeUpcomingViewModel(
 
     private fun isCollapsed(): Boolean {
         return collapsingManager.isCollapsed(
-            key = when (filterState.value) {
+            key = when (filterState.value.mode) {
                 MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_UPCOMING
                 MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_UPCOMING
                 MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_UPCOMING
@@ -268,7 +270,7 @@ internal class HomeUpcomingViewModel(
             loading = state[0] as LoadingState,
             user = state[1] as User?,
             items = state[2] as ImmutableList<HomeUpcomingItem>?,
-            filter = state[3] as MediaMode?,
+            filter = state[3] as GlobalFilter?,
             collapsed = state[4] as Boolean,
             navigateShow = state[5] as TraktId?,
             navigateEpisode = state[6] as Pair<TraktId, Episode>?,

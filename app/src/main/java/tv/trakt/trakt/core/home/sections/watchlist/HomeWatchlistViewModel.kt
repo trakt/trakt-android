@@ -40,14 +40,17 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeConfig.HOME_WATCHLIST_LIMIT
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeMoviesWatchlistUseCase
@@ -55,8 +58,6 @@ import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeShowsWatchlis
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.ShowItem
-import tv.trakt.trakt.core.main.helpers.MediaModeManager
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.user.data.local.watchlist.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
@@ -79,7 +80,7 @@ internal class HomeWatchlistViewModel(
     private val userWatchlistMinSource: UserWatchlistMinimalLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
-    private val modeManager: MediaModeManager,
+    private val filterManager: GlobalFilterManager,
     private val checkInManager: CheckInManager,
     private val checkInUpdates: CheckInUpdates,
     private val watchlistUpdates: WatchlistUpdates,
@@ -89,10 +90,9 @@ internal class HomeWatchlistViewModel(
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = HomeWatchlistState()
-    private val initialMode = modeManager.getMode()
 
     private val itemsState = MutableStateFlow(initialState.items)
-    private val filterState = MutableStateFlow(initialMode)
+    private val filterState = MutableStateFlow(filterManager.getFilter())
     private val collapseState = MutableStateFlow(isCollapsed())
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
@@ -108,7 +108,7 @@ internal class HomeWatchlistViewModel(
     init {
         loadData()
 
-        observeMode()
+        observeFilter()
         observeUser()
         observeData()
     }
@@ -127,13 +127,13 @@ internal class HomeWatchlistViewModel(
         }
     }
 
-    private fun observeMode() {
-        modeManager.observeMode()
+    private fun observeFilter() {
+        filterManager.observeFilter()
             .distinctUntilChanged()
             .onEach { value ->
                 filterState.update { value }
                 collapseState.update { isCollapsed() }
-                loadData(localOnly = true)
+                loadData()
             }
             .launchIn(viewModelScope)
     }
@@ -177,7 +177,7 @@ internal class HomeWatchlistViewModel(
                         itemsState.update {
                             (localShows + localMovies)
                                 .filter {
-                                    when (filterState.value) {
+                                    when (filterState.value.mode) {
                                         MediaMode.SHOWS -> it is ShowItem
                                         MediaMode.MOVIES -> it is MovieItem
                                         else -> true
@@ -201,14 +201,14 @@ internal class HomeWatchlistViewModel(
                 }
 
                 coroutineScope {
-                    val showsAsync = async { getShowsUseCase.getWatchlist(HOME_WATCHLIST_LIMIT) }
-                    val moviesAsync = async { getMoviesUseCase.getWatchlist(HOME_WATCHLIST_LIMIT) }
+                    val showsAsync = async { getShowsUseCase.getWatchlist(HOME_WATCHLIST_LIMIT, filterState.value) }
+                    val moviesAsync = async { getMoviesUseCase.getWatchlist(HOME_WATCHLIST_LIMIT, filterState.value) }
 
                     itemsState.update {
                         awaitAll(showsAsync, moviesAsync)
                             .flatten()
                             .filter {
-                                when (filterState.value) {
+                                when (filterState.value.mode) {
                                     MediaMode.SHOWS -> it is ShowItem
                                     MediaMode.MOVIES -> it is MovieItem
                                     else -> true
@@ -499,7 +499,7 @@ internal class HomeWatchlistViewModel(
 
         collapseJob?.cancel()
         collapseJob = viewModelScope.launch {
-            val key = when (filterState.value) {
+            val key = when (filterState.value.mode) {
                 MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_START_WATCHING
                 MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_START_WATCHING
                 MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_START_WATCHING
@@ -513,7 +513,7 @@ internal class HomeWatchlistViewModel(
 
     private fun isCollapsed(): Boolean {
         return collapsingManager.isCollapsed(
-            key = when (filterState.value) {
+            key = when (filterState.value.mode) {
                 MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_START_WATCHING
                 MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_START_WATCHING
                 MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_START_WATCHING
@@ -590,7 +590,7 @@ internal class HomeWatchlistViewModel(
     ) { state ->
         HomeWatchlistState(
             items = state[0] as ImmutableList<WatchlistItem>?,
-            filter = state[1] as MediaMode,
+            filter = state[1] as GlobalFilter,
             collapsed = state[2] as Boolean,
             loading = state[3] as LoadingState,
             info = state[4] as StringResource?,

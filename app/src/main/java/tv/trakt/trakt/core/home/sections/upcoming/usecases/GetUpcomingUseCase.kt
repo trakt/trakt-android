@@ -11,16 +11,16 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode.MEDIA
+import tv.trakt.trakt.common.model.MediaMode.MOVIES
+import tv.trakt.trakt.common.model.MediaMode.SHOWS
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
 import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
-import tv.trakt.trakt.core.main.model.MediaMode
-import tv.trakt.trakt.core.main.model.MediaMode.MEDIA
-import tv.trakt.trakt.core.main.model.MediaMode.MOVIES
-import tv.trakt.trakt.core.main.model.MediaMode.SHOWS
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit.DAYS
@@ -35,10 +35,10 @@ internal class GetUpcomingUseCase(
     private val remoteUserSource: UserCalendarRemoteDataSource,
     private val localDataSource: HomeUpcomingLocalDataSource,
 ) {
-    suspend fun getLocalUpcoming(filter: MediaMode): ImmutableList<HomeUpcomingItem> {
+    suspend fun getLocalUpcoming(filter: GlobalFilter): ImmutableList<HomeUpcomingItem> {
         return localDataSource.getItems()
             .filter {
-                when (filter) {
+                when (filter.mode) {
                     MEDIA -> true
                     SHOWS -> it is HomeUpcomingItem.EpisodeItem
                     MOVIES -> it is HomeUpcomingItem.MovieItem
@@ -48,15 +48,13 @@ internal class GetUpcomingUseCase(
             .toImmutableList()
     }
 
-    suspend fun getUpcoming(filter: MediaMode): ImmutableList<HomeUpcomingItem> {
+    suspend fun getUpcoming(filter: GlobalFilter): ImmutableList<HomeUpcomingItem> {
         return coroutineScope {
-            val showsAsync = async { getShows() }
-            val moviesAsync = async { getMovies() }
+            val showsAsync = async { getShows(filter) }
+            val moviesAsync = async { getMovies(filter) }
+            val items = showsAsync.await() + moviesAsync.await()
 
-            return@coroutineScope (
-                showsAsync.await() +
-                    moviesAsync.await()
-            )
+            return@coroutineScope items
                 .sortedBy { it.releasedAt }
                 .also {
                     localDataSource.setItems(
@@ -64,7 +62,7 @@ internal class GetUpcomingUseCase(
                     )
                 }
                 .filter {
-                    when (filter) {
+                    when (filter.mode) {
                         MEDIA -> true
                         SHOWS -> it is HomeUpcomingItem.EpisodeItem
                         MOVIES -> it is HomeUpcomingItem.MovieItem
@@ -74,10 +72,11 @@ internal class GetUpcomingUseCase(
         }
     }
 
-    private suspend fun getShows(): List<HomeUpcomingItem.EpisodeItem> {
+    private suspend fun getShows(filter: GlobalFilter): List<HomeUpcomingItem.EpisodeItem> {
         val remoteShows = remoteUserSource.getShowsCalendar(
             startDate = nowLocalDay().minusDays(DAYS_OFFSET),
             days = DAYS_RANGE,
+            filters = filter,
         )
 
         val fullSeasonItems = remoteShows
@@ -127,10 +126,11 @@ internal class GetUpcomingUseCase(
             .filterNotNull()
     }
 
-    private suspend fun getMovies(): List<HomeUpcomingItem.MovieItem> {
+    private suspend fun getMovies(filter: GlobalFilter): List<HomeUpcomingItem.MovieItem> {
         val remoteMovies = remoteUserSource.getMoviesCalendar(
             startDate = nowLocalDay().minusDays(DAYS_OFFSET),
             days = DAYS_RANGE,
+            filters = filter,
         )
 
         val today = nowLocalDay()

@@ -1,6 +1,7 @@
 package tv.trakt.trakt.common.core.user.data.remote.personallists
 
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.ListDto
@@ -20,6 +21,7 @@ interface UserPersonalListsRemoteDataSource {
         page: Int = 1,
         extended: String,
         sorting: Sorting,
+        filters: GlobalFilter? = null,
     ): List<ListItemDto>
 
     suspend fun getPersonalListShowItems(
@@ -28,6 +30,7 @@ interface UserPersonalListsRemoteDataSource {
         page: Int = 1,
         extended: String,
         sorting: Sorting,
+        filters: GlobalFilter? = null,
     ): List<ListShowItemDto>
 
     suspend fun getPersonalListMovieItems(
@@ -36,6 +39,7 @@ interface UserPersonalListsRemoteDataSource {
         page: Int = 1,
         extended: String,
         sorting: Sorting,
+        filters: GlobalFilter? = null,
     ): List<ListMovieItemDto>
 
     suspend fun getMovieLists(movieId: TraktId): Set<TraktId>

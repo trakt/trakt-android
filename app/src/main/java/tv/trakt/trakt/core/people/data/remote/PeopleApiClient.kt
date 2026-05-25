@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.people.data.remote
 
 import org.openapitools.client.apis.PeopleApi
+import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.PersonDto
 import tv.trakt.trakt.common.networking.PersonMoviesDto
@@ -20,19 +21,33 @@ internal class PeopleApiClient(
     }
 
     override suspend fun getPersonShowsCredits(personId: TraktId): PersonShowsDto {
-        val response = peopleApi.getPeopleShows(
-            id = personId.value.toString(),
-            extended = "full,cloud9,colors,streaming_ids",
-        )
-        return response.body()
+        return try {
+            peopleApi.getPeopleShows(
+                id = personId.value.toString(),
+                extended = "full,cloud9,colors,streaming_ids",
+            ).body()
+        } catch (e: Exception) {
+            if (e.getHttpCode() == 204) {
+                // The API returns a 204 No Content status code when there are no show credits for the person.
+                return PersonShowsDto()
+            }
+            PersonShowsDto()
+        }
     }
 
     override suspend fun getPersonMoviesCredits(personId: TraktId): PersonMoviesDto {
-        val response = peopleApi.getPeopleMovies(
-            id = personId.value.toString(),
-            extended = "full,cloud9,colors,streaming_ids",
-        )
-        return response.body()
+        return try {
+            peopleApi.getPeopleMovies(
+                id = personId.value.toString(),
+                extended = "full,cloud9,colors,streaming_ids",
+            ).body()
+        } catch (e: Exception) {
+            if (e.getHttpCode() == 204) {
+                // The API returns a 204 No Content status code when there are no movie credits for the person.
+                return PersonMoviesDto()
+            }
+            PersonMoviesDto()
+        }
     }
 
     override suspend fun getBirthdayPeople(): List<PersonDto> {

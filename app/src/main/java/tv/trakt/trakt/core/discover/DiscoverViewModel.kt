@@ -15,37 +15,25 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.core.discover.DiscoverState.UserState
-import tv.trakt.trakt.core.main.helpers.MediaModeManager
 import tv.trakt.trakt.core.user.CollectionStateProvider
 
 @OptIn(FlowPreview::class)
 internal class DiscoverViewModel(
-    private val modeManager: MediaModeManager,
     private val sessionManager: SessionManager,
     private val collectionStateProvider: CollectionStateProvider,
     analytics: Analytics,
 ) : ViewModel() {
     private val initialState = DiscoverState()
 
-    private val modeState = MutableStateFlow(modeManager.getMode())
     private val userState = MutableStateFlow(initialState.user)
 
     init {
         observeUser()
-        observeMode()
         observeData()
 
         analytics.logScreenView(
             screenName = "discover",
         )
-    }
-
-    private fun observeMode() {
-        modeManager.observeMode()
-            .onEach { value ->
-                modeState.update { value }
-            }
-            .launchIn(viewModelScope)
     }
 
     private fun observeUser() {

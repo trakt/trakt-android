@@ -5,12 +5,12 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
-import tv.trakt.trakt.core.main.model.MediaMode
 
 @Immutable
 internal data class HomeWatchlistState(
-    val filter: MediaMode? = null,
+    val filter: GlobalFilter? = null,
     val items: ImmutableList<WatchlistItem>? = null,
     val collapsed: Boolean? = null,
     val navigateShow: TraktId? = null,

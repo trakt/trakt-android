@@ -39,6 +39,7 @@ import tv.trakt.trakt.core.comments.di.commentsDataModule
 import tv.trakt.trakt.core.comments.di.commentsModule
 import tv.trakt.trakt.core.discover.di.discoverModule
 import tv.trakt.trakt.core.favorites.di.favoritesDataModule
+import tv.trakt.trakt.core.filters.di.filtersModule
 import tv.trakt.trakt.core.home.di.homeDataModule
 import tv.trakt.trakt.core.home.di.homeModule
 import tv.trakt.trakt.core.lists.di.listsDataModule
@@ -135,6 +136,7 @@ internal class TraktApplication : Application() {
                 networkingApiModule,
                 mainModule,
                 authModule,
+                filtersModule,
                 tutorialsModule,
                 commonAuthModule,
                 calendarModule,

@@ -7,13 +7,13 @@ import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import timber.log.Timber
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
@@ -127,27 +127,32 @@ internal class PersonDetailsViewModel(
     }
 
     private suspend fun loadPersonCredits(personId: TraktId) {
-        try {
-            loadingCreditsState.update { LoadingState.Loading }
+        loadingCreditsState.update { LoadingState.Loading }
 
-            coroutineScope {
-                val showCreditsAsync = async { getPersonCreditsUseCase.getShowCredits(personId) }
-                val movieCreditsAsync = async { getPersonCreditsUseCase.getMovieCredits(personId) }
+        supervisorScope {
+            val showCreditsAsync = async { getPersonCreditsUseCase.getShowCredits(personId) }
+            val movieCreditsAsync = async { getPersonCreditsUseCase.getMovieCredits(personId) }
 
-                val showCredits = showCreditsAsync.await()
-                val movieCredits = movieCreditsAsync.await()
-
-                personShowCreditsState.update { showCredits }
-                personMovieCreditsState.update { movieCredits }
+            try {
+                personShowCreditsState.update { showCreditsAsync.await() }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
             }
-        } catch (error: Exception) {
-            error.rethrowCancellation {
-                errorState.update { error }
-                Timber.recordError(error)
+
+            try {
+                personMovieCreditsState.update { movieCreditsAsync.await() }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
             }
-        } finally {
-            loadingCreditsState.update { LoadingState.Done }
         }
+
+        loadingCreditsState.update { LoadingState.Done }
     }
 
     fun navigateToShow(show: Show) {

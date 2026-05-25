@@ -4,6 +4,7 @@ package tv.trakt.trakt.core.home.sections.activity.features.all.social
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
@@ -28,8 +30,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -52,9 +56,13 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.core.filters.GlobalFiltersSheet
+import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.core.home.sections.activity.features.all.AllActivityState
 import tv.trakt.trakt.core.home.sections.activity.features.all.views.AllActivityEpisodeItem
 import tv.trakt.trakt.core.home.sections.activity.features.all.views.AllActivityMovieItem
@@ -64,13 +72,14 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.Episode
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieItem
 import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextContent
 import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextState
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.components.chips.FilterChipGroup
+import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.LocalDate
 import java.time.ZoneId
@@ -105,11 +114,18 @@ internal fun AllActivitySocialScreen(
         }
     }
 
+    var filtersSheet by remember { mutableStateOf(false) }
+
     AllActivitySocialContent(
         state = state,
         modifier = modifier,
-        onUsersFilterClick = viewModel::setUserFilter,
-        onItemsFilterClick = viewModel::setItemsFilter,
+        onUserFilterClick = viewModel::setUserFilter,
+        onModeClick = { mode ->
+            state.itemsFilter?.let {
+                viewModel.setFilter(it.copy(mode = mode))
+            }
+        },
+        onFiltersClick = { filtersSheet = true },
         onBackClick = onNavigateBack,
         onLoadMore = {
             // No pagination at the moment.
@@ -127,28 +143,52 @@ internal fun AllActivitySocialScreen(
             viewModel.navigateToMovie(movie)
         },
     )
+
+    GlobalFiltersSheet(
+        active = filtersSheet,
+        options = GlobalFiltersOptions(
+            global = false,
+            initial = state.itemsFilter,
+        ),
+        onUpdate = viewModel::setFilter,
+        onDismiss = { filtersSheet = false },
+    )
 }
 
 @Composable
-private fun TitleBar(modifier: Modifier = Modifier) {
+private fun TitleBar(
+    isFilterActive: Boolean,
+    onFiltersClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Row(
         verticalAlignment = CenterVertically,
-        horizontalArrangement = spacedBy(12.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
+            .fillMaxWidth()
             .height(TraktTheme.size.titleBarHeight)
             .graphicsLayer {
                 translationX = -2.dp.toPx()
             },
     ) {
-        Icon(
-            painter = painterResource(R.drawable.ic_back_arrow),
-            tint = TraktTheme.colors.textPrimary,
-            contentDescription = null,
-        )
-        Text(
-            text = stringResource(R.string.list_title_social_activity),
-            color = TraktTheme.colors.textPrimary,
-            style = TraktTheme.typography.heading5,
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(12.dp),
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_back_arrow),
+                tint = TraktTheme.colors.textPrimary,
+                contentDescription = null,
+            )
+            Text(
+                text = stringResource(R.string.list_title_social_activity),
+                color = TraktTheme.colors.textPrimary,
+                style = TraktTheme.typography.heading5,
+            )
+        }
+        MediaFilterIcon(
+            active = isFilterActive,
+            onClick = onFiltersClick,
         )
     }
 }
@@ -157,8 +197,9 @@ private fun TitleBar(modifier: Modifier = Modifier) {
 internal fun AllActivitySocialContent(
     state: AllActivityState,
     modifier: Modifier = Modifier,
-    onUsersFilterClick: (User) -> Unit = {},
-    onItemsFilterClick: (MediaMode) -> Unit = {},
+    onUserFilterClick: (User) -> Unit = {},
+    onModeClick: (MediaMode) -> Unit = {},
+    onFiltersClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
     onLoadMore: () -> Unit = {},
     onShowClick: (EpisodeItem) -> Unit = {},
@@ -202,9 +243,11 @@ internal fun AllActivitySocialContent(
             listUsersFilters = state.usersFilter,
             listItemsFilters = state.itemsFilter,
             contentPadding = contentPadding,
+            loading = state.loading.isLoading,
             onEndOfList = onLoadMore,
-            onItemsFilterClick = onItemsFilterClick,
-            onUserFilterClick = onUsersFilterClick,
+            onItemsFilterClick = onModeClick,
+            onUserFilterClick = onUserFilterClick,
+            onFiltersClick = onFiltersClick,
             onBackClick = onBackClick,
             onShowClick = onShowClick,
             onEpisodeClick = onEpisodeClick,
@@ -218,11 +261,13 @@ private fun ContentList(
     modifier: Modifier = Modifier,
     listItems: ImmutableMap<LocalDate, ImmutableList<HomeActivityItem>>,
     listUsersFilters: AllActivityState.UsersFilter,
-    listItemsFilters: MediaMode?,
+    listItemsFilters: GlobalFilter?,
     listState: LazyListState,
     contentPadding: PaddingValues,
+    loading: Boolean,
     onUserFilterClick: (User) -> Unit,
     onItemsFilterClick: (MediaMode) -> Unit,
+    onFiltersClick: () -> Unit,
     onEndOfList: () -> Unit,
     onBackClick: () -> Unit,
     onShowClick: (EpisodeItem) -> Unit,
@@ -252,6 +297,8 @@ private fun ContentList(
     ) {
         item {
             TitleBar(
+                isFilterActive = listItemsFilters?.isActive == true,
+                onFiltersClick = onFiltersClick,
                 modifier = Modifier
                     .padding(
                         start = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -264,13 +311,15 @@ private fun ContentList(
             )
         }
 
-        item {
-            ContentFilters(
-                itemsFilter = listItemsFilters,
-                usersFilter = listUsersFilters,
-                onUserFilterClick = onUserFilterClick,
-                onItemFilterClick = onItemsFilterClick,
-            )
+        if (listItemsFilters != null) {
+            item {
+                ContentFilters(
+                    itemsFilter = listItemsFilters,
+                    usersFilter = listUsersFilters,
+                    onUserFilterClick = onUserFilterClick,
+                    onItemFilterClick = onItemsFilterClick,
+                )
+            }
         }
 
         val today = nowLocalDay()
@@ -305,6 +354,7 @@ private fun ContentList(
                     is MovieItem -> {
                         AllActivityMovieItem(
                             item = item,
+                            enabled = !loading,
                             onClick = {
                                 onMovieClick(item.movie)
                             },
@@ -325,6 +375,7 @@ private fun ContentList(
                     is EpisodeItem -> {
                         AllActivityEpisodeItem(
                             item = item,
+                            enabled = !loading,
                             onClick = { onEpisodeClick(item) },
                             onShowClick = { onShowClick(item) },
                             moreButton = false,
@@ -343,12 +394,45 @@ private fun ContentList(
                 }
             }
         }
+
+        if (loading && listItems.isEmpty()) {
+            items(5) {
+                PanelMediaSkeletonCard(
+                    modifier = Modifier
+                        .padding(
+                            start = TraktTheme.spacing.mainPageHorizontalSpace,
+                            end = TraktTheme.spacing.mainPageHorizontalSpace,
+                        )
+                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                )
+            }
+        }
+
+        if (!loading && listItems.isEmpty()) {
+            item {
+                ContentEmptyView(
+                    modifier = Modifier
+                        .padding(
+                            start = TraktTheme.spacing.mainPageHorizontalSpace,
+                            end = TraktTheme.spacing.mainPageHorizontalSpace,
+                        )
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                )
+            }
+        }
     }
 }
 
 @Composable
 private fun ContentFilters(
-    itemsFilter: MediaMode?,
+    itemsFilter: GlobalFilter,
     usersFilter: AllActivityState.UsersFilter,
     onItemFilterClick: (MediaMode) -> Unit,
     onUserFilterClick: (User) -> Unit,
@@ -362,7 +446,7 @@ private fun ContentFilters(
     ) {
         for (filter in MediaMode.entries) {
             FilterChip(
-                selected = itemsFilter == filter,
+                selected = itemsFilter.mode == filter,
                 text = stringResource(filter.displayRes),
                 unselectedTextVisible = false,
                 height = 32.dp,
@@ -397,6 +481,16 @@ private fun ContentFilters(
             )
         }
     }
+}
+
+@Composable
+private fun ContentEmptyView(modifier: Modifier = Modifier) {
+    Text(
+        text = stringResource(R.string.list_placeholder_empty),
+        color = TraktTheme.colors.textSecondary,
+        style = TraktTheme.typography.heading6,
+        modifier = modifier,
+    )
 }
 
 @Preview(

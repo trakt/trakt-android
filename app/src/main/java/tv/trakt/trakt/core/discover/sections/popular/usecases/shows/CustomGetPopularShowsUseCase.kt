@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.popular.data.local.shows.PopularShowsLocalDataSource
@@ -33,30 +34,12 @@ internal class CustomGetPopularShowsUseCase(
         limit: Int,
         page: Int,
         skipLocal: Boolean,
+        filters: GlobalFilter,
     ): ImmutableList<DiscoverItem.ShowItem> {
-        val config = customThemeUseCase.getConfig()
-        val filters = config.theme?.filters
-
-        val customGenres = when {
-            config.enabled -> filters?.shows?.popular?.genres
-            else -> null
-        }
-        val customSubgenres = when {
-            config.enabled -> filters?.shows?.popular?.subgenres
-            else -> null
-        }
-
-        val customYears = when {
-            config.enabled -> filters?.shows?.popular?.years?.toString()
-            else -> null
-        }
-
         return remoteSource.getPopular(
             page = page,
             limit = limit,
-            genres = customGenres,
-            subgenres = customSubgenres,
-            years = customYears,
+            filters = filters,
         ).asyncMap {
             DiscoverItem.ShowItem(
                 show = Show.fromDto(it),

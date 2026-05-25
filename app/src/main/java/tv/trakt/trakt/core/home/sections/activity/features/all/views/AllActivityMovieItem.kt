@@ -41,6 +41,7 @@ import java.time.format.DateTimeFormatter
 internal fun AllActivityMovieItem(
     item: HomeActivityItem.MovieItem,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     itemRating: UserRating? = null,
     moreButton: Boolean = false,
     dateFormat: DateTimeFormatter? = null,
@@ -56,6 +57,7 @@ internal fun AllActivityMovieItem(
     }
 
     PanelMediaCard(
+        enabled = enabled,
         title = item.title,
         titleOriginal = null,
         subtitle = stringResource(R.string.translated_value_type_movie),

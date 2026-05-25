@@ -4,6 +4,7 @@ package tv.trakt.trakt.core.home.sections.watchlist.features.all
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
@@ -23,6 +25,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -46,8 +49,12 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.core.filters.GlobalFiltersSheet
+import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.core.home.sections.watchlist.features.all.ui.AllHomeWatchlistEpisodeView
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.views.AllWatchlistMovieView
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.sheets.WatchlistMovieSheet
@@ -55,14 +62,15 @@ import tv.trakt.trakt.core.lists.sections.watchlist.features.context.shows.sheet
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.ShowItem
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
+import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -82,6 +90,7 @@ internal fun AllHomeWatchlistScreen(
     var contextMovieSheet by remember { mutableStateOf<MovieItem?>(null) }
     var contextShowSheet by remember { mutableStateOf<ShowItem?>(null) }
     var dateSheet by remember { mutableStateOf<WatchlistItem?>(null) }
+    var filtersSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(state) {
         state.navigateShow?.let {
@@ -136,7 +145,12 @@ internal fun AllHomeWatchlistScreen(
         onCheckLongClick = {
             dateSheet = it
         },
-        onFilterClick = viewModel::setFilter,
+        onModeClick = { mode ->
+            state.filter?.let {
+                viewModel.setFilter(it.copy(mode = mode))
+            }
+        },
+        onFiltersClick = { filtersSheet = true },
         onBackClick = onNavigateBack,
     )
 
@@ -209,6 +223,18 @@ internal fun AllHomeWatchlistScreen(
             dateSheet = null
         },
     )
+
+    GlobalFiltersSheet(
+        active = filtersSheet,
+        options = GlobalFiltersOptions(
+            global = false,
+            initial = state.filter,
+        ),
+        onUpdate = viewModel::setFilter,
+        onDismiss = {
+            filtersSheet = false
+        },
+    )
 }
 
 @Composable
@@ -219,7 +245,8 @@ internal fun AllHomeWatchlistContent(
     onCheckClick: (WatchlistItem) -> Unit = {},
     onCheckLongClick: (WatchlistItem) -> Unit = {},
     onLongClick: (WatchlistItem) -> Unit = {},
-    onFilterClick: (MediaMode) -> Unit = {},
+    onModeClick: (MediaMode) -> Unit = {},
+    onFiltersClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val listState = rememberLazyListState(
@@ -259,7 +286,8 @@ internal fun AllHomeWatchlistContent(
             listFilter = state.filter,
             loading = state.loading.isLoading,
             contentPadding = contentPadding,
-            onFilterClick = onFilterClick,
+            onModeClick = onModeClick,
+            onFiltersClick = onFiltersClick,
             onClick = onClick,
             onCheckClick = onCheckClick,
             onCheckLongClick = onCheckLongClick,
@@ -296,14 +324,15 @@ private fun ContentList(
     modifier: Modifier = Modifier,
     listState: LazyListState,
     listItems: ImmutableList<WatchlistItem>,
-    listFilter: MediaMode?,
+    listFilter: GlobalFilter?,
     loading: Boolean,
     contentPadding: PaddingValues,
     onClick: (WatchlistItem) -> Unit,
     onCheckClick: (WatchlistItem) -> Unit,
     onCheckLongClick: (WatchlistItem) -> Unit,
     onLongClick: (WatchlistItem) -> Unit,
-    onFilterClick: (MediaMode) -> Unit,
+    onModeClick: (MediaMode) -> Unit,
+    onFiltersClick: () -> Unit,
     onBackClick: () -> Unit,
 ) {
     LazyColumn(
@@ -320,11 +349,13 @@ private fun ContentList(
             )
         }
 
-        if (listFilter != null && !loading) {
+        if (listFilter != null) {
             item {
                 ContentFilters(
-                    watchlistFilter = listFilter,
-                    onFilterClick = onFilterClick,
+                    filters = listFilter,
+                    enabled = !loading,
+                    onModeClick = onModeClick,
+                    onFiltersClick = onFiltersClick,
                 )
             }
         }
@@ -336,6 +367,7 @@ private fun ContentList(
             when (item) {
                 is ShowItem -> AllHomeWatchlistEpisodeView(
                     item = item,
+                    enabled = !loading,
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     onCheckClick = { onCheckClick(item) },
@@ -350,6 +382,7 @@ private fun ContentList(
 
                 is MovieItem -> AllWatchlistMovieView(
                     item = item,
+                    enabled = !loading,
                     showCheck = true,
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
@@ -364,22 +397,68 @@ private fun ContentList(
                 )
             }
         }
+
+        if (loading && listItems.isEmpty()) {
+            items(5) {
+                PanelMediaSkeletonCard(
+                    modifier = Modifier
+                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                )
+            }
+        }
+
+        if (listItems.isEmpty() && !loading) {
+            item {
+                ContentEmptyView(
+                    modifier = Modifier
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                )
+            }
+        }
     }
 }
 
 @Composable
 private fun ContentFilters(
-    watchlistFilter: MediaMode,
-    onFilterClick: (MediaMode) -> Unit,
+    filters: GlobalFilter,
+    enabled: Boolean,
+    onModeClick: (MediaMode) -> Unit,
+    onFiltersClick: () -> Unit,
 ) {
-    MediaModeFilters(
-        selected = watchlistFilter,
-        onClick = onFilterClick,
-        height = 32.dp,
-        paddingVertical = PaddingValues(
-            top = 0.dp,
-            bottom = 19.dp,
-        ),
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 19.dp),
+    ) {
+        MediaModeFilters(
+            selected = filters.mode,
+            height = 32.dp,
+            onClick = onModeClick,
+        )
+        MediaFilterIcon(
+            active = filters.isActive,
+            enabled = enabled,
+            onClick = onFiltersClick,
+        )
+    }
+}
+
+@Composable
+private fun ContentEmptyView(modifier: Modifier = Modifier) {
+    Text(
+        text = stringResource(R.string.list_placeholder_empty),
+        color = TraktTheme.colors.textSecondary,
+        style = TraktTheme.typography.heading6,
+        modifier = modifier,
     )
 }
 

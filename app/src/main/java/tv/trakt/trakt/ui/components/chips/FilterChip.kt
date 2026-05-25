@@ -47,6 +47,7 @@ internal fun FilterChip(
     height: Dp = 28.dp,
     animated: Boolean = true,
     unselectedTextVisible: Boolean = true,
+    leadingAlwaysVisible: Boolean = false,
     leadingContent: @Composable (() -> Unit)? = null,
     endContent: @Composable (() -> Unit)? = null,
     paddingHorizontal: PaddingValues = PaddingValues(
@@ -86,7 +87,7 @@ internal fun FilterChip(
                 },
             ),
     ) {
-        val visible = (selected && leadingContent != null) || !unselectedTextVisible
+        val visible = (selected && leadingContent != null) || !unselectedTextVisible || leadingAlwaysVisible
         if (animated) {
             AnimatedVisibility(
                 visible = visible,

@@ -55,6 +55,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
@@ -64,7 +65,6 @@ import tv.trakt.trakt.core.lists.sections.watchlist.features.context.shows.sheet
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.ShowItem
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
@@ -117,7 +117,7 @@ internal fun HomeWatchlistView(
         contentPadding = contentPadding,
         onCollapse = viewModel::setCollapsed,
         onEmptyClick = {
-            when (state.filter) {
+            when (state.filter?.mode) {
                 MediaMode.MOVIES -> onMoviesClick()
                 else -> onShowsClick()
             }
@@ -303,7 +303,7 @@ internal fun HomeWatchlistContent(
                                 HomeEmptyView(
                                     text = stringResource(R.string.text_cta_watchlist_released),
                                     icon = R.drawable.ic_empty_watchlist,
-                                    buttonText = when (state.filter) {
+                                    buttonText = when (state.filter?.mode) {
                                         MediaMode.MOVIES -> stringResource(R.string.link_text_discover_movies)
                                         else -> stringResource(R.string.link_text_discover_shows)
                                     },
@@ -322,7 +322,7 @@ internal fun HomeWatchlistContent(
 
                             else -> {
                                 ContentList(
-                                    listFilter = state.filter,
+                                    listFilter = state.filter?.mode,
                                     listItems = (state.items ?: emptyList()).toImmutableList(),
                                     contentPadding = contentPadding,
                                     onClick = onClick,

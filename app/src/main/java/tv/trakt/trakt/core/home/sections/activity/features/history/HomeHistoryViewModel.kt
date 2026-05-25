@@ -35,19 +35,19 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.features.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
-import tv.trakt.trakt.core.main.helpers.MediaModeManager
-import tv.trakt.trakt.core.main.model.MediaMode
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates.Source.POST_RATING
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
@@ -78,16 +78,15 @@ internal class HomeHistoryViewModel(
     private val ratingsUpdates: RatingsUpdates,
     private val checkInUpdates: CheckInUpdates,
     private val sessionManager: SessionManager,
-    private val modeManager: MediaModeManager,
+    private val filterManager: GlobalFilterManager,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = HomeHistoryState()
-    private val initialMode = modeManager.getMode()
 
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val itemsRatingsState = MutableStateFlow(initialState.itemsRatings)
-    private val filterState = MutableStateFlow(initialMode)
+    private val filterState = MutableStateFlow(filterManager.getFilter())
     private val collapseState = MutableStateFlow(isCollapsed())
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
@@ -106,11 +105,11 @@ internal class HomeHistoryViewModel(
         observeUser()
         observeUpdates()
         observeRatings()
-        observeMode()
+        observeFilter()
     }
 
-    private fun observeMode() {
-        modeManager.observeMode()
+    private fun observeFilter() {
+        filterManager.observeFilter()
             .distinctUntilChanged()
             .onEach { value ->
                 filterState.update { value }
@@ -174,7 +173,7 @@ internal class HomeHistoryViewModel(
 
                 val localItems = getPersonalActivityUseCase.getLocalPersonalActivity(
                     limit = HOME_SECTION_LIMIT,
-                    filter = filterState.value,
+                    filter = filterState.value.mode,
                 )
 
                 if (localItems.isNotEmpty()) {
@@ -311,7 +310,7 @@ internal class HomeHistoryViewModel(
 
         collapseJob?.cancel()
         collapseJob = viewModelScope.launch {
-            val key = when (filterState.value) {
+            val key = when (filterState.value.mode) {
                 MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_HISTORY
                 MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_HISTORY
                 MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_HISTORY
@@ -325,7 +324,7 @@ internal class HomeHistoryViewModel(
 
     private fun isCollapsed(): Boolean {
         return collapsingManager.isCollapsed(
-            key = when (filterState.value) {
+            key = when (filterState.value.mode) {
                 MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_HISTORY
                 MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_HISTORY
                 MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_HISTORY

@@ -14,17 +14,17 @@ import kotlinx.coroutines.flow.update
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeState.UserState
-import tv.trakt.trakt.core.main.helpers.MediaModeManager
 
 @OptIn(FlowPreview::class)
 internal class HomeViewModel(
-    private val modeManager: MediaModeManager,
+    private val filterManager: GlobalFilterManager,
     private val sessionManager: SessionManager,
     analytics: Analytics,
 ) : ViewModel() {
     private val initialState = HomeState()
-    private val initialMode = modeManager.getMode()
+    private val initialMode = filterManager.getFilter().mode
 
     private val modeState = MutableStateFlow(initialMode)
     private val userState = MutableStateFlow(initialState.user)
@@ -52,9 +52,9 @@ internal class HomeViewModel(
     }
 
     private fun observeMode() {
-        modeManager.observeMode()
+        filterManager.observeFilter()
             .onEach { value ->
-                modeState.update { value }
+                modeState.update { value.mode }
             }
             .launchIn(viewModelScope)
     }
