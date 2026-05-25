@@ -41,8 +41,7 @@ Text(
 
 ## Key namespacing
 
-Borrowed from web/iOS conventions and aligned with what already exists
-in the `values/strings.xml`:
+Aligned with existing keys in `values/strings.xml`:
 
 | Prefix              | Used for                                          |
 | ------------------- | ------------------------------------------------- |
@@ -55,7 +54,7 @@ in the `values/strings.xml`:
 Platform-specific suffixes:
 
 - `_tv` — Android TV-only variant
-- `_phone` — phone-only variant when wording differs
+- `_mobile` — phone-only variant when wording differs
 
 Example keys:
 
@@ -84,8 +83,7 @@ breaks every non-English locale.
 
 - Dates via `kotlinx.datetime` + locale-aware helpers in
   `common/.../helpers/formatting/`.
-- Numbers via `NumberFormat.getInstance(locale)`. Mirror trakt-web's
-  `toHumanNumber` (compact notation) when porting.
+- Numbers via `NumberFormat.getInstance(locale)` with compact notation for large values.
 - Durations via existing duration helpers; don't hand-code
   `"$hours h $minutes m"`.
 

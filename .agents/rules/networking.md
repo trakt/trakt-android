@@ -180,8 +180,7 @@ sealed interface ApiError {
 
 ## TTL & caching
 
-When caching domain entities, define TTLs through a centralised
-helper similar to web/iOS:
+When caching domain entities, define TTLs through a centralised helper:
 
 ```kotlin
 object TraktDurations {

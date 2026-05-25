@@ -2,8 +2,7 @@ Before implementing anything, identify which domain you are working in and
 actively apply the corresponding rule file for that domain:
 
 - Compose screens, composables, theme (`app/`, `tv/`, `common/.../ui/`):
-  apply architecture.md, state-management.md, theming.md (note:
-  `compose-stability.conf` at repo root lists stable types)
+  apply architecture.md, state-management.md, theming.md
 - Networking, Ktor client, OpenAPI mappers (`common/.../networking/`,
   generated OpenAPI sources): apply networking.md
 - Persistence (DataStore, Room entities, file caches): apply persistence.md

@@ -153,18 +153,6 @@ during recomposition.
 
 ## Compose stability
 
-All Trakt domain types in `common/.../model/` are listed in
-`compose-stability.conf` at the repo root so the Compose compiler
-treats them as stable. The same file declares third-party types that
-are stable in practice but not annotated (`kotlinx.datetime.*`,
-`kotlin.time.Duration`, `coil3.compose.AsyncImagePainter.State`,
-`androidx.paging.compose.LazyPagingItems`). Compose convention plugins
-wire the file via `freeCompilerArgs`:
-
-```
--Xstability-configuration-path=$projectDir/compose-stability.conf
-```
-
 Rules:
 
 - **`@Immutable`** for data classes used as state where every public

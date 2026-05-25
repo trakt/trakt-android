@@ -82,8 +82,8 @@ sealed interface MovieUiState {
 ```
 
 Compose `when` handlers must be exhaustive — do not add `else ->`
-branches that swallow new cases. Recent bug (web + apple)
-`keep tag(isLatestAired:provider:) switch exhaustive` shows the cost.
+branches that swallow new cases. Non-exhaustive `when` on a sealed type
+silently drops new variants added to the hierarchy.
 
 ## Code Smells to Avoid
 

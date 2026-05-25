@@ -71,23 +71,6 @@ core/<feature>/
 └── di/<Feature>Module.kt
 ```
 
-## Web/iOS ↔ Android Idiom Map
-
-For contributors moving between the trakt-web (Svelte) / trakt-apple
-(SwiftUI) stacks and Android:
-
-| Web / iOS                        | Android / Compose                                       |
-| -------------------------------- | ------------------------------------------------------- |
-| Zod schema / `Codable`           | `@Serializable` data class (kotlinx.serialization)      |
-| `$state(value)` / `@State`       | `var x by remember { mutableStateOf(value) }`           |
-| `$derived(expr)` / `var x: T`    | `val x by remember(...) { derivedStateOf { expr } }`    |
-| `useFoo()` hook / `FooStore`     | `FooViewModel` + `koinViewModel()`                      |
-| `goto(url, { replaceState })`    | `navController.navigate(route) { popUpTo(...) }`        |
-| `RenderFor audience="member"`    | `TraktGate(audience = Audience.Member) { … }`           |
-| `time.hours(3)` / `TraktTime`    | `kotlin.time.Duration.Companion.hours(3)`               |
-| `defineQuery(...)`               | Repository function returning `Flow<…>`                 |
-| `goto` with typed params         | Compose Navigation typed routes via `@Serializable`     |
-
 ## Type Safety
 
 - No `Any` types in new code unless interop demands it. Use generics or
