@@ -43,18 +43,15 @@ internal class DefaultGlobalFilterManager(
     override suspend fun setFilter(filter: GlobalFilter) {
         currentFilters = filter
         currentFiltersFlow.emit(filter)
-
         dataStore.edit {
             it[KEY_FILTERS] = Json.encodeToString(filter)
         }
     }
 
-    override fun setMode(mode: GlobalFilterMode) {
+    override suspend fun setMode(mode: GlobalFilterMode) {
         currentMode = mode
-        runBlocking {
-            dataStore.edit {
-                it[KEY_FILTERS_MODE] = mode.name
-            }
+        dataStore.edit {
+            it[KEY_FILTERS_MODE] = mode.name
         }
     }
 

@@ -9,7 +9,7 @@ internal interface GlobalFilterManager {
 
     fun getFilter(): GlobalFilter
 
-    fun setMode(mode: GlobalFilterMode)
+    suspend fun setMode(mode: GlobalFilterMode)
 
     fun getMode(): GlobalFilterMode
 
