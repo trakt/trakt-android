@@ -150,6 +150,9 @@ internal class AllDiscoverViewModel(
             try {
                 loadingState.update { Loading }
 
+                pages = 1
+                hasMoreData = false
+
                 coroutineScope {
                     val showsAsync = async {
                         getShowsUseCase.getShows(
