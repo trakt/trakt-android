@@ -7,9 +7,9 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode
 internal interface GlobalFilterManager {
     suspend fun setFilter(filter: GlobalFilter)
 
-    fun getFilter(): GlobalFilter
-
     suspend fun setMode(mode: GlobalFilterMode)
+
+    fun getFilter(): GlobalFilter
 
     fun getMode(): GlobalFilterMode
 

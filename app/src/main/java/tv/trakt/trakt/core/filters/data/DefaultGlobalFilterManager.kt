@@ -4,11 +4,11 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.serialization.json.Json
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode
@@ -17,47 +17,34 @@ private val KEY_FILTERS = stringPreferencesKey("key_global_filters")
 private val KEY_FILTERS_MODE = stringPreferencesKey("key_global_filters_mode")
 
 internal class DefaultGlobalFilterManager(
+    scope: CoroutineScope,
     private val dataStore: DataStore<Preferences>,
 ) : GlobalFilterManager {
-    private var currentMode: GlobalFilterMode = runBlocking {
-        val data = dataStore.data.first()
-        val modeValue = data[KEY_FILTERS_MODE] ?: return@runBlocking GlobalFilterMode.Simple
+    private val filtersState = dataStore.data
+        .map { prefs ->
+            val json = prefs[KEY_FILTERS] ?: return@map GlobalFilter.Default
+            Json.decodeFromString(json)
+        }
+        .stateIn(scope, SharingStarted.Eagerly, GlobalFilter.Default)
 
-        GlobalFilterMode.entries
-            .find { it.name == modeValue } ?: GlobalFilterMode.Simple
-    }
-
-    private var currentFilters: GlobalFilter = runBlocking {
-        val data = dataStore.data.first()
-        val filterJson = data[KEY_FILTERS]
-            ?: return@runBlocking GlobalFilter.Default
-
-        Json.decodeFromString(filterJson)
-    }
-
-    private val currentFiltersFlow = MutableSharedFlow<GlobalFilter>(
-        extraBufferCapacity = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST,
-    )
+    private val modeState = dataStore.data
+        .map { prefs ->
+            val value = prefs[KEY_FILTERS_MODE] ?: return@map GlobalFilterMode.Simple
+            GlobalFilterMode.entries.find { it.name == value } ?: GlobalFilterMode.Simple
+        }
+        .stateIn(scope, SharingStarted.Eagerly, GlobalFilterMode.Simple)
 
     override suspend fun setFilter(filter: GlobalFilter) {
-        currentFilters = filter
-        currentFiltersFlow.emit(filter)
-        dataStore.edit {
-            it[KEY_FILTERS] = Json.encodeToString(filter)
-        }
+        dataStore.edit { it[KEY_FILTERS] = Json.encodeToString(filter) }
     }
 
     override suspend fun setMode(mode: GlobalFilterMode) {
-        currentMode = mode
-        dataStore.edit {
-            it[KEY_FILTERS_MODE] = mode.name
-        }
+        dataStore.edit { it[KEY_FILTERS_MODE] = mode.name }
     }
 
-    override fun getFilter(): GlobalFilter = currentFilters
+    override fun getFilter(): GlobalFilter = filtersState.value
 
-    override fun getMode(): GlobalFilterMode = currentMode
+    override fun getMode(): GlobalFilterMode = modeState.value
 
-    override fun observeFilter(): Flow<GlobalFilter> = currentFiltersFlow
+    override fun observeFilter(): Flow<GlobalFilter> = filtersState
 }

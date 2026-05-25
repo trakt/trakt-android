@@ -31,6 +31,7 @@ internal val filtersModule = module {
 
     single<GlobalFilterManager> {
         DefaultGlobalFilterManager(
+            scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
             dataStore = get(named(FILTERS_PREFERENCES)),
         )
     }
