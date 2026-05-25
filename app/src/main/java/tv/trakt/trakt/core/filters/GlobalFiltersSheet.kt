@@ -4,6 +4,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
@@ -22,6 +23,8 @@ internal fun GlobalFiltersSheet(
     onUpdate: (GlobalFilter) -> Unit = { _ -> },
     onDismiss: () -> Unit,
 ) {
+    val sheetKey = remember(active) { nextInt().toString() }
+
     if (active) {
         TraktBottomSheet(
             sheetState = state,
@@ -29,7 +32,7 @@ internal fun GlobalFiltersSheet(
         ) {
             GlobalFiltersView(
                 viewModel = koinViewModel(
-                    key = nextInt().toString(),
+                    key = sheetKey,
                     parameters = { parametersOf(options) },
                 ),
                 onUpdate = onUpdate,
