@@ -148,7 +148,7 @@ object PreviewData {
         rating = Rating(rating = 4.34f, votes = 5394),
         commentCount = 4424,
         runtime = 24.minutes,
-        episodeType = null,
+        type = null,
         originalTitle = "Episode Original Title",
         images = Images(
             screenshot = listOf(

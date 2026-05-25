@@ -30,7 +30,7 @@ internal data class ProgressShow(
         val stats: Stats?,
         val nextEpisode: Episode?,
         val lastEpisode: Episode?,
-        val isLatestAired: Boolean = false,
+        val isLatestAired: Boolean,
     ) {
         @Immutable
         internal data class Stats(

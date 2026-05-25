@@ -7,6 +7,8 @@ import androidx.compose.ui.res.stringResource
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.toInstant
+import tv.trakt.trakt.common.model.EpisodeType.MID_SEASON_FINALE
+import tv.trakt.trakt.common.model.EpisodeType.MID_SEASON_PREMIERE
 import tv.trakt.trakt.common.networking.EpisodeDto
 import tv.trakt.trakt.common.networking.EpisodeLikesDto
 import tv.trakt.trakt.common.networking.LastEpisodeDto
@@ -18,6 +20,7 @@ import kotlin.time.Duration.Companion.minutes
 @Immutable
 data class Episode(
     val ids: Ids,
+    val type: EpisodeType?,
     val number: Int,
     val season: Int,
     val title: String,
@@ -26,7 +29,6 @@ data class Episode(
     val rating: Rating,
     val commentCount: Int,
     val runtime: Duration?,
-    val episodeType: String?,
     val originalTitle: String,
     val images: Images?,
     val updatedAt: Instant?,
@@ -56,7 +58,11 @@ data class Episode(
 
     @Composable
     fun seasonEpisodeString(): String {
-        val string = stringResource(R.string.episode_footer_season_episode, this.season, this.number)
+        val string = stringResource(
+            R.string.episode_footer_season_episode,
+            this.season,
+            this.number,
+        )
         return when {
             title.isNotBlank() -> "$string - $title"
             else -> string
@@ -64,39 +70,24 @@ data class Episode(
     }
 
     @Composable
-    fun isPremiere(isLatestAired: Boolean? = null): Boolean =
-        remember(episodeType, isLatestAired) {
-            val premiere = episodeType?.contains("premiere") == true
-            premiere && !isMidSeasonHidden(isLatestAired)
+    fun isPremiere(isLatestAired: Boolean = false): Boolean =
+        remember(type, isLatestAired) {
+            if (type?.isPremiere == true) return@remember true
+            type == MID_SEASON_PREMIERE && isLatestAired
         }
 
     @Composable
-    fun isFinale(isLatestAired: Boolean? = null): Boolean =
-        remember(episodeType, isLatestAired) {
-            val finale = episodeType?.contains("finale") == true
-            finale && !isMidSeasonHidden(isLatestAired)
-        }
-
-    private fun isMidSeasonHidden(isLatestAired: Boolean?): Boolean {
-        if (isLatestAired != false) return false
-        return episodeType?.contains("mid_season") == true
-    }
-
-    val episodeTypeStringRes: Int?
-        get() = when (episodeType) {
-            "series_premiere" -> R.string.tag_text_series_premiere
-            "season_premiere" -> R.string.tag_text_season_premiere
-            "mid_season_premiere" -> R.string.tag_text_mid_season_premiere
-            "series_finale" -> R.string.tag_text_series_finale
-            "season_finale" -> R.string.tag_text_season_finale
-            "mid_season_finale" -> R.string.tag_text_mid_season_finale
-            else -> null
+    fun isFinale(isLatestAired: Boolean = false): Boolean =
+        remember(type, isLatestAired) {
+            if (type?.isFinale == true) return@remember true
+            type == MID_SEASON_FINALE && isLatestAired
         }
 }
 
 fun Episode.Companion.fromDto(dto: EpisodeDto): Episode {
     return Episode(
         ids = Ids.fromDto(dto.ids),
+        type = dto.episodeType?.let { EpisodeType.fromValue(it.value) },
         number = dto.number,
         season = dto.season,
         title = dto.title ?: "N/A",
@@ -108,7 +99,6 @@ fun Episode.Companion.fromDto(dto: EpisodeDto): Episode {
         ),
         commentCount = dto.commentCount ?: 0,
         runtime = dto.runtime?.minutes,
-        episodeType = dto.episodeType?.value,
         originalTitle = dto.originalTitle ?: "",
         images = Images(
             screenshot = (dto.images?.screenshot ?: emptyList()).toImmutableList(),
@@ -122,6 +112,7 @@ fun Episode.Companion.fromDto(dto: EpisodeDto): Episode {
 fun Episode.Companion.fromDto(dto: LastEpisodeDto): Episode {
     return Episode(
         ids = Ids.fromDto(dto.ids),
+        type = dto.episodeType?.let { EpisodeType.fromValue(it.value) },
         number = dto.number,
         season = dto.season,
         title = dto.title ?: "N/A",
@@ -133,7 +124,6 @@ fun Episode.Companion.fromDto(dto: LastEpisodeDto): Episode {
         ),
         commentCount = dto.commentCount ?: 0,
         runtime = dto.runtime?.minutes,
-        episodeType = dto.episodeType?.value,
         originalTitle = dto.originalTitle ?: "",
         images = Images(
             screenshot = (dto.images?.screenshot ?: emptyList()).toImmutableList(),
@@ -147,6 +137,7 @@ fun Episode.Companion.fromDto(dto: LastEpisodeDto): Episode {
 fun Episode.Companion.fromDto(dto: EpisodeLikesDto): Episode {
     return Episode(
         ids = Ids.fromDto(dto.ids),
+        type = dto.episodeType?.let { EpisodeType.fromValue(it.value) },
         number = dto.number,
         season = dto.season,
         title = dto.title ?: "N/A",
@@ -158,7 +149,6 @@ fun Episode.Companion.fromDto(dto: EpisodeLikesDto): Episode {
         ),
         commentCount = dto.commentCount ?: 0,
         runtime = dto.runtime?.minutes,
-        episodeType = dto.episodeType?.value,
         originalTitle = dto.originalTitle ?: "",
         images = Images(
             screenshot = (dto.images?.screenshot ?: emptyList()).toImmutableList(),

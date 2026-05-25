@@ -22,6 +22,7 @@ import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.EpisodeType
 import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.MediaStatus
 import tv.trakt.trakt.common.model.Movie
@@ -78,7 +79,7 @@ internal fun DetailsMetaInfo(
             episode.releasedAt?.toLocal()?.toLocalDate()
         },
         runtime = episode.runtime,
-        episodeTypeRes = episode.episodeTypeStringRes,
+        episodeType = episode.type,
         directors = episodeDirectors,
         writers = episodeWriters,
         episodeRowsOnly = true,
@@ -122,7 +123,7 @@ private fun DetailsMetaInfo(
     network: String? = null,
     titleOriginal: String? = null,
     episodesCount: Int? = null,
-    episodeTypeRes: Int? = null,
+    episodeType: EpisodeType? = null,
     languages: ImmutableList<String> = EmptyImmutableList,
     genres: ImmutableList<MediaGenre> = EmptyImmutableList,
     studios: ImmutableList<String>? = null,
@@ -204,13 +205,13 @@ private fun DetailsMetaInfo(
             }
         }
 
-        if (episodeTypeRes != null) {
+        if (episodeType != null) {
             Row(
                 horizontalArrangement = spacedBy(16.dp),
             ) {
                 DetailsMeta(
                     title = stringResource(R.string.header_episode_type),
-                    values = listOf(stringResource(episodeTypeRes)),
+                    values = listOf(stringResource(episodeType.stringRes)),
                     modifier = Modifier.weight(1F),
                 )
                 Box(modifier = Modifier.weight(1F))

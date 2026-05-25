@@ -226,6 +226,7 @@ private fun Preview() {
                     ),
                     nextEpisode = PreviewData.episode1,
                     lastEpisode = null,
+                    isLatestAired = false,
                 ),
                 show = PreviewData.show1,
             ),
