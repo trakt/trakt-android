@@ -166,8 +166,8 @@
   <string name="button_label_view_all_popular_movies">Zobacz wszystkie popularne filmy</string>
   <string name="button_label_view_all_popular_shows">Zobacz wszystkie popularne seriale</string>
   <string name="button_label_view_all_progress">Zobacz cały postęp</string>
-  <string name="button_label_view_all_recommended_movies">Zobacz wszystkie polecane filmy</string>
-  <string name="button_label_view_all_recommended_shows">Zobacz wszystkie polecane seriale</string>
+  <string name="button_label_view_all_recommended_movies">Zobacz wszystkie rekomendowane filmy</string>
+  <string name="button_label_view_all_recommended_shows">Zobacz wszystkie rekomendowane seriale</string>
   <string name="button_label_view_all_social">Wyświetl wszystkie połączenia społecznościowe</string>
   <string name="button_label_view_all_social_activity">Zobacz całą aktywność innych</string>
   <string name="button_label_view_all_start_watching">Zobacz wszystkie elementy listy obserwowanych dostępne do obejrzenia</string>
@@ -627,9 +627,9 @@
   <string name="list_title_recently_searched_movies">Ostatnio wyszukiwane filmy</string>
   <string name="list_title_recently_searched_shows">Ostatnio wyszukiwane seriale</string>
   <string name="list_title_recently_watched">Ostatnio obejrzane</string>
-  <string name="list_title_recommended">Polecane</string>
-  <string name="list_title_recommended_movies">Polecane filmy</string>
-  <string name="list_title_recommended_shows">Polecane seriale</string>
+  <string name="list_title_recommended">Rekomendacje</string>
+  <string name="list_title_recommended_movies">Rekomendowane filmy</string>
+  <string name="list_title_recommended_shows">Rekomendowane seriale</string>
   <string name="list_title_related_movies">Podobne filmy</string>
   <string name="list_title_related_shows">Podobne seriale</string>
   <string name="list_title_replies">Odpowiedzi</string>
@@ -709,9 +709,9 @@
   <string name="page_title_profile">Profil</string>
   <string name="page_title_progress">Postęp</string>
   <string name="page_title_recently_watched">Ostatnio obejrzane</string>
-  <string name="page_title_recommended_media">Polecane media</string>
-  <string name="page_title_recommended_movies">Polecane filmy</string>
-  <string name="page_title_recommended_shows">Polecane seriale</string>
+  <string name="page_title_recommended_media">Rekomendowane</string>
+  <string name="page_title_recommended_movies">Rekomendowane filmy</string>
+  <string name="page_title_recommended_shows">Rekomendowane seriale</string>
   <string name="page_title_search">Szukaj</string>
   <string name="page_title_search_results">Wyniki dla %s</string>
   <string name="page_title_service_unavailable">Trakt jest obecnie niedostępny</string>
