@@ -83,6 +83,7 @@ internal fun CommentsScreen(
     modifier: Modifier = Modifier,
     viewModel: CommentsViewModel,
     onNavigateBack: () -> Unit,
+    onNavigateToUser: (User) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -119,6 +120,7 @@ internal fun CommentsScreen(
         onRepliesClick = {
             viewModel.loadReplies(it.id)
         },
+        onUserClick = onNavigateToUser,
         onBackClick = onNavigateBack,
     )
 
@@ -182,6 +184,7 @@ internal fun CommentsContent(
     onNewCommentClick: (() -> Unit)? = null,
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
+    onUserClick: ((User) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val listState = rememberLazyListState(
@@ -235,6 +238,7 @@ internal fun CommentsContent(
             onRepliesClick = onRepliesClick,
             onDeleteCommentClick = onDeleteCommentClick,
             onDeleteReplyClick = onDeleteReplyClick,
+            onUserClick = onUserClick,
             onBackClick = onBackClick,
         )
 
@@ -305,6 +309,7 @@ private fun ContentList(
     onReplyClick: ((Comment) -> Unit)? = null,
     onReplyUserClick: ((Comment, User) -> Unit)? = null,
     onRepliesClick: ((Comment) -> Unit)? = null,
+    onUserClick: ((User) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     LazyColumn(
@@ -358,6 +363,7 @@ private fun ContentList(
                     onRepliesClick = { onRepliesClick?.invoke(comment) },
                     onDeleteClick = { onDeleteCommentClick?.invoke(comment) },
                     onDeleteReplyClick = { onDeleteReplyClick?.invoke(it) },
+                    onUserClick = { onUserClick?.invoke(it) },
                     modifier = Modifier
                         .padding(bottom = 16.dp)
                         .animateItem(

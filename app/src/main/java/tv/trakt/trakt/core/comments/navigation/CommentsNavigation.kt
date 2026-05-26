@@ -8,6 +8,7 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.comments.CommentsScreen
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 
@@ -22,10 +23,14 @@ internal data class CommentsDestination(
     val initialFilter: CommentsFilter,
 )
 
-internal fun NavGraphBuilder.commentsScreen(onNavigateBack: () -> Unit) {
+internal fun NavGraphBuilder.commentsScreen(
+    onNavigateToUser: (user: User) -> Unit,
+    onNavigateBack: () -> Unit,
+) {
     composable<CommentsDestination> {
         CommentsScreen(
             viewModel = koinViewModel(),
+            onNavigateToUser = onNavigateToUser,
             onNavigateBack = onNavigateBack,
         )
     }

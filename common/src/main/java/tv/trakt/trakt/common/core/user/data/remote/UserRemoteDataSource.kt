@@ -31,6 +31,8 @@ interface UserRemoteDataSource {
 
     suspend fun getProfile(): User
 
+    suspend fun getUserProfile(userId: TraktId): User
+
     suspend fun updateProfileLocation(location: String?)
 
     suspend fun updateProfileDisplayName(displayName: String?)

@@ -40,7 +40,6 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -60,7 +59,6 @@ import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.launch
-import tv.trakt.trakt.common.Config.webUserUrl
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
@@ -101,9 +99,8 @@ internal fun CommentCard(
     onReplyUserClick: ((Comment, User) -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
+    onUserClick: ((User) -> Unit)? = null,
 ) {
-    val uriHandler = LocalUriHandler.current
-
     LaunchedEffect(comment.id) {
         if (reactions[comment.id] == null) {
             onRequestReactions?.invoke(comment)
@@ -144,11 +141,7 @@ internal fun CommentCard(
                 onRepliesClick = onRepliesClick,
                 onDeleteClick = onDeleteClick,
                 onDeleteReplyClick = onDeleteReplyClick,
-                onUserClick = {
-                    uriHandler.openUri(
-                        webUserUrl(it.username),
-                    )
-                },
+                onUserClick = { onUserClick?.invoke(it) },
             )
         },
     )

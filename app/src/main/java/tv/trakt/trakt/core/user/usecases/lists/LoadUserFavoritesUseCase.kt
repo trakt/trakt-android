@@ -64,7 +64,7 @@ internal class LoadUserFavoritesUseCase(
 
     suspend fun loadShows(sort: Sorting? = null): ImmutableList<FavoriteItem> {
         return remoteSource.getFavoriteShows(
-            sort = "added",
+            sorting = sort,
             extended = "full,cloud9,colors",
         ).asyncMap {
             val listedAt = it.listedAt.toInstant()
@@ -81,7 +81,7 @@ internal class LoadUserFavoritesUseCase(
 
     suspend fun loadMovies(sort: Sorting? = null): ImmutableList<FavoriteItem> {
         return remoteSource.getFavoriteMovies(
-            sort = "added",
+            sorting = sort,
             extended = "full,cloud9,colors",
         ).asyncMap {
             val listedAt = it.listedAt.toInstant()

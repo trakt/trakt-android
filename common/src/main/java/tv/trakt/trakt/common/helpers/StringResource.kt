@@ -9,9 +9,14 @@ sealed interface StringResource {
 
 data class DynamicStringResource(
     @param:StringRes val resId: Int,
+    val args: List<Any> = emptyList(),
 ) : StringResource {
     override fun get(context: Context): String {
-        return context.getString(resId)
+        return if (args.isEmpty()) {
+            context.getString(resId)
+        } else {
+            context.getString(resId, *args.toTypedArray())
+        }
     }
 }
 

@@ -51,6 +51,7 @@ internal fun MainNavHost(
         )
         settingsScreens(navController)
         billingScreens(navController)
+        userProfileScreens(navController)
         youTubePlayerScreens(navController)
     }
 }

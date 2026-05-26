@@ -24,6 +24,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Images.Size.THUMB
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.resources.R
@@ -42,6 +43,7 @@ internal fun AllActivityEpisodeItem(
     onClick: (() -> Unit)? = null,
     onShowClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
+    onUserClick: ((User) -> Unit)? = null,
 ) {
     val isPast = remember(item.activityAt) {
         !item.activityAt.isAfter(nowUtcInstant())
@@ -119,7 +121,10 @@ internal fun AllActivityEpisodeItem(
                     }
 
                     item.user?.let { user ->
-                        AllActivityUserChip(user = user)
+                        AllActivityUserChip(
+                            user = user,
+                            onUserClick = onUserClick?.let { { it(user) } },
+                        )
                     }
                 }
             }

@@ -4,18 +4,25 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
+import kotlin.time.Instant
 
 interface UserHistoryRemoteDataSource {
     suspend fun getEpisodesHistory(
         page: Int = 1,
         limit: Int,
         filters: GlobalFilter?,
+        from: Instant? = null,
+        to: Instant? = null,
+        userId: String = "me",
     ): List<SyncHistoryEpisodeItemDto>
 
     suspend fun getMoviesHistory(
         page: Int = 1,
         limit: Int,
         filters: GlobalFilter?,
+        from: Instant? = null,
+        to: Instant? = null,
+        userId: String = "me",
     ): List<SyncHistoryMovieItemDto>
 
     suspend fun getMovieHistory(

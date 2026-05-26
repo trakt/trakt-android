@@ -5,6 +5,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
+import kotlin.time.Instant
 
 class UserHistoryApiClient(
     private val historyApi: HistoryApi,
@@ -13,12 +14,15 @@ class UserHistoryApiClient(
         page: Int,
         limit: Int,
         filters: GlobalFilter?,
+        from: Instant?,
+        to: Instant?,
+        userId: String,
     ): List<SyncHistoryEpisodeItemDto> {
         val response = historyApi.getUsersHistoryEpisodes(
-            id = "me",
+            id = userId,
             extended = "full,cloud9,colors",
-            startAt = null,
-            endAt = null,
+            startAt = from?.toString(),
+            endAt = to?.toString(),
             page = page,
             limit = limit,
             watchnow = filters?.availability?.joinToString(",") { it.slug },
@@ -39,12 +43,15 @@ class UserHistoryApiClient(
         page: Int,
         limit: Int,
         filters: GlobalFilter?,
+        from: Instant?,
+        to: Instant?,
+        userId: String,
     ): List<SyncHistoryMovieItemDto> {
         val response = historyApi.getUsersHistoryMovies(
-            id = "me",
+            id = userId,
             extended = "full,cloud9,colors",
-            startAt = null,
-            endAt = null,
+            startAt = from?.toString(),
+            endAt = to?.toString(),
             page = page,
             limit = limit,
             watchnow = filters?.availability?.joinToString(",") { it.slug },

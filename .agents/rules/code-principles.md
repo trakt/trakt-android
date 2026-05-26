@@ -60,18 +60,6 @@ fun process(data: Data?): Foo? {
 }
 ```
 
-## Sealed Hierarchies for State
-
-Model UI state as sealed hierarchy. Forces exhaustive `when`, prevents impossible states.
-
-```kotlin
-sealed interface MovieUiState {
-    data object Loading : MovieUiState
-    data class Loaded(val movie: Movie) : MovieUiState
-    data class Error(val throwable: Throwable) : MovieUiState
-}
-```
-
 Compose `when` handlers must be exhaustive — no `else ->` branches that swallow new cases. Non-exhaustive `when` on sealed type silently drops new variants.
 
 ## Code Smells to Avoid

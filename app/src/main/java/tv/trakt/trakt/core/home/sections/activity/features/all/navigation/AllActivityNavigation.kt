@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.sections.activity.features.all.personal.AllActivityPersonalScreen
 import tv.trakt.trakt.core.home.sections.activity.features.all.social.AllActivitySocialScreen
 
@@ -37,6 +38,7 @@ internal fun NavGraphBuilder.homeActivitySocialScreen(
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToUser: (User) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     composable<AllSocialActivityDestination> {
@@ -44,6 +46,7 @@ internal fun NavGraphBuilder.homeActivitySocialScreen(
             onNavigateToShow = onNavigateToShow,
             onNavigateToEpisode = onNavigateToEpisode,
             onNavigateToMovie = onNavigateToMovie,
+            onNavigateToUser = onNavigateToUser,
             onNavigateBack = onNavigateBack,
         )
     }

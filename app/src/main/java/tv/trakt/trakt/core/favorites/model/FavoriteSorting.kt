@@ -11,7 +11,6 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 
 internal fun getFavoriteSorting(sort: Sorting?): Comparator<FavoriteItem> {
     if (sort == null) {
-        // Defaults to recently added.
         return compareByDescending { it.listedAt }
     }
     return when (sort.type) {

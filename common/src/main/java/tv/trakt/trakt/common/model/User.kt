@@ -115,6 +115,9 @@ fun Companion.fromDto(dto: UserCommentsDto): User {
             },
         ),
         streamings = null,
-        settings = null,
+        settings = User.Settings(
+            watchOnlyOnce = false,
+            coverImage = dto.vipCoverImage,
+        ),
     )
 }

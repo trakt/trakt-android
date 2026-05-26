@@ -11,6 +11,7 @@ import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.summary.shows.ShowDetailsScreen
 
@@ -29,6 +30,7 @@ internal fun NavGraphBuilder.showDetailsScreen(
     onNavigateToTrailer: (String) -> Unit,
     onNavigateToExtra: (ExtraVideo) -> Unit,
     onNavigateToAllSeasons: (Show, Int?) -> Unit,
+    onNavigateToUser: (User) -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -46,6 +48,7 @@ internal fun NavGraphBuilder.showDetailsScreen(
             onTrailerClick = { url -> onNavigateToTrailer(url) },
             onExtraClick = { extra -> onNavigateToExtra(extra) },
             onAllSeasonsClick = onNavigateToAllSeasons,
+            onNavigateToUser = onNavigateToUser,
             onNavigateVip = onNavigateVip,
             onNavigateBack = onNavigateBack,
         )

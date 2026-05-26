@@ -7,7 +7,6 @@ import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -52,6 +51,7 @@ internal class ProfileViewModel(
     init {
         loadMonthBackground()
         loadData()
+
         observeUser()
         observeCheckIn()
 
@@ -126,7 +126,7 @@ internal class ProfileViewModel(
         }
     }
 
-    val state: StateFlow<ProfileState> = combine(
+    val state = combine(
         monthStatsState,
         monthBackgroundState,
         loadingState,

@@ -261,6 +261,7 @@ private fun ContentList(
         ) { item ->
             FavoriteItemView(
                 item = item,
+                showMore = true,
                 showMediaIcon = true,
                 onShowClick = {
                     if (item is FavoriteItem.ShowItem && !item.loading) {

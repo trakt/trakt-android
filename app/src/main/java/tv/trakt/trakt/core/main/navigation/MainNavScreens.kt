@@ -49,6 +49,7 @@ import tv.trakt.trakt.core.search.navigation.navigateToSearch
 import tv.trakt.trakt.core.search.navigation.searchScreen
 import tv.trakt.trakt.core.settings.features.younify.navigation.navigateToYounify
 import tv.trakt.trakt.core.settings.features.younify.navigation.younifyScreen
+import tv.trakt.trakt.core.settings.navigation.navigateToBlockedUsers
 import tv.trakt.trakt.core.settings.navigation.navigateToSettings
 import tv.trakt.trakt.core.settings.navigation.settingsScreen
 import tv.trakt.trakt.core.summary.episodes.navigation.episodeDetailsScreen
@@ -63,6 +64,14 @@ import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
 import tv.trakt.trakt.core.summary.shows.navigation.showDetailsScreen
 import tv.trakt.trakt.core.trivia.navigation.navigateToTrivia
 import tv.trakt.trakt.core.trivia.navigation.triviaScreen
+import tv.trakt.trakt.core.users.navigation.navigateToUserProfile
+import tv.trakt.trakt.core.users.navigation.userProfileScreen
+import tv.trakt.trakt.core.users.sections.favorites.all.allUserProfileFavoritesScreen
+import tv.trakt.trakt.core.users.sections.favorites.all.navigateToAllUserProfileFavorites
+import tv.trakt.trakt.core.users.sections.history.all.allUserProfileHistoryScreen
+import tv.trakt.trakt.core.users.sections.history.all.navigateToAllUserProfileHistory
+import tv.trakt.trakt.core.users.sections.lists.all.allUserProfileListsScreen
+import tv.trakt.trakt.core.users.sections.lists.all.navigateToAllUserProfileLists
 import tv.trakt.trakt.helpers.player.navigation.navigateToYouTubePlayer
 import tv.trakt.trakt.helpers.player.navigation.youTubePlayerScreen
 
@@ -85,6 +94,7 @@ internal fun NavGraphBuilder.homeScreens(
             onNavigateToAllSocial = { navigateToAllActivitySocial() },
             onNavigateToAllWatchlist = { navigateToAllHomeWatchlist() },
             onNavigateToVip = { navigateToBilling() },
+            onNavigateToUser = { navigateToUserProfile(it) },
         )
 
         homeUpNextScreen(
@@ -117,6 +127,7 @@ internal fun NavGraphBuilder.homeScreens(
                 navigateToEpisode(showId, episode)
             },
             onNavigateToMovie = { navigateToMovie(it) },
+            onNavigateToUser = { navigateToUserProfile(it) },
             onNavigateBack = { popBackStack() },
         )
     }
@@ -203,6 +214,7 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
                     backgroundUrl = show.images?.getFanartUrl(),
                 )
             },
+            onNavigateToUser = { navigateToUserProfile(it) },
             onNavigateVip = { navigateToBilling() },
             onNavigateBack = { popBackStack() },
         )
@@ -241,6 +253,7 @@ internal fun NavGraphBuilder.episodesScreens(controller: NavHostController) {
                     backgroundUrl = show.images?.getFanartUrl(),
                 )
             },
+            onNavigateToUser = { navigateToUserProfile(it) },
             onNavigateVip = { navigateToBilling() },
             onNavigateBack = { popBackStack() },
         )
@@ -285,6 +298,7 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
             },
             onNavigateToTrailer = { navigateToYouTubePlayer(it) },
             onNavigateToExtra = { navigateToYouTubePlayer(it.url) },
+            onNavigateToUser = { navigateToUserProfile(it) },
             onNavigateVip = { navigateToBilling() },
             onNavigateBack = { popBackStack() },
         )
@@ -404,6 +418,7 @@ internal fun NavGraphBuilder.profileScreens(controller: NavHostController) {
             onNavigateToDiscover = { navigateToDiscover() },
             onNavigateToSettings = { navigateToSettings() },
             onNavigateToHome = { navigateToHome() },
+            onNavigateToUser = { navigateToUserProfile(it) },
             onNavigateToVip = { navigateToBilling() },
         )
 
@@ -439,6 +454,7 @@ internal fun NavGraphBuilder.peopleScreens(controller: NavHostController) {
 internal fun NavGraphBuilder.commentsScreens(controller: NavHostController) {
     with(controller) {
         commentsScreen(
+            onNavigateToUser = { navigateToUserProfile(it) },
             onNavigateBack = { popBackStack() },
         )
     }
@@ -468,6 +484,7 @@ internal fun NavGraphBuilder.settingsScreens(controller: NavHostController) {
         settingsScreen(
             onNavigateHome = { navigateToHome() },
             onNavigateYounify = { navigateToYounify() },
+            onNavigateBlockedUsers = { navigateToBlockedUsers() },
             onNavigateBack = { popBackStack() },
         )
 
@@ -494,6 +511,54 @@ internal fun NavGraphBuilder.calendarScreens(controller: NavHostController) {
 internal fun NavGraphBuilder.billingScreens(controller: NavHostController) {
     with(controller) {
         billingScreen(
+            onNavigateBack = { popBackStack() },
+        )
+    }
+}
+
+internal fun NavGraphBuilder.userProfileScreens(controller: NavHostController) {
+    with(controller) {
+        userProfileScreen(
+            onNavigateToShow = ::navigateToShow,
+            onNavigateToMovie = ::navigateToMovie,
+            onNavigateToEpisode = ::navigateToEpisode,
+            onNavigateToUser = ::navigateToUserProfile,
+            onNavigateToAllHistory = ::navigateToAllUserProfileHistory,
+            onNavigateToAllFavorites = ::navigateToAllUserProfileFavorites,
+            onNavigateToAllLists = ::navigateToAllUserProfileLists,
+            onNavigateToList = { list ->
+                navigateToListDetails(
+                    list = list,
+                    mediaId = (-1).toTraktId(),
+                    mediaType = listOf(SHOW, MOVIE),
+                    mediaImage = null,
+                )
+            },
+            onNavigateBack = ::popBackStack,
+        )
+
+        allUserProfileHistoryScreen(
+            onNavigateToShow = { navigateToShow(it) },
+            onNavigateToEpisode = { showId, episode -> navigateToEpisode(showId, episode) },
+            onNavigateToMovie = { navigateToMovie(it) },
+            onNavigateBack = { popBackStack() },
+        )
+
+        allUserProfileFavoritesScreen(
+            onNavigateToShow = { navigateToShow(it) },
+            onNavigateToMovie = { navigateToMovie(it) },
+            onNavigateBack = { popBackStack() },
+        )
+
+        allUserProfileListsScreen(
+            onNavigateToList = { list ->
+                navigateToListDetails(
+                    list = list,
+                    mediaId = (-1).toTraktId(),
+                    mediaType = listOf(SHOW, MOVIE),
+                    mediaImage = null,
+                )
+            },
             onNavigateBack = { popBackStack() },
         )
     }

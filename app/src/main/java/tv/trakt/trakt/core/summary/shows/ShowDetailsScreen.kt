@@ -75,6 +75,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
@@ -120,6 +121,7 @@ internal fun ShowDetailsScreen(
     onTrailerClick: (String) -> Unit,
     onExtraClick: (ExtraVideo) -> Unit,
     onAllSeasonsClick: (Show, Int?) -> Unit,
+    onNavigateToUser: ((User) -> Unit)? = null,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -229,6 +231,7 @@ internal fun ShowDetailsScreen(
             }
         },
         onAllSeasonsClick = onAllSeasonsClick,
+        onNavigateToUser = onNavigateToUser,
         onVipClick = onNavigateVip,
         onBackClick = onNavigateBack,
     )
@@ -427,6 +430,7 @@ internal fun ShowDetailsContent(
     onFavoriteClick: (() -> Unit)? = null,
     onTriviaClick: (() -> Unit)? = null,
     onAllSeasonsClick: ((Show, Int?) -> Unit)? = null,
+    onNavigateToUser: ((User) -> Unit)? = null,
     onVipClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
@@ -638,6 +642,7 @@ internal fun ShowDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onMoreClick = onMoreCommentsClick,
+                            onUserClick = onNavigateToUser,
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),

@@ -92,6 +92,7 @@ internal fun AllActivitySocialScreen(
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToUser: (User) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -142,6 +143,7 @@ internal fun AllActivitySocialScreen(
         onMovieClick = { movie ->
             viewModel.navigateToMovie(movie)
         },
+        onUserClick = onNavigateToUser,
     )
 
     GlobalFiltersSheet(
@@ -205,6 +207,7 @@ internal fun AllActivitySocialContent(
     onShowClick: (EpisodeItem) -> Unit = {},
     onEpisodeClick: (EpisodeItem) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
+    onUserClick: (User) -> Unit = {},
 ) {
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
@@ -252,6 +255,7 @@ internal fun AllActivitySocialContent(
             onShowClick = onShowClick,
             onEpisodeClick = onEpisodeClick,
             onMovieClick = onMovieClick,
+            onUserClick = onUserClick,
         )
     }
 }
@@ -273,6 +277,7 @@ private fun ContentList(
     onShowClick: (EpisodeItem) -> Unit,
     onEpisodeClick: (EpisodeItem) -> Unit,
     onMovieClick: (Movie) -> Unit,
+    onUserClick: (User) -> Unit,
 ) {
     val isScrolledToBottom by remember(listItems.size) {
         derivedStateOf {
@@ -358,6 +363,7 @@ private fun ContentList(
                             onClick = {
                                 onMovieClick(item.movie)
                             },
+                            onUserClick = onUserClick,
                             moreButton = false,
                             modifier = Modifier
                                 .padding(
@@ -378,6 +384,7 @@ private fun ContentList(
                             enabled = !loading,
                             onClick = { onEpisodeClick(item) },
                             onShowClick = { onShowClick(item) },
+                            onUserClick = onUserClick,
                             moreButton = false,
                             modifier = Modifier
                                 .padding(

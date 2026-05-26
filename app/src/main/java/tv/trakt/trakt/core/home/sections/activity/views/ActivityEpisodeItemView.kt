@@ -21,20 +21,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
@@ -52,12 +51,11 @@ internal fun ActivityEpisodeItemView(
     removeButton: Boolean = false,
     moreButton: Boolean = false,
     onClick: () -> Unit = {},
+    onLongClick: (() -> Unit)? = null,
     onRemoveClick: () -> Unit = {},
     onShowClick: () -> Unit = {},
-    onLongClick: (() -> Unit)? = null,
+    onUserClick: (user: User) -> Unit = { _ -> },
 ) {
-    val uriHandler = LocalUriHandler.current
-
     HorizontalMediaCard(
         title = "",
         more = moreButton,
@@ -84,11 +82,7 @@ internal fun ActivityEpisodeItemView(
                     contentAlignment = Alignment.CenterEnd,
                     modifier = Modifier
                         .sizeIn(maxHeight = 26.dp)
-                        .onClick {
-                            uriHandler.openUri(
-                                Config.webUserUrl(user.username),
-                            )
-                        },
+                        .onClick { onUserClick(user) },
                 ) {
                     InfoChip(
                         text = user.displayName,

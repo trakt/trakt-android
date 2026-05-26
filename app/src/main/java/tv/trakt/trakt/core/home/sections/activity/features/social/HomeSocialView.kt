@@ -42,6 +42,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.views.ActivityEpisodeItemView
 import tv.trakt.trakt.core.home.sections.activity.views.ActivityMovieItemView
@@ -60,6 +61,7 @@ internal fun HomeSocialView(
     onMovieClick: (TraktId) -> Unit,
     onShowClick: (TraktId) -> Unit,
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
+    onUserClick: (user: User) -> Unit,
     onMoreClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -101,6 +103,9 @@ internal fun HomeSocialView(
         onMovieClick = {
             viewModel.navigateToMovie(it)
         },
+        onUserClick = {
+            onUserClick(it)
+        },
         onMoreClick = onMoreClick,
     )
 }
@@ -115,6 +120,7 @@ internal fun HomeSocialContent(
     onEpisodeClick: (HomeActivityItem.EpisodeItem) -> Unit = {},
     onMovieClick: (Movie) -> Unit = { },
     onMoreClick: () -> Unit = {},
+    onUserClick: (user: User) -> Unit = {},
     onCollapse: (collapsed: Boolean) -> Unit = {},
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
@@ -187,6 +193,7 @@ internal fun HomeSocialContent(
                                     onShowClick = onShowClick,
                                     onEpisodeClick = onEpisodeClick,
                                     onMovieClick = onMovieClick,
+                                    onUserClick = onUserClick,
                                 )
                             }
                         }
@@ -223,6 +230,7 @@ private fun ContentList(
     onShowClick: (HomeActivityItem.EpisodeItem) -> Unit,
     onEpisodeClick: (HomeActivityItem.EpisodeItem) -> Unit,
     onMovieClick: (Movie) -> Unit,
+    onUserClick: (user: User) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -250,6 +258,7 @@ private fun ContentList(
                         item = item,
                         itemRating = item.userRating,
                         onClick = { onMovieClick(item.movie) },
+                        onUserClick = { onUserClick(it) },
                         modifier = Modifier
                             .animateItem(
                                 fadeInSpec = null,
@@ -264,6 +273,7 @@ private fun ContentList(
                         itemRating = item.userRating,
                         onClick = { onEpisodeClick(item) },
                         onShowClick = { onShowClick(item) },
+                        onUserClick = { onUserClick(it) },
                         modifier = Modifier
                             .animateItem(
                                 fadeInSpec = null,

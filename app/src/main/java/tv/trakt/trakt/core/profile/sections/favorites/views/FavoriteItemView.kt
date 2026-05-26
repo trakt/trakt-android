@@ -33,6 +33,9 @@ internal fun FavoriteItemView(
     item: FavoriteItem,
     modifier: Modifier = Modifier,
     showMediaIcon: Boolean = false,
+    showMore: Boolean = false,
+    watched: Boolean = false,
+    watchlist: Boolean = false,
     onShowClick: () -> Unit = {},
     onMovieClick: () -> Unit = {},
     onShowLongClick: () -> Unit = {},
@@ -44,7 +47,9 @@ internal fun FavoriteItemView(
             VerticalMediaCard(
                 title = item.show.title,
                 imageUrl = item.images?.getPosterUrl(),
-                more = true,
+                more = showMore,
+                watched = watched,
+                watchlist = watchlist,
                 onClick = onShowClick,
                 onLongClick = onShowLongClick,
                 chipContent = { modifier ->
@@ -127,7 +132,9 @@ internal fun FavoriteItemView(
                 title = item.movie.title,
                 imageUrl = item.images?.getPosterUrl(),
                 onClick = onMovieClick,
-                more = true,
+                more = showMore,
+                watched = watched,
+                watchlist = watchlist,
                 onLongClick = onMovieLongClick,
                 chipContent = { modifier ->
                     if (isReleased) {

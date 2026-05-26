@@ -74,4 +74,10 @@ internal sealed class FavoriteItem(
             is ShowItem -> show.releasedAt
             is MovieItem -> movie.released?.atStartOfDay(UTC)?.toInstant()
         }
+
+    val airedEpisodes: Int?
+        get() = when (this) {
+            is ShowItem -> show.airedEpisodes
+            is MovieItem -> null
+        }
 }

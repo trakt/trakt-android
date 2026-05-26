@@ -7,6 +7,7 @@ import kotlin.coroutines.cancellation.CancellationException
 const val HTTP_ERROR_NOT_FOUND = 404
 const val HTTP_ERROR_TRAKT_VIP_ONLY = 426
 const val HTTP_ERROR_TRAKT_VIP_LIMIT = 420
+const val HTTP_ERROR_CONFLICT = 409
 
 fun Exception.rethrowCancellation(action: () -> Unit = {}) {
     if (this is CancellationException) {

@@ -10,6 +10,7 @@ import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.summary.movies.MovieDetailsScreen
 
@@ -26,6 +27,7 @@ internal fun NavGraphBuilder.movieDetailsScreen(
     onNavigateToTrivia: (Movie) -> Unit,
     onNavigateToTrailer: (String) -> Unit,
     onNavigateToExtra: (ExtraVideo) -> Unit,
+    onNavigateToUser: (User) -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -41,6 +43,7 @@ internal fun NavGraphBuilder.movieDetailsScreen(
             onTriviaClick = { movie -> onNavigateToTrivia(movie) },
             onTrailerClick = { url -> onNavigateToTrailer(url) },
             onExtraClick = { extra -> onNavigateToExtra(extra) },
+            onNavigateToUser = onNavigateToUser,
             onNavigateVip = onNavigateVip,
             onNavigateBack = onNavigateBack,
         )

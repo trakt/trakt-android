@@ -12,6 +12,8 @@ import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 internal fun AllFavoritesShowView(
     item: FavoriteItem.ShowItem,
     modifier: Modifier = Modifier,
+    watched: Boolean = false,
+    watchlist: Boolean = false,
     mediaIcon: Boolean = true,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
@@ -25,6 +27,8 @@ internal fun AllFavoritesShowView(
         title = item.show.title,
         titleOriginal = item.show.titleOriginal,
         subtitle = genresText,
+        watched = watched,
+        watchlist = watchlist,
         contentImageUrl = item.images?.getPosterUrl(),
         containerImageUrl = item.images?.getFanartUrl(Images.Size.THUMB),
         onClick = onClick,

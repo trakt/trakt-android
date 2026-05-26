@@ -10,5 +10,5 @@ interface UserOtherListsRemoteDataSource {
         pagination: Pagination,
     ): List<LikedListDto>
 
-    suspend fun getCollaborationLists(): List<ListDto>
+    suspend fun getCollaborationLists(userId: String = "me"): List<ListDto>
 }

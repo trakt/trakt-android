@@ -29,6 +29,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun AllActivityUserChip(
     user: User,
     modifier: Modifier = Modifier,
+    onUserClick: (() -> Unit)? = null,
 ) {
     val uriHandler = LocalUriHandler.current
 
@@ -37,9 +38,11 @@ internal fun AllActivityUserChip(
         modifier = modifier
             .sizeIn(maxHeight = 26.dp)
             .onClick {
-                uriHandler.openUri(
-                    Config.webUserUrl(user.username),
-                )
+                if (onUserClick != null) {
+                    onUserClick()
+                } else {
+                    uriHandler.openUri(Config.webUserUrl(user.username))
+                }
             },
     ) {
         InfoChip(

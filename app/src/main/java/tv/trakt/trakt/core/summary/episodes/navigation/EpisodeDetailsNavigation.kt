@@ -9,6 +9,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.summary.episodes.EpisodeDetailsScreen
 
@@ -26,6 +27,7 @@ internal fun NavGraphBuilder.episodeDetailsScreen(
     onCommentsClick: ((Show, Episode, CommentsFilter) -> Unit),
     onPersonClick: ((Show, Episode, Person) -> Unit),
     onAllSeasonsClick: (Show, Int?) -> Unit,
+    onNavigateToUser: (User) -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -37,6 +39,7 @@ internal fun NavGraphBuilder.episodeDetailsScreen(
             onCommentsClick = onCommentsClick,
             onPersonClick = onPersonClick,
             onAllSeasonsClick = onAllSeasonsClick,
+            onNavigateToUser = onNavigateToUser,
             onNavigateVip = onNavigateVip,
             onNavigateBack = onNavigateBack,
         )

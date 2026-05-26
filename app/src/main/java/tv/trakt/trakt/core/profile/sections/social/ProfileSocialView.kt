@@ -59,6 +59,7 @@ internal fun ProfileSocialView(
     viewModel: ProfileSocialViewModel = koinViewModel(),
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
+    onUserClick: (User) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -69,6 +70,7 @@ internal fun ProfileSocialView(
         contentPadding = contentPadding,
         onCollapse = viewModel::setCollapsed,
         onFilterClick = viewModel::setFilter,
+        onUserClick = { onUserClick(it) },
     )
 }
 
@@ -80,6 +82,7 @@ internal fun ProfileSocialContent(
     contentPadding: PaddingValues = PaddingValues(),
     onCollapse: (collapsed: Boolean) -> Unit = {},
     onFilterClick: (SocialFilter) -> Unit = {},
+    onUserClick: (User) -> Unit = {},
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
 
@@ -148,6 +151,7 @@ internal fun ProfileSocialContent(
                                 ContentList(
                                     listItems = (state.items ?: emptyList()).toImmutableList(),
                                     contentPadding = contentPadding,
+                                    onUserClick = onUserClick,
                                 )
                             }
                         }
@@ -226,6 +230,7 @@ private fun ContentList(
     listItems: ImmutableList<User>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
+    onUserClick: (User) -> Unit = {},
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -247,7 +252,7 @@ private fun ContentList(
             items = listItems,
             key = { it.ids.trakt.value },
         ) { user ->
-            SocialUserView(user = user)
+            SocialUserView(user = user, onUserClick = { onUserClick(user) })
         }
     }
 }

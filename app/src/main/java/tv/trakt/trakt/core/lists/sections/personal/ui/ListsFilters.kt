@@ -14,6 +14,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 import tv.trakt.trakt.ui.components.chips.FilterChip
@@ -23,6 +25,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun ListsFilters(
     modifier: Modifier = Modifier,
+    options: ImmutableList<PersonalListType> = PersonalListType.entries.toImmutableList(),
     selected: PersonalListType? = null,
     height: Dp = 28.dp,
     paddingHorizontal: PaddingValues = PaddingValues.Zero,
@@ -44,7 +47,7 @@ internal fun ListsFilters(
         paddingVertical = paddingVertical,
         modifier = modifier,
     ) {
-        for (filter in PersonalListType.entries) {
+        for (filter in options) {
             FilterChip(
                 selected = selected == filter,
                 animated = initialSelected.value != null,

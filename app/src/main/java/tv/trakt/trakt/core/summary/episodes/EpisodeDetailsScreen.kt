@@ -70,6 +70,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
@@ -105,6 +106,7 @@ internal fun EpisodeDetailsScreen(
     onCommentsClick: ((Show, Episode, CommentsFilter) -> Unit),
     onPersonClick: ((Show, Episode, Person) -> Unit),
     onAllSeasonsClick: (Show, Int?) -> Unit,
+    onNavigateToUser: (User) -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -186,6 +188,7 @@ internal fun EpisodeDetailsScreen(
             haptic.performHapticFeedback(Confirm)
         },
         onAllSeasonsClick = onAllSeasonsClick,
+        onNavigateToUser = onNavigateToUser,
         onVipClick = onNavigateVip,
         onBackClick = onNavigateBack,
         onInfoClick = {
@@ -330,6 +333,7 @@ internal fun EpisodeDetailsContent(
     onRatingClick: ((Int) -> Unit)? = null,
     onRatingRemoveClick: (() -> Unit)? = null,
     onAllSeasonsClick: ((Show, Int?) -> Unit)? = null,
+    onNavigateToUser: ((User) -> Unit)? = null,
     onVipClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
     onInfoClick: (() -> Unit)? = null,
@@ -519,6 +523,7 @@ internal fun EpisodeDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onMoreClick = onMoreCommentsClick,
+                            onUserClick = onNavigateToUser,
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(

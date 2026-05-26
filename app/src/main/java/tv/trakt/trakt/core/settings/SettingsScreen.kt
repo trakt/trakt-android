@@ -82,6 +82,7 @@ import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.ui.theme.colors.Purple300
 import tv.trakt.trakt.common.ui.theme.colors.Purple600
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.core.notifications.model.DeliveryAdjustment
@@ -107,6 +108,7 @@ internal fun SettingsScreen(
     viewModel: SettingsViewModel,
     onNavigateHome: () -> Unit,
     onNavigateYounify: () -> Unit,
+    onNavigateBlockedUsers: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
@@ -145,6 +147,7 @@ internal fun SettingsScreen(
         onSetDeliveryTime = viewModel::setNotificationDeliveryTime,
         onClearCoverImage = viewModel::clearCoverImage,
         onYounifyClick = onNavigateYounify,
+        onBlockedUsersClick = onNavigateBlockedUsers,
         onGithubClick = {
             uriHandler.openUri(Config.WEB_SOCIAL_GITHUB_URL)
         },
@@ -188,6 +191,7 @@ private fun SettingsScreenContent(
     onSetAbout: (String?) -> Unit = { },
     onClearCoverImage: () -> Unit = { },
     onYounifyClick: () -> Unit = { },
+    onBlockedUsersClick: () -> Unit = { },
     onEnableMultiplePlays: (Boolean) -> Unit = { },
     onEnableNotifications: (Boolean) -> Unit = { },
     onSetDeliveryTime: (DeliveryAdjustment) -> Unit = { },
@@ -260,6 +264,7 @@ private fun SettingsScreenContent(
                 SettingsTracking(
                     state = state,
                     onEnableMultiplePlays = onEnableMultiplePlays,
+                    onBlockedUsersClick = onBlockedUsersClick,
                 )
 
                 SettingsStreaming(
@@ -379,7 +384,7 @@ private fun SettingsAccount(
             TraktHeader(
                 title = stringResource(R.string.header_account_details).uppercase(),
                 titleStyle = TraktTheme.typography.heading6,
-                titleColor = TraktTheme.colors.textSecondary,
+                titleColor = Purple300,
                 subtitle = "@${state.user?.username}",
                 subtitleColor = TraktTheme.colors.textPrimary,
                 modifier = Modifier.padding(bottom = 4.dp),
@@ -488,14 +493,15 @@ private fun SettingsTracking(
     state: SettingsState,
     modifier: Modifier = Modifier,
     onEnableMultiplePlays: (Boolean) -> Unit,
+    onBlockedUsersClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(SECTION_SPACING_DP.dp),
         modifier = modifier,
     ) {
         TraktHeader(
-            title = stringResource(R.string.header_settings_tracking).uppercase(),
-            titleColor = TraktTheme.colors.textSecondary,
+            title = stringResource(R.string.header_behavior).uppercase(),
+            titleColor = Purple300,
             titleStyle = TraktTheme.typography.heading6,
         )
 
@@ -505,6 +511,7 @@ private fun SettingsTracking(
                 else -> state.user.settings?.watchOnlyOnce == false
             }
         }
+
         SettingsSwitchField(
             text = stringResource(R.string.text_settings_enable_multiple_plays),
             description = stringResource(R.string.text_settings_enable_multiple_plays_description),
@@ -513,6 +520,14 @@ private fun SettingsTracking(
             onClick = {
                 onEnableMultiplePlays(!enabled)
             },
+            modifier = Modifier.padding(top = SECTION_SPACING_DP.dp / 1.5F),
+        )
+
+        SettingsTextField(
+            text = stringResource(R.string.heading_blocked_users),
+            description = stringResource(R.string.description_blocked_users),
+            onClick = onBlockedUsersClick,
+            modifier = Modifier.padding(top = SECTION_SPACING_DP.dp),
         )
     }
 }
@@ -529,7 +544,7 @@ private fun SettingsStreaming(
     ) {
         TraktHeader(
             title = stringResource(R.string.text_streaming_sync).uppercase(),
-            titleColor = TraktTheme.colors.textSecondary,
+            titleColor = Purple300,
             titleStyle = TraktTheme.typography.heading6,
         )
 
@@ -583,7 +598,7 @@ private fun SettingsAppearance(
     ) {
         TraktHeader(
             title = stringResource(R.string.header_appearance).uppercase(),
-            titleColor = TraktTheme.colors.textSecondary,
+            titleColor = Purple300,
             titleStyle = TraktTheme.typography.heading6,
         )
 
@@ -693,7 +708,7 @@ private fun SettingsNotifications(
         Column {
             TraktHeader(
                 title = stringResource(R.string.header_settings_notifications).uppercase(),
-                titleColor = TraktTheme.colors.textSecondary,
+                titleColor = Purple300,
                 titleStyle = TraktTheme.typography.heading6,
             )
         }
@@ -752,7 +767,7 @@ private fun SettingsMisc(
     ) {
         TraktHeader(
             title = stringResource(R.string.link_text_general_settings).uppercase(),
-            titleColor = TraktTheme.colors.textSecondary,
+            titleColor = Purple300,
             titleStyle = TraktTheme.typography.heading6,
         )
 
