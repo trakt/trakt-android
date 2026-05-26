@@ -271,7 +271,7 @@
   <string name="button_text_remove_photo">Usuń zdjęcie</string>
   <string name="button_text_renew_vip">Odnów subskrypcję</string>
   <string name="button_text_report_comment">Zgłoszenie</string>
-  <string name="button_text_reset_all_filters">Resetuj wszystkie</string>
+  <string name="button_text_reset_all_filters">Zresetuj</string>
   <string name="button_text_reset_calendar_period">Dzisiaj</string>
   <string name="button_text_restore_rating_prompts">Przywróć zapytania o ocenę</string>
   <string name="button_text_restore_show">Przywróć serial</string>
