@@ -58,6 +58,7 @@ import kotlin.math.abs
 @Composable
 internal fun UserRatingBar(
     modifier: Modifier = Modifier,
+    key: String? = null,
     rating: Int? = null,
     favorite: Boolean = false,
     favoriteVisible: Boolean = true,
@@ -160,7 +161,7 @@ internal fun UserRatingBar(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = spacedBy(spacing, CenterHorizontally),
                     modifier = Modifier
-                        .pointerInput(Unit) {
+                        .pointerInput(key ?: Unit) {
                             val starUnit = starSizePx + spacingPx
 
                             fun xToStars(x: Float): Float {

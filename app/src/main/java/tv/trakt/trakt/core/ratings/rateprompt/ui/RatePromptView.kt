@@ -115,6 +115,7 @@ internal fun RatePromptView(
             ),
     ) {
         ExpandedView(
+            key = media.movie.ids.trakt.toString(),
             image = media.movie.images?.getFanartUrl(Size.THUMB),
             title = media.movie.title,
             subtitle = stringResource(
@@ -153,6 +154,7 @@ internal fun RatePromptView(
 
 @Composable
 private fun ExpandedView(
+    key: String?,
     image: String?,
     title: String?,
     subtitle: String?,
@@ -249,6 +251,7 @@ private fun ExpandedView(
                         )
 
                         UserRatingBar(
+                            key = key,
                             size = 22.dp,
                             spacing = 7.dp,
                             textSpacing = 42.dp,
@@ -403,6 +406,7 @@ private fun Preview() {
                         ),
                 ) {
                     ExpandedView(
+                        key = null,
                         image = "",
                         title = "Lord of the Rings: The Fellowship of the Ring",
                         rating = 7,

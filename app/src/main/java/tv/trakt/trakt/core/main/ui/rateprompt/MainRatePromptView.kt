@@ -28,9 +28,13 @@ internal fun ColumnScope.MainRatePromptView(
 ) {
     val localVisibility = LocalRatePromptVisibility.current
 
+    val ratePrompt = state.ratePrompt
+    val ratePromptMovies = (ratePrompt as? UnratedMovies)?.movies.orEmpty()
+    val ratePromptFavorites = (ratePrompt as? UnratedMovies)?.favorites.orEmpty()
+
     AnimatedVisibility(
-        visible = remember(state.ratePrompt, localVisibility.value) {
-            state.ratePrompt is UnratedMovies && localVisibility.value
+        visible = remember(ratePrompt, ratePromptMovies, localVisibility.value) {
+            ratePrompt is UnratedMovies && localVisibility.value
         },
         enter = fadeIn(tween(250)) + slideInVertically(initialOffsetY = { it / 10 }),
         exit = fadeOut(tween(200)),
@@ -38,23 +42,20 @@ internal fun ColumnScope.MainRatePromptView(
             .fillMaxWidth()
             .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace - 8.dp),
     ) {
-        val movies = (state.ratePrompt as? UnratedMovies)?.movies.orEmpty()
-        val moviesFavorites = (state.ratePrompt as? UnratedMovies)?.favorites.orEmpty()
-
-        movies
+        ratePromptMovies
             .firstOrNull()
             ?.let { movie ->
                 val media = RatePromptMedia(
                     movie = movie,
-                    favorite = moviesFavorites.contains(movie.ids.trakt),
+                    favorite = ratePromptFavorites.contains(movie.ids.trakt),
                 )
 
-                val moreMedia = movies
+                val moreMedia = ratePromptMovies
                     .filter { it.ids.trakt != movie.ids.trakt }
                     .map { movie ->
                         RatePromptMedia(
                             movie = movie,
-                            favorite = moviesFavorites.contains(movie.ids.trakt),
+                            favorite = ratePromptFavorites.contains(movie.ids.trakt),
                         )
                     }
 
