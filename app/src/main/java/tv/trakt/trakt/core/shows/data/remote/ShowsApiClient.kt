@@ -102,7 +102,7 @@ internal class ShowsApiClient(
             runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
             certifications = filters.certification?.joinToString(",") { it.slug },
             countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
-            ignoreWatched = filters.hideWatched,
+            ignoreWatched = true,
             ignoreWatchlisted = filters.hideWatchlist,
             ignoreCollected = null,
             startDate = null,
