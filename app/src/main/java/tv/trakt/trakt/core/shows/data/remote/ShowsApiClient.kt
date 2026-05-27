@@ -103,7 +103,7 @@ internal class ShowsApiClient(
             certifications = filters.certification?.joinToString(",") { it.slug },
             countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
             ignoreWatched = true,
-            ignoreWatchlisted = true,
+            ignoreWatchlisted = filters.hideWatchlist,
             ignoreCollected = null,
             startDate = null,
             endDate = null,

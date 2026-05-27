@@ -102,7 +102,7 @@ internal class MoviesApiClient(
             runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
             certifications = filters.certification?.joinToString(",") { it.slug },
             ignoreWatched = true,
-            ignoreWatchlisted = true,
+            ignoreWatchlisted = filters.hideWatchlist,
             ignoreCollected = null,
             startDate = null,
             endDate = null,
