@@ -58,6 +58,7 @@ import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.AllWatchlist
 import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
@@ -137,6 +138,7 @@ internal class HomeHistoryViewModel(
         merge(
             homeUpNextSource.observeUpdates(),
             watchlistUpdates.observeUpdates(Default),
+            watchlistUpdates.observeUpdates(AllWatchlist),
             allActivitySource.observeUpdates(),
             showUpdates.observeUpdates(Source.PROGRESS),
             showUpdates.observeUpdates(Source.SEASONS),

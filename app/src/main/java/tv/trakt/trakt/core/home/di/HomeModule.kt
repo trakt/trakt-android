@@ -129,7 +129,6 @@ internal val homeModule = module {
             updateEpisodeHistoryUseCase = get(),
             userWatchlistLocalSource = get(),
             userWatchlistMinLocalSource = get(),
-            watchlistUpdates = get(),
         )
     }
 

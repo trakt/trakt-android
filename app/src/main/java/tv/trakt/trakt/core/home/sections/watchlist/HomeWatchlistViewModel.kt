@@ -61,6 +61,7 @@ import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.ShowItem
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.user.data.local.watchlist.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.AllWatchlist
 import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
@@ -141,6 +142,7 @@ internal class HomeWatchlistViewModel(
     private fun observeData() {
         merge(
             watchlistUpdates.observeUpdates(Default),
+            watchlistUpdates.observeUpdates(AllWatchlist),
             checkInUpdates.observeUpdates()
                 .filterNot { it.first == Source.HomeWatchlist }
                 .takeWhile { dataJob == null },
@@ -237,10 +239,9 @@ internal class HomeWatchlistViewModel(
 
     fun addShowToHistory(
         showId: TraktId,
-        episodeId: TraktId?,
         customDate: DateSelectionResult? = null,
     ) {
-        if (processingJob?.isActive == true || episodeId == null) {
+        if (processingJob?.isActive == true) {
             return
         }
 
@@ -263,9 +264,10 @@ internal class HomeWatchlistViewModel(
 
                 addHistoryUseCase.addEpisodeToHistory(
                     showId = showId,
-                    episodeId = episodeId,
+                    seasonEpisode = SeasonEpisode(1, 1),
                     customDate = customDate,
                 )
+                watchlistUpdates.notifyUpdate(Default)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",
@@ -318,6 +320,7 @@ internal class HomeWatchlistViewModel(
                     movieId = movieId,
                     customDate = customDate,
                 )
+                watchlistUpdates.notifyUpdate(Default)
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
@@ -363,7 +366,6 @@ internal class HomeWatchlistViewModel(
 
                 removeItem(
                     item = currentItems[itemIndex],
-                    notify = false,
                 )
                 checkInManager.startMovie(
                     movieId = movieId,
@@ -421,7 +423,6 @@ internal class HomeWatchlistViewModel(
 
                 removeItem(
                     item = currentItems[itemIndex],
-                    notify = false,
                 )
 
                 analytics.progress.logAddWatchedMedia(
@@ -533,10 +534,7 @@ internal class HomeWatchlistViewModel(
         return false
     }
 
-    fun removeItem(
-        item: WatchlistItem?,
-        notify: Boolean = false,
-    ) {
+    fun removeItem(item: WatchlistItem?) {
         val currentItems = itemsState.value ?: return
 
         itemsState.update {
@@ -564,10 +562,6 @@ internal class HomeWatchlistViewModel(
                     )
                 }
                 else -> {}
-            }
-
-            if (notify) {
-                watchlistUpdates.notifyUpdate(Default)
             }
         }
     }

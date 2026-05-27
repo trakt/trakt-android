@@ -47,6 +47,7 @@ import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.CALENDAR
 import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.AllWatchlist
 import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
@@ -121,6 +122,7 @@ internal class HomeUpcomingViewModel(
         merge(
             homeUpNextSource.observeUpdates(),
             watchlistUpdates.observeUpdates(Default),
+            watchlistUpdates.observeUpdates(AllWatchlist),
             episodeUpdates.observeUpdates(CALENDAR),
         )
             .distinctUntilChanged()
