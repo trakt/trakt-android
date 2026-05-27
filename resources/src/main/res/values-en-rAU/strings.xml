@@ -17,6 +17,8 @@
   <string name="advanced_filter_label_runtime">Runtime of %1$d to %2$d minutes.</string>
   <string name="badge_text_get_vip">Get VIP</string>
   <string name="badge_text_more">and %d more</string>
+  <string name="button_label_activity_ratings">View ratings</string>
+  <string name="button_label_activity_reviews">View reviews</string>
   <string name="button_label_add_comment">Add review</string>
   <string name="button_label_add_new_comment">Add a new review</string>
   <string name="button_label_add_note">Add a note to %s</string>
@@ -166,6 +168,7 @@
   <string name="button_label_view_all_popular_movies">View all popular movies</string>
   <string name="button_label_view_all_popular_shows">View all popular shows</string>
   <string name="button_label_view_all_progress">View all progress</string>
+  <string name="button_label_view_all_ratings">View all ratings</string>
   <string name="button_label_view_all_recommended_movies">View all recommended movies</string>
   <string name="button_label_view_all_recommended_shows">View all recommended shows</string>
   <string name="button_label_view_all_social">View all social connections</string>
@@ -182,6 +185,8 @@
   <string name="button_label_view_trivia">View trivia</string>
   <string name="button_label_vip_upgrade">Upgrade to VIP</string>
   <string name="button_label_watched_until_here">Mark \"%s\" as watched until here</string>
+  <string name="button_text_activity_ratings">Ratings</string>
+  <string name="button_text_activity_reviews">Reviews</string>
   <string name="button_text_add_note">Add Note</string>
   <string name="button_text_add_reply">Add Reply</string>
   <string name="button_text_add_review">Add Review</string>
@@ -507,6 +512,7 @@
   <string name="input_prompt_rename_list">Rename your list</string>
   <string name="input_prompt_username">What should your username be?</string>
   <string name="label_drag_image_to_adjust">Drag the image to adjust</string>
+  <string name="label_report_reason_abusive">Abusive</string>
   <string name="label_report_reason_adult">Adult content</string>
   <string name="label_report_reason_bigotry">Bigotry</string>
   <string name="label_report_reason_data_refresh">Data refresh</string>
@@ -598,6 +604,7 @@
   <string name="list_placeholder_personal_list_empty_movies">There are no movies in this list yet.</string>
   <string name="list_placeholder_personal_list_empty_shows">There are no shows in this list yet.</string>
   <string name="list_placeholder_popular_lists">\"%s\" does not appear on any popular lists.</string>
+  <string name="list_placeholder_ratings">You haven\'t rated anything yet.</string>
   <string name="list_placeholder_reviews">You haven\'t written any reviews yet.</string>
   <string name="list_title_activity">Activity</string>
   <string name="list_title_actors">Actors</string>
@@ -624,6 +631,7 @@
   <string name="list_title_popular_movies">Popular Movies</string>
   <string name="list_title_popular_shows">Popular Shows</string>
   <string name="list_title_progress">Progress</string>
+  <string name="list_title_ratings">Ratings</string>
   <string name="list_title_recently_searched_movies">Recently Searched Movies</string>
   <string name="list_title_recently_searched_shows">Recently Searched Shows</string>
   <string name="list_title_recently_watched">Recently Watched</string>
@@ -708,6 +716,7 @@
   <string name="page_title_privacy">Privacy Policy</string>
   <string name="page_title_profile">Profile</string>
   <string name="page_title_progress">Progress</string>
+  <string name="page_title_ratings">Ratings</string>
   <string name="page_title_recently_watched">Recently Watched</string>
   <string name="page_title_recommended_media">Recommended media</string>
   <string name="page_title_recommended_movies">Recommended movies</string>

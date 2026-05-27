@@ -17,6 +17,8 @@
   <string name="advanced_filter_label_runtime">Διάρκεια από %1$d έως %2$d λεπτά.</string>
   <string name="badge_text_get_vip">Αποκτήστε VIP</string>
   <string name="badge_text_more">και %d ακόμη</string>
+  <string name="button_label_activity_ratings">Προβολή βαθμολογιών</string>
+  <string name="button_label_activity_reviews">Προβολή κριτικών</string>
   <string name="button_label_add_comment">Προσθήκη κριτικής</string>
   <string name="button_label_add_new_comment">Προσθήκη νέας κριτικής</string>
   <string name="button_label_add_note">Προσθήκη σημείωσης στο %s</string>
@@ -166,6 +168,7 @@
   <string name="button_label_view_all_popular_movies">Προβολή όλων των δημοφιλών ταινιών</string>
   <string name="button_label_view_all_popular_shows">Προβολή όλων των δημοφιλών σειρών</string>
   <string name="button_label_view_all_progress">Προβολή όλων των προόδων</string>
+  <string name="button_label_view_all_ratings">Προβολή όλων των βαθμολογιών</string>
   <string name="button_label_view_all_recommended_movies">Προβολή όλων των προτεινόμενων ταινιών</string>
   <string name="button_label_view_all_recommended_shows">Προβολή όλων των προτεινόμενων σειρών</string>
   <string name="button_label_view_all_social">Προβολή όλων των κοινωνικών συνδέσεων</string>
@@ -182,6 +185,8 @@
   <string name="button_label_view_trivia">Προβολή trivia</string>
   <string name="button_label_vip_upgrade">Αναβαθμίστε σε VIP</string>
   <string name="button_label_watched_until_here">Σήμανση του \"%s\" ως παρακολουθήθηκε μέχρι εδώ</string>
+  <string name="button_text_activity_ratings">Αξιολογήσεις</string>
+  <string name="button_text_activity_reviews">Κριτικές</string>
   <string name="button_text_add_note">Προσθήκη Σημείωσης</string>
   <string name="button_text_add_reply">Προσθήκη Απάντησης</string>
   <string name="button_text_add_review">Προσθήκη Κριτικής</string>
@@ -507,6 +512,7 @@
   <string name="input_prompt_rename_list">Μετονομασία της λίστας σας</string>
   <string name="input_prompt_username">Ποιο θα πρέπει να είναι το όνομα χρήστη σας;</string>
   <string name="label_drag_image_to_adjust">Σύρετε την εικόνα για προσαρμογή</string>
+  <string name="label_report_reason_abusive">Υβριστικό</string>
   <string name="label_report_reason_adult">Περιεχόμενο ενηλίκων</string>
   <string name="label_report_reason_bigotry">Φανατισμός</string>
   <string name="label_report_reason_data_refresh">Ανανέωση δεδομένων</string>
@@ -598,6 +604,7 @@
   <string name="list_placeholder_personal_list_empty_movies">Δεν υπάρχουν ταινίες σε αυτή τη λίστα ακόμα.</string>
   <string name="list_placeholder_personal_list_empty_shows">Δεν υπάρχουν σειρές σε αυτή τη λίστα ακόμα.</string>
   <string name="list_placeholder_popular_lists">Το \"%s\" δεν εμφανίζεται σε καμία δημοφιλή λίστα.</string>
+  <string name="list_placeholder_ratings">Δεν έχετε βαθμολογήσει τίποτα ακόμα.</string>
   <string name="list_placeholder_reviews">Δεν έχετε γράψει ακόμα κριτικές.</string>
   <string name="list_title_activity">Δραστηριότητα</string>
   <string name="list_title_actors">Ηθοποιοί</string>
@@ -624,6 +631,7 @@
   <string name="list_title_popular_movies">Δημοφιλείς Ταινίες</string>
   <string name="list_title_popular_shows">Δημοφιλείς Σειρές</string>
   <string name="list_title_progress">Πρόοδος</string>
+  <string name="list_title_ratings">Αξιολογήσεις</string>
   <string name="list_title_recently_searched_movies">Πρόσφατα Αναζητημένες Ταινίες</string>
   <string name="list_title_recently_searched_shows">Πρόσφατα Αναζητημένες Σειρές</string>
   <string name="list_title_recently_watched">Πρόσφατα Παρακολουθήθηκαν</string>
@@ -708,6 +716,7 @@
   <string name="page_title_privacy">Πολιτική Απορρήτου</string>
   <string name="page_title_profile">Προφίλ</string>
   <string name="page_title_progress">Πρόοδος</string>
+  <string name="page_title_ratings">Αξιολογήσεις</string>
   <string name="page_title_recently_watched">Πρόσφατα Παρακολουθήθηκαν</string>
   <string name="page_title_recommended_media">Προτεινόμενα μέσα</string>
   <string name="page_title_recommended_movies">Προτεινόμενες ταινίες</string>

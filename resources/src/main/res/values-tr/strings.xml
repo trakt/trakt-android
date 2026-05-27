@@ -17,6 +17,8 @@
   <string name="advanced_filter_label_runtime">%1$d ila %2$d dakika oynatma süresi.</string>
   <string name="badge_text_get_vip">VIP Ol</string>
   <string name="badge_text_more">ve %d daha</string>
+  <string name="button_label_activity_ratings">Puanlamaları görüntüle</string>
+  <string name="button_label_activity_reviews">Yorumları görüntüle</string>
   <string name="button_label_add_comment">Yorum ekle</string>
   <string name="button_label_add_new_comment">Yeni bir yorum ekle</string>
   <string name="button_label_add_note">%s için bir not ekle</string>
@@ -166,6 +168,7 @@
   <string name="button_label_view_all_popular_movies">Tüm popüler filmleri görüntüle</string>
   <string name="button_label_view_all_popular_shows">Tüm popüler dizileri görüntüle</string>
   <string name="button_label_view_all_progress">Tüm ilerlemeyi görüntüle</string>
+  <string name="button_label_view_all_ratings">Tüm puanlamaları görüntüle</string>
   <string name="button_label_view_all_recommended_movies">Tüm önerilen filmleri görüntüle</string>
   <string name="button_label_view_all_recommended_shows">Tüm önerilen dizileri görüntüle</string>
   <string name="button_label_view_all_social">Tüm sosyal bağlantıları görüntüle</string>
@@ -182,6 +185,8 @@
   <string name="button_label_view_trivia">Trivia\'yı görüntüle</string>
   <string name="button_label_vip_upgrade">VIP\'ye yükselt</string>
   <string name="button_label_watched_until_here">\"%s\" buraya kadar izlendi olarak işaretle</string>
+  <string name="button_text_activity_ratings">Derecelendirmeler</string>
+  <string name="button_text_activity_reviews">Yorumlar</string>
   <string name="button_text_add_note">Not Ekle</string>
   <string name="button_text_add_reply">Yanıt Ekle</string>
   <string name="button_text_add_review">Yorum Ekle</string>
@@ -507,6 +512,7 @@
   <string name="input_prompt_rename_list">Listenizi yeniden adlandırın</string>
   <string name="input_prompt_username">Kullanıcı adınız ne olmalı?</string>
   <string name="label_drag_image_to_adjust">Görseli ayarlamak için sürükleyin</string>
+  <string name="label_report_reason_abusive">Kötüye Kullanım</string>
   <string name="label_report_reason_adult">Yetişkin içerik</string>
   <string name="label_report_reason_bigotry">Bağnazlık</string>
   <string name="label_report_reason_data_refresh">Veri yenileme</string>
@@ -598,6 +604,7 @@
   <string name="list_placeholder_personal_list_empty_movies">Bu listede henüz film yok.</string>
   <string name="list_placeholder_personal_list_empty_shows">Bu listede henüz dizi yok.</string>
   <string name="list_placeholder_popular_lists">\"%s\" herhangi bir popüler listede görünmüyor.</string>
+  <string name="list_placeholder_ratings">Henüz hiçbir şeye puan vermediniz.</string>
   <string name="list_placeholder_reviews">Henüz hiçbir inceleme yazmadınız.</string>
   <string name="list_title_activity">Etkinlik</string>
   <string name="list_title_actors">Oyuncular</string>
@@ -624,6 +631,7 @@
   <string name="list_title_popular_movies">Popüler Filmler</string>
   <string name="list_title_popular_shows">Popüler Diziler</string>
   <string name="list_title_progress">İlerleme</string>
+  <string name="list_title_ratings">Derecelendirmeler</string>
   <string name="list_title_recently_searched_movies">Son Aranan Filmler</string>
   <string name="list_title_recently_searched_shows">Son Aranan Diziler</string>
   <string name="list_title_recently_watched">Son İzlenenler</string>
@@ -708,6 +716,7 @@
   <string name="page_title_privacy">Gizlilik Politikası</string>
   <string name="page_title_profile">Profil</string>
   <string name="page_title_progress">İlerleme</string>
+  <string name="page_title_ratings">Derecelendirmeler</string>
   <string name="page_title_recently_watched">Son İzlenenler</string>
   <string name="page_title_recommended_media">Önerilen medya</string>
   <string name="page_title_recommended_movies">Önerilen filmler</string>

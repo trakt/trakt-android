@@ -17,6 +17,8 @@
   <string name="advanced_filter_label_runtime">再生時間 %1$d～%2$d分</string>
   <string name="badge_text_get_vip">VIPをゲット</string>
   <string name="badge_text_more">他%d件</string>
+  <string name="button_label_activity_ratings">評価を見る</string>
+  <string name="button_label_activity_reviews">レビューを見る</string>
   <string name="button_label_add_comment">レビューを追加</string>
   <string name="button_label_add_new_comment">新しいレビューを追加</string>
   <string name="button_label_add_note">%sにノートを追加</string>
@@ -166,6 +168,7 @@
   <string name="button_label_view_all_popular_movies">すべての人気映画を見る</string>
   <string name="button_label_view_all_popular_shows">すべての人気番組を見る</string>
   <string name="button_label_view_all_progress">すべての進捗を表示</string>
+  <string name="button_label_view_all_ratings">全ての評価を見る</string>
   <string name="button_label_view_all_recommended_movies">すべてのおすすめ映画を見る</string>
   <string name="button_label_view_all_recommended_shows">すべてのおすすめ番組を見る</string>
   <string name="button_label_view_all_social">すべてのソーシャル接続を表示</string>
@@ -182,6 +185,8 @@
   <string name="button_label_view_trivia">トリビアを表示</string>
   <string name="button_label_vip_upgrade">VIPにアップグレード</string>
   <string name="button_label_watched_until_here">「%s」をここまで視聴済みにする</string>
+  <string name="button_text_activity_ratings">評価</string>
+  <string name="button_text_activity_reviews">レビュー</string>
   <string name="button_text_add_note">ノートを追加</string>
   <string name="button_text_add_reply">返信を追加</string>
   <string name="button_text_add_review">レビューを追加</string>
@@ -507,6 +512,7 @@
   <string name="input_prompt_rename_list">リスト名を変更</string>
   <string name="input_prompt_username">ユーザー名は何にしますか？</string>
   <string name="label_drag_image_to_adjust">画像をドラッグして調整</string>
+  <string name="label_report_reason_abusive">不適切</string>
   <string name="label_report_reason_adult">成人向けコンテンツ</string>
   <string name="label_report_reason_bigotry">偏見</string>
   <string name="label_report_reason_data_refresh">データ更新</string>
@@ -598,6 +604,7 @@
   <string name="list_placeholder_personal_list_empty_movies">このリストにはまだ映画がありません。</string>
   <string name="list_placeholder_personal_list_empty_shows">このリストにはまだ番組がありません。</string>
   <string name="list_placeholder_popular_lists">「%s」はどの人気リストにも表示されていません。</string>
+  <string name="list_placeholder_ratings">まだ何も評価していません。</string>
   <string name="list_placeholder_reviews">まだレビューを書いていません。</string>
   <string name="list_title_activity">アクティビティ</string>
   <string name="list_title_actors">俳優</string>
@@ -624,6 +631,7 @@
   <string name="list_title_popular_movies">人気映画</string>
   <string name="list_title_popular_shows">人気番組</string>
   <string name="list_title_progress">進捗</string>
+  <string name="list_title_ratings">評価</string>
   <string name="list_title_recently_searched_movies">最近検索した映画</string>
   <string name="list_title_recently_searched_shows">最近検索した番組</string>
   <string name="list_title_recently_watched">最近視聴した作品</string>
@@ -708,6 +716,7 @@
   <string name="page_title_privacy">プライバシーポリシー</string>
   <string name="page_title_profile">プロフィール</string>
   <string name="page_title_progress">進捗</string>
+  <string name="page_title_ratings">評価</string>
   <string name="page_title_recently_watched">最近視聴した作品</string>
   <string name="page_title_recommended_media">おすすめメディア</string>
   <string name="page_title_recommended_movies">おすすめ映画</string>

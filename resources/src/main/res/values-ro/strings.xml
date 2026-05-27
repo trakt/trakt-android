@@ -17,6 +17,8 @@
   <string name="advanced_filter_label_runtime">Durată de la %1$d la %2$d minute.</string>
   <string name="badge_text_get_vip">Ia VIP</string>
   <string name="badge_text_more">și încă %d</string>
+  <string name="button_label_activity_ratings">Vezi evaluări</string>
+  <string name="button_label_activity_reviews">Vezi recenzii</string>
   <string name="button_label_add_comment">Adaugă recenzie</string>
   <string name="button_label_add_new_comment">Adaugă o nouă recenzie</string>
   <string name="button_label_add_note">Adaugă o notă la %s</string>
@@ -166,6 +168,7 @@
   <string name="button_label_view_all_popular_movies">Vezi toate filmele populare</string>
   <string name="button_label_view_all_popular_shows">Vezi toate serialele populare</string>
   <string name="button_label_view_all_progress">Vezi tot progresul</string>
+  <string name="button_label_view_all_ratings">Vezi toate evaluările</string>
   <string name="button_label_view_all_recommended_movies">Vezi toate filmele recomandate</string>
   <string name="button_label_view_all_recommended_shows">Vezi toate serialele recomandate</string>
   <string name="button_label_view_all_social">Vezi toate conexiunile sociale</string>
@@ -182,6 +185,8 @@
   <string name="button_label_view_trivia">Vezi curiozități</string>
   <string name="button_label_vip_upgrade">Upgrade la VIP</string>
   <string name="button_label_watched_until_here">Marchează \"%s\" ca vizionat până aici</string>
+  <string name="button_text_activity_ratings">Evaluări</string>
+  <string name="button_text_activity_reviews">Recenzii</string>
   <string name="button_text_add_note">Adaugă notă</string>
   <string name="button_text_add_reply">Adaugă răspuns</string>
   <string name="button_text_add_review">Adaugă recenzie</string>
@@ -507,6 +512,7 @@
   <string name="input_prompt_rename_list">Redenumește-ți lista</string>
   <string name="input_prompt_username">Care ar trebui să fie numele tău de utilizator?</string>
   <string name="label_drag_image_to_adjust">Trage imaginea pentru a ajusta</string>
+  <string name="label_report_reason_abusive">Abuziv</string>
   <string name="label_report_reason_adult">Conținut pentru adulți</string>
   <string name="label_report_reason_bigotry">Intoleranță</string>
   <string name="label_report_reason_data_refresh">Reîmprospătare date</string>
@@ -598,6 +604,7 @@
   <string name="list_placeholder_personal_list_empty_movies">Nu sunt filme în această listă încă.</string>
   <string name="list_placeholder_personal_list_empty_shows">Nu sunt seriale în această listă încă.</string>
   <string name="list_placeholder_popular_lists">\"%s\" nu apare în nicio listă populară.</string>
+  <string name="list_placeholder_ratings">Nu ai evaluat nimic încă.</string>
   <string name="list_placeholder_reviews">Nu ai scris nicio recenzie încă.</string>
   <string name="list_title_activity">Activitate</string>
   <string name="list_title_actors">Actori</string>
@@ -624,6 +631,7 @@
   <string name="list_title_popular_movies">Filme populare</string>
   <string name="list_title_popular_shows">Seriale populare</string>
   <string name="list_title_progress">Progres</string>
+  <string name="list_title_ratings">Evaluări</string>
   <string name="list_title_recently_searched_movies">Filme căutate recent</string>
   <string name="list_title_recently_searched_shows">Seriale căutate recent</string>
   <string name="list_title_recently_watched">Vizionat recent</string>
@@ -708,6 +716,7 @@
   <string name="page_title_privacy">Politica de confidențialitate</string>
   <string name="page_title_profile">Profil</string>
   <string name="page_title_progress">Progres</string>
+  <string name="page_title_ratings">Evaluări</string>
   <string name="page_title_recently_watched">Vizionat recent</string>
   <string name="page_title_recommended_media">Media recomandate</string>
   <string name="page_title_recommended_movies">Filme recomandate</string>

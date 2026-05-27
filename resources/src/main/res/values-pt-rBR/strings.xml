@@ -17,6 +17,8 @@
   <string name="advanced_filter_label_runtime">Duração de %1$d a %2$d minutos.</string>
   <string name="badge_text_get_vip">Seja VIP</string>
   <string name="badge_text_more">e mais %d</string>
+  <string name="button_label_activity_ratings">Ver avaliações</string>
+  <string name="button_label_activity_reviews">Ver avaliações</string>
   <string name="button_label_add_comment">Adicionar avaliação</string>
   <string name="button_label_add_new_comment">Adicionar nova avaliação</string>
   <string name="button_label_add_note">Adicionar uma nota a %s</string>
@@ -166,6 +168,7 @@
   <string name="button_label_view_all_popular_movies">Ver todos os filmes populares</string>
   <string name="button_label_view_all_popular_shows">Ver todas as séries populares</string>
   <string name="button_label_view_all_progress">Ver todo o progresso</string>
+  <string name="button_label_view_all_ratings">Ver todas as avaliações</string>
   <string name="button_label_view_all_recommended_movies">Ver todos os filmes recomendados</string>
   <string name="button_label_view_all_recommended_shows">Ver todas as séries recomendadas</string>
   <string name="button_label_view_all_social">Ver todas as conexões sociais</string>
@@ -182,6 +185,8 @@
   <string name="button_label_view_trivia">Ver curiosidades</string>
   <string name="button_label_vip_upgrade">Fazer upgrade para VIP</string>
   <string name="button_label_watched_until_here">Marcar \"%s\" como assistido até aqui</string>
+  <string name="button_text_activity_ratings">Avaliações</string>
+  <string name="button_text_activity_reviews">Avaliações</string>
   <string name="button_text_add_note">Adicionar Nota</string>
   <string name="button_text_add_reply">Adicionar Resposta</string>
   <string name="button_text_add_review">Adicionar Avaliação</string>
@@ -507,6 +512,7 @@
   <string name="input_prompt_rename_list">Renomear sua lista</string>
   <string name="input_prompt_username">Qual deve ser seu nome de usuário?</string>
   <string name="label_drag_image_to_adjust">Arraste a imagem para ajustar</string>
+  <string name="label_report_reason_abusive">Abusivo</string>
   <string name="label_report_reason_adult">Conteúdo adulto</string>
   <string name="label_report_reason_bigotry">Intolerância</string>
   <string name="label_report_reason_data_refresh">Atualizar dados</string>
@@ -538,7 +544,7 @@
   <string name="label_stats_plays">Reproduções</string>
   <string name="label_stats_previous_streak">Sequência Anterior</string>
   <string name="label_stats_ratings">Avaliações</string>
-  <string name="label_stats_screen_time_share">Horas Acordado</string>
+  <string name="label_stats_screen_time_share">Horas Ativas</string>
   <string name="label_stats_screen_time_total">Tempo de Tela</string>
   <string name="label_stats_shows">Séries</string>
   <string name="limit_title_digital_library">Biblioteca Digital</string>
@@ -598,6 +604,7 @@
   <string name="list_placeholder_personal_list_empty_movies">Não há filmes nesta lista ainda.</string>
   <string name="list_placeholder_personal_list_empty_shows">Não há séries nesta lista ainda.</string>
   <string name="list_placeholder_popular_lists">\"%s\" não aparece em nenhuma lista popular.</string>
+  <string name="list_placeholder_ratings">Você ainda não avaliou nada.</string>
   <string name="list_placeholder_reviews">Você ainda não escreveu nenhuma crítica.</string>
   <string name="list_title_activity">Atividade</string>
   <string name="list_title_actors">Atores</string>
@@ -624,6 +631,7 @@
   <string name="list_title_popular_movies">Filmes Populares</string>
   <string name="list_title_popular_shows">Séries Populares</string>
   <string name="list_title_progress">Progresso</string>
+  <string name="list_title_ratings">Avaliações</string>
   <string name="list_title_recently_searched_movies">Filmes Pesquisados Recentemente</string>
   <string name="list_title_recently_searched_shows">Séries Pesquisadas Recentemente</string>
   <string name="list_title_recently_watched">Assistidos Recentemente</string>
@@ -708,6 +716,7 @@
   <string name="page_title_privacy">Política de Privacidade</string>
   <string name="page_title_profile">Perfil</string>
   <string name="page_title_progress">Progresso</string>
+  <string name="page_title_ratings">Avaliações</string>
   <string name="page_title_recently_watched">Assistidos Recentemente</string>
   <string name="page_title_recommended_media">Mídia recomendada</string>
   <string name="page_title_recommended_movies">Filmes recomendados</string>
@@ -1036,7 +1045,7 @@
   <string name="text_stats_this_week">Esta semana</string>
   <string name="text_stats_time_afternoon">Tarde</string>
   <string name="text_stats_time_evening">Noite</string>
-  <string name="text_stats_time_late_night">Noite</string>
+  <string name="text_stats_time_late_night">Madrugada</string>
   <string name="text_stats_time_morning">Manhã</string>
   <string name="text_stats_today">Hoje</string>
   <string name="text_stats_was_last_week">foi %s na anterior</string>
@@ -1107,7 +1116,7 @@
   <string name="tooltip_stats_movies">Filmes assistidos esta semana</string>
   <string name="tooltip_stats_plays">Total de filmes e episódios assistidos</string>
   <string name="tooltip_stats_ratings">Itens avaliados esta semana</string>
-  <string name="tooltip_stats_screen_time_share">% das horas acordado assistindo (com base em um dia de 16h)</string>
+  <string name="tooltip_stats_screen_time_share">% das horas do dia assistindo (com base em um dia de 16h)</string>
   <string name="tooltip_stats_screen_time_total">Tempo total de exibição esta semana</string>
   <string name="tooltip_stats_shows">Séries diferentes assistidas</string>
   <string name="tooltip_text_future_activity">%s, o futuro está em aberto</string>
@@ -1377,7 +1386,7 @@
   <string name="yir_2024_stats_per_month">Por mês</string>
   <string name="yir_2024_stats_per_week">Por semana</string>
   <string name="yir_2024_stats_summary_movies">%1$s horas de %2$s filmes</string>
-  <string name="yir_2024_stats_summary_shows">%1$s horas de %2$s programas</string>
+  <string name="yir_2024_stats_summary_shows">%1$s horas de %2$s séries</string>
   <string name="yir_2024_stats_tooltip_hours">%s Horas</string>
   <string name="yir_2024_stats_tooltip_plays">%s Reproduções</string>
   <string name="yir_2024_stats_tooltip_week_label">Semana %s</string>
