@@ -17,6 +17,8 @@
   <string name="advanced_filter_label_runtime">Продължителност от %1$d до %2$d минути.</string>
   <string name="badge_text_get_vip">Вземи VIP</string>
   <string name="badge_text_more">и още %d</string>
+  <string name="button_label_activity_ratings">Виж оценки</string>
+  <string name="button_label_activity_reviews">Виж рецензии</string>
   <string name="button_label_add_comment">Добави рецензия</string>
   <string name="button_label_add_new_comment">Добави нова рецензия</string>
   <string name="button_label_add_note">Добавяне на бележка към %s</string>
@@ -166,6 +168,7 @@
   <string name="button_label_view_all_popular_movies">Виж всички популярни филми</string>
   <string name="button_label_view_all_popular_shows">Виж всички популярни сериали</string>
   <string name="button_label_view_all_progress">Виж целия прогрес</string>
+  <string name="button_label_view_all_ratings">Виж всички оценки</string>
   <string name="button_label_view_all_recommended_movies">Виж всички препоръчани филми</string>
   <string name="button_label_view_all_recommended_shows">Виж всички препоръчани сериали</string>
   <string name="button_label_view_all_social">Преглед на всички социални връзки</string>
@@ -182,6 +185,8 @@
   <string name="button_label_view_trivia">Преглед на любопитни факти</string>
   <string name="button_label_vip_upgrade">Надстройте до VIP</string>
   <string name="button_label_watched_until_here">Маркирай \"%s\" като гледано дотук</string>
+  <string name="button_text_activity_ratings">Оценки</string>
+  <string name="button_text_activity_reviews">Рецензии</string>
   <string name="button_text_add_note">Добавяне на бележка</string>
   <string name="button_text_add_reply">Добави отговор</string>
   <string name="button_text_add_review">Добави рецензия</string>
@@ -507,6 +512,7 @@
   <string name="input_prompt_rename_list">Преименувай списъка си</string>
   <string name="input_prompt_username">Какво да бъде потребителското ти име?</string>
   <string name="label_drag_image_to_adjust">Плъзни изображението за настройка</string>
+  <string name="label_report_reason_abusive">Обидно</string>
   <string name="label_report_reason_adult">Съдържание за възрастни</string>
   <string name="label_report_reason_bigotry">Нетърпимост</string>
   <string name="label_report_reason_data_refresh">Обновяване на данни</string>
@@ -598,6 +604,7 @@
   <string name="list_placeholder_personal_list_empty_movies">Все още няма филми в този списък.</string>
   <string name="list_placeholder_personal_list_empty_shows">Все още няма сериали в този списък.</string>
   <string name="list_placeholder_popular_lists">\"%s\" не присъства в никой популярен списък.</string>
+  <string name="list_placeholder_ratings">Все още не сте оценили нищо.</string>
   <string name="list_placeholder_reviews">Все още не сте написали ревюта.</string>
   <string name="list_title_activity">Активност</string>
   <string name="list_title_actors">Актьори</string>
@@ -624,6 +631,7 @@
   <string name="list_title_popular_movies">Популярни филми</string>
   <string name="list_title_popular_shows">Популярни сериали</string>
   <string name="list_title_progress">Прогрес</string>
+  <string name="list_title_ratings">Оценки</string>
   <string name="list_title_recently_searched_movies">Наскоро търсени филми</string>
   <string name="list_title_recently_searched_shows">Наскоро търсени сериали</string>
   <string name="list_title_recently_watched">Наскоро гледани</string>
@@ -708,6 +716,7 @@
   <string name="page_title_privacy">Политика за поверителност</string>
   <string name="page_title_profile">Профил</string>
   <string name="page_title_progress">Прогрес</string>
+  <string name="page_title_ratings">Оценки</string>
   <string name="page_title_recently_watched">Наскоро гледани</string>
   <string name="page_title_recommended_media">Препоръчани заглавия</string>
   <string name="page_title_recommended_movies">Препоръчани филми</string>

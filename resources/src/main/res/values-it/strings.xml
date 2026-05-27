@@ -17,6 +17,8 @@
   <string name="advanced_filter_label_runtime">Durata da %1$d a %2$d minuti.</string>
   <string name="badge_text_get_vip">Ottieni VIP</string>
   <string name="badge_text_more">e altri %d</string>
+  <string name="button_label_activity_ratings">Visualizza valutazioni</string>
+  <string name="button_label_activity_reviews">Visualizza recensioni</string>
   <string name="button_label_add_comment">Aggiungi recensione</string>
   <string name="button_label_add_new_comment">Aggiungi una nuova recensione</string>
   <string name="button_label_add_note">Aggiungi una nota a %s</string>
@@ -166,6 +168,7 @@
   <string name="button_label_view_all_popular_movies">Visualizza tutti i film popolari</string>
   <string name="button_label_view_all_popular_shows">Visualizza tutte le serie TV popolari</string>
   <string name="button_label_view_all_progress">Visualizza tutti i progressi</string>
+  <string name="button_label_view_all_ratings">Visualizza tutte le valutazioni</string>
   <string name="button_label_view_all_recommended_movies">Visualizza tutti i film consigliati</string>
   <string name="button_label_view_all_recommended_shows">Visualizza tutte le serie TV consigliate</string>
   <string name="button_label_view_all_social">Visualizza tutte le connessioni sociali</string>
@@ -182,6 +185,8 @@
   <string name="button_label_view_trivia">Visualizza curiosità</string>
   <string name="button_label_vip_upgrade">Passa a VIP</string>
   <string name="button_label_watched_until_here">Segna \"%s\" come visto fino a qui</string>
+  <string name="button_text_activity_ratings">Valutazioni</string>
+  <string name="button_text_activity_reviews">Recensioni</string>
   <string name="button_text_add_note">Aggiungi nota</string>
   <string name="button_text_add_reply">Aggiungi Risposta</string>
   <string name="button_text_add_review">Aggiungi Recensione</string>
@@ -507,6 +512,7 @@
   <string name="input_prompt_rename_list">Rinomina la tua lista</string>
   <string name="input_prompt_username">Quale dovrebbe essere il tuo nome utente?</string>
   <string name="label_drag_image_to_adjust">Trascina l\'immagine per regolare</string>
+  <string name="label_report_reason_abusive">Abusivo</string>
   <string name="label_report_reason_adult">Contenuti per adulti</string>
   <string name="label_report_reason_bigotry">Fanatismo</string>
   <string name="label_report_reason_data_refresh">Aggiornamento dati</string>
@@ -598,6 +604,7 @@
   <string name="list_placeholder_personal_list_empty_movies">Non ci sono ancora film in questa lista.</string>
   <string name="list_placeholder_personal_list_empty_shows">Non ci sono ancora serie TV in questa lista.</string>
   <string name="list_placeholder_popular_lists">\"%s\" non compare in nessuna lista popolare.</string>
+  <string name="list_placeholder_ratings">Non hai ancora valutato nulla.</string>
   <string name="list_placeholder_reviews">Non hai ancora scritto recensioni.</string>
   <string name="list_title_activity">Attività</string>
   <string name="list_title_actors">Attori</string>
@@ -624,6 +631,7 @@
   <string name="list_title_popular_movies">Film Popolari</string>
   <string name="list_title_popular_shows">Serie TV Popolari</string>
   <string name="list_title_progress">Progresso</string>
+  <string name="list_title_ratings">Valutazioni</string>
   <string name="list_title_recently_searched_movies">Film Cercati Di Recente</string>
   <string name="list_title_recently_searched_shows">Serie TV Cercate Di Recente</string>
   <string name="list_title_recently_watched">Visti di Recente</string>
@@ -708,6 +716,7 @@
   <string name="page_title_privacy">Informativa sulla Privacy</string>
   <string name="page_title_profile">Profilo</string>
   <string name="page_title_progress">Progresso</string>
+  <string name="page_title_ratings">Valutazioni</string>
   <string name="page_title_recently_watched">Visti di Recente</string>
   <string name="page_title_recommended_media">Media consigliati</string>
   <string name="page_title_recommended_movies">Film consigliati</string>

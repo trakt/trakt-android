@@ -17,6 +17,8 @@
   <string name="advanced_filter_label_runtime">Speltid från %1$d till %2$d minuter.</string>
   <string name="badge_text_get_vip">Skaffa VIP</string>
   <string name="badge_text_more">och %d till</string>
+  <string name="button_label_activity_ratings">Visa betyg</string>
+  <string name="button_label_activity_reviews">Visa recensioner</string>
   <string name="button_label_add_comment">Lägg till recension</string>
   <string name="button_label_add_new_comment">Lägg till en ny recension</string>
   <string name="button_label_add_note">Lägg till en anteckning till %s</string>
@@ -166,6 +168,7 @@
   <string name="button_label_view_all_popular_movies">Visa alla populära filmer</string>
   <string name="button_label_view_all_popular_shows">Visa alla populära serier</string>
   <string name="button_label_view_all_progress">Visa alla förlopp</string>
+  <string name="button_label_view_all_ratings">Visa alla betyg</string>
   <string name="button_label_view_all_recommended_movies">Visa alla rekommenderade filmer</string>
   <string name="button_label_view_all_recommended_shows">Visa alla rekommenderade serier</string>
   <string name="button_label_view_all_social">Visa alla sociala anslutningar</string>
@@ -182,6 +185,8 @@
   <string name="button_label_view_trivia">Visa trivia</string>
   <string name="button_label_vip_upgrade">Uppgradera till VIP</string>
   <string name="button_label_watched_until_here">Markera \"%s\" som sedd hitintills</string>
+  <string name="button_text_activity_ratings">Betyg</string>
+  <string name="button_text_activity_reviews">Recensioner</string>
   <string name="button_text_add_note">Lägg till anteckning</string>
   <string name="button_text_add_reply">Lägg till svar</string>
   <string name="button_text_add_review">Lägg till recension</string>
@@ -507,6 +512,7 @@
   <string name="input_prompt_rename_list">Byt namn på din lista</string>
   <string name="input_prompt_username">Vad ska ditt användarnamn vara?</string>
   <string name="label_drag_image_to_adjust">Dra bilden för att justera</string>
+  <string name="label_report_reason_abusive">Kränkande</string>
   <string name="label_report_reason_adult">Vuxeninnehåll</string>
   <string name="label_report_reason_bigotry">Fanatism</string>
   <string name="label_report_reason_data_refresh">Datauppdatering</string>
@@ -598,6 +604,7 @@
   <string name="list_placeholder_personal_list_empty_movies">Det finns inga filmer i den här listan ännu.</string>
   <string name="list_placeholder_personal_list_empty_shows">Det finns inga serier i den här listan ännu.</string>
   <string name="list_placeholder_popular_lists">\"%s\" visas inte på några populära listor.</string>
+  <string name="list_placeholder_ratings">Du har inte betygsatt något än.</string>
   <string name="list_placeholder_reviews">Du har inte skrivit några recensioner än.</string>
   <string name="list_title_activity">Aktivitet</string>
   <string name="list_title_actors">Skådespelare</string>
@@ -624,6 +631,7 @@
   <string name="list_title_popular_movies">Populära filmer</string>
   <string name="list_title_popular_shows">Populära serier</string>
   <string name="list_title_progress">Förlopp</string>
+  <string name="list_title_ratings">Betyg</string>
   <string name="list_title_recently_searched_movies">Nyligen sökta filmer</string>
   <string name="list_title_recently_searched_shows">Nyligen sökta serier</string>
   <string name="list_title_recently_watched">Nyligen sedda</string>
@@ -708,6 +716,7 @@
   <string name="page_title_privacy">Integritetspolicy</string>
   <string name="page_title_profile">Profil</string>
   <string name="page_title_progress">Förlopp</string>
+  <string name="page_title_ratings">Betyg</string>
   <string name="page_title_recently_watched">Nyligen sedda</string>
   <string name="page_title_recommended_media">Rekommenderad media</string>
   <string name="page_title_recommended_movies">Rekommenderade filmer</string>

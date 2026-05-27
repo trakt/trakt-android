@@ -17,6 +17,8 @@
   <string name="advanced_filter_label_runtime">Játékidő: %1$d és %2$d perc között.</string>
   <string name="badge_text_get_vip">Legyél VIP</string>
   <string name="badge_text_more">és %d további</string>
+  <string name="button_label_activity_ratings">Értékelések megtekintése</string>
+  <string name="button_label_activity_reviews">Értékelések megtekintése</string>
   <string name="button_label_add_comment">Értékelés hozzáadása</string>
   <string name="button_label_add_new_comment">Új értékelés hozzáadása</string>
   <string name="button_label_add_note">Jegyzet hozzáadása ehhez: %s</string>
@@ -166,6 +168,7 @@
   <string name="button_label_view_all_popular_movies">Összes népszerű film megtekintése</string>
   <string name="button_label_view_all_popular_shows">Összes népszerű sorozat megtekintése</string>
   <string name="button_label_view_all_progress">Összes folyamat megtekintése</string>
+  <string name="button_label_view_all_ratings">Összes értékelés megtekintése</string>
   <string name="button_label_view_all_recommended_movies">Összes ajánlott film megtekintése</string>
   <string name="button_label_view_all_recommended_shows">Összes ajánlott sorozat megtekintése</string>
   <string name="button_label_view_all_social">Összes közösségi kapcsolat megtekintése</string>
@@ -182,6 +185,8 @@
   <string name="button_label_view_trivia">Érdekességek megtekintése</string>
   <string name="button_label_vip_upgrade">Válts VIP-re</string>
   <string name="button_label_watched_until_here">\"%s megjelölése eddig látottként</string>
+  <string name="button_text_activity_ratings">Értékelések</string>
+  <string name="button_text_activity_reviews">Értékelések</string>
   <string name="button_text_add_note">Jegyzet hozzáadása</string>
   <string name="button_text_add_reply">Válasz hozzáadása</string>
   <string name="button_text_add_review">Értékelés hozzáadása</string>
@@ -507,6 +512,7 @@
   <string name="input_prompt_rename_list">Listád átnevezése</string>
   <string name="input_prompt_username">Mi legyen a felhasználóneved?</string>
   <string name="label_drag_image_to_adjust">Húzd a képet az igazításhot</string>
+  <string name="label_report_reason_abusive">Bántalmazó</string>
   <string name="label_report_reason_adult">Felnőtt tartalom</string>
   <string name="label_report_reason_bigotry">Fanatizmus</string>
   <string name="label_report_reason_data_refresh">Adatok frissítése</string>
@@ -598,6 +604,7 @@
   <string name="list_placeholder_personal_list_empty_movies">Még nincsenek filmek ezen a listán.</string>
   <string name="list_placeholder_personal_list_empty_shows">Még nincsenek sorozatok ezen a listán.</string>
   <string name="list_placeholder_popular_lists">„%s” nem szerepel egyetlen népszerű listán sem.</string>
+  <string name="list_placeholder_ratings">Még nem értékeltél semmit.</string>
   <string name="list_placeholder_reviews">Még nem írtál véleményt.</string>
   <string name="list_title_activity">Tevékenység</string>
   <string name="list_title_actors">Színészek</string>
@@ -624,6 +631,7 @@
   <string name="list_title_popular_movies">Népszerű filmek</string>
   <string name="list_title_popular_shows">Népszerű sorozatok</string>
   <string name="list_title_progress">Folyamat</string>
+  <string name="list_title_ratings">Értékelések</string>
   <string name="list_title_recently_searched_movies">Legutóbb keresett filmek</string>
   <string name="list_title_recently_searched_shows">Legutóbb keresett sorozatok</string>
   <string name="list_title_recently_watched">Legutóbb megtekintett</string>
@@ -708,6 +716,7 @@
   <string name="page_title_privacy">Adatvédelmi irányelvek</string>
   <string name="page_title_profile">Profil</string>
   <string name="page_title_progress">Folyamat</string>
+  <string name="page_title_ratings">Értékelések</string>
   <string name="page_title_recently_watched">Legutóbb megtekintett</string>
   <string name="page_title_recommended_media">Ajánlott média</string>
   <string name="page_title_recommended_movies">Ajánlott filmek</string>

@@ -17,6 +17,8 @@
   <string name="advanced_filter_label_runtime">Speelduur van %1$d tot %2$d minuten.</string>
   <string name="badge_text_get_vip">Word VIP</string>
   <string name="badge_text_more">en %d meer</string>
+  <string name="button_label_activity_ratings">Bekijk beoordelingen</string>
+  <string name="button_label_activity_reviews">Bekijk recensies</string>
   <string name="button_label_add_comment">Recensie toevoegen</string>
   <string name="button_label_add_new_comment">Voeg een nieuwe recensie toe</string>
   <string name="button_label_add_note">Notitie toevoegen aan %s</string>
@@ -166,6 +168,7 @@
   <string name="button_label_view_all_popular_movies">Alle populaire films bekijken</string>
   <string name="button_label_view_all_popular_shows">Alle populaire series bekijken</string>
   <string name="button_label_view_all_progress">Bekijk alle voortgang</string>
+  <string name="button_label_view_all_ratings">Bekijk alle beoordelingen</string>
   <string name="button_label_view_all_recommended_movies">Alle aanbevolen films bekijken</string>
   <string name="button_label_view_all_recommended_shows">Alle aanbevolen series bekijken</string>
   <string name="button_label_view_all_social">Bekijk alle sociale connecties</string>
@@ -182,6 +185,8 @@
   <string name="button_label_view_trivia">Bekijk trivia</string>
   <string name="button_label_vip_upgrade">Upgrade naar VIP</string>
   <string name="button_label_watched_until_here">\"%s\" als tot hier bekeken markeren</string>
+  <string name="button_text_activity_ratings">Beoordelingen</string>
+  <string name="button_text_activity_reviews">Recensies</string>
   <string name="button_text_add_note">Notitie toevoegen</string>
   <string name="button_text_add_reply">Reactie toevoegen</string>
   <string name="button_text_add_review">Recensie toevoegen</string>
@@ -507,6 +512,7 @@
   <string name="input_prompt_rename_list">Hernoem je lijst</string>
   <string name="input_prompt_username">Wat moet je gebruikersnaam zijn?</string>
   <string name="label_drag_image_to_adjust">Sleep de afbeelding om aan te passen</string>
+  <string name="label_report_reason_abusive">Beledigend</string>
   <string name="label_report_reason_adult">Erotische inhoud</string>
   <string name="label_report_reason_bigotry">Onverdraagzaamheid</string>
   <string name="label_report_reason_data_refresh">Gegevens vernieuwen</string>
@@ -598,6 +604,7 @@
   <string name="list_placeholder_personal_list_empty_movies">Er staan nog geen films in deze lijst.</string>
   <string name="list_placeholder_personal_list_empty_shows">Er staan nog geen series in deze lijst.</string>
   <string name="list_placeholder_popular_lists">\"%s\" komt niet voor op populaire lijsten.</string>
+  <string name="list_placeholder_ratings">Je hebt nog niets beoordeeld.</string>
   <string name="list_placeholder_reviews">Je hebt nog geen recensies geschreven.</string>
   <string name="list_title_activity">Activiteit</string>
   <string name="list_title_actors">Acteurs</string>
@@ -624,6 +631,7 @@
   <string name="list_title_popular_movies">Populaire films</string>
   <string name="list_title_popular_shows">Populaire series</string>
   <string name="list_title_progress">Voortgang</string>
+  <string name="list_title_ratings">Beoordelingen</string>
   <string name="list_title_recently_searched_movies">Recent gezochte films</string>
   <string name="list_title_recently_searched_shows">Recent gezochte series</string>
   <string name="list_title_recently_watched">Recent bekeken</string>
@@ -708,6 +716,7 @@
   <string name="page_title_privacy">Privacybeleid</string>
   <string name="page_title_profile">Profiel</string>
   <string name="page_title_progress">Voortgang</string>
+  <string name="page_title_ratings">Beoordelingen</string>
   <string name="page_title_recently_watched">Recent bekeken</string>
   <string name="page_title_recommended_media">Aanbevolen media</string>
   <string name="page_title_recommended_movies">Aanbevolen films</string>

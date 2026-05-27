@@ -17,6 +17,8 @@
   <string name="advanced_filter_label_runtime">Spilletid fra %1$d til %2$d minutter.</string>
   <string name="badge_text_get_vip">Få VIP</string>
   <string name="badge_text_more">og %d mer</string>
+  <string name="button_label_activity_ratings">Vis vurderinger</string>
+  <string name="button_label_activity_reviews">Vis anmeldelser</string>
   <string name="button_label_add_comment">Legg til anmeldelse</string>
   <string name="button_label_add_new_comment">Legg til en ny anmeldelse</string>
   <string name="button_label_add_note">Legg til et notat til %s</string>
@@ -166,6 +168,7 @@
   <string name="button_label_view_all_popular_movies">Vis alle populære filmer</string>
   <string name="button_label_view_all_popular_shows">Vis alle populære serier</string>
   <string name="button_label_view_all_progress">Vis all fremdrift</string>
+  <string name="button_label_view_all_ratings">Vis alle vurderinger</string>
   <string name="button_label_view_all_recommended_movies">Vis alle anbefalte filmer</string>
   <string name="button_label_view_all_recommended_shows">Vis alle anbefalte serier</string>
   <string name="button_label_view_all_social">Se alle sosiale forbindelser</string>
@@ -182,6 +185,8 @@
   <string name="button_label_view_trivia">Se trivia</string>
   <string name="button_label_vip_upgrade">Oppgrader til VIP</string>
   <string name="button_label_watched_until_here">Merk \"%s\" som sett til hit</string>
+  <string name="button_text_activity_ratings">Vurderinger</string>
+  <string name="button_text_activity_reviews">Anmeldelser</string>
   <string name="button_text_add_note">Legg til notat</string>
   <string name="button_text_add_reply">Legg til svar</string>
   <string name="button_text_add_review">Legg til anmeldelse</string>
@@ -507,6 +512,7 @@
   <string name="input_prompt_rename_list">Gi listen din nytt navn</string>
   <string name="input_prompt_username">Hva skal brukernavnet ditt være?</string>
   <string name="label_drag_image_to_adjust">Dra bildet for å justere</string>
+  <string name="label_report_reason_abusive">Krenkende</string>
   <string name="label_report_reason_adult">Voksent innhold</string>
   <string name="label_report_reason_bigotry">Bigotteri</string>
   <string name="label_report_reason_data_refresh">Oppdater data</string>
@@ -598,6 +604,7 @@
   <string name="list_placeholder_personal_list_empty_movies">Det er ingen filmer i denne listen ennå.</string>
   <string name="list_placeholder_personal_list_empty_shows">Det er ingen serier i denne listen ennå.</string>
   <string name="list_placeholder_popular_lists">\"%s\" vises ikke på noen populære lister.</string>
+  <string name="list_placeholder_ratings">Du har ikke vurdert noe ennå.</string>
   <string name="list_placeholder_reviews">Du har ikke skrevet noen anmeldelser ennå.</string>
   <string name="list_title_activity">Aktivitet</string>
   <string name="list_title_actors">Skuespillere</string>
@@ -624,6 +631,7 @@
   <string name="list_title_popular_movies">Populære filmer</string>
   <string name="list_title_popular_shows">Populære serier</string>
   <string name="list_title_progress">Fremdrift</string>
+  <string name="list_title_ratings">Vurderinger</string>
   <string name="list_title_recently_searched_movies">Nylig søkte filmer</string>
   <string name="list_title_recently_searched_shows">Nylig søkte serier</string>
   <string name="list_title_recently_watched">Nylig sett</string>
@@ -708,6 +716,7 @@
   <string name="page_title_privacy">Personvernregler</string>
   <string name="page_title_profile">Profil</string>
   <string name="page_title_progress">Fremdrift</string>
+  <string name="page_title_ratings">Vurderinger</string>
   <string name="page_title_recently_watched">Nylig sett</string>
   <string name="page_title_recommended_media">Anbefalt medieinnhold</string>
   <string name="page_title_recommended_movies">Anbefalte filmer</string>
