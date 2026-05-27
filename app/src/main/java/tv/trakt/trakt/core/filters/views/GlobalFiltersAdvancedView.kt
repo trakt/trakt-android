@@ -431,7 +431,7 @@ private fun YearsFilter(
 
         Text(
             text = stringResource(
-                R.string.filter_label_ratings,
+                R.string.advanced_filter_label_release_year,
                 rangeYearsValue.value.start.toInt(),
                 rangeYearsValue.value.endInclusive.toInt(),
             ),
@@ -623,7 +623,7 @@ private fun RatingFilter(
 
         Text(
             text = stringResource(
-                R.string.filter_label_ratings,
+                R.string.advanced_filter_label_ratings,
                 rangeRatingValue.value.start.toInt(),
                 rangeRatingValue.value.endInclusive.toInt(),
             ),
