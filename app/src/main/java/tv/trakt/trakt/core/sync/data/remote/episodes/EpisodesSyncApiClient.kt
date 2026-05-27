@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.sync.data.remote.episodes
 
 import org.openapitools.client.apis.SyncApi
+import org.openapitools.client.models.PostCheckinStartRequestOneOfOneOfEpisodeIds
 import org.openapitools.client.models.PostSyncHistoryAdd200Response
 import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostUsersListsListAddRequest
@@ -8,6 +9,9 @@ import org.openapitools.client.models.PostUsersListsListAddRequestEpisodesInner
 import org.openapitools.client.models.PostUsersListsListAddRequestEpisodesInnerIds
 import org.openapitools.client.models.PostUsersListsListAddRequestSeasonsInner
 import org.openapitools.client.models.PostUsersListsListAddRequestSeasonsInnerIds
+import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
+import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerOneOf1SeasonsInner
+import org.openapitools.client.models.PostUsersListsListAddRequestShowsInnerOneOf1SeasonsInnerEpisodesInner
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
@@ -26,6 +30,47 @@ internal class EpisodesSyncApiClient(
                         trakt = episodeId.value,
                         tvdb = -1,
                     ),
+                    watchedAt = watchedAt,
+                ),
+            ),
+        )
+
+        val response = syncApi.postSyncHistoryAdd(request)
+        cacheMarker.invalidate()
+
+        return response.body()
+    }
+
+    override suspend fun addToHistory(
+        showId: TraktId,
+        season: Int,
+        episode: Int,
+        watchedAt: String,
+    ): PostSyncHistoryAdd200Response {
+        val request = PostUsersListsListAddRequest(
+            shows = listOf(
+                PostUsersListsListAddRequestShowsInner(
+                    seasons = listOf(
+                        PostUsersListsListAddRequestShowsInnerOneOf1SeasonsInner(
+                            episodes = listOf(
+                                PostUsersListsListAddRequestShowsInnerOneOf1SeasonsInnerEpisodesInner(
+                                    number = episode,
+                                    watchedAt = watchedAt,
+                                ),
+                            ),
+                            number = season,
+                            watchedAt = watchedAt,
+                        ),
+                    ),
+                    ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
+                        trakt = showId.value,
+                        slug = null,
+                        imdb = null,
+                        tmdb = null,
+                        tvdb = 0,
+                    ),
+                    title = "",
+                    year = 0,
                     watchedAt = watchedAt,
                 ),
             ),

@@ -131,15 +131,8 @@ internal fun AllHomeWatchlistScreen(
         },
         onCheckClick = {
             when (it) {
-                is ShowItem -> {
-                    viewModel.addShowToHistory(
-                        showId = it.id,
-                        episodeId = it.progress?.nextEpisode?.ids?.trakt,
-                    )
-                }
-                is MovieItem -> {
-                    viewModel.addMovieToHistory(it.id)
-                }
+                is ShowItem -> viewModel.addShowToHistory(showId = it.id)
+                is MovieItem -> viewModel.addMovieToHistory(it.id)
             }
         },
         onCheckLongClick = {
@@ -191,14 +184,9 @@ internal fun AllHomeWatchlistScreen(
                             customDate = date,
                         )
                     }
-
                     is ShowItem -> {
-                        val episode = (dateSheet as ShowItem).progress?.nextEpisode
-                            ?: return@AllHomeDateSelectionSheet
-
                         viewModel.addShowToHistory(
                             showId = it.id,
-                            episodeId = episode.ids.trakt,
                             customDate = date,
                         )
                     }

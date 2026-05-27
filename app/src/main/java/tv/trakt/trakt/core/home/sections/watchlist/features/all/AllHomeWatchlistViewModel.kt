@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
-import kotlinx.coroutines.flow.filterNot
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -61,6 +61,7 @@ import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.ShowItem
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.user.data.local.watchlist.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
+import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.AllWatchlist
 import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
@@ -137,7 +138,8 @@ internal class AllHomeWatchlistViewModel(
     private fun observeData() {
         merge(
             watchlistUpdates.observeUpdates(Default),
-            checkInUpdates.observeUpdates().filterNot { it.first == Source.AllHomeWatchlist },
+            checkInUpdates.observeUpdates()
+                .filter { it.first != Source.AllHomeWatchlist },
         )
             .distinctUntilChanged()
             .debounce(200)
@@ -289,10 +291,9 @@ internal class AllHomeWatchlistViewModel(
 
     fun addShowToHistory(
         showId: TraktId,
-        episodeId: TraktId?,
         customDate: DateSelectionResult? = null,
     ) {
-        if (processingJob?.isActive == true || episodeId == null) {
+        if (processingJob?.isActive == true) {
             return
         }
 
@@ -315,7 +316,7 @@ internal class AllHomeWatchlistViewModel(
 
                 addHistoryUseCase.addEpisodeToHistory(
                     showId = showId,
-                    episodeId = episodeId,
+                    seasonEpisode = SeasonEpisode(1, 1),
                     customDate = customDate,
                 )
 
@@ -325,11 +326,15 @@ internal class AllHomeWatchlistViewModel(
                     date = customDate?.analyticsStrings,
                 )
 
+                removeItem(
+                    item = currentItems[itemIndex],
+                    notify = true,
+                )
+
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_added)
                 }
 
-                removeItem(currentItems[itemIndex], notify = true)
                 loadShowsProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -378,11 +383,15 @@ internal class AllHomeWatchlistViewModel(
                     date = customDate?.analyticsStrings,
                 )
 
+                removeItem(
+                    item = currentItems[itemIndex],
+                    notify = true,
+                )
+
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_added)
                 }
 
-                removeItem(currentItems[itemIndex], notify = true)
                 loadMoviesProgress()
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -508,26 +517,18 @@ internal class AllHomeWatchlistViewModel(
         viewModelScope.launch {
             when (item) {
                 is ShowItem -> {
-                    userWatchlistSource.removeShows(
-                        ids = setOf(item.id),
-                    )
-                    userWatchlistMinSource.removeShows(
-                        ids = setOf(item.id),
-                    )
+                    userWatchlistSource.removeShows(setOf(item.id))
+                    userWatchlistMinSource.removeShows(setOf(item.id))
                 }
                 is MovieItem -> {
-                    userWatchlistSource.removeMovies(
-                        ids = setOf(item.id),
-                    )
-                    userWatchlistMinSource.removeMovies(
-                        ids = setOf(item.id),
-                    )
+                    userWatchlistSource.removeMovies(setOf(item.id))
+                    userWatchlistMinSource.removeMovies(setOf(item.id))
                 }
                 else -> {}
             }
 
             if (notify) {
-                watchlistUpdates.notifyUpdate(Default)
+                watchlistUpdates.notifyUpdate(AllWatchlist)
             }
         }
     }

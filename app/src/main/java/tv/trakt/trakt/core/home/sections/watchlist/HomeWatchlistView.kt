@@ -136,11 +136,7 @@ internal fun HomeWatchlistView(
         },
         onCheckClick = {
             when (it) {
-                is ShowItem -> viewModel.addShowToHistory(
-                    showId = it.id,
-                    episodeId = it.progress?.nextEpisode?.ids?.trakt,
-                )
-
+                is ShowItem -> viewModel.addShowToHistory(showId = it.id)
                 is MovieItem -> viewModel.addMovieToHistory(it.id)
             }
         },
@@ -192,14 +188,9 @@ internal fun HomeWatchlistView(
                             customDate = date,
                         )
                     }
-
                     is ShowItem -> {
-                        val episode = (dateSheet as ShowItem).progress?.nextEpisode
-                            ?: return@HomeDateSelectionSheet
-
                         viewModel.addShowToHistory(
                             showId = it.id,
-                            episodeId = episode.ids.trakt,
                             customDate = date,
                         )
                     }

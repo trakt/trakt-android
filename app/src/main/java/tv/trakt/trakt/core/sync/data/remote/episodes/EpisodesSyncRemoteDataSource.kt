@@ -10,6 +10,13 @@ internal interface EpisodesSyncRemoteDataSource {
     ): PostSyncHistoryAdd200Response
 
     suspend fun addToHistory(
+        showId: TraktId,
+        season: Int,
+        episode: Int,
+        watchedAt: String,
+    ): PostSyncHistoryAdd200Response
+
+    suspend fun addToHistory(
         episodeIds: List<TraktId>,
         watchedAt: String,
     )
