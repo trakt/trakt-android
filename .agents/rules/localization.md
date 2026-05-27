@@ -10,12 +10,12 @@ applyTo: '{resources/src/main/res/**,**/ui/**/*.kt,**/strings.xml}'
 ## Source of truth
 
 - All user-facing strings live in
-  `resources/src/main/res/values/strings.xml` (the `en` source).
-- Translations land under `resources/src/main/res/values-<locale>/`
+  `resources/src/main/res/values/strings.xml` (`en` source).
+- Translations under `resources/src/main/res/values-<locale>/`
   (`values-de`, `values-fr`, …), populated by Crowdin via
   `.github/workflows/i18n_sync.yml`. Never hand-edit translation files.
 - `buildSrc/.../ValidateStringPlaceholdersTask` validates placeholder
-  parity across locales — run it before merging strings PRs.
+  parity across locales — run before merging strings PRs.
 
 ## Reading strings in Compose
 
@@ -34,8 +34,7 @@ Text(
 )
 ```
 
-- **Never** inline raw string literals for user-facing text in
-  composables. Debug logs (via Timber) are not localised.
+- **Never** inline raw string literals for user-facing text in composables. Debug logs (via Timber) not localised.
 - Reach into `R.string.*` from `resources` package
   (`tv.trakt.trakt.resources.R`).
 
@@ -69,8 +68,7 @@ a11y_rating_picker
 ## Pluralisation
 
 Use `<plurals>` in `strings.xml` and `pluralStringResource` in code.
-Never `if (count == 1) "1 episode" else "${count} episodes"` — it
-breaks every non-English locale.
+Never `if (count == 1) "1 episode" else "${count} episodes"` — breaks every non-English locale.
 
 ```xml
 <plurals name="episodes_left">
@@ -89,11 +87,7 @@ breaks every non-English locale.
 
 ## API enum → translated UI text
 
-When an API enum surfaces as translated UI text (genre, episode type,
-status), build an exhaustive lookup helper that returns a `@StringRes`
-id, not a resolved `String`. This keeps the mapper pure and testable
-without a `Context`, and lets ViewModels stay free of Android
-framework types (per `architecture.md`).
+When API enum surfaces as translated UI text (genre, episode type, status), build exhaustive lookup helper returning `@StringRes` id, not resolved `String`. Keeps mapper pure + testable without `Context`; ViewModels stay free of Android framework types (per `architecture.md`).
 
 ```kotlin
 @StringRes
@@ -112,41 +106,28 @@ Text(
 )
 ```
 
-- `normalizeKey()` lower-cases and replaces separators so
-  `Mid Season Finale` / `mid-season-finale` / `mid_season_finale` all
-  resolve.
-- Make the `when` **exhaustive** for sealed enums you control. The
-  `else -> null` fallback exists only for open-ended API strings — the
-  call site decides whether to render the raw key or a placeholder.
+- `normalizeKey()` lower-cases + replaces separators so
+  `Mid Season Finale` / `mid-season-finale` / `mid_season_finale` all resolve.
+- Make `when` **exhaustive** for sealed enums you control. `else -> null` fallback exists only for open-ended API strings — call site decides whether to render raw key or placeholder.
 - Recent bug across stacks
-  (`keep tag(isLatestAired:provider:) switch exhaustive`) shows the
-  cost of swallowing new API values silently.
+  (`keep tag(isLatestAired:provider:) switch exhaustive`) shows cost of swallowing new API values silently.
 
 ## TV-specific strings
 
-- Add a `_tv` suffix variant when the TV wording differs (shorter
-  text, no instructions referencing tapping).
-- Reuse the phone variant when wording is identical.
+- Add `_tv` suffix variant when TV wording differs (shorter text, no tap instructions).
+- Reuse phone variant when wording identical.
 
 ## CrowdIn workflow
 
 - Source-only edits in `values/strings.xml`.
-- Crowdin sync workflow runs daily; opens a `feat(i18n): translations
-  updates from CrowdIn` PR.
-- New keys ship with English only; translations land via the next
-  Crowdin sync.
-- `ValidateStringPlaceholdersTask` blocks merges that introduce
-  placeholder mismatches.
+- Crowdin sync runs daily; opens `feat(i18n): translations updates from CrowdIn` PR.
+- New keys ship English-only; translations land via next Crowdin sync.
+- `ValidateStringPlaceholdersTask` blocks merges with placeholder mismatches.
 
 ## Don'ts
 
-- Don't hand-edit any `values-<locale>/strings.xml` file. Crowdin owns
-  them.
-- Don't introduce keys without a namespace prefix.
-- Don't use `String.format` with positional args (`%s %s`) when keys
-  could clash on translator interpretation — use named placeholders
-  via `<xliff:g>` tags.
-- Don't concatenate user-facing strings with `+`. Use formatted
-  templates.
-- Don't ship locale-specific code paths (`if (locale == "de") …`).
-  All locale logic flows through resources and `Intl.*`-style helpers.
+- Don't hand-edit any `values-<locale>/strings.xml`. Crowdin owns them.
+- Don't introduce keys without namespace prefix.
+- Don't use `String.format` with positional args (`%s %s`) when keys could clash on translator interpretation — use named placeholders via `<xliff:g>` tags.
+- Don't concatenate user-facing strings with `+`. Use formatted templates.
+- Don't ship locale-specific code paths (`if (locale == "de") …`). All locale logic flows through resources and `Intl.*`-style helpers.

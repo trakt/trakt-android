@@ -10,22 +10,14 @@ applyTo: '**'
 ## Functional Programming
 
 - **Prefer pure functions.** Same input → same output.
-- **Side effects at the edges.** I/O (network, disk, Firebase, analytics)
-  lives in repositories, use-cases, and ViewModel collectors — never
-  inside mappers, formatters, or composables.
-- Composables are pure functions of their parameters. State they read
-  must come from a hoisted source (parameter, `CompositionLocal`,
-  `collectAsStateWithLifecycle`).
+- **Side effects at edges.** I/O (network, disk, Firebase, analytics) lives in repositories, use-cases, ViewModel collectors — never inside mappers, formatters, composables.
+- Composables: pure functions of params. State must come from hoisted source (parameter, `CompositionLocal`, `collectAsStateWithLifecycle`).
 
 ## Immutability
 
-- **Prefer `val` over `var`.** Reach for `var` only when local mutation
-  measurably simplifies the code.
-- Default to value types: `data class`, `sealed class`, `enum`. Reach
-  for plain `class` only when behaviour requires it.
-- Use `kotlin.collections.immutable` (`ImmutableList`,
-  `PersistentMap`) for state held by `data class`es and exposed to
-  Compose. The dep is already in the version catalogue.
+- **Prefer `val` over `var`.** Use `var` only when local mutation measurably simplifies code.
+- Default to value types: `data class`, `sealed class`, `enum`. Plain `class` only when behaviour requires.
+- Use `kotlin.collections.immutable` (`ImmutableList`, `PersistentMap`) for state in `data class`es exposed to Compose. Dep already in version catalogue.
 - Use `map` / `filter` / `fold` over mutating loops.
 
 **Avoid:**
@@ -70,8 +62,7 @@ fun process(data: Data?): Foo? {
 
 ## Sealed Hierarchies for State
 
-Model UI state as a sealed hierarchy. Forces exhaustive `when` and
-prevents impossible states.
+Model UI state as sealed hierarchy. Forces exhaustive `when`, prevents impossible states.
 
 ```kotlin
 sealed interface MovieUiState {
@@ -81,33 +72,22 @@ sealed interface MovieUiState {
 }
 ```
 
-Compose `when` handlers must be exhaustive — do not add `else ->`
-branches that swallow new cases. Non-exhaustive `when` on a sealed type
-silently drops new variants added to the hierarchy.
+Compose `when` handlers must be exhaustive — no `else ->` branches that swallow new cases. Non-exhaustive `when` on sealed type silently drops new variants.
 
 ## Code Smells to Avoid
 
-- **Nested conditionals** — refactor into guard clauses or separate
-  functions.
-- **God ViewModels** — stores over ~300 lines are smells; split by
-  concern.
-- **Abstraction leaks** — callers shouldn't need to know how a type is
-  built.
-- **Singleton-style lookups inside types** — accept dependencies via
-  Koin's `module { … }` declarations and constructor injection. Don't
-  `KoinJavaComponent.getKoin().get<T>()` from inside a class body.
-- **`!!` non-null assertions** in production code. Use `requireNotNull`
-  with a message, `checkNotNull` for internal invariants, or a `?:`
-  fallback. `!!` is acceptable inside tests and previews.
-- **`runBlocking`** in production code. It exists for tests and CLI
-  tools only.
+- **Nested conditionals** — refactor into guard clauses or separate functions.
+- **God ViewModels** — >~300 lines = smell; split by concern.
+- **Abstraction leaks** — callers shouldn't know how type is built.
+- **Singleton-style lookups inside types** — accept deps via Koin `module { … }` + constructor injection. No `KoinJavaComponent.getKoin().get<T>()` inside class body.
+- **`!!` non-null assertions** in production code. Use `requireNotNull` with message, `checkNotNull` for internal invariants, or `?:` fallback. `!!` OK in tests and previews.
+- **`runBlocking`** in production code. Tests and CLI tools only.
 
 ## Function Design
 
 - **Single Responsibility** — one job per function.
-- Function names describe what the function does, not how.
-- Functions with **3 or more parameters** take a single
-  `data class` parameter (or named arguments at every call site).
+- Names describe what, not how.
+- **3+ parameters** → single `data class` param (or named arguments at every call site).
 
 **Avoid:**
 ```kotlin
@@ -128,21 +108,14 @@ fun fetch(options: FetchOptions): Response
 
 ## Dependency Injection
 
-- **Constructor injection** for ViewModels, use-cases, repositories,
-  clients.
-- Wire dependencies in Koin modules under
-  `common/.../di/` or feature-local `<feature>/di/<Feature>Module.kt`.
-- Scope rule of thumb:
-  - **`single { }`** — clients, repositories, caches, anything
-    expensive or that owns state.
-  - **`factory { }`** — use-cases, mappers, anything stateless and
-    cheap.
+- **Constructor injection** for ViewModels, use-cases, repositories, clients.
+- Wire deps in Koin modules under `common/.../di/` or `<feature>/di/<Feature>Module.kt`.
+- Scope:
+  - **`single { }`** — clients, repositories, caches, expensive/stateful things.
+  - **`factory { }`** — use-cases, mappers, stateless cheap things.
   - **`viewModel { }`** — every ViewModel.
-- Do not mix Koin with Hilt / Dagger. The codebase has standardised on
-  Koin.
-- Compose retrieves ViewModels via `koinViewModel()`. Composables
-  receiving collaborators take them as parameters (not via service
-  locator lookup inside the body).
+- No mixing Koin with Hilt/Dagger. Codebase standardised on Koin.
+- Compose: ViewModels via `koinViewModel()`. Composables receiving collaborators take them as params (not service locator inside body).
 
 **Avoid:**
 ```kotlin
@@ -166,15 +139,13 @@ fun ProfileScreen(
 
 ## Simplicity
 
-- Simple code is maintainable code.
-- Favour readability over cleverness.
-- If a solution feels complex, step back and reconsider before adding
-  more abstraction.
+- Simple code = maintainable code.
+- Readability over cleverness.
+- If solution feels complex, step back before adding abstraction.
 
 ## Typed IDs
 
-Wrap primitive identifiers in `@JvmInline value class` at the domain
-boundary:
+Wrap primitive identifiers in `@JvmInline value class` at domain boundary:
 
 ```kotlin
 @JvmInline value class MovieId(val raw: Long)
@@ -182,23 +153,14 @@ boundary:
 @JvmInline value class Slug(val raw: String)
 ```
 
-- Mappers in `common/.../networking/` are the only place that produces
-  them from generated DTOs (`MovieDto.ids.trakt.let(::MovieId)`).
-- Repository / use-case / ViewModel signatures take the typed form so
-  a `MovieId` cannot be passed where an `EpisodeId` is expected.
-- Compose Navigation typed routes accept the wrapped form too via a
-  custom `NavType` for `@Serializable` data classes.
+- Mappers in `common/.../networking/` only place that produces them from DTOs (`MovieDto.ids.trakt.let(::MovieId)`).
+- Repository / use-case / ViewModel signatures take typed form — `MovieId` cannot pass where `EpisodeId` expected.
+- Compose Navigation typed routes accept wrapped form via custom `NavType` for `@Serializable` data classes.
 
-This is a **recommendation, not a hard mandate**. Apply when the cost
-of swap-confusion is real (cross-entity APIs like `Credits`, `Reviews`,
-`Lists`). Skip for purely internal helpers.
+**Recommendation, not hard mandate.** Apply when swap-confusion cost is real (cross-entity APIs: `Credits`, `Reviews`, `Lists`). Skip for purely internal helpers.
 
 ## Iteration
 
-- Functional collection operators (`map`, `filter`, `flatMap`, `fold`,
-  `groupBy`) over imperative loops.
-- For flows: `map`, `filter`, `combine`, `flatMapLatest`,
-  `distinctUntilChanged`. Use `stateIn` to convert a cold flow to a
-  hot `StateFlow` once at the ViewModel layer.
-- `forEach` only when the body is a side effect; otherwise use the
-  expression form.
+- Functional operators (`map`, `filter`, `flatMap`, `fold`, `groupBy`) over imperative loops.
+- Flows: `map`, `filter`, `combine`, `flatMapLatest`, `distinctUntilChanged`. Use `stateIn` to convert cold flow to hot `StateFlow` at ViewModel layer.
+- `forEach` only when body is side effect; otherwise use expression form.

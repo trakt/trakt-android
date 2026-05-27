@@ -9,34 +9,22 @@ applyTo: '**/*.kt'
 
 ## Before Writing Code
 
-- **Search existing patterns first.** The codebase already has feature
-  folders, Koin modules, and `TraktTheme` tokens — look for a working
-  example before inventing.
-- Check whether a new helper already exists in `common/.../helpers/`,
-  `common/.../ui/`, or another feature.
-- Prefer referencing real files as examples over abstract descriptions.
+- **Search existing patterns first.** Codebase has feature folders, Koin modules, `TraktTheme` tokens — find working example before inventing.
+- Check if new helper already exists in `common/.../helpers/`, `common/.../ui/`, or another feature.
+- Prefer real files as examples over abstract descriptions.
 
 ## When Establishing New Patterns
 
-- When a pattern diverges from or extends existing conventions, note
-  it so the rules can be updated.
-- A helper used in 2+ places earns a home in `common/.../helpers/`
-  (logic) or `common/.../ui/` (Compose).
-- If you refactor shared logic, leave a one-line note in the PR body
-  pointing at the new home.
+- Pattern diverges from conventions → note it so rules can update.
+- Helper used in 2+ places → home in `common/.../helpers/` (logic) or `common/.../ui/` (Compose).
+- Refactor shared logic → leave one-line note in PR body pointing at new home.
 
 ## Naming Conventions
 
-- **PascalCase** — types, top-level Composables, file names matching the
-  primary type.
-- **camelCase** — properties, functions, local variables, lambda
-  parameters.
-- **SCREAMING_SNAKE_CASE** — top-level / companion constants only
-  (`const val MAX_RETRIES = 3`).
-- **Acronyms** — follow the official Kotlin style guide: treat acronyms
-  as words. `Url` / `Id` / `Json` for type names; `url`, `id`, `json`
-  for properties. ktlint's `function-naming` would flag the all-caps
-  variant.
+- **PascalCase** — types, top-level Composables, file names matching primary type.
+- **camelCase** — properties, functions, local variables, lambda parameters.
+- **SCREAMING_SNAKE_CASE** — top-level / companion constants only (`const val MAX_RETRIES = 3`).
+- **Acronyms** — follow Kotlin style guide: treat as words. `Url` / `Id` / `Json` for type names; `url`, `id`, `json` for properties. ktlint's `function-naming` flags all-caps variant.
 
 ### File Naming
 
@@ -55,8 +43,7 @@ applyTo: '**/*.kt'
 
 ### Package Naming
 
-- Lower-case, no underscores: `tv.trakt.trakt.core.search`,
-  `tv.trakt.trakt.common.networking`. Match the file path.
+- Lower-case, no underscores: `tv.trakt.trakt.core.search`, `tv.trakt.trakt.common.networking`. Match file path.
 
 ### Folder Layout per Feature
 
@@ -73,50 +60,31 @@ core/<feature>/
 
 ## Type Safety
 
-- No `Any` types in new code unless interop demands it. Use generics or
-  sealed hierarchies.
-- Prefer non-nullable types. Reach for `T?` only when the absence is
-  semantically meaningful.
+- No `Any` types in new code unless interop demands. Use generics or sealed hierarchies.
+- Prefer non-nullable. Use `T?` only when absence is semantically meaningful.
 - Optional chaining: `?.`, `?:`, `let`, `also`, `apply`, `run`.
-- No `lateinit var` for properties that have a sensible default value;
-  use `var x: T = default` or pull state into a constructor parameter.
-- `Result<T>` (`kotlin.Result` or a domain-specific sealed type) at
-  cross-module boundaries when failure is part of the contract.
+- No `lateinit var` when sensible default exists; use `var x: T = default` or pull state into constructor param.
+- `Result<T>` (`kotlin.Result` or domain-specific sealed type) at cross-module boundaries when failure is part of contract.
 
 ## Async / Coroutines
 
-- `suspend` functions for one-shot async work.
-- `Flow` for cold streams; `StateFlow` for hot, observable state with
-  a current value; `SharedFlow` for one-shot events with replay.
-- Launch work inside `viewModelScope` (ViewModels) or `lifecycleScope`
-  (composition holders) — never `GlobalScope`.
-- Side effects in composables use `LaunchedEffect(key)` /
-  `DisposableEffect(key)` — never start a coroutine from `body { }`
-  directly.
-- Cancellation: respect it. Use `withTimeout`, `ensureActive`. Don't
-  `try { … } catch (e: Exception) { … }` over the whole body and
-  swallow `CancellationException`.
+- `suspend` for one-shot async work.
+- `Flow` for cold streams; `StateFlow` for hot observable state with current value; `SharedFlow` for one-shot events with replay.
+- Launch work inside `viewModelScope` (ViewModels) or `lifecycleScope` (composition holders) — never `GlobalScope`.
+- Side effects in composables: `LaunchedEffect(key)` / `DisposableEffect(key)` — never start coroutine from `body { }` directly.
+- Cancellation: respect it. Use `withTimeout`, `ensureActive`. Don't `try { … } catch (e: Exception) { … }` over whole body and swallow `CancellationException`.
 
 ## State Hoisting
 
-- ViewModel owns the state. Composables read it via
-  `collectAsStateWithLifecycle()`.
-- `remember { mutableStateOf(...) }` is acceptable for **transient UI**
-  that doesn't survive ViewModel rebuild (sheet visibility tied to a
-  single screen, scroll positions, focus). Anything that should survive
-  a config change belongs in the ViewModel.
-- `rememberSaveable` for transient state that should survive config
-  change but not destruction (text field input, expanded card state).
+- ViewModel owns state. Composables read via `collectAsStateWithLifecycle()`.
+- `remember { mutableStateOf(...) }` OK for **transient UI** not surviving ViewModel rebuild (sheet visibility, scroll positions, focus). Config-change survivors belong in ViewModel.
+- `rememberSaveable` for transient state surviving config change but not destruction (text field input, expanded card state).
 
 ## Navigation
 
-- Compose Navigation 2.9+ with typed routes via
-  `@Serializable` route classes.
-- One `NavHost` in `app/` and one in `tv/`. Feature graphs are
-  exposed via `NavGraphBuilder.<feature>Graph(...)` extension functions
-  declared in the feature module.
-- Pass typed arguments through the serializable route, not through
-  global state.
+- Compose Navigation 2.9+ with typed routes via `@Serializable` route classes.
+- One `NavHost` in `app/` and one in `tv/`. Feature graphs exposed via `NavGraphBuilder.<feature>Graph(...)` extension functions in feature module.
+- Pass typed args through serializable route, not global state.
 
 ```kotlin
 @Serializable
@@ -133,20 +101,14 @@ composable<MovieSummaryRoute> { backStackEntry ->
 ## Error Handling
 
 - Predictable failures bubble as `Result<T>` / typed sealed errors.
-- UI surfaces errors through the `UiState.Error(message)` variant with
-  copy from a localised `error_*` string.
-- Unrecoverable invariants: `error(...)`, `check(...)`, `require(...)`
-  with a clear message. Never `throw RuntimeException("…")` for
-  user-input validation.
+- UI surfaces errors via `UiState.Error(message)` with copy from localised `error_*` string.
+- Unrecoverable invariants: `error(...)`, `check(...)`, `require(...)` with clear message. Never `throw RuntimeException("…")` for user-input validation.
 
 ## Search-First Reuse
 
 Before authoring:
 
-- A new mapper — search `mapTo*` and `*Mapper` for an existing one.
-- A new colour or spacing token — check `TraktTheme.colors` and
-  `TraktTheme.spacing` first.
-- A new HTTP call — check whether the OpenAPI client already exposes
-  the endpoint, or whether `KtorClientFactory` already wraps it.
-- A new date / number formatter — check
-  `common/.../helpers/formatting/`.
+- New mapper — search `mapTo*` and `*Mapper` for existing one.
+- New colour or spacing token — check `TraktTheme.colors` and `TraktTheme.spacing` first.
+- New HTTP call — check if OpenAPI client exposes endpoint, or if `KtorClientFactory` wraps it.
+- New date / number formatter — check `common/.../helpers/formatting/`.

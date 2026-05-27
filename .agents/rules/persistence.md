@@ -21,8 +21,7 @@ applyTo: 'common/src/main/**/*.kt'
 
 - `SharedPreferences` direct usage (use DataStore).
 - Realm.
-- SQLDelight (the codebase has not adopted it; do not introduce
-  without an architecture decision).
+- SQLDelight (codebase not adopted; no introduce without architecture decision).
 - Hand-rolled SQLite via `SupportSQLiteOpenHelper`.
 
 ## DataStore — Preferences
@@ -46,18 +45,14 @@ class UserPreferencesStore(private val dataStore: DataStore<Preferences>) {
 
 Rules:
 
-- One `DataStore<Preferences>` instance per logical scope (user prefs,
-  feature-flag overrides, etc.). Don't share a single global store
-  across feature concerns.
-- Keys live in a `companion object` next to the store. Use the typed
-  helpers (`stringPreferencesKey`, `booleanPreferencesKey`, …).
+- One `DataStore<Preferences>` per logical scope. No shared global store across feature concerns.
+- Keys in `companion object` next to store. Use typed helpers (`stringPreferencesKey`, `booleanPreferencesKey`, …).
 - Reads return `Flow<T>`. Writes are `suspend`.
 - Wire stores as `single { }` in Koin.
 
 ## Typed (Proto) DataStore
 
-For more complex state (multi-field structures, schema evolution),
-use Proto DataStore + kotlinx.serialization Proto:
+Complex state (multi-field structures, schema evolution): use Proto DataStore + kotlinx.serialization Proto:
 
 ```kotlin
 @Serializable
@@ -74,47 +69,35 @@ class CalendarPrefsSerializer : Serializer<CalendarPrefs> {
 
 Rules:
 
-- `@Serializable` data classes with default values for every field.
-- Migrations handled through `DataStoreFactory` with a `produceMigrations`
-  block when schema changes.
+- `@Serializable` data classes, default value every field.
+- Migrations via `DataStoreFactory` `produceMigrations` block on schema change.
 - One file per typed store under `common/.../persistence/`.
 
 ## In-memory caches
 
-For state that doesn't need to outlive the process but should be shared
-across ViewModels (current login session, scrobble queue):
+State not needing process survival but shared across ViewModels (login session, scrobble queue):
 
-- Define a class with a private `MutableStateFlow<T>`, expose
-  `StateFlow<T>`.
-- Wire as `single { }` in Koin so all consumers see the same flow.
-- Document the lifecycle: in-memory only, cleared on logout, etc.
+- Class with private `MutableStateFlow<T>`, expose `StateFlow<T>`.
+- Wire as `single { }` in Koin — all consumers same flow.
+- Document lifecycle: in-memory only, cleared on logout, etc.
 
 ## Auth tokens
 
-- Tokens stored in a dedicated DataStore (`auth_prefs`).
-- The `AuthStorage` collaborator is the **only** type that reads or
-  writes auth tokens.
-- Repositories and ViewModels go through `AuthStorage`; they do not
-  reach DataStore directly.
-- Token refresh handled in the Ktor authorised client's `Auth` plugin
-  (see `networking.md`).
+- Tokens in dedicated DataStore (`auth_prefs`).
+- `AuthStorage` only type that reads/writes auth tokens.
+- Repositories and ViewModels go through `AuthStorage`; no direct DataStore access.
+- Token refresh in Ktor authorised client's `Auth` plugin (see `networking.md`).
 
 ## Migrations
 
-- For Preferences DataStore: use `SharedPreferencesMigration` once
-  during the legacy-shedding pass; document in a one-line comment when
-  retiring an old key.
-- For Proto DataStore: bump the schema version, write a migration
-  closure that maps old → new defaults.
+- Preferences DataStore: use `SharedPreferencesMigration` once during legacy-shedding pass; one-line comment when retiring old key.
+- Proto DataStore: bump schema version, write migration closure mapping old → new defaults.
 
 ## Disk I/O hygiene
 
-- All DataStore reads/writes are `suspend` — they already dispatch off
-  the main thread.
-- File caches live under `context.cacheDir` (OkHttp / Ktor already use
-  this); never under `filesDir` unless data must survive cache eviction.
-- Do not block on `runBlocking { dataStore.data.first() }` in
-  production code. Read through Flow.
+- All DataStore reads/writes `suspend` — already off main thread.
+- File caches under `context.cacheDir` (OkHttp / Ktor already use this); never `filesDir` unless data must survive cache eviction.
+- No `runBlocking { dataStore.data.first() }` in production. Read through Flow.
 
 ## Quick checklist
 

@@ -20,7 +20,7 @@ applyTo: '{app,tv,common}/src/main/**/*.kt'
 
 ## Sealed UiState
 
-Every screen has a sealed UI state hierarchy:
+Every screen has sealed UI state hierarchy:
 
 ```kotlin
 sealed interface MovieSummaryUiState {
@@ -31,20 +31,13 @@ sealed interface MovieSummaryUiState {
 ```
 
 - **No `data class … (val movie: Movie?, val isLoading: Boolean, val error: Throwable?)`**
-  flat shapes. Use sealed types so impossible combinations are
-  impossible.
-- `@Immutable` annotation on `Loaded`-style data classes that hold
-  collections, so Compose can skip recomposition when references are
-  stable.
-- For collections held in state, prefer `ImmutableList`
-  (`kotlinx.collections.immutable`) over `List<T>` — Compose treats
-  immutable types as stable.
+  flat shapes. Use sealed types — impossible combinations stay impossible.
+- `@Immutable` on `Loaded`-style data classes holding collections. Compose skips recomposition when refs stable.
+- For collections in state, prefer `ImmutableList` (`kotlinx.collections.immutable`) over `List<T>` — Compose treats immutable types as stable.
 
 ## ViewModel
 
-One `state: StateFlow<UiState>` per ViewModel. Build it from upstream
-Flows and expose via `stateIn(viewModelScope, WhileSubscribed(5_000),
-initial)`. Internal mutable signals are private:
+One `state: StateFlow<UiState>` per ViewModel. Build from upstream Flows, expose via `stateIn(viewModelScope, WhileSubscribed(5_000), initial)`. Internal mutable signals private:
 
 ```kotlin
 class CalendarViewModel(
@@ -70,15 +63,10 @@ class CalendarViewModel(
 
 Rules:
 
-- **Don't put `mutableStateOf` in a ViewModel.** Use `StateFlow` /
-  `MutableStateFlow`. `mutableStateOf` is Compose-coupled and breaks
-  the ability to unit-test the ViewModel without Compose runtime.
-- **Don't combine three separate `StateFlow`s in the composable.**
-  Combine them once in the ViewModel and expose a single state.
-- **Don't expose `MutableStateFlow` publicly.** Expose `StateFlow`;
-  mutate from inside the ViewModel.
-- Use `update { … }` on `MutableStateFlow` for atomic updates rather
-  than `value = value.copy(…)`.
+- **No `mutableStateOf` in ViewModel.** Use `StateFlow` / `MutableStateFlow`. `mutableStateOf` Compose-coupled, breaks unit-testing without Compose runtime.
+- **Don't combine three separate `StateFlow`s in composable.** Combine once in ViewModel, expose single state.
+- **Don't expose `MutableStateFlow` publicly.** Expose `StateFlow`; mutate inside ViewModel.
+- Use `update { … }` on `MutableStateFlow` for atomic updates, not `value = value.copy(…)`.
 
 ## One-shot events
 
@@ -104,23 +92,20 @@ fun MovieSummaryScreen(viewModel: MovieSummaryViewModel = koinViewModel()) {
 ```
 
 - Use `SharedFlow(replay = 0)` for one-shot events.
-- Collect events in a `LaunchedEffect`.
+- Collect events in `LaunchedEffect`.
 - Don't fire events from inside composition (`body { }` directly).
 
 ## Composable-local state
 
-`remember { mutableStateOf(...) }` is for state that:
+`remember { mutableStateOf(...) }` for state that:
 
-- Is owned by a single composable instance.
-- Doesn't need to survive config change.
-- Doesn't need to be tested without Compose runtime.
+- Owned by single composable instance.
+- Doesn't survive config change.
+- Doesn't need testing without Compose runtime.
 
-Examples that qualify: sheet visibility, scroll position, dropdown
-expanded state, text field input that is committed elsewhere on
-"Done", focus management.
+Qualifies: sheet visibility, scroll position, dropdown expanded state, text field input committed elsewhere on "Done", focus management.
 
-Use `rememberSaveable` when the state should survive a config change
-but not the screen leaving the back stack.
+Use `rememberSaveable` when state survives config change but not screen leaving back stack.
 
 ## CompositionLocal
 
@@ -128,51 +113,35 @@ App-wide ambient UI state already wired:
 
 - `LocalBottomBarVisibility` — driven by feature flags.
 - `LocalSnackbarState` — global snackbar host accessor.
-- `LocalCheckInVisibility`, `LocalRatePromptVisibility` — overlay
-  visibility.
+- `LocalCheckInVisibility`, `LocalRatePromptVisibility` — overlay visibility.
 
 Add new locals **only** when:
 
-- The value is genuinely app-level (not a single feature).
-- Threading it through every composable's parameter list is impractical.
-- The value is provided once at the app root.
+- Value genuinely app-level (not single feature).
+- Threading through every composable param list impractical.
+- Value provided once at app root.
 
-Define using `staticCompositionLocalOf` when the value is constant for
-the lifetime of the provider; `compositionLocalOf` when it changes
-during recomposition.
+Use `staticCompositionLocalOf` when value constant for provider lifetime; `compositionLocalOf` when it changes during recomposition.
 
 ## Side effects
 
 - `LaunchedEffect(key) { … }` — coroutine tied to composition lifetime.
 - `DisposableEffect(key) { … onDispose { … } }` — cleanup on dispose.
-- `SideEffect { … }` — synchronous side effect after every successful
-  composition. Rare; usually you want `LaunchedEffect`.
-- **Never** start a coroutine from inside `body { }` directly.
-- **Never** read `mutableStateOf` from outside composition without
-  `snapshotFlow`.
+- `SideEffect { … }` — sync side effect after every successful composition. Rare; usually want `LaunchedEffect`.
+- **Never** start coroutine from inside `body { }` directly.
+- **Never** read `mutableStateOf` from outside composition without `snapshotFlow`.
 
 ## Compose stability
 
 Rules:
 
-- **`@Immutable`** for data classes used as state where every public
-  property is `val` and points at deeply immutable values.
-- **`@Stable`** for types whose properties are observable but whose
-  equality and hash are stable — rare; reach for it only when
-  `@Immutable` would be a lie.
-- **`ImmutableList<T>` / `PersistentList<T>`** from
-  `kotlinx.collections.immutable` for collections held in state. Plain
-  `List<T>` is unstable to Compose.
-- **Triage recomposition regressions with compose-compiler metrics.**
-  Run `./gradlew :app:assembleDebug -Pcompose.metrics=true
-  -Pcompose.reports=true` and commit the report under
-  `docs/compose-metrics/<bom-version>/` when investigating a hot
-  screen.
+- **`@Immutable`** for data classes used as state where every public property is `val` pointing at deeply immutable values.
+- **`@Stable`** for types with observable properties but stable equality/hash — rare; only when `@Immutable` would be lie.
+- **`ImmutableList<T>` / `PersistentList<T>`** from `kotlinx.collections.immutable` for collections in state. Plain `List<T>` unstable to Compose.
+- **Triage recomposition regressions with compose-compiler metrics.** Run `./gradlew :app:assembleDebug -Pcompose.metrics=true -Pcompose.reports=true`, commit report under `docs/compose-metrics/<bom-version>/` when investigating hot screen.
 
 ## Persistence beyond a ViewModel
 
-For state that must outlive the screen (auth tokens, preferences,
-sync watermarks): write to DataStore. The ViewModel reads it through a
-repository that exposes a `Flow<Preferences>`.
+State outliving screen (auth tokens, preferences, sync watermarks): write to DataStore. ViewModel reads through repository exposing `Flow<Preferences>`.
 
-See `persistence.md` for the data layer rules.
+See `persistence.md` for data layer rules.

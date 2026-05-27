@@ -7,9 +7,7 @@ applyTo: '**'
 
 # Commit Standards
 
-The codebase already follows Conventional Commits — recent history
-shows `feat:`, `fix:`, `refactor:`, `chore:`, `feat(i18n):`. These rules
-codify the convention and define the allowed scope enum.
+Codebase follows Conventional Commits — history shows `feat:`, `fix:`, `refactor:`, `chore:`, `feat(i18n):`. Rules codify convention + define allowed scope enum.
 
 ## Format
 
@@ -41,7 +39,7 @@ codify the convention and define the allowed scope enum.
 
 ## Allowed scopes
 
-Drawn from the actual module list + recurring concerns:
+From actual module list + recurring concerns:
 
 | Scope        | Path coverage                                              |
 | ------------ | ---------------------------------------------------------- |
@@ -58,8 +56,7 @@ Drawn from the actual module list + recurring concerns:
 | `agents`     | `.agents/`, `AGENTS.md`, `CLAUDE.md`                       |
 | `gemini`     | `.gemini/`                                                 |
 
-Multi-scope changes pick the most-affected scope or use the broader
-one:
+Multi-scope changes: pick most-affected scope or broader one:
 
 ```
 feat(app): add notes drawer
@@ -83,7 +80,7 @@ chore: update locales
 feat(i18n): translations updates from CrowdIn (#149)
 ```
 
-Better (add scope from the enum above for clarity):
+Better (add scope from enum above):
 
 ```
 feat(app): surface specific episode type in details meta info
@@ -102,7 +99,7 @@ feat: notes                                  # missing scope and verb
 
 ## Body content
 
-Use the body to record **why** the change is needed:
+Use body to record **why** change needed:
 
 ```
 fix(common): handle 204 from credits endpoint
@@ -114,18 +111,15 @@ surfacing an empty screen with a stale error toast.
 
 Avoid:
 
-- Restating the subject in the body.
-- Describing the diff line-by-line.
+- Restating subject in body.
+- Describing diff line-by-line.
 - AI-generated `Generated with Claude Code` footers.
-- `Co-Authored-By: Claude <noreply@anthropic.com>` trailer — only add
-  when explicitly requested by the human author.
-- Em-dashes / en-dashes in commit messages, PR titles, or PR bodies.
-  Use plain hyphens (`-`).
+- `Co-Authored-By: Claude <noreply@anthropic.com>` trailer — only add when human author explicitly requests.
+- Em-dashes / en-dashes in commit messages, PR titles, or PR bodies. Use plain hyphens (`-`).
 
 ## PR titles
 
-PR titles follow the same Conventional Commits format. They show up on
-`main` once squash-merged, so they must be self-contained:
+PR titles follow same Conventional Commits format. Show up on `main` after squash-merge — must be self-contained:
 
 ```
 feat(app): add notes drawer (#234)
@@ -134,7 +128,5 @@ chore(deps): bump compose BOM to 2026.06.00 (#235)
 
 ## Pre-merge sanity
 
-- One Conventional Commits scope per commit when possible. Squash-merge
-  rolls multiple WIP commits into a clean message at merge time.
-- No "fix typo", "address review", "wip" commits on main — squash or
-  fixup before merging.
+- One scope per commit when possible. Squash-merge rolls WIP commits into clean message at merge.
+- No "fix typo", "address review", "wip" commits on main — squash or fixup before merging.

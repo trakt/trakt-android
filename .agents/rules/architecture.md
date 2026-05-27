@@ -15,22 +15,12 @@ applyTo: '**/*.kt'
 
 ## Invariants
 
-These hold across every layer; rule files below elaborate. Lifted from
-Now in Android's `ArchitectureLearningJourney.md`:
+Hold across every layer. Lifted from Now in Android's `ArchitectureLearningJourney.md`:
 
-- **Higher layers react to lower layers.** UI reacts to domain reacts
-  to data. Never the other way around.
-- **Events flow down, data flows up.** User intents propagate down as
-  function calls / event sinks; state propagates up as `Flow`s and
-  `StateFlow`s.
-- **Local storage is the single source of truth.** Repositories write
-  remote responses to local storage **before** emitting to callers;
-  callers always observe the local stream. Remote-only emission paths
-  break offline-first.
-- **Repositories own their domain models.** Mappers translate at the
-  network boundary; no DTO leaks past a repository, and no domain model
-  leaks across feature boundaries — features depend on `:common`
-  models, not on each other.
+- **Higher layers react to lower layers.** UI reacts to domain reacts to data. Never reverse.
+- **Events flow down, data flows up.** User intents propagate down as function calls / event sinks; state propagates up as `Flow`s and `StateFlow`s.
+- **Local storage is single source of truth.** Repositories write remote responses to local storage **before** emitting to callers; callers always observe local stream. Remote-only emission paths break offline-first.
+- **Repositories own domain models.** Mappers translate at network boundary; no DTO leaks past repository, no domain model leaks across feature boundaries — features depend on `:common` models, not each other.
 
 ## Layers
 
@@ -50,18 +40,12 @@ Now in Android's `ArchitectureLearningJourney.md`:
 └──────────────────────────────────────────┘
 ```
 
-- Add a `UseCase` **only when** a ViewModel needs to combine multiple
-  repositories or apply non-trivial business logic that is reused. Do
-  not write a `UseCase` that just forwards to a single repository
-  method — call the repository directly.
-- Repositories own the **offline-first** behaviour: read from local
-  first, refresh from remote in the background, emit updates through
-  the same Flow.
+- Add `UseCase` **only when** ViewModel needs to combine multiple repositories or apply non-trivial business logic that is reused. No `UseCase` that just forwards to single repository method — call repository directly.
+- Repositories own **offline-first** behaviour: read local first, refresh remote in background, emit updates through same Flow.
 
 ## Composables
 
-Composables are pure functions of their parameters. State flows in
-through the parameter list; events flow out through lambdas.
+Composables are pure functions of parameters. State flows in through parameter list; events flow out through lambdas.
 
 ```kotlin
 @Composable
@@ -93,19 +77,13 @@ private fun MovieSummaryContent(
 }
 ```
 
-- **Split `<Feature>Screen` (stateful) from `<Feature>Content` (stateless).**
-  `Content` takes the state and event lambdas only — easy to preview
-  and snapshot-test.
-- **No `@Preview` on the stateful screen.** Preview the `Content`
-  variant.
-- **`when` over sealed `UiState` is exhaustive.** Add a case to the
-  sealed type instead of an `else ->` branch.
+- **Split `<Feature>Screen` (stateful) from `<Feature>Content` (stateless).** `Content` takes state and event lambdas only — easy to preview and snapshot-test.
+- **No `@Preview` on stateful screen.** Preview `Content` variant.
+- **`when` over sealed `UiState` is exhaustive.** Add case to sealed type instead of `else ->` branch.
 
 ## ViewModels
 
-ViewModels expose a single `state: StateFlow<UiState>` constructed via
-`stateIn(viewModelScope, WhileSubscribed(5_000), Loading)`. Internal
-mutable flows feed the public one.
+ViewModels expose single `state: StateFlow<UiState>` via `stateIn(viewModelScope, WhileSubscribed(5_000), Loading)`. Internal mutable flows feed public one.
 
 ```kotlin
 class MovieSummaryViewModel(
@@ -130,42 +108,30 @@ class MovieSummaryViewModel(
 
 Rules:
 
-- **One `StateFlow<UiState>` per ViewModel.** Not three separate
-  `StateFlow`s combined inside the view.
-- ViewModels do not call composables, do not hold Android `Context`,
-  do not depend on `View`/`Composer` types.
-- One-shot events (snackbars, navigation effects) flow through a
-  `SharedFlow<UiEvent>` with `replay = 0`, collected from
-  `LaunchedEffect`.
+- **One `StateFlow<UiState>` per ViewModel.** Not three separate `StateFlow`s combined inside view.
+- ViewModels don't call composables, don't hold Android `Context`, don't depend on `View`/`Composer` types.
+- One-shot events (snackbars, navigation effects) flow through `SharedFlow<UiEvent>` with `replay = 0`, collected from `LaunchedEffect`.
 
 ## Domain Layer (Optional)
 
-Use-cases live in `core/<feature>/domain/` only when they earn their
-keep:
+Use-cases live in `core/<feature>/domain/` only when they earn keep:
 
-- They combine 2+ repositories.
-- They encapsulate non-trivial business logic (rate-limit-aware
-  refreshes, complex ranking).
-- They are shared by multiple ViewModels.
+- Combine 2+ repositories.
+- Encapsulate non-trivial business logic (rate-limit-aware refreshes, complex ranking).
+- Shared by multiple ViewModels.
 
 Avoid one-line `UseCase` wrappers around repository calls.
 
 ## Data Layer
 
-- **Repository** is the public boundary. Located in `core/<feature>/data/`
-  or in `common/.../<entity>/`.
-- **Reads return `Flow<T>`.** Local + remote sources flow through
-  the repository unified by the `data` layer; the ViewModel sees only
-  the unified stream.
-- **Writes are `suspend fun` returning `Result<…>`** (or a domain-
-  specific sealed result type).
-- **Mappers** are pure functions named `mapTo<Domain>(...)` or
-  `<Source>Mapper.kt`. Live next to the repository. No I/O.
+- **Repository** is public boundary. Located in `core/<feature>/data/` or `common/.../<entity>/`.
+- **Reads return `Flow<T>`.** Local + remote sources flow through repository unified by `data` layer; ViewModel sees only unified stream.
+- **Writes are `suspend fun` returning `Result<…>`** (or domain-specific sealed result type).
+- **Mappers** are pure functions named `mapTo<Domain>(...)` or `<Source>Mapper.kt`. Live next to repository. No I/O.
 
 ## Navigation
 
-Single-activity, single `NavHost` in `app/`, mirror in `tv/`. Typed
-routes via `@Serializable` data classes (Compose Navigation 2.9+):
+Single-activity, single `NavHost` in `app/`, mirror in `tv/`. Typed routes via `@Serializable` data classes (Compose Navigation 2.9+):
 
 ```kotlin
 @Serializable
@@ -184,11 +150,8 @@ NavHost(navController, startDestination = HomeRoute) {
 ```
 
 - **No string routes.** Typed routes only for new screens.
-- **No global navigator singleton.** Pass `navController` callbacks
-  down as lambdas (`onMovieClick: (Long) -> Unit`) so feature
-  composables stay framework-agnostic.
-- **Feature-local `NavGraphBuilder` extensions** expose a feature's
-  destinations:
+- **No global navigator singleton.** Pass `navController` callbacks down as lambdas (`onMovieClick: (Long) -> Unit`) so feature composables stay framework-agnostic.
+- **Feature-local `NavGraphBuilder` extensions** expose feature destinations:
 
 ```kotlin
 fun NavGraphBuilder.movieFeature(onBack: () -> Unit) {
@@ -200,8 +163,7 @@ fun NavGraphBuilder.movieFeature(onBack: () -> Unit) {
 ## Dependency Injection (Koin)
 
 - Constructor injection at every layer.
-- One Koin module per feature, named `<Feature>Module.kt`, located in
-  `core/<feature>/di/`.
+- One Koin module per feature, named `<Feature>Module.kt`, located in `core/<feature>/di/`.
 - Wire all feature modules in `TraktApplication.setupKoin()`.
 
 ```kotlin
@@ -215,14 +177,12 @@ internal val movieModule = module {
 Scopes:
 
 - **`single { }`** — repositories, clients, caches, stateful collaborators.
-- **`factory { }`** — use-cases, mappers, anything stateless and cheap.
+- **`factory { }`** — use-cases, mappers, stateless + cheap.
 - **`viewModel { }`** — every ViewModel.
 
 ## Background sync
 
-Periodic refreshes (calendar, up-next, watchlist deltas, scrobble
-flush) run as `CoroutineWorker` instances inside a `sync/` package
-today, or a dedicated `:sync` module once the pattern grows.
+Periodic refreshes (calendar, up-next, watchlist deltas, scrobble flush) run as `CoroutineWorker` instances inside `sync/` package today, or dedicated `:sync` module once pattern grows.
 
 ```kotlin
 class CalendarSyncWorker(
@@ -246,24 +206,15 @@ class CalendarSyncWorker(
 Rules:
 
 - Workers receive repositories via Koin (`workerOf<>(...)`).
-- Refresh tasks fan out via `async` + `awaitAll`. Single failures don't
-  cancel siblings unless intended.
-- Return `Result.retry()` on failure so WorkManager applies its
-  exponential backoff. Don't write a custom retry loop inside the
-  worker.
-- Use `OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST` when
-  expediting user-triggered syncs.
-- Provide `ForegroundInfo` only when the user is actively waiting
-  (manual pull-to-refresh chained through WorkManager).
-- Sync entry points (which Workers to enqueue when) live in
-  `common/.../sync/` or `app/.../sync/`. Composables / ViewModels do
-  not enqueue work directly — they call a `SyncTrigger` collaborator.
+- Refresh tasks fan out via `async` + `awaitAll`. Single failures don't cancel siblings unless intended.
+- Return `Result.retry()` on failure so WorkManager applies exponential backoff. No custom retry loop inside worker.
+- Use `OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST` when expediting user-triggered syncs.
+- Provide `ForegroundInfo` only when user actively waiting (manual pull-to-refresh chained through WorkManager).
+- Sync entry points (which Workers to enqueue when) live in `common/.../sync/` or `app/.../sync/`. Composables / ViewModels don't enqueue work directly — call `SyncTrigger` collaborator.
 
 ## Adaptive layouts
 
-Phone + tablet + Android TV — three form factors share most code.
-Lean on Material 3 Adaptive (`androidx.compose.material3.adaptive`)
-and `WindowSizeClass`:
+Phone + tablet + Android TV — three form factors share most code. Lean on Material 3 Adaptive (`androidx.compose.material3.adaptive`) and `WindowSizeClass`:
 
 ```kotlin
 @Composable
@@ -279,54 +230,37 @@ fun MovieSummaryContent(
 
 Rules:
 
-- **Pass `WindowSizeClass` as a parameter** to feature `Content`
-  composables that need it. Compute it once at the app root via
-  `calculateWindowSizeClass(activity)`.
-- **Never** branch on `Resources.configuration.smallestScreenWidthDp`
-  inside a composable or `if (isTablet)` from helpers.
-- TV-specific composables live in the `:tv` module; phone variants in
-  `:app`. They share state types and ViewModels via `:common`.
-- Use `TraktTheme.spacing` / `TraktTheme.size` tokens — they vary by
-  window class internally.
+- **Pass `WindowSizeClass` as parameter** to feature `Content` composables that need it. Compute once at app root via `calculateWindowSizeClass(activity)`.
+- **Never** branch on `Resources.configuration.smallestScreenWidthDp` inside composable or `if (isTablet)` from helpers.
+- TV-specific composables live in `:tv` module; phone variants in `:app`. Share state types and ViewModels via `:common`.
+- Use `TraktTheme.spacing` / `TraktTheme.size` tokens — vary by window class internally.
 
 ## Single-Activity, Phone vs TV
 
-- `MainActivity` (`app/`) hosts the phone NavHost.
-- `TvActivity` (`tv/`) hosts the TV NavHost.
-- Routing between them at startup: `MainActivity` detects
-  `isTelevision()` and forwards to `TvSplashActivity`.
-- **TV reuses the same ViewModels** where the underlying state is
-  identical; only the Compose tree differs.
+- `MainActivity` (`app/`) hosts phone NavHost.
+- `TvActivity` (`tv/`) hosts TV NavHost.
+- Routing at startup: `MainActivity` detects `isTelevision()` and forwards to `TvSplashActivity`.
+- **TV reuses same ViewModels** where underlying state identical; only Compose tree differs.
 
 ## Compose-as-Function
 
-- Composables take **parameters in, render output, expose events as
-  lambdas.** No object identity, no mutable side state outside
-  `remember`.
-- `Modifier` is always the second parameter and has a default
-  (`modifier: Modifier = Modifier`).
-- Slot APIs use `@Composable` lambda parameters
-  (`content: @Composable () -> Unit`).
+- Composables take **parameters in, render output, expose events as lambdas.** No object identity, no mutable side state outside `remember`.
+- `Modifier` always second parameter with default (`modifier: Modifier = Modifier`).
+- Slot APIs use `@Composable` lambda parameters (`content: @Composable () -> Unit`).
 
 ## Composition Locals
 
-Existing pattern: `LocalBottomBarVisibility`, `LocalSnackbarState`,
-`LocalCheckInVisibility`, `LocalRatePromptVisibility`. Use sparingly
-for **ambient app-level UI state** that doesn't fit a feature
-ViewModel.
+Existing pattern: `LocalBottomBarVisibility`, `LocalSnackbarState`, `LocalCheckInVisibility`, `LocalRatePromptVisibility`. Use sparingly for **ambient app-level UI state** that doesn't fit feature ViewModel.
 
 Guidelines:
 
-- Define `staticCompositionLocalOf` for values that don't change
-  during a recomposition.
-- Provide via `CompositionLocalProvider` at the app root.
-- Don't reach for `CompositionLocal` to avoid prop drilling within
-  a feature — pass parameters down instead.
+- Define `staticCompositionLocalOf` for values that don't change during recomposition.
+- Provide via `CompositionLocalProvider` at app root.
+- Don't reach for `CompositionLocal` to avoid prop drilling within feature — pass parameters down instead.
 
 ## Concurrency
 
 - Single coroutine context per ViewModel (`viewModelScope`).
-- Use `Dispatchers.Default` for CPU-bound work, `Dispatchers.IO`
-  only when interop demands it (Ktor handles its own dispatchers).
+- Use `Dispatchers.Default` for CPU-bound work, `Dispatchers.IO` only when interop demands it (Ktor handles own dispatchers).
 - **No `runBlocking`** outside tests.
 - **No `GlobalScope`.** Anywhere.

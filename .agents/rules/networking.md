@@ -20,43 +20,31 @@ applyTo: 'common/src/main/**/*.kt'
 ## OpenAPI client (generated)
 
 - Source of truth: `openapi/openapi.json`.
-- Regenerate with `./gradlew openApiGenerate`.
-- Generated sources are **not edited by hand**. The root
-  `build.gradle.kts` runs post-generate tasks to normalise the
-  output:
-  - `dedupeSerializable` — removes duplicate `@Serializable`
-    annotations.
-  - `publicApiClient` — makes the generated `HttpClient` public.
-  - `removeGenders` — strips the unused gender parameter from people
-    endpoints.
-- When the OpenAPI spec changes, regenerate and commit the diff —
-  generated sources are committed so consumers don't need the
-  generator at build time.
-- Generated files are excluded from ktlint via `.editorconfig`.
+- Regenerate: `./gradlew openApiGenerate`.
+- Generated sources **not edited by hand**. Root `build.gradle.kts` runs post-generate tasks:
+  - `dedupeSerializable` — removes duplicate `@Serializable` annotations.
+  - `publicApiClient` — makes generated `HttpClient` public.
+  - `removeGenders` — strips unused gender param from people endpoints.
+- Spec changes: regenerate, commit diff — generated sources committed so consumers skip generator at build time.
+- Generated files excluded from ktlint via `.editorconfig`.
 
 ## Ktor client setup
 
-`common/.../networking/KtorClientFactory` builds two `HttpClient`
-instances over a single shared `OkHttp` engine:
+`common/.../networking/KtorClientFactory` builds two `HttpClient` instances over single shared `OkHttp` engine:
 
-- **Authorised** — attaches the bearer token from auth storage,
-  refreshes on 401, sends Trakt API headers.
-- **Public** — no token, used for unauthenticated endpoints.
+- **Authorised** — attaches bearer token from auth storage, refreshes on 401, sends Trakt API headers.
+- **Public** — no token, unauthenticated endpoints.
 
 Rules:
 
-- New endpoints reuse the existing `HttpClient` instances injected via
-  Koin. Don't construct a new `HttpClient` per call.
-- Logging via `Logger.SIMPLE` (Timber bridge) at `LogLevel.HEADERS` in
-  debug builds, `LogLevel.NONE` in release.
-- File-based response cache lives under the app's cache dir.
-- Use `ContentNegotiation` + `json()` for kotlinx.serialization, or
-  `moshi()` where existing endpoints rely on it.
+- New endpoints reuse existing `HttpClient` instances injected via Koin. No new `HttpClient` per call.
+- Logging via `Logger.SIMPLE` (Timber bridge) at `LogLevel.HEADERS` in debug, `LogLevel.NONE` in release.
+- File-based response cache under app's cache dir.
+- Use `ContentNegotiation` + `json()` for kotlinx.serialization, or `moshi()` where existing endpoints need it.
 
 ## Domain mappers
 
-Hand-written, pure, deterministic. One mapper per endpoint or per
-entity.
+Hand-written, pure, deterministic. One mapper per endpoint or entity.
 
 ```kotlin
 // common/.../movie/MovieMapper.kt
@@ -70,15 +58,10 @@ internal fun MovieDto.toDomain(): Movie = Movie(
 )
 ```
 
-- Mappers are `internal` and named `…ToDomain` or `mapTo<Domain>`.
+- Mappers `internal`, named `…ToDomain` or `mapTo<Domain>`.
 - No I/O, no logging, no `runBlocking`.
-- Mappers handle nullability and provide sensible domain defaults
-  (empty strings, empty lists) — domain types are non-nullable where
-  possible.
-- Status `204` (no content) is **success**, not failure. Mappers and
-  repositories handle `204` by returning empty/default values. Recent
-  bug across stacks: credits endpoints returned `204` and were treated
-  as errors.
+- Mappers handle nullability, provide sensible domain defaults (empty strings, empty lists) — domain types non-nullable where possible.
+- Status `204` (no content) = **success**, not failure. Mappers and repositories return empty/default values. Recent bug: credits endpoints returned `204`, treated as errors.
 
 ## Domain models
 
@@ -95,17 +78,13 @@ data class Movie(
 )
 ```
 
-- `@Immutable` annotation on models held in Compose state.
-- Use `kotlin.time.Duration`, `kotlinx.datetime.LocalDate /
-  Instant` for time values. `kotlinx-datetime` is in the version
-  catalogue.
-- Use `ImmutableList<T>` / `PersistentList<T>` for collections held
-  in state.
+- `@Immutable` on models held in Compose state.
+- Use `kotlin.time.Duration`, `kotlinx.datetime.LocalDate / Instant` for time. `kotlinx-datetime` in version catalogue.
+- Use `ImmutableList<T>` / `PersistentList<T>` for collections in state.
 
 ## Repositories
 
-Repositories are the public boundary between data and the rest of the
-app.
+Repositories = public boundary between data and rest of app.
 
 ```kotlin
 interface MovieRepository {
@@ -131,24 +110,16 @@ internal class MovieRepositoryImpl(
 
 Rules:
 
-- **Public reads return `Flow<T>`.** Hot or cold, the caller doesn't
-  care.
-- **Public writes are `suspend fun`** returning `Result<T>` or a
-  domain-specific sealed result type.
-- **Offline-first**: prefer reading from local first, refresh from
-  remote in the background, emit the local stream.
-- **Local storage is the single source of truth.** Remote responses
-  are persisted to local before the repository emits them. Never
-  forward an HTTP response straight to the caller — that breaks the
-  offline-first invariant the moment the network fails on a retry.
-- **Implementations are `internal`.** Expose only the interface
-  through Koin.
-- **No `Activity` / `Context` / `Composable` references** in
-  repositories.
+- **Public reads return `Flow<T>`.** Hot or cold, caller doesn't care.
+- **Public writes are `suspend fun`** returning `Result<T>` or domain-specific sealed result type.
+- **Offline-first**: read local first, refresh remote in background, emit local stream.
+- **Local storage = single source of truth.** Remote responses persisted to local before emit. Never forward HTTP response straight to caller — breaks offline-first when network fails on retry.
+- **Implementations `internal`.** Expose only interface through Koin.
+- **No `Activity` / `Context` / `Composable` references** in repositories.
 
 ## Errors
 
-Define a typed error hierarchy at the boundary:
+Define typed error hierarchy at boundary:
 
 ```kotlin
 sealed interface ApiError {
@@ -161,26 +132,19 @@ sealed interface ApiError {
 }
 ```
 
-- Catch Ktor exceptions in one place (interceptor or repository) and
-  map to `ApiError`.
-- Repository return types carry the error via `Result<…>` or a
-  domain sealed type — don't let raw `IOException` / `HttpException`
-  escape into ViewModels.
-- ViewModel surfaces `ApiError` through `UiState.Error(...)` with
-  localised copy.
+- Catch Ktor exceptions in one place (interceptor or repository), map to `ApiError`.
+- Repository return types carry error via `Result<…>` or domain sealed type — no raw `IOException` / `HttpException` escaping into ViewModels.
+- ViewModel surfaces `ApiError` through `UiState.Error(...)` with localised copy.
 
 ## Authentication
 
-- Bearer token storage: DataStore (`Preferences`) wrapped by an
-  `AuthStorage` collaborator.
-- Token refresh: handled by the authorised `HttpClient`'s `Auth` plugin
-  configuration. Repositories don't reach into auth state.
-- For OAuth flows (sign-in, device code), keep the flow in a dedicated
-  `auth/` feature folder; do not couple to feature ViewModels.
+- Bearer token storage: DataStore (`Preferences`) wrapped by `AuthStorage` collaborator.
+- Token refresh: handled by authorised `HttpClient`'s `Auth` plugin config. Repositories don't touch auth state.
+- OAuth flows (sign-in, device code): keep in dedicated `auth/` feature folder, don't couple to feature ViewModels.
 
 ## TTL & caching
 
-When caching domain entities, define TTLs through a centralised helper:
+Define TTLs via centralised helper:
 
 ```kotlin
 object TraktDurations {
@@ -195,11 +159,10 @@ Never cache for `Duration.INFINITE`.
 
 ## Quick checklist
 
-- [ ] DTO comes from the generated OpenAPI client (or a documented
-      exception)
-- [ ] Mapper is pure, named `…ToDomain` / `mapTo<Domain>`
+- [ ] DTO from generated OpenAPI client (or documented exception)
+- [ ] Mapper pure, named `…ToDomain` / `mapTo<Domain>`
 - [ ] Repository exposes `Flow<…>` reads and `suspend` writes
-- [ ] Errors mapped to a typed `ApiError` before reaching the ViewModel
+- [ ] Errors mapped to typed `ApiError` before ViewModel
 - [ ] Status `204` handled explicitly where applicable
-- [ ] Koin module wires the repository via `single { }`
+- [ ] Koin module wires repository via `single { }`
 - [ ] No `Activity` / `Context` references in data classes
