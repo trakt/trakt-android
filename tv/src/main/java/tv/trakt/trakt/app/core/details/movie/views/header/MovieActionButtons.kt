@@ -141,7 +141,7 @@ internal fun MovieActionButtons(
             text = stringResource(
                 if (isHistory) R.string.button_text_watch_again else R.string.button_text_mark_as_watched,
             ),
-            icon = painterResource(if (isHistory) R.drawable.ic_check_double else R.drawable.ic_check),
+            icon = painterResource(if (isHistory) R.drawable.ic_check_double else R.drawable.ic_check_2),
             onClick = onHistoryClick,
             containerColor = if (isHistory) Purple500 else Purple50,
             contentColor = if (isHistory) Color.White else Purple500,

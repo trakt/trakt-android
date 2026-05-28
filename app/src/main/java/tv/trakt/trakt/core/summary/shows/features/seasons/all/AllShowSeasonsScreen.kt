@@ -526,7 +526,7 @@ private fun EpisodeListItem(
 
                 Box(
                     contentAlignment = Alignment.BottomCenter,
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(21.dp),
                 ) {
                     when {
                         episode.isLoading -> {
@@ -534,11 +534,11 @@ private fun EpisodeListItem(
                         }
                         isReleased && !episode.isWatched && episode.isCheckable -> {
                             Icon(
-                                painter = painterResource(R.drawable.ic_check),
+                                painter = painterResource(R.drawable.ic_check_2),
                                 contentDescription = null,
                                 tint = TraktTheme.colors.accent,
                                 modifier = Modifier
-                                    .size(20.dp)
+                                    .size(21.dp)
                                     .onClickCombined(
                                         onClick = { onCheckClick?.invoke(episode) },
                                         onLongClick = { onCheckLongClick?.invoke(episode) },
@@ -554,111 +554,6 @@ private fun EpisodeListItem(
         onImageClick = { onClick?.invoke(episode) },
         modifier = modifier,
     )
-
-//    Row(
-//        verticalAlignment = CenterVertically,
-//        horizontalArrangement = spacedBy(12.dp),
-//        modifier = modifier
-//            .fillMaxWidth()
-//            .padding(vertical = 6.dp)
-//            .onClickCombined(
-//                onClick = { onEpisodeClick?.invoke(item) },
-//                onLongClick = {
-//                    if (item.isWatched) onRemoveClick?.invoke(item)
-//                },
-//            ),
-//    ) {
-//        val imageUrl = item.episode.images?.getScreenshotUrl()
-//            ?: show.images?.getFanartUrl()
-//
-//        Box(
-//            modifier = Modifier
-//                .width(120.dp)
-//                .aspectRatio(HorizontalImageAspectRatio)
-//                .clip(RoundedCornerShape(10.dp))
-//                .background(TraktTheme.colors.placeholderContainer),
-//        ) {
-//            if (imageUrl != null) {
-//                AsyncImage(
-//                    model = ImageRequest.Builder(LocalContext.current)
-//                        .data(imageUrl)
-//                        .crossfade(true)
-//                        .build(),
-//                    contentDescription = item.episode.title,
-//                    contentScale = ContentScale.Crop,
-//                    modifier = Modifier.fillMaxSize(),
-//                )
-//            } else {
-//                Icon(
-//                    painter = painterResource(R.drawable.ic_placeholder_horizontal_border),
-//                    contentDescription = null,
-//                    tint = TraktTheme.colors.placeholderContent,
-//                    modifier = Modifier
-//                        .padding(4.dp)
-//                        .align(Alignment.Center),
-//                )
-//            }
-//        }
-//
-//        Column(
-//            verticalArrangement = spacedBy(2.dp),
-//            modifier = Modifier.weight(1f),
-//        ) {
-//            Text(
-//                text = item.episode.title,
-//                style = TraktTheme.typography.cardTitle,
-//                color = TraktTheme.colors.textPrimary,
-//                maxLines = 2,
-//                overflow = TextOverflow.Ellipsis,
-//            )
-//            Text(
-//                text = item.episode.seasonEpisode.toDisplayString(),
-//                style = TraktTheme.typography.cardSubtitle,
-//                color = TraktTheme.colors.textSecondary,
-//                maxLines = 1,
-//            )
-//            if (!isReleased) {
-//                Text(
-//                    text = item.episode.firstAired?.relativeDateTimeString() ?: "TBA",
-//                    style = TraktTheme.typography.cardSubtitle,
-//                    color = TraktTheme.colors.accent,
-//                    maxLines = 1,
-//                )
-//            }
-//        }
-//
-//        Box(
-//            contentAlignment = Alignment.Center,
-//            modifier = Modifier.size(28.dp),
-//        ) {
-//            when {
-//                item.isLoading -> {
-//                    FilmProgressIndicator(size = 18.dp)
-//                }
-//                isReleased && !item.isWatched && item.isCheckable -> {
-//                    Icon(
-//                        painter = painterResource(R.drawable.ic_check),
-//                        contentDescription = null,
-//                        tint = TraktTheme.colors.accent,
-//                        modifier = Modifier
-//                            .size(20.dp)
-//                            .onClickCombined(
-//                                onClick = { onCheckClick?.invoke(item) },
-//                                onLongClick = { onCheckLongClick?.invoke(item) },
-//                            ),
-//                    )
-//                }
-//                item.isWatched -> {
-//                    Icon(
-//                        painter = painterResource(R.drawable.ic_check_double),
-//                        contentDescription = null,
-//                        tint = TraktTheme.colors.accent,
-//                        modifier = Modifier.size(20.dp),
-//                    )
-//                }
-//            }
-//        }
-//    }
 }
 
 @Composable

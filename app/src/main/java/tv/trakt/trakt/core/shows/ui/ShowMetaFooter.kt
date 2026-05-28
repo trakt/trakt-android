@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.shows.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.SpaceBetween
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -147,22 +148,28 @@ fun ShowMetaFooter(
         }
 
         if (check && !secondary) {
-            if (loading) {
-                FilmProgressIndicator(
-                    size = 16.dp,
-                )
-            } else {
-                Icon(
-                    painter = painterResource(R.drawable.ic_check),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.accent,
-                    modifier = Modifier
-                        .size(18.dp)
-                        .onClickCombined(
-                            onClick = onCheckClick,
-                            onLongClick = onCheckLongClick,
-                        ),
-                )
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .size(20.dp),
+            ) {
+                if (loading) {
+                    FilmProgressIndicator(
+                        size = 16.dp,
+                    )
+                } else {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_check_2),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.accent,
+                        modifier = Modifier
+                            .size(20.dp)
+                            .onClickCombined(
+                                onClick = onCheckClick,
+                                onLongClick = onCheckLongClick,
+                            ),
+                    )
+                }
             }
         }
     }

@@ -178,7 +178,7 @@ private fun Preview() {
             text = "Filter Chip",
             leadingContent = {
                 Icon(
-                    painter = painterResource(R.drawable.ic_check),
+                    painter = painterResource(R.drawable.ic_check_2),
                     contentDescription = null,
                     tint = TraktTheme.colors.textPrimary,
                     modifier = Modifier,
@@ -197,7 +197,7 @@ private fun Preview2() {
             text = "Selected Chip",
             leadingContent = {
                 Icon(
-                    painter = painterResource(R.drawable.ic_check),
+                    painter = painterResource(R.drawable.ic_check_2),
                     contentDescription = null,
                     tint = TraktTheme.colors.textPrimary,
                     modifier = Modifier.size(FilterChipDefaults.IconSize),

@@ -42,7 +42,7 @@ internal fun DetailsActions(
     watched: Boolean = false,
     watchlist: Boolean? = false,
     trailer: Boolean = false,
-    primaryIcon: Int = R.drawable.ic_check,
+    primaryIcon: Int = R.drawable.ic_check_2,
     onPrimaryClick: (() -> Unit)? = null,
     onSecondaryClick: (() -> Unit)? = null,
     onSecondaryLongClick: (() -> Unit)? = null,

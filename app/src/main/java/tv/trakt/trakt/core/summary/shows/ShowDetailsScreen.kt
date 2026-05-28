@@ -517,7 +517,7 @@ internal fun ShowDetailsContent(
                         primaryEnabled = isReleased,
                         primaryIcon = when {
                             isWatched -> R.drawable.ic_check_double
-                            else -> R.drawable.ic_check
+                            else -> R.drawable.ic_check_2
                         },
                         enabled = state.user != null &&
                             !state.loadingProgress.isLoading &&

@@ -90,7 +90,7 @@ internal fun ShowActionButtons(
                 if (isAllWatched) R.string.button_text_watch_again else R.string.button_text_mark_as_watched,
             ),
             icon = painterResource(
-                if (isAllWatched) R.drawable.ic_check_double else R.drawable.ic_check,
+                if (isAllWatched) R.drawable.ic_check_double else R.drawable.ic_check_2,
             ),
             onClick = onHistoryClick,
             containerColor = if (!isWatched) Purple50 else Purple500,

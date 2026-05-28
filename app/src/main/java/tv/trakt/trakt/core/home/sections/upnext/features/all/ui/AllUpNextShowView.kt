@@ -141,16 +141,19 @@ internal fun AllUpNextShowView(
                         )
 
                         if (item.loading) {
-                            Box(modifier = Modifier.size(18.dp)) {
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier.size(20.dp),
+                            ) {
                                 FilmProgressIndicator(size = 16.dp)
                             }
                         } else {
                             Icon(
-                                painter = painterResource(R.drawable.ic_check),
+                                painter = painterResource(R.drawable.ic_check_2),
                                 contentDescription = null,
                                 tint = TraktTheme.colors.accent,
                                 modifier = Modifier
-                                    .size(18.dp)
+                                    .size(20.dp)
                                     .onClickCombined(
                                         onClick = onCheckClick,
                                         onLongClick = onCheckLongClick,

@@ -174,10 +174,10 @@ private fun UpNextItemContextViewContent(
                     iconSize = 20.dp,
                     iconSpace = 16.dp,
                     onClick = onAddWatched,
-                    icon = painterResource(R.drawable.ic_check),
+                    icon = painterResource(R.drawable.ic_check_2),
                     modifier = Modifier
                         .graphicsLayer {
-                            translationX = -6.dp.toPx()
+                            translationX = -7.dp.toPx()
                         },
                 )
             }
@@ -192,7 +192,7 @@ private fun UpNextItemContextViewContent(
                     },
                 ),
                 onClick = onRemoveWatchlist,
-                iconSize = 22.dp,
+                iconSize = 21.dp,
                 iconSpace = 16.dp,
                 icon = painterResource(R.drawable.ic_drop),
                 modifier = Modifier

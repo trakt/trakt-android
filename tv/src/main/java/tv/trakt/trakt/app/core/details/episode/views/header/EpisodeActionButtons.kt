@@ -143,7 +143,7 @@ internal fun EpisodeActionButtons(
             text = stringResource(
                 if (isWatched) R.string.button_text_watch_again else R.string.button_text_mark_as_watched,
             ),
-            icon = painterResource(if (isWatched) R.drawable.ic_check_double else R.drawable.ic_check),
+            icon = painterResource(if (isWatched) R.drawable.ic_check_double else R.drawable.ic_check_2),
             onClick = onHistoryClick,
             containerColor = if (!isWatched) Purple50 else Purple500,
             contentColor = if (!isWatched) Purple500 else Color.White,

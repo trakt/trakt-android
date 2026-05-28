@@ -213,7 +213,7 @@ private fun MovieActionButtons(
                         else -> stringResource(R.string.button_text_watch_again)
                     },
                     icon = when {
-                        !watched -> painterResource(R.drawable.ic_check)
+                        !watched -> painterResource(R.drawable.ic_check_2)
                         else -> painterResource(R.drawable.ic_check_double)
                     },
                     enabled = !isLoading,

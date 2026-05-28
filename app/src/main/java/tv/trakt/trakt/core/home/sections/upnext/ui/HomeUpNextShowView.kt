@@ -149,7 +149,7 @@ internal fun HomeUpNextShowView(
                         FilmProgressIndicator(size = checkSize - 3.dp)
                     } else {
                         Icon(
-                            painter = painterResource(R.drawable.ic_check),
+                            painter = painterResource(R.drawable.ic_check_2),
                             contentDescription = null,
                             tint = TraktTheme.colors.accent,
                             modifier = Modifier

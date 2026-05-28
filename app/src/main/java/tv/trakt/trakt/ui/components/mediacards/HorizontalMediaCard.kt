@@ -373,7 +373,7 @@ private fun Preview() {
                             }
 
                             Icon(
-                                painter = painterResource(R.drawable.ic_check),
+                                painter = painterResource(R.drawable.ic_check_2),
                                 contentDescription = null,
                                 tint = TraktTheme.colors.accent,
                                 modifier = Modifier.size(18.dp),
@@ -414,7 +414,7 @@ private fun Preview() {
                             }
 
                             Icon(
-                                painter = painterResource(R.drawable.ic_check),
+                                painter = painterResource(R.drawable.ic_check_2),
                                 contentDescription = null,
                                 tint = TraktTheme.colors.accent,
                                 modifier = Modifier

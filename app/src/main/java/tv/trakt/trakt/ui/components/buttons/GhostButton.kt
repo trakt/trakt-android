@@ -126,7 +126,7 @@ private fun Preview2() {
     TraktTheme {
         GhostButton(
             text = "Short",
-            icon = painterResource(id = R.drawable.ic_check),
+            icon = painterResource(id = R.drawable.ic_check_2),
         )
     }
 }

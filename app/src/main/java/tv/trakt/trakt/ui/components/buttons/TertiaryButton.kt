@@ -61,7 +61,7 @@ private fun Preview2() {
     TraktTheme {
         TertiaryButton(
             text = "Short",
-            icon = painterResource(id = R.drawable.ic_check),
+            icon = painterResource(id = R.drawable.ic_check_2),
         )
     }
 }
@@ -72,7 +72,7 @@ private fun PreviewIcon() {
     TraktTheme {
         TertiaryButton(
             text = "Mark as something long",
-            icon = painterResource(id = R.drawable.ic_check),
+            icon = painterResource(id = R.drawable.ic_check_2),
         )
     }
 }
