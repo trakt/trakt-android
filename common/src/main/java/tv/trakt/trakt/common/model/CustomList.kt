@@ -67,7 +67,9 @@ data class CustomList(
                 likes = dto.likes,
                 images = dto.images?.let {
                     Images(
-                        posters = it.posters.toImmutableList(),
+                        posters = it.posters
+                            .distinct()
+                            .toImmutableList(),
                     )
                 },
                 user = User.fromDto(dto.user),
@@ -92,7 +94,9 @@ data class CustomList(
                 likes = dto.likes,
                 images = dto.images?.let {
                     Images(
-                        posters = it.posters.toImmutableList(),
+                        posters = it.posters
+                            .distinct()
+                            .toImmutableList(),
                     )
                 },
                 user = User.fromDto(dto.user),
@@ -117,7 +121,9 @@ data class CustomList(
                 likes = list.likes,
                 images = list.images?.let {
                     Images(
-                        posters = it.posters.toImmutableList(),
+                        posters = it.posters
+                            .distinct()
+                            .toImmutableList(),
                     )
                 },
                 user = User.fromDto(list.user!!),
