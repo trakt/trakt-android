@@ -62,7 +62,9 @@
   <string name="button_label_drop_show">Marchează serialul \"%s\" ca abandonat</string>
   <string name="button_label_edit_comment">Editează Recenzia</string>
   <string name="button_label_edit_list">Editează lista ta %s</string>
+  <string name="button_label_edit_mode">Mod editare</string>
   <string name="button_label_edit_note">Editează notă</string>
+  <string name="button_label_exit_edit_mode">Ieși din modul de editare</string>
   <string name="button_label_expand_category">Extinde %s</string>
   <string name="button_label_expand_media_overview">Extinde prezentarea generală a \"%s\"</string>
   <string name="button_label_expand_navbar">Extinde</string>
@@ -73,6 +75,7 @@
   <string name="button_label_get_vip">Deblochează funcții VIP</string>
   <string name="button_label_go_to_calendar_day">Mergi la %d</string>
   <string name="button_label_hide_recommendation">Ascunde „%s” din recomandări</string>
+  <string name="button_label_hide_section">Ascunde %s</string>
   <string name="button_label_history">Istoric</string>
   <string name="button_label_history_slot">Vizionat între %1$s și %2$s</string>
   <string name="button_label_home">Înapoi la pagina principală</string>
@@ -128,6 +131,7 @@
   <string name="button_label_set_cover_image">Setează imaginea \"%s\" ca imagine de copertă.</string>
   <string name="button_label_settings">Setări</string>
   <string name="button_label_share">Partajează \"%s\"</string>
+  <string name="button_label_show_section">Afișează %s</string>
   <string name="button_label_shows">Seriale</string>
   <string name="button_label_sort_added_date">Sortează după data adăugării</string>
   <string name="button_label_sort_ascending">Sortează ascendent</string>
@@ -227,6 +231,7 @@
   <string name="button_text_edit_comment">Editează</string>
   <string name="button_text_edit_list">Editează</string>
   <string name="button_text_edit_note">Editează</string>
+  <string name="button_text_exit_edit_mode">Ieși din modul de editare</string>
   <string name="button_text_find_movies">Găsește filme</string>
   <string name="button_text_find_shows">Găsește seriale</string>
   <string name="button_text_follow">Urmărește</string>
@@ -884,6 +889,7 @@
   <string name="text_display_email">E-mail</string>
   <string name="text_display_name">Nume afișat</string>
   <string name="text_during_credits">În timpul creditelor</string>
+  <string name="text_edit_mode_toggle_sections">Ascunde/afișează secțiunile</string>
   <string name="text_ends_at">Se termină la %s</string>
   <string name="text_episodes_watched">%d episoade</string>
   <string name="text_export_status_complete">Export finalizat.</string>

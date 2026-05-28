@@ -62,7 +62,9 @@
   <string name="button_label_drop_show">Позначити серіал \"%s\" як покинутий</string>
   <string name="button_label_edit_comment">Редагувати рецензію</string>
   <string name="button_label_edit_list">Редагувати ваш список %s</string>
+  <string name="button_label_edit_mode">Режим редагування</string>
   <string name="button_label_edit_note">Редагувати примітку</string>
+  <string name="button_label_exit_edit_mode">Вийти з режиму редагування</string>
   <string name="button_label_expand_category">Розгорнути %s</string>
   <string name="button_label_expand_media_overview">Розгорнути огляд \"%s\"</string>
   <string name="button_label_expand_navbar">Розгорнути</string>
@@ -73,6 +75,7 @@
   <string name="button_label_get_vip">Розблокувати VIP-функції</string>
   <string name="button_label_go_to_calendar_day">Перейти до %d</string>
   <string name="button_label_hide_recommendation">Приховати \"%s\" з рекомендацій</string>
+  <string name="button_label_hide_section">Приховати %s</string>
   <string name="button_label_history">Історія</string>
   <string name="button_label_history_slot">Переглянуто між %1$s та %2$s</string>
   <string name="button_label_home">Повернутися на домашню сторінку</string>
@@ -128,6 +131,7 @@
   <string name="button_label_set_cover_image">Встановити зображення \"%s\" як вашу обкладинку.</string>
   <string name="button_label_settings">Налаштування</string>
   <string name="button_label_share">Поділитися \"%s\"</string>
+  <string name="button_label_show_section">Показати %s</string>
   <string name="button_label_shows">Серіали</string>
   <string name="button_label_sort_added_date">Сортувати за датою додавання</string>
   <string name="button_label_sort_ascending">Сортувати за зростанням</string>
@@ -227,6 +231,7 @@
   <string name="button_text_edit_comment">Редагувати</string>
   <string name="button_text_edit_list">Редагувати</string>
   <string name="button_text_edit_note">Редагувати</string>
+  <string name="button_text_exit_edit_mode">Вийти з режиму редагування</string>
   <string name="button_text_find_movies">Знайти фільми</string>
   <string name="button_text_find_shows">Знайти серіали</string>
   <string name="button_text_follow">Стежити</string>
@@ -884,6 +889,7 @@
   <string name="text_display_email">Електронна пошта</string>
   <string name="text_display_name">Ім\'я для відображення</string>
   <string name="text_during_credits">Під час титрів</string>
+  <string name="text_edit_mode_toggle_sections">Приховати/показати розділи</string>
   <string name="text_ends_at">Закінчується о %s</string>
   <string name="text_episodes_watched">%d епізодів</string>
   <string name="text_export_status_complete">Експорт завершено.</string>

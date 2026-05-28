@@ -62,7 +62,9 @@
   <string name="button_label_drop_show">Маркирай сериала \"%s\" като изоставен</string>
   <string name="button_label_edit_comment">Редактиране на ревю</string>
   <string name="button_label_edit_list">Редактирай списъка си %s</string>
+  <string name="button_label_edit_mode">Режим на редактиране</string>
   <string name="button_label_edit_note">Редактиране на бележка</string>
+  <string name="button_label_exit_edit_mode">Изход от режим на редактиране</string>
   <string name="button_label_expand_category">Разшири %s</string>
   <string name="button_label_expand_media_overview">Разшири преглед на \"%s\"</string>
   <string name="button_label_expand_navbar">Разширяване</string>
@@ -73,6 +75,7 @@
   <string name="button_label_get_vip">Отключи VIP функции</string>
   <string name="button_label_go_to_calendar_day">Отиди на %d</string>
   <string name="button_label_hide_recommendation">Скрий „%s“ от препоръки</string>
+  <string name="button_label_hide_section">Скриване на %s</string>
   <string name="button_label_history">Исторически</string>
   <string name="button_label_history_slot">Гледано между %1$s и %2$s</string>
   <string name="button_label_home">Върни се към началната страница</string>
@@ -128,6 +131,7 @@
   <string name="button_label_set_cover_image">Задайте изображението на „%s“ като ваша корица.</string>
   <string name="button_label_settings">Настройки</string>
   <string name="button_label_share">Сподели \"%s\"</string>
+  <string name="button_label_show_section">Показване на %s</string>
   <string name="button_label_shows">Сериали</string>
   <string name="button_label_sort_added_date">Сортиране по дата на добавяне</string>
   <string name="button_label_sort_ascending">Сортиране във възходящ ред</string>
@@ -227,6 +231,7 @@
   <string name="button_text_edit_comment">Редактирай</string>
   <string name="button_text_edit_list">Редактирай</string>
   <string name="button_text_edit_note">Редактирай</string>
+  <string name="button_text_exit_edit_mode">Изход от режим на редактиране</string>
   <string name="button_text_find_movies">Намери филми</string>
   <string name="button_text_find_shows">Намери сериали</string>
   <string name="button_text_follow">Следвай</string>
@@ -884,6 +889,7 @@
   <string name="text_display_email">Имейл</string>
   <string name="text_display_name">Показвано име</string>
   <string name="text_during_credits">По време на надписите</string>
+  <string name="text_edit_mode_toggle_sections">Скриване/показване на секции</string>
   <string name="text_ends_at">Приключва в %s</string>
   <string name="text_episodes_watched">%d епизода</string>
   <string name="text_export_status_complete">Експортирането е завършено.</string>

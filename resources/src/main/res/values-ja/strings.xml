@@ -62,7 +62,9 @@
   <string name="button_label_drop_show">番組「%s」を中止済みとしてマーク</string>
   <string name="button_label_edit_comment">レビューを編集</string>
   <string name="button_label_edit_list">リスト「%s」を編集</string>
+  <string name="button_label_edit_mode">編集モード</string>
   <string name="button_label_edit_note">メモを編集</string>
+  <string name="button_label_exit_edit_mode">編集モードを終了</string>
   <string name="button_label_expand_category">%sを展開</string>
   <string name="button_label_expand_media_overview">「%s」の概要を展開</string>
   <string name="button_label_expand_navbar">展開する</string>
@@ -73,6 +75,7 @@
   <string name="button_label_get_vip">VIP機能をアンロック</string>
   <string name="button_label_go_to_calendar_day">%dへ移動</string>
   <string name="button_label_hide_recommendation">「%s」を おすすめから非表示にする</string>
+  <string name="button_label_hide_section">%sを非表示</string>
   <string name="button_label_history">歴史</string>
   <string name="button_label_history_slot">%1$sから%2$sの間に視聴</string>
   <string name="button_label_home">ホームページに戻る</string>
@@ -128,6 +131,7 @@
   <string name="button_label_set_cover_image">「%s」の画像をカバー画像として設定</string>
   <string name="button_label_settings">設定</string>
   <string name="button_label_share">「%s」を共有</string>
+  <string name="button_label_show_section">%sを表示</string>
   <string name="button_label_shows">番組</string>
   <string name="button_label_sort_added_date">追加日でソート</string>
   <string name="button_label_sort_ascending">昇順でソート</string>
@@ -227,6 +231,7 @@
   <string name="button_text_edit_comment">編集</string>
   <string name="button_text_edit_list">編集</string>
   <string name="button_text_edit_note">編集</string>
+  <string name="button_text_exit_edit_mode">編集モードを終了</string>
   <string name="button_text_find_movies">映画を探す</string>
   <string name="button_text_find_shows">番組を探す</string>
   <string name="button_text_follow">フォロー</string>
@@ -884,6 +889,7 @@
   <string name="text_display_email">メールアドレス</string>
   <string name="text_display_name">表示名</string>
   <string name="text_during_credits">クレジット中</string>
+  <string name="text_edit_mode_toggle_sections">セクションの表示/非表示</string>
   <string name="text_ends_at">%sに終了</string>
   <string name="text_episodes_watched">%d話</string>
   <string name="text_export_status_complete">エクスポートが完了しました。</string>

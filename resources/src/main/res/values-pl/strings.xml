@@ -62,7 +62,9 @@
   <string name="button_label_drop_show">Oznacz serial \"%s\" jako porzucony</string>
   <string name="button_label_edit_comment">Edytuj recenzję</string>
   <string name="button_label_edit_list">Edytuj listę %s</string>
+  <string name="button_label_edit_mode">Tryb edycji</string>
   <string name="button_label_edit_note">Edytuj notatkę</string>
+  <string name="button_label_exit_edit_mode">Wyjdź z trybu edycji</string>
   <string name="button_label_expand_category">Rozwiń %s</string>
   <string name="button_label_expand_media_overview">Rozwiń opis \"%s\"</string>
   <string name="button_label_expand_navbar">Rozwiń</string>
@@ -73,6 +75,7 @@
   <string name="button_label_get_vip">Odblokuj funkcje VIP</string>
   <string name="button_label_go_to_calendar_day">Idź do %d</string>
   <string name="button_label_hide_recommendation">Ukryj \"%s\" w rekomendacjach</string>
+  <string name="button_label_hide_section">Ukryj %s</string>
   <string name="button_label_history">Historia</string>
   <string name="button_label_history_slot">Obejrzany między %1$s a %2$s</string>
   <string name="button_label_home">Wróć do strony głównej</string>
@@ -128,6 +131,7 @@
   <string name="button_label_set_cover_image">Ustaw \"%s\" jako twoją okładkę.</string>
   <string name="button_label_settings">Ustawienia</string>
   <string name="button_label_share">Udostępnij \"%s\"</string>
+  <string name="button_label_show_section">Pokaż %s</string>
   <string name="button_label_shows">Seriale</string>
   <string name="button_label_sort_added_date">Sortuj według daty dodania</string>
   <string name="button_label_sort_ascending">Rosnąco</string>
@@ -227,6 +231,7 @@
   <string name="button_text_edit_comment">Edytuj</string>
   <string name="button_text_edit_list">Edytuj</string>
   <string name="button_text_edit_note">Edytuj</string>
+  <string name="button_text_exit_edit_mode">Wyjdź z trybu edycji</string>
   <string name="button_text_find_movies">Znajdź filmy</string>
   <string name="button_text_find_shows">Znajdź seriale</string>
   <string name="button_text_follow">Obserwuj</string>
@@ -884,6 +889,7 @@
   <string name="text_display_email">E-mail</string>
   <string name="text_display_name">Wyświetlana nazwa</string>
   <string name="text_during_credits">Podczas napisów</string>
+  <string name="text_edit_mode_toggle_sections">Ukryj/pokaż sekcje</string>
   <string name="text_ends_at">Kończy się o %s</string>
   <string name="text_episodes_watched">%d odcinków</string>
   <string name="text_export_status_complete">Eksport zakończony.</string>

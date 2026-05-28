@@ -62,7 +62,9 @@
   <string name="button_label_drop_show">\"%s\" jelölése félbehagyottként</string>
   <string name="button_label_edit_comment">Értékelés szerkesztése</string>
   <string name="button_label_edit_list">Listád szerkesztése: %s</string>
+  <string name="button_label_edit_mode">Szerkesztési mód</string>
   <string name="button_label_edit_note">Jegyzet szerkesztése</string>
+  <string name="button_label_exit_edit_mode">Szerkesztési módból kilépés</string>
   <string name="button_label_expand_category">%s kibontása</string>
   <string name="button_label_expand_media_overview">„%s” ismertetőjőnek kibontása</string>
   <string name="button_label_expand_navbar">Kibontás</string>
@@ -73,6 +75,7 @@
   <string name="button_label_get_vip">VIP funkciók feloldása</string>
   <string name="button_label_go_to_calendar_day">Ugrás ide: %d</string>
   <string name="button_label_hide_recommendation">\"%s\" elrejtése az ajánlások közül</string>
+  <string name="button_label_hide_section">Elrejtés: %s</string>
   <string name="button_label_history">Előzmények</string>
   <string name="button_label_history_slot">Megnézve %1$s és %2$s között</string>
   <string name="button_label_home">Vissza a kezdőlapra</string>
@@ -128,6 +131,7 @@
   <string name="button_label_set_cover_image">Állítsd be a(z) \"%s\" képét borítóképként.</string>
   <string name="button_label_settings">Beállítások</string>
   <string name="button_label_share">„%s” megosztása</string>
+  <string name="button_label_show_section">Megjelenítés: %s</string>
   <string name="button_label_shows">Sorozatok</string>
   <string name="button_label_sort_added_date">Rendezés hozzáadás dátuma szerint</string>
   <string name="button_label_sort_ascending">Rendezés növekvő sorrendben</string>
@@ -227,6 +231,7 @@
   <string name="button_text_edit_comment">Szerkesztés</string>
   <string name="button_text_edit_list">Szerkesztés</string>
   <string name="button_text_edit_note">Szerkesztés</string>
+  <string name="button_text_exit_edit_mode">Szerkesztési módból kilépés</string>
   <string name="button_text_find_movies">Filmek keresése</string>
   <string name="button_text_find_shows">Sorozatok keresése</string>
   <string name="button_text_follow">Követés</string>
@@ -884,6 +889,7 @@
   <string name="text_display_email">E-mail</string>
   <string name="text_display_name">Megjelenített név</string>
   <string name="text_during_credits">Stáblista közbeni jelenetek</string>
+  <string name="text_edit_mode_toggle_sections">Szakaszok elrejtése/megjelenítése</string>
   <string name="text_ends_at">Vége %s órakor</string>
   <string name="text_episodes_watched">%d epizód</string>
   <string name="text_export_status_complete">Exportálás befejeződött.</string>

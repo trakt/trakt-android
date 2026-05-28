@@ -62,7 +62,9 @@
   <string name="button_label_drop_show">Flag show \"%s\" as dropped</string>
   <string name="button_label_edit_comment">Edit Review</string>
   <string name="button_label_edit_list">Edit your list %s</string>
+  <string name="button_label_edit_mode">Edit mode</string>
   <string name="button_label_edit_note">Edit note</string>
+  <string name="button_label_exit_edit_mode">Exit edit mode</string>
   <string name="button_label_expand_category">Expand %s</string>
   <string name="button_label_expand_media_overview">Expand \"%s\" overview</string>
   <string name="button_label_expand_navbar">Expand</string>
@@ -73,6 +75,7 @@
   <string name="button_label_get_vip">Unlock VIP features</string>
   <string name="button_label_go_to_calendar_day">Go to %d</string>
   <string name="button_label_hide_recommendation">Hide \"%s\" from recommendations</string>
+  <string name="button_label_hide_section">Hide %s</string>
   <string name="button_label_history">History</string>
   <string name="button_label_history_slot">Watched between %1$s and %2$s</string>
   <string name="button_label_home">Go back to the homepage</string>
@@ -128,6 +131,7 @@
   <string name="button_label_set_cover_image">Set the image of \"%s\" as your cover image.</string>
   <string name="button_label_settings">Settings</string>
   <string name="button_label_share">Share \"%s\"</string>
+  <string name="button_label_show_section">Show %s</string>
   <string name="button_label_shows">Shows</string>
   <string name="button_label_sort_added_date">Sort by date added</string>
   <string name="button_label_sort_ascending">Sort ascending</string>
@@ -227,6 +231,7 @@
   <string name="button_text_edit_comment">Edit</string>
   <string name="button_text_edit_list">Edit</string>
   <string name="button_text_edit_note">Edit</string>
+  <string name="button_text_exit_edit_mode">Exit edit mode</string>
   <string name="button_text_find_movies">Find Movies</string>
   <string name="button_text_find_shows">Find Shows</string>
   <string name="button_text_follow">Follow</string>
@@ -884,6 +889,7 @@
   <string name="text_display_email">Email</string>
   <string name="text_display_name">Display name</string>
   <string name="text_during_credits">During credits</string>
+  <string name="text_edit_mode_toggle_sections">Hide/show sections</string>
   <string name="text_ends_at">Ends at %s</string>
   <string name="text_episodes_watched">%d episodes</string>
   <string name="text_export_status_complete">Export complete.</string>

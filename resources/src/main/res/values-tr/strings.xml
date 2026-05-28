@@ -62,7 +62,9 @@
   <string name="button_label_drop_show">\"%s\" dizisini bıraktı olarak işaretle</string>
   <string name="button_label_edit_comment">İncelemeyi Düzenle</string>
   <string name="button_label_edit_list">%s listenizi düzenle</string>
+  <string name="button_label_edit_mode">Düzenleme modu</string>
   <string name="button_label_edit_note">Notu düzenle</string>
+  <string name="button_label_exit_edit_mode">Düzenleme modundan çık</string>
   <string name="button_label_expand_category">%s genişlet</string>
   <string name="button_label_expand_media_overview">\"%s\" genel bakışını genişlet</string>
   <string name="button_label_expand_navbar">Genişlet</string>
@@ -73,6 +75,7 @@
   <string name="button_label_get_vip">VIP özelliklerini aç</string>
   <string name="button_label_go_to_calendar_day">%d tarihine git</string>
   <string name="button_label_hide_recommendation">\"%s\" öğesini önerilerden gizle</string>
+  <string name="button_label_hide_section">%s gizle</string>
   <string name="button_label_history">Geçmiş</string>
   <string name="button_label_history_slot">%1$s ile %2$s arasında izlendi</string>
   <string name="button_label_home">Ana sayfaya geri dön</string>
@@ -128,6 +131,7 @@
   <string name="button_label_set_cover_image">\"%s\" görselini kapak resminiz olarak ayarla.</string>
   <string name="button_label_settings">Ayarlar</string>
   <string name="button_label_share">\"%s\" paylaş</string>
+  <string name="button_label_show_section">%s göster</string>
   <string name="button_label_shows">Diziler</string>
   <string name="button_label_sort_added_date">Eklenme tarihine göre sırala</string>
   <string name="button_label_sort_ascending">Artan şekilde sırala</string>
@@ -227,6 +231,7 @@
   <string name="button_text_edit_comment">Düzenle</string>
   <string name="button_text_edit_list">Düzenle</string>
   <string name="button_text_edit_note">Düzenle</string>
+  <string name="button_text_exit_edit_mode">Düzenleme modundan çık</string>
   <string name="button_text_find_movies">Film Bul</string>
   <string name="button_text_find_shows">Dizi Bul</string>
   <string name="button_text_follow">Takip Et</string>
@@ -884,6 +889,7 @@
   <string name="text_display_email">E-posta</string>
   <string name="text_display_name">Görünen ad</string>
   <string name="text_during_credits">Jenerik sırasında</string>
+  <string name="text_edit_mode_toggle_sections">Bölümleri gizle/göster</string>
   <string name="text_ends_at">%sda biter</string>
   <string name="text_episodes_watched">%d bölüm</string>
   <string name="text_export_status_complete">Dışa aktarma tamamlandı.</string>
