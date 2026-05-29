@@ -27,7 +27,20 @@
       "Bash(grep -o '%[0-9]\\\\+\\\\$[a-zA-Z]' /Users/michal/Documents/Android/trakt/trakt-android-2025/resources/src/main/res/values/strings.xml)",
       "Skill(update-config)",
       "Bash(grep -v \"^.*//.*$\")",
-      "Bash(grep -v '\\\\.original\\\\.md$')"
+      "Bash(grep -v '\\\\.original\\\\.md$')",
+      "Bash(grep -v \"^$\")",
+      "Bash(xargs cat -n)",
+      "Bash(xargs cat)",
+      "Bash(grep -v \"\\\\.kt$\")",
+      "Bash(./gradlew :app:compileDebugKotlin)",
+      "Bash(./gradlew :app:compileInternalDebugKotlin)",
+      "Bash(android emulator *)",
+      "Bash(echo \"Emulator starting in background \\(PID $!\\)\")",
+      "Bash(./gradlew :app:assembleDebug)",
+      "Bash(android layout *)",
+      "Bash(chmod +x *)",
+      "Bash(bash *)",
+      "Bash(./gradlew :app:assembleInternalDebug)"
     ]
   }
 }
