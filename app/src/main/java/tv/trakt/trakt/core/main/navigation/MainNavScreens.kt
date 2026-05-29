@@ -64,14 +64,14 @@ import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
 import tv.trakt.trakt.core.summary.shows.navigation.showDetailsScreen
 import tv.trakt.trakt.core.trivia.navigation.navigateToTrivia
 import tv.trakt.trakt.core.trivia.navigation.triviaScreen
-import tv.trakt.trakt.core.users.navigation.navigateToUserProfile
-import tv.trakt.trakt.core.users.navigation.userProfileScreen
-import tv.trakt.trakt.core.users.sections.favorites.all.allUserProfileFavoritesScreen
-import tv.trakt.trakt.core.users.sections.favorites.all.navigateToAllUserProfileFavorites
-import tv.trakt.trakt.core.users.sections.history.all.allUserProfileHistoryScreen
-import tv.trakt.trakt.core.users.sections.history.all.navigateToAllUserProfileHistory
-import tv.trakt.trakt.core.users.sections.lists.all.allUserProfileListsScreen
-import tv.trakt.trakt.core.users.sections.lists.all.navigateToAllUserProfileLists
+import tv.trakt.trakt.core.userprofile.navigation.navigateToUserProfile
+import tv.trakt.trakt.core.userprofile.navigation.userProfileScreen
+import tv.trakt.trakt.core.userprofile.sections.favorites.all.allUserProfileFavoritesScreen
+import tv.trakt.trakt.core.userprofile.sections.favorites.all.navigateToAllUserProfileFavorites
+import tv.trakt.trakt.core.userprofile.sections.history.all.allUserProfileHistoryScreen
+import tv.trakt.trakt.core.userprofile.sections.history.all.navigateToAllUserProfileHistory
+import tv.trakt.trakt.core.userprofile.sections.lists.all.allUserProfileListsScreen
+import tv.trakt.trakt.core.userprofile.sections.lists.all.navigateToAllUserProfileLists
 import tv.trakt.trakt.helpers.player.navigation.navigateToYouTubePlayer
 import tv.trakt.trakt.helpers.player.navigation.youTubePlayerScreen
 
