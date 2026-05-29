@@ -62,7 +62,9 @@
   <string name="button_label_drop_show">Merk serien \"%s\" som droppet</string>
   <string name="button_label_edit_comment">Rediger anmeldelse</string>
   <string name="button_label_edit_list">Rediger listen din %s</string>
+  <string name="button_label_edit_mode">Redigeringsmodus</string>
   <string name="button_label_edit_note">Rediger notat</string>
+  <string name="button_label_exit_edit_mode">Avslutt redigeringsmodus</string>
   <string name="button_label_expand_category">Utvid %s</string>
   <string name="button_label_expand_media_overview">Utvid \"%s\" oversikt</string>
   <string name="button_label_expand_navbar">Vis</string>
@@ -73,6 +75,7 @@
   <string name="button_label_get_vip">Lås opp VIP-funksjoner</string>
   <string name="button_label_go_to_calendar_day">Gå til %d</string>
   <string name="button_label_hide_recommendation">Skjul \"%s\" fra anbefalinger</string>
+  <string name="button_label_hide_section">Skjul %s</string>
   <string name="button_label_history">Historie</string>
   <string name="button_label_history_slot">Sett mellom %1$s og %2$s</string>
   <string name="button_label_home">Gå tilbake til hjemmesiden</string>
@@ -128,6 +131,7 @@
   <string name="button_label_set_cover_image">Angi bildet av \"%s\" som forsidebilde.</string>
   <string name="button_label_settings">Innstillinger</string>
   <string name="button_label_share">Del \"%s\"</string>
+  <string name="button_label_show_section">Vis %s</string>
   <string name="button_label_shows">Serier</string>
   <string name="button_label_sort_added_date">Sorter etter dato lagt til</string>
   <string name="button_label_sort_ascending">Sorter stigende</string>
@@ -227,6 +231,7 @@
   <string name="button_text_edit_comment">Rediger</string>
   <string name="button_text_edit_list">Rediger</string>
   <string name="button_text_edit_note">Rediger</string>
+  <string name="button_text_exit_edit_mode">Avslutt redigeringsmodus</string>
   <string name="button_text_find_movies">Finn filmer</string>
   <string name="button_text_find_shows">Finn serier</string>
   <string name="button_text_follow">Følg</string>
@@ -884,6 +889,7 @@
   <string name="text_display_email">E-post</string>
   <string name="text_display_name">Visningsnavn</string>
   <string name="text_during_credits">Under rulleteksten</string>
+  <string name="text_edit_mode_toggle_sections">Skjul/vis seksjoner</string>
   <string name="text_ends_at">Slutter kl. %s</string>
   <string name="text_episodes_watched">%d episoder</string>
   <string name="text_export_status_complete">Eksport fullført.</string>

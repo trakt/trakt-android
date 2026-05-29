@@ -62,7 +62,9 @@
   <string name="button_label_drop_show">Serie \"%s\" als abgebrochen markieren</string>
   <string name="button_label_edit_comment">Rezension bearbeiten</string>
   <string name="button_label_edit_list">Ihre Liste %s bearbeiten</string>
+  <string name="button_label_edit_mode">Bearbeitungsmodus</string>
   <string name="button_label_edit_note">Notiz bearbeiten</string>
+  <string name="button_label_exit_edit_mode">Bearbeitungsmodus verlassen</string>
   <string name="button_label_expand_category">%s erweitern</string>
   <string name="button_label_expand_media_overview">Übersicht von \"%s\" erweitern</string>
   <string name="button_label_expand_navbar">Ausklappen</string>
@@ -73,6 +75,7 @@
   <string name="button_label_get_vip">VIP-Funktionen freischalten</string>
   <string name="button_label_go_to_calendar_day">Gehe zu %d</string>
   <string name="button_label_hide_recommendation">„%s“ aus Empfehlungen ausblenden</string>
+  <string name="button_label_hide_section">%s ausblenden</string>
   <string name="button_label_history">Geschichte</string>
   <string name="button_label_history_slot">Gesehen zwischen %1$s und %2$s</string>
   <string name="button_label_home">Zur Startseite zurückkehren</string>
@@ -128,6 +131,7 @@
   <string name="button_label_set_cover_image">Das Bild von \"%s\" als Ihr Coverbild festlegen.</string>
   <string name="button_label_settings">Einstellungen</string>
   <string name="button_label_share">\"%s\" teilen</string>
+  <string name="button_label_show_section">%s anzeigen</string>
   <string name="button_label_shows">Serien</string>
   <string name="button_label_sort_added_date">Nach Hinzugefügt-Datum sortieren</string>
   <string name="button_label_sort_ascending">Aufsteigend sortieren</string>
@@ -227,6 +231,7 @@
   <string name="button_text_edit_comment">Bearbeiten</string>
   <string name="button_text_edit_list">Bearbeiten</string>
   <string name="button_text_edit_note">Bearbeiten</string>
+  <string name="button_text_exit_edit_mode">Bearbeitungsmodus verlassen</string>
   <string name="button_text_find_movies">Filme finden</string>
   <string name="button_text_find_shows">Serien finden</string>
   <string name="button_text_follow">Folgen</string>
@@ -884,6 +889,7 @@
   <string name="text_display_email">E-Mail</string>
   <string name="text_display_name">Anzeigename</string>
   <string name="text_during_credits">Während des Abspanns</string>
+  <string name="text_edit_mode_toggle_sections">Abschnitte aus-/einblenden</string>
   <string name="text_ends_at">Endet um %s</string>
   <string name="text_episodes_watched">%d Folgen</string>
   <string name="text_export_status_complete">Export abgeschlossen.</string>

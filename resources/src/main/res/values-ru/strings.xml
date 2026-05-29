@@ -62,7 +62,9 @@
   <string name="button_label_drop_show">Отметить сериал \"%s\" как заброшенный</string>
   <string name="button_label_edit_comment">Редактировать отзыв</string>
   <string name="button_label_edit_list">Изменить список %s</string>
+  <string name="button_label_edit_mode">Режим редактирования</string>
   <string name="button_label_edit_note">Редактировать заметку</string>
+  <string name="button_label_exit_edit_mode">Выйти из режима редактирования</string>
   <string name="button_label_expand_category">Развернуть %s</string>
   <string name="button_label_expand_media_overview">Развернуть обзор \"%s\"</string>
   <string name="button_label_expand_navbar">Развернуть</string>
@@ -73,6 +75,7 @@
   <string name="button_label_get_vip">Разблокировать VIP-функции</string>
   <string name="button_label_go_to_calendar_day">Перейти к %d</string>
   <string name="button_label_hide_recommendation">Скрыть \"%s\" из рекомендаций</string>
+  <string name="button_label_hide_section">Скрыть %s</string>
   <string name="button_label_history">История</string>
   <string name="button_label_history_slot">Просмотрено между %1$s и %2$s</string>
   <string name="button_label_home">Вернуться на главную страницу</string>
@@ -128,6 +131,7 @@
   <string name="button_label_set_cover_image">Установить изображение \"%s\" в качестве обложки.</string>
   <string name="button_label_settings">Настройки</string>
   <string name="button_label_share">Поделиться \"%s\"</string>
+  <string name="button_label_show_section">Показать %s</string>
   <string name="button_label_shows">Сериалы</string>
   <string name="button_label_sort_added_date">Сортировать по дате добавления</string>
   <string name="button_label_sort_ascending">Сортировать по возрастанию</string>
@@ -227,6 +231,7 @@
   <string name="button_text_edit_comment">Изменить</string>
   <string name="button_text_edit_list">Изменить</string>
   <string name="button_text_edit_note">Изменить</string>
+  <string name="button_text_exit_edit_mode">Выйти из режима редактирования</string>
   <string name="button_text_find_movies">Найти фильмы</string>
   <string name="button_text_find_shows">Найти сериалы</string>
   <string name="button_text_follow">Подписаться</string>
@@ -884,6 +889,7 @@
   <string name="text_display_email">Электронная почта</string>
   <string name="text_display_name">Отображаемое имя</string>
   <string name="text_during_credits">Во время титров</string>
+  <string name="text_edit_mode_toggle_sections">Скрыть/показать разделы</string>
   <string name="text_ends_at">Заканчивается в %s</string>
   <string name="text_episodes_watched">%d эпизодов</string>
   <string name="text_export_status_complete">Экспорт завершен.</string>

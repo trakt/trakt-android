@@ -62,7 +62,9 @@
   <string name="button_label_drop_show">Σήμανση σειράς \"%s\" ως εγκαταλειμμένη</string>
   <string name="button_label_edit_comment">Επεξεργασία Κριτικής</string>
   <string name="button_label_edit_list">Επεξεργασία της λίστας σας %s</string>
+  <string name="button_label_edit_mode">Λειτουργία επεξεργασίας</string>
   <string name="button_label_edit_note">Επεξεργασία σημείωσης</string>
+  <string name="button_label_exit_edit_mode">Έξοδος από λειτουργία επεξεργασίας</string>
   <string name="button_label_expand_category">Ανάπτυξη %s</string>
   <string name="button_label_expand_media_overview">Ανάπτυξη επισκόπησης \"%s\"</string>
   <string name="button_label_expand_navbar">Ανάπτυξη</string>
@@ -73,6 +75,7 @@
   <string name="button_label_get_vip">Ξεκλειδώστε λειτουργίες VIP</string>
   <string name="button_label_go_to_calendar_day">Μετάβαση στην %d</string>
   <string name="button_label_hide_recommendation">Απόκρυψη του \"%s\" από τις προτάσεις</string>
+  <string name="button_label_hide_section">Απόκρυψη %s</string>
   <string name="button_label_history">Ιστορικά</string>
   <string name="button_label_history_slot">Παρακολουθήθηκε μεταξύ %1$s και %2$s</string>
   <string name="button_label_home">Επιστροφή στην αρχική σελίδα</string>
@@ -128,6 +131,7 @@
   <string name="button_label_set_cover_image">Ορίστε την εικόνα του \"%s\" ως εικόνα εξωφύλλου σας.</string>
   <string name="button_label_settings">Ρυθμίσεις</string>
   <string name="button_label_share">Κοινή χρήση \"%s\"</string>
+  <string name="button_label_show_section">Εμφάνιση %s</string>
   <string name="button_label_shows">Σειρές</string>
   <string name="button_label_sort_added_date">Ταξινόμηση κατά ημερομηνία προσθήκης</string>
   <string name="button_label_sort_ascending">Ταξινόμηση αύξουσα</string>
@@ -227,6 +231,7 @@
   <string name="button_text_edit_comment">Επεξεργασία</string>
   <string name="button_text_edit_list">Επεξεργασία</string>
   <string name="button_text_edit_note">Επεξεργασία</string>
+  <string name="button_text_exit_edit_mode">Έξοδος από λειτουργία επεξεργασίας</string>
   <string name="button_text_find_movies">Βρείτε Ταινίες</string>
   <string name="button_text_find_shows">Βρείτε Σειρές</string>
   <string name="button_text_follow">Ακολουθήστε</string>
@@ -884,6 +889,7 @@
   <string name="text_display_email">Email</string>
   <string name="text_display_name">Όνομα εμφάνισης</string>
   <string name="text_during_credits">Κατά τη διάρκεια των τίτλων</string>
+  <string name="text_edit_mode_toggle_sections">Απόκρυψη/εμφάνιση ενοτήτων</string>
   <string name="text_ends_at">Τελειώνει στις %s</string>
   <string name="text_episodes_watched">%d επεισόδια</string>
   <string name="text_export_status_complete">Η εξαγωγή ολοκληρώθηκε.</string>

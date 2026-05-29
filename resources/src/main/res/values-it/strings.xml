@@ -62,7 +62,9 @@
   <string name="button_label_drop_show">Contrassegna la serie \"%s\" come abbandonata</string>
   <string name="button_label_edit_comment">Modifica recensione</string>
   <string name="button_label_edit_list">Modifica la tua lista %s</string>
+  <string name="button_label_edit_mode">Modalità di modifica</string>
   <string name="button_label_edit_note">Modifica nota</string>
+  <string name="button_label_exit_edit_mode">Esci dalla modalità di modifica</string>
   <string name="button_label_expand_category">Espandi %s</string>
   <string name="button_label_expand_media_overview">Espandi la panoramica di \"%s\"</string>
   <string name="button_label_expand_navbar">Espandi</string>
@@ -73,6 +75,7 @@
   <string name="button_label_get_vip">Sblocca funzionalità VIP</string>
   <string name="button_label_go_to_calendar_day">Vai al %d</string>
   <string name="button_label_hide_recommendation">Nascondi \"%s\" dalle raccomandazioni</string>
+  <string name="button_label_hide_section">Nascondi %s</string>
   <string name="button_label_history">Storico</string>
   <string name="button_label_history_slot">Visto tra il %1$s e il %2$s</string>
   <string name="button_label_home">Torna alla homepage</string>
@@ -128,6 +131,7 @@
   <string name="button_label_set_cover_image">Imposta l\'immagine di \"%s\" come immagine di copertina.</string>
   <string name="button_label_settings">Impostazioni</string>
   <string name="button_label_share">Condividi \"%s\"</string>
+  <string name="button_label_show_section">Mostra %s</string>
   <string name="button_label_shows">Serie TV</string>
   <string name="button_label_sort_added_date">Ordina per data di aggiunta</string>
   <string name="button_label_sort_ascending">Ordina crescente</string>
@@ -227,6 +231,7 @@
   <string name="button_text_edit_comment">Modifica</string>
   <string name="button_text_edit_list">Modifica</string>
   <string name="button_text_edit_note">Modifica</string>
+  <string name="button_text_exit_edit_mode">Esci dalla modalità di modifica</string>
   <string name="button_text_find_movies">Trova Film</string>
   <string name="button_text_find_shows">Trova Serie TV</string>
   <string name="button_text_follow">Segui</string>
@@ -884,6 +889,7 @@
   <string name="text_display_email">Email</string>
   <string name="text_display_name">Nome visualizzato</string>
   <string name="text_during_credits">Durante i titoli di coda</string>
+  <string name="text_edit_mode_toggle_sections">Nascondi/mostra sezioni</string>
   <string name="text_ends_at">Termina alle %s</string>
   <string name="text_episodes_watched">%d episodi</string>
   <string name="text_export_status_complete">Esportazione completata.</string>

@@ -62,7 +62,9 @@
   <string name="button_label_drop_show">Markera serien \"%s\" som avbruten</string>
   <string name="button_label_edit_comment">Redigera recension</string>
   <string name="button_label_edit_list">Redigera din lista %s</string>
+  <string name="button_label_edit_mode">Redigeringsläge</string>
   <string name="button_label_edit_note">Redigera anteckning</string>
+  <string name="button_label_exit_edit_mode">Avsluta redigeringsläge</string>
   <string name="button_label_expand_category">Visa %s</string>
   <string name="button_label_expand_media_overview">Expandera översikt för \"%s\"</string>
   <string name="button_label_expand_navbar">Fäll ut</string>
@@ -73,6 +75,7 @@
   <string name="button_label_get_vip">Lås upp VIP-funktioner</string>
   <string name="button_label_go_to_calendar_day">Gå till %d</string>
   <string name="button_label_hide_recommendation">Dölj \"%s\" från rekommendationer</string>
+  <string name="button_label_hide_section">Dölj %s</string>
   <string name="button_label_history">Historik</string>
   <string name="button_label_history_slot">Sedda mellan %1$s och %2$s</string>
   <string name="button_label_home">Gå tillbaka till startsidan</string>
@@ -128,6 +131,7 @@
   <string name="button_label_set_cover_image">Ange bilden för \"%s\" som din omslagsbild.</string>
   <string name="button_label_settings">Inställningar</string>
   <string name="button_label_share">Dela \"%s\"</string>
+  <string name="button_label_show_section">Visa %s</string>
   <string name="button_label_shows">Serier</string>
   <string name="button_label_sort_added_date">Sortera efter datum tillagt</string>
   <string name="button_label_sort_ascending">Sortera stigande</string>
@@ -227,6 +231,7 @@
   <string name="button_text_edit_comment">Redigera</string>
   <string name="button_text_edit_list">Redigera</string>
   <string name="button_text_edit_note">Redigera</string>
+  <string name="button_text_exit_edit_mode">Avsluta redigeringsläge</string>
   <string name="button_text_find_movies">Hitta filmer</string>
   <string name="button_text_find_shows">Hitta serier</string>
   <string name="button_text_follow">Följ</string>
@@ -884,6 +889,7 @@
   <string name="text_display_email">E-post</string>
   <string name="text_display_name">Visningsnamn</string>
   <string name="text_during_credits">Under eftertexterna</string>
+  <string name="text_edit_mode_toggle_sections">Dölj/visa avsnitt</string>
   <string name="text_ends_at">Slutar klockan %s</string>
   <string name="text_episodes_watched">%d avsnitt</string>
   <string name="text_export_status_complete">Exporten slutförd.</string>

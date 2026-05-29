@@ -62,7 +62,9 @@
   <string name="button_label_drop_show">Markeer serie \"%s\" als gestopt</string>
   <string name="button_label_edit_comment">Beoordeling bewerken</string>
   <string name="button_label_edit_list">Bewerk je lijst %s</string>
+  <string name="button_label_edit_mode">Bewerkmodus</string>
   <string name="button_label_edit_note">Notitie bewerken</string>
+  <string name="button_label_exit_edit_mode">Bewerkmodus verlaten</string>
   <string name="button_label_expand_category">%s uitvouwen</string>
   <string name="button_label_expand_media_overview">Vouw overzicht van \"%s\" uit</string>
   <string name="button_label_expand_navbar">Uitvouwen</string>
@@ -73,6 +75,7 @@
   <string name="button_label_get_vip">VIP-functies ontgrendelen</string>
   <string name="button_label_go_to_calendar_day">Ga naar %d</string>
   <string name="button_label_hide_recommendation">Verberg \"%s\" uit aanbevelingen</string>
+  <string name="button_label_hide_section">%s verbergen</string>
   <string name="button_label_history">Geschiedenis</string>
   <string name="button_label_history_slot">Bekeken tussen %1$s en %2$s</string>
   <string name="button_label_home">Terug naar de startpagina gaan</string>
@@ -128,6 +131,7 @@
   <string name="button_label_set_cover_image">Stel de afbeelding van \"%s\" in als je omslagafbeelding.</string>
   <string name="button_label_settings">Instellingen</string>
   <string name="button_label_share">Deel \"%s\"</string>
+  <string name="button_label_show_section">%s tonen</string>
   <string name="button_label_shows">Series</string>
   <string name="button_label_sort_added_date">Sorteren op datum toegevoegd</string>
   <string name="button_label_sort_ascending">Oplopend sorteren</string>
@@ -227,6 +231,7 @@
   <string name="button_text_edit_comment">Bewerken</string>
   <string name="button_text_edit_list">Bewerken</string>
   <string name="button_text_edit_note">Bewerken</string>
+  <string name="button_text_exit_edit_mode">Bewerkmodus verlaten</string>
   <string name="button_text_find_movies">Films zoeken</string>
   <string name="button_text_find_shows">Series zoeken</string>
   <string name="button_text_follow">Volgen</string>
@@ -884,6 +889,7 @@
   <string name="text_display_email">E-mail</string>
   <string name="text_display_name">Weergavenaam</string>
   <string name="text_during_credits">Tijdens de aftiteling</string>
+  <string name="text_edit_mode_toggle_sections">Secties verbergen/tonen</string>
   <string name="text_ends_at">Eindigt om %s</string>
   <string name="text_episodes_watched">%d afleveringen</string>
   <string name="text_export_status_complete">Export voltooid.</string>
