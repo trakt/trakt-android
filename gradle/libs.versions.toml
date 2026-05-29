@@ -1,6 +1,6 @@
 [versions]
-versionCode = "391"
-versionName = "3.10.0"
+versionCode = "395"
+versionName = "3.11.0"
 
 minSdk = "28"
 compileSdk = "37"
@@ -19,7 +19,7 @@ composeBom = "2026.05.01"
 composeNavigation = "2.9.8"
 coreKtx = "1.18.0"
 datastore = "1.2.1"
-firebaseBom = "34.13.0"
+firebaseBom = "34.14.0"
 firebaseCrashlytics = "3.0.7"
 flagkit = "1.0.5"
 googleServices = "4.4.4"
