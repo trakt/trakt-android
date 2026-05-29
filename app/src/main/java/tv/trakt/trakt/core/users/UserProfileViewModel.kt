@@ -205,7 +205,7 @@ internal class UserProfileViewModel(
                         infoState.update {
                             DynamicStringResource(
                                 R.string.text_info_not_following,
-                                listOf(state.value.user.displayName),
+                                listOf(user.displayName),
                             )
                         }
                     }
@@ -217,7 +217,7 @@ internal class UserProfileViewModel(
                                 infoState.update {
                                     DynamicStringResource(
                                         R.string.text_info_following,
-                                        listOf(state.value.user.displayName),
+                                        listOf(user.displayName),
                                     )
                                 }
                             }
@@ -255,7 +255,7 @@ internal class UserProfileViewModel(
                         infoState.update {
                             DynamicStringResource(
                                 R.string.text_info_unblocked,
-                                listOf(state.value.user.displayName),
+                                listOf(user.displayName),
                             )
                         }
                     }
@@ -264,7 +264,7 @@ internal class UserProfileViewModel(
                         infoState.update {
                             DynamicStringResource(
                                 R.string.text_info_blocked,
-                                listOf(state.value.user.displayName),
+                                listOf(user.displayName),
                             )
                         }
                     }

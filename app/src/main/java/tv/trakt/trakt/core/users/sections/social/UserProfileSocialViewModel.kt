@@ -19,6 +19,8 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter
+import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter.FOLLOWERS
+import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter.FOLLOWING
 import tv.trakt.trakt.core.users.sections.social.usecases.GetUserProfileSocialUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
@@ -50,8 +52,8 @@ internal class UserProfileSocialViewModel(
                 loadingState.update { Loading }
                 itemsState.update {
                     when (filterState.value) {
-                        SocialFilter.FOLLOWING -> getSocialUseCase.getFollowing(userId)
-                        SocialFilter.FOLLOWERS -> getSocialUseCase.getFollowers(userId)
+                        FOLLOWING -> getSocialUseCase.getFollowing(userId)
+                        FOLLOWERS -> getSocialUseCase.getFollowers(userId)
                     }
                 }
             } catch (error: Exception) {

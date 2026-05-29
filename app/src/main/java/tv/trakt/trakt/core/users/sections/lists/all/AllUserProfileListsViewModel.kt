@@ -26,6 +26,7 @@ import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collaborations
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Personal
 import tv.trakt.trakt.core.users.UserProfileConfig.ALL_PAGE_LIMIT
 import tv.trakt.trakt.core.users.sections.lists.all.AllUserProfileListsState.User
@@ -82,7 +83,7 @@ internal class AllUserProfileListsViewModel(
                             userId = userId,
                             pagination = pagination,
                         )
-                        else -> EmptyImmutableList
+                        Liked -> EmptyImmutableList
                     }
                 }
 

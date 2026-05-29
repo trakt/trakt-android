@@ -16,8 +16,8 @@ internal class GetUserProfileMonthUseCase(
         return coroutineScope {
             val nowLocalDay = nowLocalDay()
 
-            val fromDate = nowLocalDay.withDayOfMonth(1).atStartOfDay().toInstant(UTC).toKotlinInstant()
-            val toDate = nowLocalDay.plusDays(1).atStartOfDay().toInstant(UTC).toKotlinInstant()
+            val fromDate = nowLocalDay.withDayOfMonth(1).atStartOfDay(UTC).toInstant().toKotlinInstant()
+            val toDate = nowLocalDay.plusDays(1).atStartOfDay(UTC).toInstant().toKotlinInstant()
 
             val remoteEpisodesAsync = async {
                 remoteUserSource.getEpisodesHistory(
