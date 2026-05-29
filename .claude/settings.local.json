@@ -33,7 +33,14 @@
       "Bash(xargs cat)",
       "Bash(grep -v \"\\\\.kt$\")",
       "Bash(./gradlew :app:compileDebugKotlin)",
-      "Bash(./gradlew :app:compileInternalDebugKotlin)"
+      "Bash(./gradlew :app:compileInternalDebugKotlin)",
+      "Bash(android emulator *)",
+      "Bash(echo \"Emulator starting in background \\(PID $!\\)\")",
+      "Bash(./gradlew :app:assembleDebug)",
+      "Bash(android layout *)",
+      "Bash(chmod +x *)",
+      "Bash(bash *)",
+      "Bash(./gradlew :app:assembleInternalDebug)"
     ]
   }
 }
