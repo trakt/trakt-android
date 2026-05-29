@@ -17,9 +17,9 @@ class UserPersonalListsApiClient(
     private val usersApi: UsersApi,
     private val v3Api: V3Api,
 ) : UserPersonalListsRemoteDataSource {
-    override suspend fun getPersonalLists(pagination: Pagination): List<ListDto> {
+    override suspend fun getPersonalLists(pagination: Pagination, userId: String): List<ListDto> {
         val response = usersApi.getUsersListsPersonal(
-            id = "me",
+            id = userId,
             extended = "cloud9,images",
             page = pagination.page,
             limit = pagination.limit,

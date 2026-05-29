@@ -8,6 +8,7 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.extensions.popUpToTop
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.HomeScreen
 
 @Serializable
@@ -25,6 +26,7 @@ internal fun NavGraphBuilder.homeScreen(
     onNavigateToAllSocial: () -> Unit,
     onNavigateToVip: () -> Unit,
     onNavigateToCalendar: () -> Unit,
+    onNavigateToUser: (User) -> Unit,
 ) {
     composable<HomeDestination> {
         HomeScreen(
@@ -40,6 +42,7 @@ internal fun NavGraphBuilder.homeScreen(
             onNavigateToAllSocial = onNavigateToAllSocial,
             onNavigateToVip = onNavigateToVip,
             onNavigateToCalendar = onNavigateToCalendar,
+            onNavigateToUser = onNavigateToUser,
         )
     }
 }

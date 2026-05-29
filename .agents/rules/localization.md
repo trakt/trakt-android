@@ -40,30 +40,10 @@ Text(
 
 ## Key namespacing
 
-Aligned with existing keys in `values/strings.xml`:
-
-| Prefix              | Used for                                          |
-| ------------------- | ------------------------------------------------- |
-| `action_*`          | Verbs on buttons / menu items                     |
-| `common_*`          | Shared phrases reused across screens               |
-| `a11y_*`            | Accessibility-only labels                          |
-| `screen_<name>_*`   | Strings scoped to one screen                       |
-| `error_*`           | User-facing error copy                             |
-
 Platform-specific suffixes:
 
 - `_tv` — Android TV-only variant
 - `_mobile` — phone-only variant when wording differs
-
-Example keys:
-
-```
-screen_movie_summary_title
-screen_movie_summary_cta_play_tv
-action_remove_from_watchlist
-error_credits_load_failed
-a11y_rating_picker
-```
 
 ## Pluralisation
 
@@ -84,33 +64,6 @@ Never `if (count == 1) "1 episode" else "${count} episodes"` — breaks every no
 - Numbers via `NumberFormat.getInstance(locale)` with compact notation for large values.
 - Durations via existing duration helpers; don't hand-code
   `"$hours h $minutes m"`.
-
-## API enum → translated UI text
-
-When API enum surfaces as translated UI text (genre, episode type, status), build exhaustive lookup helper returning `@StringRes` id, not resolved `String`. Keeps mapper pure + testable without `Context`; ViewModels stay free of Android framework types (per `architecture.md`).
-
-```kotlin
-@StringRes
-fun episodeTypeLabel(raw: String): Int? = when (raw.normalizeKey()) {
-    "standard"          -> R.string.common_episode_type_standard
-    "mid_season_finale" -> R.string.common_episode_type_mid_season_finale
-    "season_finale"     -> R.string.common_episode_type_season_finale
-    "series_finale"     -> R.string.common_episode_type_series_finale
-    else                -> null
-}
-
-// In a composable:
-val labelRes = episodeTypeLabel(episode.type)
-Text(
-    text = labelRes?.let { stringResource(it) } ?: episode.type,
-)
-```
-
-- `normalizeKey()` lower-cases + replaces separators so
-  `Mid Season Finale` / `mid-season-finale` / `mid_season_finale` all resolve.
-- Make `when` **exhaustive** for sealed enums you control. `else -> null` fallback exists only for open-ended API strings — call site decides whether to render raw key or placeholder.
-- Recent bug across stacks
-  (`keep tag(isLatestAired:provider:) switch exhaustive`) shows cost of swallowing new API values silently.
 
 ## TV-specific strings
 

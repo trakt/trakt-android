@@ -265,7 +265,7 @@ internal class MoviesApiClient(
         val response = moviesApi.getMoviesComments(
             id = movieId.value.toString(),
             sort = sort,
-            extended = "images",
+            extended = "full,images,vip",
             page = null,
             limit = limit.toString(),
         )

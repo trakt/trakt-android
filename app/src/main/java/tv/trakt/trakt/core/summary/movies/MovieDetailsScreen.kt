@@ -69,6 +69,7 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
@@ -110,6 +111,7 @@ internal fun MovieDetailsScreen(
     onTriviaClick: (Movie) -> Unit,
     onTrailerClick: (String) -> Unit,
     onExtraClick: (ExtraVideo) -> Unit,
+    onNavigateToUser: ((User) -> Unit)? = null,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -201,6 +203,7 @@ internal fun MovieDetailsScreen(
                 state.movieUserRating?.rating?.favorite != true,
             )
         },
+        onNavigateToUser = onNavigateToUser,
         onVipClick = onNavigateVip,
         onTriviaClick = {
             state.movie?.let { movie ->
@@ -372,6 +375,7 @@ internal fun MovieDetailsContent(
     onRatingClick: ((Int) -> Unit)? = null,
     onRatingRemoveClick: (() -> Unit)? = null,
     onFavoriteClick: (() -> Unit)? = null,
+    onNavigateToUser: ((User) -> Unit)? = null,
     onVipClick: (() -> Unit)? = null,
     onTriviaClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
@@ -583,6 +587,7 @@ internal fun MovieDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onMoreClick = onMoreCommentsClick,
+                            onUserClick = onNavigateToUser,
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),

@@ -21,19 +21,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.resources.R
@@ -49,9 +48,8 @@ internal fun ActivityMovieItemView(
     moreButton: Boolean = false,
     onClick: (TraktId) -> Unit = { },
     onLongClick: (() -> Unit)? = null,
+    onUserClick: (user: User) -> Unit = { _ -> },
 ) {
-    val uriHandler = LocalUriHandler.current
-
     HorizontalMediaCard(
         modifier = modifier,
         title = "",
@@ -77,11 +75,7 @@ internal fun ActivityMovieItemView(
                     contentAlignment = Alignment.CenterEnd,
                     modifier = Modifier
                         .sizeIn(maxHeight = 26.dp)
-                        .onClick {
-                            uriHandler.openUri(
-                                Config.webUserUrl(user.username),
-                            )
-                        },
+                        .onClick { onUserClick(user) },
                 ) {
                     InfoChip(
                         text = user.displayName,

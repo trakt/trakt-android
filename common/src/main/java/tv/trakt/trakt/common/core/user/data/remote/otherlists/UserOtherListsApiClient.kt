@@ -23,9 +23,9 @@ class UserOtherListsApiClient(
         return response.body()
     }
 
-    override suspend fun getCollaborationLists(): List<ListDto> {
+    override suspend fun getCollaborationLists(userId: String): List<ListDto> {
         val response = usersApi.getUsersListsCollaborations(
-            id = "me",
+            id = userId,
             extended = "cloud9,images",
         )
         return response.body()

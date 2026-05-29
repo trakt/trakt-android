@@ -96,7 +96,7 @@ internal class EpisodesApiClient(
             season = season,
             episode = episode,
             sort = sort,
-            extended = "images",
+            extended = "full,images,vip",
             page = null,
             limit = limit.toString(),
         )

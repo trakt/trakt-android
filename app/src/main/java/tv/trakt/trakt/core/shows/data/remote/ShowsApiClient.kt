@@ -275,7 +275,7 @@ internal class ShowsApiClient(
         val response = showsApi.getShowsComments(
             id = showId.value.toString(),
             sort = sort,
-            extended = "images",
+            extended = "full,images,vip",
             page = null,
             limit = limit.toString(),
         )

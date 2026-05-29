@@ -1,6 +1,8 @@
 package tv.trakt.trakt.common.core.user.data.remote.favorites
 
 import org.openapitools.client.apis.UsersApi
+import tv.trakt.trakt.common.model.sorting.SortTypeList.DEFAULT
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.SyncFavoriteMovieDto
 import tv.trakt.trakt.common.networking.SyncFavoriteShowDto
 
@@ -9,16 +11,20 @@ class UserFavoritesApiClient(
 ) : UserFavoritesRemoteDataSource {
     override suspend fun getFavoriteShows(
         extended: String?,
-        sort: String?,
+        sorting: Sorting?,
+        userId: String,
     ): List<SyncFavoriteShowDto> {
         val response = usersApi.getUsersFavoritesShows(
-            id = "me",
+            id = userId,
             extended = extended,
-            sort = sort ?: "rank",
+            sort = "",
             page = 1,
             limit = 250,
-            sortBy = null,
-            sortHow = null,
+            sortBy = when (sorting?.type) {
+                DEFAULT, null -> null
+                else -> sorting.type.value
+            },
+            sortHow = sorting?.order?.value,
         )
 
         return response.body()
@@ -26,16 +32,20 @@ class UserFavoritesApiClient(
 
     override suspend fun getFavoriteMovies(
         extended: String?,
-        sort: String?,
+        sorting: Sorting?,
+        userId: String,
     ): List<SyncFavoriteMovieDto> {
         val response = usersApi.getUsersFavoritesMovies(
-            id = "me",
+            id = userId,
             extended = extended,
-            sort = sort ?: "rank",
+            sort = "",
             page = 1,
             limit = 250,
-            sortBy = null,
-            sortHow = null,
+            sortBy = when (sorting?.type) {
+                DEFAULT, null -> null
+                else -> sorting.type.value
+            },
+            sortHow = sorting?.order?.value,
         )
 
         return response.body()

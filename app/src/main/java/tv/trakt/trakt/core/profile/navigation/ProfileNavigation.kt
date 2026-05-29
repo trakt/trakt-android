@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.profile.ProfileScreen
 
 @Serializable
@@ -23,6 +24,7 @@ internal fun NavGraphBuilder.profileScreen(
     onNavigateToDiscover: () -> Unit,
     onNavigateToSettings: () -> Unit,
     onNavigateToHome: () -> Unit,
+    onNavigateToUser: (User) -> Unit,
     onNavigateToVip: () -> Unit,
 ) {
     composable<ProfileDestination> {
@@ -38,6 +40,7 @@ internal fun NavGraphBuilder.profileScreen(
             onNavigateToDiscover = onNavigateToDiscover,
             onNavigateToSettings = onNavigateToSettings,
             onNavigateToHome = onNavigateToHome,
+            onNavigateToUser = onNavigateToUser,
             onNavigateToVip = onNavigateToVip,
         )
     }

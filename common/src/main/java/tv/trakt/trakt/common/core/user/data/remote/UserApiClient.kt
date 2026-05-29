@@ -29,6 +29,15 @@ class UserApiClient(
         return User.fromDto(response)
     }
 
+    override suspend fun getUserProfile(userId: TraktId): User {
+        val response = usersApi.getUsersProfile(
+            id = userId.value.toString(),
+            extended = "full,vip,images",
+        ).body()
+
+        return User.fromDto(response)
+    }
+
     override suspend fun getWatchingNow(): UserWatchingDto? {
         val response = usersApi.getUsersWatching(
             id = "me",

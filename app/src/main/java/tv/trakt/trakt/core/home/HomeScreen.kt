@@ -36,6 +36,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.home.sections.activity.features.history.HomeHistoryView
@@ -64,6 +65,7 @@ internal fun HomeScreen(
     onNavigateToAllSocial: () -> Unit,
     onNavigateToVip: () -> Unit,
     onNavigateToCalendar: () -> Unit,
+    onNavigateToUser: (User) -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
 
@@ -97,6 +99,7 @@ internal fun HomeScreen(
         onMoreSocialClick = onNavigateToAllSocial,
         onCalendarClick = onNavigateToCalendar,
         onVipClick = onNavigateToVip,
+        onUserClick = onNavigateToUser,
         onFiltersClick = {
             filtersSheet = true
         },
@@ -128,6 +131,7 @@ private fun HomeScreenContent(
     onVipClick: () -> Unit = {},
     onCalendarClick: () -> Unit = {},
     onFiltersClick: () -> Unit = {},
+    onUserClick: (user: User) -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
     val lazyListState = rememberLazyListState(
@@ -251,6 +255,7 @@ private fun HomeScreenContent(
                     onShowClick = onShowClick,
                     onEpisodeClick = onEpisodeClick,
                     onMovieClick = onMovieClick,
+                    onUserClick = onUserClick,
                 )
             }
         }

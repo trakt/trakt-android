@@ -76,6 +76,7 @@ import tv.trakt.trakt.core.summary.shows.di.showDetailsDataModule
 import tv.trakt.trakt.core.summary.shows.di.showDetailsModule
 import tv.trakt.trakt.core.sync.di.syncModule
 import tv.trakt.trakt.core.trivia.di.triviaModule
+import tv.trakt.trakt.core.userprofile.di.userProfileModule
 import tv.trakt.trakt.helpers.player.di.youTubePlayerModule
 import java.util.concurrent.TimeUnit.MINUTES
 import tv.trakt.trakt.common.R as RCommon
@@ -182,6 +183,7 @@ internal class TraktApplication : Application() {
                 analyticsModule,
                 translationsDataModule,
                 translationsModule,
+                userProfileModule,
                 youTubePlayerModule,
             )
         }

@@ -85,6 +85,7 @@ internal fun ShowCommentsView(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     onMoreClick: ((CommentsFilter) -> Unit)?,
+    onUserClick: ((User) -> Unit)?,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -121,6 +122,7 @@ internal fun ShowCommentsView(
             viewModel.setReaction(reaction, comment.id)
         },
         onCollapse = viewModel::setCollapsed,
+        onUserClick = onUserClick,
     )
 
     CommentDetailsSheet(
@@ -165,6 +167,7 @@ private fun ShowCommentsContent(
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
     onCollapse: ((Boolean) -> Unit)? = null,
+    onUserClick: ((User) -> Unit)? = null,
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
 
@@ -265,6 +268,7 @@ private fun ShowCommentsContent(
                                     onDeleteCommentClick = onDeleteCommentClick,
                                     onCommentLoaded = onCommentLoaded,
                                     onReactionClick = onReactionClick,
+                                    onUserClick = onUserClick,
                                 )
                             }
                         }
@@ -287,6 +291,7 @@ private fun ContentList(
     onCommentClick: ((Comment) -> Unit)? = null,
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
+    onUserClick: ((User) -> Unit)? = null,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -319,6 +324,7 @@ private fun ContentList(
                 onDeleteClick = { onDeleteCommentClick?.invoke(comment) },
                 onRequestReactions = { onCommentLoaded?.invoke(comment) },
                 onReactionClick = onReactionClick,
+                onUserClick = onUserClick,
                 modifier = Modifier
                     .height(TraktTheme.size.commentCardSize)
                     .aspectRatio(HorizontalImageAspectRatio)

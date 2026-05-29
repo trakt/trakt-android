@@ -22,6 +22,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.notifications.usecases.EnableNotificationsUseCase
 import tv.trakt.trakt.core.notifications.usecases.UpdateNotificationsDeliveryUseCase
 import tv.trakt.trakt.core.settings.SettingsViewModel
+import tv.trakt.trakt.core.settings.features.blocked.BlockedUsersViewModel
 import tv.trakt.trakt.core.settings.features.cover.CoverImageViewModel
 import tv.trakt.trakt.core.settings.features.younify.YounifyViewModel
 import tv.trakt.trakt.core.settings.features.younify.data.remote.YounifyApiClient
@@ -93,6 +94,13 @@ internal val settingsModule = module {
     factory {
         UnlinkYounifyServiceUseCase(
             remoteSource = get(),
+        )
+    }
+
+    viewModel {
+        BlockedUsersViewModel(
+            getBlockedUsersUseCase = get(),
+            blockUserUseCase = get(),
         )
     }
 

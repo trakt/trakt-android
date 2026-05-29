@@ -13,11 +13,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -66,6 +68,7 @@ internal fun ThisMonthCard(
     modifier: Modifier = Modifier,
     containerColor: Color = Shade920,
     containerImage: String? = null,
+    loading: Boolean = false,
     stats: ThisMonthStats?,
 ) {
     val uriHandler = LocalUriHandler.current
@@ -189,14 +192,17 @@ internal fun ThisMonthCard(
                 StatsChip(
                     text = stringResource(R.string.text_episodes_watched, stats?.episodesCount ?: 0),
                     icon = painterResource(R.drawable.ic_shows_off),
+                    loading = loading,
                 )
                 StatsChip(
                     text = stringResource(R.string.text_shows_watched, stats?.showsCount ?: 0),
                     icon = painterResource(R.drawable.ic_shows_off),
+                    loading = loading,
                 )
                 StatsChip(
                     text = stringResource(R.string.text_movies_watched, stats?.moviesCount ?: 0),
                     icon = painterResource(R.drawable.ic_movies_off),
+                    loading = loading,
                 )
             }
 
@@ -245,6 +251,7 @@ private fun StatsChip(
     modifier: Modifier = Modifier,
     text: String,
     icon: Painter,
+    loading: Boolean,
 ) {
     val shape = RoundedCornerShape(6.dp)
     Row(
@@ -269,11 +276,20 @@ private fun StatsChip(
             modifier = Modifier
                 .size(16.dp),
         )
-        Text(
-            text = text.uppercase(),
-            color = TraktTheme.colors.textPrimary,
-            style = TraktTheme.typography.buttonTertiary,
-        )
+
+        if (loading) {
+            Row {
+                Spacer(
+                    modifier = Modifier.width(56.dp),
+                )
+            }
+        } else {
+            Text(
+                text = text.uppercase(),
+                color = TraktTheme.colors.textPrimary,
+                style = TraktTheme.typography.buttonTertiary,
+            )
+        }
     }
 }
 
@@ -284,6 +300,23 @@ private fun Preview() {
         ThisMonthCard(
             user = PreviewData.user1,
             modifier = Modifier.padding(16.dp),
+            stats = ThisMonthStats(
+                showsCount = 12,
+                moviesCount = 0,
+                episodesCount = 34,
+            ),
+        )
+    }
+}
+
+@Preview(widthDp = 350)
+@Composable
+private fun Preview2() {
+    TraktTheme {
+        ThisMonthCard(
+            user = PreviewData.user1,
+            modifier = Modifier.padding(16.dp),
+            loading = true,
             stats = ThisMonthStats(
                 showsCount = 12,
                 moviesCount = 0,
