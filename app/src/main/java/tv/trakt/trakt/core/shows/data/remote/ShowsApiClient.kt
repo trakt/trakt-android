@@ -1,11 +1,8 @@
 package tv.trakt.trakt.core.shows.data.remote
 
-import io.ktor.http.HttpStatusCode
-import kotlinx.collections.immutable.toImmutableList
 import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.ShowsApi
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
-import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.CastCrewDto
@@ -18,6 +15,8 @@ import tv.trakt.trakt.common.networking.SeasonDto
 import tv.trakt.trakt.common.networking.ShowDto
 import tv.trakt.trakt.common.networking.ShowStatsDto
 import tv.trakt.trakt.common.networking.StreamingDto
+import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
 import tv.trakt.trakt.core.shows.data.remote.model.AnticipatedShowDto
 import tv.trakt.trakt.core.shows.data.remote.model.TrendingShowDto
 import java.time.Instant
@@ -25,6 +24,7 @@ import java.time.Instant
 internal class ShowsApiClient(
     private val showsApi: ShowsApi,
     private val recommendationsApi: RecommendationsApi,
+    private val v3Api: V3Api,
 ) : ShowsRemoteDataSource {
     override suspend fun getTrending(
         page: Int,
@@ -220,24 +220,11 @@ internal class ShowsApiClient(
         }
     }
 
-    override suspend fun getSentiments(showId: TraktId): Sentiments {
-        val response = showsApi.getShowsSentiments(
-            id = showId.value.toString(),
+    override suspend fun getSentiments(showId: TraktId): V3SentimentResponse? {
+        val response = v3Api.getShowSentiment(
+            showId = showId,
         )
-
-        if (response.status == HttpStatusCode.NoContent.value) {
-            return Sentiments()
-        }
-
-        val responseBody = response.body()
-        return Sentiments(
-            good = responseBody.good
-                .map { Sentiments.Sentiment(it.sentiment) }
-                .toImmutableList(),
-            bad = responseBody.bad
-                .map { Sentiments.Sentiment(it.sentiment) }
-                .toImmutableList(),
-        )
+        return response
     }
 
     override suspend fun getRelated(showId: TraktId): List<ShowDto> {

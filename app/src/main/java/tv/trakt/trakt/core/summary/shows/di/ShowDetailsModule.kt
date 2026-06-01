@@ -285,6 +285,7 @@ internal val showDetailsModule = module {
             show = show,
             getSentimentUseCase = get(),
             collapsingManager = get(),
+            sessionManager = get(),
         )
     }
 

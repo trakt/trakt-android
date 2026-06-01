@@ -253,6 +253,7 @@ internal val movieDetailsModule = module {
             movie = movie,
             getSentimentUseCase = get(),
             collapsingManager = get(),
+            sessionManager = get(),
         )
     }
 

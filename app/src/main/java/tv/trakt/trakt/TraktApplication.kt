@@ -72,6 +72,7 @@ import tv.trakt.trakt.core.summary.episodes.di.episodeDetailsModule
 import tv.trakt.trakt.core.summary.movies.di.movieDetailsDataModule
 import tv.trakt.trakt.core.summary.movies.di.movieDetailsModule
 import tv.trakt.trakt.core.summary.people.di.personDetailsModule
+import tv.trakt.trakt.core.summary.sentiment.di.sentimentModule
 import tv.trakt.trakt.core.summary.shows.di.showDetailsDataModule
 import tv.trakt.trakt.core.summary.shows.di.showDetailsModule
 import tv.trakt.trakt.core.sync.di.syncModule
@@ -165,6 +166,7 @@ internal class TraktApplication : Application() {
                 commentsDataModule,
                 commentsModule,
                 triviaModule,
+                sentimentModule,
                 listsModule,
                 listsDataModule,
                 reactionsDataModule,

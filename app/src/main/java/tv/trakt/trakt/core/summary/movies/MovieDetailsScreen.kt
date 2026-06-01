@@ -69,6 +69,7 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
+import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.comments.model.CommentsFilter
@@ -109,6 +110,7 @@ internal fun MovieDetailsScreen(
     onListClick: ((Movie, CustomList) -> Unit),
     onPersonClick: ((Movie, Person) -> Unit),
     onTriviaClick: (Movie) -> Unit,
+    onSentimentClick: ((Movie, Sentiments) -> Unit)? = null,
     onTrailerClick: (String) -> Unit,
     onExtraClick: (ExtraVideo) -> Unit,
     onNavigateToUser: ((User) -> Unit)? = null,
@@ -208,6 +210,11 @@ internal fun MovieDetailsScreen(
         onTriviaClick = {
             state.movie?.let { movie ->
                 onTriviaClick(movie)
+            }
+        },
+        onSentimentClick = { sentiments ->
+            state.movie?.let { movie ->
+                onSentimentClick?.invoke(movie, sentiments)
             }
         },
         onBackClick = onNavigateBack,
@@ -378,6 +385,7 @@ internal fun MovieDetailsContent(
     onNavigateToUser: ((User) -> Unit)? = null,
     onVipClick: (() -> Unit)? = null,
     onTriviaClick: (() -> Unit)? = null,
+    onSentimentClick: ((Sentiments) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val previewMode = LocalInspectionMode.current
@@ -567,6 +575,9 @@ internal fun MovieDetailsContent(
                                 ),
                                 headerPadding = sectionPadding,
                                 contentPadding = sectionPadding,
+                                onSentimentClick = { sentiments ->
+                                    onSentimentClick?.invoke(sentiments)
+                                },
                                 modifier = Modifier
                                     .alpha(ratingAlphaMask)
                                     .padding(
