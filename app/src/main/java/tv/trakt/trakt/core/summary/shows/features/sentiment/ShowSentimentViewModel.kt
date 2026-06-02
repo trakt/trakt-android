@@ -50,6 +50,22 @@ internal class ShowSentimentViewModel(
         observeUser()
     }
 
+    @OptIn(FlowPreview::class)
+    private fun observeUser() {
+        sessionManager.observeProfile()
+            .distinctUntilChanged()
+            .debounce(200)
+            .filter {
+                val user = userState.value
+                user != null && user.isAnyVip != it?.isAnyVip
+            }
+            .onEach { user ->
+                userState.update { user }
+                loadData()
+            }
+            .launchIn(viewModelScope)
+    }
+
     private fun loadData() {
         viewModelScope.launch {
             try {
@@ -80,22 +96,6 @@ internal class ShowSentimentViewModel(
                 Timber.recordError(error)
             }
         }
-    }
-
-    @OptIn(FlowPreview::class)
-    private fun observeUser() {
-        sessionManager.observeProfile()
-            .distinctUntilChanged()
-            .debounce(200)
-            .filter {
-                // Only update if VIP status has changed, as sentiment may be VIP locked.
-                userState.value?.isAnyVip != it?.isAnyVip
-            }
-            .onEach { user ->
-                userState.update { user }
-                loadData()
-            }
-            .launchIn(viewModelScope)
     }
 
     fun setCollapsed(collapsed: Boolean) {

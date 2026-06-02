@@ -56,8 +56,8 @@ internal class MovieSentimentViewModel(
             .distinctUntilChanged()
             .debounce(200)
             .filter {
-                // Only update if VIP status has changed, as sentiment may be VIP locked.
-                userState.value?.isAnyVip != it?.isAnyVip
+                val user = userState.value
+                user != null && user.isAnyVip != it?.isAnyVip
             }
             .onEach { user ->
                 userState.update { user }
