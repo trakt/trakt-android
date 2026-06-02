@@ -122,7 +122,7 @@ internal fun DetailsSentiment(
             verticalArrangement = spacedBy(8.dp),
             modifier = Modifier.padding(top = 16.dp),
         ) {
-            val prosCons = remember(sentiments.overall) {
+            val prosCons = remember(sentiments) {
                 when (sentiments.overall) {
                     Positive -> sentiments.pros.take(4)
                     Mixed -> sentiments.pros.take(2) + sentiments.cons.take(2)
