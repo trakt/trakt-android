@@ -1,8 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="text_info_follow_request">Follow request has been sent.</string>
-  <string name="text_info_following">You are now following %s.</string>
-  <string name="text_info_not_following">You are no longer following %s.</string>
-  <string name="text_info_blocked">%s has been blocked.</string>
-  <string name="text_info_unblocked">%s has been unblocked.</string>
 </resources>
