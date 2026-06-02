@@ -155,7 +155,7 @@ internal fun DetailsSentiment(
             Icon(
                 painter = painterResource(R.drawable.ic_back_arrow),
                 contentDescription = null,
-                tint = TraktTheme.colors.triviaAccent,
+                tint = sentimentColor,
                 modifier = Modifier
                     .align(Alignment.End)
                     .padding(top = 8.dp)
