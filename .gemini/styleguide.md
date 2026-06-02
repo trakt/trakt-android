@@ -152,8 +152,8 @@ plain hyphens.
 - All colours via `TraktTheme.colors.*`. **Forbid raw `Color(0xFF…)` /
   `Color(red = …)`** and `MaterialTheme.colorScheme.*` direct reads
   in feature code.
-- All spacing via `TraktTheme.spacing.*`. **No `Modifier.padding(16.dp)`**
-  magic numbers.
+- All spacing via `TraktTheme.spacing.*` when available. Allow `Modifier.padding(16.dp)`
+  for misc cases.
 - All sizes via `TraktTheme.size.*`.
 - All typography via `TraktTheme.typography.*`. No inline `TextStyle`
   literals.
@@ -233,8 +233,6 @@ Severity-prioritised list:
 
 **Medium:**
 
-- `Modifier.padding(16.dp)` magic numbers.
-- `Modifier.size(64.dp)` magic numbers.
 - Inline `Spacer(Modifier.height(8.dp))` instead of arrangement
   spacing.
 - Implicit (default) Compose Material colours when a Trakt token
@@ -247,10 +245,10 @@ Severity-prioritised list:
 
 **Low (advisory):**
 
+- `Modifier.padding(16.dp)` magic numbers.
+- `Modifier.size(64.dp)` magic numbers.
 - File naming that doesn't match the primary type.
 - `forEach` used for transformation (use `map`).
-- Over-defensive `[weak self]`-style captures (Kotlin equivalent:
-  unnecessary `lambda::class.java` ceremony).
 
 ## Review tone
 
