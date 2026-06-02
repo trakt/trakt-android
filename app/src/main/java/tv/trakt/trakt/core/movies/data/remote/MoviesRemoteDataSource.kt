@@ -1,6 +1,5 @@
 package tv.trakt.trakt.core.movies.data.remote
 
-import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.CastCrewDto
@@ -12,6 +11,7 @@ import tv.trakt.trakt.common.networking.MovieDto
 import tv.trakt.trakt.common.networking.MovieStatsDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.common.networking.StreamingDto
+import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
 import tv.trakt.trakt.core.movies.data.remote.model.AnticipatedMovieDto
 import tv.trakt.trakt.core.movies.data.remote.model.TrendingMovieDto
 import java.time.Instant
@@ -66,7 +66,7 @@ internal interface MoviesRemoteDataSource {
 
     suspend fun getRelated(movieId: TraktId): List<MovieDto>
 
-    suspend fun getSentiments(movieId: TraktId): Sentiments
+    suspend fun getSentiments(movieId: TraktId): V3SentimentResponse?
 
     suspend fun getComments(
         movieId: TraktId,

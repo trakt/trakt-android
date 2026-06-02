@@ -43,6 +43,7 @@ internal fun MainNavHost(
         commentsScreens(navController)
         allShowSeasonsScreens(navController)
         triviaScreens(navController)
+        sentimentScreens(navController)
         peopleScreens(navController)
         searchScreens(
             controller = navController,

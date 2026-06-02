@@ -73,6 +73,7 @@ import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Person
+import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -118,6 +119,7 @@ internal fun ShowDetailsScreen(
     onListClick: ((Show, CustomList) -> Unit),
     onPersonClick: ((Show, Person) -> Unit),
     onTriviaClick: ((Show) -> Unit)? = null,
+    onSentimentClick: ((Show, Sentiments) -> Unit)? = null,
     onTrailerClick: (String) -> Unit,
     onExtraClick: (ExtraVideo) -> Unit,
     onAllSeasonsClick: (Show, Int?) -> Unit,
@@ -228,6 +230,11 @@ internal fun ShowDetailsScreen(
         onTriviaClick = {
             state.show?.let { show ->
                 onTriviaClick?.invoke(show)
+            }
+        },
+        onSentimentClick = { sentiments ->
+            state.show?.let { show ->
+                onSentimentClick?.invoke(show, sentiments)
             }
         },
         onAllSeasonsClick = onAllSeasonsClick,
@@ -429,6 +436,7 @@ internal fun ShowDetailsContent(
     onRatingRemoveClick: (() -> Unit)? = null,
     onFavoriteClick: (() -> Unit)? = null,
     onTriviaClick: (() -> Unit)? = null,
+    onSentimentClick: ((Sentiments) -> Unit)? = null,
     onAllSeasonsClick: ((Show, Int?) -> Unit)? = null,
     onNavigateToUser: ((User) -> Unit)? = null,
     onVipClick: (() -> Unit)? = null,
@@ -622,6 +630,9 @@ internal fun ShowDetailsContent(
                                 ),
                                 headerPadding = sectionPadding,
                                 contentPadding = sectionPadding,
+                                onSentimentClick = { sentiments ->
+                                    onSentimentClick?.invoke(sentiments)
+                                },
                                 modifier = Modifier
                                     .alpha(ratingAlphaMask)
                                     .padding(

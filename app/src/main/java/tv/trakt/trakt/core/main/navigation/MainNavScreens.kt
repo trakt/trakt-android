@@ -58,6 +58,8 @@ import tv.trakt.trakt.core.summary.movies.navigation.movieDetailsScreen
 import tv.trakt.trakt.core.summary.movies.navigation.navigateToMovie
 import tv.trakt.trakt.core.summary.people.navigation.navigateToPerson
 import tv.trakt.trakt.core.summary.people.navigation.personDetailsScreen
+import tv.trakt.trakt.core.summary.sentiment.navigation.navigateToSentiment
+import tv.trakt.trakt.core.summary.sentiment.navigation.sentimentScreen
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.navigation.allShowSeasonsScreen
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.navigation.navigateToAllShowSeasons
 import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
@@ -205,6 +207,14 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
                     navSource = "show_summary",
                 )
             },
+            onNavigateToSentiment = { show, sentiments ->
+                navigateToSentiment(
+                    sentiments = sentiments,
+                    mediaTitle = show.title,
+                    mediaImage = show.images?.getFanartUrl(),
+                    navSource = "show_summary",
+                )
+            },
             onNavigateToTrailer = { navigateToYouTubePlayer(it) },
             onNavigateToExtra = { navigateToYouTubePlayer(it.url) },
             onNavigateToAllSeasons = { show, initialSeason ->
@@ -293,6 +303,14 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
                     mediaType = MOVIE,
                     mediaImage = movie.images?.getFanartUrl(),
                     mediaTitle = movie.title,
+                    navSource = "movie_summary",
+                )
+            },
+            onNavigateToSentiment = { movie, sentiments ->
+                navigateToSentiment(
+                    sentiments = sentiments,
+                    mediaTitle = movie.title,
+                    mediaImage = movie.images?.getFanartUrl(),
                     navSource = "movie_summary",
                 )
             },
@@ -474,6 +492,15 @@ internal fun NavGraphBuilder.allShowSeasonsScreens(controller: NavHostController
 internal fun NavGraphBuilder.triviaScreens(controller: NavHostController) {
     with(controller) {
         triviaScreen(
+            onNavigateBack = { popBackStack() },
+        )
+    }
+}
+
+internal fun NavGraphBuilder.sentimentScreens(controller: NavHostController) {
+    with(controller) {
+        sentimentScreen(
+            onNavigateVip = { navigateToBilling() },
             onNavigateBack = { popBackStack() },
         )
     }

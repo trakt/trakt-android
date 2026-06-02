@@ -3,9 +3,11 @@ package tv.trakt.trakt.core.summary.movies.features.sentiment
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.Sentiments
+import tv.trakt.trakt.common.model.User
 
 @Immutable
 internal data class MovieSentimentState(
+    val user: User? = null,
     val sentiment: Sentiments? = null,
     val loading: LoadingState = LoadingState.Idle,
     val collapsed: Boolean? = null,

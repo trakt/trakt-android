@@ -48,6 +48,7 @@ internal val showsDataModule = module {
         ShowsApiClient(
             showsApi = get(),
             recommendationsApi = get(),
+            v3Api = get(),
         )
     }
 

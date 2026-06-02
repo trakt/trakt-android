@@ -1,11 +1,8 @@
 package tv.trakt.trakt.core.movies.data.remote
 
-import io.ktor.http.HttpStatusCode
-import kotlinx.collections.immutable.toImmutableList
 import org.openapitools.client.apis.MoviesApi
 import org.openapitools.client.apis.RecommendationsApi
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
-import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.CastCrewDto
@@ -17,6 +14,8 @@ import tv.trakt.trakt.common.networking.MovieDto
 import tv.trakt.trakt.common.networking.MovieStatsDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.common.networking.StreamingDto
+import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
 import tv.trakt.trakt.core.movies.data.remote.model.AnticipatedMovieDto
 import tv.trakt.trakt.core.movies.data.remote.model.TrendingMovieDto
 import java.time.Instant
@@ -24,6 +23,7 @@ import java.time.Instant
 internal class MoviesApiClient(
     private val moviesApi: MoviesApi,
     private val recommendationsApi: RecommendationsApi,
+    private val v3Api: V3Api,
 ) : MoviesRemoteDataSource {
     override suspend fun getTrending(
         page: Int,
@@ -237,24 +237,11 @@ internal class MoviesApiClient(
         return response.body()
     }
 
-    override suspend fun getSentiments(movieId: TraktId): Sentiments {
-        val response = moviesApi.getMoviesSentiments(
-            id = movieId.value.toString(),
+    override suspend fun getSentiments(movieId: TraktId): V3SentimentResponse? {
+        val response = v3Api.getMovieSentiment(
+            movieId = movieId,
         )
-
-        if (response.status == HttpStatusCode.NoContent.value) {
-            return Sentiments()
-        }
-
-        val responseBody = response.body()
-        return Sentiments(
-            good = responseBody.good
-                .map { Sentiments.Sentiment(it.sentiment) }
-                .toImmutableList(),
-            bad = responseBody.bad
-                .map { Sentiments.Sentiment(it.sentiment) }
-                .toImmutableList(),
-        )
+        return response
     }
 
     override suspend fun getComments(

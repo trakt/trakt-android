@@ -47,6 +47,7 @@ internal val moviesDataModule = module {
         MoviesApiClient(
             moviesApi = get(),
             recommendationsApi = get(),
+            v3Api = get(),
         )
     }
 

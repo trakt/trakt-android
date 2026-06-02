@@ -1,6 +1,5 @@
 package tv.trakt.trakt.core.shows.data.remote
 
-import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.CastCrewDto
@@ -13,6 +12,7 @@ import tv.trakt.trakt.common.networking.SeasonDto
 import tv.trakt.trakt.common.networking.ShowDto
 import tv.trakt.trakt.common.networking.ShowStatsDto
 import tv.trakt.trakt.common.networking.StreamingDto
+import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
 import tv.trakt.trakt.core.shows.data.remote.model.AnticipatedShowDto
 import tv.trakt.trakt.core.shows.data.remote.model.TrendingShowDto
 import java.time.Instant
@@ -62,7 +62,7 @@ internal interface ShowsRemoteDataSource {
 
     suspend fun getCastCrew(showId: TraktId): CastCrewDto
 
-    suspend fun getSentiments(showId: TraktId): Sentiments
+    suspend fun getSentiments(showId: TraktId): V3SentimentResponse?
 
     suspend fun getRelated(showId: TraktId): List<ShowDto>
 

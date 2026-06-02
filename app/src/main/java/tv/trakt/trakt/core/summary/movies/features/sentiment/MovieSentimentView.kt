@@ -35,7 +35,9 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Sentiments
+import tv.trakt.trakt.common.model.Sentiments.Overall.Positive
 import tv.trakt.trakt.core.summary.ui.views.DetailsSentiment
 import tv.trakt.trakt.core.summary.ui.views.DetailsSentimentSkeleton
 import tv.trakt.trakt.resources.R
@@ -49,6 +51,7 @@ internal fun MovieSentimentView(
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
+    onSentimentClick: (Sentiments) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var visible by remember { mutableStateOf(true) }
@@ -61,6 +64,7 @@ internal fun MovieSentimentView(
             contentPadding = contentPadding,
             onCollapse = viewModel::setCollapsed,
             onNotAvailable = { visible = false },
+            onSentimentClick = onSentimentClick,
         )
     }
 }
@@ -71,6 +75,7 @@ private fun MovieSentimentContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    onSentimentClick: (Sentiments) -> Unit = {},
     onCollapse: (collapsed: Boolean) -> Unit = {},
     onNotAvailable: (() -> Unit)? = null,
 ) {
@@ -95,7 +100,10 @@ private fun MovieSentimentContent(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(headerPadding),
+                .padding(headerPadding)
+                .onClick {
+                    state.sentiment?.let { onSentimentClick(it) }
+                },
         )
 
         if (state.collapsed != true) {
@@ -114,12 +122,14 @@ private fun MovieSentimentContent(
                     }
 
                     Done -> {
-                        if (state.sentiment != null && !state.sentiment.isEmpty) {
+                        if (state.sentiment != null) {
                             DetailsSentiment(
+                                vip = state.user?.isAnyVip == true,
                                 sentiments = state.sentiment,
                                 modifier = Modifier
                                     .fillMaxWidth(maxWidth)
-                                    .padding(contentPadding),
+                                    .padding(contentPadding)
+                                    .onClick { onSentimentClick(state.sentiment) },
                             )
                         } else {
                             onNotAvailable?.invoke()
@@ -168,7 +178,7 @@ private fun Preview2() {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             MovieSentimentContent(
                 state = MovieSentimentState(
-                    sentiment = Sentiments(),
+                    sentiment = Sentiments(Positive),
                     loading = Loading,
                 ),
             )
@@ -191,7 +201,7 @@ private fun Preview3() {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             MovieSentimentContent(
                 state = MovieSentimentState(
-                    sentiment = Sentiments(),
+                    sentiment = Sentiments(Positive),
                     loading = Done,
                 ),
             )

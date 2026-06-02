@@ -9,6 +9,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalList
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalWatchlistResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3TriviaResponse
 
 class V3Api(
@@ -45,6 +46,18 @@ class V3Api(
     suspend fun getShowMeLists(showId: TraktId): List<Int> {
         val response = client.get("${baseUrl}shows/${showId.value}/me/lists")
         return response.body<List<Int>>()
+    }
+
+    // Sentiment
+
+    suspend fun getMovieSentiment(movieId: TraktId): V3SentimentResponse? {
+        val response = client.get("${baseUrl}media/movie/${movieId.value}/info/0/version/1")
+        return response.body()
+    }
+
+    suspend fun getShowSentiment(showId: TraktId): V3SentimentResponse? {
+        val response = client.get("${baseUrl}media/show/${showId.value}/info/0/version/1")
+        return response.body()
     }
 
     // Trivia
