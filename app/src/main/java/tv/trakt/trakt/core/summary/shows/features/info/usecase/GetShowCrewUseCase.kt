@@ -16,8 +16,7 @@ internal class GetShowCrewUseCase(
 ) {
     suspend fun getCrew(showId: TraktId): Result {
         return remoteSource.getCastCrew(showId).crew?.let { crew ->
-            val directors = crew["directing"]
-                ?.filter { it.job.equals("director", ignoreCase = true) }
+            val creators = crew["created by"]
                 ?.take(5)
                 ?.map { Person.fromDto(it.person) }
                 ?: EmptyImmutableList
@@ -27,10 +26,10 @@ internal class GetShowCrewUseCase(
                 ?.map { Person.fromDto(it.person) }
                 ?: EmptyImmutableList
 
-            peopleLocalSource.upsertPeople(directors + writers)
+            peopleLocalSource.upsertPeople(creators + writers)
 
             Result(
-                directors = directors.toImmutableList(),
+                creators = creators.toImmutableList(),
                 writers = writers.toImmutableList(),
             )
         } ?: Result()
@@ -38,7 +37,7 @@ internal class GetShowCrewUseCase(
 
     @Immutable
     data class Result(
-        val directors: ImmutableList<Person> = EmptyImmutableList,
+        val creators: ImmutableList<Person> = EmptyImmutableList,
         val writers: ImmutableList<Person> = EmptyImmutableList,
     )
 }

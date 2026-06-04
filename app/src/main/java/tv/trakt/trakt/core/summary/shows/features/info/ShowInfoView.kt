@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -75,7 +75,7 @@ private fun ShowInfoView(
                 DetailsView(
                     show = it,
                     showStudios = state.showStudios,
-                    showDirectors = state.showCrew?.directors,
+                    showCreators = state.showCrew?.creators,
                     showWriters = state.showCrew?.writers,
                     onPersonClick = onPersonClick,
                     modifier = Modifier
@@ -91,16 +91,16 @@ private fun ShowInfoView(
 private fun DetailsView(
     show: Show,
     showStudios: ImmutableList<String>?,
-    showDirectors: ImmutableList<Person>?,
+    showCreators: ImmutableList<Person>?,
     showWriters: ImmutableList<Person>?,
     onPersonClick: (person: Person) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val windowClass = currentWindowAdaptiveInfo().windowSizeClass
+    val windowClass = currentWindowAdaptiveInfoV2().windowSizeClass
     DetailsMetaInfo(
         show = show,
         showStudios = showStudios,
-        showDirectors = showDirectors,
+        showCreators = showCreators,
         showWriters = showWriters,
         onPersonClick = onPersonClick,
         modifier = modifier

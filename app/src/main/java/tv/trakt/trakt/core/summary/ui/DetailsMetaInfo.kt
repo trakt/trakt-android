@@ -40,7 +40,7 @@ internal fun DetailsMetaInfo(
     show: Show,
     modifier: Modifier = Modifier,
     showStudios: ImmutableList<String>? = null,
-    showDirectors: ImmutableList<Person>? = null,
+    showCreators: ImmutableList<Person>? = null,
     showWriters: ImmutableList<Person>? = null,
     onPersonClick: (person: Person) -> Unit = {},
 ) {
@@ -58,7 +58,7 @@ internal fun DetailsMetaInfo(
         genres = show.genres,
         network = show.network,
         studios = showStudios ?: EmptyImmutableList,
-        directors = showDirectors,
+        creators = showCreators,
         writers = showWriters,
         episodesCount = show.airedEpisodes,
         onPersonClick = onPersonClick,
@@ -127,6 +127,7 @@ private fun DetailsMetaInfo(
     languages: ImmutableList<String> = EmptyImmutableList,
     genres: ImmutableList<MediaGenre> = EmptyImmutableList,
     studios: ImmutableList<String>? = null,
+    creators: ImmutableList<Person>? = null,
     directors: ImmutableList<Person>? = null,
     writers: ImmutableList<Person>? = null,
     episodeRowsOnly: Boolean = false,
@@ -221,19 +222,33 @@ private fun DetailsMetaInfo(
         Row(
             horizontalArrangement = spacedBy(16.dp),
         ) {
+            val people = remember(creators, directors) {
+                when {
+                    creators != null -> creators
+                    directors != null -> directors
+                    else -> EmptyImmutableList
+                }
+            }
+
             DetailsMeta(
-                title = stringResource(R.string.header_director),
-                values = (directors ?: EmptyImmutableList)
+                title = stringResource(
+                    when {
+                        directors != null -> R.string.header_director
+                        else -> R.string.header_creator
+                    },
+                ),
+                values = people
                     .map { it.name }
                     .ifEmpty { listOf("N/A") },
-                loading = directors == null,
+                loading = creators == null && directors == null,
                 onValueClick = { name ->
-                    (directors ?: EmptyImmutableList)
+                    people
                         .firstOrNull { it.name == name }
                         ?.let(onPersonClick)
                 },
                 modifier = Modifier.weight(1F),
             )
+
             DetailsMeta(
                 title = stringResource(R.string.header_writer),
                 values = (writers ?: EmptyImmutableList)
