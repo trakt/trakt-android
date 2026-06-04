@@ -174,6 +174,7 @@ private fun ShowItemCard(
     VerticalMediaCard(
         title = item.show.title,
         imageUrl = item.show.images?.getPosterUrl(),
+        watched = true,
         chipSpacing = 10.dp,
         chipContent = { modifier ->
             Column(
@@ -192,9 +193,9 @@ private fun ShowItemCard(
                             .size(13.dp),
                     )
 
-                    val airedEpisodes = stringResource(
+                    val episodesCount = stringResource(
                         R.string.tag_text_number_of_episodes,
-                        item.show.airedEpisodes,
+                        item.episodesCount,
                     )
 
                     val footerText = remember {
@@ -203,9 +204,9 @@ private fun ShowItemCard(
                                 append(it.toLocal().year.toString())
                             } ?: append("TBA")
 
-                            if (item.show.airedEpisodes > 0) {
+                            if (item.episodesCount > 0) {
                                 append(" • ")
-                                append(airedEpisodes)
+                                append(episodesCount)
                             }
                         }
                     }
@@ -247,6 +248,7 @@ private fun MovieItemCard(
     VerticalMediaCard(
         title = item.movie.title,
         imageUrl = item.movie.images?.getPosterUrl(),
+        watched = true,
         chipSpacing = 10.dp,
         chipContent = { modifier ->
             Column(
