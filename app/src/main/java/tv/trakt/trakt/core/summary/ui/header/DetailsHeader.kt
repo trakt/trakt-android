@@ -241,7 +241,7 @@ internal fun DetailsHeader(
                         contentDescription = null,
                         modifier = Modifier
                             .padding(start = 5.5.dp)
-                            .size(16.dp)
+                            .size(17.dp)
                             .graphicsLayer {
                                 translationY = 0.4.dp.toPx()
                             },

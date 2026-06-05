@@ -74,6 +74,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.ExtraVideo
@@ -110,7 +111,8 @@ internal fun ShowDetailsScreen(
     onNavigateToStreamings: (showId: TraktId) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    var historyConfirmationDialog by remember { mutableStateOf(false) }
+    var pendingHistoryDate by remember { mutableStateOf<DateSelectionResult?>(null) }
+    var removeAllHistoryDialog by remember { mutableStateOf(false) }
 
     val localContext = LocalContext.current
     val localSnack = LocalSnackbarState.current
@@ -128,18 +130,43 @@ internal fun ShowDetailsScreen(
         },
         onWatchlistClick = viewModel::toggleWatchlist,
         onSeasonClick = viewModel::loadSeason,
-        onHistoryClick = {
-            historyConfirmationDialog = true
+        onHistoryClick = { date ->
+            pendingHistoryDate = date
         },
+        onRemoveAllHistoryClick = { removeAllHistoryDialog = true },
     )
 
-    if (historyConfirmationDialog) {
+    pendingHistoryDate?.let { date ->
         HistoryConfirmationOverlay(
             showTitle = state.showDetails?.title ?: "",
             showEpisodes = state.showDetails?.airedEpisodes ?: 0,
-            onConfirm = { viewModel.toggleHistory() },
-            onDismiss = { historyConfirmationDialog = false },
+            onConfirm = {
+                viewModel.toggleHistory(date)
+                pendingHistoryDate = null
+            },
+            onDismiss = { pendingHistoryDate = null },
         )
+    }
+
+    if (removeAllHistoryDialog) {
+        val showTitle = state.showDetails?.title ?: ""
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black.copy(alpha = 0.66F)),
+        )
+        Dialog(onDismissRequest = { removeAllHistoryDialog = false }) {
+            ConfirmationDialog(
+                title = showTitle,
+                message = stringResource(R.string.warning_prompt_remove_from_watched, showTitle),
+                confirmColor = Red400,
+                onConfirm = {
+                    viewModel.removeAllFromHistory()
+                    removeAllHistoryDialog = false
+                },
+                onCancel = { removeAllHistoryDialog = false },
+            )
+        }
     }
 
     LaunchedEffect(state.snackMessage) {
@@ -159,7 +186,8 @@ private fun ShowDetailsScreenContent(
     onNavigateToList: (CustomList) -> Unit,
     onNavigateToVideo: (String) -> Unit,
     onNavigateToStreamings: (showId: TraktId) -> Unit,
-    onHistoryClick: () -> Unit,
+    onHistoryClick: (DateSelectionResult) -> Unit,
+    onRemoveAllHistoryClick: () -> Unit,
     onWatchlistClick: () -> Unit,
     onSeasonClick: (Season) -> Unit,
     modifier: Modifier = Modifier,
@@ -263,6 +291,7 @@ private fun ShowDetailsScreenContent(
                     onListClick = onNavigateToList,
                     onVideoClick = onNavigateToVideo,
                     onHistoryClick = onHistoryClick,
+                    onRemoveAllHistoryClick = onRemoveAllHistoryClick,
                     onWatchlistClick = onWatchlistClick,
                     onStreamingsClick = {
                         onNavigateToStreamings(state.showDetails.ids.trakt)
@@ -292,7 +321,8 @@ private fun MainContent(
     onCommentClick: (Comment) -> Unit,
     onListClick: (CustomList) -> Unit,
     onVideoClick: (String) -> Unit,
-    onHistoryClick: () -> Unit,
+    onHistoryClick: (DateSelectionResult) -> Unit,
+    onRemoveAllHistoryClick: () -> Unit,
     onWatchlistClick: () -> Unit,
     onStreamingsClick: () -> Unit,
     focusRequesters: Map<String, FocusRequester>,
@@ -326,7 +356,9 @@ private fun MainContent(
                 ShowActionButtons(
                     streamingState = state.showStreamings,
                     collectionState = state.showCollection,
+                    watchAgainEnabled = state.user?.settings?.watchOnlyOnce != true,
                     onHistoryClick = onHistoryClick,
+                    onRemoveHistoryClick = onRemoveAllHistoryClick,
                     onWatchlistClick = onWatchlistClick,
                     onStreamingLongClick = onStreamingsClick,
                     modifier = Modifier
@@ -552,7 +584,6 @@ private fun HistoryConfirmationOverlay(
                         textDecoration = TextDecoration.Underline,
                     ),
             ),
-            confirmColor = Red400,
             onConfirm = {
                 onConfirm()
                 onDismiss()
@@ -634,6 +665,7 @@ private fun MainScreenPreview() {
             onNavigateToList = {},
             onNavigateToVideo = {},
             onHistoryClick = {},
+            onRemoveAllHistoryClick = {},
             onWatchlistClick = {},
             onNavigateToStreamings = {},
             onSeasonClick = {},

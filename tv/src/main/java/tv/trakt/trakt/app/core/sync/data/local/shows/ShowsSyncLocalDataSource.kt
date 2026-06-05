@@ -20,6 +20,8 @@ internal interface ShowsSyncLocalDataSource {
         timestamp: ZonedDateTime?,
     )
 
+    suspend fun removeWatched(showsIds: Set<TraktId>)
+
     suspend fun getWatchlist(): Set<TraktId>?
 
     suspend fun getWatched(): Map<TraktId, WatchedShow>?

@@ -269,10 +269,11 @@ internal fun MovieHeader(
                     ) {
                         if (movieCollection.historyCount > 1) {
                             InfoChip(
-                                text = stringResource(
-                                    R.string.tag_text_watch_count,
-                                    movieCollection.historyCount,
-                                ).uppercase(),
+                                text = "${
+                                    stringResource(
+                                        R.string.tag_text_watch_count,
+                                    ).uppercase()
+                                }:  ${movieCollection.historyCount}",
                                 containerColor = TraktTheme.colors.accent,
                             )
                         }

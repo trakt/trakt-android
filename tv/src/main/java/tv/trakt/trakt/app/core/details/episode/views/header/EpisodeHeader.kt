@@ -284,7 +284,11 @@ internal fun EpisodeHeader(
                     ) {
                         if (episodePlays > 1) {
                             InfoChip(
-                                text = stringResource(R.string.tag_text_watch_count, episodePlays).uppercase(),
+                                text = "${
+                                    stringResource(
+                                        R.string.tag_text_watch_count,
+                                    ).uppercase()
+                                }:  $episodePlays",
                                 containerColor = TraktTheme.colors.accent,
                             )
                         }

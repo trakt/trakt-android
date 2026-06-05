@@ -4,6 +4,8 @@ import tv.trakt.trakt.app.core.sync.data.local.shows.ShowsSyncLocalDataSource
 import tv.trakt.trakt.app.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 import tv.trakt.trakt.app.core.sync.model.WatchedShow
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
+import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.TraktId
 
 internal class ChangeHistoryUseCase(
@@ -14,8 +16,10 @@ internal class ChangeHistoryUseCase(
         showId: TraktId,
         episodesPlays: Int,
         episodesAiredCount: Int,
+        customDate: DateSelectionResult? = null,
     ): Int {
-        val watchedAt = nowUtc()
+        val watchedAt = customDate?.dateString
+            ?: nowUtcInstant().toString()
 
         val response = remoteSource.addToHistory(
             showId = showId,
@@ -30,7 +34,7 @@ internal class ChangeHistoryUseCase(
                         showId = showId,
                         episodesPlays = episodesPlays + response.added.episodes,
                         episodesAired = episodesAiredCount,
-                        lastWatchedAt = watchedAt,
+                        lastWatchedAt = timestamp,
                     ),
                 ),
                 timestamp = timestamp,
@@ -39,5 +43,10 @@ internal class ChangeHistoryUseCase(
         }
 
         return episodesPlays + response.added.episodes
+    }
+
+    suspend fun removeFromHistory(showId: TraktId) {
+        remoteSource.removeFromHistory(showId = showId)
+        syncLocalSource.removeWatched(setOf(showId))
     }
 }

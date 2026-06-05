@@ -4,6 +4,7 @@ import org.openapitools.client.apis.CollectionApi
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.models.PostCheckinStartRequestOneOfOneOfEpisodeIds
+import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
 import tv.trakt.trakt.common.model.TraktId
@@ -12,8 +13,6 @@ import tv.trakt.trakt.common.networking.ProgressShowDto
 import tv.trakt.trakt.common.networking.SyncAddHistoryResponseDto
 import tv.trakt.trakt.common.networking.WatchlistShowDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter.ISO_INSTANT
 
 internal class ShowsSyncApiClient(
     private val usersApi: UsersApi,
@@ -121,7 +120,7 @@ internal class ShowsSyncApiClient(
 
     override suspend fun addToHistory(
         showId: TraktId,
-        watchedAt: ZonedDateTime,
+        watchedAt: String,
     ): SyncAddHistoryResponseDto {
         val request = PostUsersListsListAddRequest(
             shows = listOf(
@@ -135,7 +134,7 @@ internal class ShowsSyncApiClient(
                     ),
                     title = "",
                     year = 0,
-                    watchedAt = watchedAt.format(ISO_INSTANT),
+                    watchedAt = watchedAt,
                 ),
             ),
         )
@@ -143,6 +142,26 @@ internal class ShowsSyncApiClient(
         val result = syncApi.postSyncHistoryAdd(request)
         cacheMarkerProvider.invalidate()
         return result.body()
+    }
+
+    override suspend fun removeFromHistory(showId: TraktId) {
+        val request = PostSyncHistoryRemoveRequest(
+            shows = listOf(
+                PostUsersListsListAddRequestShowsInner(
+                    ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
+                        trakt = showId.value,
+                        slug = null,
+                        imdb = null,
+                        tmdb = null,
+                        tvdb = 0,
+                    ),
+                    title = "",
+                    year = 0,
+                ),
+            ),
+        )
+        syncApi.postSyncHistoryRemove(request)
+        cacheMarkerProvider.invalidate()
     }
 
     override suspend fun getWatched(): Map<String, Map<String, Map<String, List<String>>>> {

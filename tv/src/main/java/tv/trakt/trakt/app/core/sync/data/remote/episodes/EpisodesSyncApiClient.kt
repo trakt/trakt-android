@@ -11,8 +11,6 @@ import tv.trakt.trakt.common.networking.ProgressEpisodeDto
 import tv.trakt.trakt.common.networking.SyncAddHistoryResponseDto
 import tv.trakt.trakt.common.networking.api.scrobble.ScrobbleExtrasApi
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter.ISO_INSTANT
 
 internal class EpisodesSyncApiClient(
     private val syncApi: SyncApi,
@@ -21,7 +19,7 @@ internal class EpisodesSyncApiClient(
 ) : EpisodesSyncRemoteDataSource {
     override suspend fun addToHistory(
         episodeId: TraktId,
-        watchedAt: ZonedDateTime,
+        watchedAt: String,
     ): SyncAddHistoryResponseDto {
         val request = PostUsersListsListAddRequest(
             episodes = listOf(
@@ -30,7 +28,7 @@ internal class EpisodesSyncApiClient(
                         trakt = episodeId.value,
                         tvdb = -1,
                     ),
-                    watchedAt = watchedAt.format(ISO_INSTANT),
+                    watchedAt = watchedAt,
                 ),
             ),
         )
@@ -47,6 +45,21 @@ internal class EpisodesSyncApiClient(
         val result = syncApi.postSyncHistoryRemove(request)
         cacheMarkerProvider.invalidate()
         return result.body()
+    }
+
+    override suspend fun removeEpisodeFromHistory(episodeId: TraktId) {
+        val request = PostSyncHistoryRemoveRequest(
+            episodes = listOf(
+                PostUsersListsListAddRequestEpisodesInner(
+                    ids = PostUsersListsListAddRequestEpisodesInnerIds(
+                        trakt = episodeId.value,
+                        tvdb = -1,
+                    ),
+                ),
+            ),
+        )
+        syncApi.postSyncHistoryRemove(request)
+        cacheMarkerProvider.invalidate()
     }
 
     override suspend fun getPlaybackProgress(

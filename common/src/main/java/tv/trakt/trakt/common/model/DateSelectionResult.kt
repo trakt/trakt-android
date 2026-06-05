@@ -1,4 +1,4 @@
-package tv.trakt.trakt.ui.components.dateselection
+package tv.trakt.trakt.common.model
 
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import java.time.Instant

@@ -48,6 +48,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Ids
@@ -403,7 +404,7 @@ internal class ShowDetailsViewModel(
         }
     }
 
-    fun toggleHistory() {
+    fun toggleHistory(customDate: DateSelectionResult? = null) {
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated() || showCollectionState.value.isWatchedLoading) {
                 return@launch
@@ -415,6 +416,7 @@ internal class ShowDetailsViewModel(
                     showId = show.showId.toTraktId(),
                     episodesPlays = showCollectionState.value.episodesPlays,
                     episodesAiredCount = showCollectionState.value.episodesAiredCount,
+                    customDate = customDate,
                 )
 
                 showCollectionState.update {
@@ -432,6 +434,34 @@ internal class ShowDetailsViewModel(
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
                     Timber.e("Error toggling history: ${error.message}")
+                }
+            }
+        }
+    }
+
+    fun removeAllFromHistory() {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated() || showCollectionState.value.isWatchedLoading) {
+                return@launch
+            }
+            try {
+                showCollectionState.update { it.copy(isWatchedLoading = true) }
+
+                historyUseCase.removeFromHistory(show.showId.toTraktId())
+
+                showCollectionState.update {
+                    it.copy(
+                        isWatched = false,
+                        isWatchedLoading = false,
+                        episodesPlays = 0,
+                    )
+                }
+
+                showSnackMessage(DynamicStringResource(R.string.text_info_history_removed))
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    showSnackMessage(StaticStringResource(error.toString()))
+                    Timber.e("Error removing show history: ${error.message}")
                 }
             }
         }

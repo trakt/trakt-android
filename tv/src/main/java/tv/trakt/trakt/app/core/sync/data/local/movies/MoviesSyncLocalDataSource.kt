@@ -22,6 +22,8 @@ internal interface MoviesSyncLocalDataSource {
         timestamp: ZonedDateTime?,
     )
 
+    suspend fun removeWatched(moviesIds: Set<TraktId>)
+
     suspend fun getWatched(): Map<TraktId, WatchedMovie>?
 
     suspend fun getWatchlistUpdatedAt(): ZonedDateTime?
