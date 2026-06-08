@@ -13,6 +13,7 @@ import android.content.pm.PackageManager
 import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
 import android.os.Build
 import android.os.IBinder
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -36,6 +37,7 @@ import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.toTraktId
@@ -50,6 +52,9 @@ import tv.trakt.trakt.core.summary.movies.features.trivia.usecases.GetMovieTrivi
 import tv.trakt.trakt.core.summary.shows.features.trivia.usecases.GetShowTriviaUseCase
 import tv.trakt.trakt.resources.R
 import java.time.Instant
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.Locale
 import kotlin.math.roundToLong
 import kotlin.time.Duration.Companion.seconds
 
@@ -137,6 +142,13 @@ internal class CheckInService : Service() {
         val minutesLeft = ((expiresAt - now) / 60F).roundToLong().coerceAtLeast(1)
         val secondsLeft = (expiresAt - now).coerceAtLeast(0)
 
+        val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+        val endsAt = data.expiresAt.toLocal().format(
+            DateTimeFormatter
+                .ofLocalizedTime(FormatStyle.SHORT)
+                .withLocale(locale),
+        )
+
         // Ensure progress is at least 1 to show the progress bar
         val normalizedProgress = progress.toInt().coerceIn(1, 100)
         val contentText = when {
@@ -144,13 +156,15 @@ internal class CheckInService : Service() {
             else -> getString(R.string.tag_text_remaining_duration, "<${1L.durationFormat()}")
         }
 
+        val endsAtText = getString(R.string.text_ends_at, endsAt)
+
         val notification = NotificationCompat
             .Builder(applicationContext, TraktNotificationChannel.CHECK_IN.id)
             .setForegroundServiceBehavior(FOREGROUND_SERVICE_IMMEDIATE)
             .setSmallIcon(R.drawable.ic_trakt_icon_notification)
             .setSubText(getString(R.string.button_text_checkin).uppercaseWords())
             .setContentTitle(data.title)
-            .setContentText(contentText)
+            .setContentText("$endsAtText ($contentText)")
             .setShowWhen(false)
             .setAutoCancel(false)
             .setProgress(100, normalizedProgress, false)
