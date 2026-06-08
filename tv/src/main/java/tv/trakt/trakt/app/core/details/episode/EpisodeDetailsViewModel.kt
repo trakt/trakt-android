@@ -53,6 +53,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Ids
@@ -377,7 +378,7 @@ internal class EpisodeDetailsViewModel(
         }
     }
 
-    fun addToHistory() {
+    fun addToHistory(customDate: DateSelectionResult? = null) {
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated() || episodeHistoryState.value.isLoading) {
                 return@launch
@@ -386,7 +387,7 @@ internal class EpisodeDetailsViewModel(
                 episodeHistoryState.update { it.copy(isLoading = true) }
                 val episodeId = destination.episodeId.toTraktId()
 
-                changeHistoryUseCase.addToHistory(episodeId)
+                changeHistoryUseCase.addToHistory(episodeId, customDate)
                 val episodes = getHistoryUseCase.getEpisodeHistory(episodeId, nowUtc())
 
                 episodeHistoryState.update {
@@ -431,6 +432,35 @@ internal class EpisodeDetailsViewModel(
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))
                     Timber.e("Error removing history: ${error.message}")
+                }
+            }
+        }
+    }
+
+    fun removeAllFromHistory() {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated() || episodeHistoryState.value.isLoading) {
+                return@launch
+            }
+            try {
+                episodeHistoryState.update { it.copy(isLoading = true) }
+                val episodeId = destination.episodeId.toTraktId()
+
+                changeHistoryUseCase.removeEpisodeFromHistory(episodeId)
+                val episodes = getHistoryUseCase.getEpisodeHistory(episodeId, nowUtc())
+
+                episodeHistoryState.update {
+                    it.copy(
+                        isLoading = false,
+                        episodes = episodes,
+                    )
+                }
+
+                showSnackMessage(DynamicStringResource(R.string.text_info_history_removed))
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    showSnackMessage(StaticStringResource(error.toString()))
+                    Timber.e("Error removing all history: ${error.message}")
                 }
             }
         }

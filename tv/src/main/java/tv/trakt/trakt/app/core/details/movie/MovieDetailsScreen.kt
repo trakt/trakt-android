@@ -41,9 +41,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -56,6 +59,7 @@ import timber.log.Timber
 import tv.trakt.trakt.app.BuildConfig
 import tv.trakt.trakt.app.LocalDrawerVisibility
 import tv.trakt.trakt.app.LocalSnackbarState
+import tv.trakt.trakt.app.common.ui.ConfirmationDialog
 import tv.trakt.trakt.app.core.details.comments.CommentDetailsDialog
 import tv.trakt.trakt.app.core.details.movie.views.content.MovieCastCrewList
 import tv.trakt.trakt.app.core.details.movie.views.content.MovieCommentsList
@@ -67,16 +71,19 @@ import tv.trakt.trakt.app.core.details.movie.views.header.MovieHeader
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.people.navigation.PersonDestination
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.customAnnotatedString
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.resources.R
 import java.time.ZonedDateTime
 import kotlin.math.roundToInt
@@ -105,6 +112,8 @@ internal fun MovieDetailsScreen(
     val localContext = LocalContext.current
     val localSnack = LocalSnackbarState.current
 
+    var removeHistoryDialog by remember { mutableStateOf(false) }
+
     MovieDetailsScreenContent(
         state = state,
         onNavigateToMovie = onNavigateToMovie,
@@ -115,10 +124,24 @@ internal fun MovieDetailsScreen(
             viewModel.clearWatchNowTip()
             onNavigateToStreamings(it)
         },
+        onHistoryClick = viewModel::addHistory,
+        onRemoveHistoryClick = { removeHistoryDialog = true },
         onWatchlistClick = viewModel::toggleWatchlist,
-        onHistoryClick = viewModel::toggleHistory,
         onDropMovieClick = viewModel::dropMoviePlayback,
     )
+
+    if (removeHistoryDialog) {
+        RemoveHistoryConfirmationOverlay(
+            movieTitle = state.movieDetails?.title ?: "",
+            onConfirm = {
+                viewModel.removeHistory()
+                removeHistoryDialog = false
+            },
+            onDismiss = {
+                removeHistoryDialog = false
+            },
+        )
+    }
 
     LaunchedEffect(state.snackMessage) {
         state.snackMessage?.let {
@@ -160,7 +183,8 @@ private fun MovieDetailsScreenContent(
     onNavigateToList: (CustomList) -> Unit,
     onNavigateToVideo: (String) -> Unit,
     onNavigateToStreamings: (showId: TraktId) -> Unit,
-    onHistoryClick: () -> Unit,
+    onHistoryClick: (DateSelectionResult) -> Unit,
+    onRemoveHistoryClick: () -> Unit,
     onWatchlistClick: () -> Unit,
     onDropMovieClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -263,6 +287,7 @@ private fun MovieDetailsScreenContent(
                     onListClick = onNavigateToList,
                     onVideoClick = onNavigateToVideo,
                     onHistoryClick = onHistoryClick,
+                    onRemoveHistoryClick = onRemoveHistoryClick,
                     onWatchlistClick = onWatchlistClick,
                     onDropMovieClick = onDropMovieClick,
                     onStreamingsClick = {
@@ -291,7 +316,8 @@ private fun MainContent(
     onCommentClick: (Comment) -> Unit,
     onListClick: (CustomList) -> Unit,
     onVideoClick: (String) -> Unit,
-    onHistoryClick: () -> Unit,
+    onHistoryClick: (DateSelectionResult) -> Unit,
+    onRemoveHistoryClick: () -> Unit,
     onWatchlistClick: () -> Unit,
     onStreamingsClick: () -> Unit,
     onDropMovieClick: () -> Unit,
@@ -327,6 +353,7 @@ private fun MainContent(
                 MovieActionButtons(
                     movieState = state,
                     onHistoryClick = onHistoryClick,
+                    onRemoveHistoryClick = onRemoveHistoryClick,
                     onWatchlistClick = onWatchlistClick,
                     onStreamingLongClick = onStreamingsClick,
                     onDropMovieClick = onDropMovieClick,
@@ -470,6 +497,45 @@ private fun CommentDetailsOverlay(
     }
 }
 
+@Composable
+private fun RemoveHistoryConfirmationOverlay(
+    movieTitle: String,
+    onConfirm: () -> Unit = {},
+    onDismiss: () -> Unit = {},
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black.copy(alpha = 0.66F)),
+    )
+
+    Dialog(onDismissRequest = onDismiss) {
+        ConfirmationDialog(
+            title = stringResource(
+                R.string.button_label_remove_from_watched,
+                movieTitle,
+            ),
+            annotatedMessage = customAnnotatedString(
+                stringResource(
+                    R.string.warning_prompt_remove_from_watched,
+                    movieTitle,
+                ),
+                style = TraktTheme.typography.paragraph.toSpanStyle()
+                    .copy(
+                        fontWeight = FontWeight.W600,
+                        textDecoration = TextDecoration.Underline,
+                    ),
+            ),
+            confirmColor = Red400,
+            onConfirm = {
+                onConfirm()
+                onDismiss()
+            },
+            onCancel = onDismiss,
+        )
+    }
+}
+
 @Preview(
     device = "id:tv_4k",
     showBackground = true,
@@ -541,6 +607,7 @@ private fun Preview() {
             onNavigateToList = {},
             onNavigateToVideo = {},
             onHistoryClick = {},
+            onRemoveHistoryClick = {},
             onWatchlistClick = {},
             onNavigateToStreamings = {},
             onDropMovieClick = {},

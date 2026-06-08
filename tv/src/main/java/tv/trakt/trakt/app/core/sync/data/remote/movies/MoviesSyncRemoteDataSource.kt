@@ -3,7 +3,6 @@ package tv.trakt.trakt.app.core.sync.data.remote.movies
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.ProgressMovieDto
 import tv.trakt.trakt.common.networking.WatchlistMovieDto
-import java.time.ZonedDateTime
 
 internal interface MoviesSyncRemoteDataSource {
     suspend fun getPlaybackProgress(
@@ -27,7 +26,7 @@ internal interface MoviesSyncRemoteDataSource {
 
     suspend fun addToHistory(
         movieId: TraktId,
-        watchedAt: ZonedDateTime,
+        watchedAt: String,
     )
 
     suspend fun removeFromHistory(movieId: TraktId)

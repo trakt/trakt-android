@@ -4,7 +4,6 @@ import org.openapitools.client.models.PostUsersHiddenRemoveProgress200Response
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.ProgressEpisodeDto
 import tv.trakt.trakt.common.networking.SyncAddHistoryResponseDto
-import java.time.ZonedDateTime
 
 internal interface EpisodesSyncRemoteDataSource {
     suspend fun getPlaybackProgress(
@@ -14,8 +13,10 @@ internal interface EpisodesSyncRemoteDataSource {
 
     suspend fun addToHistory(
         episodeId: TraktId,
-        watchedAt: ZonedDateTime,
+        watchedAt: String,
     ): SyncAddHistoryResponseDto
 
     suspend fun removeFromHistory(episodePlayId: Long): PostUsersHiddenRemoveProgress200Response
+
+    suspend fun removeEpisodeFromHistory(episodeId: TraktId)
 }

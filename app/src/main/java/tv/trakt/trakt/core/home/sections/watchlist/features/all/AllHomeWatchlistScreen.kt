@@ -49,6 +49,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
@@ -68,7 +69,6 @@ import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.MediaModeFilters
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme

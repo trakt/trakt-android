@@ -55,6 +55,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Ids
@@ -352,7 +353,7 @@ internal class MovieDetailsViewModel(
         }
     }
 
-    fun toggleHistory() {
+    fun addHistory(customDate: DateSelectionResult? = null) {
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated() || movieCollectionState.value.isHistoryLoading) {
                 return@launch
@@ -363,6 +364,7 @@ internal class MovieDetailsViewModel(
                 historyUseCase.addToHistory(
                     movieId = movie.movieId.toTraktId(),
                     plays = movieCollectionState.value.historyCount,
+                    customDate = customDate,
                 )
 
                 movieCollectionState.update {
@@ -380,6 +382,34 @@ internal class MovieDetailsViewModel(
                 e.rethrowCancellation {
                     showSnackMessage(StaticStringResource(e.toString()))
                     Timber.e("Error toggling history: ${e.message}")
+                }
+            }
+        }
+    }
+
+    fun removeHistory() {
+        viewModelScope.launch {
+            if (!sessionManager.isAuthenticated() || movieCollectionState.value.isHistoryLoading) {
+                return@launch
+            }
+            try {
+                movieCollectionState.update { it.copy(isHistoryLoading = true) }
+
+                historyUseCase.removeFromHistory(movie.movieId.toTraktId())
+
+                movieCollectionState.update {
+                    it.copy(
+                        isHistory = false,
+                        isHistoryLoading = false,
+                        historyCount = 0,
+                    )
+                }
+
+                showSnackMessage(DynamicStringResource(R.string.text_info_history_removed))
+            } catch (e: Exception) {
+                e.rethrowCancellation {
+                    showSnackMessage(StaticStringResource(e.toString()))
+                    Timber.e("Error removing from history: ${e.message}")
                 }
             }
         }

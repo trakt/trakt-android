@@ -1,21 +1,13 @@
 package tv.trakt.trakt.app.core.details.episode.views.header
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.MenuDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -25,24 +17,27 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.app.Config.DEFAULT_PLEX_LOGO_URL
 import tv.trakt.trakt.app.common.ui.buttons.IconButton
 import tv.trakt.trakt.app.common.ui.buttons.PrimaryButton
 import tv.trakt.trakt.app.common.ui.buttons.WatchNowButton
+import tv.trakt.trakt.app.common.ui.menus.TvDropdownMenu
+import tv.trakt.trakt.app.common.ui.menus.TvDropdownMenuItem
 import tv.trakt.trakt.app.core.details.episode.EpisodeDetailsState
+import tv.trakt.trakt.app.core.details.episode.EpisodeDetailsState.HistoryState
 import tv.trakt.trakt.app.core.details.episode.EpisodeDetailsState.StreamingsState
+import tv.trakt.trakt.app.core.details.ui.dateselection.DateSelectionMenu
 import tv.trakt.trakt.app.core.player.plex.TvPlexPlayerActivity
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.openPlexLink
 import tv.trakt.trakt.common.helpers.extensions.openWatchNowLink
+import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.ui.theme.colors.Purple50
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
@@ -52,7 +47,8 @@ import tv.trakt.trakt.resources.R
 @Composable
 internal fun EpisodeActionButtons(
     detailsState: EpisodeDetailsState,
-    onHistoryClick: () -> Unit,
+    onHistoryClick: (DateSelectionResult) -> Unit,
+    onRemoveHistoryClick: () -> Unit,
     onStreamingLongClick: () -> Unit,
     onDropClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -135,21 +131,133 @@ internal fun EpisodeActionButtons(
             }
         }
 
-        val isWatched = remember(detailsState.episodeHistory.episodes?.size) {
-            detailsState.episodeHistory.episodesPlays > 0
+        val historyState = detailsState.episodeHistory
+        val isWatched = remember(historyState.episodes?.size) {
+            historyState.episodesPlays > 0
         }
+        val dateMenuVisible = remember { mutableStateOf(false) }
 
+        Row(
+            horizontalArrangement = spacedBy(6.dp),
+            verticalAlignment = CenterVertically,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            MarkAsWatchedButton(
+                isWatched = isWatched,
+                historyState = historyState,
+                onHistoryClick = onHistoryClick,
+                onRemoveHistoryClick = onRemoveHistoryClick,
+                modifier = Modifier.weight(1f, false),
+            )
+
+            if (!historyState.isLoading && isWatched) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                ) {
+                    HistoryDropDownButton(
+                        watchAgainEnabled = detailsState.user?.settings?.watchOnlyOnce != true,
+                        onWatchAgainClick = { dateMenuVisible.value = true },
+                        onRemoveFromHistoryClick = onRemoveHistoryClick,
+                    )
+
+                    DateSelectionMenu(
+                        expanded = dateMenuVisible.value,
+                        onDismissRequest = { dateMenuVisible.value = false },
+                        onSelect = onHistoryClick,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun MarkAsWatchedButton(
+    isWatched: Boolean,
+    historyState: HistoryState,
+    onHistoryClick: (DateSelectionResult) -> Unit,
+    onRemoveHistoryClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val menuVisible = remember { mutableStateOf(false) }
+
+    Box(modifier = modifier.fillMaxWidth()) {
         PrimaryButton(
             text = stringResource(
-                if (isWatched) R.string.button_text_watch_again else R.string.button_text_mark_as_watched,
+                if (isWatched) R.string.tag_text_watched else R.string.button_text_mark_as_watched,
             ),
             icon = painterResource(if (isWatched) R.drawable.ic_check_double else R.drawable.ic_check_2),
-            onClick = onHistoryClick,
+            onClick = {
+                if (isWatched) {
+                    onRemoveHistoryClick()
+                } else {
+                    menuVisible.value = true
+                }
+            },
             containerColor = if (!isWatched) Purple50 else Purple500,
             contentColor = if (!isWatched) Purple500 else Color.White,
             borderColor = if (!isWatched) Purple500 else Color.White,
-            enabled = !detailsState.episodeHistory.isLoading,
-            loading = detailsState.episodeHistory.isLoading,
+            enabled = !historyState.isLoading,
+            loading = historyState.isLoading,
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        Box(modifier = Modifier.align(Alignment.CenterEnd)) {
+            DateSelectionMenu(
+                expanded = menuVisible.value,
+                onDismissRequest = { menuVisible.value = false },
+                onSelect = onHistoryClick,
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun HistoryDropDownButton(
+    watchAgainEnabled: Boolean,
+    onWatchAgainClick: () -> Unit,
+    onRemoveFromHistoryClick: () -> Unit,
+) {
+    val menuVisible = remember { mutableStateOf(false) }
+    IconButton(
+        icon = painterResource(R.drawable.ic_more_vertical),
+        iconSize = 14.dp,
+        size = 32.dp,
+        onClick = { menuVisible.value = true },
+        containerColor = Color.Transparent,
+        contentColor = TraktTheme.colors.primaryButtonContent,
+        borderColor = Color.White,
+        modifier = Modifier.height(42.dp),
+    )
+
+    TvDropdownMenu(
+        visible = menuVisible.value,
+        onDismiss = { menuVisible.value = false },
+    ) {
+        var focusedIndex by remember { mutableIntStateOf(0) }
+
+        TvDropdownMenuItem(
+            text = stringResource(R.string.button_text_watch_again),
+            icon = painterResource(R.drawable.ic_check_double),
+            enabled = watchAgainEnabled,
+            focused = focusedIndex == 0,
+            onFocus = { focusedIndex = 0 },
+            onClick = {
+                menuVisible.value = false
+                onWatchAgainClick()
+            },
+        )
+
+        TvDropdownMenuItem(
+            text = stringResource(R.string.button_text_remove_from_history),
+            icon = painterResource(R.drawable.ic_trash),
+            focused = focusedIndex == 1,
+            onFocus = { focusedIndex = 1 },
+            onClick = {
+                menuVisible.value = false
+                onRemoveFromHistoryClick()
+            },
         )
     }
 }
@@ -255,133 +363,41 @@ private fun DropDownButton(
             modifier = Modifier.height(42.dp),
         )
 
-        DropdownMenu(
-            containerColor = TraktTheme.colors.dialogContainer,
-            shape = RoundedCornerShape(20.dp),
-            expanded = menuVisible.value,
-            onDismissRequest = { menuVisible.value = false },
+        TvDropdownMenu(
+            visible = menuVisible.value,
+            onDismiss = { menuVisible.value = false },
         ) {
             var focusedIndex by remember { mutableIntStateOf(0) }
 
-            DropdownMenuItem(
-                text = {
-                    Text(
-                        text = "${stringResource(R.string.button_text_stream)} Plex".uppercase(),
-                        textAlign = TextAlign.Start,
-                        style = TraktTheme.typography.buttonPrimary,
-                        color = when {
-                            focusedIndex == 0 -> TraktTheme.colors.textPrimary
-                            else -> TraktTheme.colors.textSecondary
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                            .border(
-                                width = 3.dp,
-                                color = when {
-                                    focusedIndex == 0 -> Color.White
-                                    else -> Color.Transparent
-                                },
-                                shape = RoundedCornerShape(12.dp),
-                            )
-                            .padding(horizontal = 20.dp, vertical = 16.dp),
-                    )
-                },
-                colors = MenuDefaults.selectableItemColors(
-                    containerColor = Color.Transparent,
-                ),
-                contentPadding = PaddingValues.Zero,
+            TvDropdownMenuItem(
+                text = "${stringResource(R.string.button_text_stream)} Plex",
+                focused = focusedIndex == 0,
+                onFocus = { focusedIndex = 0 },
                 onClick = {
                     menuVisible.value = false
                     onStreamOnPlexClick()
                 },
-                modifier = Modifier
-                    .onFocusChanged {
-                        if (it.isFocused) {
-                            focusedIndex = 0
-                        }
-                    },
             )
 
-            DropdownMenuItem(
-                text = {
-                    Text(
-                        text = stringResource(R.string.button_text_where_to_watch).uppercase(),
-                        textAlign = TextAlign.Start,
-                        style = TraktTheme.typography.buttonPrimary,
-                        color = when {
-                            focusedIndex == 1 -> TraktTheme.colors.textPrimary
-                            else -> TraktTheme.colors.textSecondary
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                            .border(
-                                width = 3.dp,
-                                color = when {
-                                    focusedIndex == 1 -> Color.White
-                                    else -> Color.Transparent
-                                },
-                                shape = RoundedCornerShape(12.dp),
-                            )
-                            .padding(horizontal = 20.dp, vertical = 16.dp),
-                    )
-                },
-                colors = MenuDefaults.selectableItemColors(
-                    containerColor = Color.Transparent,
-                ),
-                contentPadding = PaddingValues.Zero,
+            TvDropdownMenuItem(
+                text = stringResource(R.string.button_text_where_to_watch),
+                focused = focusedIndex == 1,
+                onFocus = { focusedIndex = 1 },
                 onClick = {
                     menuVisible.value = false
                     onWhereToWatchClick()
                 },
-                modifier = Modifier
-                    .onFocusChanged {
-                        if (it.isFocused) {
-                            focusedIndex = 1
-                        }
-                    },
             )
 
             if ((streamingState.plexStream?.progress ?: 0F) > 0F) {
-                DropdownMenuItem(
-                    text = {
-                        Text(
-                            text = stringResource(R.string.button_text_drop_episode).uppercase(),
-                            textAlign = TextAlign.Start,
-                            style = TraktTheme.typography.buttonPrimary,
-                            color = when {
-                                focusedIndex == 2 -> TraktTheme.colors.textPrimary
-                                else -> TraktTheme.colors.textSecondary
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 8.dp)
-                                .border(
-                                    width = 3.dp,
-                                    color = when {
-                                        focusedIndex == 2 -> Color.White
-                                        else -> Color.Transparent
-                                    },
-                                    shape = RoundedCornerShape(12.dp),
-                                )
-                                .padding(horizontal = 20.dp, vertical = 16.dp),
-                        )
-                    },
-                    colors = MenuDefaults.selectableItemColors(
-                        containerColor = Color.Transparent,
-                    ),
-                    contentPadding = PaddingValues.Zero,
+                TvDropdownMenuItem(
+                    text = stringResource(R.string.button_text_drop_episode).uppercase(),
+                    focused = focusedIndex == 2,
+                    onFocus = { focusedIndex = 2 },
                     onClick = {
                         menuVisible.value = false
                         onDropClick()
                     },
-                    modifier = Modifier
-                        .onFocusChanged {
-                            if (it.isFocused) {
-                                focusedIndex = 2
-                            }
-                        },
                 )
             }
         }

@@ -39,6 +39,7 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.customAnnotatedString
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.core.shows.ui.ShowMetaFooter
@@ -46,7 +47,6 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
-import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 

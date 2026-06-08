@@ -1,9 +1,9 @@
 package tv.trakt.trakt.core.sync.usecases
 
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
+import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
-import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
 internal class UpdateShowHistoryUseCase(
     private val remoteSource: ShowsSyncRemoteDataSource,

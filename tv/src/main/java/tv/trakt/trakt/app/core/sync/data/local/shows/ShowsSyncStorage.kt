@@ -4,6 +4,7 @@ import io.ktor.util.collections.ConcurrentSet
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.app.core.sync.model.WatchedShow
+import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.model.TraktId
 import java.time.ZonedDateTime
 import java.util.concurrent.ConcurrentHashMap
@@ -95,6 +96,16 @@ internal class ShowsSyncStorage : ShowsSyncLocalDataSource {
             timestamp?.let {
                 watchedUpdatedAt = it
             }
+        }
+    }
+
+    override suspend fun removeWatched(showsIds: Set<TraktId>) {
+        mutex.withLock {
+            if (showsIds.isEmpty() || watchedCache == null) {
+                return@withLock
+            }
+            watchedCache?.keys?.removeAll(showsIds)
+            watchedUpdatedAt = nowUtc()
         }
     }
 

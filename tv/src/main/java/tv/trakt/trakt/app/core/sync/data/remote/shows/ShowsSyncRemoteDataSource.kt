@@ -4,7 +4,6 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.ProgressShowDto
 import tv.trakt.trakt.common.networking.SyncAddHistoryResponseDto
 import tv.trakt.trakt.common.networking.WatchlistShowDto
-import java.time.ZonedDateTime
 
 internal interface ShowsSyncRemoteDataSource {
     suspend fun getUpNextProgress(
@@ -31,10 +30,10 @@ internal interface ShowsSyncRemoteDataSource {
 
     suspend fun addToHistory(
         showId: TraktId,
-        watchedAt: ZonedDateTime,
+        watchedAt: String,
     ): SyncAddHistoryResponseDto
-//
-//    suspend fun removeFromHistory(showId: TraktId)
+
+    suspend fun removeFromHistory(showId: TraktId)
 
     suspend fun getShowsPlexCollection(): Map<TraktId, Map<TraktId, Map<TraktId, String>>>
 

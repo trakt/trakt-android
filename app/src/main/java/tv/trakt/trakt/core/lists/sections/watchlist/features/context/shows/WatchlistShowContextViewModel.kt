@@ -17,6 +17,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
@@ -25,7 +26,6 @@ import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
 import tv.trakt.trakt.core.user.data.local.watchlist.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
-import tv.trakt.trakt.ui.components.dateselection.DateSelectionResult
 
 internal class WatchlistShowContextViewModel(
     private val show: Show,

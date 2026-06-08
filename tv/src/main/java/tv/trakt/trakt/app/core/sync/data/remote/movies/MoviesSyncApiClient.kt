@@ -13,8 +13,6 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.ProgressMovieDto
 import tv.trakt.trakt.common.networking.WatchlistMovieDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 
 internal class MoviesSyncApiClient(
     private val usersApi: UsersApi,
@@ -77,7 +75,7 @@ internal class MoviesSyncApiClient(
 
     override suspend fun addToHistory(
         movieId: TraktId,
-        watchedAt: ZonedDateTime,
+        watchedAt: String,
     ) {
         val request = PostUsersListsListAddRequest(
             movies = listOf(
@@ -90,7 +88,7 @@ internal class MoviesSyncApiClient(
                     ),
                     title = "",
                     year = 0,
-                    watchedAt = watchedAt.format(DateTimeFormatter.ISO_INSTANT),
+                    watchedAt = watchedAt,
                 ),
             ),
         )

@@ -73,11 +73,13 @@ import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.resources.R
 import kotlin.math.roundToInt
 
@@ -101,6 +103,7 @@ internal fun EpisodeDetailsScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var historyConfirmationDialog: Long? by remember { mutableStateOf(null) }
+    var removeAllHistoryDialog by remember { mutableStateOf(false) }
 
     val localContext = LocalContext.current
     val localSnack = LocalSnackbarState.current
@@ -116,6 +119,7 @@ internal fun EpisodeDetailsScreen(
         },
         onAddHistoryClick = viewModel::addToHistory,
         onRemoveHistoryClick = { historyConfirmationDialog = it },
+        onRemoveAllHistoryClick = { removeAllHistoryDialog = true },
         onDropEpisodeClick = viewModel::dropEpisodePlayback,
     )
 
@@ -127,6 +131,28 @@ internal fun EpisodeDetailsScreen(
             onConfirm = viewModel::removeFromHistory,
             onDismiss = { historyConfirmationDialog = null },
         )
+    }
+
+    if (removeAllHistoryDialog) {
+        val title = state.episodeDetails?.seasonEpisodeString()
+            ?: stringResource(R.string.list_title_history)
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black.copy(alpha = 0.66F)),
+        )
+        Dialog(onDismissRequest = { removeAllHistoryDialog = false }) {
+            ConfirmationDialog(
+                title = title,
+                message = stringResource(R.string.warning_prompt_remove_from_watched, title),
+                confirmColor = Red400,
+                onConfirm = {
+                    viewModel.removeAllFromHistory()
+                    removeAllHistoryDialog = false
+                },
+                onCancel = { removeAllHistoryDialog = false },
+            )
+        }
     }
 
     LaunchedEffect(state.snackMessage) {
@@ -168,8 +194,9 @@ private fun EpisodeDetailsScreenContent(
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToPerson: (PersonDestination) -> Unit,
     onNavigateToStreamings: (showId: TraktId, episode: Episode) -> Unit,
-    onAddHistoryClick: () -> Unit,
+    onAddHistoryClick: (DateSelectionResult) -> Unit,
     onRemoveHistoryClick: (id: Long) -> Unit,
+    onRemoveAllHistoryClick: () -> Unit,
     onDropEpisodeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -280,6 +307,7 @@ private fun EpisodeDetailsScreenContent(
                     onCommentClicked = { selectedComment = it },
                     onAddHistoryClick = onAddHistoryClick,
                     onRemoveHistoryClick = onRemoveHistoryClick,
+                    onRemoveAllHistoryClick = onRemoveAllHistoryClick,
                     onStreamingsClick = {
                         onNavigateToStreamings(
                             state.showDetails.ids.trakt,
@@ -312,8 +340,9 @@ private fun MainContent(
     onPersonClicked: (Person) -> Unit,
     onCommentClicked: (Comment) -> Unit,
     onStreamingsClick: () -> Unit,
-    onAddHistoryClick: () -> Unit,
+    onAddHistoryClick: (DateSelectionResult) -> Unit,
     onRemoveHistoryClick: (id: Long) -> Unit,
+    onRemoveAllHistoryClick: () -> Unit,
     onDropEpisodeClick: () -> Unit,
     focusRequesters: Map<String, FocusRequester>,
     scrollState: ScrollState,
@@ -347,6 +376,7 @@ private fun MainContent(
                 EpisodeActionButtons(
                     detailsState = state,
                     onHistoryClick = onAddHistoryClick,
+                    onRemoveHistoryClick = onRemoveAllHistoryClick,
                     onStreamingLongClick = onStreamingsClick,
                     onDropClick = onDropEpisodeClick,
                     modifier = Modifier
@@ -539,7 +569,8 @@ private fun HistoryConfirmationOverlay(
     Dialog(onDismissRequest = onDismiss) {
         ConfirmationDialog(
             title = title,
-            message = stringResource(R.string.warning_prompt_remove_single_watched),
+            message = stringResource(R.string.warning_prompt_remove_single_watched, title),
+            confirmColor = Red400,
             onConfirm = {
                 onConfirm(episodePlayId)
                 onDismiss()
@@ -571,6 +602,7 @@ private fun Preview() {
             onAddHistoryClick = {},
             onNavigateToStreamings = { _, _ -> },
             onRemoveHistoryClick = {},
+            onRemoveAllHistoryClick = {},
             onDropEpisodeClick = {},
         )
     }
