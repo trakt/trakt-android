@@ -44,6 +44,7 @@ val Purple600 = Color(0xFF913CB4)
 val Purple700 = Color(0xFF712F8D)
 val Purple800 = Color(0xFF57246D)
 val Purple900 = Color(0xFF431C53)
+val Purple920 = Color(0xFF3A1740)
 
 // Red
 val Red40 = Color(0xFFFFEDEB)

@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.core.home.HomeViewModel
@@ -29,6 +30,10 @@ import tv.trakt.trakt.core.home.sections.activity.features.social.HomeSocialView
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.views.context.ActivityItemContextViewModel
+import tv.trakt.trakt.core.home.sections.streaks.HomeStreaksViewModel
+import tv.trakt.trakt.core.home.sections.streaks.all.StreaksViewModel
+import tv.trakt.trakt.core.home.sections.streaks.data.DefaultStreaksManager
+import tv.trakt.trakt.core.home.sections.streaks.data.StreaksManager
 import tv.trakt.trakt.core.home.sections.upcoming.HomeUpcomingViewModel
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingStorage
@@ -85,6 +90,12 @@ internal val homeDataModule = module {
 
     single<AllActivityLocalDataSource> {
         AllActivityStorage()
+    }
+
+    single<StreaksManager> {
+        DefaultStreaksManager(
+            userProgressUseCase = get(),
+        )
     }
 }
 
@@ -345,6 +356,9 @@ internal val homeModule = module {
             loadUserProgressUseCase = get(),
         )
     }
+
+    viewModelOf(::HomeStreaksViewModel)
+    viewModelOf(::StreaksViewModel)
 }
 
 private fun createStore(context: Context): DataStore<Preferences> {

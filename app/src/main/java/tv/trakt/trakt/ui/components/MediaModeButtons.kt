@@ -4,15 +4,16 @@ package tv.trakt.trakt.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -75,7 +76,6 @@ internal fun MediaModeButtons(
                             width = 0.dp,
                             color = Color.Transparent,
                         )
-
                         else -> BorderStroke(
                             width = 1.dp,
                             color = TraktTheme.colors.chipContainer,
@@ -86,9 +86,6 @@ internal fun MediaModeButtons(
                         MediaMode.SHOWS -> ButtonGroupDefaults.connectedMiddleButtonShapes()
                         MediaMode.MOVIES -> ButtonGroupDefaults.connectedTrailingButtonShapes()
                     },
-                    contentPadding = PaddingValues(
-                        horizontal = 12.dp,
-                    ),
                     modifier = Modifier.height(height),
                 ) {
                     Icon(
@@ -102,13 +99,19 @@ internal fun MediaModeButtons(
                         modifier = Modifier.size(16.dp),
                     )
 
-                    Spacer(Modifier.size(5.dp))
-
-                    Text(
-                        text = stringResource(option.displayRes),
-                        color = TraktTheme.colors.textPrimary,
-                        style = TraktTheme.typography.buttonTertiary,
-                    )
+                    AnimatedVisibility(
+                        visible = selectedMode == option,
+                        enter = fadeIn(tween(150, delayMillis = 100)) +
+                            expandHorizontally(tween(100, delayMillis = 100)),
+                        exit = fadeOut(tween(150)) + shrinkHorizontally(tween(100)),
+                    ) {
+                        Text(
+                            text = stringResource(option.displayRes),
+                            color = TraktTheme.colors.textPrimary,
+                            style = TraktTheme.typography.buttonTertiary,
+                            modifier = Modifier.padding(start = 5.dp),
+                        )
+                    }
                 }
             }
         }

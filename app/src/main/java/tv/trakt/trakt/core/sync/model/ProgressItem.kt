@@ -14,7 +14,7 @@ internal sealed class ProgressItem(
     @Immutable
     internal data class MovieItem(
         val movie: MovieProgress,
-        val plays: Int,
+        val plays: ImmutableList<Instant>,
         val lastWatchedAt: Instant,
         override val loading: Boolean = false,
     ) : ProgressItem(loading)
@@ -28,12 +28,12 @@ internal sealed class ProgressItem(
         val plays: Int
             get() = seasons
                 .flatMap { it.episodes }
-                .sumOf { it.plays }
+                .sumOf { it.plays.size }
 
         val playsDistinct: Int
             get() = seasons
                 .flatMap { it.episodes }
-                .sumOf { it.playsDistinct }
+                .sumOf { it.playsDistinctCount }
 
         val lastWatchedAt: Instant
             get() = seasons
@@ -49,8 +49,8 @@ internal sealed class ProgressItem(
 
         data class Episode(
             val id: TraktId,
-            val plays: Int,
-            val playsDistinct: Int,
+            val plays: ImmutableList<Instant>,
+            val playsDistinctCount: Int,
             val lastWatchedAt: Instant,
         )
 
@@ -62,7 +62,8 @@ internal sealed class ProgressItem(
                 .firstOrNull { it.number == seasonNumber }
                 ?.episodes
                 ?.firstOrNull { it.id == episodeId }
-                ?.let { it.plays > 0 }
+                ?.plays
+                ?.isNotEmpty()
                 ?: false
         }
 
@@ -71,7 +72,7 @@ internal sealed class ProgressItem(
 
             val watchedEpisodes = seasons
                 .flatMap { it.episodes }
-                .filter { it.plays > 0 }
+                .filter { it.plays.isNotEmpty() }
 
             return watchedEpisodes.size >= airedEpisodes
         }

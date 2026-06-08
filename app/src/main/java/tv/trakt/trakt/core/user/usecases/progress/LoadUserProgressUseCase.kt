@@ -13,10 +13,12 @@ import tv.trakt.trakt.common.model.toSlugId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.sync.model.ProgressItem
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
+import tv.trakt.trakt.core.user.usecases.progress.updates.ProgressUpdates
 
 internal class LoadUserProgressUseCase(
     private val remoteSource: UserRemoteDataSource,
     private val localSource: UserProgressLocalDataSource,
+    private val progressUpdates: ProgressUpdates,
 ) {
     suspend fun loadLocalShows(): ImmutableList<ProgressItem.ShowItem> {
         return localSource.getShows()
@@ -40,12 +42,12 @@ internal class LoadUserProgressUseCase(
         return localSource.isShowsLoaded() && localSource.isMoviesLoaded()
     }
 
-    suspend fun loadMoviesProgress(): ImmutableList<ProgressItem.MovieItem> {
+    suspend fun loadMoviesProgress(notifyUpdate: Boolean = true): ImmutableList<ProgressItem.MovieItem> {
         val progress = mutableMapOf<String, List<String>>()
         var page = 1
 
         while (true) {
-            val pageResponse = remoteSource.getWatchedMovies(Pagination(page = page, limit = 100))
+            val pageResponse = remoteSource.getWatchedMovies(Pagination(page = page, limit = 1000))
             if (pageResponse.isEmpty()) {
                 break
             }
@@ -55,21 +57,22 @@ internal class LoadUserProgressUseCase(
 
         val response = progress
             .map { (movieId, plays) ->
+                val allPlays = plays
+                    .filter {
+                        // Filter out invalid dates like "0000-00-00T00:00:00Z"
+                        // (leftovers from older bugged Trakt users)
+                        !it.startsWith("0000")
+                    }
+
                 ProgressItem.MovieItem(
-                    plays = plays.size,
+                    plays = allPlays.map { it.toInstant() }.toImmutableList(),
                     movie = MovieProgress(
                         Ids(
                             trakt = movieId.toInt().toTraktId(),
                             slug = "".toSlugId(),
                         ),
                     ),
-                    lastWatchedAt = plays
-                        .filter {
-                            // Filter out invalid dates like "0000-00-00T00:00:00Z"
-                            // (leftovers from older bugged Trakt users)
-                            !it.startsWith("0000")
-                        }
-                        .maxOf { it.toInstant() },
+                    lastWatchedAt = allPlays.maxOf { it.toInstant() },
                 )
             }
 
@@ -77,15 +80,21 @@ internal class LoadUserProgressUseCase(
             setMovies(response)
         }
 
-        return response.toImmutableList()
+        return response
+            .toImmutableList()
+            .also {
+                if (notifyUpdate) {
+                    progressUpdates.notifyUpdate()
+                }
+            }
     }
 
-    suspend fun loadShowsProgress(): ImmutableList<ProgressItem.ShowItem> {
+    suspend fun loadShowsProgress(notifyUpdate: Boolean = true): ImmutableList<ProgressItem.ShowItem> {
         val progress = mutableMapOf<String, Map<String, Map<String, List<String>>>>()
         var page = 1
 
         while (true) {
-            val pageResponse = remoteSource.getWatchedShows(Pagination(page = page, limit = 100))
+            val pageResponse = remoteSource.getWatchedShows(Pagination(page = page, limit = 1000))
             if (pageResponse.isEmpty()) break
             progress.putAll(pageResponse)
             page++
@@ -99,8 +108,8 @@ internal class LoadUserProgressUseCase(
                         val episodePlays = episodeKey.value
                         ProgressItem.ShowItem.Episode(
                             id = episodeKey.key.toInt().toTraktId(),
-                            plays = episodePlays.size,
-                            playsDistinct = if (episodePlays.isEmpty()) 0 else 1,
+                            plays = episodeKey.value.map { it.toInstant() }.toImmutableList(),
+                            playsDistinctCount = if (episodePlays.isEmpty()) 0 else 1,
                             lastWatchedAt = episodePlays.maxOf { it.toInstant() },
                         )
                     }
@@ -123,16 +132,24 @@ internal class LoadUserProgressUseCase(
             setShows(response)
         }
 
-        return response.toImmutableList()
+        return response
+            .toImmutableList()
+            .also {
+                if (notifyUpdate) {
+                    progressUpdates.notifyUpdate()
+                }
+            }
     }
 
     suspend fun loadProgress() {
         return coroutineScope {
-            val showsAsync = async { loadShowsProgress() }
-            val moviesAsync = async { loadMoviesProgress() }
+            val showsAsync = async { loadShowsProgress(notifyUpdate = false) }
+            val moviesAsync = async { loadMoviesProgress(notifyUpdate = false) }
 
             showsAsync.await()
             moviesAsync.await()
+
+            progressUpdates.notifyUpdate()
         }
     }
 }

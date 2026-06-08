@@ -153,36 +153,41 @@ private fun HeaderBar(
                 )
             }
 
-            if (showLogin) {
-                TertiaryButton(
-                    text = stringResource(R.string.button_text_login),
-                    icon = painterResource(R.drawable.ic_trakt_icon),
-                    height = contentHeight,
-                    loading = userLoading,
-                    enabled = !userLoading,
-                    onClick = {
-                        uriHandler.openUri(ConfigAuth.authCodeUrl)
-                    },
-                )
-            } else if (customTheme?.theme != null && customTheme.visible) {
-                TraktThemeSwitch(
-                    theme = customTheme.theme,
-                    checked = customTheme.enabled,
-                    onCheckedChange = onCustomThemeChange,
-                    modifier = Modifier
-                        .height(contentHeight),
-                )
-            } else if (showVip) {
-                VipChip(
-                    onClick = onVipClick,
-                )
-            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                if (showLogin) {
+                    TertiaryButton(
+                        text = stringResource(R.string.button_text_login),
+                        icon = painterResource(R.drawable.ic_trakt_icon),
+                        height = contentHeight,
+                        loading = userLoading,
+                        enabled = !userLoading,
+                        onClick = {
+                            uriHandler.openUri(ConfigAuth.authCodeUrl)
+                        },
+                    )
+                } else if (customTheme?.theme != null && customTheme.visible) {
+                    TraktThemeSwitch(
+                        theme = customTheme.theme,
+                        checked = customTheme.enabled,
+                        onCheckedChange = onCustomThemeChange,
+                        modifier = Modifier
+                            .height(contentHeight),
+                    )
+                } else if (showVip) {
+                    VipChip(
+                        onClick = onVipClick,
+                    )
+                }
 
-            if (showFilters) {
-                MediaFilterIcon(
-                    active = filter.isActive,
-                    onClick = onFilterClick,
-                )
+                if (showFilters) {
+                    MediaFilterIcon(
+                        active = filter.isActive,
+                        onClick = onFilterClick,
+                    )
+                }
             }
         }
     }
