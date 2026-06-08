@@ -136,7 +136,7 @@ internal fun ShowActionButtons(
 
         val isWatchlist = remember(collectionState.isWatchlist) { collectionState.isWatchlist }
         PrimaryButton(
-            text = stringResource(if (isWatchlist) R.string.button_text_watchlist else R.string.button_text_watchlist),
+            text = stringResource(R.string.button_text_watchlist),
             icon = painterResource(if (isWatchlist) R.drawable.ic_minus else R.drawable.ic_plus),
             onClick = onWatchlistClick,
             containerColor = if (isWatchlist) Blue500 else Blue50,

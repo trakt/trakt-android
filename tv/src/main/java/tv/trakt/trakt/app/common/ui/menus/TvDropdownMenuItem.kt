@@ -40,7 +40,7 @@ internal fun TvDropdownMenuItem(
             Row(
                 verticalAlignment = CenterVertically,
                 horizontalArrangement = spacedBy(12.dp),
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp)
                     .border(
