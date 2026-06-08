@@ -262,7 +262,7 @@ private fun AllShowSeasonsContent(
                 bottom = WindowInsets.navigationBars.asPaddingValues()
                     .calculateBottomPadding()
                     .plus(TraktTheme.size.navigationBarHeight)
-                    .plus(32.dp),
+                    .plus(TraktTheme.spacing.mainPageBottomSpace),
             ),
         ) {
             item {
