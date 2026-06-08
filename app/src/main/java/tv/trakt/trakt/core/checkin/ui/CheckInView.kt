@@ -65,6 +65,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onEmptyClick
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.timeFormat
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Shade300
@@ -73,7 +74,6 @@ import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.theme.HorizontalCheckInImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
-import java.time.ZoneId
 import kotlin.math.roundToLong
 import kotlin.time.Duration.Companion.minutes
 
@@ -106,8 +106,8 @@ internal fun CheckInView(
     onDismiss: () -> Unit = {},
 ) {
     var confirmClose by remember { mutableStateOf(false) }
-
     var timestamp by remember { mutableStateOf(nowUtcInstant()) }
+    var endsAtMode by rememberSaveable { mutableStateOf(true) }
 
     val totalSeconds = remember(startedAt, expiresAt) {
         if (startedAt != null && expiresAt != null) {
@@ -180,6 +180,7 @@ internal fun CheckInView(
                 image = image,
                 title = title,
                 subtitle = subtitle,
+                endsAtMode = endsAtMode,
                 totalDurationSeconds = { totalSeconds },
                 durationSeconds = { secondsLeft },
                 durationMinutes = { minutesLeft },
@@ -187,6 +188,7 @@ internal fun CheckInView(
                 onMediaClick = onMediaClick,
                 onCollapseClick = onCollapseClick,
                 onCloseClick = { confirmClose = true },
+                onEndsAtClick = { endsAtMode = !endsAtMode },
                 modifier = Modifier.padding(viewPadding),
             )
         } else {
@@ -227,6 +229,7 @@ private fun ExpandedView(
     image: String?,
     title: String?,
     subtitle: String?,
+    endsAtMode: Boolean,
     totalDurationSeconds: () -> Long,
     durationSeconds: () -> Long,
     durationMinutes: () -> Long,
@@ -235,6 +238,7 @@ private fun ExpandedView(
     onMediaClick: () -> Unit = {},
     onCollapseClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
+    onEndsAtClick: () -> Unit = {},
 ) {
     Box(
         modifier = modifier,
@@ -314,29 +318,35 @@ private fun ExpandedView(
 
                         val timeFormatter = timeFormat()
                         val endsAtText = remember(expiresAt, timeFormatter) {
-                            expiresAt
-                                ?.atZone(ZoneId.systemDefault())
-                                ?.toLocalTime()
-                                ?.format(timeFormatter)
+                            expiresAt?.toLocal()?.format(timeFormatter)
                         }
 
                         Column(
                             horizontalAlignment = Alignment.End,
-                            modifier = Modifier.padding(start = 16.dp, end = 0.5.dp),
-                        ) {
-                            Text(
-                                text = stringResource(R.string.tag_text_remaining_duration, durationText),
-                                textAlign = TextAlign.End,
-                                color = TraktTheme.colors.textSecondary,
-                                style = TraktTheme.typography.cardSubtitle.copy(
-                                    fontSize = 11.sp,
+                            modifier = Modifier
+                                .padding(
+                                    start = 16.dp,
+                                    end = 0.5.dp,
+                                )
+                                .onClick(
+                                    onClick = onEndsAtClick,
+                                    throttle = false,
                                 ),
-                                maxLines = 1,
-                                overflow = Ellipsis,
-                            )
-                            endsAtText?.let {
+                        ) {
+                            if (endsAtMode && !endsAtText.isNullOrBlank()) {
                                 Text(
-                                    text = stringResource(R.string.text_ends_at, it),
+                                    text = stringResource(R.string.text_ends_at, endsAtText),
+                                    textAlign = TextAlign.End,
+                                    color = TraktTheme.colors.textSecondary,
+                                    style = TraktTheme.typography.cardSubtitle.copy(
+                                        fontSize = 11.sp,
+                                    ),
+                                    maxLines = 1,
+                                    overflow = Ellipsis,
+                                )
+                            } else {
+                                Text(
+                                    text = stringResource(R.string.tag_text_remaining_duration, durationText),
                                     textAlign = TextAlign.End,
                                     color = TraktTheme.colors.textSecondary,
                                     style = TraktTheme.typography.cardSubtitle.copy(
@@ -614,6 +624,7 @@ private fun Preview() {
                         image = "",
                         title = "Stranger Things",
                         subtitle = "Season 2 - Episode 5",
+                        endsAtMode = true,
                         totalDurationSeconds = { minutesTotal.minutes.inWholeSeconds },
                         durationSeconds = { minutesLeft.minutes.inWholeSeconds },
                         durationMinutes = { minutesLeft.minutes.inWholeMinutes },
