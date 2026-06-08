@@ -10,6 +10,8 @@ class UserRatingsApiClient(
         val response = usersApi.getUsersRatingsShows(
             id = "me",
             extended = null,
+            page = null,
+            limit = null,
         )
 
         return response.body()
@@ -19,6 +21,8 @@ class UserRatingsApiClient(
         val response = usersApi.getUsersRatingsMovies(
             id = "me",
             extended = null,
+            page = null,
+            limit = null,
         )
 
         return response.body()
@@ -28,6 +32,8 @@ class UserRatingsApiClient(
         val response = usersApi.getUsersRatingsEpisodes(
             id = "me",
             extended = null,
+            page = null,
+            limit = null,
         )
 
         return response.body()
