@@ -424,6 +424,7 @@ private fun CollapsedView(
                                 ),
                                 maxLines = 1,
                                 overflow = Ellipsis,
+                                modifier = Modifier.padding(end = 72.dp),
                             )
                         }
                         subtitle?.let {
