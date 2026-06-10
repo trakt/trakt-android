@@ -158,11 +158,12 @@ private fun StreakStatCard(
                 color = TraktTheme.colors.dialogOnContainer,
                 shape = RoundedCornerShape(16.dp),
             )
-            .padding(horizontal = 12.dp, vertical = 12.dp),
+            .padding(horizontal = 14.dp, vertical = 12.dp),
     ) {
         Text(
             text = value,
             style = TraktTheme.typography.heading3.copy(
+                fontSize = 22.sp,
                 letterSpacing = 0.02.sp,
             ),
             color = Purple400,
