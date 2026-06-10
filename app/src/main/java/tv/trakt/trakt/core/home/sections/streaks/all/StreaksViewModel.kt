@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.sections.streaks.data.StreaksManager
@@ -19,12 +18,24 @@ internal class StreaksViewModel(
     streaksManager: StreaksManager,
     private val filtersManager: GlobalFilterManager,
 ) : ViewModel() {
+    private val modeState = MutableStateFlow<MediaMode?>(null)
+    private val dataState = MutableStateFlow<MonthlyStreakData?>(null)
+
+    init {
+        streaksManager.observeStreakData()
+            .onEach { data ->
+                modeState.update { filtersManager.getFilter().mode }
+                dataState.update { data }
+            }
+            .launchIn(viewModelScope)
+    }
+
     val state = combine(
-        streaksManager.observeStreakData(),
-        filtersManager.observeFilter()
-    ) { data, filter ->
+        modeState,
+        dataState,
+    ) { mode, data ->
         StreaksState(
-            mode = filter.mode,
+            mode = mode,
             data = data,
         )
     }.stateIn(

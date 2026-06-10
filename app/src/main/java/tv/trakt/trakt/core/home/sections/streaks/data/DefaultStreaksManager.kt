@@ -11,6 +11,9 @@ import kotlinx.coroutines.flow.update
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.MediaMode.MEDIA
+import tv.trakt.trakt.common.model.MediaMode.MOVIES
+import tv.trakt.trakt.common.model.MediaMode.SHOWS
 import tv.trakt.trakt.core.home.sections.streaks.model.MonthlyStreakData
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import java.time.LocalDate
@@ -32,16 +35,16 @@ internal class DefaultStreaksManager(
         coroutineScope {
             val watchedShowsAsync = async {
                 when (mode) {
-                    MediaMode.MOVIES -> EmptyImmutableList
-                    MediaMode.MEDIA -> userProgressUseCase.loadLocalShows()
-                    MediaMode.SHOWS -> userProgressUseCase.loadLocalShows()
+                    MOVIES -> EmptyImmutableList
+                    MEDIA -> userProgressUseCase.loadLocalShows()
+                    SHOWS -> userProgressUseCase.loadLocalShows()
                 }
             }
             val watchedMoviesAsync = async {
                 when (mode) {
-                    MediaMode.SHOWS -> EmptyImmutableList
-                    MediaMode.MEDIA -> userProgressUseCase.loadLocalMovies()
-                    MediaMode.MOVIES -> userProgressUseCase.loadLocalMovies()
+                    SHOWS -> EmptyImmutableList
+                    MEDIA -> userProgressUseCase.loadLocalMovies()
+                    MOVIES -> userProgressUseCase.loadLocalMovies()
                 }
             }
 
@@ -61,10 +64,8 @@ internal class DefaultStreaksManager(
                 }
             }
 
-            val activeDaysYear = (movieDates + episodeDates)
-                .filter { it.year == localDay.year }
-                .toSet()
-                .size
+            val allActivityDates = (movieDates + episodeDates).toSet()
+            val activeDaysYear = allActivityDates.count { it.year == localDay.year }
 
             val movieCountsByDateMonth = movieDates
                 .filter { it.month == localDay.month && it.year == localDay.year }
@@ -85,12 +86,16 @@ internal class DefaultStreaksManager(
                     )
                 }
 
+            val currentStreakTotal = computeCurrentStreak(allActivityDates, localDay)
+            val previousStreakTotal = computePreviousStreak(allActivityDates, localDay, currentStreakTotal)
             val currentStreak = computeCurrentStreak(monthActivityMap.keys, localDay)
             val previousStreak = computePreviousStreak(monthActivityMap.keys, localDay, currentStreak)
             val activeDaysMonth = monthActivityMap.size
 
             val streakData = MonthlyStreakData(
                 activity = monthActivityMap.toImmutableMap(),
+                currentStreakTotal = currentStreakTotal,
+                previousStreakTotal = previousStreakTotal,
                 currentStreak = currentStreak,
                 previousStreak = previousStreak,
                 droppedStreaks = computeDroppedStreaks(monthActivityMap.keys, localDay),

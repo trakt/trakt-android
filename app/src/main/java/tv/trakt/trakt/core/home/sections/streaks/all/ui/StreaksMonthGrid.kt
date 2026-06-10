@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package tv.trakt.trakt.core.home.sections.streaks.ui
+package tv.trakt.trakt.core.home.sections.streaks.all.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -75,7 +75,6 @@ internal fun StreaksMonthGrid(
     val today = LocalDate.now()
     val maxCount = data.values.maxOfOrNull { it.total } ?: 0
     val borderColor = Shade900
-    val accentColor = TraktTheme.colors.accent
     val todayColor = Color.White
 
     Column(
@@ -170,7 +169,7 @@ internal fun StreaksMonthGrid(
                                             val moviesText = stringResource(R.string.text_movies_watched, movies)
 
                                             val tooltipText = buildString {
-                                                append(date.format(fullDayFormat()))
+                                                append(date.format(fullDayFormat()).capitalize())
                                                 if (episodes > 0 || movies > 0) {
                                                     append("  •  ")
                                                 }

@@ -5,6 +5,8 @@ import java.time.LocalDate
 
 internal data class MonthlyStreakData(
     val activity: ImmutableMap<LocalDate, StreakDataPoint>,
+    val currentStreakTotal: Int,
+    val previousStreakTotal: Int,
     val currentStreak: Int,
     val previousStreak: Int,
     val droppedStreaks: Int,

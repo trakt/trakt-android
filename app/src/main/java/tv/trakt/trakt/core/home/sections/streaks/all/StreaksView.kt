@@ -25,8 +25,8 @@ import tv.trakt.trakt.common.helpers.extensions.yearMonthFormat
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
+import tv.trakt.trakt.core.home.sections.streaks.all.ui.StreaksMonthGrid
 import tv.trakt.trakt.core.home.sections.streaks.model.MonthlyStreakData
-import tv.trakt.trakt.core.home.sections.streaks.ui.StreaksMonthGrid
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -93,15 +93,15 @@ private fun StreaksViewContent(
                 .fillMaxWidth(),
         ) {
             StreakStatCard(
-                value = data.previousStreak.toString(),
-                label = stringResource(R.string.label_stats_previous_streak),
+                value = data.currentStreakTotal.toString(),
+                label = stringResource(R.string.label_stats_current_streak),
                 subtitle = stringResource(R.string.text_stats_keep_it_going),
                 modifier = Modifier.weight(1f),
             )
             StreakStatCard(
-                value = data.currentStreak.toString(),
-                label = stringResource(R.string.label_stats_current_streak),
-                subtitle = stringResource(R.string.text_this_month),
+                value = data.previousStreakTotal.toString(),
+                label = stringResource(R.string.label_stats_previous_streak),
+                subtitle = stringResource(R.string.text_stats_last_one),
                 modifier = Modifier.weight(1f),
             )
         }
@@ -110,18 +110,18 @@ private fun StreaksViewContent(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier.fillMaxWidth(),
         ) {
+            StreakStatCard(
+                value = data.currentStreak.toString(),
+                label = stringResource(R.string.label_stats_current_streak_monthly),
+                subtitle = stringResource(R.string.text_this_month),
+                modifier = Modifier.weight(1f),
+            )
             StreakStatCard(
                 value = data.droppedStreaks.toString(),
                 label = stringResource(R.string.label_stats_dropped_streaks),
                 subtitle = stringResource(R.string.text_this_month),
                 modifier = Modifier.weight(1f),
             )
-            StreakStatCard(
-                value = data.activeDaysMonth.toString(),
-                label = stringResource(R.string.label_stats_active_days),
-                subtitle = stringResource(R.string.text_this_month),
-                modifier = Modifier.weight(1f),
-            )
         }
 
         Row(
@@ -129,15 +129,15 @@ private fun StreaksViewContent(
             modifier = Modifier.fillMaxWidth(),
         ) {
             StreakStatCard(
-                value = data.activeDaysYear.toString(),
+                value = "${data.activeDaysMonth}  (${data.activeDaysMonthPercent}%)",
                 label = stringResource(R.string.label_stats_active_days),
-                subtitle = stringResource(R.string.text_this_year),
+                subtitle = stringResource(R.string.text_this_month),
                 modifier = Modifier.weight(1f),
             )
             StreakStatCard(
-                value = "${data.activeDaysMonthPercent}%",
-                label = stringResource(R.string.label_stats_days_active),
-                subtitle = stringResource(R.string.text_this_month),
+                value = data.activeDaysYear.toString(),
+                label = stringResource(R.string.label_stats_active_days),
+                subtitle = stringResource(R.string.text_this_year),
                 modifier = Modifier.weight(1f),
             )
         }
@@ -215,6 +215,8 @@ private fun Preview() {
             mode = MediaMode.MOVIES,
             data = MonthlyStreakData(
                 activity = persistentMapOf(),
+                currentStreakTotal = 128,
+                previousStreakTotal = 45,
                 currentStreak = 1,
                 previousStreak = 2,
                 droppedStreaks = 2,

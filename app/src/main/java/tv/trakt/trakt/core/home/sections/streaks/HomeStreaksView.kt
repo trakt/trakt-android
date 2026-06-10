@@ -96,8 +96,8 @@ private fun HomeStreaksContent(
                     Image(
                         painter = painterResource(
                             when {
-                                data.currentStreak <= 1 -> R.drawable.ic_flame_1
-                                data.currentStreak <= 7 -> R.drawable.ic_flame_2
+                                data.currentStreakTotal <= 1 -> R.drawable.ic_flame_1
+                                data.currentStreakTotal <= 7 -> R.drawable.ic_flame_2
                                 else -> R.drawable.ic_flame_3
                             },
                         ),
@@ -113,10 +113,10 @@ private fun HomeStreaksContent(
                         text = "${
                             stringResource(
                                 when {
-                                    data.currentStreak > 1 -> R.string.text_stats_days_count
+                                    data.currentStreakTotal > 1 -> R.string.text_stats_days_count
                                     else -> R.string.text_stats_day_count
                                 },
-                                data.currentStreak,
+                                data.currentStreakTotal,
                             )
                         } ${stringResource(R.string.text_stats_watching_streak)}",
                         overflow = TextOverflow.Ellipsis,
@@ -239,8 +239,10 @@ private fun Preview() {
         HomeStreaksContent(
             data = MonthlyStreakData(
                 activity = persistentMapOf(),
+                currentStreakTotal = 333,
                 currentStreak = 33,
                 previousStreak = 2,
+                previousStreakTotal = 0,
                 droppedStreaks = 2,
                 activeDaysMonth = 4,
                 activeDaysMonthPercent = 50,
