@@ -85,6 +85,8 @@ import tv.trakt.trakt.core.user.usecases.lists.LoadUserLibraryUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.core.user.usecases.progress.updates.ProgressUpdates
+import tv.trakt.trakt.core.user.usecases.progress.updates.ProgressUpdatesStorage
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase
 import tv.trakt.trakt.core.user.usecases.social.LoadUserSocialUseCase
@@ -308,7 +310,12 @@ internal val profileModule = module {
         LoadUserProgressUseCase(
             remoteSource = get(),
             localSource = get(),
+            progressUpdates = get(),
         )
+    }
+
+    single<ProgressUpdates> {
+        ProgressUpdatesStorage()
     }
 
     factory {

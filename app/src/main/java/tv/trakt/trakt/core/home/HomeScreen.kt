@@ -41,6 +41,8 @@ import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.home.sections.activity.features.history.HomeHistoryView
 import tv.trakt.trakt.core.home.sections.activity.features.social.HomeSocialView
+import tv.trakt.trakt.core.home.sections.streaks.HomeStreaksView
+import tv.trakt.trakt.core.home.sections.streaks.all.StreaksSheet
 import tv.trakt.trakt.core.home.sections.upcoming.HomeUpcomingView
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextView
 import tv.trakt.trakt.core.home.sections.watchlist.HomeWatchlistView
@@ -72,6 +74,7 @@ internal fun HomeScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var filtersSheet by remember { mutableStateOf(false) }
+    var streaksSheet by remember { mutableStateOf(false) }
 
     HomeScreenContent(
         state = state,
@@ -100,6 +103,9 @@ internal fun HomeScreen(
         onCalendarClick = onNavigateToCalendar,
         onVipClick = onNavigateToVip,
         onUserClick = onNavigateToUser,
+        onStreakClick = {
+            streaksSheet = true
+        },
         onFiltersClick = {
             filtersSheet = true
         },
@@ -109,6 +115,13 @@ internal fun HomeScreen(
         active = filtersSheet,
         onDismiss = {
             filtersSheet = false
+        },
+    )
+
+    StreaksSheet(
+        visible = streaksSheet,
+        onDismiss = {
+            streaksSheet = false
         },
     )
 }
@@ -130,6 +143,7 @@ private fun HomeScreenContent(
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
     onVipClick: () -> Unit = {},
     onCalendarClick: () -> Unit = {},
+    onStreakClick: () -> Unit = {},
     onFiltersClick: () -> Unit = {},
     onUserClick: (user: User) -> Unit = {},
 ) {
@@ -217,6 +231,15 @@ private fun HomeScreenContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(sectionPadding),
+                    )
+                }
+            }
+
+            if (state.user.user != null) {
+                item {
+                    HomeStreaksView(
+                        modifier = Modifier.padding(sectionPadding),
+                        onClick = onStreakClick,
                     )
                 }
             }

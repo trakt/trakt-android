@@ -264,7 +264,7 @@ internal class MovieDetailsViewModel(
 
                     movieProgressState.update {
                         MovieDetailsState.ProgressState(
-                            plays = progress?.plays ?: 0,
+                            plays = progress?.plays?.size ?: 0,
                             inWatchlist = watchlist.contains(movieId),
                             inLists = lists.isNotEmpty(),
                         )

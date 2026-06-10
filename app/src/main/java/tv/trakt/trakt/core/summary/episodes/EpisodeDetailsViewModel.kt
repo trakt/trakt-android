@@ -257,7 +257,7 @@ internal class EpisodeDetailsViewModel(
                     }
 
                 episodeProgressState.update {
-                    EpisodeDetailsState.ProgressState(plays = progress?.plays)
+                    EpisodeDetailsState.ProgressState(plays = progress?.plays?.size)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -374,7 +374,7 @@ internal class EpisodeDetailsViewModel(
                     }
 
                 episodeProgressState.update { state ->
-                    state?.copy(plays = progress?.plays)
+                    state?.copy(plays = progress?.plays?.size)
                 }
 
                 analytics.progress.logAddWatchedMedia(
@@ -421,7 +421,7 @@ internal class EpisodeDetailsViewModel(
                     }
 
                 episodeProgressState.update { state ->
-                    state?.copy(plays = progress?.plays)
+                    state?.copy(plays = progress?.plays?.size)
                 }
 
                 episodeUpdatesSource.notifyUpdate(PROGRESS)
@@ -512,7 +512,7 @@ internal class EpisodeDetailsViewModel(
                     }
 
                 episodeProgressState.update { state ->
-                    state?.copy(plays = progress?.plays)
+                    state?.copy(plays = progress?.plays?.size)
                 }
 
                 episodeUpdatesSource.notifyUpdate(PROGRESS)
