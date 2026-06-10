@@ -83,7 +83,7 @@ fun yearMonthFormat(): DateTimeFormatter {
 
     return remember(appLocale) {
         DateTimeFormatter
-            .ofPattern("MMMM yyyy")
+            .ofPattern("LLLL yyyy")
             .withLocale(appLocale)
     }
 }

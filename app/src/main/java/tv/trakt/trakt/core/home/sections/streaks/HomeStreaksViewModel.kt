@@ -49,7 +49,7 @@ internal class HomeStreaksViewModel(
     }
 
     private fun loadData() {
-        if (dataJob?.isActive == true) return
+        dataJob?.cancel()
         dataJob = viewModelScope.launch {
             try {
                 streaksManager.loadStreakData(
@@ -58,8 +58,6 @@ internal class HomeStreaksViewModel(
                 )
             } catch (error: Exception) {
                 error.rethrowCancellation { }
-            } finally {
-                dataJob = null
             }
         }
     }

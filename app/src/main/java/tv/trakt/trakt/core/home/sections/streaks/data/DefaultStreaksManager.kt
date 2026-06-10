@@ -142,10 +142,10 @@ internal class DefaultStreaksManager(
         activitySet: Set<LocalDate>,
         today: LocalDate,
     ): Int {
-        val yearStart = today.withDayOfMonth(1)
+        val monthStart = today.withDayOfMonth(1)
         var drops = 0
         var prevWasActive = false
-        var day = yearStart
+        var day = monthStart
         val yesterday = today.minusDays(1)
         while (!day.isAfter(yesterday)) {
             val isActive = day in activitySet
