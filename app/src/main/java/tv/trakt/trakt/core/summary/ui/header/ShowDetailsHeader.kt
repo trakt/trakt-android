@@ -42,6 +42,7 @@ internal fun DetailsHeader(
     loading: Boolean,
     onCreatorClick: (Person) -> Unit,
     onShareClick: () -> Unit,
+    onShareImageClick: () -> Unit,
     onInfoClick: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -137,6 +138,7 @@ internal fun DetailsHeader(
         loading = loading,
         onBackClick = onBackClick,
         onShareClick = onShareClick,
+        onShareImageClick = onShareImageClick,
         onInfoClick = onInfoClick,
         onImdbClick = {
             show.ids.imdb?.let {

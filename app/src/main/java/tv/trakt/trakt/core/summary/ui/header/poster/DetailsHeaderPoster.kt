@@ -36,6 +36,7 @@ import tv.trakt.trakt.common.model.ImdbId
 import tv.trakt.trakt.core.summary.ui.DetailsPoster
 import tv.trakt.trakt.core.summary.ui.header.PosterChipsGroup
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.TraktShareButton
 import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -52,6 +53,7 @@ fun DetailsHeaderPoster(
     personImdb: ImdbId?,
     onBackClick: () -> Unit,
     onShareClick: () -> Unit,
+    onShareImageClick: () -> Unit,
     extraRightColumn: @Composable () -> Unit = {},
 ) {
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
@@ -147,14 +149,10 @@ fun DetailsHeaderPoster(
                     .padding(top = 8.dp),
                 horizontalAlignment = Alignment.Start,
             ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_share),
-                    tint = TraktTheme.colors.textPrimary,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(start = 20.dp)
-                        .size(24.dp)
-                        .onClick(onClick = onShareClick),
+                TraktShareButton(
+                    onShareLinkClick = onShareClick,
+                    onShareImageClick = onShareImageClick,
+                    modifier = Modifier.padding(start = 20.dp),
                 )
 
                 extraRightColumn.invoke()
@@ -182,6 +180,7 @@ private fun Preview() {
             personImdb = null,
             onBackClick = {},
             onShareClick = {},
+            onShareImageClick = {},
             modifier = Modifier
                 .padding(bottom = 9.dp),
         )
@@ -207,6 +206,7 @@ private fun Preview2() {
             personImdb = null,
             onBackClick = {},
             onShareClick = {},
+            onShareImageClick = {},
             modifier = Modifier
                 .padding(bottom = 9.dp),
         )

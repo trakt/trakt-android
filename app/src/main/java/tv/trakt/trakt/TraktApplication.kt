@@ -64,6 +64,7 @@ import tv.trakt.trakt.core.search.di.searchDataModule
 import tv.trakt.trakt.core.search.di.searchModule
 import tv.trakt.trakt.core.settings.di.settingsDataModule
 import tv.trakt.trakt.core.settings.di.settingsModule
+import tv.trakt.trakt.core.share.di.shareModule
 import tv.trakt.trakt.core.shows.di.showsDataModule
 import tv.trakt.trakt.core.shows.di.showsModule
 import tv.trakt.trakt.core.streamings.di.streamingsDataModule
@@ -187,6 +188,7 @@ internal class TraktApplication : Application() {
                 translationsModule,
                 userProfileModule,
                 youTubePlayerModule,
+                shareModule,
             )
         }
     }

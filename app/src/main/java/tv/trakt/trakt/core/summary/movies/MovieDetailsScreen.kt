@@ -76,6 +76,7 @@ import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
+import tv.trakt.trakt.core.share.ShareSheet
 import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsView
 import tv.trakt.trakt.core.summary.movies.features.comments.MovieCommentsView
 import tv.trakt.trakt.core.summary.movies.features.context.history.MovieDetailsHistorySheet
@@ -132,6 +133,7 @@ internal fun MovieDetailsScreen(
     var confirmRemoveWatchedSheet by remember { mutableStateOf(false) }
     var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
     var dateSheet by remember { mutableStateOf(false) }
+    var shareSheet by remember { mutableStateOf(false) }
     var coverImageSheet by remember { mutableStateOf<Movie?>(null) }
 
     DisposableEffect(Unit) {
@@ -168,7 +170,12 @@ internal fun MovieDetailsScreen(
                 dateSheet = true
             }
         },
-        onShareClick = { state.movie?.let { shareMovie(it, context) } },
+        onShareClick = {
+            state.movie?.let { shareMovie(it, context) }
+        },
+        onShareImageClick = {
+            state.movie?.let { shareSheet = true }
+        },
         onTrailerClick = {
             state.movie?.trailer?.let { url ->
                 onTrailerClick(url)
@@ -344,6 +351,13 @@ internal fun MovieDetailsScreen(
         },
     )
 
+    ShareSheet(
+        active = shareSheet,
+        mediaSlug = state.movie?.ids?.slug,
+        mediaType = MediaType.MOVIE,
+        onDismiss = { shareSheet = false },
+    )
+
     LaunchedEffect(state.info) {
         if (state.info == null) {
             return@LaunchedEffect
@@ -369,6 +383,7 @@ internal fun MovieDetailsContent(
     onMovieClick: ((Movie) -> Unit)? = null,
     onTrackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
+    onShareImageClick: (() -> Unit)? = null,
     onInfoClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
     onExtraClick: ((ExtraVideo) -> Unit)? = null,
@@ -466,6 +481,7 @@ internal fun MovieDetailsContent(
                         onCreatorClick = onPersonClick ?: {},
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},
+                        onShareImageClick = onShareImageClick ?: {},
                         onInfoClick = onInfoClick ?: {},
                         modifier = Modifier
                             .align(Alignment.Center)

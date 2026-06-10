@@ -189,6 +189,7 @@ internal fun DetailsHeader(
         onBackClick = onBackClick,
         onInfoClick = onInfoClick,
         onShareClick = onShareClick,
+        onShareImageClick = {},
         onImdbClick = {
             val uri = when {
                 episode.ids.imdb != null -> webImdbMediaUrl(episode.ids.imdb!!.value)

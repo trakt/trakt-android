@@ -82,6 +82,7 @@ import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
+import tv.trakt.trakt.core.share.ShareSheet
 import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsView
 import tv.trakt.trakt.core.summary.shows.features.comments.ShowCommentsView
 import tv.trakt.trakt.core.summary.shows.features.context.history.ShowDetailsHistorySheet
@@ -143,6 +144,7 @@ internal fun ShowDetailsScreen(
     var confirmRemoveWatchedSheet by remember { mutableStateOf(false) }
     var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
     var dateSheet by remember { mutableStateOf(false) }
+    var shareSheet by remember { mutableStateOf(false) }
     var coverImageSheet by remember { mutableStateOf<Show?>(null) }
 
     DisposableEffect(Unit) {
@@ -186,6 +188,9 @@ internal fun ShowDetailsScreen(
         },
         onShareClick = {
             state.show?.let { shareShow(it, context) }
+        },
+        onShareImageClick = {
+            state.show?.let { shareSheet = true }
         },
         onTrailerClick = {
             state.show?.trailer?.let { url -> onTrailerClick(url) }
@@ -389,6 +394,13 @@ internal fun ShowDetailsScreen(
         },
     )
 
+    ShareSheet(
+        active = shareSheet,
+        mediaSlug = state.show?.ids?.slug,
+        mediaType = MediaType.SHOW,
+        onDismiss = { shareSheet = false },
+    )
+
     LaunchedEffect(state.navigateEpisode) {
         state.navigateEpisode?.let {
             onEpisodeClick(it.first, it.second)
@@ -422,6 +434,7 @@ internal fun ShowDetailsContent(
     onEpisodeClick: ((Episode) -> Unit)? = null,
     onTrackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
+    onShareImageClick: (() -> Unit)? = null,
     onInfoClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
     onExtraClick: ((ExtraVideo) -> Unit)? = null,
@@ -517,6 +530,7 @@ internal fun ShowDetailsContent(
                         onCreatorClick = onPersonClick ?: {},
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},
+                        onShareImageClick = onShareImageClick ?: {},
                         onInfoClick = onInfoClick ?: {},
                         modifier = Modifier
                             .align(Alignment.Center)

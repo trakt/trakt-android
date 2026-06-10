@@ -82,6 +82,7 @@ internal fun DetailsHeader(
     onImdbClick: () -> Unit,
     onRottenClick: (link: String) -> Unit,
     onShareClick: () -> Unit,
+    onShareImageClick: () -> Unit,
     onInfoClick: (() -> Unit)? = null,
     onBackClick: () -> Unit,
 ) {
@@ -100,6 +101,7 @@ internal fun DetailsHeader(
                 playsCount = playsCount,
                 personImdb = personImdb,
                 onShareClick = onShareClick,
+                onShareImageClick = onShareImageClick,
                 onBackClick = onBackClick,
                 extraRightColumn = extraRightColumn ?: {},
             )
@@ -458,6 +460,7 @@ private fun Preview() {
                 ),
             ),
             onShareClick = {},
+            onShareImageClick = {},
             onBackClick = {},
             onImdbClick = {},
             onRottenClick = {},
@@ -526,6 +529,7 @@ private fun Preview2() {
                 ),
             ),
             onShareClick = {},
+            onShareImageClick = {},
             onBackClick = {},
             onImdbClick = {},
             onRottenClick = {},
