@@ -19,31 +19,13 @@ internal class StreaksViewModel(
     streaksManager: StreaksManager,
     private val filtersManager: GlobalFilterManager,
 ) : ViewModel() {
-    private val modeState = MutableStateFlow<MediaMode?>(null)
-    private val dataState = MutableStateFlow<MonthlyStreakData?>(null)
-    private val loadingState = MutableStateFlow(Idle)
-    private val errorState = MutableStateFlow<Exception?>(null)
-
-    init {
-        streaksManager.observeStreakData()
-            .onEach { data ->
-                modeState.update { filtersManager.getFilter().mode }
-                dataState.update { data }
-            }
-            .launchIn(viewModelScope)
-    }
-
     val state = combine(
-        modeState,
-        dataState,
-        loadingState,
-        errorState,
-    ) { mode, data, loading, error ->
+        streaksManager.observeStreakData(),
+        filtersManager.observeFilter()
+    ) { data, filter ->
         StreaksState(
-            mode = mode,
+            mode = filter.mode,
             data = data,
-            loading = loading,
-            error = error,
         )
     }.stateIn(
         scope = viewModelScope,
