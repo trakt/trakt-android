@@ -625,6 +625,7 @@
   <string name="label_stats_best_day">Cea mai bună zi</string>
   <string name="label_stats_busiest_day">Ziua cea mai aglomerată</string>
   <string name="label_stats_comments">Comentarii</string>
+  <string name="label_stats_current_monthly_streak">Serie lunară</string>
   <string name="label_stats_current_streak">Serie curentă</string>
   <string name="label_stats_days_active">Zile active</string>
   <string name="label_stats_dropped_streaks">Serii întrerupte</string>

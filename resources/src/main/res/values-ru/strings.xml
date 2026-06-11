@@ -625,6 +625,7 @@
   <string name="label_stats_best_day">Лучший день</string>
   <string name="label_stats_busiest_day">Самый загруженный день</string>
   <string name="label_stats_comments">Комментарии</string>
+  <string name="label_stats_current_monthly_streak">Ежемесячная серия</string>
   <string name="label_stats_current_streak">Текущая серия</string>
   <string name="label_stats_days_active">Активные дни</string>
   <string name="label_stats_dropped_streaks">Прерванные серии</string>

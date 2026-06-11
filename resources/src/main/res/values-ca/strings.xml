@@ -625,6 +625,7 @@
   <string name="label_stats_best_day">Millor dia</string>
   <string name="label_stats_busiest_day">Dia de més activitat</string>
   <string name="label_stats_comments">Comentaris</string>
+  <string name="label_stats_current_monthly_streak">Ratxa mensual</string>
   <string name="label_stats_current_streak">Ratxa actual</string>
   <string name="label_stats_days_active">Dies actius</string>
   <string name="label_stats_dropped_streaks">Ratxes abandonades</string>

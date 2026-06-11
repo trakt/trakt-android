@@ -625,6 +625,7 @@
   <string name="label_stats_best_day">Bester Tag</string>
   <string name="label_stats_busiest_day">Aktivster Tag</string>
   <string name="label_stats_comments">Kommentare</string>
+  <string name="label_stats_current_monthly_streak">Monatliche Serie</string>
   <string name="label_stats_current_streak">Aktuelle Serie</string>
   <string name="label_stats_days_active">Aktive Tage</string>
   <string name="label_stats_dropped_streaks">Abgebrochene Serien</string>

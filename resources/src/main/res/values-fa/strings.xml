@@ -625,6 +625,7 @@
   <string name="label_stats_best_day">بهترین روز</string>
   <string name="label_stats_busiest_day">شلوغ‌ترین روز</string>
   <string name="label_stats_comments">نظرات</string>
+  <string name="label_stats_current_monthly_streak">رگه ماهانه</string>
   <string name="label_stats_current_streak">فعالیت پیاپی فعلی</string>
   <string name="label_stats_days_active">روزهای فعال</string>
   <string name="label_stats_dropped_streaks">فعالیت‌های پیاپی رها شده</string>

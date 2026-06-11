@@ -625,6 +625,7 @@
   <string name="label_stats_best_day">Legjobb nap</string>
   <string name="label_stats_busiest_day">Legforgalmasabb nap</string>
   <string name="label_stats_comments">Hozzászólások</string>
+  <string name="label_stats_current_monthly_streak">Havi sorozat</string>
   <string name="label_stats_current_streak">Jelenlegi sorozat</string>
   <string name="label_stats_days_active">Aktív nap</string>
   <string name="label_stats_dropped_streaks">Elveszített sorozat</string>

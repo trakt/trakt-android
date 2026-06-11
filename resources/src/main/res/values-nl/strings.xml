@@ -625,6 +625,7 @@
   <string name="label_stats_best_day">Beste dag</string>
   <string name="label_stats_busiest_day">Drukste dag</string>
   <string name="label_stats_comments">Reacties</string>
+  <string name="label_stats_current_monthly_streak">Maandelijkse Reeks</string>
   <string name="label_stats_current_streak">Huidige Reeks</string>
   <string name="label_stats_days_active">Actieve Dagen</string>
   <string name="label_stats_dropped_streaks">Verloren Reeksen</string>

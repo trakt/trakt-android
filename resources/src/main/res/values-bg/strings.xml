@@ -625,6 +625,7 @@
   <string name="label_stats_best_day">Най-добър ден</string>
   <string name="label_stats_busiest_day">Най-натоварен ден</string>
   <string name="label_stats_comments">Коментари</string>
+  <string name="label_stats_current_monthly_streak">Месечна поредица</string>
   <string name="label_stats_current_streak">Текуща поредица</string>
   <string name="label_stats_days_active">Активни дни</string>
   <string name="label_stats_dropped_streaks">Прекъснати поредици</string>

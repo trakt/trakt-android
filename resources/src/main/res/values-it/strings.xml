@@ -625,6 +625,7 @@
   <string name="label_stats_best_day">Miglior giorno</string>
   <string name="label_stats_busiest_day">Giorno più impegnativo</string>
   <string name="label_stats_comments">Commenti</string>
+  <string name="label_stats_current_monthly_streak">Striscia mensile</string>
   <string name="label_stats_current_streak">Serie attuale</string>
   <string name="label_stats_days_active">Giorni attivi</string>
   <string name="label_stats_dropped_streaks">Serie interrotte</string>

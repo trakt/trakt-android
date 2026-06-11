@@ -625,6 +625,7 @@
   <string name="label_stats_best_day">Melhor Dia</string>
   <string name="label_stats_busiest_day">Dia Mais Ocupado</string>
   <string name="label_stats_comments">Comentários</string>
+  <string name="label_stats_current_monthly_streak">Sequência Mensal</string>
   <string name="label_stats_current_streak">Sequência Atual</string>
   <string name="label_stats_days_active">Dias Ativos</string>
   <string name="label_stats_dropped_streaks">Sequências Abandonadas</string>

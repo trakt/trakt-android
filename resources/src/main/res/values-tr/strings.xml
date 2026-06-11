@@ -625,6 +625,7 @@
   <string name="label_stats_best_day">En İyi Gün</string>
   <string name="label_stats_busiest_day">En Yoğun Gün</string>
   <string name="label_stats_comments">Yorumlar</string>
+  <string name="label_stats_current_monthly_streak">Aylık Seri</string>
   <string name="label_stats_current_streak">Mevcut Seri</string>
   <string name="label_stats_days_active">Aktif Günler</string>
   <string name="label_stats_dropped_streaks">Bırakılan Seriler</string>

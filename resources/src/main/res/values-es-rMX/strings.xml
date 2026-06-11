@@ -625,6 +625,7 @@
   <string name="label_stats_best_day">Mejor día</string>
   <string name="label_stats_busiest_day">Día más activo</string>
   <string name="label_stats_comments">Comentarios</string>
+  <string name="label_stats_current_monthly_streak">Racha Mensual</string>
   <string name="label_stats_current_streak">Racha Actual</string>
   <string name="label_stats_days_active">Días Activos</string>
   <string name="label_stats_dropped_streaks">Rachas Interrumpidas</string>
