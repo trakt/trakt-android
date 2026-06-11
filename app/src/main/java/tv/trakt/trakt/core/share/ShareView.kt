@@ -288,10 +288,16 @@ private suspend fun prepareShareFile(
     val bytes = withContext(Dispatchers.IO) {
         URL(imageUri.toString()).openStream().use { it.readBytes() }
     }
+
     val shareDir = File(context.cacheDir, "share")
+    shareDir.deleteRecursively()
     shareDir.mkdirs()
+
     val file = File(shareDir, "share_image.png")
-    withContext(Dispatchers.IO) { file.writeBytes(bytes) }
+    withContext(Dispatchers.IO) {
+        file.writeBytes(bytes)
+    }
+
     return FileProvider.getUriForFile(
         context,
         "${context.packageName}.fileprovider",

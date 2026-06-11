@@ -16,7 +16,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -49,10 +48,17 @@ internal fun TraktShareButton(
             shape = RoundedCornerShape(16.dp),
         ) {
             DropdownMenuItem(
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_link),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier.size(22.dp),
+                    )
+                },
                 text = {
                     Text(
                         text = stringResource(R.string.button_share_option_link),
-                        textAlign = TextAlign.Center,
                         style = TraktTheme.typography.buttonTertiary,
                         color = TraktTheme.colors.textPrimary,
                         modifier = Modifier.fillMaxWidth(),
@@ -64,10 +70,17 @@ internal fun TraktShareButton(
                 },
             )
             DropdownMenuItem(
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_image),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier.size(22.dp),
+                    )
+                },
                 text = {
                     Text(
                         text = stringResource(R.string.button_share_option_image),
-                        textAlign = TextAlign.Center,
                         style = TraktTheme.typography.buttonTertiary,
                         color = TraktTheme.colors.textPrimary,
                         modifier = Modifier.fillMaxWidth(),
