@@ -173,7 +173,7 @@ private fun ShareContent(
             if (selectedVariant == Story && isInstagramAvailable) {
                 val isLoading = state.media == null || loadingVariant
                 PrimaryButton(
-                    text = stringResource(R.string.button_text_share_instagram_stories),
+                    text = stringResource(R.string.share_variant_story),
                     border = BorderStroke(1.dp, TraktTheme.colors.chipContainer),
                     icon = painterResource(R.drawable.ic_instagram),
                     iconSize = 24.dp,
