@@ -117,7 +117,7 @@ private fun StreaksViewContent(
         ) {
             StreakStatCard(
                 value = data.currentStreak.toString(),
-                label = stringResource(R.string.label_stats_current_streak_monthly),
+                label = stringResource(R.string.label_stats_current_monthly_streak),
                 subtitle = stringResource(R.string.text_this_month),
                 modifier = Modifier.weight(1f),
             )
