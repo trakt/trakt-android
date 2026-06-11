@@ -625,6 +625,7 @@
   <string name="label_stats_best_day">Hari Terbaik</string>
   <string name="label_stats_busiest_day">Hari Tersibuk</string>
   <string name="label_stats_comments">Komentar</string>
+  <string name="label_stats_current_monthly_streak">Rentetan Bulanan</string>
   <string name="label_stats_current_streak">Streak Saat Ini</string>
   <string name="label_stats_days_active">Hari Aktif</string>
   <string name="label_stats_dropped_streaks">Streak yang Dibatalkan</string>

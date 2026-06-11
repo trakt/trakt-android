@@ -625,6 +625,7 @@
   <string name="label_stats_best_day">Best Day</string>
   <string name="label_stats_busiest_day">Busiest Day</string>
   <string name="label_stats_comments">Comments</string>
+  <string name="label_stats_current_monthly_streak">Monthly Streak</string>
   <string name="label_stats_current_streak">Current Streak</string>
   <string name="label_stats_days_active">Days Active</string>
   <string name="label_stats_dropped_streaks">Dropped Streaks</string>

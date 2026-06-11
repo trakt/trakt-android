@@ -625,6 +625,7 @@
   <string name="label_stats_best_day">最佳日</string>
   <string name="label_stats_busiest_day">最忙的一天</string>
   <string name="label_stats_comments">评论</string>
+  <string name="label_stats_current_monthly_streak">月度连看</string>
   <string name="label_stats_current_streak">当前连击</string>
   <string name="label_stats_days_active">活跃天数</string>
   <string name="label_stats_dropped_streaks">中断连击</string>

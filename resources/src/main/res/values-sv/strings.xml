@@ -625,6 +625,7 @@
   <string name="label_stats_best_day">Bästa dagen</string>
   <string name="label_stats_busiest_day">Mest upptagna dag</string>
   <string name="label_stats_comments">Kommentarer</string>
+  <string name="label_stats_current_monthly_streak">Månatlig svit</string>
   <string name="label_stats_current_streak">Nuvarande svit</string>
   <string name="label_stats_days_active">Aktiva dagar</string>
   <string name="label_stats_dropped_streaks">Avbrutna svitar</string>

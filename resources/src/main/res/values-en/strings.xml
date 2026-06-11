@@ -124,6 +124,7 @@
   <string name="button_label_remove_from_watchlist">Remove \"%s\" from your Watchlist</string>
   <string name="button_label_remove_photo">Remove your profile photo</string>
   <string name="button_label_renew_vip">Renew Subscription</string>
+  <string name="button_label_reorder_list">Reorder %s</string>
   <string name="button_label_report_comment">Report review</string>
   <string name="button_label_report_list">Report %s</string>
   <string name="button_label_report_media">Report %s</string>
@@ -307,6 +308,7 @@
   <string name="button_text_remove_from_watchlist">Remove from watchlist</string>
   <string name="button_text_remove_photo">Remove photo</string>
   <string name="button_text_renew_vip">Renew Subscription</string>
+  <string name="button_text_reorder">Reorder</string>
   <string name="button_text_report">Report</string>
   <string name="button_text_report_comment">Report</string>
   <string name="button_text_reset_all_filters">Reset all</string>
@@ -428,6 +430,7 @@
   <string name="drawer_title_add_note">Note</string>
   <string name="drawer_title_notes">Notes</string>
   <string name="drawer_title_people">People</string>
+  <string name="drawer_title_reorder_list">Drag to reorder</string>
   <string name="drawer_title_sort">Sort By</string>
   <string name="drawer_title_streak_activity">Daily Streak Activity</string>
   <string name="dropdown_label_add_remove_from_lists">Add or remove \"%s\" from lists</string>
@@ -625,6 +628,7 @@
   <string name="label_stats_best_day">Best Day</string>
   <string name="label_stats_busiest_day">Busiest Day</string>
   <string name="label_stats_comments">Comments</string>
+  <string name="label_stats_current_monthly_streak">Monthly Streak</string>
   <string name="label_stats_current_streak">Current Streak</string>
   <string name="label_stats_days_active">Days Active</string>
   <string name="label_stats_dropped_streaks">Dropped Streaks</string>

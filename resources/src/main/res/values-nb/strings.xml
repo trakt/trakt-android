@@ -625,6 +625,7 @@
   <string name="label_stats_best_day">Beste dag</string>
   <string name="label_stats_busiest_day">Travleste dag</string>
   <string name="label_stats_comments">Kommentarer</string>
+  <string name="label_stats_current_monthly_streak">Månedlig rekke</string>
   <string name="label_stats_current_streak">Nåværende strek</string>
   <string name="label_stats_days_active">Aktive dager</string>
   <string name="label_stats_dropped_streaks">Avbrutte streker</string>
