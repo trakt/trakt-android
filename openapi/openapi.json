@@ -9049,6 +9049,1152 @@
         "operationId": "getUsersSyncsSkipped"
       }
     },
+    "/users/settings/plex/": {
+      "get": {
+        "description": "#### 🔒 OAuth Required\nReturns the authenticated user's Plex connection status, real-time scrobbler webhook info, server/library/home-user selection, and both toggle sets (batch `sync` + real-time `scrobbler`). Read-only, though the VIP webhook URL lazily mints its tokens.\n\n`connection.connected` reflects that a Plex authorization exists; for a live auth check call `servers` and watch for a `bad_auth` error. `webhook.url` is null unless the user is VIP. `sync.configured` indicates the initial sync has been set up. Toggles are booleans (unset ⇒ `false`); sync toggles include `watching`/`watchlist`, scrobbler toggles do not carry `watchlist`. All timestamps are normalized to `.000Z`.",
+        "summary": "Get Plex settings",
+        "tags": [
+          "users",
+          "plex"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "connection": {
+                      "type": "object",
+                      "properties": {
+                        "connected": {
+                          "type": "boolean",
+                          "description": "Whether a Plex authorization exists."
+                        },
+                        "username": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "The stored Plex uid (currently usually null)."
+                        }
+                      },
+                      "required": [
+                        "connected",
+                        "username"
+                      ]
+                    },
+                    "webhook": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "The real-time scrobbler webhook URL; null unless the user is VIP."
+                        },
+                        "last_event_at": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "When the webhook last fired, normalized to `.000Z`, or null."
+                        },
+                        "event_count": {
+                          "type": "integer"
+                        },
+                        "home_users": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Comma-separated Plex home usernames to scrobble for."
+                        }
+                      },
+                      "required": [
+                        "url",
+                        "last_event_at",
+                        "event_count",
+                        "home_users"
+                      ]
+                    },
+                    "sync": {
+                      "type": "object",
+                      "properties": {
+                        "configured": {
+                          "type": "boolean",
+                          "description": "Whether the initial sync has been set up."
+                        },
+                        "error": {
+                          "type": "boolean",
+                          "description": "Whether a persisted Plex-sync error is currently active."
+                        },
+                        "selection": {
+                          "type": "object",
+                          "properties": {
+                            "server_ids": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "library_ids": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "server_id": {
+                                    "type": "string"
+                                  },
+                                  "uuid": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "server_id",
+                                  "uuid"
+                                ]
+                              }
+                            },
+                            "user_ids": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "required": [
+                            "server_ids",
+                            "library_ids",
+                            "user_ids"
+                          ]
+                        },
+                        "toggles": {
+                          "type": "object",
+                          "properties": {
+                            "movie": {
+                              "type": "object",
+                              "properties": {
+                                "watching": {
+                                  "type": "boolean"
+                                },
+                                "watched": {
+                                  "type": "boolean"
+                                },
+                                "rated": {
+                                  "type": "boolean"
+                                },
+                                "collected": {
+                                  "type": "boolean"
+                                },
+                                "watchlist": {
+                                  "type": "boolean"
+                                }
+                              },
+                              "required": [
+                                "watching",
+                                "watched",
+                                "rated",
+                                "collected",
+                                "watchlist"
+                              ]
+                            },
+                            "show": {
+                              "type": "object",
+                              "properties": {
+                                "rated": {
+                                  "type": "boolean"
+                                },
+                                "watchlist": {
+                                  "type": "boolean"
+                                }
+                              },
+                              "required": [
+                                "rated",
+                                "watchlist"
+                              ]
+                            },
+                            "season": {
+                              "type": "object",
+                              "properties": {
+                                "rated": {
+                                  "type": "boolean"
+                                }
+                              },
+                              "required": [
+                                "rated"
+                              ]
+                            },
+                            "episode": {
+                              "type": "object",
+                              "properties": {
+                                "watching": {
+                                  "type": "boolean"
+                                },
+                                "watched": {
+                                  "type": "boolean"
+                                },
+                                "rated": {
+                                  "type": "boolean"
+                                },
+                                "collected": {
+                                  "type": "boolean"
+                                }
+                              },
+                              "required": [
+                                "watching",
+                                "watched",
+                                "rated",
+                                "collected"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "movie",
+                            "show",
+                            "season",
+                            "episode"
+                          ],
+                          "description": "Batch-sync toggles (unset ⇒ false). Includes `watching`/`watchlist`."
+                        }
+                      },
+                      "required": [
+                        "configured",
+                        "error",
+                        "selection",
+                        "toggles"
+                      ]
+                    },
+                    "scrobbler": {
+                      "type": "object",
+                      "properties": {
+                        "toggles": {
+                          "type": "object",
+                          "properties": {
+                            "movie": {
+                              "type": "object",
+                              "properties": {
+                                "watching": {
+                                  "type": "boolean"
+                                },
+                                "watched": {
+                                  "type": "boolean"
+                                },
+                                "rated": {
+                                  "type": "boolean"
+                                },
+                                "collected": {
+                                  "type": "boolean"
+                                }
+                              },
+                              "required": [
+                                "watching",
+                                "watched",
+                                "rated",
+                                "collected"
+                              ]
+                            },
+                            "show": {
+                              "type": "object",
+                              "properties": {
+                                "rated": {
+                                  "type": "boolean"
+                                }
+                              },
+                              "required": [
+                                "rated"
+                              ]
+                            },
+                            "season": {
+                              "type": "object",
+                              "properties": {
+                                "rated": {
+                                  "type": "boolean"
+                                }
+                              },
+                              "required": [
+                                "rated"
+                              ]
+                            },
+                            "episode": {
+                              "type": "object",
+                              "properties": {
+                                "watching": {
+                                  "type": "boolean"
+                                },
+                                "watched": {
+                                  "type": "boolean"
+                                },
+                                "rated": {
+                                  "type": "boolean"
+                                },
+                                "collected": {
+                                  "type": "boolean"
+                                }
+                              },
+                              "required": [
+                                "watching",
+                                "watched",
+                                "rated",
+                                "collected"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "movie",
+                            "show",
+                            "season",
+                            "episode"
+                          ],
+                          "description": "Real-time scrobbler toggles (unset ⇒ false). No `watchlist`."
+                        }
+                      },
+                      "required": [
+                        "toggles"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "connection",
+                    "webhook",
+                    "sync",
+                    "scrobbler"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "getUsersPlexSettings"
+      },
+      "put": {
+        "description": "#### 🔒 OAuth Required\nWrites the Plex toggles, selection, and home users. Mirrors the GET shape so it round-trips; omitted toggle keys are left unchanged (no clobbering), and `library_ids` is sent structured and rebuilt into the `server|uuid` storage server-side.\n\nThe optional `trigger_sync` block is the only thing that touches sync timestamps or enqueues work: any `*_all_data: true` resets the affected cursors and enqueues a full sync per selected server; present-but-all-false seeds every cursor to \"now\" (the first sync skips old history); absent writes settings without syncing.",
+        "summary": "Update Plex settings",
+        "tags": [
+          "users",
+          "plex"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sync": {
+                    "type": "object",
+                    "properties": {
+                      "selection": {
+                        "type": "object",
+                        "properties": {
+                          "server_ids": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "library_ids": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "server_id": {
+                                  "type": "string"
+                                },
+                                "uuid": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "server_id",
+                                "uuid"
+                              ]
+                            }
+                          },
+                          "user_ids": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "toggles": {
+                        "type": "object",
+                        "properties": {
+                          "movie": {
+                            "type": "object",
+                            "properties": {
+                              "watching": {
+                                "type": "boolean"
+                              },
+                              "watched": {
+                                "type": "boolean"
+                              },
+                              "rated": {
+                                "type": "boolean"
+                              },
+                              "collected": {
+                                "type": "boolean"
+                              },
+                              "watchlist": {
+                                "type": "boolean"
+                              }
+                            }
+                          },
+                          "show": {
+                            "type": "object",
+                            "properties": {
+                              "rated": {
+                                "type": "boolean"
+                              },
+                              "watchlist": {
+                                "type": "boolean"
+                              }
+                            }
+                          },
+                          "season": {
+                            "type": "object",
+                            "properties": {
+                              "rated": {
+                                "type": "boolean"
+                              }
+                            }
+                          },
+                          "episode": {
+                            "type": "object",
+                            "properties": {
+                              "watching": {
+                                "type": "boolean"
+                              },
+                              "watched": {
+                                "type": "boolean"
+                              },
+                              "rated": {
+                                "type": "boolean"
+                              },
+                              "collected": {
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "scrobbler": {
+                    "type": "object",
+                    "properties": {
+                      "toggles": {
+                        "type": "object",
+                        "properties": {
+                          "movie": {
+                            "type": "object",
+                            "properties": {
+                              "watching": {
+                                "type": "boolean"
+                              },
+                              "watched": {
+                                "type": "boolean"
+                              },
+                              "rated": {
+                                "type": "boolean"
+                              },
+                              "collected": {
+                                "type": "boolean"
+                              }
+                            }
+                          },
+                          "show": {
+                            "type": "object",
+                            "properties": {
+                              "rated": {
+                                "type": "boolean"
+                              }
+                            }
+                          },
+                          "season": {
+                            "type": "object",
+                            "properties": {
+                              "rated": {
+                                "type": "boolean"
+                              }
+                            }
+                          },
+                          "episode": {
+                            "type": "object",
+                            "properties": {
+                              "watching": {
+                                "type": "boolean"
+                              },
+                              "watched": {
+                                "type": "boolean"
+                              },
+                              "rated": {
+                                "type": "boolean"
+                              },
+                              "collected": {
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "webhook": {
+                    "type": "object",
+                    "properties": {
+                      "home_users": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Comma-separated Plex home usernames to scrobble for."
+                      }
+                    }
+                  },
+                  "trigger_sync": {
+                    "type": "object",
+                    "properties": {
+                      "watched_all_data": {
+                        "type": "boolean"
+                      },
+                      "collection_all_data": {
+                        "type": "boolean"
+                      },
+                      "ratings_all_data": {
+                        "type": "boolean"
+                      },
+                      "watchlist_all_data": {
+                        "type": "boolean"
+                      }
+                    },
+                    "description": "Optional. Only this block touches sync timestamps/enqueues work: any `*_all_data: true` resets the affected cursors and enqueues a full sync per selected server; present-but-all-false seeds every cursor to \"now\" (first sync skips old history); absent writes settings without syncing."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "204",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "putUsersPlexUpdateSettings"
+      }
+    },
+    "/users/settings/plex/connect": {
+      "post": {
+        "description": "#### 🔒 OAuth Required\nMints a Plex web-auth URL for the client to open. Plex uses a 2-step PIN OAuth; the PIN is stashed server-side under an opaque `state` token and Plex is forwarded to a website return endpoint that exchanges it and redirects back to your `return_url` with `?plex_status=connected|error`.\n\n`return_url` is validated against the trakt-owned allowlist (`trakt://`, `http(s)://localhost`, `https://*.trakt.tv`); a `400` is returned otherwise.",
+        "summary": "Connect Plex",
+        "tags": [
+          "users",
+          "plex"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "return_url": {
+                    "type": "string",
+                    "description": "Where to return the user once the Plex web-auth flow completes. Must be a trakt-owned destination (`trakt://…`, `http(s)://localhost`, or `https://*.trakt.tv`); the flow appends `?plex_status=connected|error`."
+                  }
+                },
+                "required": [
+                  "return_url"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "description": "The Plex web-auth URL for the client to open."
+                    }
+                  },
+                  "required": [
+                    "url"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "postUsersPlexConnect"
+      },
+      "delete": {
+        "description": "#### 🔒 OAuth Required\nDisconnects Plex: destroys the authorization, clears server/library/user selection and sync state, and busts the connection caches.",
+        "summary": "Disconnect Plex",
+        "tags": [
+          "users",
+          "plex"
+        ],
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "204",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "deleteUsersPlexDisconnect"
+      }
+    },
+    "/users/settings/plex/servers": {
+      "get": {
+        "description": "#### 🔒 OAuth Required\nLists the authenticated user's Plex servers. Network-bound — probes each server's remote URL. On a Plex/auth failure it returns the shared `{ error_code, message, guidance }` envelope: `bad_auth` (401), `plex_timeout` (504), `plex_bad_response`/`plex_generic_error` (502).",
+        "summary": "Get Plex servers",
+        "tags": [
+          "users",
+          "plex"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "servers": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "connection_count": {
+                            "type": "integer"
+                          },
+                          "connection_timeout": {
+                            "type": "integer",
+                            "description": "Worst-case probe timeout across the server connections, in seconds."
+                          },
+                          "ports": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            }
+                          },
+                          "owned": {
+                            "type": "boolean"
+                          },
+                          "url": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "The resolved remote URL, or null when the server is unreachable."
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "connection_count",
+                          "connection_timeout",
+                          "ports",
+                          "owned",
+                          "url"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "servers"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_code": {
+                      "type": "string",
+                      "description": "Machine-readable error code (e.g. `bad_auth`, `invalid_server_url`, `plex_timeout`)."
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "guidance": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error_code",
+                    "message",
+                    "guidance"
+                  ]
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "502",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_code": {
+                      "type": "string",
+                      "description": "Machine-readable error code (e.g. `bad_auth`, `invalid_server_url`, `plex_timeout`)."
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "guidance": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error_code",
+                    "message",
+                    "guidance"
+                  ]
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "504",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_code": {
+                      "type": "string",
+                      "description": "Machine-readable error code (e.g. `bad_auth`, `invalid_server_url`, `plex_timeout`)."
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "guidance": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error_code",
+                    "message",
+                    "guidance"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "getUsersPlexServers"
+      }
+    },
+    "/users/settings/plex/servers/{server_id}": {
+      "get": {
+        "description": "#### 🔒 OAuth Required\nReturns the home accounts (owned servers only) and syncable libraries for a Plex server, with the user's current library selection flagged. Network-bound.\n\nErrors use the shared `{ error_code, message, guidance }` envelope: `missing_token`/`bad_auth` (401), `missing_server_id`/`plex_unprocessable` (422), `invalid_server_id`/`plex_not_found` (404), `invalid_server_url` (503), `plex_timeout` (504), `plex_bad_response`/`plex_generic_error` (502).",
+        "summary": "Get Plex server accounts and libraries",
+        "tags": [
+          "users",
+          "plex"
+        ],
+        "parameters": [
+          {
+            "name": "server_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The Plex server machine identifier."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accounts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name"
+                        ]
+                      },
+                      "description": "Home accounts on the server; empty for servers the user does not own."
+                    },
+                    "libraries": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "uuid": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "agent": {
+                            "type": "string"
+                          },
+                          "scanner": {
+                            "type": "string"
+                          },
+                          "selected": {
+                            "type": "boolean",
+                            "description": "Whether this library is in the user's current sync selection."
+                          },
+                          "url": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "uuid",
+                          "type",
+                          "title",
+                          "agent",
+                          "scanner",
+                          "selected",
+                          "url"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "accounts",
+                    "libraries"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_code": {
+                      "type": "string",
+                      "description": "Machine-readable error code (e.g. `bad_auth`, `invalid_server_url`, `plex_timeout`)."
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "guidance": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error_code",
+                    "message",
+                    "guidance"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_code": {
+                      "type": "string",
+                      "description": "Machine-readable error code (e.g. `bad_auth`, `invalid_server_url`, `plex_timeout`)."
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "guidance": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error_code",
+                    "message",
+                    "guidance"
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "422",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_code": {
+                      "type": "string",
+                      "description": "Machine-readable error code (e.g. `bad_auth`, `invalid_server_url`, `plex_timeout`)."
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "guidance": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error_code",
+                    "message",
+                    "guidance"
+                  ]
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "502",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_code": {
+                      "type": "string",
+                      "description": "Machine-readable error code (e.g. `bad_auth`, `invalid_server_url`, `plex_timeout`)."
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "guidance": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error_code",
+                    "message",
+                    "guidance"
+                  ]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "503",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_code": {
+                      "type": "string",
+                      "description": "Machine-readable error code (e.g. `bad_auth`, `invalid_server_url`, `plex_timeout`)."
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "guidance": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error_code",
+                    "message",
+                    "guidance"
+                  ]
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "504",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_code": {
+                      "type": "string",
+                      "description": "Machine-readable error code (e.g. `bad_auth`, `invalid_server_url`, `plex_timeout`)."
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "guidance": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error_code",
+                    "message",
+                    "guidance"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "getUsersPlexServerAccounts"
+      }
+    },
+    "/users/settings/plex/sync": {
+      "post": {
+        "description": "#### 🔒 OAuth Required\nEnqueues a Plex sync immediately. With `server_id`, syncs that server; without it, syncs every server in the saved selection. `all_data: true` re-pulls full history, otherwise an incremental sync. A `422` is returned when there is no server to sync.",
+        "summary": "Sync Plex now",
+        "tags": [
+          "users",
+          "plex"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "server_id": {
+                    "type": "string",
+                    "description": "Sync this server; omit to sync every server in the saved selection."
+                  },
+                  "all_data": {
+                    "type": "boolean",
+                    "description": "When true, re-pulls full history; otherwise an incremental sync."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "422",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "postUsersPlexSync"
+      }
+    },
     "/users/{id}/": {
       "get": {
         "description": "#### 🔓 OAuth Optional ✨ Extended Info\nGet a user's profile information. If the user is private, info will only be returned if you send OAuth and are either that user or an approved follower. Adding `?extended=vip` will return some additional VIP related fields so you can display the user's Trakt VIP status and year count.",
@@ -70296,6 +71442,55 @@
         "operationId": "getMoviesJustwatchLink"
       }
     },
+    "/movies/{id}/refresh/justwatch": {
+      "put": {
+        "description": "#### 🔥 VIP Only 🔒 OAuth Required\nQueue a refresh of a movie's JustWatch watch now links.",
+        "summary": "Refresh movie JustWatch links",
+        "tags": [
+          "movies",
+          "justwatch"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug of the resource."
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "putMoviesJustwatchRefresh"
+      }
+    },
     "/movies/{id}/people": {
       "get": {
         "description": "#### ✨ Extended Info\nReturns all `cast` and `crew` for a movie. Each `cast` member will have a `characters` array and a standard `person` object.\n\nThe `crew` object will be broken up by department into `production`, `art`, `crew`, `costume & make-up`, `directing`, `writing`, `sound`, `camera`, `visual effects`, `lighting`, and `editing` (if there are people for those crew positions). Each of those members will have a `jobs` array and a standard `person` object.",
@@ -71499,6 +72694,63 @@
           }
         ],
         "operationId": "postMoviesReport"
+      }
+    },
+    "/movies/{id}/refresh": {
+      "put": {
+        "description": "#### 🔥 VIP Only 🔒 OAuth Required\nQueue a full metadata refresh for a movie. Pass `images=true` to also refresh the movie's images.",
+        "summary": "Refresh movie metadata",
+        "tags": [
+          "movies"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug of the resource."
+          },
+          {
+            "name": "images",
+            "in": "query",
+            "description": "Also queue a refresh of the resource images.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "putMoviesRefresh"
       }
     },
     "/movies/trending": {
@@ -76304,6 +77556,55 @@
         "operationId": "getShowsJustwatchLink"
       }
     },
+    "/shows/{id}/refresh/justwatch": {
+      "put": {
+        "description": "#### 🔥 VIP Only 🔒 OAuth Required\nQueue a refresh of a show's JustWatch watch now links.",
+        "summary": "Refresh show JustWatch links",
+        "tags": [
+          "shows",
+          "justwatch"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug of the resource."
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "putShowsJustwatchRefresh"
+      }
+    },
     "/shows/{id}/people": {
       "get": {
         "description": "#### ✨ Extended Info\nReturns all `cast` and `crew` for a show, including the `episode_count` for which they appears. Each `cast` member will have a `characters` array and a standard `person` object.\n\nThe `crew` object will be broken up by department into `production`, `art`, `crew`, `costume & make-up`, `directing`, `writing`, `sound`, `camera`, `visual effects`, `lighting`, `editing`, and `created  by` (if there are people for those crew positions). Each of those members will have a `jobs` array and a standard `person` object.\n\n#### Guest Stars\nIf you add `?extended=guest_stars` to the URL, it will return all guest stars that appeared in at least 1 episode of the show.\n\n> ### Note\n> _This returns a lot of data, so please only use this extended parameter if you actually need it!_",
@@ -78117,6 +79418,63 @@
           }
         ],
         "operationId": "postShowsReport"
+      }
+    },
+    "/shows/{id}/refresh": {
+      "put": {
+        "description": "#### 🔥 VIP Only 🔒 OAuth Required\nQueue a full metadata refresh for a show. Pass `images=true` to also refresh the show's images.",
+        "summary": "Refresh show metadata",
+        "tags": [
+          "shows"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug of the resource."
+          },
+          {
+            "name": "images",
+            "in": "query",
+            "description": "Also queue a refresh of the resource images.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "putShowsRefresh"
       }
     },
     "/shows/{id}/seasons/{season}/episodes/{episode}": {
@@ -87255,6 +88613,63 @@
           }
         ],
         "operationId": "postPeopleReport"
+      }
+    },
+    "/people/{id}/refresh": {
+      "put": {
+        "description": "#### 🔥 VIP Only 🔒 OAuth Required\nQueue a full metadata refresh for a person. Pass `images=true` to also refresh the person's images.",
+        "summary": "Refresh person metadata",
+        "tags": [
+          "people"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug of the resource."
+          },
+          {
+            "name": "images",
+            "in": "query",
+            "description": "Also queue a refresh of the resource images.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "putPeopleRefresh"
       }
     },
     "/watchnow/sources": {
