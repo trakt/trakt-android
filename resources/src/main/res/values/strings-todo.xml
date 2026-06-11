@@ -1,11 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="button_share_option_link">Link</string>
-  <string name="button_share_option_image">Image</string>
-  <string name="share_variant_default">Default</string>
-  <string name="share_variant_feed">Feed</string>
-  <string name="share_variant_story">Story</string>
   <string name="label_stats_current_streak_monthly">Monthly Streak</string>
-  <string name="text_stats_last_one">Number of days</string>
-  <string name="text_chose_share_variant">"Choose an image format to share."</string>
 </resources>

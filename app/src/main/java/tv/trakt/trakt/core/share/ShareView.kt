@@ -92,7 +92,7 @@ private fun ShareContent(
     ) {
         TraktHeader(
             title = stringResource(R.string.button_text_share),
-            subtitle = stringResource(R.string.text_chose_share_variant),
+            subtitle = stringResource(R.string.dialog_prompt_media_share_image_format),
         )
 
         ShareButtons(
@@ -173,7 +173,7 @@ private fun ShareContent(
             if (selectedVariant == Story && isInstagramAvailable) {
                 val isLoading = state.media == null || loadingVariant
                 PrimaryButton(
-                    text = stringResource(R.string.share_variant_story),
+                    text = stringResource(R.string.button_text_media_share_format_story),
                     border = BorderStroke(1.dp, TraktTheme.colors.chipContainer),
                     icon = painterResource(R.drawable.ic_instagram),
                     iconSize = 24.dp,

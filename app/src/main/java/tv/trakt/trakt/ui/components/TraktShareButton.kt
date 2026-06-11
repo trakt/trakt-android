@@ -58,7 +58,7 @@ internal fun TraktShareButton(
                 },
                 text = {
                     Text(
-                        text = stringResource(R.string.button_share_option_link),
+                        text = stringResource(R.string.button_text_media_share_type_link),
                         style = TraktTheme.typography.buttonTertiary,
                         color = TraktTheme.colors.textPrimary,
                         modifier = Modifier.fillMaxWidth(),
@@ -80,7 +80,7 @@ internal fun TraktShareButton(
                 },
                 text = {
                     Text(
-                        text = stringResource(R.string.button_share_option_image),
+                        text = stringResource(R.string.button_text_media_share_type_image),
                         style = TraktTheme.typography.buttonTertiary,
                         color = TraktTheme.colors.textPrimary,
                         modifier = Modifier.fillMaxWidth(),

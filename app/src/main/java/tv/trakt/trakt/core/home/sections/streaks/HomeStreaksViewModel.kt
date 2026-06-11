@@ -20,6 +20,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.sections.streaks.data.StreaksManager
 import tv.trakt.trakt.core.user.usecases.progress.updates.ProgressUpdates
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class HomeStreaksViewModel(
     private val streaksManager: StreaksManager,
@@ -31,13 +32,14 @@ internal class HomeStreaksViewModel(
     init {
         observeMode()
         observeProgress()
+        loadData()
     }
 
     private fun observeProgress() {
         progressUpdates.observeUpdates()
             .distinctUntilChanged()
             .filterNotNull()
-            .debounce(300)
+            .debounce(300.milliseconds)
             .onEach { loadData() }
             .launchIn(viewModelScope)
     }

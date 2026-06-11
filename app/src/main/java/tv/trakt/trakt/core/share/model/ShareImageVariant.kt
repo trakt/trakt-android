@@ -10,9 +10,9 @@ internal enum class ShareImageVariant(
     val value: String,
     @param:StringRes val displayRes: Int,
 ) {
-    Default("open-graph", R.string.share_variant_default),
-    Feed("feed", R.string.share_variant_feed),
-    Story("story", R.string.share_variant_story),
+    Default("open-graph", R.string.button_text_media_share_format_open_graph),
+    Feed("feed", R.string.button_text_media_share_format_feed),
+    Story("story", R.string.button_text_media_share_format_story),
     ;
 
     fun getImageUri(
