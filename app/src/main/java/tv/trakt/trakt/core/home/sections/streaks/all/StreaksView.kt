@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentMapOf
+import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.yearMonthFormat
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
@@ -73,7 +74,9 @@ private fun StreaksViewContent(
     ) {
         TraktHeader(
             title = stringResource(R.string.drawer_title_streak_activity),
-            subtitle = "${YearMonth.now().format(yearMonthFormat())}  •  ${stringResource(mode.displayRes)}",
+            subtitle = "${
+                YearMonth.now().format(yearMonthFormat()).capitalize()
+            }  •  ${stringResource(mode.displayRes)}",
             modifier = Modifier.padding(bottom = 12.dp),
         )
 

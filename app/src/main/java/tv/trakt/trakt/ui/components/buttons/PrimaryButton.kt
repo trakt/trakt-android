@@ -1,5 +1,6 @@
 package tv.trakt.trakt.ui.components.buttons
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -34,6 +35,7 @@ internal fun PrimaryButton(
     onClick: () -> Unit = {},
     text: String,
     textStyle: TextStyle = TraktTheme.typography.buttonPrimary,
+    border: BorderStroke? = null,
     icon: Painter? = null,
     iconSize: Dp = 18.dp,
     iconSpace: Dp = 8.dp,
@@ -54,6 +56,7 @@ internal fun PrimaryButton(
         ),
         modifier = modifier.height(height),
         shape = RoundedCornerShape(corner),
+        border = border,
         colors = buttonColors(
             containerColor = containerColor,
             contentColor = contentColor,

@@ -41,6 +41,7 @@ internal fun DetailsHeader(
     loading: Boolean,
     onCreatorClick: (Person) -> Unit,
     onShareClick: () -> Unit,
+    onShareImageClick: () -> Unit,
     onInfoClick: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -128,6 +129,7 @@ internal fun DetailsHeader(
         onBackClick = onBackClick,
         onInfoClick = onInfoClick,
         onShareClick = onShareClick,
+        onShareImageClick = onShareImageClick,
         onImdbClick = {
             movie.ids.imdb?.let {
                 openExternalAppLink(
