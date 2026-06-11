@@ -1,2 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+  <string name="text_edit_screen">Edit Screen</string>
+  <string name="text_edit_screen_description">Adjust the visibility of screen sections.</string>
+</resources>

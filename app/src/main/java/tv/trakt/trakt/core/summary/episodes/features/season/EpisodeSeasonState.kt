@@ -18,5 +18,4 @@ internal data class EpisodeSeasonState(
     val loadingEpisode: LoadingState = LoadingState.Idle,
     val info: StringResource? = null,
     val error: Exception? = null,
-    val collapsed: Boolean? = null,
 )

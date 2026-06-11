@@ -1,9 +1,6 @@
 package tv.trakt.trakt.core.lists.sections.collaborations
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.snap
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -26,7 +23,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -94,7 +90,6 @@ internal fun ListsCollaborationsView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onCollapse = viewModel::setCollapsed,
         onShowClick = {
             if (!state.loading.isLoading) {
                 viewModel.navigateToShow(it)
@@ -139,20 +134,14 @@ private fun ListsCollaborationsContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onCollapse: (collapsed: Boolean) -> Unit = {},
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
     onEpisodeClick: (Show, Episode) -> Unit = { _, _ -> },
     onAllClick: () -> Unit = {},
 ) {
-    var animateCollapse by rememberSaveable { mutableStateOf(false) }
-
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
-        modifier = modifier
-            .animateContentSize(
-                animationSpec = if (animateCollapse) spring() else snap(),
-            ),
+        modifier = modifier,
     ) {
         TraktSectionHeader(
             title = list?.name ?: "",
@@ -161,12 +150,6 @@ private fun ListsCollaborationsContent(
                 else -> null
             },
             chevron = !state.items.isNullOrEmpty() || state.loading != Done,
-            collapsed = state.collapsed ?: false,
-            onCollapseClick = {
-                animateCollapse = true
-                val current = (state.collapsed ?: false)
-                onCollapse(!current)
-            },
             maxSubtitleLength = 30,
             modifier = Modifier
                 .padding(headerPadding)
@@ -175,56 +158,54 @@ private fun ListsCollaborationsContent(
                 },
         )
 
-        if (state.collapsed != true) {
-            Crossfade(
-                targetState = state.loading,
-                animationSpec = tween(200),
-            ) { loading ->
-                when (loading) {
-                    Idle, Loading -> {
-                        ContentLoadingList(
-                            visible = loading.isLoading,
-                            contentPadding = contentPadding,
-                            modifier = Modifier.padding(bottom = 3.75.dp),
-                        )
-                    }
+        Crossfade(
+            targetState = state.loading,
+            animationSpec = tween(200),
+        ) { loading ->
+            when (loading) {
+                Idle, Loading -> {
+                    ContentLoadingList(
+                        visible = loading.isLoading,
+                        contentPadding = contentPadding,
+                        modifier = Modifier.padding(bottom = 3.75.dp),
+                    )
+                }
 
-                    Done -> {
-                        when {
-                            state.error != null -> {
-                                Text(
-                                    text =
-                                        "${
-                                            stringResource(
-                                                R.string.error_text_unexpected_error_short,
-                                            )
-                                        }\n\n${state.error}",
-                                    color = TraktTheme.colors.textSecondary,
-                                    style = TraktTheme.typography.meta,
-                                    maxLines = 10,
-                                    modifier = Modifier.padding(contentPadding),
-                                )
-                            }
+                Done -> {
+                    when {
+                        state.error != null -> {
+                            Text(
+                                text =
+                                    "${
+                                        stringResource(
+                                            R.string.error_text_unexpected_error_short,
+                                        )
+                                    }\n\n${state.error}",
+                                color = TraktTheme.colors.textSecondary,
+                                style = TraktTheme.typography.meta,
+                                maxLines = 10,
+                                modifier = Modifier.padding(contentPadding),
+                            )
+                        }
 
-                            state.items?.isEmpty() == true -> {
-                                ContentEmptyList(
-                                    filter = state.filter?.mode,
-                                    contentPadding = contentPadding,
-                                    modifier = Modifier.padding(bottom = 3.75.dp),
-                                )
-                            }
+                        state.items?.isEmpty() == true -> {
+                            ContentEmptyList(
+                                filter = state.filter?.mode,
+                                contentPadding = contentPadding,
+                                modifier = Modifier.padding(bottom = 3.75.dp),
+                            )
+                        }
 
-                            else -> {
-                                ContentList(
-                                    listItems = (state.items ?: emptyList()).toImmutableList(),
-                                    listFilter = state.filter?.mode,
-                                    collectionState = state.collection,
-                                    contentPadding = contentPadding,
-                                    onMovieClick = onMovieClick,
-                                    onShowClick = onShowClick,
-                                    onEpisodeClick = onEpisodeClick,
-                                )
-                            }
+                        else -> {
+                            ContentList(
+                                listItems = (state.items ?: emptyList()).toImmutableList(),
+                                listFilter = state.filter?.mode,
+                                collectionState = state.collection,
+                                contentPadding = contentPadding,
+                                onMovieClick = onMovieClick,
+                                onShowClick = onShowClick,
+                                onEpisodeClick = onEpisodeClick,
+                            )
                         }
                     }
                 }

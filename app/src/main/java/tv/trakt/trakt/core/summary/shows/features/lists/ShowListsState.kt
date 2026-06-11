@@ -13,5 +13,4 @@ internal data class ShowListsState(
     val likedItems: ImmutableSet<TraktId>? = null,
     val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
-    val collapsed: Boolean? = null,
 )

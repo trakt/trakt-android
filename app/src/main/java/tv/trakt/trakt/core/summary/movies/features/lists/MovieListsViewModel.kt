@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,24 +24,18 @@ import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.summary.movies.features.lists.usecases.GetMovieListsUseCase
-import tv.trakt.trakt.helpers.collapsing.CollapsingManager
-import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class MovieListsViewModel(
     private val movie: Movie,
     private val getListsUseCase: GetMovieListsUseCase,
     private val loadUserLikedListsUseCase: LoadUserLikedListsUseCase,
-    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = MovieListsState()
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val likedItemsState = MutableStateFlow(initialState.likedItems)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.MOVIE_LISTS))
     private val errorState = MutableStateFlow(initialState.error)
-
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -90,32 +83,18 @@ internal class MovieListsViewModel(
         }
     }
 
-    fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.MOVIE_LISTS)
-                else -> collapsingManager.expand(CollapsingKey.MOVIE_LISTS)
-            }
-        }
-    }
-
     @Suppress("UNCHECKED_CAST")
     val state = combine(
         itemsState,
         likedItemsState,
         loadingState,
-        collapseState,
         errorState,
     ) { state ->
         MovieListsState(
             items = state[0] as ImmutableList<CustomList>?,
             likedItems = state[1] as ImmutableSet<TraktId>?,
             loading = state[2] as LoadingState,
-            collapsed = state[3] as Boolean,
-            error = state[4] as Exception?,
+            error = state[3] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

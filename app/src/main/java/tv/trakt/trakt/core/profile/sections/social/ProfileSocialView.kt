@@ -3,9 +3,6 @@
 package tv.trakt.trakt.core.profile.sections.social
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.snap
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -24,10 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
@@ -68,7 +62,6 @@ internal fun ProfileSocialView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onCollapse = viewModel::setCollapsed,
         onFilterClick = viewModel::setFilter,
         onUserClick = { onUserClick(it) },
     )
@@ -80,80 +73,66 @@ internal fun ProfileSocialContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onCollapse: (collapsed: Boolean) -> Unit = {},
     onFilterClick: (SocialFilter) -> Unit = {},
     onUserClick: (User) -> Unit = {},
 ) {
-    var animateCollapse by rememberSaveable { mutableStateOf(false) }
-
     Column(
-        modifier = modifier
-            .animateContentSize(
-                animationSpec = if (animateCollapse) spring() else snap(),
-            ),
+        modifier = modifier,
     ) {
         TraktSectionHeader(
             title = stringResource(R.string.list_title_social),
             chevron = false,
-            collapsed = state.collapsed ?: false,
-            onCollapseClick = {
-                animateCollapse = true
-                val current = (state.collapsed ?: false)
-                onCollapse(!current)
-            },
             modifier = Modifier
                 .padding(headerPadding),
         )
 
-        if (state.collapsed != true) {
-            ContentFilters(
-                state = state,
-                headerPadding = headerPadding,
-                onFilterClick = onFilterClick,
-            )
+        ContentFilters(
+            state = state,
+            headerPadding = headerPadding,
+            onFilterClick = onFilterClick,
+        )
 
-            Crossfade(
-                targetState = state.loading,
-                animationSpec = tween(200),
-            ) { loading ->
-                when (loading) {
-                    Idle, Loading -> {
-                        ContentLoadingList(
-                            visible = loading.isLoading,
-                            contentPadding = contentPadding,
-                        )
-                    }
+        Crossfade(
+            targetState = state.loading,
+            animationSpec = tween(200),
+        ) { loading ->
+            when (loading) {
+                Idle, Loading -> {
+                    ContentLoadingList(
+                        visible = loading.isLoading,
+                        contentPadding = contentPadding,
+                    )
+                }
 
-                    Done -> {
-                        when {
-                            state.error != null -> {
-                                Text(
-                                    text =
-                                        "${
-                                            stringResource(
-                                                R.string.error_text_unexpected_error_short,
-                                            )
-                                        }\n\n${state.error}",
-                                    color = TraktTheme.colors.textSecondary,
-                                    style = TraktTheme.typography.meta,
-                                    maxLines = 10,
-                                    modifier = Modifier.padding(contentPadding),
-                                )
-                            }
+                Done -> {
+                    when {
+                        state.error != null -> {
+                            Text(
+                                text =
+                                    "${
+                                        stringResource(
+                                            R.string.error_text_unexpected_error_short,
+                                        )
+                                    }\n\n${state.error}",
+                                color = TraktTheme.colors.textSecondary,
+                                style = TraktTheme.typography.meta,
+                                maxLines = 10,
+                                modifier = Modifier.padding(contentPadding),
+                            )
+                        }
 
-                            state.items?.isEmpty() == true -> {
-                                HomeEmptySocialView(
-                                    modifier = Modifier.padding(contentPadding),
-                                )
-                            }
+                        state.items?.isEmpty() == true -> {
+                            HomeEmptySocialView(
+                                modifier = Modifier.padding(contentPadding),
+                            )
+                        }
 
-                            else -> {
-                                ContentList(
-                                    listItems = (state.items ?: emptyList()).toImmutableList(),
-                                    contentPadding = contentPadding,
-                                    onUserClick = onUserClick,
-                                )
-                            }
+                        else -> {
+                            ContentList(
+                                listItems = (state.items ?: emptyList()).toImmutableList(),
+                                contentPadding = contentPadding,
+                                onUserClick = onUserClick,
+                            )
                         }
                     }
                 }

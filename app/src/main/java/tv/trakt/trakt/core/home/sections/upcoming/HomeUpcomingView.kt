@@ -1,9 +1,6 @@
 package tv.trakt.trakt.core.home.sections.upcoming
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.snap
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -20,10 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
@@ -91,7 +85,6 @@ internal fun HomeUpcomingView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onCollapse = viewModel::setCollapsed,
         onCalendarClick = onCalendarClick,
         onEmptyClick = {
             when (state.filter?.mode) {
@@ -122,26 +115,14 @@ internal fun HomeUpcomingContent(
     onMovieClick: (Movie) -> Unit = {},
     onEmptyClick: () -> Unit = {},
     onCalendarClick: () -> Unit = {},
-    onCollapse: (collapsed: Boolean) -> Unit = {},
 ) {
-    var animateCollapse by rememberSaveable { mutableStateOf(false) }
-
     Column(
         verticalArrangement = Arrangement.spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
-        modifier = modifier
-            .animateContentSize(
-                animationSpec = if (animateCollapse) spring() else snap(),
-            ),
+        modifier = modifier,
     ) {
         TraktSectionHeader(
             title = stringResource(R.string.page_title_calendar),
             chevron = state.user != null,
-            collapsed = state.collapsed ?: false,
-            onCollapseClick = {
-                animateCollapse = true
-                val current = (state.collapsed ?: false)
-                onCollapse(!current)
-            },
             modifier = Modifier
                 .padding(headerPadding)
                 .onClick(enabled = state.user != null) {
@@ -149,66 +130,64 @@ internal fun HomeUpcomingContent(
                 },
         )
 
-        if (state.collapsed != true) {
-            Crossfade(
-                targetState = state.loading,
-                animationSpec = tween(200),
-            ) { loading ->
-                when (loading) {
-                    Idle, Loading -> {
-                        ContentLoadingList(
-                            visible = loading.isLoading,
-                            contentPadding = contentPadding,
-                        )
-                    }
+        Crossfade(
+            targetState = state.loading,
+            animationSpec = tween(200),
+        ) { loading ->
+            when (loading) {
+                Idle, Loading -> {
+                    ContentLoadingList(
+                        visible = loading.isLoading,
+                        contentPadding = contentPadding,
+                    )
+                }
 
-                    Done -> {
-                        when {
-                            state.error != null -> {
-                                Text(
-                                    text =
-                                        "${
-                                            stringResource(
-                                                R.string.error_text_unexpected_error_short,
-                                            )
-                                        }\n\n${state.error}",
-                                    color = TraktTheme.colors.textSecondary,
-                                    style = TraktTheme.typography.meta,
-                                    maxLines = 10,
-                                    modifier = Modifier.padding(contentPadding),
-                                )
-                            }
+                Done -> {
+                    when {
+                        state.error != null -> {
+                            Text(
+                                text =
+                                    "${
+                                        stringResource(
+                                            R.string.error_text_unexpected_error_short,
+                                        )
+                                    }\n\n${state.error}",
+                                color = TraktTheme.colors.textSecondary,
+                                style = TraktTheme.typography.meta,
+                                maxLines = 10,
+                                modifier = Modifier.padding(contentPadding),
+                            )
+                        }
 
-                            state.items?.isEmpty() == true -> {
-                                val imageUrl = remember {
-                                    Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_3).ifBlank { null }
-                                }
-                                HomeEmptyView(
-                                    text = stringResource(R.string.text_cta_upcoming),
-                                    icon = R.drawable.ic_empty_upcoming,
-                                    buttonText = stringResource(
-                                        when (state.filter?.mode) {
-                                            MediaMode.MOVIES -> R.string.link_text_discover_movies
-                                            else -> R.string.link_text_discover_shows
-                                        },
-                                    ),
-                                    backgroundImageUrl = imageUrl,
-                                    backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
-                                    onClick = onEmptyClick,
-                                    modifier = Modifier
-                                        .padding(contentPadding),
-                                )
+                        state.items?.isEmpty() == true -> {
+                            val imageUrl = remember {
+                                Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_3).ifBlank { null }
                             }
+                            HomeEmptyView(
+                                text = stringResource(R.string.text_cta_upcoming),
+                                icon = R.drawable.ic_empty_upcoming,
+                                buttonText = stringResource(
+                                    when (state.filter?.mode) {
+                                        MediaMode.MOVIES -> R.string.link_text_discover_movies
+                                        else -> R.string.link_text_discover_shows
+                                    },
+                                ),
+                                backgroundImageUrl = imageUrl,
+                                backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
+                                onClick = onEmptyClick,
+                                modifier = Modifier
+                                    .padding(contentPadding),
+                            )
+                        }
 
-                            else -> {
-                                ContentList(
-                                    listItems = (state.items ?: emptyList()).toImmutableList(),
-                                    contentPadding = contentPadding,
-                                    onClick = onClick,
-                                    onShowClick = onShowClick,
-                                    onMovieClick = onMovieClick,
-                                )
-                            }
+                        else -> {
+                            ContentList(
+                                listItems = (state.items ?: emptyList()).toImmutableList(),
+                                contentPadding = contentPadding,
+                                onClick = onClick,
+                                onShowClick = onShowClick,
+                                onMovieClick = onMovieClick,
+                            )
                         }
                     }
                 }

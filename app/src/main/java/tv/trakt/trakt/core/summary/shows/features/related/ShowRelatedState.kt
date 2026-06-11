@@ -12,5 +12,4 @@ internal data class ShowRelatedState(
     val collection: UserCollectionState = UserCollectionState.Default,
     val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
-    val collapsed: Boolean? = null,
 )

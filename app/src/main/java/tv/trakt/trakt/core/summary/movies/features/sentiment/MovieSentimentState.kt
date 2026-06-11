@@ -10,6 +10,5 @@ internal data class MovieSentimentState(
     val user: User? = null,
     val sentiment: Sentiments? = null,
     val loading: LoadingState = LoadingState.Idle,
-    val collapsed: Boolean? = null,
     val error: Exception? = null,
 )

@@ -22,5 +22,4 @@ internal data class EpisodeCommentsState(
     val loading: LoadingState = LoadingState.Idle,
     val user: User? = null,
     val error: Exception? = null,
-    val collapsed: Boolean? = null,
 )

@@ -11,7 +11,6 @@ import tv.trakt.trakt.core.home.sections.upnext.model.UpNextItem
 internal data class HomeUpNextState(
     val items: ItemsState = ItemsState(),
     val loading: LoadingState = LoadingState.Idle,
-    val collapsed: Boolean? = null,
     val filter: GlobalFilter? = null,
     val info: StringResource? = null,
     val error: Exception? = null,

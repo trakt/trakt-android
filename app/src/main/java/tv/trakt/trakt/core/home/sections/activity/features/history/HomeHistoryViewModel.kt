@@ -35,7 +35,6 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
-import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -61,8 +60,6 @@ import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
 import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.AllWatchlist
 import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
-import tv.trakt.trakt.helpers.collapsing.CollapsingManager
-import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class HomeHistoryViewModel(
     private val getPersonalActivityUseCase: GetPersonalActivityUseCase,
@@ -80,7 +77,6 @@ internal class HomeHistoryViewModel(
     private val checkInUpdates: CheckInUpdates,
     private val sessionManager: SessionManager,
     private val filterManager: GlobalFilterManager,
-    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = HomeHistoryState()
 
@@ -88,7 +84,6 @@ internal class HomeHistoryViewModel(
     private val itemsState = MutableStateFlow(initialState.items)
     private val itemsRatingsState = MutableStateFlow(initialState.itemsRatings)
     private val filterState = MutableStateFlow(filterManager.getFilter())
-    private val collapseState = MutableStateFlow(isCollapsed())
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
@@ -97,7 +92,6 @@ internal class HomeHistoryViewModel(
 
     private var dataJob: Job? = null
     private var processingJob: Job? = null
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -114,7 +108,6 @@ internal class HomeHistoryViewModel(
             .distinctUntilChanged()
             .onEach { value ->
                 filterState.update { value }
-                collapseState.update { isCollapsed() }
                 loadData()
             }
             .launchIn(viewModelScope)
@@ -307,39 +300,11 @@ internal class HomeHistoryViewModel(
         processingJob = null
     }
 
-    fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            val key = when (filterState.value.mode) {
-                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_HISTORY
-                MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_HISTORY
-                MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_HISTORY
-            }
-            when {
-                collapsed -> collapsingManager.collapse(key)
-                else -> collapsingManager.expand(key)
-            }
-        }
-    }
-
-    private fun isCollapsed(): Boolean {
-        return collapsingManager.isCollapsed(
-            key = when (filterState.value.mode) {
-                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_HISTORY
-                MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_HISTORY
-                MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_HISTORY
-            },
-        )
-    }
-
     @Suppress("UNCHECKED_CAST")
     val state = combine(
         loadingState,
         itemsState,
         itemsRatingsState,
-        collapseState,
         navigateShow,
         navigateEpisode,
         navigateMovie,
@@ -350,12 +315,11 @@ internal class HomeHistoryViewModel(
             loading = states[0] as LoadingState,
             items = states[1] as? ImmutableList<HomeActivityItem>,
             itemsRatings = states[2] as? ImmutableMap<String, UserRating>,
-            collapsed = states[3] as Boolean,
-            navigateShow = states[4] as? TraktId,
-            navigateEpisode = states[5] as? Pair<TraktId, Episode>,
-            navigateMovie = states[6] as? TraktId,
-            error = states[7] as? Exception,
-            user = states[8] as? User,
+            navigateShow = states[3] as? TraktId,
+            navigateEpisode = states[4] as? Pair<TraktId, Episode>,
+            navigateMovie = states[5] as? TraktId,
+            error = states[6] as? Exception,
+            user = states[7] as? User,
         )
     }.stateIn(
         scope = viewModelScope,

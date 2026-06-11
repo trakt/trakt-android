@@ -54,8 +54,6 @@ import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
-import tv.trakt.trakt.helpers.collapsing.CollapsingManager
-import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class ProfileHistoryViewModel(
     private val getPersonalActivityUseCase: GetPersonalActivityUseCase,
@@ -70,7 +68,6 @@ internal class ProfileHistoryViewModel(
     private val ratingsUpdates: RatingsUpdates,
     private val checkInUpdate: CheckInUpdates,
     private val sessionManager: SessionManager,
-    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = ProfileHistoryState()
 
@@ -80,12 +77,10 @@ internal class ProfileHistoryViewModel(
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val collapseState = MutableStateFlow(isCollapsed())
     private val errorState = MutableStateFlow(initialState.error)
 
     private var loadDataJob: Job? = null
     private var processingJob: Job? = null
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -261,21 +256,7 @@ internal class ProfileHistoryViewModel(
         navigateMovie.update { null }
     }
 
-    fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
 
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.PROFILE_HISTORY)
-                else -> collapsingManager.expand(CollapsingKey.PROFILE_HISTORY)
-            }
-        }
-    }
-
-    private fun isCollapsed(): Boolean {
-        return collapsingManager.isCollapsed(CollapsingKey.PROFILE_HISTORY)
-    }
 
     @Suppress("UNCHECKED_CAST")
     val state = combine(
@@ -285,7 +266,6 @@ internal class ProfileHistoryViewModel(
         navigateShow,
         navigateEpisode,
         navigateMovie,
-        collapseState,
         errorState,
     ) { states ->
         ProfileHistoryState(
@@ -295,8 +275,7 @@ internal class ProfileHistoryViewModel(
             navigateShow = states[3] as? TraktId,
             navigateEpisode = states[4] as? Pair<TraktId, Episode>,
             navigateMovie = states[5] as? TraktId,
-            collapsed = states[6] as Boolean,
-            error = states[7] as? Exception,
+            error = states[6] as? Exception,
         )
     }.stateIn(
         scope = viewModelScope,

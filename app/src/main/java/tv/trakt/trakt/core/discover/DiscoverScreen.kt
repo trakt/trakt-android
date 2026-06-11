@@ -41,6 +41,12 @@ import tv.trakt.trakt.core.discover.sections.recommended.DiscoverRecommendedView
 import tv.trakt.trakt.core.discover.sections.trending.DiscoverTrendingView
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.helpers.ScreenHeaderState
+import tv.trakt.trakt.helpers.editscreen.EditScreenSheet
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.DiscoverAnticipated
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.DiscoverPopular
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.DiscoverRecommended
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.DiscoverTrending
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
@@ -61,6 +67,7 @@ internal fun DiscoverScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var filtersSheet by remember { mutableStateOf(false) }
+    var sectionsSheet by remember { mutableStateOf(false) }
 
     DiscoverScreen(
         state = state,
@@ -71,16 +78,19 @@ internal fun DiscoverScreen(
         onMoreAnticipatedClick = onNavigateToAllAnticipated,
         onMoreRecommendedClick = onNavigateToAllRecommended,
         onVipClick = onNavigateToVip,
-        onFiltersClick = {
-            filtersSheet = true
-        },
+        onFiltersClick = { filtersSheet = true },
+        onEditScreenClick = { sectionsSheet = true },
     )
 
     GlobalFiltersSheet(
         active = filtersSheet,
-        onDismiss = {
-            filtersSheet = false
-        },
+        onDismiss = { filtersSheet = false },
+    )
+
+    EditScreenSheet(
+        active = sectionsSheet,
+        enabledValues = EditScreenKey.DiscoverKeys,
+        onDismiss = { sectionsSheet = false },
     )
 }
 
@@ -96,6 +106,7 @@ private fun DiscoverScreen(
     onMoreRecommendedClick: () -> Unit = {},
     onVipClick: () -> Unit = {},
     onFiltersClick: () -> Unit = {},
+    onEditScreenClick: () -> Unit = {},
 ) {
     val activity = LocalActivity.current
     val customThemeEnabled = (activity as? MainActivity)?.customThemeConfig?.enabled == true
@@ -147,32 +158,36 @@ private fun DiscoverScreen(
             verticalArrangement = spacedBy(TraktTheme.spacing.mainSectionVerticalSpace),
             contentPadding = listPadding,
         ) {
-            item {
-                DiscoverTrendingView(
-                    viewModel = koinViewModel {
-                        parametersOf(customThemeEnabled)
-                    },
-                    collection = state.collection,
-                    headerPadding = sectionPadding,
-                    contentPadding = sectionPadding,
-                    onShowClick = onShowClick,
-                    onMovieClick = onMovieClick,
-                    onMoreClick = onMoreTrendingClick,
-                )
+            if (state.visibility?.get(DiscoverTrending) == true) {
+                item {
+                    DiscoverTrendingView(
+                        viewModel = koinViewModel {
+                            parametersOf(customThemeEnabled)
+                        },
+                        collection = state.collection,
+                        headerPadding = sectionPadding,
+                        contentPadding = sectionPadding,
+                        onShowClick = onShowClick,
+                        onMovieClick = onMovieClick,
+                        onMoreClick = onMoreTrendingClick,
+                    )
+                }
             }
 
-            item {
-                DiscoverAnticipatedView(
-                    viewModel = koinViewModel {
-                        parametersOf(customThemeEnabled)
-                    },
-                    collection = state.collection,
-                    headerPadding = sectionPadding,
-                    contentPadding = sectionPadding,
-                    onShowClick = onShowClick,
-                    onMovieClick = onMovieClick,
-                    onMoreClick = onMoreAnticipatedClick,
-                )
+            if (state.visibility?.get(DiscoverAnticipated) == true) {
+                item {
+                    DiscoverAnticipatedView(
+                        viewModel = koinViewModel {
+                            parametersOf(customThemeEnabled)
+                        },
+                        collection = state.collection,
+                        headerPadding = sectionPadding,
+                        contentPadding = sectionPadding,
+                        onShowClick = onShowClick,
+                        onMovieClick = onMovieClick,
+                        onMoreClick = onMoreAnticipatedClick,
+                    )
+                }
             }
 
             if (state.user.user != null && !state.user.user.isVip) {
@@ -184,21 +199,26 @@ private fun DiscoverScreen(
                 }
             }
 
-            item {
-                DiscoverPopularView(
-                    viewModel = koinViewModel {
-                        parametersOf(customThemeEnabled)
-                    },
-                    collection = state.collection,
-                    headerPadding = sectionPadding,
-                    contentPadding = sectionPadding,
-                    onShowClick = onShowClick,
-                    onMovieClick = onMovieClick,
-                    onMoreClick = onMorePopularClick,
-                )
+            if (state.visibility?.get(DiscoverPopular) == true) {
+                item {
+                    DiscoverPopularView(
+                        viewModel = koinViewModel {
+                            parametersOf(customThemeEnabled)
+                        },
+                        collection = state.collection,
+                        headerPadding = sectionPadding,
+                        contentPadding = sectionPadding,
+                        onShowClick = onShowClick,
+                        onMovieClick = onMovieClick,
+                        onMoreClick = onMorePopularClick,
+                    )
+                }
             }
 
-            if (state.user.isAuthenticated) {
+            if (
+                state.user.isAuthenticated &&
+                state.visibility?.get(DiscoverRecommended) == true
+            ) {
                 item {
                     DiscoverRecommendedView(
                         viewModel = koinViewModel {
@@ -221,6 +241,7 @@ private fun DiscoverScreen(
             isScrolledToTop = isScrolledToTop,
             onVipClick = onVipClick,
             onFiltersClick = onFiltersClick,
+            onEditScreenClick = onEditScreenClick,
         )
     }
 }
@@ -232,6 +253,7 @@ private fun ScreenHeader(
     isScrolledToTop: Boolean,
     onVipClick: () -> Unit,
     onFiltersClick: () -> Unit,
+    onEditScreenClick: () -> Unit,
 ) {
     val userState = remember(state.user) {
         val loadingDone = state.user.loading == Done
@@ -244,8 +266,10 @@ private fun ScreenHeader(
         showLogin = userState.first && !userState.second,
         showVip = userState.second && state.user.user?.isVip == false,
         showFilters = true,
+        showEditScreen = true,
         onVipClick = onVipClick,
         onFilterClick = onFiltersClick,
+        onEditScreenClick = onEditScreenClick,
         modifier = Modifier.offset {
             IntOffset(0, headerState.connection.barOffset.fastRoundToInt())
         },

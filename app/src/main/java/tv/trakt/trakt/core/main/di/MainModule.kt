@@ -24,25 +24,18 @@ import tv.trakt.trakt.core.main.MainViewModel
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
 import tv.trakt.trakt.core.main.usecases.LoadWhatsNewUseCase
-import tv.trakt.trakt.helpers.collapsing.CollapsingManager
-import tv.trakt.trakt.helpers.collapsing.DefaultCollapsingManager
+import tv.trakt.trakt.helpers.editscreen.data.DefaultEditScreenManager
+import tv.trakt.trakt.helpers.editscreen.data.EditScreenManager
 
 internal const val MAIN_PREFERENCES = "main_preferences"
 internal const val WHATS_NEW_PREFERENCES = "whats_new_preferences"
-internal const val COLLAPSING_PREFERENCES = "collapsing_preferences"
+internal const val EDIT_SCREEN_PREFERENCES = "edit_screen_preferences"
 
 internal val mainModule = module {
     single<DataStore<Preferences>>(named(MAIN_PREFERENCES)) {
         createStore(
             context = androidApplication(),
             file = MAIN_PREFERENCES,
-        )
-    }
-
-    single<DataStore<Preferences>>(named(COLLAPSING_PREFERENCES)) {
-        createStore(
-            context = androidApplication(),
-            file = COLLAPSING_PREFERENCES,
         )
     }
 
@@ -53,9 +46,16 @@ internal val mainModule = module {
         )
     }
 
-    single<CollapsingManager> {
-        DefaultCollapsingManager(
-            dataStore = get(named(COLLAPSING_PREFERENCES)),
+    single<DataStore<Preferences>>(named(EDIT_SCREEN_PREFERENCES)) {
+        createStore(
+            context = androidApplication(),
+            file = EDIT_SCREEN_PREFERENCES,
+        )
+    }
+
+    single<EditScreenManager> {
+        DefaultEditScreenManager(
+            dataStore = get(named(EDIT_SCREEN_PREFERENCES)),
         )
     }
 

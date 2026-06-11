@@ -11,5 +11,4 @@ internal data class ShowSentimentState(
     val sentiment: Sentiments? = null,
     val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
-    val collapsed: Boolean? = null,
 )

@@ -59,6 +59,7 @@ internal fun EpisodeDetailsContextView(
     onRemoveClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
+    onEditScreenClick: (() -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -70,6 +71,7 @@ internal fun EpisodeDetailsContextView(
         onRemoveClick = onRemoveClick,
         onShareClick = onShareClick,
         onCoverClick = onCoverClick,
+        onEditScreenClick = onEditScreenClick,
         modifier = modifier,
     )
 }
@@ -84,6 +86,7 @@ private fun EpisodeDetailsContextViewContent(
     onRemoveClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
+    onEditScreenClick: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
     val isReleased = episode.rememberReleased()
@@ -161,6 +164,7 @@ private fun EpisodeDetailsContextViewContent(
             onRemoveClick = onRemoveClick ?: {},
             onShareClick = onShareClick ?: {},
             onCoverClick = onCoverClick ?: {},
+            onEditScreenClick = onEditScreenClick ?: {},
             modifier = Modifier
                 .padding(top = 14.dp),
         )
@@ -218,6 +222,7 @@ private fun ActionButtons(
     onShareClick: () -> Unit,
     onRemoveClick: () -> Unit,
     onCoverClick: () -> Unit,
+    onEditScreenClick: () -> Unit,
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
@@ -291,6 +296,18 @@ private fun ActionButtons(
                     translationX = -5.dp.toPx()
                 },
             onClick = onShareClick,
+        )
+
+        GhostButton(
+            text = stringResource(R.string.text_edit_screen),
+            icon = painterResource(R.drawable.ic_edit_screen),
+            iconSize = 22.dp,
+            iconSpace = 15.dp,
+            modifier = Modifier
+                .graphicsLayer {
+                    translationX = -5.dp.toPx()
+                },
+            onClick = onEditScreenClick,
         )
     }
 }

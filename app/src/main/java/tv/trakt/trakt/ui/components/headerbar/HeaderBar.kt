@@ -12,13 +12,20 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +39,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import tv.trakt.trakt.MainActivity
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.auth.ConfigAuth
@@ -52,11 +60,13 @@ internal fun HeaderBar(
     containerColor: Color = TraktTheme.colors.navigationHeaderContainer,
     containerAlpha: Float = 0.98F,
     showFilters: Boolean = false,
+    showEditScreen: Boolean = false,
     showLogin: Boolean = false,
     showVip: Boolean = false,
     userLoading: Boolean = false,
     onVipClick: () -> Unit = {},
     onFilterClick: () -> Unit = {},
+    onEditScreenClick: () -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
     val localActivity = LocalActivity.current
@@ -78,10 +88,12 @@ internal fun HeaderBar(
         showLogin = showLogin,
         showVip = showVip,
         showFilters = showFilters,
+        showEditScreen = showEditScreen,
         userLoading = userLoading,
         customTheme = customThemeConfig,
         onVipClick = onVipClick,
         onFilterClick = onFilterClick,
+        onEditScreenClick = onEditScreenClick,
         onCustomThemeChange = {
             (localActivity as? MainActivity)?.toggleCustomTheme(it)
         },
@@ -102,12 +114,14 @@ private fun HeaderBar(
     showLogin: Boolean = false,
     showVip: Boolean = false,
     showFilters: Boolean = false,
+    showEditScreen: Boolean = false,
     userLoading: Boolean = false,
     customTheme: CustomThemeUseCase.CustomThemeConfig? = null,
     onMediaModeSelect: (MediaMode) -> Unit = {},
     onCustomThemeChange: (Boolean) -> Unit = {},
     onVipClick: () -> Unit = {},
     onFilterClick: () -> Unit = {},
+    onEditScreenClick: () -> Unit = {},
 ) {
     val uriHandler = LocalUriHandler.current
 
@@ -155,7 +169,7 @@ private fun HeaderBar(
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(20.dp),
             ) {
                 if (showLogin) {
                     TertiaryButton(
@@ -188,7 +202,61 @@ private fun HeaderBar(
                         onClick = onFilterClick,
                     )
                 }
+
+                if (showEditScreen) {
+                    HeaderBarMoreButton(
+                        onEditScreenClick = onEditScreenClick,
+                    )
+                }
             }
+        }
+    }
+}
+
+@Composable
+fun HeaderBarMoreButton(onEditScreenClick: () -> Unit = {}) {
+    var showMenu by remember { mutableStateOf(false) }
+
+    Box {
+        Icon(
+            painter = painterResource(R.drawable.ic_more_vertical),
+            contentDescription = null,
+            tint = TraktTheme.colors.textPrimary,
+            modifier = Modifier
+                .size(18.dp)
+                .onClick {
+                    showMenu = true
+                },
+        )
+        DropdownMenu(
+            expanded = showMenu,
+            containerColor = TraktTheme.colors.dialogContainer,
+            shape = RoundedCornerShape(16.dp),
+            onDismissRequest = {
+                showMenu = false
+            },
+        ) {
+            DropdownMenuItem(
+                text = {
+                    Text(
+                        text = stringResource(R.string.text_edit_screen),
+                        style = TraktTheme.typography.buttonTertiary,
+                        color = TraktTheme.colors.textPrimary,
+                    )
+                },
+                onClick = {
+                    onEditScreenClick()
+                    showMenu = false
+                },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_edit_screen),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier.size(21.dp),
+                    )
+                },
+            )
         }
     }
 }
@@ -247,6 +315,7 @@ private fun Preview4() {
             ),
             showVip = true,
             showFilters = true,
+            showEditScreen = true,
         )
     }
 }

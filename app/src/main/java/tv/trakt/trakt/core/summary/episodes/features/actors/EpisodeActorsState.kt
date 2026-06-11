@@ -10,5 +10,4 @@ internal data class EpisodeActorsState(
     val items: ImmutableList<CastPerson>? = null,
     val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
-    val collapsed: Boolean? = null,
 )

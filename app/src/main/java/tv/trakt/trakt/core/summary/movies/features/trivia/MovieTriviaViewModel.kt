@@ -28,15 +28,10 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.trivia.TriviaFact
 import tv.trakt.trakt.core.summary.movies.features.trivia.usecases.GetMovieTriviaUseCase
-import tv.trakt.trakt.helpers.collapsing.CollapsingManager
-import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
-
-private val collapsingKey = CollapsingKey.MOVIE_TRIVIA
 
 internal class MovieTriviaViewModel(
     private val movie: Movie,
     private val getTriviaUseCase: GetMovieTriviaUseCase,
-    private val collapsingManager: CollapsingManager,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = MovieTriviaState()
@@ -45,10 +40,7 @@ internal class MovieTriviaViewModel(
     private val summaryState = MutableStateFlow(initialState.summary)
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(collapsingKey))
     private val errorState = MutableStateFlow(initialState.error)
-
-    private var collapseJob: kotlinx.coroutines.Job? = null
 
     init {
         loadData()
@@ -107,24 +99,11 @@ internal class MovieTriviaViewModel(
         }
     }
 
-    fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(collapsingKey)
-                else -> collapsingManager.expand(collapsingKey)
-            }
-        }
-    }
-
     val state = combine(
         userState,
         itemsState,
         summaryState,
         loadingState,
-        collapseState,
         errorState,
     ) { state ->
         @Suppress("UNCHECKED_CAST")
@@ -133,8 +112,7 @@ internal class MovieTriviaViewModel(
             items = state[1] as ImmutableList<TriviaFact>?,
             summary = state[2] as ImmutableList<String>?,
             loading = state[3] as LoadingState,
-            collapsed = state[4] as Boolean,
-            error = state[5] as Exception?,
+            error = state[4] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

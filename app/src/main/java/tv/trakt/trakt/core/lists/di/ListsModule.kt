@@ -242,6 +242,7 @@ internal val listsModule = module {
             localListsItemsSource = get(),
             localLikedListsSource = get(),
             localCollaborationsListsSource = get(),
+            editScreenManager = get(),
             analytics = get(),
         )
     }
@@ -256,7 +257,6 @@ internal val listsModule = module {
             collectionStateProvider = get(),
             filterManager = get(),
             sessionManager = get(),
-            collapsingManager = get(),
             watchlistUpdates = get(),
         )
     }
@@ -294,7 +294,6 @@ internal val listsModule = module {
             movieLocalDataSource = get(),
             episodeLocalDataSource = get(),
             collectionStateProvider = get(),
-            collapsingManager = get(),
         )
     }
 
@@ -308,7 +307,6 @@ internal val listsModule = module {
             movieLocalDataSource = get(),
             episodeLocalDataSource = get(),
             collectionStateProvider = get(),
-            collapsingManager = get(),
         )
     }
 
@@ -324,7 +322,6 @@ internal val listsModule = module {
             movieLocalDataSource = get(),
             episodeLocalDataSource = get(),
             collectionStateProvider = get(),
-            collapsingManager = get(),
         )
     }
 

@@ -5,7 +5,6 @@ package tv.trakt.trakt.core.summary.episodes
 import android.content.Context
 import android.content.Intent
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -89,6 +88,14 @@ import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
 import tv.trakt.trakt.helpers.SimpleScrollConnection
+import tv.trakt.trakt.helpers.editscreen.EditScreenSheet
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.Companion.EpisodeKeys
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.EpisodeActors
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.EpisodeHistory
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.EpisodeRelated
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.EpisodeReviews
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.EpisodeSeason
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.EpisodeWhereToWatch
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
@@ -124,6 +131,7 @@ internal fun EpisodeDetailsScreen(
     var dateSheet by remember { mutableStateOf(false) }
     var detailsSheet by remember { mutableStateOf<Pair<Show, Episode>?>(null) }
     var coverImageSheet by remember { mutableStateOf(false) }
+    var sectionsSheet by remember { mutableStateOf(false) }
 
     DisposableEffect(Unit) {
         localRateVisibility.value = false
@@ -221,6 +229,9 @@ internal fun EpisodeDetailsScreen(
         onCoverClick = {
             coverImageSheet = true
         },
+        onEditScreenClick = {
+            sectionsSheet = true
+        },
         onDismiss = {
             contextSheet = false
         },
@@ -298,6 +309,12 @@ internal fun EpisodeDetailsScreen(
         onDismiss = {
             coverImageSheet = false
         },
+    )
+
+    EditScreenSheet(
+        active = sectionsSheet,
+        enabledValues = EpisodeKeys,
+        onDismiss = { sectionsSheet = false },
     )
 
     LaunchedEffect(state.info) {
@@ -496,7 +513,7 @@ internal fun EpisodeDetailsContent(
                 if (!previewMode) {
                     val streamingsVisible = isReleased && (state.user != null)
 
-                    if (streamingsVisible) {
+                    if (streamingsVisible && state.visibility?.get(EpisodeWhereToWatch) == true) {
                         item {
                             EpisodeStreamingsView(
                                 viewModel = koinViewModel(
@@ -513,80 +530,88 @@ internal fun EpisodeDetailsContent(
                         }
                     }
 
-                    item {
-                        EpisodeCommentsView(
-                            viewModel = koinViewModel(
-                                parameters = {
-                                    parametersOf(state.show, state.episode)
-                                },
-                            ),
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onMoreClick = onMoreCommentsClick,
-                            onUserClick = onNavigateToUser,
-                            modifier = Modifier
-                                .alpha(ratingAlphaMask)
-                                .padding(
-                                    top = when {
-                                        streamingsVisible -> 32.dp
-                                        else -> 24.dp
+                    if (state.visibility?.get(EpisodeReviews) == true) {
+                        item {
+                            EpisodeCommentsView(
+                                viewModel = koinViewModel(
+                                    parameters = {
+                                        parametersOf(state.show, state.episode)
                                     },
                                 ),
-                        )
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onMoreClick = onMoreCommentsClick,
+                                onUserClick = onNavigateToUser,
+                                modifier = Modifier
+                                    .alpha(ratingAlphaMask)
+                                    .padding(
+                                        top = when {
+                                            streamingsVisible -> 32.dp
+                                            else -> 24.dp
+                                        },
+                                    ),
+                            )
+                        }
                     }
 
-                    item {
-                        EpisodeActorsView(
-                            viewModel = koinViewModel(
-                                parameters = {
-                                    parametersOf(state.show, state.episode)
+                    if (state.visibility?.get(EpisodeActors) == true) {
+                        item {
+                            EpisodeActorsView(
+                                viewModel = koinViewModel(
+                                    parameters = {
+                                        parametersOf(state.show, state.episode)
+                                    },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onPersonClick = onPersonClick ?: {},
+                                modifier = Modifier
+                                    .alpha(ratingAlphaMask)
+                                    .padding(top = 32.dp),
+                            )
+                        }
+                    }
+
+                    if (state.visibility?.get(EpisodeSeason) == true) {
+                        item {
+                            EpisodeSeasonView(
+                                viewModel = koinViewModel(
+                                    parameters = {
+                                        parametersOf(state.show, state.episode)
+                                    },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onEpisodeClick = onEpisodeClick ?: {},
+                                onAllSeasonsClick = { season ->
+                                    onAllSeasonsClick?.invoke(state.show, season)
                                 },
-                            ),
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onPersonClick = onPersonClick ?: {},
-                            modifier = Modifier
-                                .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
-                        )
+                                modifier = Modifier
+                                    .alpha(ratingAlphaMask)
+                                    .padding(top = 32.dp),
+                            )
+                        }
                     }
 
-                    item {
-                        EpisodeSeasonView(
-                            viewModel = koinViewModel(
-                                parameters = {
-                                    parametersOf(state.show, state.episode)
-                                },
-                            ),
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onEpisodeClick = onEpisodeClick ?: {},
-                            onAllSeasonsClick = { season ->
-                                onAllSeasonsClick?.invoke(state.show, season)
-                            },
-                            modifier = Modifier
-                                .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
-                        )
+                    if (state.visibility?.get(EpisodeRelated) == true) {
+                        item {
+                            EpisodeRelatedView(
+                                viewModel = koinViewModel(
+                                    parameters = {
+                                        parametersOf(state.show, state.episode)
+                                    },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onClick = onShowClick,
+                                modifier = Modifier
+                                    .alpha(ratingAlphaMask)
+                                    .padding(top = 32.dp),
+                            )
+                        }
                     }
 
-                    item {
-                        EpisodeRelatedView(
-                            viewModel = koinViewModel(
-                                parameters = {
-                                    parametersOf(state.show, state.episode)
-                                },
-                            ),
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onClick = onShowClick,
-                            modifier = Modifier
-                                .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
-                        )
-                    }
-
-                    if (isWatched) {
+                    if (isWatched && state.visibility?.get(EpisodeHistory) == true) {
                         item {
                             EpisodeHistoryView(
                                 viewModel = koinViewModel(
@@ -628,9 +653,6 @@ fun DetailsRating(
             .ifOrElse(
                 condition = animated,
                 isTrue = Modifier,
-                isFalse = Modifier.animateContentSize(
-                    animationSpec = tween(200, delayMillis = 250),
-                ),
             ),
     ) {
         if (visible) {

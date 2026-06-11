@@ -3,9 +3,6 @@
 package tv.trakt.trakt.core.summary.shows.features.seasons
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.snap
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -32,13 +29,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
@@ -146,7 +141,6 @@ internal fun ShowSeasonsView(
         onAllSeasonsClick = {
             onAllSeasonsClick(state.items.selectedSeason?.number)
         },
-        onCollapse = viewModel::setCollapsed,
     )
 
     RemoveConfirmationSheet(
@@ -263,16 +257,10 @@ private fun ShowSeasonsContent(
     onCheckSeasonClick: (() -> Unit)? = null,
     onRemoveSeasonClick: (() -> Unit)? = null,
     onAllSeasonsClick: (() -> Unit)? = null,
-    onCollapse: (collapsed: Boolean) -> Unit = {},
 ) {
-    var animateCollapse by rememberSaveable { mutableStateOf(false) }
-
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
-        modifier = modifier
-            .animateContentSize(
-                animationSpec = if (animateCollapse) spring() else snap(),
-            ),
+        modifier = modifier,
     ) {
         val headerSeasons = stringResource(R.string.list_title_seasons)
         val headerCurrentSeason = state.items.selectedSeason?.let {
@@ -294,7 +282,7 @@ private fun ShowSeasonsContent(
                 verticalAlignment = CenterVertically,
                 modifier = Modifier
                     .weight(1f)
-                    .onClick(enabled = !state.loading.isLoading && state.collapsed != true) {
+                    .onClick(enabled = !state.loading.isLoading) {
                         onAllSeasonsClick?.invoke()
                     },
             ) {
@@ -302,12 +290,11 @@ private fun ShowSeasonsContent(
                     title = headerSeasons,
                     titleColor = when {
                         !state.loading.isLoading && state.items.seasons.isEmpty() -> TraktTheme.colors.textPrimary
-                        state.collapsed == true -> TraktTheme.colors.textPrimary
                         else -> TraktTheme.colors.textSecondary
                     },
                 )
 
-                if (state.items.selectedSeason != null && state.collapsed != true) {
+                if (state.items.selectedSeason != null && true) {
                     TraktHeader(
                         title = "/",
                         titleColor = TraktTheme.colors.textSecondary,
@@ -317,14 +304,14 @@ private fun ShowSeasonsContent(
                     )
                 }
 
-                if (state.items.selectedSeason != null && state.collapsed != true) {
+                if (state.items.selectedSeason != null && true) {
                     AllSeasonsDropdown(
                         state = state,
                         onSeasonClick = onSeasonClick,
                     )
                 }
 
-                if (user != null && state.collapsed != true && !state.loading.isLoading) {
+                if (user != null && true && !state.loading.isLoading) {
                     Icon(
                         painter = painterResource(R.drawable.ic_chevron_right),
                         contentDescription = null,
@@ -346,63 +333,46 @@ private fun ShowSeasonsContent(
                 if (state.loadingSeason.isLoading) {
                     FilmProgressIndicator(size = 16.dp)
                 }
-
-                Icon(
-                    painter = painterResource(R.drawable.ic_arrow_dropdown),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textSecondary,
-                    modifier = Modifier
-                        .padding(start = 4.dp)
-                        .rotate(if (state.collapsed == true) -180F else 0F)
-                        .size(16.dp)
-                        .onClick {
-                            animateCollapse = true
-                            val current = (state.collapsed ?: false)
-                            onCollapse(!current)
-                        },
-                )
             }
         }
 
-        if (state.collapsed != true) {
-            Crossfade(
-                targetState = state.loading,
-                animationSpec = tween(300),
-            ) { loading ->
-                when (loading) {
-                    Idle, Loading -> {
-                        ContentLoading(
-                            visible = loading.isLoading,
-                            contentPadding = contentPadding,
-                        )
-                    }
+        Crossfade(
+            targetState = state.loading,
+            animationSpec = tween(300),
+        ) { loading ->
+            when (loading) {
+                Idle, Loading -> {
+                    ContentLoading(
+                        visible = loading.isLoading,
+                        contentPadding = contentPadding,
+                    )
+                }
 
-                    Done -> {
-                        if (state.items.seasons.isEmpty()) {
-                            ContentEmpty(
-                                contentPadding = headerPadding,
-                            )
-                        } else {
-                            ContentList(
-                                show = state.show,
-                                seasons = state.items,
-                                contentPadding = contentPadding,
-                                onEpisodeClick = onEpisodeClick,
-                                onSeasonClick = onSeasonClick,
-                                onSeasonLongClick = {
-                                    if (state.loadingSeason.isLoading) {
-                                        return@ContentList
-                                    }
-                                    when (state.items.isSelectedSeasonWatched) {
-                                        true -> onRemoveSeasonClick?.invoke()
-                                        else -> onCheckSeasonClick?.invoke()
-                                    }
-                                },
-                                onCheckEpisodeClick = onCheckEpisodeClick,
-                                onCheckEpisodeLongClick = onCheckEpisodeLongClick,
-                                onRemoveEpisodeClick = onRemoveEpisodeClick,
-                            )
-                        }
+                Done -> {
+                    if (state.items.seasons.isEmpty()) {
+                        ContentEmpty(
+                            contentPadding = headerPadding,
+                        )
+                    } else {
+                        ContentList(
+                            show = state.show,
+                            seasons = state.items,
+                            contentPadding = contentPadding,
+                            onEpisodeClick = onEpisodeClick,
+                            onSeasonClick = onSeasonClick,
+                            onSeasonLongClick = {
+                                if (state.loadingSeason.isLoading) {
+                                    return@ContentList
+                                }
+                                when (state.items.isSelectedSeasonWatched) {
+                                    true -> onRemoveSeasonClick?.invoke()
+                                    else -> onCheckSeasonClick?.invoke()
+                                }
+                            },
+                            onCheckEpisodeClick = onCheckEpisodeClick,
+                            onCheckEpisodeLongClick = onCheckEpisodeLongClick,
+                            onRemoveEpisodeClick = onRemoveEpisodeClick,
+                        )
                     }
                 }
             }

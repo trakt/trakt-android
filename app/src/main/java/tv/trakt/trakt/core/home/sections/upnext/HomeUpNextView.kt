@@ -3,9 +3,6 @@
 package tv.trakt.trakt.core.home.sections.upnext
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.snap
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -90,7 +87,6 @@ internal fun HomeUpNextView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onCollapse = viewModel::setCollapsed,
         onShowsClick = onShowsClick,
         onMoviesClick = onMoviesClick,
         onShowClick = { onShowClick(it.show.ids.trakt) },
@@ -181,26 +177,14 @@ internal fun HomeUpNextContent(
     onLongClick: (UpNextItem) -> Unit = {},
     onCheckClick: (UpNextItem) -> Unit = {},
     onCheckLongClick: (UpNextItem) -> Unit = {},
-    onCollapse: (collapsed: Boolean) -> Unit = {},
 ) {
-    var animateCollapse by rememberSaveable { mutableStateOf(false) }
-
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
-        modifier = modifier
-            .animateContentSize(
-                animationSpec = if (animateCollapse) spring() else snap(),
-            ),
+        modifier = modifier,
     ) {
         TraktSectionHeader(
             title = stringResource(R.string.list_title_up_next),
             chevron = !state.items.items.isNullOrEmpty() || state.loading != Done,
-            collapsed = state.collapsed ?: false,
-            onCollapseClick = {
-                animateCollapse = true
-                val current = (state.collapsed ?: false)
-                onCollapse(!current)
-            },
             modifier = Modifier
                 .padding(headerPadding)
                 .onClick(enabled = state.loading == Done) {
@@ -208,77 +192,75 @@ internal fun HomeUpNextContent(
                 },
         )
 
-        if (state.collapsed != true) {
-            Crossfade(
-                targetState = state.loading,
-                animationSpec = tween(200),
-            ) { loading ->
-                when (loading) {
-                    Idle, Loading -> {
-                        ContentLoadingList(
-                            visible = loading.isLoading,
-                            contentPadding = contentPadding,
-                        )
-                    }
+        Crossfade(
+            targetState = state.loading,
+            animationSpec = tween(200),
+        ) { loading ->
+            when (loading) {
+                Idle, Loading -> {
+                    ContentLoadingList(
+                        visible = loading.isLoading,
+                        contentPadding = contentPadding,
+                    )
+                }
 
-                    Done -> {
-                        when {
-                            state.error != null -> {
-                                Text(
-                                    text =
-                                        "${
-                                            stringResource(
-                                                R.string.error_text_unexpected_error_short,
-                                            )
-                                        }\n\n${state.error}",
-                                    color = TraktTheme.colors.textSecondary,
-                                    style = TraktTheme.typography.meta,
-                                    maxLines = 10,
-                                    modifier = Modifier.padding(contentPadding),
-                                )
+                Done -> {
+                    when {
+                        state.error != null -> {
+                            Text(
+                                text =
+                                    "${
+                                        stringResource(
+                                            R.string.error_text_unexpected_error_short,
+                                        )
+                                    }\n\n${state.error}",
+                                color = TraktTheme.colors.textSecondary,
+                                style = TraktTheme.typography.meta,
+                                maxLines = 10,
+                                modifier = Modifier.padding(contentPadding),
+                            )
+                        }
+
+                        state.items.items?.isEmpty() == true -> {
+                            val imageUrl = remember {
+                                Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_1).ifBlank { null }
                             }
-
-                            state.items.items?.isEmpty() == true -> {
-                                val imageUrl = remember {
-                                    Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_1).ifBlank { null }
-                                }
-                                HomeEmptyView(
-                                    text = stringResource(
-                                        when (state.filter?.mode) {
-                                            MediaMode.MOVIES -> R.string.text_cta_up_next_movies
-                                            else -> R.string.text_cta_up_next
-                                        },
-                                    ),
-                                    icon = R.drawable.ic_empty_upnext,
-                                    buttonText = when (state.filter?.mode) {
-                                        MediaMode.MOVIES -> stringResource(R.string.link_text_discover_movies)
-                                        else -> stringResource(R.string.link_text_discover_shows)
+                            HomeEmptyView(
+                                text = stringResource(
+                                    when (state.filter?.mode) {
+                                        MediaMode.MOVIES -> R.string.text_cta_up_next_movies
+                                        else -> R.string.text_cta_up_next
                                     },
-                                    backgroundImageUrl = imageUrl,
-                                    backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
-                                    modifier = Modifier.padding(contentPadding),
-                                    onClick = {
-                                        when (state.filter?.mode) {
-                                            MediaMode.MOVIES -> onMoviesClick()
-                                            else -> onShowsClick()
-                                        }
-                                    },
-                                )
-                            }
+                                ),
+                                icon = R.drawable.ic_empty_upnext,
+                                buttonText = when (state.filter?.mode) {
+                                    MediaMode.MOVIES -> stringResource(R.string.link_text_discover_movies)
+                                    else -> stringResource(R.string.link_text_discover_shows)
+                                },
+                                backgroundImageUrl = imageUrl,
+                                backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,
+                                modifier = Modifier.padding(contentPadding),
+                                onClick = {
+                                    when (state.filter?.mode) {
+                                        MediaMode.MOVIES -> onMoviesClick()
+                                        else -> onShowsClick()
+                                    }
+                                },
+                            )
+                        }
 
-                            else -> {
-                                ContentList(
-                                    listFilter = state.filter?.mode,
-                                    listItems = state.items,
-                                    contentPadding = contentPadding,
-                                    onClick = onClick,
-                                    onLongClick = onLongClick,
-                                    onCheckClick = onCheckClick,
-                                    onCheckLongClick = onCheckLongClick,
-                                    onShowClick = onShowClick,
-                                    onMovieClick = onMovieClick,
-                                )
-                            }
+                        else -> {
+                            ContentList(
+                                listFilter = state.filter?.mode,
+                                listItems = state.items,
+                                contentPadding = contentPadding,
+                                onClick = onClick,
+                                onLongClick = onLongClick,
+                                onCheckClick = onCheckClick,
+                                onCheckLongClick = onCheckLongClick,
+                                onShowClick = onShowClick,
+                                onMovieClick = onMovieClick,
+                            )
                         }
                     }
                 }

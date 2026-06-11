@@ -3,9 +3,6 @@
 package tv.trakt.trakt.core.summary.movies.features.comments
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.snap
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -34,7 +31,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -122,7 +118,6 @@ internal fun MovieCommentsView(
         onReactionClick = { reaction, comment ->
             viewModel.setReaction(reaction, comment.id)
         },
-        onCollapse = viewModel::setCollapsed,
         onUserClick = onUserClick,
     )
 
@@ -167,15 +162,11 @@ private fun MovieCommentsContent(
     onAddCommentClick: (() -> Unit)? = null,
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
-    onCollapse: ((Boolean) -> Unit)? = null,
     onUserClick: ((User) -> Unit)? = null,
 ) {
-    var animateCollapse by rememberSaveable { mutableStateOf(false) }
-
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
-        modifier = modifier
-            .animateContentSize(animationSpec = if (animateCollapse) spring() else snap()),
+        modifier = modifier,
     ) {
         Row(
             modifier = Modifier
@@ -187,12 +178,6 @@ private fun MovieCommentsContent(
             TraktSectionHeader(
                 title = stringResource(R.string.list_title_comments),
                 chevron = !state.items.isNullOrEmpty() || state.loading != Done,
-                collapsed = state.collapsed ?: false,
-                onCollapseClick = {
-                    animateCollapse = true
-                    val current = (state.collapsed ?: false)
-                    onCollapse?.invoke(!current)
-                },
                 extraIcon = when {
                     state.user != null -> {
                         {
@@ -227,51 +212,49 @@ private fun MovieCommentsContent(
             )
         }
 
-        if (state.collapsed != true) {
-            if (!state.items.isNullOrEmpty() || state.loading.isLoading || state.user != null) {
-                ContentFilters(
-                    selectedFilter = state.filter,
-                    headerPadding = headerPadding,
-                    onFilterClick = onFilterClick,
-                )
-            } else {
-                Spacer(modifier = Modifier.height(TraktTheme.spacing.mainRowHeaderSpace))
-            }
+        if (!state.items.isNullOrEmpty() || state.loading.isLoading || state.user != null) {
+            ContentFilters(
+                selectedFilter = state.filter,
+                headerPadding = headerPadding,
+                onFilterClick = onFilterClick,
+            )
+        } else {
+            Spacer(modifier = Modifier.height(TraktTheme.spacing.mainRowHeaderSpace))
+        }
 
-            Crossfade(
-                targetState = state.loading,
-                animationSpec = tween(200),
-            ) { loading ->
-                when (loading) {
-                    Idle, Loading -> {
-                        ContentLoading(
-                            visible = loading.isLoading,
-                            contentPadding = contentPadding,
-                        )
-                    }
+        Crossfade(
+            targetState = state.loading,
+            animationSpec = tween(200),
+        ) { loading ->
+            when (loading) {
+                Idle, Loading -> {
+                    ContentLoading(
+                        visible = loading.isLoading,
+                        contentPadding = contentPadding,
+                    )
+                }
 
-                    Done -> {
-                        Column(
-                            verticalArrangement = spacedBy(0.dp),
-                        ) {
-                            if (state.items?.isEmpty() == true) {
-                                ContentEmpty(
-                                    contentPadding = headerPadding,
-                                )
-                            } else {
-                                ContentList(
-                                    listItems = (state.items ?: emptyList()).toImmutableList(),
-                                    listReactions = (state.reactions ?: emptyMap()).toImmutableMap(),
-                                    user = state.user,
-                                    userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
-                                    contentPadding = contentPadding,
-                                    onCommentClick = onCommentClick,
-                                    onDeleteCommentClick = onDeleteCommentClick,
-                                    onCommentLoaded = onCommentLoaded,
-                                    onReactionClick = onReactionClick,
-                                    onUserClick = onUserClick,
-                                )
-                            }
+                Done -> {
+                    Column(
+                        verticalArrangement = spacedBy(0.dp),
+                    ) {
+                        if (state.items?.isEmpty() == true) {
+                            ContentEmpty(
+                                contentPadding = headerPadding,
+                            )
+                        } else {
+                            ContentList(
+                                listItems = (state.items ?: emptyList()).toImmutableList(),
+                                listReactions = (state.reactions ?: emptyMap()).toImmutableMap(),
+                                user = state.user,
+                                userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
+                                contentPadding = contentPadding,
+                                onCommentClick = onCommentClick,
+                                onDeleteCommentClick = onDeleteCommentClick,
+                                onCommentLoaded = onCommentLoaded,
+                                onReactionClick = onReactionClick,
+                                onUserClick = onUserClick,
+                            )
                         }
                     }
                 }

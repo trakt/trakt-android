@@ -5,7 +5,6 @@ package tv.trakt.trakt.core.summary.shows
 import android.content.Context
 import android.content.Intent
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -101,6 +100,18 @@ import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
 import tv.trakt.trakt.helpers.SimpleScrollConnection
+import tv.trakt.trakt.helpers.editscreen.EditScreenSheet
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.Companion.ShowKeys
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.ShowActors
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.ShowExtras
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.ShowHistory
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.ShowLists
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.ShowRelated
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.ShowReviews
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.ShowSeasons
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.ShowSentiment
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.ShowTrivia
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.ShowWhereToWatch
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
@@ -146,6 +157,7 @@ internal fun ShowDetailsScreen(
     var dateSheet by remember { mutableStateOf(false) }
     var shareSheet by remember { mutableStateOf(false) }
     var coverImageSheet by remember { mutableStateOf<Show?>(null) }
+    var sectionsSheet by remember { mutableStateOf(false) }
 
     DisposableEffect(Unit) {
         localRateVisibility.value = false
@@ -297,8 +309,19 @@ internal fun ShowDetailsScreen(
         onCoverClick = {
             coverImageSheet = state.show
         },
+        onEditScreenClick = {
+            sectionsSheet = true
+        },
         onDismiss = {
             contextSheet = null
+        },
+    )
+
+    EditScreenSheet(
+        active = sectionsSheet,
+        enabledValues = ShowKeys,
+        onDismiss = {
+            sectionsSheet = false
         },
     )
 
@@ -621,7 +644,7 @@ internal fun ShowDetailsContent(
                 if (!previewMode) {
                     val showStreamings = (state.user != null) && isReleased
 
-                    if (showStreamings) {
+                    if (showStreamings && state.visibility?.get(ShowWhereToWatch) == true) {
                         item {
                             ShowStreamingsView(
                                 viewModel = koinViewModel(
@@ -636,7 +659,7 @@ internal fun ShowDetailsContent(
                         }
                     }
 
-                    if (isReleased) {
+                    if (isReleased && state.visibility?.get(ShowSentiment) == true) {
                         item {
                             ShowSentimentView(
                                 viewModel = koinViewModel(
@@ -659,94 +682,106 @@ internal fun ShowDetailsContent(
                         }
                     }
 
-                    item {
-                        ShowCommentsView(
-                            viewModel = koinViewModel(
-                                parameters = { parametersOf(show) },
-                            ),
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onMoreClick = onMoreCommentsClick,
-                            onUserClick = onNavigateToUser,
-                            modifier = Modifier
-                                .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
-                        )
+                    if (state.visibility?.get(ShowReviews) == true) {
+                        item {
+                            ShowCommentsView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(show) },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onMoreClick = onMoreCommentsClick,
+                                onUserClick = onNavigateToUser,
+                                modifier = Modifier
+                                    .alpha(ratingAlphaMask)
+                                    .padding(top = 32.dp),
+                            )
+                        }
                     }
 
-                    item {
-                        ShowActorsView(
-                            viewModel = koinViewModel(
-                                parameters = { parametersOf(show) },
-                            ),
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onPersonClick = onPersonClick ?: {},
-                            modifier = Modifier
-                                .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
-                        )
+                    if (state.visibility?.get(ShowActors) == true) {
+                        item {
+                            ShowActorsView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(show) },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onPersonClick = onPersonClick ?: {},
+                                modifier = Modifier
+                                    .alpha(ratingAlphaMask)
+                                    .padding(top = 32.dp),
+                            )
+                        }
                     }
 
-                    item {
-                        ShowSeasonsView(
-                            viewModel = koinViewModel(
-                                parameters = { parametersOf(show) },
-                            ),
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            user = state.user,
-                            onEpisodeClick = onEpisodeClick ?: {},
-                            onAllSeasonsClick = { onAllSeasonsClick?.invoke(show, it) },
-                            modifier = Modifier
-                                .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
-                        )
+                    if (state.visibility?.get(ShowSeasons) == true) {
+                        item {
+                            ShowSeasonsView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(show) },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                user = state.user,
+                                onEpisodeClick = onEpisodeClick ?: {},
+                                onAllSeasonsClick = { onAllSeasonsClick?.invoke(show, it) },
+                                modifier = Modifier
+                                    .alpha(ratingAlphaMask)
+                                    .padding(top = 32.dp),
+                            )
+                        }
                     }
 
-                    item {
-                        ShowExtrasView(
-                            viewModel = koinViewModel(
-                                parameters = { parametersOf(show) },
-                            ),
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onVideoClick = onExtraClick ?: {},
-                            modifier = Modifier
-                                .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
-                        )
+                    if (state.visibility?.get(ShowExtras) == true) {
+                        item {
+                            ShowExtrasView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(show) },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onVideoClick = onExtraClick ?: {},
+                                modifier = Modifier
+                                    .alpha(ratingAlphaMask)
+                                    .padding(top = 32.dp),
+                            )
+                        }
                     }
 
-                    item {
-                        ShowRelatedView(
-                            viewModel = koinViewModel(
-                                parameters = { parametersOf(show) },
-                            ),
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onClick = onShowClick,
-                            modifier = Modifier
-                                .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
-                        )
+                    if (state.visibility?.get(ShowRelated) == true) {
+                        item {
+                            ShowRelatedView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(show) },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onClick = onShowClick,
+                                modifier = Modifier
+                                    .alpha(ratingAlphaMask)
+                                    .padding(top = 32.dp),
+                            )
+                        }
                     }
 
-                    item {
-                        ShowListsView(
-                            viewModel = koinViewModel(
-                                parameters = { parametersOf(show) },
-                            ),
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onClick = onListClick ?: {},
-                            modifier = Modifier
-                                .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
-                        )
+                    if (state.visibility?.get(ShowLists) == true) {
+                        item {
+                            ShowListsView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(show) },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onClick = onListClick ?: {},
+                                modifier = Modifier
+                                    .alpha(ratingAlphaMask)
+                                    .padding(top = 32.dp),
+                            )
+                        }
                     }
 
-                    if (isWatched) {
+                    if (isWatched && state.visibility?.get(ShowHistory) == true) {
                         item {
                             ShowHistoryView(
                                 viewModel = koinViewModel(
@@ -763,19 +798,21 @@ internal fun ShowDetailsContent(
                         }
                     }
 
-                    item {
-                        ShowTriviaView(
-                            viewModel = koinViewModel(
-                                parameters = { parametersOf(show) },
-                            ),
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onVipClick = onVipClick ?: {},
-                            onTriviaClick = onTriviaClick ?: {},
-                            modifier = Modifier
-                                .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
-                        )
+                    if (state.visibility?.get(ShowTrivia) == true) {
+                        item {
+                            ShowTriviaView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(show) },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onVipClick = onVipClick ?: {},
+                                onTriviaClick = onTriviaClick ?: {},
+                                modifier = Modifier
+                                    .alpha(ratingAlphaMask)
+                                    .padding(top = 32.dp),
+                            )
+                        }
                     }
                 }
             }
@@ -803,9 +840,6 @@ fun DetailsRating(
             .ifOrElse(
                 condition = animated,
                 isTrue = Modifier,
-                isFalse = Modifier.animateContentSize(
-                    animationSpec = tween(200, delayMillis = 250),
-                ),
             ),
     ) {
         if (visible) {

@@ -3,9 +3,6 @@
 package tv.trakt.trakt.core.summary.shows.features.related
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.snap
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -24,7 +21,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -76,7 +72,6 @@ internal fun ShowRelatedView(
         contentPadding = contentPadding,
         onClick = onClick,
         onLongClick = { contextSheet = it },
-        onCollapse = viewModel::setCollapsed,
     )
 
     ShowContextSheet(
@@ -93,59 +88,45 @@ private fun ShowRelatedContent(
     contentPadding: PaddingValues = PaddingValues(),
     onClick: ((Show) -> Unit)? = null,
     onLongClick: ((Show) -> Unit)? = null,
-    onCollapse: (collapsed: Boolean) -> Unit = {},
 ) {
-    var animateCollapse by rememberSaveable { mutableStateOf(false) }
-
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
-        modifier = modifier
-            .animateContentSize(
-                animationSpec = if (animateCollapse) spring() else snap(),
-            ),
+        modifier = modifier,
     ) {
         TraktSectionHeader(
             title = stringResource(R.string.list_title_related_shows),
             chevron = false,
-            collapsed = state.collapsed ?: false,
-            onCollapseClick = {
-                animateCollapse = true
-                val current = (state.collapsed ?: false)
-                onCollapse(!current)
-            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(headerPadding),
         )
 
-        if (state.collapsed != true) {
-            Crossfade(
-                targetState = state.loading,
-                animationSpec = tween(200),
-            ) { loading ->
-                when (loading) {
-                    Idle, Loading -> {
-                        ContentLoading(
-                            visible = loading.isLoading,
-                            contentPadding = contentPadding,
-                            modifier = Modifier.padding(bottom = 4.dp),
-                        )
-                    }
+        Crossfade(
+            targetState = state.loading,
+            animationSpec = tween(200),
+        ) { loading ->
+            when (loading) {
+                Idle, Loading -> {
+                    ContentLoading(
+                        visible = loading.isLoading,
+                        contentPadding = contentPadding,
+                        modifier = Modifier.padding(bottom = 4.dp),
+                    )
+                }
 
-                    Done -> {
-                        if (state.items?.isEmpty() == true) {
-                            ContentEmpty(
-                                contentPadding = headerPadding,
-                            )
-                        } else {
-                            ContentList(
-                                listItems = state.items ?: EmptyImmutableList,
-                                collection = state.collection,
-                                contentPadding = contentPadding,
-                                onClick = onClick,
-                                onLongClick = onLongClick,
-                            )
-                        }
+                Done -> {
+                    if (state.items?.isEmpty() == true) {
+                        ContentEmpty(
+                            contentPadding = headerPadding,
+                        )
+                    } else {
+                        ContentList(
+                            listItems = state.items ?: EmptyImmutableList,
+                            collection = state.collection,
+                            contentPadding = contentPadding,
+                            onClick = onClick,
+                            onLongClick = onLongClick,
+                        )
                     }
                 }
             }

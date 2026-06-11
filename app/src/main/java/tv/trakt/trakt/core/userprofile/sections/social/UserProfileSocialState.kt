@@ -11,6 +11,5 @@ internal data class UserProfileSocialState(
     val items: ImmutableList<User>? = null,
     val filter: SocialFilter = SocialFilter.FOLLOWING,
     val loading: LoadingState = LoadingState.Idle,
-    val collapsed: Boolean? = null,
     val error: Exception? = null,
 )

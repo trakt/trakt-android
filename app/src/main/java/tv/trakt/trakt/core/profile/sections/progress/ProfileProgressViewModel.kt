@@ -42,8 +42,6 @@ import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PR
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
-import tv.trakt.trakt.helpers.collapsing.CollapsingManager
-import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class ProfileProgressViewModel(
     private val getFilterUseCase: GetProgressFilterUseCase,
@@ -51,7 +49,6 @@ internal class ProfileProgressViewModel(
     private val getCompletedUseCase: GetProgressCompleteUseCase,
     private val getWatchingUseCase: GetProgressWatchingUseCase,
     private val localShowSource: ShowLocalDataSource,
-    private val collapsingManager: CollapsingManager,
     private val showUpdates: ShowDetailsUpdates,
     private val episodeUpdates: EpisodeDetailsUpdates,
 ) : ViewModel() {
@@ -62,11 +59,9 @@ internal class ProfileProgressViewModel(
     private val filterState = MutableStateFlow(initialState.filter)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val collapseState = MutableStateFlow(isCollapsed())
     private val errorState = MutableStateFlow(initialState.error)
 
     private var loadDataJob: Job? = null
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -160,21 +155,7 @@ internal class ProfileProgressViewModel(
         navigateShow.update { null }
     }
 
-    fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
 
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.PROFILE_PROGRESS)
-                else -> collapsingManager.expand(CollapsingKey.PROFILE_PROGRESS)
-            }
-        }
-    }
-
-    private fun isCollapsed(): Boolean {
-        return collapsingManager.isCollapsed(CollapsingKey.PROFILE_PROGRESS)
-    }
 
     @Suppress("UNCHECKED_CAST")
     val state = combine(
@@ -182,7 +163,6 @@ internal class ProfileProgressViewModel(
         itemsState,
         filterState,
         navigateShow,
-        collapseState,
         errorState,
         userState,
     ) { states ->
@@ -191,9 +171,8 @@ internal class ProfileProgressViewModel(
             items = states[1] as ImmutableList<ProfileProgressItem>?,
             filter = states[2] as ProgressFilter?,
             navigateShow = states[3] as TraktId?,
-            collapsed = states[4] as Boolean,
-            error = states[5] as Exception?,
-            user = states[6] as User?,
+            error = states[4] as Exception?,
+            user = states[5] as User?,
         )
     }.stateIn(
         scope = viewModelScope,

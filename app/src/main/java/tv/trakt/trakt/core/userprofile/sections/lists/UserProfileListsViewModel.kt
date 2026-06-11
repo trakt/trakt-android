@@ -26,13 +26,10 @@ import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Personal
 import tv.trakt.trakt.core.userprofile.UserProfileConfig.LISTS_SECTION_LIMIT
 import tv.trakt.trakt.core.userprofile.sections.lists.usecases.GetUserProfileListsUseCase
-import tv.trakt.trakt.helpers.collapsing.CollapsingManager
-import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class UserProfileListsViewModel(
     private val userId: TraktId,
     private val getListsUseCase: GetUserProfileListsUseCase,
-    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = UserProfileListsState()
 
@@ -40,10 +37,8 @@ internal class UserProfileListsViewModel(
     private val filterState = MutableStateFlow(initialState.filter)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
-    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.USER_PROFILE_LISTS))
 
     private var loadDataJob: Job? = null
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -88,31 +83,18 @@ internal class UserProfileListsViewModel(
         loadData()
     }
 
-    fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.USER_PROFILE_LISTS)
-                else -> collapsingManager.expand(CollapsingKey.USER_PROFILE_LISTS)
-            }
-        }
-    }
-
     @Suppress("UNCHECKED_CAST")
     val state = combine(
         itemsState,
         filterState,
         loadingState,
         errorState,
-        collapseState,
     ) { state ->
         UserProfileListsState(
             items = state[0] as ImmutableList<CustomList>?,
             filter = state[1] as PersonalListType,
             loading = state[2] as LoadingState,
             error = state[3] as Exception?,
-            collapsed = state[4] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

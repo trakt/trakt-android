@@ -2,12 +2,9 @@
 
 package tv.trakt.trakt.core.ratings.rateprompt.ui
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -52,7 +49,6 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -106,13 +102,7 @@ internal fun RatePromptView(
                 color = TraktTheme.colors.navigationContainer,
                 shape = viewShape,
             )
-            .onEmptyClick()
-            .animateContentSize(
-                animationSpec = spring(
-                    stiffness = 1200F,
-                    visibilityThreshold = IntSize.VisibilityThreshold,
-                ),
-            ),
+            .onEmptyClick(),
     ) {
         ExpandedView(
             key = media.movie.ids.trakt.toString(),

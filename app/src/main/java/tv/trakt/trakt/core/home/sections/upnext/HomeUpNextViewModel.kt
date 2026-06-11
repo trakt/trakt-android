@@ -34,7 +34,6 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.DateSelectionResult
-import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaMode.MOVIES
 import tv.trakt.trakt.common.model.MediaMode.SHOWS
 import tv.trakt.trakt.common.model.MediaType.SHOW
@@ -66,8 +65,6 @@ import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
 import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.AllWatchlist
 import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
-import tv.trakt.trakt.helpers.collapsing.CollapsingManager
-import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import tv.trakt.trakt.resources.R
 
 @OptIn(FlowPreview::class)
@@ -87,13 +84,11 @@ internal class HomeUpNextViewModel(
     private val checkInManager: CheckInManager,
     private val filterManager: GlobalFilterManager,
     private val sessionManager: SessionManager,
-    private val collapsingManager: CollapsingManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = HomeUpNextState()
 
     private val filterState = MutableStateFlow(filterManager.getFilter())
-    private val collapseState = MutableStateFlow(isCollapsed())
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val infoState = MutableStateFlow(initialState.info)
@@ -103,7 +98,6 @@ internal class HomeUpNextViewModel(
     private var itemsOrder: List<String>? = null
     private var dataJob: Job? = null
     private var processingJob: Job? = null
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -118,7 +112,6 @@ internal class HomeUpNextViewModel(
             .distinctUntilChanged()
             .onEach { value ->
                 filterState.update { value }
-                collapseState.update { isCollapsed() }
                 loadData()
             }
             .launchIn(viewModelScope)
@@ -410,40 +403,12 @@ internal class HomeUpNextViewModel(
         }
     }
 
-    fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            val key = when (filterState.value.mode) {
-                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_UP_NEXT
-                SHOWS -> CollapsingKey.HOME_SHOWS_UP_NEXT
-                MOVIES -> CollapsingKey.HOME_MOVIES_UP_NEXT
-            }
-            when {
-                collapsed -> collapsingManager.collapse(key)
-                else -> collapsingManager.expand(key)
-            }
-        }
-    }
-
-    private fun isCollapsed(): Boolean {
-        return collapsingManager.isCollapsed(
-            key = when (filterState.value.mode) {
-                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_UP_NEXT
-                SHOWS -> CollapsingKey.HOME_SHOWS_UP_NEXT
-                MOVIES -> CollapsingKey.HOME_MOVIES_UP_NEXT
-            },
-        )
-    }
-
     fun clearInfo() {
         infoState.update { null }
     }
 
     val state = combine(
         loadingState,
-        collapseState,
         itemsState,
         infoState,
         errorState,
@@ -451,11 +416,10 @@ internal class HomeUpNextViewModel(
     ) { state ->
         HomeUpNextState(
             loading = state[0] as LoadingState,
-            collapsed = state[1] as Boolean,
-            items = state[2] as ItemsState,
-            info = state[3] as StringResource?,
-            error = state[4] as Exception?,
-            filter = state[5] as GlobalFilter,
+            items = state[1] as ItemsState,
+            info = state[2] as StringResource?,
+            error = state[3] as Exception?,
+            filter = state[4] as GlobalFilter,
         )
     }.stateIn(
         scope = viewModelScope,

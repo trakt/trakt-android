@@ -1,12 +1,14 @@
 package tv.trakt.trakt.core.userprofile
 
 import androidx.compose.runtime.Immutable
+import kotlinx.collections.immutable.ImmutableMap
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.profile.sections.thismonth.model.ThisMonthStats
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey
 
 @Immutable
 internal data class UserProfileState(
@@ -19,6 +21,7 @@ internal data class UserProfileState(
     val navigateEpisode: Pair<TraktId, Episode>? = null,
     val loading: LoadingState = LoadingState.Idle,
     val info: StringResource? = null,
+    val visibility: ImmutableMap<EditScreenKey, Boolean>? = null,
 ) {
     data class MonthlyStats(
         val stats: ThisMonthStats?,

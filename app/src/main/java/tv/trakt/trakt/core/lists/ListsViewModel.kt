@@ -2,7 +2,10 @@ package tv.trakt.trakt.core.lists
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,11 +23,13 @@ import timber.log.Timber
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.analytics.Analytics
+import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.lists.ListsState.UserState
 import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsLocalDataSource
@@ -38,7 +43,11 @@ import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collab
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Personal
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
+import tv.trakt.trakt.helpers.editscreen.data.EditScreenManager
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.Companion.ListsKeys
 
+@Suppress("UNCHECKED_CAST")
 @OptIn(FlowPreview::class)
 internal class ListsViewModel(
     private val sessionManager: SessionManager,
@@ -49,6 +58,7 @@ internal class ListsViewModel(
     private val localListsItemsSource: ListsPersonalItemsLocalDataSource,
     private val localLikedListsSource: ListsLikedLocalDataSource,
     private val localCollaborationsListsSource: ListsCollaborationsLocalDataSource,
+    private val editScreenManager: EditScreenManager,
     analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ListsState()
@@ -58,12 +68,14 @@ internal class ListsViewModel(
     private val listsState = MutableStateFlow(initialState.lists)
     private val listsLoadingState = MutableStateFlow(initialState.listsLoading)
     private val errorState = MutableStateFlow(initialState.error)
+    private val visibilityState = MutableStateFlow(initialState.visibility)
 
     private var dataJob: Job? = null
 
     init {
         observeUser()
         observeLists()
+        observeVisibility()
 
         analytics.logScreenView(
             screenName = "lists",
@@ -84,6 +96,15 @@ internal class ListsViewModel(
                     loadData()
                 }
         }
+    }
+
+    private fun observeVisibility() {
+        editScreenManager.observe(ListsKeys)
+            .distinctUntilChanged()
+            .onEach { map ->
+                visibilityState.update { map.toImmutableMap() }
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun observeLists() {
@@ -218,13 +239,15 @@ internal class ListsViewModel(
         listsState,
         listsLoadingState,
         errorState,
-    ) { s1, s2, s3, s4, s5 ->
+        visibilityState,
+    ) { state ->
         ListsState(
-            user = s1,
-            filter = s2,
-            lists = s3,
-            listsLoading = s4,
-            error = s5,
+            user = state[0] as UserState,
+            filter = state[1] as PersonalListType,
+            lists = state[2] as ImmutableList<CustomList>?,
+            listsLoading = state[3] as LoadingState,
+            error = state[4] as Exception?,
+            visibility = state[5] as ImmutableMap<EditScreenKey, Boolean>?,
         )
     }.stateIn(
         scope = viewModelScope,

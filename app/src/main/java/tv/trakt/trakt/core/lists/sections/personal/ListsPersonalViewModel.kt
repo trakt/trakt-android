@@ -25,7 +25,6 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
-import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -41,8 +40,6 @@ import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItems
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 import tv.trakt.trakt.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.user.UserCollectionState
-import tv.trakt.trakt.helpers.collapsing.CollapsingManager
-import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 @OptIn(FlowPreview::class)
 internal class ListsPersonalViewModel(
@@ -56,13 +53,11 @@ internal class ListsPersonalViewModel(
     private val movieLocalDataSource: MovieLocalDataSource,
     private val collectionStateProvider: CollectionStateProvider,
     private val filterManager: GlobalFilterManager,
-    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = ListsPersonalState()
 
     private val userState = MutableStateFlow(initialState.user)
     private val filterState = MutableStateFlow(filterManager.getFilter())
-    private val collapseState = MutableStateFlow(isCollapsed())
     private val listState = MutableStateFlow(initialState.list)
     private val itemsState = MutableStateFlow(initialState.items)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
@@ -73,7 +68,6 @@ internal class ListsPersonalViewModel(
 
     private var dataJob: Job? = null
     private var processingJob: Job? = null
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -87,7 +81,6 @@ internal class ListsPersonalViewModel(
         filterManager.observeFilter()
             .onEach { value ->
                 filterState.update { value }
-                collapseState.update { isCollapsed() }
                 loadData()
             }
             .launchIn(viewModelScope)
@@ -213,40 +206,12 @@ internal class ListsPersonalViewModel(
         navigateEpisode.update { null }
     }
 
-    fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            val key = when (filterState.value.mode) {
-                MediaMode.MEDIA -> CollapsingKey.LISTS_MEDIA_PERSONAL
-                MediaMode.SHOWS -> CollapsingKey.LISTS_SHOWS_PERSONAL
-                MediaMode.MOVIES -> CollapsingKey.LISTS_MOVIES_PERSONAL
-            }
-            when {
-                collapsed -> collapsingManager.collapse("${key.preferenceKey}-${listId.value}")
-                else -> collapsingManager.expand("${key.preferenceKey}-${listId.value}")
-            }
-        }
-    }
-
-    private fun isCollapsed(): Boolean {
-        val key = when (filterState.value.mode) {
-            MediaMode.MEDIA -> CollapsingKey.LISTS_MEDIA_PERSONAL
-            MediaMode.SHOWS -> CollapsingKey.LISTS_SHOWS_PERSONAL
-            MediaMode.MOVIES -> CollapsingKey.LISTS_MOVIES_PERSONAL
-        }
-        return collapsingManager
-            .isCollapsed("${key.preferenceKey}-${listId.value}")
-    }
-
     @Suppress("UNCHECKED_CAST")
     val state = combine(
         listState,
         userState,
         itemsState,
         filterState,
-        collapseState,
         collectionStateProvider.stateFlow,
         navigateShow,
         navigateMovie,
@@ -259,13 +224,12 @@ internal class ListsPersonalViewModel(
             user = states[1] as User?,
             items = states[2] as ImmutableList<CustomListItem>?,
             filter = states[3] as GlobalFilter?,
-            collapsed = states[4] as Boolean,
-            collection = states[5] as UserCollectionState,
-            navigateShow = states[6] as TraktId?,
-            navigateMovie = states[7] as TraktId?,
-            navigateEpisode = states[8] as Pair<TraktId, Episode>?,
-            loading = states[9] as LoadingState,
-            error = states[10] as Exception?,
+            collection = states[4] as UserCollectionState,
+            navigateShow = states[5] as TraktId?,
+            navigateMovie = states[6] as TraktId?,
+            navigateEpisode = states[7] as Pair<TraktId, Episode>?,
+            loading = states[8] as LoadingState,
+            error = states[9] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

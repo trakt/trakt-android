@@ -40,8 +40,6 @@ import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.RATE_PROMPT
 import tv.trakt.trakt.core.favorites.model.FavoriteItem
 import tv.trakt.trakt.core.lists.ListsConfig.FAVORITES_SECTION_LIMIT
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserFavoritesUseCase
-import tv.trakt.trakt.helpers.collapsing.CollapsingManager
-import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 @OptIn(FlowPreview::class)
 internal class ProfileFavoritesViewModel(
@@ -50,7 +48,6 @@ internal class ProfileFavoritesViewModel(
     private val movieLocalDataSource: MovieLocalDataSource,
     private val favoritesUpdates: FavoritesUpdates,
     private val sessionManager: SessionManager,
-    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = ProfileFavoritesState()
 
@@ -59,12 +56,10 @@ internal class ProfileFavoritesViewModel(
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val collapseState = MutableStateFlow(isCollapsed())
     private val errorState = MutableStateFlow(initialState.error)
 
     private var loadDataJob: Job? = null
     private var processingJob: Job? = null
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -180,21 +175,7 @@ internal class ProfileFavoritesViewModel(
         navigateMovie.update { null }
     }
 
-    fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
 
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.PROFILE_FAVORITES)
-                else -> collapsingManager.expand(CollapsingKey.PROFILE_FAVORITES)
-            }
-        }
-    }
-
-    private fun isCollapsed(): Boolean {
-        return collapsingManager.isCollapsed(CollapsingKey.PROFILE_FAVORITES)
-    }
 
     @Suppress("UNCHECKED_CAST")
     val state = combine(
@@ -202,7 +183,6 @@ internal class ProfileFavoritesViewModel(
         itemsState,
         navigateShow,
         navigateMovie,
-        collapseState,
         errorState,
         userState,
     ) { states ->
@@ -211,9 +191,8 @@ internal class ProfileFavoritesViewModel(
             items = states[1] as ImmutableList<FavoriteItem>?,
             navigateShow = states[2] as TraktId?,
             navigateMovie = states[3] as TraktId?,
-            collapsed = states[4] as Boolean,
-            error = states[5] as Exception?,
-            user = states[6] as User?,
+            error = states[4] as Exception?,
+            user = states[5] as User?,
         )
     }.stateIn(
         scope = viewModelScope,

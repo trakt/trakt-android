@@ -9,6 +9,5 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 internal data class UserProfileHistoryState(
     val items: ImmutableList<HomeActivityItem>? = null,
     val loading: LoadingState = LoadingState.Idle,
-    val collapsed: Boolean? = null,
     val error: Exception? = null,
 )

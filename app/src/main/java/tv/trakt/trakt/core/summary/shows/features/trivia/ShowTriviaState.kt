@@ -11,7 +11,6 @@ internal data class ShowTriviaState(
     val user: User? = null,
     val summary: ImmutableList<String>? = null,
     val items: ImmutableList<TriviaFact>? = null,
-    val collapsed: Boolean? = null,
     val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
 )

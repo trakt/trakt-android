@@ -62,6 +62,7 @@ internal fun ShowDetailsContextView(
     onCheckClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
+    onEditScreenClick: (() -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -75,6 +76,7 @@ internal fun ShowDetailsContextView(
         onCheckClick = onCheckClick,
         onListsClick = onListsClick,
         onCoverClick = onCoverClick,
+        onEditScreenClick = onEditScreenClick,
         modifier = modifier,
     )
 }
@@ -91,6 +93,7 @@ private fun ShowDetailsContextViewContent(
     onShareClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
+    onEditScreenClick: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
 
@@ -175,6 +178,7 @@ private fun ShowDetailsContextViewContent(
             onShareClick = onShareClick ?: {},
             onListsClick = onListsClick ?: {},
             onCoverClick = onCoverClick ?: {},
+            onEditScreenClick = onEditScreenClick ?: {},
             modifier = Modifier
                 .padding(top = 14.dp),
         )
@@ -234,6 +238,7 @@ private fun ActionButtons(
     onCoverClick: () -> Unit,
     onRemoveClick: () -> Unit,
     onListsClick: () -> Unit,
+    onEditScreenClick: () -> Unit,
 ) {
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
@@ -311,17 +316,17 @@ private fun ActionButtons(
             }
         }
 
-//        GhostButton(
-//            text = stringResource(R.string.button_text_share),
-//            icon = painterResource(R.drawable.ic_share),
-//            iconSize = 22.dp,
-//            iconSpace = 15.dp,
-//            modifier = Modifier
-//                .graphicsLayer {
-//                    translationX = -5.dp.toPx()
-//                },
-//            onClick = onShareClick,
-//        )
+        GhostButton(
+            text = stringResource(R.string.text_edit_screen),
+            icon = painterResource(R.drawable.ic_edit_screen),
+            iconSize = 22.dp,
+            iconSpace = 15.dp,
+            modifier = Modifier
+                .graphicsLayer {
+                    translationX = -5.dp.toPx()
+                },
+            onClick = onEditScreenClick,
+        )
     }
 }
 

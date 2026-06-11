@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.discover
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -16,20 +17,25 @@ import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.core.discover.DiscoverState.UserState
 import tv.trakt.trakt.core.user.CollectionStateProvider
+import tv.trakt.trakt.helpers.editscreen.data.EditScreenManager
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.Companion.DiscoverKeys
 
 @OptIn(FlowPreview::class)
 internal class DiscoverViewModel(
     private val sessionManager: SessionManager,
+    private val editScreenManager: EditScreenManager,
     private val collectionStateProvider: CollectionStateProvider,
     analytics: Analytics,
 ) : ViewModel() {
     private val initialState = DiscoverState()
 
     private val userState = MutableStateFlow(initialState.user)
+    private val visibilityState = MutableStateFlow(initialState.visibility)
 
     init {
         observeUser()
         observeData()
+        observeVisibility()
 
         analytics.logScreenView(
             screenName = "discover",
@@ -55,13 +61,25 @@ internal class DiscoverViewModel(
             .launchIn(viewModelScope)
     }
 
+    private fun observeVisibility() {
+        editScreenManager.observe(DiscoverKeys)
+            .onEach { visibility ->
+                visibilityState.update {
+                    visibility.toImmutableMap()
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
     val state = combine(
         userState,
+        visibilityState,
         collectionStateProvider.stateFlow,
-    ) { s1, s2 ->
+    ) { s1, s2, s3 ->
         DiscoverState(
             user = s1,
-            collection = s2,
+            visibility = s2,
+            collection = s3,
         )
     }.stateIn(
         scope = viewModelScope,
