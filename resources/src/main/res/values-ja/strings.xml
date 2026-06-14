@@ -27,6 +27,7 @@
   <string name="button_label_add_to_personal_list">「%1$s」を%2$sに追加</string>
   <string name="button_label_add_to_watchlist">「%s」をウォッチリストに追加</string>
   <string name="button_label_apply">変更を適用</string>
+  <string name="button_label_approve_follow_request">%sからのフォローリクエストを承認</string>
   <string name="button_label_back">戻る</string>
   <string name="button_label_block">%sをブロック</string>
   <string name="button_label_browse_lists">あなたのリストを閲覧</string>
@@ -72,6 +73,7 @@
   <string name="button_label_expand_navbar">展開する</string>
   <string name="button_label_filters">フィルター</string>
   <string name="button_label_follow">%sをフォロー</string>
+  <string name="button_label_follow_requests">フォローリクエスト</string>
   <string name="button_label_followers">フォロワー</string>
   <string name="button_label_following">フォロー中</string>
   <string name="button_label_get_vip">VIP機能をアンロック</string>
@@ -116,6 +118,7 @@
   <string name="button_label_react">%sでリアクションする</string>
   <string name="button_label_read_more">詳細を読む</string>
   <string name="button_label_recent_comments">最新レビュー</string>
+  <string name="button_label_reject_follow_request">%sからのフォローリクエストを拒否</string>
   <string name="button_label_remove_from_favorites">「%s」をお気に入りから削除</string>
   <string name="button_label_remove_from_history">「%s」のこの視聴記録を視聴履歴から削除</string>
   <string name="button_label_remove_from_list">「%s」をリストから削除</string>
@@ -124,6 +127,7 @@
   <string name="button_label_remove_from_watchlist">「%s」をウォッチリストから削除</string>
   <string name="button_label_remove_photo">プロフィール写真を削除</string>
   <string name="button_label_renew_vip">サブスクリプションを更新</string>
+  <string name="button_label_reorder_list">%sを並べ替える</string>
   <string name="button_label_report_comment">レビューを報告</string>
   <string name="button_label_report_list">%sを報告</string>
   <string name="button_label_report_media">%sを報告</string>
@@ -214,6 +218,7 @@
   <string name="button_text_add_review">レビューを追加</string>
   <string name="button_text_add_to_favorites">お気に入りに追加</string>
   <string name="button_text_apply">適用</string>
+  <string name="button_text_approve_follow_request">リクエストを承認</string>
   <string name="button_text_block">ブロック</string>
   <string name="button_text_block_comments">%sからのコメントをブロック</string>
   <string name="button_text_browse_movies">映画</string>
@@ -254,6 +259,7 @@
   <string name="button_text_find_movies">映画を探す</string>
   <string name="button_text_find_shows">番組を探す</string>
   <string name="button_text_follow">フォロー</string>
+  <string name="button_text_follow_requests">リクエスト</string>
   <string name="button_text_followers">フォロワー</string>
   <string name="button_text_following">フォロー中</string>
   <string name="button_text_get_vip">ゲット</string>
@@ -301,12 +307,14 @@
   <string name="button_text_raw_export">今すぐエクスポート</string>
   <string name="button_text_recent_comments">最新</string>
   <string name="button_text_reconnect">再接続</string>
+  <string name="button_text_reject_follow_request">リクエストを拒否</string>
   <string name="button_text_remove_from_favorites">お気に入りから削除</string>
   <string name="button_text_remove_from_history">履歴から削除</string>
   <string name="button_text_remove_from_list">リストから削除</string>
   <string name="button_text_remove_from_watchlist">ウォッチリストから削除</string>
   <string name="button_text_remove_photo">写真を削除</string>
   <string name="button_text_renew_vip">サブスクリプションを更新</string>
+  <string name="button_text_reorder">並べ替え</string>
   <string name="button_text_report">報告</string>
   <string name="button_text_report_comment">報告</string>
   <string name="button_text_reset_all_filters">全てリセット</string>
@@ -428,6 +436,7 @@
   <string name="drawer_title_add_note">ノート</string>
   <string name="drawer_title_notes">ノート</string>
   <string name="drawer_title_people">人物</string>
+  <string name="drawer_title_reorder_list">ドラッグして並べ替え</string>
   <string name="drawer_title_sort">並べ替え</string>
   <string name="drawer_title_streak_activity">連続記録アクティビティ</string>
   <string name="dropdown_label_add_remove_from_lists">「%s」をリストに追加または削除</string>
@@ -686,6 +695,7 @@
   <string name="list_placeholder_favorite_movies">ここにはお気に入りの映画がありません。</string>
   <string name="list_placeholder_favorite_shows">ここにはお気に入りの番組がありません。</string>
   <string name="list_placeholder_favorites">ここにはお気に入りがありません。</string>
+  <string name="list_placeholder_follow_requests">フォローリクエストはありません。</string>
   <string name="list_placeholder_followers">ここには誰もいません（まだ）。</string>
   <string name="list_placeholder_following">ここには誰もいません（まだ）。</string>
   <string name="list_placeholder_from_my_history">%sが出演している作品はまだ見ていません。</string>
@@ -1030,6 +1040,8 @@
   <string name="text_info_favorites_added">お気に入りに追加されました。</string>
   <string name="text_info_favorites_removed">お気に入りから削除されました。</string>
   <string name="text_info_follow_request">フォローリクエストを送信しました。</string>
+  <string name="text_info_follow_request_approved">%sからのフォローリクエストを承認しました。</string>
+  <string name="text_info_follow_request_rejected">%sからのフォローリクエストを拒否しました。</string>
   <string name="text_info_following">%sをフォローしました。</string>
   <string name="text_info_history_added">視聴履歴に追加されました。</string>
   <string name="text_info_history_removed">視聴履歴から削除されました。</string>
@@ -1559,6 +1571,10 @@
   <string name="yir_2024_stats_tooltip_plays">%s回再生</string>
   <string name="yir_2024_stats_tooltip_week_label">第%s週</string>
   <string name="yir_2024_studio_count">スタジオ数</string>
+  <string name="yir_2024_thanks_copy_directed">あなたは<b>%1$d</b>を壮大な形で演出しました。<b>%2$d</b>にはさらに素晴らしい続編を期待しましょう。</string>
+  <string name="yir_2024_thanks_copy_recommend">あなたの旅を続けましょう。これらの人気番組や映画を試してみてください。</string>
+  <string name="yir_2024_thanks_intro">しかし、最も重要なのは…</string>
+  <string name="yir_2024_thanks_title">ありがとう！</string>
   <string name="yir_2024_time_watched_label">視聴時間</string>
   <string name="yir_2024_trakt_worldwide">Traktワールドワイド</string>
   <string name="yir_2024_trend_watched">視聴済み</string>

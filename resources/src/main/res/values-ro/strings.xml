@@ -27,6 +27,7 @@
   <string name="button_label_add_to_personal_list">Adaugă \"%1$s\" la %2$s</string>
   <string name="button_label_add_to_watchlist">Adaugă \"%s\" la lista ta de vizionare</string>
   <string name="button_label_apply">Aplică modificările</string>
+  <string name="button_label_approve_follow_request">Aprobă cererea de urmărire de la %s</string>
   <string name="button_label_back">Înapoi</string>
   <string name="button_label_block">Blochează-l pe %s</string>
   <string name="button_label_browse_lists">Răsfoiește listele tale</string>
@@ -72,6 +73,7 @@
   <string name="button_label_expand_navbar">Extinde</string>
   <string name="button_label_filters">Filtre</string>
   <string name="button_label_follow">Urmărește-l pe %s</string>
+  <string name="button_label_follow_requests">Cereri de urmărire</string>
   <string name="button_label_followers">Urmăritori</string>
   <string name="button_label_following">Urmărește</string>
   <string name="button_label_get_vip">Deblochează funcții VIP</string>
@@ -116,6 +118,7 @@
   <string name="button_label_react">Reacționează cu %s</string>
   <string name="button_label_read_more">Citește mai mult</string>
   <string name="button_label_recent_comments">Recenzii recente</string>
+  <string name="button_label_reject_follow_request">Refuză cererea de urmărire de la %s</string>
   <string name="button_label_remove_from_favorites">Elimină \"%s\" din Favoritele tale</string>
   <string name="button_label_remove_from_history">Elimină această vizionare a \"%s\" din istoricul tău de vizionate</string>
   <string name="button_label_remove_from_list">Elimină \"%s\" din listă</string>
@@ -124,6 +127,7 @@
   <string name="button_label_remove_from_watchlist">Elimină \"%s\" din lista ta de vizionare</string>
   <string name="button_label_remove_photo">Elimină fotografia ta de profil</string>
   <string name="button_label_renew_vip">Reînnoiește abonamentul</string>
+  <string name="button_label_reorder_list">Rearanjează %s</string>
   <string name="button_label_report_comment">Raportează recenzia</string>
   <string name="button_label_report_list">Raportează %s</string>
   <string name="button_label_report_media">Raportează %s</string>
@@ -214,6 +218,7 @@
   <string name="button_text_add_review">Adaugă recenzie</string>
   <string name="button_text_add_to_favorites">Adaugă la Favorite</string>
   <string name="button_text_apply">Aplică</string>
+  <string name="button_text_approve_follow_request">Aprobă cererea</string>
   <string name="button_text_block">Blocare</string>
   <string name="button_text_block_comments">Blochează comentariile de la %s</string>
   <string name="button_text_browse_movies">Filme</string>
@@ -254,6 +259,7 @@
   <string name="button_text_find_movies">Găsește filme</string>
   <string name="button_text_find_shows">Găsește seriale</string>
   <string name="button_text_follow">Urmărește</string>
+  <string name="button_text_follow_requests">Cereri</string>
   <string name="button_text_followers">Urmăritori</string>
   <string name="button_text_following">Urmărește</string>
   <string name="button_text_get_vip">Obține</string>
@@ -301,12 +307,14 @@
   <string name="button_text_raw_export">Exportă acum</string>
   <string name="button_text_recent_comments">Recente</string>
   <string name="button_text_reconnect">Reconectează</string>
+  <string name="button_text_reject_follow_request">Refuză cererea</string>
   <string name="button_text_remove_from_favorites">Elimină din Favorite</string>
   <string name="button_text_remove_from_history">Elimină din istoric</string>
   <string name="button_text_remove_from_list">Elimină din listă</string>
   <string name="button_text_remove_from_watchlist">Elimină din lista de vizionare</string>
   <string name="button_text_remove_photo">Elimină fotografia</string>
   <string name="button_text_renew_vip">Reînnoiește abonamentul</string>
+  <string name="button_text_reorder">Reordonare</string>
   <string name="button_text_report">Raport</string>
   <string name="button_text_report_comment">Raport</string>
   <string name="button_text_reset_all_filters">Resetează tot</string>
@@ -428,6 +436,7 @@
   <string name="drawer_title_add_note">Notă</string>
   <string name="drawer_title_notes">Note</string>
   <string name="drawer_title_people">Persoane</string>
+  <string name="drawer_title_reorder_list">Trageți pentru a reordona</string>
   <string name="drawer_title_sort">Sortează după</string>
   <string name="drawer_title_streak_activity">Activitate serie zilnică</string>
   <string name="dropdown_label_add_remove_from_lists">Adaugă sau elimină \"%s\" din liste</string>
@@ -686,6 +695,7 @@
   <string name="list_placeholder_favorite_movies">Nu există filme favorite aici.</string>
   <string name="list_placeholder_favorite_shows">Nu există seriale favorite aici.</string>
   <string name="list_placeholder_favorites">Nu există favorite aici.</string>
+  <string name="list_placeholder_follow_requests">Nu există cereri de urmărire.</string>
   <string name="list_placeholder_followers">Nu este nimeni aici (încă).</string>
   <string name="list_placeholder_following">Nu este nimeni aici (încă).</string>
   <string name="list_placeholder_from_my_history">Nu l-ai văzut pe %s în nimic încă.</string>
@@ -1030,6 +1040,8 @@
   <string name="text_info_favorites_added">Adăugat la favorite.</string>
   <string name="text_info_favorites_removed">Eliminat din favorite.</string>
   <string name="text_info_follow_request">Cererea de urmărire a fost trimisă.</string>
+  <string name="text_info_follow_request_approved">Cererea de urmărire de la %s a fost aprobată.</string>
+  <string name="text_info_follow_request_rejected">Cererea de urmărire de la %s a fost refuzată.</string>
   <string name="text_info_following">Urmărești acum pe %s.</string>
   <string name="text_info_history_added">Adăugat la istoricul de vizionare.</string>
   <string name="text_info_history_removed">Eliminat din istoricul de vizionare.</string>
@@ -1559,6 +1571,10 @@
   <string name="yir_2024_stats_tooltip_plays">%s Vizionări</string>
   <string name="yir_2024_stats_tooltip_week_label">Săptămâna %s</string>
   <string name="yir_2024_studio_count">Număr de studiouri</string>
+  <string name="yir_2024_thanks_copy_directed">Ai făcut o treabă epică regizând <b>%1$d</b>. Să avem o continuare și mai bună în <b>%2$d</b>.</string>
+  <string name="yir_2024_thanks_copy_recommend">Continuă-ți călătoria. Încearcă să vizionezi una dintre aceste emisiuni sau filme populare.</string>
+  <string name="yir_2024_thanks_intro">Dar cel mai important…</string>
+  <string name="yir_2024_thanks_title">mulțumim!</string>
   <string name="yir_2024_time_watched_label">Timp vizionat</string>
   <string name="yir_2024_trakt_worldwide">Trakt Mondial</string>
   <string name="yir_2024_trend_watched">Vizionat</string>

@@ -27,6 +27,7 @@
   <string name="button_label_add_to_personal_list">Afegeix \"%1$s\" a %2$s</string>
   <string name="button_label_add_to_watchlist">Afegeix \"%s\" a la teva Llista de seguiment</string>
   <string name="button_label_apply">Aplica els canvis</string>
+  <string name="button_label_approve_follow_request">Aprovar sol·licitud de seguiment de %s</string>
   <string name="button_label_back">Enrere</string>
   <string name="button_label_block">Bloqueja %s</string>
   <string name="button_label_browse_lists">Explora les teves llistes</string>
@@ -72,6 +73,7 @@
   <string name="button_label_expand_navbar">Expandeix</string>
   <string name="button_label_filters">Filtres</string>
   <string name="button_label_follow">Segueix %s</string>
+  <string name="button_label_follow_requests">Sol·licituds de seguiment</string>
   <string name="button_label_followers">Seguidors</string>
   <string name="button_label_following">Seguint</string>
   <string name="button_label_get_vip">Desbloqueja les funcions VIP</string>
@@ -116,6 +118,7 @@
   <string name="button_label_react">Reacciona amb %s</string>
   <string name="button_label_read_more">Llegeix més</string>
   <string name="button_label_recent_comments">Ressenyes recents</string>
+  <string name="button_label_reject_follow_request">Rebutjar sol·licitud de seguiment de %s</string>
   <string name="button_label_remove_from_favorites">Elimina \"%s\" dels teus Preferits</string>
   <string name="button_label_remove_from_history">Eliminar aquesta reproducció de \"%s\" del teu historial de visualitzacions</string>
   <string name="button_label_remove_from_list">Elimina \"%s\" de la llista</string>
@@ -124,6 +127,7 @@
   <string name="button_label_remove_from_watchlist">Elimina \"%s\" de la teva Llista de seguiment</string>
   <string name="button_label_remove_photo">Elimina la teva foto de perfil</string>
   <string name="button_label_renew_vip">Renova la subscripció</string>
+  <string name="button_label_reorder_list">Reordenar %s</string>
   <string name="button_label_report_comment">Informa de la ressenya</string>
   <string name="button_label_report_list">Informa de %s</string>
   <string name="button_label_report_media">Reporta %s</string>
@@ -214,6 +218,7 @@
   <string name="button_text_add_review">Afegeix ressenya</string>
   <string name="button_text_add_to_favorites">Afegeix a Preferits</string>
   <string name="button_text_apply">Aplica</string>
+  <string name="button_text_approve_follow_request">Aprovar sol·licitud</string>
   <string name="button_text_block">Bloquejar</string>
   <string name="button_text_block_comments">Bloqueja els comentaris de %s</string>
   <string name="button_text_browse_movies">Pel·lícules</string>
@@ -254,6 +259,7 @@
   <string name="button_text_find_movies">Troba pel·lícules</string>
   <string name="button_text_find_shows">Troba sèries</string>
   <string name="button_text_follow">Segueix</string>
+  <string name="button_text_follow_requests">Sol·licituds</string>
   <string name="button_text_followers">Seguidors</string>
   <string name="button_text_following">Seguint</string>
   <string name="button_text_get_vip">Obtén</string>
@@ -301,12 +307,14 @@
   <string name="button_text_raw_export">Exporta ara</string>
   <string name="button_text_recent_comments">Recents</string>
   <string name="button_text_reconnect">Torna a connectar</string>
+  <string name="button_text_reject_follow_request">Rebutjar sol·licitud</string>
   <string name="button_text_remove_from_favorites">Elimina de Preferits</string>
   <string name="button_text_remove_from_history">Eliminar de l\'historial</string>
   <string name="button_text_remove_from_list">Elimina de la llista</string>
   <string name="button_text_remove_from_watchlist">Elimina de la llista de seguiment</string>
   <string name="button_text_remove_photo">Elimina la foto</string>
   <string name="button_text_renew_vip">Renova la subscripció</string>
+  <string name="button_text_reorder">Reordenar</string>
   <string name="button_text_report">Informar</string>
   <string name="button_text_report_comment">Informar</string>
   <string name="button_text_reset_all_filters">Restableix-ho tot</string>
@@ -428,6 +436,7 @@
   <string name="drawer_title_add_note">Nota</string>
   <string name="drawer_title_notes">Notes</string>
   <string name="drawer_title_people">Persones</string>
+  <string name="drawer_title_reorder_list">Arrossega per reordenar</string>
   <string name="drawer_title_sort">Ordenar per</string>
   <string name="drawer_title_streak_activity">Activitat de la ratxa diària</string>
   <string name="dropdown_label_add_remove_from_lists">Afegeix o elimina \"%s\" de les llistes</string>
@@ -686,6 +695,7 @@
   <string name="list_placeholder_favorite_movies">No hi ha pel·lícules preferides aquí.</string>
   <string name="list_placeholder_favorite_shows">No hi ha sèries preferides aquí.</string>
   <string name="list_placeholder_favorites">No hi ha preferits aquí.</string>
+  <string name="list_placeholder_follow_requests">No hi ha sol·licituds de seguiment.</string>
   <string name="list_placeholder_followers">No hi ha ningú aquí (encara).</string>
   <string name="list_placeholder_following">No hi ha ningú aquí (encara).</string>
   <string name="list_placeholder_from_my_history">Encara no has vist %s en res.</string>
@@ -1030,6 +1040,8 @@
   <string name="text_info_favorites_added">Afegit a preferits.</string>
   <string name="text_info_favorites_removed">Eliminat de preferits.</string>
   <string name="text_info_follow_request">S\'ha enviat la sol·licitud de seguiment.</string>
+  <string name="text_info_follow_request_approved">S\'ha aprovat la sol·licitud de seguiment de %s.</string>
+  <string name="text_info_follow_request_rejected">S\'ha rebutjat la sol·licitud de seguiment de %s.</string>
   <string name="text_info_following">Ara segueixes %s.</string>
   <string name="text_info_history_added">Afegit a l\'historial de vists.</string>
   <string name="text_info_history_removed">Eliminat de l\'historial de vists.</string>
@@ -1559,6 +1571,10 @@
   <string name="yir_2024_stats_tooltip_plays">%s Reproduccions</string>
   <string name="yir_2024_stats_tooltip_week_label">Setmana %s</string>
   <string name="yir_2024_studio_count">Recompte d\'estudis</string>
+  <string name="yir_2024_thanks_copy_directed">Has fet una feina èpica dirigint <b>%1$d</b>. Per una seqüela encara millor el <b>%2$d</b>.</string>
+  <string name="yir_2024_thanks_copy_recommend">Continua el teu viatge. Prova de veure una d\'aquestes sèries o pel·lícules populars.</string>
+  <string name="yir_2024_thanks_intro">Però el més important…</string>
+  <string name="yir_2024_thanks_title">gràcies!</string>
   <string name="yir_2024_time_watched_label">Temps vist</string>
   <string name="yir_2024_trakt_worldwide">Trakt a tot el món</string>
   <string name="yir_2024_trend_watched">Vist</string>

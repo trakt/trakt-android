@@ -27,6 +27,7 @@
   <string name="button_label_add_to_personal_list">Προσθήκη του \"%1$s\" στη λίστα %2$s</string>
   <string name="button_label_add_to_watchlist">Προσθήκη του \"%s\" στη λίστα παρακολούθησής σας</string>
   <string name="button_label_apply">Εφαρμογή αλλαγών</string>
+  <string name="button_label_approve_follow_request">Αποδοχή αίτησης παρακολούθησης από %s</string>
   <string name="button_label_back">Πίσω</string>
   <string name="button_label_block">Αποκλεισμός %s</string>
   <string name="button_label_browse_lists">Περιηγηθείτε στις λίστες σας</string>
@@ -72,6 +73,7 @@
   <string name="button_label_expand_navbar">Ανάπτυξη</string>
   <string name="button_label_filters">Φίλτρα</string>
   <string name="button_label_follow">Ακολουθήστε τον %s</string>
+  <string name="button_label_follow_requests">Αιτήσεις παρακολούθησης</string>
   <string name="button_label_followers">Ακόλουθοι</string>
   <string name="button_label_following">Ακολουθώντας</string>
   <string name="button_label_get_vip">Ξεκλειδώστε λειτουργίες VIP</string>
@@ -116,6 +118,7 @@
   <string name="button_label_react">Αντιδράστε με %s</string>
   <string name="button_label_read_more">Διαβάστε περισσότερα</string>
   <string name="button_label_recent_comments">Πρόσφατες κριτικές</string>
+  <string name="button_label_reject_follow_request">Απόρριψη αίτησης παρακολούθησης από %s</string>
   <string name="button_label_remove_from_favorites">Αφαίρεση του \"%s\" από τα Αγαπημένα σας</string>
   <string name="button_label_remove_from_history">Αφαίρεση αυτής της προβολής του \"%s\" από το Ιστορικό σας</string>
   <string name="button_label_remove_from_list">Αφαίρεση του \"%s\" από τη λίστα</string>
@@ -124,6 +127,7 @@
   <string name="button_label_remove_from_watchlist">Αφαίρεση του \"%s\" από τη λίστα παρακολούθησής σας</string>
   <string name="button_label_remove_photo">Αφαίρεση της φωτογραφίας προφίλ σας</string>
   <string name="button_label_renew_vip">Ανανέωση Συνδρομής</string>
+  <string name="button_label_reorder_list">Αναδιάταξη %s</string>
   <string name="button_label_report_comment">Αναφορά κριτικής</string>
   <string name="button_label_report_list">Αναφορά %s</string>
   <string name="button_label_report_media">Αναφορά %s</string>
@@ -214,6 +218,7 @@
   <string name="button_text_add_review">Προσθήκη Κριτικής</string>
   <string name="button_text_add_to_favorites">Προσθήκη στα Αγαπημένα</string>
   <string name="button_text_apply">Εφαρμογή</string>
+  <string name="button_text_approve_follow_request">Αποδοχή Αίτησης</string>
   <string name="button_text_block">Αποκλεισμός</string>
   <string name="button_text_block_comments">Αποκλεισμός σχολίων από %s</string>
   <string name="button_text_browse_movies">Ταινίες</string>
@@ -254,6 +259,7 @@
   <string name="button_text_find_movies">Βρείτε Ταινίες</string>
   <string name="button_text_find_shows">Βρείτε Σειρές</string>
   <string name="button_text_follow">Ακολουθήστε</string>
+  <string name="button_text_follow_requests">Αιτήσεις</string>
   <string name="button_text_followers">Ακόλουθοι</string>
   <string name="button_text_following">Ακολουθώντας</string>
   <string name="button_text_get_vip">Αποκτήστε</string>
@@ -301,12 +307,14 @@
   <string name="button_text_raw_export">Εξαγωγή τώρα</string>
   <string name="button_text_recent_comments">Πρόσφατα</string>
   <string name="button_text_reconnect">Επανασύνδεση</string>
+  <string name="button_text_reject_follow_request">Απόρριψη Αίτησης</string>
   <string name="button_text_remove_from_favorites">Αφαίρεση από τα Αγαπημένα</string>
   <string name="button_text_remove_from_history">Αφαίρεση από το Ιστορικό</string>
   <string name="button_text_remove_from_list">Αφαίρεση από τη λίστα</string>
   <string name="button_text_remove_from_watchlist">Αφαίρεση από λίστα παρακολούθησης</string>
   <string name="button_text_remove_photo">Αφαίρεση φωτογραφίας</string>
   <string name="button_text_renew_vip">Ανανέωση Συνδρομής</string>
+  <string name="button_text_reorder">Αναδιάταξη</string>
   <string name="button_text_report">Αναφορά</string>
   <string name="button_text_report_comment">Αναφορά</string>
   <string name="button_text_reset_all_filters">Επαναφορά όλων</string>
@@ -428,6 +436,7 @@
   <string name="drawer_title_add_note">Σημείωση</string>
   <string name="drawer_title_notes">Σημειώσεις</string>
   <string name="drawer_title_people">Άτομα</string>
+  <string name="drawer_title_reorder_list">Σύρετε για αναδιάταξη</string>
   <string name="drawer_title_sort">Ταξινόμηση κατά</string>
   <string name="drawer_title_streak_activity">Καθημερινή Δραστηριότητα Σερί</string>
   <string name="dropdown_label_add_remove_from_lists">Προσθήκη ή αφαίρεση του \"%s\" από λίστες</string>
@@ -686,6 +695,7 @@
   <string name="list_placeholder_favorite_movies">Δεν υπάρχουν αγαπημένες ταινίες εδώ.</string>
   <string name="list_placeholder_favorite_shows">Δεν υπάρχουν αγαπημένες σειρές εδώ.</string>
   <string name="list_placeholder_favorites">Δεν υπάρχουν αγαπημένα εδώ.</string>
+  <string name="list_placeholder_follow_requests">Δεν υπάρχουν αιτήσεις παρακολούθησης.</string>
   <string name="list_placeholder_followers">Δεν υπάρχει κανείς εδώ (ακόμα).</string>
   <string name="list_placeholder_following">Δεν υπάρχει κανείς εδώ (ακόμα).</string>
   <string name="list_placeholder_from_my_history">Δεν έχετε δει ακόμα τον/την %s σε τίποτα.</string>
@@ -1030,6 +1040,8 @@
   <string name="text_info_favorites_added">Προστέθηκε στα αγαπημένα.</string>
   <string name="text_info_favorites_removed">Αφαιρέθηκε από τα αγαπημένα.</string>
   <string name="text_info_follow_request">Το αίτημα παρακολούθησης έχει σταλεί.</string>
+  <string name="text_info_follow_request_approved">Εγκρίθηκε η αίτηση παρακολούθησης από %s.</string>
+  <string name="text_info_follow_request_rejected">Απορρίφθηκε η αίτηση παρακολούθησης από %s.</string>
   <string name="text_info_following">Τώρα ακολουθείτε τον/την %s.</string>
   <string name="text_info_history_added">Προστέθηκε στο ιστορικό παρακολούθησης.</string>
   <string name="text_info_history_removed">Αφαιρέθηκε από το ιστορικό παρακολούθησης.</string>
@@ -1559,6 +1571,10 @@
   <string name="yir_2024_stats_tooltip_plays">%s Προβολές</string>
   <string name="yir_2024_stats_tooltip_week_label">Εβδομάδα %s</string>
   <string name="yir_2024_studio_count">Πλήθος στούντιο</string>
+  <string name="yir_2024_thanks_copy_directed">Κάνατε καταπληκτική δουλειά σκηνοθετώντας το <b>%1$d</b>. Ας έχουμε μια ακόμα καλύτερη συνέχεια το <b>%2$d</b>.</string>
+  <string name="yir_2024_thanks_copy_recommend">Συνεχίστε το ταξίδι σας. Δοκιμάστε να παρακολουθήσετε μία από αυτές τις δημοφιλείς εκπομπές ή ταινίες.</string>
+  <string name="yir_2024_thanks_intro">Αλλά το πιο σημαντικό…</string>
+  <string name="yir_2024_thanks_title">ευχαριστώ!</string>
   <string name="yir_2024_time_watched_label">Χρόνος Παρακολούθησης</string>
   <string name="yir_2024_trakt_worldwide">Trakt Παγκοσμίως</string>
   <string name="yir_2024_trend_watched">Παρακολουθήθηκε</string>

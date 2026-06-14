@@ -27,6 +27,7 @@
   <string name="button_label_add_to_personal_list">Добавить \"%1$s\" в %2$s</string>
   <string name="button_label_add_to_watchlist">Добавить \"%s\" в список просмотра</string>
   <string name="button_label_apply">Применить изменения</string>
+  <string name="button_label_approve_follow_request">Одобрить запрос на подписку от %s</string>
   <string name="button_label_back">Назад</string>
   <string name="button_label_block">Заблокировать %s</string>
   <string name="button_label_browse_lists">Просмотреть ваши списки</string>
@@ -72,6 +73,7 @@
   <string name="button_label_expand_navbar">Развернуть</string>
   <string name="button_label_filters">Фильтры</string>
   <string name="button_label_follow">Подписаться на %s</string>
+  <string name="button_label_follow_requests">Запросы на подписку</string>
   <string name="button_label_followers">Подписчики</string>
   <string name="button_label_following">Подписки</string>
   <string name="button_label_get_vip">Разблокировать VIP-функции</string>
@@ -116,6 +118,7 @@
   <string name="button_label_react">Отреагировать как %s</string>
   <string name="button_label_read_more">Читать далее</string>
   <string name="button_label_recent_comments">Недавние отзывы</string>
+  <string name="button_label_reject_follow_request">Отклонить запрос на подписку от %s</string>
   <string name="button_label_remove_from_favorites">Удалить \"%s\" из избранного</string>
   <string name="button_label_remove_from_history">Удалить этот просмотр \"%s\" из истории просмотров</string>
   <string name="button_label_remove_from_list">Удалить \"%s\" из списка</string>
@@ -124,6 +127,7 @@
   <string name="button_label_remove_from_watchlist">Удалить \"%s\" из списка просмотра</string>
   <string name="button_label_remove_photo">Удалить ваше фото профиля</string>
   <string name="button_label_renew_vip">Продлить подписку</string>
+  <string name="button_label_reorder_list">Переупорядочить %s</string>
   <string name="button_label_report_comment">Пожаловаться на отзыв</string>
   <string name="button_label_report_list">Пожаловаться на %s</string>
   <string name="button_label_report_media">Пожаловаться на %s</string>
@@ -214,6 +218,7 @@
   <string name="button_text_add_review">Добавить отзыв</string>
   <string name="button_text_add_to_favorites">Добавить в избранное</string>
   <string name="button_text_apply">Применить</string>
+  <string name="button_text_approve_follow_request">Одобрить запрос</string>
   <string name="button_text_block">Заблокировать</string>
   <string name="button_text_block_comments">Блокировать комментарии от %s</string>
   <string name="button_text_browse_movies">Фильмы</string>
@@ -254,6 +259,7 @@
   <string name="button_text_find_movies">Найти фильмы</string>
   <string name="button_text_find_shows">Найти сериалы</string>
   <string name="button_text_follow">Подписаться</string>
+  <string name="button_text_follow_requests">Запросы</string>
   <string name="button_text_followers">Подписчики</string>
   <string name="button_text_following">Подписки</string>
   <string name="button_text_get_vip">Получить</string>
@@ -301,12 +307,14 @@
   <string name="button_text_raw_export">Экспортировать сейчас</string>
   <string name="button_text_recent_comments">Недавние</string>
   <string name="button_text_reconnect">Переподключить</string>
+  <string name="button_text_reject_follow_request">Отклонить запрос</string>
   <string name="button_text_remove_from_favorites">Удалить из избранного</string>
   <string name="button_text_remove_from_history">Удалить из истории</string>
   <string name="button_text_remove_from_list">Удалить из списка</string>
   <string name="button_text_remove_from_watchlist">Удалить из списка просмотра</string>
   <string name="button_text_remove_photo">Удалить фото</string>
   <string name="button_text_renew_vip">Продлить подписку</string>
+  <string name="button_text_reorder">Переупорядочить</string>
   <string name="button_text_report">Пожаловаться</string>
   <string name="button_text_report_comment">Пожаловаться</string>
   <string name="button_text_reset_all_filters">Сбросить все</string>
@@ -428,6 +436,7 @@
   <string name="drawer_title_add_note">Заметка</string>
   <string name="drawer_title_notes">Заметки</string>
   <string name="drawer_title_people">Люди</string>
+  <string name="drawer_title_reorder_list">Перетащите для изменения порядка</string>
   <string name="drawer_title_sort">Сортировать по</string>
   <string name="drawer_title_streak_activity">Ежедневная активность серии</string>
   <string name="dropdown_label_add_remove_from_lists">Добавить или удалить \"%s\" из списков</string>
@@ -686,6 +695,7 @@
   <string name="list_placeholder_favorite_movies">Здесь нет любимых фильмов.</string>
   <string name="list_placeholder_favorite_shows">Здесь нет любимых сериалов.</string>
   <string name="list_placeholder_favorites">Здесь нет избранного.</string>
+  <string name="list_placeholder_follow_requests">Нет запросов на подписку.</string>
   <string name="list_placeholder_followers">Здесь еще никого нет.</string>
   <string name="list_placeholder_following">Здесь еще никого нет.</string>
   <string name="list_placeholder_from_my_history">Вы еще не видели %s ни в чем.</string>
@@ -1030,6 +1040,8 @@
   <string name="text_info_favorites_added">Добавлено в избранное.</string>
   <string name="text_info_favorites_removed">Удалено из избранного.</string>
   <string name="text_info_follow_request">Запрос на подписку отправлен.</string>
+  <string name="text_info_follow_request_approved">Запрос на подписку от %s одобрен.</string>
+  <string name="text_info_follow_request_rejected">Запрос на подписку от %s отклонен.</string>
   <string name="text_info_following">Вы теперь подписаны на %s.</string>
   <string name="text_info_history_added">Добавлено в историю просмотров.</string>
   <string name="text_info_history_removed">Удалено из истории просмотров.</string>
@@ -1559,6 +1571,10 @@
   <string name="yir_2024_stats_tooltip_plays">%s Просмотров</string>
   <string name="yir_2024_stats_tooltip_week_label">Неделя %s</string>
   <string name="yir_2024_studio_count">Количество студий</string>
+  <string name="yir_2024_thanks_copy_directed">Вы проделали грандиозную работу, режиссируя <b>%1$d</b>. За еще более успешное продолжение в <b>%2$d</b> году.</string>
+  <string name="yir_2024_thanks_copy_recommend">Продолжайте свое путешествие. Попробуйте посмотреть одно из этих популярных шоу или фильмов.</string>
+  <string name="yir_2024_thanks_intro">Но самое главное…</string>
+  <string name="yir_2024_thanks_title">спасибо!</string>
   <string name="yir_2024_time_watched_label">Время просмотра</string>
   <string name="yir_2024_trakt_worldwide">Trakt по всему миру</string>
   <string name="yir_2024_trend_watched">Просмотрено</string>

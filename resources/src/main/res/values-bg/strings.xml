@@ -27,6 +27,7 @@
   <string name="button_label_add_to_personal_list">Добави \"%1$s\" към %2$s</string>
   <string name="button_label_add_to_watchlist">Добави \"%s\" към списъка си за гледане</string>
   <string name="button_label_apply">Приложи промените</string>
+  <string name="button_label_approve_follow_request">Одобри заявка за следване от %s</string>
   <string name="button_label_back">Назад</string>
   <string name="button_label_block">Блокирай %s</string>
   <string name="button_label_browse_lists">Разгледай списъците си</string>
@@ -72,6 +73,7 @@
   <string name="button_label_expand_navbar">Разширяване</string>
   <string name="button_label_filters">Филтри</string>
   <string name="button_label_follow">Следвай %s</string>
+  <string name="button_label_follow_requests">Заявки за следване</string>
   <string name="button_label_followers">Последователи</string>
   <string name="button_label_following">Абонирани</string>
   <string name="button_label_get_vip">Отключи VIP функции</string>
@@ -116,6 +118,7 @@
   <string name="button_label_react">Реагирай с %s</string>
   <string name="button_label_read_more">Прочети повече</string>
   <string name="button_label_recent_comments">Скорошни отзиви</string>
+  <string name="button_label_reject_follow_request">Отхвърли заявка за следване от %s</string>
   <string name="button_label_remove_from_favorites">Премахни \"%s\" от любимите си</string>
   <string name="button_label_remove_from_history">Премахни това гледане на \"%s\" от историята си с гледани</string>
   <string name="button_label_remove_from_list">Премахни \"%s\" от списъка</string>
@@ -124,6 +127,7 @@
   <string name="button_label_remove_from_watchlist">Премахни \"%s\" от списъка си за гледане</string>
   <string name="button_label_remove_photo">Премахни профилната си снимка</string>
   <string name="button_label_renew_vip">Подновяване на абонамент</string>
+  <string name="button_label_reorder_list">Пренареди %s</string>
   <string name="button_label_report_comment">Докладвай отзив</string>
   <string name="button_label_report_list">Докладвай %s</string>
   <string name="button_label_report_media">Докладвай %s</string>
@@ -214,6 +218,7 @@
   <string name="button_text_add_review">Добави рецензия</string>
   <string name="button_text_add_to_favorites">Добави към любими</string>
   <string name="button_text_apply">Приложи</string>
+  <string name="button_text_approve_follow_request">Одобри заявка</string>
   <string name="button_text_block">Блокирай</string>
   <string name="button_text_block_comments">Блокиране на коментари от %s</string>
   <string name="button_text_browse_movies">Филми</string>
@@ -254,6 +259,7 @@
   <string name="button_text_find_movies">Намери филми</string>
   <string name="button_text_find_shows">Намери сериали</string>
   <string name="button_text_follow">Следвай</string>
+  <string name="button_text_follow_requests">Заявки</string>
   <string name="button_text_followers">Последователи</string>
   <string name="button_text_following">Абонирани</string>
   <string name="button_text_get_vip">Вземи</string>
@@ -301,12 +307,14 @@
   <string name="button_text_raw_export">Експортирай сега</string>
   <string name="button_text_recent_comments">Скорошни</string>
   <string name="button_text_reconnect">Повторно свързване</string>
+  <string name="button_text_reject_follow_request">Отхвърли заявка</string>
   <string name="button_text_remove_from_favorites">Премахни от любими</string>
   <string name="button_text_remove_from_history">Премахни от историята</string>
   <string name="button_text_remove_from_list">Премахни от списъка</string>
   <string name="button_text_remove_from_watchlist">Премахване от списъка за гледане</string>
   <string name="button_text_remove_photo">Премахни снимка</string>
   <string name="button_text_renew_vip">Подновяване на абонамент</string>
+  <string name="button_text_reorder">Пренареди</string>
   <string name="button_text_report">Докладвай</string>
   <string name="button_text_report_comment">Докладвай</string>
   <string name="button_text_reset_all_filters">Нулирай всички</string>
@@ -428,6 +436,7 @@
   <string name="drawer_title_add_note">Бележка</string>
   <string name="drawer_title_notes">Бележки</string>
   <string name="drawer_title_people">Хора</string>
+  <string name="drawer_title_reorder_list">Плъзнете за пренареждане</string>
   <string name="drawer_title_sort">Сортиране по</string>
   <string name="drawer_title_streak_activity">Активност на ежедневната поредица</string>
   <string name="dropdown_label_add_remove_from_lists">Добави или премахни \"%s\" от списъци</string>
@@ -686,6 +695,7 @@
   <string name="list_placeholder_favorite_movies">Тук няма любими филми.</string>
   <string name="list_placeholder_favorite_shows">Тук няма любими сериали.</string>
   <string name="list_placeholder_favorites">Тук няма любими.</string>
+  <string name="list_placeholder_follow_requests">Няма заявки за следване.</string>
   <string name="list_placeholder_followers">Тук няма никой (все още).</string>
   <string name="list_placeholder_following">Тук няма никой (все още).</string>
   <string name="list_placeholder_from_my_history">Все още не сте гледали нищо с участието на %s.</string>
@@ -1030,6 +1040,8 @@
   <string name="text_info_favorites_added">Добавено към любими.</string>
   <string name="text_info_favorites_removed">Премахнато от любими.</string>
   <string name="text_info_follow_request">Заявката за следване е изпратена.</string>
+  <string name="text_info_follow_request_approved">Одобрена заявка за следване от %s.</string>
+  <string name="text_info_follow_request_rejected">Отхвърлена заявка за следване от %s.</string>
   <string name="text_info_following">Вече следвате %s.</string>
   <string name="text_info_history_added">Добавено към историята на гледанията.</string>
   <string name="text_info_history_removed">Премахнато от историята на гледанията.</string>
@@ -1559,6 +1571,10 @@
   <string name="yir_2024_stats_tooltip_plays">%s Гледания</string>
   <string name="yir_2024_stats_tooltip_week_label">Седмица %s</string>
   <string name="yir_2024_studio_count">Брой студия</string>
+  <string name="yir_2024_thanks_copy_directed">Свършихте страхотна работа, режисирайки <b>%1$d</b>. Нека <b>%2$d</b> да е още по-добро продължение.</string>
+  <string name="yir_2024_thanks_copy_recommend">Продължете своето пътешествие. Опитайте да гледате някое от тези популярни предавания или филми.</string>
+  <string name="yir_2024_thanks_intro">Но най-важното е…</string>
+  <string name="yir_2024_thanks_title">благодарим!</string>
   <string name="yir_2024_time_watched_label">Време за гледане</string>
   <string name="yir_2024_trakt_worldwide">Trakt по света</string>
   <string name="yir_2024_trend_watched">Гледано</string>
