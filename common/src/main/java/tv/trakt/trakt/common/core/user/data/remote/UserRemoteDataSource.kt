@@ -4,6 +4,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.pagination.Pagination
+import tv.trakt.trakt.common.networking.CommentAllDto
 import tv.trakt.trakt.common.networking.DroppedItemDto
 import tv.trakt.trakt.common.networking.SyncLibraryMediaDto
 import tv.trakt.trakt.common.networking.UserWatchingDto
@@ -26,6 +27,11 @@ interface UserRemoteDataSource {
         page: Int,
         limit: Int,
     ): List<DroppedItemDto>
+
+    suspend fun getComments(
+        page: Int,
+        limit: Int,
+    ): List<CommentAllDto>
 
     // Profile & Settings
 

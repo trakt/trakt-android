@@ -8,7 +8,9 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -42,6 +44,7 @@ fun ReactionsToolTip(
     state: TooltipState,
     reactions: ReactionsSummary?,
     modifier: Modifier = Modifier,
+    userEnabled: Boolean = true,
     userReaction: Reaction? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
     contentAnchor: @Composable () -> Unit,
@@ -58,6 +61,7 @@ fun ReactionsToolTip(
             ReactionsToolTipContent(
                 reactions = reactions,
                 userReaction = userReaction,
+                userEnabled = userEnabled,
                 onReactionClick = {
                     onReactionClick?.invoke(it)
                     haptic.performHapticFeedback(Confirm)
@@ -76,6 +80,7 @@ private fun ReactionsToolTipContent(
     modifier: Modifier = Modifier,
     reactions: ReactionsSummary?,
     userReaction: Reaction?,
+    userEnabled: Boolean,
     onReactionClick: (Reaction) -> Unit = {},
     onDismiss: () -> Unit = {},
 ) {
@@ -132,29 +137,33 @@ private fun ReactionsToolTipContent(
                 .onClick(onClick = onDismiss),
         )
 
-        ReactionsStrip(
-            selectedReaction = userReaction,
-            onReactionClick = onReactionClick,
-            onCloseClick = onDismiss,
-            modifier = Modifier
-                .fillMaxWidth()
-                .dropShadow(
-                    shape = RoundedCornerShape(20.dp),
-                    shadow = Shadow(
-                        radius = 4.dp,
-                        color = if (summaryVisible) Color.Transparent else Color.Black,
-                        spread = 4.dp,
-                        alpha = 0.1f,
+        if (userEnabled) {
+            ReactionsStrip(
+                selectedReaction = userReaction,
+                onReactionClick = onReactionClick,
+                onCloseClick = onDismiss,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .dropShadow(
+                        shape = RoundedCornerShape(20.dp),
+                        shadow = Shadow(
+                            radius = 4.dp,
+                            color = if (summaryVisible) Color.Transparent else Color.Black,
+                            spread = 4.dp,
+                            alpha = 0.1f,
+                        ),
+                    )
+                    .background(Shade800, RoundedCornerShape(20.dp))
+                    .padding(
+                        start = 8.dp,
+                        end = 8.dp,
+                        top = 6.dp,
+                        bottom = 6.dp,
                     ),
-                )
-                .background(Shade800, RoundedCornerShape(20.dp))
-                .padding(
-                    start = 8.dp,
-                    end = 8.dp,
-                    top = 6.dp,
-                    bottom = 6.dp,
-                ),
-        )
+            )
+        } else {
+            Spacer(modifier = Modifier.height(2.dp))
+        }
     }
 }
 
@@ -164,6 +173,7 @@ private fun Preview() {
     TraktTheme {
         ReactionsToolTipContent(
             userReaction = null,
+            userEnabled = true,
             reactions = ReactionsSummary(
                 reactionsCount = 14,
                 distribution = mapOf(
@@ -181,6 +191,7 @@ private fun Preview2() {
     TraktTheme {
         ReactionsToolTipContent(
             userReaction = Reaction.SPOILER,
+            userEnabled = false,
             reactions = ReactionsSummary(
                 reactionsCount = 14,
                 distribution = mapOf(

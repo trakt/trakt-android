@@ -33,6 +33,7 @@ import org.openapitools.client.models.GetSyncProgressMovies200ResponseInner
 import org.openapitools.client.models.GetSyncProgressUpNextStandard200ResponseInner
 import org.openapitools.client.models.GetSyncProgressUpNextStandard200ResponseInnerProgressNextEpisode
 import org.openapitools.client.models.GetUsersActivities200ResponseInner
+import org.openapitools.client.models.GetUsersComments200ResponseInner
 import org.openapitools.client.models.GetUsersComments200ResponseInnerOneOf2Season
 import org.openapitools.client.models.GetUsersComments200ResponseInnerOneOfComment
 import org.openapitools.client.models.GetUsersFavoritesMedia200ResponseInnerOneOf
@@ -88,6 +89,7 @@ typealias PersonMoviesDto = GetPeopleMovies200Response
 typealias PersonSearchDto = GetSearchQuery200ResponseInnerOneOf2Person
 typealias TrendingSearchDto = GetSearchTrending200ResponseInner
 typealias CommentDto = GetUsersComments200ResponseInnerOneOfComment
+typealias CommentAllDto = GetUsersComments200ResponseInner
 typealias SeasonDto = GetUsersComments200ResponseInnerOneOf2Season
 typealias SeasonLikesDto = GetUsersLikesComments200ResponseInnerAllOfOneOf3Season
 typealias ListDto = GetUsersListsPersonal200ResponseInner

@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.core.user.data.local.liked.UserLikedListsLocalDataSource
@@ -40,6 +41,15 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.profile.ProfileViewModel
+import tv.trakt.trakt.core.profile.sections.activity.ProfileActivityViewModel
+import tv.trakt.trakt.core.profile.sections.activity.all.ProfileAllActivityViewModel
+import tv.trakt.trakt.core.profile.sections.activity.data.local.comments.ProfileCommentsLocalDataSource
+import tv.trakt.trakt.core.profile.sections.activity.data.local.comments.ProfileCommentsStorage
+import tv.trakt.trakt.core.profile.sections.activity.data.local.ratings.ProfileRatingsLocalDataSource
+import tv.trakt.trakt.core.profile.sections.activity.data.local.ratings.ProfileRatingsStorage
+import tv.trakt.trakt.core.profile.sections.activity.usecases.GetProfileCommentsUseCase
+import tv.trakt.trakt.core.profile.sections.activity.usecases.GetProfileRatingsUseCase
+import tv.trakt.trakt.core.profile.sections.activity.usecases.filters.GetActivityFilterUseCase
 import tv.trakt.trakt.core.profile.sections.favorites.ProfileFavoritesViewModel
 import tv.trakt.trakt.core.profile.sections.favorites.all.AllFavoritesViewModel
 import tv.trakt.trakt.core.profile.sections.favorites.context.movie.FavoriteMovieContextViewModel
@@ -203,6 +213,14 @@ internal val profileDataModule = module {
         ProgressDroppedStorage()
     }
 
+    single<ProfileRatingsLocalDataSource> {
+        ProfileRatingsStorage()
+    }
+
+    single<ProfileCommentsLocalDataSource> {
+        ProfileCommentsStorage()
+    }
+
     single<DataStore<Preferences>>(named(PROFILE_PREFERENCES)) {
         createStore(
             context = androidApplication(),
@@ -248,6 +266,26 @@ internal val profileModule = module {
     factory {
         GetSocialFilterUseCase(
             dataStore = get(named(PROFILE_PREFERENCES)),
+        )
+    }
+
+    factory {
+        GetActivityFilterUseCase(
+            dataStore = get(named(PROFILE_PREFERENCES)),
+        )
+    }
+
+    factory {
+        GetProfileRatingsUseCase(
+            remoteSource = get(),
+            localDataSource = get(),
+        )
+    }
+
+    factory {
+        GetProfileCommentsUseCase(
+            remoteSource = get(),
+            localDataSource = get(),
         )
     }
 
@@ -366,6 +404,7 @@ internal val profileModule = module {
             localProfileDropped = get(),
             localProfileWatching = get(),
             localProfileCompleted = get(),
+            localProfileRatings = get(),
             appReviewUseCase = get(),
             analytics = get(),
         )
@@ -417,6 +456,22 @@ internal val profileModule = module {
             movieLocalDataSource = get(),
             sessionManager = get(),
             collapsingManager = get(),
+        )
+    }
+
+    viewModelOf(::ProfileActivityViewModel)
+
+    viewModel {
+        ProfileAllActivityViewModel(
+            getFilterUseCase = get(),
+            getRatingsUseCase = get(),
+            getCommentsUseCase = get(),
+            getCommentReactionsUseCase = get(),
+            showLocalDataSource = get(),
+            episodeLocalDataSource = get(),
+            movieLocalDataSource = get(),
+            ratingsUpdates = get(),
+            commentsUpdates = get(),
         )
     }
 

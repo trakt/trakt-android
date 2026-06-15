@@ -8,6 +8,9 @@ internal object ListsConfig {
     const val PROGRESS_SECTION_LIMIT = 20
     const val PROGRESS_PAGE_LIMIT = 100
 
+    const val ACTIVITY_SECTION_LIMIT = 20
+    const val ACTIVITY_PAGE_LIMIT = 100
+
     const val LIBRARY_SECTION_LIMIT = 20
     const val LIBRARY_PAGE_LIMIT = 100
 

@@ -44,6 +44,7 @@ import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class ProfileProgressViewModel(
     private val getFilterUseCase: GetProgressFilterUseCase,
@@ -82,7 +83,7 @@ internal class ProfileProgressViewModel(
             episodeUpdates.observeUpdates(SEASON),
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
             }.launchIn(viewModelScope)

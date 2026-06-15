@@ -1,0 +1,37 @@
+package tv.trakt.trakt.core.profile.sections.activity.data.local.comments
+
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import tv.trakt.trakt.core.profile.sections.activity.model.ProfileCommentItem
+
+internal class ProfileCommentsStorage : ProfileCommentsLocalDataSource {
+    private val mutex = Mutex()
+    private val storage = mutableMapOf<String, ProfileCommentItem>()
+
+    override suspend fun addItems(items: List<ProfileCommentItem>) {
+        mutex.withLock {
+            with(storage) {
+                putAll(items.associateBy { it.key })
+            }
+        }
+    }
+
+    override suspend fun setItems(items: List<ProfileCommentItem>) {
+        mutex.withLock {
+            with(storage) {
+                clear()
+                putAll(items.associateBy { it.key })
+            }
+        }
+    }
+
+    override suspend fun getItems(): List<ProfileCommentItem> {
+        return mutex.withLock {
+            storage.values.toList()
+        }
+    }
+
+    override fun clear() {
+        storage.clear()
+    }
+}
