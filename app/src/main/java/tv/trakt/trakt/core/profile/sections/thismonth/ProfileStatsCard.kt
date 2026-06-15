@@ -56,20 +56,20 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.common.ui.theme.colors.Shade940
-import tv.trakt.trakt.core.profile.sections.thismonth.model.ThisMonthStats
+import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.format.TextStyle
 import java.util.Locale
 
 @Composable
-internal fun ThisMonthCard(
+internal fun ProfileStatsCard(
     user: User,
     modifier: Modifier = Modifier,
     containerColor: Color = Shade920,
     containerImage: String? = null,
     loading: Boolean = false,
-    stats: ThisMonthStats?,
+    stats: ProfileStats?,
 ) {
     val uriHandler = LocalUriHandler.current
 
@@ -297,10 +297,10 @@ private fun StatsChip(
 @Composable
 private fun Preview() {
     TraktTheme {
-        ThisMonthCard(
+        ProfileStatsCard(
             user = PreviewData.user1,
             modifier = Modifier.padding(16.dp),
-            stats = ThisMonthStats(
+            stats = ProfileStats(
                 showsCount = 12,
                 moviesCount = 0,
                 episodesCount = 34,
@@ -313,11 +313,11 @@ private fun Preview() {
 @Composable
 private fun Preview2() {
     TraktTheme {
-        ThisMonthCard(
+        ProfileStatsCard(
             user = PreviewData.user1,
             modifier = Modifier.padding(16.dp),
             loading = true,
-            stats = ThisMonthStats(
+            stats = ProfileStats(
                 showsCount = 12,
                 moviesCount = 0,
                 episodesCount = 34,

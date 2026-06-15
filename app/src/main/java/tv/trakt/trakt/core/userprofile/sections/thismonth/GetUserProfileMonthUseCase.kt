@@ -7,14 +7,14 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.profile.sections.thismonth.model.ThisMonthStats
+import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
 import java.time.ZoneOffset.UTC
 import kotlin.time.toKotlinInstant
 
 internal class GetUserProfileMonthUseCase(
     private val remoteUserSource: UserHistoryRemoteDataSource,
 ) {
-    suspend fun getMonthStats(userId: TraktId): ThisMonthStats {
+    suspend fun getMonthStats(userId: TraktId): ProfileStats {
         return coroutineScope {
             val nowLocal = nowLocalDay()
 
@@ -54,7 +54,7 @@ internal class GetUserProfileMonthUseCase(
             val episodes = remoteEpisodesAsync.await()
             val movies = remoteMoviesAsync.await()
 
-            ThisMonthStats(
+            ProfileStats(
                 showsCount = episodes.distinctBy { it.show.ids.trakt }.size,
                 episodesCount = episodes.size,
                 moviesCount = movies.size,

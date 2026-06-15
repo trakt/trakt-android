@@ -73,7 +73,7 @@ import tv.trakt.trakt.core.profile.sections.history.ProfileHistoryView
 import tv.trakt.trakt.core.profile.sections.library.ProfileLibraryView
 import tv.trakt.trakt.core.profile.sections.progress.ProfileProgressView
 import tv.trakt.trakt.core.profile.sections.social.ProfileSocialView
-import tv.trakt.trakt.core.profile.sections.thismonth.ThisMonthCard
+import tv.trakt.trakt.core.profile.sections.thismonth.ProfileStatsCard
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -227,7 +227,7 @@ private fun ProfileScreen(
             if (state.user != null) {
                 if (state.user.isAnyVip) {
                     item {
-                        ThisMonthCard(
+                        ProfileStatsCard(
                             user = state.user,
                             stats = state.monthStats,
                             containerImage = state.monthBackgroundUrl,
