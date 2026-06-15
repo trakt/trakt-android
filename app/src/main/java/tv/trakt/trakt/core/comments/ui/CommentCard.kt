@@ -330,7 +330,12 @@ private fun CommentHeader(
             }
         }
 
-        Column(verticalArrangement = spacedBy(1.dp)) {
+        Column(
+            verticalArrangement = spacedBy(1.dp),
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 16.dp),
+        ) {
             Row(
                 horizontalArrangement = spacedBy(4.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -341,9 +346,10 @@ private fun CommentHeader(
                     color = TraktTheme.colors.textPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.onClick {
-                        onUserClick?.invoke(comment.user)
-                    },
+                    modifier = Modifier
+                        .onClick {
+                            onUserClick?.invoke(comment.user)
+                        },
                 )
             }
 
@@ -363,9 +369,7 @@ private fun CommentHeader(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = spacedBy(12.dp),
-            modifier = Modifier.fillMaxWidth(),
         ) {
-            Spacer(modifier = Modifier.weight(1f))
             comment.user5Rating?.let { rating ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
