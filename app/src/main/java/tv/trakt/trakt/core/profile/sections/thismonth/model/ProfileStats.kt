@@ -1,5 +1,8 @@
 package tv.trakt.trakt.core.profile.sections.thismonth.model
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class ProfileStats(
     val showsCount: Int = 0,
     val moviesCount: Int = 0,

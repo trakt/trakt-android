@@ -61,19 +61,24 @@ internal class GetProfileStatsUseCase(
             it.lastWatchedAt.isInSameMonthAs(currentDate)
         }
 
-        val allEpisodes = progress
-            .flatMap { it.seasons }
-            .flatMap { it.episodes }
-
-        val episodesThisMonth = allEpisodes.count {
-            it.lastWatchedAt.isInSameMonthAs(currentDate)
+        var allEpisodes = 0
+        var episodesThisMonth = 0
+        progress.forEach { show ->
+            show.seasons.forEach { season ->
+                season.episodes.forEach { episode ->
+                    allEpisodes++
+                    if (episode.lastWatchedAt.isInSameMonthAs(currentDate)) {
+                        episodesThisMonth++
+                    }
+                }
+            }
         }
 
         return ShowsCounts(
             showsThisMonth = showsThisMonth,
             episodesThisMonth = episodesThisMonth,
             allShows = progress.size,
-            allEpisodes = allEpisodes.size,
+            allEpisodes = allEpisodes,
         )
     }
 
