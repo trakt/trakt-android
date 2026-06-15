@@ -6,6 +6,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -78,6 +80,9 @@ import tv.trakt.trakt.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
+import tv.trakt.trakt.helpers.editscreen.data.EditScreenManager
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.Companion.ShowKeys
 import tv.trakt.trakt.resources.R
 import java.util.Locale
 
@@ -110,6 +115,7 @@ internal class ShowDetailsViewModel(
     private val watchlistUpdates: WatchlistUpdates,
     private val sessionManager: SessionManager,
     private val errorsManager: GlobalErrorsManager,
+    private val editScreenManager: EditScreenManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ShowDetailsDestination>()
@@ -131,6 +137,7 @@ internal class ShowDetailsViewModel(
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
     private val userState = MutableStateFlow(initialState.user)
+    private val visibilityState = MutableStateFlow(initialState.visibility)
 
     private var ratingJob: Job? = null
 
@@ -140,6 +147,7 @@ internal class ShowDetailsViewModel(
         loadProgressData()
         loadUserRatingData()
         observeData()
+        observeVisibility()
 
         analytics.logScreenView(
             screenName = "show_details",
@@ -154,6 +162,15 @@ internal class ShowDetailsViewModel(
                 loadProgressData(
                     ignoreErrors = true,
                 )
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeVisibility() {
+        editScreenManager.observe(ShowKeys)
+            .distinctUntilChanged()
+            .onEach { map ->
+                visibilityState.update { map.toImmutableMap() }
             }
             .launchIn(viewModelScope)
     }
@@ -963,6 +980,7 @@ internal class ShowDetailsViewModel(
         infoState,
         errorState,
         userState,
+        visibilityState,
     ) { state ->
         ShowDetailsState(
             show = state[0] as Show?,
@@ -979,6 +997,7 @@ internal class ShowDetailsViewModel(
             info = state[11] as StringResource?,
             error = state[12] as Exception?,
             user = state[13] as User?,
+            visibility = state[14] as ImmutableMap<EditScreenKey, Boolean>?,
         )
     }.stateIn(
         scope = viewModelScope,

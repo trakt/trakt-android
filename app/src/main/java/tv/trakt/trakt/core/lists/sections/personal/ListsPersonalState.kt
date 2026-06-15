@@ -23,6 +23,5 @@ internal data class ListsPersonalState(
     val navigateMovie: TraktId? = null,
     val navigateEpisode: Pair<TraktId, Episode>? = null,
     val loading: LoadingState = Idle,
-    val collapsed: Boolean? = null,
     val error: Exception? = null,
 )

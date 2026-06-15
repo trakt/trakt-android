@@ -36,7 +36,6 @@ internal val userProfileModule = module {
         UserProfileHistoryViewModel(
             userId = userId,
             getHistoryUseCase = get(),
-            collapsingManager = get(),
         )
     }
 
@@ -45,7 +44,6 @@ internal val userProfileModule = module {
             userId = userId,
             getFavoritesUseCase = get(),
             collectionStateProvider = get(),
-            collapsingManager = get(),
         )
     }
 
@@ -53,7 +51,6 @@ internal val userProfileModule = module {
         UserProfileSocialViewModel(
             userId = userId,
             getSocialUseCase = get(),
-            collapsingManager = get(),
         )
     }
 
@@ -61,7 +58,6 @@ internal val userProfileModule = module {
         UserProfileListsViewModel(
             userId = userId,
             getListsUseCase = get(),
-            collapsingManager = get(),
         )
     }
 

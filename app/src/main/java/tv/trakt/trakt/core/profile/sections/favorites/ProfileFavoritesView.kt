@@ -3,9 +3,6 @@
 package tv.trakt.trakt.core.profile.sections.favorites
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.snap
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -24,7 +21,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -89,7 +85,6 @@ internal fun ProfileFavoritesView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onCollapse = viewModel::setCollapsed,
         onShowClick = { viewModel.navigateToShow(it) },
         onMovieClick = { viewModel.navigateToMovie(it) },
         onShowLongClick = { showContextSheet = it },
@@ -119,7 +114,6 @@ internal fun ProfileFavoritesContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onCollapse: (collapsed: Boolean) -> Unit = {},
     onShowClick: (Show) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
     onShowLongClick: (Show) -> Unit = {},
@@ -127,25 +121,14 @@ internal fun ProfileFavoritesContent(
     onFavoritesClick: () -> Unit = {},
     onShowsClick: () -> Unit = {},
 ) {
-    var animateCollapse by rememberSaveable { mutableStateOf(false) }
-
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
-        modifier = modifier
-            .animateContentSize(
-                animationSpec = if (animateCollapse) spring() else snap(),
-            ),
+        modifier = modifier,
     ) {
         TraktSectionHeader(
             title = stringResource(R.string.list_title_favorites),
             subtitle = stringResource(R.string.text_sort_recently_added),
             chevron = !state.items.isNullOrEmpty() || state.loading != Done,
-            collapsed = state.collapsed ?: false,
-            onCollapseClick = {
-                animateCollapse = true
-                val current = (state.collapsed ?: false)
-                onCollapse(!current)
-            },
             modifier = Modifier
                 .padding(headerPadding)
                 .onClick(enabled = state.loading == Done) {
@@ -153,54 +136,52 @@ internal fun ProfileFavoritesContent(
                 },
         )
 
-        if (state.collapsed != true) {
-            Crossfade(
-                targetState = state.loading,
-                animationSpec = tween(200),
-            ) { loading ->
-                when (loading) {
-                    Idle, Loading -> {
-                        ContentLoadingList(
-                            visible = loading.isLoading,
-                            contentPadding = contentPadding,
-                            modifier = Modifier.padding(bottom = 3.75.dp),
-                        )
-                    }
+        Crossfade(
+            targetState = state.loading,
+            animationSpec = tween(200),
+        ) { loading ->
+            when (loading) {
+                Idle, Loading -> {
+                    ContentLoadingList(
+                        visible = loading.isLoading,
+                        contentPadding = contentPadding,
+                        modifier = Modifier.padding(bottom = 3.75.dp),
+                    )
+                }
 
-                    Done -> {
-                        when {
-                            state.error != null -> {
-                                Text(
-                                    text =
-                                        "${
-                                            stringResource(
-                                                R.string.error_text_unexpected_error_short,
-                                            )
-                                        }\n\n${state.error}",
-                                    color = TraktTheme.colors.textSecondary,
-                                    style = TraktTheme.typography.meta,
-                                    maxLines = 10,
-                                    modifier = Modifier.padding(contentPadding),
-                                )
-                            }
+                Done -> {
+                    when {
+                        state.error != null -> {
+                            Text(
+                                text =
+                                    "${
+                                        stringResource(
+                                            R.string.error_text_unexpected_error_short,
+                                        )
+                                    }\n\n${state.error}",
+                                color = TraktTheme.colors.textSecondary,
+                                style = TraktTheme.typography.meta,
+                                maxLines = 10,
+                                modifier = Modifier.padding(contentPadding),
+                            )
+                        }
 
-                            state.items?.isEmpty() == true -> {
-                                ContentEmptyView(
-                                    onShowsClick = onShowsClick,
-                                    modifier = Modifier.padding(contentPadding),
-                                )
-                            }
+                        state.items?.isEmpty() == true -> {
+                            ContentEmptyView(
+                                onShowsClick = onShowsClick,
+                                modifier = Modifier.padding(contentPadding),
+                            )
+                        }
 
-                            else -> {
-                                ContentList(
-                                    listItems = (state.items ?: emptyList()).toImmutableList(),
-                                    contentPadding = contentPadding,
-                                    onShowClick = onShowClick,
-                                    onMovieClick = onMovieClick,
-                                    onShowLongClick = onShowLongClick,
-                                    onMovieLongClick = onMovieLongClick,
-                                )
-                            }
+                        else -> {
+                            ContentList(
+                                listItems = (state.items ?: emptyList()).toImmutableList(),
+                                contentPadding = contentPadding,
+                                onShowClick = onShowClick,
+                                onMovieClick = onMovieClick,
+                                onShowLongClick = onShowLongClick,
+                                onMovieLongClick = onMovieLongClick,
+                            )
                         }
                     }
                 }

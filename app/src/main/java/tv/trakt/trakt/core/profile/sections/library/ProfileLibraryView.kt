@@ -3,9 +3,6 @@
 package tv.trakt.trakt.core.profile.sections.library
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.snap
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -27,7 +24,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -81,7 +77,6 @@ internal fun ProfileLibraryView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onCollapse = viewModel::setCollapsed,
         onFilterClick = viewModel::setFilter,
         onEpisodeClick = { show, _ ->
             scope.launch {
@@ -119,29 +114,17 @@ private fun ProfileLibraryView(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onCollapse: (collapsed: Boolean) -> Unit = {},
     onFilterClick: (LibraryFilter) -> Unit = {},
     onEpisodeClick: (Show, Episode) -> Unit = { _, _ -> },
     onMovieClick: (Movie) -> Unit = {},
     onLibraryClick: () -> Unit = {},
 ) {
-    var animateCollapse by rememberSaveable { mutableStateOf(false) }
-
     Column(
-        modifier = modifier
-            .animateContentSize(
-                animationSpec = if (animateCollapse) spring() else snap(),
-            ),
+        modifier = modifier,
     ) {
         TraktSectionHeader(
             title = stringResource(R.string.list_title_library),
             chevron = !state.items.isNullOrEmpty() || state.loading != Done,
-            collapsed = state.collapsed ?: false,
-            onCollapseClick = {
-                animateCollapse = true
-                val current = (state.collapsed ?: false)
-                onCollapse(!current)
-            },
             modifier = Modifier
                 .padding(headerPadding)
                 .onClick(enabled = state.loading == Done) {
@@ -149,64 +132,62 @@ private fun ProfileLibraryView(
                 },
         )
 
-        if (state.collapsed != true) {
-            ContentFilters(
-                state = state,
-                headerPadding = headerPadding,
-                onFilterClick = onFilterClick,
-            )
+        ContentFilters(
+            state = state,
+            headerPadding = headerPadding,
+            onFilterClick = onFilterClick,
+        )
 
-            Crossfade(
-                targetState = state.loading,
-                animationSpec = tween(200),
-            ) { loading ->
-                when (loading) {
-                    Idle, Loading -> {
-                        ContentLoadingList(
-                            visible = loading.isLoading,
-                            contentPadding = contentPadding,
-                        )
-                    }
+        Crossfade(
+            targetState = state.loading,
+            animationSpec = tween(200),
+        ) { loading ->
+            when (loading) {
+                Idle, Loading -> {
+                    ContentLoadingList(
+                        visible = loading.isLoading,
+                        contentPadding = contentPadding,
+                    )
+                }
 
-                    Done -> {
-                        when {
-                            state.error != null -> {
-                                Text(
-                                    text =
-                                        "${
-                                            stringResource(
-                                                R.string.error_text_unexpected_error_short,
-                                            )
-                                        }\n\n${state.error}",
-                                    color = TraktTheme.colors.textSecondary,
-                                    style = TraktTheme.typography.meta,
-                                    maxLines = 10,
-                                    modifier = Modifier.padding(contentPadding),
-                                )
-                            }
+                Done -> {
+                    when {
+                        state.error != null -> {
+                            Text(
+                                text =
+                                    "${
+                                        stringResource(
+                                            R.string.error_text_unexpected_error_short,
+                                        )
+                                    }\n\n${state.error}",
+                                color = TraktTheme.colors.textSecondary,
+                                style = TraktTheme.typography.meta,
+                                maxLines = 10,
+                                modifier = Modifier.padding(contentPadding),
+                            )
+                        }
 
-                            state.items?.isEmpty() == true -> {
-                                Text(
-                                    text = stringResource(R.string.list_placeholder_empty),
-                                    color = TraktTheme.colors.textSecondary,
-                                    style = TraktTheme.typography.heading6,
-                                    modifier = Modifier.padding(contentPadding),
-                                )
-                            }
+                        state.items?.isEmpty() == true -> {
+                            Text(
+                                text = stringResource(R.string.list_placeholder_empty),
+                                color = TraktTheme.colors.textSecondary,
+                                style = TraktTheme.typography.heading6,
+                                modifier = Modifier.padding(contentPadding),
+                            )
+                        }
 
-                            else -> {
-                                ContentList(
+                        else -> {
+                            ContentList(
 //                                filter = state.filter,
-                                    listItems = (state.items ?: emptyList()).toImmutableList(),
-                                    contentPadding = contentPadding,
-                                    onEpisodeClick = {
-                                        onEpisodeClick(it.show, it.episode)
-                                    },
-                                    onMovieClick = {
-                                        onMovieClick(it.movie)
-                                    },
-                                )
-                            }
+                                listItems = (state.items ?: emptyList()).toImmutableList(),
+                                contentPadding = contentPadding,
+                                onEpisodeClick = {
+                                    onEpisodeClick(it.show, it.episode)
+                                },
+                                onMovieClick = {
+                                    onMovieClick(it.movie)
+                                },
+                            )
                         }
                     }
                 }

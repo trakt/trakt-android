@@ -12,7 +12,6 @@ import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 internal data class HomeWatchlistState(
     val filter: GlobalFilter? = null,
     val items: ImmutableList<WatchlistItem>? = null,
-    val collapsed: Boolean? = null,
     val navigateShow: TraktId? = null,
     val navigateMovie: TraktId? = null,
     val loading: LoadingState = LoadingState.Idle,

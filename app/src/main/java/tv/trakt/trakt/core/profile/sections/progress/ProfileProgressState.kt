@@ -15,6 +15,5 @@ internal data class ProfileProgressState(
     val filter: ProgressFilter? = null,
     val navigateShow: TraktId? = null,
     val loading: LoadingState = LoadingState.Idle,
-    val collapsed: Boolean? = null,
     val error: Exception? = null,
 )

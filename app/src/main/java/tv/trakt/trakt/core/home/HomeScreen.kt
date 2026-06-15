@@ -47,6 +47,14 @@ import tv.trakt.trakt.core.home.sections.upcoming.HomeUpcomingView
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextView
 import tv.trakt.trakt.core.home.sections.watchlist.HomeWatchlistView
 import tv.trakt.trakt.helpers.ScreenHeaderState
+import tv.trakt.trakt.helpers.editscreen.EditScreenSheet
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.Companion.HomeKeys
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.HomeHistory
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.HomeSocial
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.HomeStreaks
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.HomeUpNext
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.HomeUpcoming
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.HomeWatchlist
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
@@ -75,6 +83,7 @@ internal fun HomeScreen(
 
     var filtersSheet by remember { mutableStateOf(false) }
     var streaksSheet by remember { mutableStateOf(false) }
+    var sectionsSheet by remember { mutableStateOf(false) }
 
     HomeScreenContent(
         state = state,
@@ -109,6 +118,9 @@ internal fun HomeScreen(
         onFiltersClick = {
             filtersSheet = true
         },
+        onEditScreenClick = {
+            sectionsSheet = true
+        },
     )
 
     GlobalFiltersSheet(
@@ -122,6 +134,14 @@ internal fun HomeScreen(
         visible = streaksSheet,
         onDismiss = {
             streaksSheet = false
+        },
+    )
+
+    EditScreenSheet(
+        active = sectionsSheet,
+        enabledValues = HomeKeys,
+        onDismiss = {
+            sectionsSheet = false
         },
     )
 }
@@ -145,6 +165,7 @@ private fun HomeScreenContent(
     onCalendarClick: () -> Unit = {},
     onStreakClick: () -> Unit = {},
     onFiltersClick: () -> Unit = {},
+    onEditScreenClick: () -> Unit = {},
     onUserClick: (user: User) -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
@@ -199,29 +220,33 @@ private fun HomeScreenContent(
             verticalArrangement = spacedBy(TraktTheme.spacing.mainSectionVerticalSpace),
             contentPadding = listPadding,
         ) {
-            item {
-                HomeUpNextView(
-                    headerPadding = sectionPadding,
-                    contentPadding = sectionPadding,
-                    onShowClick = onShowClick,
-                    onMovieClick = onMovieClick,
-                    onShowsClick = onShowsClick,
-                    onMoviesClick = onMoviesClick,
-                    onEpisodeClick = onEpisodeClick,
-                    onMoreClick = onMoreUpNextClick,
-                )
+            if (state.visibility?.get(HomeUpNext) == true) {
+                item {
+                    HomeUpNextView(
+                        headerPadding = sectionPadding,
+                        contentPadding = sectionPadding,
+                        onShowClick = onShowClick,
+                        onMovieClick = onMovieClick,
+                        onShowsClick = onShowsClick,
+                        onMoviesClick = onMoviesClick,
+                        onEpisodeClick = onEpisodeClick,
+                        onMoreClick = onMoreUpNextClick,
+                    )
+                }
             }
 
-            item {
-                HomeWatchlistView(
-                    headerPadding = sectionPadding,
-                    contentPadding = sectionPadding,
-                    onShowClick = onShowClick,
-                    onShowsClick = onShowsClick,
-                    onMovieClick = onMovieClick,
-                    onMoviesClick = onMoviesClick,
-                    onMoreClick = onMoreWatchlistClick,
-                )
+            if (state.visibility?.get(HomeWatchlist) == true) {
+                item {
+                    HomeWatchlistView(
+                        headerPadding = sectionPadding,
+                        contentPadding = sectionPadding,
+                        onShowClick = onShowClick,
+                        onShowsClick = onShowsClick,
+                        onMovieClick = onMovieClick,
+                        onMoviesClick = onMoviesClick,
+                        onMoreClick = onMoreWatchlistClick,
+                    )
+                }
             }
 
             if (state.user.user != null && !state.user.user.isVip) {
@@ -235,7 +260,7 @@ private fun HomeScreenContent(
                 }
             }
 
-            if (state.user.user != null) {
+            if (state.user.user != null && state.visibility?.get(HomeStreaks) == true) {
                 item {
                     HomeStreaksView(
                         modifier = Modifier.padding(sectionPadding),
@@ -244,20 +269,22 @@ private fun HomeScreenContent(
                 }
             }
 
-            item {
-                HomeUpcomingView(
-                    headerPadding = sectionPadding,
-                    contentPadding = sectionPadding,
-                    onShowClick = onShowClick,
-                    onShowsClick = onShowsClick,
-                    onMoviesClick = onMoviesClick,
-                    onEpisodeClick = onEpisodeClick,
-                    onMovieClick = onMovieClick,
-                    onCalendarClick = onCalendarClick,
-                )
+            if (state.visibility?.get(HomeUpcoming) == true) {
+                item {
+                    HomeUpcomingView(
+                        headerPadding = sectionPadding,
+                        contentPadding = sectionPadding,
+                        onShowClick = onShowClick,
+                        onShowsClick = onShowsClick,
+                        onMoviesClick = onMoviesClick,
+                        onEpisodeClick = onEpisodeClick,
+                        onMovieClick = onMovieClick,
+                        onCalendarClick = onCalendarClick,
+                    )
+                }
             }
 
-            if (state.user.user != null) {
+            if (state.user.user != null && state.visibility?.get(HomeHistory) == true) {
                 item {
                     HomeHistoryView(
                         headerPadding = sectionPadding,
@@ -270,16 +297,18 @@ private fun HomeScreenContent(
                 }
             }
 
-            item {
-                HomeSocialView(
-                    headerPadding = sectionPadding,
-                    contentPadding = sectionPadding,
-                    onMoreClick = onMoreSocialClick,
-                    onShowClick = onShowClick,
-                    onEpisodeClick = onEpisodeClick,
-                    onMovieClick = onMovieClick,
-                    onUserClick = onUserClick,
-                )
+            if (state.visibility?.get(HomeSocial) == true) {
+                item {
+                    HomeSocialView(
+                        headerPadding = sectionPadding,
+                        contentPadding = sectionPadding,
+                        onMoreClick = onMoreSocialClick,
+                        onShowClick = onShowClick,
+                        onEpisodeClick = onEpisodeClick,
+                        onMovieClick = onMovieClick,
+                        onUserClick = onUserClick,
+                    )
+                }
             }
         }
 
@@ -290,6 +319,7 @@ private fun HomeScreenContent(
             isScrolledToTop = isScrolledToTop,
             onVipClick = onVipClick,
             onFiltersClick = onFiltersClick,
+            onEditScreenClick = onEditScreenClick,
         )
     }
 }
@@ -302,6 +332,7 @@ private fun HomeScreenHeader(
     isScrolledToTop: Boolean,
     onVipClick: () -> Unit,
     onFiltersClick: () -> Unit,
+    onEditScreenClick: () -> Unit,
 ) {
     val userState = remember(state.user) {
         val loadingDone = state.user.loading == Done
@@ -314,9 +345,11 @@ private fun HomeScreenHeader(
         showLogin = userState.first && !userState.second,
         showVip = userState.second && state.user.user?.isVip == false,
         showFilters = true,
+        showEditScreen = true,
         userLoading = userLoading,
         onVipClick = onVipClick,
         onFilterClick = onFiltersClick,
+        onEditScreenClick = onEditScreenClick,
         modifier = Modifier.offset {
             IntOffset(0, headerState.connection.barOffset.fastRoundToInt())
         },

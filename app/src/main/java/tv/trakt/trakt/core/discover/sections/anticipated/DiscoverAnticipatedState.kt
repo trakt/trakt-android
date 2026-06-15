@@ -10,7 +10,6 @@ import tv.trakt.trakt.core.discover.model.DiscoverItem
 internal data class DiscoverAnticipatedState(
     val items: ImmutableList<DiscoverItem>? = null,
     val filter: GlobalFilter? = null,
-    val collapsed: Boolean? = null,
     val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
 )

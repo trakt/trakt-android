@@ -8,6 +8,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -80,6 +82,9 @@ import tv.trakt.trakt.core.user.usecases.lists.LoadUserListsUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
+import tv.trakt.trakt.helpers.editscreen.data.EditScreenManager
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.Companion.MovieKeys
 import tv.trakt.trakt.resources.R
 import java.util.Locale
 
@@ -112,6 +117,7 @@ internal class MovieDetailsViewModel(
     private val checkInManager: CheckInManager,
     private val errorsManager: GlobalErrorsManager,
     private val analytics: Analytics,
+    private val editScreenManager: EditScreenManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<MovieDetailsDestination>()
     private val movieId = destination.movieId.toTraktId()
@@ -131,6 +137,7 @@ internal class MovieDetailsViewModel(
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
     private val userState = MutableStateFlow(initialState.user)
+    private val visibilityState = MutableStateFlow(initialState.visibility)
 
     private var ratingJob: Job? = null
 
@@ -142,10 +149,19 @@ internal class MovieDetailsViewModel(
         loadUserRatingData()
 
         observeCheckIn()
+        observeVisibility()
 
         analytics.logScreenView(
             screenName = "movie_details",
         )
+    }
+
+    private fun observeVisibility() {
+        editScreenManager.observe(MovieKeys)
+            .onEach { map ->
+                visibilityState.update { map.toImmutableMap() }
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun observeCheckIn() {
@@ -985,6 +1001,7 @@ internal class MovieDetailsViewModel(
         infoState,
         errorState,
         userState,
+        visibilityState,
     ) { state ->
         MovieDetailsState(
             movie = state[0] as Movie?,
@@ -1000,6 +1017,7 @@ internal class MovieDetailsViewModel(
             info = state[10] as StringResource?,
             error = state[11] as Exception?,
             user = state[12] as User?,
+            visibility = state[13] as ImmutableMap<EditScreenKey, Boolean>?,
         )
     }.stateIn(
         scope = viewModelScope,

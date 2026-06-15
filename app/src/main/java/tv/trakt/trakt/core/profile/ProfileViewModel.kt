@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -29,6 +31,9 @@ import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.profile.sections.thismonth.model.ThisMonthStats
 import tv.trakt.trakt.core.profile.sections.thismonth.usecases.GetThisMonthUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
+import tv.trakt.trakt.helpers.editscreen.data.EditScreenManager
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.Companion.ProfileKeys
 
 @OptIn(FlowPreview::class)
 internal class ProfileViewModel(
@@ -36,6 +41,7 @@ internal class ProfileViewModel(
     private val getThisMonthUseCase: GetThisMonthUseCase,
     private val logoutUseCase: LogoutUserUseCase,
     private val checkInManager: CheckInManager,
+    private val editScreenManager: EditScreenManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ProfileState()
@@ -47,6 +53,7 @@ internal class ProfileViewModel(
     private val loadingMonthStatsState = MutableStateFlow(initialState.loadingMonthStats)
     private val logoutLoadingState = MutableStateFlow(initialState.logoutLoading)
     private val checkInState = MutableStateFlow(initialState.checkIn)
+    private val visibilityState = MutableStateFlow(initialState.visibility)
 
     init {
         loadMonthBackground()
@@ -54,6 +61,7 @@ internal class ProfileViewModel(
 
         observeUser()
         observeCheckIn()
+        observeVisibility()
 
         analytics.logScreenView(
             screenName = "profile",
@@ -82,6 +90,15 @@ internal class ProfileViewModel(
             .distinctUntilChanged()
             .onEach { isActive ->
                 checkInState.update { isActive }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeVisibility() {
+        editScreenManager.observe(ProfileKeys)
+            .distinctUntilChanged()
+            .onEach { map ->
+                visibilityState.update { map.toImmutableMap() }
             }
             .launchIn(viewModelScope)
     }
@@ -126,6 +143,7 @@ internal class ProfileViewModel(
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     val state = combine(
         monthStatsState,
         monthBackgroundState,
@@ -134,6 +152,7 @@ internal class ProfileViewModel(
         logoutLoadingState,
         userState,
         checkInState,
+        visibilityState,
     ) { state ->
         ProfileState(
             monthStats = state[0] as ThisMonthStats?,
@@ -143,6 +162,7 @@ internal class ProfileViewModel(
             logoutLoading = state[4] as LoadingState,
             user = state[5] as User?,
             checkIn = state[6] as Boolean,
+            visibility = state[7] as ImmutableMap<EditScreenKey, Boolean>?,
         )
     }.stateIn(
         scope = viewModelScope,

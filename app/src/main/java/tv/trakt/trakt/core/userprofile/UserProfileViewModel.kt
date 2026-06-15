@@ -8,10 +8,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -40,6 +44,9 @@ import tv.trakt.trakt.core.user.usecases.social.LoadUserSocialUseCase
 import tv.trakt.trakt.core.userprofile.navigation.UserProfileDestination
 import tv.trakt.trakt.core.userprofile.sections.thismonth.GetUserProfileMonthUseCase
 import tv.trakt.trakt.core.userprofile.usecases.GetUserProfileDetailsUseCase
+import tv.trakt.trakt.helpers.editscreen.data.EditScreenManager
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.Companion.UserProfileKeys
 import tv.trakt.trakt.resources.R
 
 internal class UserProfileViewModel(
@@ -53,6 +60,7 @@ internal class UserProfileViewModel(
     private val showLocalDataSource: ShowLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
+    private val editScreenManager: EditScreenManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<UserProfileDestination>()
     private val user = Json.decodeFromString<User>(destination.userJson)
@@ -65,6 +73,7 @@ internal class UserProfileViewModel(
     private val userMonthState = MutableStateFlow(initialState.monthStats)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val infoState = MutableStateFlow(initialState.info)
+    private val visibilityState = MutableStateFlow(initialState.visibility)
 
     private val navigateShowState = MutableStateFlow(initialState.navigateShow)
     private val navigateMovieState = MutableStateFlow(initialState.navigateMovie)
@@ -74,6 +83,15 @@ internal class UserProfileViewModel(
 
     init {
         loadData()
+        observeVisibility()
+    }
+
+    private fun observeVisibility() {
+        editScreenManager.observe(UserProfileKeys)
+            .onEach { map ->
+                visibilityState.update { map.toImmutableMap() }
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun loadData() {
@@ -344,6 +362,7 @@ internal class UserProfileViewModel(
         navigateMovieState,
         navigateEpisodeState,
         infoState,
+        visibilityState,
     ) { states ->
         UserProfileState(
             user = states[0] as User,
@@ -355,6 +374,7 @@ internal class UserProfileViewModel(
             navigateMovie = states[6] as? TraktId,
             navigateEpisode = states[7] as? Pair<TraktId, Episode>,
             info = states[8] as? StringResource,
+            visibility = states[9] as ImmutableMap<EditScreenKey, Boolean>?,
         )
     }.stateIn(
         scope = viewModelScope,

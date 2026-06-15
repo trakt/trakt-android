@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.summary.episodes
 
 import androidx.compose.runtime.Immutable
+import kotlinx.collections.immutable.ImmutableMap
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.StringResource
@@ -11,6 +12,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey
 
 @Immutable
 internal data class EpisodeDetailsState(
@@ -27,6 +29,7 @@ internal data class EpisodeDetailsState(
     val info: StringResource? = null,
     val error: Exception? = null,
     val user: User? = null,
+    val visibility: ImmutableMap<EditScreenKey, Boolean>? = null,
 ) {
     data class ProgressState(
         val plays: Int?,

@@ -8,6 +8,5 @@ import tv.trakt.trakt.core.streamings.model.StreamingsResult
 internal data class MovieStreamingsState(
     val items: StreamingsResult? = null,
     val loading: LoadingState = LoadingState.Idle,
-    val collapsed: Boolean? = null,
     val error: Exception? = null,
 )

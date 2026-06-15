@@ -14,7 +14,6 @@ internal data class HomeUpcomingState(
     val user: User? = null,
     val items: ImmutableList<HomeUpcomingItem>? = null,
     val filter: GlobalFilter? = null,
-    val collapsed: Boolean? = null,
     val navigateShow: TraktId? = null,
     val navigateEpisode: Pair<TraktId, Episode>? = null,
     val navigateMovie: TraktId? = null,

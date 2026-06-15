@@ -31,6 +31,7 @@ internal fun EpisodeDetailsContextSheet(
     onRemoveClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
+    onEditScreenClick: (() -> Unit)? = null,
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
@@ -76,6 +77,15 @@ internal fun EpisodeDetailsContextSheet(
                 },
                 onCoverClick = {
                     onCoverClick?.invoke()
+                    sheetScope.launch { state.hide() }
+                        .invokeOnCompletion {
+                            if (!state.isVisible) {
+                                onDismiss()
+                            }
+                        }
+                },
+                onEditScreenClick = {
+                    onEditScreenClick?.invoke()
                     sheetScope.launch { state.hide() }
                         .invokeOnCompletion {
                             if (!state.isVisible) {

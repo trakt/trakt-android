@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -16,11 +17,14 @@ import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeState.UserState
+import tv.trakt.trakt.helpers.editscreen.data.EditScreenManager
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.Companion.HomeKeys
 
 @OptIn(FlowPreview::class)
 internal class HomeViewModel(
     private val filterManager: GlobalFilterManager,
     private val sessionManager: SessionManager,
+    private val editScreenManager: EditScreenManager,
     analytics: Analytics,
 ) : ViewModel() {
     private val initialState = HomeState()
@@ -28,10 +32,12 @@ internal class HomeViewModel(
 
     private val modeState = MutableStateFlow(initialMode)
     private val userState = MutableStateFlow(initialState.user)
+    private val visibilityState = MutableStateFlow(initialState.visibility)
 
     init {
         observeUser()
         observeMode()
+        observeVisibility()
 
         analytics.logScreenView(screenName = "home")
         analytics.logMediaMode(mode = initialMode.name)
@@ -59,13 +65,24 @@ internal class HomeViewModel(
             .launchIn(viewModelScope)
     }
 
+    private fun observeVisibility() {
+        editScreenManager.observe(HomeKeys)
+            .distinctUntilChanged()
+            .onEach { map ->
+                visibilityState.update { map.toImmutableMap() }
+            }
+            .launchIn(viewModelScope)
+    }
+
     val state = combine(
         modeState,
         userState,
-    ) { s1, s2 ->
+        visibilityState,
+    ) { s1, s2, s3 ->
         HomeState(
             mode = s1,
             user = s2,
+            visibility = s3,
         )
     }.stateIn(
         scope = viewModelScope,

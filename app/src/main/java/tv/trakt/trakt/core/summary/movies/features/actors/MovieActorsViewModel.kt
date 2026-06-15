@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -19,22 +18,16 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.summary.movies.features.actors.usecases.GetMovieActorsUseCase
-import tv.trakt.trakt.helpers.collapsing.CollapsingManager
-import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class MovieActorsViewModel(
     private val movie: Movie,
     private val getActorsUseCase: GetMovieActorsUseCase,
-    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = MovieActorsState()
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.MOVIE_ACTORS))
     private val errorState = MutableStateFlow(initialState.error)
-
-    private var collapseJob: kotlinx.coroutines.Job? = null
 
     init {
         loadData()
@@ -59,30 +52,16 @@ internal class MovieActorsViewModel(
         }
     }
 
-    fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            when {
-                collapsed -> collapsingManager.collapse(CollapsingKey.MOVIE_ACTORS)
-                else -> collapsingManager.expand(CollapsingKey.MOVIE_ACTORS)
-            }
-        }
-    }
-
     @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<MovieActorsState> = combine(
+    val state = combine(
         itemsState,
         loadingState,
-        collapseState,
         errorState,
     ) { state ->
         MovieActorsState(
             items = state[0] as ImmutableList<CastPerson>?,
             loading = state[1] as LoadingState,
-            collapsed = state[2] as Boolean,
-            error = state[3] as Exception?,
+            error = state[2] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -38,12 +38,10 @@ import tv.trakt.trakt.core.user.data.local.ratings.UserRatingsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.reactions.UserReactionsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.watchlist.UserWatchlistLocalDataSource
 import tv.trakt.trakt.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
-import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 
 internal class LogoutUserUseCase(
     private val appContext: Context,
     private val sessionManager: SessionManager,
-    private val collapsingManager: CollapsingManager,
     private val checkInManager: CheckInManager,
     private val apiClients: Array<ApiClient>,
     private val younifyApiClient: YounifyRemoteDataSource,
@@ -78,7 +76,6 @@ internal class LogoutUserUseCase(
 ) {
     suspend fun logoutUser() {
         sessionManager.clear()
-        collapsingManager.clear()
         checkInManager.stop(
             source = CheckInUpdates.Source.Default,
             context = appContext,

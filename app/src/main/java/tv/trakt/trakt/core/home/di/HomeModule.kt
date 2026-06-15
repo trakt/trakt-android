@@ -168,6 +168,7 @@ internal val homeModule = module {
         HomeViewModel(
             sessionManager = get(),
             filterManager = get(),
+            editScreenManager = get(),
             analytics = get(),
         )
     }
@@ -188,7 +189,6 @@ internal val homeModule = module {
             watchlistUpdates = get(),
             filterManager = get(),
             sessionManager = get(),
-            collapsingManager = get(),
             checkInManager = get(),
             analytics = get(),
         )
@@ -225,7 +225,6 @@ internal val homeModule = module {
             userWatchlistSource = get(),
             filterManager = get(),
             sessionManager = get(),
-            collapsingManager = get(),
             checkInManager = get(),
             ratePromptManager = get(),
             checkInUpdates = get(),
@@ -263,7 +262,6 @@ internal val homeModule = module {
             movieLocalDataSource = get(),
             sessionManager = get(),
             filterManager = get(),
-            collapsingManager = get(),
         )
     }
 
@@ -283,7 +281,6 @@ internal val homeModule = module {
             ratingsUpdates = get(),
             sessionManager = get(),
             filterManager = get(),
-            collapsingManager = get(),
             checkInUpdates = get(),
         )
     }
@@ -330,7 +327,6 @@ internal val homeModule = module {
             episodeUpdates = get(),
             sessionManager = get(),
             filterManager = get(),
-            collapsingManager = get(),
             watchlistUpdates = get(),
         )
     }

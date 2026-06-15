@@ -3,9 +3,6 @@
 package tv.trakt.trakt.core.summary.shows.features.history
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.snap
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -22,9 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
@@ -73,7 +67,6 @@ internal fun ShowHistoryView(
         onLongClick = {
             if (!loading) onClick?.invoke(it)
         },
-        onCollapse = viewModel::setCollapsed,
     )
 }
 
@@ -86,26 +79,14 @@ private fun ShowHistoryContent(
     contentPadding: PaddingValues = PaddingValues(),
     onClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
     onLongClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
-    onCollapse: (collapsed: Boolean) -> Unit = {},
 ) {
-    var animateCollapse by rememberSaveable { mutableStateOf(false) }
-
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
-        modifier = modifier
-            .animateContentSize(
-                animationSpec = if (animateCollapse) spring() else snap(),
-            ),
+        modifier = modifier,
     ) {
         TraktSectionHeader(
             title = stringResource(R.string.list_title_history),
             chevron = false,
-            collapsed = state.collapsed ?: false,
-            onCollapseClick = {
-                animateCollapse = true
-                val current = (state.collapsed ?: false)
-                onCollapse(!current)
-            },
             extraIcon = if (loading) {
                 {
                     FilmProgressIndicator(
@@ -120,32 +101,30 @@ private fun ShowHistoryContent(
                 .padding(headerPadding),
         )
 
-        if (state.collapsed != true) {
-            Crossfade(
-                targetState = state.loading,
-                animationSpec = tween(200),
-            ) { loading ->
-                when (loading) {
-                    Idle, Loading -> {
-                        ContentLoading(
-                            visible = loading.isLoading,
-                            contentPadding = contentPadding,
-                        )
-                    }
+        Crossfade(
+            targetState = state.loading,
+            animationSpec = tween(200),
+        ) { loading ->
+            when (loading) {
+                Idle, Loading -> {
+                    ContentLoading(
+                        visible = loading.isLoading,
+                        contentPadding = contentPadding,
+                    )
+                }
 
-                    Done -> {
-                        if (state.items?.isEmpty() == true) {
-                            ContentEmpty(
-                                contentPadding = headerPadding,
-                            )
-                        } else {
-                            ContentList(
-                                listItems = (state.items ?: emptyList()).toImmutableList(),
-                                contentPadding = contentPadding,
-                                onClick = onClick,
-                                onLongClick = onLongClick,
-                            )
-                        }
+                Done -> {
+                    if (state.items?.isEmpty() == true) {
+                        ContentEmpty(
+                            contentPadding = headerPadding,
+                        )
+                    } else {
+                        ContentList(
+                            listItems = (state.items ?: emptyList()).toImmutableList(),
+                            contentPadding = contentPadding,
+                            onClick = onClick,
+                            onLongClick = onLongClick,
+                        )
                     }
                 }
             }

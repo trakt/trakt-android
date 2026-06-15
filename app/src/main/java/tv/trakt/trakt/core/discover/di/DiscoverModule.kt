@@ -63,6 +63,7 @@ internal val discoverModule = module {
             sessionManager = get(),
             analytics = get(),
             collectionStateProvider = get(),
+            editScreenManager = get(),
         )
     }
 
@@ -87,7 +88,6 @@ internal val discoverModule = module {
     viewModel { (customTheme: Boolean) ->
         DiscoverTrendingViewModel(
             filterManager = get(),
-            collapsingManager = get(),
             getTrendingShowsUseCase = when {
                 customTheme -> get(named("customTrendingShowsUseCase"))
                 else -> get(named("defaultTrendingShowsUseCase"))
@@ -102,7 +102,6 @@ internal val discoverModule = module {
     viewModel { (customTheme: Boolean) ->
         DiscoverAnticipatedViewModel(
             filterManager = get(),
-            collapsingManager = get(),
             getAnticipatedShowsUseCase = when {
                 customTheme -> get(named("customAnticipatedShowsUseCase"))
                 else -> get(named("defaultAnticipatedShowsUseCase"))
@@ -117,7 +116,6 @@ internal val discoverModule = module {
     viewModel { (customTheme: Boolean) ->
         DiscoverPopularViewModel(
             filterManager = get(),
-            collapsingManager = get(),
             getPopularShowsUseCase = when {
                 customTheme -> get(named("customPopularShowsUseCase"))
                 else -> get(named("defaultPopularShowsUseCase"))
@@ -132,7 +130,6 @@ internal val discoverModule = module {
     viewModel { (customTheme: Boolean) ->
         DiscoverRecommendedViewModel(
             filterManager = get(),
-            collapsingManager = get(),
             getRecommendedShowsUseCase = when {
                 customTheme -> get(named("customRecommendedShowsUseCase"))
                 else -> get(named("defaultRecommendedShowsUseCase"))

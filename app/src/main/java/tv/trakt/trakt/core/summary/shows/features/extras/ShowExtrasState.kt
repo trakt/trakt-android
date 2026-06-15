@@ -12,7 +12,6 @@ internal data class ShowExtrasState(
     val filters: FiltersState = FiltersState(),
     val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
-    val collapsed: Boolean? = null,
 ) {
     data class FiltersState(
         val filters: ImmutableList<String> = emptyList<String>().toImmutableList(),

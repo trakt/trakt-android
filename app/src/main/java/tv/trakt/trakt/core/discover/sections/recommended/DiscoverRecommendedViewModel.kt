@@ -24,33 +24,25 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.interleave
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.model.MediaMode.MEDIA
-import tv.trakt.trakt.common.model.MediaMode.MOVIES
-import tv.trakt.trakt.common.model.MediaMode.SHOWS
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
-import tv.trakt.trakt.helpers.collapsing.CollapsingManager
-import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class DiscoverRecommendedViewModel(
     private val filterManager: GlobalFilterManager,
     private val getRecommendedShowsUseCase: GetRecommendedShowsUseCase,
     private val getRecommendedMoviesUseCase: GetRecommendedMoviesUseCase,
-    private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = DiscoverRecommendedState()
 
     private val filterState = MutableStateFlow(filterManager.getFilter())
-    private val collapseState = MutableStateFlow(isCollapsed())
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var dataJob: Job? = null
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -61,7 +53,6 @@ internal class DiscoverRecommendedViewModel(
         filterManager.observeFilter()
             .onEach { value ->
                 filterState.update { value }
-                collapseState.update { isCollapsed() }
                 loadData()
             }
             .launchIn(viewModelScope)
@@ -118,46 +109,17 @@ internal class DiscoverRecommendedViewModel(
         }
     }
 
-    fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
-
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            val key = when (filterState.value.mode) {
-                MEDIA -> CollapsingKey.DISCOVER_MEDIA_RECOMMENDED
-                SHOWS -> CollapsingKey.DISCOVER_SHOWS_RECOMMENDED
-                MOVIES -> CollapsingKey.DISCOVER_MOVIES_RECOMMENDED
-            }
-            when {
-                collapsed -> collapsingManager.collapse(key)
-                else -> collapsingManager.expand(key)
-            }
-        }
-    }
-
-    private fun isCollapsed(): Boolean {
-        return collapsingManager.isCollapsed(
-            key = when (filterState.value.mode) {
-                MEDIA -> CollapsingKey.DISCOVER_MEDIA_RECOMMENDED
-                SHOWS -> CollapsingKey.DISCOVER_SHOWS_RECOMMENDED
-                MOVIES -> CollapsingKey.DISCOVER_MOVIES_RECOMMENDED
-            },
-        )
-    }
-
     val state = combine(
         itemsState,
         filterState,
-        collapseState,
         loadingState,
         errorState,
     ) { state ->
         DiscoverRecommendedState(
             items = state[0] as ImmutableList<DiscoverItem>?,
             filter = state[1] as GlobalFilter?,
-            collapsed = state[2] as Boolean,
-            loading = state[3] as LoadingState,
-            error = state[4] as Exception?,
+            loading = state[2] as LoadingState,
+            error = state[3] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

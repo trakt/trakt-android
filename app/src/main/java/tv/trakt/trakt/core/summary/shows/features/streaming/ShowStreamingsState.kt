@@ -9,5 +9,4 @@ internal data class ShowStreamingsState(
     val items: StreamingsResult? = null,
     val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
-    val collapsed: Boolean? = null,
 )

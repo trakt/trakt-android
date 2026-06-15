@@ -12,6 +12,5 @@ internal data class UserProfileListsState(
     val items: ImmutableList<CustomList>? = null,
     val filter: PersonalListType = PersonalListType.Personal,
     val loading: LoadingState = Idle,
-    val collapsed: Boolean? = null,
     val error: Exception? = null,
 )

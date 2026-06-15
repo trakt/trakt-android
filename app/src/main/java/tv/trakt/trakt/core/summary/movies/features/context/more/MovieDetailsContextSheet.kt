@@ -30,6 +30,7 @@ internal fun MovieDetailsContextSheet(
     onRemoveClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
+    onEditScreenClick: (() -> Unit)? = null,
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
@@ -85,6 +86,15 @@ internal fun MovieDetailsContextSheet(
                 },
                 onCoverClick = {
                     onCoverClick?.invoke()
+                    sheetScope.launch { state.hide() }
+                        .invokeOnCompletion {
+                            if (!state.isVisible) {
+                                onDismiss()
+                            }
+                        }
+                },
+                onEditScreenClick = {
+                    onEditScreenClick?.invoke()
                     sheetScope.launch { state.hide() }
                         .invokeOnCompletion {
                             if (!state.isVisible) {

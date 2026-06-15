@@ -5,7 +5,6 @@ package tv.trakt.trakt.core.summary.movies
 import android.content.Context
 import android.content.Intent
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -94,6 +93,17 @@ import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
 import tv.trakt.trakt.helpers.SimpleScrollConnection
+import tv.trakt.trakt.helpers.editscreen.EditScreenSheet
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.Companion.MovieKeys
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.MovieActors
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.MovieExtras
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.MovieHistory
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.MovieLists
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.MovieRelated
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.MovieReviews
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.MovieSentiment
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.MovieTrivia
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.MovieWhereToWatch
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
@@ -135,6 +145,7 @@ internal fun MovieDetailsScreen(
     var dateSheet by remember { mutableStateOf(false) }
     var shareSheet by remember { mutableStateOf(false) }
     var coverImageSheet by remember { mutableStateOf<Movie?>(null) }
+    var sectionsSheet by remember { mutableStateOf(false) }
 
     DisposableEffect(Unit) {
         localRateVisibility.value = false
@@ -304,6 +315,9 @@ internal fun MovieDetailsScreen(
         onCoverClick = {
             coverImageSheet = state.movie
         },
+        onEditScreenClick = {
+            sectionsSheet = true
+        },
         onDismiss = {
             contextSheet = null
         },
@@ -356,6 +370,12 @@ internal fun MovieDetailsScreen(
         mediaSlug = state.movie?.ids?.slug,
         mediaType = MediaType.MOVIE,
         onDismiss = { shareSheet = false },
+    )
+
+    EditScreenSheet(
+        active = sectionsSheet,
+        enabledValues = MovieKeys,
+        onDismiss = { sectionsSheet = false },
     )
 
     LaunchedEffect(state.info) {
@@ -568,7 +588,7 @@ internal fun MovieDetailsContent(
                 if (!previewMode) {
                     val showStreamings = (state.user != null) && isReleased
 
-                    if (showStreamings) {
+                    if (showStreamings && state.visibility?.get(MovieWhereToWatch) == true) {
                         item {
                             MovieStreamingsView(
                                 viewModel = koinViewModel(
@@ -583,7 +603,7 @@ internal fun MovieDetailsContent(
                         }
                     }
 
-                    if (isReleased) {
+                    if (isReleased && state.visibility?.get(MovieSentiment) == true) {
                         item {
                             MovieSentimentView(
                                 viewModel = koinViewModel(
@@ -606,78 +626,88 @@ internal fun MovieDetailsContent(
                         }
                     }
 
-                    item {
-                        MovieCommentsView(
-                            viewModel = koinViewModel(
-                                parameters = { parametersOf(movie) },
-                            ),
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onMoreClick = onMoreCommentsClick,
-                            onUserClick = onNavigateToUser,
-                            modifier = Modifier
-                                .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
-                        )
+                    if (state.visibility?.get(MovieReviews) == true) {
+                        item {
+                            MovieCommentsView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(movie) },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onMoreClick = onMoreCommentsClick,
+                                onUserClick = onNavigateToUser,
+                                modifier = Modifier
+                                    .alpha(ratingAlphaMask)
+                                    .padding(top = 32.dp),
+                            )
+                        }
                     }
 
-                    item {
-                        MovieActorsView(
-                            viewModel = koinViewModel(
-                                parameters = { parametersOf(movie) },
-                            ),
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onPersonClick = onPersonClick ?: {},
-                            modifier = Modifier
-                                .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
-                        )
+                    if (state.visibility?.get(MovieActors) == true) {
+                        item {
+                            MovieActorsView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(movie) },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onPersonClick = onPersonClick ?: {},
+                                modifier = Modifier
+                                    .alpha(ratingAlphaMask)
+                                    .padding(top = 32.dp),
+                            )
+                        }
                     }
 
-                    item {
-                        MovieExtrasView(
-                            viewModel = koinViewModel(
-                                parameters = { parametersOf(movie) },
-                            ),
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onVideoClick = onExtraClick ?: {},
-                            modifier = Modifier
-                                .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
-                        )
+                    if (state.visibility?.get(MovieExtras) == true) {
+                        item {
+                            MovieExtrasView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(movie) },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onVideoClick = onExtraClick ?: {},
+                                modifier = Modifier
+                                    .alpha(ratingAlphaMask)
+                                    .padding(top = 32.dp),
+                            )
+                        }
                     }
 
-                    item {
-                        MovieRelatedView(
-                            viewModel = koinViewModel(
-                                parameters = { parametersOf(movie) },
-                            ),
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onClick = onMovieClick,
-                            modifier = Modifier
-                                .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
-                        )
+                    if (state.visibility?.get(MovieRelated) == true) {
+                        item {
+                            MovieRelatedView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(movie) },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onClick = onMovieClick,
+                                modifier = Modifier
+                                    .alpha(ratingAlphaMask)
+                                    .padding(top = 32.dp),
+                            )
+                        }
                     }
 
-                    item {
-                        MovieListsView(
-                            viewModel = koinViewModel(
-                                parameters = { parametersOf(movie) },
-                            ),
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onClick = onListClick ?: {},
-                            modifier = Modifier
-                                .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
-                        )
+                    if (state.visibility?.get(MovieLists) == true) {
+                        item {
+                            MovieListsView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(movie) },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onClick = onListClick ?: {},
+                                modifier = Modifier
+                                    .alpha(ratingAlphaMask)
+                                    .padding(top = 32.dp),
+                            )
+                        }
                     }
 
-                    if (isWatched) {
+                    if (isWatched && state.visibility?.get(MovieHistory) == true) {
                         item {
                             MovieHistoryView(
                                 viewModel = koinViewModel(
@@ -693,19 +723,21 @@ internal fun MovieDetailsContent(
                         }
                     }
 
-                    item {
-                        MovieTriviaView(
-                            viewModel = koinViewModel(
-                                parameters = { parametersOf(movie) },
-                            ),
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onVipClick = onVipClick ?: {},
-                            onTriviaClick = onTriviaClick ?: {},
-                            modifier = Modifier
-                                .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
-                        )
+                    if (state.visibility?.get(MovieTrivia) == true) {
+                        item {
+                            MovieTriviaView(
+                                viewModel = koinViewModel(
+                                    parameters = { parametersOf(movie) },
+                                ),
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onVipClick = onVipClick ?: {},
+                                onTriviaClick = onTriviaClick ?: {},
+                                modifier = Modifier
+                                    .alpha(ratingAlphaMask)
+                                    .padding(top = 32.dp),
+                            )
+                        }
                     }
                 }
             }
@@ -763,9 +795,6 @@ fun DetailsRating(
             .ifOrElse(
                 condition = animated,
                 isTrue = Modifier,
-                isFalse = Modifier.animateContentSize(
-                    animationSpec = tween(200, delayMillis = 250),
-                ),
             ),
     ) {
         if (visible) {

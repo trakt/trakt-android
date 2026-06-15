@@ -75,6 +75,13 @@ import tv.trakt.trakt.core.profile.sections.progress.ProfileProgressView
 import tv.trakt.trakt.core.profile.sections.social.ProfileSocialView
 import tv.trakt.trakt.core.profile.sections.thismonth.ThisMonthCard
 import tv.trakt.trakt.helpers.SimpleScrollConnection
+import tv.trakt.trakt.helpers.editscreen.EditScreenSheet
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.Companion.ProfileKeys
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.ProfileFavorites
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.ProfileHistory
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.ProfileLibrary
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.ProfileProgress
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.ProfileSocial
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -104,6 +111,7 @@ internal fun ProfileScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var confirmLogout by remember { mutableStateOf(false) }
+    var sectionsSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.user, state.logoutLoading) {
         if (state.logoutLoading == Done && state.user == null) {
@@ -132,6 +140,17 @@ internal fun ProfileScreen(
         },
         onLogoutClick = {
             confirmLogout = true
+        },
+        onEditScreenClick = {
+            sectionsSheet = true
+        },
+    )
+
+    EditScreenSheet(
+        active = sectionsSheet,
+        enabledValues = ProfileKeys,
+        onDismiss = {
+            sectionsSheet = false
         },
     )
 
@@ -167,6 +186,7 @@ private fun ProfileScreen(
     onShareClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {},
+    onEditScreenClick: () -> Unit = {},
 ) {
     val inspection = LocalInspectionMode.current
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
@@ -219,6 +239,7 @@ private fun ProfileScreen(
                     onShareClick = onShareClick,
                     onLogoutClick = onLogoutClick,
                     onSettingsClick = onSettingsClick,
+                    onEditScreenClick = onEditScreenClick,
                     modifier = Modifier
                         .padding(bottom = 8.dp),
                 )
@@ -295,63 +316,73 @@ private fun ProfileScreen(
                 }
 
                 if (!inspection) {
-                    item {
-                        ProfileHistoryView(
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onMoreClick = onNavigateToHistory,
-                            onEpisodeClick = onNavigateToEpisode,
-                            onShowClick = onNavigateToShow,
-                            onMovieClick = onNavigateToMovie,
-                            modifier = Modifier
-                                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
-                        )
+                    if (state.visibility?.get(ProfileHistory) == true) {
+                        item {
+                            ProfileHistoryView(
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onMoreClick = onNavigateToHistory,
+                                onEpisodeClick = onNavigateToEpisode,
+                                onShowClick = onNavigateToShow,
+                                onMovieClick = onNavigateToMovie,
+                                modifier = Modifier
+                                    .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+                            )
+                        }
                     }
 
-                    item {
-                        ProfileProgressView(
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onShowClick = onNavigateToShow,
-                            onMoreClick = onNavigateToProgress,
-                            modifier = Modifier
-                                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
-                        )
+                    if (state.visibility?.get(ProfileProgress) == true) {
+                        item {
+                            ProfileProgressView(
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onShowClick = onNavigateToShow,
+                                onMoreClick = onNavigateToProgress,
+                                modifier = Modifier
+                                    .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+                            )
+                        }
                     }
 
-                    item {
-                        ProfileFavoritesView(
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onShowClick = onNavigateToShow,
-                            onMovieClick = onNavigateToMovie,
-                            onMoreClick = onNavigateToFavorites,
-                            onShowsClick = onNavigateToShows,
-                            modifier = Modifier
-                                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
-                        )
+                    if (state.visibility?.get(ProfileFavorites) == true) {
+                        item {
+                            ProfileFavoritesView(
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onShowClick = onNavigateToShow,
+                                onMovieClick = onNavigateToMovie,
+                                onMoreClick = onNavigateToFavorites,
+                                onShowsClick = onNavigateToShows,
+                                modifier = Modifier
+                                    .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+                            )
+                        }
                     }
 
-                    item {
-                        ProfileLibraryView(
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onShowClick = onNavigateToShow,
-                            onMovieClick = onNavigateToMovie,
-                            onMoreClick = onNavigateToLibrary,
-                            modifier = Modifier
-                                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
-                        )
+                    if (state.visibility?.get(ProfileLibrary) == true) {
+                        item {
+                            ProfileLibraryView(
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onShowClick = onNavigateToShow,
+                                onMovieClick = onNavigateToMovie,
+                                onMoreClick = onNavigateToLibrary,
+                                modifier = Modifier
+                                    .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+                            )
+                        }
                     }
 
-                    item {
-                        ProfileSocialView(
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onUserClick = onNavigateToUser,
-                            modifier = Modifier
-                                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
-                        )
+                    if (state.visibility?.get(ProfileSocial) == true) {
+                        item {
+                            ProfileSocialView(
+                                headerPadding = sectionPadding,
+                                contentPadding = sectionPadding,
+                                onUserClick = onNavigateToUser,
+                                modifier = Modifier
+                                    .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+                            )
+                        }
                     }
                 }
             }
@@ -366,6 +397,7 @@ private fun TitleBar(
     onShareClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
+    onEditScreenClick: () -> Unit = {},
 ) {
     Row(
         verticalAlignment = CenterVertically,
@@ -494,6 +526,29 @@ private fun TitleBar(
                                 )
                             },
                         )
+
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = stringResource(R.string.text_edit_screen),
+                                    style = TraktTheme.typography.buttonTertiary,
+                                    color = TraktTheme.colors.textPrimary,
+                                )
+                            },
+                            onClick = {
+                                onEditScreenClick()
+                                showMenu = false
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_edit_screen),
+                                    contentDescription = null,
+                                    tint = TraktTheme.colors.textPrimary,
+                                    modifier = Modifier.size(22.dp),
+                                )
+                            },
+                        )
+
                         DropdownMenuItem(
                             text = {
                                 Text(

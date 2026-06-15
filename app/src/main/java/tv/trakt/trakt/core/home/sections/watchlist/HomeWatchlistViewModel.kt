@@ -66,8 +66,6 @@ import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.All
 import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
-import tv.trakt.trakt.helpers.collapsing.CollapsingManager
-import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import tv.trakt.trakt.resources.R
 
 @OptIn(FlowPreview::class)
@@ -86,7 +84,6 @@ internal class HomeWatchlistViewModel(
     private val checkInUpdates: CheckInUpdates,
     private val watchlistUpdates: WatchlistUpdates,
     private val sessionManager: SessionManager,
-    private val collapsingManager: CollapsingManager,
     private val ratePromptManager: RatePromptManager,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -94,7 +91,6 @@ internal class HomeWatchlistViewModel(
 
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(filterManager.getFilter())
-    private val collapseState = MutableStateFlow(isCollapsed())
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -104,7 +100,6 @@ internal class HomeWatchlistViewModel(
     private var user: User? = null
     private var dataJob: Job? = null
     private var processingJob: Job? = null
-    private var collapseJob: Job? = null
 
     init {
         loadData()
@@ -133,7 +128,6 @@ internal class HomeWatchlistViewModel(
             .distinctUntilChanged()
             .onEach { value ->
                 filterState.update { value }
-                collapseState.update { isCollapsed() }
                 loadData()
             }
             .launchIn(viewModelScope)
@@ -495,32 +489,7 @@ internal class HomeWatchlistViewModel(
         infoState.update { null }
     }
 
-    fun setCollapsed(collapsed: Boolean) {
-        collapseState.update { collapsed }
 
-        collapseJob?.cancel()
-        collapseJob = viewModelScope.launch {
-            val key = when (filterState.value.mode) {
-                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_START_WATCHING
-                MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_START_WATCHING
-                MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_START_WATCHING
-            }
-            when {
-                collapsed -> collapsingManager.collapse(key)
-                else -> collapsingManager.expand(key)
-            }
-        }
-    }
-
-    private fun isCollapsed(): Boolean {
-        return collapsingManager.isCollapsed(
-            key = when (filterState.value.mode) {
-                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_START_WATCHING
-                MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_START_WATCHING
-                MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_START_WATCHING
-            },
-        )
-    }
 
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
@@ -575,7 +544,6 @@ internal class HomeWatchlistViewModel(
     val state = combine(
         itemsState,
         filterState,
-        collapseState,
         loadingState,
         infoState,
         errorState,
@@ -585,12 +553,11 @@ internal class HomeWatchlistViewModel(
         HomeWatchlistState(
             items = state[0] as ImmutableList<WatchlistItem>?,
             filter = state[1] as GlobalFilter,
-            collapsed = state[2] as Boolean,
-            loading = state[3] as LoadingState,
-            info = state[4] as StringResource?,
-            error = state[5] as Exception?,
-            navigateMovie = state[6] as TraktId?,
-            navigateShow = state[7] as TraktId?,
+            loading = state[2] as LoadingState,
+            info = state[3] as StringResource?,
+            error = state[4] as Exception?,
+            navigateMovie = state[5] as TraktId?,
+            navigateShow = state[6] as TraktId?,
         )
     }.stateIn(
         scope = viewModelScope,

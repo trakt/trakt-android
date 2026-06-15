@@ -185,6 +185,7 @@ internal val movieDetailsModule = module {
             checkInManager = get(),
             errorsManager = get(),
             analytics = get(),
+            editScreenManager = get(),
         )
     }
 
@@ -202,7 +203,6 @@ internal val movieDetailsModule = module {
             movie = movie,
             sessionManager = get(),
             getStreamingsUseCase = get(),
-            collapsingManager = get(),
         )
     }
 
@@ -210,7 +210,6 @@ internal val movieDetailsModule = module {
         MovieExtrasViewModel(
             movie = movie,
             getExtrasUseCase = get(),
-            collapsingManager = get(),
         )
     }
 
@@ -218,7 +217,6 @@ internal val movieDetailsModule = module {
         MovieActorsViewModel(
             movie = movie,
             getActorsUseCase = get(),
-            collapsingManager = get(),
         )
     }
 
@@ -227,7 +225,6 @@ internal val movieDetailsModule = module {
             movie = movie,
             getRelatedMoviesUseCase = get(),
             collectionStateProvider = get(),
-            collapsingManager = get(),
         )
     }
 
@@ -236,7 +233,6 @@ internal val movieDetailsModule = module {
             movie = movie,
             getListsUseCase = get(),
             loadUserLikedListsUseCase = get(),
-            collapsingManager = get(),
         )
     }
 
@@ -252,7 +248,6 @@ internal val movieDetailsModule = module {
         MovieSentimentViewModel(
             movie = movie,
             getSentimentUseCase = get(),
-            collapsingManager = get(),
             sessionManager = get(),
         )
     }
@@ -261,7 +256,6 @@ internal val movieDetailsModule = module {
         MovieTriviaViewModel(
             movie = movie,
             getTriviaUseCase = get(),
-            collapsingManager = get(),
             sessionManager = get(),
         )
     }
@@ -277,7 +271,6 @@ internal val movieDetailsModule = module {
             reactionsUpdates = get(),
             sessionManager = get(),
             commentsUpdates = get(),
-            collapsingManager = get(),
         )
     }
 

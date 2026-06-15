@@ -83,6 +83,12 @@ import tv.trakt.trakt.core.userprofile.sections.history.UserProfileHistoryView
 import tv.trakt.trakt.core.userprofile.sections.lists.UserProfileListsView
 import tv.trakt.trakt.core.userprofile.sections.social.UserProfileSocialView
 import tv.trakt.trakt.helpers.SimpleScrollConnection
+import tv.trakt.trakt.helpers.editscreen.EditScreenSheet
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.Companion.UserProfileKeys
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.UserProfileFavorites
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.UserProfileHistory
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.UserProfileLists
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.UserProfileSocial
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -111,6 +117,13 @@ internal fun UserProfileScreen(
 
     var confirmBlockSheet by remember { mutableStateOf(false) }
     var confirmUnfollowSheet by remember { mutableStateOf(false) }
+    var sectionsSheet by remember { mutableStateOf(false) }
+
+    EditScreenSheet(
+        active = sectionsSheet,
+        enabledValues = UserProfileKeys,
+        onDismiss = { sectionsSheet = false },
+    )
 
     LaunchedEffect(state.info) {
         state.info?.let { info ->
@@ -154,6 +167,7 @@ internal fun UserProfileScreen(
                 else -> confirmBlockSheet = true
             }
         },
+        onEditScreenClick = { sectionsSheet = true },
         onNavigateToShow = viewModel::navigateToShow,
         onNavigateToMovie = viewModel::navigateToMovie,
         onNavigateToEpisode = viewModel::navigateToEpisode,
@@ -202,6 +216,7 @@ private fun UserProfileContent(
     onNavigateBack: () -> Unit = {},
     onFollowClick: () -> Unit = {},
     onBlockClick: () -> Unit = {},
+    onEditScreenClick: () -> Unit = {},
 ) {
     val windowClass = currentWindowAdaptiveInfoV2().windowSizeClass
 
@@ -257,6 +272,7 @@ private fun UserProfileContent(
                     onBack = onNavigateBack,
                     onFollowClick = onFollowClick,
                     onBlockClick = onBlockClick,
+                    onEditScreenClick = onEditScreenClick,
                     modifier = Modifier
                         .padding(bottom = 8.dp),
                 )
@@ -360,62 +376,70 @@ private fun LazyListScope.userProfilePublicContent(
         }
     }
 
-    item {
-        UserProfileHistoryView(
-            viewModel = koinViewModel(
-                parameters = { parametersOf(state.user.ids.trakt) },
-            ),
-            headerPadding = sectionPadding,
-            contentPadding = sectionPadding,
-            onShowClick = onNavigateToShow,
-            onEpisodeClick = onNavigateToEpisode,
-            onMovieClick = onNavigateToMovie,
-            onMoreClick = { onNavigateToAllHistory(state.user.ids.trakt) },
-            modifier = Modifier
-                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
-        )
+    if (state.visibility?.get(UserProfileHistory) == true) {
+        item {
+            UserProfileHistoryView(
+                viewModel = koinViewModel(
+                    parameters = { parametersOf(state.user.ids.trakt) },
+                ),
+                headerPadding = sectionPadding,
+                contentPadding = sectionPadding,
+                onShowClick = onNavigateToShow,
+                onEpisodeClick = onNavigateToEpisode,
+                onMovieClick = onNavigateToMovie,
+                onMoreClick = { onNavigateToAllHistory(state.user.ids.trakt) },
+                modifier = Modifier
+                    .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+            )
+        }
     }
 
-    item {
-        UserProfileFavoritesView(
-            viewModel = koinViewModel(
-                parameters = { parametersOf(state.user.ids.trakt) },
-            ),
-            headerPadding = sectionPadding,
-            contentPadding = sectionPadding,
-            onShowClick = onNavigateToShow,
-            onMovieClick = onNavigateToMovie,
-            onMoreClick = { onNavigateToAllFavorites(state.user.ids.trakt) },
-            modifier = Modifier
-                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
-        )
+    if (state.visibility?.get(UserProfileFavorites) == true) {
+        item {
+            UserProfileFavoritesView(
+                viewModel = koinViewModel(
+                    parameters = { parametersOf(state.user.ids.trakt) },
+                ),
+                headerPadding = sectionPadding,
+                contentPadding = sectionPadding,
+                onShowClick = onNavigateToShow,
+                onMovieClick = onNavigateToMovie,
+                onMoreClick = { onNavigateToAllFavorites(state.user.ids.trakt) },
+                modifier = Modifier
+                    .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+            )
+        }
     }
 
-    item {
-        UserProfileListsView(
-            viewModel = koinViewModel(
-                parameters = { parametersOf(state.user.ids.trakt) },
-            ),
-            headerPadding = sectionPadding,
-            contentPadding = sectionPadding,
-            onListClick = onNavigateToList,
-            onMoreClick = { onNavigateToAllLists(state.user, it) },
-            modifier = Modifier
-                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
-        )
+    if (state.visibility?.get(UserProfileLists) == true) {
+        item {
+            UserProfileListsView(
+                viewModel = koinViewModel(
+                    parameters = { parametersOf(state.user.ids.trakt) },
+                ),
+                headerPadding = sectionPadding,
+                contentPadding = sectionPadding,
+                onListClick = onNavigateToList,
+                onMoreClick = { onNavigateToAllLists(state.user, it) },
+                modifier = Modifier
+                    .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+            )
+        }
     }
 
-    item {
-        UserProfileSocialView(
-            viewModel = koinViewModel(
-                parameters = { parametersOf(state.user.ids.trakt) },
-            ),
-            headerPadding = sectionPadding,
-            contentPadding = sectionPadding,
-            onUserClick = onNavigateToUser,
-            modifier = Modifier
-                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
-        )
+    if (state.visibility?.get(UserProfileSocial) == true) {
+        item {
+            UserProfileSocialView(
+                viewModel = koinViewModel(
+                    parameters = { parametersOf(state.user.ids.trakt) },
+                ),
+                headerPadding = sectionPadding,
+                contentPadding = sectionPadding,
+                onUserClick = onNavigateToUser,
+                modifier = Modifier
+                    .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+            )
+        }
     }
 }
 
@@ -473,6 +497,7 @@ private fun TitleBar(
     onBack: () -> Unit = {},
     onFollowClick: () -> Unit = {},
     onBlockClick: () -> Unit = {},
+    onEditScreenClick: () -> Unit = {},
 ) {
     Row(
         verticalAlignment = CenterVertically,
@@ -656,6 +681,28 @@ private fun TitleBar(
                                 contentDescription = null,
                                 tint = TraktTheme.colors.textPrimary,
                                 modifier = Modifier.size(21.dp),
+                            )
+                        },
+                    )
+
+                    DropdownMenuItem(
+                        text = {
+                            Text(
+                                text = stringResource(R.string.text_edit_screen),
+                                style = TraktTheme.typography.buttonTertiary,
+                                color = TraktTheme.colors.textPrimary,
+                            )
+                        },
+                        onClick = {
+                            onEditScreenClick()
+                            showMenu = false
+                        },
+                        leadingIcon = {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_edit_screen),
+                                contentDescription = null,
+                                tint = TraktTheme.colors.textPrimary,
+                                modifier = Modifier.size(22.dp),
                             )
                         },
                     )

@@ -336,7 +336,6 @@ internal val profileModule = module {
         LogoutUserUseCase(
             appContext = androidApplication(),
             sessionManager = get(),
-            collapsingManager = get(),
             checkInManager = get(),
             apiClients = get(named("apiClients")),
             younifyApiClient = get(),
@@ -377,6 +376,7 @@ internal val profileModule = module {
             checkInManager = get(),
             getThisMonthUseCase = get(),
             logoutUseCase = get(),
+            editScreenManager = get(),
             analytics = get(),
         )
     }
@@ -394,7 +394,6 @@ internal val profileModule = module {
             episodeUpdates = get(),
             ratingsUpdates = get(),
             checkInUpdate = get(),
-            collapsingManager = get(),
             sessionManager = get(),
         )
     }
@@ -406,7 +405,6 @@ internal val profileModule = module {
             movieLocalDataSource = get(),
             favoritesUpdates = get(),
             sessionManager = get(),
-            collapsingManager = get(),
         )
     }
 
@@ -416,7 +414,6 @@ internal val profileModule = module {
             showLocalDataSource = get(),
             movieLocalDataSource = get(),
             sessionManager = get(),
-            collapsingManager = get(),
         )
     }
 
@@ -425,7 +422,6 @@ internal val profileModule = module {
             loadSocialUseCase = get(),
             getFilterUseCase = get(),
             sessionManager = get(),
-            collapsingManager = get(),
         )
     }
 
@@ -436,7 +432,6 @@ internal val profileModule = module {
             getDroppedUseCase = get(),
             getWatchingUseCase = get(),
             localShowSource = get(),
-            collapsingManager = get(),
             episodeUpdates = get(),
             showUpdates = get(),
         )

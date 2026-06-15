@@ -74,6 +74,10 @@ import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistView
 import tv.trakt.trakt.core.lists.sheets.CreateListSheet
 import tv.trakt.trakt.core.lists.sheets.EditListSheet
 import tv.trakt.trakt.helpers.ScreenHeaderState
+import tv.trakt.trakt.helpers.editscreen.EditScreenSheet
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.Companion.ListsKeys
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.ListsMyLists
+import tv.trakt.trakt.helpers.editscreen.data.model.EditScreenKey.ListsWatchlist
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -107,6 +111,7 @@ internal fun ListsScreen(
     var createListSheet by remember { mutableStateOf(false) }
     var editListSheet by remember { mutableStateOf<CustomList?>(null) }
     var filtersSheet by remember { mutableStateOf(false) }
+    var sectionsSheet by remember { mutableStateOf(false) }
 
     ListsScreenContent(
         state = state,
@@ -139,6 +144,17 @@ internal fun ListsScreen(
         onVipClick = onNavigateToVip,
         onFiltersClick = {
             filtersSheet = true
+        },
+        onEditScreenClick = {
+            sectionsSheet = true
+        },
+    )
+
+    EditScreenSheet(
+        active = sectionsSheet,
+        enabledValues = ListsKeys,
+        onDismiss = {
+            sectionsSheet = false
         },
     )
 
@@ -183,6 +199,7 @@ private fun ListsScreenContent(
     onAllListsClick: () -> Unit = { },
     onVipClick: () -> Unit = {},
     onFiltersClick: () -> Unit = {},
+    onEditScreenClick: () -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
     val lazyListState = rememberLazyListState(
@@ -243,19 +260,21 @@ private fun ListsScreenContent(
             overscrollEffect = null,
             contentPadding = listPadding,
         ) {
-            item(
-                key = "watchlist",
-            ) {
-                ListsWatchlistView(
-                    headerPadding = sectionPadding,
-                    contentPadding = sectionPadding,
-                    onShowsClick = onShowsClick,
-                    onShowClick = onShowClick,
-                    onMoviesClick = onMoviesClick,
-                    onMovieClick = onMovieClick,
-                    onProfileClick = onProfileClick,
-                    onWatchlistClick = onWatchlistClick,
-                )
+            if (state.visibility?.get(ListsWatchlist) == true) {
+                item(
+                    key = "watchlist",
+                ) {
+                    ListsWatchlistView(
+                        headerPadding = sectionPadding,
+                        contentPadding = sectionPadding,
+                        onShowsClick = onShowsClick,
+                        onShowClick = onShowClick,
+                        onMoviesClick = onMoviesClick,
+                        onMovieClick = onMovieClick,
+                        onProfileClick = onProfileClick,
+                        onWatchlistClick = onWatchlistClick,
+                    )
+                }
             }
 
             if (state.user.user != null && !state.user.user.isVip) {
@@ -269,22 +288,25 @@ private fun ListsScreenContent(
                 }
             }
 
-            item(
-                key = "personal_header",
-            ) {
-                MyListsHeader(
-                    sectionPadding = sectionPadding,
-                    state = state,
-                    onHeaderClick = onAllListsClick,
-                    onFilterClick = onFilterClick,
-                    onCreateListClick = onCreateListClick,
-                    modifier = Modifier.padding(
-                        top = TraktTheme.spacing.mainSectionVerticalSpace,
-                    ),
-                )
+            if (state.visibility?.get(ListsMyLists) == true) {
+                item(
+                    key = "personal_header",
+                ) {
+                    MyListsHeader(
+                        sectionPadding = sectionPadding,
+                        state = state,
+                        onHeaderClick = onAllListsClick,
+                        onFilterClick = onFilterClick,
+                        onCreateListClick = onCreateListClick,
+                        modifier = Modifier.padding(
+                            top = TraktTheme.spacing.mainSectionVerticalSpace,
+                        ),
+                    )
+                }
             }
 
             val topVerticalPadding = 32.dp
+            if (state.visibility?.get(ListsMyLists) == true) {
             itemsIndexed(
                 items = state.lists ?: emptyList(),
                 key = { _, list -> list.ids.trakt.value },
@@ -436,6 +458,7 @@ private fun ListsScreenContent(
                     }
                 }
             }
+            }
         }
 
         ListsScreenHeader(
@@ -444,6 +467,7 @@ private fun ListsScreenContent(
             isScrolledToTop = isScrolledToTop,
             onVipClick = onVipClick,
             onFiltersClick = onFiltersClick,
+            onEditScreenClick = onEditScreenClick,
         )
     }
 }
@@ -455,6 +479,7 @@ private fun ListsScreenHeader(
     isScrolledToTop: Boolean,
     onVipClick: () -> Unit,
     onFiltersClick: () -> Unit,
+    onEditScreenClick: () -> Unit,
 ) {
     val userState = remember(state.user) {
         val loadingDone = state.user.loading == Done
@@ -467,8 +492,10 @@ private fun ListsScreenHeader(
         showLogin = userState.first && !userState.second,
         showVip = userState.second && state.user.user?.isVip == false,
         showFilters = true,
+        showEditScreen = true,
         onVipClick = onVipClick,
         onFilterClick = onFiltersClick,
+        onEditScreenClick = onEditScreenClick,
         modifier = Modifier.offset {
             IntOffset(0, headerState.connection.barOffset.fastRoundToInt())
         },
@@ -495,7 +522,6 @@ private fun MyListsHeader(
         ) {
             TraktSectionHeader(
                 title = stringResource(R.string.list_title_personal_lists),
-                collapsable = false,
                 chevron = true,
                 modifier = Modifier
                     .onClick(
