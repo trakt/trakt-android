@@ -545,6 +545,7 @@
   <string name="header_sentiment_positive">Θετικό</string>
   <string name="header_settings_clear_cover">Εκκαθάριση εικόνας εξωφύλλου</string>
   <string name="header_settings_notifications">Ειδοποιήσεις</string>
+  <string name="header_settings_privacy">Απόρρητο &amp; Συνδρομή</string>
   <string name="header_settings_tracking">Παρακολούθηση</string>
   <string name="header_settings_translations">Μεταφράσεις</string>
   <string name="header_skipped_items">%s Παραλειφθέντα στοιχεία</string>

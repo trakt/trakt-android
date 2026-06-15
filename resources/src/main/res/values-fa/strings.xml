@@ -545,6 +545,7 @@
   <string name="header_sentiment_positive">مثبت</string>
   <string name="header_settings_clear_cover">پاک کردن تصویر جلد</string>
   <string name="header_settings_notifications">اعلان‌ها</string>
+  <string name="header_settings_privacy">حریم خصوصی و اشتراک</string>
   <string name="header_settings_tracking">ردیابی</string>
   <string name="header_settings_translations">ترجمه‌ها</string>
   <string name="header_skipped_items">%s مورد نادیده گرفته شده</string>

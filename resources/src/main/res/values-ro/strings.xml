@@ -545,6 +545,7 @@
   <string name="header_sentiment_positive">Pozitiv</string>
   <string name="header_settings_clear_cover">Șterge Imaginea de Copertă</string>
   <string name="header_settings_notifications">Notificări</string>
+  <string name="header_settings_privacy">Confidențialitate și Abonament</string>
   <string name="header_settings_tracking">Urmărire</string>
   <string name="header_settings_translations">Traduceri</string>
   <string name="header_skipped_items">%s Elemente Omise</string>

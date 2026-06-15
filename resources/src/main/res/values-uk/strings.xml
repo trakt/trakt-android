@@ -545,6 +545,7 @@
   <string name="header_sentiment_positive">Позитивний</string>
   <string name="header_settings_clear_cover">Очистити обкладинку</string>
   <string name="header_settings_notifications">Сповіщення</string>
+  <string name="header_settings_privacy">Приватність і Підписка</string>
   <string name="header_settings_tracking">Відстеження</string>
   <string name="header_settings_translations">Переклади</string>
   <string name="header_skipped_items">%s пропущених елементів</string>

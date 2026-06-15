@@ -545,6 +545,7 @@
   <string name="header_sentiment_positive">积极</string>
   <string name="header_settings_clear_cover">清除封面图片</string>
   <string name="header_settings_notifications">通知</string>
+  <string name="header_settings_privacy">隐私与订阅</string>
   <string name="header_settings_tracking">追踪</string>
   <string name="header_settings_translations">翻译</string>
   <string name="header_skipped_items">%s 个已跳过项目</string>

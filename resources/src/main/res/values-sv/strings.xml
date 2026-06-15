@@ -545,6 +545,7 @@
   <string name="header_sentiment_positive">Positiv</string>
   <string name="header_settings_clear_cover">Rensa omslagsbild</string>
   <string name="header_settings_notifications">Aviseringar</string>
+  <string name="header_settings_privacy">Integritet och prenumeration</string>
   <string name="header_settings_tracking">Spårning</string>
   <string name="header_settings_translations">Översättningar</string>
   <string name="header_skipped_items">%s överhoppade objekt</string>

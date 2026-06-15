@@ -545,6 +545,7 @@
   <string name="header_sentiment_positive">Положително</string>
   <string name="header_settings_clear_cover">Изчисти корицата</string>
   <string name="header_settings_notifications">Известия</string>
+  <string name="header_settings_privacy">Поверителност &amp; Абонамент</string>
   <string name="header_settings_tracking">Проследяване</string>
   <string name="header_settings_translations">Преводи</string>
   <string name="header_skipped_items">%s пропуснати елемента</string>

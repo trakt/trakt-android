@@ -545,6 +545,7 @@
   <string name="header_sentiment_positive">Positivo</string>
   <string name="header_settings_clear_cover">Borrar Imagen de Portada</string>
   <string name="header_settings_notifications">Notificaciones</string>
+  <string name="header_settings_privacy">Privacidad y Suscripción</string>
   <string name="header_settings_tracking">Seguimiento</string>
   <string name="header_settings_translations">Traducciones</string>
   <string name="header_skipped_items">%s elementos omitidos</string>

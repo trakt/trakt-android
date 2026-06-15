@@ -545,6 +545,7 @@
   <string name="header_sentiment_positive">Positiv</string>
   <string name="header_settings_clear_cover">Fjern forsidebilde</string>
   <string name="header_settings_notifications">Varsler</string>
+  <string name="header_settings_privacy">Personvern og abonnement</string>
   <string name="header_settings_tracking">Sporing</string>
   <string name="header_settings_translations">Oversettelser</string>
   <string name="header_skipped_items">%s elementer hoppet over</string>
