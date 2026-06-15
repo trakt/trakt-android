@@ -82,6 +82,7 @@ private fun ShareContent(
 ) {
     var selectedVariant by remember { mutableStateOf(Default) }
     var loadingVariant by remember { mutableStateOf(false) }
+    var isError by remember(selectedVariant) { mutableStateOf<String?>(null) }
 
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -105,10 +106,6 @@ private fun ShareContent(
         )
 
         state.media?.let { media ->
-            var isError by remember(selectedVariant) {
-                mutableStateOf<String?>(null)
-            }
-
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
@@ -201,7 +198,7 @@ private fun ShareContent(
 
             PrimaryButton(
                 text = stringResource(R.string.button_text_share),
-                enabled = state.media != null && !loadingVariant,
+                enabled = state.media != null && !loadingVariant && isError == null,
                 onClick = {
                     val media = state.media ?: return@PrimaryButton
                     val imageUri = selectedVariant.getImageUri(

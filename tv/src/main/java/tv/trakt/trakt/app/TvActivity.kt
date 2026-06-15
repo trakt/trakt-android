@@ -51,6 +51,8 @@ import tv.trakt.trakt.common.core.translations.di.translationsModule
 import tv.trakt.trakt.common.core.tutorials.di.tutorialsModule
 import tv.trakt.trakt.common.firebase.analytics.di.analyticsModule
 import tv.trakt.trakt.common.firebase.inappreview.di.inAppReviewModule
+import tv.trakt.trakt.common.helpers.coil.coilModule
+import tv.trakt.trakt.common.helpers.coil.registerCoilImageLoader
 import tv.trakt.trakt.common.helpers.extensions.isTelevision
 import tv.trakt.trakt.common.networking.di.networkingApiModule
 import tv.trakt.trakt.common.networking.di.networkingModule
@@ -99,6 +101,7 @@ class TvActivity : ComponentActivity() {
             if (!context.isTelevision()) {
                 return
             }
+
             startKoin {
                 androidContext(context.applicationContext)
                 androidLogger()
@@ -108,6 +111,7 @@ class TvActivity : ComponentActivity() {
                 modules(
                     networkingModule,
                     networkingApiModule,
+                    coilModule,
                     mainModule,
                     tutorialsModule,
                     homeModule,
@@ -142,6 +146,8 @@ class TvActivity : ComponentActivity() {
                     translationsModule,
                 )
             }
+
+            registerCoilImageLoader()
         }
     }
 }

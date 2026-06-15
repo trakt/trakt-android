@@ -24,6 +24,8 @@ import tv.trakt.trakt.common.core.translations.di.translationsModule
 import tv.trakt.trakt.common.core.tutorials.di.tutorialsModule
 import tv.trakt.trakt.common.firebase.analytics.di.analyticsModule
 import tv.trakt.trakt.common.firebase.inappreview.di.inAppReviewModule
+import tv.trakt.trakt.common.helpers.coil.coilModule
+import tv.trakt.trakt.common.helpers.coil.registerCoilImageLoader
 import tv.trakt.trakt.common.helpers.extensions.isTelevision
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider.State.BACKGROUND
@@ -102,6 +104,8 @@ internal class TraktApplication : Application() {
         FirebaseApp.initializeApp(this)
         setupFirebaseConfig()
         setupFirebaseCrashlytics()
+
+        registerCoilImageLoader()
     }
 
     fun setupFirebaseCrashlytics() {
@@ -137,6 +141,7 @@ internal class TraktApplication : Application() {
             modules(
                 networkingModule,
                 networkingApiModule,
+                coilModule,
                 mainModule,
                 authModule,
                 filtersModule,

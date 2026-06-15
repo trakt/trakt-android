@@ -99,6 +99,10 @@ dependencies {
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.timber)
 
+    api(libs.coil.compose)
+    api(libs.coil.network)
+    api(libs.coil.svg)
+
     api(libs.youtube.player)
     api(libs.youtube.player.ui)
 

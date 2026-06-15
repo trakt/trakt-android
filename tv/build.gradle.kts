@@ -81,10 +81,6 @@ dependencies {
     implementation(libs.ktor.client.negotiation)
     implementation(libs.ktor.client.auth)
 
-    implementation(libs.coil.compose)
-    implementation(libs.coil.network)
-    implementation(libs.coil.svg)
-
     implementation(project.dependencies.platform(libs.koin.bom))
     implementation(libs.koin.core)
     implementation(libs.koin.android.compose)
