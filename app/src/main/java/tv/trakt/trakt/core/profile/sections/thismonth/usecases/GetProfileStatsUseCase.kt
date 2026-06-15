@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
+import java.time.Instant
 import java.time.ZonedDateTime
 
 internal class GetProfileStatsUseCase(
@@ -33,20 +34,14 @@ internal class GetProfileStatsUseCase(
     }
 
     private suspend fun loadMoviesCount(currentDate: ZonedDateTime): MoviesCounts {
-        val moviesProgress = when {
-            !loadUserProgressUseCase.isMoviesLoaded() -> {
-                loadUserProgressUseCase.loadMoviesProgress()
-            }
-
-            else -> {
-                loadUserProgressUseCase.loadLocalMovies()
-            }
+        val moviesProgress = if (loadUserProgressUseCase.isMoviesLoaded()) {
+            loadUserProgressUseCase.loadLocalMovies()
+        } else {
+            loadUserProgressUseCase.loadMoviesProgress()
         }
 
         val moviesThisMonth = moviesProgress.count {
-            val localWatchedAt = it.lastWatchedAt.toLocal()
-            localWatchedAt.year == currentDate.year &&
-                localWatchedAt.month == currentDate.month
+            it.lastWatchedAt.isInSameMonthAs(currentDate)
         }
 
         return MoviesCounts(
@@ -56,20 +51,14 @@ internal class GetProfileStatsUseCase(
     }
 
     private suspend fun loadShowsEpisodesCount(currentDate: ZonedDateTime): ShowsCounts {
-        val progress = when {
-            !loadUserProgressUseCase.isShowsLoaded() -> {
-                loadUserProgressUseCase.loadShowsProgress()
-            }
-
-            else -> {
-                loadUserProgressUseCase.loadLocalShows()
-            }
+        val progress = if (loadUserProgressUseCase.isShowsLoaded()) {
+            loadUserProgressUseCase.loadLocalShows()
+        } else {
+            loadUserProgressUseCase.loadShowsProgress()
         }
 
         val showsThisMonth = progress.count {
-            val localWatchedAt = it.lastWatchedAt.toLocal()
-            localWatchedAt.year == currentDate.year &&
-                localWatchedAt.month == currentDate.month
+            it.lastWatchedAt.isInSameMonthAs(currentDate)
         }
 
         val allEpisodes = progress
@@ -77,9 +66,7 @@ internal class GetProfileStatsUseCase(
             .flatMap { it.episodes }
 
         val episodesThisMonth = allEpisodes.count {
-            val localWatchedAt = it.lastWatchedAt.toLocal()
-            localWatchedAt.year == currentDate.year &&
-                localWatchedAt.month == currentDate.month
+            it.lastWatchedAt.isInSameMonthAs(currentDate)
         }
 
         return ShowsCounts(
@@ -88,6 +75,11 @@ internal class GetProfileStatsUseCase(
             allShows = progress.size,
             allEpisodes = allEpisodes.size,
         )
+    }
+
+    private fun Instant.isInSameMonthAs(reference: ZonedDateTime): Boolean {
+        val local = toLocal()
+        return local.year == reference.year && local.month == reference.month
     }
 
     private data class MoviesCounts(
