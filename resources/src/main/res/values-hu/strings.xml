@@ -27,6 +27,7 @@
   <string name="button_label_add_to_personal_list">\"%1$s\" hozzáadása ehhez: %2$s</string>
   <string name="button_label_add_to_watchlist">\"%s\" hozzáadása a Megnézendőkhöz</string>
   <string name="button_label_apply">Változások alkalmazása</string>
+  <string name="button_label_approve_follow_request">Követési kérelem jóváhagyása %s felhasználótól</string>
   <string name="button_label_back">Vissza</string>
   <string name="button_label_block">%s blokkolása</string>
   <string name="button_label_browse_lists">Listáid böngészése</string>
@@ -72,6 +73,7 @@
   <string name="button_label_expand_navbar">Kibontás</string>
   <string name="button_label_filters">Szűrők</string>
   <string name="button_label_follow">%s követése</string>
+  <string name="button_label_follow_requests">Követési kérelmek</string>
   <string name="button_label_followers">Követők</string>
   <string name="button_label_following">Követettek</string>
   <string name="button_label_get_vip">VIP funkciók feloldása</string>
@@ -116,6 +118,7 @@
   <string name="button_label_react">Reagálás ezzel: %s</string>
   <string name="button_label_read_more">Bővebben</string>
   <string name="button_label_recent_comments">Legújabb értékelések</string>
+  <string name="button_label_reject_follow_request">Követési kérelem elutasítása %s felhasználótól</string>
   <string name="button_label_remove_from_favorites">\"%s\" eltávolítása a kedvencek közül</string>
   <string name="button_label_remove_from_history">\"%s\" ezen lejátszásának eltávolítása az előzményekből</string>
   <string name="button_label_remove_from_list">\"%s\" eltávolítása a listáról</string>
@@ -124,6 +127,7 @@
   <string name="button_label_remove_from_watchlist">\"%s\" eltávolítása a Megnézendők közül</string>
   <string name="button_label_remove_photo">Profilképed eltávolítása</string>
   <string name="button_label_renew_vip">Előfizetés megújítása</string>
+  <string name="button_label_reorder_list">%s átrendezése</string>
   <string name="button_label_report_comment">Vélemény jelentése</string>
   <string name="button_label_report_list">%s jelentése</string>
   <string name="button_label_report_media">Jelentés: %s</string>
@@ -214,6 +218,7 @@
   <string name="button_text_add_review">Értékelés hozzáadása</string>
   <string name="button_text_add_to_favorites">Hozzáadás a kedvencekhez</string>
   <string name="button_text_apply">Alkalmaz</string>
+  <string name="button_text_approve_follow_request">Kérelem jóváhagyása</string>
   <string name="button_text_block">Blokkolás</string>
   <string name="button_text_block_comments">Hozzászólások letiltása ettől: %s</string>
   <string name="button_text_browse_movies">Filmek</string>
@@ -254,6 +259,7 @@
   <string name="button_text_find_movies">Filmek keresése</string>
   <string name="button_text_find_shows">Sorozatok keresése</string>
   <string name="button_text_follow">Követés</string>
+  <string name="button_text_follow_requests">Kérelmek</string>
   <string name="button_text_followers">Követők</string>
   <string name="button_text_following">Követettek</string>
   <string name="button_text_get_vip">Szerezd be</string>
@@ -301,12 +307,14 @@
   <string name="button_text_raw_export">Exportálás most</string>
   <string name="button_text_recent_comments">Legújabb</string>
   <string name="button_text_reconnect">Újracsatlakozás</string>
+  <string name="button_text_reject_follow_request">Kérelem elutasítása</string>
   <string name="button_text_remove_from_favorites">Eltávolítás a kedvencek közül</string>
   <string name="button_text_remove_from_history">Eltávolítás az előzményekből</string>
   <string name="button_text_remove_from_list">Eltávolítás a listáról</string>
   <string name="button_text_remove_from_watchlist">Eltávolítás a megnézendőkből</string>
   <string name="button_text_remove_photo">Fotó eltávolítása</string>
   <string name="button_text_renew_vip">Előfizetés megújítása</string>
+  <string name="button_text_reorder">Átrendezés</string>
   <string name="button_text_report">Jelentés</string>
   <string name="button_text_report_comment">Jelentés</string>
   <string name="button_text_reset_all_filters">Összes visszaállítása</string>
@@ -428,6 +436,7 @@
   <string name="drawer_title_add_note">Jegyzet</string>
   <string name="drawer_title_notes">Jegyzetek</string>
   <string name="drawer_title_people">Személyek</string>
+  <string name="drawer_title_reorder_list">Húzd az átrendezéshez</string>
   <string name="drawer_title_sort">Rendezés</string>
   <string name="drawer_title_streak_activity">Napi sorozat tevékenység</string>
   <string name="dropdown_label_add_remove_from_lists">\"%s\" hozzáadása listákhoz vagy eltávolítása onnan</string>
@@ -686,6 +695,7 @@
   <string name="list_placeholder_favorite_movies">Nincsenek kedvenc filmek.</string>
   <string name="list_placeholder_favorite_shows">Nincsenek kedvenc sorozatok.</string>
   <string name="list_placeholder_favorites">Nincsenek kedvencek itt.</string>
+  <string name="list_placeholder_follow_requests">Nincsenek követési kérelmek.</string>
   <string name="list_placeholder_followers">Senki sincs itt (még).</string>
   <string name="list_placeholder_following">Senki sincs itt (még).</string>
   <string name="list_placeholder_from_my_history">Még semmiben sem láttad %s-t.</string>
@@ -1030,6 +1040,8 @@
   <string name="text_info_favorites_added">Hozzáadva a kedvencekhez.</string>
   <string name="text_info_favorites_removed">Eltávolítva a kedvencekből.</string>
   <string name="text_info_follow_request">Követési kérelem elküldve.</string>
+  <string name="text_info_follow_request_approved">Követési kérelem jóváhagyva %s felhasználótól.</string>
+  <string name="text_info_follow_request_rejected">Követési kérelem elutasítva %s felhasználótól.</string>
   <string name="text_info_following">Mostantól követed %s.</string>
   <string name="text_info_history_added">Hozzáadva a megtekintési előzményekhez.</string>
   <string name="text_info_history_removed">Eltávolítva a megtekintési előzményekből.</string>
@@ -1559,6 +1571,10 @@
   <string name="yir_2024_stats_tooltip_plays">%s lejátszás</string>
   <string name="yir_2024_stats_tooltip_week_label">%s. hét</string>
   <string name="yir_2024_studio_count">Stúdiók száma</string>
+  <string name="yir_2024_thanks_copy_directed">Epikus munkát végeztél <b>%1$d</b> rendezésében. Kívánjuk, hogy a(z) <b>%2$d</b> év még jobb folytatás legyen.</string>
+  <string name="yir_2024_thanks_copy_recommend">Folytasd az utazásod. Próbálj meg megnézni egyet ezek közül a népszerű sorozatok vagy filmek közül.</string>
+  <string name="yir_2024_thanks_intro">De ami a legfontosabb…</string>
+  <string name="yir_2024_thanks_title">köszönjük!</string>
   <string name="yir_2024_time_watched_label">Megnézett idő</string>
   <string name="yir_2024_trakt_worldwide">Trakt Világszerte</string>
   <string name="yir_2024_trend_watched">Megnézve</string>

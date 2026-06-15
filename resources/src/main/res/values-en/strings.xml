@@ -27,6 +27,7 @@
   <string name="button_label_add_to_personal_list">Add \"%1$s\" to %2$s</string>
   <string name="button_label_add_to_watchlist">Add \"%s\" to your Watchlist</string>
   <string name="button_label_apply">Apply changes</string>
+  <string name="button_label_approve_follow_request">Approve follow request from %s</string>
   <string name="button_label_back">Back</string>
   <string name="button_label_block">Block %s</string>
   <string name="button_label_browse_lists">Browse your lists</string>
@@ -72,6 +73,7 @@
   <string name="button_label_expand_navbar">Expand</string>
   <string name="button_label_filters">Filters</string>
   <string name="button_label_follow">Follow %s</string>
+  <string name="button_label_follow_requests">Follow requests</string>
   <string name="button_label_followers">Followers</string>
   <string name="button_label_following">Following</string>
   <string name="button_label_get_vip">Unlock VIP features</string>
@@ -116,6 +118,7 @@
   <string name="button_label_react">React with %s</string>
   <string name="button_label_read_more">Read more</string>
   <string name="button_label_recent_comments">Recent reviews</string>
+  <string name="button_label_reject_follow_request">Reject follow request from %s</string>
   <string name="button_label_remove_from_favorites">Remove \"%s\" from your Favorites</string>
   <string name="button_label_remove_from_history">Remove this play of \"%s\" from your History</string>
   <string name="button_label_remove_from_list">Remove \"%s\" from list</string>
@@ -215,6 +218,7 @@
   <string name="button_text_add_review">Add Review</string>
   <string name="button_text_add_to_favorites">Add to Favorites</string>
   <string name="button_text_apply">Apply</string>
+  <string name="button_text_approve_follow_request">Approve Request</string>
   <string name="button_text_block">Block</string>
   <string name="button_text_block_comments">Block comments from %s</string>
   <string name="button_text_browse_movies">Movies</string>
@@ -255,6 +259,7 @@
   <string name="button_text_find_movies">Find Movies</string>
   <string name="button_text_find_shows">Find Shows</string>
   <string name="button_text_follow">Follow</string>
+  <string name="button_text_follow_requests">Requests</string>
   <string name="button_text_followers">Followers</string>
   <string name="button_text_following">Following</string>
   <string name="button_text_get_vip">Get</string>
@@ -302,6 +307,7 @@
   <string name="button_text_raw_export">Export now</string>
   <string name="button_text_recent_comments">Recent</string>
   <string name="button_text_reconnect">Reconnect</string>
+  <string name="button_text_reject_follow_request">Reject Request</string>
   <string name="button_text_remove_from_favorites">Remove from Favorites</string>
   <string name="button_text_remove_from_history">Remove from History</string>
   <string name="button_text_remove_from_list">Remove from list</string>
@@ -689,6 +695,7 @@
   <string name="list_placeholder_favorite_movies">There are no favorite movies here.</string>
   <string name="list_placeholder_favorite_shows">There are no favorite shows here.</string>
   <string name="list_placeholder_favorites">There are no favorites here.</string>
+  <string name="list_placeholder_follow_requests">There are no follow requests.</string>
   <string name="list_placeholder_followers">There is no one here (yet).</string>
   <string name="list_placeholder_following">There is no one here (yet).</string>
   <string name="list_placeholder_from_my_history">You haven\'t seen %s in anything yet.</string>
@@ -1033,6 +1040,8 @@
   <string name="text_info_favorites_added">Added to favorites.</string>
   <string name="text_info_favorites_removed">Removed from favorites.</string>
   <string name="text_info_follow_request">Follow request has been sent.</string>
+  <string name="text_info_follow_request_approved">Approved follow request from %s.</string>
+  <string name="text_info_follow_request_rejected">Rejected follow request from %s.</string>
   <string name="text_info_following">You are now following %s.</string>
   <string name="text_info_history_added">Added to watched history.</string>
   <string name="text_info_history_removed">Removed from watched history.</string>
@@ -1562,6 +1571,10 @@
   <string name="yir_2024_stats_tooltip_plays">%s Plays</string>
   <string name="yir_2024_stats_tooltip_week_label">Week %s</string>
   <string name="yir_2024_studio_count">Studio Count</string>
+  <string name="yir_2024_thanks_copy_directed">You did an epic job directing <b>%1$d</b>. Here\'s to an even better sequel in <b>%2$d</b>.</string>
+  <string name="yir_2024_thanks_copy_recommend">Keep your journey going. Try watching one of these popular shows or movies.</string>
+  <string name="yir_2024_thanks_intro">But most importantly…</string>
+  <string name="yir_2024_thanks_title">thanks!</string>
   <string name="yir_2024_time_watched_label">Time Watched</string>
   <string name="yir_2024_trakt_worldwide">Trakt Worldwide</string>
   <string name="yir_2024_trend_watched">Watched</string>

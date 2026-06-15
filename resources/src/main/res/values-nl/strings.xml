@@ -27,6 +27,7 @@
   <string name="button_label_add_to_personal_list">Voeg \"%1$s\" toe aan %2$s</string>
   <string name="button_label_add_to_watchlist">\"%s\" aan je kijklijst toevoegen</string>
   <string name="button_label_apply">Wijzigingen toepassen</string>
+  <string name="button_label_approve_follow_request">Volgverzoek van %s goedkeuren</string>
   <string name="button_label_back">Terug</string>
   <string name="button_label_block">Blokkeer %s</string>
   <string name="button_label_browse_lists">Je lijsten bekijken</string>
@@ -72,6 +73,7 @@
   <string name="button_label_expand_navbar">Uitvouwen</string>
   <string name="button_label_filters">Filters</string>
   <string name="button_label_follow">Volg %s</string>
+  <string name="button_label_follow_requests">Volgverzoeken</string>
   <string name="button_label_followers">Volgers</string>
   <string name="button_label_following">Volgend</string>
   <string name="button_label_get_vip">VIP-functies ontgrendelen</string>
@@ -116,6 +118,7 @@
   <string name="button_label_react">Reageer met %s</string>
   <string name="button_label_read_more">Lees meer</string>
   <string name="button_label_recent_comments">Recente recensies</string>
+  <string name="button_label_reject_follow_request">Volgverzoek van %s afwijzen</string>
   <string name="button_label_remove_from_favorites">\"%s\" uit je favorieten verwijderen</string>
   <string name="button_label_remove_from_history">Deze weergave van \"%s\" uit je kijkgeschiedenis verwijderen</string>
   <string name="button_label_remove_from_list">Verwijder \"%s\" uit lijst</string>
@@ -124,6 +127,7 @@
   <string name="button_label_remove_from_watchlist">\"%s\" van je kijklijst verwijderen</string>
   <string name="button_label_remove_photo">Verwijder je profielfoto</string>
   <string name="button_label_renew_vip">Abonnement verlengen</string>
+  <string name="button_label_reorder_list">Herschik %s</string>
   <string name="button_label_report_comment">Recensie melden</string>
   <string name="button_label_report_list">Meld %s</string>
   <string name="button_label_report_media">Meld %s</string>
@@ -214,6 +218,7 @@
   <string name="button_text_add_review">Recensie toevoegen</string>
   <string name="button_text_add_to_favorites">Aan favorieten toevoegen</string>
   <string name="button_text_apply">Toepassen</string>
+  <string name="button_text_approve_follow_request">Verzoek goedkeuren</string>
   <string name="button_text_block">Blokkeren</string>
   <string name="button_text_block_comments">Blokkeer reacties van %s</string>
   <string name="button_text_browse_movies">Films</string>
@@ -254,6 +259,7 @@
   <string name="button_text_find_movies">Films zoeken</string>
   <string name="button_text_find_shows">Series zoeken</string>
   <string name="button_text_follow">Volgen</string>
+  <string name="button_text_follow_requests">Verzoeken</string>
   <string name="button_text_followers">Volgers</string>
   <string name="button_text_following">Volgend</string>
   <string name="button_text_get_vip">Word</string>
@@ -301,12 +307,14 @@
   <string name="button_text_raw_export">Nu exporteren</string>
   <string name="button_text_recent_comments">Recent</string>
   <string name="button_text_reconnect">Opnieuw verbinden</string>
+  <string name="button_text_reject_follow_request">Verzoek afwijzen</string>
   <string name="button_text_remove_from_favorites">Uit favorieten verwijderen</string>
   <string name="button_text_remove_from_history">Verwijderen uit geschiedenis</string>
   <string name="button_text_remove_from_list">Verwijderen uit lijst</string>
   <string name="button_text_remove_from_watchlist">Verwijder van kijklijst</string>
   <string name="button_text_remove_photo">Foto verwijderen</string>
   <string name="button_text_renew_vip">Abonnement verlengen</string>
+  <string name="button_text_reorder">Herschikken</string>
   <string name="button_text_report">Melden</string>
   <string name="button_text_report_comment">Melden</string>
   <string name="button_text_reset_all_filters">Alles resetten</string>
@@ -428,6 +436,7 @@
   <string name="drawer_title_add_note">Notitie</string>
   <string name="drawer_title_notes">Notities</string>
   <string name="drawer_title_people">Personen</string>
+  <string name="drawer_title_reorder_list">Slepen om te herschikken</string>
   <string name="drawer_title_sort">Sorteren op</string>
   <string name="drawer_title_streak_activity">Dagelijkse Reeks Activiteit</string>
   <string name="dropdown_label_add_remove_from_lists">Voeg \"%s\" toe aan of verwijder uit lijsten</string>
@@ -686,6 +695,7 @@
   <string name="list_placeholder_favorite_movies">Hier zijn geen favoriete films.</string>
   <string name="list_placeholder_favorite_shows">Hier zijn geen favoriete series.</string>
   <string name="list_placeholder_favorites">Hier zijn geen favorieten.</string>
+  <string name="list_placeholder_follow_requests">Er zijn geen volgverzoeken.</string>
   <string name="list_placeholder_followers">Er is hier (nog) niemand.</string>
   <string name="list_placeholder_following">Er is hier (nog) niemand.</string>
   <string name="list_placeholder_from_my_history">Je hebt %s nog nergens in gezien.</string>
@@ -1030,6 +1040,8 @@
   <string name="text_info_favorites_added">Toegevoegd aan favorieten.</string>
   <string name="text_info_favorites_removed">Verwijderd uit favorieten.</string>
   <string name="text_info_follow_request">Volgverzoek is verzonden.</string>
+  <string name="text_info_follow_request_approved">Volgverzoek van %s goedgekeurd.</string>
+  <string name="text_info_follow_request_rejected">Volgverzoek van %s afgewezen.</string>
   <string name="text_info_following">Je volgt nu %s.</string>
   <string name="text_info_history_added">Toegevoegd aan kijkgeschiedenis.</string>
   <string name="text_info_history_removed">Verwijderd uit kijkgeschiedenis.</string>
@@ -1559,6 +1571,10 @@
   <string name="yir_2024_stats_tooltip_plays">%s Weergaven</string>
   <string name="yir_2024_stats_tooltip_week_label">Week %s</string>
   <string name="yir_2024_studio_count">Aantal studio\'s</string>
+  <string name="yir_2024_thanks_copy_directed">Je hebt fantastisch werk geleverd bij het regisseren van <b>%1$d</b>. Op naar een nog beter vervolg in <b>%2$d</b>.</string>
+  <string name="yir_2024_thanks_copy_recommend">Zet je reis voort. Probeer een van deze populaire series of films te bekijken.</string>
+  <string name="yir_2024_thanks_intro">Maar het belangrijkste…</string>
+  <string name="yir_2024_thanks_title">bedankt!</string>
   <string name="yir_2024_time_watched_label">Tijd bekeken</string>
   <string name="yir_2024_trakt_worldwide">Trakt Wereldwijd</string>
   <string name="yir_2024_trend_watched">Bekeken</string>

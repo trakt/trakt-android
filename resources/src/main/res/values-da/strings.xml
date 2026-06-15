@@ -27,6 +27,7 @@
   <string name="button_label_add_to_personal_list">Føj \"%1$s\" til %2$s</string>
   <string name="button_label_add_to_watchlist">Føj \"%s\" til din Huskeliste</string>
   <string name="button_label_apply">Anvend ændringer</string>
+  <string name="button_label_approve_follow_request">Godkend følgeanmodning fra %s</string>
   <string name="button_label_back">Tilbage</string>
   <string name="button_label_block">Bloker %s</string>
   <string name="button_label_browse_lists">Gennemse dine lister</string>
@@ -72,6 +73,7 @@
   <string name="button_label_expand_navbar">Udvid</string>
   <string name="button_label_filters">Filtre</string>
   <string name="button_label_follow">Følg %s</string>
+  <string name="button_label_follow_requests">Følgeanmodninger</string>
   <string name="button_label_followers">Følgere</string>
   <string name="button_label_following">Følger</string>
   <string name="button_label_get_vip">Lås op for VIP-funktioner</string>
@@ -116,6 +118,7 @@
   <string name="button_label_react">Reager med %s</string>
   <string name="button_label_read_more">Læs mere</string>
   <string name="button_label_recent_comments">Seneste anmeldelser</string>
+  <string name="button_label_reject_follow_request">Afvis følgeanmodning fra %s</string>
   <string name="button_label_remove_from_favorites">Fjern \"%s\" fra dine favoritter</string>
   <string name="button_label_remove_from_history">Fjern denne afspilning af \"%s\" fra din Set historik</string>
   <string name="button_label_remove_from_list">Fjern \"%s\" fra liste</string>
@@ -124,6 +127,7 @@
   <string name="button_label_remove_from_watchlist">Fjern \"%s\" fra din Huskeliste</string>
   <string name="button_label_remove_photo">Fjern dit profilfoto</string>
   <string name="button_label_renew_vip">Forny abonnement</string>
+  <string name="button_label_reorder_list">Omarranger %s</string>
   <string name="button_label_report_comment">Rapportér anmeldelse</string>
   <string name="button_label_report_list">Rapportér %s</string>
   <string name="button_label_report_media">Rapportér %s</string>
@@ -214,6 +218,7 @@
   <string name="button_text_add_review">Tilføj anmeldelse</string>
   <string name="button_text_add_to_favorites">Føj til favoritter</string>
   <string name="button_text_apply">Anvend</string>
+  <string name="button_text_approve_follow_request">Godkend anmodning</string>
   <string name="button_text_block">Bloker</string>
   <string name="button_text_block_comments">Bloker kommentarer fra %s</string>
   <string name="button_text_browse_movies">Film</string>
@@ -254,6 +259,7 @@
   <string name="button_text_find_movies">Find film</string>
   <string name="button_text_find_shows">Find serier</string>
   <string name="button_text_follow">Følg</string>
+  <string name="button_text_follow_requests">Anmodninger</string>
   <string name="button_text_followers">Følgere</string>
   <string name="button_text_following">Følger</string>
   <string name="button_text_get_vip">Få</string>
@@ -301,12 +307,14 @@
   <string name="button_text_raw_export">Eksporter nu</string>
   <string name="button_text_recent_comments">Seneste</string>
   <string name="button_text_reconnect">Gendan forbindelse</string>
+  <string name="button_text_reject_follow_request">Afvis anmodning</string>
   <string name="button_text_remove_from_favorites">Fjern fra favoritter</string>
   <string name="button_text_remove_from_history">Fjern fra historik</string>
   <string name="button_text_remove_from_list">Fjern fra liste</string>
   <string name="button_text_remove_from_watchlist">Fjern fra huskeliste</string>
   <string name="button_text_remove_photo">Fjern foto</string>
   <string name="button_text_renew_vip">Forny abonnement</string>
+  <string name="button_text_reorder">Omarranger</string>
   <string name="button_text_report">Rapportér</string>
   <string name="button_text_report_comment">Rapportér</string>
   <string name="button_text_reset_all_filters">Nulstil alle</string>
@@ -428,6 +436,7 @@
   <string name="drawer_title_add_note">Note</string>
   <string name="drawer_title_notes">Noter</string>
   <string name="drawer_title_people">Personer</string>
+  <string name="drawer_title_reorder_list">Træk for at omarrangere</string>
   <string name="drawer_title_sort">Sortér efter</string>
   <string name="drawer_title_streak_activity">Daglig serieaktivitet</string>
   <string name="dropdown_label_add_remove_from_lists">Føj \"%s\" til eller fjern fra lister</string>
@@ -686,6 +695,7 @@
   <string name="list_placeholder_favorite_movies">Der er ingen favoritfilm her.</string>
   <string name="list_placeholder_favorite_shows">Der er ingen favoritserier her.</string>
   <string name="list_placeholder_favorites">Der er ingen favoritter her.</string>
+  <string name="list_placeholder_follow_requests">Der er ingen følgeanmodninger.</string>
   <string name="list_placeholder_followers">Der er ingen her (endnu).</string>
   <string name="list_placeholder_following">Der er ingen her (endnu).</string>
   <string name="list_placeholder_from_my_history">Du har ikke set %s i noget endnu.</string>
@@ -1030,6 +1040,8 @@
   <string name="text_info_favorites_added">Føjet til favoritter.</string>
   <string name="text_info_favorites_removed">Fjernet fra favoritter.</string>
   <string name="text_info_follow_request">Følgeanmodning er sendt.</string>
+  <string name="text_info_follow_request_approved">Følgeanmodning fra %s er godkendt.</string>
+  <string name="text_info_follow_request_rejected">Følgeanmodning fra %s er afvist.</string>
   <string name="text_info_following">Du følger nu %s.</string>
   <string name="text_info_history_added">Føjet til set historik.</string>
   <string name="text_info_history_removed">Fjernet fra set historik.</string>
@@ -1559,6 +1571,10 @@
   <string name="yir_2024_stats_tooltip_plays">%s Visninger</string>
   <string name="yir_2024_stats_tooltip_week_label">Uge %s</string>
   <string name="yir_2024_studio_count">Antal studier}]}``` 24641: </string>
+  <string name="yir_2024_thanks_copy_directed">Du instruerede <b>%1$d</b> på en episk måde. Her er til en endnu bedre efterfølger i <b>%2$d</b>.</string>
+  <string name="yir_2024_thanks_copy_recommend">Fortsæt din rejse. Prøv at se en af disse populære serier eller film.</string>
+  <string name="yir_2024_thanks_intro">Men vigtigst af alt…</string>
+  <string name="yir_2024_thanks_title">tak!</string>
   <string name="yir_2024_time_watched_label">Set tid</string>
   <string name="yir_2024_trakt_worldwide">Trakt Verdensomspændende</string>
   <string name="yir_2024_trend_watched">Set</string>

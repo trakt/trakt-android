@@ -27,6 +27,7 @@
   <string name="button_label_add_to_personal_list">Lägg till \"%1$s\" i %2$s</string>
   <string name="button_label_add_to_watchlist">Lägg till \"%s\" i din bevakningslista</string>
   <string name="button_label_apply">Verkställ ändringar</string>
+  <string name="button_label_approve_follow_request">Godkänn följningsförfrågan från %s</string>
   <string name="button_label_back">Tillbaka</string>
   <string name="button_label_block">Blockera %s</string>
   <string name="button_label_browse_lists">Bläddra bland dina listor</string>
@@ -72,6 +73,7 @@
   <string name="button_label_expand_navbar">Fäll ut</string>
   <string name="button_label_filters">Filter</string>
   <string name="button_label_follow">Följ %s</string>
+  <string name="button_label_follow_requests">Följningsförfrågningar</string>
   <string name="button_label_followers">Följare</string>
   <string name="button_label_following">Följer</string>
   <string name="button_label_get_vip">Lås upp VIP-funktioner</string>
@@ -116,6 +118,7 @@
   <string name="button_label_react">Reagera med %s</string>
   <string name="button_label_read_more">Läs mer</string>
   <string name="button_label_recent_comments">Senaste recensioner</string>
+  <string name="button_label_reject_follow_request">Avvisa följningsförfrågan från %s</string>
   <string name="button_label_remove_from_favorites">Ta bort \"%s\" från dina favoriter</string>
   <string name="button_label_remove_from_history">Ta bort denna visning av \"%s\" från din sedda lista</string>
   <string name="button_label_remove_from_list">Ta bort \"%s\" från lista</string>
@@ -124,6 +127,7 @@
   <string name="button_label_remove_from_watchlist">Ta bort \"%s\" från din bevakningslista</string>
   <string name="button_label_remove_photo">Ta bort din profilbild</string>
   <string name="button_label_renew_vip">Förnya prenumeration</string>
+  <string name="button_label_reorder_list">Omordna %s</string>
   <string name="button_label_report_comment">Rapportera recension</string>
   <string name="button_label_report_list">Rapportera %s</string>
   <string name="button_label_report_media">Rapportera %s</string>
@@ -214,6 +218,7 @@
   <string name="button_text_add_review">Lägg till recension</string>
   <string name="button_text_add_to_favorites">Lägg till i favoriter</string>
   <string name="button_text_apply">Verkställ</string>
+  <string name="button_text_approve_follow_request">Godkänn förfrågan</string>
   <string name="button_text_block">Blockera</string>
   <string name="button_text_block_comments">Blockera kommentarer från %s</string>
   <string name="button_text_browse_movies">Filmer</string>
@@ -254,6 +259,7 @@
   <string name="button_text_find_movies">Hitta filmer</string>
   <string name="button_text_find_shows">Hitta serier</string>
   <string name="button_text_follow">Följ</string>
+  <string name="button_text_follow_requests">Förfrågningar</string>
   <string name="button_text_followers">Följare</string>
   <string name="button_text_following">Följer</string>
   <string name="button_text_get_vip">Skaffa</string>
@@ -301,12 +307,14 @@
   <string name="button_text_raw_export">Exportera nu</string>
   <string name="button_text_recent_comments">Senaste</string>
   <string name="button_text_reconnect">Återanslut</string>
+  <string name="button_text_reject_follow_request">Avvisa förfrågan</string>
   <string name="button_text_remove_from_favorites">Ta bort från favoriter</string>
   <string name="button_text_remove_from_history">Ta bort från historik</string>
   <string name="button_text_remove_from_list">Ta bort från lista</string>
   <string name="button_text_remove_from_watchlist">Ta bort från bevakningslista</string>
   <string name="button_text_remove_photo">Ta bort foto</string>
   <string name="button_text_renew_vip">Förnya prenumeration</string>
+  <string name="button_text_reorder">Ändra ordning</string>
   <string name="button_text_report">Rapportera</string>
   <string name="button_text_report_comment">Rapportera</string>
   <string name="button_text_reset_all_filters">Återställ alla</string>
@@ -428,6 +436,7 @@
   <string name="drawer_title_add_note">Anteckning</string>
   <string name="drawer_title_notes">Anteckningar</string>
   <string name="drawer_title_people">Personer</string>
+  <string name="drawer_title_reorder_list">Dra för att omordna</string>
   <string name="drawer_title_sort">Sortera efter</string>
   <string name="drawer_title_streak_activity">Daglig svitaktivitet</string>
   <string name="dropdown_label_add_remove_from_lists">Lägg till eller ta bort \"%s\" från listor</string>
@@ -686,6 +695,7 @@
   <string name="list_placeholder_favorite_movies">Det finns inga favoritfilmer här.</string>
   <string name="list_placeholder_favorite_shows">Det finns inga favoritserier här.</string>
   <string name="list_placeholder_favorites">Det finns inga favoriter här.</string>
+  <string name="list_placeholder_follow_requests">Det finns inga följningsförfrågningar.</string>
   <string name="list_placeholder_followers">Det finns ingen här (ännu).</string>
   <string name="list_placeholder_following">Det finns ingen här (ännu).</string>
   <string name="list_placeholder_from_my_history">Du har inte sett %s i något än.</string>
@@ -1030,6 +1040,8 @@
   <string name="text_info_favorites_added">Tillagd i favoriter.</string>
   <string name="text_info_favorites_removed">Borttagen från favoriter.</string>
   <string name="text_info_follow_request">Följförfrågan har skickats.</string>
+  <string name="text_info_follow_request_approved">Följningsförfrågan från %s har godkänts.</string>
+  <string name="text_info_follow_request_rejected">Följningsförfrågan från %s har avvisats.</string>
   <string name="text_info_following">Du följer nu %s.</string>
   <string name="text_info_history_added">Tillagd i tittarhistorik.</string>
   <string name="text_info_history_removed">Borttagen från tittarhistorik.</string>
@@ -1559,6 +1571,10 @@
   <string name="yir_2024_stats_tooltip_plays">%s Visningar</string>
   <string name="yir_2024_stats_tooltip_week_label">Vecka %s</string>
   <string name="yir_2024_studio_count">Antal studior</string>
+  <string name="yir_2024_thanks_copy_directed">Du gjorde ett episkt jobb med att regissera <b>%1$d</b>. Här är en ännu bättre uppföljare under <b>%2$d</b>.</string>
+  <string name="yir_2024_thanks_copy_recommend">Fortsätt din resa. Prova att titta på en av dessa populära serier eller filmer.</string>
+  <string name="yir_2024_thanks_intro">Men viktigast av allt…</string>
+  <string name="yir_2024_thanks_title">tack!</string>
   <string name="yir_2024_time_watched_label">Tittad tid</string>
   <string name="yir_2024_trakt_worldwide">Trakt globalt</string>
   <string name="yir_2024_trend_watched">Sedd</string>
