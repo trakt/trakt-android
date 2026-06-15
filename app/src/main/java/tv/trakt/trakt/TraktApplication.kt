@@ -78,6 +78,7 @@ import tv.trakt.trakt.core.summary.people.di.personDetailsModule
 import tv.trakt.trakt.core.summary.sentiment.di.sentimentModule
 import tv.trakt.trakt.core.summary.shows.di.showDetailsDataModule
 import tv.trakt.trakt.core.summary.shows.di.showDetailsModule
+import tv.trakt.trakt.core.summary.social.di.mediaSocialActivityModule
 import tv.trakt.trakt.core.sync.di.syncModule
 import tv.trakt.trakt.core.trivia.di.triviaModule
 import tv.trakt.trakt.core.userprofile.di.userProfileModule
@@ -161,6 +162,7 @@ internal class TraktApplication : Application() {
                 moviesDataModule,
                 movieDetailsModule,
                 movieDetailsDataModule,
+                mediaSocialActivityModule,
                 profileModule,
                 profileDataModule,
                 peopleDataModule,

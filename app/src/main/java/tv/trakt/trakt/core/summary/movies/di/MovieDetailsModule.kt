@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.summary.movies.di
 
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
@@ -30,6 +31,7 @@ import tv.trakt.trakt.core.summary.movies.features.related.MovieRelatedViewModel
 import tv.trakt.trakt.core.summary.movies.features.related.usecases.GetMovieRelatedUseCase
 import tv.trakt.trakt.core.summary.movies.features.sentiment.MovieSentimentViewModel
 import tv.trakt.trakt.core.summary.movies.features.sentiment.usecases.GetMovieSentimentUseCase
+import tv.trakt.trakt.core.summary.movies.features.socials.GetMovieSocialsUseCase
 import tv.trakt.trakt.core.summary.movies.features.streaming.MovieStreamingsViewModel
 import tv.trakt.trakt.core.summary.movies.features.streaming.usecases.GetMovieStreamingsUseCase
 import tv.trakt.trakt.core.summary.movies.features.trivia.MovieTriviaViewModel
@@ -155,6 +157,8 @@ internal val movieDetailsModule = module {
         )
     }
 
+    factoryOf(::GetMovieSocialsUseCase)
+
     viewModel {
         MovieDetailsViewModel(
             appContext = androidApplication(),
@@ -163,6 +167,7 @@ internal val movieDetailsModule = module {
             getExternalRatingsUseCase = get(),
             getMovieDirectorUseCase = get(),
             getMovieTranslationsUseCase = get(),
+            getMovieSocialsUseCase = get(),
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
             loadListsUseCase = get(),

@@ -1,14 +1,19 @@
 package tv.trakt.trakt.core.summary.ui.header
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -19,8 +24,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.Config.webImdbMediaUrl
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -30,6 +38,8 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
+import tv.trakt.trakt.core.summary.ui.header.social.DetailsHeaderSocialHorizontalChip
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -38,6 +48,7 @@ internal fun DetailsHeader(
     episode: Episode,
     show: Show,
     episodeTranslation: MediaTranslation?,
+    episodeSocials: ImmutableList<MediaSocialActivity>?,
     ratings: ExternalRating?,
     creator: Person?,
     playsCount: Int?,
@@ -45,6 +56,7 @@ internal fun DetailsHeader(
     onShowClick: (Show) -> Unit,
     onCreatorClick: (Person) -> Unit,
     onShareClick: () -> Unit,
+    onSocialActivityClick: () -> Unit,
     onInfoClick: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -190,6 +202,27 @@ internal fun DetailsHeader(
         onInfoClick = onInfoClick,
         onShareClick = onShareClick,
         onShareImageClick = {},
+        extraRightColumn = {
+            val users = remember(episodeSocials?.size) {
+                episodeSocials?.map { it.user }?.toImmutableList()
+            }
+            AnimatedVisibility(
+                visible = !users.isNullOrEmpty(),
+                enter = fadeIn(),
+                exit = fadeOut(),
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                ) {
+                    DetailsHeaderSocialHorizontalChip(
+                        users = users ?: EmptyImmutableList,
+                        size = 22.dp,
+                        spacing = 14,
+                        modifier = Modifier.onClick { onSocialActivityClick() },
+                    )
+                }
+            }
+        },
         onImdbClick = {
             val uri = when {
                 episode.ids.imdb != null -> webImdbMediaUrl(episode.ids.imdb!!.value)

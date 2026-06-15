@@ -54,6 +54,7 @@ import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -97,6 +98,8 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.ShowSeasonsView
 import tv.trakt.trakt.core.summary.shows.features.sentiment.ShowSentimentView
 import tv.trakt.trakt.core.summary.shows.features.streaming.ShowStreamingsView
 import tv.trakt.trakt.core.summary.shows.features.trivia.ShowTriviaView
+import tv.trakt.trakt.core.summary.social.MediaSocialActivitySheet
+import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
@@ -146,6 +149,7 @@ internal fun ShowDetailsScreen(
     var dateSheet by remember { mutableStateOf(false) }
     var shareSheet by remember { mutableStateOf(false) }
     var coverImageSheet by remember { mutableStateOf<Show?>(null) }
+    var socialActivitySheet by remember { mutableStateOf<ImmutableList<MediaSocialActivity>?>(null) }
 
     DisposableEffect(Unit) {
         localRateVisibility.value = false
@@ -191,6 +195,11 @@ internal fun ShowDetailsScreen(
         },
         onShareImageClick = {
             state.show?.let { shareSheet = true }
+        },
+        onSocialActivityClick = {
+            state.showSocials?.let {
+                socialActivitySheet = it
+            }
         },
         onTrailerClick = {
             state.show?.trailer?.let { url -> onTrailerClick(url) }
@@ -401,6 +410,17 @@ internal fun ShowDetailsScreen(
         onDismiss = { shareSheet = false },
     )
 
+    MediaSocialActivitySheet(
+        activity = socialActivitySheet,
+        mediaTitle = state.show?.title ?: "",
+        onUserClick = {
+            onNavigateToUser?.invoke(it)
+        },
+        onDismiss = {
+            socialActivitySheet = null
+        },
+    )
+
     LaunchedEffect(state.navigateEpisode) {
         state.navigateEpisode?.let {
             onEpisodeClick(it.first, it.second)
@@ -435,6 +455,7 @@ internal fun ShowDetailsContent(
     onTrackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onShareImageClick: (() -> Unit)? = null,
+    onSocialActivityClick: (() -> Unit)? = null,
     onInfoClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
     onExtraClick: ((ExtraVideo) -> Unit)? = null,
@@ -521,6 +542,7 @@ internal fun ShowDetailsContent(
                     DetailsHeader(
                         show = show,
                         showTranslation = state.showTranslation,
+                        showSocials = state.showSocials,
                         ratings = state.showRatings,
                         creator = state.showCreator,
                         airedCount = state.showProgress?.aired ?: 0,
@@ -531,6 +553,7 @@ internal fun ShowDetailsContent(
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},
                         onShareImageClick = onShareImageClick ?: {},
+                        onSocialActivityClick = onSocialActivityClick ?: {},
                         onInfoClick = onInfoClick ?: {},
                         modifier = Modifier
                             .align(Alignment.Center)

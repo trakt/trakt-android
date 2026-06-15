@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -54,12 +55,14 @@ import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
 import tv.trakt.trakt.core.summary.episodes.features.actors.usecases.GetEpisodeDirectorUseCase
+import tv.trakt.trakt.core.summary.episodes.features.socials.GetEpisodeSocialsUseCase
 import tv.trakt.trakt.core.summary.episodes.navigation.EpisodeDetailsDestination
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeDetailsUseCase
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeRatingsUseCase
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
+import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
@@ -74,6 +77,7 @@ internal class EpisodeDetailsViewModel(
     private val getEpisodeDetailsUseCase: GetEpisodeDetailsUseCase,
     private val getEpisodeDirectorUseCase: GetEpisodeDirectorUseCase,
     private val getEpisodeTranslationsUseCase: GetEpisodeTranslationsUseCase,
+    private val getEpisodeSocialsUseCase: GetEpisodeSocialsUseCase,
     private val getRatingsUseCase: GetEpisodeRatingsUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadRatingUseCase: LoadUserRatingsUseCase,
@@ -104,6 +108,7 @@ internal class EpisodeDetailsViewModel(
     private val episodeProgressState = MutableStateFlow(initialState.episodeProgress)
     private val episodeCreatorState = MutableStateFlow(initialState.episodeCreator)
     private val episodeTranslationState = MutableStateFlow(initialState.episodeTranslation)
+    private val episodeSocialsState = MutableStateFlow(initialState.episodeSocials)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingProgress = MutableStateFlow(initialState.loadingProgress)
@@ -202,6 +207,7 @@ internal class EpisodeDetailsViewModel(
 
                 loadTranslations()
                 loadRatings(episode)
+                loadSocials(episode)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -268,6 +274,27 @@ internal class EpisodeDetailsViewModel(
                 }
             } finally {
                 loadingProgress.update { Done }
+            }
+        }
+    }
+
+    private fun loadSocials(episode: Episode?) {
+        if (episode == null) {
+            return
+        }
+        viewModelScope.launch {
+            try {
+                episodeSocialsState.update {
+                    getEpisodeSocialsUseCase.getSocials(
+                        showId = showId,
+                        season = episode.season,
+                        episode = episode.number,
+                    )
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
             }
         }
     }
@@ -643,6 +670,7 @@ internal class EpisodeDetailsViewModel(
         episodeProgressState,
         episodeCreatorState,
         episodeTranslationState,
+        episodeSocialsState,
         loadingState,
         loadingProgress,
         infoState,
@@ -658,12 +686,13 @@ internal class EpisodeDetailsViewModel(
             episodeProgress = state[4] as EpisodeDetailsState.ProgressState?,
             episodeCreator = state[5] as Person?,
             episodeTranslation = state[6] as MediaTranslation?,
-            loading = state[7] as LoadingState,
-            loadingProgress = state[8] as LoadingState,
-            info = state[9] as StringResource?,
-            error = state[10] as Exception?,
-            user = state[11] as User?,
-            navigateEpisode = state[12] as Pair<TraktId, Episode>?,
+            episodeSocials = state[7] as ImmutableList<MediaSocialActivity>?,
+            loading = state[8] as LoadingState,
+            loadingProgress = state[9] as LoadingState,
+            info = state[10] as StringResource?,
+            error = state[11] as Exception?,
+            user = state[12] as User?,
+            navigateEpisode = state[13] as Pair<TraktId, Episode>?,
         )
     }.stateIn(
         scope = viewModelScope,

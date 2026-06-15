@@ -34,6 +34,7 @@ internal fun SocialUserView(
     user: User,
     modifier: Modifier = Modifier,
     size: Dp = 56.dp,
+    showName: Boolean = true,
     onUserClick: () -> Unit = {},
 ) {
     Column(
@@ -82,15 +83,17 @@ internal fun SocialUserView(
             }
         }
 
-        Text(
-            text = user.displayName,
-            style = TraktTheme.typography.cardTitle,
-            color = TraktTheme.colors.textPrimary,
-            maxLines = 1,
-            textAlign = TextAlign.Center,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.width(size + 8.dp),
-        )
+        if (showName) {
+            Text(
+                text = user.displayName,
+                style = TraktTheme.typography.cardTitle,
+                color = TraktTheme.colors.textPrimary,
+                maxLines = 1,
+                textAlign = TextAlign.Center,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.width(size + 8.dp),
+            )
+        }
     }
 }
 
@@ -113,6 +116,7 @@ private fun Preview2() {
                 name = "John Dutton",
                 isVip = true,
             ),
+            showName = false,
         )
     }
 }

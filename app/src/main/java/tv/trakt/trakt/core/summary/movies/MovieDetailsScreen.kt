@@ -51,6 +51,7 @@ import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -90,6 +91,8 @@ import tv.trakt.trakt.core.summary.movies.features.related.MovieRelatedView
 import tv.trakt.trakt.core.summary.movies.features.sentiment.MovieSentimentView
 import tv.trakt.trakt.core.summary.movies.features.streaming.MovieStreamingsView
 import tv.trakt.trakt.core.summary.movies.features.trivia.MovieTriviaView
+import tv.trakt.trakt.core.summary.social.MediaSocialActivitySheet
+import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
@@ -135,6 +138,7 @@ internal fun MovieDetailsScreen(
     var dateSheet by remember { mutableStateOf(false) }
     var shareSheet by remember { mutableStateOf(false) }
     var coverImageSheet by remember { mutableStateOf<Movie?>(null) }
+    var socialActivitySheet by remember { mutableStateOf<ImmutableList<MediaSocialActivity>?>(null) }
 
     DisposableEffect(Unit) {
         localRateVisibility.value = false
@@ -175,6 +179,11 @@ internal fun MovieDetailsScreen(
         },
         onShareImageClick = {
             state.movie?.let { shareSheet = true }
+        },
+        onSocialActivityClick = {
+            state.movieSocials?.let {
+                socialActivitySheet = it
+            }
         },
         onTrailerClick = {
             state.movie?.trailer?.let { url ->
@@ -358,6 +367,17 @@ internal fun MovieDetailsScreen(
         onDismiss = { shareSheet = false },
     )
 
+    MediaSocialActivitySheet(
+        activity = socialActivitySheet,
+        mediaTitle = state.movie?.title ?: "",
+        onUserClick = {
+            onNavigateToUser?.invoke(it)
+        },
+        onDismiss = {
+            socialActivitySheet = null
+        },
+    )
+
     LaunchedEffect(state.info) {
         if (state.info == null) {
             return@LaunchedEffect
@@ -384,6 +404,7 @@ internal fun MovieDetailsContent(
     onTrackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
     onShareImageClick: (() -> Unit)? = null,
+    onSocialActivityClick: (() -> Unit)? = null,
     onInfoClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
     onExtraClick: ((ExtraVideo) -> Unit)? = null,
@@ -469,6 +490,7 @@ internal fun MovieDetailsContent(
                     DetailsHeader(
                         movie = movie,
                         movieTranslation = state.movieTranslation,
+                        movieSocials = state.movieSocials,
                         ratings = state.movieRatings,
                         creator = state.movieCreator,
                         creditsCount = when {
@@ -482,6 +504,7 @@ internal fun MovieDetailsContent(
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},
                         onShareImageClick = onShareImageClick ?: {},
+                        onSocialActivityClick = onSocialActivityClick ?: {},
                         onInfoClick = onInfoClick ?: {},
                         modifier = Modifier
                             .align(Alignment.Center)

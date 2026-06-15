@@ -30,6 +30,7 @@ import tv.trakt.trakt.common.model.trivia.TriviaFact
 import tv.trakt.trakt.core.summary.movies.features.trivia.usecases.GetMovieTriviaUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
+import kotlin.time.Duration.Companion.milliseconds
 
 private val collapsingKey = CollapsingKey.MOVIE_TRIVIA
 
@@ -59,7 +60,7 @@ internal class MovieTriviaViewModel(
     private fun observeUser() {
         sessionManager.observeProfile()
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .filter {
                 // Only update if VIP status has changed, as trivia may be VIP locked.
                 userState.value?.isAnyVip != it?.isAnyVip

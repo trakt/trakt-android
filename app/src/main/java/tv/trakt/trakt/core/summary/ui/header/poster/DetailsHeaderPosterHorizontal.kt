@@ -99,6 +99,8 @@ fun DetailsHeaderPosterHorizontal(
                 horizontalArrangement = spacedBy(20.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
+                extraRightColumn.invoke()
+
                 Icon(
                     painter = painterResource(R.drawable.ic_share),
                     tint = TraktTheme.colors.textPrimary,
@@ -107,8 +109,6 @@ fun DetailsHeaderPosterHorizontal(
                         .size(22.dp)
                         .onClick(onClick = onShareClick),
                 )
-
-                extraRightColumn.invoke()
             }
         }
 

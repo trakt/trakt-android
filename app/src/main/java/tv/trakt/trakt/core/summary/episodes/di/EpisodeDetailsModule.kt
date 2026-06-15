@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.summary.episodes.di
 
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
@@ -25,6 +26,7 @@ import tv.trakt.trakt.core.summary.episodes.features.related.EpisodeRelatedViewM
 import tv.trakt.trakt.core.summary.episodes.features.related.usecases.GetEpisodeRelatedUseCase
 import tv.trakt.trakt.core.summary.episodes.features.season.EpisodeSeasonViewModel
 import tv.trakt.trakt.core.summary.episodes.features.season.usecases.GetEpisodeSeasonUseCase
+import tv.trakt.trakt.core.summary.episodes.features.socials.GetEpisodeSocialsUseCase
 import tv.trakt.trakt.core.summary.episodes.features.streaming.EpisodeStreamingsViewModel
 import tv.trakt.trakt.core.summary.episodes.features.streaming.usecases.GetEpisodeStreamingsUseCase
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeDetailsUseCase
@@ -124,6 +126,8 @@ internal val episodeDetailsModule = module {
         )
     }
 
+    factoryOf(::GetEpisodeSocialsUseCase)
+
     viewModel {
         EpisodeDetailsViewModel(
             appContext = androidApplication(),
@@ -132,6 +136,7 @@ internal val episodeDetailsModule = module {
             getEpisodeDetailsUseCase = get(),
             getEpisodeDirectorUseCase = get(),
             getEpisodeTranslationsUseCase = get(),
+            getEpisodeSocialsUseCase = get(),
             getRatingsUseCase = get(),
             loadProgressUseCase = get(),
             loadRatingUseCase = get(),
