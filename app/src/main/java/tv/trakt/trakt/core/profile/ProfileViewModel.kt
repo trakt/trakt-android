@@ -26,14 +26,15 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.checkin.data.CheckInManager
-import tv.trakt.trakt.core.profile.sections.thismonth.model.ThisMonthStats
-import tv.trakt.trakt.core.profile.sections.thismonth.usecases.GetThisMonthUseCase
+import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
+import tv.trakt.trakt.core.profile.sections.thismonth.usecases.GetProfileStatsUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 internal class ProfileViewModel(
     private val sessionManager: SessionManager,
-    private val getThisMonthUseCase: GetThisMonthUseCase,
+    private val getProfileStatsUseCase: GetProfileStatsUseCase,
     private val logoutUseCase: LogoutUserUseCase,
     private val checkInManager: CheckInManager,
     private val analytics: Analytics,
@@ -77,7 +78,7 @@ internal class ProfileViewModel(
 
     private fun observeCheckIn() {
         checkInManager.observe()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .map { it.isActive() }
             .distinctUntilChanged()
             .onEach { isActive ->
@@ -96,7 +97,7 @@ internal class ProfileViewModel(
             try {
                 loadingMonthStatsState.update { Loading }
                 monthStatsState.update {
-                    getThisMonthUseCase.getThisMonthStats()
+                    getProfileStatsUseCase.getProfileStats()
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -136,7 +137,7 @@ internal class ProfileViewModel(
         checkInState,
     ) { state ->
         ProfileState(
-            monthStats = state[0] as ThisMonthStats?,
+            monthStats = state[0] as ProfileStats?,
             monthBackgroundUrl = state[1] as String?,
             loading = state[2] as LoadingState,
             loadingMonthStats = state[3] as LoadingState,

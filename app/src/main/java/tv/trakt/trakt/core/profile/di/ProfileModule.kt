@@ -61,7 +61,7 @@ import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressDroppedU
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressWatchingUseCase
 import tv.trakt.trakt.core.profile.sections.social.ProfileSocialViewModel
 import tv.trakt.trakt.core.profile.sections.social.usecases.GetSocialFilterUseCase
-import tv.trakt.trakt.core.profile.sections.thismonth.usecases.GetThisMonthUseCase
+import tv.trakt.trakt.core.profile.sections.thismonth.usecases.GetProfileStatsUseCase
 import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserListsStorage
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
@@ -252,7 +252,7 @@ internal val profileModule = module {
     }
 
     factory {
-        GetThisMonthUseCase(
+        GetProfileStatsUseCase(
             loadUserProgressUseCase = get(),
         )
     }
@@ -375,7 +375,7 @@ internal val profileModule = module {
         ProfileViewModel(
             sessionManager = get(),
             checkInManager = get(),
-            getThisMonthUseCase = get(),
+            getProfileStatsUseCase = get(),
             logoutUseCase = get(),
             analytics = get(),
         )

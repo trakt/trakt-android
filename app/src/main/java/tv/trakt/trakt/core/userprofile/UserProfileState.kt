@@ -6,7 +6,7 @@ import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.profile.sections.thismonth.model.ThisMonthStats
+import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
 
 @Immutable
 internal data class UserProfileState(
@@ -21,7 +21,7 @@ internal data class UserProfileState(
     val info: StringResource? = null,
 ) {
     data class MonthlyStats(
-        val stats: ThisMonthStats?,
+        val stats: ProfileStats?,
         val backgroundUrl: String?,
         val loading: Boolean,
     )

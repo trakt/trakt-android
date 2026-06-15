@@ -77,7 +77,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.common.ui.theme.colors.Red60
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
-import tv.trakt.trakt.core.profile.sections.thismonth.ThisMonthCard
+import tv.trakt.trakt.core.profile.sections.thismonth.ProfileStatsCard
 import tv.trakt.trakt.core.userprofile.sections.favorites.UserProfileFavoritesView
 import tv.trakt.trakt.core.userprofile.sections.history.UserProfileHistoryView
 import tv.trakt.trakt.core.userprofile.sections.lists.UserProfileListsView
@@ -301,7 +301,7 @@ private fun LazyListScope.userProfilePublicContent(
 ) {
     if (state.user.isAnyVip) {
         item {
-            ThisMonthCard(
+            ProfileStatsCard(
                 loading = state.monthStats?.loading ?: true,
                 user = state.user,
                 stats = state.monthStats?.stats,
