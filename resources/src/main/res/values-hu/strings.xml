@@ -545,6 +545,7 @@
   <string name="header_sentiment_positive">Pozitív</string>
   <string name="header_settings_clear_cover">Borítókép törlése</string>
   <string name="header_settings_notifications">Értesítések</string>
+  <string name="header_settings_privacy">Adatvédelem és Előfizetés</string>
   <string name="header_settings_tracking">Nyomon követés</string>
   <string name="header_settings_translations">Fordítások</string>
   <string name="header_skipped_items">%s kihagyott elem</string>

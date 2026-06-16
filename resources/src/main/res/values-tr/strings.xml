@@ -545,6 +545,7 @@
   <string name="header_sentiment_positive">Olumlu</string>
   <string name="header_settings_clear_cover">Kapak Resmini Temizle</string>
   <string name="header_settings_notifications">Bildirimler</string>
+  <string name="header_settings_privacy">Gizlilik ve Abonelik</string>
   <string name="header_settings_tracking">Takip</string>
   <string name="header_settings_translations">Çeviriler</string>
   <string name="header_skipped_items">%s Atlanan Öğe</string>

@@ -545,6 +545,7 @@
   <string name="header_sentiment_positive">Положительный</string>
   <string name="header_settings_clear_cover">Очистить обложку</string>
   <string name="header_settings_notifications">Уведомления</string>
+  <string name="header_settings_privacy">Конфиденциальность и подписка</string>
   <string name="header_settings_tracking">Отслеживание</string>
   <string name="header_settings_translations">Переводы</string>
   <string name="header_skipped_items">%s пропущенных элементов</string>

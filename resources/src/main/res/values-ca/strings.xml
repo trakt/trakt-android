@@ -545,6 +545,7 @@
   <string name="header_sentiment_positive">Positiu</string>
   <string name="header_settings_clear_cover">Esborra la imatge de portada</string>
   <string name="header_settings_notifications">Notificacions</string>
+  <string name="header_settings_privacy">Privadesa i subscripció</string>
   <string name="header_settings_tracking">Seguiment</string>
   <string name="header_settings_translations">Traduccions</string>
   <string name="header_skipped_items">%s elements omesos</string>

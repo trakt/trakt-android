@@ -545,6 +545,7 @@
   <string name="header_sentiment_positive">Positiv</string>
   <string name="header_settings_clear_cover">Ryd Coverbillede</string>
   <string name="header_settings_notifications">Notifikationer</string>
+  <string name="header_settings_privacy">Privatliv &amp; Abonnement</string>
   <string name="header_settings_tracking">Sporing</string>
   <string name="header_settings_translations">Oversættelser</string>
   <string name="header_skipped_items">%s Oversprungne Elementer</string>

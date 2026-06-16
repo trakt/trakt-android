@@ -545,6 +545,7 @@
   <string name="header_sentiment_positive">ポジティブ</string>
   <string name="header_settings_clear_cover">カバー画像をクリア</string>
   <string name="header_settings_notifications">通知</string>
+  <string name="header_settings_privacy">プライバシーとサブスクリプション</string>
   <string name="header_settings_tracking">トラッキング</string>
   <string name="header_settings_translations">翻訳</string>
   <string name="header_skipped_items">%s個のスキップ済みアイテム</string>
