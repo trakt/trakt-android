@@ -9,5 +9,5 @@ internal interface ProfileRatingsLocalDataSource {
 
     suspend fun getItems(): List<ProfileRatingItem>
 
-    fun clear()
+    suspend fun clear()
 }

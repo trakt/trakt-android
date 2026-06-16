@@ -9,5 +9,5 @@ internal interface ProfileCommentsLocalDataSource {
 
     suspend fun getItems(): List<ProfileCommentItem>
 
-    fun clear()
+    suspend fun clear()
 }

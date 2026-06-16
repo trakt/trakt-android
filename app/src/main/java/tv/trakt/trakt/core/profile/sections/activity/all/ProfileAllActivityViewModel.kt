@@ -188,7 +188,7 @@ internal class ProfileAllActivityViewModel(
                 val newData = when (filter) {
                     Ratings -> {
                         val newItems = getRatingsUseCase.getRemoteRatings(
-                            Pagination(page, ACTIVITY_PAGE_LIMIT),
+                            Pagination(nextPage, ACTIVITY_PAGE_LIMIT),
                         )
                         ratingItemsState.update { current ->
                             current
@@ -200,7 +200,7 @@ internal class ProfileAllActivityViewModel(
                     }
                     Comments -> {
                         val newItems = getCommentsUseCase.getRemoteComments(
-                            Pagination(page, ACTIVITY_PAGE_LIMIT),
+                            Pagination(nextPage, ACTIVITY_PAGE_LIMIT),
                         )
                         commentItemsState.update { current ->
                             current
@@ -270,7 +270,7 @@ internal class ProfileAllActivityViewModel(
         }
         viewModelScope.launch {
             getFilterUseCase.setFilter(newFilter)
-            filterState.value = newFilter
+            filterState.update { newFilter }
             loadData()
         }
     }

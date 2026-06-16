@@ -31,7 +31,9 @@ internal class ProfileCommentsStorage : ProfileCommentsLocalDataSource {
         }
     }
 
-    override fun clear() {
-        storage.clear()
+    override suspend fun clear() {
+        mutex.withLock {
+            storage.clear()
+        }
     }
 }
