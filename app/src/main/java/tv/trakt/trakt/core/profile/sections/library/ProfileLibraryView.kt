@@ -196,7 +196,6 @@ private fun ProfileLibraryView(
 
                             else -> {
                                 ContentList(
-//                                filter = state.filter,
                                     listItems = (state.items ?: emptyList()).toImmutableList(),
                                     contentPadding = contentPadding,
                                     onEpisodeClick = {

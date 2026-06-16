@@ -87,6 +87,7 @@ internal enum class CollapsingKey(
 
     // Profile Screen
     PROFILE_HISTORY("key_profile_history"),
+    PROFILE_ACTIVITY("key_profile_activity"),
     PROFILE_FAVORITES("key_profile_favorites"),
     PROFILE_PROGRESS("key_profile_progress"),
     PROFILE_LIBRARY("key_profile_library"),

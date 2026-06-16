@@ -21,9 +21,11 @@ applyTo: '**/*.kt'
 
 ## Naming Conventions
 
-- **PascalCase** — types, top-level Composables, file names matching primary type.
+- **PascalCase** — types, top-level Composables, file names matching primary type, **enum entries
+  ** (`enum class Status { Active, Pending, Archived }` — not `ACTIVE`).
 - **camelCase** — properties, functions, local variables, lambda parameters.
-- **SCREAMING_SNAKE_CASE** — top-level / companion constants only (`const val MAX_RETRIES = 3`).
+- **SCREAMING_SNAKE_CASE** — top-level / companion constants only (`const val MAX_RETRIES = 3`). Not
+  for enum entries.
 - **Acronyms** — follow Kotlin style guide: treat as words. `Url` / `Id` / `Json` for type names; `url`, `id`, `json` for properties. ktlint's `function-naming` flags all-caps variant.
 
 ### File Naming

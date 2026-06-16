@@ -26,6 +26,8 @@ import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedLocal
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
+import tv.trakt.trakt.core.profile.sections.activity.data.local.comments.ProfileCommentsLocalDataSource
+import tv.trakt.trakt.core.profile.sections.activity.data.local.ratings.ProfileRatingsLocalDataSource
 import tv.trakt.trakt.core.profile.sections.progress.data.local.completed.ProgressCompletedLocalDataSource
 import tv.trakt.trakt.core.profile.sections.progress.data.local.dropped.ProgressDroppedLocalDataSource
 import tv.trakt.trakt.core.profile.sections.progress.data.local.watching.ProgressWatchingLocalDataSource
@@ -73,6 +75,8 @@ internal class LogoutUserUseCase(
     private val localProfileCompleted: ProgressCompletedLocalDataSource,
     private val localProfileWatching: ProgressWatchingLocalDataSource,
     private val localProfileDropped: ProgressDroppedLocalDataSource,
+    private val localProfileRatings: ProfileRatingsLocalDataSource,
+    private val localProfileComments: ProfileCommentsLocalDataSource,
     private val appReviewUseCase: RequestAppReviewUseCase,
     private val analytics: Analytics,
 ) {
@@ -115,6 +119,8 @@ internal class LogoutUserUseCase(
         localProfileCompleted.clear()
         localProfileWatching.clear()
         localProfileDropped.clear()
+        localProfileRatings.clear()
+        localProfileComments.clear()
 
         localRecommendedShows.clear()
         localRecommendedMovies.clear()

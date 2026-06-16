@@ -1,6 +1,7 @@
 package tv.trakt.trakt.common.core.user.data.remote.ratings
 
 import org.openapitools.client.apis.UsersApi
+import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.networking.UserRatingDto
 
 class UserRatingsApiClient(
@@ -34,6 +35,17 @@ class UserRatingsApiClient(
             extended = null,
             page = null,
             limit = null,
+        )
+
+        return response.body()
+    }
+
+    override suspend fun getAllRatings(pagination: Pagination): List<UserRatingDto> {
+        val response = usersApi.getUsersRatingsAll(
+            id = "me",
+            extended = "full,cloud9,colors",
+            page = pagination.page,
+            limit = pagination.limit,
         )
 
         return response.body()

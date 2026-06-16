@@ -11,6 +11,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.pagination.Pagination
+import tv.trakt.trakt.common.networking.CommentAllDto
 import tv.trakt.trakt.common.networking.DroppedItemDto
 import tv.trakt.trakt.common.networking.SyncLibraryMediaDto
 import tv.trakt.trakt.common.networking.UserWatchingDto
@@ -175,6 +176,22 @@ class UserApiClient(
             page = page,
             limit = limit,
             extended = "full,cloud9,colors",
+        )
+        return response.body()
+    }
+
+    override suspend fun getComments(
+        page: Int,
+        limit: Int,
+    ): List<CommentAllDto> {
+        val response = usersApi.getUsersComments(
+            id = "me",
+            page = page,
+            limit = limit,
+            commentType = "all",
+            type = "all",
+            extended = "full,cloud9,colors",
+            includeReplies = null,
         )
         return response.body()
     }

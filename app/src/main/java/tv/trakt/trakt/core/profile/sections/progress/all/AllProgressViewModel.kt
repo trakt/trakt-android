@@ -195,7 +195,7 @@ internal class AllProgressViewModel(
             return
         }
         viewModelScope.launch {
-            filterState.value = newFilter
+            filterState.update { newFilter }
             loadData()
         }
     }
