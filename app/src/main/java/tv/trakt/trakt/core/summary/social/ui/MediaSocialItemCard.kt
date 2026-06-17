@@ -57,7 +57,6 @@ internal fun MediaSocialItemCard(
     containerColor: Color = TraktTheme.colors.panelCardContainer,
     onClick: () -> Unit = {},
     onUserClick: () -> Unit = {},
-    onReviewClick: () -> Unit = {},
 ) {
     Row(
         horizontalArrangement = spacedBy(0.dp),
@@ -130,7 +129,7 @@ internal fun MediaSocialItemCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 10.dp),
+                    .padding(top = 8.dp),
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,

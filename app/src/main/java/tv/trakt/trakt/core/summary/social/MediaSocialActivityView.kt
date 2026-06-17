@@ -66,7 +66,7 @@ private fun MediaSocialActivityContent(
     onUserClick: (user: User) -> Unit = {},
 ) {
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
         contentPadding = PaddingValues(bottom = 12.dp),
         modifier = modifier.fillMaxWidth(),
     ) {
