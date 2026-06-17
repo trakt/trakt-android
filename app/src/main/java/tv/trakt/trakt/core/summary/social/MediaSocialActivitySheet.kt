@@ -31,6 +31,7 @@ internal fun MediaSocialActivitySheet(
     onDismiss: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
+    val viewModelKey = remember(activity) { nextInt().toString() }
 
     if (activity != null) {
         TraktBottomSheet(
@@ -39,7 +40,7 @@ internal fun MediaSocialActivitySheet(
         ) {
             MediaSocialActivityView(
                 viewModel = koinViewModel(
-                    key = nextInt().toString(),
+                    key = viewModelKey,
                     parameters = { parametersOf(activity) },
                 ),
                 mediaTitle = mediaTitle,
