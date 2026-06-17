@@ -896,6 +896,7 @@
   <string name="tag_text_mid_season_premiere">Прем\'єра середини сезону</string>
   <string name="tag_text_most_popular">Найпопулярніший</string>
   <string name="tag_text_movies">Фільми</string>
+  <string name="tag_text_new">Нове</string>
   <string name="tag_text_number_of_episodes">%d еп.</string>
   <string name="tag_text_plays">%d переглядів</string>
   <string name="tag_text_premiere">Прем\'єра</string>
@@ -970,6 +971,7 @@
   <string name="text_calendar_placeholder_9">Цей день без подій. Можливо, перегляньте старий улюблений фільм.</string>
   <string name="text_calendar_placeholder_empty_period">Екран темний. Жодних фільмів. Жодних епізодів. Тільки ви і тиша.</string>
   <string name="text_clear_source_history">Історія</string>
+  <string name="text_clear_source_library">Бібліотека</string>
   <string name="text_clear_source_ratings">Рейтинги</string>
   <string name="text_clear_source_watchlist">Список перегляду</string>
   <string name="text_clear_watchlist">Очистити список перегляду</string>

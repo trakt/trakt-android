@@ -896,6 +896,7 @@
   <string name="tag_text_mid_season_premiere">シーズン中盤初回放送</string>
   <string name="tag_text_most_popular">最も人気</string>
   <string name="tag_text_movies">映画</string>
+  <string name="tag_text_new">新着</string>
   <string name="tag_text_number_of_episodes">%d話</string>
   <string name="tag_text_plays">%d回視聴</string>
   <string name="tag_text_premiere">プレミア</string>
@@ -970,6 +971,7 @@
   <string name="text_calendar_placeholder_9">この日にはイベントはありません。昔のお気に入りを再訪してみませんか。</string>
   <string name="text_calendar_placeholder_empty_period">画面は暗いまま。映画もエピソードもなし。ただあなたと静寂だけ。</string>
   <string name="text_clear_source_history">歴史</string>
+  <string name="text_clear_source_library">ライブラリ</string>
   <string name="text_clear_source_ratings">評価</string>
   <string name="text_clear_source_watchlist">ウォッチリスト</string>
   <string name="text_clear_watchlist">ウォッチリストをクリア</string>

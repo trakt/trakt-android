@@ -896,6 +896,7 @@
   <string name="tag_text_mid_season_premiere">Félévad premier</string>
   <string name="tag_text_most_popular">Legnépszerűbb</string>
   <string name="tag_text_movies">Filmek</string>
+  <string name="tag_text_new">Új</string>
   <string name="tag_text_number_of_episodes">%d epizód</string>
   <string name="tag_text_plays">%d lejátszás</string>
   <string name="tag_text_premiere">Premier</string>
@@ -970,6 +971,7 @@
   <string name="text_calendar_placeholder_9">Mára nincsenek események. Mit szólnál egy régi kedvenchez?</string>
   <string name="text_calendar_placeholder_empty_period">A képernyő sötét. Nincsenek filmek. Nincsenek epizódok. Csak te és a csend.</string>
   <string name="text_clear_source_history">Történelmi</string>
+  <string name="text_clear_source_library">Könyvtár</string>
   <string name="text_clear_source_ratings">Értékelések</string>
   <string name="text_clear_source_watchlist">Megnézendők</string>
   <string name="text_clear_watchlist">Megnézendők listájának törlése</string>

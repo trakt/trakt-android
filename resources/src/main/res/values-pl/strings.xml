@@ -896,6 +896,7 @@
   <string name="tag_text_mid_season_premiere">Premiera w połowie sezonu</string>
   <string name="tag_text_most_popular">Najpopularniejsze</string>
   <string name="tag_text_movies">Filmy</string>
+  <string name="tag_text_new">Nowość</string>
   <string name="tag_text_number_of_episodes">%d odc.</string>
   <string name="tag_text_plays">%d odtworzeń</string>
   <string name="tag_text_premiere">Premiera</string>
@@ -970,6 +971,7 @@
   <string name="text_calendar_placeholder_9">Brak wydarzeń. Może czas na powrót do klasyków?</string>
   <string name="text_calendar_placeholder_empty_period">Żadnych filmów. Żadnych odcinków. Tylko Ty i cisza dookoła.</string>
   <string name="text_clear_source_history">Historyczny</string>
+  <string name="text_clear_source_library">Biblioteka</string>
   <string name="text_clear_source_ratings">Oceny</string>
   <string name="text_clear_source_watchlist">Obserwowane</string>
   <string name="text_clear_watchlist">Wyczyść listę obserwowanych</string>

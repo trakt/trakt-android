@@ -896,6 +896,7 @@
   <string name="tag_text_mid_season_premiere">Mid-seizoenpremière</string>
   <string name="tag_text_most_popular">Meest populair</string>
   <string name="tag_text_movies">Films</string>
+  <string name="tag_text_new">Nieuw</string>
   <string name="tag_text_number_of_episodes">%d afl.</string>
   <string name="tag_text_plays">%d weergaven</string>
   <string name="tag_text_premiere">Première</string>
@@ -970,6 +971,7 @@
   <string name="text_calendar_placeholder_9">Geen evenementen deze dag. Misschien een oude favoriet opnieuw bekijken.</string>
   <string name="text_calendar_placeholder_empty_period">Het scherm is donker. Geen films. Geen afleveringen. Alleen u en de stilte.</string>
   <string name="text_clear_source_history">Geschiedenis</string>
+  <string name="text_clear_source_library">Bibliotheek</string>
   <string name="text_clear_source_ratings">Beoordelingen</string>
   <string name="text_clear_source_watchlist">Kijklijst</string>
   <string name="text_clear_watchlist">Kijklijst wissen</string>

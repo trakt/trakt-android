@@ -896,6 +896,7 @@
   <string name="tag_text_mid_season_premiere">Estreno de mitad de temporada</string>
   <string name="tag_text_most_popular">Más popular</string>
   <string name="tag_text_movies">Películas</string>
+  <string name="tag_text_new">Nuevo</string>
   <string name="tag_text_number_of_episodes">%d ep.</string>
   <string name="tag_text_plays">%d reproducciones</string>
   <string name="tag_text_premiere">Estreno</string>
@@ -970,6 +971,7 @@
   <string name="text_calendar_placeholder_9">No hay eventos este día. Quizás revisitaste un viejo favorito.</string>
   <string name="text_calendar_placeholder_empty_period">La pantalla está oscura. Sin películas. Sin episodios. Solo tú y el silencio.</string>
   <string name="text_clear_source_history">Historia</string>
+  <string name="text_clear_source_library">Biblioteca</string>
   <string name="text_clear_source_ratings">Calificaciones</string>
   <string name="text_clear_source_watchlist">Lista de seguimiento</string>
   <string name="text_clear_watchlist">Borrar lista de seguimiento</string>

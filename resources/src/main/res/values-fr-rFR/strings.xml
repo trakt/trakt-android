@@ -896,6 +896,7 @@
   <string name="tag_text_mid_season_premiere">Première de mi-saison</string>
   <string name="tag_text_most_popular">Le plus populaire</string>
   <string name="tag_text_movies">Films</string>
+  <string name="tag_text_new">Nouveau</string>
   <string name="tag_text_number_of_episodes">%d ép.</string>
   <string name="tag_text_plays">%d vues</string>
   <string name="tag_text_premiere">Première</string>
@@ -970,6 +971,7 @@
   <string name="text_calendar_placeholder_9">Aucun événement aujourd\'hui. Peut-être revisiter un ancien favori.</string>
   <string name="text_calendar_placeholder_empty_period">L\'écran est sombre. Pas de films. Pas d\'épisodes. Juste vous et le silence.</string>
   <string name="text_clear_source_history">Historique</string>
+  <string name="text_clear_source_library">Bibliothèque</string>
   <string name="text_clear_source_ratings">Notes</string>
   <string name="text_clear_source_watchlist">Liste de suivi</string>
   <string name="text_clear_watchlist">Vider la liste de suivi</string>
