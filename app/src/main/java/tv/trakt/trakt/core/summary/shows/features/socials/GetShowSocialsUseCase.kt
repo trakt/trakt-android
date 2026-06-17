@@ -11,7 +11,7 @@ import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 
 internal class GetShowSocialsUseCase(
-    val remoteSource: V3Api,
+    private val remoteSource: V3Api,
     private val sessionManager: SessionManager,
 ) {
     suspend fun getSocials(showId: TraktId): ImmutableList<MediaSocialActivity> {
