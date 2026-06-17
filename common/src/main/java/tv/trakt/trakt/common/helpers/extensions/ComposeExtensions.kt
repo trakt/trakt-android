@@ -14,6 +14,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 )
 annotation class DevicePreview
 
+@Preview(
+    device = "id:pixel_7",
+    showBackground = false,
+    backgroundColor = 0xFF212427,
+    locale = "us",
+)
+annotation class DeviceSheetPreview
+
 fun MutableStateFlow<*>.isNotNull(): Boolean {
     return this.value != null
 }

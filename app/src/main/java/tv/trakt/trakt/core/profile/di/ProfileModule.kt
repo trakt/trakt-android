@@ -69,6 +69,12 @@ import tv.trakt.trakt.core.profile.sections.progress.filters.GetProgressFilterUs
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressCompleteUseCase
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressDroppedUseCase
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressWatchingUseCase
+import tv.trakt.trakt.core.profile.sections.screentime.ProfileScreenTimeViewModel
+import tv.trakt.trakt.core.profile.sections.screentime.all.ScreenTimeAllViewModel
+import tv.trakt.trakt.core.profile.sections.screentime.data.local.ScreenTimeLocalDataSource
+import tv.trakt.trakt.core.profile.sections.screentime.data.local.ScreenTimeStorage
+import tv.trakt.trakt.core.profile.sections.screentime.model.ScreenTimeData
+import tv.trakt.trakt.core.profile.sections.screentime.usecase.GetScreenTimeUseCase
 import tv.trakt.trakt.core.profile.sections.social.ProfileSocialViewModel
 import tv.trakt.trakt.core.profile.sections.social.usecases.GetSocialFilterUseCase
 import tv.trakt.trakt.core.profile.sections.thismonth.usecases.GetProfileStatsUseCase
@@ -213,6 +219,10 @@ internal val profileDataModule = module {
         ProgressDroppedStorage()
     }
 
+    single<ScreenTimeLocalDataSource> {
+        ScreenTimeStorage()
+    }
+
     single<ProfileRatingsLocalDataSource> {
         ProfileRatingsStorage()
     }
@@ -352,6 +362,13 @@ internal val profileModule = module {
         )
     }
 
+    factory {
+        GetScreenTimeUseCase(
+            remoteSource = get(),
+            localDataSource = get(),
+        )
+    }
+
     single<ProgressUpdates> {
         ProgressUpdatesStorage()
     }
@@ -402,6 +419,7 @@ internal val profileModule = module {
             localUserReactions = get(),
             localUserRatings = get(),
             localProfileDropped = get(),
+            localScreenTime = get(),
             localProfileWatching = get(),
             localProfileCompleted = get(),
             localProfileRatings = get(),
@@ -461,6 +479,13 @@ internal val profileModule = module {
     }
 
     viewModelOf(::ProfileActivityViewModel)
+    viewModelOf(::ProfileScreenTimeViewModel)
+
+    viewModel { (data: ScreenTimeData) ->
+        ScreenTimeAllViewModel(
+            data = data,
+        )
+    }
 
     viewModel {
         ProfileAllActivityViewModel(
