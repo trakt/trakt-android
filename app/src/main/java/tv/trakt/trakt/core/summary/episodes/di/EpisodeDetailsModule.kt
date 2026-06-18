@@ -1,7 +1,9 @@
 package tv.trakt.trakt.core.summary.episodes.di
 
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
@@ -34,98 +36,24 @@ import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeRatingsUseCase
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeStreamingUseCase
 
 internal val episodeDetailsDataModule = module {
-    single<EpisodeLocalDataSource> {
-        EpisodeStorage()
-    }
+    singleOf(::EpisodeStorage) { bind<EpisodeLocalDataSource>() }
 
-    single<EpisodeDetailsUpdates> {
-        EpisodeDetailsUpdatesStorage()
-    }
+    singleOf(::EpisodeDetailsUpdatesStorage) { bind<EpisodeDetailsUpdates>() }
 }
 
 internal val episodeDetailsModule = module {
-    factory {
-        GetEpisodeDetailsUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        GetEpisodeRatingsUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetEpisodeActorsUseCase(
-            remoteSource = get(),
-            peopleLocalSource = get(),
-        )
-    }
-
-    factory {
-        GetEpisodeDirectorUseCase(
-            remoteSource = get(),
-            peopleLocalSource = get(),
-        )
-    }
-
-    factory {
-        GetEpisodeCommentsUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetEpisodeHistoryUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetEpisodeSeasonUseCase(
-            remoteEpisodesSource = get(),
-        )
-    }
-
-    factory {
-        GetEpisodeRelatedUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        GetEpisodeStreamingsUseCase(
-            remoteEpisodeSource = get(),
-            remoteStreamingSource = get(),
-            localStreamingSource = get(),
-        )
-    }
-
-    factory {
-        GetEpisodeStreamingUseCase(
-            remoteEpisodeSource = get(),
-            remoteStreamingSource = get(),
-            localStreamingSource = get(),
-            priorityStreamingProvider = get(),
-        )
-    }
-
-    factory {
-        GetEpisodeStatsUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetEpisodeCrewUseCase(
-            remoteSource = get(),
-            peopleLocalSource = get(),
-        )
-    }
-
+    factoryOf(::GetEpisodeDetailsUseCase)
+    factoryOf(::GetEpisodeRatingsUseCase)
+    factoryOf(::GetEpisodeActorsUseCase)
+    factoryOf(::GetEpisodeDirectorUseCase)
+    factoryOf(::GetEpisodeCommentsUseCase)
+    factoryOf(::GetEpisodeHistoryUseCase)
+    factoryOf(::GetEpisodeSeasonUseCase)
+    factoryOf(::GetEpisodeRelatedUseCase)
+    factoryOf(::GetEpisodeStreamingsUseCase)
+    factoryOf(::GetEpisodeStreamingUseCase)
+    factoryOf(::GetEpisodeStatsUseCase)
+    factoryOf(::GetEpisodeCrewUseCase)
     factoryOf(::GetEpisodeSocialsUseCase)
 
     viewModel {

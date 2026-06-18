@@ -1,5 +1,8 @@
 package tv.trakt.trakt.core.people.di
 
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.Config.API_BASE_URL
@@ -23,22 +26,10 @@ internal val peopleDataModule = module {
         )
     }
 
-    single<PeopleLocalDataSource> {
-        PeopleStorage()
-    }
+    singleOf(::PeopleStorage) { bind<PeopleLocalDataSource>() }
 }
 
 internal val peopleModule = module {
-    factory {
-        GetPersonUseCase(
-            peopleLocalSource = get(),
-            peopleRemoteSource = get(),
-        )
-    }
-
-    factory {
-        GetPersonCreditsUseCase(
-            peopleRemoteSource = get(),
-        )
-    }
+    factoryOf(::GetPersonUseCase)
+    factoryOf(::GetPersonCreditsUseCase)
 }

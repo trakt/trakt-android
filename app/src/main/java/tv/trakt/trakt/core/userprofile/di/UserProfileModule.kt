@@ -1,13 +1,11 @@
 package tv.trakt.trakt.core.userprofile.di
 
 import org.koin.core.module.dsl.factoryOf
-import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import tv.trakt.trakt.common.core.user.usecases.blocking.BlockUserUseCase
 import tv.trakt.trakt.common.core.user.usecases.blocking.GetBlockedUsersUseCase
 import tv.trakt.trakt.common.core.user.usecases.following.FollowUserUseCase
-import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.userprofile.UserProfileViewModel
 import tv.trakt.trakt.core.userprofile.sections.favorites.UserProfileFavoritesViewModel
 import tv.trakt.trakt.core.userprofile.sections.favorites.all.AllUserProfileFavoritesViewModel
@@ -24,47 +22,6 @@ import tv.trakt.trakt.core.userprofile.sections.thismonth.GetUserProfileMonthUse
 import tv.trakt.trakt.core.userprofile.usecases.GetUserProfileDetailsUseCase
 
 internal val userProfileModule = module {
-    viewModelOf(::UserProfileViewModel)
-
-    viewModelOf(::AllUserProfileHistoryViewModel)
-
-    viewModelOf(::AllUserProfileFavoritesViewModel)
-
-    viewModelOf(::AllUserProfileListsViewModel)
-
-    viewModel { (userId: TraktId) ->
-        UserProfileHistoryViewModel(
-            userId = userId,
-            getHistoryUseCase = get(),
-            collapsingManager = get(),
-        )
-    }
-
-    viewModel { (userId: TraktId) ->
-        UserProfileFavoritesViewModel(
-            userId = userId,
-            getFavoritesUseCase = get(),
-            collectionStateProvider = get(),
-            collapsingManager = get(),
-        )
-    }
-
-    viewModel { (userId: TraktId) ->
-        UserProfileSocialViewModel(
-            userId = userId,
-            getSocialUseCase = get(),
-            collapsingManager = get(),
-        )
-    }
-
-    viewModel { (userId: TraktId) ->
-        UserProfileListsViewModel(
-            userId = userId,
-            getListsUseCase = get(),
-            collapsingManager = get(),
-        )
-    }
-
     factoryOf(::GetUserProfileHistoryUseCase)
     factoryOf(::GetUserProfileFavoritesUseCase)
     factoryOf(::GetUserProfileSocialUseCase)
@@ -75,4 +32,16 @@ internal val userProfileModule = module {
     factoryOf(::GetBlockedUsersUseCase)
     factoryOf(::BlockUserUseCase)
     factoryOf(::FollowUserUseCase)
+
+    // ViewModels
+
+    viewModelOf(::AllUserProfileHistoryViewModel)
+    viewModelOf(::AllUserProfileFavoritesViewModel)
+    viewModelOf(::AllUserProfileListsViewModel)
+
+    viewModelOf(::UserProfileViewModel)
+    viewModelOf(::UserProfileHistoryViewModel)
+    viewModelOf(::UserProfileFavoritesViewModel)
+    viewModelOf(::UserProfileSocialViewModel)
+    viewModelOf(::UserProfileListsViewModel)
 }

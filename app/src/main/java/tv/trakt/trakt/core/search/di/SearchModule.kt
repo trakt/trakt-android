@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -59,32 +60,10 @@ internal val searchDataModule = module {
 
 internal val searchModule = module {
 
-    factory {
-        GetSearchResultsUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetPopularSearchUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        PostUserSearchUseCase(
-            remoteSource = get(),
-            sessionManager = get(),
-        )
-    }
-
-    factory {
-        GetBirthdayPeopleUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
+    factoryOf(::GetSearchResultsUseCase)
+    factoryOf(::GetPopularSearchUseCase)
+    factoryOf(::PostUserSearchUseCase)
+    factoryOf(::GetBirthdayPeopleUseCase)
 
     viewModel { (_: SavedStateHandle) ->
         SearchViewModel(

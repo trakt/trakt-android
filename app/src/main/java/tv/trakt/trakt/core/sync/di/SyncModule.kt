@@ -1,5 +1,8 @@
 package tv.trakt.trakt.core.sync.di
 
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import tv.trakt.trakt.core.sync.data.remote.episodes.EpisodesSyncApiClient
 import tv.trakt.trakt.core.sync.data.remote.episodes.EpisodesSyncRemoteDataSource
@@ -17,77 +20,25 @@ import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
 import tv.trakt.trakt.core.user.CollectionStateProvider
 
 internal val syncModule = module {
-    single<ShowsSyncRemoteDataSource> {
-        ShowsSyncApiClient(
-            syncApi = get(),
-            usersApi = get(),
-            cacheMarker = get(),
-        )
-    }
+    singleOf(::ShowsSyncApiClient) { bind<ShowsSyncRemoteDataSource>() }
 
-    single<MoviesSyncRemoteDataSource> {
-        MoviesSyncApiClient(
-            syncApi = get(),
-            cacheMarker = get(),
-        )
-    }
+    singleOf(::MoviesSyncApiClient) { bind<MoviesSyncRemoteDataSource>() }
 
-    single<EpisodesSyncRemoteDataSource> {
-        EpisodesSyncApiClient(
-            syncApi = get(),
-            cacheMarker = get(),
-        )
-    }
+    singleOf(::EpisodesSyncApiClient) { bind<EpisodesSyncRemoteDataSource>() }
 
-    single<CollectionStateProvider> {
-        CollectionStateProvider(
-            sessionManager = get(),
-            userWatchlistUseCase = get(),
-            userProgressUseCase = get(),
-            userProgressLocalSource = get(),
-            watchlistUpdates = get(),
-        )
-    }
+    singleOf(::CollectionStateProvider)
 
-    factory {
-        UpdateMovieHistoryUseCase(
-            remoteSource = get(),
-        )
-    }
+    factoryOf(::UpdateMovieHistoryUseCase)
 
-    factory {
-        UpdateMovieWatchlistUseCase(
-            remoteSource = get(),
-        )
-    }
+    factoryOf(::UpdateMovieWatchlistUseCase)
 
-    factory {
-        UpdateMovieFavoritesUseCase(
-            remoteSource = get(),
-        )
-    }
+    factoryOf(::UpdateMovieFavoritesUseCase)
 
-    factory {
-        UpdateShowWatchlistUseCase(
-            remoteSource = get(),
-        )
-    }
+    factoryOf(::UpdateShowWatchlistUseCase)
 
-    factory {
-        UpdateShowFavoritesUseCase(
-            remoteSource = get(),
-        )
-    }
+    factoryOf(::UpdateShowFavoritesUseCase)
 
-    factory {
-        UpdateEpisodeHistoryUseCase(
-            remoteSource = get(),
-        )
-    }
+    factoryOf(::UpdateEpisodeHistoryUseCase)
 
-    factory {
-        UpdateShowHistoryUseCase(
-            remoteSource = get(),
-        )
-    }
+    factoryOf(::UpdateShowHistoryUseCase)
 }

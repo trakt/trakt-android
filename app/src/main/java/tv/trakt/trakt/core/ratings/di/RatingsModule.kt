@@ -13,6 +13,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.workmanager.dsl.worker
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -31,12 +34,7 @@ import tv.trakt.trakt.core.ratings.rateprompt.ui.RatePromptViewModel
 internal const val RATINGS_PREFERENCES = "ratings_preferences"
 
 internal val ratingsDataModule = module {
-    single<RatingsRemoteDataSource> {
-        RatingsApiClient(
-            ratingsApi = get(),
-            cacheMarker = get(),
-        )
-    }
+    singleOf(::RatingsApiClient) { bind<RatingsRemoteDataSource>() }
 
     single<DataStore<Preferences>>(named(RATINGS_PREFERENCES)) {
         createStore(
@@ -44,9 +42,7 @@ internal val ratingsDataModule = module {
         )
     }
 
-    single<RatingsUpdates> {
-        RatingsUpdatesStorage()
-    }
+    singleOf(::RatingsUpdatesStorage) { bind<RatingsUpdates>() }
 
     single<RatePromptManager> {
         DefaultRatePromptManager(
@@ -75,17 +71,9 @@ internal val ratingsModule = module {
         )
     }
 
-    factory {
-        PostRatingUseCase(
-            remoteSource = get(),
-        )
-    }
+    factoryOf(::PostRatingUseCase)
 
-    factory {
-        DeleteRatingUseCase(
-            remoteSource = get(),
-        )
-    }
+    factoryOf(::DeleteRatingUseCase)
 
     worker {
         PostRatingWorker(

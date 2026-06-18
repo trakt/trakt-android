@@ -12,6 +12,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -52,45 +55,19 @@ internal val commentsDataModule = module {
         )
     }
 
-    single<CommentsUpdates> {
-        CommentsUpdatesStorage()
-    }
+    singleOf(::CommentsUpdatesStorage) { bind<CommentsUpdates>() }
 }
 
 internal val commentsModule = module {
-    factory {
-        GetCommentRepliesUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetCommentReactionsUseCase(
-            remoteSource = get(),
-        )
-    }
+    factoryOf(::GetCommentRepliesUseCase)
+    factoryOf(::GetCommentReactionsUseCase)
+    factoryOf(::PostCommentUseCase)
+    factoryOf(::PostReplyUseCase)
+    factoryOf(::DeleteCommentUseCase)
 
     factory {
         GetCommentsFilterUseCase(
             dataStore = get(named(COMMENTS_PREFERENCES)),
-        )
-    }
-
-    factory {
-        PostCommentUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        PostReplyUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        DeleteCommentUseCase(
-            remoteSource = get(),
         )
     }
 

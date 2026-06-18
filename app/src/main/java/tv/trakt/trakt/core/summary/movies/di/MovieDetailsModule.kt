@@ -1,7 +1,9 @@
 package tv.trakt.trakt.core.summary.movies.di
 
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
@@ -41,122 +43,28 @@ import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieStreamingUseCase
 
 internal val movieDetailsDataModule = module {
-    single<MovieLocalDataSource> {
-        MovieStorage()
-    }
+    singleOf(::MovieStorage) { bind<MovieLocalDataSource>() }
 
-    single<MovieDetailsUpdates> {
-        MovieDetailsUpdatesStorage()
-    }
+    singleOf(::MovieDetailsUpdatesStorage) { bind<MovieDetailsUpdates>() }
 }
 
 internal val movieDetailsModule = module {
-    factory {
-        GetMovieDetailsUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        GetMovieRatingsUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetMovieStudiosUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetMovieStatsUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetMovieExtrasUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetMovieActorsUseCase(
-            remoteSource = get(),
-            peopleLocalSource = get(),
-        )
-    }
-
-    factory {
-        GetMovieDirectorUseCase(
-            remoteSource = get(),
-            peopleLocalSource = get(),
-        )
-    }
-
-    factory {
-        GetMovieCrewUseCase(
-            remoteSource = get(),
-            peopleLocalSource = get(),
-        )
-    }
-
-    factory {
-        GetMovieRelatedUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        GetMovieStreamingsUseCase(
-            remoteMovieSource = get(),
-            remoteStreamingSource = get(),
-            localStreamingSource = get(),
-        )
-    }
-
-    factory {
-        GetMovieStreamingUseCase(
-            remoteMovieSource = get(),
-            remoteStreamingSource = get(),
-            localStreamingSource = get(),
-            priorityStreamingProvider = get(),
-        )
-    }
-
-    factory {
-        GetMovieSentimentUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetMovieHistoryUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetMovieCommentsUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetMovieListsUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetMovieTriviaUseCase(
-            v3Api = get(),
-        )
-    }
-
+    factoryOf(::GetMovieDetailsUseCase)
+    factoryOf(::GetMovieRatingsUseCase)
+    factoryOf(::GetMovieStudiosUseCase)
+    factoryOf(::GetMovieStatsUseCase)
+    factoryOf(::GetMovieExtrasUseCase)
+    factoryOf(::GetMovieActorsUseCase)
+    factoryOf(::GetMovieDirectorUseCase)
+    factoryOf(::GetMovieCrewUseCase)
+    factoryOf(::GetMovieRelatedUseCase)
+    factoryOf(::GetMovieStreamingsUseCase)
+    factoryOf(::GetMovieStreamingUseCase)
+    factoryOf(::GetMovieSentimentUseCase)
+    factoryOf(::GetMovieHistoryUseCase)
+    factoryOf(::GetMovieCommentsUseCase)
+    factoryOf(::GetMovieListsUseCase)
+    factoryOf(::GetMovieTriviaUseCase)
     factoryOf(::GetMovieSocialsUseCase)
 
     viewModel {

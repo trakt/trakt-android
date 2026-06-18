@@ -12,7 +12,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.core.lists.data.remote.ListsApiClient
@@ -70,217 +74,48 @@ import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdatesStorage
 internal const val LISTS_PREFERENCES = "lists_preferences_mobile"
 
 internal val listsDataModule = module {
-
-    single<ListsRemoteDataSource> {
-        ListsApiClient(
-            listsApi = get(),
-            cacheMarker = get(),
-        )
-    }
+    singleOf(::ListsApiClient) { bind<ListsRemoteDataSource>() }
+    singleOf(::ListsPersonalStorage) { bind<ListsPersonalLocalDataSource>() }
+    singleOf(::ListsLikedStorage) { bind<ListsLikedLocalDataSource>() }
+    singleOf(::ListsCollaborationsStorage) { bind<ListsCollaborationsLocalDataSource>() }
+    singleOf(::ListsPersonalItemsStorage) { bind<ListsPersonalItemsLocalDataSource>() }
+    singleOf(::ListsLikedItemsStorage) { bind<ListsLikedItemsLocalDataSource>() }
+    singleOf(::ListsCollaborationsItemsStorage) { bind<ListsCollaborationsItemsLocalDataSource>() }
+    singleOf(::WatchlistUpdatesStorage) { bind<WatchlistUpdates>() }
 
     single<DataStore<Preferences>>(named(LISTS_PREFERENCES)) {
         createStore(
             context = androidApplication(),
         )
     }
-
-    single<ListsPersonalLocalDataSource> {
-        ListsPersonalStorage()
-    }
-
-    single<ListsLikedLocalDataSource> {
-        ListsLikedStorage()
-    }
-
-    single<ListsCollaborationsLocalDataSource> {
-        ListsCollaborationsStorage()
-    }
-
-    single<ListsPersonalItemsLocalDataSource> {
-        ListsPersonalItemsStorage()
-    }
-
-    single<ListsLikedItemsLocalDataSource> {
-        ListsLikedItemsStorage()
-    }
-
-    single<ListsCollaborationsItemsLocalDataSource> {
-        ListsCollaborationsItemsStorage()
-    }
-
-    single<WatchlistUpdates> {
-        WatchlistUpdatesStorage()
-    }
 }
 
 internal val listsModule = module {
-    factory {
-        GetWatchlistUseCase(
-            remoteSource = get(),
-            userWatchlistLocalDataSource = get(),
-        )
-    }
+    factoryOf(::GetWatchlistUseCase)
+    factoryOf(::GetShowsWatchlistUseCase)
+    factoryOf(::GetMoviesWatchlistUseCase)
+    factoryOf(::GetPersonalListsUseCase)
+    factoryOf(::GetLikedListsUseCase)
+    factoryOf(::GetCollaborationsListsUseCase)
+    factoryOf(::GetPersonalListItemsUseCase)
+    factoryOf(::GetLikedListItemsUseCase)
+    factoryOf(::GetCollaborationsListItemsUseCase)
+    factoryOf(::GetListItemsUseCase)
+    factoryOf(::CreateListUseCase)
+    factoryOf(::EditListUseCase)
+    factoryOf(::RemovePersonalListItemUseCase)
+    factoryOf(::AddPersonalListItemUseCase)
+    factoryOf(::AddLikedListUseCase)
+    factoryOf(::RemoveLikedListUseCase)
 
-    factory {
-        GetShowsWatchlistUseCase(
-            remoteSource = get(),
-            userWatchlistLocalDataSource = get(),
-        )
-    }
-
-    factory {
-        GetMoviesWatchlistUseCase(
-            remoteSource = get(),
-            userWatchlistLocalDataSource = get(),
-        )
-    }
-
-    factory {
-        GetPersonalListsUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        GetLikedListsUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        GetCollaborationsListsUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        GetPersonalListItemsUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        GetLikedListItemsUseCase(
-            getListItemsUseCase = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        GetCollaborationsListItemsUseCase(
-            getListItemsUseCase = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        GetListItemsUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        CreateListUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        EditListUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        RemovePersonalListItemUseCase(
-            remoteSource = get(),
-            personalListsItemsLocalDataSource = get(),
-            personalListsLocalDataSource = get(),
-            collabListsLocalDataSource = get(),
-            collabListsItemsLocalDataSource = get(),
-        )
-    }
-
-    factory {
-        AddPersonalListItemUseCase(
-            remoteSource = get(),
-            listsItemsLocalDataSource = get(),
-            listsLocalDataSource = get(),
-            collabListsLocalDataSource = get(),
-            collabListsItemsLocalDataSource = get(),
-        )
-    }
-
-    factory {
-        AddLikedListUseCase(
-            remoteSource = get(),
-            localSource = get(),
-            listsLocalSource = get(),
-        )
-    }
-
-    factory {
-        RemoveLikedListUseCase(
-            remoteSource = get(),
-            localUserLikedListsSource = get(),
-            listsLocalSource = get(),
-        )
-    }
-
-    viewModel {
-        ListsViewModel(
-            sessionManager = get(),
-            getPersonalListsUseCase = get(),
-            getLikedListsUseCase = get(),
-            getCollaborationsListsUseCase = get(),
-            localListsSource = get(),
-            localListsItemsSource = get(),
-            localLikedListsSource = get(),
-            localCollaborationsListsSource = get(),
-            analytics = get(),
-        )
-    }
-
-    viewModel {
-        ListsWatchlistViewModel(
-            getWatchlistUseCase = get(),
-            getShowsWatchlistUseCase = get(),
-            getMoviesWatchlistUseCase = get(),
-            showLocalDataSource = get(),
-            movieLocalDataSource = get(),
-            collectionStateProvider = get(),
-            filterManager = get(),
-            sessionManager = get(),
-            collapsingManager = get(),
-            watchlistUpdates = get(),
-        )
-    }
-
-    viewModel {
-        AllWatchlistViewModel(
-            getWatchlistUseCase = get(),
-            getShowsWatchlistUseCase = get(),
-            getMoviesWatchlistUseCase = get(),
-            showLocalDataSource = get(),
-            movieLocalDataSource = get(),
-            loadUserProgressUseCase = get(),
-            updateMovieHistoryUseCase = get(),
-            showUpdatesSource = get(),
-            episodeUpdatesSource = get(),
-            movieDetailsUpdates = get(),
-            watchlistUpdates = get(),
-            collectionStateProvider = get(),
-            filterManager = get(),
-            sessionManager = get(),
-            ratePromptManager = get(),
-            analytics = get(),
-        )
-    }
+    viewModelOf(::ListsViewModel)
+    viewModelOf(::ListsWatchlistViewModel)
+    viewModelOf(::ListDetailsViewModel)
+    viewModelOf(::CreateListViewModel)
+    viewModelOf(::EditListViewModel)
+    viewModelOf(::AllWatchlistViewModel)
+    viewModelOf(::AllPersonalListViewModel)
+    viewModelOf(::AllListsViewModel)
 
     viewModel { (listId: TraktId) ->
         ListsPersonalViewModel(
@@ -325,35 +160,6 @@ internal val listsModule = module {
             episodeLocalDataSource = get(),
             collectionStateProvider = get(),
             collapsingManager = get(),
-        )
-    }
-
-    viewModel {
-        AllPersonalListViewModel(
-            savedStateHandle = get(),
-            getListUseCase = get(),
-            getListItemsUseCase = get(),
-            showLocalDataSource = get(),
-            movieLocalDataSource = get(),
-            episodeLocalDataSource = get(),
-            collectionStateProvider = get(),
-            sessionManager = get(),
-            filterManager = get(),
-            analytics = get(),
-        )
-    }
-
-    viewModel {
-        CreateListViewModel(
-            createListUseCase = get(),
-            userListsLocalDataSource = get(),
-        )
-    }
-
-    viewModel {
-        EditListViewModel(
-            editListUseCase = get(),
-            userListsLocalDataSource = get(),
         )
     }
 
@@ -425,36 +231,6 @@ internal val listsModule = module {
             sessionManager = get(),
             errorsManager = get(),
             analytics = get(),
-        )
-    }
-
-    viewModel {
-        ListDetailsViewModel(
-            savedStateHandle = get(),
-            getListItemsUseCase = get(),
-            getListLikedUseCase = get(),
-            addLikedListUseCase = get(),
-            removeLikedListUseCase = get(),
-            showLocalDataSource = get(),
-            movieLocalDataSource = get(),
-            episodeLocalDataSource = get(),
-            collectionStateProvider = get(),
-            filtersManager = get(),
-            sessionManager = get(),
-        )
-    }
-
-    viewModel {
-        AllListsViewModel(
-            savedStateHandle = get(),
-            sessionManager = get(),
-            analytics = get(),
-            getPersonalListsUseCase = get(),
-            getLikedListsUseCase = get(),
-            getCollaborationsListsUseCase = get(),
-            localPersonalListsSource = get(),
-            localLikedListsSource = get(),
-            localCollaborationsListsSource = get(),
         )
     }
 }

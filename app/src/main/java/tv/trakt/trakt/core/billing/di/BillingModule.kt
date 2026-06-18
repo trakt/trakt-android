@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.billing.di
 
 import io.ktor.client.HttpClientConfig
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -22,12 +23,7 @@ internal val billingDataModule = module {
 }
 
 internal val billingModule = module {
-    factory {
-        VerifyPurchaseUseCase(
-            remoteSource = get(),
-            sessionManager = get(),
-        )
-    }
+    factoryOf(::VerifyPurchaseUseCase)
 
     viewModel {
         BillingViewModel(

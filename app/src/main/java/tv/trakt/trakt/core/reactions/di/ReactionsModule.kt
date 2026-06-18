@@ -2,6 +2,9 @@ package tv.trakt.trakt.core.reactions.di
 
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.workmanager.dsl.worker
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdatesStorage
@@ -13,30 +16,13 @@ import tv.trakt.trakt.core.reactions.usecases.DeleteCommentReactionUseCase
 import tv.trakt.trakt.core.reactions.usecases.PostCommentReactionUseCase
 
 internal val reactionsDataModule = module {
-    single<ReactionsRemoteDataSource> {
-        ReactionsApiClient(
-            reactionsApi = get(),
-            cacheMarker = get(),
-        )
-    }
-
-    single<ReactionsUpdates> {
-        ReactionsUpdatesStorage()
-    }
+    singleOf(::ReactionsApiClient) { bind<ReactionsRemoteDataSource>() }
+    singleOf(::ReactionsUpdatesStorage) { bind<ReactionsUpdates>() }
 }
 
 internal val reactionsModule = module {
-    factory {
-        PostCommentReactionUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        DeleteCommentReactionUseCase(
-            remoteSource = get(),
-        )
-    }
+    factoryOf(::PostCommentReactionUseCase)
+    factoryOf(::DeleteCommentReactionUseCase)
 
     worker {
         PostReactionWorker(

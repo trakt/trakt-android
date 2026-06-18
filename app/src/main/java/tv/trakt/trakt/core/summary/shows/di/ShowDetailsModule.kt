@@ -1,8 +1,11 @@
 package tv.trakt.trakt.core.summary.shows.di
 
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowStorage
@@ -45,129 +48,29 @@ import tv.trakt.trakt.core.summary.shows.usecases.GetShowStreamingUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 
 internal val showDetailsDataModule = module {
-    single<ShowLocalDataSource> {
-        ShowStorage()
-    }
+    singleOf(::ShowStorage) { bind<ShowLocalDataSource>() }
 
-    single<ShowDetailsUpdates> {
-        ShowDetailsUpdatesStorage()
-    }
+    singleOf(::ShowDetailsUpdatesStorage) { bind<ShowDetailsUpdates>() }
 }
 
 internal val showDetailsModule = module {
-    factory {
-        GetShowDetailsUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        GetShowRatingsUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetShowStudiosUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetShowStatsUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetShowCreatorUseCase(
-            remoteSource = get(),
-            peopleLocalSource = get(),
-        )
-    }
-
-    factory {
-        GetShowCrewUseCase(
-            remoteSource = get(),
-            peopleLocalSource = get(),
-        )
-    }
-
-    factory {
-        GetShowSeasonsUseCase(
-            remoteShowsSource = get(),
-            remoteEpisodesSource = get(),
-        )
-    }
-
-    factory {
-        GetShowExtrasUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetShowActorsUseCase(
-            remoteSource = get(),
-            peopleLocalSource = get(),
-        )
-    }
-
-    factory {
-        GetShowRelatedUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        GetShowStreamingsUseCase(
-            remoteShowSource = get(),
-            remoteStreamingSource = get(),
-            localStreamingSource = get(),
-        )
-    }
-
-    factory {
-        GetShowStreamingUseCase(
-            remoteShowSource = get(),
-            remoteStreamingSource = get(),
-            localStreamingSource = get(),
-            priorityStreamingProvider = get(),
-        )
-    }
-
-    factory {
-        GetShowSentimentUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetShowCommentsUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetShowListsUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetShowHistoryUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetShowTriviaUseCase(
-            v3Api = get(),
-        )
-    }
-
+    factoryOf(::GetShowDetailsUseCase)
+    factoryOf(::GetShowRatingsUseCase)
+    factoryOf(::GetShowStudiosUseCase)
+    factoryOf(::GetShowStatsUseCase)
+    factoryOf(::GetShowCreatorUseCase)
+    factoryOf(::GetShowCrewUseCase)
+    factoryOf(::GetShowSeasonsUseCase)
+    factoryOf(::GetShowExtrasUseCase)
+    factoryOf(::GetShowActorsUseCase)
+    factoryOf(::GetShowRelatedUseCase)
+    factoryOf(::GetShowStreamingsUseCase)
+    factoryOf(::GetShowStreamingUseCase)
+    factoryOf(::GetShowSentimentUseCase)
+    factoryOf(::GetShowCommentsUseCase)
+    factoryOf(::GetShowListsUseCase)
+    factoryOf(::GetShowHistoryUseCase)
+    factoryOf(::GetShowTriviaUseCase)
     factoryOf(::GetShowSocialsUseCase)
 
     viewModel {
@@ -244,20 +147,7 @@ internal val showDetailsModule = module {
         )
     }
 
-    viewModel {
-        AllShowSeasonsViewModel(
-            savedStateHandle = get(),
-            getShowDetailsUseCase = get(),
-            getSeasonsUseCase = get(),
-            loadUserProgressUseCase = get(),
-            updateEpisodeHistoryUseCase = get(),
-            showDetailsUpdates = get(),
-            episodeDetailsUpdates = get(),
-            episodeLocalDataSource = get(),
-            sessionManager = get(),
-            analytics = get(),
-        )
-    }
+    viewModelOf(::AllShowSeasonsViewModel)
 
     viewModel { (show: Show) ->
         ShowActorsViewModel(

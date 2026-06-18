@@ -1,5 +1,7 @@
 package tv.trakt.trakt.core.checkin.di
 
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.DefaultCheckInManager
@@ -9,25 +11,7 @@ import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdatesStorage
 
 val checkInModule = module {
-    single<CheckInManager> {
-        DefaultCheckInManager(
-            sessionManager = get(),
-            checkInUpdates = get(),
-            checkInRemoteDataSource = get(),
-            userRemoteDataSource = get(),
-            cacheMarkerProvider = get(),
-            loadUserProgressUseCase = get(),
-            loadUserWatchlistMinUseCase = get(),
-        )
-    }
-
-    single<CheckInRemoteDataSource> {
-        CheckInApiClient(
-            api = get(),
-        )
-    }
-
-    single<CheckInUpdates> {
-        CheckInUpdatesStorage()
-    }
+    singleOf(::DefaultCheckInManager) { bind<CheckInManager>() }
+    singleOf(::CheckInApiClient) { bind<CheckInRemoteDataSource>() }
+    singleOf(::CheckInUpdatesStorage) { bind<CheckInUpdates>() }
 }

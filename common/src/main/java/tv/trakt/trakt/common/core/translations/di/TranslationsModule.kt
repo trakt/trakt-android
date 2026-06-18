@@ -1,5 +1,8 @@
 package tv.trakt.trakt.common.core.translations.di
 
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import tv.trakt.trakt.common.core.translations.data.local.TranslationsLocalDataSource
 import tv.trakt.trakt.common.core.translations.data.local.TranslationsStorage
@@ -10,37 +13,12 @@ import tv.trakt.trakt.common.core.translations.usecase.GetMovieTranslationsUseCa
 import tv.trakt.trakt.common.core.translations.usecase.GetShowTranslationsUseCase
 
 val translationsDataModule = module {
-    single<TranslationsRemoteDataSource> {
-        TranslationsApiClient(
-            showsApi = get(),
-            moviesApi = get(),
-        )
-    }
-
-    single<TranslationsLocalDataSource> {
-        TranslationsStorage()
-    }
+    singleOf(::TranslationsApiClient) { bind<TranslationsRemoteDataSource>() }
+    singleOf(::TranslationsStorage) { bind<TranslationsLocalDataSource>() }
 }
 
 val translationsModule = module {
-    factory {
-        GetShowTranslationsUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        GetMovieTranslationsUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        GetEpisodeTranslationsUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
+    factoryOf(::GetShowTranslationsUseCase)
+    factoryOf(::GetMovieTranslationsUseCase)
+    factoryOf(::GetEpisodeTranslationsUseCase)
 }

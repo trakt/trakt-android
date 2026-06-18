@@ -12,6 +12,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
@@ -58,119 +61,41 @@ import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeShowsWatchlis
 internal const val HOME_PREFERENCES = "home_preferences_mobile"
 
 internal val homeDataModule = module {
+    singleOf(::HomeUpNextStorage) { bind<HomeUpNextLocalDataSource>() }
+    singleOf(::UpNextUpdatesStorage) { bind<UpNextUpdates>() }
+    singleOf(::HomeWatchlistStorage) { bind<HomeWatchlistLocalDataSource>() }
+    singleOf(::HomeUpcomingStorage) { bind<HomeUpcomingLocalDataSource>() }
+    singleOf(::HomePersonalStorage) { bind<HomePersonalLocalDataSource>() }
+    singleOf(::HomeSocialStorage) { bind<HomeSocialLocalDataSource>() }
+    singleOf(::AllActivityStorage) { bind<AllActivityLocalDataSource>() }
+    singleOf(::DefaultStreaksManager) { bind<StreaksManager>() }
+
     single<DataStore<Preferences>>(named(HOME_PREFERENCES)) {
         createStore(
             context = androidApplication(),
         )
     }
-
-    single<HomeUpNextLocalDataSource> {
-        HomeUpNextStorage()
-    }
-
-    single<UpNextUpdates> {
-        UpNextUpdatesStorage()
-    }
-
-    single<HomeWatchlistLocalDataSource> {
-        HomeWatchlistStorage()
-    }
-
-    single<HomeUpcomingLocalDataSource> {
-        HomeUpcomingStorage()
-    }
-
-    single<HomePersonalLocalDataSource> {
-        HomePersonalStorage()
-    }
-
-    single<HomeSocialLocalDataSource> {
-        HomeSocialStorage()
-    }
-
-    single<AllActivityLocalDataSource> {
-        AllActivityStorage()
-    }
-
-    single<StreaksManager> {
-        DefaultStreaksManager(
-            userProgressUseCase = get(),
-        )
-    }
 }
 
 internal val homeModule = module {
+    factoryOf(::GetUpNextUseCase)
+    factoryOf(::DropPlaybackUseCase)
+    factoryOf(::GetHomeShowsWatchlistUseCase)
+    factoryOf(::GetHomeMoviesWatchlistUseCase)
+    factoryOf(::AddHomeHistoryUseCase)
+    factoryOf(::GetSocialActivityUseCase)
+    factoryOf(::GetPersonalActivityUseCase)
+    factoryOf(::GetUpcomingUseCase)
 
-    factory {
-        GetUpNextUseCase(
-            remoteShowsSyncSource = get(),
-            remoteMoviesSyncSource = get(),
-            localDataSource = get(),
-            localShowSource = get(),
-            localMovieSource = get(),
-            localEpisodeSource = get(),
-        )
-    }
-
-    factory {
-        DropPlaybackUseCase(
-            remoteMovieSyncSource = get(),
-            remoteScrobbleSource = get(),
-            cacheMarkerProvider = get(),
-        )
-    }
-
-    factory {
-        GetHomeShowsWatchlistUseCase(
-            userRemoteSource = get(),
-            homeWatchlistLocalSource = get(),
-        )
-    }
-
-    factory {
-        GetHomeMoviesWatchlistUseCase(
-            homeWatchlistLocalSource = get(),
-            userRemoteSource = get(),
-        )
-    }
-
-    factory {
-        AddHomeHistoryUseCase(
-            updateMovieHistoryUseCase = get(),
-            updateEpisodeHistoryUseCase = get(),
-            userWatchlistLocalSource = get(),
-            userWatchlistMinLocalSource = get(),
-        )
-    }
-
-    factory {
-        GetSocialActivityUseCase(
-            remoteSource = get(),
-            localDataSource = get(),
-        )
-    }
-
-    factory {
-        GetPersonalActivityUseCase(
-            remoteUserSource = get(),
-            localDataSource = get(),
-        )
-    }
-
-    factory {
-        GetUpcomingUseCase(
-            remoteUserSource = get(),
-            localDataSource = get(),
-        )
-    }
-
-    viewModel {
-        HomeViewModel(
-            sessionManager = get(),
-            filterManager = get(),
-            analytics = get(),
-        )
-    }
+    viewModelOf(::HomeViewModel)
+    viewModelOf(::HomeSocialViewModel)
+    viewModelOf(::HomeHistoryViewModel)
+    viewModelOf(::AllActivityPersonalViewModel)
+    viewModelOf(::AllActivitySocialViewModel)
+    viewModelOf(::ActivityItemContextViewModel)
+    viewModelOf(::UpNextItemContextViewModel)
+    viewModelOf(::HomeStreaksViewModel)
+    viewModelOf(::StreaksViewModel)
 
     viewModel {
         HomeUpNextViewModel(
@@ -256,70 +181,6 @@ internal val homeModule = module {
     }
 
     viewModel {
-        HomeSocialViewModel(
-            getSocialActivityUseCase = get(),
-            showLocalDataSource = get(),
-            episodeLocalDataSource = get(),
-            movieLocalDataSource = get(),
-            sessionManager = get(),
-            filterManager = get(),
-            collapsingManager = get(),
-        )
-    }
-
-    viewModel {
-        HomeHistoryViewModel(
-            getPersonalActivityUseCase = get(),
-            userRatingsUseCase = get(),
-            homeUpNextSource = get(),
-            allActivitySource = get(),
-            showLocalDataSource = get(),
-            movieLocalDataSource = get(),
-            episodeLocalDataSource = get(),
-            watchlistUpdates = get(),
-            showUpdates = get(),
-            movieUpdates = get(),
-            episodeUpdates = get(),
-            ratingsUpdates = get(),
-            sessionManager = get(),
-            filterManager = get(),
-            collapsingManager = get(),
-            checkInUpdates = get(),
-        )
-    }
-
-    viewModel {
-        AllActivityPersonalViewModel(
-            savedStateHandle = get(),
-            getActivityUseCase = get(),
-            userRatingsUseCase = get(),
-            showLocalDataSource = get(),
-            episodeLocalDataSource = get(),
-            movieLocalDataSource = get(),
-            showUpdatesSource = get(),
-            episodeUpdatesSource = get(),
-            movieDetailsUpdates = get(),
-            ratingsUpdates = get(),
-            checkInUpdates = get(),
-            sessionManager = get(),
-            filterManager = get(),
-            analytics = get(),
-        )
-    }
-
-    viewModel {
-        AllActivitySocialViewModel(
-            getActivityUseCase = get(),
-            showLocalDataSource = get(),
-            episodeLocalDataSource = get(),
-            movieLocalDataSource = get(),
-            sessionManager = get(),
-            analytics = get(),
-            filterManager = get(),
-        )
-    }
-
-    viewModel {
         HomeUpcomingViewModel(
             appContext = androidApplication(),
             getUpcomingUseCase = get(),
@@ -334,31 +195,6 @@ internal val homeModule = module {
             watchlistUpdates = get(),
         )
     }
-
-    viewModel {
-        ActivityItemContextViewModel(
-            updateMovieHistoryUseCase = get(),
-            updateEpisodeHistoryUseCase = get(),
-            activityLocalSource = get(),
-            allActivityLocalSource = get(),
-            loadUserProgressUseCase = get(),
-            analytics = get(),
-        )
-    }
-
-    viewModel {
-        UpNextItemContextViewModel(
-            updateShowHistoryUseCase = get(),
-            dropPlaybackUseCase = get(),
-            upNextLocalDataSource = get(),
-            upNextUpdates = get(),
-            upcomingLocalDataSource = get(),
-            loadUserProgressUseCase = get(),
-        )
-    }
-
-    viewModelOf(::HomeStreaksViewModel)
-    viewModelOf(::StreaksViewModel)
 }
 
 private fun createStore(context: Context): DataStore<Preferences> {
