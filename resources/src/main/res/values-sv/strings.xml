@@ -896,6 +896,7 @@
   <string name="tag_text_mid_season_premiere">Mellansäsongspremiär</string>
   <string name="tag_text_most_popular">Mest populär</string>
   <string name="tag_text_movies">Filmer</string>
+  <string name="tag_text_new">Ny</string>
   <string name="tag_text_number_of_episodes">%d avsnitt</string>
   <string name="tag_text_plays">%d visningar</string>
   <string name="tag_text_premiere">Premiär</string>
@@ -970,6 +971,7 @@
   <string name="text_calendar_placeholder_9">Inga händelser idag. Kanske återbesök en gammal favorit.</string>
   <string name="text_calendar_placeholder_empty_period">Skärmen är mörk. Inga filmer. Inga avsnitt. Bara du och tystnaden.</string>
   <string name="text_clear_source_history">Historia</string>
+  <string name="text_clear_source_library">Bibliotek</string>
   <string name="text_clear_source_ratings">Betyg</string>
   <string name="text_clear_source_watchlist">Bevakningslista</string>
   <string name="text_clear_watchlist">Rensa bevakningslista</string>

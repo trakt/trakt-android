@@ -896,6 +896,7 @@
   <string name="tag_text_mid_season_premiere">Премьера середины сезона</string>
   <string name="tag_text_most_popular">Самые популярные</string>
   <string name="tag_text_movies">Фильмы</string>
+  <string name="tag_text_new">Новое</string>
   <string name="tag_text_number_of_episodes">%d эп.</string>
   <string name="tag_text_plays">%d просмотров</string>
   <string name="tag_text_premiere">Премьера</string>
@@ -970,6 +971,7 @@
   <string name="text_calendar_placeholder_9">Событий на этот день нет. Может, пересмотреть что-то старое и любимое?</string>
   <string name="text_calendar_placeholder_empty_period">Экран темный. Нет фильмов. Нет эпизодов. Только вы и тишина.</string>
   <string name="text_clear_source_history">История</string>
+  <string name="text_clear_source_library">Библиотека</string>
   <string name="text_clear_source_ratings">Рейтинги</string>
   <string name="text_clear_source_watchlist">Список просмотра</string>
   <string name="text_clear_watchlist">Очистить список просмотра</string>

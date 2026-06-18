@@ -896,6 +896,7 @@
   <string name="tag_text_mid_season_premiere">Premiere Pertengahan Musim</string>
   <string name="tag_text_most_popular">Paling populer</string>
   <string name="tag_text_movies">Film</string>
+  <string name="tag_text_new">Baru</string>
   <string name="tag_text_number_of_episodes">%d episode.</string>
   <string name="tag_text_plays">%d putar</string>
   <string name="tag_text_premiere">Premiere</string>
@@ -970,6 +971,7 @@
   <string name="text_calendar_placeholder_9">Tidak ada acara hari ini. Mungkin kunjungi kembali favorit lama.</string>
   <string name="text_calendar_placeholder_empty_period">Layar gelap. Tidak ada film. Tidak ada episode. Hanya Anda dan keheningan.</string>
   <string name="text_clear_source_history">Sejarah</string>
+  <string name="text_clear_source_library">Pustaka</string>
   <string name="text_clear_source_ratings">Peringkat</string>
   <string name="text_clear_source_watchlist">Daftar Tontonan</string>
   <string name="text_clear_watchlist">Hapus daftar tontonan</string>

@@ -896,6 +896,7 @@
   <string name="tag_text_mid_season_premiere">Премиера в средата на сезона</string>
   <string name="tag_text_most_popular">Най-популярен</string>
   <string name="tag_text_movies">Филми</string>
+  <string name="tag_text_new">Ново</string>
   <string name="tag_text_number_of_episodes">%d еп.</string>
   <string name="tag_text_plays">%d гледания</string>
   <string name="tag_text_premiere">Премиера</string>
@@ -970,6 +971,7 @@
   <string name="text_calendar_placeholder_9">Няма събития този ден. Може би прегледай стар любим.</string>
   <string name="text_calendar_placeholder_empty_period">Екранът е тъмен. Без филми. Без епизоди. Само вие и тишината.</string>
   <string name="text_clear_source_history">Исторически</string>
+  <string name="text_clear_source_library">Библиотека</string>
   <string name="text_clear_source_ratings">Оценки</string>
   <string name="text_clear_source_watchlist">Списък за гледане</string>
   <string name="text_clear_watchlist">Изчисти списъка за гледане</string>

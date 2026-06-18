@@ -896,6 +896,7 @@
   <string name="tag_text_mid_season_premiere">Estrena de mitja temporada</string>
   <string name="tag_text_most_popular">Més popular</string>
   <string name="tag_text_movies">Pel·lícules</string>
+  <string name="tag_text_new">Nou</string>
   <string name="tag_text_number_of_episodes">%d ep.</string>
   <string name="tag_text_plays">%d reproduccions</string>
   <string name="tag_text_premiere">Estrena</string>
@@ -970,6 +971,7 @@
   <string name="text_calendar_placeholder_9">No hi ha esdeveniments aquest dia. Potser revisita un antic preferit.</string>
   <string name="text_calendar_placeholder_empty_period">La pantalla és fosca. Sense pel·lícules. Sense episodis. Només tu i el silenci.</string>
   <string name="text_clear_source_history">Història</string>
+  <string name="text_clear_source_library">Biblioteca</string>
   <string name="text_clear_source_ratings">Valoracions</string>
   <string name="text_clear_source_watchlist">Llista de seguiment</string>
   <string name="text_clear_watchlist">Esborra la llista de seguiment</string>

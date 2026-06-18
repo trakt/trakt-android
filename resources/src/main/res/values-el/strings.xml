@@ -896,6 +896,7 @@
   <string name="tag_text_mid_season_premiere">Πρεμιέρα Ενδιάμεσης Σεζόν</string>
   <string name="tag_text_most_popular">Πιο δημοφιλές</string>
   <string name="tag_text_movies">Ταινίες</string>
+  <string name="tag_text_new">Νέο</string>
   <string name="tag_text_number_of_episodes">%d επ.</string>
   <string name="tag_text_plays">%d προβολές</string>
   <string name="tag_text_premiere">Πρεμιέρα</string>
@@ -970,6 +971,7 @@
   <string name="text_calendar_placeholder_9">Κανένα γεγονός αυτήν την ημέρα. Ίσως ξαναδείτε ένα παλιό αγαπημένο.</string>
   <string name="text_calendar_placeholder_empty_period">Η οθόνη είναι σκοτεινή. Καμία ταινία. Κανένα επεισόδιο. Μόνο εσείς και η σιωπή.</string>
   <string name="text_clear_source_history">Ιστορικά</string>
+  <string name="text_clear_source_library">Βιβλιοθήκη</string>
   <string name="text_clear_source_ratings">Αξιολογήσεις</string>
   <string name="text_clear_source_watchlist">Λίστα παρακολούθησης</string>
   <string name="text_clear_watchlist">Εκκαθάριση λίστας παρακολούθησης</string>

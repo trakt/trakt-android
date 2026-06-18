@@ -896,6 +896,7 @@
   <string name="tag_text_mid_season_premiere">Midtsesongpremiere</string>
   <string name="tag_text_most_popular">Mest populær</string>
   <string name="tag_text_movies">Filmer</string>
+  <string name="tag_text_new">Ny</string>
   <string name="tag_text_number_of_episodes">%d ep.</string>
   <string name="tag_text_plays">%d avspillinger</string>
   <string name="tag_text_premiere">Premiere</string>
@@ -970,6 +971,7 @@
   <string name="text_calendar_placeholder_9">Ingen hendelser denne dagen. Kanskje gjenopplive en gammel favoritt.</string>
   <string name="text_calendar_placeholder_empty_period">Skjermen er mørk. Ingen filmer. Ingen episoder. Bare deg og stillheten.</string>
   <string name="text_clear_source_history">Historie</string>
+  <string name="text_clear_source_library">Bibliotek</string>
   <string name="text_clear_source_ratings">Vurderinger</string>
   <string name="text_clear_source_watchlist">Ønskeliste</string>
   <string name="text_clear_watchlist">Tøm overvåkningsliste</string>

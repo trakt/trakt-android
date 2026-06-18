@@ -896,6 +896,7 @@
   <string name="tag_text_mid_season_premiere">Mid-Season-Premiere</string>
   <string name="tag_text_most_popular">Am beliebtesten</string>
   <string name="tag_text_movies">Filme</string>
+  <string name="tag_text_new">Neu</string>
   <string name="tag_text_number_of_episodes">%d Folg.</string>
   <string name="tag_text_plays">%d Wiedergaben</string>
   <string name="tag_text_premiere">Premiere</string>
@@ -970,6 +971,7 @@
   <string name="text_calendar_placeholder_9">Keine Ereignisse an diesem Tag. Vielleicht einen alten Favoriten wiedersehen.</string>
   <string name="text_calendar_placeholder_empty_period">Der Bildschirm ist dunkel. Keine Filme. Keine Episoden. Nur Sie und die Stille.</string>
   <string name="text_clear_source_history">Historie</string>
+  <string name="text_clear_source_library">Bibliothek</string>
   <string name="text_clear_source_ratings">Bewertungen</string>
   <string name="text_clear_source_watchlist">Merkliste</string>
   <string name="text_clear_watchlist">Watchlist leeren</string>

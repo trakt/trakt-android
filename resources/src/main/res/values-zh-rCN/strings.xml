@@ -896,6 +896,7 @@
   <string name="tag_text_mid_season_premiere">季中首播</string>
   <string name="tag_text_most_popular">最受欢迎</string>
   <string name="tag_text_movies">电影</string>
+  <string name="tag_text_new">新</string>
   <string name="tag_text_number_of_episodes">%d 集</string>
   <string name="tag_text_plays">%d 次播放</string>
   <string name="tag_text_premiere">首映</string>
@@ -970,6 +971,7 @@
   <string name="text_calendar_placeholder_9">今天没有活动。也许重温一部老电影吧。</string>
   <string name="text_calendar_placeholder_empty_period">屏幕一片漆黑。没有电影。没有剧集。只有您和寂静。</string>
   <string name="text_clear_source_history">历史</string>
+  <string name="text_clear_source_library">媒体库</string>
   <string name="text_clear_source_ratings">评分</string>
   <string name="text_clear_source_watchlist">待看列表</string>
   <string name="text_clear_watchlist">清除待看列表</string>

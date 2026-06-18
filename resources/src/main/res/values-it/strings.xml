@@ -896,6 +896,7 @@
   <string name="tag_text_mid_season_premiere">Première di metà stagione</string>
   <string name="tag_text_most_popular">Più popolare</string>
   <string name="tag_text_movies">Film</string>
+  <string name="tag_text_new">Nuovo</string>
   <string name="tag_text_number_of_episodes">%d ep.</string>
   <string name="tag_text_plays">%d riproduzioni</string>
   <string name="tag_text_premiere">Première</string>
@@ -970,6 +971,7 @@
   <string name="text_calendar_placeholder_9">Nessun evento oggi. Forse rivisitare un vecchio preferito.</string>
   <string name="text_calendar_placeholder_empty_period">Lo schermo è scuro. Nessun film. Nessun episodio. Solo tu e il silenzio.</string>
   <string name="text_clear_source_history">Storico</string>
+  <string name="text_clear_source_library">Libreria</string>
   <string name="text_clear_source_ratings">Valutazioni</string>
   <string name="text_clear_source_watchlist">Watchlist</string>
   <string name="text_clear_watchlist">Svuota watchlist</string>

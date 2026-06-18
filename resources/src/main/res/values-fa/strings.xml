@@ -896,6 +896,7 @@
   <string name="tag_text_mid_season_premiere">اولین قسمت میان‌فصل</string>
   <string name="tag_text_most_popular">محبوب‌ترین</string>
   <string name="tag_text_movies">فیلم‌ها</string>
+  <string name="tag_text_new">جدید</string>
   <string name="tag_text_number_of_episodes">%d اپیزود</string>
   <string name="tag_text_plays">%d پخش</string>
   <string name="tag_text_premiere">اولین پخش</string>
@@ -970,6 +971,7 @@
   <string name="text_calendar_placeholder_9">هیچ رویدادی در این روز. شاید یک مورد قدیمی مورد علاقه را دوباره ببینید.</string>
   <string name="text_calendar_placeholder_empty_period">صفحه تاریک است. نه فیلمی. نه قسمتی. فقط شما و سکوت.</string>
   <string name="text_clear_source_history">تاریخی</string>
+  <string name="text_clear_source_library">کتابخانه</string>
   <string name="text_clear_source_ratings">امتیازات</string>
   <string name="text_clear_source_watchlist">لیست تماشا</string>
   <string name="text_clear_watchlist">پاک کردن لیست تماشا</string>

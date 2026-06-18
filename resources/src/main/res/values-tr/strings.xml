@@ -896,6 +896,7 @@
   <string name="tag_text_mid_season_premiere">Sezon Ortası Prömiyeri</string>
   <string name="tag_text_most_popular">En popüler</string>
   <string name="tag_text_movies">Filmler</string>
+  <string name="tag_text_new">Yeni</string>
   <string name="tag_text_number_of_episodes">%d böl.</string>
   <string name="tag_text_plays">%d oynatma</string>
   <string name="tag_text_premiere">Gala</string>
@@ -970,6 +971,7 @@
   <string name="text_calendar_placeholder_9">Bu gün hiçbir etkinlik yok. Belki eski bir favoriyi tekrar ziyaret edersiniz.</string>
   <string name="text_calendar_placeholder_empty_period">Ekran karanlık. Film yok. Bölüm yok. Sadece siz ve sessizlik.</string>
   <string name="text_clear_source_history">Tarih</string>
+  <string name="text_clear_source_library">Kütüphane</string>
   <string name="text_clear_source_ratings">Derecelendirmeler</string>
   <string name="text_clear_source_watchlist">İzleme Listesi</string>
   <string name="text_clear_watchlist">İzleme listesini temizle</string>

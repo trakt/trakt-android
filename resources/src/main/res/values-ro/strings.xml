@@ -896,6 +896,7 @@
   <string name="tag_text_mid_season_premiere">Premiera de jumătate de sezon</string>
   <string name="tag_text_most_popular">Cel mai popular</string>
   <string name="tag_text_movies">Filme</string>
+  <string name="tag_text_new">Nou</string>
   <string name="tag_text_number_of_episodes">%d ep.</string>
   <string name="tag_text_plays">%d vizionări</string>
   <string name="tag_text_premiere">Premiera</string>
@@ -970,6 +971,7 @@
   <string name="text_calendar_placeholder_9">Fără evenimente în această zi. Poate revizitezi un vechi favorit.</string>
   <string name="text_calendar_placeholder_empty_period">Ecranul este întunecat. Fără filme. Fără episoade. Doar tu și liniștea.</string>
   <string name="text_clear_source_history">Istoric</string>
+  <string name="text_clear_source_library">Bibliotecă</string>
   <string name="text_clear_source_ratings">Evaluări</string>
   <string name="text_clear_source_watchlist">Listă de vizionare</string>
   <string name="text_clear_watchlist">Șterge lista de vizionare</string>

@@ -896,6 +896,7 @@
   <string name="tag_text_mid_season_premiere">Mid-Season Premiere</string>
   <string name="tag_text_most_popular">Most popular</string>
   <string name="tag_text_movies">Movies</string>
+  <string name="tag_text_new">New</string>
   <string name="tag_text_number_of_episodes">%d eps.</string>
   <string name="tag_text_plays">%d plays</string>
   <string name="tag_text_premiere">Premiere</string>
@@ -970,6 +971,7 @@
   <string name="text_calendar_placeholder_9">No events this day. Maybe revisit an old favourite.</string>
   <string name="text_calendar_placeholder_empty_period">The screen is dark. No movies. No episodes. Just you and the silence.</string>
   <string name="text_clear_source_history">History</string>
+  <string name="text_clear_source_library">Library</string>
   <string name="text_clear_source_ratings">Ratings</string>
   <string name="text_clear_source_watchlist">Watchlist</string>
   <string name="text_clear_watchlist">Clear watchlist</string>
