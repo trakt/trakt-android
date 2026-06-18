@@ -240,9 +240,7 @@ private fun ContentRow(
 }
 
 @Composable
-private fun ContentLoading(
-    contentPadding: PaddingValues,
-) {
+private fun ContentLoading(contentPadding: PaddingValues) {
     LazyRow(
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
         contentPadding = contentPadding,
