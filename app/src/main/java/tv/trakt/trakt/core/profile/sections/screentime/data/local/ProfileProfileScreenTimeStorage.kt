@@ -4,7 +4,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.core.profile.sections.screentime.model.ScreenTimeData
 
-internal class ScreenTimeStorage : ScreenTimeLocalDataSource {
+internal class ProfileProfileScreenTimeStorage : ProfileScreenTimeLocalDataSource {
     private val mutex = Mutex()
     private var storage: ScreenTimeData? = null
 

@@ -11,7 +11,7 @@ import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.helpers.extensions.toLocalTime
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
-import tv.trakt.trakt.core.profile.sections.screentime.data.local.ScreenTimeLocalDataSource
+import tv.trakt.trakt.core.profile.sections.screentime.data.local.ProfileScreenTimeLocalDataSource
 import tv.trakt.trakt.core.profile.sections.screentime.model.ScreenTimeData
 import java.time.LocalDate
 import java.time.ZoneOffset.UTC
@@ -24,7 +24,7 @@ internal const val WAKING_HOURS_PER_DAY = 16
 
 internal class GetScreenTimeUseCase(
     private val remoteSource: UserHistoryRemoteDataSource,
-    private val localDataSource: ScreenTimeLocalDataSource,
+    private val localDataSource: ProfileScreenTimeLocalDataSource,
 ) {
     suspend fun getLocalScreenTimeData(): ScreenTimeData? {
         return localDataSource.getData()

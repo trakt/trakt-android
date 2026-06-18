@@ -12,6 +12,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
@@ -71,8 +74,8 @@ import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressDroppedU
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressWatchingUseCase
 import tv.trakt.trakt.core.profile.sections.screentime.ProfileScreenTimeViewModel
 import tv.trakt.trakt.core.profile.sections.screentime.all.ScreenTimeAllViewModel
-import tv.trakt.trakt.core.profile.sections.screentime.data.local.ScreenTimeLocalDataSource
-import tv.trakt.trakt.core.profile.sections.screentime.data.local.ScreenTimeStorage
+import tv.trakt.trakt.core.profile.sections.screentime.data.local.ProfileProfileScreenTimeStorage
+import tv.trakt.trakt.core.profile.sections.screentime.data.local.ProfileScreenTimeLocalDataSource
 import tv.trakt.trakt.core.profile.sections.screentime.model.ScreenTimeData
 import tv.trakt.trakt.core.profile.sections.screentime.usecase.GetScreenTimeUseCase
 import tv.trakt.trakt.core.profile.sections.social.ProfileSocialViewModel
@@ -110,125 +113,36 @@ import tv.trakt.trakt.core.user.usecases.social.LoadUserSocialUseCase
 internal const val PROFILE_PREFERENCES = "profile_preferences_mobile"
 
 internal val profileDataModule = module {
-    single<UserRemoteDataSource> {
-        UserApiClient(
-            usersApi = get(),
-            syncApi = get(),
-            cacheMarkerProvider = get(),
-        )
-    }
+    singleOf(::UserApiClient) { bind<UserRemoteDataSource>() }
+    singleOf(::UserHistoryApiClient) { bind<UserHistoryRemoteDataSource>() }
+    singleOf(::UserWatchlistApiClient) { bind<UserWatchlistRemoteDataSource>() }
+    singleOf(::UserFavoritesApiClient) { bind<UserFavoritesRemoteDataSource>() }
+    singleOf(::UserOtherListsApiClient) { bind<UserOtherListsRemoteDataSource>() }
+    singleOf(::UserCalendarApiClient) { bind<UserCalendarRemoteDataSource>() }
+    singleOf(::UserRatingsApiClient) { bind<UserRatingsRemoteDataSource>() }
+    singleOf(::UserPersonalListsApiClient) { bind<UserPersonalListsRemoteDataSource>() }
+    singleOf(::UserSocialApiClient) { bind<UserSocialRemoteDataSource>() }
+    singleOf(::UserWatchlistMinimalStorage) { bind<UserWatchlistMinimalLocalDataSource>() }
+    singleOf(::UserProgressStorage) { bind<UserProgressLocalDataSource>() }
+    singleOf(::UserListsStorage) { bind<UserListsLocalDataSource>() }
+    singleOf(::UserLikedListsStorage) { bind<UserLikedListsLocalDataSource>() }
+    singleOf(::UserReactionsStorage) { bind<UserReactionsLocalDataSource>() }
+    singleOf(::UserFavoritesStorage) { bind<UserFavoritesLocalDataSource>() }
+    singleOf(::UserLibraryStorage) { bind<UserLibraryLocalDataSource>() }
+    singleOf(::UserRatingsStorage) { bind<UserRatingsLocalDataSource>() }
 
-    single<UserHistoryRemoteDataSource> {
-        UserHistoryApiClient(
-            historyApi = get(),
-        )
-    }
+    singleOf(::ProgressCompletedStorage) { bind<ProgressCompletedLocalDataSource>() }
+    singleOf(::ProgressWatchingStorage) { bind<ProgressWatchingLocalDataSource>() }
+    singleOf(::ProgressDroppedStorage) { bind<ProgressDroppedLocalDataSource>() }
 
-    single<UserWatchlistRemoteDataSource> {
-        UserWatchlistApiClient(
-            usersApi = get(),
-            v3Api = get(),
-        )
-    }
-
-    single<UserFavoritesRemoteDataSource> {
-        UserFavoritesApiClient(
-            usersApi = get(),
-        )
-    }
-
-    single<UserOtherListsRemoteDataSource> {
-        UserOtherListsApiClient(
-            usersApi = get(),
-        )
-    }
-
-    single<UserCalendarRemoteDataSource> {
-        UserCalendarApiClient(
-            calendarsApi = get(),
-        )
-    }
-
-    single<UserRatingsRemoteDataSource> {
-        UserRatingsApiClient(
-            usersApi = get(),
-        )
-    }
-
-    single<UserPersonalListsRemoteDataSource> {
-        UserPersonalListsApiClient(
-            usersApi = get(),
-            v3Api = get(),
-        )
-    }
-
-    single<UserSocialRemoteDataSource> {
-        UserSocialApiClient(
-            usersApi = get(),
-            cacheMarker = get(),
-        )
-    }
+    singleOf(::ProfileRatingsStorage) { bind<ProfileRatingsLocalDataSource>() }
+    singleOf(::ProfileCommentsStorage) { bind<ProfileCommentsLocalDataSource>() }
+    singleOf(::ProfileProfileScreenTimeStorage) { bind<ProfileScreenTimeLocalDataSource>() }
 
     single<UserWatchlistLocalDataSource> {
         UserWatchlistStorage(
             homeWatchlistStorage = get(clazz = HomeWatchlistLocalDataSource::class),
         )
-    }
-
-    single<UserWatchlistMinimalLocalDataSource> {
-        UserWatchlistMinimalStorage()
-    }
-
-    single<UserProgressLocalDataSource> {
-        UserProgressStorage()
-    }
-
-    single<UserListsLocalDataSource> {
-        UserListsStorage()
-    }
-
-    single<UserLikedListsLocalDataSource> {
-        UserLikedListsStorage()
-    }
-
-    single<UserReactionsLocalDataSource> {
-        UserReactionsStorage()
-    }
-
-    single<UserFavoritesLocalDataSource> {
-        UserFavoritesStorage()
-    }
-
-    single<UserLibraryLocalDataSource> {
-        UserLibraryStorage()
-    }
-
-    single<UserRatingsLocalDataSource> {
-        UserRatingsStorage()
-    }
-
-    single<ProgressCompletedLocalDataSource> {
-        ProgressCompletedStorage()
-    }
-
-    single<ProgressWatchingLocalDataSource> {
-        ProgressWatchingStorage()
-    }
-
-    single<ProgressDroppedLocalDataSource> {
-        ProgressDroppedStorage()
-    }
-
-    single<ScreenTimeLocalDataSource> {
-        ScreenTimeStorage()
-    }
-
-    single<ProfileRatingsLocalDataSource> {
-        ProfileRatingsStorage()
-    }
-
-    single<ProfileCommentsLocalDataSource> {
-        ProfileCommentsStorage()
     }
 
     single<DataStore<Preferences>>(named(PROFILE_PREFERENCES)) {
@@ -239,33 +153,25 @@ internal val profileDataModule = module {
 }
 
 internal val profileModule = module {
-    factory {
-        LoadUserProfileUseCase(
-            sessionManager = get(),
-            remoteSource = get(),
-        )
-    }
+    singleOf(::ProgressUpdatesStorage) { bind<ProgressUpdates>() }
 
-    factory {
-        GetProgressDroppedUseCase(
-            remoteUserSource = get(),
-            localDataSource = get(),
-        )
-    }
-
-    factory {
-        GetProgressWatchingUseCase(
-            remoteShowsSyncSource = get(),
-            localDataSource = get(),
-        )
-    }
-
-    factory {
-        GetProgressCompleteUseCase(
-            remoteShowsSyncSource = get(),
-            localDataSource = get(),
-        )
-    }
+    factoryOf(::LoadUserProfileUseCase)
+    factoryOf(::GetProgressDroppedUseCase)
+    factoryOf(::GetProgressWatchingUseCase)
+    factoryOf(::GetProgressCompleteUseCase)
+    factoryOf(::GetProfileRatingsUseCase)
+    factoryOf(::GetProfileCommentsUseCase)
+    factoryOf(::GetProfileStatsUseCase)
+    factoryOf(::LoadUserWatchlistUseCase)
+    factoryOf(::LoadUserSocialUseCase)
+    factoryOf(::LoadUserFavoritesUseCase)
+    factoryOf(::LoadUserLibraryUseCase)
+    factoryOf(::LoadUserListsUseCase)
+    factoryOf(::LoadUserLikedListsUseCase)
+    factoryOf(::LoadUserProgressUseCase)
+    factoryOf(::GetScreenTimeUseCase)
+    factoryOf(::LoadUserReactionsUseCase)
+    factoryOf(::LoadUserRatingsUseCase)
 
     factory {
         GetProgressFilterUseCase(
@@ -282,108 +188,6 @@ internal val profileModule = module {
     factory {
         GetActivityFilterUseCase(
             dataStore = get(named(PROFILE_PREFERENCES)),
-        )
-    }
-
-    factory {
-        GetProfileRatingsUseCase(
-            remoteSource = get(),
-            localDataSource = get(),
-        )
-    }
-
-    factory {
-        GetProfileCommentsUseCase(
-            remoteSource = get(),
-            localDataSource = get(),
-        )
-    }
-
-    factory {
-        GetProfileStatsUseCase(
-            loadUserProgressUseCase = get(),
-        )
-    }
-
-    factory {
-        LoadUserWatchlistUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        LoadUserWatchlistUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        LoadUserSocialUseCase(
-            remoteSource = get(),
-        )
-    }
-
-    factory {
-        LoadUserFavoritesUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        LoadUserLibraryUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        LoadUserListsUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        LoadUserLikedListsUseCase(
-            sessionManager = get(),
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        LoadUserProgressUseCase(
-            remoteSource = get(),
-            localSource = get(),
-            progressUpdates = get(),
-        )
-    }
-
-    factory {
-        GetScreenTimeUseCase(
-            remoteSource = get(),
-            localDataSource = get(),
-        )
-    }
-
-    single<ProgressUpdates> {
-        ProgressUpdatesStorage()
-    }
-
-    factory {
-        LoadUserReactionsUseCase(
-            remoteSource = get(),
-            localSource = get(),
-        )
-    }
-
-    factory {
-        LoadUserRatingsUseCase(
-            remoteSource = get(),
-            localSource = get(),
         )
     }
 
@@ -429,132 +233,19 @@ internal val profileModule = module {
         )
     }
 
-    viewModel {
-        ProfileViewModel(
-            sessionManager = get(),
-            checkInManager = get(),
-            getProfileStatsUseCase = get(),
-            logoutUseCase = get(),
-            analytics = get(),
-        )
-    }
-
-    viewModel {
-        ProfileHistoryViewModel(
-            getPersonalActivityUseCase = get(),
-            userRatingsUseCase = get(),
-            allActivitySource = get(),
-            showLocalDataSource = get(),
-            movieLocalDataSource = get(),
-            episodeLocalDataSource = get(),
-            showUpdates = get(),
-            movieUpdates = get(),
-            episodeUpdates = get(),
-            ratingsUpdates = get(),
-            checkInUpdate = get(),
-            collapsingManager = get(),
-            sessionManager = get(),
-        )
-    }
-
-    viewModel {
-        ProfileFavoritesViewModel(
-            loadFavoritesUseCase = get(),
-            showLocalDataSource = get(),
-            movieLocalDataSource = get(),
-            favoritesUpdates = get(),
-            sessionManager = get(),
-            collapsingManager = get(),
-        )
-    }
-
-    viewModel {
-        ProfileLibraryViewModel(
-            loadLibraryUseCase = get(),
-            showLocalDataSource = get(),
-            movieLocalDataSource = get(),
-            sessionManager = get(),
-            collapsingManager = get(),
-        )
-    }
-
+    viewModelOf(::ProfileViewModel)
+    viewModelOf(::ProfileHistoryViewModel)
+    viewModelOf(::ProfileFavoritesViewModel)
+    viewModelOf(::ProfileLibraryViewModel)
     viewModelOf(::ProfileActivityViewModel)
     viewModelOf(::ProfileScreenTimeViewModel)
+    viewModelOf(::ProfileAllActivityViewModel)
+    viewModelOf(::ProfileSocialViewModel)
+    viewModelOf(::ProfileProgressViewModel)
 
-    viewModel { (data: ScreenTimeData) ->
-        ScreenTimeAllViewModel(
-            data = data,
-        )
-    }
-
-    viewModel {
-        ProfileAllActivityViewModel(
-            getFilterUseCase = get(),
-            getRatingsUseCase = get(),
-            getCommentsUseCase = get(),
-            getCommentReactionsUseCase = get(),
-            showLocalDataSource = get(),
-            episodeLocalDataSource = get(),
-            movieLocalDataSource = get(),
-            ratingsUpdates = get(),
-            commentsUpdates = get(),
-        )
-    }
-
-    viewModel {
-        ProfileSocialViewModel(
-            loadSocialUseCase = get(),
-            getFilterUseCase = get(),
-            sessionManager = get(),
-            collapsingManager = get(),
-        )
-    }
-
-    viewModel {
-        ProfileProgressViewModel(
-            getFilterUseCase = get(),
-            getCompletedUseCase = get(),
-            getDroppedUseCase = get(),
-            getWatchingUseCase = get(),
-            localShowSource = get(),
-            collapsingManager = get(),
-            episodeUpdates = get(),
-            showUpdates = get(),
-        )
-    }
-
-    viewModel {
-        AllProgressViewModel(
-            getFilterUseCase = get(),
-            getCompletedUseCase = get(),
-            getDroppedUseCase = get(),
-            getWatchingUseCase = get(),
-            localShowSource = get(),
-            episodeUpdates = get(),
-            showUpdates = get(),
-        )
-    }
-
-    viewModel {
-        AllFavoritesViewModel(
-            sessionManager = get(),
-            loadFavoritesUseCase = get(),
-            showLocalDataSource = get(),
-            movieLocalDataSource = get(),
-            favoritesUpdates = get(),
-            analytics = get(),
-        )
-    }
-
-    viewModel {
-        AllLibraryViewModel(
-            sessionManager = get(),
-            loadLibraryUseCase = get(),
-            showLocalDataSource = get(),
-            movieLocalDataSource = get(),
-            analytics = get(),
-        )
-    }
+    viewModelOf(::AllProgressViewModel)
+    viewModelOf(::AllFavoritesViewModel)
+    viewModelOf(::AllLibraryViewModel)
 
     viewModel { (show: Show) ->
         FavoriteShowContextViewModel(
@@ -575,6 +266,12 @@ internal val profileModule = module {
             userFavoritesLocalSource = get(),
             favoritesUpdates = get(),
             analytics = get(),
+        )
+    }
+
+    viewModel { (data: ScreenTimeData) ->
+        ScreenTimeAllViewModel(
+            data = data,
         )
     }
 }
