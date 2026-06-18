@@ -38,12 +38,16 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.LocalDate
 import java.time.format.TextStyle
+import java.util.AbstractMap.SimpleImmutableEntry
 import java.util.Locale
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
 // Bars below this fraction of the tallest day still render a visible stub.
 private const val MIN_BAR_FRACTION = 0.06F
+
+// Days shown when there is no data, so the graph still renders with zeroed bars.
+private const val FALLBACK_DAYS = 7
 
 @Composable
 internal fun ScreenTimeDailyBreakdownCard(
@@ -53,7 +57,14 @@ internal fun ScreenTimeDailyBreakdownCard(
 ) {
     val locale = configurationLocale()
     val today = remember { LocalDate.now() }
-    val days = remember(data) { data.entries.sortedBy { it.key } }
+    val days = remember(data, today) {
+        when {
+            data.isEmpty() -> (FALLBACK_DAYS - 1 downTo 0).map { offset ->
+                SimpleImmutableEntry(today.minusDays(offset.toLong()), Duration.ZERO)
+            }
+            else -> data.entries.sortedBy { it.key }
+        }
+    }
     val maxMinutes = remember(days) { days.maxOfOrNull { it.value.inWholeMinutes } ?: 0L }
 
     Column(
