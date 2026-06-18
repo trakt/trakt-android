@@ -52,6 +52,7 @@ import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -85,6 +86,8 @@ import tv.trakt.trakt.core.summary.episodes.features.info.EpisodeInfoSheet
 import tv.trakt.trakt.core.summary.episodes.features.related.EpisodeRelatedView
 import tv.trakt.trakt.core.summary.episodes.features.season.EpisodeSeasonView
 import tv.trakt.trakt.core.summary.episodes.features.streaming.EpisodeStreamingsView
+import tv.trakt.trakt.core.summary.social.MediaSocialActivitySheet
+import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
@@ -124,6 +127,7 @@ internal fun EpisodeDetailsScreen(
     var dateSheet by remember { mutableStateOf(false) }
     var detailsSheet by remember { mutableStateOf<Pair<Show, Episode>?>(null) }
     var coverImageSheet by remember { mutableStateOf(false) }
+    var socialActivitySheet by remember { mutableStateOf<ImmutableList<MediaSocialActivity>?>(null) }
 
     DisposableEffect(Unit) {
         localRateVisibility.value = false
@@ -158,6 +162,11 @@ internal fun EpisodeDetailsScreen(
                 episode = state.episode,
                 context = context,
             )
+        },
+        onSocialActivityClick = {
+            state.episodeSocials?.let {
+                socialActivitySheet = it
+            }
         },
         onHistoryClick = {
             historySheet = it
@@ -276,6 +285,17 @@ internal fun EpisodeDetailsScreen(
         onDismiss = { detailsSheet = null },
     )
 
+    MediaSocialActivitySheet(
+        activity = socialActivitySheet,
+        mediaTitle = state.episode?.title ?: "",
+        onUserClick = {
+            onNavigateToUser(it)
+        },
+        onDismiss = {
+            socialActivitySheet = null
+        },
+    )
+
     CoverImageSheet(
         mediaId = when {
             coverImageSheet -> state.episode?.ids?.trakt
@@ -326,6 +346,7 @@ internal fun EpisodeDetailsContent(
     onEpisodeClick: ((Episode) -> Unit)? = null,
     onTrackClick: (() -> Unit)? = null,
     onShareClick: (() -> Unit)? = null,
+    onSocialActivityClick: (() -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
     onMoreCommentsClick: ((CommentsFilter) -> Unit)? = null,
     onHistoryClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
@@ -408,6 +429,7 @@ internal fun EpisodeDetailsContent(
                         episode = state.episode,
                         show = state.show,
                         episodeTranslation = state.episodeTranslation,
+                        episodeSocials = state.episodeSocials,
                         ratings = state.episodeRatings,
                         creator = state.episodeCreator,
                         playsCount = state.episodeProgress?.plays ?: 0,
@@ -416,6 +438,7 @@ internal fun EpisodeDetailsContent(
                         onShowClick = onShowClick ?: {},
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},
+                        onSocialActivityClick = onSocialActivityClick ?: {},
                         onInfoClick = onInfoClick ?: {},
                         modifier = Modifier
                             .align(Center)

@@ -8,6 +8,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -64,9 +65,11 @@ import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.movies.MovieDetailsState.UserRatingsState
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.movies.features.actors.usecases.GetMovieDirectorUseCase
+import tv.trakt.trakt.core.summary.movies.features.socials.GetMovieSocialsUseCase
 import tv.trakt.trakt.core.summary.movies.navigation.MovieDetailsDestination
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
+import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieFavoritesUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
@@ -82,6 +85,7 @@ import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.resources.R
 import java.util.Locale
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class MovieDetailsViewModel(
     savedStateHandle: SavedStateHandle,
@@ -90,6 +94,7 @@ internal class MovieDetailsViewModel(
     private val getExternalRatingsUseCase: GetMovieRatingsUseCase,
     private val getMovieDirectorUseCase: GetMovieDirectorUseCase,
     private val getMovieTranslationsUseCase: GetMovieTranslationsUseCase,
+    private val getMovieSocialsUseCase: GetMovieSocialsUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
     private val loadListsUseCase: LoadUserListsUseCase,
@@ -124,6 +129,7 @@ internal class MovieDetailsViewModel(
     private val movieCreatorState = MutableStateFlow(initialState.movieCreator)
     private val movieProgressState = MutableStateFlow(initialState.movieProgress)
     private val movieTranslationState = MutableStateFlow(initialState.movieTranslation)
+    private val movieSocialsState = MutableStateFlow(initialState.movieSocials)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingProgress = MutableStateFlow(initialState.loadingProgress)
     private val loadingLists = MutableStateFlow(initialState.loadingLists)
@@ -151,7 +157,7 @@ internal class MovieDetailsViewModel(
     private fun observeCheckIn() {
         checkInUpdates.observeUpdates()
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .filterNot { it.first == MovieDetails }
             .onEach {
                 loadUserProgressData(force = true)
@@ -187,6 +193,7 @@ internal class MovieDetailsViewModel(
 
                 loadTranslations()
                 loadRatings(movie)
+                loadSocials()
                 loadCreator()
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -208,6 +215,20 @@ internal class MovieDetailsViewModel(
                         movieId = movieId,
                         locale = locale,
                     )
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    private fun loadSocials() {
+        viewModelScope.launch {
+            try {
+                movieSocialsState.update {
+                    getMovieSocialsUseCase.getSocials(movieId)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -807,7 +828,7 @@ internal class MovieDetailsViewModel(
             try {
                 loadingFavorite.update { Loading }
 
-                delay(300) // Small delay to allow UI to settle.
+                delay(300.milliseconds) // Small delay to allow UI to settle.
                 updateMovieFavoritesUseCase.addToFavorites(movieId)
                 userFavoritesLocalSource.addMovies(
                     movies = listOf(
@@ -861,7 +882,7 @@ internal class MovieDetailsViewModel(
             try {
                 loadingFavorite.update { Loading }
 
-                delay(300) // Small delay to allow UI to settle.
+                delay(300.milliseconds) // Small delay to allow UI to settle.
                 updateMovieFavoritesUseCase.removeFromFavorites(movieId)
                 userFavoritesLocalSource.removeMovies(setOf(movieId))
                 favoritesUpdates.notifyUpdate(DETAILS)
@@ -978,6 +999,7 @@ internal class MovieDetailsViewModel(
         movieProgressState,
         movieUserRatingsState,
         movieTranslationState,
+        movieSocialsState,
         loadingState,
         loadingProgress,
         loadingLists,
@@ -993,13 +1015,14 @@ internal class MovieDetailsViewModel(
             movieProgress = state[3] as MovieDetailsState.ProgressState?,
             movieUserRating = state[4] as UserRatingsState?,
             movieTranslation = state[5] as MediaTranslation?,
-            loading = state[6] as LoadingState,
-            loadingProgress = state[7] as LoadingState,
-            loadingLists = state[8] as LoadingState,
-            loadingFavorite = state[9] as LoadingState,
-            info = state[10] as StringResource?,
-            error = state[11] as Exception?,
-            user = state[12] as User?,
+            movieSocials = state[6] as ImmutableList<MediaSocialActivity>?,
+            loading = state[7] as LoadingState,
+            loadingProgress = state[8] as LoadingState,
+            loadingLists = state[9] as LoadingState,
+            loadingFavorite = state[10] as LoadingState,
+            info = state[11] as StringResource?,
+            error = state[12] as Exception?,
+            user = state[13] as User?,
         )
     }.stateIn(
         scope = viewModelScope,

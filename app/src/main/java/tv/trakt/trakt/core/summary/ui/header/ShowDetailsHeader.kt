@@ -1,9 +1,14 @@
 package tv.trakt.trakt.core.summary.ui.header
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,8 +22,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.Config.webImdbMediaUrl
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -28,6 +36,8 @@ import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
+import tv.trakt.trakt.core.summary.ui.header.social.DetailsHeaderSocialVerticalChip
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -35,6 +45,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun DetailsHeader(
     show: Show,
     showTranslation: MediaTranslation?,
+    showSocials: ImmutableList<MediaSocialActivity>?,
     ratings: ExternalRating?,
     creator: Person?,
     airedCount: Int,
@@ -43,6 +54,7 @@ internal fun DetailsHeader(
     onCreatorClick: (Person) -> Unit,
     onShareClick: () -> Unit,
     onShareImageClick: () -> Unit,
+    onSocialActivityClick: () -> Unit,
     onInfoClick: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -116,6 +128,30 @@ internal fun DetailsHeader(
                             }
                         },
                 )
+            }
+        },
+        extraRightColumn = {
+            val users = remember(showSocials?.size) {
+                showSocials?.map { it.user }?.toImmutableList()
+            }
+            AnimatedVisibility(
+                visible = !users.isNullOrEmpty(),
+                enter = fadeIn(),
+                exit = fadeOut(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 19.dp),
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                ) {
+                    DetailsHeaderSocialVerticalChip(
+                        users = users ?: EmptyImmutableList,
+                        size = 28.dp,
+                        spacing = 20,
+                        modifier = Modifier.onClick { onSocialActivityClick() },
+                    )
+                }
             }
         },
         genres = show.genres,

@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.summary.shows.di
 
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
@@ -33,6 +34,7 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.all.AllShowSeasonsView
 import tv.trakt.trakt.core.summary.shows.features.seasons.usecases.GetShowSeasonsUseCase
 import tv.trakt.trakt.core.summary.shows.features.sentiment.ShowSentimentViewModel
 import tv.trakt.trakt.core.summary.shows.features.sentiment.usecases.GetShowSentimentUseCase
+import tv.trakt.trakt.core.summary.shows.features.socials.GetShowSocialsUseCase
 import tv.trakt.trakt.core.summary.shows.features.streaming.ShowStreamingsViewModel
 import tv.trakt.trakt.core.summary.shows.features.streaming.usecases.GetShowStreamingsUseCase
 import tv.trakt.trakt.core.summary.shows.features.trivia.ShowTriviaViewModel
@@ -166,6 +168,8 @@ internal val showDetailsModule = module {
         )
     }
 
+    factoryOf(::GetShowSocialsUseCase)
+
     viewModel {
         ShowDetailsViewModel(
             appContext = androidApplication(),
@@ -174,6 +178,7 @@ internal val showDetailsModule = module {
             getExternalRatingsUseCase = get(),
             getShowCreatorUseCase = get(),
             getShowTranslationsUseCase = get(),
+            getShowSocialsUseCase = get(),
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
             loadListsUseCase = get(),

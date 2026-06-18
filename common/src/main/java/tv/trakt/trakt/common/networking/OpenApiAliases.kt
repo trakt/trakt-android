@@ -100,6 +100,7 @@ typealias ListMediaItemDto = GetUsersWatchlistAll200ResponseInner
 typealias ListItemDto = GetUsersListsListItemsAll200ResponseInner
 typealias UserSettingsDto = GetUsersSettings200Response
 typealias UserReactionDto = GetUsersReactionsComments200ResponseInner
+typealias UserMediaDto = GetUsersReactionsComments200ResponseInnerCommentUser
 typealias UserCommentsDto = GetUsersReactionsComments200ResponseInnerCommentUser
 typealias UserBlockedDto = GetUsersReactionsComments200ResponseInnerCommentUser
 typealias StreamingDto = GetMoviesWatchnow200ResponseValue

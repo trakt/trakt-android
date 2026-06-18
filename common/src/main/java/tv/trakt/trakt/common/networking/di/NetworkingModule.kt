@@ -104,7 +104,8 @@ val networkingApiModule = module {
 
     single<V3Api> {
         V3Api(
-            baseUrl = API_V3_BASE_URL,
+            baseUrl = API_BASE_URL,
+            baseV3Url = API_V3_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
         )
