@@ -15,6 +15,7 @@ import kotlin.time.Duration
 
 @Immutable
 internal sealed class CustomListItem(
+    open val itemId: Int,
     open val rank: Int,
     open val listedAt: Instant,
     open val loading: Boolean,
@@ -22,36 +23,40 @@ internal sealed class CustomListItem(
     @Immutable
     internal data class MovieItem(
         val movie: Movie,
+        override val itemId: Int,
         override val rank: Int,
         override val listedAt: Instant,
         override val loading: Boolean = false,
-    ) : CustomListItem(rank, listedAt, loading)
+    ) : CustomListItem(itemId, rank, listedAt, loading)
 
     @Immutable
     internal data class ShowItem(
         val show: Show,
+        override val itemId: Int,
         override val rank: Int,
         override val listedAt: Instant,
         override val loading: Boolean = false,
-    ) : CustomListItem(rank, listedAt, loading)
+    ) : CustomListItem(itemId, rank, listedAt, loading)
 
     @Immutable
     internal data class SeasonItem(
         val show: Show,
         val season: Season,
+        override val itemId: Int,
         override val rank: Int,
         override val listedAt: Instant,
         override val loading: Boolean = false,
-    ) : CustomListItem(rank, listedAt, loading)
+    ) : CustomListItem(itemId, rank, listedAt, loading)
 
     @Immutable
     internal data class EpisodeItem(
         val show: Show,
         val episode: Episode,
+        override val itemId: Int,
         override val rank: Int,
         override val listedAt: Instant,
         override val loading: Boolean = false,
-    ) : CustomListItem(rank, listedAt, loading)
+    ) : CustomListItem(itemId, rank, listedAt, loading)
 
     val id: TraktId
         get() = when (this) {
@@ -71,6 +76,14 @@ internal sealed class CustomListItem(
 
     val key: String
         get() = "${id.value}-${type.value}-cli"
+
+    val title: String
+        get() = when (this) {
+            is ShowItem -> show.title
+            is MovieItem -> movie.title
+            is SeasonItem -> show.title
+            is EpisodeItem -> show.title
+        }
 
     val images: Images?
         get() = when (this) {

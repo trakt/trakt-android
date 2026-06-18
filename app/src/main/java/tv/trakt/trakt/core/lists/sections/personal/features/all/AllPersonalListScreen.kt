@@ -99,6 +99,7 @@ internal fun AllPersonalListScreen(
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onEpisodeClick: (TraktId, Episode) -> Unit,
+    onReorderClick: (CustomList) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -176,6 +177,9 @@ internal fun AllPersonalListScreen(
         onMoreClick = {
             editListSheet = state.list
         },
+        onReorderClick = {
+            state.list?.let(onReorderClick)
+        },
         onBackClick = onNavigateBack,
     )
 
@@ -251,6 +255,7 @@ internal fun AllPersonalListContent(
     onBackClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
     onMoreClick: () -> Unit = {},
+    onReorderClick: () -> Unit = {},
 ) {
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
@@ -303,6 +308,7 @@ internal fun AllPersonalListContent(
             onBackClick = onBackClick,
             onMoreClick = onMoreClick,
             onShareClick = onShareClick,
+            onReorderClick = onReorderClick,
             onEndOfList = onLoadMoreData,
         )
     }
@@ -311,6 +317,7 @@ internal fun AllPersonalListContent(
 @Composable
 private fun TitleBar(
     enabled: Boolean,
+    reorderEnabled: Boolean,
     title: String,
     subtitle: String?,
     subtitleVisible: Boolean,
@@ -319,6 +326,7 @@ private fun TitleBar(
     onBackClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
     onFiltersClick: () -> Unit = {},
+    onReorderClick: () -> Unit = {},
     onMoreClick: () -> Unit = {},
 ) {
     Row(
@@ -416,6 +424,29 @@ private fun TitleBar(
                     )
 
                     DropdownMenuItem(
+                        enabled = reorderEnabled,
+                        text = {
+                            Text(
+                                text = stringResource(R.string.button_text_reorder),
+                                style = TraktTheme.typography.buttonTertiary,
+                                color = TraktTheme.colors.textPrimary,
+                            )
+                        },
+                        onClick = {
+                            onReorderClick()
+                            showMenu = false
+                        },
+                        leadingIcon = {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_reorder),
+                                contentDescription = null,
+                                tint = TraktTheme.colors.textPrimary,
+                                modifier = Modifier.size(24.dp),
+                            )
+                        },
+                    )
+
+                    DropdownMenuItem(
                         text = {
                             Text(
                                 text = stringResource(R.string.button_text_share),
@@ -500,6 +531,7 @@ private fun ContentList(
     onBackClick: () -> Unit,
     onShareClick: () -> Unit,
     onMoreClick: () -> Unit,
+    onReorderClick: () -> Unit,
     onEndOfList: () -> Unit,
 ) {
     val subtitleVisible = remember(subtitle) {
@@ -528,6 +560,7 @@ private fun ContentList(
         item {
             TitleBar(
                 enabled = !loading,
+                reorderEnabled = !loading && listItems.isNotEmpty(),
                 title = title,
                 subtitle = subtitle,
                 subtitleVisible = subtitleVisible,
@@ -535,6 +568,7 @@ private fun ContentList(
                 onBackClick = onBackClick,
                 onShareClick = onShareClick,
                 onMoreClick = onMoreClick,
+                onReorderClick = onReorderClick,
                 onFiltersClick = onFiltersClick,
             )
         }

@@ -126,6 +126,7 @@ internal class GetPersonalListItemsUseCase(
         ).asyncMap {
             val listedAt = it.listedAt.toInstant()
             CustomListItem.MovieItem(
+                itemId = it.id,
                 rank = it.rank,
                 movie = Movie.fromDto(it.movie),
                 listedAt = listedAt,
@@ -150,6 +151,7 @@ internal class GetPersonalListItemsUseCase(
         ).asyncMap {
             val listedAt = it.listedAt.toInstant()
             CustomListItem.ShowItem(
+                itemId = it.id,
                 rank = it.rank,
                 show = Show.fromDto(it.show),
                 listedAt = listedAt,
@@ -179,22 +181,26 @@ internal class GetPersonalListItemsUseCase(
     private fun mapListItem(dto: ListItemDto): CustomListItem {
         return when (dto.type.value) {
             SHOW.value -> CustomListItem.ShowItem(
+                itemId = dto.id,
                 rank = dto.rank,
                 show = Show.fromDto(dto.show!!),
                 listedAt = dto.listedAt.toInstant(),
             )
             MOVIE.value -> CustomListItem.MovieItem(
+                itemId = dto.id,
                 rank = dto.rank,
                 movie = Movie.fromDto(dto.movie!!),
                 listedAt = dto.listedAt.toInstant(),
             )
             SEASON.value -> CustomListItem.SeasonItem(
+                itemId = dto.id,
                 rank = dto.rank,
                 season = Season.fromDto(dto.season!!),
                 show = Show.fromDto(dto.show!!),
                 listedAt = dto.listedAt.toInstant(),
             )
             EPISODE.value -> CustomListItem.EpisodeItem(
+                itemId = dto.id,
                 rank = dto.rank,
                 episode = Episode.fromDto(dto.episode!!),
                 show = Show.fromDto(dto.show!!),

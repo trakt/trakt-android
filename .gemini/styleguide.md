@@ -24,8 +24,7 @@ Gemini uses when reviewing pull requests.
 ## Review scope
 
 - Apply rules to **new files** and **substantially rewritten files**.
-- Skip nits inside legacy/generated zones (see
-  `.agents/rules/legacy-zones.md`): `build/`, `external/`, generated
+- Skip nits inside legacy/generated zones: `build/`, `external/`, generated
   OpenAPI sources, `values-*/strings.xml` translation files.
 - Don't flag the same pattern repeatedly across legacy files — once is
   enough.

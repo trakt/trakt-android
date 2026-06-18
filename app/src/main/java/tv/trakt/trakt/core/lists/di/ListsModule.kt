@@ -23,12 +23,14 @@ import tv.trakt.trakt.common.core.lists.data.remote.ListsApiClient
 import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.ListsViewModel
 import tv.trakt.trakt.core.lists.features.all.AllListsViewModel
 import tv.trakt.trakt.core.lists.features.details.ListDetailsViewModel
 import tv.trakt.trakt.core.lists.features.details.usecases.GetListItemsUseCase
+import tv.trakt.trakt.core.lists.features.reorder.ListReorderViewModel
+import tv.trakt.trakt.core.lists.features.reorder.data.ReorderUpdates
+import tv.trakt.trakt.core.lists.features.reorder.data.ReorderUpdatesStorage
+import tv.trakt.trakt.core.lists.features.reorder.usecase.ReorderListUseCase
 import tv.trakt.trakt.core.lists.sections.collaborations.ListsCollaborationsViewModel
 import tv.trakt.trakt.core.lists.sections.collaborations.data.local.items.ListsCollaborationsItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.collaborations.data.local.items.ListsCollaborationsItemsStorage
@@ -82,6 +84,7 @@ internal val listsDataModule = module {
     singleOf(::ListsLikedItemsStorage) { bind<ListsLikedItemsLocalDataSource>() }
     singleOf(::ListsCollaborationsItemsStorage) { bind<ListsCollaborationsItemsLocalDataSource>() }
     singleOf(::WatchlistUpdatesStorage) { bind<WatchlistUpdates>() }
+    singleOf(::ReorderUpdatesStorage) { bind<ReorderUpdates>() }
 
     single<DataStore<Preferences>>(named(LISTS_PREFERENCES)) {
         createStore(
@@ -107,61 +110,22 @@ internal val listsModule = module {
     factoryOf(::AddPersonalListItemUseCase)
     factoryOf(::AddLikedListUseCase)
     factoryOf(::RemoveLikedListUseCase)
+    factoryOf(::ReorderListUseCase)
 
     viewModelOf(::ListsViewModel)
     viewModelOf(::ListsWatchlistViewModel)
     viewModelOf(::ListDetailsViewModel)
+    viewModelOf(::ListReorderViewModel)
     viewModelOf(::CreateListViewModel)
     viewModelOf(::EditListViewModel)
     viewModelOf(::AllWatchlistViewModel)
     viewModelOf(::AllPersonalListViewModel)
     viewModelOf(::AllListsViewModel)
-
-    viewModel { (listId: TraktId) ->
-        ListsPersonalViewModel(
-            listId = listId,
-            filterManager = get(),
-            getListUseCase = get(),
-            getListItemsUseCase = get(),
-            localListsSource = get(),
-            localListsItemsSource = get(),
-            showLocalDataSource = get(),
-            movieLocalDataSource = get(),
-            episodeLocalDataSource = get(),
-            collectionStateProvider = get(),
-            collapsingManager = get(),
-        )
-    }
-
-    viewModel { (listId: TraktId) ->
-        ListsLikedViewModel(
-            listId = listId,
-            filterManager = get(),
-            getLikedListUseCase = get(),
-            getLikedListItemsUseCase = get(),
-            showLocalDataSource = get(),
-            movieLocalDataSource = get(),
-            episodeLocalDataSource = get(),
-            collectionStateProvider = get(),
-            collapsingManager = get(),
-        )
-    }
-
-    viewModel { (listId: TraktId) ->
-        ListsCollaborationsViewModel(
-            listId = listId,
-            filterManager = get(),
-            getCollaborationsListUseCase = get(),
-            getCollaborationsListItemsUseCase = get(),
-            localListsItemsSource = get(),
-            localListsSource = get(),
-            showLocalDataSource = get(),
-            movieLocalDataSource = get(),
-            episodeLocalDataSource = get(),
-            collectionStateProvider = get(),
-            collapsingManager = get(),
-        )
-    }
+    viewModelOf(::ListsPersonalViewModel)
+    viewModelOf(::ListsLikedViewModel)
+    viewModelOf(::ListsCollaborationsViewModel)
+    viewModelOf(::WatchlistShowContextViewModel)
+    viewModelOf(::ListShowContextViewModel)
 
     viewModel {
         WatchlistMovieContextViewModel(
@@ -176,20 +140,6 @@ internal val listsModule = module {
             ratePromptManager = get(),
             analytics = get(),
             watchlistUpdates = get(),
-        )
-    }
-
-    viewModel { (show: Show) ->
-        WatchlistShowContextViewModel(
-            show = show,
-            updateWatchlistUseCase = get(),
-            updateHistoryUseCase = get(),
-            userProgressLocalSource = get(),
-            userWatchlistLocalSource = get(),
-            userWatchlistMinLocalSource = get(),
-            loadProgressUseCase = get(),
-            sessionManager = get(),
-            analytics = get(),
         )
     }
 
@@ -210,25 +160,6 @@ internal val listsModule = module {
             sessionManager = get(),
             checkInManager = get(),
             ratePromptManager = get(),
-            errorsManager = get(),
-            analytics = get(),
-        )
-    }
-
-    viewModel { (show: Show, list: CustomList) ->
-        ListShowContextViewModel(
-            show = show,
-            list = list,
-            updateShowWatchlistUseCase = get(),
-            updateShowHistoryUseCase = get(),
-            removeListItemUseCase = get(),
-            userProgressLocalSource = get(),
-            userWatchlistLocalSource = get(),
-            userWatchlistMinLocalSource = get(),
-            loadProgressUseCase = get(),
-            loadWatchlistMinUseCase = get(),
-            watchlistUpdates = get(),
-            sessionManager = get(),
             errorsManager = get(),
             analytics = get(),
         )

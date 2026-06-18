@@ -34,6 +34,7 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ITEMS_SECTION_LIMIT
+import tv.trakt.trakt.core.lists.features.reorder.data.ReorderUpdates
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
@@ -43,6 +44,7 @@ import tv.trakt.trakt.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 internal class ListsPersonalViewModel(
@@ -55,6 +57,7 @@ internal class ListsPersonalViewModel(
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val collectionStateProvider: CollectionStateProvider,
+    private val reorderUpdates: ReorderUpdates,
     private val filterManager: GlobalFilterManager,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
@@ -78,8 +81,9 @@ internal class ListsPersonalViewModel(
     init {
         loadData()
 
-        observeLists()
         observeMode()
+        observeLists()
+        observeReorder()
         observeCollection()
     }
 
@@ -99,13 +103,21 @@ internal class ListsPersonalViewModel(
             localListsItemsSource.observeUpdates(),
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach { loadLocalData() }
             .launchIn(viewModelScope)
     }
 
     private fun observeCollection() {
         collectionStateProvider
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeReorder() {
+        reorderUpdates.observeUpdates(listId)
+            .distinctUntilChanged()
+            .debounce(200.milliseconds)
+            .onEach { loadData(ignoreErrors = true) }
             .launchIn(viewModelScope)
     }
 

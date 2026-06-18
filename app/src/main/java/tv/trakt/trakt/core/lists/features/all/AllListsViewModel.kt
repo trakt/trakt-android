@@ -32,10 +32,12 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.lists.ListsConfig
 import tv.trakt.trakt.core.lists.features.all.navigation.AllListsDestination
+import tv.trakt.trakt.core.lists.features.reorder.data.ReorderUpdates
 import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.collaborations.usecases.GetCollaborationsListsUseCase
 import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedLocalDataSource
@@ -46,17 +48,19 @@ import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collab
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Personal
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class AllListsViewModel(
     savedStateHandle: SavedStateHandle,
     analytics: Analytics,
-    private val sessionManager: SessionManager,
     private val getPersonalListsUseCase: GetPersonalListsUseCase,
     private val getLikedListsUseCase: GetLikedListsUseCase,
     private val getCollaborationsListsUseCase: GetCollaborationsListsUseCase,
     private val localPersonalListsSource: ListsPersonalLocalDataSource,
     private val localLikedListsSource: ListsLikedLocalDataSource,
     private val localCollaborationsListsSource: ListsCollaborationsLocalDataSource,
+    private val reorderUpdates: ReorderUpdates,
+    private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<AllListsDestination>()
 
@@ -92,9 +96,20 @@ internal class AllListsViewModel(
             localCollaborationsListsSource.observeUpdates(),
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach { loadData() }
             .launchIn(viewModelScope)
+    }
+
+    private fun observeReorder(listIds: List<TraktId>) {
+        reorderUpdates.clear()
+        listIds.forEach { listId ->
+            reorderUpdates.observeUpdates(listId)
+                .distinctUntilChanged()
+                .debounce(200.milliseconds)
+                .onEach { loadData(reload = true) }
+                .launchIn(viewModelScope)
+        }
     }
 
     fun loadUser() {
@@ -170,6 +185,10 @@ internal class AllListsViewModel(
 
                 hasMorePages = filterState.value != Collaborations &&
                     (itemsState.value?.size ?: 0) >= ListsConfig.LISTS_ALL_PAGE_LIMIT
+
+                itemsState.value?.map { it.ids.trakt }?.let {
+                    observeReorder(it)
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

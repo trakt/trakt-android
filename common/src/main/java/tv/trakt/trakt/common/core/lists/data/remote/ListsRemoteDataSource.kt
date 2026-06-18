@@ -82,4 +82,9 @@ interface ListsRemoteDataSource {
     suspend fun addLikedList(listId: TraktId)
 
     suspend fun removeLikedList(listId: TraktId)
+
+    suspend fun reorderListItems(
+        listId: TraktId,
+        itemsIds: List<Int>,
+    )
 }

@@ -13,6 +13,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -40,12 +44,14 @@ import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ITEMS_ALL_LIMIT
+import tv.trakt.trakt.core.lists.features.reorder.data.ReorderUpdates
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.ListsPersonalDestination
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 import tv.trakt.trakt.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.user.UserCollectionState
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 internal class AllPersonalListViewModel(
@@ -58,6 +64,7 @@ internal class AllPersonalListViewModel(
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val collectionStateProvider: CollectionStateProvider,
+    private val reorderUpdates: ReorderUpdates,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<ListsPersonalDestination>()
@@ -89,6 +96,7 @@ internal class AllPersonalListViewModel(
         loadUser()
 
         observeCollection()
+        observeReorder()
 
         analytics.logScreenView(
             screenName = "all_personal_list",
@@ -97,6 +105,14 @@ internal class AllPersonalListViewModel(
 
     private fun observeCollection() {
         collectionStateProvider
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeReorder() {
+        reorderUpdates.observeUpdates(destination.listId.toTraktId())
+            .distinctUntilChanged()
+            .debounce(250.milliseconds)
+            .onEach { loadData(ignoreErrors = true) }
             .launchIn(viewModelScope)
     }
 
@@ -252,7 +268,7 @@ internal class AllPersonalListViewModel(
         loadingJob = launch {
             if (itemsState.value?.isNotEmpty() == true) {
                 // Avoid blinking loading but still show it if loading takes too long
-                delay(100)
+                delay(100.milliseconds)
             }
             loadingState.update { Loading }
         }
