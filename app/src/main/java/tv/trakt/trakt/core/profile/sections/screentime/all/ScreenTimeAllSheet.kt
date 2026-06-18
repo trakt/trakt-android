@@ -23,7 +23,7 @@ internal fun ScreenTimeAllSheet(
     visible: Boolean,
     onDismiss: () -> Unit,
 ) {
-    val viewModelKey = remember(visible) {
+    val viewModelKey = remember(visible, data) {
         nextInt().toString()
     }
 

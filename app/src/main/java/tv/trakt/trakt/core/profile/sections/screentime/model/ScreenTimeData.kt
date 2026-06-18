@@ -31,9 +31,9 @@ internal data class ScreenTimeData(
         @param:StringRes val displayRes: Int,
         val period: Pair<LocalTime, LocalTime>,
     ) {
-        Morning(R.string.text_stats_time_morning, LocalTime.of(5, 0) to LocalTime.of(11, 59)),
-        Afternoon(R.string.text_stats_time_afternoon, LocalTime.of(12, 0) to LocalTime.of(16, 59)),
-        Evening(R.string.text_stats_time_evening, LocalTime.of(17, 0) to LocalTime.of(21, 59)),
-        Night(R.string.text_stats_time_late_night, LocalTime.of(22, 0) to LocalTime.of(4, 59)),
+        Morning(R.string.text_stats_time_morning, LocalTime.of(5, 0) to LocalTime.of(11, 59, 59)),
+        Afternoon(R.string.text_stats_time_afternoon, LocalTime.of(12, 0) to LocalTime.of(16, 59, 59)),
+        Evening(R.string.text_stats_time_evening, LocalTime.of(17, 0) to LocalTime.of(21, 59, 59)),
+        Night(R.string.text_stats_time_late_night, LocalTime.of(22, 0) to LocalTime.of(4, 59, 59)),
     }
 }

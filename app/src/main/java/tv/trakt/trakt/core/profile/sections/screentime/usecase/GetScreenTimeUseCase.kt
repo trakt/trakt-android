@@ -31,7 +31,7 @@ internal class GetScreenTimeUseCase(
     }
 
     suspend fun getScreenTimeData(): ScreenTimeData {
-        val startLocal = nowLocalDay().minusDays(15).atStartOfDay()
+        val startLocal = nowLocalDay().minusDays(14).atStartOfDay()
         val endLocal = nowLocalDay().plusDays(1).atStartOfDay()
 
         return coroutineScope {
