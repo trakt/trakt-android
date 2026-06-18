@@ -102,6 +102,7 @@ fun fetch(options: FetchOptions): Response
   - **`single { }`** — clients, repositories, caches, expensive/stateful things.
   - **`factory { }`** — use-cases, mappers, stateless cheap things.
   - **`viewModel { }`** — every ViewModel.
+- **Prefer the constructor-reference DSL (`singleOf`, `factoryOf`, `viewModelOf`, `workerOf`) over the lambda form whenever possible.** When a definition is just `single { Foo(get(), get()) }`, write `singleOf(::Foo)` — Koin resolves the constructor params by type. Bind interfaces with the `bind` infix: `singleOf(::FooRepositoryImpl) bind FooRepository::class`. Fall back to the lambda form (`single { … }`) only when the `Of` variant can't express the construction: parametrised definitions (`viewModel { (id: TraktId) -> … }`), named/qualified params, manual `get(named(…))`, or values built inline (not via a constructor). See `core/lists/di/ListsModule.kt` for a worked example.
 - No mixing Koin with Hilt/Dagger. Codebase standardised on Koin.
 - Compose: ViewModels via `koinViewModel()`. Composables receiving collaborators take them as params (not service locator inside body).
 

@@ -168,8 +168,9 @@ fun NavGraphBuilder.movieFeature(onBack: () -> Unit) {
 
 ```kotlin
 internal val movieModule = module {
-    single<MovieRepository> { MovieRepositoryImpl(client = get(), local = get()) }
-    factory { GetMovieSummaryUseCase(repository = get()) }
+    singleOf(::MovieRepositoryImpl) bind MovieRepository::class
+    factoryOf(::GetMovieSummaryUseCase)
+    // parametrised ViewModel: no Of variant, keep the lambda form
     viewModel { (id: Long) -> MovieSummaryViewModel(id = id, repository = get()) }
 }
 ```
@@ -179,6 +180,12 @@ Scopes:
 - **`single { }`** — repositories, clients, caches, stateful collaborators.
 - **`factory { }`** — use-cases, mappers, stateless + cheap.
 - **`viewModel { }`** — every ViewModel.
+
+DSL form:
+
+- **Default to the constructor-reference DSL (`singleOf`, `factoryOf`, `viewModelOf`, `workerOf`)** — `singleOf(::Foo)` replaces `single { Foo(get(), get()) }`; Koin resolves params by type.
+- **Bind interfaces with `bind`**: `singleOf(::FooRepositoryImpl) bind FooRepository::class`.
+- **Lambda form (`single { … }`) only when `Of` can't express it**: parametrised definitions (`viewModel { (id) -> … }`), qualified/named params, `get(named(…))`, or inline-built values. See `core/lists/di/ListsModule.kt`.
 
 ## Background sync
 
