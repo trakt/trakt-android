@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import java.util.Locale
+import kotlin.math.abs
 
 /**
  * Formats an integer into a compact string representation using thousands (e.g., 1.2K for 1200).
@@ -54,9 +55,10 @@ fun rememberThousandsFormat(count: Int): String {
 fun Long.durationFormat(
     locale: Locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault(),
 ): String {
-    val days = this / (60 * 24)
-    val hours = (this % (60 * 24)) / 60
-    val minutes = this % 60
+    val magnitude = abs(this)
+    val days = magnitude / (60 * 24)
+    val hours = (magnitude % (60 * 24)) / 60
+    val minutes = magnitude % 60
 
     val measures = mutableListOf<Measure>()
     if (days > 0) {
@@ -70,7 +72,8 @@ fun Long.durationFormat(
     }
 
     val format = MeasureFormat.getInstance(locale, FormatWidth.NARROW)
-    return format.formatMeasures(*measures.toTypedArray()).capitalize()
+    val formatted = format.formatMeasures(*measures.toTypedArray()).capitalize()
+    return if (this < 0) "-$formatted" else formatted
 }
 
 /**
@@ -78,12 +81,22 @@ fun Long.durationFormat(
  * If the duration is null, it returns "N/A".
  */
 @Composable
-fun rememberDurationFormat(duration: Long?): String {
-    if (duration == null) return "N/A"
+fun rememberDurationFormat(
+    duration: Long?,
+    spaces: Boolean = true,
+): String {
+    if (duration == null) {
+        return "N/A"
+    }
+
     val configuration = LocalConfiguration.current
     return remember(duration, configuration) {
         val configurationLocale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
-        duration.durationFormat(configurationLocale)
+        val format = duration.durationFormat(configurationLocale)
+        when {
+            spaces -> format
+            else -> format.replace(" ", "")
+        }
     }
 }
 

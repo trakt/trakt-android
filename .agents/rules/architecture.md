@@ -1,7 +1,7 @@
 ---
 trigger: glob
 globs: '**/*.kt'
-description: 'MVVM + UDF, Compose-only UI, ViewModel + StateFlow, sealed UiState, Compose Navigation typed routes, repositories. Background sync, adaptive layouts.'
+description: 'MVVM + UDF, Compose-only UI, ViewModel + StateFlow, Compose Navigation typed routes, repositories. Background sync, adaptive layouts.'
 applyTo: '**/*.kt'
 ---
 

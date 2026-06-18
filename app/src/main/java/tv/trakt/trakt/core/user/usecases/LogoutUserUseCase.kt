@@ -31,6 +31,7 @@ import tv.trakt.trakt.core.profile.sections.activity.data.local.ratings.ProfileR
 import tv.trakt.trakt.core.profile.sections.progress.data.local.completed.ProgressCompletedLocalDataSource
 import tv.trakt.trakt.core.profile.sections.progress.data.local.dropped.ProgressDroppedLocalDataSource
 import tv.trakt.trakt.core.profile.sections.progress.data.local.watching.ProgressWatchingLocalDataSource
+import tv.trakt.trakt.core.profile.sections.screentime.data.local.ScreenTimeLocalDataSource
 import tv.trakt.trakt.core.settings.features.younify.data.remote.YounifyRemoteDataSource
 import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
 import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
@@ -75,6 +76,7 @@ internal class LogoutUserUseCase(
     private val localProfileCompleted: ProgressCompletedLocalDataSource,
     private val localProfileWatching: ProgressWatchingLocalDataSource,
     private val localProfileDropped: ProgressDroppedLocalDataSource,
+    private val localScreenTime: ScreenTimeLocalDataSource,
     private val localProfileRatings: ProfileRatingsLocalDataSource,
     private val localProfileComments: ProfileCommentsLocalDataSource,
     private val appReviewUseCase: RequestAppReviewUseCase,
@@ -119,6 +121,7 @@ internal class LogoutUserUseCase(
         localProfileCompleted.clear()
         localProfileWatching.clear()
         localProfileDropped.clear()
+        localScreenTime.clear()
         localProfileRatings.clear()
         localProfileComments.clear()
 

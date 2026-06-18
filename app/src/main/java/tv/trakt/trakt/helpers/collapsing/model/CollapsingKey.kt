@@ -92,6 +92,7 @@ internal enum class CollapsingKey(
     PROFILE_PROGRESS("key_profile_progress"),
     PROFILE_LIBRARY("key_profile_library"),
     PROFILE_SOCIAL("key_profile_social"),
+    PROFILE_SCREEN_TIME("key_profile_screen_time"),
 
     // User Profile Screen
     USER_PROFILE_HISTORY("key_user_profile_history"),

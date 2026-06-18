@@ -91,11 +91,11 @@ internal class ProfileHistoryViewModel(
         loadData()
         loadUserRatingData()
 
-        observeHome()
+        observeData()
         observeRatings()
     }
 
-    private fun observeHome() {
+    private fun observeData() {
         merge(
             allActivitySource.observeUpdates(),
             movieUpdates.observeUpdates(),

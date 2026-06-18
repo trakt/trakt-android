@@ -361,6 +361,21 @@ private fun LazyListScope.userProfilePublicContent(
     }
 
     item {
+        UserProfileFavoritesView(
+            viewModel = koinViewModel(
+                parameters = { parametersOf(state.user.ids.trakt) },
+            ),
+            headerPadding = sectionPadding,
+            contentPadding = sectionPadding,
+            onShowClick = onNavigateToShow,
+            onMovieClick = onNavigateToMovie,
+            onMoreClick = { onNavigateToAllFavorites(state.user.ids.trakt) },
+            modifier = Modifier
+                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+        )
+    }
+
+    item {
         UserProfileHistoryView(
             viewModel = koinViewModel(
                 parameters = { parametersOf(state.user.ids.trakt) },
@@ -371,21 +386,6 @@ private fun LazyListScope.userProfilePublicContent(
             onEpisodeClick = onNavigateToEpisode,
             onMovieClick = onNavigateToMovie,
             onMoreClick = { onNavigateToAllHistory(state.user.ids.trakt) },
-            modifier = Modifier
-                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
-        )
-    }
-
-    item {
-        UserProfileFavoritesView(
-            viewModel = koinViewModel(
-                parameters = { parametersOf(state.user.ids.trakt) },
-            ),
-            headerPadding = sectionPadding,
-            contentPadding = sectionPadding,
-            onShowClick = onNavigateToShow,
-            onMovieClick = onNavigateToMovie,
-            onMoreClick = { onNavigateToAllFavorites(state.user.ids.trakt) },
             modifier = Modifier
                 .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
         )

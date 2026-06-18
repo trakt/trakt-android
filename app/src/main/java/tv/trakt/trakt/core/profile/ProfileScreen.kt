@@ -73,6 +73,7 @@ import tv.trakt.trakt.core.profile.sections.favorites.ProfileFavoritesView
 import tv.trakt.trakt.core.profile.sections.history.ProfileHistoryView
 import tv.trakt.trakt.core.profile.sections.library.ProfileLibraryView
 import tv.trakt.trakt.core.profile.sections.progress.ProfileProgressView
+import tv.trakt.trakt.core.profile.sections.screentime.ProfileScreenTimeView
 import tv.trakt.trakt.core.profile.sections.social.ProfileSocialView
 import tv.trakt.trakt.core.profile.sections.thismonth.ProfileStatsCard
 import tv.trakt.trakt.helpers.SimpleScrollConnection
@@ -172,7 +173,7 @@ private fun ProfileScreen(
     onSettingsClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {},
 ) {
-    val inspection = LocalInspectionMode.current
+    val preview = LocalInspectionMode.current
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
 
     val listPadding = PaddingValues(
@@ -298,7 +299,29 @@ private fun ProfileScreen(
                     }
                 }
 
-                if (!inspection) {
+                if (!preview) {
+                    item {
+                        ProfileFavoritesView(
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            onShowClick = onNavigateToShow,
+                            onMovieClick = onNavigateToMovie,
+                            onMoreClick = onNavigateToFavorites,
+                            onShowsClick = onNavigateToShows,
+                            modifier = Modifier
+                                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+                        )
+                    }
+
+                    item {
+                        ProfileScreenTimeView(
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            modifier = Modifier
+                                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+                        )
+                    }
+
                     item {
                         ProfileHistoryView(
                             headerPadding = sectionPadding,
@@ -331,19 +354,6 @@ private fun ProfileScreen(
                             contentPadding = sectionPadding,
                             onShowClick = onNavigateToShow,
                             onMoreClick = onNavigateToProgress,
-                            modifier = Modifier
-                                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
-                        )
-                    }
-
-                    item {
-                        ProfileFavoritesView(
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onShowClick = onNavigateToShow,
-                            onMovieClick = onNavigateToMovie,
-                            onMoreClick = onNavigateToFavorites,
-                            onShowsClick = onNavigateToShows,
                             modifier = Modifier
                                 .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
                         )

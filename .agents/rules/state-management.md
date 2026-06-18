@@ -18,23 +18,6 @@ applyTo: '{app,tv,common}/src/main/**/*.kt'
 | Derived value reactive to other state                | `val x by remember(...) { derivedStateOf { … } }`      |
 | Side effects keyed to recomposition                  | `LaunchedEffect(key)`, `DisposableEffect(key)`         |
 
-## Sealed UiState
-
-Every screen has sealed UI state hierarchy:
-
-```kotlin
-sealed interface MovieSummaryUiState {
-    data object Loading : MovieSummaryUiState
-    data class Loaded(val movie: Movie) : MovieSummaryUiState
-    data class Error(val throwable: Throwable) : MovieSummaryUiState
-}
-```
-
-- **No `data class … (val movie: Movie?, val isLoading: Boolean, val error: Throwable?)`**
-  flat shapes. Use sealed types — impossible combinations stay impossible.
-- `@Immutable` on `Loaded`-style data classes holding collections. Compose skips recomposition when refs stable.
-- For collections in state, prefer `ImmutableList` (`kotlinx.collections.immutable`) over `List<T>` — Compose treats immutable types as stable.
-
 ## ViewModel
 
 One `state: StateFlow<UiState>` per ViewModel. Build from upstream Flows, expose via `stateIn(viewModelScope, WhileSubscribed(5_000), initial)`. Internal mutable signals private:

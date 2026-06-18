@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.ZoneOffset.UTC
@@ -124,6 +125,8 @@ fun ZonedDateTime.toLocal(): ZonedDateTime = this.withZoneSameInstant(ZoneId.sys
 fun Instant.toLocal(): ZonedDateTime = this.atZone(ZoneId.systemDefault())
 
 fun Instant.toLocalDay(): LocalDate = this.atZone(ZoneId.systemDefault()).toLocalDate()
+
+fun Instant.toLocalTime(): LocalTime = this.atZone(ZoneId.systemDefault()).toLocalTime()
 
 fun LocalDate.isTodayOrBefore(): Boolean {
     val today = LocalDate.now()
