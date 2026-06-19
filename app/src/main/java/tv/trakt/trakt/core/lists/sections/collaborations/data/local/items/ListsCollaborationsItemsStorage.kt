@@ -44,9 +44,10 @@ internal class ListsCollaborationsItemsStorage : ListsCollaborationsItemsLocalDa
     ) {
         mutex.withLock {
             val currentItems = storage[listId] ?: emptyList()
-            val newItems = shows.mapIndexed { index, show ->
+            val newItems = shows.mapIndexed { _, show ->
                 CustomListItem.ShowItem(
                     show = show,
+                    itemId = 0,
                     rank = Int.MAX_VALUE,
                     listedAt = nowUtcInstant(),
                 )
@@ -92,9 +93,10 @@ internal class ListsCollaborationsItemsStorage : ListsCollaborationsItemsLocalDa
     ) {
         mutex.withLock {
             val currentItems = storage[listId] ?: emptyList()
-            val newItems = movies.mapIndexed { index, movie ->
+            val newItems = movies.mapIndexed { _, movie ->
                 CustomListItem.MovieItem(
                     movie = movie,
+                    itemId = 0,
                     rank = Int.MAX_VALUE,
                     listedAt = nowUtcInstant(),
                 )

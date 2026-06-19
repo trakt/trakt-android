@@ -8702,8 +8702,7 @@
                       "kind",
                       "type",
                       "trakt_item"
-                    ],
-                    "additionalProperties": true
+                    ]
                   }
                 }
               }
@@ -9021,8 +9020,7 @@
                       "kind",
                       "type",
                       "trakt_item"
-                    ],
-                    "additionalProperties": true
+                    ]
                   }
                 }
               }
@@ -43051,7 +43049,7 @@
         "operationId": "postUsersListsListRemove"
       }
     },
-    "/users/{id}/lists/{list_id}/reorder": {
+    "/users/{id}/lists/{list_id}/items/reorder": {
       "post": {
         "description": "#### 🔒 OAuth Required\nReorder items on a personal list. Send the ordered list item IDs in the request body; the response returns the updated item order.",
         "summary": "Reorder items on a list",

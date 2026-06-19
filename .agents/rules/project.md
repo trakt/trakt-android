@@ -89,7 +89,11 @@ ViewModels expose `StateFlow<UiState>`. Composables call `viewModel.state.collec
 Group by feature (`core/home`, `core/calendar`, `core/search`, `core/profile`, `core/billing`). Each feature carries `Screen.kt`, `State.kt`, `ViewModel.kt`, `di/<Feature>Module.kt` Koin module.
 
 ### Custom theme tokens
-All visual tokens in `common/.../ui/theme/`: `TraktTheme.colors`, `TraktTheme.typography`, `TraktTheme.spacing`, `TraktTheme.size`. Exposed via `CompositionLocal`. No raw `Color(0xFF…)`, no magic-number paddings in feature code.
+
+All visual tokens in `common/.../ui/theme/`: `TraktTheme.colors`, `TraktTheme.typography`,
+`TraktTheme.spacing`, `TraktTheme.size`. Exposed via `CompositionLocal`. Semantic/theme-aware
+colours go through `TraktTheme.colors`; raw `Color(…)` allowed only for brand, decorative, preview,
+or computed values (see `theming.md`). No magic-number paddings in feature code.
 
 ### OpenAPI-driven data layer
 API DTOs generated from `openapi/openapi.json`. **Not** hand-edited. Hand-written mappers in `common/.../networking/` translate generated DTOs into domain models defined in `common/.../model/`.

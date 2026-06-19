@@ -121,7 +121,9 @@ Per-module setup:
 
 Today: `ktlint` via `./gradlew ktlintFormat` / `ktlintCheck`, wired into CI through `.github/workflows/master.yml`.
 
-Aspirational: move to **Spotless** — formatting, ktlint, license headers, import ordering in one pass (both NIA and Tivi do this). Track in `legacy-zones.md` migration list. Until migrated, honour `.editorconfig` rules and run ktlint before pushing.
+Aspirational: move to **Spotless** — formatting, ktlint, license headers, import ordering in one
+pass (both NIA and Tivi do this). Until migrated, honour `.editorconfig` rules and run ktlint before
+pushing.
 
 ## OpenAPI generator
 

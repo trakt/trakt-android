@@ -7,6 +7,7 @@ import org.openapitools.client.models.PostUsersListsCreateRequest
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
+import org.openapitools.client.models.PostUsersListsReorderRequest
 import org.openapitools.client.models.PutUsersListsListUpdateRequest
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
@@ -308,6 +309,20 @@ class ListsApiClient(
     override suspend fun removeLikedList(listId: TraktId) {
         listsApi.deleteListsUnlike(
             id = listId.value.toString(),
+        )
+        cacheMarker.invalidate()
+    }
+
+    override suspend fun reorderListItems(
+        listId: TraktId,
+        itemsIds: List<Int>,
+    ) {
+        listsApi.postUsersListsListReorder(
+            id = "me",
+            listId = listId.value.toString(),
+            postUsersListsReorderRequest = PostUsersListsReorderRequest(
+                rank = itemsIds,
+            ),
         )
         cacheMarker.invalidate()
     }

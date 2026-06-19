@@ -31,6 +31,8 @@ import tv.trakt.trakt.core.lists.features.all.navigation.allListsScreen
 import tv.trakt.trakt.core.lists.features.all.navigation.navigateToAllLists
 import tv.trakt.trakt.core.lists.features.details.navigation.listDetailsScreen
 import tv.trakt.trakt.core.lists.features.details.navigation.navigateToListDetails
+import tv.trakt.trakt.core.lists.features.reorder.navigation.listReorderScreen
+import tv.trakt.trakt.core.lists.features.reorder.navigation.navigateToListReorder
 import tv.trakt.trakt.core.lists.navigation.listsScreen
 import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.allPersonalListScreen
 import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.navigateToPersonalList
@@ -384,6 +386,11 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
             onNavigateToEpisode = { showId, episode ->
                 navigateToEpisode(showId, episode)
             },
+            onNavigateToReorder = { list ->
+                navigateToListReorder(
+                    list = list,
+                )
+            },
             onNavigateBack = { popBackStack() },
         )
         listDetailsScreen(
@@ -393,6 +400,9 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
             onNavigateToEpisode = { showId, episode ->
                 navigateToEpisode(showId, episode)
             },
+        )
+        listReorderScreen(
+            onNavigateBack = { popBackStack() },
         )
     }
 }

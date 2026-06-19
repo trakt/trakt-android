@@ -414,6 +414,7 @@ private fun PreviewShow() {
     TraktTheme {
         ListsCustomItemView(
             item = ShowItem(
+                itemId = 0,
                 rank = 0,
                 show = PreviewData.show1,
                 listedAt = nowUtcInstant().minus(3, DAYS),
@@ -432,6 +433,7 @@ private fun PreviewMovie() {
     TraktTheme {
         ListsCustomItemView(
             item = MovieItem(
+                itemId = 0,
                 rank = 0,
                 movie = PreviewData.movie1,
                 listedAt = nowUtcInstant().minus(3, DAYS),

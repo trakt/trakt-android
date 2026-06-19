@@ -41,6 +41,7 @@ internal class GetListItemsUseCase(
                 filters = filters?.copy(mode = MOVIES),
             ).asyncMap {
                 CustomListItem.MovieItem(
+                    itemId = it.id,
                     rank = it.rank,
                     movie = Movie.fromDto(it.movie),
                     listedAt = it.listedAt.toInstant(),
@@ -57,6 +58,7 @@ internal class GetListItemsUseCase(
                 filters = filters?.copy(mode = SHOWS),
             ).asyncMap {
                 CustomListItem.ShowItem(
+                    itemId = it.id,
                     rank = it.rank,
                     show = Show.fromDto(it.show),
                     listedAt = it.listedAt.toInstant(),
@@ -74,22 +76,26 @@ internal class GetListItemsUseCase(
             ).asyncMap {
                 when (it.type.value) {
                     MOVIE.value -> CustomListItem.MovieItem(
+                        itemId = it.id,
                         rank = it.rank,
                         movie = Movie.fromDto(it.movie!!),
                         listedAt = it.listedAt.toInstant(),
                     )
                     SHOW.value -> CustomListItem.ShowItem(
+                        itemId = it.id,
                         rank = it.rank,
                         show = Show.fromDto(it.show!!),
                         listedAt = it.listedAt.toInstant(),
                     )
                     SEASON.value -> CustomListItem.SeasonItem(
+                        itemId = it.id,
                         rank = it.rank,
                         show = Show.fromDto(it.show!!),
                         season = Season.fromDto(it.season!!),
                         listedAt = it.listedAt.toInstant(),
                     )
                     EPISODE.value -> CustomListItem.EpisodeItem(
+                        itemId = it.id,
                         rank = it.rank,
                         show = Show.fromDto(it.show!!),
                         episode = Episode.fromDto(it.episode!!),

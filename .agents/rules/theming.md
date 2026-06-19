@@ -35,9 +35,8 @@ Use via `TraktTheme.<namespace>.<token>` inside composables. Each namespace = da
 
 ## Colours
 
-All colours via `TraktTheme.colors.*` in general.
-For one time shots a direct color is allowed if it makes sense for bot Light and Dark themes, e.g.
-`Color.White` or `Color.Transparent`. For example:
+Default: colours via `TraktTheme.colors.*`. Semantic, theme-aware UI colours (text, backgrounds,
+surfaces, accents that adapt to light/dark/seasonal) belong in tokens. For example:
 
 ```kotlin
 Text(
@@ -50,16 +49,31 @@ Surface(
 ) { … }
 ```
 
-**Forbidden in new code:**
+**Raw `Color(...)` values are allowed when they are not theme-aware design-system colours.**
+Acceptable cases:
 
-- Raw `Color(0xFF7B68EE)` / `Color(red = …, green = …, blue = …)`.
+- **Brand / fixed colours** — values tied to an external brand (Trakt red, partner logos, rating
+  badges) that stay identical across light/dark.
+- **Decorative / gradients** — overlays, scrims, gradient stops, shadows where the exact value is
+  cosmetic and theme-neutral.
+- **Previews / tooling** — `@Preview`, debug, demo, screenshot code. Non-production composables.
+- **Computed / derived** — runtime-computed colours (alpha blends, `Color.lerp`, hex parsed from
+  API / remote config data).
+- **Theme-neutral one-shots** — `Color.White`, `Color.Transparent`, `Color.Black` where they read
+  correctly in both light and dark.
+
+Keep raw literals close to where they're used; a brand/decorative colour reused in 2+ places earns a
+named `val` (or a token) for clarity.
+
+**Still discouraged in new code:**
+
+- Raw `Color(0xFF…)` as a stand-in for a **semantic, theme-aware** colour (text, background,
+  surface,
+  adaptive accent). Those → **add a token** to `TraktColors` with light/dark/seasonal variants.
 - `MaterialTheme.colorScheme.primary` direct reads (use Trakt token). Material 3 colour scheme wired
   underneath; consumers go through `TraktTheme.colors`.
 - `colorResource(R.color.…)` for design-system colours. Colour resources OK for legacy values also
   referenced from XML (notifications, app icon); new tokens live in theme.
-
-Need colour not in palette → **add token** to `TraktColors` with light/dark/seasonal variants. Never
-use literal at call site.
 
 ## Seasonal themes
 
@@ -148,7 +162,8 @@ spacing — use tokens, don't hard-code `64.dp`.
 
 ## Quick checklist
 
-- [ ] Colours via `TraktTheme.colors.*` — no raw `Color(...)` literals
+- [ ] Semantic/theme-aware colours via `TraktTheme.colors.*` — raw `Color(...)` only for brand,
+  decorative, preview, or computed values
 - [ ] Spacing via `TraktTheme.spacing.*` — no `padding(16.dp)`
 - [ ] Sizes via `TraktTheme.size.*` — no `Modifier.size(64.dp)` magic
 - [ ] Typography via `TraktTheme.typography.*` — no inline `TextStyle`
