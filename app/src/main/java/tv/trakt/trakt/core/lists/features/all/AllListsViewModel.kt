@@ -77,6 +77,7 @@ internal class AllListsViewModel(
     private var hasMorePages = false
 
     private var dataJob: Job? = null
+    private var reorderJob: Job? = null
 
     init {
         loadUser()
@@ -102,13 +103,17 @@ internal class AllListsViewModel(
     }
 
     private fun observeReorder(listIds: List<TraktId>) {
-        reorderUpdates.clear()
-        listIds.forEach { listId ->
-            reorderUpdates.observeUpdates(listId)
-                .distinctUntilChanged()
-                .debounce(200.milliseconds)
-                .onEach { loadData(reload = true) }
-                .launchIn(viewModelScope)
+        reorderJob?.cancel()
+        reorderJob = viewModelScope.launch {
+            reorderUpdates.clear()
+            listIds.forEach { listId ->
+                launch {
+                    reorderUpdates.observeUpdates(listId)
+                        .distinctUntilChanged()
+                        .debounce(200.milliseconds)
+                        .collect { loadData(reload = true) }
+                }
+            }
         }
     }
 

@@ -3,11 +3,9 @@
 package tv.trakt.trakt.core.lists.features.reorder
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -27,16 +25,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -62,9 +59,7 @@ import tv.trakt.trakt.core.lists.features.reorder.ui.dragHandle
 import tv.trakt.trakt.core.lists.features.reorder.ui.rememberDragDropState
 import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
-import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -145,99 +140,84 @@ internal fun ListReorderContent(
         }
     }
 
-    val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
-        SimpleScrollConnection()
-    }
+    val contentPadding = PaddingValues(
+        start = TraktTheme.spacing.mainPageHorizontalSpace,
+        end = TraktTheme.spacing.mainPageHorizontalSpace,
+        top = WindowInsets.statusBars.asPaddingValues()
+            .calculateTopPadding(),
+        bottom = WindowInsets.navigationBars.asPaddingValues()
+            .calculateBottomPadding()
+            .plus(TraktTheme.size.navigationBarHeight * 2),
+    )
 
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(TraktTheme.colors.backgroundPrimary)
-            .nestedScroll(listScrollConnection),
+    LazyColumn(
+        state = listState,
+        verticalArrangement = spacedBy(0.dp),
+        contentPadding = contentPadding,
+        overscrollEffect = null,
+        modifier = Modifier.fillMaxSize(),
     ) {
-        val contentPadding = PaddingValues(
-            start = TraktTheme.spacing.mainPageHorizontalSpace,
-            end = TraktTheme.spacing.mainPageHorizontalSpace,
-            top = WindowInsets.statusBars.asPaddingValues()
-                .calculateTopPadding(),
-            bottom = WindowInsets.navigationBars.asPaddingValues()
-                .calculateBottomPadding()
-                .plus(TraktTheme.size.navigationBarHeight * 2),
-        )
-
-        ScrollableBackdropImage(
-            translation = listScrollConnection.resultOffset,
-        )
-
-        LazyColumn(
-            state = listState,
-            verticalArrangement = spacedBy(0.dp),
-            contentPadding = contentPadding,
-            overscrollEffect = null,
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            item {
-                TitleBar(
-                    title = state.list?.name ?: "",
-                    applyEnabled = state.items != null && !loading && !sameOrder,
-                    onApplyClick = {
-                        if (!reordering) {
-                            onApplyClick()
-                        }
-                    },
-                    onBackClick = onBackClick,
-                    modifier = Modifier.padding(bottom = TraktTheme.spacing.mainListVerticalSpace),
-                )
-            }
-
-            if (listItems.isNotEmpty()) {
-                itemsIndexed(
-                    items = listItems,
-                    key = { _, item -> item.key },
-                ) { index, item ->
-                    val subtitle = item.released?.toLocal()?.year?.toString().orEmpty()
-                    val lazyIndex = index + HEADER_COUNT
-
-                    DraggableItem(
-                        dragDropState = dragDropState,
-                        index = lazyIndex,
-                    ) { isDragging ->
-                        val indexState = rememberUpdatedState(lazyIndex)
-
-                        ListReorderMediaCard(
-                            rank = "#${index + 1}",
-                            title = item.title,
-                            subtitle = subtitle,
-                            contentImageUrl = item.images?.getPosterUrl(),
-                            containerImageUrl = item.images?.getFanartUrl(Images.Size.THUMB),
-                            shadow = when {
-                                isDragging -> 4.dp
-                                else -> 0.dp
-                            },
-                            handleModifier = Modifier.dragHandle(
-                                state = dragDropState,
-                                index = indexState,
-                                haptic = haptic,
-                            ),
-                            modifier = Modifier
-                                .alpha(if (loading) 0.33F else 1F)
-                                .padding(bottom = 12.dp),
-                        )
+        item {
+            TitleBar(
+                title = state.list?.name ?: "",
+                applyEnabled = state.items != null && !loading && !sameOrder,
+                onApplyClick = {
+                    if (!reordering) {
+                        onApplyClick()
                     }
-                }
-            }
+                },
+                onBackClick = onBackClick,
+                modifier = Modifier.padding(bottom = TraktTheme.spacing.mainListVerticalSpace),
+            )
+        }
 
-            if (loading && listItems.isEmpty()) {
-                items(12) {
-                    ListReorderMediaSkeletonCard(
+        if (listItems.isNotEmpty()) {
+            itemsIndexed(
+                items = listItems,
+                key = { _, item -> item.key },
+            ) { index, item ->
+                val subtitle = item.released?.toLocal()?.year?.toString().orEmpty()
+                val lazyIndex = index + HEADER_COUNT
+
+                DraggableItem(
+                    dragDropState = dragDropState,
+                    index = lazyIndex,
+                ) { isDragging ->
+                    val indexState = rememberUpdatedState(lazyIndex)
+
+                    ListReorderMediaCard(
+                        rank = "#${index + 1}",
+                        title = item.title,
+                        subtitle = subtitle,
+                        contentImageUrl = item.images?.getPosterUrl(),
+                        containerImageUrl = item.images?.getFanartUrl(Images.Size.THUMB),
+                        shadow = when {
+                            isDragging -> 4.dp
+                            else -> 0.dp
+                        },
+                        handleModifier = Modifier.dragHandle(
+                            state = dragDropState,
+                            index = indexState,
+                            haptic = haptic,
+                        ),
                         modifier = Modifier
-                            .padding(bottom = 12.dp)
-                            .animateItem(
-                                fadeInSpec = null,
-                                fadeOutSpec = null,
-                            ),
+                            .alpha(if (loading) 0.33F else 1F)
+                            .padding(bottom = 12.dp),
                     )
                 }
+            }
+        }
+
+        if (loading && listItems.isEmpty()) {
+            items(12) {
+                ListReorderMediaSkeletonCard(
+                    modifier = Modifier
+                        .padding(bottom = 12.dp)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                )
             }
         }
     }
@@ -259,9 +239,6 @@ private fun TitleBar(
             .height(TraktTheme.size.titleBarHeight)
             .graphicsLayer {
                 translationX = -2.dp.toPx()
-            }
-            .onClick {
-                onBackClick()
             },
     ) {
         Row(
@@ -269,7 +246,10 @@ private fun TitleBar(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier
                 .weight(1F, fill = false)
-                .padding(end = 16.dp),
+                .padding(end = 16.dp)
+                .onClick {
+                    onBackClick()
+                },
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_back_arrow),
