@@ -27,6 +27,15 @@ openApiGenerate {
     )
 }
 
+// Remove double ()() artifacts
+tasks.register<ReplaceInFilesTask>("removeArtifacts") {
+    group = "Custom"
+    description = "Remove double ()() artifacts from generated code"
+    sourceDir.set(file("build/generate-resources/main/src"))
+    targetString.set("()()")
+    replacementString.set("()")
+}
+
 // Workaround https://github.com/OpenAPITools/openapi-generator/issues/18904
 tasks.register<ReplaceInFilesTask>("dedupeSerializable") {
     group = "Custom"
@@ -54,8 +63,10 @@ tasks.register<ReplaceInFilesTask>("removeGenders") {
     description = "Makes ApiClient class and its HttpClient property public"
 
     sourceDir.set(file("build/generate-resources/main/src"))
-    targetString.set("@SerialName(value = \"gender\")\n" +
-        "    val gender: kotlin.String? = null,")
+    targetString.set(
+        "@SerialName(value = \"gender\")\n" +
+            "    val gender: kotlin.String? = null,"
+    )
     replacementString.set("")
 }
 
@@ -96,5 +107,6 @@ tasks.getByName("openApiGenerate")
     .finalizedBy(
         "dedupeSerializable",
         "publicApiClient",
-        "removeGenders"
+        "removeGenders",
+        "removeArtifacts"
     )
