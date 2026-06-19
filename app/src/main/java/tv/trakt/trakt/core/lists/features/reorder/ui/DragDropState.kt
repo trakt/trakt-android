@@ -35,7 +35,7 @@ internal class DragDropState(
     var draggingItemIndex by mutableStateOf<Int?>(null)
         private set
 
-    internal val scrollChannel = Channel<Float>()
+    internal val scrollChannel = Channel<Float>(capacity = Channel.CONFLATED)
 
     private var draggingItemDraggedDelta by mutableFloatStateOf(0f)
     private var draggingItemInitialOffset by mutableIntStateOf(0)
