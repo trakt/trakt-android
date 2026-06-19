@@ -119,7 +119,9 @@ internal fun ListReorderContent(
     val listState = rememberLazyListState()
     val listItems = (state.items ?: emptyList()).toImmutableList()
     val loading = state.loading.isLoading
-    val sameOrder = state.items?.map { it.itemId } == state.initialItemsOrder
+    val sameOrder = remember(state.items, state.initialItemsOrder) {
+        state.items?.map { it.itemId } == state.initialItemsOrder
+    }
 
     val haptic = LocalHapticFeedback.current
     val scope = rememberCoroutineScope()
