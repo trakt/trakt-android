@@ -31,7 +31,6 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
-import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
@@ -56,7 +55,6 @@ internal fun MediaSocialItemCard(
     shadow: Dp = 0.dp,
     containerColor: Color = TraktTheme.colors.panelCardContainer,
     onClick: () -> Unit = {},
-    onUserClick: () -> Unit = {},
 ) {
     Row(
         horizontalArrangement = spacedBy(0.dp),
@@ -82,7 +80,7 @@ internal fun MediaSocialItemCard(
             user = item.user,
             size = 52.dp,
             showName = false,
-            onUserClick = onUserClick,
+            onUserClick = onClick,
         )
 
         Column(
@@ -108,10 +106,7 @@ internal fun MediaSocialItemCard(
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier
                             .weight(1f)
-                            .padding(end = 16.dp)
-                            .onClick {
-                                onUserClick()
-                            },
+                            .padding(end = 16.dp),
                     )
 
                     Text(
