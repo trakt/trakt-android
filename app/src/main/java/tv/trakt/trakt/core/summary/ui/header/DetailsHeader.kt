@@ -121,26 +121,12 @@ internal fun DetailsHeader(
             )
         }
 
-        if (externalRatingsVisible) {
-            DetailsRatings(
-                traktRatings = traktRatings,
-                externalRatings = externalRatings,
-                rottenEnabled = externalRottenVisible,
-                onImdbClick = onImdbClick,
-                onRottenClick = onRottenClick,
-                modifier = Modifier
-                    .padding(top = 20.dp),
-            )
-        } else {
-            Spacer(Modifier.padding(top = 4.dp))
-        }
-
         Column(
             horizontalAlignment = CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    top = 15.dp,
+                    top = 14.dp,
                     start = TraktTheme.spacing.mainPageHorizontalSpace,
                     end = TraktTheme.spacing.mainPageHorizontalSpace,
                 ),
@@ -269,6 +255,20 @@ internal fun DetailsHeader(
                         modifier = Modifier.padding(top = 1.dp),
                     )
                 }
+            }
+
+            if (externalRatingsVisible) {
+                DetailsRatings(
+                    traktRatings = traktRatings,
+                    externalRatings = externalRatings,
+                    rottenEnabled = externalRottenVisible,
+                    onImdbClick = onImdbClick,
+                    onRottenClick = onRottenClick,
+                    modifier = Modifier
+                        .padding(top = 13.dp),
+                )
+            } else {
+                Spacer(Modifier.padding(top = 4.dp))
             }
         }
     }
