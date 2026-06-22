@@ -1153,6 +1153,7 @@
   <string name="text_overview_placeholder">Prezentarea generală nu este disponibilă.</string>
   <string name="text_personal_note">Notă personală</string>
   <string name="text_pick_history_slot">Alege unde se încadrează „%s” în istoricul tău de vizionare</string>
+  <string name="text_placeholder_generic">Nimic de văzut aici.</string>
   <string name="text_placeholder_preview_features">În prezent nu există funcții de previzualizare. Revino mai târziu.</string>
   <string name="text_play_count">%d vizionări</string>
   <string name="text_plex_auth_waiting">O pagină de autorizare Plex a fost deschisă. Finalizează autentificarea acolo, apoi apasă pe butonul de mai jos.</string>

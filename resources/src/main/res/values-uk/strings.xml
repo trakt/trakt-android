@@ -1153,6 +1153,7 @@
   <string name="text_overview_placeholder">Опис недоступний.</string>
   <string name="text_personal_note">Особиста нотатка</string>
   <string name="text_pick_history_slot">Оберіть, куди \"%s\" вписується в історію ваших переглядів.</string>
+  <string name="text_placeholder_generic">Тут нічого немає.</string>
   <string name="text_placeholder_preview_features">Наразі немає функцій попереднього перегляду. Перевірте пізніше.</string>
   <string name="text_play_count">%d переглядів</string>
   <string name="text_plex_auth_waiting">Сторінку авторизації Plex відкрито. Завершіть вхід там, а потім натисніть кнопку нижче.</string>

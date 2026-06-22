@@ -1153,6 +1153,7 @@
   <string name="text_overview_placeholder">La panoramica non è disponibile.</string>
   <string name="text_personal_note">Nota personale</string>
   <string name="text_pick_history_slot">Scegli dove collocare \"%s\" nella tua cronologia.</string>
+  <string name="text_placeholder_generic">Niente da vedere qui.</string>
   <string name="text_placeholder_preview_features">Al momento non ci sono funzionalità in anteprima. Riprova più tardi.</string>
   <string name="text_play_count">%d riproduzioni</string>
   <string name="text_plex_auth_waiting">È stata aperta una pagina di autorizzazione Plex. Completa l\'accesso lì, quindi clicca sul pulsante qui sotto.</string>

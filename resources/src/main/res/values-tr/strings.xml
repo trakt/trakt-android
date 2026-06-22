@@ -1153,6 +1153,7 @@
   <string name="text_overview_placeholder">Genel bakış mevcut değil.</string>
   <string name="text_personal_note">Kişisel Not</string>
   <string name="text_pick_history_slot">“%s”ın izleme geçmişinizdeki yerini belirleyin.</string>
+  <string name="text_placeholder_generic">Gösterilecek hiçbir şey yok.</string>
   <string name="text_placeholder_preview_features">Şu anda herhangi bir önizleme özelliği bulunmamaktadır. Daha sonra tekrar kontrol edin.</string>
   <string name="text_play_count">%d oynatma</string>
   <string name="text_plex_auth_waiting">Bir Plex yetkilendirme sayfası açıldı. Oturum açma işlemini orada tamamlayın, ardından aşağıdaki düğmeye tıklayın.</string>

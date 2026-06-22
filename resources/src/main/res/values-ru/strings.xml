@@ -288,7 +288,7 @@
   <string name="button_text_hold_to_confirm">Удерживайте для подтверждения</string>
   <string name="button_text_import_more">Импортировать еще</string>
   <string name="button_text_join_trakt">Присоединиться к Trakt</string>
-  <string name="button_text_join_trakt_for_free">Trakt бесплатно</string>
+  <string name="button_text_join_trakt_for_free">Присоединиться к Trakt бесплатно</string>
   <string name="button_text_keyboard_done">Готово</string>
   <string name="button_text_load_more">Загрузить больше</string>
   <string name="button_text_login">Войти</string>
@@ -375,8 +375,8 @@
   <string name="button_text_unblock">Разблокировать</string>
   <string name="button_text_undo">Отменить</string>
   <string name="button_text_unfollow">Отписаться</string>
-  <string name="button_text_unlink">Отключить</string>
-  <string name="button_text_upgrade">Обновить</string>
+  <string name="button_text_unlink">Отвязать</string>
+  <string name="button_text_upgrade">Улучшить</string>
   <string name="button_text_upgrade_to_vip">Обновить до VIP</string>
   <string name="button_text_upload_photo">Загрузить фото</string>
   <string name="button_text_view_all">Больше</string>
@@ -1153,6 +1153,7 @@
   <string name="text_overview_placeholder">Описание недоступно.</string>
   <string name="text_personal_note">Личная заметка</string>
   <string name="text_pick_history_slot">Выберите, куда \"%s\" вписывается в вашу историю просмотров.</string>
+  <string name="text_placeholder_generic">Здесь ничего нет.</string>
   <string name="text_placeholder_preview_features">В настоящее время нет предварительных функций. Проверьте позже.</string>
   <string name="text_play_count">%d просмотров</string>
   <string name="text_plex_auth_waiting">Открыта страница авторизации Plex. Завершите вход там, затем нажмите кнопку ниже.</string>

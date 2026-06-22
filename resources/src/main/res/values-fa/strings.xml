@@ -1153,6 +1153,7 @@
   <string name="text_overview_placeholder">نمای کلی در دسترس نیست.</string>
   <string name="text_personal_note">یادداشت شخصی</string>
   <string name="text_pick_history_slot">انتخاب کنید \"%s\" در کدام بخش تاریخچه تماشای شما قرار می‌گیرد.</string>
+  <string name="text_placeholder_generic">اینجا چیزی برای نمایش نیست.</string>
   <string name="text_placeholder_preview_features">در حال حاضر هیچ ویژگی پیش‌نمایشی وجود ندارد. بعداً دوباره بررسی کنید.</string>
   <string name="text_play_count">%d پخش</string>
   <string name="text_plex_auth_waiting">صفحه مجوزدهی Plex باز شده است. ورود به سیستم را در آنجا تکمیل کنید، سپس روی دکمه زیر کلیک کنید.</string>

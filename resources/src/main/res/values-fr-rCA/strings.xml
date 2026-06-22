@@ -1153,6 +1153,7 @@
   <string name="text_overview_placeholder">L\'aperçu n\'est pas disponible.</string>
   <string name="text_personal_note">Note personnelle</string>
   <string name="text_pick_history_slot">Choisissez où \"%s\" s\'insère dans votre historique de visionnement.</string>
+  <string name="text_placeholder_generic">Rien à afficher ici.</string>
   <string name="text_placeholder_preview_features">Il n\'y a actuellement aucune fonctionnalité en avant-première. Revenez plus tard.</string>
   <string name="text_play_count">%d lectures</string>
   <string name="text_plex_auth_waiting">Une page d\'autorisation Plex a été ouverte. Terminez la connexion là-bas, puis cliquez sur le bouton ci-dessous.</string>

@@ -1153,6 +1153,7 @@
   <string name="text_overview_placeholder">Ikhtisar tidak tersedia.</string>
   <string name="text_personal_note">Catatan Pribadi</string>
   <string name="text_pick_history_slot">Pilih di mana \"%s\" masuk dalam riwayat tontonan Anda.</string>
+  <string name="text_placeholder_generic">Tidak ada apa-apa di sini.</string>
   <string name="text_placeholder_preview_features">Saat ini tidak ada fitur pratinjau. Coba periksa lagi nanti.</string>
   <string name="text_play_count">%d putaran</string>
   <string name="text_plex_auth_waiting">Halaman otorisasi Plex telah dibuka. Selesaikan proses masuk di sana, lalu klik tombol di bawah.</string>

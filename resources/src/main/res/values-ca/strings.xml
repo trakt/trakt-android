@@ -1153,6 +1153,7 @@
   <string name="text_overview_placeholder">La sinopsi no està disponible.</string>
   <string name="text_personal_note">Nota personal</string>
   <string name="text_pick_history_slot">Tria on s\'ajusta \"%s\" al teu historial de visualitzacions.</string>
+  <string name="text_placeholder_generic">Res a veure aquí.</string>
   <string name="text_placeholder_preview_features">Actualment no hi ha funcions de previsualització. Torna-hi més tard.</string>
   <string name="text_play_count">%d reproduccions</string>
   <string name="text_plex_auth_waiting">S\'ha obert una pàgina d\'autorització de Plex. Completa l\'inici de sessió allà i, a continuació, fes clic al botó de sota.</string>

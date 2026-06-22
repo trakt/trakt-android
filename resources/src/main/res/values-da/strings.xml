@@ -1153,6 +1153,7 @@
   <string name="text_overview_placeholder">Oversigt er ikke tilgængelig.</string>
   <string name="text_personal_note">Personlig note</string>
   <string name="text_pick_history_slot">Vælg hvor \"%s\" passer ind i din set-historik.</string>
+  <string name="text_placeholder_generic">Intet at se her.</string>
   <string name="text_placeholder_preview_features">Der er i øjeblikket ingen forhåndsvisningsfunktioner. Tjek tilbage senere.</string>
   <string name="text_play_count">%d visninger</string>
   <string name="text_plex_auth_waiting">En Plex-godkendelsesside er blevet åbnet. Fuldfør login der, og klik derefter på knappen nedenfor.</string>

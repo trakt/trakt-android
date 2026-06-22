@@ -1153,6 +1153,7 @@
   <string name="text_overview_placeholder">概览不可用。</string>
   <string name="text_personal_note">个人笔记</string>
   <string name="text_pick_history_slot">选择“%s”在您的观看历史中所属的位置。</string>
+  <string name="text_placeholder_generic">暂无内容。</string>
   <string name="text_placeholder_preview_features">当前没有任何预览功能。请稍后查看。</string>
   <string name="text_play_count">%d 次播放</string>
   <string name="text_plex_auth_waiting">Plex授权页面已打开。请在那里完成登录，然后点击下方按钮。</string>
