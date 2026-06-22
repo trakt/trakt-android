@@ -124,7 +124,7 @@ import tv.trakt.trakt.ui.snackbar.MainSnackbarHost
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val IN_APP_UPDATE_REQUEST_CODE = 4001
-private const val IN_APP_UPDATE_STALENESS_DAYS = 5
+private const val IN_APP_UPDATE_STALENESS_DAYS = 7
 
 @Composable
 internal fun MainScreen(
