@@ -355,14 +355,12 @@ internal class MainViewModel(
         }
     }
 
-    fun completeInAppUpdate() {
-        viewModelScope.launch {
-            try {
-                inAppUpdateManager.requestCompleteUpdate()
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
+    suspend fun completeInAppUpdate() {
+        try {
+            inAppUpdateManager.requestCompleteUpdate()
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
             }
         }
     }

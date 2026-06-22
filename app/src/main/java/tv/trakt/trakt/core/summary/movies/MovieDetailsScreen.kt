@@ -539,7 +539,7 @@ internal fun MovieDetailsContent(
                                     else -> ratingAlphaMask
                                 },
                             )
-                            .padding(top = 16.dp)
+                            .padding(top = 20.dp)
                             .ifOrElse(
                                 windowClass.isAtLeastMedium(),
                                 isTrue = Modifier.width(TraktTheme.size.detailsActionButtonsSize),
