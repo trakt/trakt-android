@@ -1153,6 +1153,7 @@
   <string name="text_overview_placeholder">Η επισκόπηση δεν είναι διαθέσιμη.</string>
   <string name="text_personal_note">Προσωπική Σημείωση</string>
   <string name="text_pick_history_slot">Επιλέξτε πού ταιριάζει το \"%s\" στο ιστορικό παρακολούθησής σας.</string>
+  <string name="text_placeholder_generic">Τίποτα για προβολή.</string>
   <string name="text_placeholder_preview_features">Προς το παρόν δεν υπάρχουν λειτουργίες προεπισκόπησης. Ελέγξτε ξανά αργότερα.</string>
   <string name="text_play_count">%d προβολές</string>
   <string name="text_plex_auth_waiting">Έχει ανοίξει μια σελίδα εξουσιοδότησης Plex. Ολοκληρώστε τη σύνδεση εκεί, και μετά κάντε κλικ στο παρακάτω κουμπί.</string>

@@ -1153,6 +1153,7 @@
   <string name="text_overview_placeholder">Übersicht nicht verfügbar.</string>
   <string name="text_personal_note">Persönliche Notiz</string>
   <string name="text_pick_history_slot">Wählen Sie, wo \"%s\" in Ihre Historie passt.</string>
+  <string name="text_placeholder_generic">Nichts zu sehen hier.</string>
   <string name="text_placeholder_preview_features">Derzeit sind keine Vorschau-Funktionen verfügbar. Schauen Sie später noch einmal vorbei.</string>
   <string name="text_play_count">%d Wiedergaben</string>
   <string name="text_plex_auth_waiting">Eine Plex-Autorisierungsseite wurde geöffnet. Schließen Sie dort die Anmeldung ab und klicken Sie dann auf die Schaltfläche unten.</string>

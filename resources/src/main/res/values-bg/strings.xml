@@ -1153,6 +1153,7 @@
   <string name="text_overview_placeholder">Прегледът не е наличен.</string>
   <string name="text_personal_note">Лична бележка</string>
   <string name="text_pick_history_slot">Изберете къде „%s“ се вписва в историята ви на гледане.</string>
+  <string name="text_placeholder_generic">Няма нищо за разглеждане.</string>
   <string name="text_placeholder_preview_features">В момента няма налични функции за предварителен преглед. Проверете по-късно.</string>
   <string name="text_play_count">%d гледания</string>
   <string name="text_plex_auth_waiting">Отвори се страница за оторизация на Plex. Завършете влизането там, след което кликнете върху бутона по-долу.</string>

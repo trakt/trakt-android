@@ -1153,6 +1153,7 @@
   <string name="text_overview_placeholder">Opis jest niedostępny.</string>
   <string name="text_personal_note">Notatka osobista</string>
   <string name="text_pick_history_slot">Wybierz, gdzie „%s” pasuje do Twojej historii oglądania.</string>
+  <string name="text_placeholder_generic">Nic tu nie ma.</string>
   <string name="text_placeholder_preview_features">Brak nowych funkcjonalności. Sprawdź później.</string>
   <string name="text_play_count">%d odtworzeń</string>
   <string name="text_plex_auth_waiting">Strona autoryzacji Plex została otwarta. Zaloguj się tam, a następnie kliknij przycisk poniżej.</string>

@@ -1153,6 +1153,7 @@
   <string name="text_overview_placeholder">El resumen no está disponible.</string>
   <string name="text_personal_note">Nota personal</string>
   <string name="text_pick_history_slot">Elige dónde encaja \"%s\" en tu historial de visionados.</string>
+  <string name="text_placeholder_generic">Nada que ver aquí.</string>
   <string name="text_placeholder_preview_features">Actualmente no hay funciones de vista previa disponibles. Vuelve a consultar más tarde.</string>
   <string name="text_play_count">%d reproducciones</string>
   <string name="text_plex_auth_waiting">Se ha abierto una página de autorización de Plex. Completa el inicio de sesión allí, luego haz clic en el botón de abajo.</string>

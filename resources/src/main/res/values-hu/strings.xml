@@ -1153,6 +1153,7 @@
   <string name="text_overview_placeholder">Az áttekintés nem elérhető.</string>
   <string name="text_personal_note">Személyes jegyzet</string>
   <string name="text_pick_history_slot">Válaszd ki, hová illik a(z) „%s” a nézési előzményeidbe.</string>
+  <string name="text_placeholder_generic">Nincs itt semmi.</string>
   <string name="text_placeholder_preview_features">Jelenleg nincsenek előnézeti funkciók. Nézz vissza később.</string>
   <string name="text_play_count">%d lejátszás</string>
   <string name="text_plex_auth_waiting">Megnyílt egy Plex engedélyezési oldal. Fejezd be a bejelentkezést ott, majd kattints az alábbi gombra.</string>
