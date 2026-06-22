@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.main
 
 import androidx.compose.runtime.Immutable
+import com.google.android.play.core.ktx.AppUpdateResult
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.WhatsNew
@@ -17,6 +18,7 @@ internal data class MainState(
     val welcome: WelcomeState = WelcomeState(),
     val whatsNew: WhatsNew? = null,
     val review: Boolean? = null,
+    val update: AppUpdateResult? = null,
     val error: Exception? = null,
 ) {
     @Immutable

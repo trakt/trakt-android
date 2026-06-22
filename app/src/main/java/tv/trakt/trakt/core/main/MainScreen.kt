@@ -31,6 +31,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -59,6 +60,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.rememberNavController
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.ktx.AppUpdateResult.Available
+import com.google.android.play.core.ktx.AppUpdateResult.Downloaded
+import com.google.android.play.core.ktx.clientVersionStalenessDays
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.android.play.core.review.testing.FakeReviewManager
 import com.jakewharton.processphoenix.ProcessPhoenix
@@ -111,6 +116,9 @@ import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.whatsnew.WhatsNewSheet
 import tv.trakt.trakt.ui.snackbar.MainSnackbarHost
 import tv.trakt.trakt.ui.theme.TraktTheme
+
+private const val IN_APP_UPDATE_REQUEST_CODE = 4001
+private const val IN_APP_UPDATE_STALENESS_DAYS = 5
 
 @Composable
 internal fun MainScreen(
@@ -221,6 +229,36 @@ internal fun MainScreen(
 
                 Timber.d("Launching in-app review")
             }
+        }
+    }
+
+    LaunchedEffect(state.update) {
+        when (val update = state.update) {
+            is Available -> {
+                localActivity?.let { activity ->
+                    val updateInfo = update.updateInfo
+
+                    val isStale = (updateInfo.clientVersionStalenessDays ?: -1) >= IN_APP_UPDATE_STALENESS_DAYS
+                    val isAllowed = updateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+
+                    if (isStale && isAllowed) {
+                        update.startFlexibleUpdate(activity, IN_APP_UPDATE_REQUEST_CODE)
+                    }
+                }
+            }
+            is Downloaded -> {
+                val result = localSnackbar.showSnackbar(
+                    message = localRes.getString(R.string.text_info_update_downloaded),
+                    actionLabel = localRes.getString(R.string.button_text_install),
+                    duration = SnackbarDuration.Indefinite,
+                )
+                if (result == SnackbarResult.ActionPerformed) {
+                    viewModel.completeInAppUpdate()
+                } else {
+                    viewModel.clearInAppUpdate()
+                }
+            }
+            else -> {}
         }
     }
 

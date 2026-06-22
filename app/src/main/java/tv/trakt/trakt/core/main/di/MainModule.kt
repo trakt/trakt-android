@@ -8,6 +8,8 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -67,6 +69,10 @@ internal val mainModule = module {
         DefaultGlobalErrorsManager()
     }
 
+    single<AppUpdateManager> {
+        AppUpdateManagerFactory.create(androidApplication())
+    }
+
     viewModel {
         MainViewModel(
             appContext = androidApplication(),
@@ -84,6 +90,7 @@ internal val mainModule = module {
             dismissWelcomeUseCase = get(),
             loadWhatsNewUseCase = get(),
             inAppReviewUseCase = get(),
+            inAppUpdateManager = get(),
             errorsManager = get(),
             analytics = get(),
         )
