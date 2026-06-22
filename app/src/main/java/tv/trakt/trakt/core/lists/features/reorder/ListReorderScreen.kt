@@ -2,6 +2,7 @@
 
 package tv.trakt.trakt.core.lists.features.reorder
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Arrangement
@@ -19,15 +20,18 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarDuration.Long
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -52,6 +56,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.core.lists.features.reorder.ui.DraggableItem
 import tv.trakt.trakt.core.lists.features.reorder.ui.ListReorderMediaCard
 import tv.trakt.trakt.core.lists.features.reorder.ui.ListReorderMediaSkeletonCard
@@ -62,21 +67,24 @@ import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
+import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
 
 /** Non-reorderable items above the list (the title bar) that shift LazyList indices. */
 private const val HEADER_COUNT = 1
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ListReorderScreen(
     modifier: Modifier = Modifier,
     viewModel: ListReorderViewModel,
     onNavigateBack: () -> Unit,
 ) {
+    val snack = LocalSnackbarState.current
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    val snack = LocalSnackbarState.current
+    var showExitConfirm by remember { mutableStateOf(false) }
 
     LaunchedEffect(state.error) {
         if (state.error != null) {
@@ -94,15 +102,46 @@ internal fun ListReorderScreen(
         }
     }
 
+    val hasUnsavedChanges = state.items != null &&
+        state.items?.map { it.itemId } != state.initialItemsOrder
+
+    val handleBack = {
+        if (hasUnsavedChanges) {
+            showExitConfirm = true
+        } else {
+            onNavigateBack()
+        }
+    }
+
+    BackHandler(enabled = hasUnsavedChanges) {
+        showExitConfirm = true
+    }
+
     ListReorderContent(
         state = state,
         modifier = modifier,
         onMove = viewModel::reorderItem,
         onApplyClick = viewModel::applyChanges,
-        onBackClick = onNavigateBack,
+        onBackClick = handleBack,
+    )
+
+    ConfirmationSheet(
+        active = showExitConfirm,
+        title = stringResource(R.string.dialog_title_discard_changes),
+        message = stringResource(R.string.warning_prompt_discard_changes),
+        yesText = stringResource(R.string.button_text_discard),
+        yesColor = Red400,
+        onYes = {
+            showExitConfirm = false
+            onNavigateBack()
+        },
+        onNo = {
+            showExitConfirm = false
+        },
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ListReorderContent(
     state: ListReorderState,
@@ -155,7 +194,7 @@ internal fun ListReorderContent(
         verticalArrangement = spacedBy(0.dp),
         contentPadding = contentPadding,
         overscrollEffect = null,
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
     ) {
         item {
             TitleBar(
