@@ -13,6 +13,7 @@ import kotlinx.coroutines.delay
 import tv.trakt.trakt.core.main.navigation.isNonSearchDestination
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.SearchDestination
+import kotlin.time.Duration.Companion.milliseconds
 
 @Immutable
 internal data class MainSearchState(
@@ -34,7 +35,7 @@ internal fun rememberSearchState(currentDestination: NavDestination?): MainSearc
 
     LaunchedEffect(currentDestination) {
         if (isNonSearchDestination(currentDestination)) {
-            delay(200)
+            delay(200.milliseconds)
             searchState = MainSearchState()
         }
     }

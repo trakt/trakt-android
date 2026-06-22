@@ -8,6 +8,10 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.ktx.AppUpdateResult
+import com.google.android.play.core.ktx.requestCompleteUpdate
+import com.google.android.play.core.ktx.requestUpdateFlow
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -15,6 +19,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -55,6 +60,7 @@ import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import java.time.Instant
 import java.time.temporal.ChronoUnit.MINUTES
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 internal class MainViewModel(
@@ -73,6 +79,7 @@ internal class MainViewModel(
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
     private val dismissWelcomeUseCase: DismissWelcomeUseCase,
     private val inAppReviewUseCase: RequestAppReviewUseCase,
+    private val inAppUpdateManager: AppUpdateManager,
     private val errorsManager: GlobalErrorsManager,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -86,6 +93,7 @@ internal class MainViewModel(
     private val welcomeState = MutableStateFlow(initialState.welcome)
     private val whatsNewState = MutableStateFlow(initialState.whatsNew)
     private val reviewState = MutableStateFlow(initialState.review)
+    private val updateState = MutableStateFlow(initialState.update)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var lastLoadTime: Instant? = null
@@ -94,6 +102,7 @@ internal class MainViewModel(
         loadWelcome()
         loadWhatsNew()
         loadUser()
+        observeInAppUpdate()
 
         observeUser()
         observeAuthCode()
@@ -106,7 +115,7 @@ internal class MainViewModel(
     private fun observeUser() {
         sessionManager.observeProfile()
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach { user ->
                 val currentUser = userState.value
 
@@ -132,7 +141,7 @@ internal class MainViewModel(
     private fun observeCheckIn() {
         checkInManager.observe()
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach { state ->
                 checkInState.update { state }
             }
@@ -142,7 +151,7 @@ internal class MainViewModel(
     private fun observeRatePrompt() {
         ratePromptManager.observe()
             .distinctUntilChanged()
-            .debounce(50)
+            .debounce(50.milliseconds)
             .onEach { state ->
                 ratePromptState.update { state }
             }
@@ -153,11 +162,26 @@ internal class MainViewModel(
         inAppReviewUseCase.observeCount()
             .distinctUntilChanged()
             .filterNotNull()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 reviewState.update {
                     inAppReviewUseCase.shouldRequest()
                 }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeInAppUpdate() {
+        inAppUpdateManager
+            .requestUpdateFlow()
+            .debounce(200.milliseconds)
+            .catch { error ->
+                // requestUpdateFlow throws InstallException when the API is unavailable
+                // (e.g. sideloaded builds). Swallow it; in-app updates simply stay off.
+                Timber.e(error, "In-app update flow unavailable")
+            }
+            .onEach { result ->
+                updateState.update { result }
             }
             .launchIn(viewModelScope)
     }
@@ -173,7 +197,7 @@ internal class MainViewModel(
     private fun loadUser() {
         viewModelScope.launch {
             try {
-                delay(500)
+                delay(500.milliseconds)
                 getUserUseCase.loadUserProfile()?.let {
                     analytics.setUserId(it.ids.trakt.value.toString())
                 }
@@ -331,6 +355,28 @@ internal class MainViewModel(
         }
     }
 
+    suspend fun completeInAppUpdate() {
+        try {
+            inAppUpdateManager.requestCompleteUpdate()
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
+            }
+        }
+    }
+
+    fun suppressRatePrompt() {
+        viewModelScope.launch {
+            try {
+                ratePromptManager.onUserSuppress()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
     fun dismissWelcome() {
         viewModelScope.launch {
             welcomeState.update { it.copy(welcome = false) }
@@ -389,16 +435,8 @@ internal class MainViewModel(
         ratePromptState.update { null }
     }
 
-    fun suppressRatePrompt() {
-        viewModelScope.launch {
-            try {
-                ratePromptManager.onUserSuppress()
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
+    fun clearInAppUpdate() {
+        updateState.update { null }
     }
 
     val state = combine(
@@ -410,6 +448,7 @@ internal class MainViewModel(
         welcomeState,
         whatsNewState,
         reviewState,
+        updateState,
         errorState,
     ) { state ->
         MainState(
@@ -421,7 +460,8 @@ internal class MainViewModel(
             welcome = state[5] as MainState.WelcomeState,
             whatsNew = state[6] as WhatsNew?,
             review = state[7] as Boolean?,
-            error = state[8] as Exception?,
+            update = state[8] as AppUpdateResult?,
+            error = state[9] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

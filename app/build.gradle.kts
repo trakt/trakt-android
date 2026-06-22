@@ -122,6 +122,7 @@ dependencies {
     implementation(libs.android.billing)
     implementation(libs.androidx.lifecycle.process)
     implementation(libs.androidx.app.review)
+    implementation(libs.androidx.app.update)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)

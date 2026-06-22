@@ -25,15 +25,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.LocalCheckInVisibility
 import tv.trakt.trakt.LocalRatePromptVisibility
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.ui.theme.TraktTheme
+import kotlin.time.Duration.Companion.milliseconds
 
 internal const val SNACK_DURATION_SHORT = 2500L
 internal const val SNACK_DURATION_LONG = 4500L
@@ -77,13 +82,20 @@ internal fun MainSnackbarHost(
     LaunchedEffect(currentSnackbarData) {
         if (currentSnackbarData != null) {
             snackbarDataToShow = currentSnackbarData
-            delay(
-                when (currentSnackbarData.visuals.duration) {
-                    SnackbarDuration.Long -> SNACK_DURATION_LONG
-                    else -> SNACK_DURATION_SHORT
-                },
-            )
-            currentSnackbarData.dismiss()
+            when (val duration = currentSnackbarData.visuals.duration) {
+                SnackbarDuration.Indefinite -> {
+                    // Stays until action tapped or dismissed
+                }
+                else -> {
+                    delay(
+                        when (duration) {
+                            SnackbarDuration.Long -> SNACK_DURATION_LONG
+                            else -> SNACK_DURATION_SHORT
+                        }.milliseconds,
+                    )
+                    currentSnackbarData.dismiss()
+                }
+            }
         }
     }
 
@@ -98,6 +110,22 @@ internal fun MainSnackbarHost(
                     shape = RoundedCornerShape(12.dp),
                     containerColor = TraktTheme.colors.snackbarContainer,
                     contentColor = TraktTheme.colors.snackbarContent,
+                    action = data.visuals.actionLabel?.let { label ->
+                        {
+                            Text(
+                                text = label,
+                                color = TraktTheme.colors.snackbarContent,
+                                style = TraktTheme.typography.buttonTertiary.copy(
+                                    fontWeight = W700,
+                                    letterSpacing = 0.01.em,
+                                ),
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .onClick { data.performAction() }
+                                    .padding(horizontal = 8.dp),
+                            )
+                        }
+                    },
                     modifier = Modifier
                         .padding(bottom = padding)
                         .padding(horizontal = 16.dp)

@@ -265,7 +265,7 @@ internal fun DetailsHeader(
                     onImdbClick = onImdbClick,
                     onRottenClick = onRottenClick,
                     modifier = Modifier
-                        .padding(top = 13.dp),
+                        .padding(top = 16.dp),
                 )
             } else {
                 Spacer(Modifier.padding(top = 4.dp))

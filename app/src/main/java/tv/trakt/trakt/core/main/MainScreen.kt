@@ -31,12 +31,16 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
@@ -56,12 +60,19 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.ktx.AppUpdateResult.Available
+import com.google.android.play.core.ktx.AppUpdateResult.Downloaded
+import com.google.android.play.core.ktx.clientVersionStalenessDays
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.android.play.core.review.testing.FakeReviewManager
 import com.jakewharton.processphoenix.ProcessPhoenix
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import timber.log.Timber
 import tv.trakt.trakt.LocalBottomBarVisibility
@@ -112,6 +123,9 @@ import tv.trakt.trakt.ui.components.whatsnew.WhatsNewSheet
 import tv.trakt.trakt.ui.snackbar.MainSnackbarHost
 import tv.trakt.trakt.ui.theme.TraktTheme
 
+private const val IN_APP_UPDATE_REQUEST_CODE = 4001
+private const val IN_APP_UPDATE_STALENESS_DAYS = 7
+
 @Composable
 internal fun MainScreen(
     viewModel: MainViewModel,
@@ -121,13 +135,11 @@ internal fun MainScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    val localUriHandler = LocalUriHandler.current
+    val scope = rememberCoroutineScope()
     val localContext = LocalContext.current
     val localRes = LocalResources.current
     val localActivity = LocalActivity.current
     val localSnackbar = LocalSnackbarState.current
-    val localBottomBarVisibility = LocalBottomBarVisibility.current
-    val localCheckInVisibility = LocalCheckInVisibility.current
 
     val navController = rememberNavController()
     val currentDestination = navController
@@ -137,10 +149,6 @@ internal fun MainScreen(
     val searchState = rememberSearchState(currentDestination.value?.destination)
     var whatsNewState by remember { mutableStateOf<WhatsNew?>(null) }
     var stopRatePromptSheet by remember { mutableStateOf(false) }
-
-    val customThemeConfig = remember {
-        (localActivity as? MainActivity)?.customThemeConfig
-    }
 
     LifecycleEventEffect(ON_RESUME) {
         viewModel.loadData()
@@ -198,32 +206,6 @@ internal fun MainScreen(
         )
     }
 
-    LaunchedEffect(state.review) {
-        if (state.review == true) {
-            viewModel.dismissInAppReview()
-            localActivity?.let { activity ->
-                val manager = when {
-                    BuildConfig.DEBUG -> FakeReviewManager(activity)
-                    else -> ReviewManagerFactory.create(activity)
-                }
-
-                manager
-                    .requestReviewFlow()
-                    .addOnCompleteListener { request ->
-                        if (request.isSuccessful) {
-                            val reviewInfo = request.result
-                            manager.launchReviewFlow(activity, reviewInfo)
-                            Timber.d("Review flow launched")
-                        } else {
-                            Timber.e("Review flow error: ${request.exception}")
-                        }
-                    }
-
-                Timber.d("Launching in-app review")
-            }
-        }
-    }
-
     LaunchedEffect(state.ratePrompt) {
         if (state.ratePrompt is AskSuppress) {
             stopRatePromptSheet = true
@@ -239,6 +221,31 @@ internal fun MainScreen(
             viewModel.clearError()
         }
     }
+
+    LaunchedAppReview(
+        state = state,
+        onDismiss = viewModel::dismissInAppReview,
+    )
+
+    LaunchedAppUpdate(
+        state = state,
+        onCompleteUpdate = {
+            scope.launch {
+                viewModel.completeInAppUpdate()
+            }
+        },
+        onClearUpdate = viewModel::clearInAppUpdate,
+    )
+
+    MainScreenContent(
+        modifier = modifier,
+        state = state,
+        searchState = searchState,
+        navController = navController,
+        currentDestination = currentDestination,
+        onDismissWelcome = viewModel::dismissWelcome,
+        onDismissCheckIn = viewModel::dismissCheckIn,
+    )
 
     WhatsNewSheet(
         data = whatsNewState,
@@ -263,6 +270,44 @@ internal fun MainScreen(
         },
     )
 
+    BackHandler(
+        enabled = !state.welcome.isActive,
+    ) {
+        with(currentDestination.value?.destination) {
+            if (isStartDestination(this)) {
+                (localContext as? Activity)?.finish()
+                return@BackHandler
+            }
+            if (isMainDestination(this)) {
+                navController.navigateToMainDestination(HomeDestination)
+                return@BackHandler
+            }
+        }
+
+        navController.popBackStack()
+    }
+}
+
+@Composable
+private fun MainScreenContent(
+    modifier: Modifier,
+    state: MainState,
+    searchState: MainSearchStateHolder,
+    navController: NavHostController,
+    currentDestination: State<NavBackStackEntry?>,
+    onDismissWelcome: () -> Unit = {},
+    onDismissCheckIn: () -> Unit = {},
+) {
+    val localActivity = LocalActivity.current
+    val localSnackbar = LocalSnackbarState.current
+    val localBottomBarVisibility = LocalBottomBarVisibility.current
+    val localCheckInVisibility = LocalCheckInVisibility.current
+    val localUriHandler = LocalUriHandler.current
+
+    val customThemeConfig = remember {
+        (localActivity as? MainActivity)?.customThemeConfig
+    }
+
     Box(
         modifier = modifier.fillMaxSize(),
     ) {
@@ -273,7 +318,7 @@ internal fun MainScreen(
             when {
                 targetState.welcome -> {
                     WelcomeScreen(
-                        onDismiss = viewModel::dismissWelcome,
+                        onDismiss = onDismissWelcome,
                     )
                 }
 
@@ -344,7 +389,7 @@ internal fun MainScreen(
                                         else -> Unit
                                     }
                                 },
-                                onDismiss = viewModel::dismissCheckIn,
+                                onDismiss = onDismissCheckIn,
                             )
 
                             NavigationBar(
@@ -453,22 +498,89 @@ internal fun MainScreen(
             }
         }
     }
+}
 
-    BackHandler(
-        enabled = !state.welcome.isActive,
-    ) {
-        with(currentDestination.value?.destination) {
-            if (isStartDestination(this)) {
-                (localContext as? Activity)?.finish()
-                return@BackHandler
-            }
-            if (isMainDestination(this)) {
-                navController.navigateToMainDestination(HomeDestination)
-                return@BackHandler
+@Composable
+private fun LaunchedAppReview(
+    state: MainState,
+    onDismiss: () -> Unit,
+) {
+    val localActivity = LocalActivity.current
+
+    LaunchedEffect(state.review) {
+        if (state.review == true) {
+            onDismiss()
+            localActivity?.let { activity ->
+                val manager = when {
+                    BuildConfig.DEBUG -> FakeReviewManager(activity)
+                    else -> ReviewManagerFactory.create(activity)
+                }
+
+                manager
+                    .requestReviewFlow()
+                    .addOnCompleteListener { request ->
+                        if (request.isSuccessful) {
+                            val reviewInfo = request.result
+                            manager.launchReviewFlow(activity, reviewInfo)
+                            Timber.d("Review flow launched")
+                        } else {
+                            Timber.e("Review flow error: ${request.exception}")
+                        }
+                    }
+
+                Timber.d("Launching in-app review")
             }
         }
+    }
+}
 
-        navController.popBackStack()
+@Composable
+private fun LaunchedAppUpdate(
+    state: MainState,
+    onCompleteUpdate: () -> Unit,
+    onClearUpdate: () -> Unit,
+) {
+    val localRes = LocalResources.current
+    val localActivity = LocalActivity.current
+    val localSnackbar = LocalSnackbarState.current
+
+    var hasPromptedUpdate by rememberSaveable { mutableStateOf(false) }
+    var hasPromptedDownload by rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(state.update) {
+        when (val update = state.update) {
+            is Available -> {
+                val updateInfo = update.updateInfo
+
+                val isStale = (updateInfo.clientVersionStalenessDays ?: -1) >= IN_APP_UPDATE_STALENESS_DAYS
+                val isAllowed = updateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+
+                if (isStale && isAllowed && !hasPromptedUpdate) {
+                    localActivity?.let { activity ->
+                        hasPromptedUpdate = true
+                        update.startFlexibleUpdate(activity, IN_APP_UPDATE_REQUEST_CODE)
+                    }
+                }
+            }
+            is Downloaded -> {
+                if (!hasPromptedDownload) {
+                    val result = localSnackbar.showSnackbar(
+                        message = localRes.getString(R.string.text_info_update_downloaded),
+                        actionLabel = localRes.getString(R.string.button_text_install),
+                        duration = SnackbarDuration.Indefinite,
+                    )
+
+                    if (result == SnackbarResult.ActionPerformed) {
+                        onCompleteUpdate()
+                    } else {
+                        onClearUpdate()
+                    }
+
+                    hasPromptedDownload = true
+                }
+            }
+            else -> {}
+        }
     }
 }
 
