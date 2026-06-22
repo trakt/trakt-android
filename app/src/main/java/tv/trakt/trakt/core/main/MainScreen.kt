@@ -38,6 +38,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
@@ -232,6 +233,8 @@ internal fun MainScreen(
         }
     }
 
+    var hasPromptedUpdate by rememberSaveable { mutableStateOf(false) }
+    var hasPromptedDownload by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(state.update) {
         when (val update = state.update) {
             is Available -> {
@@ -241,21 +244,27 @@ internal fun MainScreen(
                     val isStale = (updateInfo.clientVersionStalenessDays ?: -1) >= IN_APP_UPDATE_STALENESS_DAYS
                     val isAllowed = updateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
 
-                    if (isStale && isAllowed) {
+                    if (isStale && isAllowed && !hasPromptedUpdate) {
+                        hasPromptedUpdate = true
                         update.startFlexibleUpdate(activity, IN_APP_UPDATE_REQUEST_CODE)
                     }
                 }
             }
             is Downloaded -> {
-                val result = localSnackbar.showSnackbar(
-                    message = localRes.getString(R.string.text_info_update_downloaded),
-                    actionLabel = localRes.getString(R.string.button_text_install),
-                    duration = SnackbarDuration.Indefinite,
-                )
-                if (result == SnackbarResult.ActionPerformed) {
-                    viewModel.completeInAppUpdate()
-                } else {
-                    viewModel.clearInAppUpdate()
+                if (!hasPromptedDownload) {
+                    val result = localSnackbar.showSnackbar(
+                        message = localRes.getString(R.string.text_info_update_downloaded),
+                        actionLabel = localRes.getString(R.string.button_text_install),
+                        duration = SnackbarDuration.Indefinite,
+                    )
+
+                    if (result == SnackbarResult.ActionPerformed) {
+                        viewModel.completeInAppUpdate()
+                    } else {
+                        viewModel.clearInAppUpdate()
+                    }
+
+                    hasPromptedDownload = true
                 }
             }
             else -> {}
