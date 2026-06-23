@@ -287,6 +287,7 @@
   <string name="button_text_hide_recommendation">Ukryj rekomendację</string>
   <string name="button_text_hold_to_confirm">Przytrzymaj, aby potwierdzić</string>
   <string name="button_text_import_more">Importuj więcej</string>
+  <string name="button_text_install">Zainstaluj</string>
   <string name="button_text_join_trakt">Dołącz do Trakt</string>
   <string name="button_text_join_trakt_for_free">Dołącz do Trakt za darmo</string>
   <string name="button_text_keyboard_done">Gotowe</string>
@@ -1110,6 +1111,7 @@
   <string name="text_info_signed_in">Zalogowano pomyślnie.</string>
   <string name="text_info_signed_out">Wylogowano pomyślnie.</string>
   <string name="text_info_unblocked">%s został odblokowany.</string>
+  <string name="text_info_update_downloaded">Aktualizacja jest gotowa do instalacji.</string>
   <string name="text_info_watchlist_added">Dodano do obserwowanych.</string>
   <string name="text_info_watchlist_removed">Usunięto z obserwowanych.</string>
   <string name="text_info_younify_service_linked">Serwis streamingowy został połączony.</string>

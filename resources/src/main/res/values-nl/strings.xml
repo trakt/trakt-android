@@ -287,6 +287,7 @@
   <string name="button_text_hide_recommendation">Aanbeveling verbergen</string>
   <string name="button_text_hold_to_confirm">Vasthouden om te bevestigen</string>
   <string name="button_text_import_more">Meer importeren</string>
+  <string name="button_text_install">Installeren</string>
   <string name="button_text_join_trakt">Lid worden van Trakt</string>
   <string name="button_text_join_trakt_for_free">Word gratis lid</string>
   <string name="button_text_keyboard_done">Klaar</string>
@@ -1110,6 +1111,7 @@
   <string name="text_info_signed_in">Je bent ingelogd.</string>
   <string name="text_info_signed_out">Je bent uitgelogd.</string>
   <string name="text_info_unblocked">%s is gedeblokkeerd.</string>
+  <string name="text_info_update_downloaded">Update is klaar om te installeren.</string>
   <string name="text_info_watchlist_added">Toegevoegd aan kijklijst.</string>
   <string name="text_info_watchlist_removed">Verwijderd uit kijklijst.</string>
   <string name="text_info_younify_service_linked">Streamingdienst is gekoppeld.</string>
