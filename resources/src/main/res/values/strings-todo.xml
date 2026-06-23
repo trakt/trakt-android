@@ -1,5 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="button_text_install">Install</string>
-  <string name="text_info_update_downloaded">Update is ready to install.</string>
 </resources>
