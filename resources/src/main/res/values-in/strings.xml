@@ -287,6 +287,7 @@
   <string name="button_text_hide_recommendation">Sembunyikan rekomendasi</string>
   <string name="button_text_hold_to_confirm">Tahan untuk Konfirmasi</string>
   <string name="button_text_import_more">Impor lagi</string>
+  <string name="button_text_install">Pasang</string>
   <string name="button_text_join_trakt">Gabung Trakt</string>
   <string name="button_text_join_trakt_for_free">Gabung Trakt Gratis</string>
   <string name="button_text_keyboard_done">Selesai</string>
@@ -1110,6 +1111,7 @@
   <string name="text_info_signed_in">Anda telah berhasil masuk.</string>
   <string name="text_info_signed_out">Anda telah berhasil keluar.</string>
   <string name="text_info_unblocked">%s telah dibuka blokirnya.</string>
+  <string name="text_info_update_downloaded">Pembaruan siap dipasang.</string>
   <string name="text_info_watchlist_added">Ditambahkan ke daftar tontonan.</string>
   <string name="text_info_watchlist_removed">Dihapus dari daftar tontonan.</string>
   <string name="text_info_younify_service_linked">Layanan streaming telah ditautkan.</string>

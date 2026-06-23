@@ -287,6 +287,7 @@
   <string name="button_text_hide_recommendation">Dölj rekommendation</string>
   <string name="button_text_hold_to_confirm">Håll för att bekräfta</string>
   <string name="button_text_import_more">Importera mer</string>
+  <string name="button_text_install">Installera</string>
   <string name="button_text_join_trakt">Gå med i Trakt</string>
   <string name="button_text_join_trakt_for_free">Gå med i Trakt gratis</string>
   <string name="button_text_keyboard_done">Klar</string>
@@ -1110,6 +1111,7 @@
   <string name="text_info_signed_in">Du är inloggad.</string>
   <string name="text_info_signed_out">Du har loggats ut.</string>
   <string name="text_info_unblocked">%s har avblockerats.</string>
+  <string name="text_info_update_downloaded">Uppdatering är redo att installeras.</string>
   <string name="text_info_watchlist_added">Tillagd i bevakningslista.</string>
   <string name="text_info_watchlist_removed">Borttagen från bevakningslista.</string>
   <string name="text_info_younify_service_linked">Streamingtjänsten har länkats.</string>

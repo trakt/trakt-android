@@ -287,6 +287,7 @@
   <string name="button_text_hide_recommendation">Приховати рекомендацію</string>
   <string name="button_text_hold_to_confirm">Утримуйте для підтвердження</string>
   <string name="button_text_import_more">Імпортувати більше</string>
+  <string name="button_text_install">Встановити</string>
   <string name="button_text_join_trakt">Приєднатися до Trakt</string>
   <string name="button_text_join_trakt_for_free">Приєднатися до Trakt безкоштовно</string>
   <string name="button_text_keyboard_done">Готово</string>
@@ -1110,6 +1111,7 @@
   <string name="text_info_signed_in">Ви ввійшли в систему.</string>
   <string name="text_info_signed_out">Ви вийшли з системи.</string>
   <string name="text_info_unblocked">%s розблоковано.</string>
+  <string name="text_info_update_downloaded">Оновлення готове до встановлення.</string>
   <string name="text_info_watchlist_added">Додано до списку перегляду.</string>
   <string name="text_info_watchlist_removed">Видалено зі списку перегляду.</string>
   <string name="text_info_younify_service_linked">Потоковий сервіс пов\'язано.</string>
