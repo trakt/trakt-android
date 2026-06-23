@@ -61,6 +61,7 @@ import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import java.time.LocalDate
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 internal class AllActivityPersonalViewModel(
@@ -125,11 +126,13 @@ internal class AllActivityPersonalViewModel(
             showUpdatesSource.observeUpdates(Source.SEASONS),
             episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.PROGRESS),
             episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.SEASON),
-            movieDetailsUpdates.observeUpdates(),
+            episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.HISTORY),
+            movieDetailsUpdates.observeUpdates(MovieDetailsUpdates.Source.Progress),
+            movieDetailsUpdates.observeUpdates(MovieDetailsUpdates.Source.History),
             checkInUpdates.observeUpdates(),
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach { loadData(ignoreErrors = true) }
             .launchIn(viewModelScope)
     }
@@ -139,7 +142,7 @@ internal class AllActivityPersonalViewModel(
             ratingsUpdates.observeUpdates(POST_RATING),
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 loadUserRatingData(ignoreErrors = true)
             }.launchIn(viewModelScope)

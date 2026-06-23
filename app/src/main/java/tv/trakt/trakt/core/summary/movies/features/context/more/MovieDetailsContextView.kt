@@ -57,7 +57,7 @@ internal fun MovieDetailsContextView(
     lists: Boolean,
     viewModel: MovieDetailsContextViewModel,
     modifier: Modifier = Modifier,
-    onShareClick: (() -> Unit)? = null,
+    onHistoryClick: (() -> Unit)? = null,
     onRemoveClick: (() -> Unit)? = null,
     onCheckClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
@@ -71,7 +71,7 @@ internal fun MovieDetailsContextView(
         lists = lists,
         state = state,
         onCheckClick = onCheckClick,
-        onShareClick = onShareClick,
+        onHistoryClick = onHistoryClick,
         onRemoveClick = onRemoveClick,
         onListsClick = onListsClick,
         onCoverClick = onCoverClick,
@@ -86,9 +86,9 @@ private fun MovieDetailsContextViewContent(
     lists: Boolean,
     state: MovieDetailsContextState,
     modifier: Modifier = Modifier,
+    onHistoryClick: (() -> Unit)? = null,
     onCheckClick: (() -> Unit)? = null,
     onRemoveClick: (() -> Unit)? = null,
-    onShareClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
     onCoverClick: (() -> Unit)? = null,
 ) {
@@ -170,8 +170,8 @@ private fun MovieDetailsContextViewContent(
             coverEnabled = !movie.images?.getFanartUrl().isNullOrBlank(),
             vip = state.user?.isAnyVip == true,
             onCheckClick = onCheckClick ?: {},
+            onHistoryClick = onHistoryClick ?: {},
             onRemoveClick = onRemoveClick ?: {},
-            onShareClick = onShareClick ?: {},
             onListsClick = onListsClick ?: {},
             onCoverClick = onCoverClick ?: {},
             modifier = Modifier
@@ -229,7 +229,7 @@ private fun ActionButtons(
     vip: Boolean,
     modifier: Modifier = Modifier,
     onCheckClick: () -> Unit,
-    onShareClick: () -> Unit,
+    onHistoryClick: () -> Unit,
     onRemoveClick: () -> Unit,
     onListsClick: () -> Unit,
     onCoverClick: () -> Unit,
@@ -262,6 +262,18 @@ private fun ActionButtons(
         }
 
         if (watched) {
+            GhostButton(
+                text = stringResource(R.string.button_text_view_history),
+                icon = painterResource(R.drawable.ic_calendar_check),
+                iconSize = 24.dp,
+                iconSpace = 14.5.dp,
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = -6.dp.toPx()
+                    },
+                onClick = onHistoryClick,
+            )
+
             GhostButton(
                 text = stringResource(R.string.button_text_remove_from_history),
                 icon = painterResource(R.drawable.ic_close),

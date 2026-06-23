@@ -56,14 +56,20 @@ import tv.trakt.trakt.core.settings.features.younify.navigation.younifyScreen
 import tv.trakt.trakt.core.settings.navigation.navigateToBlockedUsers
 import tv.trakt.trakt.core.settings.navigation.navigateToSettings
 import tv.trakt.trakt.core.settings.navigation.settingsScreen
+import tv.trakt.trakt.core.summary.episodes.features.history.navigation.episodeHistoryScreen
+import tv.trakt.trakt.core.summary.episodes.features.history.navigation.navigateToEpisodeHistory
 import tv.trakt.trakt.core.summary.episodes.navigation.episodeDetailsScreen
 import tv.trakt.trakt.core.summary.episodes.navigation.navigateToEpisode
+import tv.trakt.trakt.core.summary.movies.features.history.navigation.movieHistoryScreen
+import tv.trakt.trakt.core.summary.movies.features.history.navigation.navigateToMovieHistory
 import tv.trakt.trakt.core.summary.movies.navigation.movieDetailsScreen
 import tv.trakt.trakt.core.summary.movies.navigation.navigateToMovie
 import tv.trakt.trakt.core.summary.people.navigation.navigateToPerson
 import tv.trakt.trakt.core.summary.people.navigation.personDetailsScreen
 import tv.trakt.trakt.core.summary.sentiment.navigation.navigateToSentiment
 import tv.trakt.trakt.core.summary.sentiment.navigation.sentimentScreen
+import tv.trakt.trakt.core.summary.shows.features.history.navigation.navigateToShowHistory
+import tv.trakt.trakt.core.summary.shows.features.history.navigation.showHistoryScreen
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.navigation.allShowSeasonsScreen
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.navigation.navigateToAllShowSeasons
 import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
@@ -228,8 +234,23 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
                     backgroundUrl = show.images?.getFanartUrl(),
                 )
             },
+            onNavigateToHistory = { show, watched ->
+                navigateToShowHistory(
+                    showId = show.ids.trakt,
+                    showTitle = show.title,
+                    watched = watched,
+                    backgroundUrl = show.images?.getFanartUrl(),
+                )
+            },
             onNavigateToUser = { navigateToUserProfile(it) },
             onNavigateVip = { navigateToBilling() },
+            onNavigateBack = { popBackStack() },
+        )
+
+        showHistoryScreen(
+            onNavigateToEpisode = { showId, episode ->
+                navigateToEpisode(showId, episode)
+            },
             onNavigateBack = { popBackStack() },
         )
     }
@@ -267,8 +288,20 @@ internal fun NavGraphBuilder.episodesScreens(controller: NavHostController) {
                     backgroundUrl = show.images?.getFanartUrl(),
                 )
             },
+            onNavigateToHistory = { show, episode, watched ->
+                navigateToEpisodeHistory(
+                    episodeId = episode.ids.trakt,
+                    episodeTitle = episode.title,
+                    watched = watched,
+                    backgroundUrl = show.images?.getFanartUrl(),
+                )
+            },
             onNavigateToUser = { navigateToUserProfile(it) },
             onNavigateVip = { navigateToBilling() },
+            onNavigateBack = { popBackStack() },
+        )
+
+        episodeHistoryScreen(
             onNavigateBack = { popBackStack() },
         )
     }
@@ -320,8 +353,20 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
             },
             onNavigateToTrailer = { navigateToYouTubePlayer(it) },
             onNavigateToExtra = { navigateToYouTubePlayer(it.url) },
+            onNavigateToHistory = { movie, watched ->
+                navigateToMovieHistory(
+                    movieId = movie.ids.trakt,
+                    movieTitle = movie.title,
+                    watched = watched,
+                    backgroundUrl = movie.images?.getFanartUrl(),
+                )
+            },
             onNavigateToUser = { navigateToUserProfile(it) },
             onNavigateVip = { navigateToBilling() },
+            onNavigateBack = { popBackStack() },
+        )
+
+        movieHistoryScreen(
             onNavigateBack = { popBackStack() },
         )
     }

@@ -55,6 +55,7 @@ internal fun DetailsHeader(
     onShareImageClick: () -> Unit,
     onSocialActivityClick: () -> Unit,
     onInfoClick: () -> Unit,
+    onWatchedClick: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -164,6 +165,7 @@ internal fun DetailsHeader(
         loading = loading,
         onBackClick = onBackClick,
         onInfoClick = onInfoClick,
+        onWatchedClick = onWatchedClick,
         onShareClick = onShareClick,
         onShareImageClick = onShareImageClick,
         onImdbClick = {

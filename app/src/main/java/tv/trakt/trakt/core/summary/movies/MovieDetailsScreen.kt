@@ -74,17 +74,14 @@ import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.comments.model.CommentsFilter
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
 import tv.trakt.trakt.core.share.ShareSheet
 import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsView
 import tv.trakt.trakt.core.summary.movies.features.comments.MovieCommentsView
-import tv.trakt.trakt.core.summary.movies.features.context.history.MovieDetailsHistorySheet
 import tv.trakt.trakt.core.summary.movies.features.context.lists.MovieDetailsListsSheet
 import tv.trakt.trakt.core.summary.movies.features.context.more.MovieDetailsContextSheet
 import tv.trakt.trakt.core.summary.movies.features.extras.MovieExtrasView
-import tv.trakt.trakt.core.summary.movies.features.history.MovieHistoryView
 import tv.trakt.trakt.core.summary.movies.features.info.MovieInfoSheet
 import tv.trakt.trakt.core.summary.movies.features.lists.MovieListsView
 import tv.trakt.trakt.core.summary.movies.features.related.MovieRelatedView
@@ -117,6 +114,7 @@ internal fun MovieDetailsScreen(
     onSentimentClick: ((Movie, Sentiments) -> Unit)? = null,
     onTrailerClick: (String) -> Unit,
     onExtraClick: (ExtraVideo) -> Unit,
+    onNavigateToHistory: (Movie, watched: Int) -> Unit,
     onNavigateToUser: ((User) -> Unit)? = null,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
@@ -132,7 +130,6 @@ internal fun MovieDetailsScreen(
     var detailsSheet by remember { mutableStateOf<Movie?>(null) }
     var contextSheet by remember { mutableStateOf<Movie?>(null) }
     var listsSheet by remember { mutableStateOf<Movie?>(null) }
-    var historySheet by remember { mutableStateOf<HomeActivityItem.MovieItem?>(null) }
     var confirmRemoveWatchedSheet by remember { mutableStateOf(false) }
     var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
     var dateSheet by remember { mutableStateOf(false) }
@@ -207,7 +204,11 @@ internal fun MovieDetailsScreen(
                 onCommentsClick(it, filter)
             }
         },
-        onHistoryClick = { historySheet = it },
+        onWatchedClick = {
+            state.movie?.let {
+                onNavigateToHistory(it, state.movieProgress?.plays ?: 0)
+            }
+        },
         onRatingClick = {
             viewModel.addRating(it)
             haptic.performHapticFeedback(Confirm)
@@ -298,8 +299,11 @@ internal fun MovieDetailsScreen(
         movie = contextSheet,
         watched = (state.movieProgress?.plays ?: 0) > 0,
         lists = state.movieProgress?.inLists == true,
-        onShareClick = {
-            state.movie?.let { shareMovie(it, context) }
+        onHistoryClick = {
+            contextSheet = null
+            state.movie?.let {
+                onNavigateToHistory(it, state.movieProgress?.plays ?: 0)
+            }
         },
         onCheckClick = {
             dateSheet = true
@@ -315,16 +319,6 @@ internal fun MovieDetailsScreen(
         },
         onDismiss = {
             contextSheet = null
-        },
-    )
-
-    MovieDetailsHistorySheet(
-        sheetItem = historySheet,
-        onRemovePlay = {
-            viewModel.removeFromWatched(playId = it.id)
-        },
-        onDismiss = {
-            historySheet = null
         },
     )
 
@@ -406,11 +400,11 @@ internal fun MovieDetailsContent(
     onShareImageClick: (() -> Unit)? = null,
     onSocialActivityClick: (() -> Unit)? = null,
     onInfoClick: (() -> Unit)? = null,
+    onWatchedClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
     onExtraClick: ((ExtraVideo) -> Unit)? = null,
     onWatchlistClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
-    onHistoryClick: ((HomeActivityItem.MovieItem) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
     onMoreCommentsClick: ((CommentsFilter) -> Unit)? = null,
     onPersonClick: ((Person) -> Unit)? = null,
@@ -506,6 +500,7 @@ internal fun MovieDetailsContent(
                         onShareImageClick = onShareImageClick ?: {},
                         onSocialActivityClick = onSocialActivityClick ?: {},
                         onInfoClick = onInfoClick ?: {},
+                        onWatchedClick = onWatchedClick ?: {},
                         modifier = Modifier
                             .align(Alignment.Center)
                             .alpha(ratingAlphaMask),
@@ -698,22 +693,6 @@ internal fun MovieDetailsContent(
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),
                         )
-                    }
-
-                    if (isWatched) {
-                        item {
-                            MovieHistoryView(
-                                viewModel = koinViewModel(
-                                    parameters = { parametersOf(movie) },
-                                ),
-                                headerPadding = sectionPadding,
-                                contentPadding = sectionPadding,
-                                onClick = onHistoryClick,
-                                modifier = Modifier
-                                    .alpha(ratingAlphaMask)
-                                    .padding(top = 32.dp),
-                            )
-                        }
                     }
 
                     item {

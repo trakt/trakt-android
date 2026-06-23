@@ -346,7 +346,7 @@ internal fun PanelMediaCard(
                                     translationX = 5.dp.toPx()
                                 }
                                 .size(14.dp)
-                                .onClick(onClick = onLongClick ?: {}),
+                                .onClick(enabled = enabled, onClick = onLongClick ?: {}),
                         )
                     }
                 }

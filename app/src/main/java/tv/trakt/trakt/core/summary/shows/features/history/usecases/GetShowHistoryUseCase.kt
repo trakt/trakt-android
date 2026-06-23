@@ -9,14 +9,21 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
+
+internal const val HISTORY_PAGE_LIMIT = 100
 
 internal class GetShowHistoryUseCase(
     private val remoteSource: UserHistoryRemoteDataSource,
 ) {
-    suspend fun getHistory(showId: TraktId): ImmutableList<HomeActivityItem.EpisodeItem> {
+    suspend fun getHistory(
+        showId: TraktId,
+        pagination: Pagination,
+    ): ImmutableList<HomeActivityItem.EpisodeItem> {
         return remoteSource.getShowHistory(
             showId = showId,
+            pagination = pagination,
         ).asyncMap {
             HomeActivityItem.EpisodeItem(
                 id = it.id,

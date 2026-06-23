@@ -84,6 +84,7 @@ internal class EpisodeSeasonViewModel(
             showDetailsUpdates.observeUpdates(PROGRESS),
             showDetailsUpdates.observeUpdates(SEASONS),
             episodeDetailsUpdates.observeUpdates(Source.PROGRESS),
+            episodeDetailsUpdates.observeUpdates(Source.HISTORY),
         )
             .distinctUntilChanged()
             .debounce(200L)

@@ -56,6 +56,7 @@ internal fun DetailsHeader(
     onShareImageClick: () -> Unit,
     onSocialActivityClick: () -> Unit,
     onInfoClick: () -> Unit,
+    onWatchedClick: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -176,6 +177,7 @@ internal fun DetailsHeader(
         onShareClick = onShareClick,
         onShareImageClick = onShareImageClick,
         onInfoClick = onInfoClick,
+        onWatchedClick = onWatchedClick,
         onImdbClick = {
             show.ids.imdb?.let {
                 openExternalAppLink(

@@ -122,7 +122,9 @@ internal class AllWatchlistViewModel(
             showUpdatesSource.observeUpdates(Source.SEASONS),
             episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.PROGRESS),
             episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.SEASON),
-            movieDetailsUpdates.observeUpdates(),
+            episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.HISTORY),
+            movieDetailsUpdates.observeUpdates(MovieDetailsUpdates.Source.Progress),
+            movieDetailsUpdates.observeUpdates(MovieDetailsUpdates.Source.History),
             watchlistUpdates.observeUpdates(Default),
         )
             .distinctUntilChanged()

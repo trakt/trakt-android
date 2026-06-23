@@ -74,14 +74,11 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.comments.model.CommentsFilter
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
 import tv.trakt.trakt.core.summary.episodes.features.actors.EpisodeActorsView
 import tv.trakt.trakt.core.summary.episodes.features.comments.EpisodeCommentsView
-import tv.trakt.trakt.core.summary.episodes.features.context.history.EpisodeDetailsHistorySheet
 import tv.trakt.trakt.core.summary.episodes.features.context.more.EpisodeDetailsContextSheet
-import tv.trakt.trakt.core.summary.episodes.features.history.EpisodeHistoryView
 import tv.trakt.trakt.core.summary.episodes.features.info.EpisodeInfoSheet
 import tv.trakt.trakt.core.summary.episodes.features.related.EpisodeRelatedView
 import tv.trakt.trakt.core.summary.episodes.features.season.EpisodeSeasonView
@@ -109,6 +106,7 @@ internal fun EpisodeDetailsScreen(
     onCommentsClick: ((Show, Episode, CommentsFilter) -> Unit),
     onPersonClick: ((Show, Episode, Person) -> Unit),
     onAllSeasonsClick: (Show, Int?) -> Unit,
+    onNavigateToHistory: (Show, Episode, Int) -> Unit,
     onNavigateToUser: (User) -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
@@ -122,7 +120,6 @@ internal fun EpisodeDetailsScreen(
 
     val scope = rememberCoroutineScope()
     var contextSheet by remember { mutableStateOf(false) }
-    var historySheet by remember { mutableStateOf<HomeActivityItem.EpisodeItem?>(null) }
     var confirmRemoveWatchedSheet by remember { mutableStateOf(false) }
     var dateSheet by remember { mutableStateOf(false) }
     var detailsSheet by remember { mutableStateOf<Pair<Show, Episode>?>(null) }
@@ -168,8 +165,16 @@ internal fun EpisodeDetailsScreen(
                 socialActivitySheet = it
             }
         },
-        onHistoryClick = {
-            historySheet = it
+        onWatchedClick = {
+            val show = state.show
+            val episode = state.episode
+            if (show != null && episode != null) {
+                onNavigateToHistory(
+                    show,
+                    episode,
+                    state.episodeProgress?.plays ?: 0,
+                )
+            }
         },
         onMoreClick = {
             contextSheet = true
@@ -217,6 +222,17 @@ internal fun EpisodeDetailsScreen(
         onCheckClick = {
             dateSheet = true
         },
+        onHistoryClick = {
+            val show = state.show
+            val episode = state.episode
+            if (show != null && episode != null) {
+                onNavigateToHistory(
+                    show,
+                    episode,
+                    state.episodeProgress?.plays ?: 0,
+                )
+            }
+        },
         onRemoveClick = {
             confirmRemoveWatchedSheet = true
         },
@@ -232,16 +248,6 @@ internal fun EpisodeDetailsScreen(
         },
         onDismiss = {
             contextSheet = false
-        },
-    )
-
-    EpisodeDetailsHistorySheet(
-        sheetItem = historySheet,
-        onRemovePlay = {
-            viewModel.removeFromWatched(playId = it.id)
-        },
-        onDismiss = {
-            historySheet = null
         },
     )
 
@@ -349,7 +355,7 @@ internal fun EpisodeDetailsContent(
     onSocialActivityClick: (() -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
     onMoreCommentsClick: ((CommentsFilter) -> Unit)? = null,
-    onHistoryClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
+    onWatchedClick: (() -> Unit)? = null,
     onPersonClick: ((Person) -> Unit)? = null,
     onRatingClick: ((Int) -> Unit)? = null,
     onRatingRemoveClick: (() -> Unit)? = null,
@@ -440,6 +446,7 @@ internal fun EpisodeDetailsContent(
                         onShareClick = onShareClick ?: {},
                         onSocialActivityClick = onSocialActivityClick ?: {},
                         onInfoClick = onInfoClick ?: {},
+                        onWatchedClick = onWatchedClick ?: {},
                         modifier = Modifier
                             .align(Center)
                             .alpha(ratingAlphaMask),
@@ -607,25 +614,6 @@ internal fun EpisodeDetailsContent(
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),
                         )
-                    }
-
-                    if (isWatched) {
-                        item {
-                            EpisodeHistoryView(
-                                viewModel = koinViewModel(
-                                    parameters = {
-                                        parametersOf(state.episode)
-                                    },
-                                ),
-                                headerPadding = sectionPadding,
-                                contentPadding = sectionPadding,
-                                loading = state.loadingProgress.isLoading,
-                                onClick = onHistoryClick,
-                                modifier = Modifier
-                                    .alpha(ratingAlphaMask)
-                                    .padding(top = 32.dp),
-                            )
-                        }
                     }
                 }
             }

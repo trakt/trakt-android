@@ -64,6 +64,7 @@ import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.movies.MovieDetailsState.UserRatingsState
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
+import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates.Source
 import tv.trakt.trakt.core.summary.movies.features.actors.usecases.GetMovieDirectorUseCase
 import tv.trakt.trakt.core.summary.movies.features.socials.GetMovieSocialsUseCase
 import tv.trakt.trakt.core.summary.movies.navigation.MovieDetailsDestination
@@ -147,6 +148,7 @@ internal class MovieDetailsViewModel(
         loadUserProgressData()
         loadUserRatingData()
 
+        observeHistory()
         observeCheckIn()
 
         analytics.logScreenView(
@@ -159,6 +161,16 @@ internal class MovieDetailsViewModel(
             .distinctUntilChanged()
             .debounce(200.milliseconds)
             .filterNot { it.first == MovieDetails }
+            .onEach {
+                loadUserProgressData(force = true)
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeHistory() {
+        movieDetailsUpdates.observeUpdates(Source.History)
+            .distinctUntilChanged()
+            .debounce(200.milliseconds)
             .onEach {
                 loadUserProgressData(force = true)
             }
@@ -466,7 +478,7 @@ internal class MovieDetailsViewModel(
                 userWatchlistMinLocalSource.removeMovies(ids = setOf(movieId))
 
                 watchlistUpdates.notifyUpdate(Default)
-                movieDetailsUpdates.notifyUpdate()
+                movieDetailsUpdates.notifyUpdate(Source.Progress)
 
                 if (response.added.movies != 0) {
                     movieProgressState.update {
@@ -520,52 +532,7 @@ internal class MovieDetailsViewModel(
                         plays = 0,
                     )
                 }
-                movieDetailsUpdates.notifyUpdate()
-
-                infoState.update {
-                    DynamicStringResource(R.string.text_info_history_removed)
-                }
-                analytics.progress.logRemoveWatchedMedia(
-                    mediaType = "movie",
-                    source = "movie_details",
-                )
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.recordError(error)
-                }
-            } finally {
-                loadingProgress.update { Done }
-            }
-        }
-    }
-
-    fun removeFromWatched(playId: Long) {
-        if (movieState.value == null ||
-            loadingState.value.isLoading ||
-            loadingProgress.value.isLoading ||
-            loadingLists.value.isLoading
-        ) {
-            return
-        }
-
-        viewModelScope.launch {
-            if (!sessionManager.isAuthenticated()) {
-                return@launch
-            }
-            try {
-                loadingProgress.update { Loading }
-
-                updateMovieHistoryUseCase.removePlayFromHistory(playId)
-                loadProgressUseCase.loadMoviesProgress()
-
-                val plays = movieProgressState.value?.plays?.minus(1) ?: 0
-                movieProgressState.update {
-                    it?.copy(
-                        plays = plays.coerceAtLeast(0),
-                    )
-                }
-                movieDetailsUpdates.notifyUpdate()
+                movieDetailsUpdates.notifyUpdate(Source.Progress)
 
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_removed)

@@ -2,6 +2,7 @@ package tv.trakt.trakt.common.core.user.data.remote.history
 
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
 import kotlin.time.Instant
@@ -33,8 +34,7 @@ interface UserHistoryRemoteDataSource {
 
     suspend fun getShowHistory(
         showId: TraktId,
-        page: Int = 1,
-        limit: Int? = null,
+        pagination: Pagination,
     ): List<SyncHistoryEpisodeItemDto>
 
     suspend fun getEpisodeHistory(

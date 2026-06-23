@@ -8,15 +8,22 @@ import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
+
+internal const val HISTORY_PAGE_LIMIT = 100
 
 internal class GetMovieHistoryUseCase(
     private val remoteSource: UserHistoryRemoteDataSource,
 ) {
-    suspend fun getHistory(movieId: TraktId): ImmutableList<HomeActivityItem.MovieItem> {
+    suspend fun getHistory(
+        movieId: TraktId,
+        pagination: Pagination,
+    ): ImmutableList<HomeActivityItem.MovieItem> {
         return remoteSource.getMovieHistory(
             movieId = movieId,
-            limit = 50,
+            page = pagination.page,
+            limit = pagination.limit,
         ).asyncMap {
             HomeActivityItem.MovieItem(
                 id = it.id,
@@ -30,6 +37,9 @@ internal class GetMovieHistoryUseCase(
                     },
                 ),
             )
+        }.filter {
+            // Filter plays that belong to the specified movie
+            it.movie.ids.trakt == movieId
         }.sortedByDescending {
             it.activityAt
         }.toImmutableList()

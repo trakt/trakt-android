@@ -134,7 +134,7 @@ private fun StreaksViewContent(
             modifier = Modifier.fillMaxWidth(),
         ) {
             StreakStatCard(
-                value = "${data.activeDaysMonth}  (${data.activeDaysMonthPercent}%)",
+                value = "${data.activeDaysMonth} (${data.activeDaysMonthPercent}%)",
                 label = stringResource(R.string.label_stats_active_days),
                 subtitle = stringResource(R.string.text_this_month),
                 modifier = Modifier.weight(1f),

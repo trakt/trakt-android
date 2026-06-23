@@ -7,16 +7,24 @@ import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
+
+internal const val HISTORY_PAGE_LIMIT = 100
 
 internal class GetEpisodeHistoryUseCase(
     private val remoteSource: UserHistoryRemoteDataSource,
 ) {
-    suspend fun getHistory(episode: Episode): ImmutableList<HomeActivityItem.EpisodeItem> {
+    suspend fun getHistory(
+        episodeId: TraktId,
+        pagination: Pagination,
+    ): ImmutableList<HomeActivityItem.EpisodeItem> {
         return remoteSource.getEpisodeHistory(
-            episodeId = episode.ids.trakt,
-            limit = 100,
+            episodeId = episodeId,
+            page = pagination.page,
+            limit = pagination.limit,
         ).asyncMap {
             HomeActivityItem.EpisodeItem(
                 id = it.id,
@@ -36,8 +44,8 @@ internal class GetEpisodeHistoryUseCase(
                 ),
             )
         }.filter {
-            // Filter to ensure we only get history for the specified episode
-            it.episode.ids.trakt == episode.ids.trakt
+            // Filter plays that belong to the specified episode
+            it.episode.ids.trakt == episodeId
         }.sortedByDescending {
             it.activityAt
         }.toImmutableList()
