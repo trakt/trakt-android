@@ -478,6 +478,7 @@
   <string name="error_text_failed_update">Oppdatering mislyktes. Vennligst prøv igjen.</string>
   <string name="error_text_image_preview_failed">Forhåndsvisning kunne ikke lastes inn</string>
   <string name="error_text_lists_limit">Du har nådd grensen for dine personlige lister. Oppgrader til VIP for ubegrenset antall lister!</string>
+  <string name="error_text_locked_account_collection_limit">Denne brukerkontoen er blitt låst fordi samlingen har overskredet grensen. Vennligst <a>kontakt support</a> for å løse dette problemet.</string>
   <string name="error_text_locked_account_guide">Vennligst besøk <a>avanserte innstillinger</a> for å kjøre en historikkanalyse og låse opp kontoen din.</string>
   <string name="error_text_locked_account_persists">Hvis problemet vedvarer, vennligst <a>kontakt kundestøtte</a> for å løse dette problemet.</string>
   <string name="error_text_report_already_reported">Du har allerede rapportert dette.</string>
@@ -519,6 +520,7 @@
   <string name="header_device_auth_qr_instruction">Skann QR-koden, eller logg inn på:</string>
   <string name="header_device_auth_try_again">Aktiveringen ble nektet, utløp, eller noe uforutsett skjedde. Vennligst prøv igjen.</string>
   <string name="header_director">Regissør</string>
+  <string name="header_display">Visning</string>
   <string name="header_episode_type">Type</string>
   <string name="header_expected_premiere">Forventet premiere</string>
   <string name="header_expiration_date">Utløpsdato</string>
@@ -1325,6 +1327,8 @@
   <string name="text_younify_status_unlinked">Ikke koblet</string>
   <string name="textarea_placeholder_comment">Legg til en anmeldelse…</string>
   <string name="textarea_placeholder_reply">Svar…</string>
+  <string name="tooltip_reset_filters">Tilbakestill filtre</string>
+  <string name="tooltip_save_as_default">Lagre som standard</string>
   <string name="tooltip_stats_active_days">Dager med minst én visning</string>
   <string name="tooltip_stats_avg_per_day">Gjennomsnittlig seertid på aktive dager</string>
   <string name="tooltip_stats_best_day">Flest visninger på en enkelt dag</string>

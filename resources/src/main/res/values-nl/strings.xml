@@ -478,6 +478,7 @@
   <string name="error_text_failed_update">Bijwerken mislukt. Probeer het opnieuw.</string>
   <string name="error_text_image_preview_failed">Voorbeeld kon niet worden geladen</string>
   <string name="error_text_lists_limit">Je hebt de limiet voor persoonlijke lijsten bereikt. Upgrade naar VIP voor een onbeperkt aantal lijsten!</string>
+  <string name="error_text_locked_account_collection_limit">Dit gebruikersaccount is vergrendeld omdat de collectie de limiet heeft overschreden. Neem alstublieft <a>contact op met de ondersteuning</a> om dit probleem op te lossen.</string>
   <string name="error_text_locked_account_guide">Bezoek de <a>geavanceerde instellingen</a> om een geschiedenisanalyse uit te voeren en je account te ontgrendelen.</string>
   <string name="error_text_locked_account_persists">Als het probleem aanhoudt, neem dan <a>contact op met de ondersteuning</a> om dit probleem op te lossen.</string>
   <string name="error_text_report_already_reported">Dit is al door u gemeld.</string>
@@ -519,6 +520,7 @@
   <string name="header_device_auth_qr_instruction">Scan de QR-code, of log in op:</string>
   <string name="header_device_auth_try_again">De activering is geweigerd, verlopen of er is iets onvoorziens gebeurd. Probeer het opnieuw.</string>
   <string name="header_director">Regisseur</string>
+  <string name="header_display">Weergave</string>
   <string name="header_episode_type">Type</string>
   <string name="header_expected_premiere">Verwachte première</string>
   <string name="header_expiration_date">Vervaldatum</string>
@@ -1325,6 +1327,8 @@
   <string name="text_younify_status_unlinked">Niet gekoppeld</string>
   <string name="textarea_placeholder_comment">Voeg een recensie toe…</string>
   <string name="textarea_placeholder_reply">Reageren…</string>
+  <string name="tooltip_reset_filters">Filters resetten</string>
+  <string name="tooltip_save_as_default">Instellen als standaard</string>
   <string name="tooltip_stats_active_days">Dagen met minstens één kijkbeurt</string>
   <string name="tooltip_stats_avg_per_day">Gemiddelde kijktijd op actieve dagen</string>
   <string name="tooltip_stats_best_day">Meeste kijkbeurten op één dag</string>

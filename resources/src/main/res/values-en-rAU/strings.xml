@@ -478,6 +478,7 @@
   <string name="error_text_failed_update">Update failed. Please try again.</string>
   <string name="error_text_image_preview_failed">Preview failed to load</string>
   <string name="error_text_lists_limit">You\'ve reached your limit for personal lists. Upgrade to VIP for unlimited lists!</string>
+  <string name="error_text_locked_account_collection_limit">This user account has been locked because the collection has exceeded the limit. Please <a>contact support</a> to resolve this issue.</string>
   <string name="error_text_locked_account_guide">Please visit the <a>advanced settings</a> to run a history analysis and unlock your account.</string>
   <string name="error_text_locked_account_persists">If the issue persists, please <a>contact support</a> to resolve this issue.</string>
   <string name="error_text_report_already_reported">You\'ve already reported this.</string>
@@ -519,6 +520,7 @@
   <string name="header_device_auth_qr_instruction">Scan the QR code, or sign in at:</string>
   <string name="header_device_auth_try_again">The activation was denied, expired, or something unforeseeable happened. Please try again.</string>
   <string name="header_director">Director</string>
+  <string name="header_display">Display</string>
   <string name="header_episode_type">Type</string>
   <string name="header_expected_premiere">Expected Premiere</string>
   <string name="header_expiration_date">Expiration Date</string>
@@ -1325,6 +1327,8 @@
   <string name="text_younify_status_unlinked">Not linked</string>
   <string name="textarea_placeholder_comment">Add a review…</string>
   <string name="textarea_placeholder_reply">Reply…</string>
+  <string name="tooltip_reset_filters">Reset filters</string>
+  <string name="tooltip_save_as_default">Set as default</string>
   <string name="tooltip_stats_active_days">Days with at least one watch</string>
   <string name="tooltip_stats_avg_per_day">Average watch time on active days</string>
   <string name="tooltip_stats_best_day">Most watches in a single day</string>

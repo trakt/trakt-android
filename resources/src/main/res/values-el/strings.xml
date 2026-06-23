@@ -478,6 +478,7 @@
   <string name="error_text_failed_update">Η ενημέρωση απέτυχε. Παρακαλώ δοκιμάστε ξανά.</string>
   <string name="error_text_image_preview_failed">Η προεπισκόπηση απέτυχε να φορτώσει</string>
   <string name="error_text_lists_limit">Έχετε φτάσει το όριο των προσωπικών σας λιστών. Αναβαθμίστε σε VIP για απεριόριστο αριθμό λιστών!</string>
+  <string name="error_text_locked_account_collection_limit">Αυτός ο λογαριασμός χρήστη έχει κλειδωθεί επειδή η συλλογή έχει υπερβεί το όριο. Παρακαλούμε <a>επικοινωνήστε με την υποστήριξη</a> για την επίλυση αυτού του ζητήματος.</string>
   <string name="error_text_locked_account_guide">Παρακαλούμε επισκεφθείτε τις <a>προηγμένες ρυθμίσεις</a> για να εκτελέσετε ανάλυση ιστορικού και να ξεκλειδώσετε τον λογαριασμό σας.</string>
   <string name="error_text_locked_account_persists">Εάν το πρόβλημα επιμένει, παρακαλούμε <a>επικοινωνήστε με την υποστήριξη</a> για να επιλύσετε αυτό το ζήτημα.</string>
   <string name="error_text_report_already_reported">Το έχετε ήδη αναφέρει.</string>
@@ -519,6 +520,7 @@
   <string name="header_device_auth_qr_instruction">Σαρώστε τον κωδικό QR ή συνδεθείτε στη διεύθυνση:</string>
   <string name="header_device_auth_try_again">Η ενεργοποίηση απορρίφθηκε, έληξε ή συνέβη κάτι απρόβλεπτο. Παρακαλώ δοκιμάστε ξανά.</string>
   <string name="header_director">Σκηνοθέτης</string>
+  <string name="header_display">Εμφάνιση</string>
   <string name="header_episode_type">Τύπος</string>
   <string name="header_expected_premiere">Αναμενόμενη Πρεμιέρα</string>
   <string name="header_expiration_date">Ημερομηνία Λήξης</string>
@@ -1325,6 +1327,8 @@
   <string name="text_younify_status_unlinked">Δεν είναι συνδεδεμένο</string>
   <string name="textarea_placeholder_comment">Προσθήκη κριτικής…</string>
   <string name="textarea_placeholder_reply">Απάντηση…</string>
+  <string name="tooltip_reset_filters">Επαναφορά φίλτρων</string>
+  <string name="tooltip_save_as_default">Αποθήκευση ως προεπιλογή</string>
   <string name="tooltip_stats_active_days">Ημέρες με τουλάχιστον μία παρακολούθηση</string>
   <string name="tooltip_stats_avg_per_day">Μέσος χρόνος παρακολούθησης σε ενεργές ημέρες</string>
   <string name="tooltip_stats_best_day">Περισσότερες παρακολουθήσεις σε μία ημέρα</string>

@@ -478,6 +478,7 @@
   <string name="error_text_failed_update">Актуализацията е неуспешна. Моля, опитайте отново.</string>
   <string name="error_text_image_preview_failed">Предварителният преглед не можа да бъде зареден</string>
   <string name="error_text_lists_limit">Достигнали сте лимита на личните си списъци. Надстройте до VIP за неограничен брой списъци!</string>
+  <string name="error_text_locked_account_collection_limit">Този потребителски акаунт е заключен, защото колекцията е надвишила лимита. Моля, <a>свържете се с поддръжката</a>, за да разрешите този проблем.</string>
   <string name="error_text_locked_account_guide">Моля, посетете <a>разширените настройки</a>, за да стартирате анализ на историята и да отключите акаунта си.</string>
   <string name="error_text_locked_account_persists">Ако проблемът продължава, моля, <a>свържете се с поддръжката</a>, за да разрешите този проблем.</string>
   <string name="error_text_report_already_reported">Вече сте подали сигнал за това.</string>
@@ -519,6 +520,7 @@
   <string name="header_device_auth_qr_instruction">Сканирай QR кода или влез на:</string>
   <string name="header_device_auth_try_again">Активацията беше отказана, изтекла или се случи нещо непредвидено. Моля, опитайте отново.</string>
   <string name="header_director">Режисьор</string>
+  <string name="header_display">Показване</string>
   <string name="header_episode_type">Тип</string>
   <string name="header_expected_premiere">Очаквана премиера</string>
   <string name="header_expiration_date">Дата на изтичане</string>
@@ -1325,6 +1327,8 @@
   <string name="text_younify_status_unlinked">Не е свързано</string>
   <string name="textarea_placeholder_comment">Добави рецензия…</string>
   <string name="textarea_placeholder_reply">Отговор…</string>
+  <string name="tooltip_reset_filters">Нулирай филтрите</string>
+  <string name="tooltip_save_as_default">Запази като подразбиране</string>
   <string name="tooltip_stats_active_days">Дни с поне едно гледане</string>
   <string name="tooltip_stats_avg_per_day">Средно време за гледане в активни дни</string>
   <string name="tooltip_stats_best_day">Най-много гледания за един ден</string>

@@ -478,6 +478,7 @@
   <string name="error_text_failed_update">A atualização falhou. Tente novamente.</string>
   <string name="error_text_image_preview_failed">Falha ao carregar pré-visualização</string>
   <string name="error_text_lists_limit">Você atingiu o limite das suas listas pessoais. Faça upgrade para VIP para ter listas ilimitadas!</string>
+  <string name="error_text_locked_account_collection_limit">Esta conta de usuário foi bloqueada porque a coleção excedeu o limite. Por favor, <a>entre em contato com o suporte</a> para resolver este problema.</string>
   <string name="error_text_locked_account_guide">Por favor, visite as <a>configurações avançadas</a> para executar uma análise de histórico e desbloquear sua conta.</string>
   <string name="error_text_locked_account_persists">Se o problema persistir, por favor <a>entre em contato com o suporte</a> para resolver este problema.</string>
   <string name="error_text_report_already_reported">Você já denunciou isso.</string>
@@ -519,6 +520,7 @@
   <string name="header_device_auth_qr_instruction">Escaneie o código QR, ou faça login em:</string>
   <string name="header_device_auth_try_again">A ativação foi negada, expirou ou algo imprevisto aconteceu. Por favor, tente novamente.</string>
   <string name="header_director">Diretor</string>
+  <string name="header_display">Exibição</string>
   <string name="header_episode_type">Tipo</string>
   <string name="header_expected_premiere">Estreia Prevista</string>
   <string name="header_expiration_date">Data de Expiração</string>
@@ -1325,6 +1327,8 @@
   <string name="text_younify_status_unlinked">Não vinculado</string>
   <string name="textarea_placeholder_comment">Adicionar uma avaliação…</string>
   <string name="textarea_placeholder_reply">Responder…</string>
+  <string name="tooltip_reset_filters">Redefinir filtros</string>
+  <string name="tooltip_save_as_default">Salvar como padrão</string>
   <string name="tooltip_stats_active_days">Dias com pelo menos uma visualização</string>
   <string name="tooltip_stats_avg_per_day">Tempo médio de exibição em dias ativos</string>
   <string name="tooltip_stats_best_day">Mais visualizações em um único dia</string>

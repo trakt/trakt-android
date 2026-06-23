@@ -478,6 +478,7 @@
   <string name="error_text_failed_update">Aggiornamento fallito. Riprova.</string>
   <string name="error_text_image_preview_failed">Impossibile caricare l\'anteprima</string>
   <string name="error_text_lists_limit">Hai raggiunto il limite delle tue liste personali. Passa a VIP per un numero illimitato di liste!</string>
+  <string name="error_text_locked_account_collection_limit">Questo account utente è stato bloccato perché la collezione ha superato il limite. Si prega di <a>contattare il supporto</a> per risolvere questo problema.</string>
   <string name="error_text_locked_account_guide">Visita le <a>impostazioni avanzate</a> per eseguire un\'analisi della cronologia e sbloccare il tuo account.</string>
   <string name="error_text_locked_account_persists">Se il problema persiste, <a>contatta il supporto</a> per risolvere il problema.</string>
   <string name="error_text_report_already_reported">Hai già segnalato questo elemento.</string>
@@ -519,6 +520,7 @@
   <string name="header_device_auth_qr_instruction">Scansiona il codice QR, o accedi su:</string>
   <string name="header_device_auth_try_again">L\'attivazione è stata negata, è scaduta o è successo qualcosa di imprevedibile. Riprova.</string>
   <string name="header_director">Regista</string>
+  <string name="header_display">Visualizzazione</string>
   <string name="header_episode_type">Tipo</string>
   <string name="header_expected_premiere">Première prevista</string>
   <string name="header_expiration_date">Data di scadenza</string>
@@ -1325,6 +1327,8 @@
   <string name="text_younify_status_unlinked">Non collegato</string>
   <string name="textarea_placeholder_comment">Aggiungi una recensione…</string>
   <string name="textarea_placeholder_reply">Rispondi…</string>
+  <string name="tooltip_reset_filters">Reimposta filtri</string>
+  <string name="tooltip_save_as_default">Salva come predefinito</string>
   <string name="tooltip_stats_active_days">Giorni con almeno una visione</string>
   <string name="tooltip_stats_avg_per_day">Tempo medio di visione nei giorni attivi</string>
   <string name="tooltip_stats_best_day">Più visioni in un singolo giorno</string>

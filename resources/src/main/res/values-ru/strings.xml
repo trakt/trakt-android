@@ -478,6 +478,7 @@
   <string name="error_text_failed_update">Ошибка обновления. Пожалуйста, попробуйте еще раз.</string>
   <string name="error_text_image_preview_failed">Не удалось загрузить предварительный просмотр</string>
   <string name="error_text_lists_limit">Вы достигли лимита личных списков. Обновитесь до VIP для неограниченного количества списков!</string>
+  <string name="error_text_locked_account_collection_limit">Эта учетная запись пользователя заблокирована, так как коллекция превысила лимит. Пожалуйста, <a>свяжитесь со службой поддержки</a> для решения этой проблемы.</string>
   <string name="error_text_locked_account_guide">Пожалуйста, посетите <a>расширенные настройки</a>, чтобы запустить анализ истории и разблокировать свою учетную запись.</string>
   <string name="error_text_locked_account_persists">Если проблема не исчезнет, пожалуйста, <a>свяжитесь со службой поддержки</a> для ее решения.</string>
   <string name="error_text_report_already_reported">Вы уже сообщили об этом.</string>
@@ -519,6 +520,7 @@
   <string name="header_device_auth_qr_instruction">Отсканируйте QR-код или войдите на:</string>
   <string name="header_device_auth_try_again">Активация была отклонена, истекла или произошло что-то непредвиденное. Пожалуйста, попробуйте еще раз.</string>
   <string name="header_director">Режиссер</string>
+  <string name="header_display">Отображение</string>
   <string name="header_episode_type">Тип</string>
   <string name="header_expected_premiere">Ожидаемая премьера</string>
   <string name="header_expiration_date">Дата истечения срока</string>
@@ -1325,6 +1327,8 @@
   <string name="text_younify_status_unlinked">Не подключено</string>
   <string name="textarea_placeholder_comment">Добавить отзыв…</string>
   <string name="textarea_placeholder_reply">Ответить…</string>
+  <string name="tooltip_reset_filters">Сбросить фильтры</string>
+  <string name="tooltip_save_as_default">Сохранить по умолчанию</string>
   <string name="tooltip_stats_active_days">Дни хотя бы с одним просмотром</string>
   <string name="tooltip_stats_avg_per_day">Среднее время просмотра в активные дни</string>
   <string name="tooltip_stats_best_day">Наибольшее количество просмотров за один день</string>

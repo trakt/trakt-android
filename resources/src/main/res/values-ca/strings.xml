@@ -478,6 +478,7 @@
   <string name="error_text_failed_update">L\'actualització ha fallat. Torna-ho a provar.</string>
   <string name="error_text_image_preview_failed">No s\'ha pogut carregar la previsualització</string>
   <string name="error_text_lists_limit">Has arribat al límit de les teves llistes personals. Actualitza a VIP per obtenir una quantitat il·limitada de llistes!</string>
+  <string name="error_text_locked_account_collection_limit">Aquest compte d\'usuari s\'ha bloquejat perquè la col·lecció ha superat el límit. Si us plau, <a>contacta amb el suport</a> per resoldre aquest problema.</string>
   <string name="error_text_locked_account_guide">Si us plau, visita la secció de <a>configuració avançada</a> per executar una anàlisi de l\'historial i desbloquejar el teu compte.</string>
   <string name="error_text_locked_account_persists">Si el problema persisteix, si us plau, <a>contacta amb el suport</a> per resoldre\'l.</string>
   <string name="error_text_report_already_reported">Ja has informat d\'això.</string>
@@ -519,6 +520,7 @@
   <string name="header_device_auth_qr_instruction">Escaneja el codi QR, o inicia sessió a:</string>
   <string name="header_device_auth_try_again">L\'activació ha estat denegada, ha caducat o ha succeït alguna cosa imprevista. Si us plau, torna a intentar-ho.</string>
   <string name="header_director">Director</string>
+  <string name="header_display">Visualització</string>
   <string name="header_episode_type">Tipus</string>
   <string name="header_expected_premiere">Estrena esperada</string>
   <string name="header_expiration_date">Data de caducitat</string>
@@ -1325,6 +1327,8 @@
   <string name="text_younify_status_unlinked">No vinculat</string>
   <string name="textarea_placeholder_comment">Afegeix una ressenya…</string>
   <string name="textarea_placeholder_reply">Respon…</string>
+  <string name="tooltip_reset_filters">Restablir els filtres</string>
+  <string name="tooltip_save_as_default">Desa com a predeterminat</string>
   <string name="tooltip_stats_active_days">Dies amb almenys una visualització</string>
   <string name="tooltip_stats_avg_per_day">Temps mitjà de visualització en dies actius</string>
   <string name="tooltip_stats_best_day">Més visualitzacions en un sol dia</string>
