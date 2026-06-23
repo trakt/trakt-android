@@ -478,6 +478,7 @@
   <string name="error_text_failed_update">به‌روزرسانی ناموفق بود. لطفاً دوباره تلاش کنید.</string>
   <string name="error_text_image_preview_failed">پیش‌نمایش بارگیری نشد</string>
   <string name="error_text_lists_limit">شما به حد مجاز لیست‌های شخصی خود رسیده‌اید. برای لیست‌های نامحدود به VIP ارتقا دهید!</string>
+  <string name="error_text_locked_account_collection_limit">این حساب کاربری قفل شده است زیرا مجموعه از حد مجاز فراتر رفته است. لطفاً برای حل این مشکل <a>با پشتیبانی تماس بگیرید</a>.</string>
   <string name="error_text_locked_account_guide">لطفاً برای اجرای تحلیل تاریخچه و باز کردن قفل حساب خود، به <a>تنظیمات پیشرفته</a> مراجعه کنید.</string>
   <string name="error_text_locked_account_persists">اگر مشکل ادامه داشت، لطفاً برای حل این مسئله با <a>پشتیبانی تماس بگیرید</a>.</string>
   <string name="error_text_report_already_reported">شما قبلاً این مورد را گزارش داده‌اید.</string>
@@ -519,6 +520,7 @@
   <string name="header_device_auth_qr_instruction">کد QR را اسکن کنید، یا وارد شوید در:</string>
   <string name="header_device_auth_try_again">فعال‌سازی رد شد، منقضی شد، یا اتفاق غیرقابل پیش‌بینی رخ داد. لطفاً دوباره امتحان کنید.</string>
   <string name="header_director">کارگردان</string>
+  <string name="header_display">نمایش</string>
   <string name="header_episode_type">نوع</string>
   <string name="header_expected_premiere">اولین نمایش مورد انتظار</string>
   <string name="header_expiration_date">تاریخ انقضا</string>
@@ -1325,6 +1327,8 @@
   <string name="text_younify_status_unlinked">پیوند داده نشده</string>
   <string name="textarea_placeholder_comment">افزودن یک بازخورد…</string>
   <string name="textarea_placeholder_reply">پاسخ…</string>
+  <string name="tooltip_reset_filters">بازنشانی فیلترها</string>
+  <string name="tooltip_save_as_default">ذخیره به عنوان پیش\nفرض</string>
   <string name="tooltip_stats_active_days">روزهایی با حداقل یک بار تماشا</string>
   <string name="tooltip_stats_avg_per_day">میانگین زمان تماشا در روزهای فعال</string>
   <string name="tooltip_stats_best_day">بیشترین بازدید در یک روز</string>

@@ -478,6 +478,7 @@
   <string name="error_text_failed_update">更新に失敗しました。もう一度お試しください。</string>
   <string name="error_text_image_preview_failed">プレビューの読み込みに失敗しました</string>
   <string name="error_text_lists_limit">個人のリストの制限に達しました。VIPにアップグレードして無制限のリストを入手しましょう！</string>
+  <string name="error_text_locked_account_collection_limit">このユーザーアカウントは、コレクションが上限を超過したためロックされました。この問題を解決するには、<a>サポートに連絡してください</a>。</string>
   <string name="error_text_locked_account_guide">履歴分析を実行してアカウントをロック解除するには、<a>詳細設定</a>をご覧ください。</string>
   <string name="error_text_locked_account_persists">問題が解決しない場合は、この問題を解決するため<a>サポートにお問い合わせください</a>。</string>
   <string name="error_text_report_already_reported">すでに報告済みです。</string>
@@ -519,6 +520,7 @@
   <string name="header_device_auth_qr_instruction">QRコードをスキャンするか、以下でサインインしてください:</string>
   <string name="header_device_auth_try_again">アクティベーションが拒否されたか、期限切れになったか、予期せぬ問題が発生しました。もう一度お試しください。</string>
   <string name="header_director">監督</string>
+  <string name="header_display">表示</string>
   <string name="header_episode_type">タイプ</string>
   <string name="header_expected_premiere">予定されているプレミア</string>
   <string name="header_expiration_date">有効期限</string>
@@ -1325,6 +1327,8 @@
   <string name="text_younify_status_unlinked">未リンク</string>
   <string name="textarea_placeholder_comment">レビューを追加…</string>
   <string name="textarea_placeholder_reply">返信…</string>
+  <string name="tooltip_reset_filters">フィルターをリセット</string>
+  <string name="tooltip_save_as_default">デフォルトとして保存</string>
   <string name="tooltip_stats_active_days">少なくとも1回視聴した日数</string>
   <string name="tooltip_stats_avg_per_day">活動日における平均視聴時間</string>
   <string name="tooltip_stats_best_day">1日で最も視聴が多かった回数</string>

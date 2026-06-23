@@ -478,6 +478,7 @@
   <string name="error_text_failed_update">Actualizarea a eșuat. Te rog să încerci din nou.</string>
   <string name="error_text_image_preview_failed">Previzualizarea nu a putut fi încărcată</string>
   <string name="error_text_lists_limit">Ai atins limita listelor personale. Fă upgrade la VIP pentru liste nelimitate!</string>
+  <string name="error_text_locked_account_collection_limit">Acest cont de utilizator a fost blocat deoarece colecția a depășit limita. Vă rugăm să <a>contactați asistența</a> pentru a rezolva această problemă.</string>
   <string name="error_text_locked_account_guide">Te rugăm să vizitezi <a>setările avansate</a> pentru a rula o analiză a istoricului și a debloca contul.</string>
   <string name="error_text_locked_account_persists">Dacă problema persistă, te rugăm să <a>contactezi asistența</a> pentru a rezolva această problemă.</string>
   <string name="error_text_report_already_reported">Ați raportat deja acest lucru.</string>
@@ -519,6 +520,7 @@
   <string name="header_device_auth_qr_instruction">Scanează codul QR, sau conectează-te la:</string>
   <string name="header_device_auth_try_again">Activarea a fost refuzată, a expirat sau s-a întâmplat ceva imprevizibil. Te rugăm să încerci din nou.</string>
   <string name="header_director">Regizor</string>
+  <string name="header_display">Afișare</string>
   <string name="header_episode_type">Tip</string>
   <string name="header_expected_premiere">Premiera așteptată</string>
   <string name="header_expiration_date">Data expirării</string>
@@ -1325,6 +1327,8 @@
   <string name="text_younify_status_unlinked">Neconectat</string>
   <string name="textarea_placeholder_comment">Adaugă o recenzie…</string>
   <string name="textarea_placeholder_reply">Răspunde…</string>
+  <string name="tooltip_reset_filters">Resetează filtrele</string>
+  <string name="tooltip_save_as_default">Salvează ca implicit</string>
   <string name="tooltip_stats_active_days">Zile cu cel puțin o vizionare</string>
   <string name="tooltip_stats_avg_per_day">Timp mediu de vizionare în zilele active</string>
   <string name="tooltip_stats_best_day">Cele mai multe vizionări într-o singură zi</string>

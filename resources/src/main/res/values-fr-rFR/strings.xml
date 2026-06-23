@@ -478,6 +478,7 @@
   <string name="error_text_failed_update">La mise à jour a échoué. Veuillez réessayer.</string>
   <string name="error_text_image_preview_failed">Le chargement de l\'aperçu a échoué</string>
   <string name="error_text_lists_limit">Vous avez atteint la limite de vos listes personnelles. Passez au VIP pour un nombre illimité de listes !</string>
+  <string name="error_text_locked_account_collection_limit">Ce compte utilisateur a été verrouillé car la collection a dépassé la limite. Veuillez <a>contacter le support</a> pour résoudre ce problème.</string>
   <string name="error_text_locked_account_guide">Veuillez visiter les <a>paramètres avancés</a> pour exécuter une analyse de l\'historique et déverrouiller votre compte.</string>
   <string name="error_text_locked_account_persists">Si le problème persiste, veuillez <a>contacter le support</a> pour résoudre ce problème.</string>
   <string name="error_text_report_already_reported">Vous avez déjà signalé ceci.</string>
@@ -519,6 +520,7 @@
   <string name="header_device_auth_qr_instruction">Scannez le code QR ou connectez-vous sur :</string>
   <string name="header_device_auth_try_again">L\'activation a été refusée, a expiré ou un événement imprévu s\'est produit. Veuillez réessayer.</string>
   <string name="header_director">Réalisateur</string>
+  <string name="header_display">Affichage</string>
   <string name="header_episode_type">Type</string>
   <string name="header_expected_premiere">Première attendue</string>
   <string name="header_expiration_date">Date d\'expiration</string>
@@ -1325,6 +1327,8 @@
   <string name="text_younify_status_unlinked">Non lié</string>
   <string name="textarea_placeholder_comment">Ajouter un avis…</string>
   <string name="textarea_placeholder_reply">Répondre…</string>
+  <string name="tooltip_reset_filters">Réinitialiser les filtres</string>
+  <string name="tooltip_save_as_default">Enregistrer par défaut</string>
   <string name="tooltip_stats_active_days">Jours avec au moins un visionnage</string>
   <string name="tooltip_stats_avg_per_day">Temps de visionnage moyen les jours actifs</string>
   <string name="tooltip_stats_best_day">Plus grand nombre de visionnages en une seule journée</string>

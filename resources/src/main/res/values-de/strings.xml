@@ -478,6 +478,7 @@
   <string name="error_text_failed_update">Aktualisierung fehlgeschlagen. Bitte versuchen Sie es erneut.</string>
   <string name="error_text_image_preview_failed">Vorschau konnte nicht geladen werden</string>
   <string name="error_text_lists_limit">Sie haben das Limit Ihrer persönlichen Listen erreicht. Werden Sie VIP für unbegrenzt viele Listen!</string>
+  <string name="error_text_locked_account_collection_limit">Dieses Benutzerkonto wurde gesperrt, da die Sammlung das Limit überschritten hat. Bitte <a>kontaktieren Sie den Support</a>, um dieses Problem zu lösen.</string>
   <string name="error_text_locked_account_guide">Bitte besuchen Sie die <a>erweiterten Einstellungen</a>, um eine Historienanalyse durchzuführen und Ihr Konto zu entsperren.</string>
   <string name="error_text_locked_account_persists">Sollte das Problem weiterhin bestehen, bitte <a>kontaktieren Sie den Support</a>, um dieses Problem zu lösen.</string>
   <string name="error_text_report_already_reported">Sie haben dies bereits gemeldet.</string>
@@ -519,6 +520,7 @@
   <string name="header_device_auth_qr_instruction">Scannen Sie den QR-Code oder melden Sie sich an unter:</string>
   <string name="header_device_auth_try_again">Die Aktivierung wurde verweigert, ist abgelaufen oder es ist etwas Unvorhersehbares passiert. Bitte versuchen Sie es erneut.</string>
   <string name="header_director">Regisseur</string>
+  <string name="header_display">Anzeige</string>
   <string name="header_episode_type">Typ</string>
   <string name="header_expected_premiere">Erwartete Premiere</string>
   <string name="header_expiration_date">Ablaufdatum</string>
@@ -1325,6 +1327,8 @@
   <string name="text_younify_status_unlinked">Nicht verknüpft</string>
   <string name="textarea_placeholder_comment">Rezension hinzufügen…</string>
   <string name="textarea_placeholder_reply">Antworten…</string>
+  <string name="tooltip_reset_filters">Filter zurücksetzen</string>
+  <string name="tooltip_save_as_default">Als Standard speichern</string>
   <string name="tooltip_stats_active_days">Tage mit mindestens einer Wiedergabe</string>
   <string name="tooltip_stats_avg_per_day">Durchschnittliche Wiedergabezeit an aktiven Tagen</string>
   <string name="tooltip_stats_best_day">Meiste Wiedergaben an einem Tag</string>

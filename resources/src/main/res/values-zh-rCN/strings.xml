@@ -478,6 +478,7 @@
   <string name="error_text_failed_update">更新失败。请再试一次。</string>
   <string name="error_text_image_preview_failed">预览加载失败</string>
   <string name="error_text_lists_limit">你已达到个人列表数量上限。升级至VIP可获得无限量列表！</string>
+  <string name="error_text_locked_account_collection_limit">此用户帐户已被锁定，因为收藏已超出限制。请<a>联系支持</a>以解决此问题。</string>
   <string name="error_text_locked_account_guide">请访问<a>高级设置</a>以运行历史分析并解锁您的账户。</string>
   <string name="error_text_locked_account_persists">如果问题仍然存在，请<a>联系支持</a>以解决此问题。</string>
   <string name="error_text_report_already_reported">您已举报过此内容。</string>
@@ -519,6 +520,7 @@
   <string name="header_device_auth_qr_instruction">扫描二维码，或登录：</string>
   <string name="header_device_auth_try_again">激活被拒绝、已过期或发生了不可预见的问题。请重试。</string>
   <string name="header_director">导演</string>
+  <string name="header_display">显示</string>
   <string name="header_episode_type">类型</string>
   <string name="header_expected_premiere">预计首播</string>
   <string name="header_expiration_date">到期日期</string>
@@ -1325,6 +1327,8 @@
   <string name="text_younify_status_unlinked">未关联</string>
   <string name="textarea_placeholder_comment">添加评论…</string>
   <string name="textarea_placeholder_reply">回复…</string>
+  <string name="tooltip_reset_filters">重置筛选器</string>
+  <string name="tooltip_save_as_default">设为默认</string>
   <string name="tooltip_stats_active_days">至少观看一次的天数</string>
   <string name="tooltip_stats_avg_per_day">活跃日平均观看时间</string>
   <string name="tooltip_stats_best_day">单日观看次数最多</string>

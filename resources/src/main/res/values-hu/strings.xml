@@ -478,6 +478,7 @@
   <string name="error_text_failed_update">A frissítés sikertelen. Kérjük, próbálja újra.</string>
   <string name="error_text_image_preview_failed">Az előnézet betöltése sikertelen</string>
   <string name="error_text_lists_limit">Elérted a személyes listáid számának a limitjét. Válts VIP tagságra korlátlan számú listákért!</string>
+  <string name="error_text_locked_account_collection_limit">Ez a felhasználói fiók zárolásra került, mert a gyűjtemény túllépte a limitet. Kérjük, <a>keresse fel az ügyfélszolgálatot</a> a probléma megoldásához.</string>
   <string name="error_text_locked_account_guide">Kérjük, keresd fel a <a>haladó beállítások</a> oldalt, az előzmények elemzéséhez és a fiók feloldásához.</string>
   <string name="error_text_locked_account_persists">Ha a probléma továbbra is fennáll, kérjük, <a>vedd fel a kapcsolatot az ügyfélszolgálattal</a> a probléma megoldásához.</string>
   <string name="error_text_report_already_reported">Ezt már jelentetted.</string>
@@ -519,6 +520,7 @@
   <string name="header_device_auth_qr_instruction">Olvasd be a QR kódot, vagy jelentkezz be itt:</string>
   <string name="header_device_auth_try_again">Az aktiválás megtagadva, lejárt, vagy valami előre nem látható történt. Kérjük, próbáld újra.</string>
   <string name="header_director">Rendező</string>
+  <string name="header_display">Megjelenítés</string>
   <string name="header_episode_type">Típus</string>
   <string name="header_expected_premiere">Várható premier</string>
   <string name="header_expiration_date">Lejárat dátuma</string>
@@ -1325,6 +1327,8 @@
   <string name="text_younify_status_unlinked">Nincs összekapcsolva</string>
   <string name="textarea_placeholder_comment">Értékelés hozzáadása…</string>
   <string name="textarea_placeholder_reply">Válasz…</string>
+  <string name="tooltip_reset_filters">Szűrők visszaállítása</string>
+  <string name="tooltip_save_as_default">Mentés alapértelmezettként</string>
   <string name="tooltip_stats_active_days">Napok legalább egy nézéssel</string>
   <string name="tooltip_stats_avg_per_day">Átlagos nézési idő aktív napokon</string>
   <string name="tooltip_stats_best_day">A legtöbb nézés egyetlen napon</string>

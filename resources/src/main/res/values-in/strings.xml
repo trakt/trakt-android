@@ -478,6 +478,7 @@
   <string name="error_text_failed_update">Pembaruan gagal. Silakan coba lagi.</string>
   <string name="error_text_image_preview_failed">Pratinjau gagal dimuat</string>
   <string name="error_text_lists_limit">Anda telah mencapai batas daftar pribadi Anda. Tingkatkan ke VIP untuk daftar tanpa batas!</string>
+  <string name="error_text_locked_account_collection_limit">Akun pengguna ini telah dikunci karena koleksi telah melampaui batas. Harap <a>hubungi dukungan</a> untuk menyelesaikan masalah ini.</string>
   <string name="error_text_locked_account_guide">Silakan kunjungi <a>pengaturan lanjutan</a> untuk menjalankan analisis riwayat dan membuka kunci akun Anda.</string>
   <string name="error_text_locked_account_persists">Jika masalah berlanjut, silakan <a>hubungi dukungan</a> untuk menyelesaikan masalah ini.</string>
   <string name="error_text_report_already_reported">Anda sudah melaporkan ini.</string>
@@ -519,6 +520,7 @@
   <string name="header_device_auth_qr_instruction">Pindai kode QR, atau masuk di:</string>
   <string name="header_device_auth_try_again">Aktivasi ditolak, kedaluwarsa, atau terjadi sesuatu yang tidak terduga. Silakan coba lagi.</string>
   <string name="header_director">Sutradara</string>
+  <string name="header_display">Tampilan</string>
   <string name="header_episode_type">Jenis</string>
   <string name="header_expected_premiere">Premiere yang Diharapkan</string>
   <string name="header_expiration_date">Tanggal Kedaluwarsa</string>
@@ -1325,6 +1327,8 @@
   <string name="text_younify_status_unlinked">Tidak tertaut</string>
   <string name="textarea_placeholder_comment">Tambahkan ulasan…</string>
   <string name="textarea_placeholder_reply">Balas…</string>
+  <string name="tooltip_reset_filters">Setel ulang filter</string>
+  <string name="tooltip_save_as_default">Simpan sebagai default</string>
   <string name="tooltip_stats_active_days">Hari dengan setidaknya satu tontonan</string>
   <string name="tooltip_stats_avg_per_day">Waktu tonton rata-rata pada hari-hari aktif</string>
   <string name="tooltip_stats_best_day">Tontonan terbanyak dalam satu hari</string>

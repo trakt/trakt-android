@@ -478,6 +478,7 @@
   <string name="error_text_failed_update">Aktualizacja nie powiodła się. Spróbuj ponownie.</string>
   <string name="error_text_image_preview_failed">Nie udało się wczytać podglądu</string>
   <string name="error_text_lists_limit">Osiągnąłeś limit swoich list osobistych. Zostań VIP, aby odblokować większą liczbę list!</string>
+  <string name="error_text_locked_account_collection_limit">Konto użytkownika zostało zablokowane, ponieważ kolekcja przekroczyła limit. Skontaktuj się z <a>pomocą techniczną</a>, aby rozwiązać ten problem.</string>
   <string name="error_text_locked_account_guide">Zobacz <a>ustawienia zaawansowane</a>, aby przeanalizować historię i odblokować swoje konto.</string>
   <string name="error_text_locked_account_persists">Jeśli problem będzie się powtarzał, proszę <a>skontaktować się z pomocą techniczną</a>.</string>
   <string name="error_text_report_already_reported">Już to zgłosiłeś.</string>
@@ -519,6 +520,7 @@
   <string name="header_device_auth_qr_instruction">Zeskanuj kod QR lub zaloguj się na:</string>
   <string name="header_device_auth_try_again">Aktywacja została odrzucona lub wygasła. Spróbuj ponownie.</string>
   <string name="header_director">Reżyser</string>
+  <string name="header_display">Wyświetlanie</string>
   <string name="header_episode_type">Typ</string>
   <string name="header_expected_premiere">Oczekiwana premiera</string>
   <string name="header_expiration_date">Data wygaśnięcia</string>
@@ -1325,6 +1327,8 @@
   <string name="text_younify_status_unlinked">Nie połączono</string>
   <string name="textarea_placeholder_comment">Dodaj recenzję…</string>
   <string name="textarea_placeholder_reply">Odpowiedz…</string>
+  <string name="tooltip_reset_filters">Zresetować filtry</string>
+  <string name="tooltip_save_as_default">Zapisz jako domyślne</string>
   <string name="tooltip_stats_active_days">Dni z co najmniej jednym obejrzeniem</string>
   <string name="tooltip_stats_avg_per_day">Średni czas oglądania w dniach aktywności</string>
   <string name="tooltip_stats_best_day">Najwięcej obejrzeń w ciągu jednego dnia</string>

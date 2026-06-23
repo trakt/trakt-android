@@ -478,6 +478,7 @@
   <string name="error_text_failed_update">Güncelleme başarısız oldu. Lütfen tekrar deneyin.</string>
   <string name="error_text_image_preview_failed">Önizleme yüklenemedi</string>
   <string name="error_text_lists_limit">Kişisel listelerinizin sınırına ulaştınız. Sınırsız liste için VIP\'ye yükseltin!</string>
+  <string name="error_text_locked_account_collection_limit">Bu kullanıcı hesabı, koleksiyon limiti aşıldığı için kilitlenmiştir. Lütfen bu sorunu çözmek için <a>destek ile iletişime geçin</a>.</string>
   <string name="error_text_locked_account_guide">Bir geçmiş analizi yapmak ve hesabınızın kilidini açmak için lütfen <a>gelişmiş ayarlara</a> gidin.</string>
   <string name="error_text_locked_account_persists">Sorun devam ederse, lütfen bu sorunu çözmek için <a>destek ile iletişime geçin</a>.</string>
   <string name="error_text_report_already_reported">Bunu zaten bildirdiniz.</string>
@@ -519,6 +520,7 @@
   <string name="header_device_auth_qr_instruction">QR kodunu tarayın veya şuradan oturum açın:</string>
   <string name="header_device_auth_try_again">Etkinleştirme reddedildi, süresi doldu veya öngörülemeyen bir şey oldu. Lütfen tekrar deneyin.</string>
   <string name="header_director">Yönetmen</string>
+  <string name="header_display">Görüntüleme</string>
   <string name="header_episode_type">Tür</string>
   <string name="header_expected_premiere">Beklenen İlk Gösterim</string>
   <string name="header_expiration_date">Son Kullanma Tarihi</string>
@@ -1325,6 +1327,8 @@
   <string name="text_younify_status_unlinked">Bağlı değil</string>
   <string name="textarea_placeholder_comment">Yorum ekle…</string>
   <string name="textarea_placeholder_reply">Yanıtla…</string>
+  <string name="tooltip_reset_filters">Filtreleri Sıfırla</string>
+  <string name="tooltip_save_as_default">Varsayılan Olarak Kaydet</string>
   <string name="tooltip_stats_active_days">En az bir izlemeyle geçen günler</string>
   <string name="tooltip_stats_avg_per_day">Aktif günlerde ortalama izleme süresi</string>
   <string name="tooltip_stats_best_day">Tek bir günde en çok izleme</string>

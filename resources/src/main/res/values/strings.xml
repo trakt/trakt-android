@@ -387,6 +387,7 @@
   <string name="button_text_view_history">View History</string>
   <string name="button_text_view_import_guidelines">View guidelines</string>
   <string name="button_text_view_photo">View photo</string>
+  <string name="button_text_view_recommendation_sources">Why this?</string>
   <string name="button_text_vip_upgrade">Upgrade</string>
   <string name="button_text_watch_again">Watch again</string>
   <string name="button_text_watch_until_here_anchor_end">End time</string>
@@ -462,6 +463,7 @@
   <string name="drawer_title_add_note">Note</string>
   <string name="drawer_title_notes">Notes</string>
   <string name="drawer_title_people">People</string>
+  <string name="drawer_title_recommendation_sources">Why was this recommended?</string>
   <string name="drawer_title_reorder_list">Drag to reorder</string>
   <string name="drawer_title_sort">Sort By</string>
   <string name="drawer_title_streak_activity">Daily Streak Activity</string>
@@ -478,6 +480,7 @@
   <string name="error_text_failed_update">Update failed. Please try again.</string>
   <string name="error_text_image_preview_failed">Preview failed to load</string>
   <string name="error_text_lists_limit">You have reached the limit of your personal lists. Upgrade to VIP for unlimited amount of lists!</string>
+  <string name="error_text_locked_account_collection_limit">This user account has been locked because the collection has exceeded the limit. Please <a>contact support</a> to resolve this issue.</string>
   <string name="error_text_locked_account_guide">Please visit the <a>advanced settings</a> to run a history analysis and unlock your account.</string>
   <string name="error_text_locked_account_persists">If the issue persists, please <a>contact support</a> to resolve this issue.</string>
   <string name="error_text_report_already_reported">You\'ve already reported this.</string>
@@ -519,6 +522,7 @@
   <string name="header_device_auth_qr_instruction">Scan the QR code, or sign in at:</string>
   <string name="header_device_auth_try_again">The activation was denied, expired, or something unforeseeable happened. Please try again.</string>
   <string name="header_director">Director</string>
+  <string name="header_display">Display</string>
   <string name="header_episode_type">Type</string>
   <string name="header_expected_premiere">Expected Premiere</string>
   <string name="header_expiration_date">Expiration Date</string>
@@ -784,6 +788,9 @@
   <string name="list_title_recently_searched_movies">Recently Searched Movies</string>
   <string name="list_title_recently_searched_shows">Recently Searched Shows</string>
   <string name="list_title_recently_watched">Recently Watched</string>
+  <string name="list_title_recommendation_sources_activity">You watched</string>
+  <string name="list_title_recommendation_sources_favorite">You loved</string>
+  <string name="list_title_recommendation_sources_subgenre">You like</string>
   <string name="list_title_recommended">Recommended</string>
   <string name="list_title_recommended_movies">Recommended Movies</string>
   <string name="list_title_recommended_shows">Recommended Shows</string>
@@ -1325,6 +1332,8 @@
   <string name="text_younify_status_unlinked">Not linked</string>
   <string name="textarea_placeholder_comment">Add a review…</string>
   <string name="textarea_placeholder_reply">Reply…</string>
+  <string name="tooltip_reset_filters">Reset Filters</string>
+  <string name="tooltip_save_as_default">Save as Default</string>
   <string name="tooltip_stats_active_days">Days with at least one watch</string>
   <string name="tooltip_stats_avg_per_day">Average watch time on active days</string>
   <string name="tooltip_stats_best_day">Most watches in a single day</string>
