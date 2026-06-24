@@ -48,6 +48,7 @@ fun DetailsHeaderPosterHorizontal(
     playsCount: Int?,
     onBackClick: () -> Unit,
     onShareClick: () -> Unit,
+    onWatchedClick: () -> Unit,
     modifier: Modifier = Modifier,
     extraRightColumn: @Composable () -> Unit = {},
 ) {
@@ -134,6 +135,7 @@ fun DetailsHeaderPosterHorizontal(
                     creditsCount = creditsCount,
                     playsCount = playsCount,
                     personImdb = null,
+                    onWatchedChipClick = onWatchedClick,
                 )
             }
         }
@@ -156,6 +158,7 @@ private fun Preview() {
             playsCount = 0,
             onBackClick = {},
             onShareClick = {},
+            onWatchedClick = {},
             modifier = Modifier
                 .padding(bottom = 9.dp),
         )
@@ -178,6 +181,7 @@ private fun Preview2() {
             playsCount = 0,
             onBackClick = {},
             onShareClick = {},
+            onWatchedClick = {},
             modifier = Modifier
                 .padding(bottom = 9.dp),
         )

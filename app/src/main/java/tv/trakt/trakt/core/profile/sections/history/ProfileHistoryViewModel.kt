@@ -48,6 +48,7 @@ import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUs
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates.Source.POST_RATING
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.HISTORY
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
@@ -98,11 +99,13 @@ internal class ProfileHistoryViewModel(
     private fun observeData() {
         merge(
             allActivitySource.observeUpdates(),
-            movieUpdates.observeUpdates(),
+            movieUpdates.observeUpdates(MovieDetailsUpdates.Source.Progress),
+            movieUpdates.observeUpdates(MovieDetailsUpdates.Source.History),
             showUpdates.observeUpdates(Source.PROGRESS),
             showUpdates.observeUpdates(Source.SEASONS),
             episodeUpdates.observeUpdates(PROGRESS),
             episodeUpdates.observeUpdates(SEASON),
+            episodeUpdates.observeUpdates(HISTORY),
             checkInUpdate.observeUpdates(),
         )
             .distinctUntilChanged()

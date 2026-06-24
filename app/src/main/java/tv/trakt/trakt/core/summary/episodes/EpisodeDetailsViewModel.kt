@@ -52,6 +52,7 @@ import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source.EpisodeDet
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.episodes.EpisodeDetailsState.UserRatingsState
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.HISTORY
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
 import tv.trakt.trakt.core.summary.episodes.features.actors.usecases.GetEpisodeDirectorUseCase
@@ -68,6 +69,7 @@ import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.resources.R
 import java.util.Locale
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 internal class EpisodeDetailsViewModel(
@@ -138,9 +140,10 @@ internal class EpisodeDetailsViewModel(
             showUpdatesSource.observeUpdates(Source.PROGRESS),
             showUpdatesSource.observeUpdates(Source.SEASONS),
             episodeUpdatesSource.observeUpdates(SEASON),
+            episodeUpdatesSource.observeUpdates(HISTORY),
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 loadProgressData(
                     ignoreErrors = true,
@@ -152,7 +155,7 @@ internal class EpisodeDetailsViewModel(
     private fun observeCheckIn() {
         checkInUpdates.observeUpdates()
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .filterNot { it.first == EpisodeDetails }
             .onEach {
                 loadProgressData(
@@ -496,50 +499,6 @@ internal class EpisodeDetailsViewModel(
 
                 episodeProgressState.update { state ->
                     state?.copy(plays = 0)
-                }
-
-                episodeUpdatesSource.notifyUpdate(PROGRESS)
-                infoState.update {
-                    DynamicStringResource(R.string.text_info_history_removed)
-                }
-                analytics.progress.logRemoveWatchedMedia(
-                    mediaType = "episode",
-                    source = "episode_details",
-                )
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.recordError(error)
-                }
-            } finally {
-                loadingProgress.update { Done }
-            }
-        }
-    }
-
-    fun removeFromWatched(playId: Long) {
-        if (isLoading()) {
-            return
-        }
-        viewModelScope.launch {
-            if (!sessionManager.isAuthenticated()) {
-                return@launch
-            }
-            try {
-                loadingProgress.update { Loading }
-
-                updateHistoryUseCase.removePlayFromHistory(playId)
-                val progress = loadProgressUseCase.loadShowsProgress()
-                    .firstOrNull {
-                        it.showId == showId
-                    }?.seasons?.firstOrNull {
-                        it.number == seasonEpisode.season
-                    }?.episodes?.firstOrNull {
-                        it.id == episodeId
-                    }
-
-                episodeProgressState.update { state ->
-                    state?.copy(plays = progress?.plays?.size)
                 }
 
                 episodeUpdatesSource.notifyUpdate(PROGRESS)

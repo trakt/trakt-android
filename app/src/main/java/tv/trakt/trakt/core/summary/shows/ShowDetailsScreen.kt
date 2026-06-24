@@ -80,17 +80,14 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.comments.model.CommentsFilter
-import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
 import tv.trakt.trakt.core.share.ShareSheet
 import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsView
 import tv.trakt.trakt.core.summary.shows.features.comments.ShowCommentsView
-import tv.trakt.trakt.core.summary.shows.features.context.history.ShowDetailsHistorySheet
 import tv.trakt.trakt.core.summary.shows.features.context.lists.ShowDetailsListsSheet
 import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextSheet
 import tv.trakt.trakt.core.summary.shows.features.extras.ShowExtrasView
-import tv.trakt.trakt.core.summary.shows.features.history.ShowHistoryView
 import tv.trakt.trakt.core.summary.shows.features.info.ShowInfoSheet
 import tv.trakt.trakt.core.summary.shows.features.lists.ShowListsView
 import tv.trakt.trakt.core.summary.shows.features.related.ShowRelatedView
@@ -127,6 +124,7 @@ internal fun ShowDetailsScreen(
     onTrailerClick: (String) -> Unit,
     onExtraClick: (ExtraVideo) -> Unit,
     onAllSeasonsClick: (Show, Int?) -> Unit,
+    onNavigateToHistory: (Show, watched: Int) -> Unit,
     onNavigateToUser: ((User) -> Unit)? = null,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
@@ -142,7 +140,6 @@ internal fun ShowDetailsScreen(
     var detailsSheet by remember { mutableStateOf<Show?>(null) }
     var contextSheet by remember { mutableStateOf<Show?>(null) }
     var listsSheet by remember { mutableStateOf<Show?>(null) }
-    var historySheet by remember { mutableStateOf<HomeActivityItem.EpisodeItem?>(null) }
     var confirmAddWatchedSheet by remember { mutableStateOf(false) }
     var confirmRemoveWatchedSheet by remember { mutableStateOf(false) }
     var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
@@ -207,6 +204,11 @@ internal fun ShowDetailsScreen(
         onExtraClick = { extra ->
             onExtraClick(extra)
         },
+        onWatchedClick = {
+            state.show?.let {
+                onNavigateToHistory(it, state.showProgress?.plays ?: 0)
+            }
+        },
         onWatchlistClick = {
             if (state.showProgress?.inWatchlist == true) {
                 confirmRemoveWatchlistSheet = true
@@ -216,9 +218,6 @@ internal fun ShowDetailsScreen(
         },
         onListsClick = {
             listsSheet = state.show
-        },
-        onHistoryClick = {
-            historySheet = it
         },
         onMoreClick = {
             contextSheet = state.show
@@ -291,8 +290,9 @@ internal fun ShowDetailsScreen(
         show = contextSheet,
         watched = state.showProgress?.isWatched == true,
         lists = state.showProgress?.inLists == true,
-        onShareClick = {
-            state.show?.let { shareShow(it, context) }
+        onHistoryClick = {
+            contextSheet = null
+            state.show?.let { onNavigateToHistory(it, state.showProgress?.plays ?: 0) }
         },
         onCheckClick = {
             confirmAddWatchedSheet = true
@@ -308,16 +308,6 @@ internal fun ShowDetailsScreen(
         },
         onDismiss = {
             contextSheet = null
-        },
-    )
-
-    ShowDetailsHistorySheet(
-        sheetItem = historySheet,
-        onRemovePlay = {
-            viewModel.removeFromWatched(playId = it.id)
-        },
-        onDismiss = {
-            historySheet = null
         },
     )
 
@@ -457,11 +447,11 @@ internal fun ShowDetailsContent(
     onShareImageClick: (() -> Unit)? = null,
     onSocialActivityClick: (() -> Unit)? = null,
     onInfoClick: (() -> Unit)? = null,
+    onWatchedClick: (() -> Unit)? = null,
     onTrailerClick: (() -> Unit)? = null,
     onExtraClick: ((ExtraVideo) -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
     onWatchlistClick: (() -> Unit)? = null,
-    onHistoryClick: ((HomeActivityItem.EpisodeItem) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
     onMoreCommentsClick: ((CommentsFilter) -> Unit)? = null,
     onPersonClick: ((Person) -> Unit)? = null,
@@ -555,6 +545,7 @@ internal fun ShowDetailsContent(
                         onShareImageClick = onShareImageClick ?: {},
                         onSocialActivityClick = onSocialActivityClick ?: {},
                         onInfoClick = onInfoClick ?: {},
+                        onWatchedClick = onWatchedClick ?: {},
                         modifier = Modifier
                             .align(Alignment.Center)
                             .alpha(ratingAlphaMask),
@@ -767,23 +758,6 @@ internal fun ShowDetailsContent(
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),
                         )
-                    }
-
-                    if (isWatched) {
-                        item {
-                            ShowHistoryView(
-                                viewModel = koinViewModel(
-                                    parameters = { parametersOf(show) },
-                                ),
-                                headerPadding = sectionPadding,
-                                contentPadding = sectionPadding,
-                                loading = state.loadingProgress.isLoading,
-                                onClick = onHistoryClick,
-                                modifier = Modifier
-                                    .alpha(ratingAlphaMask)
-                                    .padding(top = 32.dp),
-                            )
-                        }
                     }
 
                     item {

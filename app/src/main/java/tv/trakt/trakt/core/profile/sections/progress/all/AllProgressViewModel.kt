@@ -41,6 +41,7 @@ import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressComplete
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressDroppedUseCase
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressWatchingUseCase
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.HISTORY
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
@@ -82,6 +83,7 @@ internal class AllProgressViewModel(
             showUpdates.observeUpdates(Source.SEASONS),
             episodeUpdates.observeUpdates(PROGRESS),
             episodeUpdates.observeUpdates(SEASON),
+            episodeUpdates.observeUpdates(HISTORY),
         )
             .distinctUntilChanged()
             .debounce(200)

@@ -56,6 +56,7 @@ import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.CALENDAR
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.HISTORY
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.HOME
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
@@ -150,6 +151,7 @@ internal class HomeUpNextViewModel(
             episodeUpdates.observeUpdates(SEASON),
             episodeUpdates.observeUpdates(HOME),
             episodeUpdates.observeUpdates(CALENDAR),
+            episodeUpdates.observeUpdates(HISTORY),
             checkInUpdates.observeUpdates().filterNot { it.first == HomeUpNext },
         )
             .distinctUntilChanged()

@@ -5,6 +5,7 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeStorage
@@ -113,14 +114,7 @@ internal val episodeDetailsModule = module {
         )
     }
 
-    viewModel { (episode: Episode) ->
-        EpisodeHistoryViewModel(
-            episode = episode,
-            getHistoryUseCase = get(),
-            showUpdatesSource = get(),
-            episodeUpdatesSource = get(),
-        )
-    }
+    viewModelOf(::EpisodeHistoryViewModel)
 
     viewModel { (show: Show, episode: Episode) ->
         EpisodeSeasonViewModel(

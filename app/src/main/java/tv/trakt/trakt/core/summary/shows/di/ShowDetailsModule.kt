@@ -45,7 +45,6 @@ import tv.trakt.trakt.core.summary.shows.features.trivia.usecases.GetShowTriviaU
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowRatingsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowStreamingUseCase
-import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 
 internal val showDetailsDataModule = module {
     singleOf(::ShowStorage) { bind<ShowLocalDataSource>() }
@@ -73,6 +72,20 @@ internal val showDetailsModule = module {
     factoryOf(::GetShowTriviaUseCase)
     factoryOf(::GetShowSocialsUseCase)
 
+    viewModelOf(::ShowInfoViewModel)
+    viewModelOf(::ShowStreamingsViewModel)
+    viewModelOf(::ShowExtrasViewModel)
+    viewModelOf(::ShowSeasonsViewModel)
+    viewModelOf(::AllShowSeasonsViewModel)
+    viewModelOf(::ShowActorsViewModel)
+    viewModelOf(::ShowRelatedViewModel)
+    viewModelOf(::ShowListsViewModel)
+    viewModelOf(::ShowSentimentViewModel)
+    viewModelOf(::ShowDetailsContextViewModel)
+    viewModelOf(::ShowDetailsListsViewModel)
+    viewModelOf(::ShowHistoryViewModel)
+    viewModelOf(::ShowTriviaViewModel)
+
     viewModel {
         ShowDetailsViewModel(
             appContext = androidApplication(),
@@ -88,7 +101,6 @@ internal val showDetailsModule = module {
             loadRatingUseCase = get(),
             loadFavoritesUseCase = get(),
             updateShowHistoryUseCase = get(),
-            updateEpisodeHistoryUseCase = get(),
             updateShowWatchlistUseCase = get(),
             updateShowFavoritesUseCase = get(),
             addListItemUseCase = get(),
@@ -99,88 +111,12 @@ internal val showDetailsModule = module {
             userFavoritesLocalSource = get(),
             episodeLocalDataSource = get(),
             showDetailsUpdates = get(),
+            episodeDetailsUpdates = get(),
             favoritesUpdates = get(),
             watchlistUpdates = get(),
             sessionManager = get(),
             errorsManager = get(),
             analytics = get(),
-        )
-    }
-
-    viewModel { (show: Show) ->
-        ShowInfoViewModel(
-            show = show,
-            getStatsUseCase = get(),
-            getStudiosUseCase = get(),
-            getCrewUseCase = get(),
-        )
-    }
-
-    viewModel { (show: Show) ->
-        ShowStreamingsViewModel(
-            show = show,
-            sessionManager = get(),
-            getStreamingsUseCase = get(),
-            collapsingManager = get(),
-        )
-    }
-
-    viewModel { (show: Show) ->
-        ShowExtrasViewModel(
-            show = show,
-            getExtrasUseCase = get(),
-            collapsingManager = get(),
-        )
-    }
-
-    viewModel { (show: Show) ->
-        ShowSeasonsViewModel(
-            show = show,
-            getSeasonsUseCase = get(),
-            loadUserProgressUseCase = get(),
-            updateEpisodeHistoryUseCase = get(),
-            showDetailsUpdates = get(),
-            episodeDetailsUpdates = get(),
-            sessionManager = get(),
-            analytics = get(),
-            collapsingManager = get(),
-        )
-    }
-
-    viewModelOf(::AllShowSeasonsViewModel)
-
-    viewModel { (show: Show) ->
-        ShowActorsViewModel(
-            show = show,
-            getActorsUseCase = get(),
-            collapsingManager = get(),
-        )
-    }
-
-    viewModel { (show: Show) ->
-        ShowRelatedViewModel(
-            show = show,
-            getRelatedShowsUseCase = get(),
-            collectionStateProvider = get(),
-            collapsingManager = get(),
-        )
-    }
-
-    viewModel { (show: Show) ->
-        ShowListsViewModel(
-            show = show,
-            getListsUseCase = get(),
-            loadUserLikedListsUseCase = get(),
-            collapsingManager = get(),
-        )
-    }
-
-    viewModel { (show: Show) ->
-        ShowSentimentViewModel(
-            show = show,
-            getSentimentUseCase = get(),
-            collapsingManager = get(),
-            sessionManager = get(),
         )
     }
 
@@ -196,41 +132,6 @@ internal val showDetailsModule = module {
             sessionManager = get(),
             commentsUpdates = get(),
             collapsingManager = get(),
-        )
-    }
-
-    viewModel { (show: Show) ->
-        ShowDetailsContextViewModel(
-            show = show,
-            sessionManager = get(),
-            getStreamingsUseCase = get(),
-        )
-    }
-
-    viewModel { (show: Show) ->
-        ShowDetailsListsViewModel(
-            show = show,
-            sessionManager = get(),
-            loadListsUseCase = get(),
-        )
-    }
-
-    viewModel { (show: Show) ->
-        ShowHistoryViewModel(
-            show = show,
-            getHistoryUseCase = get(),
-            showDetailsUpdates = get(),
-            episodeDetailsUpdates = get(),
-            collapsingManager = get<CollapsingManager>(),
-        )
-    }
-
-    viewModel { (show: Show) ->
-        ShowTriviaViewModel(
-            show = show,
-            getTriviaUseCase = get(),
-            collapsingManager = get(),
-            sessionManager = get(),
         )
     }
 }

@@ -84,6 +84,7 @@ internal fun DetailsHeader(
     onShareClick: () -> Unit,
     onShareImageClick: () -> Unit,
     onInfoClick: (() -> Unit)? = null,
+    onWatchedClick: (() -> Unit)? = null,
     onBackClick: () -> Unit,
 ) {
     Column(
@@ -103,6 +104,7 @@ internal fun DetailsHeader(
                 onShareClick = onShareClick,
                 onShareImageClick = onShareImageClick,
                 onBackClick = onBackClick,
+                onWatchedClick = onWatchedClick ?: {},
                 extraRightColumn = extraRightColumn ?: {},
             )
         } else {
@@ -114,6 +116,7 @@ internal fun DetailsHeader(
                 playsCount = playsCount,
                 onShareClick = onShareClick,
                 onBackClick = onBackClick,
+                onWatchedClick = onWatchedClick ?: {},
                 extraRightColumn = extraRightColumn ?: {},
                 modifier = Modifier.padding(
                     horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
@@ -279,6 +282,7 @@ internal fun PosterChipsGroup(
     creditsCount: Int?,
     playsCount: Int?,
     personImdb: ImdbId?,
+    onWatchedChipClick: () -> Unit = {},
 ) {
     Row(
         horizontalArrangement = spacedBy(6.dp),
@@ -297,6 +301,7 @@ internal fun PosterChipsGroup(
                     else -> stringResource(R.string.tag_text_watched)
                 },
                 icon = painterResource(R.drawable.ic_check_double),
+                modifier = Modifier.onClick(onClick = onWatchedChipClick),
             )
         }
 

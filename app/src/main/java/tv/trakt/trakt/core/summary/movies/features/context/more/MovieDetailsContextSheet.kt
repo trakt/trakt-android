@@ -25,7 +25,7 @@ internal fun MovieDetailsContextSheet(
     movie: Movie?,
     watched: Boolean,
     lists: Boolean,
-    onShareClick: (() -> Unit)? = null,
+    onHistoryClick: (() -> Unit)? = null,
     onCheckClick: (() -> Unit)? = null,
     onRemoveClick: (() -> Unit)? = null,
     onListsClick: (() -> Unit)? = null,
@@ -47,8 +47,8 @@ internal fun MovieDetailsContextSheet(
                     key = nextInt().toString(),
                     parameters = { parametersOf(movie) },
                 ),
-                onShareClick = {
-                    onShareClick?.invoke()
+                onHistoryClick = {
+                    onHistoryClick?.invoke()
                     sheetScope.launch { state.hide() }
                         .invokeOnCompletion {
                             if (!state.isVisible) {

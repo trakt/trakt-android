@@ -5,6 +5,7 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieStorage
@@ -153,13 +154,7 @@ internal val movieDetailsModule = module {
         )
     }
 
-    viewModel { (movie: Movie) ->
-        MovieHistoryViewModel(
-            movie = movie,
-            getHistoryUseCase = get(),
-            movieDetailsUpdates = get(),
-        )
-    }
+    viewModelOf(::MovieHistoryViewModel)
 
     viewModel { (movie: Movie) ->
         MovieSentimentViewModel(

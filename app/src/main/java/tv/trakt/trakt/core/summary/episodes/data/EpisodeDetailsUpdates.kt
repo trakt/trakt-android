@@ -11,6 +11,7 @@ internal interface EpisodeDetailsUpdates {
     enum class Source {
         HOME,
         PROGRESS,
+        HISTORY,
         SEASON,
         CALENDAR,
     }

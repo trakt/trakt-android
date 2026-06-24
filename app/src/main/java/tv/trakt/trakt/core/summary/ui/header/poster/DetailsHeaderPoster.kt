@@ -54,6 +54,7 @@ fun DetailsHeaderPoster(
     onBackClick: () -> Unit,
     onShareClick: () -> Unit,
     onShareImageClick: () -> Unit,
+    onWatchedClick: () -> Unit,
     extraRightColumn: @Composable () -> Unit = {},
 ) {
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
@@ -139,6 +140,7 @@ fun DetailsHeaderPoster(
                         creditsCount = creditsCount,
                         playsCount = playsCount,
                         personImdb = personImdb,
+                        onWatchedChipClick = onWatchedClick,
                     )
                 }
             }
@@ -181,6 +183,7 @@ private fun Preview() {
             onBackClick = {},
             onShareClick = {},
             onShareImageClick = {},
+            onWatchedClick = {},
             modifier = Modifier
                 .padding(bottom = 9.dp),
         )
@@ -207,6 +210,7 @@ private fun Preview2() {
             onBackClick = {},
             onShareClick = {},
             onShareImageClick = {},
+            onWatchedClick = {},
             modifier = Modifier
                 .padding(bottom = 9.dp),
         )

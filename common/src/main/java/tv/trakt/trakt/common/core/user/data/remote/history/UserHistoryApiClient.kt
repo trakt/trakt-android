@@ -3,6 +3,7 @@ package tv.trakt.trakt.common.core.user.data.remote.history
 import org.openapitools.client.apis.HistoryApi
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
 import kotlin.time.Instant
@@ -87,8 +88,7 @@ class UserHistoryApiClient(
 
     override suspend fun getShowHistory(
         showId: TraktId,
-        page: Int,
-        limit: Int?,
+        pagination: Pagination,
     ): List<SyncHistoryEpisodeItemDto> {
         val response = historyApi.getUsersHistoryShow(
             id = "me",
@@ -96,11 +96,8 @@ class UserHistoryApiClient(
             extended = "full,cloud9,colors",
             startAt = null,
             endAt = null,
-            page = page,
-            limit = when {
-                limit == null -> 99_999
-                else -> limit
-            },
+            page = pagination.page,
+            limit = pagination.limit,
         )
         return response.body()
     }

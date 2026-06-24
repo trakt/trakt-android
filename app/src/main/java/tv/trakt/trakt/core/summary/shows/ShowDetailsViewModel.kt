@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -58,6 +59,8 @@ import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.AddPersonalLi
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.HISTORY
 import tv.trakt.trakt.core.summary.shows.ShowDetailsState.UserRatingsState
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
@@ -67,7 +70,6 @@ import tv.trakt.trakt.core.summary.shows.navigation.ShowDetailsDestination
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowRatingsUseCase
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
-import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowFavoritesUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
@@ -83,6 +85,7 @@ import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.resources.R
 import java.util.Locale
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 internal class ShowDetailsViewModel(
@@ -99,7 +102,6 @@ internal class ShowDetailsViewModel(
     private val loadRatingUseCase: LoadUserRatingsUseCase,
     private val loadFavoritesUseCase: LoadUserFavoritesUseCase,
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
-    private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val updateShowWatchlistUseCase: UpdateShowWatchlistUseCase,
     private val updateShowFavoritesUseCase: UpdateShowFavoritesUseCase,
     private val addListItemUseCase: AddPersonalListItemUseCase,
@@ -110,6 +112,7 @@ internal class ShowDetailsViewModel(
     private val userFavoritesLocalSource: UserFavoritesLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val showDetailsUpdates: ShowDetailsUpdates,
+    private val episodeDetailsUpdates: EpisodeDetailsUpdates,
     private val favoritesUpdates: FavoritesUpdates,
     private val watchlistUpdates: WatchlistUpdates,
     private val sessionManager: SessionManager,
@@ -152,9 +155,12 @@ internal class ShowDetailsViewModel(
     }
 
     private fun observeData() {
-        showDetailsUpdates.observeUpdates(Source.SEASONS)
+        merge(
+            showDetailsUpdates.observeUpdates(Source.SEASONS),
+            episodeDetailsUpdates.observeUpdates(HISTORY),
+        )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 loadProgressData(
                     ignoreErrors = true,
@@ -501,52 +507,6 @@ internal class ShowDetailsViewModel(
         }
     }
 
-    fun removeFromWatched(playId: Long) {
-        if (showState.value == null ||
-            loadingState.value.isLoading ||
-            loadingProgress.value.isLoading ||
-            loadingLists.value.isLoading
-        ) {
-            return
-        }
-
-        viewModelScope.launch {
-            if (!sessionManager.isAuthenticated()) {
-                return@launch
-            }
-            try {
-                loadingProgress.update { Loading }
-
-                updateEpisodeHistoryUseCase.removePlayFromHistory(playId)
-                val progress = loadProgressUseCase.loadShowsProgress()
-                    .firstOrNull { it.showId == showId }
-
-                showProgressState.update {
-                    it?.copy(
-                        aired = showState.value?.airedEpisodes ?: 0,
-                        plays = progress?.plays,
-                    )
-                }
-
-                showDetailsUpdates.notifyUpdate(Source.PROGRESS)
-                infoState.update {
-                    DynamicStringResource(R.string.text_info_history_removed)
-                }
-                analytics.progress.logRemoveWatchedMedia(
-                    mediaType = "episode",
-                    source = "show_details",
-                )
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.recordError(error)
-                }
-            } finally {
-                loadingProgress.update { Done }
-            }
-        }
-    }
-
     // Lists
 
     fun toggleWatchlist() {
@@ -786,7 +746,7 @@ internal class ShowDetailsViewModel(
             try {
                 loadingFavorite.update { Loading }
 
-                delay(300) // Small delay to allow UI to settle.
+                delay(300.milliseconds) // Small delay to allow UI to settle.
                 updateShowFavoritesUseCase.addToFavorites(showId)
                 userFavoritesLocalSource.addShows(
                     shows = listOf(
@@ -835,7 +795,7 @@ internal class ShowDetailsViewModel(
             try {
                 loadingFavorite.update { Loading }
 
-                delay(300) // Small delay to allow UI to settle.
+                delay(300.milliseconds) // Small delay to allow UI to settle.
                 updateShowFavoritesUseCase.removeFromFavorites(showId)
                 userFavoritesLocalSource.removeShows(setOf(showId))
                 favoritesUpdates.notifyUpdate(DETAILS)
