@@ -1,5 +1,8 @@
+package tv.trakt.trakt.ui.components
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.heightIn
@@ -118,30 +121,31 @@ internal fun InputField(
                     Spacer(Modifier.width(8.dp))
                 }
 
-                if (!placeholder.isNullOrBlank() && state.text.isEmpty()) {
-                    Text(
-                        text = placeholder,
-                        style = TraktTheme.typography.paragraph.copy(
-                            color = TraktTheme.colors.textSecondary,
-                        ),
-                        minLines = when {
-                            lineLimits is MultiLine -> lineLimits.minHeightInLines
-                            else -> 1
-                        },
-                        modifier = Modifier
-                            .padding(
-                                start = when {
-                                    lineLimits is MultiLine -> 4.dp
-                                    else -> 0.dp
-                                },
+                Box(modifier = Modifier.weight(1F)) {
+                    if (!placeholder.isNullOrBlank() && state.text.isEmpty()) {
+                        Text(
+                            text = placeholder,
+                            style = TraktTheme.typography.paragraph.copy(
+                                color = TraktTheme.colors.textSecondary,
                             ),
-                    )
-                } else {
+                            minLines = when {
+                                lineLimits is MultiLine -> lineLimits.minHeightInLines
+                                else -> 1
+                            },
+                            modifier = Modifier
+                                .padding(
+                                    start = when {
+                                        lineLimits is MultiLine -> 4.dp
+                                        else -> 0.dp
+                                    },
+                                ),
+                        )
+                    }
+
                     innerField()
                 }
 
                 if (endSlot != null) {
-                    Spacer(Modifier.weight(1F))
                     endSlot()
                 }
             }

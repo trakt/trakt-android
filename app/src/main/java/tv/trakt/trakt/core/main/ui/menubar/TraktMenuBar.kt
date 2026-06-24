@@ -1,6 +1,5 @@
 package tv.trakt.trakt.core.main.ui.menubar
 
-import InputField
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -61,6 +60,7 @@ import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.SearchDestination
 import tv.trakt.trakt.core.search.views.SearchFiltersList
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.InputField
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val navigationItems = listOf(

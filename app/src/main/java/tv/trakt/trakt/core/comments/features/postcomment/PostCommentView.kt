@@ -2,7 +2,6 @@
 
 package tv.trakt.trakt.core.comments.features.postcomment
 
-import InputField
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,6 +39,7 @@ import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.InputField
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.switch.TraktSwitch
 import tv.trakt.trakt.ui.theme.TraktTheme
