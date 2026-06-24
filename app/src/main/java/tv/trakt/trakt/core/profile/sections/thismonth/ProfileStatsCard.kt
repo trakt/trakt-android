@@ -80,6 +80,7 @@ internal fun ProfileStatsCard(
     containerColor: Color = Shade920,
     containerImage: String? = null,
     loading: Boolean = false,
+    showAllStats: Boolean = true,
     stats: ProfileStats?,
 ) {
     val uriHandler = LocalUriHandler.current
@@ -95,7 +96,12 @@ internal fun ProfileStatsCard(
     }
 
     val scope = rememberCoroutineScope()
-    val pagerState = rememberPagerState(pageCount = { 2 })
+    val pagerState = rememberPagerState(pageCount = {
+        when {
+            showAllStats -> 2
+            else -> 1
+        }
+    })
 
     Box(
         modifier = modifier
@@ -149,7 +155,8 @@ internal fun ProfileStatsCard(
                 state = pagerState,
                 modifier = Modifier.fillMaxWidth(),
             ) { page ->
-                val showAll = page == 1
+                val showAll = showAllStats && page == 1
+
                 StatsChipsRow(
                     episodes = (if (showAll) stats?.allEpisodesCount else stats?.episodesCount) ?: 0,
                     shows = (if (showAll) stats?.allShowsCount else stats?.showsCount) ?: 0,
@@ -173,18 +180,20 @@ internal fun ProfileStatsCard(
             )
         }
 
-        PagerIndicator(
-            pagerState = pagerState,
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(horizontal = 18.dp, vertical = 18.dp)
-                .onClick(throttle = false) {
-                    togglePage(
-                        scope = scope,
-                        pagerState = pagerState,
-                    )
-                },
-        )
+        if (showAllStats) {
+            PagerIndicator(
+                pagerState = pagerState,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(horizontal = 18.dp, vertical = 18.dp)
+                    .onClick(throttle = false) {
+                        togglePage(
+                            scope = scope,
+                            pagerState = pagerState,
+                        )
+                    },
+            )
+        }
     }
 }
 

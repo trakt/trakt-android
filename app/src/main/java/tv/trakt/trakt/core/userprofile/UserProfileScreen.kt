@@ -305,6 +305,7 @@ private fun LazyListScope.userProfilePublicContent(
                 loading = state.monthStats?.loading ?: true,
                 user = state.user,
                 stats = state.monthStats?.stats,
+                showAllStats = false,
                 containerImage = state.monthStats?.backgroundUrl,
                 modifier = Modifier
                     .fillMaxWidth(
