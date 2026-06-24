@@ -303,17 +303,17 @@ private fun HomeScreenHeader(
     onVipClick: () -> Unit,
     onFiltersClick: () -> Unit,
 ) {
-    val userState = remember(state.user) {
-        val loadingDone = state.user.loading == Done
-        val userNotNull = state.user.user != null
-        loadingDone to userNotNull
+    val (userLoaded, userLoggedIn) = remember(state.user) {
+        val userLoaded = state.user.loading == Done
+        val userLoggedIn = state.user.user != null
+        userLoaded to userLoggedIn
     }
 
     HeaderBar(
         containerAlpha = if (headerState.scrolled && !isScrolledToTop) 0.98F else 0F,
-        showLogin = userState.first && !userState.second,
-        showVip = userState.second && state.user.user?.isVip == false,
-        showFilters = true,
+        showLogin = userLoaded && !userLoggedIn,
+        showVip = userLoggedIn && state.user.user?.isVip == false,
+        showFilters = userLoggedIn,
         userLoading = userLoading,
         onVipClick = onVipClick,
         onFilterClick = onFiltersClick,
