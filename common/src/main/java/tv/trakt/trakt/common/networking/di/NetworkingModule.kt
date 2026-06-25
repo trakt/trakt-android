@@ -29,6 +29,7 @@ import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.apis.WatchedApi
 import tv.trakt.trakt.common.Config.API_BASE_URL
 import tv.trakt.trakt.common.Config.API_V3_BASE_URL
+import tv.trakt.trakt.common.Config.WEB_AUTH_URL
 import tv.trakt.trakt.common.networking.api.scrobble.ScrobbleExtrasApi
 import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.common.networking.client.KtorClientFactory
@@ -289,7 +290,7 @@ val networkingApiModule = module {
 
     single<OauthApi> {
         OauthApi(
-            baseUrl = API_BASE_URL,
+            baseUrl = WEB_AUTH_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
         )

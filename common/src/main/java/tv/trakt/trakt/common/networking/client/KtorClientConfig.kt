@@ -37,6 +37,7 @@ import tv.trakt.trakt.common.auth.model.TraktRefreshToken
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import kotlin.coroutines.cancellation.CancellationException
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 private const val HEADER_TRAKT_API_KEY = "trakt-api-key"
@@ -144,7 +145,7 @@ internal fun HttpClientConfig<*>.applyAuthorizationConfig(
 
                     try {
                         Timber.d("Refreshing auth tokens")
-                        val newTokens = client.post("${Config.API_BASE_URL}oauth/token") {
+                        val newTokens = client.post("${Config.WEB_AUTH_URL}oauth/token") {
                             setBody(
                                 TraktRefreshToken(
                                     refreshToken = oldTokens.refreshToken ?: "",
@@ -208,7 +209,7 @@ private val CacheBusterPlugin = createClientPlugin("CacheBusterPlugin", ::CacheB
  * Plugin that adds a fixed delay to each request to simulate network delay for debugging purposes.
  */
 private val NetworkDelayPlugin = createClientPlugin("DebugDelayPlugin") {
-    onRequest { request, _ ->
-        delay(3000)
+    onRequest { _, _ ->
+        delay(3000.milliseconds)
     }
 }
