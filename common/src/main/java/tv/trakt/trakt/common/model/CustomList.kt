@@ -50,6 +50,7 @@ data class CustomList(
         }
     }
 
+    @Serializable
     enum class Privacy(
         val value: String,
         @param:StringRes val displayRes: Int,
