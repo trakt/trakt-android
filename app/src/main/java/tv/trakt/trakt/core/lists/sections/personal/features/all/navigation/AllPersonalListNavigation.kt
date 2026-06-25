@@ -15,6 +15,7 @@ internal data class ListsPersonalDestination(
     val listId: Int,
     val listTitle: String,
     val listDescription: String?,
+    val listPrivacy: CustomList.Privacy?,
 )
 
 internal fun NavGraphBuilder.allPersonalListScreen(
@@ -40,12 +41,14 @@ internal fun NavController.navigateToPersonalList(
     listId: Int,
     listTitle: String,
     listDescription: String?,
+    listPrivacy: CustomList.Privacy?,
 ) {
     navigate(
         route = ListsPersonalDestination(
             listId = listId,
             listTitle = listTitle,
             listDescription = listDescription,
+            listPrivacy = listPrivacy,
         ),
     )
 }

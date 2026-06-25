@@ -23,6 +23,7 @@ internal interface ListsPersonalLocalDataSource {
         listId: TraktId,
         name: String,
         description: String?,
+        privacy: CustomList.Privacy,
         notify: Boolean,
     )
 

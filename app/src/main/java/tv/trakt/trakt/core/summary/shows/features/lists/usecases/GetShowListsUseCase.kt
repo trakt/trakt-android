@@ -14,14 +14,14 @@ internal class GetShowListsUseCase(
     suspend fun getOfficialLists(showId: TraktId) =
         getLists(
             showId = showId,
-            type = Type.OFFICIAL,
+            type = Type.Official,
             limit = 1,
         )
 
     suspend fun getPersonalLists(showId: TraktId) =
         getLists(
             showId = showId,
-            type = Type.PERSONAL,
+            type = Type.Personal,
             limit = 1,
         )
 

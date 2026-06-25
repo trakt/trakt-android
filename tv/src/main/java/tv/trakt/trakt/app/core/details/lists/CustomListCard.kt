@@ -82,7 +82,7 @@ private fun CustomListCardContent(
 ) {
     val containerColor =
         when (list.type) {
-            Type.OFFICIAL -> Purple900
+            Type.Official -> Purple900
             else -> TraktTheme.colors.customListContainer
         }
 
@@ -273,7 +273,7 @@ private fun CustomListHeader(
                 modifier = Modifier.padding(start = 16.dp),
             ) {
                 val tint = when {
-                    list.type == Type.OFFICIAL -> TraktTheme.colors.textPrimary
+                    list.type == Type.Official -> TraktTheme.colors.textPrimary
                     else -> TraktTheme.colors.textSecondary
                 }
                 Icon(
@@ -322,7 +322,7 @@ fun Preview() {
                 )
 
                 CustomListCardContent(
-                    list = PreviewData.customList1.copy(type = Type.ALL),
+                    list = PreviewData.customList1.copy(type = Type.All),
                     modifier =
                         Modifier
                             .height(TraktTheme.size.detailsCustomListSize)

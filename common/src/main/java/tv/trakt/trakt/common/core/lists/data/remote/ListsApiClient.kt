@@ -26,10 +26,12 @@ class ListsApiClient(
     override suspend fun createList(
         name: String,
         description: String?,
+        privacy: String,
     ) {
         val request = PostUsersListsCreateRequest(
             name = name,
             description = description,
+            privacy = privacy,
         )
 
         listsApi.postUsersListsCreate(
@@ -44,10 +46,12 @@ class ListsApiClient(
         listId: TraktId,
         name: String,
         description: String?,
+        privacy: String,
     ) {
         val request = PutUsersListsListUpdateRequest(
             name = name,
             description = description,
+            privacy = privacy,
         )
 
         listsApi.putUsersListsListUpdate(

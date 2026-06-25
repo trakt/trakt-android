@@ -14,14 +14,14 @@ internal class GetMovieListsUseCase(
     suspend fun getOfficialLists(movieId: TraktId) =
         getLists(
             movieId = movieId,
-            type = Type.OFFICIAL,
+            type = Type.Official,
             limit = 1,
         )
 
     suspend fun getPersonalLists(movieId: TraktId) =
         getLists(
             movieId = movieId,
-            type = Type.PERSONAL,
+            type = Type.Personal,
             limit = 1,
         )
 
