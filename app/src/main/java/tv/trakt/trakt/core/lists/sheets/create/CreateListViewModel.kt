@@ -14,6 +14,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.core.lists.sheets.create.usecases.CreateListUseCase
 import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
 
@@ -30,6 +31,7 @@ internal class CreateListViewModel(
     fun createList(
         name: String,
         description: String?,
+        privacy: CustomList.Privacy,
     ) {
         if (loadingState.value.isLoading) {
             return
@@ -41,6 +43,7 @@ internal class CreateListViewModel(
                 createListUseCase.createList(
                     name = name,
                     description = description,
+                    privacy = privacy,
                 )
 
                 // Clear cached lists to force refresh next time lists are accessed.

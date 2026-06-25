@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="text_list_private">Private</string>
+  <string name="text_list_public">Public</string>
+
+  <string name="text_list_public_info">List will be visible to all the users.</string>
+  <string name="text_list_private_info">List will be visible only to you.</string>
 </resources>

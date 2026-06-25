@@ -290,7 +290,10 @@ internal fun AllPersonalListContent(
 
         ContentList(
             title = state.list?.name ?: "",
-            subtitle = state.list?.description,
+            subtitle = state.list?.privacy?.let {
+                stringResource(it.displayRes)
+            },
+            description = state.list?.description,
             loading = state.loading.isLoading,
             loadingMore = state.loadingMore.isLoading,
             listState = listState,
@@ -320,7 +323,6 @@ private fun TitleBar(
     reorderEnabled: Boolean,
     title: String,
     subtitle: String?,
-    subtitleVisible: Boolean,
     filters: GlobalFilter?,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
@@ -355,10 +357,7 @@ private fun TitleBar(
             )
             TraktHeader(
                 title = title,
-                subtitle = when {
-                    subtitleVisible -> subtitle
-                    else -> null
-                },
+                subtitle = subtitle,
             )
         }
 
@@ -514,6 +513,7 @@ private fun ContentList(
     modifier: Modifier = Modifier,
     title: String,
     subtitle: String?,
+    description: String?,
     loading: Boolean,
     loadingMore: Boolean,
     listState: LazyListState,
@@ -534,10 +534,6 @@ private fun ContentList(
     onReorderClick: () -> Unit,
     onEndOfList: () -> Unit,
 ) {
-    val subtitleVisible = remember(subtitle) {
-        (subtitle?.length ?: 0) <= LIST_DESCRIPTION_LIMIT
-    }
-
     val isScrolledToBottom by remember(listItems.size) {
         derivedStateOf {
             listState.firstVisibleItemIndex >= (listItems.size - 5)
@@ -563,7 +559,6 @@ private fun ContentList(
                 reorderEnabled = !loading && listItems.isNotEmpty(),
                 title = title,
                 subtitle = subtitle,
-                subtitleVisible = subtitleVisible,
                 filters = listFilter,
                 onBackClick = onBackClick,
                 onShareClick = onShareClick,
@@ -573,11 +568,11 @@ private fun ContentList(
             )
         }
 
-        if (!subtitleVisible) {
+        if (!description.isNullOrBlank()) {
             item {
                 var collapsed by remember { mutableStateOf(true) }
                 Text(
-                    text = subtitle ?: "",
+                    text = description,
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.meta.copy(
                         fontWeight = W400,

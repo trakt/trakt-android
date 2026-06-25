@@ -132,7 +132,7 @@ private fun CustomListContent(
             .fillMaxSize()
             .background(
                 brush = when {
-                    list.type == Type.OFFICIAL -> radialGradient
+                    list.type == Type.Official -> radialGradient
                     else -> SolidColor(containerColor)
                 },
                 shape = RoundedCornerShape(24.dp),
@@ -198,7 +198,7 @@ private fun CustomListContent(
                     .shadow(2.dp, RoundedCornerShape(16.dp))
                     .background(
                         color = when {
-                            list.type == Type.OFFICIAL -> Purple900
+                            list.type == Type.Official -> Purple900
                             else -> TraktTheme.colors.skeletonShimmer
                         },
                         shape = RoundedCornerShape(16.dp),
@@ -208,7 +208,7 @@ private fun CustomListContent(
                 Text(
                     text = stringResource(R.string.list_placeholder_empty),
                     color = when {
-                        list.type == Type.OFFICIAL -> Color.White
+                        list.type == Type.Official -> Color.White
                         else -> TraktTheme.colors.textSecondary
                     },
                     style = TraktTheme.typography.heading6,
@@ -378,7 +378,7 @@ private fun Preview() {
                     list = PreviewData.customList1.copy(
                         name = "A very long list name that should be truncated",
                         likes = 12341,
-                        type = Type.OFFICIAL,
+                        type = Type.Official,
                     ),
                     liked = true,
                     likesVisible = true,
@@ -392,7 +392,7 @@ private fun Preview() {
                     list = PreviewData.customList1.copy(
                         name = "A very long list name that should be truncated",
                         likes = 12341,
-                        type = Type.ALL,
+                        type = Type.All,
                     ),
                     liked = true,
                     likesVisible = true,
@@ -404,7 +404,7 @@ private fun Preview() {
 
                 CustomListCard(
                     list = PreviewData.customList1.copy(
-                        type = Type.ALL,
+                        type = Type.All,
                         images = Images(
                             posters = listOf(
                                 "https://trakt.tv/images/posters/000/000/001/thumb/1.jpg",

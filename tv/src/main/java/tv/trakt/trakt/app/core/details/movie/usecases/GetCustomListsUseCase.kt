@@ -11,9 +11,9 @@ import tv.trakt.trakt.common.model.TraktId
 internal class GetCustomListsUseCase(
     private val remoteSource: MoviesRemoteDataSource,
 ) {
-    suspend fun getOfficialLists(movieId: TraktId): ImmutableList<CustomList> = getLists(movieId, Type.OFFICIAL, 3)
+    suspend fun getOfficialLists(movieId: TraktId): ImmutableList<CustomList> = getLists(movieId, Type.Official, 3)
 
-    suspend fun getPersonalLists(movieId: TraktId): ImmutableList<CustomList> = getLists(movieId, Type.PERSONAL, 5)
+    suspend fun getPersonalLists(movieId: TraktId): ImmutableList<CustomList> = getLists(movieId, Type.Personal, 5)
 
     private suspend fun getLists(
         movieId: TraktId,

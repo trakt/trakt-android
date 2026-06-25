@@ -62,6 +62,7 @@ internal class ListsPersonalStorage : ListsPersonalLocalDataSource {
         listId: TraktId,
         name: String,
         description: String?,
+        privacy: CustomList.Privacy,
         notify: Boolean,
     ) {
         mutex.withLock {
@@ -70,6 +71,7 @@ internal class ListsPersonalStorage : ListsPersonalLocalDataSource {
             storage[listId] = existing.copy(
                 name = name,
                 description = description,
+                privacy = privacy,
             )
 
             if (notify) {

@@ -389,6 +389,7 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
                     listId = it.ids.trakt.value,
                     listTitle = it.name,
                     listDescription = it.description,
+                    listPrivacy = it.privacy,
                 )
             },
             onNavigateToCustomList = { list ->
@@ -416,6 +417,7 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
                     listId = it.ids.trakt.value,
                     listTitle = it.name,
                     listDescription = it.description,
+                    listPrivacy = it.privacy,
                 )
             },
             onNavigateBack = { popBackStack() },

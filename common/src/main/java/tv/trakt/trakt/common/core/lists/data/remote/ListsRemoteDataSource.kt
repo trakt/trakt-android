@@ -13,12 +13,14 @@ interface ListsRemoteDataSource {
     suspend fun createList(
         name: String,
         description: String?,
+        privacy: String,
     )
 
     suspend fun editList(
         listId: TraktId,
         name: String,
         description: String?,
+        privacy: String,
     )
 
     suspend fun deleteList(listId: TraktId)
