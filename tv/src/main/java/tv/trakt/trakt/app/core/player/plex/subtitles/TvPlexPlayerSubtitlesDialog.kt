@@ -211,6 +211,7 @@ private fun TvPlexPlayerSubtitlesContent(
                     val format = track.getTrackFormat(0)
                     SubtitleItem(
                         format = format,
+                        index = index,
                         isSelected = format.id == selectedTrackFormat,
                         onClick = {
                             onTrackSelect(track)
@@ -237,20 +238,24 @@ private fun TvPlexPlayerSubtitlesContent(
 @Composable
 private fun SubtitleItem(
     format: Format,
+    index: Int,
     isSelected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val label = remember(format) {
+    val fallbackLabel = "Subtitle ${index + 1}"
+    val label = remember(format, fallbackLabel) {
         val languageDisplayText = format.language
+            ?.takeIf { it.isNotBlank() && !it.equals("und", ignoreCase = true) }
             ?.let { Locale(it, "").displayName }
-            ?: "Unknown"
 
-        buildString {
-            append(languageDisplayText)
-            if (!format.label.isNullOrBlank()) {
-                append("  (${format.label})")
-            }
+        val trackLabel = format.label?.takeIf { it.isNotBlank() }
+
+        when {
+            languageDisplayText != null && trackLabel != null -> "$languageDisplayText  ($trackLabel)"
+            languageDisplayText != null -> languageDisplayText
+            trackLabel != null -> trackLabel
+            else -> fallbackLabel
         }
     }
 
