@@ -5,4 +5,7 @@
 
   <string name="text_list_public_info">List will be visible to all the users.</string>
   <string name="text_list_private_info">List will be visible only to you.</string>
+
+  <string name="button_text_sort_asc">Asc</string>
+  <string name="button_text_sort_desc">Desc</string>
 </resources>

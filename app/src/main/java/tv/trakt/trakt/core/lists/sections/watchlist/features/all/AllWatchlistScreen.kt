@@ -51,14 +51,19 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableMap
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaType.MOVIE
 import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import tv.trakt.trakt.common.model.sorting.SortTypeList
+import tv.trakt.trakt.common.model.sorting.SortType.Added
+import tv.trakt.trakt.common.model.sorting.SortType.Released
+import tv.trakt.trakt.common.model.sorting.SortType.Title
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
@@ -96,7 +101,7 @@ internal fun AllWatchlistScreen(
     var contextMovieSheet by remember { mutableStateOf<MovieItem?>(null) }
     var contextShowSheet by remember { mutableStateOf<ShowItem?>(null) }
     var dateSheet by remember { mutableStateOf<WatchlistItem?>(null) }
-    var sortSheet by remember { mutableStateOf<SortTypeList?>(null) }
+    var sortSheet by remember { mutableStateOf<Sorting?>(null) }
     var filtersSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(state) {
@@ -152,7 +157,7 @@ internal fun AllWatchlistScreen(
             filtersSheet = true
         },
         onSortTypeClick = {
-            sortSheet = state.sorting.type
+            sortSheet = state.sorting
         },
         onSortOrderClick = {
             val sorting = state.sorting
@@ -200,16 +205,11 @@ internal fun AllWatchlistScreen(
         onDateSelected = { date ->
             dateSheet?.let {
                 when (it) {
-                    is MovieItem -> {
-                        viewModel.addMovieToHistory(
-                            movieId = it.id,
-                            customDate = date,
-                        )
-                    }
-
-                    is ShowItem -> {
-                        Unit
-                    }
+                    is ShowItem -> Unit
+                    is MovieItem -> viewModel.addMovieToHistory(
+                        movieId = it.id,
+                        customDate = date,
+                    )
                 }
             }
         },
@@ -220,14 +220,8 @@ internal fun AllWatchlistScreen(
 
     SortSelectionSheet(
         active = sortSheet != null,
-        selected = sortSheet,
-        onResult = {
-            viewModel.setSorting(
-                state.sorting.copy(
-                    type = it,
-                ),
-            )
-        },
+        selectedSorting = sortSheet,
+        onResult = viewModel::setSorting,
         onDismiss = {
             sortSheet = null
         },
@@ -366,7 +360,7 @@ private fun ContentList(
     listState: LazyListState,
     listItems: ImmutableList<WatchlistItem>,
     listFilter: GlobalFilter?,
-    listSorting: Sorting?,
+    listSorting: Sorting,
     collection: UserCollectionState,
     loading: Boolean,
     loadingMore: Boolean,
@@ -394,6 +388,15 @@ private fun ContentList(
         }
     }
 
+    val itemsGroup = remember(listItems) {
+        when (listSorting.type) {
+            Title -> listItems.groupBy { it.title.first().uppercaseChar().toString() }
+            Added -> listItems.groupBy { it.listedAt.toLocalDay().year.toString() }
+            Released -> listItems.groupBy { it.released?.toLocalDay()?.year.toString().ifEmpty { "N/A" } }
+            else -> listItems.groupBy { null }
+        }.toImmutableMap()
+    }
+
     LazyColumn(
         state = listState,
         verticalArrangement = spacedBy(0.dp),
@@ -412,7 +415,7 @@ private fun ContentList(
             )
         }
 
-        if (listFilter != null && listSorting != null) {
+        if (listFilter != null) {
             item {
                 ContentFilters(
                     filters = listFilter,
@@ -424,40 +427,63 @@ private fun ContentList(
             }
         }
 
-        items(
-            items = listItems,
-            key = { it.key },
-        ) { item ->
-            when (item) {
-                is ShowItem -> AllWatchlistShowView(
-                    item = item,
-                    enabled = !loading,
-                    watched = collection.isWatched(item.id, SHOW, item.airedEpisodes),
-                    onClick = { onClick(item) },
-                    onLongClick = { onLongClick(item) },
-                    modifier = Modifier
-                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
-                        .animateItem(
-                            fadeInSpec = null,
-                            fadeOutSpec = null,
-                        ),
-                )
+        itemsGroup.keys.forEachIndexed { index, key ->
+            key?.let {
+                item(
+                    key = "header-$key",
+                ) {
+                    TraktHeader(
+                        title = key,
+                        modifier = Modifier
+                            .padding(
+                                top = if (index == 0) 0.dp else 16.dp,
+                                bottom = 12.dp,
+                            )
+                            .animateItem(
+                                fadeInSpec = null,
+                                fadeOutSpec = null,
+                            ),
+                    )
+                }
+            }
 
-                is MovieItem -> AllWatchlistMovieView(
-                    item = item,
-                    enabled = !loading,
-                    watched = collection.isWatched(item.id, MOVIE, null),
-                    onClick = { onClick(item) },
-                    onLongClick = { onLongClick(item) },
-                    onCheckClick = { onCheckClick(item) },
-                    onCheckLongClick = { onCheckLongClick(item) },
-                    modifier = Modifier
-                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
-                        .animateItem(
-                            fadeInSpec = null,
-                            fadeOutSpec = null,
-                        ),
-                )
+            items(
+                items = itemsGroup[key] ?: EmptyImmutableList,
+                key = { it.key },
+            ) { item ->
+                when (item) {
+                    is ShowItem -> AllWatchlistShowView(
+                        item = item,
+                        sorting = listSorting,
+                        enabled = !loading,
+                        watched = collection.isWatched(item.id, SHOW, item.airedEpisodes),
+                        onClick = { onClick(item) },
+                        onLongClick = { onLongClick(item) },
+                        modifier = Modifier
+                            .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                            .animateItem(
+                                fadeInSpec = null,
+                                fadeOutSpec = null,
+                            ),
+                    )
+
+                    is MovieItem -> AllWatchlistMovieView(
+                        item = item,
+                        sorting = listSorting,
+                        enabled = !loading,
+                        watched = collection.isWatched(item.id, MOVIE, null),
+                        onClick = { onClick(item) },
+                        onLongClick = { onLongClick(item) },
+                        onCheckClick = { onCheckClick(item) },
+                        onCheckLongClick = { onCheckLongClick(item) },
+                        modifier = Modifier
+                            .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                            .animateItem(
+                                fadeInSpec = null,
+                                fadeOutSpec = null,
+                            ),
+                    )
+                }
             }
         }
 

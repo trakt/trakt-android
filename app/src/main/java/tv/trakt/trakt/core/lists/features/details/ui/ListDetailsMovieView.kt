@@ -6,6 +6,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sorting.SortType.Runtime
+import tv.trakt.trakt.common.model.sorting.SortType.UserRating
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.movies.ui.MovieMetaFooter
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
@@ -13,6 +16,7 @@ import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 @Composable
 internal fun ListDetailsMovieView(
     item: CustomListItem.MovieItem,
+    sorting: Sorting,
     modifier: Modifier = Modifier,
     showIcon: Boolean = false,
     shadow: Boolean = false,
@@ -44,6 +48,15 @@ internal fun ListDetailsMovieView(
                 movie = item.movie,
                 mediaIcon = showIcon,
                 loading = item.loading,
+                rating = enabled && sorting.type != UserRating && sorting.type != Runtime,
+                userRating = when {
+                    sorting.type == UserRating && enabled -> item.userRating
+                    else -> null
+                },
+                duration = when {
+                    sorting.type == Runtime && enabled -> item.movie.runtime
+                    else -> null
+                },
             )
         },
     )

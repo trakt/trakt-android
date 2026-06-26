@@ -1,7 +1,7 @@
 package tv.trakt.trakt.common.core.user.data.remote.favorites
 
 import org.openapitools.client.apis.UsersApi
-import tv.trakt.trakt.common.model.sorting.SortTypeList.DEFAULT
+import tv.trakt.trakt.common.model.sorting.SortType.Default
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.SyncFavoriteMovieDto
 import tv.trakt.trakt.common.networking.SyncFavoriteShowDto
@@ -21,7 +21,7 @@ class UserFavoritesApiClient(
             page = 1,
             limit = 250,
             sortBy = when (sorting?.type) {
-                DEFAULT, null -> null
+                Default, null -> null
                 else -> sorting.type.value
             },
             sortHow = sorting?.order?.value,
@@ -42,7 +42,7 @@ class UserFavoritesApiClient(
             page = 1,
             limit = 250,
             sortBy = when (sorting?.type) {
-                DEFAULT, null -> null
+                Default, null -> null
                 else -> sorting.type.value
             },
             sortHow = sorting?.order?.value,

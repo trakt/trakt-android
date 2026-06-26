@@ -6,6 +6,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sorting.SortType.Runtime
+import tv.trakt.trakt.common.model.sorting.SortType.UserRating
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.episodes.ui.SeasonMetaFooter
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.resources.R
@@ -14,6 +17,7 @@ import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 @Composable
 internal fun ListDetailsSeasonView(
     item: CustomListItem.SeasonItem,
+    sorting: Sorting,
     modifier: Modifier = Modifier,
     shadow: Boolean = false,
     enabled: Boolean = true,
@@ -37,6 +41,11 @@ internal fun ListDetailsSeasonView(
             SeasonMetaFooter(
                 season = item.season,
                 mediaIcon = true,
+                rating = enabled && sorting.type != UserRating && sorting.type != Runtime,
+                userRating = when {
+                    sorting.type == UserRating && enabled -> item.userRating
+                    else -> null
+                },
             )
         },
     )

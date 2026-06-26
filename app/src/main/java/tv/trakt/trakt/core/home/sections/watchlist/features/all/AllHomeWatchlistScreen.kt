@@ -54,6 +54,7 @@ import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.core.home.sections.watchlist.features.all.ui.AllHomeWatchlistEpisodeView
@@ -370,6 +371,7 @@ private fun ContentList(
 
                 is MovieItem -> AllWatchlistMovieView(
                     item = item,
+                    sorting = Sorting.Default,
                     enabled = !loading,
                     showCheck = true,
                     onClick = { onClick(item) },

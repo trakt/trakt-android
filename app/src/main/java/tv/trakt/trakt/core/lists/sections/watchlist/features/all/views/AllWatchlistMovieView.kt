@@ -4,6 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.sorting.SortType.Runtime
+import tv.trakt.trakt.common.model.sorting.SortType.UserRating
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.movies.ui.MovieMetaFooter
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
@@ -11,6 +14,7 @@ import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 @Composable
 internal fun AllWatchlistMovieView(
     item: WatchlistItem.MovieItem,
+    sorting: Sorting,
     modifier: Modifier = Modifier,
     showCheck: Boolean = false,
     watched: Boolean = false,
@@ -40,6 +44,15 @@ internal fun AllWatchlistMovieView(
             MovieMetaFooter(
                 movie = item.movie,
                 mediaIcon = true,
+                rating = enabled && sorting.type != UserRating && sorting.type != Runtime,
+                userRating = when {
+                    sorting.type == UserRating && enabled -> item.userRating
+                    else -> null
+                },
+                duration = when {
+                    sorting.type == Runtime && enabled -> item.movie.runtime
+                    else -> null
+                },
                 loading = item.loading,
                 check = showCheck,
                 onCheckClick = onCheckClick,

@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Rating
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.ratings.UserRating
 import java.time.Instant
 import java.time.ZoneOffset.UTC
 import kotlin.time.Duration
@@ -15,6 +16,7 @@ import kotlin.time.Duration
 internal sealed class FavoriteItem(
     open val rank: Int,
     open val listedAt: Instant,
+    open val userRating: UserRating?,
     open val loading: Boolean,
 ) {
     @Immutable
@@ -23,7 +25,8 @@ internal sealed class FavoriteItem(
         override val rank: Int,
         override val listedAt: Instant,
         override val loading: Boolean = false,
-    ) : FavoriteItem(rank, listedAt, loading)
+        override val userRating: UserRating? = null,
+    ) : FavoriteItem(rank, listedAt, userRating, loading)
 
     @Immutable
     internal data class ShowItem(
@@ -31,7 +34,8 @@ internal sealed class FavoriteItem(
         override val rank: Int,
         override val listedAt: Instant,
         override val loading: Boolean = false,
-    ) : FavoriteItem(rank, listedAt, loading)
+        override val userRating: UserRating? = null,
+    ) : FavoriteItem(rank, listedAt, userRating, loading)
 
     val id: TraktId
         get() = when (this) {
@@ -43,6 +47,12 @@ internal sealed class FavoriteItem(
         get() = when (this) {
             is ShowItem -> "${show.ids.trakt.value}-show"
             is MovieItem -> "${movie.ids.trakt.value}-movie"
+        }
+
+    val title: String
+        get() = when (this) {
+            is ShowItem -> show.title
+            is MovieItem -> movie.title
         }
 
     val type: MediaType
@@ -65,7 +75,7 @@ internal sealed class FavoriteItem(
 
     val runtime: Duration?
         get() = when (this) {
-            is ShowItem -> show.runtime
+            is ShowItem -> show.totalRuntime
             is MovieItem -> movie.runtime
         }
 

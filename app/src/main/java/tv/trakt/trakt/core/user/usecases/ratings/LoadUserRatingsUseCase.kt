@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.user.usecases.ratings
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.core.user.data.remote.ratings.UserRatingsRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -44,21 +45,6 @@ internal class LoadUserRatingsUseCase(
 
     suspend fun isEpisodesLoaded(): Boolean {
         return localSource.isEpisodesLoaded()
-    }
-
-    suspend fun loadAll(): ImmutableMap<TraktId, UserRating> {
-        return coroutineScope {
-            val showsAsync = async { loadShows() }
-            val moviesAsync = async { loadMovies() }
-            val episodesAsync = async { loadEpisodes() }
-
-            val shows = showsAsync.await()
-            val movies = moviesAsync.await()
-            val episodes = episodesAsync.await()
-
-            (shows + movies + episodes)
-                .toImmutableMap()
-        }
     }
 
     suspend fun loadShows(): ImmutableMap<TraktId, UserRating> {
@@ -107,5 +93,60 @@ internal class LoadUserRatingsUseCase(
             }
             .associateBy { it.mediaId }
             .toImmutableMap()
+    }
+
+    suspend fun loadAll(): ImmutableMap<TraktId, UserRating> {
+        return coroutineScope {
+            val showsAsync = async { loadShows() }
+            val moviesAsync = async { loadMovies() }
+            val episodesAsync = async { loadEpisodes() }
+
+            val shows = showsAsync.await()
+            val movies = moviesAsync.await()
+            val episodes = episodesAsync.await()
+
+            (shows + movies + episodes)
+                .toImmutableMap()
+        }
+    }
+
+    suspend fun loadAllIfNeeded(): Triple<
+        ImmutableMap<TraktId, UserRating>,
+        ImmutableMap<TraktId, UserRating>,
+        ImmutableMap<TraktId, UserRating>,
+    > {
+        return coroutineScope {
+            val showsRatingsAsync = async {
+                if (!isShowsLoaded()) {
+                    loadShows()
+                }
+            }
+            val moviesRatingsAsync = async {
+                if (!isMoviesLoaded()) {
+                    loadMovies()
+                }
+            }
+            val episodesRatingsAsync = async {
+                if (!isEpisodesLoaded()) {
+                    loadEpisodes()
+                }
+            }
+
+            awaitAll(
+                showsRatingsAsync,
+                moviesRatingsAsync,
+                episodesRatingsAsync,
+            )
+
+            val showsRatingsLocal = async { loadLocalShows() }
+            val moviesRatingsLocal = async { loadLocalMovies() }
+            val episodesRatingsLocal = async { loadLocalEpisodes() }
+
+            Triple(
+                showsRatingsLocal.await(),
+                moviesRatingsLocal.await(),
+                episodesRatingsLocal.await(),
+            )
+        }
     }
 }

@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.lists.sections.personal.usecases
 
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalListsRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -20,14 +21,17 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
+import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 
 internal class GetPersonalListItemsUseCase(
     private val remoteSource: UserPersonalListsRemoteDataSource,
     private val localSource: ListsPersonalItemsLocalDataSource,
+    private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
 ) {
     suspend fun getItems(
         listId: TraktId,
@@ -82,6 +86,9 @@ internal class GetPersonalListItemsUseCase(
         filter: GlobalFilter,
         sorting: Sorting,
     ): ImmutableList<CustomListItem> {
+        val (showsRatings, moviesRatings, episodesRatings) =
+            loadUserRatingsUseCase.loadAllIfNeeded()
+
         return when (filter.mode) {
             MEDIA -> getRemoteAllItems(
                 listId = listId,
@@ -89,6 +96,9 @@ internal class GetPersonalListItemsUseCase(
                 limit = limit,
                 filter = filter,
                 sorting = sorting,
+                showsRatings = showsRatings,
+                moviesRatings = moviesRatings,
+                episodesRatings = episodesRatings,
             )
 
             SHOWS -> getRemoteShowItems(
@@ -97,6 +107,7 @@ internal class GetPersonalListItemsUseCase(
                 limit = limit,
                 filter = filter,
                 sorting = sorting,
+                showsRatings = showsRatings,
             )
 
             MOVIES -> getRemoteMovieItems(
@@ -105,6 +116,7 @@ internal class GetPersonalListItemsUseCase(
                 limit = limit,
                 filter = filter,
                 sorting = sorting,
+                moviesRatings = moviesRatings,
             )
         }
     }
@@ -115,6 +127,7 @@ internal class GetPersonalListItemsUseCase(
         limit: Int,
         filter: GlobalFilter,
         sorting: Sorting,
+        moviesRatings: ImmutableMap<TraktId, UserRating>,
     ): ImmutableList<CustomListItem> {
         return remoteSource.getPersonalListMovieItems(
             listId = listId,
@@ -124,12 +137,14 @@ internal class GetPersonalListItemsUseCase(
             sorting = sorting,
             filters = filter,
         ).asyncMap {
+            val movie = Movie.fromDto(it.movie)
             val listedAt = it.listedAt.toInstant()
             CustomListItem.MovieItem(
                 itemId = it.id,
                 rank = it.rank,
-                movie = Movie.fromDto(it.movie),
+                movie = movie,
                 listedAt = listedAt,
+                userRating = moviesRatings[movie.ids.trakt],
             )
         }.toImmutableList()
     }
@@ -140,6 +155,7 @@ internal class GetPersonalListItemsUseCase(
         limit: Int,
         filter: GlobalFilter,
         sorting: Sorting,
+        showsRatings: ImmutableMap<TraktId, UserRating>,
     ): ImmutableList<CustomListItem> {
         return remoteSource.getPersonalListShowItems(
             listId = listId,
@@ -149,12 +165,14 @@ internal class GetPersonalListItemsUseCase(
             sorting = sorting,
             filters = filter,
         ).asyncMap {
+            val show = Show.fromDto(it.show)
             val listedAt = it.listedAt.toInstant()
             CustomListItem.ShowItem(
                 itemId = it.id,
                 rank = it.rank,
-                show = Show.fromDto(it.show),
+                show = show,
                 listedAt = listedAt,
+                userRating = showsRatings[show.ids.trakt],
             )
         }.toImmutableList()
     }
@@ -165,6 +183,9 @@ internal class GetPersonalListItemsUseCase(
         limit: Int,
         filter: GlobalFilter,
         sorting: Sorting,
+        showsRatings: ImmutableMap<TraktId, UserRating>,
+        moviesRatings: ImmutableMap<TraktId, UserRating>,
+        episodesRatings: ImmutableMap<TraktId, UserRating>,
     ): ImmutableList<CustomListItem> {
         return remoteSource.getPersonalListItems(
             listId = listId,
@@ -174,39 +195,69 @@ internal class GetPersonalListItemsUseCase(
             sorting = sorting,
             filters = filter,
         )
-            .asyncMap(::mapListItem)
+            .asyncMap {
+                mapListItem(
+                    dto = it,
+                    showsRatings = showsRatings,
+                    moviesRatings = moviesRatings,
+                    episodesRatings = episodesRatings,
+                )
+            }
             .toImmutableList()
     }
 
-    private fun mapListItem(dto: ListItemDto): CustomListItem {
+    private fun mapListItem(
+        dto: ListItemDto,
+        showsRatings: ImmutableMap<TraktId, UserRating>? = null,
+        moviesRatings: ImmutableMap<TraktId, UserRating>? = null,
+        episodesRatings: ImmutableMap<TraktId, UserRating>? = null,
+    ): CustomListItem {
         return when (dto.type.value) {
-            SHOW.value -> CustomListItem.ShowItem(
-                itemId = dto.id,
-                rank = dto.rank,
-                show = Show.fromDto(dto.show!!),
-                listedAt = dto.listedAt.toInstant(),
-            )
-            MOVIE.value -> CustomListItem.MovieItem(
-                itemId = dto.id,
-                rank = dto.rank,
-                movie = Movie.fromDto(dto.movie!!),
-                listedAt = dto.listedAt.toInstant(),
-            )
-            SEASON.value -> CustomListItem.SeasonItem(
-                itemId = dto.id,
-                rank = dto.rank,
-                season = Season.fromDto(dto.season!!),
-                show = Show.fromDto(dto.show!!),
-                listedAt = dto.listedAt.toInstant(),
-            )
-            EPISODE.value -> CustomListItem.EpisodeItem(
-                itemId = dto.id,
-                rank = dto.rank,
-                episode = Episode.fromDto(dto.episode!!),
-                show = Show.fromDto(dto.show!!),
-                listedAt = dto.listedAt.toInstant(),
-            )
-            else -> throw IllegalArgumentException("Unknown media type: ${dto.type}")
+            SHOW.value -> {
+                val show = Show.fromDto(dto.show!!)
+                CustomListItem.ShowItem(
+                    itemId = dto.id,
+                    rank = dto.rank,
+                    show = show,
+                    listedAt = dto.listedAt.toInstant(),
+                    userRating = showsRatings?.get(show.ids.trakt),
+                )
+            }
+            MOVIE.value -> {
+                val movie = Movie.fromDto(dto.movie!!)
+                CustomListItem.MovieItem(
+                    itemId = dto.id,
+                    rank = dto.rank,
+                    movie = movie,
+                    listedAt = dto.listedAt.toInstant(),
+                    userRating = moviesRatings?.get(movie.ids.trakt),
+                )
+            }
+            SEASON.value -> {
+                CustomListItem.SeasonItem(
+                    itemId = dto.id,
+                    rank = dto.rank,
+                    season = Season.fromDto(dto.season!!),
+                    show = Show.fromDto(dto.show!!),
+                    listedAt = dto.listedAt.toInstant(),
+                    userRating = null,
+                )
+            }
+            EPISODE.value -> {
+                val show = Show.fromDto(dto.show!!)
+                val episode = Episode.fromDto(dto.episode!!)
+                CustomListItem.EpisodeItem(
+                    itemId = dto.id,
+                    rank = dto.rank,
+                    episode = episode,
+                    show = show,
+                    listedAt = dto.listedAt.toInstant(),
+                    userRating = episodesRatings?.get(episode.ids.trakt),
+                )
+            }
+            else -> {
+                throw IllegalArgumentException("Unknown media type: ${dto.type}")
+            }
         }
     }
 }

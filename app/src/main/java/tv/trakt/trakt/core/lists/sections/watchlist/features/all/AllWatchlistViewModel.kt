@@ -62,7 +62,9 @@ import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
 import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.AllWatchlist
 import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.resources.R
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 internal class AllWatchlistViewModel(
@@ -71,6 +73,7 @@ internal class AllWatchlistViewModel(
     private val getShowsWatchlistUseCase: GetShowsWatchlistUseCase,
     private val getMoviesWatchlistUseCase: GetMoviesWatchlistUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
+    private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
     private val updateMovieHistoryUseCase: AddHomeHistoryUseCase,
     private val collectionStateProvider: CollectionStateProvider,
     private val showLocalDataSource: ShowLocalDataSource,
@@ -128,7 +131,7 @@ internal class AllWatchlistViewModel(
             watchlistUpdates.observeUpdates(Default),
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
             }.launchIn(viewModelScope)
@@ -160,12 +163,15 @@ internal class AllWatchlistViewModel(
                 if (loadEmptyIfNeeded()) return@launch
                 loadingIfNeeded()
 
+                val (showRatings, movieRatings) = loadUserRatingsUseCase.loadAllIfNeeded()
                 val items = when (filterState.value.mode) {
                     MEDIA -> getWatchlistUseCase.getRemoteWatchlist(
                         page = page,
                         limit = WATCHLIST_PAGE_LIMIT,
                         filters = filterState.value,
                         sorting = sortingState.value,
+                        showsRatings = showRatings,
+                        moviesRatings = movieRatings,
                         skipLocal = true,
                     )
                     SHOWS -> getShowsWatchlistUseCase.getRemoteWatchlist(
@@ -173,6 +179,7 @@ internal class AllWatchlistViewModel(
                         limit = WATCHLIST_PAGE_LIMIT,
                         filters = filterState.value,
                         sorting = sortingState.value,
+                        ratings = showRatings,
                         skipLocal = true,
                     )
                     MOVIES -> getMoviesWatchlistUseCase.getRemoteWatchlist(
@@ -180,6 +187,7 @@ internal class AllWatchlistViewModel(
                         limit = WATCHLIST_PAGE_LIMIT,
                         filters = filterState.value,
                         sorting = sortingState.value,
+                        ratings = movieRatings,
                         skipLocal = true,
                     )
                 }
@@ -213,12 +221,15 @@ internal class AllWatchlistViewModel(
                 page = 1
                 hasMoreData = false
 
+                val (showsRatings, moviesRatings) = loadUserRatingsUseCase.loadAllIfNeeded()
                 val items = when (filterState.value.mode) {
                     MEDIA -> getWatchlistUseCase.getRemoteWatchlist(
                         page = page,
                         limit = WATCHLIST_PAGE_LIMIT,
                         filters = filterState.value,
                         sorting = sortingState.value,
+                        showsRatings = showsRatings,
+                        moviesRatings = moviesRatings,
                         skipLocal = true,
                     )
                     SHOWS -> getShowsWatchlistUseCase.getRemoteWatchlist(
@@ -226,6 +237,7 @@ internal class AllWatchlistViewModel(
                         limit = WATCHLIST_PAGE_LIMIT,
                         filters = filterState.value,
                         sorting = sortingState.value,
+                        ratings = showsRatings,
                         skipLocal = true,
                     )
                     MOVIES -> getMoviesWatchlistUseCase.getRemoteWatchlist(
@@ -233,6 +245,7 @@ internal class AllWatchlistViewModel(
                         limit = WATCHLIST_PAGE_LIMIT,
                         filters = filterState.value,
                         sorting = sortingState.value,
+                        ratings = moviesRatings,
                         skipLocal = true,
                     )
                 }
@@ -271,6 +284,8 @@ internal class AllWatchlistViewModel(
             try {
                 loadingMoreState.update { Loading }
 
+                val (showsRatings, moviesRatings) = loadUserRatingsUseCase.loadAllIfNeeded()
+
                 val nextPage = page + 1
                 val nextItems = when (filterState.value.mode) {
                     MEDIA -> getWatchlistUseCase.getRemoteWatchlist(
@@ -278,6 +293,8 @@ internal class AllWatchlistViewModel(
                         limit = WATCHLIST_PAGE_LIMIT,
                         filters = filterState.value,
                         sorting = sortingState.value,
+                        showsRatings = showsRatings,
+                        moviesRatings = moviesRatings,
                         skipLocal = true,
                     )
                     SHOWS -> getShowsWatchlistUseCase.getRemoteWatchlist(
@@ -285,6 +302,7 @@ internal class AllWatchlistViewModel(
                         limit = WATCHLIST_PAGE_LIMIT,
                         filters = filterState.value,
                         sorting = sortingState.value,
+                        ratings = showsRatings,
                         skipLocal = true,
                     )
                     MOVIES -> getMoviesWatchlistUseCase.getRemoteWatchlist(
@@ -292,6 +310,7 @@ internal class AllWatchlistViewModel(
                         limit = WATCHLIST_PAGE_LIMIT,
                         filters = filterState.value,
                         sorting = sortingState.value,
+                        ratings = moviesRatings,
                         skipLocal = true,
                     )
                 }
@@ -333,7 +352,7 @@ internal class AllWatchlistViewModel(
         loadingJob = launch {
             if (itemsState.value?.isNotEmpty() == true) {
                 // Avoid blinking loading but still show it if loading takes too long
-                delay(100)
+                delay(100.milliseconds)
             }
             loadingState.update { Loading }
         }
@@ -348,10 +367,11 @@ internal class AllWatchlistViewModel(
     }
 
     fun setSorting(newSorting: Sorting) {
-        if (newSorting == sortingState.value || loadingState.value.isLoading) {
+        if (newSorting == sortingState.value) {
             return
         }
 
+        loadingState.update { Loading }
         sortingState.update {
             it.copy(
                 type = newSorting.type,
@@ -469,11 +489,8 @@ internal class AllWatchlistViewModel(
     override fun onCleared() {
         dataJob?.cancel()
         dataJob = null
-
         processingJob?.cancel()
         processingJob = null
-
-        super.onCleared()
     }
 
     @Suppress("UNCHECKED_CAST")

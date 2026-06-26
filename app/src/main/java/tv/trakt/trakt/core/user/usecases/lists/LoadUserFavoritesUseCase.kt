@@ -22,21 +22,18 @@ internal class LoadUserFavoritesUseCase(
     private val remoteSource: UserFavoritesRemoteDataSource,
     private val localSource: UserFavoritesLocalDataSource,
 ) {
-    suspend fun loadLocalAll(sort: Sorting? = null): ImmutableList<FavoriteItem> {
+    suspend fun loadLocalAll(): ImmutableList<FavoriteItem> {
         return localSource.getAll()
-            .sortedWith(getFavoriteSorting(sort))
             .toImmutableList()
     }
 
-    suspend fun loadLocalShows(sort: Sorting? = null): ImmutableList<FavoriteItem.ShowItem> {
+    suspend fun loadLocalShows(): ImmutableList<FavoriteItem.ShowItem> {
         return localSource.getShows()
-            .sortedWith(getFavoriteSorting(sort))
             .toImmutableList()
     }
 
-    suspend fun loadLocalMovies(sort: Sorting? = null): ImmutableList<FavoriteItem.MovieItem> {
+    suspend fun loadLocalMovies(): ImmutableList<FavoriteItem.MovieItem> {
         return localSource.getMovies()
-            .sortedWith(getFavoriteSorting(sort))
             .toImmutableList()
     }
 

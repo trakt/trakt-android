@@ -9,6 +9,7 @@ import tv.trakt.trakt.common.model.Rating
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.ratings.UserRating
 import java.time.Instant
 import java.time.ZoneOffset.UTC
 import kotlin.time.Duration
@@ -18,6 +19,7 @@ internal sealed class CustomListItem(
     open val itemId: Int,
     open val rank: Int,
     open val listedAt: Instant,
+    open val userRating: UserRating?,
     open val loading: Boolean,
 ) {
     @Immutable
@@ -26,8 +28,9 @@ internal sealed class CustomListItem(
         override val itemId: Int,
         override val rank: Int,
         override val listedAt: Instant,
+        override val userRating: UserRating? = null,
         override val loading: Boolean = false,
-    ) : CustomListItem(itemId, rank, listedAt, loading)
+    ) : CustomListItem(itemId, rank, listedAt, userRating, loading)
 
     @Immutable
     internal data class ShowItem(
@@ -35,8 +38,9 @@ internal sealed class CustomListItem(
         override val itemId: Int,
         override val rank: Int,
         override val listedAt: Instant,
+        override val userRating: UserRating? = null,
         override val loading: Boolean = false,
-    ) : CustomListItem(itemId, rank, listedAt, loading)
+    ) : CustomListItem(itemId, rank, listedAt, userRating, loading)
 
     @Immutable
     internal data class SeasonItem(
@@ -45,8 +49,9 @@ internal sealed class CustomListItem(
         override val itemId: Int,
         override val rank: Int,
         override val listedAt: Instant,
+        override val userRating: UserRating? = null,
         override val loading: Boolean = false,
-    ) : CustomListItem(itemId, rank, listedAt, loading)
+    ) : CustomListItem(itemId, rank, listedAt, userRating, loading)
 
     @Immutable
     internal data class EpisodeItem(
@@ -55,8 +60,9 @@ internal sealed class CustomListItem(
         override val itemId: Int,
         override val rank: Int,
         override val listedAt: Instant,
+        override val userRating: UserRating? = null,
         override val loading: Boolean = false,
-    ) : CustomListItem(itemId, rank, listedAt, loading)
+    ) : CustomListItem(itemId, rank, listedAt, userRating, loading)
 
     val id: TraktId
         get() = when (this) {

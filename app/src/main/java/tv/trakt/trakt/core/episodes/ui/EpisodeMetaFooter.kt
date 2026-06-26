@@ -27,6 +27,7 @@ import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.resources.R
@@ -42,6 +43,7 @@ fun EpisodeMetaFooter(
     secondary: Boolean = false,
     loading: Boolean = false,
     rating: Boolean = true,
+    userRating: UserRating? = null,
     check: Boolean = false,
     mediaIcon: Boolean = false,
     textStyle: TextStyle = TraktTheme.typography.cardSubtitle.copy(
@@ -137,6 +139,25 @@ fun EpisodeMetaFooter(
                 )
                 Text(
                     text = if (episode.rating.rating > 0) "${episode.rating.ratingPercent}%" else "-",
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
+                )
+            }
+        }
+
+        if (userRating != null && userRating.rating > 0) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = spacedBy(2.dp),
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_star_trakt_on),
+                    contentDescription = null,
+                    modifier = Modifier.size(14.dp),
+                    tint = TraktTheme.colors.textPrimary,
+                )
+                Text(
+                    text = userRating.rating5Scale,
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
                 )
