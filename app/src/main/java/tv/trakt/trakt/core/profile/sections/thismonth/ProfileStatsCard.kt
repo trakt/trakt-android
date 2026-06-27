@@ -61,9 +61,8 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.common.ui.theme.colors.Red600
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
-import tv.trakt.trakt.common.ui.theme.colors.Shade940
 import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -91,7 +90,7 @@ internal fun ProfileStatsCard(
         verticalGradient(
             0F to Color.Transparent,
             0.7F to Color.Transparent,
-            1F to Red500.copy(alpha = 0.4F),
+            1F to Red600.copy(alpha = 0.4F),
         )
     }
 
@@ -391,7 +390,7 @@ private fun StatsChip(
             .animateContentSize()
             .shadow(1.dp, shape)
             .background(
-                color = Shade940,
+                color = Shade920,
                 shape = shape,
             )
             .padding(

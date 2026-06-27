@@ -41,7 +41,6 @@ import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Purple700
 import tv.trakt.trakt.common.ui.theme.colors.Purple920
 import tv.trakt.trakt.common.ui.theme.colors.Shade800
-import tv.trakt.trakt.common.ui.theme.colors.Shade900
 import tv.trakt.trakt.core.home.sections.streaks.model.MonthlyStreakData.StreakDataPoint
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -74,7 +73,7 @@ internal fun StreaksMonthGrid(
     val rowCount = (firstDayOffset + daysInMonth + 6) / 7
     val today = LocalDate.now()
     val maxCount = data.values.maxOfOrNull { it.total } ?: 0
-    val borderColor = Shade900
+    val borderColor = Shade800
     val todayColor = Color.White
 
     Column(

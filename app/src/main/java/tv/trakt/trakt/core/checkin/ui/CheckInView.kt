@@ -67,7 +67,7 @@ import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.timeFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
-import tv.trakt.trakt.common.ui.theme.colors.Red400
+import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.common.ui.theme.colors.Shade300
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
@@ -89,7 +89,7 @@ private val collapsedImageShape = RoundedCornerShape(11.dp)
 private val collapsedImageHeight = 38.dp
 private val collapsedImageShadow = 2.dp
 
-private val progressTrackColor = Shade300.copy(alpha = 0.25F)
+private val progressTrackColor = Shade300.copy(alpha = 0.2F)
 
 @Composable
 internal fun CheckInView(
@@ -220,7 +220,7 @@ internal fun CheckInView(
             R.string.warning_prompt_stop_checkin,
             title ?: "",
         ),
-        yesColor = Red400,
+        yesColor = Red500,
     )
 }
 

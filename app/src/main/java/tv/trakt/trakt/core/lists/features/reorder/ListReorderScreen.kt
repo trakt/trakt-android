@@ -56,7 +56,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
-import tv.trakt.trakt.common.ui.theme.colors.Red400
+import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.lists.features.reorder.ui.DraggableItem
 import tv.trakt.trakt.core.lists.features.reorder.ui.ListReorderMediaCard
 import tv.trakt.trakt.core.lists.features.reorder.ui.ListReorderMediaSkeletonCard
@@ -130,7 +130,7 @@ internal fun ListReorderScreen(
         title = stringResource(R.string.dialog_title_discard_changes),
         message = stringResource(R.string.warning_prompt_discard_changes),
         yesText = stringResource(R.string.button_text_discard),
-        yesColor = Red400,
+        yesColor = Red500,
         onYes = {
             showExitConfirm = false
             onNavigateBack()

@@ -84,7 +84,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Purple300
 import tv.trakt.trakt.common.ui.theme.colors.Purple600
-import tv.trakt.trakt.common.ui.theme.colors.Red400
+import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.notifications.model.DeliveryAdjustment
 import tv.trakt.trakt.core.settings.features.notifications.AdjustNotificationTimeSheet
 import tv.trakt.trakt.core.settings.ui.SettingsSwitchField
@@ -178,7 +178,7 @@ internal fun SettingsScreen(
         },
         title = stringResource(R.string.button_text_logout),
         message = stringResource(R.string.warning_prompt_log_out),
-        yesColor = Red400,
+        yesColor = Red500,
     )
 }
 

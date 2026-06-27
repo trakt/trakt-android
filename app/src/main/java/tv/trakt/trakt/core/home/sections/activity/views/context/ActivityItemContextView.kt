@@ -41,7 +41,6 @@ import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
-import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.EpisodeItem
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieItem
@@ -215,7 +214,7 @@ private fun ActivityItemContextViewContent(
         Spacer(
             modifier = Modifier
                 .padding(top = 22.dp)
-                .background(Shade910)
+                .background(TraktTheme.colors.separator)
                 .fillMaxWidth()
                 .height(1.dp),
         )

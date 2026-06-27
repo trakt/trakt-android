@@ -37,7 +37,6 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.core.movies.ui.MovieMetaFooter
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
@@ -131,7 +130,7 @@ private fun FavoriteMovieContextViewContent(
         Spacer(
             modifier = Modifier
                 .padding(top = 22.dp)
-                .background(Shade910)
+                .background(TraktTheme.colors.separator)
                 .fillMaxWidth()
                 .height(1.dp),
         )

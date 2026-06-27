@@ -67,7 +67,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.common.ui.theme.colors.Red400
+import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.profile.sections.activity.ProfileActivityView
 import tv.trakt.trakt.core.profile.sections.favorites.ProfileFavoritesView
 import tv.trakt.trakt.core.profile.sections.history.ProfileHistoryView
@@ -150,7 +150,7 @@ internal fun ProfileScreen(
         },
         title = stringResource(R.string.button_text_logout),
         message = stringResource(R.string.warning_prompt_log_out),
-        yesColor = Red400,
+        yesColor = Red500,
     )
 }
 

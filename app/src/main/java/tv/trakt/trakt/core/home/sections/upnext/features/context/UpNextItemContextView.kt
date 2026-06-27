@@ -32,7 +32,6 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
-import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.core.home.sections.upnext.model.Progress
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextItem
 import tv.trakt.trakt.core.home.sections.upnext.model.UpNextMovie
@@ -153,7 +152,7 @@ private fun UpNextItemContextViewContent(
         Spacer(
             modifier = Modifier
                 .padding(top = 22.dp)
-                .background(Shade910)
+                .background(TraktTheme.colors.separator)
                 .fillMaxWidth()
                 .height(1.dp),
         )

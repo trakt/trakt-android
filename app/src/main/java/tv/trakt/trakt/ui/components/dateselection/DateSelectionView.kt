@@ -36,7 +36,6 @@ import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
-import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.notifications.NotificationsRationaleSheet
@@ -115,7 +114,7 @@ internal fun DateSelectionView(
         Spacer(
             modifier = Modifier
                 .padding(top = 22.dp)
-                .background(Shade910)
+                .background(TraktTheme.colors.separator)
                 .fillMaxWidth()
                 .height(1.dp),
         )
