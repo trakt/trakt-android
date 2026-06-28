@@ -178,10 +178,12 @@
   <string name="button_label_submit_report">Trimite raportul</string>
   <string name="button_label_sync_options">Alege opțiunea de sincronizare</string>
   <string name="button_label_sync_streaming_service">Sincronizează %s</string>
+  <string name="button_label_toggle_favorite_service">Comută %s ca favorit</string>
   <string name="button_label_toggle_genre">Activează/dezactivează genul %s</string>
   <string name="button_label_toggle_search_lists">Căută liste</string>
   <string name="button_label_toggle_search_media">Căută media</string>
   <string name="button_label_toggle_search_people">Căută persoane</string>
+  <string name="button_label_trivia_category_filter">Filtrare trivia după categorie</string>
   <string name="button_label_trivia_no_spoilers">Fără spoilere</string>
   <string name="button_label_trivia_spoilers">Spoilere</string>
   <string name="button_label_unblock">Deblochează-l pe %s</string>
@@ -235,6 +237,7 @@
   <string name="button_text_add_note">Adaugă notă</string>
   <string name="button_text_add_reply">Adaugă răspuns</string>
   <string name="button_text_add_review">Adaugă recenzie</string>
+  <string name="button_text_add_streaming_service">Adaugă serviciu de streaming</string>
   <string name="button_text_add_to_favorites">Adaugă la Favorite</string>
   <string name="button_text_apply">Aplică</string>
   <string name="button_text_approve_follow_request">Aprobă cererea</string>
@@ -294,6 +297,7 @@
   <string name="button_text_load_more">Încarcă mai mult</string>
   <string name="button_text_login">Autentificare</string>
   <string name="button_text_logout">Deconectare</string>
+  <string name="button_text_manage">Gestionează</string>
   <string name="button_text_manage_lists">Gestionează liste</string>
   <string name="button_text_manage_subscription">Gestionează abonamentul</string>
   <string name="button_text_manage_vip">Gestionează abonamentul</string>
@@ -312,6 +316,9 @@
   <string name="button_text_meet_team">Fă cunoștință cu echipa</string>
   <string name="button_text_month_in_review">Retrospectiva lunii %s</string>
   <string name="button_text_more">%d mai multe</string>
+  <string name="button_text_move_to_bottom">Mută la final</string>
+  <string name="button_text_move_to_position">Mută la…</string>
+  <string name="button_text_move_to_top">Mută la început</string>
   <string name="button_text_movies">Filme</string>
   <string name="button_text_no_services">Niciun serviciu</string>
   <string name="button_text_open_in_service">Deschide în %s</string>
@@ -342,6 +349,7 @@
   <string name="button_text_restore_rating_prompts">Restaurează solicitările de evaluare</string>
   <string name="button_text_restore_show">Restaurează serialul</string>
   <string name="button_text_retry">Reîncearcă</string>
+  <string name="button_text_save">Salvează</string>
   <string name="button_text_save_filters">Setează ca implicit</string>
   <string name="button_text_set_cover_image">Setează ca imagine de copertă</string>
   <string name="button_text_settings">Setări</string>
@@ -387,6 +395,7 @@
   <string name="button_text_view_history">Vezi istoricul</string>
   <string name="button_text_view_import_guidelines">Vizualizați ghidurile</string>
   <string name="button_text_view_photo">Vezi fotografia</string>
+  <string name="button_text_view_recommendation_sources">De ce asta?</string>
   <string name="button_text_vip_upgrade">Actualizează</string>
   <string name="button_text_watch_again">Vizionează din nou</string>
   <string name="button_text_watch_until_here_anchor_end">Ora de încheiere</string>
@@ -440,16 +449,18 @@
   <string name="description_export">Obține un export al datelor tale de utilizator într-un singur fișier ZIP. Acest proces poate dura.</string>
   <string name="description_genres">Adaugă sau elimină cele %d genuri favorite.</string>
   <string name="description_import">Importă-ți datele de la alte servicii direct în browserul tău.</string>
-  <string name="description_paused_items">Aceste elemente au fost adăugate ca pauzate, deoarece nu au fost vizionate în proporție de cel puțin 80%.</string>
+  <string name="description_paused_items">Aceste elemente nu au fost vizionate cel puțin 80%.</string>
   <string name="description_plex_manual_sync">Declanșează o sincronizare imediată a istoricului tău de vizionări Plex către Trakt.</string>
   <string name="description_plex_servers">Alege serverul Plex pentru a sincroniza cu Trakt.</string>
   <string name="description_plex_sync">Conectează-ți contul Plex pentru a sincroniza istoricul vizionărilor, evaluările și colecțiile cu Trakt.</string>
   <string name="description_plex_sync_settings">Aceste setări controlează ce tipuri de date se sincronizează cu Trakt.</string>
-  <string name="description_preview_features">Activează sau dezactivează funcțiile de previzualizare care sunt în dezvoltare. Aceste funcții pot fi instabile și pot fi modificate în orice moment.</string>
-  <string name="description_skipped_items">Câteva informații utile pentru a ajuta la identificarea a ceea ce a fost omis și de ce. Orice este în roșu a determinat omiterea elementului.</string>
-  <string name="description_streaming_sync">Sincronizează automat istoricul vizionărilor și evaluările tale. Conectează un serviciu de mai jos sau în aplicațiile mobile oficiale Trakt.</string>
+  <string name="description_preview_features">Încearcă funcționalități viitoare înainte de a fi disponibile pe scară largă. Funcționalitățile de previzualizare se pot schimba pe măsură ce le îmbunătățim.</string>
+  <string name="description_skipped_items">Orice element marcat cu roșu a cauzat săritura acestuia.</string>
+  <string name="description_streaming_services">Favoritele tale facilitează găsirea de conținut pe serviciile pe care le urmărești cel mai des.</string>
+  <string name="description_streaming_sync">Sincronizează automat istoricul vizionărilor și evaluările tale.</string>
   <string name="description_sync_detail">Câteva detalii despre această sincronizare.</string>
   <string name="dialog_prompt_media_share_image_format">Alege un format de imagine pentru partajare.</string>
+  <string name="dialog_prompt_move_to_position">Introduceți o nouă poziție pentru \"%s\".</string>
   <string name="dialog_prompt_younify_data_sync">Dorești să-ți importi datele existente în contul Trakt sau să sincronizezi doar date noi de acum încolo?</string>
   <string name="dialog_title_comment">Recenzie</string>
   <string name="dialog_title_comments">Recenzii</string>
@@ -462,6 +473,7 @@
   <string name="drawer_title_add_note">Notă</string>
   <string name="drawer_title_notes">Note</string>
   <string name="drawer_title_people">Persoane</string>
+  <string name="drawer_title_recommendation_sources">De ce mi-a fost recomandat?</string>
   <string name="drawer_title_reorder_list">Trageți pentru a reordona</string>
   <string name="drawer_title_sort">Sortează după</string>
   <string name="drawer_title_streak_activity">Activitate serie zilnică</string>
@@ -589,6 +601,7 @@
   <string name="header_status">Stare</string>
   <string name="header_stream_on">Disponibil pe</string>
   <string name="header_streaming">Disponibilitate</string>
+  <string name="header_streaming_services">Servicii de streaming</string>
   <string name="header_streaming_sync">Sincronizare streaming</string>
   <string name="header_studio">Studio</string>
   <string name="header_sync_detail">ID sincronizare %s</string>
@@ -624,10 +637,12 @@
   <string name="import_summary_watchlist">%d elemente pentru Lista de vizionare</string>
   <string name="import_vip_limit_exceeded">Importul tău depășește limita nivelului gratuit. Actualizează la VIP pentru a importa toate cele %d elemente.</string>
   <string name="input_label_search_credit_members">Căutați persoane</string>
+  <string name="input_placeholder_filter_services">Filtrează serviciile de streaming</string>
   <string name="input_placeholder_lists_description">Descriere (opțional)</string>
   <string name="input_placeholder_lists_name">Nume</string>
   <string name="input_placeholder_note_drop">De ce ai renunțat la acest titlu?</string>
   <string name="input_placeholder_note_favorite">De ce ai adăugat acest titlu la favorite?</string>
+  <string name="input_placeholder_reorder_position">Poziție (1–%d)</string>
   <string name="input_placeholder_report_message">Furnizați detalii despre acest raport</string>
   <string name="input_placeholder_report_reason">Selectați un motiv</string>
   <string name="input_placeholder_search">Căutați seriale și filme…</string>
@@ -645,6 +660,7 @@
   <string name="input_prompt_rename_list">Redenumește-ți lista</string>
   <string name="input_prompt_username">Care ar trebui să fie numele tău de utilizator?</string>
   <string name="label_drag_image_to_adjust">Trage imaginea pentru a ajusta</string>
+  <string name="label_favorites">Favorite</string>
   <string name="label_plex_connected">Conectat la Plex</string>
   <string name="label_plex_connection">Conexiune</string>
   <string name="label_plex_history_date">Dată</string>
@@ -674,7 +690,7 @@
   <string name="label_report_reason_too_short">Prea scurt</string>
   <string name="label_stats_active_days">Zile active</string>
   <string name="label_stats_average">Medie</string>
-  <string name="label_stats_avg_per_day">Medie / Zi</string>
+  <string name="label_stats_avg_per_day">Medie Zilnică</string>
   <string name="label_stats_best_day">Cea mai bună zi</string>
   <string name="label_stats_busiest_day">Ziua cea mai aglomerată</string>
   <string name="label_stats_comments">Comentarii</string>
@@ -691,8 +707,8 @@
   <string name="label_stats_screen_time_share">Ore de veghe</string>
   <string name="label_stats_screen_time_total">Total</string>
   <string name="label_stats_shows">Seriale</string>
+  <string name="label_streaming_country">Țară</string>
   <string name="limit_title_digital_library">Bibliotecă digitală</string>
-  <string name="limit_title_notes">Note</string>
   <string name="limit_title_offline_library">Bibliotecă offline</string>
   <string name="limit_title_personal_lists">Liste personale</string>
   <string name="limit_title_ratings">Evaluări</string>
@@ -709,6 +725,7 @@
   <string name="link_label_github">GitHub</string>
   <string name="link_label_install_pwa">Instalează PWA</string>
   <string name="link_label_ios_app">Aplicație iOS</string>
+  <string name="link_label_open_preview_feature">Deschide %s</string>
   <string name="link_label_open_review">Deschide recenzia de la %s</string>
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_view_social_activities">Vezi activitățile sociale pentru %s</string>
@@ -729,7 +746,7 @@
   <string name="link_text_preview_settings">Previzualizare</string>
   <string name="link_text_privacy">Confidențialitate</string>
   <string name="link_text_service_status">Status serviciu Trakt</string>
-  <string name="link_text_streaming_sync_settings">Sincronizare streaming</string>
+  <string name="link_text_streaming_sync_settings">Servicii de streaming</string>
   <string name="link_text_support">Asistență</string>
   <string name="link_text_terms">Termeni</string>
   <string name="link_text_terms_of_use">Termeni de utilizare</string>
@@ -786,6 +803,9 @@
   <string name="list_title_recently_searched_movies">Filme căutate recent</string>
   <string name="list_title_recently_searched_shows">Seriale căutate recent</string>
   <string name="list_title_recently_watched">Vizionat recent</string>
+  <string name="list_title_recommendation_sources_activity">Ai vizionat</string>
+  <string name="list_title_recommendation_sources_favorite">Ai iubit</string>
+  <string name="list_title_recommendation_sources_subgenre">Îți place</string>
   <string name="list_title_recommended">Recomandate</string>
   <string name="list_title_recommended_movies">Filme recomandate</string>
   <string name="list_title_recommended_shows">Seriale recomandate</string>
@@ -832,6 +852,8 @@
   <string name="match_pill_anchor">Potrivire:</string>
   <string name="match_pill_aria_label">%1$d% potrivire, %2$s. Deschide detaliile potrivirii.</string>
   <string name="match_pill_loading_aria_label">Se calculează scorul de potrivire</string>
+  <string name="mir_share_text">Vezi Luna mea în Revistă %s pe Trakt</string>
+  <string name="mir_title_month_in_review">Retrospectiva Lunii</string>
   <string name="notes_placeholder_text">Lasă o notă data viitoare când adaugi la favorite sau renunți la un titlu.</string>
   <string name="option_text_africa">Africa</string>
   <string name="option_text_all">Toate</string>
@@ -852,6 +874,12 @@
   <string name="option_text_theme_dark">Întunecat</string>
   <string name="option_text_theme_light">Luminos</string>
   <string name="option_text_theme_system">Sistem</string>
+  <string name="option_text_trivia_category_all">Toate</string>
+  <string name="option_text_trivia_category_bts">Din culise</string>
+  <string name="option_text_trivia_category_cast_n_crew">Distribuție &amp; Echipă</string>
+  <string name="option_text_trivia_category_impact_n_legacy">Impact și moștenire</string>
+  <string name="option_text_trivia_category_real_world_connections">Conexiuni cu lumea reală</string>
+  <string name="option_text_trivia_category_story_n_themes">Poveste și teme</string>
   <string name="page_description_create_list">Introdu un nume și o descriere pentru lista ta.</string>
   <string name="page_description_edit_list">Editează detaliile listei tale.</string>
   <string name="page_description_home">Urmărește-ți serialele și filmele cu Trakt Web — descoperă ce e în trend, primește recomandări personalizate și nu rata niciodată ce urmează.</string>
@@ -911,6 +939,20 @@
   <string name="page_title_where_to_watch">Unde să vizionezi</string>
   <string name="page_title_year_in_review">Retrospectiva anului %s</string>
   <string name="page_title_year_to_date">Anul curent</string>
+  <string name="preview_feature_description_edit_mode">Activează controale pentru ascunderea sau afișarea secțiunilor configurabile în întreaga aplicație.</string>
+  <string name="preview_feature_description_month_in_review">Previzualizează Retrospectiva Lunii, acum disponibilă direct în V3.</string>
+  <string name="preview_feature_description_plex_sync">Conectează Plex pentru a-ți sincroniza istoricul vizionărilor, evaluările și biblioteca cu Trakt. Include instrumente de conectare, selecție server și sincronizare.</string>
+  <string name="preview_feature_description_scoped_favorites">Organizează listele de favorite pe perioade, afișând favoritele din anul curent pe profile și grupând lista completă de favorite pe ani.</string>
+  <string name="preview_feature_description_social_activities">Afișează ce au urmărit, adăugat în liste de vizionare, comentat sau evaluat de către persoanele pe care le urmărești, un film, un serial sau un episod, direct pe paginile media.</string>
+  <string name="preview_feature_description_streaming_sync">Conectează serviciile de streaming acceptate pentru ca istoricul vizionărilor și evaluările să se poată sincroniza automat cu Trakt. Fluxul de conectare de pe web este încă în versiune beta.</string>
+  <string name="preview_feature_description_year_in_review">Previzualizează Retrospectiva Anului, acum disponibilă direct în V3.</string>
+  <string name="preview_feature_title_edit_mode">Mod editare</string>
+  <string name="preview_feature_title_month_in_review">Retrospectiva Lunii</string>
+  <string name="preview_feature_title_plex_sync">Sincronizare Plex</string>
+  <string name="preview_feature_title_scoped_favorites">Favorite Contextuale</string>
+  <string name="preview_feature_title_social_activities">Activități sociale</string>
+  <string name="preview_feature_title_streaming_sync">Sincronizare streaming</string>
+  <string name="preview_feature_title_year_in_review">Retrospectiva Anului</string>
   <string name="reset_status_cleared">Lista de vizionare a fost ștearsă.</string>
   <string name="section_title_season_progress">Sezonul %d progres</string>
   <string name="section_title_specials_progress">Progresul episoadelor speciale</string>
@@ -921,6 +963,7 @@
   <string name="switch_label_mark_as_spoiler">Marchează ca spoiler</string>
   <string name="switch_label_multiple_watches">Activează sau dezactivează vizionările multiple</string>
   <string name="switch_label_private">Profilul este privat</string>
+  <string name="switch_label_rating_prompt">Activează sau dezactivează solicitările de evaluare</string>
   <string name="switch_label_spoilers">Arată spoilere</string>
   <string name="switch_label_toggle_christmas_filters">Activează/dezactivează filtrele de Crăciun</string>
   <string name="switch_label_toggle_halloween_filters">Activează/dezactivează filtrele de Halloween</string>
@@ -1080,6 +1123,7 @@
   <string name="text_export_status_fetching">Se preiau %s…</string>
   <string name="text_export_status_zipping">Se arhivează fișierele…</string>
   <string name="text_exporting">Se exportă… %s</string>
+  <string name="text_favorites_limit_reached">Poți selecta până la %s servicii</string>
   <string name="text_first_play_this_month">Prima vizionare luna aceasta</string>
   <string name="text_footer_category_community">Comunitate</string>
   <string name="text_footer_category_legal">Legal</string>
@@ -1136,6 +1180,7 @@
   <string name="text_no_data_synced">Nu au fost sincronizate date încă.</string>
   <string name="text_no_paused_items">Niciun element pauzat.</string>
   <string name="text_no_rating">Fără rating</string>
+  <string name="text_no_services_match_filter">Niciun serviciu nu corespunde filtrului tău.</string>
   <string name="text_no_skipped_items">Niciun element omis.</string>
   <string name="text_notification_episode_release">S%1$d • E%2$d este acum disponibil.</string>
   <string name="text_notification_episodes_release">S%1$d • E%2$d-%3$d sunt acum disponibile.</string>
@@ -1202,6 +1247,7 @@
   <string name="text_season_number">Sezonul %d</string>
   <string name="text_season_specials">Speciale</string>
   <string name="text_sentiment_example">Exemplu din „%s”</string>
+  <string name="text_services_selected">%1$s / %2$s selectate · %3$s</string>
   <string name="text_settings_adjust_delivery">Ora notificării</string>
   <string name="text_settings_adjust_delivery_description">Alege când să fii notificat.</string>
   <string name="text_settings_clear_cover">Șterge imaginea de copertă curentă și revino la cea implicită.</string>
@@ -1213,6 +1259,8 @@
   <string name="text_settings_notification_time_60_min">Cu 1 oră înainte</string>
   <string name="text_settings_notification_time_now">La lansare</string>
   <string name="text_settings_play_subscriptions">Abonamente Google Play</string>
+  <string name="text_settings_show_rating_prompt">Solicitări de evaluare</string>
+  <string name="text_settings_show_rating_prompt_description">Fii întrebat să evaluezi filme și episoade după vizionare.</string>
   <string name="text_settings_translations">Ajută la traducerea aplicației și corectează greșelile pentru limba ta.</string>
   <string name="text_share_episode">Tocmai am vizionat %1$s S%2$dE%3$d - %4$s! 🔥</string>
   <string name="text_share_list">Vezi această listă \"%s\" pe Trakt! 📋</string>
@@ -1509,7 +1557,6 @@
   <string name="translated_value_video_type_trailer">Trailer</string>
   <string name="usage_title_library">Bibliotecă</string>
   <string name="usage_title_lists">Liste</string>
-  <string name="usage_title_personal_activity">Activitate personală</string>
   <string name="validation_text_list_name">Numele este obligatoriu</string>
   <string name="validation_text_note">Nota este necesară</string>
   <string name="validation_text_note_character_limit">Depășește limita de %d caractere</string>
@@ -1524,8 +1571,6 @@
   <string name="vip_feature_description_more_lists">Creează și mai multe liste personalizate pentru a-ți organiza serialele și filmele exact așa cum dorești.</string>
   <string name="vip_feature_description_more_to_come">Construim constant funcții noi exclusiv pentru membrii VIP, cu actualizări interesante deja în curs.</string>
   <string name="vip_feature_description_plex_sync">Menține-ți biblioteca Plex perfect sincronizată cu actualizări automate mai frecvente pe parcursul zilei.</string>
-  <string name="vip_feature_description_private_notes">Adaugă mult mai multe note personale la serialele și filmele tale pentru a-ți aminti gândurile și recomandările.</string>
-  <string name="vip_feature_description_profile_customisation">Personalizează-ți profilul cu antete personalizate și fă-ți prezența pe Trakt unică.</string>
   <string name="vip_feature_description_recaps">Obține informații mai detaliate cu recapitulări lunare și anuale complete, arătând tot ce ai vizionat, evaluat și descoperit.</string>
   <string name="vip_feature_description_sentiment">Deblochează o analiză mai detaliată a sentimentului pentru seriale și filme.</string>
   <string name="vip_feature_description_sentiment_trivia">Deblochează analiza detaliată a sentimentului și curiozități fascinante despre filmele și serialele pe care le vizionezi.</string>
@@ -1544,11 +1589,9 @@
   <string name="vip_feature_title_more_lists">Mai multe liste</string>
   <string name="vip_feature_title_more_to_come">Mai Mult Va Urma</string>
   <string name="vip_feature_title_plex_sync">Sincronizează Plex mai des</string>
-  <string name="vip_feature_title_private_notes">Mai multe note private</string>
-  <string name="vip_feature_title_profile_customisation">Mai multă personalizare: Antet profil</string>
-  <string name="vip_feature_title_recaps">Mai multe Recapitulări: Lunare &amp; Anuale</string>
+  <string name="vip_feature_title_recaps">Mai multe Statistici: Recapitulări Lunare și Anuale</string>
   <string name="vip_feature_title_sentiment">Sentiment</string>
-  <string name="vip_feature_title_sentiment_trivia">Mai multe informații: Sentiment + Curiozități</string>
+  <string name="vip_feature_title_sentiment_trivia">Mai multe informații: Sentiment și Curiozități</string>
   <string name="vip_feature_title_streaming_services">Sincronizează mai multe Servicii de Streaming</string>
   <string name="vip_feature_title_streaming_sync">Sincronizare streaming</string>
   <string name="vip_feature_title_support">Suport îmbunătățit: Forum &amp; Feedback</string>
@@ -1632,7 +1675,10 @@
   <string name="yir_2024_stats_card_hours">%s Ore</string>
   <string name="yir_2024_stats_card_plays">%s Vizionări</string>
   <string name="yir_2024_stats_intro_movies">În %d, ai vizionat</string>
+  <string name="yir_2024_stats_intro_movies_monthly">În %s, ai vizionat</string>
   <string name="yir_2024_stats_intro_shows">În %d, ai vizionat</string>
+  <string name="yir_2024_stats_intro_shows_monthly">În %s, ai vizionat</string>
+  <string name="yir_2024_stats_most_active_day">Ziua ta cea mai activă a fost <b>%1$s</b> cu <b>%2$s vizionări</b>.</string>
   <string name="yir_2024_stats_most_active_week">Săptămâna ta cea mai activă a fost <b>%1$s - %2$s</b> cu <b>%3$s vizionări</b>.</string>
   <string name="yir_2024_stats_most_popular_time">Cel mai popular interval orar de vizionare a fost <b>%s</b>.</string>
   <string name="yir_2024_stats_per_day">Pe zi</string>
@@ -1643,6 +1689,9 @@
   <string name="yir_2024_stats_tooltip_hours">%s Ore</string>
   <string name="yir_2024_stats_tooltip_plays">%s Vizionări</string>
   <string name="yir_2024_stats_tooltip_week_label">Săptămâna %s</string>
+  <string name="yir_2024_streaming_intro">Disponibilitate pe</string>
+  <string name="yir_2024_streaming_service_count">Număr de servicii</string>
+  <string name="yir_2024_streaming_title">Servicii de streaming</string>
   <string name="yir_2024_studio_count">Număr de studiouri</string>
   <string name="yir_2024_thanks_copy_directed">Ai făcut o treabă epică regizând <b>%1$d</b>. Să avem o continuare și mai bună în <b>%2$d</b>.</string>
   <string name="yir_2024_thanks_copy_recommend">Continuă-ți călătoria. Încearcă să vizionezi una dintre aceste emisiuni sau filme populare.</string>

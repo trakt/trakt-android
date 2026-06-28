@@ -178,10 +178,12 @@
   <string name="button_label_submit_report">ارسال گزارش</string>
   <string name="button_label_sync_options">انتخاب گزینه همگام‌سازی</string>
   <string name="button_label_sync_streaming_service">همگام‌سازی %s</string>
+  <string name="button_label_toggle_favorite_service">فعال/غیرفعال کردن %s به عنوان مورد علاقه</string>
   <string name="button_label_toggle_genre">تغییر ژانر %s</string>
   <string name="button_label_toggle_search_lists">جستجو برای لیست‌ها</string>
   <string name="button_label_toggle_search_media">جستجو برای رسانه</string>
   <string name="button_label_toggle_search_people">جستجو برای افراد</string>
+  <string name="button_label_trivia_category_filter">فیلتر کردن دانستنی‌ها بر اساس دسته‌بندی</string>
   <string name="button_label_trivia_no_spoilers">بدون اسپویلر</string>
   <string name="button_label_trivia_spoilers">اسپویلرها</string>
   <string name="button_label_unblock">رفع مسدودیت %s</string>
@@ -235,6 +237,7 @@
   <string name="button_text_add_note">افزودن یادداشت</string>
   <string name="button_text_add_reply">افزودن پاسخ</string>
   <string name="button_text_add_review">افزودن بازخورد</string>
+  <string name="button_text_add_streaming_service">افزودن سرویس پخش</string>
   <string name="button_text_add_to_favorites">افزودن به علاقه‌مندی‌ها</string>
   <string name="button_text_apply">اعمال</string>
   <string name="button_text_approve_follow_request">تایید درخواست</string>
@@ -294,6 +297,7 @@
   <string name="button_text_load_more">بارگذاری بیشتر</string>
   <string name="button_text_login">ورود</string>
   <string name="button_text_logout">خروج</string>
+  <string name="button_text_manage">مدیریت</string>
   <string name="button_text_manage_lists">مدیریت لیست‌ها</string>
   <string name="button_text_manage_subscription">مدیریت اشتراک</string>
   <string name="button_text_manage_vip">مدیریت اشتراک</string>
@@ -312,6 +316,9 @@
   <string name="button_text_meet_team">با تیم آشنا شوید</string>
   <string name="button_text_month_in_review">مرور %s</string>
   <string name="button_text_more">%d مورد دیگر</string>
+  <string name="button_text_move_to_bottom">انتقال به انتها</string>
+  <string name="button_text_move_to_position">انتقال به…</string>
+  <string name="button_text_move_to_top">انتقال به بالا</string>
   <string name="button_text_movies">فیلم‌ها</string>
   <string name="button_text_no_services">هیچ سرویسی</string>
   <string name="button_text_open_in_service">باز کردن در %s</string>
@@ -342,6 +349,7 @@
   <string name="button_text_restore_rating_prompts">بازگرداندن درخواست‌های امتیاز</string>
   <string name="button_text_restore_show">بازگرداندن برنامه</string>
   <string name="button_text_retry">تلاش مجدد</string>
+  <string name="button_text_save">ذخیره</string>
   <string name="button_text_save_filters">به عنوان پیش‌فرض تنظیم کن</string>
   <string name="button_text_set_cover_image">به عنوان تصویر کاور تنظیم کن</string>
   <string name="button_text_settings">تنظیمات</string>
@@ -387,6 +395,7 @@
   <string name="button_text_view_history">مشاهده تاریخچه</string>
   <string name="button_text_view_import_guidelines">مشاهده دستورالعمل‌ها</string>
   <string name="button_text_view_photo">مشاهده عکس</string>
+  <string name="button_text_view_recommendation_sources">چرا این؟</string>
   <string name="button_text_vip_upgrade">ارتقا</string>
   <string name="button_text_watch_again">دوباره تماشا کن</string>
   <string name="button_text_watch_until_here_anchor_end">زمان پایان</string>
@@ -440,16 +449,18 @@
   <string name="description_export">یک خروجی از داده‌های کاربر خود را در یک فایل ZIP دریافت کنید. این فرآیند ممکن است کمی طول بکشد.</string>
   <string name="description_genres">%d ژانر مورد علاقه خود را اضافه یا حذف کنید.</string>
   <string name="description_import">داده‌های خود را از سایر سرویس‌ها مستقیماً در مرورگر خود وارد کنید.</string>
-  <string name="description_paused_items">این موارد به عنوان متوقف شده اضافه شدند، زیرا حداقل ۸۰٪ تماشا نشده بودند.</string>
+  <string name="description_paused_items">این موارد حداقل ۸۰٪ تماشا نشده‌اند.</string>
   <string name="description_plex_manual_sync">همگام‌سازی فوری سابقه تماشای Plex خود را با Trakt آغاز کنید.</string>
   <string name="description_plex_servers">سرور Plex را برای همگام‌سازی با Trakt انتخاب کنید.</string>
   <string name="description_plex_sync">حساب Plex خود را متصل کنید تا سابقه تماشا، امتیازات و مجموعه‌ها را با Trakt همگام‌سازی کنید.</string>
   <string name="description_plex_sync_settings">این تنظیمات کنترل می‌کنند که کدام انواع داده با Trakt همگام‌سازی شوند.</string>
-  <string name="description_preview_features">ویژگی‌های پیش‌نمایش در حال توسعه را فعال یا غیرفعال کنید. این ویژگی‌ها ممکن است ناپایدار باشند و در هر زمان قابل تغییر هستند.</string>
-  <string name="description_skipped_items">برخی اطلاعات مفید برای کمک به شناسایی اینکه چه چیزی و چرا نادیده گرفته شده است. هر چیزی که به رنگ قرمز است باعث نادیده گرفته شدن مورد شده است.</string>
-  <string name="description_streaming_sync">سابقه تماشا و امتیازات خود را به صورت خودکار همگام‌سازی کنید. سرویسی را در زیر یا در برنامه‌های موبایل رسمی Trakt متصل کنید.</string>
+  <string name="description_preview_features">ویژگی‌های آتی را قبل از در دسترس قرار گرفتن عمومی امتحان کنید. ویژگی‌های پیش‌نمایش ممکن است با بهبود آنها تغییر کنند.</string>
+  <string name="description_skipped_items">هر چیزی که به رنگ قرمز است باعث شده مورد مورد نظر رد شود.</string>
+  <string name="description_streaming_services">موارد دلخواه شما یافتن محتوا را در سرویس‌هایی که بیشتر تماشا می‌کنید، آسان‌تر می‌کنند.</string>
+  <string name="description_streaming_sync">به‌طور خودکار سابقه تماشا و امتیازات خود را همگام‌سازی کنید.</string>
   <string name="description_sync_detail">برخی جزئیات در مورد این همگام‌سازی.</string>
   <string name="dialog_prompt_media_share_image_format">یک قالب تصویر برای اشتراک‌گذاری انتخاب کنید.</string>
+  <string name="dialog_prompt_move_to_position">موقعیت جدیدی برای \"%s\" وارد کنید.</string>
   <string name="dialog_prompt_younify_data_sync">آیا مایلید داده‌های موجود خود را به حساب Trakt خود وارد کنید، یا از این به بعد فقط داده‌های جدید را همگام‌سازی کنید؟</string>
   <string name="dialog_title_comment">بازخورد</string>
   <string name="dialog_title_comments">بازخوردها</string>
@@ -462,6 +473,7 @@
   <string name="drawer_title_add_note">یادداشت</string>
   <string name="drawer_title_notes">یادداشت‌ها</string>
   <string name="drawer_title_people">افراد</string>
+  <string name="drawer_title_recommendation_sources">چرا این توصیه شد؟</string>
   <string name="drawer_title_reorder_list">برای مرتب سازی بکشید</string>
   <string name="drawer_title_sort">مرتب‌سازی بر اساس</string>
   <string name="drawer_title_streak_activity">فعالیت پیاپی روزانه</string>
@@ -589,6 +601,7 @@
   <string name="header_status">وضعیت</string>
   <string name="header_stream_on">پخش در</string>
   <string name="header_streaming">دسترسی</string>
+  <string name="header_streaming_services">سرویس‌های پخش</string>
   <string name="header_streaming_sync">همگام‌سازی پخش</string>
   <string name="header_studio">استودیو</string>
   <string name="header_sync_detail">شناسه همگام‌سازی %s</string>
@@ -624,10 +637,12 @@
   <string name="import_summary_watchlist">%d آیتم برای لیست تماشا</string>
   <string name="import_vip_limit_exceeded">وارد کردن شما از حد مجاز طرح رایگان بیشتر است. برای وارد کردن تمام %d آیتم به VIP ارتقا دهید.</string>
   <string name="input_label_search_credit_members">جستجوی افراد</string>
+  <string name="input_placeholder_filter_services">فیلتر کردن سرویس‌های پخش</string>
   <string name="input_placeholder_lists_description">توضیحات (اختیاری)</string>
   <string name="input_placeholder_lists_name">نام</string>
   <string name="input_placeholder_note_drop">چرا این عنوان را رها کردید؟</string>
   <string name="input_placeholder_note_favorite">چرا این عنوان را مورد علاقه خود قرار دادید؟</string>
+  <string name="input_placeholder_reorder_position">موقعیت (1–%d)</string>
   <string name="input_placeholder_report_message">جزئیات این گزارش را ارائه دهید</string>
   <string name="input_placeholder_report_reason">یک دلیل را انتخاب کنید</string>
   <string name="input_placeholder_search">جستجوی برنامه‌ها و فیلم‌ها…</string>
@@ -645,6 +660,7 @@
   <string name="input_prompt_rename_list">نام لیست خود را تغییر دهید</string>
   <string name="input_prompt_username">نام کاربری شما چه باید باشد؟</string>
   <string name="label_drag_image_to_adjust">برای تنظیم، تصویر را بکشید</string>
+  <string name="label_favorites">علاقه‌مندی‌ها</string>
   <string name="label_plex_connected">متصل به Plex</string>
   <string name="label_plex_connection">اتصال</string>
   <string name="label_plex_history_date">تاریخ</string>
@@ -674,7 +690,7 @@
   <string name="label_report_reason_too_short">خیلی کوتاه</string>
   <string name="label_stats_active_days">روزهای فعال</string>
   <string name="label_stats_average">میانگین</string>
-  <string name="label_stats_avg_per_day">میانگین / روز</string>
+  <string name="label_stats_avg_per_day">میانگین روزانه</string>
   <string name="label_stats_best_day">بهترین روز</string>
   <string name="label_stats_busiest_day">شلوغ‌ترین روز</string>
   <string name="label_stats_comments">نظرات</string>
@@ -691,8 +707,8 @@
   <string name="label_stats_screen_time_share">ساعات بیداری</string>
   <string name="label_stats_screen_time_total">مجموع</string>
   <string name="label_stats_shows">برنامه‌ها</string>
+  <string name="label_streaming_country">کشور</string>
   <string name="limit_title_digital_library">کتابخانه دیجیتال</string>
-  <string name="limit_title_notes">یادداشت‌ها</string>
   <string name="limit_title_offline_library">کتابخانه آفلاین</string>
   <string name="limit_title_personal_lists">لیست‌های شخصی</string>
   <string name="limit_title_ratings">امتیازات</string>
@@ -709,6 +725,7 @@
   <string name="link_label_github">گیت‌هاب</string>
   <string name="link_label_install_pwa">نصب PWA</string>
   <string name="link_label_ios_app">برنامه iOS</string>
+  <string name="link_label_open_preview_feature">%s را باز کن</string>
   <string name="link_label_open_review">باز کردن بررسی توسط %s</string>
   <string name="link_label_reddit">ردیت</string>
   <string name="link_label_view_social_activities">مشاهده فعالیت‌های اجتماعی برای %s</string>
@@ -729,7 +746,7 @@
   <string name="link_text_preview_settings">پیش‌نمایش</string>
   <string name="link_text_privacy">حریم خصوصی</string>
   <string name="link_text_service_status">وضعیت سرویس Trakt</string>
-  <string name="link_text_streaming_sync_settings">همگام‌سازی پخش</string>
+  <string name="link_text_streaming_sync_settings">سرویس‌های پخش</string>
   <string name="link_text_support">پشتیبانی</string>
   <string name="link_text_terms">شرایط</string>
   <string name="link_text_terms_of_use">شرایط استفاده</string>
@@ -786,6 +803,9 @@
   <string name="list_title_recently_searched_movies">فیلم‌های اخیراً جستجو شده</string>
   <string name="list_title_recently_searched_shows">برنامه‌های اخیراً جستجو شده</string>
   <string name="list_title_recently_watched">اخیراً تماشا شده</string>
+  <string name="list_title_recommendation_sources_activity">آنچه تماشا کردید</string>
+  <string name="list_title_recommendation_sources_favorite">آنچه دوست داشتید</string>
+  <string name="list_title_recommendation_sources_subgenre">آنچه دوست دارید</string>
   <string name="list_title_recommended">توصیه شده</string>
   <string name="list_title_recommended_movies">فیلم‌های پیشنهادی</string>
   <string name="list_title_recommended_shows">برنامه‌های پیشنهادی</string>
@@ -832,6 +852,8 @@
   <string name="match_pill_anchor">همخوانی:</string>
   <string name="match_pill_aria_label">%1$d% تطابق، %2$s. جزئیات تطابق را باز کنید.</string>
   <string name="match_pill_loading_aria_label">در حال محاسبه امتیاز تطابق</string>
+  <string name="mir_share_text">مرور ماه %s من در Trakt را بررسی کنید</string>
+  <string name="mir_title_month_in_review">مرور ماه</string>
   <string name="notes_placeholder_text">دفعه بعد که عنوانی را به لیست علاقه خود اضافه می‌کنید یا آن را رها می‌کنید، یک یادداشت بگذارید.</string>
   <string name="option_text_africa">آفریقا</string>
   <string name="option_text_all">همه</string>
@@ -852,6 +874,12 @@
   <string name="option_text_theme_dark">تیره</string>
   <string name="option_text_theme_light">روشن</string>
   <string name="option_text_theme_system">سیستم</string>
+  <string name="option_text_trivia_category_all">همه</string>
+  <string name="option_text_trivia_category_bts">پشت صحنه</string>
+  <string name="option_text_trivia_category_cast_n_crew">بازیگران و عوامل</string>
+  <string name="option_text_trivia_category_impact_n_legacy">تأثیر و میراث</string>
+  <string name="option_text_trivia_category_real_world_connections">ارتباطات دنیای واقعی</string>
+  <string name="option_text_trivia_category_story_n_themes">داستان و مضامین</string>
   <string name="page_description_create_list">یک نام و توضیحات برای لیست خود وارد کنید.</string>
   <string name="page_description_edit_list">جزئیات لیست خود را ویرایش کنید.</string>
   <string name="page_description_home">نمایش‌ها و فیلم‌های خود را با Trakt Web ردیابی کنید — آنچه پرطرفدار است را کشف کنید، توصیه‌های شخصی‌سازی شده دریافت کنید و هرگز آنچه در راه است را از دست ندهید.</string>
@@ -911,6 +939,20 @@
   <string name="page_title_where_to_watch">کجا تماشا کنیم</string>
   <string name="page_title_year_in_review">مرور سال %s</string>
   <string name="page_title_year_to_date">سال تا به امروز</string>
+  <string name="preview_feature_description_edit_mode">کنترل‌هایی را برای پنهان کردن یا نمایش بخش‌های قابل تنظیم در سراسر برنامه فعال کنید.</string>
+  <string name="preview_feature_description_month_in_review">مرور ماه را پیش‌نمایش کنید، اکنون مستقیماً در V3 اجرا می‌شود.</string>
+  <string name="preview_feature_description_plex_sync">Plex را متصل کنید تا تاریخچه تماشا، امتیازات و کتابخانه خود را با Trakt همگام‌سازی کنید. شامل ابزارهای اتصال، انتخاب سرور و همگام‌سازی است.</string>
+  <string name="preview_feature_description_scoped_favorites">لیست‌های علاقه‌مندی را با نمایش علاقه‌مندی‌های سال جاری در پروفایل‌ها و گروه‌بندی لیست کامل علاقه‌مندی‌ها بر اساس سال، محدود کنید.</string>
+  <string name="preview_feature_description_social_activities">نشان دهید افرادی که دنبال می‌کنید چه فیلم، نمایش یا قسمتی را تماشا کرده‌اند، به لیست تماشا اضافه کرده‌اند، نظر داده‌اند یا امتیاز داده‌اند، مستقیماً در صفحات رسانه.</string>
+  <string name="preview_feature_description_streaming_sync">سرویس‌های پخش پشتیبانی شده را متصل کنید تا تاریخچه تماشا و امتیازات به طور خودکار با Trakt همگام‌سازی شوند. جریان اتصال از وب هنوز در حالت بتا است.</string>
+  <string name="preview_feature_description_year_in_review">مرور سال را پیش‌نمایش کنید، اکنون مستقیماً در V3 اجرا می‌شود.</string>
+  <string name="preview_feature_title_edit_mode">حالت ویرایش</string>
+  <string name="preview_feature_title_month_in_review">مرور ماه</string>
+  <string name="preview_feature_title_plex_sync">همگام‌سازی پلکس</string>
+  <string name="preview_feature_title_scoped_favorites">علاقه‌مندی‌های محدود</string>
+  <string name="preview_feature_title_social_activities">فعالیت‌های اجتماعی</string>
+  <string name="preview_feature_title_streaming_sync">همگام‌سازی پخش</string>
+  <string name="preview_feature_title_year_in_review">مرور سال</string>
   <string name="reset_status_cleared">لیست تماشا پاک شد.</string>
   <string name="section_title_season_progress">فصل %d پیشرفت</string>
   <string name="section_title_specials_progress">پیشرفت قسمت‌های ویژه</string>
@@ -921,6 +963,7 @@
   <string name="switch_label_mark_as_spoiler">علامت‌گذاری به عنوان اسپویلر</string>
   <string name="switch_label_multiple_watches">فعال یا غیرفعال کردن تماشای چندگانه</string>
   <string name="switch_label_private">پروفایل خصوصی است</string>
+  <string name="switch_label_rating_prompt">فعال یا غیرفعال کردن درخواست‌های امتیاز</string>
   <string name="switch_label_spoilers">نمایش اسپویلرها</string>
   <string name="switch_label_toggle_christmas_filters">تغییر فیلترهای کریسمس</string>
   <string name="switch_label_toggle_halloween_filters">تغییر فیلترهای هالووین</string>
@@ -1080,6 +1123,7 @@
   <string name="text_export_status_fetching">در حال دریافت %s…</string>
   <string name="text_export_status_zipping">در حال فشرده‌سازی فایل‌ها…</string>
   <string name="text_exporting">در حال خروجی گرفتن… %s</string>
+  <string name="text_favorites_limit_reached">شما می‌توانید تا %s سرویس را انتخاب کنید</string>
   <string name="text_first_play_this_month">اولین پخش در این ماه</string>
   <string name="text_footer_category_community">جامعه</string>
   <string name="text_footer_category_legal">حقوقی</string>
@@ -1136,6 +1180,7 @@
   <string name="text_no_data_synced">هنوز هیچ داده‌ای همگام‌سازی نشده است.</string>
   <string name="text_no_paused_items">هیچ مورد متوقف شده‌ای وجود ندارد.</string>
   <string name="text_no_rating">بدون امتیاز</string>
+  <string name="text_no_services_match_filter">هیچ سرویسی با فیلتر شما مطابقت ندارد.</string>
   <string name="text_no_skipped_items">هیچ مورد نادیده گرفته شده‌ای وجود ندارد.</string>
   <string name="text_notification_episode_release">فصل %1$d • قسمت %2$d اکنون در دسترس است.</string>
   <string name="text_notification_episodes_release">فصل %1$d • قسمت %2$d-%3$d اکنون در دسترس هستند.</string>
@@ -1202,6 +1247,7 @@
   <string name="text_season_number">فصل %d</string>
   <string name="text_season_specials">ویژه‌ها</string>
   <string name="text_sentiment_example">مثالی از \"%s\"</string>
+  <string name="text_services_selected">%1$s / %2$s انتخاب شده · %3$s</string>
   <string name="text_settings_adjust_delivery">زمان اعلان</string>
   <string name="text_settings_adjust_delivery_description">انتخاب کنید چه زمانی مطلع شوید.</string>
   <string name="text_settings_clear_cover">پاک کردن تصویر جلد فعلی و بازگشت به حالت پیش‌فرض.</string>
@@ -1213,6 +1259,8 @@
   <string name="text_settings_notification_time_60_min">۱ ساعت قبل</string>
   <string name="text_settings_notification_time_now">در زمان انتشار</string>
   <string name="text_settings_play_subscriptions">اشتراک‌های Google Play</string>
+  <string name="text_settings_show_rating_prompt">درخواست‌های امتیاز</string>
+  <string name="text_settings_show_rating_prompt_description">از شما خواسته شود تا پس از تماشا به فیلم‌ها و قسمت‌ها امتیاز دهید.</string>
   <string name="text_settings_translations">به ترجمه برنامه و رفع اشتباهات برای زبان خود کمک کنید.</string>
   <string name="text_share_episode">تازه %1$s فصل %2$d اپیزود %3$d - %4$s را تماشا کردم! 🔥</string>
   <string name="text_share_list">این لیست \"%s\" را در Trakt ببینید! 📋</string>
@@ -1509,7 +1557,6 @@
   <string name="translated_value_video_type_trailer">تریلر</string>
   <string name="usage_title_library">کتابخانه</string>
   <string name="usage_title_lists">لیست‌ها</string>
-  <string name="usage_title_personal_activity">فعالیت شخصی</string>
   <string name="validation_text_list_name">نام الزامی است</string>
   <string name="validation_text_note">یادداشت الزامی است</string>
   <string name="validation_text_note_character_limit">بیش از حد مجاز %d کاراکتر</string>
@@ -1524,8 +1571,6 @@
   <string name="vip_feature_description_more_lists">لیست‌های سفارشی بیشتری ایجاد کنید تا نمایش‌ها و فیلم‌های خود را دقیقاً به روشی که می‌خواهید سازماندهی کنید.</string>
   <string name="vip_feature_description_more_to_come">ما دائماً در حال ساخت ویژگی‌های جدید و انحصاری برای اعضای VIP هستیم، با به‌روزرسانی‌های هیجان‌انگیزی که از قبل در راه هستند.</string>
   <string name="vip_feature_description_plex_sync">کتابخانه Plex خود را با به‌روزرسانی‌های خودکار مکرر در طول روز، کاملاً همگام نگه دارید.</string>
-  <string name="vip_feature_description_private_notes">یادداشت‌های شخصی بیشتری را به نمایش‌ها و فیلم‌های خود اضافه کنید تا افکار و توصیه‌های خود را به خاطر بسپارید.</string>
-  <string name="vip_feature_description_profile_customisation">پروفایل خود را با سربرگ‌های سفارشی شخصی‌سازی کنید و حضور خود در Trakt را منحصر به فرد کنید.</string>
   <string name="vip_feature_description_recaps">با خلاصه‌های جامع ماهانه و سالانه که هر آنچه تماشا کرده‌اید، امتیاز داده‌اید و کشف کرده‌اید را نشان می‌دهد، بینش‌های عمیق‌تری کسب کنید.</string>
   <string name="vip_feature_description_sentiment">تحلیل احساسات دقیق‌تر را برای نمایش‌ها و فیلم‌ها باز کنید.</string>
   <string name="vip_feature_description_sentiment_trivia">تحلیل احساسات دقیق و جزئیات جالب و جذاب درباره فیلم‌ها و نمایش‌هایی که تماشا می‌کنید را باز کنید.</string>
@@ -1544,11 +1589,9 @@
   <string name="vip_feature_title_more_lists">لیست‌های بیشتر</string>
   <string name="vip_feature_title_more_to_come">ویژگی‌های بیشتر در راه است</string>
   <string name="vip_feature_title_plex_sync">همگام‌سازی Plex با دفعات بیشتر</string>
-  <string name="vip_feature_title_private_notes">یادداشت‌های خصوصی بیشتر</string>
-  <string name="vip_feature_title_profile_customisation">سفارشی‌سازی بیشتر: سربرگ پروفایل</string>
-  <string name="vip_feature_title_recaps">خلاصه‌های بیشتر: ماهانه و سالانه</string>
+  <string name="vip_feature_title_recaps">آمار بیشتر: خلاصه ماهانه و سالانه</string>
   <string name="vip_feature_title_sentiment">نظر عمومی</string>
-  <string name="vip_feature_title_sentiment_trivia">اطلاعات بیشتر: احساسات + جزئیات جالب</string>
+  <string name="vip_feature_title_sentiment_trivia">اطلاعات بیشتر: احساسات و جزئیات جالب</string>
   <string name="vip_feature_title_streaming_services">همگام‌سازی سرویس‌های پخش آنلاین بیشتر</string>
   <string name="vip_feature_title_streaming_sync">همگام‌سازی پخش</string>
   <string name="vip_feature_title_support">پشتیبانی بهتر: انجمن و بازخورد</string>
@@ -1632,7 +1675,10 @@
   <string name="yir_2024_stats_card_hours">%s ساعت</string>
   <string name="yir_2024_stats_card_plays">%s بازدید</string>
   <string name="yir_2024_stats_intro_movies">در %d، شما تماشا کردید</string>
+  <string name="yir_2024_stats_intro_movies_monthly">در %s، شما تماشا کردید</string>
   <string name="yir_2024_stats_intro_shows">در %d، شما تماشا کردید</string>
+  <string name="yir_2024_stats_intro_shows_monthly">در %s، شما تماشا کردید</string>
+  <string name="yir_2024_stats_most_active_day">فعال‌ترین روز شما <b>%1$s</b> با <b>%2$s بازدید</b> بود.</string>
   <string name="yir_2024_stats_most_active_week">فعال‌ترین هفته شما <b>%1$s - %2$s</b> با <b>%3$s بازدید</b> بود.</string>
   <string name="yir_2024_stats_most_popular_time">پرطرفدارترین زمان تماشای شما <b>%s</b> بود.</string>
   <string name="yir_2024_stats_per_day">در هر روز</string>
@@ -1643,6 +1689,9 @@
   <string name="yir_2024_stats_tooltip_hours">%s ساعت</string>
   <string name="yir_2024_stats_tooltip_plays">%s بازدید</string>
   <string name="yir_2024_stats_tooltip_week_label">هفته %s</string>
+  <string name="yir_2024_streaming_intro">دسترسی در</string>
+  <string name="yir_2024_streaming_service_count">تعداد سرویس</string>
+  <string name="yir_2024_streaming_title">سرویس‌های پخش</string>
   <string name="yir_2024_studio_count">تعداد استودیوها</string>
   <string name="yir_2024_thanks_copy_directed">شما در کارگردانی <b>%1$d</b> فوق‌العاده عمل کردید. به امید یک دنباله حتی بهتر در <b>%2$d</b>.</string>
   <string name="yir_2024_thanks_copy_recommend">سفر خود را ادامه دهید. یکی از این سریال‌ها یا فیلم‌های محبوب را تماشا کنید.</string>

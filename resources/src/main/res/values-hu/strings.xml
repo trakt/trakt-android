@@ -178,10 +178,12 @@
   <string name="button_label_submit_report">Jelentés elküldése</string>
   <string name="button_label_sync_options">Szinkronizálási opció kiválasztása</string>
   <string name="button_label_sync_streaming_service">Szinkronizálás a(z) %s szolgáltatással</string>
+  <string name="button_label_toggle_favorite_service">Kedvencként való be-/kikapcsolása: %s</string>
   <string name="button_label_toggle_genre">A(z) %s műfaj kapcsolása</string>
   <string name="button_label_toggle_search_lists">Listák keresése</string>
   <string name="button_label_toggle_search_media">Média keresése</string>
   <string name="button_label_toggle_search_people">Személyek keresése</string>
+  <string name="button_label_trivia_category_filter">Szűrje az érdekességeket kategória szerint</string>
   <string name="button_label_trivia_no_spoilers">Spoiler nélkül</string>
   <string name="button_label_trivia_spoilers">Spoilerekkel</string>
   <string name="button_label_unblock">Feloldás: %s</string>
@@ -235,6 +237,7 @@
   <string name="button_text_add_note">Jegyzet hozzáadása</string>
   <string name="button_text_add_reply">Válasz hozzáadása</string>
   <string name="button_text_add_review">Értékelés hozzáadása</string>
+  <string name="button_text_add_streaming_service">Streaming szolgáltatás hozzáadása</string>
   <string name="button_text_add_to_favorites">Hozzáadás a kedvencekhez</string>
   <string name="button_text_apply">Alkalmaz</string>
   <string name="button_text_approve_follow_request">Kérelem jóváhagyása</string>
@@ -294,6 +297,7 @@
   <string name="button_text_load_more">Továbbiak betöltése</string>
   <string name="button_text_login">Bejelentkezés</string>
   <string name="button_text_logout">Kijelentkezés</string>
+  <string name="button_text_manage">Kezelés</string>
   <string name="button_text_manage_lists">Listák kezelése</string>
   <string name="button_text_manage_subscription">Előfizetés kezelése</string>
   <string name="button_text_manage_vip">Előfizetés kezelése</string>
@@ -312,6 +316,9 @@
   <string name="button_text_meet_team">Ismerd meg a csapatot</string>
   <string name="button_text_month_in_review">%s összefoglaló</string>
   <string name="button_text_more">%d további</string>
+  <string name="button_text_move_to_bottom">Mozgatás alulra</string>
+  <string name="button_text_move_to_position">Mozgatás ide…</string>
+  <string name="button_text_move_to_top">Mozgatás felülre</string>
   <string name="button_text_movies">Filmek</string>
   <string name="button_text_no_services">Nincsenek szolgáltatások</string>
   <string name="button_text_open_in_service">Megnyitás ezzel: %s</string>
@@ -342,6 +349,7 @@
   <string name="button_text_restore_rating_prompts">Értékelési felszólítások visszaállítása</string>
   <string name="button_text_restore_show">Sorozat visszaállítása</string>
   <string name="button_text_retry">Újra</string>
+  <string name="button_text_save">Mentés</string>
   <string name="button_text_save_filters">Beállítás alapértelmezettként</string>
   <string name="button_text_set_cover_image">Beállítás borítóképként</string>
   <string name="button_text_settings">Beállítások</string>
@@ -387,6 +395,7 @@
   <string name="button_text_view_history">Előzmények megtekintése</string>
   <string name="button_text_view_import_guidelines">Irányelvek megtekintése</string>
   <string name="button_text_view_photo">Fotó megtekintése</string>
+  <string name="button_text_view_recommendation_sources">Miért ez?</string>
   <string name="button_text_vip_upgrade">Frissítés</string>
   <string name="button_text_watch_again">Megtekintés újra</string>
   <string name="button_text_watch_until_here_anchor_end">Befejezés időpontja</string>
@@ -440,16 +449,18 @@
   <string name="description_export">Töltsd le a felhasználói adataidat egyetlen ZIP-fájlban. Ez a folyamat eltarthat egy ideig.</string>
   <string name="description_genres">Adj hozzá vagy távolíts el a kedvenc műfajaid közül legfeljebb %d darabot!</string>
   <string name="description_import">Importáld az adataidat más szolgáltatásokból közvetlenül a böngésződben.</string>
-  <string name="description_paused_items">Ezek az elemek szüneteltetettként lettek hozzáadva, mivel nem voltak legalább 80%-ban megtekintve.</string>
+  <string name="description_paused_items">Ezeket az elemeket nem nézték meg legalább 80%-ban.</string>
   <string name="description_plex_manual_sync">Azonnali szinkronizálás indítása a Plex megtekintési előzményeiből a Traktba.</string>
   <string name="description_plex_servers">Válaszd ki a Plex szervert, amellyel szinkronizálni szeretnéd a Traktot.</string>
   <string name="description_plex_sync">Csatlakoztasd Plex fiókodat a megtekintési előzmények, értékelések és gyűjtemények szinkronizálásához a Trakttal.</string>
   <string name="description_plex_sync_settings">Ezek a beállítások szabályozzák, hogy mely adattípusok szinkronizálódnak a Traktba.</string>
-  <string name="description_preview_features">Engedélyezze vagy tiltsa le a fejlesztés alatt álló előnézeti funkciókat. Ezek a funkciók instabilak lehetnek, és bármikor megváltozhatnak.</string>
-  <string name="description_skipped_items">Néhány hasznos információ a kihagyott elemek azonosításához és annak okához. A pirossal jelölt elemek okozták az elem kihagyását.</string>
-  <string name="description_streaming_sync">Automatikusan szinkronizálja megtekintett előzményeit és értékeléseit. Csatlakoztasson egy szolgáltatást alább, vagy a hivatalos Trakt mobilalkalmazásokban.</string>
+  <string name="description_preview_features">Próbáld ki a közelgő funkciókat, mielőtt széles körben elérhetővé válnak. Az előzetes funkciók változhatnak, ahogy finomítjuk őket.</string>
+  <string name="description_skipped_items">Bármi, ami pirosan van jelölve, az elem kihagyását okozta.</string>
+  <string name="description_streaming_services">A kedvencei megkönnyítik a tartalom megtalálását azokon a szolgáltatásokon, amelyeket a leggyakrabban néz.</string>
+  <string name="description_streaming_sync">Automatikusan szinkronizálja megtekintett előzményeit és értékeléseit.</string>
   <string name="description_sync_detail">Néhány részlet erről a szinkronizálásról.</string>
   <string name="dialog_prompt_media_share_image_format">Válasszon egy képformátumot a megosztáshoz.</string>
+  <string name="dialog_prompt_move_to_position">Adjon meg egy új pozíciót a(z) \"%s\" számára.</string>
   <string name="dialog_prompt_younify_data_sync">Szeretnéd importálni a meglévő adataidat a Trakt-fiókodba, vagy mostantól csak az új adatokat szinkronizáljuk?</string>
   <string name="dialog_title_comment">Értékelés</string>
   <string name="dialog_title_comments">Értékelések</string>
@@ -462,6 +473,7 @@
   <string name="drawer_title_add_note">Jegyzet</string>
   <string name="drawer_title_notes">Jegyzetek</string>
   <string name="drawer_title_people">Személyek</string>
+  <string name="drawer_title_recommendation_sources">Miért ezt ajánlották?</string>
   <string name="drawer_title_reorder_list">Húzd az átrendezéshez</string>
   <string name="drawer_title_sort">Rendezés</string>
   <string name="drawer_title_streak_activity">Napi sorozat tevékenység</string>
@@ -589,6 +601,7 @@
   <string name="header_status">Állapot</string>
   <string name="header_stream_on">Streameld itt:</string>
   <string name="header_streaming">Elérhetőség</string>
+  <string name="header_streaming_services">Streaming szolgáltatások</string>
   <string name="header_streaming_sync">Streaming szinkronizálás</string>
   <string name="header_studio">Stúdió</string>
   <string name="header_sync_detail">Szinkronizálási azonosító: %s</string>
@@ -624,10 +637,12 @@
   <string name="import_summary_watchlist">%d elem a Megnézendők listájához</string>
   <string name="import_vip_limit_exceeded">Az importálásod túllépi az ingyenes szint korlátját. Frissíts VIP-re mind a(z) %d elem importálásához.</string>
   <string name="input_label_search_credit_members">Személyek keresése</string>
+  <string name="input_placeholder_filter_services">Streaming szolgáltatások szűrése</string>
   <string name="input_placeholder_lists_description">Leírás (opcionális)</string>
   <string name="input_placeholder_lists_name">Név</string>
   <string name="input_placeholder_note_drop">Miért hagytad abba ezt a címet?</string>
   <string name="input_placeholder_note_favorite">Miért jelölted kedvencnek ezt a címet?</string>
+  <string name="input_placeholder_reorder_position">Pozíció (1–%d)</string>
   <string name="input_placeholder_report_message">Adj meg részleteket a jelentésről</string>
   <string name="input_placeholder_report_reason">Válassz okot</string>
   <string name="input_placeholder_search">Sorozatok és filmek keresése…</string>
@@ -645,6 +660,7 @@
   <string name="input_prompt_rename_list">Listád átnevezése</string>
   <string name="input_prompt_username">Mi legyen a felhasználóneved?</string>
   <string name="label_drag_image_to_adjust">Húzd a képet az igazításhot</string>
+  <string name="label_favorites">Kedvencek</string>
   <string name="label_plex_connected">Csatlakoztatva a Plexhez</string>
   <string name="label_plex_connection">Csatlakozás</string>
   <string name="label_plex_history_date">Dátum</string>
@@ -674,7 +690,7 @@
   <string name="label_report_reason_too_short">Túl rövid</string>
   <string name="label_stats_active_days">Aktív nap</string>
   <string name="label_stats_average">Átl.</string>
-  <string name="label_stats_avg_per_day">Átl. / Nap</string>
+  <string name="label_stats_avg_per_day">Napi átlag</string>
   <string name="label_stats_best_day">Legjobb nap</string>
   <string name="label_stats_busiest_day">Legforgalmasabb nap</string>
   <string name="label_stats_comments">Hozzászólások</string>
@@ -691,8 +707,8 @@
   <string name="label_stats_screen_time_share">Ébrenléti órák</string>
   <string name="label_stats_screen_time_total">Összesen</string>
   <string name="label_stats_shows">Sorozatok</string>
+  <string name="label_streaming_country">Ország</string>
   <string name="limit_title_digital_library">Digitális könyvtár</string>
-  <string name="limit_title_notes">Jegyzetek</string>
   <string name="limit_title_offline_library">Offline könyvtár</string>
   <string name="limit_title_personal_lists">Személyes listák</string>
   <string name="limit_title_ratings">Értékelések</string>
@@ -709,6 +725,7 @@
   <string name="link_label_github">GitHub</string>
   <string name="link_label_install_pwa">PWA telepítése</string>
   <string name="link_label_ios_app">iOS alkalmazás</string>
+  <string name="link_label_open_preview_feature">%s megnyitása</string>
   <string name="link_label_open_review">Megnyitja %s értékelését</string>
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_view_social_activities">%s közösségi tevékenységeinek megtekintése</string>
@@ -729,7 +746,7 @@
   <string name="link_text_preview_settings">Előnézet</string>
   <string name="link_text_privacy">Adatvédelem</string>
   <string name="link_text_service_status">Trakt szolgáltatás állapota</string>
-  <string name="link_text_streaming_sync_settings">Streaming szinkronizálás</string>
+  <string name="link_text_streaming_sync_settings">Streaming szolgáltatások</string>
   <string name="link_text_support">Támogatás</string>
   <string name="link_text_terms">Feltételek</string>
   <string name="link_text_terms_of_use">Felhasználási feltételek</string>
@@ -786,6 +803,9 @@
   <string name="list_title_recently_searched_movies">Legutóbb keresett filmek</string>
   <string name="list_title_recently_searched_shows">Legutóbb keresett sorozatok</string>
   <string name="list_title_recently_watched">Legutóbb megtekintett</string>
+  <string name="list_title_recommendation_sources_activity">Megnézted</string>
+  <string name="list_title_recommendation_sources_favorite">Szeretted</string>
+  <string name="list_title_recommendation_sources_subgenre">Kedveled</string>
   <string name="list_title_recommended">Ajánlott</string>
   <string name="list_title_recommended_movies">Ajánlott filmek</string>
   <string name="list_title_recommended_shows">Ajánlott sorozatok</string>
@@ -832,6 +852,8 @@
   <string name="match_pill_anchor">Egyezés:</string>
   <string name="match_pill_aria_label">%1$d% egyezés, %2$s. Egyezési részletek megnyitása.</string>
   <string name="match_pill_loading_aria_label">Egyezési pontszám számítása</string>
+  <string name="mir_share_text">Nézd meg az %s havi összefoglalómat a Trakt-on!</string>
+  <string name="mir_title_month_in_review">Havi összefoglaló</string>
   <string name="notes_placeholder_text">Hagyj egy jegyzetet, amikor legközelebb kedvencnek jelölsz vagy eldobsz egy címet.</string>
   <string name="option_text_africa">Afrika</string>
   <string name="option_text_all">Összes</string>
@@ -852,6 +874,12 @@
   <string name="option_text_theme_dark">Sötét</string>
   <string name="option_text_theme_light">Világos</string>
   <string name="option_text_theme_system">Rendszer</string>
+  <string name="option_text_trivia_category_all">Összes</string>
+  <string name="option_text_trivia_category_bts">Kulisszák mögött</string>
+  <string name="option_text_trivia_category_cast_n_crew">Szereplők és Stáb</string>
+  <string name="option_text_trivia_category_impact_n_legacy">Hatás és örökség</string>
+  <string name="option_text_trivia_category_real_world_connections">Valós világ kapcsolatok</string>
+  <string name="option_text_trivia_category_story_n_themes">Történet és témák</string>
   <string name="page_description_create_list">Add meg a lista nevét és leírását.</string>
   <string name="page_description_edit_list">Listád részleteinek szerkesztése.</string>
   <string name="page_description_home">Kövesd nyomon műsoraidat és filmjeidet a Trakt Web segítségével — fedezd fel, mi a felkapott, kapj személyre szabott ajánlásokat, és soha ne maradj le a a közelgő műsorokról.</string>
@@ -911,6 +939,20 @@
   <string name="page_title_where_to_watch">Hol nézhető</string>
   <string name="page_title_year_in_review">%s év áttekintése</string>
   <string name="page_title_year_to_date">Éves összesítés</string>
+  <string name="preview_feature_description_edit_mode">Engedélyezze a vezérlőket a konfigurálható szakaszok elrejtéséhez vagy megjelenítéséhez az alkalmazásban.</string>
+  <string name="preview_feature_description_month_in_review">Előzetes Havi összefoglaló, mostantól közvetlenül a V3-ban fut.</string>
+  <string name="preview_feature_description_plex_sync">Csatlakoztassa a Plexet a megtekintési előzmények, értékelések és könyvtár szinkronizálásához a Traktba. Tartalmazza a csatlakozási, szerverválasztási és szinkronizálási eszközöket.</string>
+  <string name="preview_feature_description_scoped_favorites">Időkorlátozza a kedvenc listákat azáltal, hogy megjeleníti az aktuális év kedvenceit a profilokon, és csoportosítja a teljes kedvencek listáját év szerint.</string>
+  <string name="preview_feature_description_social_activities">Mutassa meg, ki nézett meg, tett figyelőlistára, kommentált vagy értékelt egy filmet, sorozatot vagy epizódot a médiaoldalakon, azok közül, akiket követ.</string>
+  <string name="preview_feature_description_streaming_sync">Csatlakoztassa a támogatott streaming szolgáltatásokat, hogy a megtekintési előzmények és értékelések automatikusan szinkronizálódjanak a Traktba. A webes csatlakozási folyamat még béta fázisban van.</string>
+  <string name="preview_feature_description_year_in_review">Előzetes Éves összefoglaló, mostantól közvetlenül a V3-ban fut.</string>
+  <string name="preview_feature_title_edit_mode">Szerkesztési mód</string>
+  <string name="preview_feature_title_month_in_review">Havi összefoglaló</string>
+  <string name="preview_feature_title_plex_sync">Plex szinkronizálás</string>
+  <string name="preview_feature_title_scoped_favorites">Korlátozott Kedvencek</string>
+  <string name="preview_feature_title_social_activities">Közösségi tevékenységek</string>
+  <string name="preview_feature_title_streaming_sync">Streaming szinkronizálás</string>
+  <string name="preview_feature_title_year_in_review">Éves összefoglaló</string>
   <string name="reset_status_cleared">Megnézendők listája kiürítve.</string>
   <string name="section_title_season_progress">%d. évad előrehaladása</string>
   <string name="section_title_specials_progress">Különkiadások előrehaladása</string>
@@ -921,6 +963,7 @@
   <string name="switch_label_mark_as_spoiler">Jelölés spoilerként</string>
   <string name="switch_label_multiple_watches">Újranézések engedélyezése vagy letiltása</string>
   <string name="switch_label_private">Privát profil</string>
+  <string name="switch_label_rating_prompt">Értékelési felszólítások engedélyezése vagy letiltása</string>
   <string name="switch_label_spoilers">Spoilerek megjelenítése</string>
   <string name="switch_label_toggle_christmas_filters">Karácsonyi szűrők be/ki kapcsolása</string>
   <string name="switch_label_toggle_halloween_filters">Halloween szűrők be/ki kapcsolása</string>
@@ -1080,6 +1123,7 @@
   <string name="text_export_status_fetching"> %s lekérése…</string>
   <string name="text_export_status_zipping">Fájlok tömörítése…</string>
   <string name="text_exporting">Exportálás… %s</string>
+  <string name="text_favorites_limit_reached">Legfeljebb %s szolgáltatást választhat ki</string>
   <string name="text_first_play_this_month">Első lejátszás ebben a hónapban</string>
   <string name="text_footer_category_community">Közösség</string>
   <string name="text_footer_category_legal">Jogi</string>
@@ -1136,6 +1180,7 @@
   <string name="text_no_data_synced">Még nem történt adatszinkronizálás.</string>
   <string name="text_no_paused_items">Nincsenek szüneteltetett elemek.</string>
   <string name="text_no_rating">Nincs értékelés</string>
+  <string name="text_no_services_match_filter">Nincs szolgáltatás, amely megfelel a szűrőnek.</string>
   <string name="text_no_skipped_items">Nincsenek kihagyott elemek.</string>
   <string name="text_notification_episode_release">S%1$d • E%2$d már elérhető.</string>
   <string name="text_notification_episodes_release">S%1$d • E%2$d-%3$d már elérhetőek.</string>
@@ -1202,6 +1247,7 @@
   <string name="text_season_number">%d. évad</string>
   <string name="text_season_specials">Különkiadások</string>
   <string name="text_sentiment_example">Példa: „%s”</string>
+  <string name="text_services_selected">%1$s / %2$s kiválasztva · %3$s</string>
   <string name="text_settings_adjust_delivery">Értesítési idő</string>
   <string name="text_settings_adjust_delivery_description">Válaszd ki, mikor szeretnél értesítést kapni.</string>
   <string name="text_settings_clear_cover">Törölje az aktuális borítóképet, és térjen vissza az alapértelmezettre.</string>
@@ -1213,6 +1259,8 @@
   <string name="text_settings_notification_time_60_min">1 órával előtte</string>
   <string name="text_settings_notification_time_now">Megjelenéskor</string>
   <string name="text_settings_play_subscriptions">Google Play előfizetések</string>
+  <string name="text_settings_show_rating_prompt">Értékelési felszólítások</string>
+  <string name="text_settings_show_rating_prompt_description">Kérjen fel az értékelésre filmek és epizódok megnézése után.</string>
   <string name="text_settings_translations">Segíts lefordítani az alkalmazást, és javítsd ki a hibákat a nyelveden.</string>
   <string name="text_share_episode">Most néztem meg: %1$s S%2$dE%3$d - %4$s! 🔥</string>
   <string name="text_share_list">Nézd meg ezt a(z) \"%s\" listát a Trakt-on! 📋</string>
@@ -1509,7 +1557,6 @@
   <string name="translated_value_video_type_trailer">Előzetes</string>
   <string name="usage_title_library">Könyvtár</string>
   <string name="usage_title_lists">Listák</string>
-  <string name="usage_title_personal_activity">Személyes tevékenység</string>
   <string name="validation_text_list_name">Név megadása kötelező</string>
   <string name="validation_text_note">Jegyzet megadása kötelező</string>
   <string name="validation_text_note_character_limit">Meghaladja a(z) %d karakteres korlátot</string>
@@ -1524,8 +1571,6 @@
   <string name="vip_feature_description_more_lists">Hozz létre még több egyedi listát, hogy pontosan úgy rendszerezhesd a sorozataidat és filmjeidet, ahogyan szeretnéd.</string>
   <string name="vip_feature_description_more_to_come">Folyamatosan fejlesztünk új funkciókat kizárólag VIP tagok számára, és izgalmas frissítések már úton vannak.</string>
   <string name="vip_feature_description_plex_sync">Tartsd Plex könyvtáradat tökéletesen szinkronban a gyakoribb automatikus frissítésekkel a nap folyamán.</string>
-  <string name="vip_feature_description_private_notes">Adj hozzá még rengeteg személyes jegyzetet sorozataidhoz és filmjeidhez, hogy emlékezz gondolataidra és ajánlásaidra.</string>
-  <string name="vip_feature_description_profile_customisation">Tedd egyedivé profilodat egyedi fejlécekkel, és tedd a Trakt jelenlétedet egyedivé.</string>
   <string name="vip_feature_description_recaps">Mélyebb betekintést nyerhetsz átfogó havi és éves összefoglalókkal, amelyek megmutatják mindazt, amit megnéztél, értékeltél és felfedeztél.</string>
   <string name="vip_feature_description_sentiment">Feloldhatod a filmek és sorozatok részletesebb hangulatelemzését.</string>
   <string name="vip_feature_description_sentiment_trivia">Oldd fel a részletes hangulatelemzést és a lenyűgöző érdekességeket a nézett filmekről és sorozatokról.</string>
@@ -1544,11 +1589,9 @@
   <string name="vip_feature_title_more_lists">Több lista</string>
   <string name="vip_feature_title_more_to_come">Továbbiak jönnek</string>
   <string name="vip_feature_title_plex_sync">Plex szinkronizálás gyakoribbá tétele</string>
-  <string name="vip_feature_title_private_notes">Több privát jegyzet</string>
-  <string name="vip_feature_title_profile_customisation">Több testreszabás: Profilfejléc</string>
-  <string name="vip_feature_title_recaps">Több összefoglaló: havi és éves</string>
+  <string name="vip_feature_title_recaps">Több statisztika: Havi és Éves Összefoglaló</string>
   <string name="vip_feature_title_sentiment">Hangulat</string>
-  <string name="vip_feature_title_sentiment_trivia">Több infó: Hangulat + Trivia</string>
+  <string name="vip_feature_title_sentiment_trivia">Több infó: Hangulat és Trivia</string>
   <string name="vip_feature_title_streaming_services">Több streaming szolgáltatás szinkronizálása</string>
   <string name="vip_feature_title_streaming_sync">Streaming szinkronizálás</string>
   <string name="vip_feature_title_support">Jobb támogatás: Fórum és visszajelzés</string>
@@ -1632,7 +1675,10 @@
   <string name="yir_2024_stats_card_hours">%s óra</string>
   <string name="yir_2024_stats_card_plays">%s lejátszás</string>
   <string name="yir_2024_stats_intro_movies">%d évi megtekintések:</string>
+  <string name="yir_2024_stats_intro_movies_monthly">%s hónapban nézted:</string>
   <string name="yir_2024_stats_intro_shows">%d évi megtekintések:</string>
+  <string name="yir_2024_stats_intro_shows_monthly">%s hónapban nézted:</string>
+  <string name="yir_2024_stats_most_active_day">A legaktívabb napod <b>%1$s</b> volt, <b>%2$s lejátszással</b>.</string>
   <string name="yir_2024_stats_most_active_week">A legaktívabb heted a <b>%1$s - %2$s</b> időszak volt, <b>%3$s lejátszással</b>.</string>
   <string name="yir_2024_stats_most_popular_time">Legnépszerűbb időszakod: <b>%s</b>.</string>
   <string name="yir_2024_stats_per_day">Naponta</string>
@@ -1643,6 +1689,9 @@
   <string name="yir_2024_stats_tooltip_hours">%s óra</string>
   <string name="yir_2024_stats_tooltip_plays">%s lejátszás</string>
   <string name="yir_2024_stats_tooltip_week_label">%s. hét</string>
+  <string name="yir_2024_streaming_intro">Elérhetőség</string>
+  <string name="yir_2024_streaming_service_count">Szolgáltatások száma</string>
+  <string name="yir_2024_streaming_title">Streaming szolgáltatások</string>
   <string name="yir_2024_studio_count">Stúdiók száma</string>
   <string name="yir_2024_thanks_copy_directed">Epikus munkát végeztél <b>%1$d</b> rendezésében. Kívánjuk, hogy a(z) <b>%2$d</b> év még jobb folytatás legyen.</string>
   <string name="yir_2024_thanks_copy_recommend">Folytasd az utazásod. Próbálj meg megnézni egyet ezek közül a népszerű sorozatok vagy filmek közül.</string>

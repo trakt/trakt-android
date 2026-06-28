@@ -178,10 +178,12 @@
   <string name="button_label_submit_report">Kirim laporan</string>
   <string name="button_label_sync_options">Pilih opsi sinkronisasi</string>
   <string name="button_label_sync_streaming_service">Sinkronkan %s</string>
+  <string name="button_label_toggle_favorite_service">Alihkan %s sebagai favorit</string>
   <string name="button_label_toggle_genre">Alihkan genre %s</string>
   <string name="button_label_toggle_search_lists">Cari daftar</string>
   <string name="button_label_toggle_search_media">Cari media</string>
   <string name="button_label_toggle_search_people">Cari orang</string>
+  <string name="button_label_trivia_category_filter">Filter trivia berdasarkan kategori</string>
   <string name="button_label_trivia_no_spoilers">Tanpa spoiler</string>
   <string name="button_label_trivia_spoilers">Spoiler</string>
   <string name="button_label_unblock">Buka blokir %s</string>
@@ -235,6 +237,7 @@
   <string name="button_text_add_note">Tambah Catatan</string>
   <string name="button_text_add_reply">Tambahkan Balasan</string>
   <string name="button_text_add_review">Tambahkan Ulasan</string>
+  <string name="button_text_add_streaming_service">Tambahkan layanan streaming</string>
   <string name="button_text_add_to_favorites">Tambahkan ke Favorit</string>
   <string name="button_text_apply">Terapkan</string>
   <string name="button_text_approve_follow_request">Setujui Permintaan</string>
@@ -294,6 +297,7 @@
   <string name="button_text_load_more">Muat Lebih Banyak</string>
   <string name="button_text_login">Masuk</string>
   <string name="button_text_logout">Keluar</string>
+  <string name="button_text_manage">Kelola</string>
   <string name="button_text_manage_lists">Kelola daftar</string>
   <string name="button_text_manage_subscription">Kelola langganan</string>
   <string name="button_text_manage_vip">Kelola Langganan</string>
@@ -312,6 +316,9 @@
   <string name="button_text_meet_team">Temui tim</string>
   <string name="button_text_month_in_review">%s dalam kilas balik</string>
   <string name="button_text_more">%d lainnya</string>
+  <string name="button_text_move_to_bottom">Pindahkan ke Bawah</string>
+  <string name="button_text_move_to_position">Pindahkan ke…</string>
+  <string name="button_text_move_to_top">Pindahkan ke Atas</string>
   <string name="button_text_movies">Film</string>
   <string name="button_text_no_services">Tidak ada layanan</string>
   <string name="button_text_open_in_service">Buka di %s</string>
@@ -342,6 +349,7 @@
   <string name="button_text_restore_rating_prompts">Pulihkan Prompt Peringkat</string>
   <string name="button_text_restore_show">Pulihkan acara</string>
   <string name="button_text_retry">Coba lagi</string>
+  <string name="button_text_save">Simpan</string>
   <string name="button_text_save_filters">Atur sebagai default</string>
   <string name="button_text_set_cover_image">Atur sebagai gambar sampul</string>
   <string name="button_text_settings">Pengaturan</string>
@@ -387,6 +395,7 @@
   <string name="button_text_view_history">Lihat Riwayat</string>
   <string name="button_text_view_import_guidelines">Lihat panduan</string>
   <string name="button_text_view_photo">Lihat foto</string>
+  <string name="button_text_view_recommendation_sources">Mengapa ini?</string>
   <string name="button_text_vip_upgrade">Tingkatkan</string>
   <string name="button_text_watch_again">Tonton lagi</string>
   <string name="button_text_watch_until_here_anchor_end">Waktu berakhir</string>
@@ -440,16 +449,18 @@
   <string name="description_export">Dapatkan ekspor data pengguna Anda dalam satu file ZIP. Proses ini mungkin memakan waktu.</string>
   <string name="description_genres">Tambahkan atau hapus %d genre favorit Anda.</string>
   <string name="description_import">Impor data Anda dari layanan lain langsung di browser Anda.</string>
-  <string name="description_paused_items">Item-item ini ditambahkan sebagai dijeda, karena belum ditonton setidaknya 80%.</string>
+  <string name="description_paused_items">Item-item ini tidak ditonton setidaknya 80%.</string>
   <string name="description_plex_manual_sync">Picukan sinkronisasi segera riwayat tontonan Plex Anda ke Trakt.</string>
   <string name="description_plex_servers">Pilih server Plex untuk disinkronkan dengan Trakt.</string>
   <string name="description_plex_sync">Hubungkan akun Plex Anda untuk menyinkronkan riwayat tontonan, rating, dan koleksi dengan Trakt.</string>
   <string name="description_plex_sync_settings">Pengaturan ini mengontrol jenis data yang disinkronkan ke Trakt.</string>
-  <string name="description_preview_features">Aktifkan atau nonaktifkan fitur pratinjau yang sedang dalam pengembangan. Fitur-fitur ini mungkin tidak stabil dan dapat berubah sewaktu-waktu.</string>
-  <string name="description_skipped_items">Beberapa informasi berguna untuk membantu mengidentifikasi apa yang dilewati dan mengapa. Apa pun yang berwarna merah menyebabkan item dilewati.</string>
-  <string name="description_streaming_sync">Sinkronkan riwayat tontonan dan rating Anda secara otomatis. Hubungkan layanan di bawah, atau di aplikasi seluler resmi Trakt.</string>
+  <string name="description_preview_features">Coba fitur mendatang sebelum tersedia secara luas. Fitur Pratinjau dapat berubah seiring kami menyempurnakannya.</string>
+  <string name="description_skipped_items">Apa pun yang berwarna merah menyebabkan item dilewati.</string>
+  <string name="description_streaming_services">Favorit Anda memudahkan untuk menemukan konten di layanan yang paling sering Anda tonton.</string>
+  <string name="description_streaming_sync">Secara otomatis menyinkronkan riwayat tontonan dan rating Anda.</string>
   <string name="description_sync_detail">Beberapa detail tentang sinkronisasi ini.</string>
   <string name="dialog_prompt_media_share_image_format">Pilih format gambar untuk dibagikan.</string>
+  <string name="dialog_prompt_move_to_position">Masukkan posisi baru untuk \"%s\".</string>
   <string name="dialog_prompt_younify_data_sync">Apakah Anda ingin mengimpor data yang ada ke akun Trakt Anda, atau hanya menyinkronkan data baru mulai sekarang?</string>
   <string name="dialog_title_comment">Ulasan</string>
   <string name="dialog_title_comments">Ulasan</string>
@@ -462,6 +473,7 @@
   <string name="drawer_title_add_note">Catatan</string>
   <string name="drawer_title_notes">Catatan</string>
   <string name="drawer_title_people">Orang</string>
+  <string name="drawer_title_recommendation_sources">Mengapa ini direkomendasikan?</string>
   <string name="drawer_title_reorder_list">Seret untuk menyusun ulang</string>
   <string name="drawer_title_sort">Urutkan Berdasarkan</string>
   <string name="drawer_title_streak_activity">Aktivitas Streak Harian</string>
@@ -589,6 +601,7 @@
   <string name="header_status">Status</string>
   <string name="header_stream_on">Streaming di</string>
   <string name="header_streaming">Ketersediaan</string>
+  <string name="header_streaming_services">Layanan Streaming</string>
   <string name="header_streaming_sync">Sinkronisasi Streaming</string>
   <string name="header_studio">Studio</string>
   <string name="header_sync_detail">ID Sinkronisasi %s</string>
@@ -624,10 +637,12 @@
   <string name="import_summary_watchlist">%d item untuk Daftar Tontonan</string>
   <string name="import_vip_limit_exceeded">Impor Anda melebihi batas tingkat gratis. Tingkatkan ke VIP untuk mengimpor semua %d item.</string>
   <string name="input_label_search_credit_members">Cari orang</string>
+  <string name="input_placeholder_filter_services">Saring layanan streaming</string>
   <string name="input_placeholder_lists_description">Deskripsi (opsional)</string>
   <string name="input_placeholder_lists_name">Nama</string>
   <string name="input_placeholder_note_drop">Mengapa Anda membatalkan judul ini?</string>
   <string name="input_placeholder_note_favorite">Mengapa Anda memfavoritkan judul ini?</string>
+  <string name="input_placeholder_reorder_position">Posisi (1–%d)</string>
   <string name="input_placeholder_report_message">Berikan detail tentang laporan ini</string>
   <string name="input_placeholder_report_reason">Pilih alasan</string>
   <string name="input_placeholder_search">Cari acara &amp; film…</string>
@@ -645,6 +660,7 @@
   <string name="input_prompt_rename_list">Ganti nama daftar Anda</string>
   <string name="input_prompt_username">Apa nama pengguna Anda?</string>
   <string name="label_drag_image_to_adjust">Seret gambar untuk menyesuaikan</string>
+  <string name="label_favorites">Favorit</string>
   <string name="label_plex_connected">Terhubung ke Plex</string>
   <string name="label_plex_connection">Koneksi</string>
   <string name="label_plex_history_date">Tanggal</string>
@@ -674,7 +690,7 @@
   <string name="label_report_reason_too_short">Terlalu pendek</string>
   <string name="label_stats_active_days">Hari Aktif</string>
   <string name="label_stats_average">Rata-rata</string>
-  <string name="label_stats_avg_per_day">Rata-rata / Hari</string>
+  <string name="label_stats_avg_per_day">Rata-rata Harian</string>
   <string name="label_stats_best_day">Hari Terbaik</string>
   <string name="label_stats_busiest_day">Hari Tersibuk</string>
   <string name="label_stats_comments">Komentar</string>
@@ -691,8 +707,8 @@
   <string name="label_stats_screen_time_share">Jam Bangun</string>
   <string name="label_stats_screen_time_total">Total</string>
   <string name="label_stats_shows">Acara</string>
+  <string name="label_streaming_country">Negara</string>
   <string name="limit_title_digital_library">Perpustakaan Digital</string>
-  <string name="limit_title_notes">Catatan</string>
   <string name="limit_title_offline_library">Perpustakaan Offline</string>
   <string name="limit_title_personal_lists">Daftar Pribadi</string>
   <string name="limit_title_ratings">Peringkat</string>
@@ -709,6 +725,7 @@
   <string name="link_label_github">GitHub</string>
   <string name="link_label_install_pwa">Pasang PWA</string>
   <string name="link_label_ios_app">Aplikasi iOS</string>
+  <string name="link_label_open_preview_feature">Buka %s</string>
   <string name="link_label_open_review">Buka ulasan oleh %s</string>
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_view_social_activities">Lihat aktivitas sosial untuk %s</string>
@@ -729,7 +746,7 @@
   <string name="link_text_preview_settings">Pratinjau</string>
   <string name="link_text_privacy">Privasi</string>
   <string name="link_text_service_status">Status layanan Trakt</string>
-  <string name="link_text_streaming_sync_settings">Sinkronisasi Streaming</string>
+  <string name="link_text_streaming_sync_settings">Layanan Streaming</string>
   <string name="link_text_support">Dukungan</string>
   <string name="link_text_terms">Ketentuan</string>
   <string name="link_text_terms_of_use">Ketentuan Penggunaan</string>
@@ -786,6 +803,9 @@
   <string name="list_title_recently_searched_movies">Film yang Baru Dicari</string>
   <string name="list_title_recently_searched_shows">Acara yang Baru Dicari</string>
   <string name="list_title_recently_watched">Baru Ditonton</string>
+  <string name="list_title_recommendation_sources_activity">Anda tonton</string>
+  <string name="list_title_recommendation_sources_favorite">Anda suka</string>
+  <string name="list_title_recommendation_sources_subgenre">Anda suka</string>
   <string name="list_title_recommended">Rekomendasi</string>
   <string name="list_title_recommended_movies">Film Rekomendasi</string>
   <string name="list_title_recommended_shows">Acara Rekomendasi</string>
@@ -832,6 +852,8 @@
   <string name="match_pill_anchor">Cocok:</string>
   <string name="match_pill_aria_label">Kecocokan %1$d%, %2$s. Buka detail kecocokan.</string>
   <string name="match_pill_loading_aria_label">Menghitung skor kecocokan</string>
+  <string name="mir_share_text">Lihat Kilas Balik Bulan %s saya di Trakt</string>
+  <string name="mir_title_month_in_review">Kilas Balik Bulanan</string>
   <string name="notes_placeholder_text">Tinggalkan catatan saat berikutnya Anda memfavoritkan atau membatalkan judul.</string>
   <string name="option_text_africa">Afrika</string>
   <string name="option_text_all">Semua</string>
@@ -852,6 +874,12 @@
   <string name="option_text_theme_dark">Gelap</string>
   <string name="option_text_theme_light">Terang</string>
   <string name="option_text_theme_system">Sistem</string>
+  <string name="option_text_trivia_category_all">Semua</string>
+  <string name="option_text_trivia_category_bts">Di Balik Layar</string>
+  <string name="option_text_trivia_category_cast_n_crew">Pemeran &amp; Kru</string>
+  <string name="option_text_trivia_category_impact_n_legacy">Dampak &amp; warisan</string>
+  <string name="option_text_trivia_category_real_world_connections">Koneksi dunia nyata</string>
+  <string name="option_text_trivia_category_story_n_themes">Cerita &amp; tema</string>
   <string name="page_description_create_list">Masukkan nama dan deskripsi untuk daftar Anda.</string>
   <string name="page_description_edit_list">Edit detail daftar Anda.</string>
   <string name="page_description_home">Lacak acara dan film Anda dengan Trakt Web — temukan apa yang sedang tren, dapatkan rekomendasi yang dipersonalisasi, dan jangan pernah lewatkan apa yang berikutnya.</string>
@@ -911,6 +939,20 @@
   <string name="page_title_where_to_watch">Tempat Menonton</string>
   <string name="page_title_year_in_review">%s dalam tinjauan</string>
   <string name="page_title_year_to_date">Tahun Berjalan</string>
+  <string name="preview_feature_description_edit_mode">Aktifkan kontrol untuk menyembunyikan atau menampilkan bagian yang dapat dikonfigurasi di seluruh aplikasi.</string>
+  <string name="preview_feature_description_month_in_review">Pratinjau Kilas Balik Bulanan, sekarang berjalan langsung di V3.</string>
+  <string name="preview_feature_description_plex_sync">Hubungkan Plex untuk menyinkronkan riwayat tontonan, penilaian, dan perpustakaan Anda ke Trakt. Termasuk koneksi, pemilihan server, dan alat sinkronisasi.</string>
+  <string name="preview_feature_description_scoped_favorites">Batas waktu daftar favorit dengan menampilkan favorit tahun berjalan di profil dan mengelompokkan daftar favorit lengkap berdasarkan tahun.</string>
+  <string name="preview_feature_description_social_activities">Tampilkan siapa yang Anda ikuti telah menonton, menambahkan ke daftar tontonan, mengomentari, atau menilai film, acara, atau episode langsung di halaman media.</string>
+  <string name="preview_feature_description_streaming_sync">Hubungkan layanan streaming yang didukung agar riwayat tontonan dan penilaian dapat disinkronkan kembali ke Trakt secara otomatis. Alur koneksi dari web masih dalam versi beta.</string>
+  <string name="preview_feature_description_year_in_review">Pratinjau Kilas Balik Tahunan, sekarang berjalan langsung di V3.</string>
+  <string name="preview_feature_title_edit_mode">Mode Edit</string>
+  <string name="preview_feature_title_month_in_review">Kilas Balik Bulanan</string>
+  <string name="preview_feature_title_plex_sync">Sinkronisasi Plex</string>
+  <string name="preview_feature_title_scoped_favorites">Favorit Terbatas</string>
+  <string name="preview_feature_title_social_activities">Aktivitas Sosial</string>
+  <string name="preview_feature_title_streaming_sync">Sinkronisasi Streaming</string>
+  <string name="preview_feature_title_year_in_review">Kilas Balik Tahunan</string>
   <string name="reset_status_cleared">Daftar tontonan dibersihkan.</string>
   <string name="section_title_season_progress">Musim %d kemajuan</string>
   <string name="section_title_specials_progress">Kemajuan Spesial</string>
@@ -921,6 +963,7 @@
   <string name="switch_label_mark_as_spoiler">Tandai sebagai spoiler</string>
   <string name="switch_label_multiple_watches">Aktifkan atau nonaktifkan beberapa kali tonton</string>
   <string name="switch_label_private">Apakah profil bersifat pribadi</string>
+  <string name="switch_label_rating_prompt">Aktifkan atau nonaktifkan prompt peringkat</string>
   <string name="switch_label_spoilers">Tampilkan spoiler</string>
   <string name="switch_label_toggle_christmas_filters">Alihkan filter natal</string>
   <string name="switch_label_toggle_halloween_filters">Alihkan filter halloween</string>
@@ -1080,6 +1123,7 @@
   <string name="text_export_status_fetching">Mengambil %s…</string>
   <string name="text_export_status_zipping">Mengompres file…</string>
   <string name="text_exporting">Mengekspor… %s</string>
+  <string name="text_favorites_limit_reached">Anda dapat memilih hingga %s layanan</string>
   <string name="text_first_play_this_month">Putaran pertama bulan ini</string>
   <string name="text_footer_category_community">Komunitas</string>
   <string name="text_footer_category_legal">Hukum</string>
@@ -1136,6 +1180,7 @@
   <string name="text_no_data_synced">Belum ada data yang disinkronkan.</string>
   <string name="text_no_paused_items">Tidak ada item yang dijeda.</string>
   <string name="text_no_rating">Tanpa rating</string>
+  <string name="text_no_services_match_filter">Tidak ada layanan yang cocok dengan filter Anda.</string>
   <string name="text_no_skipped_items">Tidak ada item yang dilewati.</string>
   <string name="text_notification_episode_release">S%1$d • E%2$d sekarang tersedia.</string>
   <string name="text_notification_episodes_release">S%1$d • E%2$d-%3$d sekarang tersedia.</string>
@@ -1202,6 +1247,7 @@
   <string name="text_season_number">Musim %d</string>
   <string name="text_season_specials">Spesial</string>
   <string name="text_sentiment_example">Contoh dari \"%s\"</string>
+  <string name="text_services_selected">%1$s / %2$s dipilih · %3$s</string>
   <string name="text_settings_adjust_delivery">Waktu Notifikasi</string>
   <string name="text_settings_adjust_delivery_description">Pilih kapan akan diberitahu.</string>
   <string name="text_settings_clear_cover">Hapus gambar sampul saat ini dan kembali ke default.</string>
@@ -1213,6 +1259,8 @@
   <string name="text_settings_notification_time_60_min">1 jam sebelumnya</string>
   <string name="text_settings_notification_time_now">Saat rilis</string>
   <string name="text_settings_play_subscriptions">Langganan Google Play</string>
+  <string name="text_settings_show_rating_prompt">Prompt Peringkat</string>
+  <string name="text_settings_show_rating_prompt_description">Diminta untuk menilai film dan episode setelah menonton.</string>
   <string name="text_settings_translations">Bantu terjemahkan aplikasi dan perbaiki kesalahan untuk bahasa Anda.</string>
   <string name="text_share_episode">Baru saja menonton %1$s M%2$dE%3$d - %4$s! 🔥</string>
   <string name="text_share_list">Lihat daftar \"%s\" ini di Trakt! 📋</string>
@@ -1509,7 +1557,6 @@
   <string name="translated_value_video_type_trailer">Trailer</string>
   <string name="usage_title_library">Pustaka</string>
   <string name="usage_title_lists">Daftar</string>
-  <string name="usage_title_personal_activity">Aktivitas Pribadi</string>
   <string name="validation_text_list_name">Nama wajib diisi</string>
   <string name="validation_text_note">Catatan wajib diisi</string>
   <string name="validation_text_note_character_limit">Melebihi batas %d karakter</string>
@@ -1524,8 +1571,6 @@
   <string name="vip_feature_description_more_lists">Buat lebih banyak daftar kustom untuk mengatur acara dan film Anda persis seperti yang Anda inginkan.</string>
   <string name="vip_feature_description_more_to_come">Kami terus membangun fitur baru secara eksklusif untuk anggota VIP, dengan pembaruan menarik yang sudah dalam perjalanan.</string>
   <string name="vip_feature_description_plex_sync">Jaga agar perpustakaan Plex Anda tetap tersinkronisasi dengan sempurna dengan pembaruan otomatis yang lebih sering sepanjang hari.</string>
-  <string name="vip_feature_description_private_notes">Tambahkan lebih banyak catatan pribadi ke acara dan film Anda untuk mengingat pemikiran dan rekomendasi Anda.</string>
-  <string name="vip_feature_description_profile_customisation">Personalisasi profil Anda dengan header kustom dan jadikan keberadaan Trakt Anda unik milik Anda.</string>
   <string name="vip_feature_description_recaps">Dapatkan wawasan lebih dalam dengan ringkasan bulan dan tahun yang komprehensif yang menampilkan semua yang Anda tonton, nilai, dan temukan.</string>
   <string name="vip_feature_description_sentiment">Buka analisis sentimen yang lebih detail untuk acara dan film.</string>
   <string name="vip_feature_description_sentiment_trivia">Buka analisis sentimen terperinci dan trivia menarik tentang film dan acara yang Anda tonton.</string>
@@ -1544,11 +1589,9 @@
   <string name="vip_feature_title_more_lists">Lebih Banyak Daftar</string>
   <string name="vip_feature_title_more_to_come">Akan Lebih Banyak Lagi</string>
   <string name="vip_feature_title_plex_sync">Sinkronkan Plex lebih sering</string>
-  <string name="vip_feature_title_private_notes">Lebih Banyak Catatan Pribadi</string>
-  <string name="vip_feature_title_profile_customisation">Lebih Banyak Kustomisasi: Header Profil</string>
-  <string name="vip_feature_title_recaps">Lebih Banyak Ringkasan: Bulanan &amp; Tahunan</string>
+  <string name="vip_feature_title_recaps">Lebih Banyak Statistik: Ringkasan Bulanan &amp; Tahunan</string>
   <string name="vip_feature_title_sentiment">Sentimen</string>
-  <string name="vip_feature_title_sentiment_trivia">Info Lebih Lanjut: Sentimen + Trivia</string>
+  <string name="vip_feature_title_sentiment_trivia">Info Lebih Lanjut: Sentimen &amp; Trivia</string>
   <string name="vip_feature_title_streaming_services">Sinkronkan Lebih Banyak Layanan Streaming</string>
   <string name="vip_feature_title_streaming_sync">Sinkronisasi Streaming</string>
   <string name="vip_feature_title_support">Dukungan Lebih Baik: Forum &amp; Masukan</string>
@@ -1632,7 +1675,10 @@
   <string name="yir_2024_stats_card_hours">%s Jam</string>
   <string name="yir_2024_stats_card_plays">%s Tontonan</string>
   <string name="yir_2024_stats_intro_movies">Di %d, Anda menonton</string>
+  <string name="yir_2024_stats_intro_movies_monthly">Di %s, Anda menonton</string>
   <string name="yir_2024_stats_intro_shows">Di %d, Anda menonton</string>
+  <string name="yir_2024_stats_intro_shows_monthly">Di %s, Anda menonton</string>
+  <string name="yir_2024_stats_most_active_day">Hari paling aktif Anda adalah <b>%1$s</b> dengan <b>%2$s tontonan</b>.</string>
   <string name="yir_2024_stats_most_active_week">Minggu paling aktif Anda adalah <b>%1$s - %2$s</b> dengan <b>%3$s tontonan</b>.</string>
   <string name="yir_2024_stats_most_popular_time">Waktu paling populer Anda menonton adalah <b>%s</b>.</string>
   <string name="yir_2024_stats_per_day">Per Hari</string>
@@ -1643,6 +1689,9 @@
   <string name="yir_2024_stats_tooltip_hours">%s Jam</string>
   <string name="yir_2024_stats_tooltip_plays">%s Tontonan</string>
   <string name="yir_2024_stats_tooltip_week_label">Minggu %s</string>
+  <string name="yir_2024_streaming_intro">Ketersediaan di</string>
+  <string name="yir_2024_streaming_service_count">Jumlah Layanan</string>
+  <string name="yir_2024_streaming_title">Layanan Streaming</string>
   <string name="yir_2024_studio_count">Jumlah Studio</string>
   <string name="yir_2024_thanks_copy_directed">Anda melakukan pekerjaan luar biasa mengarahkan <b>%1$d</b>. Semoga sekuelnya lebih baik lagi di <b>%2$d</b>.</string>
   <string name="yir_2024_thanks_copy_recommend">Lanjutkan perjalanan Anda. Coba tonton salah satu acara atau film populer ini.</string>

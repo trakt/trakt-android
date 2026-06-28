@@ -178,10 +178,12 @@
   <string name="button_label_submit_report">Send rapport</string>
   <string name="button_label_sync_options">Vælg synkroniseringsmulighed</string>
   <string name="button_label_sync_streaming_service">Synkroniser %s</string>
+  <string name="button_label_toggle_favorite_service">Skift %s som favorit</string>
   <string name="button_label_toggle_genre">Skift %s genre</string>
   <string name="button_label_toggle_search_lists">Søg efter lister</string>
   <string name="button_label_toggle_search_media">Søg efter medier</string>
   <string name="button_label_toggle_search_people">Søg efter personer</string>
+  <string name="button_label_trivia_category_filter">Filtrer trivia efter kategori</string>
   <string name="button_label_trivia_no_spoilers">Ingen spoilere</string>
   <string name="button_label_trivia_spoilers">Spoilere</string>
   <string name="button_label_unblock">Fjern blokering af %s</string>
@@ -235,6 +237,7 @@
   <string name="button_text_add_note">Tilføj note</string>
   <string name="button_text_add_reply">Tilføj svar</string>
   <string name="button_text_add_review">Tilføj anmeldelse</string>
+  <string name="button_text_add_streaming_service">Tilføj streamingtjeneste</string>
   <string name="button_text_add_to_favorites">Føj til favoritter</string>
   <string name="button_text_apply">Anvend</string>
   <string name="button_text_approve_follow_request">Godkend anmodning</string>
@@ -294,6 +297,7 @@
   <string name="button_text_load_more">Indlæs mere</string>
   <string name="button_text_login">Log ind</string>
   <string name="button_text_logout">Log ud</string>
+  <string name="button_text_manage">Administrer</string>
   <string name="button_text_manage_lists">Administrer lister</string>
   <string name="button_text_manage_subscription">Administrer abonnement</string>
   <string name="button_text_manage_vip">Administrer abonnement</string>
@@ -312,6 +316,9 @@
   <string name="button_text_meet_team">Mød teamet</string>
   <string name="button_text_month_in_review">%s i overblik</string>
   <string name="button_text_more">%d mere</string>
+  <string name="button_text_move_to_bottom">Flyt til Bund</string>
+  <string name="button_text_move_to_position">Flyt til…</string>
+  <string name="button_text_move_to_top">Flyt til Top</string>
   <string name="button_text_movies">Film</string>
   <string name="button_text_no_services">Ingen tjenester</string>
   <string name="button_text_open_in_service">Åbn i %s</string>
@@ -342,6 +349,7 @@
   <string name="button_text_restore_rating_prompts">Gendan bedømmelsesprompter</string>
   <string name="button_text_restore_show">Gendan serie</string>
   <string name="button_text_retry">Prøv igen</string>
+  <string name="button_text_save">Gem</string>
   <string name="button_text_save_filters">Indstil som standard</string>
   <string name="button_text_set_cover_image">Indstil som coverbillede</string>
   <string name="button_text_settings">Indstillinger</string>
@@ -387,6 +395,7 @@
   <string name="button_text_view_history">Se historik</string>
   <string name="button_text_view_import_guidelines">Se retningslinjer</string>
   <string name="button_text_view_photo">Vis foto</string>
+  <string name="button_text_view_recommendation_sources">Hvorfor denne?</string>
   <string name="button_text_vip_upgrade">Opgrader</string>
   <string name="button_text_watch_again">Se igen</string>
   <string name="button_text_watch_until_here_anchor_end">Sluttidspunkt</string>
@@ -440,16 +449,18 @@
   <string name="description_export">Få en eksport af dine brugerdata i en enkelt ZIP-fil. Denne proces kan tage et stykke tid.</string>
   <string name="description_genres">Tilføj eller fjern dine %d favoritgenrer.</string>
   <string name="description_import">Importér dine data fra andre tjenester direkte i din browser.</string>
-  <string name="description_paused_items">Disse elementer blev tilføjet som pausere, da de ikke var mindst 80% set.</string>
+  <string name="description_paused_items">Disse elementer blev ikke set mindst 80%.</string>
   <string name="description_plex_manual_sync">Start en øjeblikkelig synkronisering af din Plex-sethistorik til Trakt.</string>
   <string name="description_plex_servers">Vælg den Plex-server, der skal synkroniseres med Trakt.</string>
   <string name="description_plex_sync">Forbind din Plex-konto for at synkronisere set historik, bedømmelser og samlinger med Trakt.</string>
   <string name="description_plex_sync_settings">Disse indstillinger styrer, hvilke datatyper der synkroniseres med Trakt.</string>
-  <string name="description_preview_features">Aktiver eller deaktiver forhåndsvisningsfunktioner, der er under udvikling. Disse funktioner kan være ustabile og kan ændres når som helst.</string>
-  <string name="description_skipped_items">Nyttig info til at identificere, hvad der blev sprunget over, og hvorfor. Alt i rødt fik elementet til at blive sprunget over.</string>
-  <string name="description_streaming_sync">Synkroniser automatisk din sete historie og vurderinger. Tilslut en tjeneste nedenfor, eller i de officielle Trakt mobilapps.</string>
+  <string name="description_preview_features">Prøv kommende funktioner, før de er bredt tilgængelige. Forhåndsviste funktioner kan ændre sig, når vi forfiner dem.</string>
+  <string name="description_skipped_items">Alt i rødt fik elementet til at blive sprunget over.</string>
+  <string name="description_streaming_services">Dine favoritter gør det lettere at finde indhold på de tjenester, du ser mest.</string>
+  <string name="description_streaming_sync">Synkroniser automatisk din set-historik og dine vurderinger.</string>
   <string name="description_sync_detail">Nogle detaljer om denne synkronisering.</string>
   <string name="dialog_prompt_media_share_image_format">Vælg et billedformat til deling.</string>
+  <string name="dialog_prompt_move_to_position">Angiv en ny position for \"%s\".</string>
   <string name="dialog_prompt_younify_data_sync">Vil du importere dine eksisterende data til din Trakt-konto, eller kun synkronisere nye data fremover?</string>
   <string name="dialog_title_comment">Anmeldelse</string>
   <string name="dialog_title_comments">Anmeldelser</string>
@@ -462,6 +473,7 @@
   <string name="drawer_title_add_note">Note</string>
   <string name="drawer_title_notes">Noter</string>
   <string name="drawer_title_people">Personer</string>
+  <string name="drawer_title_recommendation_sources">Hvorfor blev dette anbefalet?</string>
   <string name="drawer_title_reorder_list">Træk for at omarrangere</string>
   <string name="drawer_title_sort">Sortér efter</string>
   <string name="drawer_title_streak_activity">Daglig serieaktivitet</string>
@@ -589,6 +601,7 @@
   <string name="header_status">Status</string>
   <string name="header_stream_on">Stream på</string>
   <string name="header_streaming">Tilgængelighed</string>
+  <string name="header_streaming_services">Streamingtjenester</string>
   <string name="header_streaming_sync">Streaming-synkronisering</string>
   <string name="header_studio">Studie</string>
   <string name="header_sync_detail">Synkroniserings-ID %s</string>
@@ -624,10 +637,12 @@
   <string name="import_summary_watchlist">%d elementer til Overvågningsliste</string>
   <string name="import_vip_limit_exceeded">Din import overskrider grænsen for gratis niveau. Opgrader til VIP for at importere alle %d elementer.</string>
   <string name="input_label_search_credit_members">Søg personer</string>
+  <string name="input_placeholder_filter_services">Filtrer streamingtjenester</string>
   <string name="input_placeholder_lists_description">Beskrivelse (valgfri)</string>
   <string name="input_placeholder_lists_name">Navn</string>
   <string name="input_placeholder_note_drop">Hvorfor droppede du denne titel?</string>
   <string name="input_placeholder_note_favorite">Hvorfor favoriserede du denne titel?</string>
+  <string name="input_placeholder_reorder_position">Position (1–%d)</string>
   <string name="input_placeholder_report_message">Angiv detaljer om denne rapport</string>
   <string name="input_placeholder_report_reason">Vælg en årsag</string>
   <string name="input_placeholder_search">Søg serier &amp; film…</string>
@@ -645,6 +660,7 @@
   <string name="input_prompt_rename_list">Omdøb din liste</string>
   <string name="input_prompt_username">Hvad skal dit brugernavn være?</string>
   <string name="label_drag_image_to_adjust">Træk billedet for at justere</string>
+  <string name="label_favorites">Favoritter</string>
   <string name="label_plex_connected">Forbundet til Plex</string>
   <string name="label_plex_connection">Forbindelse</string>
   <string name="label_plex_history_date">Dato</string>
@@ -674,7 +690,7 @@
   <string name="label_report_reason_too_short">For kort</string>
   <string name="label_stats_active_days">Aktive dage</string>
   <string name="label_stats_average">Gns.</string>
-  <string name="label_stats_avg_per_day">Gns. / Dag</string>
+  <string name="label_stats_avg_per_day">Dagligt gennemsnit</string>
   <string name="label_stats_best_day">Bedste dag</string>
   <string name="label_stats_busiest_day">Travleste dag</string>
   <string name="label_stats_comments">Kommentarer</string>
@@ -691,8 +707,8 @@
   <string name="label_stats_screen_time_share">Vågne timer</string>
   <string name="label_stats_screen_time_total">Total</string>
   <string name="label_stats_shows">Serier</string>
+  <string name="label_streaming_country">Land</string>
   <string name="limit_title_digital_library">Digitalt bibliotek</string>
-  <string name="limit_title_notes">Noter</string>
   <string name="limit_title_offline_library">Offline-bibliotek</string>
   <string name="limit_title_personal_lists">Personlige lister</string>
   <string name="limit_title_ratings">Bedømmelser</string>
@@ -709,6 +725,7 @@
   <string name="link_label_github">GitHub</string>
   <string name="link_label_install_pwa">Installer PWA</string>
   <string name="link_label_ios_app">iOS App</string>
+  <string name="link_label_open_preview_feature">Åbn %s</string>
   <string name="link_label_open_review">Åbn anmeldelse af %s</string>
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_view_social_activities">Se sociale aktiviteter for %s</string>
@@ -729,7 +746,7 @@
   <string name="link_text_preview_settings">Forhåndsvisning</string>
   <string name="link_text_privacy">Privatliv</string>
   <string name="link_text_service_status">Trakt-tjenestestatus</string>
-  <string name="link_text_streaming_sync_settings">Streaming-synkronisering</string>
+  <string name="link_text_streaming_sync_settings">Streamingtjenester</string>
   <string name="link_text_support">Support</string>
   <string name="link_text_terms">Vilkår</string>
   <string name="link_text_terms_of_use">Brugsbetingelser</string>
@@ -786,6 +803,9 @@
   <string name="list_title_recently_searched_movies">Senest søgte film</string>
   <string name="list_title_recently_searched_shows">Senest søgte serier</string>
   <string name="list_title_recently_watched">Senest set</string>
+  <string name="list_title_recommendation_sources_activity">Du har set</string>
+  <string name="list_title_recommendation_sources_favorite">Du elskede</string>
+  <string name="list_title_recommendation_sources_subgenre">Du kan lide</string>
   <string name="list_title_recommended">Anbefalede</string>
   <string name="list_title_recommended_movies">Anbefalede film</string>
   <string name="list_title_recommended_shows">Anbefalede serier</string>
@@ -832,6 +852,8 @@
   <string name="match_pill_anchor">Match:</string>
   <string name="match_pill_aria_label">%1$d% match, %2$s. Åbn matchdetaljer.</string>
   <string name="match_pill_loading_aria_label">Beregner matchscore</string>
+  <string name="mir_share_text">Se min %s Månedsoversigt på Trakt</string>
+  <string name="mir_title_month_in_review">Månedsresumé</string>
   <string name="notes_placeholder_text">Efterlad en note næste gang du favoritter eller dropper en titel.</string>
   <string name="option_text_africa">Afrika</string>
   <string name="option_text_all">Alle</string>
@@ -852,6 +874,12 @@
   <string name="option_text_theme_dark">Mørk</string>
   <string name="option_text_theme_light">Lys</string>
   <string name="option_text_theme_system">System</string>
+  <string name="option_text_trivia_category_all">Alle</string>
+  <string name="option_text_trivia_category_bts">Bag kulisserne</string>
+  <string name="option_text_trivia_category_cast_n_crew">Medvirkende og Stab</string>
+  <string name="option_text_trivia_category_impact_n_legacy">Indflydelse og arv</string>
+  <string name="option_text_trivia_category_real_world_connections">Forbindelser til den virkelige verden</string>
+  <string name="option_text_trivia_category_story_n_themes">Historie og temaer</string>
   <string name="page_description_create_list">Indtast et navn og en beskrivelse for din liste.</string>
   <string name="page_description_edit_list">Rediger dine listdetaljer.</string>
   <string name="page_description_home">Spor dine serier og film med Trakt Web — opdag, hvad der trender, få personlige anbefalinger, og gå aldrig glip af det næste.</string>
@@ -911,6 +939,20 @@
   <string name="page_title_where_to_watch">Hvor kan man se</string>
   <string name="page_title_year_in_review">%s i overblik</string>
   <string name="page_title_year_to_date">År til dato</string>
+  <string name="preview_feature_description_edit_mode">Aktiver kontroller til at skjule eller vise konfigurerbare sektioner i hele appen.</string>
+  <string name="preview_feature_description_month_in_review">Forhåndsvis månedsresumé, der nu kører direkte i V3.</string>
+  <string name="preview_feature_description_plex_sync">Forbind Plex for at synkronisere din sehistorik, bedømmelser og bibliotek til Trakt. Inkluderer forbindelse, servervalg og synkroniseringsværktøjer.</string>
+  <string name="preview_feature_description_scoped_favorites">Tidsbegræns favoritlister ved at vise indeværende års favoritter på profiler og gruppere den fulde favoritliste efter år.</string>
+  <string name="preview_feature_description_social_activities">Vis, hvad dem du følger har set, føjet til overvågningsliste, kommenteret eller bedømt en film, serie eller episode direkte på mediesider.</string>
+  <string name="preview_feature_description_streaming_sync">Forbind understøttede streamingtjenester, så sehistorik og bedømmelser automatisk kan synkroniseres tilbage til Trakt. Forbindelsesflowet fra web er stadig i beta.</string>
+  <string name="preview_feature_description_year_in_review">Forhåndsvis årsresumé, der nu kører direkte i V3.</string>
+  <string name="preview_feature_title_edit_mode">Redigeringstilstand</string>
+  <string name="preview_feature_title_month_in_review">Månedsresumé</string>
+  <string name="preview_feature_title_plex_sync">Plex Synkronisering</string>
+  <string name="preview_feature_title_scoped_favorites">Afgrænsede favoritter</string>
+  <string name="preview_feature_title_social_activities">Sociale aktiviteter</string>
+  <string name="preview_feature_title_streaming_sync">Streaming-synkronisering</string>
+  <string name="preview_feature_title_year_in_review">Årsresumé</string>
   <string name="reset_status_cleared">Huskeliste ryddet.</string>
   <string name="section_title_season_progress">Sæson %d status</string>
   <string name="section_title_specials_progress">Specials status</string>
@@ -921,6 +963,7 @@
   <string name="switch_label_mark_as_spoiler">Markér som spoiler</string>
   <string name="switch_label_multiple_watches">Aktiver eller deaktiver flere visninger</string>
   <string name="switch_label_private">Er profil privat</string>
+  <string name="switch_label_rating_prompt">Aktiver eller deaktiver bedømmelsesprompter</string>
   <string name="switch_label_spoilers">Vis spoilere</string>
   <string name="switch_label_toggle_christmas_filters">Slå jule-filtre til/fra</string>
   <string name="switch_label_toggle_halloween_filters">Slå halloween-filtre til/fra</string>
@@ -1080,6 +1123,7 @@
   <string name="text_export_status_fetching">Henter %s…</string>
   <string name="text_export_status_zipping">Zipper filer…</string>
   <string name="text_exporting">Eksporterer… %s</string>
+  <string name="text_favorites_limit_reached">Du kan vælge op til %s tjenester</string>
   <string name="text_first_play_this_month">Første visning denne måned</string>
   <string name="text_footer_category_community">Fællesskab</string>
   <string name="text_footer_category_legal">Juridisk</string>
@@ -1136,6 +1180,7 @@
   <string name="text_no_data_synced">Ingen data er synkroniseret endnu.</string>
   <string name="text_no_paused_items">Ingen pausere elementer.</string>
   <string name="text_no_rating">Ingen vurdering</string>
+  <string name="text_no_services_match_filter">Ingen tjenester matcher dit filter.</string>
   <string name="text_no_skipped_items">Ingen oversprungne elementer.</string>
   <string name="text_notification_episode_release">S%1$d • A%2$d er nu tilgængelig.</string>
   <string name="text_notification_episodes_release">S%1$d • A%2$d-%3$d er nu tilgængelige.</string>
@@ -1202,6 +1247,7 @@
   <string name="text_season_number">Sæson %d</string>
   <string name="text_season_specials">Særafsnit</string>
   <string name="text_sentiment_example">Eksempel fra \"%s\"</string>
+  <string name="text_services_selected">%1$s / %2$s valgt · %3$s</string>
   <string name="text_settings_adjust_delivery">Notifikationstidspunkt</string>
   <string name="text_settings_adjust_delivery_description">Vælg, hvornår du vil modtage notifikationer.</string>
   <string name="text_settings_clear_cover">Ryd det aktuelle coverbillede og vend tilbage til standardindstillingen.</string>
@@ -1213,6 +1259,8 @@
   <string name="text_settings_notification_time_60_min">1 time før</string>
   <string name="text_settings_notification_time_now">Ved udgivelse</string>
   <string name="text_settings_play_subscriptions">Google Play-abonnementer</string>
+  <string name="text_settings_show_rating_prompt">Bedømmelsesprompter</string>
+  <string name="text_settings_show_rating_prompt_description">Bliv bedt om at bedømme film og episoder efter at have set dem.</string>
   <string name="text_settings_translations">Hjælp med at oversætte appen og ret fejl for dit sprog.</string>
   <string name="text_share_episode">Har lige set %1$s SA%2$dE%3$d - %4$s! 🔥</string>
   <string name="text_share_list">Tjek denne \"%s\" liste ud på Trakt! 📋</string>
@@ -1509,7 +1557,6 @@
   <string name="translated_value_video_type_trailer">Trailer</string>
   <string name="usage_title_library">Bibliotek</string>
   <string name="usage_title_lists">Lister</string>
-  <string name="usage_title_personal_activity">Personlig aktivitet</string>
   <string name="validation_text_list_name">Navn er påkrævet</string>
   <string name="validation_text_note">Note er påkrævet</string>
   <string name="validation_text_note_character_limit">Overskrider tegnbegrænsningen på %d</string>
@@ -1524,8 +1571,6 @@
   <string name="vip_feature_description_more_lists">Opret endnu flere brugerdefinerede lister for at organisere dine serier og film præcis, som du vil.</string>
   <string name="vip_feature_description_more_to_come">Vi bygger konstant nye funktioner eksklusivt til VIP-medlemmer, med spændende opdateringer allerede på vej.</string>
   <string name="vip_feature_description_plex_sync">Hold dit Plex-bibliotek perfekt synkroniseret med hyppigere automatiske opdateringer i løbet af dagen.</string>
-  <string name="vip_feature_description_private_notes">Tilføj tonsvis af flere personlige noter til dine serier og film for at huske dine tanker og anbefalinger.</string>
-  <string name="vip_feature_description_profile_customisation">Tilpas din profil med brugerdefinerede headere og gør din Trakt-tilstedeværelse unik.</string>
   <string name="vip_feature_description_recaps">Få dybere indsigter med omfattende måneds- og årsopsummeringer, der viser alt, hvad du har set, bedømt og opdaget.</string>
   <string name="vip_feature_description_sentiment">Lås op for mere detaljeret sentimentanalyse for serier og film.</string>
   <string name="vip_feature_description_sentiment_trivia">Lås op for detaljeret sentimentanalyse og fascinerende trivia om de film og serier, du ser.</string>
@@ -1544,11 +1589,9 @@
   <string name="vip_feature_title_more_lists">Flere lister</string>
   <string name="vip_feature_title_more_to_come">Mere på vej</string>
   <string name="vip_feature_title_plex_sync">Synkroniser Plex hyppigere</string>
-  <string name="vip_feature_title_private_notes">Flere private noter</string>
-  <string name="vip_feature_title_profile_customisation">Mere tilpasning: Profilheader</string>
-  <string name="vip_feature_title_recaps">Flere opsummeringer: Månedlig &amp; Årlig</string>
+  <string name="vip_feature_title_recaps">Flere statistikker: Månedlig &amp; Årlig Opsummering</string>
   <string name="vip_feature_title_sentiment">Holdning</string>
-  <string name="vip_feature_title_sentiment_trivia">Mere info: Sentiment + Trivia</string>
+  <string name="vip_feature_title_sentiment_trivia">Mere info: Sentiment &amp; Trivia</string>
   <string name="vip_feature_title_streaming_services">Synkroniser flere streamingtjenester</string>
   <string name="vip_feature_title_streaming_sync">Streaming-synkronisering</string>
   <string name="vip_feature_title_support">Bedre support: Forum &amp; feedback</string>
@@ -1632,7 +1675,10 @@
   <string name="yir_2024_stats_card_hours">%s Timer</string>
   <string name="yir_2024_stats_card_plays">%s Visninger</string>
   <string name="yir_2024_stats_intro_movies">I %d så du</string>
+  <string name="yir_2024_stats_intro_movies_monthly">I %s så du</string>
   <string name="yir_2024_stats_intro_shows">I %d så du</string>
+  <string name="yir_2024_stats_intro_shows_monthly">I %s så du</string>
+  <string name="yir_2024_stats_most_active_day">Din mest aktive dag var <b>%1$s</b> med <b>%2$s afspilninger</b>.</string>
   <string name="yir_2024_stats_most_active_week">Din mest aktive uge var <b>%1$s - %2$s</b> med <b>%3$s afspilninger</b>.</string>
   <string name="yir_2024_stats_most_popular_time">Det mest populære tidspunkt, du så, var <b>%s</b>.</string>
   <string name="yir_2024_stats_per_day">Pr. dag</string>
@@ -1643,6 +1689,9 @@
   <string name="yir_2024_stats_tooltip_hours">%s Timer</string>
   <string name="yir_2024_stats_tooltip_plays">%s Visninger</string>
   <string name="yir_2024_stats_tooltip_week_label">Uge %s</string>
+  <string name="yir_2024_streaming_intro">Tilgængelighed på</string>
+  <string name="yir_2024_streaming_service_count">Antal tjenester</string>
+  <string name="yir_2024_streaming_title">Streamingtjenester</string>
   <string name="yir_2024_studio_count">Antal studier}]}``` 24641: </string>
   <string name="yir_2024_thanks_copy_directed">Du instruerede <b>%1$d</b> på en episk måde. Her er til en endnu bedre efterfølger i <b>%2$d</b>.</string>
   <string name="yir_2024_thanks_copy_recommend">Fortsæt din rejse. Prøv at se en af disse populære serier eller film.</string>

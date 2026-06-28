@@ -178,10 +178,12 @@
   <string name="button_label_submit_report">提交举报</string>
   <string name="button_label_sync_options">选择同步选项</string>
   <string name="button_label_sync_streaming_service">同步 %s</string>
+  <string name="button_label_toggle_favorite_service">将 %s 设为收藏</string>
   <string name="button_label_toggle_genre">切换 %s 类型</string>
   <string name="button_label_toggle_search_lists">搜索列表</string>
   <string name="button_label_toggle_search_media">搜索媒体</string>
   <string name="button_label_toggle_search_people">搜索人物</string>
+  <string name="button_label_trivia_category_filter">按类别筛选花絮</string>
   <string name="button_label_trivia_no_spoilers">无剧透</string>
   <string name="button_label_trivia_spoilers">剧透</string>
   <string name="button_label_unblock">解除屏蔽 %s</string>
@@ -235,6 +237,7 @@
   <string name="button_text_add_note">添加笔记</string>
   <string name="button_text_add_reply">添加回复</string>
   <string name="button_text_add_review">添加评论</string>
+  <string name="button_text_add_streaming_service">添加流媒体服务</string>
   <string name="button_text_add_to_favorites">添加到我的最爱</string>
   <string name="button_text_apply">应用</string>
   <string name="button_text_approve_follow_request">批准请求</string>
@@ -294,6 +297,7 @@
   <string name="button_text_load_more">加载更多</string>
   <string name="button_text_login">登录</string>
   <string name="button_text_logout">退出</string>
+  <string name="button_text_manage">管理</string>
   <string name="button_text_manage_lists">管理列表</string>
   <string name="button_text_manage_subscription">管理订阅</string>
   <string name="button_text_manage_vip">管理订阅</string>
@@ -312,6 +316,9 @@
   <string name="button_text_meet_team">认识团队</string>
   <string name="button_text_month_in_review">%s 月度回顾</string>
   <string name="button_text_more">更多 %d</string>
+  <string name="button_text_move_to_bottom">移至底部</string>
+  <string name="button_text_move_to_position">移至…</string>
+  <string name="button_text_move_to_top">移至顶部</string>
   <string name="button_text_movies">电影</string>
   <string name="button_text_no_services">无服务</string>
   <string name="button_text_open_in_service">在 %s 中打开</string>
@@ -342,6 +349,7 @@
   <string name="button_text_restore_rating_prompts">恢复评分提示</string>
   <string name="button_text_restore_show">恢复剧集</string>
   <string name="button_text_retry">重试</string>
+  <string name="button_text_save">保存</string>
   <string name="button_text_save_filters">设为默认</string>
   <string name="button_text_set_cover_image">设为封面图片</string>
   <string name="button_text_settings">设置</string>
@@ -387,6 +395,7 @@
   <string name="button_text_view_history">查看历史记录</string>
   <string name="button_text_view_import_guidelines">查看指南</string>
   <string name="button_text_view_photo">查看照片</string>
+  <string name="button_text_view_recommendation_sources">为何推荐？</string>
   <string name="button_text_vip_upgrade">升级</string>
   <string name="button_text_watch_again">再次观看</string>
   <string name="button_text_watch_until_here_anchor_end">结束时间</string>
@@ -440,16 +449,18 @@
   <string name="description_export">将你的用户数据导出为单个 ZIP 文件。此过程可能需要一些时间。</string>
   <string name="description_genres">添加或移除你的 %d 个最喜欢的类型。</string>
   <string name="description_import">直接在浏览器中从其他服务导入您的数据。</string>
-  <string name="description_paused_items">这些项目被添加为已暂停，因为它们的观看进度未达到 80%。</string>
+  <string name="description_paused_items">这些项目未观看至少80%。</string>
   <string name="description_plex_manual_sync">立即将您的Plex观看历史同步到Trakt。</string>
   <string name="description_plex_servers">选择要与Trakt同步的Plex服务器。</string>
   <string name="description_plex_sync">连接您的Plex帐户，将观看历史、评分和收藏与Trakt同步。</string>
   <string name="description_plex_sync_settings">这些设置控制哪些数据类型同步到Trakt。</string>
-  <string name="description_preview_features">启用或禁用正在开发中的预览功能。这些功能可能不稳定，并可能随时更改。</string>
-  <string name="description_skipped_items">一些有用的信息，可帮助识别跳过的内容及原因。任何红色内容都导致项目被跳过。</string>
-  <string name="description_streaming_sync">自动同步您的观看历史和评分。请在下方或在 Trakt 官方移动应用中连接服务。</string>
+  <string name="description_preview_features">在正式推出前试用即将发布的功能。预览功能可能会在我们改进时发生变化。</string>
+  <string name="description_skipped_items">任何红色项目都导致了该项目被跳过。</string>
+  <string name="description_streaming_services">您的收藏夹让您更容易在您常观看的服务上找到内容。</string>
+  <string name="description_streaming_sync">自动同步您的观看历史和评分。</string>
   <string name="description_sync_detail">此同步的一些详细信息。</string>
   <string name="dialog_prompt_media_share_image_format">选择要分享的图片格式。</string>
+  <string name="dialog_prompt_move_to_position">为 \"%s\" 输入新位置。</string>
   <string name="dialog_prompt_younify_data_sync">你想将现有数据导入到你的 Trakt 账户，还是只从现在开始同步新数据？</string>
   <string name="dialog_title_comment">评论</string>
   <string name="dialog_title_comments">评论</string>
@@ -462,6 +473,7 @@
   <string name="drawer_title_add_note">笔记</string>
   <string name="drawer_title_notes">笔记</string>
   <string name="drawer_title_people">人物</string>
+  <string name="drawer_title_recommendation_sources">为何推荐此内容？</string>
   <string name="drawer_title_reorder_list">拖动以重新排序</string>
   <string name="drawer_title_sort">排序方式</string>
   <string name="drawer_title_streak_activity">日常连击活动</string>
@@ -589,6 +601,7 @@
   <string name="header_status">状态</string>
   <string name="header_stream_on">在…播放</string>
   <string name="header_streaming">可用性</string>
+  <string name="header_streaming_services">流媒体服务</string>
   <string name="header_streaming_sync">流媒体同步</string>
   <string name="header_studio">制片公司</string>
   <string name="header_sync_detail">同步 ID %s</string>
@@ -624,10 +637,12 @@
   <string name="import_summary_watchlist">待看列表有 %d 个项目</string>
   <string name="import_vip_limit_exceeded">您的导入超出了免费层级限制。升级到 VIP 以导入所有 %d 个项目。</string>
   <string name="input_label_search_credit_members">搜索人物</string>
+  <string name="input_placeholder_filter_services">筛选流媒体服务</string>
   <string name="input_placeholder_lists_description">描述（可选）</string>
   <string name="input_placeholder_lists_name">名称</string>
   <string name="input_placeholder_note_drop">您为什么放弃此影片？</string>
   <string name="input_placeholder_note_favorite">您最爱此影片的理由是？</string>
+  <string name="input_placeholder_reorder_position">位置 (1–%d)</string>
   <string name="input_placeholder_report_message">提供关于此举报的详细信息</string>
   <string name="input_placeholder_report_reason">选择原因</string>
   <string name="input_placeholder_search">搜索剧集和电影…</string>
@@ -645,6 +660,7 @@
   <string name="input_prompt_rename_list">重命名你的列表</string>
   <string name="input_prompt_username">你的用户名应该是什么？</string>
   <string name="label_drag_image_to_adjust">拖动图片调整</string>
+  <string name="label_favorites">我的最爱</string>
   <string name="label_plex_connected">已连接到Plex</string>
   <string name="label_plex_connection">连接</string>
   <string name="label_plex_history_date">日期</string>
@@ -674,7 +690,7 @@
   <string name="label_report_reason_too_short">太短</string>
   <string name="label_stats_active_days">活跃天数</string>
   <string name="label_stats_average">平均</string>
-  <string name="label_stats_avg_per_day">平均/天</string>
+  <string name="label_stats_avg_per_day">每日平均</string>
   <string name="label_stats_best_day">最佳日</string>
   <string name="label_stats_busiest_day">最忙的一天</string>
   <string name="label_stats_comments">评论</string>
@@ -691,8 +707,8 @@
   <string name="label_stats_screen_time_share">清醒时间</string>
   <string name="label_stats_screen_time_total">总计</string>
   <string name="label_stats_shows">剧集</string>
+  <string name="label_streaming_country">国家/地区</string>
   <string name="limit_title_digital_library">数字媒体库</string>
-  <string name="limit_title_notes">笔记</string>
   <string name="limit_title_offline_library">离线媒体库</string>
   <string name="limit_title_personal_lists">个人列表</string>
   <string name="limit_title_ratings">评分</string>
@@ -709,6 +725,7 @@
   <string name="link_label_github">GitHub</string>
   <string name="link_label_install_pwa">安装 PWA</string>
   <string name="link_label_ios_app">iOS 应用</string>
+  <string name="link_label_open_preview_feature">打开 %s</string>
   <string name="link_label_open_review">%s的评论</string>
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_view_social_activities">查看%s的社交动态</string>
@@ -729,7 +746,7 @@
   <string name="link_text_preview_settings">预览</string>
   <string name="link_text_privacy">隐私</string>
   <string name="link_text_service_status">Trakt 服务状态</string>
-  <string name="link_text_streaming_sync_settings">流媒体同步</string>
+  <string name="link_text_streaming_sync_settings">流媒体服务</string>
   <string name="link_text_support">支持</string>
   <string name="link_text_terms">条款</string>
   <string name="link_text_terms_of_use">使用条款</string>
@@ -786,6 +803,9 @@
   <string name="list_title_recently_searched_movies">最近搜索的电影</string>
   <string name="list_title_recently_searched_shows">最近搜索的节目</string>
   <string name="list_title_recently_watched">最近观看</string>
+  <string name="list_title_recommendation_sources_activity">你已观看</string>
+  <string name="list_title_recommendation_sources_favorite">你喜爱过</string>
+  <string name="list_title_recommendation_sources_subgenre">你喜欢</string>
   <string name="list_title_recommended">推荐</string>
   <string name="list_title_recommended_movies">推荐电影</string>
   <string name="list_title_recommended_shows">推荐剧集</string>
@@ -832,6 +852,8 @@
   <string name="match_pill_anchor">匹配:</string>
   <string name="match_pill_aria_label">%1$d% 匹配，%2$s。打开匹配详情。</string>
   <string name="match_pill_loading_aria_label">正在计算匹配度</string>
+  <string name="mir_share_text">在 Trakt 上查看我的 %s 月度回顾</string>
+  <string name="mir_title_month_in_review">月度回顾</string>
   <string name="notes_placeholder_text">下次您收藏或放弃某部影片时留下笔记。</string>
   <string name="option_text_africa">非洲</string>
   <string name="option_text_all">全部</string>
@@ -852,6 +874,12 @@
   <string name="option_text_theme_dark">深色</string>
   <string name="option_text_theme_light">浅色</string>
   <string name="option_text_theme_system">系统</string>
+  <string name="option_text_trivia_category_all">全部</string>
+  <string name="option_text_trivia_category_bts">幕后花絮</string>
+  <string name="option_text_trivia_category_cast_n_crew">演职人员</string>
+  <string name="option_text_trivia_category_impact_n_legacy">影响与传承</string>
+  <string name="option_text_trivia_category_real_world_connections">现实世界联系</string>
+  <string name="option_text_trivia_category_story_n_themes">故事与主题</string>
   <string name="page_description_create_list">输入你的列表名称和描述。</string>
   <string name="page_description_edit_list">编辑你的列表详情。</string>
   <string name="page_description_home">使用 Trakt Web 追踪你的电视节目和电影 — 发现热门内容，获取个性化推荐，绝不错过任何新内容。</string>
@@ -911,6 +939,20 @@
   <string name="page_title_where_to_watch">观看平台</string>
   <string name="page_title_year_in_review">%s 年回顾</string>
   <string name="page_title_year_to_date">年至今</string>
+  <string name="preview_feature_description_edit_mode">启用控件，用于隐藏或显示应用程序中可配置的部分。</string>
+  <string name="preview_feature_description_month_in_review">预览月度回顾，现在可在 V3 中直接运行。</string>
+  <string name="preview_feature_description_plex_sync">连接 Plex 以将您的观看历史、评分和媒体库同步到 Trakt。包括连接、服务器选择和同步工具。</string>
+  <string name="preview_feature_description_scoped_favorites">通过在个人资料上显示当年的收藏以及按年份分组完整的收藏列表来限制收藏列表的时间范围。</string>
+  <string name="preview_feature_description_social_activities">直接在媒体页面上显示您关注的人观看、添加到观看列表、评论或评分的电影、节目或剧集。</string>
+  <string name="preview_feature_description_streaming_sync">连接受支持的流媒体服务，以便观看历史和评分可以自动同步回 Trakt。网页连接流程仍处于测试阶段。</string>
+  <string name="preview_feature_description_year_in_review">预览年度回顾，现在可在 V3 中直接运行。</string>
+  <string name="preview_feature_title_edit_mode">编辑模式</string>
+  <string name="preview_feature_title_month_in_review">月度回顾</string>
+  <string name="preview_feature_title_plex_sync">Plex同步</string>
+  <string name="preview_feature_title_scoped_favorites">限定范围的收藏</string>
+  <string name="preview_feature_title_social_activities">社交动态</string>
+  <string name="preview_feature_title_streaming_sync">流媒体同步</string>
+  <string name="preview_feature_title_year_in_review">年度回顾</string>
   <string name="reset_status_cleared">待看列表已清除。</string>
   <string name="section_title_season_progress">第 %d 季 进度</string>
   <string name="section_title_specials_progress">特辑进度</string>
@@ -921,6 +963,7 @@
   <string name="switch_label_mark_as_spoiler">标记为剧透</string>
   <string name="switch_label_multiple_watches">启用或禁用多次观看</string>
   <string name="switch_label_private">资料是否私密</string>
+  <string name="switch_label_rating_prompt">启用或禁用评分提示</string>
   <string name="switch_label_spoilers">显示剧透</string>
   <string name="switch_label_toggle_christmas_filters">切换圣诞节筛选器</string>
   <string name="switch_label_toggle_halloween_filters">切换万圣节筛选器</string>
@@ -1080,6 +1123,7 @@
   <string name="text_export_status_fetching">正在获取 %s…</string>
   <string name="text_export_status_zipping">正在压缩文件…</string>
   <string name="text_exporting">正在导出… %s</string>
+  <string name="text_favorites_limit_reached">您最多可以选择 %s 项服务</string>
   <string name="text_first_play_this_month">本月首次播放</string>
   <string name="text_footer_category_community">社区</string>
   <string name="text_footer_category_legal">法律</string>
@@ -1136,6 +1180,7 @@
   <string name="text_no_data_synced">尚未同步任何数据。</string>
   <string name="text_no_paused_items">无已暂停项目。</string>
   <string name="text_no_rating">无评分</string>
+  <string name="text_no_services_match_filter">没有服务符合您的筛选条件。</string>
   <string name="text_no_skipped_items">无已跳过项目。</string>
   <string name="text_notification_episode_release">S%1$d • E%2$d 现已推出。</string>
   <string name="text_notification_episodes_release">S%1$d • E%2$d-%3$d 现已推出。</string>
@@ -1202,6 +1247,7 @@
   <string name="text_season_number">第 %d 季</string>
   <string name="text_season_specials">特别篇</string>
   <string name="text_sentiment_example">来自“%s”的示例</string>
+  <string name="text_services_selected">已选择 %1$s / %2$s · %3$s</string>
   <string name="text_settings_adjust_delivery">通知时间</string>
   <string name="text_settings_adjust_delivery_description">选择何时收到通知。</string>
   <string name="text_settings_clear_cover">清除当前封面图片并恢复为默认。</string>
@@ -1213,6 +1259,8 @@
   <string name="text_settings_notification_time_60_min">提前 1 小时</string>
   <string name="text_settings_notification_time_now">发布时</string>
   <string name="text_settings_play_subscriptions">Google Play 订阅</string>
+  <string name="text_settings_show_rating_prompt">评分提示</string>
+  <string name="text_settings_show_rating_prompt_description">观看后提示对电影和剧集进行评分。</string>
   <string name="text_settings_translations">帮助翻译应用并修正您语言的错误。</string>
   <string name="text_share_episode">刚看了 %1$s 第 %2$d 季第 %3$d 集 - %4$s！🔥</string>
   <string name="text_share_list">在 Trakt 上查看这个“%s”列表！📋</string>
@@ -1509,7 +1557,6 @@
   <string name="translated_value_video_type_trailer">预告片</string>
   <string name="usage_title_library">媒体库</string>
   <string name="usage_title_lists">列表</string>
-  <string name="usage_title_personal_activity">个人活动</string>
   <string name="validation_text_list_name">名称为必填项</string>
   <string name="validation_text_note">笔记为必填项</string>
   <string name="validation_text_note_character_limit">超过 %d 字符限制</string>
@@ -1524,8 +1571,6 @@
   <string name="vip_feature_description_more_lists">创建更多自定义列表，以您想要的方式整理您的节目和电影。</string>
   <string name="vip_feature_description_more_to_come">我们正在不断地为 VIP 会员独家开发新功能，令人兴奋的更新已在路上。</string>
   <string name="vip_feature_description_plex_sync">通过全天更频繁的自动更新，使您的 Plex 媒体库完美同步。</string>
-  <string name="vip_feature_description_private_notes">为您的节目和电影添加更多个人笔记，以记住您的想法和推荐。</string>
-  <string name="vip_feature_description_profile_customisation">使用自定义标题个性化您的个人资料，让您的 Trakt 存在独一无二。</string>
   <string name="vip_feature_description_recaps">通过全面的月度与年度回顾，深入了解您观看、评分和发现的所有内容。</string>
   <string name="vip_feature_description_sentiment">解锁电影和节目更详细的情感分析。</string>
   <string name="vip_feature_description_sentiment_trivia">解锁关于您观看的电影和节目的详细情感分析和精彩趣闻。</string>
@@ -1544,9 +1589,7 @@
   <string name="vip_feature_title_more_lists">更多列表</string>
   <string name="vip_feature_title_more_to_come">更多内容即将推出</string>
   <string name="vip_feature_title_plex_sync">更频繁地同步 Plex</string>
-  <string name="vip_feature_title_private_notes">更多私人笔记</string>
-  <string name="vip_feature_title_profile_customisation">更多自定义：个人资料标题</string>
-  <string name="vip_feature_title_recaps">更多回顾：月度和年度</string>
+  <string name="vip_feature_title_recaps">更多统计：月度与年度回顾</string>
   <string name="vip_feature_title_sentiment">社区情绪</string>
   <string name="vip_feature_title_sentiment_trivia">更多信息：情感 + 趣闻</string>
   <string name="vip_feature_title_streaming_services">同步更多流媒体服务</string>
@@ -1632,7 +1675,10 @@
   <string name="yir_2024_stats_card_hours">%s 小时</string>
   <string name="yir_2024_stats_card_plays">%s 次播放</string>
   <string name="yir_2024_stats_intro_movies">在 %d 年，您观看了</string>
+  <string name="yir_2024_stats_intro_movies_monthly">在 %s，您观看了</string>
   <string name="yir_2024_stats_intro_shows">在 %d 年，您观看了</string>
+  <string name="yir_2024_stats_intro_shows_monthly">在 %s，您观看了</string>
+  <string name="yir_2024_stats_most_active_day">您最活跃的一天是 <b>%1$s</b>，共有 <b>%2$s 次播放</b></string>
   <string name="yir_2024_stats_most_active_week">您最活跃的一周是 <b>%1$s - %2$s</b>，共 <b>%3$s 次播放</b>。</string>
   <string name="yir_2024_stats_most_popular_time">您最受欢迎的观看时间是 <b>%s</b>。</string>
   <string name="yir_2024_stats_per_day">每天</string>
@@ -1643,6 +1689,9 @@
   <string name="yir_2024_stats_tooltip_hours">%s 小时</string>
   <string name="yir_2024_stats_tooltip_plays">%s 次播放</string>
   <string name="yir_2024_stats_tooltip_week_label">第 %s 周</string>
+  <string name="yir_2024_streaming_intro">可用性</string>
+  <string name="yir_2024_streaming_service_count">服务数量</string>
+  <string name="yir_2024_streaming_title">流媒体服务</string>
   <string name="yir_2024_studio_count">工作室数量</string>
   <string name="yir_2024_thanks_copy_directed">您在执导<b>%1$d</b>方面表现出色。期待<b>%2$d</b>有更精彩的续集。</string>
   <string name="yir_2024_thanks_copy_recommend">继续您的旅程。尝试观看以下热门节目或电影之一。</string>
