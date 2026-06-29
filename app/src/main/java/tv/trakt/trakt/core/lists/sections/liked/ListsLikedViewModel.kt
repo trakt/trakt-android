@@ -181,9 +181,9 @@ internal class ListsLikedViewModel(
         collapseJob?.cancel()
         collapseJob = viewModelScope.launch {
             val key = when (filterState.value.mode) {
-                MediaMode.MEDIA -> CollapsingKey.LISTS_MEDIA_LIKED
-                MediaMode.SHOWS -> CollapsingKey.LISTS_SHOWS_LIKED
-                MediaMode.MOVIES -> CollapsingKey.LISTS_MOVIES_LIKED
+                MediaMode.Media -> CollapsingKey.LISTS_MEDIA_LIKED
+                MediaMode.Shows -> CollapsingKey.LISTS_SHOWS_LIKED
+                MediaMode.Movies -> CollapsingKey.LISTS_MOVIES_LIKED
             }
             when {
                 collapsed -> collapsingManager.collapse("${key.preferenceKey}-${listId.value}")
@@ -194,9 +194,9 @@ internal class ListsLikedViewModel(
 
     private fun isCollapsed(): Boolean {
         val key = when (filterState.value.mode) {
-            MediaMode.MEDIA -> CollapsingKey.LISTS_MEDIA_LIKED
-            MediaMode.SHOWS -> CollapsingKey.LISTS_SHOWS_LIKED
-            MediaMode.MOVIES -> CollapsingKey.LISTS_MOVIES_LIKED
+            MediaMode.Media -> CollapsingKey.LISTS_MEDIA_LIKED
+            MediaMode.Shows -> CollapsingKey.LISTS_SHOWS_LIKED
+            MediaMode.Movies -> CollapsingKey.LISTS_MOVIES_LIKED
         }
         return collapsingManager
             .isCollapsed("${key.preferenceKey}-${listId.value}")

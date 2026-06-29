@@ -24,9 +24,9 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.interleave
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.model.MediaMode.MEDIA
-import tv.trakt.trakt.common.model.MediaMode.MOVIES
-import tv.trakt.trakt.common.model.MediaMode.SHOWS
+import tv.trakt.trakt.common.model.MediaMode.Media
+import tv.trakt.trakt.common.model.MediaMode.Movies
+import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingMoviesUseCase
@@ -128,9 +128,9 @@ internal class DiscoverTrendingViewModel(
         collapseJob?.cancel()
         collapseJob = viewModelScope.launch {
             val key = when (filterState.value.mode) {
-                MEDIA -> CollapsingKey.DISCOVER_MEDIA_TRENDING
-                SHOWS -> CollapsingKey.DISCOVER_SHOWS_TRENDING
-                MOVIES -> CollapsingKey.DISCOVER_MOVIES_TRENDING
+                Media -> CollapsingKey.DISCOVER_MEDIA_TRENDING
+                Shows -> CollapsingKey.DISCOVER_SHOWS_TRENDING
+                Movies -> CollapsingKey.DISCOVER_MOVIES_TRENDING
             }
             when {
                 collapsed -> collapsingManager.collapse(key)
@@ -142,9 +142,9 @@ internal class DiscoverTrendingViewModel(
     private fun isCollapsed(): Boolean {
         return collapsingManager.isCollapsed(
             key = when (filterState.value.mode) {
-                MEDIA -> CollapsingKey.DISCOVER_MEDIA_TRENDING
-                SHOWS -> CollapsingKey.DISCOVER_SHOWS_TRENDING
-                MOVIES -> CollapsingKey.DISCOVER_MOVIES_TRENDING
+                Media -> CollapsingKey.DISCOVER_MEDIA_TRENDING
+                Shows -> CollapsingKey.DISCOVER_SHOWS_TRENDING
+                Movies -> CollapsingKey.DISCOVER_MOVIES_TRENDING
             },
         )
     }

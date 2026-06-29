@@ -24,9 +24,9 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.interleave
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.model.MediaMode.MEDIA
-import tv.trakt.trakt.common.model.MediaMode.MOVIES
-import tv.trakt.trakt.common.model.MediaMode.SHOWS
+import tv.trakt.trakt.common.model.MediaMode.Media
+import tv.trakt.trakt.common.model.MediaMode.Movies
+import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedMoviesUseCase
@@ -126,9 +126,9 @@ internal class DiscoverAnticipatedViewModel(
         collapseJob?.cancel()
         collapseJob = viewModelScope.launch {
             val key = when (filterState.value.mode) {
-                MEDIA -> CollapsingKey.DISCOVER_MEDIA_ANTICIPATED
-                SHOWS -> CollapsingKey.DISCOVER_SHOWS_ANTICIPATED
-                MOVIES -> CollapsingKey.DISCOVER_MOVIES_ANTICIPATED
+                Media -> CollapsingKey.DISCOVER_MEDIA_ANTICIPATED
+                Shows -> CollapsingKey.DISCOVER_SHOWS_ANTICIPATED
+                Movies -> CollapsingKey.DISCOVER_MOVIES_ANTICIPATED
             }
             when {
                 collapsed -> collapsingManager.collapse(key)
@@ -140,9 +140,9 @@ internal class DiscoverAnticipatedViewModel(
     private fun isCollapsed(): Boolean {
         return collapsingManager.isCollapsed(
             key = when (filterState.value.mode) {
-                MEDIA -> CollapsingKey.DISCOVER_MEDIA_ANTICIPATED
-                SHOWS -> CollapsingKey.DISCOVER_SHOWS_ANTICIPATED
-                MOVIES -> CollapsingKey.DISCOVER_MOVIES_ANTICIPATED
+                Media -> CollapsingKey.DISCOVER_MEDIA_ANTICIPATED
+                Shows -> CollapsingKey.DISCOVER_SHOWS_ANTICIPATED
+                Movies -> CollapsingKey.DISCOVER_MOVIES_ANTICIPATED
             },
         )
     }

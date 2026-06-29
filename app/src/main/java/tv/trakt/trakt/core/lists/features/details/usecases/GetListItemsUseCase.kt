@@ -5,8 +5,8 @@ import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
-import tv.trakt.trakt.common.model.MediaMode.MOVIES
-import tv.trakt.trakt.common.model.MediaMode.SHOWS
+import tv.trakt.trakt.common.model.MediaMode.Movies
+import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Season
@@ -39,7 +39,7 @@ internal class GetListItemsUseCase(
                 extended = "full,cloud9,colors",
                 sorting = sorting,
                 pagination = pagination,
-                filters = filters?.copy(mode = MOVIES),
+                filters = filters?.copy(mode = Movies),
             ).asyncMap {
                 val movie = Movie.fromDto(it.movie)
                 CustomListItem.MovieItem(
@@ -58,7 +58,7 @@ internal class GetListItemsUseCase(
                 extended = "full,cloud9,colors",
                 sorting = sorting,
                 pagination = pagination,
-                filters = filters?.copy(mode = SHOWS),
+                filters = filters?.copy(mode = Shows),
             ).asyncMap {
                 val show = Show.fromDto(it.show)
                 CustomListItem.ShowItem(

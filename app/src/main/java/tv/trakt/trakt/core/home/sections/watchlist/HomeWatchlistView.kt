@@ -118,7 +118,7 @@ internal fun HomeWatchlistView(
         onCollapse = viewModel::setCollapsed,
         onEmptyClick = {
             when (state.filter?.mode) {
-                MediaMode.MOVIES -> onMoviesClick()
+                MediaMode.Movies -> onMoviesClick()
                 else -> onShowsClick()
             }
         },
@@ -295,7 +295,7 @@ internal fun HomeWatchlistContent(
                                     text = stringResource(R.string.text_cta_watchlist_released),
                                     icon = R.drawable.ic_empty_watchlist,
                                     buttonText = when (state.filter?.mode) {
-                                        MediaMode.MOVIES -> stringResource(R.string.link_text_discover_movies)
+                                        MediaMode.Movies -> stringResource(R.string.link_text_discover_movies)
                                         else -> stringResource(R.string.link_text_discover_shows)
                                     },
                                     backgroundImageUrl = imageUrl,

@@ -3,9 +3,9 @@ package tv.trakt.trakt.core.lists.sections.liked.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.model.MediaMode
-import tv.trakt.trakt.common.model.MediaMode.MEDIA
-import tv.trakt.trakt.common.model.MediaMode.MOVIES
-import tv.trakt.trakt.common.model.MediaMode.SHOWS
+import tv.trakt.trakt.common.model.MediaMode.Media
+import tv.trakt.trakt.common.model.MediaMode.Movies
+import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
@@ -27,9 +27,9 @@ internal class GetLikedListItemsUseCase(
         return getListItemsUseCase.getItems(
             listId = listId,
             type = when (filter) {
-                MEDIA -> listOf(MediaType.Movie, MediaType.Show)
-                SHOWS -> listOf(MediaType.Show)
-                MOVIES -> listOf(MediaType.Movie)
+                Media -> listOf(MediaType.Movie, MediaType.Show)
+                Shows -> listOf(MediaType.Show)
+                Movies -> listOf(MediaType.Movie)
             },
             sorting = sorting,
             pagination = Pagination(page = 1, limit = limit),
@@ -51,9 +51,9 @@ internal class GetLikedListItemsUseCase(
         return localSource.getItems(listId)
             .filter {
                 when (filter) {
-                    MEDIA -> true
-                    SHOWS -> it is CustomListItem.ShowItem
-                    MOVIES -> it is CustomListItem.MovieItem
+                    Media -> true
+                    Shows -> it is CustomListItem.ShowItem
+                    Movies -> it is CustomListItem.MovieItem
                 }
             }
             .distinctBy { it.key }

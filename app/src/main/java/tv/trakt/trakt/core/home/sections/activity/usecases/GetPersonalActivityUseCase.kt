@@ -8,9 +8,9 @@ import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode
-import tv.trakt.trakt.common.model.MediaMode.MEDIA
-import tv.trakt.trakt.common.model.MediaMode.MOVIES
-import tv.trakt.trakt.common.model.MediaMode.SHOWS
+import tv.trakt.trakt.common.model.MediaMode.Media
+import tv.trakt.trakt.common.model.MediaMode.Movies
+import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
@@ -29,9 +29,9 @@ internal class GetPersonalActivityUseCase(
         return localDataSource.getItems()
             .filter {
                 when (filter) {
-                    SHOWS -> it is HomeActivityItem.EpisodeItem
-                    MOVIES -> it is HomeActivityItem.MovieItem
-                    MEDIA -> true
+                    Shows -> it is HomeActivityItem.EpisodeItem
+                    Movies -> it is HomeActivityItem.MovieItem
+                    Media -> true
                 }
             }
             .sortedByDescending { it.activityAt }
@@ -104,9 +104,9 @@ internal class GetPersonalActivityUseCase(
                 }
                 .filter {
                     when (filter.mode) {
-                        SHOWS -> it is HomeActivityItem.EpisodeItem
-                        MOVIES -> it is HomeActivityItem.MovieItem
-                        MEDIA -> true
+                        Shows -> it is HomeActivityItem.EpisodeItem
+                        Movies -> it is HomeActivityItem.MovieItem
+                        Media -> true
                     }
                 }
                 .sortedByDescending { it.activityAt }

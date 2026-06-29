@@ -152,8 +152,8 @@ internal class AllHomeUpNextViewModel(
                 val localItems = getUpNextUseCase.getLocalUpNext(limit = HOME_ALL_LIMIT)
                     .filter {
                         when (filterState.value.mode) {
-                            MediaMode.SHOWS -> it is UpNextShow
-                            MediaMode.MOVIES -> it is UpNextMovie
+                            MediaMode.Shows -> it is UpNextShow
+                            MediaMode.Movies -> it is UpNextMovie
                             else -> true
                         }
                     }.toImmutableList()
@@ -173,8 +173,8 @@ internal class AllHomeUpNextViewModel(
                     skipLocal = true,
                 ).filter {
                     when (filterState.value.mode) {
-                        MediaMode.SHOWS -> it is UpNextShow
-                        MediaMode.MOVIES -> it is UpNextMovie
+                        MediaMode.Shows -> it is UpNextShow
+                        MediaMode.Movies -> it is UpNextMovie
                         else -> true
                     }
                 }.toImmutableList()
@@ -217,8 +217,8 @@ internal class AllHomeUpNextViewModel(
                     skipLocal = true,
                 ).filter {
                     when (filterState.value.mode) {
-                        MediaMode.SHOWS -> it is UpNextShow
-                        MediaMode.MOVIES -> it is UpNextMovie
+                        MediaMode.Shows -> it is UpNextShow
+                        MediaMode.Movies -> it is UpNextMovie
                         else -> true
                     }
                 }.toImmutableList()
@@ -267,8 +267,8 @@ internal class AllHomeUpNextViewModel(
                         ?.plus(
                             nextData.filter {
                                 when (filterState.value.mode) {
-                                    MediaMode.SHOWS -> it is UpNextShow
-                                    MediaMode.MOVIES -> it is UpNextMovie
+                                    MediaMode.Shows -> it is UpNextShow
+                                    MediaMode.Movies -> it is UpNextMovie
                                     else -> true
                                 }
                             },

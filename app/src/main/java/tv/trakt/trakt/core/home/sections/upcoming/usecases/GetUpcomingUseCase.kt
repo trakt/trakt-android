@@ -11,9 +11,9 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
-import tv.trakt.trakt.common.model.MediaMode.MEDIA
-import tv.trakt.trakt.common.model.MediaMode.MOVIES
-import tv.trakt.trakt.common.model.MediaMode.SHOWS
+import tv.trakt.trakt.common.model.MediaMode.Media
+import tv.trakt.trakt.common.model.MediaMode.Movies
+import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
@@ -39,9 +39,9 @@ internal class GetUpcomingUseCase(
         return localDataSource.getItems()
             .filter {
                 when (filter.mode) {
-                    MEDIA -> true
-                    SHOWS -> it is HomeUpcomingItem.EpisodeItem
-                    MOVIES -> it is HomeUpcomingItem.MovieItem
+                    Media -> true
+                    Shows -> it is HomeUpcomingItem.EpisodeItem
+                    Movies -> it is HomeUpcomingItem.MovieItem
                 }
             }
             .sortedBy { it.releasedAt }
@@ -63,9 +63,9 @@ internal class GetUpcomingUseCase(
                 }
                 .filter {
                     when (filter.mode) {
-                        MEDIA -> true
-                        SHOWS -> it is HomeUpcomingItem.EpisodeItem
-                        MOVIES -> it is HomeUpcomingItem.MovieItem
+                        Media -> true
+                        Shows -> it is HomeUpcomingItem.EpisodeItem
+                        Movies -> it is HomeUpcomingItem.MovieItem
                     }
                 }
                 .toImmutableList()

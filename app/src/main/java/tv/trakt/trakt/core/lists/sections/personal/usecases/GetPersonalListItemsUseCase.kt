@@ -8,9 +8,9 @@ import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode
-import tv.trakt.trakt.common.model.MediaMode.MEDIA
-import tv.trakt.trakt.common.model.MediaMode.MOVIES
-import tv.trakt.trakt.common.model.MediaMode.SHOWS
+import tv.trakt.trakt.common.model.MediaMode.Media
+import tv.trakt.trakt.common.model.MediaMode.Movies
+import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Season
@@ -53,9 +53,9 @@ internal class GetPersonalListItemsUseCase(
                 )
             }.filter {
                 when (filter.mode) {
-                    MEDIA -> true
-                    SHOWS -> it is CustomListItem.ShowItem
-                    MOVIES -> it is CustomListItem.MovieItem
+                    Media -> true
+                    Shows -> it is CustomListItem.ShowItem
+                    Movies -> it is CustomListItem.MovieItem
                 }
             }.toImmutableList()
     }
@@ -67,9 +67,9 @@ internal class GetPersonalListItemsUseCase(
         return localSource.getItems(listId)
             .filter {
                 when (filter) {
-                    MEDIA -> true
-                    SHOWS -> it is CustomListItem.ShowItem
-                    MOVIES -> it is CustomListItem.MovieItem
+                    Media -> true
+                    Shows -> it is CustomListItem.ShowItem
+                    Movies -> it is CustomListItem.MovieItem
                 }
             }
             .distinctBy { it.key }
@@ -87,7 +87,7 @@ internal class GetPersonalListItemsUseCase(
             loadUserRatingsUseCase.loadAllIfNeeded()
 
         return when (filter.mode) {
-            MEDIA -> getRemoteAllItems(
+            Media -> getRemoteAllItems(
                 listId = listId,
                 page = page,
                 limit = limit,
@@ -98,7 +98,7 @@ internal class GetPersonalListItemsUseCase(
                 episodesRatings = episodesRatings,
             )
 
-            SHOWS -> getRemoteShowItems(
+            Shows -> getRemoteShowItems(
                 listId = listId,
                 page = page,
                 limit = limit,
@@ -107,7 +107,7 @@ internal class GetPersonalListItemsUseCase(
                 showsRatings = showsRatings,
             )
 
-            MOVIES -> getRemoteMovieItems(
+            Movies -> getRemoteMovieItems(
                 listId = listId,
                 page = page,
                 limit = limit,

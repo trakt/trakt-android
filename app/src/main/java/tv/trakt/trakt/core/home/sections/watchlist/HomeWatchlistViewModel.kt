@@ -180,8 +180,8 @@ internal class HomeWatchlistViewModel(
                             (localShows + localMovies)
                                 .filter {
                                     when (filterState.value.mode) {
-                                        MediaMode.SHOWS -> it is ShowItem
-                                        MediaMode.MOVIES -> it is MovieItem
+                                        MediaMode.Shows -> it is ShowItem
+                                        MediaMode.Movies -> it is MovieItem
                                         else -> true
                                     }
                                 }
@@ -211,8 +211,8 @@ internal class HomeWatchlistViewModel(
                             .flatten()
                             .filter {
                                 when (filterState.value.mode) {
-                                    MediaMode.SHOWS -> it is ShowItem
-                                    MediaMode.MOVIES -> it is MovieItem
+                                    MediaMode.Shows -> it is ShowItem
+                                    MediaMode.Movies -> it is MovieItem
                                     else -> true
                                 }
                             }.sortedWith(
@@ -501,9 +501,9 @@ internal class HomeWatchlistViewModel(
         collapseJob?.cancel()
         collapseJob = viewModelScope.launch {
             val key = when (filterState.value.mode) {
-                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_START_WATCHING
-                MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_START_WATCHING
-                MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_START_WATCHING
+                MediaMode.Media -> CollapsingKey.HOME_MEDIA_START_WATCHING
+                MediaMode.Shows -> CollapsingKey.HOME_SHOWS_START_WATCHING
+                MediaMode.Movies -> CollapsingKey.HOME_MOVIES_START_WATCHING
             }
             when {
                 collapsed -> collapsingManager.collapse(key)
@@ -515,9 +515,9 @@ internal class HomeWatchlistViewModel(
     private fun isCollapsed(): Boolean {
         return collapsingManager.isCollapsed(
             key = when (filterState.value.mode) {
-                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_START_WATCHING
-                MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_START_WATCHING
-                MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_START_WATCHING
+                MediaMode.Media -> CollapsingKey.HOME_MEDIA_START_WATCHING
+                MediaMode.Shows -> CollapsingKey.HOME_SHOWS_START_WATCHING
+                MediaMode.Movies -> CollapsingKey.HOME_MOVIES_START_WATCHING
             },
         )
     }

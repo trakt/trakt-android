@@ -28,9 +28,9 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaMode
-import tv.trakt.trakt.common.model.MediaMode.MEDIA
-import tv.trakt.trakt.common.model.MediaMode.MOVIES
-import tv.trakt.trakt.common.model.MediaMode.SHOWS
+import tv.trakt.trakt.common.model.MediaMode.Media
+import tv.trakt.trakt.common.model.MediaMode.Movies
+import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -124,15 +124,15 @@ internal class AllFavoritesViewModel(
                     return@launch
                 }
 
-                val filter = filterState.value ?: MEDIA
+                val filter = filterState.value ?: Media
                 val sorting = sortingState.value
 
                 val (showsRatings, moviesRatings) = loadRatingsUseCase.loadAllIfNeeded()
 
                 val localItems = when (filter) {
-                    MEDIA -> loadFavoritesUseCase.loadLocalAll()
-                    SHOWS -> loadFavoritesUseCase.loadLocalShows()
-                    MOVIES -> loadFavoritesUseCase.loadLocalMovies()
+                    Media -> loadFavoritesUseCase.loadLocalAll()
+                    Shows -> loadFavoritesUseCase.loadLocalShows()
+                    Movies -> loadFavoritesUseCase.loadLocalMovies()
                 }.map {
                     when (it) {
                         is ShowItem -> it.copy(userRating = showsRatings[it.id])
@@ -154,9 +154,9 @@ internal class AllFavoritesViewModel(
 
                 itemsState.update {
                     when (filter) {
-                        MEDIA -> loadFavoritesUseCase.loadAll(sort = sorting)
-                        SHOWS -> loadFavoritesUseCase.loadShows(sort = sorting)
-                        MOVIES -> loadFavoritesUseCase.loadMovies(sort = sorting)
+                        Media -> loadFavoritesUseCase.loadAll(sort = sorting)
+                        Shows -> loadFavoritesUseCase.loadShows(sort = sorting)
+                        Movies -> loadFavoritesUseCase.loadMovies(sort = sorting)
                     }.map {
                         when (it) {
                             is ShowItem -> it.copy(userRating = showsRatings[it.id])

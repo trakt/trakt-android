@@ -230,9 +230,9 @@ internal class HomeUpcomingViewModel(
         collapseJob?.cancel()
         collapseJob = viewModelScope.launch {
             val key = when (filterState.value.mode) {
-                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_UPCOMING
-                MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_UPCOMING
-                MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_UPCOMING
+                MediaMode.Media -> CollapsingKey.HOME_MEDIA_UPCOMING
+                MediaMode.Shows -> CollapsingKey.HOME_SHOWS_UPCOMING
+                MediaMode.Movies -> CollapsingKey.HOME_MOVIES_UPCOMING
             }
             when {
                 collapsed -> collapsingManager.collapse(key)
@@ -244,9 +244,9 @@ internal class HomeUpcomingViewModel(
     private fun isCollapsed(): Boolean {
         return collapsingManager.isCollapsed(
             key = when (filterState.value.mode) {
-                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_UPCOMING
-                MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_UPCOMING
-                MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_UPCOMING
+                MediaMode.Media -> CollapsingKey.HOME_MEDIA_UPCOMING
+                MediaMode.Shows -> CollapsingKey.HOME_SHOWS_UPCOMING
+                MediaMode.Movies -> CollapsingKey.HOME_MOVIES_UPCOMING
             },
         )
     }

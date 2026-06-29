@@ -220,9 +220,9 @@ internal class ListsCollaborationsViewModel(
         collapseJob?.cancel()
         collapseJob = viewModelScope.launch {
             val key = when (filterState.value.mode) {
-                MediaMode.MEDIA -> CollapsingKey.LISTS_MEDIA_COLLABORATIONS
-                MediaMode.SHOWS -> CollapsingKey.LISTS_SHOWS_COLLABORATIONS
-                MediaMode.MOVIES -> CollapsingKey.LISTS_MOVIES_COLLABORATIONS
+                MediaMode.Media -> CollapsingKey.LISTS_MEDIA_COLLABORATIONS
+                MediaMode.Shows -> CollapsingKey.LISTS_SHOWS_COLLABORATIONS
+                MediaMode.Movies -> CollapsingKey.LISTS_MOVIES_COLLABORATIONS
             }
             when {
                 collapsed -> collapsingManager.collapse("${key.preferenceKey}-${listId.value}")
@@ -233,9 +233,9 @@ internal class ListsCollaborationsViewModel(
 
     private fun isCollapsed(): Boolean {
         val key = when (filterState.value.mode) {
-            MediaMode.MEDIA -> CollapsingKey.LISTS_MEDIA_COLLABORATIONS
-            MediaMode.SHOWS -> CollapsingKey.LISTS_SHOWS_COLLABORATIONS
-            MediaMode.MOVIES -> CollapsingKey.LISTS_MOVIES_COLLABORATIONS
+            MediaMode.Media -> CollapsingKey.LISTS_MEDIA_COLLABORATIONS
+            MediaMode.Shows -> CollapsingKey.LISTS_SHOWS_COLLABORATIONS
+            MediaMode.Movies -> CollapsingKey.LISTS_MOVIES_COLLABORATIONS
         }
         return collapsingManager
             .isCollapsed("${key.preferenceKey}-${listId.value}")

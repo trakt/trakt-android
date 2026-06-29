@@ -82,9 +82,9 @@ internal fun MediaModeButtons(
                         )
                     },
                     shapes = when (option) {
-                        MediaMode.MEDIA -> ButtonGroupDefaults.connectedLeadingButtonShapes()
-                        MediaMode.SHOWS -> ButtonGroupDefaults.connectedMiddleButtonShapes()
-                        MediaMode.MOVIES -> ButtonGroupDefaults.connectedTrailingButtonShapes()
+                        MediaMode.Media -> ButtonGroupDefaults.connectedLeadingButtonShapes()
+                        MediaMode.Shows -> ButtonGroupDefaults.connectedMiddleButtonShapes()
+                        MediaMode.Movies -> ButtonGroupDefaults.connectedTrailingButtonShapes()
                     },
                     modifier = Modifier.height(height),
                 ) {

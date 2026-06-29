@@ -220,7 +220,7 @@ private fun Preview2() {
 private fun Preview3() {
     TraktTheme {
         HeaderBar(
-            filter = GlobalFilter.Default.copy(mode = MediaMode.SHOWS),
+            filter = GlobalFilter.Default.copy(mode = MediaMode.Shows),
             customTheme = CustomThemeUseCase.CustomThemeConfig(
                 theme = CustomTheme(
                     id = "christmas25",

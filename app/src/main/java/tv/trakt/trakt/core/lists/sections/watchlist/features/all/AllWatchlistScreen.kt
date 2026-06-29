@@ -557,8 +557,8 @@ private fun ContentEmpty(mode: MediaMode?) {
     Text(
         text = stringResource(
             when (mode) {
-                MediaMode.MOVIES -> R.string.list_placeholder_personal_list_empty_movies
-                MediaMode.SHOWS -> R.string.list_placeholder_personal_list_empty_shows
+                MediaMode.Movies -> R.string.list_placeholder_personal_list_empty_movies
+                MediaMode.Shows -> R.string.list_placeholder_personal_list_empty_shows
                 else -> R.string.list_placeholder_empty
             },
         ),

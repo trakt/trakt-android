@@ -48,7 +48,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.model.MediaMode
-import tv.trakt.trakt.common.model.MediaMode.MEDIA
+import tv.trakt.trakt.common.model.MediaMode.Media
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -293,7 +293,7 @@ private fun ContentListItem(
                 horizontalArrangement = spacedBy(4.dp),
                 modifier = chipModifier.height(14.dp),
             ) {
-                if (mode == MEDIA) {
+                if (mode == Media) {
                     Icon(
                         painter = painterResource(item.icon),
                         contentDescription = null,

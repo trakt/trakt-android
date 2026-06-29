@@ -245,13 +245,13 @@ internal fun HomeUpNextContent(
                                 HomeEmptyView(
                                     text = stringResource(
                                         when (state.filter?.mode) {
-                                            MediaMode.MOVIES -> R.string.text_cta_up_next_movies
+                                            MediaMode.Movies -> R.string.text_cta_up_next_movies
                                             else -> R.string.text_cta_up_next
                                         },
                                     ),
                                     icon = R.drawable.ic_empty_upnext,
                                     buttonText = when (state.filter?.mode) {
-                                        MediaMode.MOVIES -> stringResource(R.string.link_text_discover_movies)
+                                        MediaMode.Movies -> stringResource(R.string.link_text_discover_movies)
                                         else -> stringResource(R.string.link_text_discover_shows)
                                     },
                                     backgroundImageUrl = imageUrl,
@@ -259,7 +259,7 @@ internal fun HomeUpNextContent(
                                     modifier = Modifier.padding(contentPadding),
                                     onClick = {
                                         when (state.filter?.mode) {
-                                            MediaMode.MOVIES -> onMoviesClick()
+                                            MediaMode.Movies -> onMoviesClick()
                                             else -> onShowsClick()
                                         }
                                     },

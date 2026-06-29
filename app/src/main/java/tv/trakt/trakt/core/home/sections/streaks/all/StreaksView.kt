@@ -218,7 +218,7 @@ private fun PreviewLoading() {
 private fun Preview() {
     TraktTheme {
         StreaksViewContent(
-            mode = MediaMode.MOVIES,
+            mode = MediaMode.Movies,
             data = MonthlyStreakData(
                 activity = persistentMapOf(),
                 currentStreakTotal = 128,

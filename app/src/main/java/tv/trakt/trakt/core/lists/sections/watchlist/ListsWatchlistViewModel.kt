@@ -29,9 +29,9 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.model.MediaMode.MEDIA
-import tv.trakt.trakt.common.model.MediaMode.MOVIES
-import tv.trakt.trakt.common.model.MediaMode.SHOWS
+import tv.trakt.trakt.common.model.MediaMode.Media
+import tv.trakt.trakt.common.model.MediaMode.Movies
+import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -139,15 +139,15 @@ internal class ListsWatchlistViewModel(
                 }
 
                 val localItems = when (filterState.value.mode) {
-                    MEDIA -> getWatchlistUseCase.getLocalWatchlist(
+                    Media -> getWatchlistUseCase.getLocalWatchlist(
                         limit = WATCHLIST_SECTION_LIMIT,
                         sort = Sorting.RecentlyAdded,
                     )
-                    SHOWS -> getShowsWatchlistUseCase.getLocalWatchlist(
+                    Shows -> getShowsWatchlistUseCase.getLocalWatchlist(
                         limit = WATCHLIST_SECTION_LIMIT,
                         sort = Sorting.RecentlyAdded,
                     )
-                    MOVIES -> getMoviesWatchlistUseCase.getLocalWatchlist(
+                    Movies -> getMoviesWatchlistUseCase.getLocalWatchlist(
                         limit = WATCHLIST_SECTION_LIMIT,
                         sort = Sorting.RecentlyAdded,
                     )
@@ -162,19 +162,19 @@ internal class ListsWatchlistViewModel(
 
                 itemsState.update {
                     when (filterState.value.mode) {
-                        MEDIA -> getWatchlistUseCase.getRemoteWatchlist(
+                        Media -> getWatchlistUseCase.getRemoteWatchlist(
                             page = 1,
                             limit = WATCHLIST_SECTION_LIMIT,
                             filters = filterState.value,
                             sorting = Sorting.RecentlyAdded,
                         )
-                        SHOWS -> getShowsWatchlistUseCase.getRemoteWatchlist(
+                        Shows -> getShowsWatchlistUseCase.getRemoteWatchlist(
                             page = 1,
                             limit = WATCHLIST_SECTION_LIMIT,
                             filters = filterState.value,
                             sorting = Sorting.RecentlyAdded,
                         )
-                        MOVIES -> getMoviesWatchlistUseCase.getRemoteWatchlist(
+                        Movies -> getMoviesWatchlistUseCase.getRemoteWatchlist(
                             page = 1,
                             limit = WATCHLIST_SECTION_LIMIT,
                             filters = filterState.value,
@@ -239,9 +239,9 @@ internal class ListsWatchlistViewModel(
         collapseJob?.cancel()
         collapseJob = viewModelScope.launch {
             val key = when (filterState.value.mode) {
-                MEDIA -> CollapsingKey.LISTS_MEDIA_WATCHLIST
-                SHOWS -> CollapsingKey.LISTS_SHOWS_WATCHLIST
-                MOVIES -> CollapsingKey.LISTS_MOVIES_WATCHLIST
+                Media -> CollapsingKey.LISTS_MEDIA_WATCHLIST
+                Shows -> CollapsingKey.LISTS_SHOWS_WATCHLIST
+                Movies -> CollapsingKey.LISTS_MOVIES_WATCHLIST
             }
             when {
                 collapsed -> collapsingManager.collapse(key)
@@ -253,9 +253,9 @@ internal class ListsWatchlistViewModel(
     private fun isCollapsed(): Boolean {
         return collapsingManager.isCollapsed(
             key = when (filterState.value.mode) {
-                MEDIA -> CollapsingKey.LISTS_MEDIA_WATCHLIST
-                SHOWS -> CollapsingKey.LISTS_SHOWS_WATCHLIST
-                MOVIES -> CollapsingKey.LISTS_MOVIES_WATCHLIST
+                Media -> CollapsingKey.LISTS_MEDIA_WATCHLIST
+                Shows -> CollapsingKey.LISTS_SHOWS_WATCHLIST
+                Movies -> CollapsingKey.LISTS_MOVIES_WATCHLIST
             },
         )
     }

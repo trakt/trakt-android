@@ -161,8 +161,8 @@ internal class AllHomeWatchlistViewModel(
                     (localShows + localMovies)
                         .filter {
                             when (filterState.value.mode) {
-                                MediaMode.SHOWS -> it is ShowItem
-                                MediaMode.MOVIES -> it is MovieItem
+                                MediaMode.Shows -> it is ShowItem
+                                MediaMode.Movies -> it is MovieItem
                                 else -> true
                             }
                         }
@@ -197,8 +197,8 @@ internal class AllHomeWatchlistViewModel(
                     (showsAsync.await() + moviesAsync.await())
                         .filter {
                             when (filterState.value.mode) {
-                                MediaMode.SHOWS -> it is ShowItem
-                                MediaMode.MOVIES -> it is MovieItem
+                                MediaMode.Shows -> it is ShowItem
+                                MediaMode.Movies -> it is MovieItem
                                 else -> true
                             }
                         }
@@ -250,8 +250,8 @@ internal class AllHomeWatchlistViewModel(
                     (showsAsync.await() + moviesAsync.await())
                         .filter {
                             when (filterState.value.mode) {
-                                MediaMode.SHOWS -> it is ShowItem
-                                MediaMode.MOVIES -> it is MovieItem
+                                MediaMode.Shows -> it is ShowItem
+                                MediaMode.Movies -> it is MovieItem
                                 else -> true
                             }
                         }

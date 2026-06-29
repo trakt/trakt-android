@@ -312,8 +312,8 @@ private fun ContentEmptyList(
         Text(
             text = stringResource(
                 when (filter) {
-                    MediaMode.MOVIES -> R.string.list_placeholder_personal_list_empty_movies
-                    MediaMode.SHOWS -> R.string.list_placeholder_personal_list_empty_shows
+                    MediaMode.Movies -> R.string.list_placeholder_personal_list_empty_movies
+                    MediaMode.Shows -> R.string.list_placeholder_personal_list_empty_shows
                     else -> R.string.list_placeholder_empty
                 },
             ),
@@ -360,7 +360,7 @@ private fun ContentList(
         ) { item ->
             ListsCustomItemView(
                 item = item,
-                showMediaIcon = listFilter == MediaMode.MEDIA,
+                showMediaIcon = listFilter == MediaMode.Media,
                 showMoreIcon = true,
                 watched = collectionState.isWatched(item.id, item.type, item.airedEpisodes),
                 watchlist = collectionState.isWatchlist(item.id, item.type),
@@ -429,7 +429,7 @@ private fun PreviewEmptyState() {
     TraktTheme {
         ContentEmptyList(
             contentPadding = PaddingValues(16.dp),
-            filter = MediaMode.MEDIA,
+            filter = MediaMode.Media,
         )
     }
 }

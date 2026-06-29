@@ -316,9 +316,9 @@ internal class HomeHistoryViewModel(
         collapseJob?.cancel()
         collapseJob = viewModelScope.launch {
             val key = when (filterState.value.mode) {
-                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_HISTORY
-                MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_HISTORY
-                MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_HISTORY
+                MediaMode.Media -> CollapsingKey.HOME_MEDIA_HISTORY
+                MediaMode.Shows -> CollapsingKey.HOME_SHOWS_HISTORY
+                MediaMode.Movies -> CollapsingKey.HOME_MOVIES_HISTORY
             }
             when {
                 collapsed -> collapsingManager.collapse(key)
@@ -330,9 +330,9 @@ internal class HomeHistoryViewModel(
     private fun isCollapsed(): Boolean {
         return collapsingManager.isCollapsed(
             key = when (filterState.value.mode) {
-                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_HISTORY
-                MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_HISTORY
-                MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_HISTORY
+                MediaMode.Media -> CollapsingKey.HOME_MEDIA_HISTORY
+                MediaMode.Shows -> CollapsingKey.HOME_SHOWS_HISTORY
+                MediaMode.Movies -> CollapsingKey.HOME_MOVIES_HISTORY
             },
         )
     }

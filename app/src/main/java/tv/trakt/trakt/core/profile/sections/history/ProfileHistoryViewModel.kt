@@ -136,7 +136,7 @@ internal class ProfileHistoryViewModel(
 
                 val localItems = getPersonalActivityUseCase.getLocalPersonalActivity(
                     limit = HOME_SECTION_LIMIT,
-                    filter = MediaMode.MEDIA,
+                    filter = MediaMode.Media,
                 )
 
                 if (localItems.isNotEmpty()) {

@@ -35,8 +35,8 @@ import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.MediaMode
-import tv.trakt.trakt.common.model.MediaMode.MOVIES
-import tv.trakt.trakt.common.model.MediaMode.SHOWS
+import tv.trakt.trakt.common.model.MediaMode.Movies
+import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
@@ -187,8 +187,8 @@ internal class HomeUpNextViewModel(
                     limit = HOME_SECTION_LIMIT,
                 ).filter {
                     when (filterState.value.mode) {
-                        SHOWS -> it is UpNextShow
-                        MOVIES -> it is UpNextMovie
+                        Shows -> it is UpNextShow
+                        Movies -> it is UpNextMovie
                         else -> true
                     }
                 }.toImmutableList()
@@ -218,8 +218,8 @@ internal class HomeUpNextViewModel(
                             filters = filterState.value,
                         ).filter {
                             when (filterState.value.mode) {
-                                SHOWS -> it is UpNextShow
-                                MOVIES -> it is UpNextMovie
+                                Shows -> it is UpNextShow
+                                Movies -> it is UpNextMovie
                                 else -> true
                             }
                         }.toImmutableList(),
@@ -418,9 +418,9 @@ internal class HomeUpNextViewModel(
         collapseJob?.cancel()
         collapseJob = viewModelScope.launch {
             val key = when (filterState.value.mode) {
-                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_UP_NEXT
-                SHOWS -> CollapsingKey.HOME_SHOWS_UP_NEXT
-                MOVIES -> CollapsingKey.HOME_MOVIES_UP_NEXT
+                MediaMode.Media -> CollapsingKey.HOME_MEDIA_UP_NEXT
+                Shows -> CollapsingKey.HOME_SHOWS_UP_NEXT
+                Movies -> CollapsingKey.HOME_MOVIES_UP_NEXT
             }
             when {
                 collapsed -> collapsingManager.collapse(key)
@@ -432,9 +432,9 @@ internal class HomeUpNextViewModel(
     private fun isCollapsed(): Boolean {
         return collapsingManager.isCollapsed(
             key = when (filterState.value.mode) {
-                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_UP_NEXT
-                SHOWS -> CollapsingKey.HOME_SHOWS_UP_NEXT
-                MOVIES -> CollapsingKey.HOME_MOVIES_UP_NEXT
+                MediaMode.Media -> CollapsingKey.HOME_MEDIA_UP_NEXT
+                Shows -> CollapsingKey.HOME_SHOWS_UP_NEXT
+                Movies -> CollapsingKey.HOME_MOVIES_UP_NEXT
             },
         )
     }

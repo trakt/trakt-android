@@ -32,7 +32,7 @@ data class GlobalFilter(
 ) {
     companion object {
         val Default = GlobalFilter(
-            mode = MediaMode.MEDIA,
+            mode = MediaMode.Media,
         )
     }
 

@@ -200,9 +200,9 @@ internal class HomeSocialViewModel(
         collapseJob?.cancel()
         collapseJob = viewModelScope.launch {
             val key = when (filterState.value.mode) {
-                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_SOCIAL
-                MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_SOCIAL
-                MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_SOCIAL
+                MediaMode.Media -> CollapsingKey.HOME_MEDIA_SOCIAL
+                MediaMode.Shows -> CollapsingKey.HOME_SHOWS_SOCIAL
+                MediaMode.Movies -> CollapsingKey.HOME_MOVIES_SOCIAL
             }
             when {
                 collapsed -> collapsingManager.collapse(key)
@@ -214,9 +214,9 @@ internal class HomeSocialViewModel(
     private fun isCollapsed(): Boolean {
         return collapsingManager.isCollapsed(
             key = when (filterState.value.mode) {
-                MediaMode.MEDIA -> CollapsingKey.HOME_MEDIA_SOCIAL
-                MediaMode.SHOWS -> CollapsingKey.HOME_SHOWS_SOCIAL
-                MediaMode.MOVIES -> CollapsingKey.HOME_MOVIES_SOCIAL
+                MediaMode.Media -> CollapsingKey.HOME_MEDIA_SOCIAL
+                MediaMode.Shows -> CollapsingKey.HOME_SHOWS_SOCIAL
+                MediaMode.Movies -> CollapsingKey.HOME_MOVIES_SOCIAL
             },
         )
     }

@@ -14,8 +14,8 @@ import kotlinx.serialization.json.Json
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode
 
-private val KEY_FILTERS = stringPreferencesKey("key_global_filters")
-private val KEY_FILTERS_MODE = stringPreferencesKey("key_global_filters_mode")
+private val KEY_FILTERS = stringPreferencesKey("key_global_filters_2")
+private val KEY_FILTERS_MODE = stringPreferencesKey("key_global_filters_mode_2")
 
 internal class DefaultGlobalFilterManager(
     scope: CoroutineScope,

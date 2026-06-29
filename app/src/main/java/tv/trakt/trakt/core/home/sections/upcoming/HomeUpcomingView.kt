@@ -95,7 +95,7 @@ internal fun HomeUpcomingView(
         onCalendarClick = onCalendarClick,
         onEmptyClick = {
             when (state.filter?.mode) {
-                MediaMode.MOVIES -> onMoviesClick()
+                MediaMode.Movies -> onMoviesClick()
                 else -> onShowsClick()
             }
         },
@@ -188,7 +188,7 @@ internal fun HomeUpcomingContent(
                                     icon = R.drawable.ic_empty_upcoming,
                                     buttonText = stringResource(
                                         when (state.filter?.mode) {
-                                            MediaMode.MOVIES -> R.string.link_text_discover_movies
+                                            MediaMode.Movies -> R.string.link_text_discover_movies
                                             else -> R.string.link_text_discover_shows
                                         },
                                     ),

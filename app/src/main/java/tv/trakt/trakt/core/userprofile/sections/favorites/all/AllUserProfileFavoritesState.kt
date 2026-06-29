@@ -12,7 +12,7 @@ import tv.trakt.trakt.core.user.UserCollectionState
 @Immutable
 internal data class AllUserProfileFavoritesState(
     val items: ImmutableList<FavoriteItem>? = null,
-    val filter: MediaMode = MediaMode.MEDIA,
+    val filter: MediaMode = MediaMode.Media,
     val sorting: Sorting = Sorting.RecentlyAdded,
     val collection: UserCollectionState = UserCollectionState.Default,
     val navigateShow: TraktId? = null,

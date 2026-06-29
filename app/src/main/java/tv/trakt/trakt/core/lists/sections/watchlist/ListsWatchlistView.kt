@@ -44,9 +44,9 @@ import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.MediaMode
-import tv.trakt.trakt.common.model.MediaMode.MEDIA
-import tv.trakt.trakt.common.model.MediaMode.MOVIES
-import tv.trakt.trakt.common.model.MediaMode.SHOWS
+import tv.trakt.trakt.common.model.MediaMode.Media
+import tv.trakt.trakt.common.model.MediaMode.Movies
+import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.Movie
@@ -226,8 +226,8 @@ internal fun ListWatchlistContent(
                                             return@ContentEmptyView
                                         }
                                         when (it) {
-                                            MEDIA, SHOWS -> onShowsClick()
-                                            MOVIES -> onMoviesClick()
+                                            Media, Shows -> onShowsClick()
+                                            Movies -> onMoviesClick()
                                         }
                                     },
                                     modifier = Modifier.padding(contentPadding),
@@ -310,7 +310,7 @@ private fun ContentList(
         ) { item ->
             ListsWatchlistItemView(
                 item = item,
-                showMediaIcon = (filter == MEDIA),
+                showMediaIcon = (filter == Media),
                 watched = collection.isWatched(item.id, item.type, item.airedEpisodes),
                 onShowClick = {
                     if (item is WatchlistItem.ShowItem && !item.loading) {
@@ -350,8 +350,8 @@ private fun ContentEmptyView(
 ) {
     val imageUrl = remember(filter) {
         val key = when (filter) {
-            MEDIA, SHOWS -> MOBILE_EMPTY_IMAGE_1
-            MOVIES -> MOBILE_EMPTY_IMAGE_2
+            Media, Shows -> MOBILE_EMPTY_IMAGE_1
+            Movies -> MOBILE_EMPTY_IMAGE_2
         }
         Firebase.remoteConfig.getString(key).ifBlank { null }
     }
@@ -361,8 +361,8 @@ private fun ContentEmptyView(
             return@remember R.string.button_text_join_trakt
         }
         when (filter) {
-            MEDIA, SHOWS -> R.string.link_text_discover_shows
-            MOVIES -> R.string.link_text_discover_movies
+            Media, Shows -> R.string.link_text_discover_shows
+            Movies -> R.string.link_text_discover_movies
         }
     }
 

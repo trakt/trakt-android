@@ -90,7 +90,7 @@ internal fun AllDiscoverListView(
             items = items,
             loading = loading,
             collectionState = collectionState,
-            mediaIcon = (filter == MediaMode.MEDIA),
+            mediaIcon = (filter == MediaMode.Media),
             onClick = onItemClick,
             onLongClick = onItemLongClick,
         )
@@ -276,7 +276,7 @@ private fun AllDiscoverListViewPreview() {
         AllDiscoverListView(
             state = LazyListState(),
             collectionState = UserCollectionState.Default,
-            filter = MediaMode.MEDIA,
+            filter = MediaMode.Media,
             loading = false,
             loadingMore = false,
             items = listOf(

@@ -11,9 +11,9 @@ import kotlinx.coroutines.flow.update
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.MediaMode
-import tv.trakt.trakt.common.model.MediaMode.MEDIA
-import tv.trakt.trakt.common.model.MediaMode.MOVIES
-import tv.trakt.trakt.common.model.MediaMode.SHOWS
+import tv.trakt.trakt.common.model.MediaMode.Media
+import tv.trakt.trakt.common.model.MediaMode.Movies
+import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.core.home.sections.streaks.model.MonthlyStreakData
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import java.time.LocalDate
@@ -35,16 +35,16 @@ internal class DefaultStreaksManager(
         coroutineScope {
             val watchedShowsAsync = async {
                 when (mode) {
-                    MOVIES -> EmptyImmutableList
-                    MEDIA -> userProgressUseCase.loadLocalShows()
-                    SHOWS -> userProgressUseCase.loadLocalShows()
+                    Movies -> EmptyImmutableList
+                    Media -> userProgressUseCase.loadLocalShows()
+                    Shows -> userProgressUseCase.loadLocalShows()
                 }
             }
             val watchedMoviesAsync = async {
                 when (mode) {
-                    SHOWS -> EmptyImmutableList
-                    MEDIA -> userProgressUseCase.loadLocalMovies()
-                    MOVIES -> userProgressUseCase.loadLocalMovies()
+                    Shows -> EmptyImmutableList
+                    Media -> userProgressUseCase.loadLocalMovies()
+                    Movies -> userProgressUseCase.loadLocalMovies()
                 }
             }
 

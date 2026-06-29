@@ -200,7 +200,7 @@ internal fun AllFavoritesContent(
         ContentList(
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listState = listState,
-            listFilter = state.filter ?: MediaMode.MEDIA,
+            listFilter = state.filter ?: MediaMode.Media,
             listSorting = state.sorting,
             listLoading = state.loading,
             contentPadding = contentPadding,
@@ -313,7 +313,7 @@ private fun ContentList(
                     is ShowItem -> AllFavoritesShowView(
                         item = item,
                         sorting = listSorting,
-                        mediaIcon = listFilter == MediaMode.MEDIA,
+                        mediaIcon = listFilter == MediaMode.Media,
                         onClick = { onClick(item) },
                         onLongClick = { onLongClick(item) },
                         modifier = Modifier
@@ -327,7 +327,7 @@ private fun ContentList(
                     is MovieItem -> AllFavoritesMovieView(
                         item = item,
                         sorting = listSorting,
-                        mediaIcon = listFilter == MediaMode.MEDIA,
+                        mediaIcon = listFilter == MediaMode.Media,
                         onClick = { onClick(item) },
                         onLongClick = { onLongClick(item) },
                         modifier = Modifier

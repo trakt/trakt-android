@@ -13,17 +13,17 @@ enum class MediaMode(
     @param:DrawableRes val offIcon: Int,
     @param:DrawableRes val onIcon: Int,
 ) {
-    MEDIA(
+    Media(
         R.string.button_text_toggle_search_media,
         R.drawable.ic_shows_movies,
         R.drawable.ic_shows_movies_on,
     ),
-    SHOWS(
+    Shows(
         R.string.button_text_shows,
         R.drawable.ic_shows_off,
         R.drawable.ic_shows_on,
     ),
-    MOVIES(
+    Movies(
         R.string.button_text_movies,
         R.drawable.ic_movies_off,
         R.drawable.ic_movies_on,
@@ -31,8 +31,8 @@ enum class MediaMode(
     ;
 
     val isMediaOrShows: Boolean
-        get() = this == MEDIA || this == SHOWS
+        get() = this == Media || this == Shows
 
     val isMediaOrMovies: Boolean
-        get() = this == MEDIA || this == MOVIES
+        get() = this == Media || this == Movies
 }
