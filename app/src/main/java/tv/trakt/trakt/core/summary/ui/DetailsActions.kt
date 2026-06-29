@@ -28,7 +28,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Shade400
-import tv.trakt.trakt.common.ui.theme.colors.Shade920
+import tv.trakt.trakt.common.ui.theme.colors.Shade900
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -59,7 +59,7 @@ internal fun DetailsActions(
                 spotColor = DefaultShadowColor.copy(alpha = 0.33F),
             )
             .background(
-                color = Shade920,
+                color = Shade900,
                 shape = shape,
             )
             .padding(

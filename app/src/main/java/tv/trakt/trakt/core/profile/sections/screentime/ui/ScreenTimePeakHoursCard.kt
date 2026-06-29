@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
-import tv.trakt.trakt.common.ui.theme.colors.Shade800
+import tv.trakt.trakt.common.ui.theme.colors.Shade700
 import tv.trakt.trakt.core.profile.sections.screentime.StatCardSize
 import tv.trakt.trakt.core.profile.sections.screentime.model.ScreenTimeData.PeakHour
 import tv.trakt.trakt.resources.R
@@ -82,7 +82,7 @@ internal fun ScreenTimePeakHoursCard(
                     },
                     gapSize = 2.dp,
                     color = TraktTheme.colors.accent,
-                    trackColor = Shade800,
+                    trackColor = Shade700,
                     drawStopIndicator = { },
                     modifier = Modifier.weight(5F),
                 )

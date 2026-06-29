@@ -65,6 +65,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.common.ui.theme.colors.Red400
+import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.settings.features.younify.model.LinkStatus
 import tv.trakt.trakt.core.settings.features.younify.model.linkStatus
 import tv.trakt.trakt.helpers.SimpleScrollConnection
@@ -175,7 +176,7 @@ internal fun YounifyScreen(
                 confirmUnlinkSheet = null
             }
         },
-        yesColor = Red400,
+        yesColor = Red500,
         onNo = {
             confirmUnlinkSheet = null
         },

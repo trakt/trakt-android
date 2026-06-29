@@ -42,7 +42,6 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceApp
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.streamings.StreamingService
-import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextState.StreamingsState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
@@ -158,7 +157,7 @@ private fun ShowDetailsContextViewContent(
         Spacer(
             modifier = Modifier
                 .padding(top = 22.dp)
-                .background(Shade910)
+                .background(TraktTheme.colors.separator)
                 .fillMaxWidth()
                 .height(1.dp),
         )

@@ -42,7 +42,6 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomListMinimal
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.lists.ListButton
 import tv.trakt.trakt.ui.components.buttons.lists.WatchlistButton
@@ -168,7 +167,7 @@ private fun ShowDetailsListsContent(
         Spacer(
             modifier = Modifier
                 .padding(top = 22.dp)
-                .background(Shade910)
+                .background(TraktTheme.colors.separator)
                 .fillMaxWidth()
                 .height(1.dp),
         )
