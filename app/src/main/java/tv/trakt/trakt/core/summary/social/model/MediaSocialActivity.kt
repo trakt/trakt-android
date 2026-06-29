@@ -15,15 +15,15 @@ internal data class MediaSocialActivity(
     val type: MediaType,
     val user: User,
     val watched: Watched?,
-    val watchlisted: Watchlisted?,
+    val watchlist: Watchlist?,
 ) {
     val lastActivityAt: Instant
         get() {
             val watchedAt = watched?.lastWatchedAt ?: Instant.MIN
-            val watchlistedAt = watchlisted?.listedAt ?: Instant.MIN
+            val watchlistAt = watchlist?.listedAt ?: Instant.MIN
             val ratedAt = watched?.rated?.ratedAt ?: Instant.MIN
             val commentedAt = watched?.commented?.createdAt ?: Instant.MIN
-            return maxOf(watchedAt, watchlistedAt, ratedAt, commentedAt)
+            return maxOf(watchedAt, watchlistAt, ratedAt, commentedAt)
         }
 
     @Immutable
@@ -52,7 +52,7 @@ internal data class MediaSocialActivity(
     }
 
     @Immutable
-    data class Watchlisted(
+    data class Watchlist(
         val listedAt: Instant,
     )
 
@@ -87,9 +87,9 @@ internal data class MediaSocialActivity(
                         },
                     )
                 },
-                watchlisted = dto.watchlisted?.let { watchlisted ->
-                    Watchlisted(
-                        listedAt = watchlisted.listedAt.toInstant(),
+                watchlist = dto.watchlisted?.let {
+                    Watchlist(
+                        listedAt = it.listedAt.toInstant(),
                     )
                 },
             )

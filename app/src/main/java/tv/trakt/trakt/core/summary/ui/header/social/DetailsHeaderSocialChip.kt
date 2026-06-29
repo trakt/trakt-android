@@ -31,14 +31,14 @@ import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-private const val USERS_LIMIT = 3
+private const val USERS_LIMIT = 5
 
 @Composable
 internal fun DetailsHeaderSocialHorizontalChip(
     modifier: Modifier = Modifier,
     users: ImmutableList<User>,
-    size: Dp = 32.dp,
-    spacing: Int = 20,
+    size: Dp = 28.dp,
+    spacing: Int = 16,
 ) {
     val limitUsers = remember(users.size) { users.take(USERS_LIMIT) }
 
@@ -82,8 +82,8 @@ internal fun DetailsHeaderSocialHorizontalChip(
 internal fun DetailsHeaderSocialVerticalChip(
     modifier: Modifier = Modifier,
     users: ImmutableList<User>,
-    size: Dp = 32.dp,
-    spacing: Int = 20,
+    size: Dp = 28.dp,
+    spacing: Int = 16,
 ) {
     val limitUsers = remember(users.size) { users.take(USERS_LIMIT) }
 

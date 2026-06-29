@@ -85,6 +85,7 @@ import tv.trakt.trakt.core.summary.episodes.features.season.EpisodeSeasonView
 import tv.trakt.trakt.core.summary.episodes.features.streaming.EpisodeStreamingsView
 import tv.trakt.trakt.core.summary.social.MediaSocialActivitySheet
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
+import tv.trakt.trakt.core.summary.social.ui.MediaSocialView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
@@ -435,7 +436,6 @@ internal fun EpisodeDetailsContent(
                         episode = state.episode,
                         show = state.show,
                         episodeTranslation = state.episodeTranslation,
-                        episodeSocials = state.episodeSocials,
                         ratings = state.episodeRatings,
                         creator = state.episodeCreator,
                         playsCount = state.episodeProgress?.plays ?: 0,
@@ -444,7 +444,6 @@ internal fun EpisodeDetailsContent(
                         onShowClick = onShowClick ?: {},
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},
-                        onSocialActivityClick = onSocialActivityClick ?: {},
                         onInfoClick = onInfoClick ?: {},
                         onWatchedClick = onWatchedClick ?: {},
                         modifier = Modifier
@@ -495,6 +494,20 @@ internal fun EpisodeDetailsContent(
                         onRatingClick = onRatingClick ?: {},
                         onRatingRemoveClick = onRatingRemoveClick ?: {},
                         onRatingDrag = { ratingAlphaMaskActive = it },
+                    )
+                }
+
+                item {
+                    MediaSocialView(
+                        visible = !state.episodeSocials.isNullOrEmpty(),
+                        activity = state.episodeSocials,
+                        onActivityClick = {
+                            onSocialActivityClick?.invoke()
+                        },
+                        modifier = Modifier
+                            .alpha(ratingAlphaMask)
+                            .fillMaxWidth()
+                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
                     )
                 }
 

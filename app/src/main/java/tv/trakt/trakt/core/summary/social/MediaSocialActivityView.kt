@@ -177,7 +177,7 @@ private fun Preview() {
                         updatedAt = nowUtcInstant(),
                     ),
                 ),
-                watchlisted = MediaSocialActivity.Watchlisted(
+                watchlist = MediaSocialActivity.Watchlist(
                     listedAt = nowUtcInstant().minusSeconds(3.days.inWholeSeconds),
                 ),
             )

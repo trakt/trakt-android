@@ -147,7 +147,7 @@ internal fun MediaSocialItemCard(
                         )
                     }
 
-                    item.watchlisted?.let {
+                    item.watchlist?.let {
                         InfoChip(
                             iconPainter = painterResource(R.drawable.ic_bookmark_on),
                             text = stringResource(R.string.list_title_watchlist),
@@ -214,7 +214,7 @@ private fun PosterPreview() {
                             updatedAt = nowUtcInstant(),
                         ),
                     ),
-                    watchlisted = MediaSocialActivity.Watchlisted(
+                    watchlist = MediaSocialActivity.Watchlist(
                         listedAt = nowUtcInstant().minusSeconds(3.days.inWholeSeconds),
                     ),
                 ),

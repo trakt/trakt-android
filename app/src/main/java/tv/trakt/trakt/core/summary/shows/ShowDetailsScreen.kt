@@ -36,7 +36,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
@@ -97,6 +97,7 @@ import tv.trakt.trakt.core.summary.shows.features.streaming.ShowStreamingsView
 import tv.trakt.trakt.core.summary.shows.features.trivia.ShowTriviaView
 import tv.trakt.trakt.core.summary.social.MediaSocialActivitySheet
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
+import tv.trakt.trakt.core.summary.social.ui.MediaSocialView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
@@ -532,7 +533,6 @@ internal fun ShowDetailsContent(
                     DetailsHeader(
                         show = show,
                         showTranslation = state.showTranslation,
-                        showSocials = state.showSocials,
                         ratings = state.showRatings,
                         creator = state.showCreator,
                         airedCount = state.showProgress?.aired ?: 0,
@@ -543,11 +543,10 @@ internal fun ShowDetailsContent(
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},
                         onShareImageClick = onShareImageClick ?: {},
-                        onSocialActivityClick = onSocialActivityClick ?: {},
                         onInfoClick = onInfoClick ?: {},
                         onWatchedClick = onWatchedClick ?: {},
                         modifier = Modifier
-                            .align(Alignment.Center)
+                            .align(Center)
                             .alpha(ratingAlphaMask),
                     )
                 }
@@ -604,6 +603,20 @@ internal fun ShowDetailsContent(
                         onRatingClick = onRatingClick ?: {},
                         onRatingRemoveClick = onRatingRemoveClick ?: {},
                         onFavoriteClick = onFavoriteClick ?: {},
+                    )
+                }
+
+                item {
+                    MediaSocialView(
+                        visible = !state.showSocials.isNullOrEmpty(),
+                        activity = state.showSocials,
+                        onActivityClick = {
+                            onSocialActivityClick?.invoke()
+                        },
+                        modifier = Modifier
+                            .alpha(ratingAlphaMask)
+                            .fillMaxWidth()
+                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
                     )
                 }
 
@@ -794,7 +807,7 @@ fun DetailsRating(
     var animated by remember { mutableStateOf(false) }
 
     Box(
-        contentAlignment = Alignment.Center,
+        contentAlignment = Center,
         modifier = modifier
             .fillMaxWidth()
             .ifOrElse(

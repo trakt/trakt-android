@@ -37,6 +37,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -90,6 +91,7 @@ import tv.trakt.trakt.core.summary.movies.features.streaming.MovieStreamingsView
 import tv.trakt.trakt.core.summary.movies.features.trivia.MovieTriviaView
 import tv.trakt.trakt.core.summary.social.MediaSocialActivitySheet
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
+import tv.trakt.trakt.core.summary.social.ui.MediaSocialView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
@@ -484,7 +486,6 @@ internal fun MovieDetailsContent(
                     DetailsHeader(
                         movie = movie,
                         movieTranslation = state.movieTranslation,
-                        movieSocials = state.movieSocials,
                         ratings = state.movieRatings,
                         creator = state.movieCreator,
                         creditsCount = when {
@@ -498,11 +499,10 @@ internal fun MovieDetailsContent(
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},
                         onShareImageClick = onShareImageClick ?: {},
-                        onSocialActivityClick = onSocialActivityClick ?: {},
                         onInfoClick = onInfoClick ?: {},
                         onWatchedClick = onWatchedClick ?: {},
                         modifier = Modifier
-                            .align(Alignment.Center)
+                            .align(Center)
                             .alpha(ratingAlphaMask),
                     )
                 }
@@ -555,6 +555,20 @@ internal fun MovieDetailsContent(
                         onRatingClick = onRatingClick ?: {},
                         onRatingRemoveClick = onRatingRemoveClick ?: {},
                         onFavoriteClick = onFavoriteClick ?: {},
+                    )
+                }
+
+                item {
+                    MediaSocialView(
+                        visible = !state.movieSocials.isNullOrEmpty(),
+                        activity = state.movieSocials,
+                        onActivityClick = {
+                            onSocialActivityClick?.invoke()
+                        },
+                        modifier = Modifier
+                            .alpha(ratingAlphaMask)
+                            .fillMaxWidth()
+                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
                     )
                 }
 
@@ -759,7 +773,7 @@ fun DetailsRating(
     var animated by remember { mutableStateOf(false) }
 
     Box(
-        contentAlignment = Alignment.Center,
+        contentAlignment = Center,
         modifier = modifier
             .fillMaxWidth()
             .ifOrElse(
