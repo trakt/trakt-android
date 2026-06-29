@@ -42,8 +42,8 @@ internal sealed class HomeActivityItem(
 
     val key: String
         get() = when (this) {
-            is MovieItem -> "${MediaType.MOVIE.value}-${movie.ids.trakt.value}"
-            is EpisodeItem -> "${MediaType.EPISODE.value}-${episode.ids.trakt.value}"
+            is MovieItem -> "${MediaType.Movie.value}-${movie.ids.trakt.value}"
+            is EpisodeItem -> "${MediaType.Episode.value}-${episode.ids.trakt.value}"
         }
 
     val title: String

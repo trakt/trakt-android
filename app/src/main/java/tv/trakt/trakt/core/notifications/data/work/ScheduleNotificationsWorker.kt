@@ -179,8 +179,8 @@ internal class ScheduleNotificationsWorker(
                 },
                 mediaId = item.id.value,
                 mediaType = when (item) {
-                    is EpisodeItem -> MediaType.EPISODE
-                    is MovieItem -> MediaType.MOVIE
+                    is EpisodeItem -> MediaType.Episode
+                    is MovieItem -> MediaType.Movie
                 },
                 mediaImage = item.images?.getPosterUrl(),
                 title = when (item) {
@@ -241,7 +241,7 @@ internal class ScheduleNotificationsWorker(
                 targetDate = targetDate.toInstant(),
                 channel = TraktNotificationChannel.SHOWS,
                 mediaId = firstEpisode.id.value,
-                mediaType = MediaType.EPISODE,
+                mediaType = MediaType.Episode,
                 mediaImage = firstEpisode.images?.getPosterUrl(),
                 title = firstEpisode.show.title,
                 content = applicationContext.getString(

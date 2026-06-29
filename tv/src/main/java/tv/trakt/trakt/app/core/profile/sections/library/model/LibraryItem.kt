@@ -34,8 +34,8 @@ internal sealed class LibraryItem(
 
     val type: MediaType
         get() = when (this) {
-            is MovieItem -> MediaType.MOVIE
-            is EpisodeItem -> MediaType.EPISODE
+            is MovieItem -> MediaType.Movie
+            is EpisodeItem -> MediaType.Episode
         }
 
     val id: TraktId

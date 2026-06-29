@@ -666,7 +666,7 @@ fun Preview() {
             videoSubtitle = "S01E01 - Pilot",
             videoProgress = 33f,
             mediaId = TraktId(0),
-            mediaType = MediaType.MOVIE,
+            mediaType = MediaType.Movie,
         )
     }
 }

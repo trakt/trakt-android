@@ -1,10 +1,10 @@
 package tv.trakt.trakt.core.ratings
 
 import tv.trakt.trakt.common.model.MediaType
-import tv.trakt.trakt.common.model.MediaType.EPISODE
-import tv.trakt.trakt.common.model.MediaType.MOVIE
-import tv.trakt.trakt.common.model.MediaType.SEASON
-import tv.trakt.trakt.common.model.MediaType.SHOW
+import tv.trakt.trakt.common.model.MediaType.Episode
+import tv.trakt.trakt.common.model.MediaType.Movie
+import tv.trakt.trakt.common.model.MediaType.Season
+import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.ratings.data.remote.RatingsRemoteDataSource
 
@@ -16,10 +16,10 @@ internal class DeleteRatingUseCase(
         mediaType: MediaType,
     ) {
         when (mediaType) {
-            MOVIE -> remoteSource.deleteMovieRating(id = mediaId)
-            SHOW -> remoteSource.deleteShowRating(id = mediaId)
-            EPISODE -> remoteSource.deleteEpisodeRating(id = mediaId)
-            SEASON -> throw IllegalStateException("Rating a season is not supported")
+            Movie -> remoteSource.deleteMovieRating(id = mediaId)
+            Show -> remoteSource.deleteShowRating(id = mediaId)
+            Episode -> remoteSource.deleteEpisodeRating(id = mediaId)
+            Season -> throw IllegalStateException("Rating a season is not supported")
         }
     }
 }

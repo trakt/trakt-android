@@ -35,7 +35,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
-import tv.trakt.trakt.common.model.MediaType.SHOW
+import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade940
 import tv.trakt.trakt.core.profile.sections.social.ui.SocialUserView
@@ -139,7 +139,7 @@ internal fun MediaSocialItemCard(
                             iconPadding = 1.dp,
                             text = stringResource(
                                 when (item.type) {
-                                    SHOW -> R.string.tag_text_number_of_episodes
+                                    Show -> R.string.tag_text_number_of_episodes
                                     else -> R.string.text_play_count
                                 },
                                 it.plays,
@@ -195,7 +195,7 @@ private fun PosterPreview() {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             MediaSocialItemCard(
                 item = MediaSocialActivity(
-                    type = SHOW,
+                    type = Show,
                     user = PreviewData.user1,
                     watched = MediaSocialActivity.Watched(
                         lastWatchedAt = nowUtcInstant().minusSeconds(3.days.inWholeSeconds),

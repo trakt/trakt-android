@@ -134,7 +134,7 @@ internal fun EpisodeCommentsView(
     PostCommentSheet(
         active = postCommentSheet,
         mediaId = state.media?.second?.ids?.trakt,
-        mediaType = MediaType.EPISODE,
+        mediaType = MediaType.Episode,
         onCommentPost = viewModel::addComment,
         onDismiss = {
             postCommentSheet = false

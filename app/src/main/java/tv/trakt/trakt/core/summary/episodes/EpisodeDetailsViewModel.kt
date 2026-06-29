@@ -38,7 +38,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExternalRating
-import tv.trakt.trakt.common.model.MediaType.EPISODE
+import tv.trakt.trakt.common.model.MediaType.Episode
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.Show
@@ -539,7 +539,7 @@ internal class EpisodeDetailsViewModel(
                 UserRatingsState(
                     rating = UserRating(
                         mediaId = episodeId,
-                        mediaType = EPISODE,
+                        mediaType = Episode,
                         rating = newRating,
                     ),
                     loading = Done,
@@ -549,7 +549,7 @@ internal class EpisodeDetailsViewModel(
             PostRatingWorker.scheduleOneTime(
                 appContext = appContext,
                 mediaId = episodeId,
-                mediaType = EPISODE,
+                mediaType = Episode,
                 rating = newRating,
             )
         }
@@ -571,7 +571,7 @@ internal class EpisodeDetailsViewModel(
                 UserRatingsState(
                     rating = UserRating(
                         mediaId = episodeId,
-                        mediaType = EPISODE,
+                        mediaType = Episode,
                         rating = 0,
                         favorite = it?.rating?.favorite == true,
                     ),
@@ -582,7 +582,7 @@ internal class EpisodeDetailsViewModel(
             PostRatingWorker.scheduleOneTime(
                 appContext = appContext,
                 mediaId = episodeId,
-                mediaType = EPISODE,
+                mediaType = Episode,
                 rating = 0, // A rating of 0 indicates removal of rating
             )
         }

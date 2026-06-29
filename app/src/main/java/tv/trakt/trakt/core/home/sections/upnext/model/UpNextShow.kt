@@ -3,7 +3,7 @@ package tv.trakt.trakt.core.home.sections.upnext.model
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaType
-import tv.trakt.trakt.common.model.MediaType.SHOW
+import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.toTraktId
@@ -14,7 +14,7 @@ import java.time.ZonedDateTime
 internal data class UpNextShow(
     val progress: Progress,
     val show: Show,
-    override val type: MediaType = SHOW,
+    override val type: MediaType = Show,
     override val loading: Boolean = false,
 ) : UpNextItem {
     override val id: TraktId

@@ -25,7 +25,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.model.MediaType.MOVIE
+import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.core.favorites.FavoritesUpdates
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.RATE_PROMPT
 import tv.trakt.trakt.core.favorites.model.FavoriteItem
@@ -92,7 +92,7 @@ internal class RatePromptViewModel(
             PostRatingWorker.scheduleOneTime(
                 appContext = appContext,
                 mediaId = media.movie.ids.trakt,
-                mediaType = MOVIE,
+                mediaType = Movie,
                 rating = newRating,
             )
         }
@@ -116,7 +116,7 @@ internal class RatePromptViewModel(
             PostRatingWorker.scheduleOneTime(
                 appContext = appContext,
                 mediaId = media.movie.ids.trakt,
-                mediaType = MOVIE,
+                mediaType = Movie,
                 rating = 0, // A rating of 0 indicates removal of rating
             )
         }

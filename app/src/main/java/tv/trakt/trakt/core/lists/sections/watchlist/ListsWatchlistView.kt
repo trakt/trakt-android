@@ -47,8 +47,8 @@ import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaMode.MEDIA
 import tv.trakt.trakt.common.model.MediaMode.MOVIES
 import tv.trakt.trakt.common.model.MediaMode.SHOWS
-import tv.trakt.trakt.common.model.MediaType.MOVIE
-import tv.trakt.trakt.common.model.MediaType.SHOW
+import tv.trakt.trakt.common.model.MediaType.Movie
+import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -116,7 +116,7 @@ internal fun ListsWatchlistView(
         addLocally = true,
         show = showContextSheet,
         watched = showContextSheet?.let {
-            state.collection.isWatched(it.ids.trakt, SHOW, it.airedEpisodes)
+            state.collection.isWatched(it.ids.trakt, Show, it.airedEpisodes)
         } ?: false,
         onDismiss = { showContextSheet = null },
         onRemoveWatchlist = {
@@ -131,7 +131,7 @@ internal fun ListsWatchlistView(
         addLocally = true,
         movie = movieContextSheet,
         watched = movieContextSheet?.ids?.trakt?.let {
-            state.collection.isWatched(it, MOVIE, null)
+            state.collection.isWatched(it, Movie, null)
         } ?: false,
         onDismiss = { movieContextSheet = null },
         onRemoveWatchlist = {

@@ -74,10 +74,10 @@ internal sealed class CustomListItem(
 
     val type: MediaType
         get() = when (this) {
-            is ShowItem -> MediaType.SHOW
-            is MovieItem -> MediaType.MOVIE
-            is SeasonItem -> MediaType.SEASON
-            is EpisodeItem -> MediaType.EPISODE
+            is ShowItem -> MediaType.Show
+            is MovieItem -> MediaType.Movie
+            is SeasonItem -> MediaType.Season
+            is EpisodeItem -> MediaType.Episode
         }
 
     val key: String

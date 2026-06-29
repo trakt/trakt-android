@@ -51,7 +51,7 @@ internal class LoadUserRatingsUseCase(
             .asyncMap {
                 UserRating(
                     mediaId = it.show!!.ids.trakt.toTraktId(),
-                    mediaType = MediaType.SHOW,
+                    mediaType = MediaType.Show,
                     rating = it.rating,
                 )
             }
@@ -67,7 +67,7 @@ internal class LoadUserRatingsUseCase(
             .asyncMap {
                 UserRating(
                     mediaId = it.movie!!.ids.trakt.toTraktId(),
-                    mediaType = MediaType.MOVIE,
+                    mediaType = MediaType.Movie,
                     rating = it.rating,
                 )
             }
@@ -83,7 +83,7 @@ internal class LoadUserRatingsUseCase(
             .asyncMap {
                 UserRating(
                     mediaId = it.episode!!.ids.trakt.toTraktId(),
-                    mediaType = MediaType.EPISODE,
+                    mediaType = MediaType.Episode,
                     rating = it.rating,
                 )
             }

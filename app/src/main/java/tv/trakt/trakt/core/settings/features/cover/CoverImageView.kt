@@ -230,7 +230,7 @@ private fun Preview() {
             state = CoverImageState(
                 mediaId = 1.toTraktId(),
                 mediaTitle = "The Matrix",
-                mediaType = MediaType.SHOW,
+                mediaType = MediaType.Show,
                 mediaImage = "",
             ),
         )

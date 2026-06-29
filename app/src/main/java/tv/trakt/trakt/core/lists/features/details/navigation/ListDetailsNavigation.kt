@@ -9,8 +9,8 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaType
-import tv.trakt.trakt.common.model.MediaType.MOVIE
-import tv.trakt.trakt.common.model.MediaType.SHOW
+import tv.trakt.trakt.common.model.MediaType.Movie
+import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.features.details.ListDetailsScreen
 
@@ -26,7 +26,7 @@ internal data class ListsDetailsDestination(
             "mediaType must contain either 1 or 2 types"
         }
 
-        require(mediaType.all { it == SHOW.name || it == MOVIE.name }) {
+        require(mediaType.all { it == Show.name || it == Movie.name }) {
             "mediaType must be either SHOW or MOVIE"
         }
     }

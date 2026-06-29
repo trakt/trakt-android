@@ -158,7 +158,7 @@ private fun Preview() {
         }
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             val item = MediaSocialActivity(
-                type = MediaType.MOVIE,
+                type = MediaType.Movie,
                 user = PreviewData.user1,
                 watched = MediaSocialActivity.Watched(
                     lastWatchedAt = nowUtcInstant().minusSeconds(3.days.inWholeSeconds),

@@ -309,7 +309,7 @@ internal fun EpisodeDetailsScreen(
             else -> null
         },
         mediaTitle = state.show?.title ?: "",
-        mediaType = MediaType.EPISODE,
+        mediaType = MediaType.Episode,
         mediaImage = state.episode?.images?.getScreenshotUrl(),
         onImageSet = {
             scope.launch {

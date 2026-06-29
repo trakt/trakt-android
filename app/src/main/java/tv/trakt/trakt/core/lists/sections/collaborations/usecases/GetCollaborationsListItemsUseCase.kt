@@ -27,9 +27,9 @@ internal class GetCollaborationsListItemsUseCase(
         return getListItemsUseCase.getItems(
             listId = listId,
             type = when (filter) {
-                MEDIA -> listOf(MediaType.MOVIE, MediaType.SHOW)
-                SHOWS -> listOf(MediaType.SHOW)
-                MOVIES -> listOf(MediaType.MOVIE)
+                MEDIA -> listOf(MediaType.Movie, MediaType.Show)
+                SHOWS -> listOf(MediaType.Show)
+                MOVIES -> listOf(MediaType.Movie)
             },
             sorting = sorting,
             pagination = Pagination(page = 1, limit = limit),

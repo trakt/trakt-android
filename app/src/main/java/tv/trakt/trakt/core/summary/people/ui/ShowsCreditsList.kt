@@ -40,7 +40,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
-import tv.trakt.trakt.common.model.MediaType.SHOW
+import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.people.ListEmptyView
@@ -143,8 +143,8 @@ internal fun ShowsCreditsList(
                                     VerticalMediaCard(
                                         title = item.title,
                                         imageUrl = item.images?.getPosterUrl(),
-                                        watched = userCollection.isWatched(item.id, SHOW, item.airedEpisodes),
-                                        watchlist = userCollection.isWatchlist(item.id, SHOW),
+                                        watched = userCollection.isWatched(item.id, Show, item.airedEpisodes),
+                                        watchlist = userCollection.isWatchlist(item.id, Show),
                                         onClick = { onClick?.invoke(item.show) },
                                         onLongClick = { onLongClick?.invoke(item.show) },
                                         chipSpacing = 10.dp,

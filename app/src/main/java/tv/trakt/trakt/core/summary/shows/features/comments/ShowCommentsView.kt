@@ -136,7 +136,7 @@ internal fun ShowCommentsView(
     PostCommentSheet(
         active = postCommentSheet,
         mediaId = state.show?.ids?.trakt,
-        mediaType = MediaType.SHOW,
+        mediaType = MediaType.Show,
         onCommentPost = viewModel::addComment,
         onDismiss = {
             postCommentSheet = false

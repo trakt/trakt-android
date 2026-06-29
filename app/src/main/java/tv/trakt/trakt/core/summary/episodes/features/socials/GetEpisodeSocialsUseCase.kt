@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
-import tv.trakt.trakt.common.model.MediaType.EPISODE
+import tv.trakt.trakt.common.model.MediaType.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.networking.api.v3.V3Api
@@ -34,7 +34,7 @@ internal class GetEpisodeSocialsUseCase(
         }
 
         return remoteData
-            .map { MediaSocialActivity.fromDto(it, EPISODE) }
+            .map { MediaSocialActivity.fromDto(it, Episode) }
             .sortedByDescending { it.lastActivityAt }
             .toImmutableList()
     }

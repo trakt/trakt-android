@@ -338,7 +338,7 @@ internal fun MovieDetailsScreen(
     CoverImageSheet(
         mediaId = coverImageSheet?.ids?.trakt,
         mediaTitle = coverImageSheet?.title ?: "",
-        mediaType = MediaType.MOVIE,
+        mediaType = MediaType.Movie,
         mediaImage = state.movie?.images?.getFanartUrl(),
         onImageSet = {
             scope.launch {
@@ -359,7 +359,7 @@ internal fun MovieDetailsScreen(
     ShareSheet(
         active = shareSheet,
         mediaSlug = state.movie?.ids?.slug,
-        mediaType = MediaType.MOVIE,
+        mediaType = MediaType.Movie,
         onDismiss = { shareSheet = false },
     )
 

@@ -48,7 +48,7 @@ internal class HomeWatchlistStorage : HomeWatchlistLocalDataSource {
         mutex.withLock {
             with(storageShows) {
                 showsIds.forEach {
-                    remove("${it.value}-${MediaType.SHOW.value}")
+                    remove("${it.value}-${MediaType.Show.value}")
                 }
             }
         }
@@ -58,7 +58,7 @@ internal class HomeWatchlistStorage : HomeWatchlistLocalDataSource {
         mutex.withLock {
             with(storageMovies) {
                 moviesIds.forEach {
-                    remove("${it.value}-${MediaType.MOVIE.value}")
+                    remove("${it.value}-${MediaType.Movie.value}")
                 }
             }
         }

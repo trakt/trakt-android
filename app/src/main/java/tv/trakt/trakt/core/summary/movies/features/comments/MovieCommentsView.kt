@@ -137,7 +137,7 @@ internal fun MovieCommentsView(
     PostCommentSheet(
         active = postCommentSheet,
         mediaId = state.movie?.ids?.trakt,
-        mediaType = MediaType.MOVIE,
+        mediaType = MediaType.Movie,
         onCommentPost = viewModel::addComment,
         onDismiss = {
             postCommentSheet = false

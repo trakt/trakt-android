@@ -85,8 +85,8 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.model.MediaType.EPISODE
-import tv.trakt.trakt.common.model.MediaType.MOVIE
+import tv.trakt.trakt.common.model.MediaType.Episode
+import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.WhatsNew
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.auth.ConfigAuth
@@ -668,7 +668,7 @@ private fun handleNotificationIntent(
         }
 
         when {
-            extras.mediaType == EPISODE -> {
+            extras.mediaType == Episode -> {
                 if (extras.extraId == null || extras.extraValue1 == null || extras.extraValue2 == null) {
                     return
                 }
@@ -679,7 +679,7 @@ private fun handleNotificationIntent(
                     episodeNumber = extras.extraValue2,
                 )
             }
-            extras.mediaType == MOVIE -> {
+            extras.mediaType == Movie -> {
                 navController.navigateToMovie(
                     movieId = extras.mediaId.toTraktId(),
                 )

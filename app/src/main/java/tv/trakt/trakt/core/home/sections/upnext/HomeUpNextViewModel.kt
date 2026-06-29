@@ -37,7 +37,7 @@ import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaMode.MOVIES
 import tv.trakt.trakt.common.model.MediaMode.SHOWS
-import tv.trakt.trakt.common.model.MediaType.SHOW
+import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -267,7 +267,7 @@ internal class HomeUpNextViewModel(
             try {
                 val currentItems = itemsState.value.items?.toMutableList() ?: return@launch
 
-                val itemIndex = currentItems.indexOfFirst { it.type == SHOW && it.id == episodeId }
+                val itemIndex = currentItems.indexOfFirst { it.type == Show && it.id == episodeId }
                 val itemLoading = (currentItems[itemIndex] as UpNextShow).copy(loading = true)
                 currentItems[itemIndex] = itemLoading
 
@@ -343,7 +343,7 @@ internal class HomeUpNextViewModel(
             try {
                 val currentItems = itemsState.value.items?.toMutableList() ?: return@launch
 
-                val itemIndex = currentItems.indexOfFirst { it.type == SHOW && it.id == episodeId }
+                val itemIndex = currentItems.indexOfFirst { it.type == Show && it.id == episodeId }
                 val itemLoading = (currentItems[itemIndex] as UpNextShow).copy(loading = true)
                 currentItems[itemIndex] = itemLoading
 

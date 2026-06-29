@@ -27,6 +27,6 @@ internal sealed interface ProfileProgressItem {
 
     val type: MediaType
         get() = when (this) {
-            is ShowItem -> MediaType.SHOW
+            is ShowItem -> MediaType.Show
         }
 }

@@ -90,7 +90,7 @@ internal class PostScrobbleStartWorker(
                 return Result.failure()
             }
 
-            if (mediaType == MediaType.MOVIE) {
+            if (mediaType == MediaType.Movie) {
                 Timber.d("Posting scrobble start for movie ID $mediaId with progress $progress")
                 scrobbleApi.postScrobbleStart(
                     postScrobbleStartRequest = PostScrobbleStartRequest(
@@ -111,7 +111,7 @@ internal class PostScrobbleStartWorker(
                 scrobbleUpdates.notifyUpdate(SCROBBLE_START_WORKER)
             }
 
-            if (mediaType == MediaType.EPISODE) {
+            if (mediaType == MediaType.Episode) {
                 Timber.d("Posting scrobble start for episode ID $mediaId with progress $progress")
                 scrobbleApi.postScrobbleStart(
                     postScrobbleStartRequest = PostScrobbleStartRequest(

@@ -1,10 +1,10 @@
 package tv.trakt.trakt.core.ratings
 
 import tv.trakt.trakt.common.model.MediaType
-import tv.trakt.trakt.common.model.MediaType.EPISODE
-import tv.trakt.trakt.common.model.MediaType.MOVIE
-import tv.trakt.trakt.common.model.MediaType.SEASON
-import tv.trakt.trakt.common.model.MediaType.SHOW
+import tv.trakt.trakt.common.model.MediaType.Episode
+import tv.trakt.trakt.common.model.MediaType.Movie
+import tv.trakt.trakt.common.model.MediaType.Season
+import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.ratings.data.remote.RatingsRemoteDataSource
 
@@ -17,22 +17,22 @@ internal class PostRatingUseCase(
         rating: Int,
     ) {
         when (mediaType) {
-            MOVIE -> remoteSource.postMovieRating(
+            Movie -> remoteSource.postMovieRating(
                 id = mediaId,
                 rating = rating,
             )
 
-            SHOW -> remoteSource.postShowRating(
+            Show -> remoteSource.postShowRating(
                 id = mediaId,
                 rating = rating,
             )
 
-            EPISODE -> remoteSource.postEpisodeRating(
+            Episode -> remoteSource.postEpisodeRating(
                 id = mediaId,
                 rating = rating,
             )
 
-            SEASON -> throw IllegalStateException("Rating a season is not supported")
+            Season -> throw IllegalStateException("Rating a season is not supported")
         }
     }
 }

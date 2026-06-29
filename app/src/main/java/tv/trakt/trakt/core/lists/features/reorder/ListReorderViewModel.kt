@@ -24,10 +24,10 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
-import tv.trakt.trakt.common.model.MediaType.EPISODE
-import tv.trakt.trakt.common.model.MediaType.MOVIE
-import tv.trakt.trakt.common.model.MediaType.SEASON
-import tv.trakt.trakt.common.model.MediaType.SHOW
+import tv.trakt.trakt.common.model.MediaType.Episode
+import tv.trakt.trakt.common.model.MediaType.Movie
+import tv.trakt.trakt.common.model.MediaType.Season
+import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.ListsConfig.LISTS_ITEMS_ALL_LIMIT
@@ -81,7 +81,7 @@ internal class ListReorderViewModel(
                 while (true) {
                     val pageItems = getListItemsUseCase.getItems(
                         listId = destinationList.ids.trakt,
-                        type = listOf(SHOW, MOVIE, SEASON, EPISODE),
+                        type = listOf(Show, Movie, Season, Episode),
                         sorting = Sorting.Default,
                         pagination = Pagination(page, LISTS_ITEMS_ALL_LIMIT),
                         filters = null,

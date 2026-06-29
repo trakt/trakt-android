@@ -198,7 +198,7 @@ private fun EpisodeSocialItemViewPreview() {
                 user = PreviewData.user1,
                 userRating = UserRating(
                     mediaId = PreviewData.episode1.ids.trakt,
-                    mediaType = tv.trakt.trakt.common.model.MediaType.EPISODE,
+                    mediaType = tv.trakt.trakt.common.model.MediaType.Episode,
                     rating = 8,
                 ),
                 show = PreviewData.show1,

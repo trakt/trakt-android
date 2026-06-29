@@ -179,21 +179,21 @@ internal class CommentsViewModel(
     private suspend fun fetchComments(): ImmutableList<Comment> {
         val filter = loadFilter()
         return when (destination.mediaType) {
-            MediaType.MOVIE -> getMovieCommentsUseCase.getComments(
+            MediaType.Movie -> getMovieCommentsUseCase.getComments(
                 movieId = destination.mediaId.toTraktId(),
                 user = userState.value,
                 filter = filter,
                 limit = 100,
             )
 
-            MediaType.SHOW -> getShowCommentsUseCase.getComments(
+            MediaType.Show -> getShowCommentsUseCase.getComments(
                 showId = destination.mediaId.toTraktId(),
                 user = userState.value,
                 filter = filter,
                 limit = 100,
             )
 
-            MediaType.EPISODE -> getEpisodeCommentsUseCase.getComments(
+            MediaType.Episode -> getEpisodeCommentsUseCase.getComments(
                 showId = destination.mediaShowId!!.toTraktId(),
                 seasonEpisode = SeasonEpisode(
                     season = destination.mediaSeason ?: -1,

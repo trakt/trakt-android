@@ -3,8 +3,8 @@ package tv.trakt.trakt.core.main.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import tv.trakt.trakt.common.model.Images.Size
-import tv.trakt.trakt.common.model.MediaType.MOVIE
-import tv.trakt.trakt.common.model.MediaType.SHOW
+import tv.trakt.trakt.common.model.MediaType.Movie
+import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.billing.navigation.billingScreen
 import tv.trakt.trakt.core.billing.navigation.navigateToBilling
@@ -185,7 +185,7 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
             onNavigateToComments = { show, filter ->
                 navigateToComments(
                     mediaId = show.ids.trakt,
-                    mediaType = SHOW,
+                    mediaType = Show,
                     mediaImage = show.images?.getFanartUrl(),
                     filter = filter,
                 )
@@ -194,7 +194,7 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
                 navigateToListDetails(
                     list = list,
                     mediaId = show.ids.trakt,
-                    mediaType = listOf(SHOW),
+                    mediaType = listOf(Show),
                     mediaImage = show.images?.getFanartUrl(),
                 )
             },
@@ -211,7 +211,7 @@ internal fun NavGraphBuilder.showsScreens(controller: NavHostController) {
             onNavigateToTrivia = { show ->
                 navigateToTrivia(
                     mediaId = show.ids.trakt,
-                    mediaType = SHOW,
+                    mediaType = Show,
                     mediaImage = show.images?.getFanartUrl(),
                     mediaTitle = show.title,
                     navSource = "show_summary",
@@ -314,7 +314,7 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
             onNavigateToComments = { movie, filter ->
                 navigateToComments(
                     mediaId = movie.ids.trakt,
-                    mediaType = MOVIE,
+                    mediaType = Movie,
                     mediaImage = movie.images?.getFanartUrl(),
                     filter = filter,
                 )
@@ -323,7 +323,7 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
                 navigateToListDetails(
                     list = list,
                     mediaId = movie.ids.trakt,
-                    mediaType = listOf(MOVIE),
+                    mediaType = listOf(Movie),
                     mediaImage = movie.images?.getFanartUrl(),
                 )
             },
@@ -337,7 +337,7 @@ internal fun NavGraphBuilder.moviesScreens(controller: NavHostController) {
             onNavigateToTrivia = { movie ->
                 navigateToTrivia(
                     mediaId = movie.ids.trakt,
-                    mediaType = MOVIE,
+                    mediaType = Movie,
                     mediaImage = movie.images?.getFanartUrl(),
                     mediaTitle = movie.title,
                     navSource = "movie_summary",
@@ -396,7 +396,7 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
                 navigateToListDetails(
                     list = list,
                     mediaId = (-1).toTraktId(),
-                    mediaType = listOf(SHOW, MOVIE),
+                    mediaType = listOf(Show, Movie),
                     mediaImage = null,
                 )
             },
@@ -408,7 +408,7 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
                 navigateToListDetails(
                     list = it,
                     mediaId = (-1).toTraktId(),
-                    mediaType = listOf(SHOW, MOVIE),
+                    mediaType = listOf(Show, Movie),
                     mediaImage = null,
                 )
             },
@@ -470,7 +470,7 @@ internal fun NavGraphBuilder.searchScreens(
                 navigateToListDetails(
                     list = list,
                     mediaId = (-1).toTraktId(),
-                    mediaType = listOf(SHOW, MOVIE),
+                    mediaType = listOf(Show, Movie),
                     mediaImage = null,
                 )
             },
@@ -626,7 +626,7 @@ internal fun NavGraphBuilder.userProfileScreens(controller: NavHostController) {
                 navigateToListDetails(
                     list = list,
                     mediaId = (-1).toTraktId(),
-                    mediaType = listOf(SHOW, MOVIE),
+                    mediaType = listOf(Show, Movie),
                     mediaImage = null,
                 )
             },
@@ -651,7 +651,7 @@ internal fun NavGraphBuilder.userProfileScreens(controller: NavHostController) {
                 navigateToListDetails(
                     list = list,
                     mediaId = (-1).toTraktId(),
-                    mediaType = listOf(SHOW, MOVIE),
+                    mediaType = listOf(Show, Movie),
                     mediaImage = null,
                 )
             },

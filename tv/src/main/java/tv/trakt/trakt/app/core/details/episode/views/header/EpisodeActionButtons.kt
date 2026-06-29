@@ -83,7 +83,7 @@ internal fun EpisodeActionButtons(
                             val intent = TvPlexPlayerActivity.createIntent(
                                 context = context,
                                 mediaId = detailsState.episodeDetails?.ids?.trakt ?: return@WatchButton,
-                                mediaType = MediaType.EPISODE,
+                                mediaType = MediaType.Episode,
                                 primaryVideoUrl = streamingState.plexStream.primaryUrl,
                                 secondaryVideoUrls = streamingState.plexStream.secondaryUrls,
                                 videoTitle = detailsState.showDetails?.title ?: "",

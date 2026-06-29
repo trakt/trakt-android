@@ -125,9 +125,9 @@ internal class PostRatingWorker(
 
                 delay(500)
                 when (mediaType) {
-                    MediaType.SHOW -> loadUserRatingUseCase.loadShows()
-                    MediaType.MOVIE -> loadUserRatingUseCase.loadMovies()
-                    MediaType.EPISODE -> loadUserRatingUseCase.loadEpisodes()
+                    MediaType.Show -> loadUserRatingUseCase.loadShows()
+                    MediaType.Movie -> loadUserRatingUseCase.loadMovies()
+                    MediaType.Episode -> loadUserRatingUseCase.loadEpisodes()
                     else -> throw IllegalStateException("Rating is not supported")
                 }
 

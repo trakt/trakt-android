@@ -61,7 +61,7 @@ internal fun NavController.navigateToComments(
 ) {
     navigate(
         route = CommentsDestination(
-            mediaType = MediaType.EPISODE,
+            mediaType = MediaType.Episode,
             mediaId = episodeId.value,
             mediaShowId = showId.value,
             mediaEpisode = seasonEpisode.episode,

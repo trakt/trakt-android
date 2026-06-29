@@ -69,7 +69,7 @@ internal class GetSocialActivityUseCase(
                             userRating = it.userRating?.let { rating ->
                                 UserRating(
                                     mediaId = it.movie?.ids?.trakt?.toTraktId() ?: TraktId(0),
-                                    mediaType = MediaType.MOVIE,
+                                    mediaType = MediaType.Movie,
                                     rating = rating,
                                 )
                             },
@@ -90,7 +90,7 @@ internal class GetSocialActivityUseCase(
                             userRating = it.userRating?.let { rating ->
                                 UserRating(
                                     mediaId = it.episode?.ids?.trakt?.toTraktId() ?: TraktId(0),
-                                    mediaType = MediaType.EPISODE,
+                                    mediaType = MediaType.Episode,
                                     rating = rating,
                                 )
                             },

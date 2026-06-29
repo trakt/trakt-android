@@ -118,9 +118,9 @@ class UserApiClient(
             putUsersCoverRequest = PutUsersCoverRequest(
                 coverId = mediaId.value,
                 coverType = when (mediaType) {
-                    MediaType.SHOW -> PutUsersCoverRequest.CoverType.SHOW
-                    MediaType.MOVIE -> PutUsersCoverRequest.CoverType.MOVIE
-                    MediaType.EPISODE -> PutUsersCoverRequest.CoverType.EPISODE
+                    MediaType.Show -> PutUsersCoverRequest.CoverType.SHOW
+                    MediaType.Movie -> PutUsersCoverRequest.CoverType.MOVIE
+                    MediaType.Episode -> PutUsersCoverRequest.CoverType.EPISODE
                     else -> throw IllegalStateException("Unsupported media type for cover image: $mediaType")
                 },
             ),

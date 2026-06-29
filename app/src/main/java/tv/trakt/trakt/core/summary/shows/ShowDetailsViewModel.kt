@@ -45,7 +45,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExternalRating
-import tv.trakt.trakt.common.model.MediaType.SHOW
+import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -382,7 +382,7 @@ internal class ShowDetailsViewModel(
                     favorite = userFavorite,
                 ) ?: UserRating(
                     mediaId = showId,
-                    mediaType = SHOW,
+                    mediaType = Show,
                     rating = 0,
                     favorite = userFavorite,
                 )
@@ -765,7 +765,7 @@ internal class ShowDetailsViewModel(
                     ) ?: UserRatingsState(
                         rating = UserRating(
                             mediaId = showId,
-                            mediaType = SHOW,
+                            mediaType = Show,
                             rating = 0,
                             favorite = true,
                         ),
@@ -806,7 +806,7 @@ internal class ShowDetailsViewModel(
                     ) ?: UserRatingsState(
                         rating = UserRating(
                             mediaId = showId,
-                            mediaType = SHOW,
+                            mediaType = Show,
                             rating = 0,
                             favorite = false,
                         ),
@@ -846,7 +846,7 @@ internal class ShowDetailsViewModel(
                 UserRatingsState(
                     rating = UserRating(
                         mediaId = showId,
-                        mediaType = SHOW,
+                        mediaType = Show,
                         rating = newRating,
                         favorite = it?.rating?.favorite == true,
                     ),
@@ -857,7 +857,7 @@ internal class ShowDetailsViewModel(
             PostRatingWorker.scheduleOneTime(
                 appContext = appContext,
                 mediaId = showId,
-                mediaType = SHOW,
+                mediaType = Show,
                 rating = newRating,
             )
         }
@@ -879,7 +879,7 @@ internal class ShowDetailsViewModel(
                 UserRatingsState(
                     rating = UserRating(
                         mediaId = showId,
-                        mediaType = SHOW,
+                        mediaType = Show,
                         rating = 0,
                         favorite = it?.rating?.favorite == true,
                     ),
@@ -890,7 +890,7 @@ internal class ShowDetailsViewModel(
             PostRatingWorker.scheduleOneTime(
                 appContext = appContext,
                 mediaId = showId,
-                mediaType = SHOW,
+                mediaType = Show,
                 rating = 0, // A rating of 0 indicates removal of rating
             )
         }

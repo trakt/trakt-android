@@ -73,7 +73,7 @@ internal class FavoriteShowContextViewModel(
                 favoritesUpdates.notifyUpdate(CONTEXT_SHEET)
 
                 analytics.ratings.logFavoriteRemove(
-                    mediaType = MediaType.SHOW.value,
+                    mediaType = MediaType.Show.value,
                     source = "show_context",
                 )
 

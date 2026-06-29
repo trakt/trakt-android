@@ -30,8 +30,8 @@ internal sealed class DiscoverItem {
 
     val type: MediaType
         get() = when (this) {
-            is ShowItem -> MediaType.SHOW
-            is MovieItem -> MediaType.MOVIE
+            is ShowItem -> MediaType.Show
+            is MovieItem -> MediaType.Movie
         }
 
     val id: TraktId

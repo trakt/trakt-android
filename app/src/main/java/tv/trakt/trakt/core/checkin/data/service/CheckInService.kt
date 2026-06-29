@@ -237,8 +237,8 @@ internal class CheckInService : Service() {
                 val showId = serviceData.extraId?.toTraktId()
 
                 hasTrivia = when (serviceData.mediaType) {
-                    MediaType.MOVIE -> movieTriviaUseCase.getTrivia(movieId).facts.isNotEmpty()
-                    MediaType.EPISODE if showId != null -> showTriviaUseCase.getTrivia(showId).facts.isNotEmpty()
+                    MediaType.Movie -> movieTriviaUseCase.getTrivia(movieId).facts.isNotEmpty()
+                    MediaType.Episode if showId != null -> showTriviaUseCase.getTrivia(showId).facts.isNotEmpty()
                     else -> false
                 }
             } catch (error: Exception) {
@@ -297,8 +297,8 @@ internal class CheckInService : Service() {
     private fun createTriviaNotificationIntent(data: CheckInServiceData): PendingIntent {
         val targetClass = Class.forName(MAIN_ACTIVITY_PATH)
 
-        val triviaMediaId = if (data.mediaType == MediaType.EPISODE) data.extraId ?: data.mediaId else data.mediaId
-        val triviaMediaType = if (data.mediaType == MediaType.EPISODE) MediaType.SHOW else data.mediaType
+        val triviaMediaId = if (data.mediaType == MediaType.Episode) data.extraId ?: data.mediaId else data.mediaId
+        val triviaMediaType = if (data.mediaType == MediaType.Episode) MediaType.Show else data.mediaType
 
         val notifyIntent = Intent(applicationContext, targetClass).apply {
             putExtra(

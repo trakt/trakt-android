@@ -57,8 +57,8 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.MediaMode
-import tv.trakt.trakt.common.model.MediaType.MOVIE
-import tv.trakt.trakt.common.model.MediaType.SHOW
+import tv.trakt.trakt.common.model.MediaType.Movie
+import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.sorting.SortType.Added
@@ -174,7 +174,7 @@ internal fun AllWatchlistScreen(
         movie = contextMovieSheet?.movie,
         addLocally = true,
         watched = contextMovieSheet?.movie?.ids?.trakt?.let {
-            state.collection.isWatched(it, MOVIE, null)
+            state.collection.isWatched(it, Movie, null)
         } ?: false,
         onDismiss = { contextMovieSheet = null },
         onRemoveWatchlist = {
@@ -189,7 +189,7 @@ internal fun AllWatchlistScreen(
         show = contextShowSheet?.show,
         addLocally = true,
         watched = contextShowSheet?.show?.let {
-            state.collection.isWatched(it.ids.trakt, SHOW, it.airedEpisodes)
+            state.collection.isWatched(it.ids.trakt, Show, it.airedEpisodes)
         } ?: false,
         onDismiss = { contextShowSheet = null },
         onRemoveWatchlist = {
@@ -456,7 +456,7 @@ private fun ContentList(
                         item = item,
                         sorting = listSorting,
                         enabled = !loading,
-                        watched = collection.isWatched(item.id, SHOW, item.airedEpisodes),
+                        watched = collection.isWatched(item.id, Show, item.airedEpisodes),
                         onClick = { onClick(item) },
                         onLongClick = { onLongClick(item) },
                         modifier = Modifier
@@ -471,7 +471,7 @@ private fun ContentList(
                         item = item,
                         sorting = listSorting,
                         enabled = !loading,
-                        watched = collection.isWatched(item.id, MOVIE, null),
+                        watched = collection.isWatched(item.id, Movie, null),
                         onClick = { onClick(item) },
                         onLongClick = { onLongClick(item) },
                         onCheckClick = { onCheckClick(item) },

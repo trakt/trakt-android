@@ -8,10 +8,6 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode.MOVIES
 import tv.trakt.trakt.common.model.MediaMode.SHOWS
 import tv.trakt.trakt.common.model.MediaType
-import tv.trakt.trakt.common.model.MediaType.EPISODE
-import tv.trakt.trakt.common.model.MediaType.MOVIE
-import tv.trakt.trakt.common.model.MediaType.SEASON
-import tv.trakt.trakt.common.model.MediaType.SHOW
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
@@ -37,7 +33,7 @@ internal class GetListItemsUseCase(
         val (showsRatings, moviesRatings, episodesRatings) =
             loadUserRatingsUseCase.loadAllIfNeeded()
 
-        if (type.size == 1 && type[0] == MOVIE) {
+        if (type.size == 1 && type[0] == MediaType.Movie) {
             return remoteSource.getMovieListItems(
                 listId = listId,
                 extended = "full,cloud9,colors",
@@ -56,7 +52,7 @@ internal class GetListItemsUseCase(
             }
         }
 
-        if (type.size == 1 && type[0] == SHOW) {
+        if (type.size == 1 && type[0] == MediaType.Show) {
             return remoteSource.getShowListItems(
                 listId = listId,
                 extended = "full,cloud9,colors",
@@ -75,7 +71,7 @@ internal class GetListItemsUseCase(
             }.toImmutableList()
         }
 
-        if (type.containsAll(listOf(MOVIE, SHOW))) {
+        if (type.containsAll(listOf(Movie, Show))) {
             return remoteSource.getAllListItems(
                 listId = listId,
                 extended = "full,cloud9,colors",
@@ -84,7 +80,7 @@ internal class GetListItemsUseCase(
                 filters = filters,
             ).asyncMap {
                 when (it.type.value) {
-                    SHOW.value -> {
+                    MediaType.Show.value -> {
                         val show = Show.fromDto(it.show!!)
                         CustomListItem.ShowItem(
                             itemId = it.id,
@@ -94,7 +90,7 @@ internal class GetListItemsUseCase(
                             userRating = showsRatings[show.ids.trakt],
                         )
                     }
-                    MOVIE.value -> {
+                    MediaType.Movie.value -> {
                         val movie = Movie.fromDto(it.movie!!)
                         CustomListItem.MovieItem(
                             itemId = it.id,
@@ -104,7 +100,7 @@ internal class GetListItemsUseCase(
                             userRating = moviesRatings[movie.ids.trakt],
                         )
                     }
-                    SEASON.value -> {
+                    MediaType.Season.value -> {
                         CustomListItem.SeasonItem(
                             itemId = it.id,
                             rank = it.rank,
@@ -114,7 +110,7 @@ internal class GetListItemsUseCase(
                             userRating = null,
                         )
                     }
-                    EPISODE.value -> {
+                    MediaType.Episode.value -> {
                         val show = Show.fromDto(it.show!!)
                         val episode = Episode.fromDto(it.episode!!)
                         CustomListItem.EpisodeItem(

@@ -371,14 +371,14 @@ private fun MainNavHost(
                     navigateToEpisode(showId, episodeId)
                 },
                 onNavigateToPerson = { navigateToPerson(it) },
-                onNavigateToList = { navigateToCustomListMedia(it, MediaType.SHOW) },
+                onNavigateToList = { navigateToCustomListMedia(it, MediaType.Show) },
                 onNavigateToVideo = { navigateToPlayer(it) },
                 onNavigateToStreamings = { navigateToShowStreamings(mediaId = it) },
             )
             movieDetailsScreen(
                 onNavigateToMovie = { navigateToMovie(it) },
                 onNavigateToPerson = { navigateToPerson(it) },
-                onNavigateToList = { navigateToCustomListMedia(it, MediaType.MOVIE) },
+                onNavigateToList = { navigateToCustomListMedia(it, MediaType.Movie) },
                 onNavigateToVideo = { navigateToPlayer(it) },
                 onNavigateToStreamings = { navigateToMovieStreamings(mediaId = it) },
             )

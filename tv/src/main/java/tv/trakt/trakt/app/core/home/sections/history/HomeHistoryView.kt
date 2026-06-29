@@ -240,8 +240,8 @@ private fun ContentListItem(
 
                 val subtext = remember(item.type) {
                     when (item.type) {
-                        MediaType.EPISODE.value -> seString
-                        MediaType.MOVIE.value -> durationString
+                        MediaType.Episode.value -> seString
+                        MediaType.Movie.value -> durationString
                         else -> ""
                     }
                 }

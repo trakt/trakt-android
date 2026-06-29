@@ -49,7 +49,7 @@ internal class HomeUpNextStorage : HomeUpNextLocalDataSource {
     override suspend fun removeShowItems(ids: List<TraktId>) {
         mutex.withLock {
             ids.forEach { id ->
-                storage.remove(getKey(id, MediaType.SHOW.value))
+                storage.remove(getKey(id, MediaType.Show.value))
             }
         }
     }
@@ -57,7 +57,7 @@ internal class HomeUpNextStorage : HomeUpNextLocalDataSource {
     override suspend fun removeMovieItems(ids: List<TraktId>) {
         mutex.withLock {
             ids.forEach { id ->
-                storage.remove(getKey(id, MediaType.MOVIE.value))
+                storage.remove(getKey(id, MediaType.Movie.value))
             }
         }
     }

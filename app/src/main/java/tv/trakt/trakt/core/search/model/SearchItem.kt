@@ -48,8 +48,8 @@ internal sealed class SearchItem(
 
     val type: MediaType?
         get() = when (this) {
-            is Movie -> MediaType.MOVIE
-            is Show -> MediaType.SHOW
+            is Movie -> MediaType.Movie
+            is Show -> MediaType.Show
             is Person -> null
             is List -> null
         }

@@ -45,7 +45,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.ExternalRating
-import tv.trakt.trakt.common.model.MediaType.MOVIE
+import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
@@ -352,7 +352,7 @@ internal class MovieDetailsViewModel(
                     favorite = userFavorites[movieId] != null,
                 ) ?: UserRating(
                     mediaId = movieId,
-                    mediaType = MOVIE,
+                    mediaType = Movie,
                     rating = 0,
                     favorite = userFavorites[movieId] != null,
                 )
@@ -816,7 +816,7 @@ internal class MovieDetailsViewModel(
                     ) ?: UserRatingsState(
                         rating = UserRating(
                             mediaId = movieId,
-                            mediaType = MOVIE,
+                            mediaType = Movie,
                             rating = 0,
                             favorite = true,
                         ),
@@ -862,7 +862,7 @@ internal class MovieDetailsViewModel(
                     ) ?: UserRatingsState(
                         rating = UserRating(
                             mediaId = movieId,
-                            mediaType = MOVIE,
+                            mediaType = Movie,
                             rating = 0,
                             favorite = false,
                         ),
@@ -902,7 +902,7 @@ internal class MovieDetailsViewModel(
                 UserRatingsState(
                     rating = UserRating(
                         mediaId = movieId,
-                        mediaType = MOVIE,
+                        mediaType = Movie,
                         rating = newRating,
                         favorite = it?.rating?.favorite == true,
                     ),
@@ -913,7 +913,7 @@ internal class MovieDetailsViewModel(
             PostRatingWorker.scheduleOneTime(
                 appContext = appContext,
                 mediaId = movieId,
-                mediaType = MOVIE,
+                mediaType = Movie,
                 rating = newRating,
             )
         }
@@ -935,7 +935,7 @@ internal class MovieDetailsViewModel(
                 UserRatingsState(
                     rating = UserRating(
                         mediaId = movieId,
-                        mediaType = MOVIE,
+                        mediaType = Movie,
                         rating = 0,
                         favorite = it?.rating?.favorite == true,
                     ),
@@ -946,7 +946,7 @@ internal class MovieDetailsViewModel(
             PostRatingWorker.scheduleOneTime(
                 appContext = appContext,
                 mediaId = movieId,
-                mediaType = MOVIE,
+                mediaType = Movie,
                 rating = 0, // A rating of 0 indicates removal of rating
             )
         }

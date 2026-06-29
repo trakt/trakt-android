@@ -353,7 +353,7 @@ private fun PreviewShareContent() {
         ShareContent(
             state = ShareState(
                 media = ShareState.Media(
-                    type = MediaType.MOVIE,
+                    type = MediaType.Movie,
                     slug = "the-matrix".toSlugId(),
                 ),
             ),

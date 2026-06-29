@@ -63,11 +63,11 @@ internal class CustomListMediaViewModel(
 
                 itemsState.update {
                     when (destinationType) {
-                        MediaType.SHOW -> getListItemsUseCase.getShowListItems(
+                        MediaType.Show -> getListItemsUseCase.getShowListItems(
                             listId = destination.listId.toTraktId(),
                             page = dataPage,
                         )
-                        MediaType.MOVIE -> getListItemsUseCase.getMovieListItems(
+                        MediaType.Movie -> getListItemsUseCase.getMovieListItems(
                             listId = destination.listId.toTraktId(),
                             page = dataPage,
                         )
@@ -122,11 +122,11 @@ internal class CustomListMediaViewModel(
                 loadingPageState.update { true }
 
                 val items = when (destinationType) {
-                    MediaType.SHOW -> getListItemsUseCase.getShowListItems(
+                    MediaType.Show -> getListItemsUseCase.getShowListItems(
                         listId = destination.listId.toTraktId(),
                         page = dataPage,
                     )
-                    MediaType.MOVIE -> getListItemsUseCase.getMovieListItems(
+                    MediaType.Movie -> getListItemsUseCase.getMovieListItems(
                         listId = destination.listId.toTraktId(),
                         page = dataPage,
                     )

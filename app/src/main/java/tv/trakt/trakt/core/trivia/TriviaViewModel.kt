@@ -100,8 +100,8 @@ internal class TriviaViewModel(
                 itemsState.update {
                     val mediaId = destination.mediaId.toTraktId()
                     when (destination.mediaType) {
-                        MediaType.MOVIE -> getMovieTriviaUseCase.getTrivia(mediaId)
-                        MediaType.SHOW -> getShowTriviaUseCase.getTrivia(mediaId)
+                        MediaType.Movie -> getMovieTriviaUseCase.getTrivia(mediaId)
+                        MediaType.Show -> getShowTriviaUseCase.getTrivia(mediaId)
                         else -> return@launch
                     }.facts
                 }

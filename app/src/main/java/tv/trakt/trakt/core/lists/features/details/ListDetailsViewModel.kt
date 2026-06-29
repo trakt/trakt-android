@@ -386,8 +386,8 @@ internal class ListDetailsViewModel(
 
     private fun MediaMode?.toMediaTypes(): List<MediaType> {
         return when (this) {
-            MediaMode.SHOWS -> listOf(MediaType.SHOW)
-            MediaMode.MOVIES -> listOf(MediaType.MOVIE)
+            MediaMode.SHOWS -> listOf(MediaType.Show)
+            MediaMode.MOVIES -> listOf(MediaType.Movie)
             else -> destination.mediaType.map { MediaType.valueOf(it) }
         }
     }

@@ -91,7 +91,7 @@ internal fun MovieActionButtons(
                             val intent = TvPlexPlayerActivity.createIntent(
                                 context = context,
                                 mediaId = movieState.movieDetails?.ids?.trakt ?: return@StreamingButton,
-                                mediaType = MediaType.MOVIE,
+                                mediaType = MediaType.Movie,
                                 primaryVideoUrl = streamingState.plexStream.primaryUrl,
                                 secondaryVideoUrls = streamingState.plexStream.secondaryUrls,
                                 videoTitle = movieState.movieDetails.title,

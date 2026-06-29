@@ -58,7 +58,7 @@ internal class GetPlexUseCase(
         return try {
             val result = remotePlexSource.getPlexStream(
                 id = episodeTraktId.value.toString(),
-                type = MediaType.EPISODE,
+                type = MediaType.Episode,
             )
 
             result.streamUrl?.let { primaryUrl ->

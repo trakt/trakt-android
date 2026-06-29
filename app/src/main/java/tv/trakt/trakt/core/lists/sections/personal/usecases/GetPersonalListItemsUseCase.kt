@@ -11,10 +11,7 @@ import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaMode.MEDIA
 import tv.trakt.trakt.common.model.MediaMode.MOVIES
 import tv.trakt.trakt.common.model.MediaMode.SHOWS
-import tv.trakt.trakt.common.model.MediaType.EPISODE
-import tv.trakt.trakt.common.model.MediaType.MOVIE
-import tv.trakt.trakt.common.model.MediaType.SEASON
-import tv.trakt.trakt.common.model.MediaType.SHOW
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
@@ -213,7 +210,7 @@ internal class GetPersonalListItemsUseCase(
         episodesRatings: ImmutableMap<TraktId, UserRating>? = null,
     ): CustomListItem {
         return when (dto.type.value) {
-            SHOW.value -> {
+            MediaType.Show.value -> {
                 val show = Show.fromDto(dto.show!!)
                 CustomListItem.ShowItem(
                     itemId = dto.id,
@@ -223,7 +220,7 @@ internal class GetPersonalListItemsUseCase(
                     userRating = showsRatings?.get(show.ids.trakt),
                 )
             }
-            MOVIE.value -> {
+            MediaType.Movie.value -> {
                 val movie = Movie.fromDto(dto.movie!!)
                 CustomListItem.MovieItem(
                     itemId = dto.id,
@@ -233,7 +230,7 @@ internal class GetPersonalListItemsUseCase(
                     userRating = moviesRatings?.get(movie.ids.trakt),
                 )
             }
-            SEASON.value -> {
+            MediaType.Season.value -> {
                 CustomListItem.SeasonItem(
                     itemId = dto.id,
                     rank = dto.rank,
@@ -243,7 +240,7 @@ internal class GetPersonalListItemsUseCase(
                     userRating = null,
                 )
             }
-            EPISODE.value -> {
+            MediaType.Episode.value -> {
                 val show = Show.fromDto(dto.show!!)
                 val episode = Episode.fromDto(dto.episode!!)
                 CustomListItem.EpisodeItem(

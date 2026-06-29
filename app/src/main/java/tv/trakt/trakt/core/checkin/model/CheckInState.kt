@@ -58,8 +58,8 @@ val CheckInState.id: Int?
 val CheckInState.type: MediaType?
     get() {
         return when (this) {
-            is ActiveMovie -> MediaType.MOVIE
-            is ActiveEpisode -> MediaType.EPISODE
+            is ActiveMovie -> MediaType.Movie
+            is ActiveEpisode -> MediaType.Episode
             else -> null
         }
     }

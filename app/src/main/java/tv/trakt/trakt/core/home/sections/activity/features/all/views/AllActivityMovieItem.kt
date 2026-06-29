@@ -151,7 +151,7 @@ private fun AllActivityMovieItemPreview() {
                 user = PreviewData.user1,
                 userRating = UserRating(
                     mediaId = 1.toTraktId(),
-                    mediaType = MediaType.MOVIE,
+                    mediaType = MediaType.Movie,
                     rating = 8,
                 ),
                 movie = PreviewData.movie1,

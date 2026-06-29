@@ -20,9 +20,9 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.MediaType
-import tv.trakt.trakt.common.model.MediaType.EPISODE
-import tv.trakt.trakt.common.model.MediaType.MOVIE
-import tv.trakt.trakt.common.model.MediaType.SHOW
+import tv.trakt.trakt.common.model.MediaType.Episode
+import tv.trakt.trakt.common.model.MediaType.Movie
+import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.comments.usecases.PostCommentUseCase
@@ -75,19 +75,19 @@ internal class PostCommentViewModel(
                 delay(1.seconds)
                 resultState.update {
                     when (mediaType) {
-                        SHOW -> postCommentUseCase.postShowComment(
+                        Show -> postCommentUseCase.postShowComment(
                             showId = mediaId,
                             comment = comment,
                             spoiler = spoiler,
                         )
 
-                        MOVIE -> postCommentUseCase.postMovieComment(
+                        Movie -> postCommentUseCase.postMovieComment(
                             movieId = mediaId,
                             comment = comment,
                             spoiler = spoiler,
                         )
 
-                        EPISODE -> postCommentUseCase.postEpisodeComment(
+                        Episode -> postCommentUseCase.postEpisodeComment(
                             episodeId = mediaId,
                             comment = comment,
                             spoiler = spoiler,

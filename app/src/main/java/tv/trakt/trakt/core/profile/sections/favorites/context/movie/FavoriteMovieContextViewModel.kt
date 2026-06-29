@@ -73,7 +73,7 @@ internal class FavoriteMovieContextViewModel(
                 favoritesUpdates.notifyUpdate(CONTEXT_SHEET)
 
                 analytics.ratings.logFavoriteRemove(
-                    mediaType = MediaType.MOVIE.value,
+                    mediaType = MediaType.Movie.value,
                     source = "movie_context",
                 )
 

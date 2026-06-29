@@ -50,7 +50,7 @@ internal class GetPlexUseCase(
         return try {
             val result = remotePlexSource.getPlexStream(
                 id = traktId.value.toString(),
-                type = MediaType.MOVIE,
+                type = MediaType.Movie,
             )
             result.streamUrl?.let { primaryUrl ->
                 val playback = runCatching {

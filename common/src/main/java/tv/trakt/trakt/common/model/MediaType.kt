@@ -10,8 +10,8 @@ import kotlinx.serialization.Serializable
 enum class MediaType(
     val value: String,
 ) {
-    MOVIE("movie"),
-    SHOW("show"),
-    SEASON("season"),
-    EPISODE("episode"),
+    Movie("movie"),
+    Show("show"),
+    Season("season"),
+    Episode("episode"),
 }

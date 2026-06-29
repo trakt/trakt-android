@@ -42,7 +42,7 @@ import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
-import tv.trakt.trakt.common.model.MediaType.MOVIE
+import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.core.summary.people.ListEmptyView
@@ -145,8 +145,8 @@ internal fun MoviesCreditsList(
                                     VerticalMediaCard(
                                         title = item.title,
                                         imageUrl = item.images?.getPosterUrl(),
-                                        watched = userCollection.isWatched(item.id, MOVIE, null),
-                                        watchlist = userCollection.isWatchlist(item.id, MOVIE),
+                                        watched = userCollection.isWatched(item.id, Movie, null),
+                                        watchlist = userCollection.isWatchlist(item.id, Movie),
                                         onClick = { onClick?.invoke(item.movie) },
                                         onLongClick = { onLongClick?.invoke(item.movie) },
                                         chipSpacing = 10.dp,

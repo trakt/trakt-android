@@ -376,7 +376,7 @@ internal fun ShowDetailsScreen(
     CoverImageSheet(
         mediaId = coverImageSheet?.ids?.trakt,
         mediaTitle = coverImageSheet?.title ?: "",
-        mediaType = MediaType.SHOW,
+        mediaType = MediaType.Show,
         mediaImage = state.show?.images?.getFanartUrl(),
         onImageSet = {
             scope.launch {
@@ -397,7 +397,7 @@ internal fun ShowDetailsScreen(
     ShareSheet(
         active = shareSheet,
         mediaSlug = state.show?.ids?.slug,
-        mediaType = MediaType.SHOW,
+        mediaType = MediaType.Show,
         onDismiss = { shareSheet = false },
     )
 
