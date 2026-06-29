@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoilApi::class)
+
 package tv.trakt.trakt.ui.components.mediacards
 
 import androidx.compose.foundation.Image
@@ -45,6 +47,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -62,6 +65,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade940
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.theme.HorizontalEpisodeImageAspectRatio
+import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -257,7 +261,12 @@ internal fun PanelHorizontalMediaCard(
 
         Box(
             modifier = Modifier
-                .clip(RoundedCornerShape(corner)),
+                .clip(
+                    RoundedCornerShape(
+                        topEnd = corner,
+                        bottomEnd = corner,
+                    ),
+                ),
         ) {
             if (!containerImageUrl.isNullOrBlank() && !isContainerError) {
                 val inspection = LocalInspectionMode.current
@@ -275,8 +284,9 @@ internal fun PanelHorizontalMediaCard(
                     contentScale = ContentScale.Crop,
                     onError = { isContainerError = true },
                     modifier = Modifier
-                        .padding(start = TraktTheme.size.horizontalMediumMediaCardSize / 2F)
-                        .fillMaxSize()
+                        .align(Alignment.CenterEnd)
+                        .fillMaxHeight()
+                        .aspectRatio(HorizontalImageAspectRatio)
                         .drawWithContent {
                             drawContent()
                             drawRect(
@@ -348,8 +358,13 @@ internal fun PanelHorizontalMediaCard(
     }
 }
 
-@OptIn(ExperimentalCoilApi::class)
-@DevicePreview
+@Preview(
+    device = "id:pixel_7",
+    showBackground = false,
+    backgroundColor = 0xFFFFFF,
+    widthDp = 350,
+    locale = "us",
+)
 @Composable
 private fun PosterPreview() {
     TraktTheme {
@@ -360,8 +375,8 @@ private fun PosterPreview() {
             PanelHorizontalMediaCard(
                 title = "Lorem",
                 subtitle = "Action, Adventure",
-                contentImageUrl = null,
-                containerImageUrl = null,
+                contentImageUrl = "https://example.com/poster.jpg",
+                containerImageUrl = "https://example.com/poster.jpg",
                 watched = true,
             )
         }
@@ -372,14 +387,19 @@ private fun PosterPreview() {
 @Composable
 private fun PosterPreviewPlaceholder() {
     TraktTheme {
-        PanelHorizontalMediaCard(
-            title = "Lorem",
-            subtitle = "Action, Adventure",
-            contentImageUrl = null,
-            containerImageUrl = null,
-            watched = true,
-            watchlist = true,
-        )
+        val previewHandler = AsyncImagePreviewHandler {
+            ColorImage(Color.Blue.toArgb())
+        }
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            PanelHorizontalMediaCard(
+                title = "Lorem",
+                subtitle = "Action, Adventure",
+                contentImageUrl = "https://example.com/poster.jpg",
+                containerImageUrl = "https://example.com/poster.jpg",
+                watched = true,
+                watchlist = true,
+            )
+        }
     }
 }
 

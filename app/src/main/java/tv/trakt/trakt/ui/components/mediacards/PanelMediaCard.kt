@@ -45,6 +45,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -61,6 +62,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.ui.theme.colors.Shade940
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.InfoChip
+import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.VerticalImageAspectRatio
 
@@ -254,7 +256,12 @@ internal fun PanelMediaCard(
 
         Box(
             modifier = Modifier
-                .clip(RoundedCornerShape(corner)),
+                .clip(
+                    RoundedCornerShape(
+                        topEnd = corner,
+                        bottomEnd = corner,
+                    ),
+                ),
         ) {
             if (!containerImageUrl.isNullOrBlank() && !isContainerError) {
                 val inspection = LocalInspectionMode.current
@@ -272,8 +279,9 @@ internal fun PanelMediaCard(
                     contentScale = ContentScale.Crop,
                     onError = { isContainerError = true },
                     modifier = Modifier
-                        .padding(start = TraktTheme.size.verticalMediumMediaCardSize / 1.25F)
-                        .fillMaxSize()
+                        .align(Alignment.CenterEnd)
+                        .fillMaxHeight()
+                        .aspectRatio(HorizontalImageAspectRatio)
                         .drawWithContent {
                             drawContent()
                             drawRect(
@@ -358,7 +366,13 @@ internal fun PanelMediaCard(
 }
 
 @OptIn(ExperimentalCoilApi::class)
-@DevicePreview
+@Preview(
+    device = "id:pixel_7",
+    showBackground = false,
+    backgroundColor = 0xFFFFFF,
+    widthDp = 350,
+    locale = "us",
+)
 @Composable
 private fun PosterPreview() {
     TraktTheme {
@@ -370,27 +384,33 @@ private fun PosterPreview() {
                 title = "Lorem",
                 titleOriginal = null,
                 subtitle = "Action, Adventure",
-                contentImageUrl = null,
-                containerImageUrl = null,
+                contentImageUrl = "https://example.com/poster.jpg",
+                containerImageUrl = "https://example.com/container.jpg",
                 watched = true,
             )
         }
     }
 }
 
+@OptIn(ExperimentalCoilApi::class)
 @DevicePreview
 @Composable
 private fun PosterPreviewPlaceholder() {
     TraktTheme {
-        PanelMediaCard(
-            title = "Lorem",
-            titleOriginal = "Original Lorem",
-            subtitle = "Action, Adventure",
-            contentImageUrl = null,
-            containerImageUrl = null,
-            watched = true,
-            watchlist = true,
-        )
+        val previewHandler = AsyncImagePreviewHandler {
+            ColorImage(Color.Blue.toArgb())
+        }
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            PanelMediaCard(
+                title = "Lorem",
+                titleOriginal = "Original Lorem",
+                subtitle = "Action, Adventure",
+                contentImageUrl = "https://example.com/poster.jpg",
+                containerImageUrl = "https://example.com/container.jpg",
+                watched = true,
+                watchlist = true,
+            )
+        }
     }
 }
 
