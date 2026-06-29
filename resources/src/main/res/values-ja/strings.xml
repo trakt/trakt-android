@@ -178,10 +178,12 @@
   <string name="button_label_submit_report">報告を送信</string>
   <string name="button_label_sync_options">同期オプションを選択</string>
   <string name="button_label_sync_streaming_service">%sを同期</string>
+  <string name="button_label_toggle_favorite_service">%sをお気に入りとして切り替える</string>
   <string name="button_label_toggle_genre">%sジャンルの表示/非表示を切り替える</string>
   <string name="button_label_toggle_search_lists">リストを検索</string>
   <string name="button_label_toggle_search_media">メディアを検索</string>
   <string name="button_label_toggle_search_people">人物を検索</string>
+  <string name="button_label_trivia_category_filter">カテゴリーでトリビアをフィルタリング</string>
   <string name="button_label_trivia_no_spoilers">ネタバレなし</string>
   <string name="button_label_trivia_spoilers">ネタバレあり</string>
   <string name="button_label_unblock">%sのブロックを解除</string>
@@ -235,6 +237,7 @@
   <string name="button_text_add_note">ノートを追加</string>
   <string name="button_text_add_reply">返信を追加</string>
   <string name="button_text_add_review">レビューを追加</string>
+  <string name="button_text_add_streaming_service">ストリーミングサービスを追加</string>
   <string name="button_text_add_to_favorites">お気に入りに追加</string>
   <string name="button_text_apply">適用</string>
   <string name="button_text_approve_follow_request">リクエストを承認</string>
@@ -294,6 +297,7 @@
   <string name="button_text_load_more">さらに読み込む</string>
   <string name="button_text_login">ログイン</string>
   <string name="button_text_logout">ログアウト</string>
+  <string name="button_text_manage">管理</string>
   <string name="button_text_manage_lists">リストを管理</string>
   <string name="button_text_manage_subscription">サブスクリプションを管理</string>
   <string name="button_text_manage_vip">サブスクリプションを管理</string>
@@ -312,6 +316,9 @@
   <string name="button_text_meet_team">チームを見る</string>
   <string name="button_text_month_in_review">%sのレビュー</string>
   <string name="button_text_more">あと%d件</string>
+  <string name="button_text_move_to_bottom">一番下に移動</string>
+  <string name="button_text_move_to_position">移動…</string>
+  <string name="button_text_move_to_top">一番上に移動</string>
   <string name="button_text_movies">映画</string>
   <string name="button_text_no_services">サービスなし</string>
   <string name="button_text_open_in_service">%sで開く</string>
@@ -342,6 +349,7 @@
   <string name="button_text_restore_rating_prompts">評価プロンプトを復元</string>
   <string name="button_text_restore_show">番組を復元</string>
   <string name="button_text_retry">再試行</string>
+  <string name="button_text_save">保存</string>
   <string name="button_text_save_filters">デフォルトとして設定</string>
   <string name="button_text_set_cover_image">カバー画像に設定</string>
   <string name="button_text_settings">設定</string>
@@ -387,6 +395,7 @@
   <string name="button_text_view_history">履歴を見る</string>
   <string name="button_text_view_import_guidelines">ガイドラインを表示</string>
   <string name="button_text_view_photo">写真を見る</string>
+  <string name="button_text_view_recommendation_sources">なぜこれ？</string>
   <string name="button_text_vip_upgrade">アップグレード</string>
   <string name="button_text_watch_again">再視聴</string>
   <string name="button_text_watch_until_here_anchor_end">終了時間</string>
@@ -440,16 +449,18 @@
   <string name="description_export">ユーザーデータを1つのZIPファイルとしてエクスポートします。この処理には時間がかかる場合があります。</string>
   <string name="description_genres">お気に入りのジャンルを%d件追加または削除します。</string>
   <string name="description_import">他のサービスからデータをブラウザに直接インポートできます。</string>
-  <string name="description_paused_items">これらのアイテムは、少なくとも80%視聴されていなかったため、一時停止として追加されました。</string>
+  <string name="description_paused_items">これらのアイテムは80%以上視聴されていません。</string>
   <string name="description_plex_manual_sync">Plexの視聴履歴をTraktに今すぐ同期します。</string>
   <string name="description_plex_servers">Traktと同期するPlexサーバーを選択してください。</string>
   <string name="description_plex_sync">Plexアカウントを接続して、視聴履歴、評価、コレクションをTraktと同期します。</string>
   <string name="description_plex_sync_settings">これらの設定は、Traktに同期するデータタイプを制御します。</string>
-  <string name="description_preview_features">開発中のプレビュー機能を有効または無効にします。これらの機能は不安定である可能性があり、いつでも変更されることがあります。</string>
-  <string name="description_skipped_items">何がスキップされ、その理由を特定するのに役立つ情報です。赤字のものは、アイテムがスキップされた原因です。</string>
-  <string name="description_streaming_sync">視聴履歴と評価を自動的に同期します。以下のサービス、または公式Traktモバイルアプリで接続してください。</string>
+  <string name="description_preview_features">広く利用可能になる前に、今後の機能を試してください。プレビュー機能は、改善するにつれて変更される場合があります。</string>
+  <string name="description_skipped_items">赤色の項目は、スキップされた原因を示しています。</string>
+  <string name="description_streaming_services">お気に入りのサービスを使うことで、最も視聴するサービスでのコンテンツの検索が簡単になります。</string>
+  <string name="description_streaming_sync">視聴履歴と評価を自動的に同期します。</string>
   <string name="description_sync_detail">この同期に関するいくつかの詳細。</string>
   <string name="dialog_prompt_media_share_image_format">共有する画像形式を選択してください。</string>
+  <string name="dialog_prompt_move_to_position">\"%s\"の新しい位置を入力してください。</string>
   <string name="dialog_prompt_younify_data_sync">既存データをTraktアカウントにインポートしますか、それとも今後新しいデータのみを同期しますか？</string>
   <string name="dialog_title_comment">レビュー</string>
   <string name="dialog_title_comments">レビュー</string>
@@ -462,6 +473,7 @@
   <string name="drawer_title_add_note">ノート</string>
   <string name="drawer_title_notes">ノート</string>
   <string name="drawer_title_people">人物</string>
+  <string name="drawer_title_recommendation_sources">これがお勧めされた理由</string>
   <string name="drawer_title_reorder_list">ドラッグして並べ替え</string>
   <string name="drawer_title_sort">並べ替え</string>
   <string name="drawer_title_streak_activity">連続記録アクティビティ</string>
@@ -589,6 +601,7 @@
   <string name="header_status">ステータス</string>
   <string name="header_stream_on">で視聴</string>
   <string name="header_streaming">配信状況</string>
+  <string name="header_streaming_services">ストリーミングサービス</string>
   <string name="header_streaming_sync">ストリーミング同期</string>
   <string name="header_studio">スタジオ</string>
   <string name="header_sync_detail">同期ID %s</string>
@@ -624,10 +637,12 @@
   <string name="import_summary_watchlist">ウォッチリストの%d項目</string>
   <string name="import_vip_limit_exceeded">インポートが無料ティアの制限を超過しています。VIPにアップグレードすると、すべての%d項目をインポートできます。</string>
   <string name="input_label_search_credit_members">人物を検索</string>
+  <string name="input_placeholder_filter_services">ストリーミングサービスをフィルター</string>
   <string name="input_placeholder_lists_description">説明（任意）</string>
   <string name="input_placeholder_lists_name">名前</string>
   <string name="input_placeholder_note_drop">なぜこのタイトルをドロップしましたか？</string>
   <string name="input_placeholder_note_favorite">なぜこのタイトルをお気に入りに追加しましたか？</string>
+  <string name="input_placeholder_reorder_position">位置 (1–%d)</string>
   <string name="input_placeholder_report_message">この報告に関する詳細を提供</string>
   <string name="input_placeholder_report_reason">理由を選択</string>
   <string name="input_placeholder_search">番組と映画を検索…</string>
@@ -645,6 +660,7 @@
   <string name="input_prompt_rename_list">リスト名を変更</string>
   <string name="input_prompt_username">ユーザー名は何にしますか？</string>
   <string name="label_drag_image_to_adjust">画像をドラッグして調整</string>
+  <string name="label_favorites">お気に入り</string>
   <string name="label_plex_connected">Plexに接続済み</string>
   <string name="label_plex_connection">接続</string>
   <string name="label_plex_history_date">日付</string>
@@ -674,7 +690,7 @@
   <string name="label_report_reason_too_short">短すぎる</string>
   <string name="label_stats_active_days">アクティブな日数</string>
   <string name="label_stats_average">平均</string>
-  <string name="label_stats_avg_per_day">1日あたりの平均</string>
+  <string name="label_stats_avg_per_day">日別平均</string>
   <string name="label_stats_best_day">最高の視聴日</string>
   <string name="label_stats_busiest_day">最も忙しい日</string>
   <string name="label_stats_comments">コメント</string>
@@ -691,8 +707,8 @@
   <string name="label_stats_screen_time_share">起きている時間</string>
   <string name="label_stats_screen_time_total">合計</string>
   <string name="label_stats_shows">番組</string>
+  <string name="label_streaming_country">国</string>
   <string name="limit_title_digital_library">デジタルライブラリ</string>
-  <string name="limit_title_notes">ノート</string>
   <string name="limit_title_offline_library">オフラインライブラリ</string>
   <string name="limit_title_personal_lists">個人リスト</string>
   <string name="limit_title_ratings">評価</string>
@@ -709,6 +725,7 @@
   <string name="link_label_github">GitHub</string>
   <string name="link_label_install_pwa">PWAをインストール</string>
   <string name="link_label_ios_app">iOSアプリ</string>
+  <string name="link_label_open_preview_feature">%s を開く</string>
   <string name="link_label_open_review">%sによるレビューを開く</string>
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_view_social_activities">%sのソーシャルアクティビティを表示</string>
@@ -729,7 +746,7 @@
   <string name="link_text_preview_settings">プレビュー</string>
   <string name="link_text_privacy">プライバシー</string>
   <string name="link_text_service_status">Traktサービス状況</string>
-  <string name="link_text_streaming_sync_settings">ストリーミング同期</string>
+  <string name="link_text_streaming_sync_settings">ストリーミングサービス</string>
   <string name="link_text_support">サポート</string>
   <string name="link_text_terms">利用規約</string>
   <string name="link_text_terms_of_use">利用規約</string>
@@ -786,6 +803,9 @@
   <string name="list_title_recently_searched_movies">最近検索した映画</string>
   <string name="list_title_recently_searched_shows">最近検索した番組</string>
   <string name="list_title_recently_watched">最近視聴した作品</string>
+  <string name="list_title_recommendation_sources_activity">視聴済み</string>
+  <string name="list_title_recommendation_sources_favorite">お気に入り</string>
+  <string name="list_title_recommendation_sources_subgenre">お好み</string>
   <string name="list_title_recommended">おすすめ</string>
   <string name="list_title_recommended_movies">おすすめの映画</string>
   <string name="list_title_recommended_shows">おすすめの番組</string>
@@ -832,6 +852,8 @@
   <string name="match_pill_anchor">マッチ:</string>
   <string name="match_pill_aria_label">%1$d%一致、%2$s。一致の詳細を開く。</string>
   <string name="match_pill_loading_aria_label">マッチスコアを計算中</string>
+  <string name="mir_share_text">Traktで私の%s月間レビューをチェックしてください</string>
+  <string name="mir_title_month_in_review">月間レビュー</string>
   <string name="notes_placeholder_text">次回タイトルをお気に入りに追加したり、ドロップしたりする際にメモを残しましょう。</string>
   <string name="option_text_africa">アフリカ</string>
   <string name="option_text_all">全て</string>
@@ -852,6 +874,12 @@
   <string name="option_text_theme_dark">ダーク</string>
   <string name="option_text_theme_light">ライト</string>
   <string name="option_text_theme_system">システム</string>
+  <string name="option_text_trivia_category_all">全て</string>
+  <string name="option_text_trivia_category_bts">メイキング</string>
+  <string name="option_text_trivia_category_cast_n_crew">キャスト＆クルー</string>
+  <string name="option_text_trivia_category_impact_n_legacy">影響と遺産</string>
+  <string name="option_text_trivia_category_real_world_connections">現実世界とのつながり</string>
+  <string name="option_text_trivia_category_story_n_themes">ストーリー＆テーマ</string>
   <string name="page_description_create_list">リストの名前と説明を入力してください。</string>
   <string name="page_description_edit_list">リストの詳細を編集します。</string>
   <string name="page_description_home">Trakt Webで、視聴中の番組や映画を追跡しましょう。話題の作品を見つけ、パーソナライズされたおすすめを受け取り、次に観るべき作品を見逃すことはありません。</string>
@@ -911,6 +939,20 @@
   <string name="page_title_where_to_watch">どこで視聴するか</string>
   <string name="page_title_year_in_review">%s年のレビュー</string>
   <string name="page_title_year_to_date">今年これまでの統計</string>
+  <string name="preview_feature_description_edit_mode">アプリ全体で設定可能なセクションの表示/非表示を制御する機能を有効にします。</string>
+  <string name="preview_feature_description_month_in_review">V3で直接実行される月間レビューをプレビューします。</string>
+  <string name="preview_feature_description_plex_sync">Plexを接続して、視聴履歴、評価、ライブラリをTraktに同期します。接続、サーバー選択、同期ツールが含まれます。</string>
+  <string name="preview_feature_description_scoped_favorites">プロフィールに今年の「お気に入り」を表示し、お気に入りリスト全体を年別にグループ化することで、お気に入りリストを期間で区切ります。</string>
+  <string name="preview_feature_description_social_activities">フォローしているユーザーが映画、番組、またはエピソードを視聴、ウォッチリストに追加、コメント、または評価したことをメディアページに直接表示します。</string>
+  <string name="preview_feature_description_streaming_sync">対応するストリーミングサービスを接続すると、視聴履歴と評価が自動的にTraktに同期されます。ウェブからの接続フローはまだベータ版です。</string>
+  <string name="preview_feature_description_year_in_review">V3で直接実行される年間レビューをプレビューします。</string>
+  <string name="preview_feature_title_edit_mode">編集モード</string>
+  <string name="preview_feature_title_month_in_review">月間レビュー</string>
+  <string name="preview_feature_title_plex_sync">Plex同期</string>
+  <string name="preview_feature_title_scoped_favorites">範囲指定されたお気に入り</string>
+  <string name="preview_feature_title_social_activities">ソーシャルアクティビティ</string>
+  <string name="preview_feature_title_streaming_sync">ストリーミング同期</string>
+  <string name="preview_feature_title_year_in_review">年間レビュー</string>
   <string name="reset_status_cleared">ウォッチリストをクリアしました。</string>
   <string name="section_title_season_progress">シーズン%dの進捗</string>
   <string name="section_title_specials_progress">スペシャルエピソードの進捗</string>
@@ -921,6 +963,7 @@
   <string name="switch_label_mark_as_spoiler">ネタバレとしてマーク</string>
   <string name="switch_label_multiple_watches">複数回視聴を有効または無効にする</string>
   <string name="switch_label_private">プロフィールを非公開にする</string>
+  <string name="switch_label_rating_prompt">評価プロンプトを有効または無効にする</string>
   <string name="switch_label_spoilers">ネタバレを表示</string>
   <string name="switch_label_toggle_christmas_filters">クリスマスフィルターの切り替え</string>
   <string name="switch_label_toggle_halloween_filters">ハロウィンフィルターの切り替え</string>
@@ -1080,6 +1123,7 @@
   <string name="text_export_status_fetching">%sを取得中…</string>
   <string name="text_export_status_zipping">ファイルを圧縮中…</string>
   <string name="text_exporting">エクスポート中… %s</string>
+  <string name="text_favorites_limit_reached">最大%s個のサービスを選択できます</string>
   <string name="text_first_play_this_month">今月初視聴</string>
   <string name="text_footer_category_community">コミュニティ</string>
   <string name="text_footer_category_legal">法務</string>
@@ -1136,6 +1180,7 @@
   <string name="text_no_data_synced">まだデータが同期されていません。</string>
   <string name="text_no_paused_items">一時停止中のアイテムはありません。</string>
   <string name="text_no_rating">評価なし</string>
+  <string name="text_no_services_match_filter">フィルターに一致するサービスはありません。</string>
   <string name="text_no_skipped_items">スキップされたアイテムはありません。</string>
   <string name="text_notification_episode_release">S%1$d • E%2$dが配信開始されました。</string>
   <string name="text_notification_episodes_release">S%1$d • E%2$d-%3$dが配信開始されました。</string>
@@ -1202,6 +1247,7 @@
   <string name="text_season_number">シーズン%d</string>
   <string name="text_season_specials">スペシャル</string>
   <string name="text_sentiment_example">「%s」からの例</string>
+  <string name="text_services_selected">%1$s / %2$s 選択済み · %3$s</string>
   <string name="text_settings_adjust_delivery">通知時間</string>
   <string name="text_settings_adjust_delivery_description">通知を受け取るタイミングを選択します。</string>
   <string name="text_settings_clear_cover">現在のカバー画像をクリアして、デフォルトに戻します。</string>
@@ -1213,6 +1259,8 @@
   <string name="text_settings_notification_time_60_min">1時間前</string>
   <string name="text_settings_notification_time_now">リリース時</string>
   <string name="text_settings_play_subscriptions">Google Playのサブスクリプション</string>
+  <string name="text_settings_show_rating_prompt">評価プロンプト</string>
+  <string name="text_settings_show_rating_prompt_description">視聴後に映画やエピソードの評価を求められます。</string>
   <string name="text_settings_translations">アプリの翻訳や、お使いの言語の間違いの修正にご協力ください。</string>
   <string name="text_share_episode">%1$s シーズン%2$dエピソード%3$d - 「%4$s」を視聴しました！🔥</string>
   <string name="text_share_list">Traktでこの「%s」リストをチェック！📋</string>
@@ -1509,7 +1557,6 @@
   <string name="translated_value_video_type_trailer">予告編</string>
   <string name="usage_title_library">ライブラリ</string>
   <string name="usage_title_lists">リスト</string>
-  <string name="usage_title_personal_activity">個人のアクティビティ</string>
   <string name="validation_text_list_name">名前は必須です</string>
   <string name="validation_text_note">ノートは必須です</string>
   <string name="validation_text_note_character_limit">%d文字の制限を超過しています</string>
@@ -1524,8 +1571,6 @@
   <string name="vip_feature_description_more_lists">さらに多くのカスタムリストを作成して、番組や映画を思い通りに整理できます。</string>
   <string name="vip_feature_description_more_to_come">VIPメンバー専用の新機能を常に開発しており、エキサイティングなアップデートがすでに進行中です。</string>
   <string name="vip_feature_description_plex_sync">一日を通してより頻繁な自動更新で、Plexライブラリを完璧に同期させましょう。</string>
-  <string name="vip_feature_description_private_notes">番組や映画にさらに多くの個人的なメモを追加して、考えやおすすめを覚えておきましょう。</string>
-  <string name="vip_feature_description_profile_customisation">カスタムヘッダーでプロフィールをパーソナライズし、Traktでのあなたの存在を独自のものにしましょう。</string>
   <string name="vip_feature_description_recaps">視聴、評価、発見したすべてのコンテンツを示す、包括的な月間および年間のまとめでより深い洞察を得られます。</string>
   <string name="vip_feature_description_sentiment">番組や映画のより詳細な感情分析をアンロックします。</string>
   <string name="vip_feature_description_sentiment_trivia">視聴する映画や番組に関する詳細な感情分析と魅力的なトリビアをアンロックします。</string>
@@ -1544,11 +1589,9 @@
   <string name="vip_feature_title_more_lists">より多くのリスト</string>
   <string name="vip_feature_title_more_to_come">今後の予定</string>
   <string name="vip_feature_title_plex_sync">Plexの同期頻度を上げる</string>
-  <string name="vip_feature_title_private_notes">より多くのプライベートノート</string>
-  <string name="vip_feature_title_profile_customisation">さらなるカスタマイズ: プロフィールヘッダー</string>
-  <string name="vip_feature_title_recaps">より詳細なまとめ: 月間＆年間</string>
+  <string name="vip_feature_title_recaps">詳細な統計: 月間＆年間まとめ</string>
   <string name="vip_feature_title_sentiment">コミュニティの評価</string>
-  <string name="vip_feature_title_sentiment_trivia">詳細情報: 感情 + トリビア</string>
+  <string name="vip_feature_title_sentiment_trivia">詳細情報: 感情 &amp; トリビア</string>
   <string name="vip_feature_title_streaming_services">より多くのストリーミングサービスと同期</string>
   <string name="vip_feature_title_streaming_sync">ストリーミング同期</string>
   <string name="vip_feature_title_support">より良いサポート: フォーラム＆フィードバック</string>
@@ -1632,7 +1675,10 @@
   <string name="yir_2024_stats_card_hours">%s時間</string>
   <string name="yir_2024_stats_card_plays">%s回再生</string>
   <string name="yir_2024_stats_intro_movies">%d年に視聴したのは</string>
+  <string name="yir_2024_stats_intro_movies_monthly">%sに視聴したのは</string>
   <string name="yir_2024_stats_intro_shows">%d年に視聴したのは</string>
+  <string name="yir_2024_stats_intro_shows_monthly">%sに視聴したのは</string>
+  <string name="yir_2024_stats_most_active_day">最もアクティブだった日は<b>%1$s</b>で、<b>%2$s回再生</b>でした。</string>
   <string name="yir_2024_stats_most_active_week">最もアクティブだった週は<b>%1$s - %2$s</b>で、<b>%3$s回再生</b>でした。</string>
   <string name="yir_2024_stats_most_popular_time">最も視聴が多かった時間帯は<b>%s</b>でした。</string>
   <string name="yir_2024_stats_per_day">日間</string>
@@ -1643,6 +1689,9 @@
   <string name="yir_2024_stats_tooltip_hours">%s時間</string>
   <string name="yir_2024_stats_tooltip_plays">%s回再生</string>
   <string name="yir_2024_stats_tooltip_week_label">第%s週</string>
+  <string name="yir_2024_streaming_intro">配信状況</string>
+  <string name="yir_2024_streaming_service_count">サービス数</string>
+  <string name="yir_2024_streaming_title">ストリーミングサービス</string>
   <string name="yir_2024_studio_count">スタジオ数</string>
   <string name="yir_2024_thanks_copy_directed">あなたは<b>%1$d</b>を壮大な形で演出しました。<b>%2$d</b>にはさらに素晴らしい続編を期待しましょう。</string>
   <string name="yir_2024_thanks_copy_recommend">あなたの旅を続けましょう。これらの人気番組や映画を試してみてください。</string>

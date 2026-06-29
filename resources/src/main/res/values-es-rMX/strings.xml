@@ -178,10 +178,12 @@
   <string name="button_label_submit_report">Enviar reporte</string>
   <string name="button_label_sync_options">Elegir opción de sincronización</string>
   <string name="button_label_sync_streaming_service">Sincronizar %s</string>
+  <string name="button_label_toggle_favorite_service">Alternar %s como favorito</string>
   <string name="button_label_toggle_genre">Activar/desactivar el género %s</string>
   <string name="button_label_toggle_search_lists">Buscar listas</string>
   <string name="button_label_toggle_search_media">Buscar medios</string>
   <string name="button_label_toggle_search_people">Buscar personas</string>
+  <string name="button_label_trivia_category_filter">Filtrar trivia por categoría</string>
   <string name="button_label_trivia_no_spoilers">Sin spoilers</string>
   <string name="button_label_trivia_spoilers">Spoilers</string>
   <string name="button_label_unblock">Desbloquear a %s</string>
@@ -235,6 +237,7 @@
   <string name="button_text_add_note">Añadir nota</string>
   <string name="button_text_add_reply">Añadir respuesta</string>
   <string name="button_text_add_review">Añadir reseña</string>
+  <string name="button_text_add_streaming_service">Agregar servicio de streaming</string>
   <string name="button_text_add_to_favorites">Añadir a Favoritos</string>
   <string name="button_text_apply">Aplicar</string>
   <string name="button_text_approve_follow_request">Aprobar solicitud</string>
@@ -294,6 +297,7 @@
   <string name="button_text_load_more">Cargar más</string>
   <string name="button_text_login">Iniciar sesión</string>
   <string name="button_text_logout">Cerrar sesión</string>
+  <string name="button_text_manage">Administrar</string>
   <string name="button_text_manage_lists">Administrar listas</string>
   <string name="button_text_manage_subscription">Administrar suscripción</string>
   <string name="button_text_manage_vip">Gestionar suscripción</string>
@@ -312,6 +316,9 @@
   <string name="button_text_meet_team">Conoce al equipo</string>
   <string name="button_text_month_in_review">Resumen de %s</string>
   <string name="button_text_more">%d más</string>
+  <string name="button_text_move_to_bottom">Mover al final</string>
+  <string name="button_text_move_to_position">Mover a…</string>
+  <string name="button_text_move_to_top">Mover al inicio</string>
   <string name="button_text_movies">Películas</string>
   <string name="button_text_no_services">Sin servicios</string>
   <string name="button_text_open_in_service">Abrir en %s</string>
@@ -342,6 +349,7 @@
   <string name="button_text_restore_rating_prompts">Restaurar avisos de calificación</string>
   <string name="button_text_restore_show">Restaurar serie</string>
   <string name="button_text_retry">Reintentar</string>
+  <string name="button_text_save">Guardar</string>
   <string name="button_text_save_filters">Establecer como predeterminado</string>
   <string name="button_text_set_cover_image">Establecer como portada</string>
   <string name="button_text_settings">Configuración</string>
@@ -387,6 +395,7 @@
   <string name="button_text_view_history">Ver historial</string>
   <string name="button_text_view_import_guidelines">Ver directrices</string>
   <string name="button_text_view_photo">Ver foto</string>
+  <string name="button_text_view_recommendation_sources">¿Por qué esto?</string>
   <string name="button_text_vip_upgrade">Actualizar</string>
   <string name="button_text_watch_again">Volver a ver</string>
   <string name="button_text_watch_until_here_anchor_end">Hora de finalización</string>
@@ -440,16 +449,18 @@
   <string name="description_export">Obtén una exportación de tus datos de usuario en un solo archivo ZIP. Este proceso puede tardar un tiempo.</string>
   <string name="description_genres">Añade o quita tus %d géneros favoritos.</string>
   <string name="description_import">Importa tus datos de otros servicios directamente en tu navegador.</string>
-  <string name="description_paused_items">Estos elementos se agregaron en pausa, ya que no se vieron al menos en un 80%.</string>
+  <string name="description_paused_items">Estos elementos no se vieron al menos en un 80%.</string>
   <string name="description_plex_manual_sync">Activa una sincronización inmediata de tu historial de visualizaciones de Plex con Trakt.</string>
   <string name="description_plex_servers">Elige el servidor de Plex para sincronizar con Trakt.</string>
   <string name="description_plex_sync">Conecta tu cuenta de Plex para sincronizar el historial de visualizaciones, calificaciones y colecciones con Trakt.</string>
   <string name="description_plex_sync_settings">Estas configuraciones controlan qué tipos de datos se sincronizan con Trakt.</string>
-  <string name="description_preview_features">Habilita o deshabilita las funciones de vista previa que están en desarrollo. Estas funciones pueden ser inestables y pueden cambiar en cualquier momento.</string>
-  <string name="description_skipped_items">Información útil para ayudar a identificar qué se omitió y por qué. Cualquier cosa en rojo hizo que el elemento fuera omitido.</string>
-  <string name="description_streaming_sync">Sincroniza automáticamente tu historial de reproducción y tus calificaciones. Conecta un servicio a continuación o en las aplicaciones móviles oficiales de Trakt.</string>
+  <string name="description_preview_features">Prueba las próximas funciones antes de que estén ampliamente disponibles. Las funciones de vista previa pueden cambiar a medida que las perfeccionamos.</string>
+  <string name="description_skipped_items">Cualquier elemento en rojo provocó que se saltara.</string>
+  <string name="description_streaming_services">Tus favoritos facilitan encontrar contenido en los servicios que más ves.</string>
+  <string name="description_streaming_sync">Sincroniza automáticamente tu historial de reproducción y calificaciones.</string>
   <string name="description_sync_detail">Algunos detalles sobre esta sincronización.</string>
   <string name="dialog_prompt_media_share_image_format">Elige un formato de imagen para compartir.</string>
+  <string name="dialog_prompt_move_to_position">Introduce una nueva posición para \"%s\".</string>
   <string name="dialog_prompt_younify_data_sync">¿Te gustaría importar tus datos existentes a tu cuenta de Trakt, o solo sincronizar nuevos datos a partir de ahora?</string>
   <string name="dialog_title_comment">Reseña</string>
   <string name="dialog_title_comments">Reseñas</string>
@@ -462,6 +473,7 @@
   <string name="drawer_title_add_note">Nota</string>
   <string name="drawer_title_notes">Notas</string>
   <string name="drawer_title_people">Personas</string>
+  <string name="drawer_title_recommendation_sources">¿Por qué se recomendó esto?</string>
   <string name="drawer_title_reorder_list">Arrastrar para reordenar</string>
   <string name="drawer_title_sort">Ordenar por</string>
   <string name="drawer_title_streak_activity">Actividad de Racha Diaria</string>
@@ -589,6 +601,7 @@
   <string name="header_status">Estado</string>
   <string name="header_stream_on">Transmitir en</string>
   <string name="header_streaming">Disponibilidad</string>
+  <string name="header_streaming_services">Servicios de Streaming</string>
   <string name="header_streaming_sync">Sincronización de streaming</string>
   <string name="header_studio">Estudio</string>
   <string name="header_sync_detail">ID de sincronización %s</string>
@@ -624,10 +637,12 @@
   <string name="import_summary_watchlist">%d elementos para Lista de seguimiento</string>
   <string name="import_vip_limit_exceeded">Tu importación excede el límite del nivel gratuito. Actualiza a VIP para importar los %d elementos.</string>
   <string name="input_label_search_credit_members">Buscar personas</string>
+  <string name="input_placeholder_filter_services">Filtrar servicios de streaming</string>
   <string name="input_placeholder_lists_description">Descripción (opcional)</string>
   <string name="input_placeholder_lists_name">Nombre</string>
   <string name="input_placeholder_note_drop">¿Por qué abandonaste este título?</string>
   <string name="input_placeholder_note_favorite">¿Por qué marcaste este título como favorito?</string>
+  <string name="input_placeholder_reorder_position">Posición (1–%d)</string>
   <string name="input_placeholder_report_message">Proporciona detalles sobre este reporte</string>
   <string name="input_placeholder_report_reason">Seleccionar una razón</string>
   <string name="input_placeholder_search">Buscar series y películas…</string>
@@ -645,6 +660,7 @@
   <string name="input_prompt_rename_list">Cambiar nombre a tu lista</string>
   <string name="input_prompt_username">¿Cuál debería ser tu nombre de usuario?</string>
   <string name="label_drag_image_to_adjust">Arrastra la imagen para ajustar</string>
+  <string name="label_favorites">Favoritos</string>
   <string name="label_plex_connected">Conectado a Plex</string>
   <string name="label_plex_connection">Conexión</string>
   <string name="label_plex_history_date">Fecha</string>
@@ -674,7 +690,7 @@
   <string name="label_report_reason_too_short">Demasiado corto</string>
   <string name="label_stats_active_days">Días activos</string>
   <string name="label_stats_average">Prom.</string>
-  <string name="label_stats_avg_per_day">Prom. / Día</string>
+  <string name="label_stats_avg_per_day">Promedio diario</string>
   <string name="label_stats_best_day">Mejor día</string>
   <string name="label_stats_busiest_day">Día más activo</string>
   <string name="label_stats_comments">Comentarios</string>
@@ -691,8 +707,8 @@
   <string name="label_stats_screen_time_share">Horas de vigilia</string>
   <string name="label_stats_screen_time_total">Total</string>
   <string name="label_stats_shows">Series</string>
+  <string name="label_streaming_country">País</string>
   <string name="limit_title_digital_library">Biblioteca digital</string>
-  <string name="limit_title_notes">Notas</string>
   <string name="limit_title_offline_library">Biblioteca sin conexión</string>
   <string name="limit_title_personal_lists">Listas personales</string>
   <string name="limit_title_ratings">Calificaciones</string>
@@ -709,6 +725,7 @@
   <string name="link_label_github">GitHub</string>
   <string name="link_label_install_pwa">Instalar PWA</string>
   <string name="link_label_ios_app">Aplicaci\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\niOS</string>
+  <string name="link_label_open_preview_feature">Abrir %s</string>
   <string name="link_label_open_review">Abrir reseña de %s</string>
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_view_social_activities">Ver actividades sociales de %s</string>
@@ -729,7 +746,7 @@
   <string name="link_text_preview_settings">Vista previa</string>
   <string name="link_text_privacy">Privacidad</string>
   <string name="link_text_service_status">Estado del servicio Trakt</string>
-  <string name="link_text_streaming_sync_settings">Sincronización de streaming</string>
+  <string name="link_text_streaming_sync_settings">Servicios de Streaming</string>
   <string name="link_text_support">Soporte</string>
   <string name="link_text_terms">Términos</string>
   <string name="link_text_terms_of_use">Términos de uso</string>
@@ -786,6 +803,9 @@
   <string name="list_title_recently_searched_movies">Películas buscadas recientemente</string>
   <string name="list_title_recently_searched_shows">Series buscadas recientemente</string>
   <string name="list_title_recently_watched">Vistos recientemente</string>
+  <string name="list_title_recommendation_sources_activity">Viste</string>
+  <string name="list_title_recommendation_sources_favorite">Te encantó</string>
+  <string name="list_title_recommendation_sources_subgenre">Te gusta</string>
   <string name="list_title_recommended">Recomendado</string>
   <string name="list_title_recommended_movies">Películas recomendadas</string>
   <string name="list_title_recommended_shows">Series recomendadas</string>
@@ -832,6 +852,8 @@
   <string name="match_pill_anchor">Compatibilidad:</string>
   <string name="match_pill_aria_label">%1$d% de coincidencia, %2$s. Abrir detalles de la coincidencia.</string>
   <string name="match_pill_loading_aria_label">Calculando puntuación de coincidencia</string>
+  <string name="mir_share_text">Echa un vistazo a mi Resumen Mensual de %s en Trakt</string>
+  <string name="mir_title_month_in_review">Resumen Mensual</string>
   <string name="notes_placeholder_text">Deja una nota la próxima vez que marques como favorito o abandones un título.</string>
   <string name="option_text_africa">África</string>
   <string name="option_text_all">Todos</string>
@@ -852,6 +874,12 @@
   <string name="option_text_theme_dark">Oscuro</string>
   <string name="option_text_theme_light">Claro</string>
   <string name="option_text_theme_system">Sistema</string>
+  <string name="option_text_trivia_category_all">Todos</string>
+  <string name="option_text_trivia_category_bts">Detrás de cámaras</string>
+  <string name="option_text_trivia_category_cast_n_crew">Elenco y equipo</string>
+  <string name="option_text_trivia_category_impact_n_legacy">Impacto y legado</string>
+  <string name="option_text_trivia_category_real_world_connections">Conexiones con el mundo real</string>
+  <string name="option_text_trivia_category_story_n_themes">Historia y temas</string>
   <string name="page_description_create_list">Introduce un nombre y una descripción para tu lista.</string>
   <string name="page_description_edit_list">Edita los detalles de tu lista.</string>
   <string name="page_description_home">Lleva un registro de tus series y películas con Trakt Web: descubre qué está en tendencia, obtén recomendaciones personalizadas y nunca te pierdas lo que sigue.</string>
@@ -911,6 +939,20 @@
   <string name="page_title_where_to_watch">Dónde ver</string>
   <string name="page_title_year_in_review">Resumen de %s</string>
   <string name="page_title_year_to_date">Año hasta la fecha</string>
+  <string name="preview_feature_description_edit_mode">Habilita los controles para ocultar o mostrar secciones configurables en toda la aplicación.</string>
+  <string name="preview_feature_description_month_in_review">Previsualiza tu Resumen Mensual, ahora ejecutándose directamente en la V3.</string>
+  <string name="preview_feature_description_plex_sync">Conecta Plex para sincronizar tu historial de visualización, calificaciones y biblioteca con Trakt. Incluye conexión, selección de servidor y herramientas de sincronización.</string>
+  <string name="preview_feature_description_scoped_favorites">Delimita las listas de favoritos mostrando los favoritos del año actual en los perfiles y agrupando la lista completa de favoritos por año.</string>
+  <string name="preview_feature_description_social_activities">Muestra quiénes de tus seguidos han visto, añadido a la lista de seguimiento, comentado o calificado una película, serie o episodio directamente en las páginas de medios.</string>
+  <string name="preview_feature_description_streaming_sync">Conecta servicios de streaming compatibles para que tu historial de visualización y calificaciones se sincronicen automáticamente con Trakt. El proceso de conexión desde la web aún está en fase beta.</string>
+  <string name="preview_feature_description_year_in_review">Previsualiza tu Resumen Anual, ahora ejecutándose directamente en la V3.</string>
+  <string name="preview_feature_title_edit_mode">Modo de edición</string>
+  <string name="preview_feature_title_month_in_review">Resumen Mensual</string>
+  <string name="preview_feature_title_plex_sync">Sincronización de Plex</string>
+  <string name="preview_feature_title_scoped_favorites">Favoritos con Alcance</string>
+  <string name="preview_feature_title_social_activities">Actividades sociales</string>
+  <string name="preview_feature_title_streaming_sync">Sincronización de streaming</string>
+  <string name="preview_feature_title_year_in_review">Resumen Anual</string>
   <string name="reset_status_cleared">Lista de seguimiento borrada.</string>
   <string name="section_title_season_progress">Progreso de la temporada %d</string>
   <string name="section_title_specials_progress">Progreso de especiales</string>
@@ -921,6 +963,7 @@
   <string name="switch_label_mark_as_spoiler">Marcar como spoiler</string>
   <string name="switch_label_multiple_watches">Habilitar o deshabilitar múltiples reproducciones</string>
   <string name="switch_label_private">El perfil es privado</string>
+  <string name="switch_label_rating_prompt">Habilitar o deshabilitar avisos de calificación</string>
   <string name="switch_label_spoilers">Mostrar spoilers</string>
   <string name="switch_label_toggle_christmas_filters">Activar/desactivar filtros de Navidad</string>
   <string name="switch_label_toggle_halloween_filters">Activar/desactivar filtros de Halloween</string>
@@ -1080,6 +1123,7 @@
   <string name="text_export_status_fetching">Obteniendo %s…</string>
   <string name="text_export_status_zipping">Comprimiendo archivos…</string>
   <string name="text_exporting">Exportando… %s</string>
+  <string name="text_favorites_limit_reached">Puedes seleccionar hasta %s servicios</string>
   <string name="text_first_play_this_month">Primera reproducción este mes</string>
   <string name="text_footer_category_community">Comunidad</string>
   <string name="text_footer_category_legal">Legal</string>
@@ -1136,6 +1180,7 @@
   <string name="text_no_data_synced">Aún no se han sincronizado datos.</string>
   <string name="text_no_paused_items">No hay elementos en pausa.</string>
   <string name="text_no_rating">Sin calificación</string>
+  <string name="text_no_services_match_filter">Ningún servicio coincide con tu filtro.</string>
   <string name="text_no_skipped_items">No hay elementos omitidos.</string>
   <string name="text_notification_episode_release">T%1$d • E%2$d ya está disponible.</string>
   <string name="text_notification_episodes_release">T%1$d • E%2$d-%3$d ya están disponibles.</string>
@@ -1202,6 +1247,7 @@
   <string name="text_season_number">Temporada %d</string>
   <string name="text_season_specials">Especiales</string>
   <string name="text_sentiment_example">Ejemplo de \"%s\"</string>
+  <string name="text_services_selected">%1$s / %2$s seleccionados · %3$s</string>
   <string name="text_settings_adjust_delivery">Hora de notificación</string>
   <string name="text_settings_adjust_delivery_description">Elige cuándo recibir notificaciones.</string>
   <string name="text_settings_clear_cover">Borrar la imagen de portada actual y volver a la predeterminada.</string>
@@ -1213,6 +1259,8 @@
   <string name="text_settings_notification_time_60_min">1 hora antes</string>
   <string name="text_settings_notification_time_now">En el lanzamiento</string>
   <string name="text_settings_play_subscriptions">Suscripciones de Google Play</string>
+  <string name="text_settings_show_rating_prompt">Avisos de Calificación</string>
+  <string name="text_settings_show_rating_prompt_description">Recibir avisos para calificar películas y episodios después de verlos.</string>
   <string name="text_settings_translations">Ayuda a traducir la app y a corregir errores en tu idioma.</string>
   <string name="text_share_episode">¡Acabo de ver %1$s T%2$dE%3$d - %4$s! 🔥</string>
   <string name="text_share_list">¡Echa un vistazo a esta lista de \"%s\" en Trakt! 📋</string>
@@ -1509,7 +1557,6 @@
   <string name="translated_value_video_type_trailer">Tráiler</string>
   <string name="usage_title_library">Biblioteca</string>
   <string name="usage_title_lists">Listas</string>
-  <string name="usage_title_personal_activity">Actividad personal</string>
   <string name="validation_text_list_name">Se requiere un nombre</string>
   <string name="validation_text_note">La nota es obligatoria</string>
   <string name="validation_text_note_character_limit">Supera el límite de %d caracteres</string>
@@ -1524,8 +1571,6 @@
   <string name="vip_feature_description_more_lists">Crea aún más listas personalizadas para organizar tus series y películas exactamente como quieras.</string>
   <string name="vip_feature_description_more_to_come">Constantemente estamos desarrollando nuevas funciones exclusivamente para miembros VIP, con emocionantes actualizaciones ya en camino.</string>
   <string name="vip_feature_description_plex_sync">Mantén tu biblioteca de Plex perfectamente sincronizada con actualizaciones automáticas más frecuentes durante todo el día.</string>
-  <string name="vip_feature_description_private_notes">Añade muchísimas más notas personales a tus series y películas para recordar tus pensamientos y recomendaciones.</string>
-  <string name="vip_feature_description_profile_customisation">Personaliza tu perfil con encabezados personalizados y haz que tu presencia en Trakt sea únicamente tuya.</string>
   <string name="vip_feature_description_recaps">Obtén información más profunda con resúmenes mensuales y anuales completos que muestran todo lo que viste, calificaste y descubriste.</string>
   <string name="vip_feature_description_sentiment">Desbloquea un análisis de sentimiento más detallado para series y películas.</string>
   <string name="vip_feature_description_sentiment_trivia">Desbloquea un análisis de sentimiento detallado y trivia fascinante sobre las películas y series que ves.</string>
@@ -1535,7 +1580,7 @@
   <string name="vip_feature_description_trivia">Obtén más trivia e información sobre las películas y series que ves.</string>
   <string name="vip_feature_description_vip_status">Presume tu estado VIP en todas las apps y el sitio web.</string>
   <string name="vip_feature_description_yir">Muchas estadísticas por cada año que has sido miembro.</string>
-  <string name="vip_feature_title_api_apps">Más apps API conectadas</string>
+  <string name="vip_feature_title_api_apps">Más Aplicaciones API Conectadas</string>
   <string name="vip_feature_title_bigger_library">Biblioteca más grande</string>
   <string name="vip_feature_title_bigger_watchlist">Lista de seguimiento más grande</string>
   <string name="vip_feature_title_early_access">Acceso Anticipado</string>
@@ -1544,11 +1589,9 @@
   <string name="vip_feature_title_more_lists">Más listas</string>
   <string name="vip_feature_title_more_to_come">Más por venir</string>
   <string name="vip_feature_title_plex_sync">Sincronizar Plex con más frecuencia</string>
-  <string name="vip_feature_title_private_notes">Más notas privadas</string>
-  <string name="vip_feature_title_profile_customisation">Más personalización: Encabezado del perfil</string>
-  <string name="vip_feature_title_recaps">Más Resúmenes: Mensual y Anual</string>
+  <string name="vip_feature_title_recaps">Más Estadísticas: Resumen Mensual y Anual</string>
   <string name="vip_feature_title_sentiment">Sentimiento</string>
-  <string name="vip_feature_title_sentiment_trivia">Más información: Sentimiento + Trivia</string>
+  <string name="vip_feature_title_sentiment_trivia">Más Información: Sentimiento y Trivias</string>
   <string name="vip_feature_title_streaming_services">Sincronizar más servicios de streaming</string>
   <string name="vip_feature_title_streaming_sync">Sincronización de streaming</string>
   <string name="vip_feature_title_support">Mejor soporte: Foro y comentarios</string>
@@ -1632,7 +1675,10 @@
   <string name="yir_2024_stats_card_hours">%s Horas</string>
   <string name="yir_2024_stats_card_plays">%s Reproducciones</string>
   <string name="yir_2024_stats_intro_movies">En %d, viste</string>
+  <string name="yir_2024_stats_intro_movies_monthly">En %s, viste</string>
   <string name="yir_2024_stats_intro_shows">En %d, viste</string>
+  <string name="yir_2024_stats_intro_shows_monthly">En %s, viste</string>
+  <string name="yir_2024_stats_most_active_day">Tu día más activo fue <b>%1$s</b> con <b>%2$s reproducciones</b>.</string>
   <string name="yir_2024_stats_most_active_week">Tu semana más activa fue <b>%1$s - %2$s</b> con <b>%3$s reproducciones</b>.</string>
   <string name="yir_2024_stats_most_popular_time">La hora más popular en la que viste fue <b>%s</b>.</string>
   <string name="yir_2024_stats_per_day">Por día</string>
@@ -1643,6 +1689,9 @@
   <string name="yir_2024_stats_tooltip_hours">%s Horas</string>
   <string name="yir_2024_stats_tooltip_plays">%s Reproducciones</string>
   <string name="yir_2024_stats_tooltip_week_label">Semana %s</string>
+  <string name="yir_2024_streaming_intro">Disponibilidad en</string>
+  <string name="yir_2024_streaming_service_count">Número de servicios</string>
+  <string name="yir_2024_streaming_title">Servicios de Streaming</string>
   <string name="yir_2024_studio_count">Número de estudios</string>
   <string name="yir_2024_thanks_copy_directed">Hiciste un trabajo épico dirigiendo <b>%1$d</b>. Brindemos por una secuela aún mejor en <b>%2$d</b>.</string>
   <string name="yir_2024_thanks_copy_recommend">Continúa tu viaje. Intenta ver uno de estos programas o películas populares.</string>

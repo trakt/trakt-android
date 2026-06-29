@@ -178,10 +178,12 @@
   <string name="button_label_submit_report">Envia informe</string>
   <string name="button_label_sync_options">Tria l\'opció de sincronització</string>
   <string name="button_label_sync_streaming_service">Sincronitza %s</string>
+  <string name="button_label_toggle_favorite_service">Alternar %s com a favorit</string>
   <string name="button_label_toggle_genre">Activa/desactiva el gènere %s</string>
   <string name="button_label_toggle_search_lists">Cerca llistes</string>
   <string name="button_label_toggle_search_media">Cerca contingut multimèdia</string>
   <string name="button_label_toggle_search_people">Cerca persones</string>
+  <string name="button_label_trivia_category_filter">Filtrar curiositats per categoria</string>
   <string name="button_label_trivia_no_spoilers">Sense spoilers</string>
   <string name="button_label_trivia_spoilers">Spoilers</string>
   <string name="button_label_unblock">Desbloqueja %s</string>
@@ -235,6 +237,7 @@
   <string name="button_text_add_note">Afegeix nota</string>
   <string name="button_text_add_reply">Afegeix resposta</string>
   <string name="button_text_add_review">Afegeix ressenya</string>
+  <string name="button_text_add_streaming_service">Afegir servei de streaming</string>
   <string name="button_text_add_to_favorites">Afegeix a Preferits</string>
   <string name="button_text_apply">Aplica</string>
   <string name="button_text_approve_follow_request">Aprovar sol·licitud</string>
@@ -294,6 +297,7 @@
   <string name="button_text_load_more">Carrega\'n més</string>
   <string name="button_text_login">Inicia sessió</string>
   <string name="button_text_logout">Tanca la sessió</string>
+  <string name="button_text_manage">Gestionar</string>
   <string name="button_text_manage_lists">Gestiona llistes</string>
   <string name="button_text_manage_subscription">Gestiona la subscripció</string>
   <string name="button_text_manage_vip">Gestiona la subscripció</string>
@@ -312,6 +316,9 @@
   <string name="button_text_meet_team">Coneix l\'equip</string>
   <string name="button_text_month_in_review">Resum de %s</string>
   <string name="button_text_more">%d més</string>
+  <string name="button_text_move_to_bottom">Moure al final</string>
+  <string name="button_text_move_to_position">Moure a…</string>
+  <string name="button_text_move_to_top">Moure a dalt</string>
   <string name="button_text_movies">Pel·lícules</string>
   <string name="button_text_no_services">Sense serveis</string>
   <string name="button_text_open_in_service">Obre a %s</string>
@@ -342,6 +349,7 @@
   <string name="button_text_restore_rating_prompts">Restaura les sol·licituds de valoració</string>
   <string name="button_text_restore_show">Restaura la sèrie</string>
   <string name="button_text_retry">Torna a intentar-ho</string>
+  <string name="button_text_save">Desar</string>
   <string name="button_text_save_filters">Defineix com a predeterminat</string>
   <string name="button_text_set_cover_image">Defineix com a imatge de portada</string>
   <string name="button_text_settings">Configuració</string>
@@ -387,6 +395,7 @@
   <string name="button_text_view_history">Mostra l\'historial</string>
   <string name="button_text_view_import_guidelines">Veure les directrius</string>
   <string name="button_text_view_photo">Mostra la foto</string>
+  <string name="button_text_view_recommendation_sources">Per què això?</string>
   <string name="button_text_vip_upgrade">Actualitzar</string>
   <string name="button_text_watch_again">Torna a veure</string>
   <string name="button_text_watch_until_here_anchor_end">Hora de finalització</string>
@@ -440,16 +449,18 @@
   <string name="description_export">Obtén una exportació de les teves dades d\'usuari en un sol fitxer ZIP. Aquest procés pot trigar una mica.</string>
   <string name="description_genres">Afegeix o elimina els teus %d gèneres preferits.</string>
   <string name="description_import">Importa les teves dades d\'altres serveis directament al teu navegador.</string>
-  <string name="description_paused_items">Aquests elements es van afegir com a en pausa, ja que no s\'havien vist almenys en un 80%.</string>
+  <string name="description_paused_items">Aquests elements no es van veure almenys un 80%.</string>
   <string name="description_plex_manual_sync">Activa una sincronització immediata del teu historial de visualització de Plex amb Trakt.</string>
   <string name="description_plex_servers">Tria el servidor de Plex per sincronitzar amb Trakt.</string>
   <string name="description_plex_sync">Connecta el teu compte de Plex per sincronitzar l\'historial de visualització, les puntuacions i les col·leccions amb Trakt.</string>
   <string name="description_plex_sync_settings">Aquesta configuració controla quins tipus de dades se sincronitzen amb Trakt.</string>
-  <string name="description_preview_features">Activa o desactiva les funcions de previsualització que estan en desenvolupament. Aquestes funcions poden ser inestables i es poden canviar en qualsevol moment.</string>
-  <string name="description_skipped_items">Informació útil per ajudar a identificar què es va ometre i per què. Qualsevol cosa en vermell va fer que l\'element s\'ometés.</string>
-  <string name="description_streaming_sync">Sincronitza automàticament el teu historial vist i les puntuacions. Connecta un servei a continuació o a les aplicacions mòbils oficials de Trakt.</string>
+  <string name="description_preview_features">Prova les properes funcions abans que estiguin àmpliament disponibles. Les funcions de previsualització poden canviar a mesura que les perfeccionem.</string>
+  <string name="description_skipped_items">Qualsevol cosa en vermell va fer que l\'element fos omès.</string>
+  <string name="description_streaming_services">Els teus favorits faciliten trobar contingut als serveis que més mires.</string>
+  <string name="description_streaming_sync">Sincronitza automàticament el teu historial vist i les puntuacions.</string>
   <string name="description_sync_detail">Alguns detalls sobre aquesta sincronització.</string>
   <string name="dialog_prompt_media_share_image_format">Tria un format d\'imatge per compartir.</string>
+  <string name="dialog_prompt_move_to_position">Introdueix una nova posició per a \"%s\".</string>
   <string name="dialog_prompt_younify_data_sync">Vols importar les teves dades existents al teu compte de Trakt, o només sincronitzar noves dades a partir d\'ara?</string>
   <string name="dialog_title_comment">Ressenya</string>
   <string name="dialog_title_comments">Ressenyes</string>
@@ -462,6 +473,7 @@
   <string name="drawer_title_add_note">Nota</string>
   <string name="drawer_title_notes">Notes</string>
   <string name="drawer_title_people">Persones</string>
+  <string name="drawer_title_recommendation_sources">Per què es va recomanar això?</string>
   <string name="drawer_title_reorder_list">Arrossega per reordenar</string>
   <string name="drawer_title_sort">Ordenar per</string>
   <string name="drawer_title_streak_activity">Activitat de la ratxa diària</string>
@@ -589,6 +601,7 @@
   <string name="header_status">Estat</string>
   <string name="header_stream_on">En streaming a</string>
   <string name="header_streaming">Disponibilitat</string>
+  <string name="header_streaming_services">Serveis de streaming</string>
   <string name="header_streaming_sync">Sincronització de streaming</string>
   <string name="header_studio">Estudi</string>
   <string name="header_sync_detail">ID de sincronització %s</string>
@@ -624,10 +637,12 @@
   <string name="import_summary_watchlist">%d elements per a la llista de seguiment</string>
   <string name="import_vip_limit_exceeded">La teva importació supera el límit del nivell gratuït. Actualitza a VIP per importar tots els %d elements.</string>
   <string name="input_label_search_credit_members">Cerca persones</string>
+  <string name="input_placeholder_filter_services">Filtrar serveis de streaming</string>
   <string name="input_placeholder_lists_description">Descripció (opcional)</string>
   <string name="input_placeholder_lists_name">Nom</string>
   <string name="input_placeholder_note_drop">Per què has abandonat aquest títol?</string>
   <string name="input_placeholder_note_favorite">Per què has marcat aquest títol com a favorit?</string>
+  <string name="input_placeholder_reorder_position">Posició (1–%d)</string>
   <string name="input_placeholder_report_message">Proporciona detalls sobre aquest informe</string>
   <string name="input_placeholder_report_reason">Selecciona un motiu</string>
   <string name="input_placeholder_search">Cerca sèries i pel·lícules…</string>
@@ -645,6 +660,7 @@
   <string name="input_prompt_rename_list">Canvia el nom de la teva llista</string>
   <string name="input_prompt_username">Quin hauria de ser el teu nom d\'usuari?</string>
   <string name="label_drag_image_to_adjust">Arrossega la imatge per ajustar</string>
+  <string name="label_favorites">Preferits</string>
   <string name="label_plex_connected">Connectat a Plex</string>
   <string name="label_plex_connection">Connexió</string>
   <string name="label_plex_history_date">Data</string>
@@ -674,7 +690,7 @@
   <string name="label_report_reason_too_short">Massa curt</string>
   <string name="label_stats_active_days">Dies actius</string>
   <string name="label_stats_average">Mitj</string>
-  <string name="label_stats_avg_per_day">Mitjana / Dia</string>
+  <string name="label_stats_avg_per_day">Mitjana diària</string>
   <string name="label_stats_best_day">Millor dia</string>
   <string name="label_stats_busiest_day">Dia de més activitat</string>
   <string name="label_stats_comments">Comentaris</string>
@@ -691,8 +707,8 @@
   <string name="label_stats_screen_time_share">Hores de vigília</string>
   <string name="label_stats_screen_time_total">Total</string>
   <string name="label_stats_shows">Sèries</string>
+  <string name="label_streaming_country">País</string>
   <string name="limit_title_digital_library">Biblioteca digital</string>
-  <string name="limit_title_notes">Notes</string>
   <string name="limit_title_offline_library">Biblioteca fora de línia</string>
   <string name="limit_title_personal_lists">Llistes personals</string>
   <string name="limit_title_ratings">Valoracions</string>
@@ -709,6 +725,7 @@
   <string name="link_label_github">GitHub</string>
   <string name="link_label_install_pwa">Instal·la PWA</string>
   <string name="link_label_ios_app">Aplicació iOS</string>
+  <string name="link_label_open_preview_feature">Obre %s</string>
   <string name="link_label_open_review">Obre la ressenya de %s</string>
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_view_social_activities">Mostra les activitats socials de %s</string>
@@ -729,7 +746,7 @@
   <string name="link_text_preview_settings">Previsualització</string>
   <string name="link_text_privacy">Privacitat</string>
   <string name="link_text_service_status">Estat del servei de Trakt</string>
-  <string name="link_text_streaming_sync_settings">Sincronització de streaming</string>
+  <string name="link_text_streaming_sync_settings">Serveis de streaming</string>
   <string name="link_text_support">Suport</string>
   <string name="link_text_terms">Termes</string>
   <string name="link_text_terms_of_use">Condicions d\'ús</string>
@@ -786,6 +803,9 @@
   <string name="list_title_recently_searched_movies">Pel·lícules cercades recentment</string>
   <string name="list_title_recently_searched_shows">Sèries cercades recentment</string>
   <string name="list_title_recently_watched">Vists recentment</string>
+  <string name="list_title_recommendation_sources_activity">Has vist</string>
+  <string name="list_title_recommendation_sources_favorite">T\'ha encantat</string>
+  <string name="list_title_recommendation_sources_subgenre">T\'agrada</string>
   <string name="list_title_recommended">Recomanat</string>
   <string name="list_title_recommended_movies">Pel·lícules recomanades</string>
   <string name="list_title_recommended_shows">Sèries recomanades</string>
@@ -832,6 +852,8 @@
   <string name="match_pill_anchor">Coincidència:</string>
   <string name="match_pill_aria_label">%1$d% de coincidència, %2$s. Obre els detalls de la coincidència.</string>
   <string name="match_pill_loading_aria_label">Calculant la puntuació de coincidència</string>
+  <string name="mir_share_text">Fes un cop d\'ull al meu resum del mes %s a Trakt</string>
+  <string name="mir_title_month_in_review">Resum del Mes</string>
   <string name="notes_placeholder_text">Deixa una nota la propera vegada que marquis com a favorit o abandonis un títol.</string>
   <string name="option_text_africa">Àfrica</string>
   <string name="option_text_all">Tots</string>
@@ -852,6 +874,12 @@
   <string name="option_text_theme_dark">Fosc</string>
   <string name="option_text_theme_light">Clar</string>
   <string name="option_text_theme_system">Sistema</string>
+  <string name="option_text_trivia_category_all">Tots</string>
+  <string name="option_text_trivia_category_bts">Darrere les càmeres</string>
+  <string name="option_text_trivia_category_cast_n_crew">Repartiment i Equip</string>
+  <string name="option_text_trivia_category_impact_n_legacy">Impacte i llegat</string>
+  <string name="option_text_trivia_category_real_world_connections">Connexions amb el món real</string>
+  <string name="option_text_trivia_category_story_n_themes">Història i temes</string>
   <string name="page_description_create_list">Introdueix un nom i una descripció per a la teva llista.</string>
   <string name="page_description_edit_list">Edita els detalls de la teva llista.</string>
   <string name="page_description_home">Fes un seguiment de les teves sèries i pel·lícules amb Trakt Web — descobreix les tendències, rep recomanacions personalitzades i no et perdis mai les novetats.</string>
@@ -911,6 +939,20 @@
   <string name="page_title_where_to_watch">On veure</string>
   <string name="page_title_year_in_review">%s en resum</string>
   <string name="page_title_year_to_date">Acumulat de l\'any</string>
+  <string name="preview_feature_description_edit_mode">Habilita els controls per amagar o mostrar seccions configurables a tota l\'aplicació.</string>
+  <string name="preview_feature_description_month_in_review">Previsualitza el Resum del Mes, ara executant-se directament en V3.</string>
+  <string name="preview_feature_description_plex_sync">Connecta Plex per sincronitzar el teu historial de visualitzacions, valoracions i biblioteca amb Trakt. Inclou connexió, selecció de servidor i eines de sincronització.</string>
+  <string name="preview_feature_description_scoped_favorites">Delimita les llistes de preferits mostrant els preferits de l\'any actual als perfils i agrupant la llista completa de preferits per any.</string>
+  <string name="preview_feature_description_social_activities">Mostra qui segueixes ha vist, afegit a la llista, comentat o valorat una pel·lícula, sèrie o episodi directament a les pàgines multimèdia.</string>
+  <string name="preview_feature_description_streaming_sync">Connecta serveis de streaming compatibles perquè l\'historial de visualitzacions i les valoracions es puguin sincronitzar automàticament amb Trakt. El flux de connexió des del web encara està en fase beta.</string>
+  <string name="preview_feature_description_year_in_review">Previsualitza el Resum de l\'Any, ara executant-se directament en V3.</string>
+  <string name="preview_feature_title_edit_mode">Mode d\'edició</string>
+  <string name="preview_feature_title_month_in_review">Resum del Mes</string>
+  <string name="preview_feature_title_plex_sync">Sincronització de Plex</string>
+  <string name="preview_feature_title_scoped_favorites">Preferits per àmbit</string>
+  <string name="preview_feature_title_social_activities">Activitats socials</string>
+  <string name="preview_feature_title_streaming_sync">Sincronització de streaming</string>
+  <string name="preview_feature_title_year_in_review">Resum de l\'Any</string>
   <string name="reset_status_cleared">Llista de seguiment esborrada.</string>
   <string name="section_title_season_progress">Temporada %d progrés</string>
   <string name="section_title_specials_progress">Progrés dels especials</string>
@@ -921,6 +963,7 @@
   <string name="switch_label_mark_as_spoiler">Marca com a spoiler</string>
   <string name="switch_label_multiple_watches">Habilita o deshabilita múltiples visualitzacions</string>
   <string name="switch_label_private">El perfil és privat</string>
+  <string name="switch_label_rating_prompt">Activa o desactiva les sol·licituds de valoració</string>
   <string name="switch_label_spoilers">Mostra spoilers</string>
   <string name="switch_label_toggle_christmas_filters">Activa/desactiva els filtres de Nadal</string>
   <string name="switch_label_toggle_halloween_filters">Activa/desactiva els filtres de Halloween</string>
@@ -1080,6 +1123,7 @@
   <string name="text_export_status_fetching">Cercant %s…</string>
   <string name="text_export_status_zipping">Comprimint fitxers…</string>
   <string name="text_exporting">Exportant… %s</string>
+  <string name="text_favorites_limit_reached">Pots seleccionar fins a %s serveis</string>
   <string name="text_first_play_this_month">Primera reproducció aquest mes</string>
   <string name="text_footer_category_community">Comunitat</string>
   <string name="text_footer_category_legal">Legal</string>
@@ -1136,6 +1180,7 @@
   <string name="text_no_data_synced">Encara no s\'han sincronitzat dades.</string>
   <string name="text_no_paused_items">No hi ha elements en pausa.</string>
   <string name="text_no_rating">Sense valoració</string>
+  <string name="text_no_services_match_filter">Cap servei coincideix amb el teu filtre.</string>
   <string name="text_no_skipped_items">No hi ha elements omesos.</string>
   <string name="text_notification_episode_release">T%1$d • E%2$d ja està disponible.</string>
   <string name="text_notification_episodes_release">T%1$d • E%2$d-%3$d ja estan disponibles.</string>
@@ -1202,6 +1247,7 @@
   <string name="text_season_number">Temporada %d</string>
   <string name="text_season_specials">Especials</string>
   <string name="text_sentiment_example">Exemple de \"%s\"</string>
+  <string name="text_services_selected">%1$s / %2$s seleccionats · %3$s</string>
   <string name="text_settings_adjust_delivery">Hora de la notificació</string>
   <string name="text_settings_adjust_delivery_description">Tria quan vols ser notificat.</string>
   <string name="text_settings_clear_cover">Esborra la imatge de portada actual i torna a la predeterminada.</string>
@@ -1213,6 +1259,8 @@
   <string name="text_settings_notification_time_60_min">1 hora abans</string>
   <string name="text_settings_notification_time_now">En l\'estrena</string>
   <string name="text_settings_play_subscriptions">Subscripcions de Google Play</string>
+  <string name="text_settings_show_rating_prompt">Sol·licituds de valoració</string>
+  <string name="text_settings_show_rating_prompt_description">Se\'ls sol·licita que valorin pel·lícules i episodis després de veure-les.</string>
   <string name="text_settings_translations">Ajuda a traduir l\'aplicació i a corregir errors per al teu idioma.</string>
   <string name="text_share_episode">Acabo de veure %1$s T%2$dE%3$d - %4$s! 🔥</string>
   <string name="text_share_list">Fes un cop d\'ull a aquesta llista \"%s\" a Trakt! 📋</string>
@@ -1509,7 +1557,6 @@
   <string name="translated_value_video_type_trailer">Tràiler</string>
   <string name="usage_title_library">Biblioteca</string>
   <string name="usage_title_lists">Llistes</string>
-  <string name="usage_title_personal_activity">Activitat personal</string>
   <string name="validation_text_list_name">El nom és obligatori</string>
   <string name="validation_text_note">La nota és obligatòria</string>
   <string name="validation_text_note_character_limit">Supera el límit de %d caràcters</string>
@@ -1524,8 +1571,6 @@
   <string name="vip_feature_description_more_lists">Crea encara més llistes personalitzades per organitzar les teves sèries i pel·lícules exactament com vols.</string>
   <string name="vip_feature_description_more_to_come">Estem construint constantment noves funcions exclusivament per a membres VIP, amb actualitzacions emocionants ja en camí.</string>
   <string name="vip_feature_description_plex_sync">Mantén la teva biblioteca de Plex perfectament sincronitzada amb actualitzacions automàtiques més freqüents durant tot el dia.</string>
-  <string name="vip_feature_description_private_notes">Afegeix moltes més notes personals a les teves sèries i pel·lícules per recordar les teves idees i recomanacions.</string>
-  <string name="vip_feature_description_profile_customisation">Personalitza el teu perfil amb capçaleres personalitzades i fes que la teva presència a Trakt sigui única.</string>
   <string name="vip_feature_description_recaps">Obtén informació més detallada amb resums mensuals i anuals complets que mostren tot el que has vist, valorat i descobert.</string>
   <string name="vip_feature_description_sentiment">Desbloqueja una anàlisi de sentiments més detallada per a sèries i pel·lícules.</string>
   <string name="vip_feature_description_sentiment_trivia">Desbloqueja una anàlisi de sentiments detallada i curiositats fascinants sobre les pel·lícules i sèries que veus.</string>
@@ -1544,11 +1589,9 @@
   <string name="vip_feature_title_more_lists">Més llistes</string>
   <string name="vip_feature_title_more_to_come">Més per venir</string>
   <string name="vip_feature_title_plex_sync">Sincronitza Plex amb més freqüència</string>
-  <string name="vip_feature_title_private_notes">Més notes privades</string>
-  <string name="vip_feature_title_profile_customisation">Més personalització: capçalera de perfil</string>
-  <string name="vip_feature_title_recaps">Més resums: mensuals i anuals</string>
+  <string name="vip_feature_title_recaps">Més estadístiques: resums mensuals i anuals</string>
   <string name="vip_feature_title_sentiment">Sentiment</string>
-  <string name="vip_feature_title_sentiment_trivia">Més informació: sentiments + curiositats</string>
+  <string name="vip_feature_title_sentiment_trivia">Més informació: sentiments i curiositats</string>
   <string name="vip_feature_title_streaming_services">Sincronitza més serveis de streaming</string>
   <string name="vip_feature_title_streaming_sync">Sincronització de streaming</string>
   <string name="vip_feature_title_support">Millor suport: Fòrum i suggeriments</string>
@@ -1632,7 +1675,10 @@
   <string name="yir_2024_stats_card_hours">%s Hores</string>
   <string name="yir_2024_stats_card_plays">%s Reproduccions</string>
   <string name="yir_2024_stats_intro_movies">L\'any %d, vas veure</string>
+  <string name="yir_2024_stats_intro_movies_monthly">El mes de %s, vas veure</string>
   <string name="yir_2024_stats_intro_shows">L\'any %d, vas veure</string>
+  <string name="yir_2024_stats_intro_shows_monthly">El mes de %s, vas veure</string>
+  <string name="yir_2024_stats_most_active_day">El teu dia més actiu va ser <b>%1$s</b> amb <b>%2$s reproduccions</b>.</string>
   <string name="yir_2024_stats_most_active_week">La teva setmana més activa va ser <b>%1$s - %2$s</b> amb <b>%3$s reproduccions</b>.</string>
   <string name="yir_2024_stats_most_popular_time">El moment més popular en què vas veure contingut va ser <b>%s</b>.</string>
   <string name="yir_2024_stats_per_day">Per dia</string>
@@ -1643,6 +1689,9 @@
   <string name="yir_2024_stats_tooltip_hours">%s Hores</string>
   <string name="yir_2024_stats_tooltip_plays">%s Reproduccions</string>
   <string name="yir_2024_stats_tooltip_week_label">Setmana %s</string>
+  <string name="yir_2024_streaming_intro">Disponibilitat a</string>
+  <string name="yir_2024_streaming_service_count">Recompte de serveis</string>
+  <string name="yir_2024_streaming_title">Serveis de streaming</string>
   <string name="yir_2024_studio_count">Recompte d\'estudis</string>
   <string name="yir_2024_thanks_copy_directed">Has fet una feina èpica dirigint <b>%1$d</b>. Per una seqüela encara millor el <b>%2$d</b>.</string>
   <string name="yir_2024_thanks_copy_recommend">Continua el teu viatge. Prova de veure una d\'aquestes sèries o pel·lícules populars.</string>

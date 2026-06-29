@@ -178,10 +178,12 @@
   <string name="button_label_submit_report">Υποβολή αναφοράς</string>
   <string name="button_label_sync_options">Επιλογή επιλογής συγχρονισμού</string>
   <string name="button_label_sync_streaming_service">Συγχρονισμός %s</string>
+  <string name="button_label_toggle_favorite_service">Εναλλαγή %s ως αγαπημένου</string>
   <string name="button_label_toggle_genre">Εναλλαγή του είδους %s</string>
   <string name="button_label_toggle_search_lists">Αναζήτηση λιστών</string>
   <string name="button_label_toggle_search_media">Αναζήτηση μέσων</string>
   <string name="button_label_toggle_search_people">Αναζήτηση ανθρώπων</string>
+  <string name="button_label_trivia_category_filter">Φιλτράρισμα trivia ανά κατηγορία</string>
   <string name="button_label_trivia_no_spoilers">Χωρίς spoilers</string>
   <string name="button_label_trivia_spoilers">Spoilers</string>
   <string name="button_label_unblock">Ξεμπλοκάρισμα %s</string>
@@ -235,6 +237,7 @@
   <string name="button_text_add_note">Προσθήκη Σημείωσης</string>
   <string name="button_text_add_reply">Προσθήκη Απάντησης</string>
   <string name="button_text_add_review">Προσθήκη Κριτικής</string>
+  <string name="button_text_add_streaming_service">Προσθήκη υπηρεσίας streaming</string>
   <string name="button_text_add_to_favorites">Προσθήκη στα Αγαπημένα</string>
   <string name="button_text_apply">Εφαρμογή</string>
   <string name="button_text_approve_follow_request">Αποδοχή Αίτησης</string>
@@ -294,6 +297,7 @@
   <string name="button_text_load_more">Φόρτωση περισσότερων</string>
   <string name="button_text_login">Σύνδεση</string>
   <string name="button_text_logout">Αποσύνδεση</string>
+  <string name="button_text_manage">Διαχείριση</string>
   <string name="button_text_manage_lists">Διαχείριση λιστών</string>
   <string name="button_text_manage_subscription">Διαχείριση συνδρομής</string>
   <string name="button_text_manage_vip">Διαχείριση Συνδρομής</string>
@@ -312,6 +316,9 @@
   <string name="button_text_meet_team">Γνωρίστε την ομάδα</string>
   <string name="button_text_month_in_review">Ανασκόπηση %s</string>
   <string name="button_text_more">%d ακόμη</string>
+  <string name="button_text_move_to_bottom">Μετακίνηση στο Τέλος</string>
+  <string name="button_text_move_to_position">Μετακίνηση σε…</string>
+  <string name="button_text_move_to_top">Μετακίνηση στην Κορυφή</string>
   <string name="button_text_movies">Ταινίες</string>
   <string name="button_text_no_services">Καμία υπηρεσία</string>
   <string name="button_text_open_in_service">Άνοιγμα σε %s</string>
@@ -342,6 +349,7 @@
   <string name="button_text_restore_rating_prompts">Επαναφορά Προτροπών Αξιολόγησης</string>
   <string name="button_text_restore_show">Επαναφορά σειράς</string>
   <string name="button_text_retry">Επανάληψη</string>
+  <string name="button_text_save">Αποθήκευση</string>
   <string name="button_text_save_filters">Ορισμός ως προεπιλογή</string>
   <string name="button_text_set_cover_image">Ορισμός ως εικόνα εξωφύλλου</string>
   <string name="button_text_settings">Ρυθμίσεις</string>
@@ -387,6 +395,7 @@
   <string name="button_text_view_history">Προβολή Ιστορικού</string>
   <string name="button_text_view_import_guidelines">Προβολή οδηγιών</string>
   <string name="button_text_view_photo">Προβολή φωτογραφίας</string>
+  <string name="button_text_view_recommendation_sources">Γιατί αυτό;</string>
   <string name="button_text_vip_upgrade">Αναβάθμιση</string>
   <string name="button_text_watch_again">Παρακολούθηση ξανά</string>
   <string name="button_text_watch_until_here_anchor_end">Ώρα λήξης</string>
@@ -440,16 +449,18 @@
   <string name="description_export">Λάβετε εξαγωγή των δεδομένων χρήστη σας σε ένα μόνο αρχείο ZIP. Αυτή η διαδικασία μπορεί να διαρκέσει λίγο.</string>
   <string name="description_genres">Προσθέστε ή αφαιρέστε τα %d αγαπημένα σας είδη.</string>
   <string name="description_import">Εισαγάγετε τα δεδομένα σας από άλλες υπηρεσίες απευθείας στον περιηγητή σας.</string>
-  <string name="description_paused_items">Αυτά τα στοιχεία προστέθηκαν ως σε παύση, καθώς δεν παρακολουθήθηκαν τουλάχιστον κατά 80%.</string>
+  <string name="description_paused_items">Αυτά τα στοιχεία δεν παρακολουθήθηκαν τουλάχιστον κατά 80%.</string>
   <string name="description_plex_manual_sync">Ενεργοποιήστε έναν άμεσο συγχρονισμό του ιστορικού παρακολούθησης Plex με το Trakt.</string>
   <string name="description_plex_servers">Επιλέξτε τον διακομιστή Plex για συγχρονισμό με το Trakt.</string>
   <string name="description_plex_sync">Συνδέστε τον λογαριασμό σας Plex για συγχρονισμό ιστορικού παρακολούθησης, αξιολογήσεων και συλλογών με το Trakt.</string>
   <string name="description_plex_sync_settings">Αυτές οι ρυθμίσεις ελέγχουν ποιους τύπους δεδομένων θα συγχρονίζονται στο Trakt.</string>
-  <string name="description_preview_features">Ενεργοποιήστε ή απενεργοποιήστε λειτουργίες προεπισκόπησης που βρίσκονται υπό ανάπτυξη. Αυτές οι λειτουργίες ενδέχεται να είναι ασταθείς και μπορούν να αλλάξουν ανά πάσα στιγμή.</string>
-  <string name="description_skipped_items">Κάποιες χρήσιμες πληροφορίες για να βοηθήσουν στον εντοπισμό του τι παραλείφθηκε και γιατί. Οτιδήποτε με κόκκινο χρώμα προκάλεσε την παράλειψη του στοιχείου.</string>
-  <string name="description_streaming_sync">Αυτοματοποιημένος συγχρονισμός του ιστορικού παρακολούθησης και των αξιολογήσεών σας. Συνδέστε μια υπηρεσία παρακάτω ή στις επίσημες εφαρμογές κινητού του Trakt.</string>
+  <string name="description_preview_features">Δοκιμάστε επερχόμενες λειτουργίες πριν γίνουν ευρέως διαθέσιμες. Οι λειτουργίες προεπισκόπησης ενδέχεται να αλλάξουν καθώς τις βελτιώνουμε.</string>
+  <string name="description_skipped_items">Οτιδήποτε με κόκκινο χρώμα προκάλεσε την παράλειψη του στοιχείου.</string>
+  <string name="description_streaming_services">Τα αγαπημένα σας διευκολύνουν την εύρεση περιεχομένου στις υπηρεσίες που παρακολουθείτε περισσότερο.</string>
+  <string name="description_streaming_sync">Αυτόματος συγχρονισμός του ιστορικού παρακολούθησης και των αξιολογήσεών σας.</string>
   <string name="description_sync_detail">Ορισμένες λεπτομέρειες σχετικά με αυτόν τον συγχρονισμό.</string>
   <string name="dialog_prompt_media_share_image_format">Επιλέξτε μια μορφή εικόνας για κοινή χρήση.</string>
+  <string name="dialog_prompt_move_to_position">Εισαγάγετε μια νέα θέση για το \"%s\".</string>
   <string name="dialog_prompt_younify_data_sync">Θα θέλατε να εισαγάγετε τα υπάρχοντα δεδομένα σας στον λογαριασμό σας Trakt ή να συγχρονίζετε μόνο νέα δεδομένα από τώρα και στο εξής;</string>
   <string name="dialog_title_comment">Κριτική</string>
   <string name="dialog_title_comments">Κριτικές</string>
@@ -462,6 +473,7 @@
   <string name="drawer_title_add_note">Σημείωση</string>
   <string name="drawer_title_notes">Σημειώσεις</string>
   <string name="drawer_title_people">Άτομα</string>
+  <string name="drawer_title_recommendation_sources">Γιατί προτάθηκε αυτό;</string>
   <string name="drawer_title_reorder_list">Σύρετε για αναδιάταξη</string>
   <string name="drawer_title_sort">Ταξινόμηση κατά</string>
   <string name="drawer_title_streak_activity">Καθημερινή Δραστηριότητα Σερί</string>
@@ -589,6 +601,7 @@
   <string name="header_status">Κατάσταση</string>
   <string name="header_stream_on">Ροή σε</string>
   <string name="header_streaming">Διαθεσιμότητα</string>
+  <string name="header_streaming_services">Υπηρεσίες Ροής</string>
   <string name="header_streaming_sync">Συγχρονισμός Ροής</string>
   <string name="header_studio">Στούντιο</string>
   <string name="header_sync_detail">Αναγνωριστικό συγχρονισμού %s</string>
@@ -624,10 +637,12 @@
   <string name="import_summary_watchlist">%d στοιχεία για τη Λίστα Παρακολούθησης</string>
   <string name="import_vip_limit_exceeded">Η εισαγωγή σας υπερβαίνει το όριο της δωρεάν βαθμίδας. Αναβαθμίστε σε VIP για να εισαγάγετε όλα τα %d στοιχεία.</string>
   <string name="input_label_search_credit_members">Αναζήτηση ανθρώπων</string>
+  <string name="input_placeholder_filter_services">Φιλτράρισμα υπηρεσιών streaming</string>
   <string name="input_placeholder_lists_description">Περιγραφή (προαιρετικά)</string>
   <string name="input_placeholder_lists_name">Όνομα</string>
   <string name="input_placeholder_note_drop">Γιατί απορρίψατε αυτόν τον τίτλο;</string>
   <string name="input_placeholder_note_favorite">Γιατί βάλατε αυτόν τον τίτλο στα αγαπημένα;</string>
+  <string name="input_placeholder_reorder_position">Θέση (1–%d)</string>
   <string name="input_placeholder_report_message">Παρέχετε λεπτομέρειες σχετικά με αυτή την αναφορά</string>
   <string name="input_placeholder_report_reason">Επιλέξτε έναν λόγο</string>
   <string name="input_placeholder_search">Αναζήτηση σειρών &amp; ταινιών…</string>
@@ -645,6 +660,7 @@
   <string name="input_prompt_rename_list">Μετονομασία της λίστας σας</string>
   <string name="input_prompt_username">Ποιο θα πρέπει να είναι το όνομα χρήστη σας;</string>
   <string name="label_drag_image_to_adjust">Σύρετε την εικόνα για προσαρμογή</string>
+  <string name="label_favorites">Αγαπημένα</string>
   <string name="label_plex_connected">Συνδεδεμένο με το Plex</string>
   <string name="label_plex_connection">Σύνδεση</string>
   <string name="label_plex_history_date">Ημερομηνία</string>
@@ -674,7 +690,7 @@
   <string name="label_report_reason_too_short">Πολύ σύντομο</string>
   <string name="label_stats_active_days">Ενεργές Ημέρες</string>
   <string name="label_stats_average">Μέσος</string>
-  <string name="label_stats_avg_per_day">Μ.Ο. ανά Ημέρα</string>
+  <string name="label_stats_avg_per_day">Ημερήσιος Μέσος Όρος</string>
   <string name="label_stats_best_day">για να κρατήσετε το σερί σας ζωντανό!</string>
   <string name="label_stats_busiest_day">Πιο δραστήρια ημέρα</string>
   <string name="label_stats_comments">Σχόλια</string>
@@ -691,8 +707,8 @@
   <string name="label_stats_screen_time_share">Ώρες Εγρήγορσης</string>
   <string name="label_stats_screen_time_total">Σύνολο</string>
   <string name="label_stats_shows">Σειρές</string>
+  <string name="label_streaming_country">Χώρα</string>
   <string name="limit_title_digital_library">Ψηφιακή Βιβλιοθήκη</string>
-  <string name="limit_title_notes">Σημειώσεις</string>
   <string name="limit_title_offline_library">Βιβλιοθήκη εκτός σύνδεσης</string>
   <string name="limit_title_personal_lists">Προσωπικές Λίστες</string>
   <string name="limit_title_ratings">Αξιολογήσεις</string>
@@ -709,6 +725,7 @@
   <string name="link_label_github">GitHub</string>
   <string name="link_label_install_pwa">Εγκατάσταση PWA</string>
   <string name="link_label_ios_app">Εφαρμογή iOS</string>
+  <string name="link_label_open_preview_feature">Άνοιγμα %s</string>
   <string name="link_label_open_review">Άνοιγμα κριτικής από %s</string>
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_view_social_activities">Προβολή κοινωνικών δραστηριοτήτων για το/την %s</string>
@@ -729,7 +746,7 @@
   <string name="link_text_preview_settings">Προεπισκόπηση</string>
   <string name="link_text_privacy">Απόρρητο</string>
   <string name="link_text_service_status">Κατάσταση υπηρεσίας Trakt</string>
-  <string name="link_text_streaming_sync_settings">Συγχρονισμός Ροής</string>
+  <string name="link_text_streaming_sync_settings">Υπηρεσίες Ροής</string>
   <string name="link_text_support">Υποστήριξη</string>
   <string name="link_text_terms">Όροι</string>
   <string name="link_text_terms_of_use">Όροι Χρήσης</string>
@@ -786,6 +803,9 @@
   <string name="list_title_recently_searched_movies">Πρόσφατα Αναζητημένες Ταινίες</string>
   <string name="list_title_recently_searched_shows">Πρόσφατα Αναζητημένες Σειρές</string>
   <string name="list_title_recently_watched">Πρόσφατα Παρακολουθήθηκαν</string>
+  <string name="list_title_recommendation_sources_activity">Έχετε παρακολουθήσει</string>
+  <string name="list_title_recommendation_sources_favorite">Λατρέψατε</string>
+  <string name="list_title_recommendation_sources_subgenre">Σας αρέσει</string>
   <string name="list_title_recommended">Προτεινόμενα</string>
   <string name="list_title_recommended_movies">Προτεινόμενες Ταινίες</string>
   <string name="list_title_recommended_shows">Προτεινόμενες Σειρές</string>
@@ -832,6 +852,8 @@
   <string name="match_pill_anchor">Ταίριασμα:</string>
   <string name="match_pill_aria_label">%1$d% αντιστοιχία, %2$s. Άνοιγμα λεπτομερειών αντιστοιχίας.</string>
   <string name="match_pill_loading_aria_label">Υπολογίζεται η βαθμολογία αντιστοίχισης</string>
+  <string name="mir_share_text">Δείτε τη Μηνιαία Ανασκόπησή μου για το %s στο Trakt</string>
+  <string name="mir_title_month_in_review">Μηνιαία Ανασκόπηση</string>
   <string name="notes_placeholder_text">Αφήστε μια σημείωση την επόμενη φορά που θα βάλετε στα αγαπημένα ή θα απορρίψετε έναν τίτλο.</string>
   <string name="option_text_africa">Αφρική</string>
   <string name="option_text_all">Όλα</string>
@@ -852,6 +874,12 @@
   <string name="option_text_theme_dark">Σκούρο</string>
   <string name="option_text_theme_light">Φωτεινό</string>
   <string name="option_text_theme_system">Σύστημα</string>
+  <string name="option_text_trivia_category_all">Όλα</string>
+  <string name="option_text_trivia_category_bts">Παρασκήνια</string>
+  <string name="option_text_trivia_category_cast_n_crew">Διανομή &amp; Συντελεστές</string>
+  <string name="option_text_trivia_category_impact_n_legacy">Αντίκτυπος &amp; κληρονομιά</string>
+  <string name="option_text_trivia_category_real_world_connections">Συνδέσεις με τον πραγματικό κόσμο</string>
+  <string name="option_text_trivia_category_story_n_themes">Ιστορία &amp; θέματα</string>
   <string name="page_description_create_list">Εισάγετε ένα όνομα και μια περιγραφή για τη λίστα σας.</string>
   <string name="page_description_edit_list">Επεξεργαστείτε τα στοιχεία της λίστας σας.</string>
   <string name="page_description_home">Παρακολουθήστε τις σειρές και τις ταινίες σας με το Trakt Web — ανακαλύψτε τι είναι δημοφιλές, λάβετε εξατομικευμένες προτάσεις και μην χάσετε ποτέ τι έρχεται.</string>
@@ -911,6 +939,20 @@
   <string name="page_title_where_to_watch">Πού να παρακολουθήσετε</string>
   <string name="page_title_year_in_review">Ανασκόπηση του %s</string>
   <string name="page_title_year_to_date">Έτος μέχρι σήμερα</string>
+  <string name="preview_feature_description_edit_mode">Ενεργοποιήστε τα χειριστήρια για απόκρυψη ή εμφάνιση διαμορφώσιμων ενοτήτων σε όλη την εφαρμογή.</string>
+  <string name="preview_feature_description_month_in_review">Προεπισκόπηση Μηνιαίας Ανασκόπησης, τώρα διαθέσιμη απευθείας στο V3.</string>
+  <string name="preview_feature_description_plex_sync">Συνδέστε το Plex για να συγχρονίσετε το ιστορικό παρακολούθησης, τις αξιολογήσεις και τη βιβλιοθήκη σας με το Trakt. Περιλαμβάνει σύνδεση, επιλογή διακομιστή και εργαλεία συγχρονισμού.</string>
+  <string name="preview_feature_description_scoped_favorites">Οριοθετήστε τις λίστες αγαπημένων εμφανίζοντας τα αγαπημένα του τρέχοντος έτους στα προφίλ και ομαδοποιώντας την πλήρη λίστα αγαπημένων ανά έτος.</string>
+  <string name="preview_feature_description_social_activities">Δείξτε ποιοι από τους χρήστες που ακολουθείτε έχουν παρακολουθήσει, έχουν προσθέσει στη λίστα παρακολούθησης, έχουν σχολιάσει ή έχουν αξιολογήσει μια ταινία, σειρά ή επεισόδιο απευθείας στις σελίδες πολυμέσων.</string>
+  <string name="preview_feature_description_streaming_sync">Συνδέστε υποστηριζόμενες υπηρεσίες streaming ώστε το ιστορικό παρακολούθησης και οι αξιολογήσεις να μπορούν να συγχρονίζονται αυτόματα με το Trakt. Η διαδικασία σύνδεσης από το διαδίκτυο είναι ακόμα σε beta.</string>
+  <string name="preview_feature_description_year_in_review">Προεπισκόπηση Ετήσιας Ανασκόπησης, τώρα διαθέσιμη απευθείας στο V3.</string>
+  <string name="preview_feature_title_edit_mode">Λειτουργία επεξεργασίας</string>
+  <string name="preview_feature_title_month_in_review">Μηνιαία Ανασκόπηση</string>
+  <string name="preview_feature_title_plex_sync">Συγχρονισμός Plex</string>
+  <string name="preview_feature_title_scoped_favorites">Αγαπημένα με χρονικό πλαίσιο</string>
+  <string name="preview_feature_title_social_activities">Κοινωνικές Δραστηριότητες</string>
+  <string name="preview_feature_title_streaming_sync">Συγχρονισμός Ροής</string>
+  <string name="preview_feature_title_year_in_review">Ετήσια Ανασκόπηση</string>
   <string name="reset_status_cleared">Η λίστα παρακολούθησης εκκαθαρίστηκε.</string>
   <string name="section_title_season_progress">Πρόοδος Σεζόν %d</string>
   <string name="section_title_specials_progress">Πρόοδος ειδικών επεισοδίων</string>
@@ -921,6 +963,7 @@
   <string name="switch_label_mark_as_spoiler">Σήμανση ως spoiler</string>
   <string name="switch_label_multiple_watches">Ενεργοποίηση ή απενεργοποίηση πολλαπλών παρακολουθήσεων</string>
   <string name="switch_label_private">Είναι το προφίλ ιδιωτικό</string>
+  <string name="switch_label_rating_prompt">Ενεργοποίηση ή απενεργοποίηση προτροπών αξιολόγησης</string>
   <string name="switch_label_spoilers">Εμφάνιση spoilers</string>
   <string name="switch_label_toggle_christmas_filters">Εναλλαγή φίλτρων Χριστουγέννων</string>
   <string name="switch_label_toggle_halloween_filters">Εναλλαγή φίλτρων Χαλοουίν</string>
@@ -1080,6 +1123,7 @@
   <string name="text_export_status_fetching">Λήψη %s…</string>
   <string name="text_export_status_zipping">Συμπίεση αρχείων…</string>
   <string name="text_exporting">Εξαγωγή… %s</string>
+  <string name="text_favorites_limit_reached">Μπορείτε να επιλέξετε έως και %s υπηρεσίες</string>
   <string name="text_first_play_this_month">Πρώτη προβολή αυτόν τον μήνα</string>
   <string name="text_footer_category_community">Κοινότητα</string>
   <string name="text_footer_category_legal">Νομικά</string>
@@ -1136,6 +1180,7 @@
   <string name="text_no_data_synced">Δεν έχουν συγχρονιστεί δεδομένα ακόμα.</string>
   <string name="text_no_paused_items">Δεν υπάρχουν στοιχεία σε παύση.</string>
   <string name="text_no_rating">Καμία βαθμολογία</string>
+  <string name="text_no_services_match_filter">Καμία υπηρεσία δεν ταιριάζει με το φίλτρο σας.</string>
   <string name="text_no_skipped_items">Δεν υπάρχουν παραλειφθέντα στοιχεία.</string>
   <string name="text_notification_episode_release">S%1$d • E%2$d είναι τώρα διαθέσιμο.</string>
   <string name="text_notification_episodes_release">S%1$d • E%2$d-%3$d είναι τώρα διαθέσιμα.</string>
@@ -1202,6 +1247,7 @@
   <string name="text_season_number">Σεζόν %d</string>
   <string name="text_season_specials">Ειδικά</string>
   <string name="text_sentiment_example">Παράδειγμα από το \"%s\"</string>
+  <string name="text_services_selected">%1$s / %2$s επιλεγμένα · %3$s</string>
   <string name="text_settings_adjust_delivery">Ώρα ειδοποίησης</string>
   <string name="text_settings_adjust_delivery_description">Επιλέξτε πότε θα ειδοποιηθείτε.</string>
   <string name="text_settings_clear_cover">Εκκαθάριση της τρέχουσας εικόνας εξωφύλλου και επιστροφή στην προεπιλογή.</string>
@@ -1213,6 +1259,8 @@
   <string name="text_settings_notification_time_60_min">1 ώρα πριν</string>
   <string name="text_settings_notification_time_now">Κατά την κυκλοφορία</string>
   <string name="text_settings_play_subscriptions">Συνδρομές Google Play</string>
+  <string name="text_settings_show_rating_prompt">Προτροπές Αξιολόγησης</string>
+  <string name="text_settings_show_rating_prompt_description">Να σας ζητείται να αξιολογείτε ταινίες και επεισόδια μετά την παρακολούθηση.</string>
   <string name="text_settings_translations">Βοηθήστε στη μετάφραση της εφαρμογής και διορθώστε λάθη για τη γλώσσα σας.</string>
   <string name="text_share_episode">Μόλις παρακολούθησα %1$s S%2$dE%3$d - %4$s! 🔥</string>
   <string name="text_share_list">Δείτε αυτή τη λίστα \"%s\" στο Trakt! 📋</string>
@@ -1509,7 +1557,6 @@
   <string name="translated_value_video_type_trailer">Τρέιλερ</string>
   <string name="usage_title_library">Βιβλιοθήκη</string>
   <string name="usage_title_lists">Λίστες</string>
-  <string name="usage_title_personal_activity">Προσωπική Δραστηριότητα</string>
   <string name="validation_text_list_name">Απαιτείται όνομα</string>
   <string name="validation_text_note">Η σημείωση είναι υποχρεωτική</string>
   <string name="validation_text_note_character_limit">Υπερβαίνει το όριο %d χαρακτήρων</string>
@@ -1524,8 +1571,6 @@
   <string name="vip_feature_description_more_lists">Δημιουργήστε ακόμα περισσότερες προσαρμοσμένες λίστες για να οργανώσετε τις σειρές και τις ταινίες σας ακριβώς όπως θέλετε.</string>
   <string name="vip_feature_description_more_to_come">Συνεχώς δημιουργούμε νέες λειτουργίες αποκλειστικά για μέλη VIP, με συναρπαστικές ενημερώσεις να βρίσκονται ήδη καθ\' οδόν.</string>
   <string name="vip_feature_description_plex_sync">Διατηρήστε τη βιβλιοθήκη Plex σας τέλεια συγχρονισμένη με πιο συχνές αυτόματες ενημερώσεις καθ\' όλη τη διάρκεια της ημέρας.</string>
-  <string name="vip_feature_description_private_notes">Προσθέστε πολλές περισσότερες προσωπικές σημειώσεις στις σειρές και τις ταινίες σας για να θυμάστε τις σκέψεις και τις προτάσεις σας.</string>
-  <string name="vip_feature_description_profile_customisation">Εξατομικεύστε το προφίλ σας με προσαρμοσμένες κεφαλίδες και κάντε την παρουσία σας στο Trakt μοναδική.</string>
   <string name="vip_feature_description_recaps">Αποκτήστε βαθύτερες πληροφορίες με αναλυτικές μηνιαίες και ετήσιες ανακεφαλαιώσεις που δείχνουν όλα όσα παρακολουθήσατε, αξιολογήσατε και ανακαλύψατε.</string>
   <string name="vip_feature_description_sentiment">Ξεκλειδώστε πιο λεπτομερή ανάλυση συναισθήματος για σειρές και ταινίες.</string>
   <string name="vip_feature_description_sentiment_trivia">Ξεκλειδώστε λεπτομερή ανάλυση συναισθήματος και συναρπαστικά trivia για τις ταινίες και τις σειρές που παρακολουθείτε.</string>
@@ -1544,11 +1589,9 @@
   <string name="vip_feature_title_more_lists">Περισσότερες λίστες</string>
   <string name="vip_feature_title_more_to_come">Περισσότερα θα ακολουθήσουν</string>
   <string name="vip_feature_title_plex_sync">Συγχρονισμός Plex πιο συχνά</string>
-  <string name="vip_feature_title_private_notes">Περισσότερες ιδιωτικές σημειώσεις</string>
-  <string name="vip_feature_title_profile_customisation">Περισσότερη προσαρμογή: Κεφαλίδα προφίλ</string>
-  <string name="vip_feature_title_recaps">Περισσότερες Ανακεφαλαιώσεις: Μηνιαίες &amp; Ετήσιες</string>
+  <string name="vip_feature_title_recaps">Περισσότερα Στατιστικά: Μηνιαία &amp; Ετήσια Ανακεφαλαίωση</string>
   <string name="vip_feature_title_sentiment">Συναίσθημα</string>
-  <string name="vip_feature_title_sentiment_trivia">Περισσότερες πληροφορίες: Συναισθηματική ανάλυση + Trivia</string>
+  <string name="vip_feature_title_sentiment_trivia">Περισσότερες πληροφορίες: Συναισθηματική ανάλυση &amp; Trivia</string>
   <string name="vip_feature_title_streaming_services">Συγχρονισμός περισσότερων υπηρεσιών streaming</string>
   <string name="vip_feature_title_streaming_sync">Συγχρονισμός Ροής</string>
   <string name="vip_feature_title_support">Καλύτερη υποστήριξη: Φόρουμ &amp; Σχόλια</string>
@@ -1632,7 +1675,10 @@
   <string name="yir_2024_stats_card_hours">%s Ώρες</string>
   <string name="yir_2024_stats_card_plays">%s Προβολές</string>
   <string name="yir_2024_stats_intro_movies">Το %d, παρακολουθήσατε</string>
+  <string name="yir_2024_stats_intro_movies_monthly">Το %s, παρακολουθήσατε</string>
   <string name="yir_2024_stats_intro_shows">Το %d, παρακολουθήσατε</string>
+  <string name="yir_2024_stats_intro_shows_monthly">Το %s, παρακολουθήσατε</string>
+  <string name="yir_2024_stats_most_active_day">Η πιο ενεργή ημέρα σας ήταν <b>%1$s</b> με <b>%2$s προβολές</b>.</string>
   <string name="yir_2024_stats_most_active_week">Η πιο ενεργή εβδομάδα σας ήταν <b>%1$s - %2$s</b> με <b>%3$s προβολές</b>.</string>
   <string name="yir_2024_stats_most_popular_time">Η πιο δημοφιλής ώρα που παρακολουθήσατε ήταν <b>%s</b>.</string>
   <string name="yir_2024_stats_per_day">Ανά ημέρα</string>
@@ -1643,6 +1689,9 @@
   <string name="yir_2024_stats_tooltip_hours">%s Ώρες</string>
   <string name="yir_2024_stats_tooltip_plays">%s Προβολές</string>
   <string name="yir_2024_stats_tooltip_week_label">Εβδομάδα %s</string>
+  <string name="yir_2024_streaming_intro">Διαθεσιμότητα σε</string>
+  <string name="yir_2024_streaming_service_count">Πλήθος Υπηρεσιών</string>
+  <string name="yir_2024_streaming_title">Υπηρεσίες Ροής</string>
   <string name="yir_2024_studio_count">Πλήθος στούντιο</string>
   <string name="yir_2024_thanks_copy_directed">Κάνατε καταπληκτική δουλειά σκηνοθετώντας το <b>%1$d</b>. Ας έχουμε μια ακόμα καλύτερη συνέχεια το <b>%2$d</b>.</string>
   <string name="yir_2024_thanks_copy_recommend">Συνεχίστε το ταξίδι σας. Δοκιμάστε να παρακολουθήσετε μία από αυτές τις δημοφιλείς εκπομπές ή ταινίες.</string>

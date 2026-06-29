@@ -178,10 +178,12 @@
   <string name="button_label_submit_report">Изпрати сигнал</string>
   <string name="button_label_sync_options">Изберете опция за синхронизиране</string>
   <string name="button_label_sync_streaming_service">Синхронизиране на %s</string>
+  <string name="button_label_toggle_favorite_service">Превключване на %s като любима</string>
   <string name="button_label_toggle_genre">Превключи жанр %s</string>
   <string name="button_label_toggle_search_lists">Търсене на списъци</string>
   <string name="button_label_toggle_search_media">Търсене на медия</string>
   <string name="button_label_toggle_search_people">Търсене на хора</string>
+  <string name="button_label_trivia_category_filter">Филтриране на любопитни факти по категория</string>
   <string name="button_label_trivia_no_spoilers">Без спойлери</string>
   <string name="button_label_trivia_spoilers">Спойлери</string>
   <string name="button_label_unblock">Отблокирай %s</string>
@@ -235,6 +237,7 @@
   <string name="button_text_add_note">Добавяне на бележка</string>
   <string name="button_text_add_reply">Добави отговор</string>
   <string name="button_text_add_review">Добави рецензия</string>
+  <string name="button_text_add_streaming_service">Добавяне на стрийминг услуга</string>
   <string name="button_text_add_to_favorites">Добави към любими</string>
   <string name="button_text_apply">Приложи</string>
   <string name="button_text_approve_follow_request">Одобри заявка</string>
@@ -294,6 +297,7 @@
   <string name="button_text_load_more">Зареди още</string>
   <string name="button_text_login">Вход</string>
   <string name="button_text_logout">Изход</string>
+  <string name="button_text_manage">Управление</string>
   <string name="button_text_manage_lists">Управление на списъци</string>
   <string name="button_text_manage_subscription">Управление на абонамента</string>
   <string name="button_text_manage_vip">Управление на абонамент</string>
@@ -312,6 +316,9 @@
   <string name="button_text_meet_team">Запознай се с екипа</string>
   <string name="button_text_month_in_review">%s в преглед</string>
   <string name="button_text_more">още %d</string>
+  <string name="button_text_move_to_bottom">Премести най-отдолу</string>
+  <string name="button_text_move_to_position">Премести на…</string>
+  <string name="button_text_move_to_top">Премести най-отгоре</string>
   <string name="button_text_movies">Филми</string>
   <string name="button_text_no_services">Няма услуги</string>
   <string name="button_text_open_in_service">Отвори в %s</string>
@@ -342,6 +349,7 @@
   <string name="button_text_restore_rating_prompts">Възстановяване на подканите за оценка</string>
   <string name="button_text_restore_show">Възстанови сериал</string>
   <string name="button_text_retry">Опитай отново</string>
+  <string name="button_text_save">Запазване</string>
   <string name="button_text_save_filters">Задай като по подразбиране</string>
   <string name="button_text_set_cover_image">Задай като корица</string>
   <string name="button_text_settings">Настройки</string>
@@ -387,6 +395,7 @@
   <string name="button_text_view_history">Преглед на история</string>
   <string name="button_text_view_import_guidelines">Преглед на указанията</string>
   <string name="button_text_view_photo">Виж снимка</string>
+  <string name="button_text_view_recommendation_sources">Защо това?</string>
   <string name="button_text_vip_upgrade">Надграждане</string>
   <string name="button_text_watch_again">Гледай отново</string>
   <string name="button_text_watch_until_here_anchor_end">Краен час</string>
@@ -440,16 +449,18 @@
   <string name="description_export">Изтеглете експорт на потребителските си данни в един ZIP файл. Този процес може да отнеме известно време.</string>
   <string name="description_genres">Добави или премахни твоите %d любими жанра.</string>
   <string name="description_import">Импортирайте данните си от други услуги директно в браузъра си.</string>
-  <string name="description_paused_items">Тези елементи бяха добавени като спрени, тъй като не бяха гледани поне 80%.</string>
+  <string name="description_paused_items">Тези елементи не са гледани поне 80%.</string>
   <string name="description_plex_manual_sync">Задействайте незабавна синхронизация на вашата Plex история на гледанията към Trakt.</string>
   <string name="description_plex_servers">Изберете Plex сървър, с който да синхронизирате с Trakt.</string>
   <string name="description_plex_sync">Свържете своя Plex акаунт, за да синхронизирате историята на гледанията, оценките и колекциите с Trakt.</string>
   <string name="description_plex_sync_settings">Тези настройки контролират кои типове данни се синхронизират с Trakt.</string>
-  <string name="description_preview_features">Разрешете или забранете функции за предварителен преглед, които са в процес на разработка. Тези функции може да са нестабилни и да бъдат променяни по всяко време.</string>
-  <string name="description_skipped_items">Някоя полезна информация, която да помогне да се идентифицира какво е било пропуснато и защо. Всяко нещо в червено е причинило пропускането на елемента.</string>
-  <string name="description_streaming_sync">Автоматично синхронизирайте историята на гледанията си и оценките си. Свържете услуга по-долу или в официалните мобилни приложения на Trakt.</string>
+  <string name="description_preview_features">Изпробвайте предстоящи функции, преди да станат широкодостъпни. Функциите за предварителен преглед може да се променят, докато ги подобряваме.</string>
+  <string name="description_skipped_items">Всичко в червено е причинило пропускане на елемента.</string>
+  <string name="description_streaming_services">Вашите любими улесняват намирането на съдържание в услугите, които гледате най-много.</string>
+  <string name="description_streaming_sync">Автоматично синхронизирайте историята на гледанията си и оценките си.</string>
   <string name="description_sync_detail">Някои подробности за тази синхронизация.</string>
   <string name="dialog_prompt_media_share_image_format">Изберете формат на изображението за споделяне.</string>
+  <string name="dialog_prompt_move_to_position">Въведете нова позиция за \"%s\".</string>
   <string name="dialog_prompt_younify_data_sync">Желаете ли да импортирате съществуващите си данни във вашия Trakt акаунт, или да синхронизирате само нови данни отсега нататък?</string>
   <string name="dialog_title_comment">Рецензия</string>
   <string name="dialog_title_comments">Рецензии</string>
@@ -462,6 +473,7 @@
   <string name="drawer_title_add_note">Бележка</string>
   <string name="drawer_title_notes">Бележки</string>
   <string name="drawer_title_people">Хора</string>
+  <string name="drawer_title_recommendation_sources">Защо беше препоръчано това?</string>
   <string name="drawer_title_reorder_list">Плъзнете за пренареждане</string>
   <string name="drawer_title_sort">Сортиране по</string>
   <string name="drawer_title_streak_activity">Активност на ежедневната поредица</string>
@@ -589,6 +601,7 @@
   <string name="header_status">Статус</string>
   <string name="header_stream_on">Стриймвай на</string>
   <string name="header_streaming">Наличност</string>
+  <string name="header_streaming_services">Услуги за стрийминг</string>
   <string name="header_streaming_sync">Синхронизиране със стрийминг</string>
   <string name="header_studio">Студио</string>
   <string name="header_sync_detail">ID на синхронизация %s</string>
@@ -624,10 +637,12 @@
   <string name="import_summary_watchlist">%d елемента за Списък за гледане</string>
   <string name="import_vip_limit_exceeded">Вашият импорт надхвърля лимита на безплатното ниво. Надстройте до VIP, за да импортирате всички %d елемента.</string>
   <string name="input_label_search_credit_members">Търси хора</string>
+  <string name="input_placeholder_filter_services">Филтриране на стрийминг услуги</string>
   <string name="input_placeholder_lists_description">Описание (по избор)</string>
   <string name="input_placeholder_lists_name">Име</string>
   <string name="input_placeholder_note_drop">Защо премахнахте това заглавие?</string>
   <string name="input_placeholder_note_favorite">Защо харесахте това заглавие?</string>
+  <string name="input_placeholder_reorder_position">Позиция (1–%d)</string>
   <string name="input_placeholder_report_message">Предостави подробности за този сигнал</string>
   <string name="input_placeholder_report_reason">Избери причина</string>
   <string name="input_placeholder_search">Търси сериали и филми…</string>
@@ -645,6 +660,7 @@
   <string name="input_prompt_rename_list">Преименувай списъка си</string>
   <string name="input_prompt_username">Какво да бъде потребителското ти име?</string>
   <string name="label_drag_image_to_adjust">Плъзни изображението за настройка</string>
+  <string name="label_favorites">Любими</string>
   <string name="label_plex_connected">Свързан с Plex</string>
   <string name="label_plex_connection">Връзка</string>
   <string name="label_plex_history_date">Дата</string>
@@ -674,7 +690,7 @@
   <string name="label_report_reason_too_short">Твърде кратко</string>
   <string name="label_stats_active_days">Активни дни</string>
   <string name="label_stats_average">Средно</string>
-  <string name="label_stats_avg_per_day">Средно на ден</string>
+  <string name="label_stats_avg_per_day">Средна дневна стойност</string>
   <string name="label_stats_best_day">Най-добър ден</string>
   <string name="label_stats_busiest_day">Най-натоварен ден</string>
   <string name="label_stats_comments">Коментари</string>
@@ -691,8 +707,8 @@
   <string name="label_stats_screen_time_share">Будни часове</string>
   <string name="label_stats_screen_time_total">Общо</string>
   <string name="label_stats_shows">Сериали</string>
+  <string name="label_streaming_country">Държава</string>
   <string name="limit_title_digital_library">Дигитална библиотека</string>
-  <string name="limit_title_notes">Бележки</string>
   <string name="limit_title_offline_library">Офлайн библиотека</string>
   <string name="limit_title_personal_lists">Лични списъци</string>
   <string name="limit_title_ratings">Оценки</string>
@@ -709,6 +725,7 @@
   <string name="link_label_github">GitHub</string>
   <string name="link_label_install_pwa">Инсталиране на PWA</string>
   <string name="link_label_ios_app">Приложение за iOS</string>
+  <string name="link_label_open_preview_feature">Отвори %s</string>
   <string name="link_label_open_review">Отваряне на рецензия от %s</string>
   <string name="link_label_reddit">Reddit</string>
   <string name="link_label_view_social_activities">Преглед на социалните дейности за %s</string>
@@ -729,7 +746,7 @@
   <string name="link_text_preview_settings">Преглед</string>
   <string name="link_text_privacy">Поверителност</string>
   <string name="link_text_service_status">Състояние на услугата Trakt</string>
-  <string name="link_text_streaming_sync_settings">Синхронизиране със стрийминг</string>
+  <string name="link_text_streaming_sync_settings">Услуги за стрийминг</string>
   <string name="link_text_support">Поддръжка</string>
   <string name="link_text_terms">Условия</string>
   <string name="link_text_terms_of_use">Условия за ползване</string>
@@ -786,6 +803,9 @@
   <string name="list_title_recently_searched_movies">Наскоро търсени филми</string>
   <string name="list_title_recently_searched_shows">Наскоро търсени сериали</string>
   <string name="list_title_recently_watched">Наскоро гледани</string>
+  <string name="list_title_recommendation_sources_activity">Гледали сте</string>
+  <string name="list_title_recommendation_sources_favorite">Харесали сте много</string>
+  <string name="list_title_recommendation_sources_subgenre">Харесвате</string>
   <string name="list_title_recommended">Препоръчани</string>
   <string name="list_title_recommended_movies">Препоръчани филми</string>
   <string name="list_title_recommended_shows">Препоръчани сериали</string>
@@ -832,6 +852,8 @@
   <string name="match_pill_anchor">Съвпадение:</string>
   <string name="match_pill_aria_label">%1$d% съвпадение, %2$s. Отворете подробности за съвпадението.</string>
   <string name="match_pill_loading_aria_label">Изчисляване на резултат за съвпадение</string>
+  <string name="mir_share_text">Вижте моя %s месечен преглед в Trakt</string>
+  <string name="mir_title_month_in_review">Месечен преглед</string>
   <string name="notes_placeholder_text">Оставете бележка следващия път, когато харесате или премахнете заглавие.</string>
   <string name="option_text_africa">Африка</string>
   <string name="option_text_all">Всички</string>
@@ -852,6 +874,12 @@
   <string name="option_text_theme_dark">Тъмна</string>
   <string name="option_text_theme_light">Светла</string>
   <string name="option_text_theme_system">Системна</string>
+  <string name="option_text_trivia_category_all">Всички</string>
+  <string name="option_text_trivia_category_bts">Зад кулисите</string>
+  <string name="option_text_trivia_category_cast_n_crew">Актьорски състав и екип</string>
+  <string name="option_text_trivia_category_impact_n_legacy">Въздействие и наследство</string>
+  <string name="option_text_trivia_category_real_world_connections">Връзки с реалния свят</string>
+  <string name="option_text_trivia_category_story_n_themes">История и теми</string>
   <string name="page_description_create_list">Въведи име и описание за твоя списък.</string>
   <string name="page_description_edit_list">Редактирай детайлите на списъка си.</string>
   <string name="page_description_home">Проследявайте предаванията и филмите си с Trakt Web — открийте какво е актуално, получете персонализирани препоръки и никога не пропускайте какво предстои.</string>
@@ -911,6 +939,20 @@
   <string name="page_title_where_to_watch">Къде да гледате</string>
   <string name="page_title_year_in_review">%s в преглед</string>
   <string name="page_title_year_to_date">От началото на годината</string>
+  <string name="preview_feature_description_edit_mode">Активирайте контроли за скриване или показване на конфигурируеми секции в цялото приложение.</string>
+  <string name="preview_feature_description_month_in_review">Прегледайте Месечен преглед, който вече работи директно във V3.</string>
+  <string name="preview_feature_description_plex_sync">Свържете Plex, за да синхронизирате историята си на гледания, оценките и библиотеката си с Trakt. Включва свързване, избор на сървър и инструменти за синхронизация.</string>
+  <string name="preview_feature_description_scoped_favorites">Ограничете във времето списъците с любими, като показвате любими от текущата година в профилите и групирате пълния списък с любими по година.</string>
+  <string name="preview_feature_description_social_activities">Покажете какво са гледали, добавили към списък за гледане, коментирали или оценили филм, сериал или епизод тези, които следвате, директно на медийните страници.</string>
+  <string name="preview_feature_description_streaming_sync">Свържете поддържани стрийминг услуги, така че историята на гледанията и оценките да могат да се синхронизират автоматично с Trakt. Процесът на свързване от уеб все още е в бета версия.</string>
+  <string name="preview_feature_description_year_in_review">Прегледайте Годишен преглед, който вече работи директно във V3.</string>
+  <string name="preview_feature_title_edit_mode">Режим на редактиране</string>
+  <string name="preview_feature_title_month_in_review">Месечен преглед</string>
+  <string name="preview_feature_title_plex_sync">Plex Синхронизация</string>
+  <string name="preview_feature_title_scoped_favorites">Обхванати любими</string>
+  <string name="preview_feature_title_social_activities">Социални дейности</string>
+  <string name="preview_feature_title_streaming_sync">Синхронизиране със стрийминг</string>
+  <string name="preview_feature_title_year_in_review">Годишен преглед</string>
   <string name="reset_status_cleared">Списъкът за гледане е изчистен.</string>
   <string name="section_title_season_progress">Сезон %d напредък</string>
   <string name="section_title_specials_progress">Напредък на специални епизоди</string>
@@ -921,6 +963,7 @@
   <string name="switch_label_mark_as_spoiler">Маркирай като спойлер</string>
   <string name="switch_label_multiple_watches">Разрешаване или забраняване на многократно гледане</string>
   <string name="switch_label_private">Профилът е частен</string>
+  <string name="switch_label_rating_prompt">Разрешаване или забраняване на подканите за оценка</string>
   <string name="switch_label_spoilers">Покажи спойлери</string>
   <string name="switch_label_toggle_christmas_filters">Включване/изключване на филтри за Коледа</string>
   <string name="switch_label_toggle_halloween_filters">Включване/изключване на филтри за Хелоуин</string>
@@ -1080,6 +1123,7 @@
   <string name="text_export_status_fetching">Извличане на %s…</string>
   <string name="text_export_status_zipping">Компресиране на файлове…</string>
   <string name="text_exporting">Експортиране… %s</string>
+  <string name="text_favorites_limit_reached">Можете да изберете до %s услуги</string>
   <string name="text_first_play_this_month">Първо гледане този месец</string>
   <string name="text_footer_category_community">Общност</string>
   <string name="text_footer_category_legal">Правни</string>
@@ -1136,6 +1180,7 @@
   <string name="text_no_data_synced">Все още няма синхронизирани данни.</string>
   <string name="text_no_paused_items">Няма спрени елементи.</string>
   <string name="text_no_rating">Без оценка</string>
+  <string name="text_no_services_match_filter">Няма услуги, които да отговарят на вашия филтър.</string>
   <string name="text_no_skipped_items">Няма пропуснати елементи.</string>
   <string name="text_notification_episode_release">S%1$d • E%2$d вече е наличен.</string>
   <string name="text_notification_episodes_release">S%1$d • E%2$d-%3$d вече са налични.</string>
@@ -1202,6 +1247,7 @@
   <string name="text_season_number">Сезон %d</string>
   <string name="text_season_specials">Специални</string>
   <string name="text_sentiment_example">Пример от „%s“</string>
+  <string name="text_services_selected">%1$s / %2$s избрани · %3$s</string>
   <string name="text_settings_adjust_delivery">Време на известие</string>
   <string name="text_settings_adjust_delivery_description">Изберете кога да получавате известия.</string>
   <string name="text_settings_clear_cover">Изчисти текущата корица и се върни към подразбиращата се.</string>
@@ -1213,6 +1259,8 @@
   <string name="text_settings_notification_time_60_min">1 час преди</string>
   <string name="text_settings_notification_time_now">При излизане</string>
   <string name="text_settings_play_subscriptions">Абонаменти в Google Play</string>
+  <string name="text_settings_show_rating_prompt">Подкани за оценка</string>
+  <string name="text_settings_show_rating_prompt_description">Получаване на подкана за оценка на филми и епизоди след гледане.</string>
   <string name="text_settings_translations">Помогнете да преведете приложението и да коригирате грешки за вашия език.</string>
   <string name="text_share_episode">Току-що гледах %1$s S%2$dE%3$d - %4$s! 🔥</string>
   <string name="text_share_list">Виж този списък \"%s\" в Trakt! 📋</string>
@@ -1509,7 +1557,6 @@
   <string name="translated_value_video_type_trailer">Трейлър</string>
   <string name="usage_title_library">Библиотека</string>
   <string name="usage_title_lists">Списъци</string>
-  <string name="usage_title_personal_activity">Лична активност</string>
   <string name="validation_text_list_name">Името е задължително</string>
   <string name="validation_text_note">Бележката е задължителна</string>
   <string name="validation_text_note_character_limit">Надхвърля лимита от %d символа</string>
@@ -1524,8 +1571,6 @@
   <string name="vip_feature_description_more_lists">Създайте още повече персонализирани списъци, за да организирате сериалите и филмите си точно както искате.</string>
   <string name="vip_feature_description_more_to_come">Постоянно разработваме нови функции изключително за VIP членове, като вълнуващи актуализации вече са на път.</string>
   <string name="vip_feature_description_plex_sync">Поддържайте библиотеката си на Plex перфектно синхронизирана с по-чести автоматични актуализации през целия ден.</string>
-  <string name="vip_feature_description_private_notes">Добавете още много лични бележки към вашите сериали и филми, за да запомните мислите и препоръките си.</string>
-  <string name="vip_feature_description_profile_customisation">Персонализирайте профила си с персонализирани заглавия и направете присъствието си в Trakt уникално ваше.</string>
   <string name="vip_feature_description_recaps">Получете по-дълбоки прозрения с изчерпателни месечни и годишни обобщения, показващи всичко, което сте гледали, оценили и открили.</string>
   <string name="vip_feature_description_sentiment">Отключете по-подробен анализ на настроенията за сериали и филми.</string>
   <string name="vip_feature_description_sentiment_trivia">Отключете подробен анализ на настроенията и завладяващи любопитни факти за филмите и сериалите, които гледате.</string>
@@ -1544,9 +1589,7 @@
   <string name="vip_feature_title_more_lists">Повече списъци</string>
   <string name="vip_feature_title_more_to_come">Предстоят още</string>
   <string name="vip_feature_title_plex_sync">Синхронизирайте Plex по-често</string>
-  <string name="vip_feature_title_private_notes">Повече лични бележки</string>
-  <string name="vip_feature_title_profile_customisation">Повече персонализация: Заглавие на профила</string>
-  <string name="vip_feature_title_recaps">Повече обобщения: Месечни и годишни</string>
+  <string name="vip_feature_title_recaps">Повече статистики: Месечни и годишни обобщения</string>
   <string name="vip_feature_title_sentiment">Настроение</string>
   <string name="vip_feature_title_sentiment_trivia">Повече информация: Настроения + Любопитни факти</string>
   <string name="vip_feature_title_streaming_services">Синхронизиране на повече стрийминг услуги</string>
@@ -1632,7 +1675,10 @@
   <string name="yir_2024_stats_card_hours">%s Часа</string>
   <string name="yir_2024_stats_card_plays">%s Гледания</string>
   <string name="yir_2024_stats_intro_movies">През %d, гледахте</string>
+  <string name="yir_2024_stats_intro_movies_monthly">През %s, гледахте</string>
   <string name="yir_2024_stats_intro_shows">През %d, гледахте</string>
+  <string name="yir_2024_stats_intro_shows_monthly">През %s, гледахте</string>
+  <string name="yir_2024_stats_most_active_day">Най-активният ви ден беше <b>%1$s</b> с <b>%2$s гледания</b>.</string>
   <string name="yir_2024_stats_most_active_week">Най-активната ви седмица беше <b>%1$s - %2$s</b> с <b>%3$s гледания</b>.</string>
   <string name="yir_2024_stats_most_popular_time">Най-популярното време, в което гледахте, беше <b>%s</b>.</string>
   <string name="yir_2024_stats_per_day">На ден</string>
@@ -1643,6 +1689,9 @@
   <string name="yir_2024_stats_tooltip_hours">%s Часа</string>
   <string name="yir_2024_stats_tooltip_plays">%s Гледания</string>
   <string name="yir_2024_stats_tooltip_week_label">Седмица %s</string>
+  <string name="yir_2024_streaming_intro">Наличност в</string>
+  <string name="yir_2024_streaming_service_count">Брой услуги</string>
+  <string name="yir_2024_streaming_title">Услуги за стрийминг</string>
   <string name="yir_2024_studio_count">Брой студия</string>
   <string name="yir_2024_thanks_copy_directed">Свършихте страхотна работа, режисирайки <b>%1$d</b>. Нека <b>%2$d</b> да е още по-добро продължение.</string>
   <string name="yir_2024_thanks_copy_recommend">Продължете своето пътешествие. Опитайте да гледате някое от тези популярни предавания или филми.</string>
