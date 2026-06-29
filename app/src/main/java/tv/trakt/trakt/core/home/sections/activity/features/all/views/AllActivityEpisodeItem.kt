@@ -123,7 +123,9 @@ internal fun AllActivityEpisodeItem(
                     item.user?.let { user ->
                         AllActivityUserChip(
                             user = user,
-                            onUserClick = onUserClick?.let { { it(user) } },
+                            onUserClick = {
+                                onUserClick?.let { it(user) }
+                            },
                         )
                     }
                 }

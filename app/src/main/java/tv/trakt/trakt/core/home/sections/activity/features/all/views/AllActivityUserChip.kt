@@ -14,11 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.resources.R
@@ -29,21 +27,13 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun AllActivityUserChip(
     user: User,
     modifier: Modifier = Modifier,
-    onUserClick: (() -> Unit)? = null,
+    onUserClick: () -> Unit,
 ) {
-    val uriHandler = LocalUriHandler.current
-
     Box(
         contentAlignment = Alignment.CenterEnd,
         modifier = modifier
             .sizeIn(maxHeight = 26.dp)
-            .onClick {
-                if (onUserClick != null) {
-                    onUserClick()
-                } else {
-                    uriHandler.openUri(Config.webUserUrl(user.username))
-                }
-            },
+            .onClick(onClick = onUserClick),
     ) {
         InfoChip(
             text = " ${user.displayName}",

@@ -9,13 +9,13 @@ object Config {
 
     const val WEB_BASE_URL: String = "https://trakt.tv/"
     const val WEB_V3_BASE_URL: String = "https://app.trakt.tv/"
-    const val WEB_VIP_URL: String = "https://trakt.tv/vip?native_app_mode=true"
-    const val WEB_ABOUT_US_URL: String = "https://trakt.tv/about?native_app_mode=true"
-    const val WEB_TERMS_URL: String = "https://trakt.tv/terms?native_app_mode=true"
-    const val WEB_PRIVACY_URL: String = "https://trakt.tv/privacy?native_app_mode=true"
+    const val WEB_VIP_URL: String = "https://app.trakt.tv/vip?native_app_mode=true"
+    const val WEB_ABOUT_US_URL: String = "https://app.trakt.tv/about?native_app_mode=true"
+    const val WEB_TERMS_URL: String = "https://app.trakt.tv/terms?native_app_mode=true"
+    const val WEB_PRIVACY_URL: String = "https://app.trakt.tv/privacy?native_app_mode=true"
     const val WEB_FORUMS_URL: String = "https://forums.trakt.tv/"
     const val WEB_ROADMAP_URL: String = "https://roadmap.trakt.tv/"
-    const val WEB_SETTINGS_URL: String = "https://trakt.tv/settings?native_app_mode=true"
+    const val WEB_SETTINGS_URL: String = "https://app.trakt.tv/settings?native_app_mode=true"
     const val WEB_SETTINGS_SCROBBLING_URL: String = "https://trakt.tv/settings/scrobblers?native_app_mode=true"
     const val WEB_TRANSLATE_URL: String = "https://crwd.in/trakt-poc/3857d5ea667dd425fbd0cb2e4e80dc192749600"
 
@@ -29,8 +29,6 @@ object Config {
     fun apiUserAgent(): String =
         "Trakt Android/${BuildConfig.VERSION_NAME} (tv.trakt.trakt; build:${BuildConfig.VERSION_CODE}; android:${android.os.Build.VERSION.SDK_INT})"
 
-    fun webUserUrl(userId: String): String = "https://trakt.tv/users/$userId?native_app_mode=true"
-
     fun webListUrl(
         userId: String,
         listId: String,
@@ -39,14 +37,14 @@ object Config {
     fun webYearReviewUrl(
         user: String,
         year: Int,
-    ): String = "https://trakt.tv/users/$user/year/$year?native_app_mode=true"
+    ): String = "https://app.trakt.tv/users/$user/year/$year?native_app_mode=true"
 
     fun webMonthReviewUrl(
         user: String,
         month: Int,
         year: Int,
     ): String {
-        return "https://trakt.tv/users/$user/mir/$year/$month?native_app_mode=true"
+        return "https://app.trakt.tv/users/$user/mir/$year/$month?native_app_mode=true"
     }
 
     fun webImdbPersonUrl(imdbId: String): String {

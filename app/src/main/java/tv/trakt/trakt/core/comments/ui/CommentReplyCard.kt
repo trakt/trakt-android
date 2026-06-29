@@ -37,7 +37,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -50,7 +49,6 @@ import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.coroutines.launch
-import tv.trakt.trakt.common.Config.webUserUrl
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.highlightMentions
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
@@ -73,13 +71,12 @@ internal fun CommentReplyCard(
     reactions: ReactionsSummary? = null,
     userReaction: Reaction? = null,
     onClick: (() -> Unit)? = null,
+    onUserClick: ((User) -> Unit)? = null,
     onRequestReactions: (() -> Unit)? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
     onReplyClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
 ) {
-    val uriHandler = LocalUriHandler.current
-
     LaunchedEffect(reply.id) {
         if (reactions == null) {
             onRequestReactions?.invoke()
@@ -110,11 +107,7 @@ internal fun CommentReplyCard(
                 onReactionClick = onReactionClick,
                 onReplyClick = onReplyClick,
                 onDeleteClick = onDeleteClick,
-                onUserClick = {
-                    uriHandler.openUri(
-                        webUserUrl(it.username),
-                    )
-                },
+                onUserClick = onUserClick,
             )
         },
     )

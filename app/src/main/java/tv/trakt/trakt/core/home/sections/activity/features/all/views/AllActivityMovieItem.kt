@@ -127,7 +127,9 @@ internal fun AllActivityMovieItem(
                     item.user?.let { user ->
                         AllActivityUserChip(
                             user = user,
-                            onUserClick = onUserClick?.let { { it(user) } },
+                            onUserClick = {
+                                onUserClick?.let { it(user) }
+                            },
                         )
                     }
                 }
