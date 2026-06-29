@@ -71,7 +71,7 @@ internal class GetListItemsUseCase(
             }.toImmutableList()
         }
 
-        if (type.containsAll(listOf(Movie, Show))) {
+        if (type.containsAll(listOf(MediaType.Movie, MediaType.Show))) {
             return remoteSource.getAllListItems(
                 listId = listId,
                 extended = "full,cloud9,colors",
