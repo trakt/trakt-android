@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Rating
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.home.sections.upnext.model.Progress
 import java.time.Instant
 import java.time.ZoneOffset.UTC
@@ -16,6 +17,7 @@ import kotlin.time.Duration
 internal sealed class WatchlistItem(
     open val rank: Int,
     open val listedAt: Instant,
+    open val userRating: UserRating?,
     open val loading: Boolean,
 ) {
     @Immutable
@@ -23,8 +25,9 @@ internal sealed class WatchlistItem(
         val movie: Movie,
         override val rank: Int,
         override val listedAt: Instant,
+        override val userRating: UserRating? = null,
         override val loading: Boolean = false,
-    ) : WatchlistItem(rank, listedAt, loading)
+    ) : WatchlistItem(rank, listedAt, userRating, loading)
 
     @Immutable
     internal data class ShowItem(
@@ -32,8 +35,9 @@ internal sealed class WatchlistItem(
         val progress: Progress? = null,
         override val rank: Int,
         override val listedAt: Instant,
+        override val userRating: UserRating? = null,
         override val loading: Boolean = false,
-    ) : WatchlistItem(rank, listedAt, loading)
+    ) : WatchlistItem(rank, listedAt, userRating, loading)
 
     val id: TraktId
         get() = when (this) {
@@ -74,6 +78,12 @@ internal sealed class WatchlistItem(
     val runtime: Duration?
         get() = when (this) {
             is ShowItem -> show.runtime
+            is MovieItem -> movie.runtime
+        }
+
+    val totalRuntime: Duration?
+        get() = when (this) {
+            is ShowItem -> show.totalRuntime
             is MovieItem -> movie.runtime
         }
 

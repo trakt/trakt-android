@@ -22,8 +22,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.model.sorting.SortOrder
-import tv.trakt.trakt.common.model.sorting.SortOrder.ASCENDING
-import tv.trakt.trakt.common.model.sorting.SortOrder.DESCENDING
+import tv.trakt.trakt.common.model.sorting.SortOrder.Asc
+import tv.trakt.trakt.common.model.sorting.SortOrder.Desc
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -85,8 +85,8 @@ internal fun SortingSplitButton(
                 Icon(
                     painter = painterResource(
                         when (order) {
-                            ASCENDING -> R.drawable.ic_sort_asc
-                            DESCENDING -> R.drawable.ic_sort_desc
+                            Asc -> R.drawable.ic_sort_asc
+                            Desc -> R.drawable.ic_sort_desc
                         },
                     ),
                     contentDescription = null,
@@ -107,7 +107,7 @@ private fun Preview() {
     TraktTheme {
         SortingSplitButton(
             text = "Release Date",
-            order = ASCENDING,
+            order = Asc,
         )
     }
 }

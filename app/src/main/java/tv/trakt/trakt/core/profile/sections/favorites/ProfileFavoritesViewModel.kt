@@ -33,11 +33,13 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.sorting.Sorting.Companion.RecentlyAdded
 import tv.trakt.trakt.core.favorites.FavoritesUpdates
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.CONTEXT_SHEET
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.RATE_PROMPT
 import tv.trakt.trakt.core.favorites.model.FavoriteItem
+import tv.trakt.trakt.core.favorites.model.getFavoriteSorting
 import tv.trakt.trakt.core.lists.ListsConfig.FAVORITES_SECTION_LIMIT
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
@@ -106,6 +108,7 @@ internal class ProfileFavoritesViewModel(
                     if (showsLoadedAsync.await() && moviesLoadedAsync.await()) {
                         loadFavoritesUseCase
                             .loadLocalAll()
+                            .sortedWith(getFavoriteSorting(RecentlyAdded))
                             .take(FAVORITES_SECTION_LIMIT)
                     } else {
                         EmptyImmutableList

@@ -26,10 +26,12 @@ import tv.trakt.trakt.common.helpers.extensions.relativeDateString
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
+import kotlin.time.Duration
 
 private const val SEPARATOR = "  •  "
 
@@ -40,6 +42,8 @@ fun MovieMetaFooter(
     secondary: Boolean = false,
     loading: Boolean = false,
     rating: Boolean = true,
+    userRating: UserRating? = null,
+    duration: Duration? = null,
     check: Boolean = false,
     mediaIcon: Boolean = false,
     textStyle: TextStyle = TraktTheme.typography.cardSubtitle.copy(
@@ -139,6 +143,45 @@ fun MovieMetaFooter(
                 )
                 Text(
                     text = if (movie.rating.rating > 0) "${movie.rating.ratingPercent}%" else "-",
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
+                )
+            }
+        }
+
+        if (userRating != null && userRating.rating > 0 && !check) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = spacedBy(2.dp),
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_star_trakt_on),
+                    contentDescription = null,
+                    modifier = Modifier.size(14.dp),
+                    tint = TraktTheme.colors.textPrimary,
+                )
+                Text(
+                    text = userRating.rating5Scale,
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
+                )
+            }
+        }
+
+        if (duration != null && duration.isPositive() && !check) {
+            val durationText = rememberDurationFormat(duration.inWholeMinutes)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = spacedBy(2.dp),
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_clock),
+                    contentDescription = null,
+                    modifier = Modifier.size(14.dp),
+                    tint = TraktTheme.colors.textPrimary,
+                )
+                Text(
+                    text = durationText,
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
                 )

@@ -44,14 +44,24 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableMap
+import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.model.sorting.SortTypeList
+import tv.trakt.trakt.common.model.sorting.SortType
+import tv.trakt.trakt.common.model.sorting.SortType.Added
+import tv.trakt.trakt.common.model.sorting.SortType.Default
+import tv.trakt.trakt.common.model.sorting.SortType.Released
+import tv.trakt.trakt.common.model.sorting.SortType.Title
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.favorites.model.FavoriteItem
+import tv.trakt.trakt.core.favorites.model.FavoriteItem.MovieItem
+import tv.trakt.trakt.core.favorites.model.FavoriteItem.ShowItem
 import tv.trakt.trakt.core.profile.sections.favorites.all.views.AllFavoritesMovieView
 import tv.trakt.trakt.core.profile.sections.favorites.all.views.AllFavoritesShowView
 import tv.trakt.trakt.core.profile.sections.favorites.context.movie.FavoriteMovieContextSheet
@@ -77,7 +87,7 @@ internal fun AllFavoritesScreen(
 
     var contextMovieSheet by remember { mutableStateOf<Movie?>(null) }
     var contextShowSheet by remember { mutableStateOf<Show?>(null) }
-    var sortSheet by remember { mutableStateOf<SortTypeList?>(null) }
+    var sortSheet by remember { mutableStateOf<Sorting?>(null) }
 
     LaunchedEffect(state) {
         state.navigateShow?.let {
@@ -95,19 +105,19 @@ internal fun AllFavoritesScreen(
         modifier = modifier,
         onClick = {
             when (it) {
-                is FavoriteItem.ShowItem -> viewModel.navigateToShow(it.show)
-                is FavoriteItem.MovieItem -> viewModel.navigateToMovie(it.movie)
+                is ShowItem -> viewModel.navigateToShow(it.show)
+                is MovieItem -> viewModel.navigateToMovie(it.movie)
             }
         },
         onLongClick = {
             when (it) {
-                is FavoriteItem.MovieItem -> contextMovieSheet = it.movie
-                is FavoriteItem.ShowItem -> contextShowSheet = it.show
+                is MovieItem -> contextMovieSheet = it.movie
+                is ShowItem -> contextShowSheet = it.show
             }
         },
         onFilterClick = { viewModel.setFilter(it) },
         onSortTypeClick = {
-            sortSheet = state.sorting.type
+            sortSheet = state.sorting
         },
         onSortOrderClick = {
             val sorting = state.sorting
@@ -132,14 +142,13 @@ internal fun AllFavoritesScreen(
 
     SortSelectionSheet(
         active = sortSheet != null,
-        selected = sortSheet,
-        onResult = {
-            viewModel.setSorting(
-                state.sorting.copy(
-                    type = it,
-                ),
-            )
+        selectedSorting = sortSheet,
+        typeOptions = remember {
+            SortType.entries
+                .filter { it != Default }
+                .toImmutableList()
         },
+        onResult = viewModel::setSorting,
         onDismiss = {
             sortSheet = null
         },
@@ -193,6 +202,7 @@ internal fun AllFavoritesContent(
             listState = listState,
             listFilter = state.filter ?: MediaMode.MEDIA,
             listSorting = state.sorting,
+            listLoading = state.loading,
             contentPadding = contentPadding,
             onFilterClick = onFilterClick,
             onSortTypeClick = onSortTypeClick,
@@ -233,6 +243,7 @@ private fun ContentList(
     listItems: ImmutableList<FavoriteItem>,
     listFilter: MediaMode,
     listSorting: Sorting,
+    listLoading: LoadingState,
     contentPadding: PaddingValues,
     onClick: (FavoriteItem) -> Unit,
     onLongClick: (FavoriteItem) -> Unit,
@@ -241,6 +252,15 @@ private fun ContentList(
     onSortOrderClick: () -> Unit,
     onBackClick: () -> Unit,
 ) {
+    val itemsGroup = remember(listItems) {
+        when (listSorting.type) {
+            Title -> listItems.groupBy { it.title.firstOrNull()?.uppercaseChar()?.toString() ?: "#" }
+            Added -> listItems.groupBy { it.listedAt.toLocalDay().year.toString() }
+            Released -> listItems.groupBy { it.released?.toLocalDay()?.year?.toString() ?: "N/A" }
+            else -> listItems.groupBy { null }
+        }.toImmutableMap()
+    }
+
     LazyColumn(
         state = listState,
         verticalArrangement = spacedBy(0.dp),
@@ -265,40 +285,63 @@ private fun ContentList(
             )
         }
 
-        items(
-            items = listItems,
-            key = { it.key },
-        ) { item ->
-            when (item) {
-                is FavoriteItem.ShowItem -> AllFavoritesShowView(
-                    item = item,
-                    mediaIcon = listFilter == MediaMode.MEDIA,
-                    onClick = { onClick(item) },
-                    onLongClick = { onLongClick(item) },
-                    modifier = Modifier
-                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
-                        .animateItem(
-                            fadeInSpec = null,
-                            fadeOutSpec = null,
-                        ),
-                )
+        itemsGroup.keys.forEachIndexed { index, key ->
+            key?.let {
+                item(
+                    key = "header-$key",
+                ) {
+                    TraktHeader(
+                        title = key,
+                        modifier = Modifier
+                            .padding(
+                                top = if (index == 0) 0.dp else 16.dp,
+                                bottom = 12.dp,
+                            )
+                            .animateItem(
+                                fadeInSpec = null,
+                                fadeOutSpec = null,
+                            ),
+                    )
+                }
+            }
 
-                is FavoriteItem.MovieItem -> AllFavoritesMovieView(
-                    item = item,
-                    mediaIcon = listFilter == MediaMode.MEDIA,
-                    onClick = { onClick(item) },
-                    onLongClick = { onLongClick(item) },
-                    modifier = Modifier
-                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
-                        .animateItem(
-                            fadeInSpec = null,
-                            fadeOutSpec = null,
-                        ),
-                )
+            items(
+                items = itemsGroup[key] ?: EmptyImmutableList,
+                key = { it.key },
+            ) { item ->
+                when (item) {
+                    is ShowItem -> AllFavoritesShowView(
+                        item = item,
+                        sorting = listSorting,
+                        mediaIcon = listFilter == MediaMode.MEDIA,
+                        onClick = { onClick(item) },
+                        onLongClick = { onLongClick(item) },
+                        modifier = Modifier
+                            .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                            .animateItem(
+                                fadeInSpec = null,
+                                fadeOutSpec = null,
+                            ),
+                    )
+
+                    is MovieItem -> AllFavoritesMovieView(
+                        item = item,
+                        sorting = listSorting,
+                        mediaIcon = listFilter == MediaMode.MEDIA,
+                        onClick = { onClick(item) },
+                        onLongClick = { onLongClick(item) },
+                        modifier = Modifier
+                            .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                            .animateItem(
+                                fadeInSpec = null,
+                                fadeOutSpec = null,
+                            ),
+                    )
+                }
             }
         }
 
-        if (listItems.isEmpty()) {
+        if (listItems.isEmpty() && listLoading.isDone) {
             item {
                 ContentEmptyView(
                     modifier = Modifier

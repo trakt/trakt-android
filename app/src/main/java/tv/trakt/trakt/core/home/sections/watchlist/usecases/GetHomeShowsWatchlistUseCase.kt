@@ -9,7 +9,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.sorting.SortOrder
-import tv.trakt.trakt.common.model.sorting.SortTypeList
+import tv.trakt.trakt.common.model.sorting.SortType
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.WatchlistShowDto
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
@@ -35,8 +35,8 @@ internal class GetHomeShowsWatchlistUseCase(
             limit = limit,
             extended = "full,cloud9,colors",
             sorting = Sorting(
-                type = SortTypeList.RELEASED,
-                order = SortOrder.DESCENDING,
+                type = SortType.Released,
+                order = SortOrder.Desc,
             ),
             hide = "unreleased",
             filters = filters,

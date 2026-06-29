@@ -46,21 +46,6 @@ internal class LoadUserRatingsUseCase(
         return localSource.isEpisodesLoaded()
     }
 
-    suspend fun loadAll(): ImmutableMap<TraktId, UserRating> {
-        return coroutineScope {
-            val showsAsync = async { loadShows() }
-            val moviesAsync = async { loadMovies() }
-            val episodesAsync = async { loadEpisodes() }
-
-            val shows = showsAsync.await()
-            val movies = moviesAsync.await()
-            val episodes = episodesAsync.await()
-
-            (shows + movies + episodes)
-                .toImmutableMap()
-        }
-    }
-
     suspend fun loadShows(): ImmutableMap<TraktId, UserRating> {
         return remoteSource.getRatingsShows()
             .asyncMap {
@@ -107,5 +92,56 @@ internal class LoadUserRatingsUseCase(
             }
             .associateBy { it.mediaId }
             .toImmutableMap()
+    }
+
+    suspend fun loadAll(): ImmutableMap<TraktId, UserRating> {
+        return coroutineScope {
+            val showsAsync = async { loadShows() }
+            val moviesAsync = async { loadMovies() }
+            val episodesAsync = async { loadEpisodes() }
+
+            val shows = showsAsync.await()
+            val movies = moviesAsync.await()
+            val episodes = episodesAsync.await()
+
+            (shows + movies + episodes)
+                .toImmutableMap()
+        }
+    }
+
+    suspend fun loadAllIfNeeded(): Triple<
+        ImmutableMap<TraktId, UserRating>,
+        ImmutableMap<TraktId, UserRating>,
+        ImmutableMap<TraktId, UserRating>,
+    > {
+        return coroutineScope {
+            val showsRatingsAsync = async {
+                if (isShowsLoaded()) {
+                    loadLocalShows()
+                } else {
+                    loadShows()
+                }
+            }
+            val moviesRatingsAsync = async {
+                if (isMoviesLoaded()) {
+                    loadLocalMovies()
+                } else {
+                    loadMovies()
+                }
+            }
+            val episodesRatingsAsync = async {
+                if (isEpisodesLoaded()) {
+                    loadLocalEpisodes()
+                } else {
+                    loadEpisodes()
+                }
+            }
+
+            Triple(
+                showsRatingsAsync.await(),
+                moviesRatingsAsync.await(),
+                episodesRatingsAsync.await(),
+            )
+        }
     }
 }

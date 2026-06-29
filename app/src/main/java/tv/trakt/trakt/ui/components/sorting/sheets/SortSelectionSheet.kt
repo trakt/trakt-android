@@ -7,15 +7,17 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import tv.trakt.trakt.common.model.sorting.SortTypeList
+import tv.trakt.trakt.common.model.sorting.SortType
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -25,47 +27,39 @@ internal fun SortSelectionSheet(
         skipPartiallyExpanded = true,
     ),
     active: Boolean = false,
-    selected: SortTypeList? = null,
-    options: ImmutableList<SortTypeList> = SortTypeList.entries.toImmutableList(),
-    onResult: (sort: SortTypeList) -> Unit,
+    selectedSorting: Sorting? = null,
+    typeOptions: ImmutableList<SortType> = SortType.entries.toImmutableList(),
+    onResult: (sorting: Sorting) -> Unit,
     onDismiss: () -> Unit,
 ) {
-    val scope = rememberCoroutineScope()
+    var currentSorting by remember(selectedSorting) {
+        mutableStateOf(selectedSorting)
+    }
 
     if (active) {
         TraktBottomSheet(
             sheetState = state,
-            onDismiss = onDismiss,
+            onDismiss = {
+                currentSorting?.let { onResult(it) }
+                onDismiss()
+            },
         ) {
             SortSelectionView(
-                selected = selected,
-                options = options,
-                onSortClick = { selected ->
-                    scope.dismissWithAction(
-                        sheet = state,
-                        action = { onResult(selected) },
-                        onDismiss = onDismiss,
-                    )
+                selectedType = currentSorting?.type,
+                selectedOrder = currentSorting?.order,
+                typeOptions = typeOptions,
+                onSortClick = { type ->
+                    currentSorting = currentSorting
+                        ?.copy(type = type)
+                },
+                onOrderClick = { order ->
+                    currentSorting = currentSorting
+                        ?.copy(order = order)
                 },
                 modifier = Modifier
                     .padding(bottom = 24.dp)
                     .padding(horizontal = 24.dp),
             )
-        }
-    }
-}
-
-private fun CoroutineScope.dismissWithAction(
-    sheet: SheetState,
-    action: () -> Unit = {},
-    onDismiss: () -> Unit,
-) {
-    launch {
-        sheet.hide()
-    }.invokeOnCompletion {
-        if (!sheet.isVisible) {
-            action()
-            onDismiss()
         }
     }
 }
@@ -79,7 +73,7 @@ private fun Preview() {
                 skipPartiallyExpanded = true,
             ),
             active = true,
-            selected = SortTypeList.DEFAULT,
+            selectedSorting = Sorting.RecentlyAdded,
             onResult = { },
             onDismiss = { },
         )

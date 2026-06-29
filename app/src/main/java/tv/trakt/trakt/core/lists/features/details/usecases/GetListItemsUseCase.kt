@@ -21,9 +21,11 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.model.CustomListItem
+import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 
 internal class GetListItemsUseCase(
     private val remoteSource: ListsRemoteDataSource,
+    private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
 ) {
     suspend fun getItems(
         listId: TraktId,
@@ -32,6 +34,9 @@ internal class GetListItemsUseCase(
         pagination: Pagination,
         filters: GlobalFilter?,
     ): List<CustomListItem> {
+        val (showsRatings, moviesRatings, episodesRatings) =
+            loadUserRatingsUseCase.loadAllIfNeeded()
+
         if (type.size == 1 && type[0] == MOVIE) {
             return remoteSource.getMovieListItems(
                 listId = listId,
@@ -40,11 +45,13 @@ internal class GetListItemsUseCase(
                 pagination = pagination,
                 filters = filters?.copy(mode = MOVIES),
             ).asyncMap {
+                val movie = Movie.fromDto(it.movie)
                 CustomListItem.MovieItem(
                     itemId = it.id,
                     rank = it.rank,
-                    movie = Movie.fromDto(it.movie),
+                    movie = movie,
                     listedAt = it.listedAt.toInstant(),
+                    userRating = moviesRatings[movie.ids.trakt],
                 )
             }
         }
@@ -57,11 +64,13 @@ internal class GetListItemsUseCase(
                 pagination = pagination,
                 filters = filters?.copy(mode = SHOWS),
             ).asyncMap {
+                val show = Show.fromDto(it.show)
                 CustomListItem.ShowItem(
                     itemId = it.id,
                     rank = it.rank,
-                    show = Show.fromDto(it.show),
+                    show = show,
                     listedAt = it.listedAt.toInstant(),
+                    userRating = showsRatings[show.ids.trakt],
                 )
             }.toImmutableList()
         }
@@ -75,33 +84,51 @@ internal class GetListItemsUseCase(
                 filters = filters,
             ).asyncMap {
                 when (it.type.value) {
-                    MOVIE.value -> CustomListItem.MovieItem(
-                        itemId = it.id,
-                        rank = it.rank,
-                        movie = Movie.fromDto(it.movie!!),
-                        listedAt = it.listedAt.toInstant(),
-                    )
-                    SHOW.value -> CustomListItem.ShowItem(
-                        itemId = it.id,
-                        rank = it.rank,
-                        show = Show.fromDto(it.show!!),
-                        listedAt = it.listedAt.toInstant(),
-                    )
-                    SEASON.value -> CustomListItem.SeasonItem(
-                        itemId = it.id,
-                        rank = it.rank,
-                        show = Show.fromDto(it.show!!),
-                        season = Season.fromDto(it.season!!),
-                        listedAt = it.listedAt.toInstant(),
-                    )
-                    EPISODE.value -> CustomListItem.EpisodeItem(
-                        itemId = it.id,
-                        rank = it.rank,
-                        show = Show.fromDto(it.show!!),
-                        episode = Episode.fromDto(it.episode!!),
-                        listedAt = it.listedAt.toInstant(),
-                    )
-                    else -> throw IllegalStateException("Invalid media type: ${it.type}")
+                    SHOW.value -> {
+                        val show = Show.fromDto(it.show!!)
+                        CustomListItem.ShowItem(
+                            itemId = it.id,
+                            rank = it.rank,
+                            show = show,
+                            listedAt = it.listedAt.toInstant(),
+                            userRating = showsRatings[show.ids.trakt],
+                        )
+                    }
+                    MOVIE.value -> {
+                        val movie = Movie.fromDto(it.movie!!)
+                        CustomListItem.MovieItem(
+                            itemId = it.id,
+                            rank = it.rank,
+                            movie = movie,
+                            listedAt = it.listedAt.toInstant(),
+                            userRating = moviesRatings[movie.ids.trakt],
+                        )
+                    }
+                    SEASON.value -> {
+                        CustomListItem.SeasonItem(
+                            itemId = it.id,
+                            rank = it.rank,
+                            show = Show.fromDto(it.show!!),
+                            season = Season.fromDto(it.season!!),
+                            listedAt = it.listedAt.toInstant(),
+                            userRating = null,
+                        )
+                    }
+                    EPISODE.value -> {
+                        val show = Show.fromDto(it.show!!)
+                        val episode = Episode.fromDto(it.episode!!)
+                        CustomListItem.EpisodeItem(
+                            itemId = it.id,
+                            rank = it.rank,
+                            show = show,
+                            episode = episode,
+                            listedAt = it.listedAt.toInstant(),
+                            userRating = episodesRatings[episode.ids.trakt],
+                        )
+                    }
+                    else -> {
+                        throw IllegalStateException("Invalid media type: ${it.type}")
+                    }
                 }
             }.toImmutableList()
         }

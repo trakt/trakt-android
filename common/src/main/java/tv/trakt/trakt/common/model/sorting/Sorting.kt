@@ -1,18 +1,18 @@
 package tv.trakt.trakt.common.model.sorting
 
 data class Sorting(
-    val type: SortTypeList,
+    val type: SortType,
     val order: SortOrder,
 ) {
     companion object {
         val Default = Sorting(
-            type = SortTypeList.DEFAULT,
-            order = SortOrder.ASCENDING,
+            type = SortType.Default,
+            order = SortOrder.Asc,
         )
 
         val RecentlyAdded = Sorting(
-            type = SortTypeList.ADDED,
-            order = SortOrder.DESCENDING,
+            type = SortType.Added,
+            order = SortOrder.Desc,
         )
     }
 }

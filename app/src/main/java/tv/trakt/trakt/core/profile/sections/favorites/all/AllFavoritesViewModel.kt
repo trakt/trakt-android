@@ -41,11 +41,17 @@ import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.CONTEXT_SHEET
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.RATE_PROMPT
 import tv.trakt.trakt.core.favorites.model.FavoriteItem
+import tv.trakt.trakt.core.favorites.model.FavoriteItem.MovieItem
+import tv.trakt.trakt.core.favorites.model.FavoriteItem.ShowItem
+import tv.trakt.trakt.core.favorites.model.getFavoriteSorting
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserFavoritesUseCase
+import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 internal class AllFavoritesViewModel(
     private val loadFavoritesUseCase: LoadUserFavoritesUseCase,
+    private val loadRatingsUseCase: LoadUserRatingsUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val favoritesUpdates: FavoritesUpdates,
@@ -83,7 +89,7 @@ internal class AllFavoritesViewModel(
             favoritesUpdates.observeUpdates(RATE_PROMPT),
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 loadData(
                     ignoreErrors = true,
@@ -121,11 +127,20 @@ internal class AllFavoritesViewModel(
                 val filter = filterState.value ?: MEDIA
                 val sorting = sortingState.value
 
+                val (showsRatings, moviesRatings) = loadRatingsUseCase.loadAllIfNeeded()
+
                 val localItems = when (filter) {
-                    MEDIA -> loadFavoritesUseCase.loadLocalAll(sort = sorting)
-                    SHOWS -> loadFavoritesUseCase.loadLocalShows(sort = sorting)
-                    MOVIES -> loadFavoritesUseCase.loadLocalMovies(sort = sorting)
-                }
+                    MEDIA -> loadFavoritesUseCase.loadLocalAll()
+                    SHOWS -> loadFavoritesUseCase.loadLocalShows()
+                    MOVIES -> loadFavoritesUseCase.loadLocalMovies()
+                }.map {
+                    when (it) {
+                        is ShowItem -> it.copy(userRating = showsRatings[it.id])
+                        is MovieItem -> it.copy(userRating = moviesRatings[it.id])
+                    }
+                }.sortedWith(
+                    getFavoriteSorting(sorting),
+                )
 
                 if (localItems.isNotEmpty()) {
                     itemsState.update { localItems.toImmutableList() }
@@ -142,6 +157,11 @@ internal class AllFavoritesViewModel(
                         MEDIA -> loadFavoritesUseCase.loadAll(sort = sorting)
                         SHOWS -> loadFavoritesUseCase.loadShows(sort = sorting)
                         MOVIES -> loadFavoritesUseCase.loadMovies(sort = sorting)
+                    }.map {
+                        when (it) {
+                            is ShowItem -> it.copy(userRating = showsRatings[it.id])
+                            is MovieItem -> it.copy(userRating = moviesRatings[it.id])
+                        }
                     }.toImmutableList()
                 }
             } catch (error: Exception) {
@@ -222,11 +242,8 @@ internal class AllFavoritesViewModel(
     override fun onCleared() {
         loadDataJob?.cancel()
         loadDataJob = null
-
         processingJob?.cancel()
         processingJob = null
-
-        super.onCleared()
     }
 
     @Suppress("UNCHECKED_CAST")

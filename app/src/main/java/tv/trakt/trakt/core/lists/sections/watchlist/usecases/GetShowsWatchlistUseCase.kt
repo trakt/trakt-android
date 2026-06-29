@@ -6,9 +6,12 @@ import tv.trakt.trakt.common.core.user.data.remote.watchlist.UserWatchlistRemote
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.getWatchlistSorting
 import tv.trakt.trakt.core.user.data.local.watchlist.UserWatchlistLocalDataSource
@@ -32,6 +35,7 @@ internal class GetShowsWatchlistUseCase(
         limit: Int,
         sorting: Sorting,
         filters: GlobalFilter,
+        ratings: Map<TraktId, UserRating>? = null,
         skipLocal: Boolean = false,
     ): ImmutableList<WatchlistItem> {
         val response = remoteSource.getWatchlistShows(
@@ -41,11 +45,13 @@ internal class GetShowsWatchlistUseCase(
             extended = "full,cloud9,colors",
             filters = filters,
         ).asyncMap {
+            val mediaId = it.show.ids.trakt.toTraktId()
             val listedAt = it.listedAt.toInstant()
             WatchlistItem.ShowItem(
                 show = Show.fromDto(it.show),
                 rank = it.rank,
                 listedAt = listedAt,
+                userRating = ratings?.get(mediaId),
             )
         }
 

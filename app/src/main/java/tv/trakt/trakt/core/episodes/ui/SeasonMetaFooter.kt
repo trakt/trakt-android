@@ -27,6 +27,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Season
+import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.resources.R
@@ -41,6 +42,7 @@ fun SeasonMetaFooter(
     secondary: Boolean = false,
     loading: Boolean = false,
     rating: Boolean = true,
+    userRating: UserRating? = null,
     check: Boolean = false,
     mediaIcon: Boolean = false,
     textStyle: TextStyle = TraktTheme.typography.cardSubtitle.copy(
@@ -138,6 +140,25 @@ fun SeasonMetaFooter(
                 )
                 Text(
                     text = if (season.rating.rating > 0) "${season.rating.ratingPercent}%" else "-",
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
+                )
+            }
+        }
+
+        if (userRating != null && userRating.rating > 0) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = spacedBy(2.dp),
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_star_trakt_on),
+                    contentDescription = null,
+                    modifier = Modifier.size(14.dp),
+                    tint = TraktTheme.colors.textPrimary,
+                )
+                Text(
+                    text = userRating.rating5Scale,
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
                 )

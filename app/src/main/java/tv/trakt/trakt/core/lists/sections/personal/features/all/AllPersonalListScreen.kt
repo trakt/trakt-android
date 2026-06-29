@@ -53,28 +53,33 @@ import androidx.compose.ui.unit.em
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableMap
 import timber.log.Timber
 import tv.trakt.trakt.common.Config
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import tv.trakt.trakt.common.model.sorting.SortTypeList
+import tv.trakt.trakt.common.model.sorting.SortType.Added
+import tv.trakt.trakt.common.model.sorting.SortType.Released
+import tv.trakt.trakt.common.model.sorting.SortType.Title
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
+import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsEpisodeView
+import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsMovieView
+import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsSeasonView
+import tv.trakt.trakt.core.lists.features.details.ui.ListDetailsShowView
 import tv.trakt.trakt.core.lists.model.CustomListItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.EpisodeItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.SeasonItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
-import tv.trakt.trakt.core.lists.sections.personal.features.all.views.AllPersonalListEpisodeView
-import tv.trakt.trakt.core.lists.sections.personal.features.all.views.AllPersonalListMovieView
-import tv.trakt.trakt.core.lists.sections.personal.features.all.views.AllPersonalListSeasonView
-import tv.trakt.trakt.core.lists.sections.personal.features.all.views.AllPersonalListShowView
 import tv.trakt.trakt.core.lists.sections.personal.features.context.movie.sheet.ListMovieContextSheet
 import tv.trakt.trakt.core.lists.sections.personal.features.context.show.sheet.ListShowContextSheet
 import tv.trakt.trakt.core.lists.sheets.EditListSheet
@@ -89,8 +94,6 @@ import tv.trakt.trakt.ui.components.mediacards.skeletons.PanelMediaSkeletonCard
 import tv.trakt.trakt.ui.components.sorting.SortingSplitButton
 import tv.trakt.trakt.ui.components.sorting.sheets.SortSelectionSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
-
-private const val LIST_DESCRIPTION_LIMIT = 40
 
 @Composable
 internal fun AllPersonalListScreen(
@@ -123,7 +126,7 @@ internal fun AllPersonalListScreen(
     var showContextSheet by remember { mutableStateOf<ShowItem?>(null) }
     var movieContextSheet by remember { mutableStateOf<MovieItem?>(null) }
     var editListSheet by remember { mutableStateOf<CustomList?>(null) }
-    var sortSheet by remember { mutableStateOf<SortTypeList?>(null) }
+    var sortSheet by remember { mutableStateOf<Sorting?>(null) }
     var filtersSheet by remember { mutableStateOf(false) }
 
     AllPersonalListContent(
@@ -156,7 +159,7 @@ internal fun AllPersonalListScreen(
         },
         onSortTypeClick = {
             if (!state.loading.isLoading && !state.loadingMore.isLoading) {
-                sortSheet = state.sorting.type
+                sortSheet = state.sorting
             }
         },
         onSortOrderClick = {
@@ -215,11 +218,12 @@ internal fun AllPersonalListScreen(
 
     SortSelectionSheet(
         active = sortSheet != null,
-        selected = sortSheet,
+        selectedSorting = sortSheet,
         onResult = {
             viewModel.setSorting(
                 state.sorting.copy(
-                    type = it,
+                    type = it.type,
+                    order = it.order,
                 ),
             )
         },
@@ -519,7 +523,7 @@ private fun ContentList(
     listState: LazyListState,
     listItems: ImmutableList<CustomListItem>,
     listFilter: GlobalFilter?,
-    listSorting: Sorting?,
+    listSorting: Sorting,
     collection: UserCollectionState,
     contentPadding: PaddingValues,
     onClick: (CustomListItem) -> Unit,
@@ -544,6 +548,15 @@ private fun ContentList(
         if (isScrolledToBottom) {
             onEndOfList()
         }
+    }
+
+    val itemsGroup = remember(listItems) {
+        when (listSorting.type) {
+            Title -> listItems.groupBy { it.title.firstOrNull()?.uppercaseChar()?.toString() ?: "#" }
+            Added -> listItems.groupBy { it.listedAt.toLocalDay().year.toString() }
+            Released -> listItems.groupBy { it.released?.toLocalDay()?.year?.toString() ?: "N/A" }
+            else -> listItems.groupBy { null }
+        }.toImmutableMap()
     }
 
     LazyColumn(
@@ -592,7 +605,7 @@ private fun ContentList(
             }
         }
 
-        if (listFilter != null && listSorting != null) {
+        if (listFilter != null) {
             item {
                 ContentFilters(
                     hasSubtitle = !subtitle.isNullOrEmpty(),
@@ -605,66 +618,91 @@ private fun ContentList(
             }
         }
 
-        items(
-            items = listItems,
-            key = { it.key },
-        ) { item ->
-            when (item) {
-                is ShowItem -> AllPersonalListShowView(
-                    item = item,
-                    enabled = !loading,
-                    showIcon = true,
-                    watched = collection.isWatched(item.id, item.type, item.show.airedEpisodes),
-                    watchlist = collection.isWatchlist(item.id, item.type),
-                    onClick = { onClick(item) },
-                    onLongClick = { onLongClick(item) },
-                    modifier = Modifier
-                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
-                        .animateItem(
-                            fadeInSpec = null,
-                            fadeOutSpec = null,
-                        ),
-                )
+        itemsGroup.keys.forEachIndexed { index, key ->
+            key?.let {
+                item(
+                    key = "header-$key",
+                ) {
+                    TraktHeader(
+                        title = key,
+                        modifier = Modifier
+                            .padding(
+                                top = if (index == 0) 0.dp else 16.dp,
+                                bottom = 12.dp,
+                            )
+                            .animateItem(
+                                fadeInSpec = null,
+                                fadeOutSpec = null,
+                            ),
+                    )
+                }
+            }
 
-                is MovieItem -> AllPersonalListMovieView(
-                    item = item,
-                    enabled = !loading,
-                    showIcon = true,
-                    watched = collection.isWatched(item.id, item.type, null),
-                    watchlist = collection.isWatchlist(item.id, item.type),
-                    onClick = { onClick(item) },
-                    onLongClick = { onLongClick(item) },
-                    modifier = Modifier
-                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
-                        .animateItem(
-                            fadeInSpec = null,
-                            fadeOutSpec = null,
-                        ),
-                )
+            items(
+                items = itemsGroup[key] ?: EmptyImmutableList,
+                key = { it.key },
+            ) { item ->
+                when (item) {
+                    is ShowItem -> ListDetailsShowView(
+                        item = item,
+                        sorting = listSorting,
+                        enabled = !loading,
+                        showIcon = true,
+                        watched = collection.isWatched(item.id, item.type, item.show.airedEpisodes),
+                        watchlist = collection.isWatchlist(item.id, item.type),
+                        onClick = { onClick(item) },
+                        onLongClick = { onLongClick(item) },
+                        modifier = Modifier
+                            .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                            .animateItem(
+                                fadeInSpec = null,
+                                fadeOutSpec = null,
+                            ),
+                    )
 
-                is SeasonItem -> AllPersonalListSeasonView(
-                    item = item,
-                    enabled = !loading,
-                    onClick = { onClick(item) },
-                    modifier = Modifier
-                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
-                        .animateItem(
-                            fadeInSpec = null,
-                            fadeOutSpec = null,
-                        ),
-                )
+                    is MovieItem -> ListDetailsMovieView(
+                        item = item,
+                        sorting = listSorting,
+                        enabled = !loading,
+                        showIcon = true,
+                        watched = collection.isWatched(item.id, item.type, null),
+                        watchlist = collection.isWatchlist(item.id, item.type),
+                        onClick = { onClick(item) },
+                        onLongClick = { onLongClick(item) },
+                        modifier = Modifier
+                            .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                            .animateItem(
+                                fadeInSpec = null,
+                                fadeOutSpec = null,
+                            ),
+                    )
 
-                is EpisodeItem -> AllPersonalListEpisodeView(
-                    item = item,
-                    enabled = !loading,
-                    onClick = { onClick(item) },
-                    modifier = Modifier
-                        .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
-                        .animateItem(
-                            fadeInSpec = null,
-                            fadeOutSpec = null,
-                        ),
-                )
+                    is SeasonItem -> ListDetailsSeasonView(
+                        item = item,
+                        sorting = listSorting,
+                        enabled = !loading,
+                        onClick = { onClick(item) },
+                        modifier = Modifier
+                            .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                            .animateItem(
+                                fadeInSpec = null,
+                                fadeOutSpec = null,
+                            ),
+                    )
+
+                    is EpisodeItem -> ListDetailsEpisodeView(
+                        item = item,
+                        sorting = listSorting,
+                        enabled = !loading,
+                        onClick = { onClick(item) },
+                        modifier = Modifier
+                            .padding(bottom = TraktTheme.spacing.mainListVerticalSpace)
+                            .animateItem(
+                                fadeInSpec = null,
+                                fadeOutSpec = null,
+                            ),
+                    )
+                }
             }
         }
 
