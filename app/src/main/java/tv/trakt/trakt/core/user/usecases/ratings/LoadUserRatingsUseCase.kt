@@ -3,7 +3,6 @@ package tv.trakt.trakt.core.user.usecases.ratings
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.core.user.data.remote.ratings.UserRatingsRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -117,35 +116,31 @@ internal class LoadUserRatingsUseCase(
     > {
         return coroutineScope {
             val showsRatingsAsync = async {
-                if (!isShowsLoaded()) {
+                if (isShowsLoaded()) {
+                    loadLocalShows()
+                } else {
                     loadShows()
                 }
             }
             val moviesRatingsAsync = async {
-                if (!isMoviesLoaded()) {
+                if (isMoviesLoaded()) {
+                    loadLocalMovies()
+                } else {
                     loadMovies()
                 }
             }
             val episodesRatingsAsync = async {
-                if (!isEpisodesLoaded()) {
+                if (isEpisodesLoaded()) {
+                    loadLocalEpisodes()
+                } else {
                     loadEpisodes()
                 }
             }
 
-            awaitAll(
-                showsRatingsAsync,
-                moviesRatingsAsync,
-                episodesRatingsAsync,
-            )
-
-            val showsRatingsLocal = async { loadLocalShows() }
-            val moviesRatingsLocal = async { loadLocalMovies() }
-            val episodesRatingsLocal = async { loadLocalEpisodes() }
-
             Triple(
-                showsRatingsLocal.await(),
-                moviesRatingsLocal.await(),
-                episodesRatingsLocal.await(),
+                showsRatingsAsync.await(),
+                moviesRatingsAsync.await(),
+                episodesRatingsAsync.await(),
             )
         }
     }

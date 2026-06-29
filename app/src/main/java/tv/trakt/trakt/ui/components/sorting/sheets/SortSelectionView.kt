@@ -48,27 +48,6 @@ internal fun SortSelectionView(
             onSortClick = onSortClick,
             onOrderClick = onOrderClick,
         )
-
-//        Spacer(
-//            modifier = Modifier
-//                .padding(
-//                    vertical = TraktTheme.spacing.contextItemsSpace,
-//                    horizontal = 2.dp,
-//                )
-//                .height(1.dp)
-//                .fillMaxWidth()
-//                .background(
-//                    TraktTheme.colors.textSecondary.copy(
-//                        alpha = 0.25F,
-//                    ),
-//                ),
-//        )
-//
-//        OrderButtons(
-//            selected = selectedOrder,
-//            options = orderOptions,
-//            onOrderClick = onOrderClick,
-//        )
     }
 }
 
@@ -148,42 +127,6 @@ private fun ActionButtons(
                     }
                 }
             }
-        }
-    }
-}
-
-@Composable
-private fun OrderButtons(
-    modifier: Modifier = Modifier,
-    selected: SortOrder?,
-    options: ImmutableList<SortOrder>,
-    onOrderClick: (SortOrder) -> Unit = {},
-) {
-    Column(
-        verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace / 1.5F),
-        modifier = modifier
-            .graphicsLayer {
-                translationX = -8.dp.toPx()
-            },
-    ) {
-        for (sort in options) {
-            GhostButton(
-                text = stringResource(sort.displayStringRes),
-                contentColor = when {
-                    sort == selected -> TraktTheme.colors.primaryButtonContent
-                    else -> TraktTheme.colors.textSecondary.copy(alpha = 0.75F)
-                },
-                icon = when {
-                    sort == selected -> painterResource(R.drawable.ic_check_google)
-                    sort.displayIconRes != null -> painterResource(sort.displayIconRes!!)
-                    else -> null
-                },
-                iconSize = 22.dp,
-                iconSpace = 10.dp,
-                onClick = {
-                    onOrderClick(sort)
-                },
-            )
         }
     }
 }
