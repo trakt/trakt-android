@@ -13,9 +13,9 @@ internal class GetSocialFilterUseCase(
 ) {
     suspend fun getFilter(): SocialFilter {
         val storedFilter = dataStore.data.first()[KEY_ACTIVITY_FILTER]
-        return storedFilter?.let {
-            SocialFilter.valueOf(it)
-        } ?: SocialFilter.Following
+        return SocialFilter.entries
+            .find { it.name == storedFilter }
+            ?: SocialFilter.Following
     }
 
     suspend fun setFilter(filter: SocialFilter) {
