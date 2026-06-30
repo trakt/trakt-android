@@ -8,12 +8,16 @@ enum class SocialFilter(
     @param:StringRes val displayRes: Int,
     @param:DrawableRes val iconRes: Int,
 ) {
-    FOLLOWING(
+    Following(
         displayRes = R.string.button_text_following,
         iconRes = R.drawable.ic_following,
     ),
-    FOLLOWERS(
+    Followers(
         displayRes = R.string.button_text_followers,
         iconRes = R.drawable.ic_followers,
+    ),
+    Requests(
+        displayRes = R.string.button_text_follow_requests,
+        iconRes = R.drawable.ic_person_add,
     ),
 }

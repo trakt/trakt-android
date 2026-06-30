@@ -23,6 +23,7 @@ import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.blocking.BlockUserUseCase
 import tv.trakt.trakt.common.core.user.usecases.blocking.GetBlockedUsersUseCase
+import tv.trakt.trakt.common.core.user.usecases.following.FollowRequestUserUseCase
 import tv.trakt.trakt.common.core.user.usecases.following.FollowUserUseCase
 import tv.trakt.trakt.common.core.user.usecases.following.FollowUserUseCase.Result.Approved
 import tv.trakt.trakt.common.core.user.usecases.following.FollowUserUseCase.Result.RequestPending
@@ -36,7 +37,11 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.user.model.UserFollowRequest
+import tv.trakt.trakt.core.user.usecases.social.LoadUserSocialRequestsUseCase
 import tv.trakt.trakt.core.user.usecases.social.LoadUserSocialUseCase
+import tv.trakt.trakt.core.user.usecases.social.updates.SocialUpdates
+import tv.trakt.trakt.core.userprofile.UserProfileState.UserFollowRequestState
 import tv.trakt.trakt.core.userprofile.navigation.UserProfileDestination
 import tv.trakt.trakt.core.userprofile.sections.thismonth.GetUserProfileMonthUseCase
 import tv.trakt.trakt.core.userprofile.usecases.GetUserProfileDetailsUseCase
@@ -48,11 +53,14 @@ internal class UserProfileViewModel(
     private val getUserMonthUseCase: GetUserProfileMonthUseCase,
     private val getBlockedUsersUseCase: GetBlockedUsersUseCase,
     private val getSocialUseCase: LoadUserSocialUseCase,
+    private val getSocialRequestsUseCase: LoadUserSocialRequestsUseCase,
     private val blockUserUseCase: BlockUserUseCase,
     private val followUserUseCase: FollowUserUseCase,
+    private val followRequestUserUseCase: FollowRequestUserUseCase,
     private val showLocalDataSource: ShowLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
+    private val socialUpdates: SocialUpdates,
 ) : ViewModel() {
     private val destination = savedStateHandle.toRoute<UserProfileDestination>()
     private val user = Json.decodeFromString<User>(destination.userJson)
@@ -62,6 +70,7 @@ internal class UserProfileViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val userBlockedState = MutableStateFlow(initialState.userBlocked)
     private val userFollowedState = MutableStateFlow(initialState.userFollowing)
+    private val userRequestState = MutableStateFlow(initialState.userRequest)
     private val userMonthState = MutableStateFlow(initialState.monthStats)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val infoState = MutableStateFlow(initialState.info)
@@ -90,6 +99,7 @@ internal class UserProfileViewModel(
             launch { loadDetails() }
             launch { loadMonthStats() }
             launch { loadFollowingStatus() }
+            launch { loadRequestStatus() }
             launch { loadBlockedStatus() }
         }
     }
@@ -110,6 +120,23 @@ internal class UserProfileViewModel(
                 }
                 userFollowedState.update {
                     it.copy(loading = false)
+                }
+            }
+        }
+    }
+
+    private fun loadRequestStatus() {
+        viewModelScope.launch {
+            try {
+                userRequestState.update {
+                    UserFollowRequestState(
+                        getSocialRequestsUseCase.loadRequests()
+                            .find { it.user.ids.trakt == user.ids.trakt },
+                    )
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
                 }
             }
         }
@@ -287,6 +314,53 @@ internal class UserProfileViewModel(
         }
     }
 
+    fun toggleFollowRequest(
+        request: UserFollowRequest,
+        approved: Boolean,
+    ) {
+        if (processingJob?.isActive == true) {
+            return
+        }
+        processingJob = viewModelScope.launch {
+            try {
+                userRequestState.update { it.copy(loading = true) }
+
+                if (approved) {
+                    followRequestUserUseCase.approveRequest(request.id)
+                    infoState.update {
+                        DynamicStringResource(
+                            R.string.text_info_follow_request_approved,
+                            listOf(request.user.displayName),
+                        )
+                    }
+                } else {
+                    followRequestUserUseCase.rejectRequest(request.id)
+                    infoState.update {
+                        DynamicStringResource(
+                            R.string.text_info_follow_request_rejected,
+                            listOf(request.user.displayName),
+                        )
+                    }
+                }
+
+                userRequestState.update {
+                    it.copy(
+                        request = null,
+                        loading = false,
+                    )
+                }
+                socialUpdates.notifyUpdate()
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    userRequestState.update { it.copy(loading = false) }
+                    Timber.recordError(error)
+                }
+            } finally {
+                processingJob = null
+            }
+        }
+    }
+
     fun navigateToShow(show: Show) {
         if (navigateShowState.value != null || processingJob?.isActive == true) {
             return
@@ -338,6 +412,7 @@ internal class UserProfileViewModel(
         userState,
         userBlockedState,
         userFollowedState,
+        userRequestState,
         userMonthState,
         loadingState,
         navigateShowState,
@@ -349,12 +424,13 @@ internal class UserProfileViewModel(
             user = states[0] as User,
             userBlocked = states[1] as UserProfileState.BlockedState,
             userFollowing = states[2] as UserProfileState.FollowingState,
-            monthStats = states[3] as? UserProfileState.MonthlyStats,
-            loading = states[4] as LoadingState,
-            navigateShow = states[5] as? TraktId,
-            navigateMovie = states[6] as? TraktId,
-            navigateEpisode = states[7] as? Pair<TraktId, Episode>,
-            info = states[8] as? StringResource,
+            userRequest = states[3] as UserFollowRequestState,
+            monthStats = states[4] as? UserProfileState.MonthlyStats,
+            loading = states[5] as LoadingState,
+            navigateShow = states[6] as? TraktId,
+            navigateMovie = states[7] as? TraktId,
+            navigateEpisode = states[8] as? Pair<TraktId, Episode>,
+            info = states[9] as? StringResource,
         )
     }.stateIn(
         scope = viewModelScope,

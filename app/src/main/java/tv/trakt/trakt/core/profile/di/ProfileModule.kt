@@ -108,7 +108,10 @@ import tv.trakt.trakt.core.user.usecases.progress.updates.ProgressUpdates
 import tv.trakt.trakt.core.user.usecases.progress.updates.ProgressUpdatesStorage
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase
+import tv.trakt.trakt.core.user.usecases.social.LoadUserSocialRequestsUseCase
 import tv.trakt.trakt.core.user.usecases.social.LoadUserSocialUseCase
+import tv.trakt.trakt.core.user.usecases.social.updates.SocialUpdates
+import tv.trakt.trakt.core.user.usecases.social.updates.SocialUpdatesStorage
 
 internal const val PROFILE_PREFERENCES = "profile_preferences_mobile"
 
@@ -154,6 +157,7 @@ internal val profileDataModule = module {
 
 internal val profileModule = module {
     singleOf(::ProgressUpdatesStorage) { bind<ProgressUpdates>() }
+    singleOf(::SocialUpdatesStorage) { bind<SocialUpdates>() }
 
     factoryOf(::LoadUserProfileUseCase)
     factoryOf(::GetProgressDroppedUseCase)
@@ -164,6 +168,7 @@ internal val profileModule = module {
     factoryOf(::GetProfileStatsUseCase)
     factoryOf(::LoadUserWatchlistUseCase)
     factoryOf(::LoadUserSocialUseCase)
+    factoryOf(::LoadUserSocialRequestsUseCase)
     factoryOf(::LoadUserFavoritesUseCase)
     factoryOf(::LoadUserLibraryUseCase)
     factoryOf(::LoadUserListsUseCase)

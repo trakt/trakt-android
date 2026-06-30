@@ -6,16 +6,16 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.first
 import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter
 
-private val KEY_ACTIVITY_FILTER = stringPreferencesKey("key_profile_social_filter")
+private val KEY_ACTIVITY_FILTER = stringPreferencesKey("key_profile_social_filter_v2")
 
 internal class GetSocialFilterUseCase(
     private val dataStore: DataStore<Preferences>,
 ) {
     suspend fun getFilter(): SocialFilter {
         val storedFilter = dataStore.data.first()[KEY_ACTIVITY_FILTER]
-        return storedFilter?.let {
-            SocialFilter.valueOf(it)
-        } ?: SocialFilter.FOLLOWING
+        return SocialFilter.entries
+            .find { it.name == storedFilter }
+            ?: SocialFilter.Following
     }
 
     suspend fun setFilter(filter: SocialFilter) {

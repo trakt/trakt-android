@@ -5,6 +5,7 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import tv.trakt.trakt.common.core.user.usecases.blocking.BlockUserUseCase
 import tv.trakt.trakt.common.core.user.usecases.blocking.GetBlockedUsersUseCase
+import tv.trakt.trakt.common.core.user.usecases.following.FollowRequestUserUseCase
 import tv.trakt.trakt.common.core.user.usecases.following.FollowUserUseCase
 import tv.trakt.trakt.core.userprofile.UserProfileViewModel
 import tv.trakt.trakt.core.userprofile.sections.favorites.UserProfileFavoritesViewModel
@@ -32,6 +33,7 @@ internal val userProfileModule = module {
     factoryOf(::GetBlockedUsersUseCase)
     factoryOf(::BlockUserUseCase)
     factoryOf(::FollowUserUseCase)
+    factoryOf(::FollowRequestUserUseCase)
 
     // ViewModels
 

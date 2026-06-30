@@ -15,12 +15,14 @@ import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter
-import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter.FOLLOWERS
-import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter.FOLLOWING
+import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter.Followers
+import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter.Following
+import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter.Requests
 import tv.trakt.trakt.core.userprofile.sections.social.usecases.GetUserProfileSocialUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
@@ -52,8 +54,9 @@ internal class UserProfileSocialViewModel(
                 loadingState.update { Loading }
                 itemsState.update {
                     when (filterState.value) {
-                        FOLLOWING -> getSocialUseCase.getFollowing(userId)
-                        FOLLOWERS -> getSocialUseCase.getFollowers(userId)
+                        Following -> getSocialUseCase.getFollowing(userId)
+                        Followers -> getSocialUseCase.getFollowers(userId)
+                        Requests -> EmptyImmutableList
                     }
                 }
             } catch (error: Exception) {
