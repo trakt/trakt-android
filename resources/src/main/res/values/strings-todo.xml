@@ -8,4 +8,5 @@
 
   <string name="button_text_sort_asc">Asc</string>
   <string name="button_text_sort_desc">Desc</string>
+  <string name="text_info_follow_requested">%s requested to follow you.</string>
 </resources>

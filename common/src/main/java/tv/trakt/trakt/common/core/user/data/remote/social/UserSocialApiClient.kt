@@ -8,6 +8,7 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.SocialActivityItemDto
 import tv.trakt.trakt.common.networking.UserBlockedDto
 import tv.trakt.trakt.common.networking.UserCommentsDto
+import tv.trakt.trakt.common.networking.UserFollowRequestDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -78,6 +79,33 @@ class UserSocialApiClient(
                 val followedAt = it.followedAt.toZonedDateTime()
                 it.user to followedAt
             }
+    }
+
+    override suspend fun getRequests(extended: String?): List<UserFollowRequestDto> {
+        val response = usersApi.getUsersRequestsFollow(
+            extended = extended,
+        ).body()
+
+        return response
+            .sortedByDescending { it.requestedAt }
+    }
+
+    override suspend fun approveRequest(requestId: Int) {
+        usersApi.postUsersRequestsApprove(
+            id = requestId.toString(),
+            extended = null,
+            body = null,
+        ).also {
+            cacheMarker.invalidate()
+        }
+    }
+
+    override suspend fun rejectRequest(requestId: Int) {
+        usersApi.deleteUsersRequestsDeny(
+            id = requestId.toString(),
+        ).also {
+            cacheMarker.invalidate()
+        }
     }
 
     override suspend fun followUser(userId: String): PostUsersFollow201Response {

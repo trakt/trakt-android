@@ -174,6 +174,10 @@ private fun ContentFilters(
         paddingVertical = PaddingValues(top = 13.dp, bottom = 16.dp),
     ) {
         for (filter in SocialFilter.entries) {
+            if (filter == SocialFilter.Requests && state.requests.isNullOrEmpty()) {
+                // Requests chip only surfaces when there are pending requests.
+                continue
+            }
             FilterChip(
                 selected = state.filter == filter,
                 text = stringResource(filter.displayRes),
@@ -183,7 +187,10 @@ private fun ContentFilters(
                         contentDescription = null,
                         tint = TraktTheme.colors.textPrimary,
                         modifier = Modifier
-                            .size(17.dp)
+                            .size(when (filter) {
+                                SocialFilter.Requests -> 21.dp
+                                else -> 17.dp
+                            })
                             .padding(end = 2.dp),
                     )
                 },

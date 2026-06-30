@@ -2,6 +2,8 @@
 
 package tv.trakt.trakt.core.userprofile
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -42,9 +44,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -66,6 +70,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
+import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CustomList
@@ -78,6 +83,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.common.ui.theme.colors.Red60
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 import tv.trakt.trakt.core.profile.sections.thismonth.ProfileStatsCard
+import tv.trakt.trakt.core.user.model.UserFollowRequest
 import tv.trakt.trakt.core.userprofile.sections.favorites.UserProfileFavoritesView
 import tv.trakt.trakt.core.userprofile.sections.history.UserProfileHistoryView
 import tv.trakt.trakt.core.userprofile.sections.lists.UserProfileListsView
@@ -86,6 +92,7 @@ import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -154,6 +161,14 @@ internal fun UserProfileScreen(
                 else -> confirmBlockSheet = true
             }
         },
+        onToggleFollowRequest = { approved ->
+            state.userRequest.request?.let { request ->
+                viewModel.toggleFollowRequest(
+                    request = request,
+                    approved = approved,
+                )
+            }
+        },
         onNavigateToShow = viewModel::navigateToShow,
         onNavigateToMovie = viewModel::navigateToMovie,
         onNavigateToEpisode = viewModel::navigateToEpisode,
@@ -200,6 +215,7 @@ private fun UserProfileContent(
     onNavigateToAllFavorites: (TraktId) -> Unit = {},
     onNavigateToAllLists: (User, PersonalListType) -> Unit = { _, _ -> },
     onNavigateBack: () -> Unit = {},
+    onToggleFollowRequest: (approved: Boolean) -> Unit = { _ -> },
     onFollowClick: () -> Unit = {},
     onBlockClick: () -> Unit = {},
 ) {
@@ -264,14 +280,16 @@ private fun UserProfileContent(
 
             if (state.user.isPrivate) {
                 userProfilePrivateContent(
+                    state = state,
                     windowClass = windowClass,
-                    user = state.user,
+                    onToggleFollowRequest = onToggleFollowRequest,
                 )
             } else {
                 userProfilePublicContent(
                     state = state,
                     windowClass = windowClass,
                     sectionPadding = sectionPadding,
+                    onToggleFollowRequest = onToggleFollowRequest,
                     onNavigateToShow = onNavigateToShow,
                     onNavigateToEpisode = onNavigateToEpisode,
                     onNavigateToMovie = onNavigateToMovie,
@@ -290,6 +308,7 @@ private fun LazyListScope.userProfilePublicContent(
     state: UserProfileState,
     windowClass: WindowSizeClass,
     sectionPadding: PaddingValues,
+    onToggleFollowRequest: (approved: Boolean) -> Unit,
     onNavigateToShow: (Show) -> Unit,
     onNavigateToEpisode: (Show, Episode) -> Unit,
     onNavigateToMovie: (Movie) -> Unit,
@@ -299,6 +318,19 @@ private fun LazyListScope.userProfilePublicContent(
     onNavigateToList: (CustomList) -> Unit,
     onNavigateToUser: (User) -> Unit,
 ) {
+    item {
+        FollowRequestView(
+            visible = state.userRequest.request != null,
+            request = state.userRequest.request,
+            loading = state.userRequest.loading,
+            onApproveClick = { onToggleFollowRequest(true) },
+            onDenyClick = { onToggleFollowRequest(false) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+        )
+    }
+
     if (state.user.isAnyVip) {
         item {
             ProfileStatsCard(
@@ -422,7 +454,8 @@ private fun LazyListScope.userProfilePublicContent(
 
 private fun LazyListScope.userProfilePrivateContent(
     windowClass: WindowSizeClass,
-    user: User,
+    state: UserProfileState,
+    onToggleFollowRequest: (approved: Boolean) -> Unit,
 ) {
     item {
         Column(
@@ -450,7 +483,7 @@ private fun LazyListScope.userProfilePrivateContent(
             Text(
                 text = stringResource(
                     R.string.text_private_profile_description,
-                    user.displayName,
+                    state.user.displayName,
                 ),
                 style = TraktTheme.typography.paragraphSmaller.copy(
                     fontSize = 13.sp,
@@ -462,6 +495,20 @@ private fun LazyListScope.userProfilePrivateContent(
                 overflow = Ellipsis,
             )
         }
+    }
+
+    item {
+        FollowRequestView(
+            visible = state.userRequest.request != null,
+            request = state.userRequest.request,
+            loading = state.userRequest.loading,
+            onApproveClick = { onToggleFollowRequest(true) },
+            onDenyClick = { onToggleFollowRequest(false) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 32.dp)
+                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+        )
     }
 }
 
@@ -666,6 +713,80 @@ private fun TitleBar(
     }
 }
 
+@Composable
+private fun FollowRequestView(
+    request: UserFollowRequest?,
+    loading: Boolean,
+    visible: Boolean,
+    modifier: Modifier = Modifier,
+    onApproveClick: () -> Unit = {},
+    onDenyClick: () -> Unit = {},
+) {
+    val shape = RoundedCornerShape(24.dp)
+
+    Box(
+        contentAlignment = Center,
+        modifier = modifier.animateContentSize(
+            animationSpec = tween(200, delayMillis = 250),
+        ),
+    ) {
+        if (visible && request != null) {
+            Column(
+                modifier = Modifier
+                    .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace / 1.5F)
+                    .shadow(4.dp, shape)
+                    .background(TraktTheme.colors.dialogContainer, shape)
+                    .padding(16.dp)
+                    .animateContentSize(),
+            ) {
+                Row(
+                    verticalAlignment = CenterVertically,
+                    horizontalArrangement = spacedBy(8.dp),
+                    modifier = Modifier,
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_person_add),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier.size(22.dp),
+                    )
+                    Text(
+                        text = stringResource(R.string.text_info_follow_requested, request.user.displayName),
+                        style = TraktTheme.typography.heading5.copy(
+                            fontSize = 16.sp,
+                            fontWeight = W500,
+                        ),
+                        color = TraktTheme.colors.textPrimary,
+                        maxLines = 2,
+                    )
+                }
+
+                Row(
+                    horizontalArrangement = spacedBy(8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                ) {
+                    TertiaryButton(
+                        enabled = !loading,
+                        text = stringResource(R.string.button_text_reject_follow_request),
+                        onClick = onDenyClick,
+                        containerColor = TraktTheme.colors.primaryButtonContainerDisabled,
+                        modifier = Modifier.weight(1F),
+                    )
+
+                    TertiaryButton(
+                        enabled = !loading,
+                        text = stringResource(R.string.button_text_approve_follow_request),
+                        onClick = onApproveClick,
+                        modifier = Modifier.weight(1F),
+                    )
+                }
+            }
+        }
+    }
+}
+
 // Previews
 
 @Preview(
@@ -702,6 +823,13 @@ private fun Preview2() {
         UserProfileContent(
             state = UserProfileState(
                 user = PreviewData.user1,
+                userRequest = UserProfileState.UserFollowRequestState(
+                    UserFollowRequest(
+                        id = 1,
+                        requestedAt = nowUtcInstant(),
+                        user = PreviewData.user1,
+                    ),
+                ),
             ),
         )
     }

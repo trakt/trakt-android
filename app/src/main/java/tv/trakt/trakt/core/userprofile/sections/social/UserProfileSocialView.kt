@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -165,12 +166,17 @@ private fun ContentFilters(
     state: UserProfileSocialState,
     onFilterClick: (SocialFilter) -> Unit,
 ) {
-    val usersCount = state.items?.size ?: 0
+    val filters = remember {
+        SocialFilter.entries.filter {
+            it != SocialFilter.Requests
+        }
+    }
+
     FilterChipGroup(
         paddingHorizontal = headerPadding,
         paddingVertical = PaddingValues(top = 13.dp, bottom = 16.dp),
     ) {
-        for (filter in SocialFilter.entries) {
+        for (filter in filters) {
             FilterChip(
                 selected = state.filter == filter,
                 text = stringResource(filter.displayRes),
@@ -187,7 +193,7 @@ private fun ContentFilters(
                 endContent = {
                     if (state.loading == Done && state.filter == filter) {
                         Text(
-                            text = " • $usersCount",
+                            text = " • ${state.items?.size ?: 0}",
                             style = TraktTheme.typography.buttonTertiary,
                             color = TraktTheme.colors.textPrimary,
                             maxLines = 1,

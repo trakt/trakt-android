@@ -1,14 +1,22 @@
+@file:OptIn(FlowPreview::class)
+
 package tv.trakt.trakt.core.profile.sections.social
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -18,17 +26,27 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter
+import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter.Followers
+import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter.Following
+import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter.Requests
 import tv.trakt.trakt.core.profile.sections.social.usecases.GetSocialFilterUseCase
+import tv.trakt.trakt.core.user.model.UserFollowRequest
+import tv.trakt.trakt.core.user.usecases.social.LoadUserSocialRequestsUseCase
 import tv.trakt.trakt.core.user.usecases.social.LoadUserSocialUseCase
+import tv.trakt.trakt.core.user.usecases.social.updates.SocialUpdates
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class ProfileSocialViewModel(
     private val loadSocialUseCase: LoadUserSocialUseCase,
+    private val loadRequestsUseCase: LoadUserSocialRequestsUseCase,
     private val getFilterUseCase: GetSocialFilterUseCase,
+    private val socialUpdates: SocialUpdates,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
@@ -36,6 +54,7 @@ internal class ProfileSocialViewModel(
 
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
+    private val requestsState = MutableStateFlow(initialState.requests)
     private val filterState = MutableStateFlow(initialState.filter)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val collapseState = MutableStateFlow(isCollapsed())
@@ -45,9 +64,23 @@ internal class ProfileSocialViewModel(
 
     init {
         loadData()
+        observeData()
     }
 
-    fun loadData(ignoreErrors: Boolean = false) {
+    private fun observeData() {
+        socialUpdates.observeUpdates()
+            .distinctUntilChanged()
+            .debounce(200.milliseconds)
+            .onEach {
+                loadData(refreshRequests = true)
+            }
+            .launchIn(viewModelScope)
+    }
+
+    fun loadData(
+        ignoreErrors: Boolean = false,
+        refreshRequests: Boolean = true,
+    ) {
         loadDataJob?.cancel()
         loadDataJob = viewModelScope.launch {
             try {
@@ -58,11 +91,48 @@ internal class ProfileSocialViewModel(
                 loadingState.update { Loading }
 
                 val filter = loadFilter()
-                itemsState.update {
+
+                coroutineScope {
+                    // Requests are filter-independent: only refetch on a real reload,
+                    // not when the user toggles Following/Followers.
+                    val requestsDeferred = async {
+                        if (refreshRequests) {
+                            runCatching { loadRequestsUseCase.loadRequests() }
+                                .getOrDefault(EmptyImmutableList)
+                        } else {
+                            requestsState.value ?: EmptyImmutableList
+                        }
+                    }
+                    val listDeferred = when (filter) {
+                        Following -> async { loadSocialUseCase.loadFollowing() }
+                        Followers -> async { loadSocialUseCase.loadFollowers() }
+                        Requests -> async { EmptyImmutableList }
+                    }
+
+                    val requests = requestsDeferred.await()
+                    requestsState.update { requests }
+
                     when (filter) {
-                        SocialFilter.FOLLOWING -> loadSocialUseCase.loadFollowing()
-                        SocialFilter.FOLLOWERS -> loadSocialUseCase.loadFollowers()
-                    }.toImmutableList()
+                        Requests if requests.isEmpty() -> {
+                            getFilterUseCase.setFilter(Following)
+                            filterState.update { Following }
+                            itemsState.update {
+                                loadSocialUseCase
+                                    .loadFollowing()
+                                    .toImmutableList()
+                            }
+                        }
+                        Requests -> {
+                            itemsState.update {
+                                requests.map(UserFollowRequest::user).toImmutableList()
+                            }
+                        }
+                        else -> {
+                            itemsState.update {
+                                listDeferred.await().toImmutableList()
+                            }
+                        }
+                    }
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -85,9 +155,8 @@ internal class ProfileSocialViewModel(
 
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
-            itemsState.update {
-                emptyList<User>().toImmutableList()
-            }
+            itemsState.update { EmptyImmutableList }
+            requestsState.update { EmptyImmutableList }
             loadingState.update { Done }
             return true
         }
@@ -102,7 +171,7 @@ internal class ProfileSocialViewModel(
         viewModelScope.launch {
             getFilterUseCase.setFilter(newFilter)
             loadFilter()
-            loadData()
+            loadData(refreshRequests = false)
         }
     }
 
@@ -123,13 +192,14 @@ internal class ProfileSocialViewModel(
     }
 
     @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<ProfileSocialState> = combine(
+    val state = combine(
         loadingState,
         itemsState,
         filterState,
         collapseState,
         errorState,
         userState,
+        requestsState,
     ) { states ->
         ProfileSocialState(
             loading = states[0] as LoadingState,
@@ -138,6 +208,7 @@ internal class ProfileSocialViewModel(
             collapsed = states[3] as Boolean,
             error = states[4] as Exception?,
             user = states[5] as User?,
+            requests = states[6] as ImmutableList<UserFollowRequest>?,
         )
     }.stateIn(
         scope = viewModelScope,
