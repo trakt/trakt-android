@@ -187,10 +187,12 @@ private fun ContentFilters(
                         contentDescription = null,
                         tint = TraktTheme.colors.textPrimary,
                         modifier = Modifier
-                            .size(when (filter) {
-                                SocialFilter.Requests -> 21.dp
-                                else -> 17.dp
-                            })
+                            .size(
+                                when (filter) {
+                                    SocialFilter.Requests -> 21.dp
+                                    else -> 17.dp
+                                },
+                            )
                             .padding(end = 2.dp),
                     )
                 },
