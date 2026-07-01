@@ -10,11 +10,11 @@ import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -64,23 +65,24 @@ internal fun AllSocialUserViewSkeleton(
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = spacedBy(4.dp),
-            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = spacedBy(2.dp),
         ) {
-            Box(
-                content = {},
+            Text(
+                text = "",
+                style = TraktTheme.typography.cardTitle,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(12.dp)
                     .clip(RoundedCornerShape(100))
                     .background(shimmerTransition),
             )
 
-            Box(
-                content = {},
+            Text(
+                text = "",
+                style = TraktTheme.typography.cardSubtitle.copy(
+                    fontSize = 10.sp,
+                ),
                 modifier = Modifier
-                    .fillMaxWidth(0.6f)
-                    .height(10.dp)
+                    .fillMaxWidth(0.6F)
                     .clip(RoundedCornerShape(100))
                     .background(shimmerTransition),
             )
