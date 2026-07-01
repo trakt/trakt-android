@@ -109,7 +109,7 @@ internal fun AllSocialUserView(
             )
 
             Text(
-                text = user.location ?: "-",
+                text = user.location.orEmpty().ifEmpty { "-" },
                 style = TraktTheme.typography.cardSubtitle.copy(
                     fontSize = 10.sp,
                 ),
