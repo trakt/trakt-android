@@ -18,13 +18,22 @@ internal fun NavController.navigateToMainDestination(
     isSignedIn: Boolean,
 ) {
     when (destination) {
-        SearchDestination -> navigateToSearch()
-
         HomeDestination -> navigateToHome()
 
-        ShowsDestination -> navigateToShows()
+        SearchDestination -> when {
+            isSignedIn -> navigateToSearch()
+            else -> navigateToAuth()
+        }
 
-        MoviesDestination -> navigateToMovies()
+        ShowsDestination -> when {
+            isSignedIn -> navigateToShows()
+            else -> navigateToAuth()
+        }
+
+        MoviesDestination -> when {
+            isSignedIn -> navigateToMovies()
+            else -> navigateToAuth()
+        }
 
         ListsDestination -> when {
             isSignedIn -> navigateToLists()
