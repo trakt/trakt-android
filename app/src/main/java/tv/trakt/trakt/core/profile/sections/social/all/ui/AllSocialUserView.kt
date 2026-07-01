@@ -1,0 +1,152 @@
+package tv.trakt.trakt.core.profile.sections.social.all.ui
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
+import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.theme.TraktTheme
+
+@Composable
+internal fun AllSocialUserView(
+    user: User,
+    modifier: Modifier = Modifier,
+    size: Dp = 56.dp,
+    corner: Dp = 16.dp,
+    enabled: Boolean = true,
+    containerColor: Color = TraktTheme.colors.panelCardContainer,
+    onUserClick: () -> Unit = {},
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = spacedBy(10.dp),
+        modifier = modifier
+            .background(containerColor, RoundedCornerShape(corner))
+            .padding(horizontal = 12.dp)
+            .padding(top = 12.dp, bottom = 10.dp)
+            .alpha(if (!enabled) 0.33f else 1f)
+            .onClick(enabled = enabled) {
+                onUserClick()
+            },
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.size(size),
+        ) {
+            val borderWidth = 2.dp
+            val borderColor = when {
+                user.isAnyVip -> TraktTheme.colors.vipAccent
+                else -> Color.Transparent
+            }
+
+            val avatar = user.images?.avatar?.full
+            if (avatar != null) {
+                AsyncImage(
+                    model = remember(avatar) {
+                        avatar.let {
+                            if (it.startsWith("http")) it else "https://$it"
+                        }
+                            .replace("/medium/", "/thumb/")
+                            .replace("/original/", "/thumb/")
+                    },
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    error = painterResource(R.drawable.ic_person_placeholder),
+                    modifier = Modifier
+                        .size(size)
+                        .border(borderWidth, borderColor, CircleShape)
+                        .clip(CircleShape),
+                )
+            } else {
+                Image(
+                    painter = painterResource(R.drawable.ic_person_placeholder),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(size)
+                        .border(borderWidth, borderColor, CircleShape)
+                        .clip(CircleShape),
+                )
+            }
+        }
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = spacedBy(1.dp),
+        ) {
+            Text(
+                text = user.displayName,
+                style = TraktTheme.typography.cardTitle,
+                color = TraktTheme.colors.textPrimary,
+                maxLines = 1,
+                textAlign = TextAlign.Center,
+                overflow = TextOverflow.Ellipsis,
+            )
+
+            Text(
+                text = user.location ?: "-",
+                style = TraktTheme.typography.cardSubtitle.copy(
+                    fontSize = 10.sp,
+                ),
+                color = TraktTheme.colors.textSecondary,
+                maxLines = 1,
+                textAlign = TextAlign.Center,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+    }
+}
+
+@Preview(
+    backgroundColor = 0xFF000000,
+    showBackground = true,
+)
+@Composable
+private fun Preview1() {
+    TraktTheme {
+        AllSocialUserView(
+            user = PreviewData.user1,
+        )
+    }
+}
+
+@Preview(
+    backgroundColor = 0xFF000000,
+    showBackground = true,
+)
+@Composable
+private fun Preview2() {
+    TraktTheme {
+        AllSocialUserView(
+            user = PreviewData.user1.copy(
+                name = "John Dutton",
+                isVip = true,
+            ),
+        )
+    }
+}

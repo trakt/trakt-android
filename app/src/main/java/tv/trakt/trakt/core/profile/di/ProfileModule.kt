@@ -79,6 +79,7 @@ import tv.trakt.trakt.core.profile.sections.screentime.data.local.ProfileScreenT
 import tv.trakt.trakt.core.profile.sections.screentime.model.ScreenTimeData
 import tv.trakt.trakt.core.profile.sections.screentime.usecase.GetScreenTimeUseCase
 import tv.trakt.trakt.core.profile.sections.social.ProfileSocialViewModel
+import tv.trakt.trakt.core.profile.sections.social.all.AllProfileSocialViewModel
 import tv.trakt.trakt.core.profile.sections.social.usecases.GetSocialFilterUseCase
 import tv.trakt.trakt.core.profile.sections.thismonth.usecases.GetProfileStatsUseCase
 import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
@@ -246,6 +247,7 @@ internal val profileModule = module {
     viewModelOf(::ProfileScreenTimeViewModel)
     viewModelOf(::ProfileAllActivityViewModel)
     viewModelOf(::ProfileSocialViewModel)
+    viewModelOf(::AllProfileSocialViewModel)
     viewModelOf(::ProfileProgressViewModel)
 
     viewModelOf(::AllProgressViewModel)
