@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package tv.trakt.trakt.core.profile.sections.social.all
 
 import androidx.compose.foundation.background
@@ -21,7 +19,6 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -223,8 +220,6 @@ private fun ContentFilters(
                             maxLines = 1,
                             textAlign = TextAlign.Center,
                         )
-                    } else {
-                        null
                     }
                 },
                 onClick = { onFilterClick(filter) },

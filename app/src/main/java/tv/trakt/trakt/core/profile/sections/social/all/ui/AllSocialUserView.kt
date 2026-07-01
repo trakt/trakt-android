@@ -69,8 +69,9 @@ internal fun AllSocialUserView(
             if (avatar != null) {
                 AsyncImage(
                     model = remember(avatar) {
-                        avatar.let {
-                            if (it.startsWith("http")) it else "https://$it"
+                        when {
+                            avatar.startsWith("http") -> avatar
+                            else -> "https://$avatar"
                         }
                             .replace("/medium/", "/thumb/")
                             .replace("/original/", "/thumb/")

@@ -170,12 +170,6 @@ internal class AllProfileSocialViewModel(
         }
     }
 
-    override fun onCleared() {
-        loadDataJob?.cancel()
-        loadDataJob = null
-        super.onCleared()
-    }
-
     @Suppress("UNCHECKED_CAST")
     val state = combine(
         loadingState,

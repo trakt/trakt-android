@@ -36,8 +36,8 @@ internal fun AllSocialUserViewSkeleton(
     val infiniteTransition = rememberInfiniteTransition(label = "infiniteTransition")
     val shimmerTransition by infiniteTransition
         .animateColor(
-            initialValue = TraktTheme.colors.skeletonContainer,
-            targetValue = TraktTheme.colors.skeletonShimmer,
+            initialValue = containerColor,
+            targetValue = TraktTheme.colors.dialogOnContainer,
             animationSpec = infiniteRepeatable(
                 animation = tween(durationMillis = 1000),
                 repeatMode = RepeatMode.Reverse,
