@@ -1,6 +1,7 @@
 package tv.trakt.trakt.app.core.auth
 
 import android.content.ClipData
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -32,6 +33,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalClipboard
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.toClipEntry
 import androidx.compose.ui.res.painterResource
@@ -62,6 +64,7 @@ import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
+import java.util.Locale
 
 @Composable
 internal fun AuthScreen(
@@ -212,13 +215,19 @@ private fun DeviceCodeContent(
         focusRequester.requestFocus()
     }
 
+    val configuration = LocalConfiguration.current
+    val appLocale = remember(configuration) {
+        AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+    }
+
     Row(
         horizontalArrangement = spacedBy(32.dp),
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
     ) {
         QrCodeView(
-            data = "${authDeviceCode().url}/${authDeviceCode().userCode}",
+            data = "${authDeviceCode().url}/${authDeviceCode().userCode}" +
+                "?lang=${appLocale.language}-${appLocale.country}",
             modifier = Modifier.size(240.dp),
             colors = QrCodeColors(
                 background = TraktTheme.colors.backgroundPrimary,
