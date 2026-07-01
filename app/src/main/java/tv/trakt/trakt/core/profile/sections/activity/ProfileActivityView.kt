@@ -204,8 +204,8 @@ internal fun ProfileActivityContent(
                                 )
                             }
 
-                            state.ratingItems?.isEmpty() == true &&
-                                state.commentItems?.isEmpty() == true -> {
+                            (state.filter == Ratings && state.ratingItems?.isEmpty() == true) ||
+                                (state.filter == Comments && state.commentItems?.isEmpty() == true) -> {
                                 Text(
                                     text = stringResource(R.string.list_placeholder_empty),
                                     color = TraktTheme.colors.textSecondary,

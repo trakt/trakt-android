@@ -454,15 +454,18 @@ private fun TitleBar(
                     }
                 }
 
-                val vipPrefix = remember(user) {
-                    when (user.isAnyVip) {
-                        true -> "VIP • "
-                        else -> ""
-                    }
-                }
                 TraktHeader(
                     title = user.displayName,
-                    subtitle = "$vipPrefix${user.location}",
+                    subtitle = remember(user) {
+                        val vip = when (user.isAnyVip) {
+                            true -> "VIP • "
+                            else -> ""
+                        }
+                        when {
+                            user.location.isNullOrBlank() && vip.isBlank() -> null
+                            else -> "$vip${user.location.orEmpty()}"
+                        }
+                    },
                 )
             }
 
