@@ -48,6 +48,8 @@ import tv.trakt.trakt.core.profile.sections.library.all.navigation.allLibraryScr
 import tv.trakt.trakt.core.profile.sections.library.all.navigation.navigateToLibrary
 import tv.trakt.trakt.core.profile.sections.progress.all.navigation.allProgressScreen
 import tv.trakt.trakt.core.profile.sections.progress.all.navigation.navigateToProgress
+import tv.trakt.trakt.core.profile.sections.social.all.navigation.allProfileSocialScreen
+import tv.trakt.trakt.core.profile.sections.social.all.navigation.navigateToProfileSocial
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.navigateToSearch
 import tv.trakt.trakt.core.search.navigation.searchScreen
@@ -497,6 +499,7 @@ internal fun NavGraphBuilder.profileScreens(controller: NavHostController) {
             onNavigateToSettings = { navigateToSettings() },
             onNavigateToHome = { navigateToHome() },
             onNavigateToUser = { navigateToUserProfile(it) },
+            onNavigateToSocial = { navigateToProfileSocial() },
             onNavigateToVip = { navigateToBilling() },
         )
 
@@ -514,6 +517,11 @@ internal fun NavGraphBuilder.profileScreens(controller: NavHostController) {
 
         allProgressScreen(
             onNavigateToShow = { navigateToShow(it) },
+            onNavigateBack = { popBackStack() },
+        )
+
+        allProfileSocialScreen(
+            onNavigateToUser = { navigateToUserProfile(it) },
             onNavigateBack = { popBackStack() },
         )
 

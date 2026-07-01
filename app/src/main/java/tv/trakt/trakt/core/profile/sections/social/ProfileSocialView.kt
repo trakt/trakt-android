@@ -42,6 +42,7 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.home.views.HomeEmptySocialView
 import tv.trakt.trakt.core.profile.sections.social.model.SocialFilter
@@ -60,6 +61,7 @@ internal fun ProfileSocialView(
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     onUserClick: (User) -> Unit,
+    onSeeAllClick: () -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -71,6 +73,7 @@ internal fun ProfileSocialView(
         onCollapse = viewModel::setCollapsed,
         onFilterClick = viewModel::setFilter,
         onUserClick = { onUserClick(it) },
+        onSeeAllClick = onSeeAllClick,
     )
 }
 
@@ -83,6 +86,7 @@ internal fun ProfileSocialContent(
     onCollapse: (collapsed: Boolean) -> Unit = {},
     onFilterClick: (SocialFilter) -> Unit = {},
     onUserClick: (User) -> Unit = {},
+    onSeeAllClick: () -> Unit = {},
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
 
@@ -94,7 +98,7 @@ internal fun ProfileSocialContent(
     ) {
         TraktSectionHeader(
             title = stringResource(R.string.list_title_social),
-            chevron = false,
+            chevron = true,
             collapsed = state.collapsed ?: false,
             onCollapseClick = {
                 animateCollapse = true
@@ -102,7 +106,8 @@ internal fun ProfileSocialContent(
                 onCollapse(!current)
             },
             modifier = Modifier
-                .padding(headerPadding),
+                .padding(headerPadding)
+                .onClick { onSeeAllClick() },
         )
 
         if (state.collapsed != true) {

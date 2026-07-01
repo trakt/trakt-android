@@ -1,18 +1,21 @@
-package tv.trakt.trakt.core.profile.sections.social.ui
+package tv.trakt.trakt.core.profile.sections.social.all.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -22,6 +25,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -30,18 +34,26 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun SocialUserView(
+internal fun AllSocialUserView(
     user: User,
     modifier: Modifier = Modifier,
     size: Dp = 56.dp,
-    showName: Boolean = true,
+    corner: Dp = 16.dp,
+    enabled: Boolean = true,
+    containerColor: Color = TraktTheme.colors.panelCardContainer,
     onUserClick: () -> Unit = {},
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = spacedBy(6.dp),
+        verticalArrangement = spacedBy(10.dp),
         modifier = modifier
-            .onClick { onUserClick() },
+            .background(containerColor, RoundedCornerShape(corner))
+            .padding(horizontal = 12.dp)
+            .padding(top = 12.dp, bottom = 10.dp)
+            .alpha(if (!enabled) 0.33f else 1f)
+            .onClick(enabled = enabled) {
+                onUserClick()
+            },
     ) {
         Box(
             contentAlignment = Alignment.Center,
@@ -84,7 +96,10 @@ internal fun SocialUserView(
             }
         }
 
-        if (showName) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = spacedBy(1.dp),
+        ) {
             Text(
                 text = user.displayName,
                 style = TraktTheme.typography.cardTitle,
@@ -92,32 +107,47 @@ internal fun SocialUserView(
                 maxLines = 1,
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.width(size + 8.dp),
+            )
+
+            Text(
+                text = user.location.orEmpty().ifEmpty { "-" },
+                style = TraktTheme.typography.cardSubtitle.copy(
+                    fontSize = 10.sp,
+                ),
+                color = TraktTheme.colors.textSecondary,
+                maxLines = 1,
+                textAlign = TextAlign.Center,
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }
 }
 
-@Preview
+@Preview(
+    backgroundColor = 0xFF000000,
+    showBackground = true,
+)
 @Composable
 private fun Preview1() {
     TraktTheme {
-        SocialUserView(
+        AllSocialUserView(
             user = PreviewData.user1,
         )
     }
 }
 
-@Preview
+@Preview(
+    backgroundColor = 0xFF000000,
+    showBackground = true,
+)
 @Composable
 private fun Preview2() {
     TraktTheme {
-        SocialUserView(
+        AllSocialUserView(
             user = PreviewData.user1.copy(
                 name = "John Dutton",
                 isVip = true,
             ),
-            showName = false,
         )
     }
 }
