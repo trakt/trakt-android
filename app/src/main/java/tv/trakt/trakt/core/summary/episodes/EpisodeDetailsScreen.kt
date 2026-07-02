@@ -318,10 +318,6 @@ internal fun EpisodeDetailsScreen(
             }
             coverImageSheet = false
         },
-        onVipClick = {
-            onNavigateVip()
-            coverImageSheet = false
-        },
         onDismiss = {
             coverImageSheet = false
         },

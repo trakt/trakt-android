@@ -400,13 +400,6 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
             )
 
             VipOfferItem(
-                text = stringResource(R.string.vip_feature_title_profile_customisation),
-                description = stringResource(R.string.vip_feature_description_profile_customisation),
-                icon = painterResource(R.drawable.ic_image),
-                iconPadding = 2.dp,
-            )
-
-            VipOfferItem(
                 text = stringResource(R.string.vip_feature_title_early_access),
                 description = stringResource(R.string.vip_feature_description_early_access),
                 icon = painterResource(R.drawable.ic_vip_mobile),

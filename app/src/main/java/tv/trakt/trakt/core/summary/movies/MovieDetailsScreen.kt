@@ -347,10 +347,6 @@ internal fun MovieDetailsScreen(
             }
             coverImageSheet = null
         },
-        onVipClick = {
-            onNavigateVip()
-            coverImageSheet = null
-        },
         onDismiss = {
             coverImageSheet = null
         },

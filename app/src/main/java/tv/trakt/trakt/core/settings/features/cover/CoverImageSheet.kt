@@ -28,7 +28,6 @@ internal fun CoverImageSheet(
     mediaImage: String?,
     onImageSet: () -> Unit,
     onDismiss: () -> Unit,
-    onVipClick: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
 
@@ -62,14 +61,6 @@ internal fun CoverImageSheet(
                         .invokeOnCompletion {
                             if (!state.isVisible) {
                                 onDismiss()
-                            }
-                        }
-                },
-                onVipClick = {
-                    sheetScope.launch { state.hide() }
-                        .invokeOnCompletion {
-                            if (!state.isVisible) {
-                                onVipClick()
                             }
                         }
                 },

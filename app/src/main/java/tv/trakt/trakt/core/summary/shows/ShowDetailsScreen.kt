@@ -385,10 +385,6 @@ internal fun ShowDetailsScreen(
             }
             coverImageSheet = null
         },
-        onVipClick = {
-            onNavigateVip()
-            coverImageSheet = null
-        },
         onDismiss = {
             coverImageSheet = null
         },
