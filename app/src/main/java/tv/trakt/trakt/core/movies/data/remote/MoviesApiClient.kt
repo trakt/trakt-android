@@ -1,16 +1,18 @@
 package tv.trakt.trakt.core.movies.data.remote
 
+import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.MoviesApi
 import org.openapitools.client.apis.RecommendationsApi
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.networking.CalendarMediaDto
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
-import tv.trakt.trakt.common.networking.MovieDto
+import tv.trakt.trakt.common.networking.MovieCalendarDto
 import tv.trakt.trakt.common.networking.MovieStatsDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.common.networking.StreamingDto
@@ -19,10 +21,12 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
 import tv.trakt.trakt.core.movies.data.remote.model.AnticipatedMovieDto
 import tv.trakt.trakt.core.movies.data.remote.model.TrendingMovieDto
 import java.time.Instant
+import java.time.temporal.ChronoUnit.DAYS
 
 internal class MoviesApiClient(
     private val moviesApi: MoviesApi,
     private val recommendationsApi: RecommendationsApi,
+    private val calendarsApi: CalendarsApi,
     private val v3Api: V3Api,
 ) : MoviesRemoteDataSource {
     override suspend fun getTrending(
@@ -63,7 +67,7 @@ internal class MoviesApiClient(
         page: Int,
         limit: Int,
         filters: GlobalFilter,
-    ): List<MovieDto> {
+    ): List<MovieCalendarDto> {
         val response = moviesApi.getMoviesPopular(
             extended = "full,streaming_ids,cloud9,colors",
             page = page,
@@ -146,7 +150,33 @@ internal class MoviesApiClient(
             }
     }
 
-    override suspend fun getDetails(movieId: TraktId): MovieDto {
+    override suspend fun getReleases(
+        startDate: Instant,
+        days: Int,
+        filters: GlobalFilter,
+    ): List<CalendarMediaDto> {
+        val response = calendarsApi.getCalendarsReleasesHot(
+            extended = "full,images,colors",
+            startDate = startDate.truncatedTo(DAYS).toString(),
+            endDate = null,
+            days = days,
+            watchnow = filters.availability?.joinToString(",") { it.slug },
+            genres = filters.genre?.joinToString(",") { it.slug },
+            subgenres = filters.subgenre?.joinToString(","),
+            years = filters.years?.let { "${it.first}-${it.second}" },
+            ratings = filters.rating?.let { "${it.first}-${it.second}" },
+            runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
+            certifications = filters.certification?.joinToString(",") { it.slug },
+            countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
+            startDate2 = null,
+            type = "movie",
+            group = null,
+        )
+
+        return response.body()
+    }
+
+    override suspend fun getDetails(movieId: TraktId): MovieCalendarDto {
         val response = moviesApi.getMoviesSummary(
             id = movieId.value.toString(),
             extended = "full,streaming_ids,cloud9,colors",
@@ -227,7 +257,7 @@ internal class MoviesApiClient(
         }
     }
 
-    override suspend fun getRelated(movieId: TraktId): List<MovieDto> {
+    override suspend fun getRelated(movieId: TraktId): List<MovieCalendarDto> {
         val response = moviesApi.getMoviesRelated(
             id = movieId.value.toString(),
             extended = "full,streaming_ids,cloud9,colors",
@@ -255,6 +285,7 @@ internal class MoviesApiClient(
             extended = "full,images,vip",
             page = null,
             limit = limit.toString(),
+            language = null,
         )
 
         return response.body()

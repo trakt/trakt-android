@@ -1,18 +1,18 @@
 package tv.trakt.trakt.core.shows.data.remote
 
+import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.ShowsApi
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.networking.CalendarMediaDto
 import tv.trakt.trakt.common.networking.CastCrewDto
-import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.RecommendedShowDto
-import tv.trakt.trakt.common.networking.SeasonDto
-import tv.trakt.trakt.common.networking.ShowDto
+import tv.trakt.trakt.common.networking.ShowCalendarsDto
 import tv.trakt.trakt.common.networking.ShowStatsDto
 import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.common.networking.api.v3.V3Api
@@ -20,10 +20,12 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
 import tv.trakt.trakt.core.shows.data.remote.model.AnticipatedShowDto
 import tv.trakt.trakt.core.shows.data.remote.model.TrendingShowDto
 import java.time.Instant
+import java.time.temporal.ChronoUnit.DAYS
 
 internal class ShowsApiClient(
     private val showsApi: ShowsApi,
     private val recommendationsApi: RecommendationsApi,
+    private val calendarsApi: CalendarsApi,
     private val v3Api: V3Api,
 ) : ShowsRemoteDataSource {
     override suspend fun getTrending(
@@ -63,7 +65,7 @@ internal class ShowsApiClient(
         page: Int,
         limit: Int,
         filters: GlobalFilter,
-    ): List<ShowDto> {
+    ): List<ShowCalendarsDto> {
         val response = showsApi.getShowsPopular(
             extended = "full,streaming_ids,cloud9,colors",
             page = page,
@@ -146,7 +148,33 @@ internal class ShowsApiClient(
             }
     }
 
-    override suspend fun getShowDetails(showId: TraktId): ShowDto {
+    override suspend fun getReleases(
+        startDate: Instant,
+        days: Int,
+        filters: GlobalFilter,
+    ): List<CalendarMediaDto> {
+        val response = calendarsApi.getCalendarsReleasesHot(
+            extended = "full,images,colors",
+            startDate = startDate.truncatedTo(DAYS).toString(),
+            endDate = null,
+            days = days,
+            watchnow = filters.availability?.joinToString(",") { it.slug },
+            genres = filters.genre?.joinToString(",") { it.slug },
+            subgenres = filters.subgenre?.joinToString(","),
+            years = filters.years?.let { "${it.first}-${it.second}" },
+            ratings = filters.rating?.let { "${it.first}-${it.second}" },
+            runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
+            certifications = filters.certification?.joinToString(",") { it.slug },
+            countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
+            startDate2 = null,
+            type = "show",
+            group = null,
+        )
+
+        return response.body()
+    }
+
+    override suspend fun getShowDetails(showId: TraktId): ShowCalendarsDto {
         val response = showsApi.getShowsSummary(
             id = showId.value.toString(),
             extended = "full,streaming_ids,cloud9,colors",
@@ -227,7 +255,7 @@ internal class ShowsApiClient(
         return response
     }
 
-    override suspend fun getRelated(showId: TraktId): List<ShowDto> {
+    override suspend fun getRelated(showId: TraktId): List<ShowCalendarsDto> {
         val response = showsApi.getShowsRelated(
             id = showId.value.toString(),
             extended = "full,streaming_ids,cloud9,colors",
@@ -258,13 +286,14 @@ internal class ShowsApiClient(
         showId: TraktId,
         limit: Int,
         sort: String,
-    ): List<CommentDto> {
+    ): List<tv.trakt.trakt.common.networking.CommentDto> {
         val response = showsApi.getShowsComments(
             id = showId.value.toString(),
             sort = sort,
             extended = "full,images,vip",
             page = null,
             limit = limit.toString(),
+            language = null,
         )
 
         return response.body()
@@ -277,7 +306,7 @@ internal class ShowsApiClient(
         return response.body()
     }
 
-    override suspend fun getSeasons(showId: TraktId): List<SeasonDto> {
+    override suspend fun getSeasons(showId: TraktId): List<tv.trakt.trakt.common.networking.SeasonDto> {
         val response = showsApi.getShowsSeasons(
             id = showId.value.toString(),
             extended = "full,cloud9",

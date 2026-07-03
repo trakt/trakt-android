@@ -418,6 +418,7 @@ private fun CalendarScreen(
         )
 
         CalendarControlsView(
+            title = R.string.page_title_calendar,
             enabled = !state.loading.isLoading,
             startDate = state.selectedStartDay,
             focusedDate = focusedDate,
@@ -637,7 +638,7 @@ private fun ContentItemsGrid(
                     key = "empty_$date",
                 ) {
                     Text(
-                        text = "No items found for this day.", // TODO string resource
+                        text = stringResource(R.string.text_calendar_placeholder_2),
                         color = TraktTheme.colors.textSecondary,
                         style = TraktTheme.typography.meta,
                         modifier = Modifier.padding(top = 4.dp),

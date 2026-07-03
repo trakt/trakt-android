@@ -13,7 +13,7 @@ import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.SeasonDto
-import tv.trakt.trakt.common.networking.ShowDto
+import tv.trakt.trakt.common.networking.ShowCalendarsDto
 import tv.trakt.trakt.common.networking.StreamingDto
 import java.time.Instant
 
@@ -57,7 +57,7 @@ internal class ShowsApiClient(
         limit: Int,
         page: Int,
         years: Int?,
-    ): List<ShowDto> {
+    ): List<ShowCalendarsDto> {
         val response = api.getShowsPopular(
             extended = "full,streaming_ids,cloud9,colors",
             limit = limit,
@@ -139,7 +139,7 @@ internal class ShowsApiClient(
         return response.body()
     }
 
-    override suspend fun getRelatedShows(showId: TraktId): List<ShowDto> {
+    override suspend fun getRelatedShows(showId: TraktId): List<ShowCalendarsDto> {
         val response = api.getShowsRelated(
             id = showId.value.toString(),
             extended = "full,streaming_ids,cloud9,colors",
@@ -189,6 +189,7 @@ internal class ShowsApiClient(
             extended = "images",
             page = null,
             limit = 20.toString(),
+            language = null,
         )
 
         return response.body()
@@ -211,7 +212,7 @@ internal class ShowsApiClient(
         return response.body()
     }
 
-    override suspend fun getShowDetails(showId: TraktId): ShowDto {
+    override suspend fun getShowDetails(showId: TraktId): ShowCalendarsDto {
         val response = api.getShowsSummary(
             id = showId.value.toString(),
             extended = "full,streaming_ids,cloud9,colors",

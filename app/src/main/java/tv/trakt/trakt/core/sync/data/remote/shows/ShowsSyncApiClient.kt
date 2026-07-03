@@ -5,11 +5,11 @@ import kotlinx.coroutines.coroutineScope
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.models.PostCheckinStartRequestOneOfOneOfEpisodeIds
-import org.openapitools.client.models.PostSyncFavoritesAddRequest
 import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostSyncRatingsRemoveRequestShowsInner
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
+import org.openapitools.client.models.PutSyncFavoritesUpdateRequest
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.ProgressShowDto
@@ -170,7 +170,7 @@ internal class ShowsSyncApiClient(
     }
 
     override suspend fun addToFavorites(showId: TraktId) {
-        val request = PostSyncFavoritesAddRequest(
+        val request = PutSyncFavoritesUpdateRequest(
             shows = listOf(
                 PostSyncRatingsRemoveRequestShowsInner(
                     ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(
@@ -188,7 +188,7 @@ internal class ShowsSyncApiClient(
     }
 
     override suspend fun removeFromFavorites(showId: TraktId) {
-        val request = PostSyncFavoritesAddRequest(
+        val request = PutSyncFavoritesUpdateRequest(
             shows = listOf(
                 PostSyncRatingsRemoveRequestShowsInner(
                     ids = PostCheckinStartRequestOneOfOneOfEpisodeIds(

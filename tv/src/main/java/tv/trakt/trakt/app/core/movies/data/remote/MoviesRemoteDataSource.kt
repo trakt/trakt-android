@@ -8,7 +8,7 @@ import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
-import tv.trakt.trakt.common.networking.MovieDto
+import tv.trakt.trakt.common.networking.MovieCalendarDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.common.networking.StreamingDto
 import java.time.Instant
@@ -23,7 +23,7 @@ internal interface MoviesRemoteDataSource {
         limit: Int,
         page: Int,
         years: Int? = null,
-    ): List<MovieDto>
+    ): List<MovieCalendarDto>
 
     suspend fun getAnticipatedMovies(
         limit: Int,
@@ -36,9 +36,9 @@ internal interface MoviesRemoteDataSource {
         page: Int,
     ): List<RecommendedMovieDto>
 
-    suspend fun getMovieDetails(movieId: TraktId): MovieDto
+    suspend fun getMovieDetails(movieId: TraktId): MovieCalendarDto
 
-    suspend fun getRelatedMovies(movieId: TraktId): List<MovieDto>
+    suspend fun getRelatedMovies(movieId: TraktId): List<MovieCalendarDto>
 
     suspend fun getMovieExternalRatings(movieId: TraktId): ExternalRatingsDto
 

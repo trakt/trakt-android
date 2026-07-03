@@ -31,6 +31,7 @@ internal fun MovieContextSheet(
         skipPartiallyExpanded = true,
     ),
     movie: Movie?,
+    showWatched: Boolean = true,
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
@@ -45,6 +46,7 @@ internal fun MovieContextSheet(
         ) {
             MovieContextView(
                 movie = movie,
+                showWatched = showWatched,
                 viewModel = koinViewModel(
                     key = nextInt().toString(),
                     parameters = { parametersOf(movie) },

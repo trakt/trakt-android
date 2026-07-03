@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.calendar.ui.controls
 
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -53,6 +54,7 @@ import java.util.Locale
 
 @Composable
 internal fun CalendarControlsView(
+    @StringRes title: Int,
     startDate: LocalDate,
     modifier: Modifier = Modifier,
     focusedDate: LocalDate? = null,
@@ -60,6 +62,7 @@ internal fun CalendarControlsView(
     availableDates: ImmutableSet<LocalDate>? = null,
     availableItems: ImmutableMap<LocalDate, ImmutableList<CalendarItem>>? = null,
     enabled: Boolean = false,
+    filtersContent: (@Composable () -> Unit)? = null,
     onDayClick: (LocalDate) -> Unit = {},
     onTodayClick: () -> Unit = {},
     onNextWeekClick: () -> Unit = {},
@@ -97,7 +100,7 @@ internal fun CalendarControlsView(
                     contentDescription = null,
                 )
                 TraktHeader(
-                    title = stringResource(R.string.page_title_calendar),
+                    title = stringResource(title),
                 )
             }
 
@@ -137,6 +140,8 @@ internal fun CalendarControlsView(
             }
         }
 
+        filtersContent?.invoke()
+
         Row(
             verticalAlignment = CenterVertically,
             horizontalArrangement = spacedBy(4.dp),
@@ -152,6 +157,7 @@ internal fun CalendarControlsView(
                 val episodes = remember(availableItems, date) {
                     availableItems?.get(date)
                         ?.filterIsInstance<CalendarItem.EpisodeItem>()
+                        ?.flatMap { it.episodes }
                         ?.size
                 }
 
@@ -331,6 +337,7 @@ private fun Preview() {
     val now = LocalDate.now()
     TraktTheme {
         CalendarControlsView(
+            title = R.string.page_title_calendar,
             startDate = now.minusDays(3L),
             focusedDate = now,
         )
@@ -343,6 +350,7 @@ private fun Preview2() {
     val today = LocalDate.now()
     TraktTheme {
         CalendarControlsView(
+            title = R.string.page_title_calendar,
             startDate = today.minusDays(3L),
             focusedDate = today,
             enabled = true,
@@ -357,6 +365,7 @@ private fun Preview3() {
     TraktTheme {
         val now = nowLocalDay()
         CalendarControlsView(
+            title = R.string.page_title_calendar,
             startDate = now.minusDays(3L),
             focusedDate = now.minusDays(2L),
             enabled = true,

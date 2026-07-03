@@ -34,7 +34,7 @@ class LoadUserLikedListsUseCase(
                 pagination = Pagination(1, 9999),
             )
             .associateBy(
-                keySelector = { it.list.id?.toTraktId()!! },
+                keySelector = { it.list?.id?.toTraktId()!! },
                 valueTransform = { it.likedAt.toInstant() },
             )
 

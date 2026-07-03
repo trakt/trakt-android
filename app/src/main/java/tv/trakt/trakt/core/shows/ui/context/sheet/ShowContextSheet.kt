@@ -31,6 +31,7 @@ internal fun ShowContextSheet(
         skipPartiallyExpanded = true,
     ),
     show: Show?,
+    showWatched: Boolean = true,
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
@@ -45,6 +46,7 @@ internal fun ShowContextSheet(
         ) {
             ShowContextView(
                 show = show,
+                showWatched = showWatched,
                 viewModel = koinViewModel(
                     key = nextInt().toString(),
                     parameters = { parametersOf(show) },

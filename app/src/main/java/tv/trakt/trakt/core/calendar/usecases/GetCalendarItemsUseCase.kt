@@ -26,8 +26,14 @@ import java.time.LocalDate
 private const val DAYS_OFFSET = 1L
 private const val DAYS_RANGE = 8
 
-private val premiereValues = listOf("season_premiere", "series_premiere")
-private val finaleValues = listOf("season_finale", "series_finale")
+// A same-day batch is a full season when it spans more than one episode and
+// carries both the season premiere and the season finale.
+private fun List<Episode>.isFullSeason(): Boolean {
+    if (size <= 1) return false
+    val hasPremiere = any { it.type?.isPremiere == true }
+    val hasFinale = any { it.type?.isFinale == true }
+    return hasPremiere && hasFinale
+}
 
 internal class GetCalendarItemsUseCase(
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
@@ -89,39 +95,29 @@ internal class GetCalendarItemsUseCase(
                 localDate in weekStart..weekEnd
             }
 
-            val fullSeasonItems = weekShowsData
-                .groupBy { it.show.ids.trakt }
-                .filter { (_, episodes) ->
-                    val isSeasonPremiere = episodes.any {
-                        it.episode.episodeType?.value in premiereValues
-                    }
-
-                    val isSeasonFinale = episodes.any {
-                        it.episode.episodeType?.value in finaleValues
-                    }
-
-                    return@filter episodes.size > 1 && isSeasonPremiere && isSeasonFinale
-                }
-
             val episodes = weekShowsData
-                .asyncMap {
-                    val isFullSeason = fullSeasonItems[it.show.ids.trakt] != null
-                    if (isFullSeason && it.episode.number > 1) {
-                        return@asyncMap null
-                    }
+                .map { it.show to Episode.fromDto(it.episode) }
+                // Group a show's episodes that share the same release day into one item,
+                // so a same-day batch renders as a single card with a combined list.
+                .groupBy { (show, episode) -> show.ids.trakt to episode.releasedAt?.toLocalDay() }
+                .map { (_, entries) ->
+                    val show = Show.fromDto(entries.first().first)
+                    val episodeModels = entries
+                        .map { (_, episode) -> episode }
+                        .sortedBy { it.number }
+                        .toImmutableList()
+                    val firstEpisode = episodeModels.first()
 
-                    val showId = it.show.ids.trakt.toTraktId()
                     CalendarItem.EpisodeItem(
-                        watched = showsProgress[showId]?.isEpisodeWatched(
-                            seasonNumber = it.episode.season,
-                            episodeId = it.episode.ids.trakt.toTraktId(),
+                        watched = showsProgress[show.ids.trakt]?.isEpisodeWatched(
+                            seasonNumber = firstEpisode.season,
+                            episodeId = firstEpisode.ids.trakt,
                         ) == true,
-                        episode = Episode.fromDto(it.episode),
-                        show = Show.fromDto(it.show),
-                        isFullSeason = isFullSeason,
+                        episodes = episodeModels,
+                        show = show,
+                        isFullSeason = episodeModels.isFullSeason(),
                     )
                 }
-                .filterNotNull()
 
             val movies = moviesData
                 .filter {

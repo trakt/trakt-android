@@ -125,7 +125,7 @@ data class CustomList(
             val list = dto.list
             return CustomList(
                 ids = Ids(
-                    trakt = list.ids?.trakt?.toTraktId()!!,
+                    trakt = list?.ids?.trakt?.toTraktId()!!,
                     slug = list.ids.slug.toSlugId(),
                 ),
                 name = list.name ?: "",

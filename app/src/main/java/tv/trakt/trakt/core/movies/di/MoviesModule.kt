@@ -33,6 +33,10 @@ import tv.trakt.trakt.core.discover.sections.recommended.data.local.movies.Recom
 import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.recommended.usecase.movies.CustomGetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.recommended.usecase.movies.DefaultGetRecommendedMoviesUseCase
+import tv.trakt.trakt.core.discover.sections.releases.data.local.movies.ReleasesMoviesLocalDataSource
+import tv.trakt.trakt.core.discover.sections.releases.data.local.movies.ReleasesMoviesStorage
+import tv.trakt.trakt.core.discover.sections.releases.usecases.movies.DefaultGetReleasesMoviesUseCase
+import tv.trakt.trakt.core.discover.sections.releases.usecases.movies.GetReleasesMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.TrendingMoviesLocalDataSource
 import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.TrendingMoviesStorage
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingMoviesUseCase
@@ -49,6 +53,12 @@ internal val moviesDataModule = module {
 
     single<PopularMoviesLocalDataSource> {
         PopularMoviesStorage(
+            dataStore = get(named(MOVIES_PREFERENCES)),
+        )
+    }
+
+    single<ReleasesMoviesLocalDataSource> {
+        ReleasesMoviesStorage(
             dataStore = get(named(MOVIES_PREFERENCES)),
         )
     }
@@ -127,6 +137,16 @@ internal val moviesModule = module {
         DefaultGetAnticipatedMoviesUseCase(
             remoteSource = get(),
             localAnticipatedSource = get(),
+            localMovieSource = get(),
+        )
+    }
+
+    factory<GetReleasesMoviesUseCase>(
+        qualifier = named("defaultReleasesMoviesUseCase"),
+    ) {
+        DefaultGetReleasesMoviesUseCase(
+            remoteSource = get(),
+            localSource = get(),
             localMovieSource = get(),
         )
     }

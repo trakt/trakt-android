@@ -2,12 +2,13 @@ package tv.trakt.trakt.core.movies.data.remote
 
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.networking.CalendarMediaDto
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
-import tv.trakt.trakt.common.networking.MovieDto
+import tv.trakt.trakt.common.networking.MovieCalendarDto
 import tv.trakt.trakt.common.networking.MovieStatsDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.common.networking.StreamingDto
@@ -28,7 +29,7 @@ internal interface MoviesRemoteDataSource {
         page: Int = 1,
         limit: Int,
         filters: GlobalFilter,
-    ): List<MovieDto>
+    ): List<MovieCalendarDto>
 
     suspend fun getRecommended(
         limit: Int,
@@ -42,7 +43,13 @@ internal interface MoviesRemoteDataSource {
         filters: GlobalFilter,
     ): List<AnticipatedMovieDto>
 
-    suspend fun getDetails(movieId: TraktId): MovieDto
+    suspend fun getReleases(
+        startDate: Instant,
+        days: Int,
+        filters: GlobalFilter,
+    ): List<CalendarMediaDto>
+
+    suspend fun getDetails(movieId: TraktId): MovieCalendarDto
 
     suspend fun getExternalRatings(movieId: TraktId): ExternalRatingsDto
 
@@ -64,7 +71,7 @@ internal interface MoviesRemoteDataSource {
 
     suspend fun getCastCrew(movieId: TraktId): CastCrewDto
 
-    suspend fun getRelated(movieId: TraktId): List<MovieDto>
+    suspend fun getRelated(movieId: TraktId): List<MovieCalendarDto>
 
     suspend fun getSentiments(movieId: TraktId): V3SentimentResponse?
 

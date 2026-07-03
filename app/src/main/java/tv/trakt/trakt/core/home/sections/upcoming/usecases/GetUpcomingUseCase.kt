@@ -10,6 +10,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.helpers.extensions.toLocal
+import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode.Media
 import tv.trakt.trakt.common.model.MediaMode.Movies
@@ -28,8 +29,14 @@ import java.time.temporal.ChronoUnit.DAYS
 private const val DAYS_OFFSET = 1L
 private const val DAYS_RANGE = 14
 
-private val premiereValues = listOf("season_premiere", "series_premiere")
-private val finaleValues = listOf("season_finale", "series_finale")
+// A same-day batch is a full season when it spans more than one episode and
+// carries both the season premiere and the season finale.
+private fun List<Episode>.isFullSeason(): Boolean {
+    if (size <= 1) return false
+    val hasPremiere = any { it.type?.isPremiere == true }
+    val hasFinale = any { it.type?.isFinale == true }
+    return hasPremiere && hasFinale
+}
 
 internal class GetUpcomingUseCase(
     private val remoteUserSource: UserCalendarRemoteDataSource,
@@ -79,51 +86,39 @@ internal class GetUpcomingUseCase(
             filters = filter,
         )
 
-        val fullSeasonItems = remoteShows
-            .groupBy { it.show.ids.trakt }
-            .filter { (_, episodes) ->
-                val isSeasonPremiere = episodes.any {
-                    it.episode.episodeType?.value in premiereValues
-                }
-
-                val isSeasonFinale = episodes.any {
-                    it.episode.episodeType?.value in finaleValues
-                }
-
-                return@filter episodes.size > 1 && isSeasonPremiere && isSeasonFinale
-            }
-
         val now = nowLocal().truncatedTo(DAYS)
-        val showsList = remoteShows
-            .asyncMap {
+
+        return remoteShows
+            .mapNotNull {
                 val releaseAt = (it.episode.effectiveReleaseDate ?: it.episode.firstAired)
                     ?.toInstant()
                     ?.toLocal()
-
-                if (releaseAt == null) {
-                    return@asyncMap null
-                }
+                    ?: return@mapNotNull null
 
                 if (releaseAt.isBefore(now)) {
-                    return@asyncMap null
+                    return@mapNotNull null
                 }
 
-                val isFullSeason = fullSeasonItems[it.show.ids.trakt] != null
-                if (isFullSeason && it.episode.number > 1) {
-                    return@asyncMap null
-                }
+                Triple(it.show, Episode.fromDto(it.episode), releaseAt.toInstant())
+            }
+            // Group a show's episodes that share the same release day into one item,
+            // so a same-day batch renders as a single card with a combined list.
+            .groupBy { (show, _, releasedAt) -> show.ids.trakt to releasedAt.toLocalDay() }
+            .map { (_, entries) ->
+                val sorted = entries.sortedBy { (_, episode, _) -> episode.number }
+                val show = Show.fromDto(sorted.first().first)
+                val episodes = sorted
+                    .map { (_, episode, _) -> episode }
+                    .toImmutableList()
 
                 HomeUpcomingItem.EpisodeItem(
-                    id = it.episode.ids.trakt.toTraktId(),
-                    releasedAt = releaseAt.toInstant(),
-                    episode = Episode.fromDto(it.episode),
-                    show = Show.fromDto(it.show),
-                    isFullSeason = isFullSeason,
+                    id = episodes.first().ids.trakt,
+                    releasedAt = sorted.first().third,
+                    episodes = episodes,
+                    show = show,
+                    isFullSeason = episodes.isFullSeason(),
                 )
             }
-
-        return showsList
-            .filterNotNull()
     }
 
     private suspend fun getMovies(filter: GlobalFilter): List<HomeUpcomingItem.MovieItem> {

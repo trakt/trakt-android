@@ -15,8 +15,8 @@ import tv.trakt.trakt.common.helpers.serializers.InstantSerializer
 import tv.trakt.trakt.common.model.MediaStatus.Released
 import tv.trakt.trakt.common.model.Show.Companion
 import tv.trakt.trakt.common.networking.RecommendedShowDto
+import tv.trakt.trakt.common.networking.ShowCalendarsDto
 import tv.trakt.trakt.common.networking.ShowDto
-import tv.trakt.trakt.common.networking.ShowLikesDto
 import java.time.Instant
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
@@ -133,7 +133,7 @@ fun Companion.fromDto(dto: RecommendedShowDto): Show {
     )
 }
 
-fun Companion.fromDto(dto: ShowLikesDto): Show {
+fun Companion.fromDto(dto: ShowCalendarsDto): Show {
     return Show(
         ids = Ids.fromDto(dto.ids),
         title = dto.title,

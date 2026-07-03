@@ -5,7 +5,7 @@ import org.openapitools.client.apis.ShowsApi
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
-import tv.trakt.trakt.common.networking.EpisodeDto
+import tv.trakt.trakt.common.networking.EpisodeCalendarsDto
 import tv.trakt.trakt.common.networking.EpisodeStatsDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.StreamingDto
@@ -18,7 +18,7 @@ internal class EpisodesApiClient(
         showId: TraktId,
         season: Int,
         episode: Int,
-    ): EpisodeDto {
+    ): EpisodeCalendarsDto {
         val response = showsApi.getShowsEpisodeSummary(
             id = showId.value.toString(),
             season = season,
@@ -31,7 +31,7 @@ internal class EpisodesApiClient(
     override suspend fun getSeason(
         showId: TraktId,
         season: Int,
-    ): List<EpisodeDto> {
+    ): List<EpisodeCalendarsDto> {
         val response = showsApi.getShowsSeasonEpisodes(
             id = showId.value.toString(),
             season = season,
@@ -99,6 +99,7 @@ internal class EpisodesApiClient(
             extended = "full,images,vip",
             page = null,
             limit = limit.toString(),
+            language = null,
         )
         return response.body()
     }

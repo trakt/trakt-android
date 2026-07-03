@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -130,7 +131,12 @@ internal fun CalendarEpisodeItemView(
                             R.string.text_season_number,
                             item.episode.season,
                         )
-
+                        item.episodes.size > 1 -> stringResource(
+                            R.string.episode_footer_season_episode_range,
+                            item.episode.season,
+                            item.episodes.first().number,
+                            item.episodes.last().number,
+                        )
                         else -> item.episode.seasonEpisodeString()
                     }
 
@@ -202,8 +208,10 @@ private fun Preview() {
                 item = CalendarItem.EpisodeItem(
                     watched = false,
                     show = PreviewData.show1,
-                    episode = PreviewData.episode1.copy(
-                        firstAired = nowUtcInstant().minus(3, DAYS),
+                    episodes = persistentListOf(
+                        PreviewData.episode1.copy(
+                            firstAired = nowUtcInstant().minus(3, DAYS),
+                        ),
                     ),
                 ),
                 onClick = {},
@@ -214,7 +222,11 @@ private fun Preview() {
                 item = CalendarItem.EpisodeItem(
                     watched = true,
                     show = PreviewData.show1,
-                    episode = PreviewData.episode1,
+                    episodes = persistentListOf(
+                        PreviewData.episode1.copy(
+                            firstAired = nowUtcInstant().minus(3, DAYS),
+                        ),
+                    ),
                 ),
                 onClick = {},
                 onShowClick = {},
@@ -224,7 +236,11 @@ private fun Preview() {
                 item = CalendarItem.EpisodeItem(
                     watched = false,
                     show = PreviewData.show1,
-                    episode = PreviewData.episode1,
+                    episodes = persistentListOf(
+                        PreviewData.episode1.copy(
+                            firstAired = nowUtcInstant().minus(3, DAYS),
+                        ),
+                    ),
                 ),
                 onClick = {},
                 onShowClick = {},
