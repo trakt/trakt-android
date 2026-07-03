@@ -9,6 +9,7 @@ import tv.trakt.trakt.common.model.User
 internal data class HomeState(
     val mode: MediaMode? = null,
     val user: UserState = UserState(),
+    val welcomeBanner: Boolean = false,
 ) {
     data class UserState(
         val user: User? = null,

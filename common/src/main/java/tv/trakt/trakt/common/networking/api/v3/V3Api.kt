@@ -13,6 +13,7 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalList
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalWatchlistResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3TriviaResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3UsageResponse
 
 class V3Api(
     private val baseUrl: String,
@@ -24,6 +25,11 @@ class V3Api(
         httpClientEngine,
         httpClientConfig,
     ) {
+    suspend fun getUsage(): V3UsageResponse {
+        val response = client.get("${baseV3Url}users/me/usage")
+        return response.body()
+    }
+
     suspend fun getWatchlistMinimal(): Pair<Set<TraktId>, Set<TraktId>> {
         val response = client.get("${baseV3Url}users/me/watchlist/minimal")
         val responseBody = response.body<V3MinimalWatchlistResponse>()

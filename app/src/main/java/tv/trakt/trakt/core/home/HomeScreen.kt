@@ -2,6 +2,8 @@
 
 package tv.trakt.trakt.core.home
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -33,6 +35,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.delay
+import tv.trakt.trakt.common.Config.WEB_DATA_IMPORT_URL
+import tv.trakt.trakt.common.Config.WEB_WELCOME_URL
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
@@ -46,12 +51,14 @@ import tv.trakt.trakt.core.home.sections.streaks.all.StreaksSheet
 import tv.trakt.trakt.core.home.sections.upcoming.HomeUpcomingView
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextView
 import tv.trakt.trakt.core.home.sections.watchlist.HomeWatchlistView
+import tv.trakt.trakt.core.home.sections.welcome.HomeWelcomeView
 import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.components.vip.VipBanner
 import tv.trakt.trakt.ui.theme.TraktTheme
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 internal fun HomeScreen(
@@ -109,6 +116,7 @@ internal fun HomeScreen(
         onFiltersClick = {
             filtersSheet = true
         },
+        onDismissWelcomeClick = viewModel::dismissWelcomeBanner,
     )
 
     GlobalFiltersSheet(
@@ -146,7 +154,10 @@ private fun HomeScreenContent(
     onStreakClick: () -> Unit = {},
     onFiltersClick: () -> Unit = {},
     onUserClick: (user: User) -> Unit = {},
+    onDismissWelcomeClick: () -> Unit = {},
 ) {
+    val uriHandler = LocalUriHandler.current
+
     val headerState = rememberHeaderState()
     val lazyListState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
@@ -189,6 +200,12 @@ private fun HomeScreenContent(
             .background(TraktTheme.colors.backgroundPrimary)
             .nestedScroll(headerState.connection),
     ) {
+        var bannerVisible by remember { mutableStateOf(false) }
+        LaunchedEffect(state.welcomeBanner) {
+            delay(250.milliseconds)
+            bannerVisible = state.welcomeBanner
+        }
+
         ScrollableBackdropImage(
             scrollState = lazyListState,
         )
@@ -199,6 +216,25 @@ private fun HomeScreenContent(
             verticalArrangement = spacedBy(TraktTheme.spacing.mainSectionVerticalSpace),
             contentPadding = listPadding,
         ) {
+            if (state.welcomeBanner) {
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .animateContentSize(animationSpec = tween(250))
+                            .padding(sectionPadding),
+                    ) {
+                        if (bannerVisible) {
+                            HomeWelcomeView(
+                                onClick = { uriHandler.openUri(WEB_WELCOME_URL) },
+                                onImportClick = { uriHandler.openUri(WEB_DATA_IMPORT_URL) },
+                                onDismissClick = onDismissWelcomeClick,
+                            )
+                        }
+                    }
+                }
+            }
+
             item {
                 HomeUpNextView(
                     headerPadding = sectionPadding,

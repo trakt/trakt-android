@@ -22,6 +22,7 @@ import tv.trakt.trakt.common.helpers.errors.GlobalErrorsManager
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
 import tv.trakt.trakt.common.helpers.lifecycle.DefaultAppLifecycleProvider
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
+import tv.trakt.trakt.core.home.sections.welcome.usecases.DismissWelcomeBannerUseCase
 import tv.trakt.trakt.core.main.MainViewModel
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
@@ -98,6 +99,12 @@ internal val mainModule = module {
 
     factory {
         DismissWelcomeUseCase(
+            mainDataStore = get(named(MAIN_PREFERENCES)),
+        )
+    }
+
+    factory {
+        DismissWelcomeBannerUseCase(
             mainDataStore = get(named(MAIN_PREFERENCES)),
         )
     }

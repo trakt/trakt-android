@@ -11,6 +11,5 @@
   <string name="error_text_payment_canceled" translatable="false">Payment has been canceled. Please try again.</string>
   <string name="error_text_payment_already_owned" translatable="false">You already own this item or its currently being processed.</string>
   <string name="error_text_payment_item_unavailable" translatable="false">Products are currently not available. Please wait and try again later.</string>
-  <string name="error_text_payment_other" translatable="false">There was an error while processing your payment. Please try again or contact support if needed.</string>
 
 </resources>

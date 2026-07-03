@@ -10,6 +10,7 @@ class FirebaseConfig {
         const val MOBILE_EMPTY_IMAGE_3 = "mobile_empty_image_3"
         const val MOBILE_EMPTY_IMAGE_4 = "mobile_empty_image_4"
         const val MOBILE_WHATS_NEW = "mobile_whats_new"
+        const val MOBILE_WELCOME_BANNER_ENABLED = "mobile_welcome_banner_enabled"
 
         const val MOBILE_CUSTOM_THEME_ENABLED = "mobile_custom_theme_enabled"
         const val MOBILE_CUSTOM_THEME_JSON = "mobile_custom_theme_json"

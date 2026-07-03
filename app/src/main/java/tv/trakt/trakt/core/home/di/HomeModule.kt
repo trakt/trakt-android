@@ -57,6 +57,7 @@ import tv.trakt.trakt.core.home.sections.watchlist.features.all.AllHomeWatchlist
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeMoviesWatchlistUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeShowsWatchlistUseCase
+import tv.trakt.trakt.core.home.sections.welcome.usecases.GetUserUsageUseCase
 
 internal const val HOME_PREFERENCES = "home_preferences_mobile"
 
@@ -86,6 +87,7 @@ internal val homeModule = module {
     factoryOf(::GetSocialActivityUseCase)
     factoryOf(::GetPersonalActivityUseCase)
     factoryOf(::GetUpcomingUseCase)
+    factoryOf(::GetUserUsageUseCase)
 
     viewModelOf(::HomeViewModel)
     viewModelOf(::HomeSocialViewModel)
