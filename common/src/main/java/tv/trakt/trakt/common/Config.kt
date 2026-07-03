@@ -18,7 +18,6 @@ object Config {
     const val WEB_SETTINGS_URL: String = "https://app.trakt.tv/settings?native_app_mode=true"
     const val WEB_SETTINGS_SCROBBLING_URL: String = "https://trakt.tv/settings/scrobblers?native_app_mode=true"
     const val WEB_TRANSLATE_URL: String = "https://crwd.in/trakt-poc/3857d5ea667dd425fbd0cb2e4e80dc192749600"
-    const val WEB_WELCOME_URL: String = "https://app.trakt.tv/welcome?native_app_mode=true"
     const val WEB_DATA_IMPORT_URL: String = "https://app.trakt.tv/settings/data?native_app_mode=true"
 
     const val WEB_SOCIAL_GITHUB_URL: String = "https://github.com/trakt/trakt-android"
@@ -71,5 +70,9 @@ object Config {
 
     fun webWikipediaMediaUrl(title: String): String {
         return "https://en.wikipedia.org/wiki/$title"
+    }
+
+    fun webDataImportUrl(source: String?): String {
+        return "${WEB_V3_BASE_URL}settings/data?native_app_mode=true&source=$source"
     }
 }

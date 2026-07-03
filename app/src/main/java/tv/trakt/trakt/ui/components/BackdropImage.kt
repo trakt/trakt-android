@@ -54,7 +54,7 @@ import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-private const val PARALLAX_RATIO = 0.75F
+internal const val PARALLAX_RATIO = 0.75F
 
 @Composable
 internal fun ScrollableBackdropImage(

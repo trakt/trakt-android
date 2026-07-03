@@ -32,6 +32,7 @@ internal fun TraktBottomSheet(
     modifier: Modifier = Modifier,
     containerColor: Color = TraktTheme.colors.dialogContainer,
     contentColor: Color = TraktTheme.colors.dialogContent,
+    handle: Boolean = true,
     onDismiss: () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -42,21 +43,25 @@ internal fun TraktBottomSheet(
         contentColor = contentColor,
         scrimColor = Color.Black.copy(alpha = 0.66F),
         onDismissRequest = onDismiss,
-        dragHandle = {
-            Box(
-                modifier = Modifier
-                    .padding(top = 8.dp, bottom = 12.dp)
-                    .background(
-                        color = TraktTheme.colors.dialogContent,
-                        shape = RoundedCornerShape(100),
-                    )
-                    .size(36.dp, 4.dp)
-                    .clickable(
-                        onClick = { },
-                        indication = null,
-                        interactionSource = null,
-                    ),
-            )
+        dragHandle = if (handle) {
+            {
+                Box(
+                    modifier = Modifier
+                        .padding(top = 8.dp, bottom = 12.dp)
+                        .background(
+                            color = TraktTheme.colors.dialogContent,
+                            shape = RoundedCornerShape(100),
+                        )
+                        .size(36.dp, 4.dp)
+                        .clickable(
+                            onClick = { },
+                            indication = null,
+                            interactionSource = null,
+                        ),
+                )
+            }
+        } else {
+            null
         },
     ) {
         // Set light system bars appearance fix for dialogs

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -25,6 +26,7 @@ import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeState.UserState
 import tv.trakt.trakt.core.home.sections.welcome.usecases.DismissWelcomeBannerUseCase
 import tv.trakt.trakt.core.home.sections.welcome.usecases.GetUserUsageUseCase
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 internal class HomeViewModel(
@@ -80,6 +82,7 @@ internal class HomeViewModel(
                 if (enabled && !dismissed) {
                     val isAuthenticated = sessionManager.isAuthenticated()
                     val usage = getUserUsageUseCase.getUserUsage()
+                    delay(500.milliseconds) // Delay to avoid showing the banner too quickly.
                     welcomeBannerState.update {
                         isAuthenticated && usage.isEmpty
                     }
