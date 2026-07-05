@@ -97,7 +97,7 @@
   <string name="button_label_like_list">Gostar de %s</string>
   <string name="button_label_login">Iniciar sessão</string>
   <string name="button_label_logout">Terminar sessão</string>
-  <string name="button_label_manage_subscription">Gerir Assinatura VIP</string>
+  <string name="button_label_manage_subscription">Gerir subscrição VIP</string>
   <string name="button_label_manage_vip">Gerir Assinatura</string>
   <string name="button_label_mark_as_watched">Marcar \"%s\" como visto</string>
   <string name="button_label_mark_as_watched_now">Agora mesmo</string>
@@ -434,7 +434,7 @@
   <string name="button_text_younify_send_logs">Enviar Registos</string>
   <string name="button_text_younify_unlink">Desvincular</string>
   <string name="chart_label_grouped_categories">%d categorias</string>
-  <string name="chart_label_other">Outro</string>
+  <string name="chart_label_other">Outras</string>
   <string name="cleanup_status_done">Removidas %d reproduções duplicadas.</string>
   <string name="cleanup_status_removing">Removendo %1$d / %2$d reproduções duplicadas…</string>
   <string name="clear_status_clearing">Limpando %1$d / %2$d itens…</string>
@@ -503,7 +503,7 @@
   <string name="dialog_title_younify_data_sync">Sincronizar Dados Existentes</string>
   <string name="drawer_meta_info_cast">Elenco</string>
   <string name="drawer_meta_info_cast_and_crew">Elenco e Equipe</string>
-  <string name="drawer_meta_info_crew">Equipa</string>
+  <string name="drawer_meta_info_crew">Equipa técnica</string>
   <string name="drawer_title_add_note">Nota</string>
   <string name="drawer_title_notes">Notas</string>
   <string name="drawer_title_people">Pessoas</string>
@@ -642,7 +642,7 @@
   <string name="header_status">Estado</string>
   <string name="header_stream_on">Transmitir em</string>
   <string name="header_streaming">Disponibilidade</string>
-  <string name="header_streaming_services">Serviços de Streaming</string>
+  <string name="header_streaming_services">Serviços de streaming</string>
   <string name="header_streaming_sync">Sincronização de Streaming</string>
   <string name="header_studio">Estúdio</string>
   <string name="header_sync_detail">ID de Sincronização %s</string>
@@ -690,7 +690,7 @@
   <string name="import_guide_imdb_step_2">Visite a sua <a>lista de observação</a></string>
   <string name="import_guide_imdb_step_3">Clique em Exportar</string>
   <string name="import_guide_imdb_step_4">Visite as suas <a>classificações</a></string>
-  <string name="import_guide_imdb_step_5">Clique em Exportar</string>
+  <string name="import_guide_imdb_step_5">Clica em Exportar</string>
   <string name="import_guide_imdb_step_6">Carregue os ficheiros .csv aqui</string>
   <string name="import_guide_imdb_title">IMDb no Trakt? Luzes, câmara, ação! ✨</string>
   <string name="import_guide_json_description">O Trakt recebe os seus dados estruturados de braços abertos. Carregue o seu ficheiro JSON, certificando-se de que segue as nossas diretrizes para uma importação suave e bem-sucedida.</string>
@@ -834,7 +834,7 @@
   <string name="link_text_preview_settings">Pré-visualização</string>
   <string name="link_text_privacy">Privacidade</string>
   <string name="link_text_service_status">Estado do serviço Trakt</string>
-  <string name="link_text_streaming_sync_settings">Serviços de Streaming</string>
+  <string name="link_text_streaming_sync_settings">Serviços de streaming</string>
   <string name="link_text_support">Suporte</string>
   <string name="link_text_terms">Termos</string>
   <string name="link_text_terms_of_use">Termos de Utilização</string>
@@ -1039,7 +1039,7 @@
   <string name="preview_feature_description_year_in_review">Pré-visualize a Retrospectiva do Ano, agora em execução diretamente na V3.</string>
   <string name="preview_feature_title_edit_mode">Modo de edição</string>
   <string name="preview_feature_title_month_in_review">Retrospectiva do Mês</string>
-  <string name="preview_feature_title_plex_sync">Sincronização Plex</string>
+  <string name="preview_feature_title_plex_sync">Sincronização com o Plex</string>
   <string name="preview_feature_title_rewatch">Rever</string>
   <string name="preview_feature_title_scoped_favorites">Favoritos Delimitados</string>
   <string name="preview_feature_title_smart_related">Conteúdo Relacionado Inteligente</string>
@@ -1068,7 +1068,7 @@
   <string name="tab_text_more">Mais</string>
   <string name="tab_text_seasons_episodes">Episódios</string>
   <string name="tab_text_seasons_info">Informações</string>
-  <string name="tab_text_seasons_reviews">Avaliações</string>
+  <string name="tab_text_seasons_reviews">Críticas</string>
   <string name="tab_text_simple_filters">Simples</string>
   <string name="tag_label_progress">Progresso</string>
   <string name="tag_text_blocked_user">Bloqueado</string>
@@ -1093,7 +1093,7 @@
   <string name="tag_text_remaining_duration">Faltam %s</string>
   <string name="tag_text_remaining_episodes">Faltam %d</string>
   <string name="tag_text_reviewed">Avaliado</string>
-  <string name="tag_text_rewatching">A Rever</string>
+  <string name="tag_text_rewatching">A rever</string>
   <string name="tag_text_season_finale">Final da Temporada</string>
   <string name="tag_text_season_premiere">Estreia da Temporada</string>
   <string name="tag_text_series_finale">Final da Série</string>
@@ -1276,7 +1276,7 @@
   <string name="text_language">Idioma</string>
   <string name="text_last_day">último %s</string>
   <string name="text_library">Biblioteca</string>
-  <string name="text_list_private">Privado</string>
+  <string name="text_list_private">Privada</string>
   <string name="text_list_private_info">A lista será visível apenas para você.</string>
   <string name="text_list_public">Pública</string>
   <string name="text_list_public_info">A lista será visível para todos os utilizadores.</string>
@@ -1840,7 +1840,7 @@
   <string name="yir_2024_stats_tooltip_week_label">Semana %s</string>
   <string name="yir_2024_streaming_intro">Disponibilidade em</string>
   <string name="yir_2024_streaming_service_count">Contagem de Serviços</string>
-  <string name="yir_2024_streaming_title">Serviços de Streaming</string>
+  <string name="yir_2024_streaming_title">Serviços de streaming</string>
   <string name="yir_2024_studio_count">Contagem de Estúdios</string>
   <string name="yir_2024_thanks_copy_directed">Fizeste um trabalho épico a dirigir <b>%1$d</b>. Que venha uma sequela ainda melhor em <b>%2$d</b>.</string>
   <string name="yir_2024_thanks_copy_recommend">Continua a tua jornada. Tenta ver um destes programas ou filmes populares.</string>
