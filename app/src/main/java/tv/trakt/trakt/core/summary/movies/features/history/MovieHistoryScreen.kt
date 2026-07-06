@@ -62,6 +62,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.capitalize
+import tv.trakt.trakt.common.helpers.extensions.isTraktUnknown
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
@@ -270,9 +271,12 @@ private fun ContentList(
 
             item(key = "header-$date") {
                 TraktHeader(
-                    title = when (date) {
-                        today, today.minusDays(1) -> {
+                    title = when {
+                        today == date || today.minusDays(1) == date -> {
                             date.atStartOfDay(ZoneId.systemDefault()).relativePastDateString()
+                        }
+                        date.isTraktUnknown() -> {
+                            stringResource(R.string.button_text_mark_as_watched_unknown_date)
                         }
                         else -> {
                             date.format(longDateFormat()).capitalize()

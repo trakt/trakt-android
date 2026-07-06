@@ -17,9 +17,11 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import tv.trakt.trakt.common.helpers.extensions.isTraktUnknown
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
@@ -87,7 +89,11 @@ internal fun AllActivityEpisodeItem(
                     Text(
                         text = when (dateFormat) {
                             null -> item.activityAt.toLocal().relativePastDateString()
-                            else -> item.activityAt.toLocal().format(dateFormat)
+                            else -> if (item.activityAt.isTraktUnknown()) {
+                                stringResource(R.string.button_text_mark_as_watched_unknown_date)
+                            } else {
+                                item.activityAt.toLocal().format(dateFormat)
+                            }
                         },
                         color = TraktTheme.colors.textPrimary,
                         style = TraktTheme.typography.cardSubtitle.copy(

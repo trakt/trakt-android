@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalResources
+import tv.trakt.trakt.resources.R
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDate
@@ -112,6 +114,15 @@ fun nowUtcInstant(): Instant = Instant.now()
 fun ZonedDateTime.isNowOrBefore(zone: ZoneOffset = UTC): Boolean {
     val today = ZonedDateTime.now(zone)
     return this.isEqual(today) || this.isBefore(today)
+}
+
+fun LocalDate.isTraktUnknown(): Boolean {
+    return this.year == 1970 && this.monthValue == 1 && this.dayOfMonth == 1
+}
+
+fun Instant.isTraktUnknown(): Boolean {
+    val utc = this.atZone(UTC)
+    return utc.year == 1970 && utc.monthValue == 1 && utc.dayOfMonth == 1
 }
 
 // Local time functions
@@ -314,14 +325,16 @@ fun ZonedDateTime.relativeDateTimeString(): String {
 @Composable
 fun ZonedDateTime.relativePastDateString(): String {
     val configuration = LocalConfiguration.current
+    val resources = LocalResources.current
 
     val appLocale = remember(configuration) {
         AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
     }
 
     return remember(appLocale) {
-        if (year == 1970 && monthValue == 1 && dayOfMonth == 1) {
-            return@remember "N/A"
+        val utcDate = this.withZoneSameInstant(UTC)
+        if (utcDate.year == 1970 && utcDate.monthValue == 1 && utcDate.dayOfMonth == 1) {
+            return@remember resources.getString(R.string.button_text_mark_as_watched_unknown_date)
         }
 
         val formatter = RelativeDateTimeFormatter.getInstance(appLocale)
