@@ -1429,7 +1429,7 @@
   <string name="text_streaming_service_logo_alt">Logo de %s</string>
   <string name="text_streaming_sync">Sincronización de streaming</string>
   <string name="text_streaming_tmdb_pill">TMDB %s</string>
-  <string name="text_table_history">Historia</string>
+  <string name="text_table_history">Historial</string>
   <string name="text_table_library">Biblioteca</string>
   <string name="text_table_ratings">Calificaciones</string>
   <string name="text_table_watchlist">Lista de seguimiento</string>
