@@ -112,8 +112,7 @@ internal fun HomeWelcomeView(
                     tint = TraktTheme.colors.textSecondary,
                     modifier = Modifier
                         .padding(start = 8.dp)
-                        .size(18.dp)
-                        .onClick(onClick = onDismissClick),
+                        .size(18.dp),
                 )
             }
         }
