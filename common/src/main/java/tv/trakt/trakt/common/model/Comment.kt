@@ -6,7 +6,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import isGoogleTranslateInstalled
+import tv.trakt.trakt.common.helpers.extensions.isGoogleTranslateInstalled
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.networking.CommentDto
 import java.time.ZonedDateTime

@@ -1,8 +1,13 @@
+package tv.trakt.trakt.common.helpers.extensions
+
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.ResolveInfo
+
+private const val GOOGLE_TRANSLATE_PACKAGE = "com.google.android.apps.translate"
+private var isGoogleTranslateInstalled: Boolean? = null
 
 fun Context.openGoogleTranslate(
     activity: ActivityInfo,
@@ -17,23 +22,29 @@ fun Context.openGoogleTranslate(
         .setClassName(activity.packageName, activity.name)
     try {
         startActivity(intent)
-    } catch (e: ActivityNotFoundException) {
+    } catch (_: ActivityNotFoundException) {
         // TODO: Show error
     }
 }
 
-fun Context.googleTranslateActivityInfo() =
-    queryProcessTextActivities()
-        .firstOrNull { it.activityInfo.packageName == "com.google.android.apps.translate" }
+fun Context.googleTranslateActivityInfo(): ActivityInfo? {
+    return queryProcessTextActivities()
+        .firstOrNull { it.activityInfo.packageName == GOOGLE_TRANSLATE_PACKAGE }
         ?.activityInfo
+}
 
-fun Context.queryProcessTextActivities(): List<ResolveInfo> {
+fun Context.isGoogleTranslateInstalled(): Boolean {
+    if (isGoogleTranslateInstalled != null) {
+        return isGoogleTranslateInstalled ?: false
+    }
+    return queryProcessTextActivities()
+        .any { it.activityInfo.packageName == GOOGLE_TRANSLATE_PACKAGE }
+        .also { isGoogleTranslateInstalled = it }
+}
+
+private fun Context.queryProcessTextActivities(): List<ResolveInfo> {
     val intent = Intent()
         .setAction(Intent.ACTION_PROCESS_TEXT)
         .setType("text/plain")
     return packageManager.queryIntentActivities(intent, 0)
 }
-
-fun Context.isGoogleTranslateInstalled() =
-    queryProcessTextActivities()
-        .any { it.activityInfo.packageName == "com.google.android.apps.translate" }

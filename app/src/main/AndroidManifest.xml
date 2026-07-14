@@ -183,10 +183,7 @@
     <package android:name="com.rottentomatoes.android" />
 
     <!-- Misc. -->
-    <intent>
-      <action android:name="android.intent.action.PROCESS_TEXT" />
-      <data android:mimeType="text/plain" />
-    </intent>
+    <package android:name="com.google.android.apps.translate" />
   </queries>
 
 </manifest>
