@@ -510,17 +510,11 @@ private fun SettingsTracking(
         )
 
         val multiplePlays = remember(state.user?.settings) {
-            when (state.user?.settings?.watchOnlyOnce) {
-                null -> false
-                else -> state.user.settings?.watchOnlyOnce == false
-            }
+            state.user?.settings?.watchOnlyOnce == false
         }
 
         val ratePrompts = remember(state.user?.settings) {
-            when (state.user?.settings?.ratingPrompts) {
-                null -> false
-                else -> state.user.settings?.ratingPrompts == true
-            }
+            state.user?.settings?.ratingPrompts == true
         }
 
         SettingsSwitchField(
