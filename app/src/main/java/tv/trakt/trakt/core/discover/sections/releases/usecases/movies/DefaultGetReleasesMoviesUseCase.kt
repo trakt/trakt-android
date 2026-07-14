@@ -39,7 +39,7 @@ internal class DefaultGetReleasesMoviesUseCase(
             filters = filters,
         ).asyncMap {
             CalendarItem.MovieItem(
-                movie = Movie.fromDto(it.movie!!),
+                movie = Movie.fromDto(requireNotNull(it.movie) { "Movie DTO is null" }),
                 watched = false,
             )
         }
