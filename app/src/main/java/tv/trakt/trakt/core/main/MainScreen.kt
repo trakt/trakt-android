@@ -111,6 +111,8 @@ import tv.trakt.trakt.core.notifications.model.NotificationIntentExtras
 import tv.trakt.trakt.core.profile.navigation.ProfileDestination
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState.AskSuppress
+import tv.trakt.trakt.core.search.model.SearchInput
+import tv.trakt.trakt.core.search.navigation.SearchDestination
 import tv.trakt.trakt.core.search.navigation.navigateToSearch
 import tv.trakt.trakt.core.summary.episodes.navigation.navigateToEpisode
 import tv.trakt.trakt.core.summary.movies.navigation.navigateToMovie
@@ -149,6 +151,7 @@ internal fun MainScreen(
     val searchState = rememberSearchState(currentDestination.value?.destination)
     var whatsNewState by remember { mutableStateOf<WhatsNew?>(null) }
     var stopRatePromptSheet by remember { mutableStateOf(false) }
+    var pendingSearchQuery by remember { mutableStateOf<String?>(null) }
 
     LifecycleEventEffect(ON_RESUME) {
         viewModel.loadData()
@@ -194,6 +197,15 @@ internal fun MainScreen(
     }
 
     LaunchedEffect(intent, newIntent?.value) {
+        val processTextQuery = extractProcessTextQuery(newIntent?.value ?: intent)
+        if (processTextQuery != null) {
+            // Defer applying the query until the search destination is active,
+            // so rememberSearchState's non-search reset can't clobber it.
+            pendingSearchQuery = processTextQuery
+            navController.navigateToSearch()
+            return@LaunchedEffect
+        }
+
         handleShortcutIntent(
             intent = intent,
             navController = navController,
@@ -204,6 +216,19 @@ internal fun MainScreen(
             intent = newIntent?.value ?: intent,
             navController = navController,
         )
+    }
+
+    LaunchedEffect(currentDestination.value, pendingSearchQuery) {
+        val query = pendingSearchQuery ?: return@LaunchedEffect
+        val onSearch = currentDestination.value
+            ?.destination
+            ?.hasRoute(SearchDestination::class) == true
+
+        if (onSearch) {
+            searchState.onSearchInput(SearchInput(query = query))
+            searchState.onRequestFocus()
+            pendingSearchQuery = null
+        }
     }
 
     LaunchedEffect(state.ratePrompt) {
@@ -582,6 +607,27 @@ private fun LaunchedAppUpdate(
             else -> {}
         }
     }
+}
+
+private fun extractProcessTextQuery(intent: Intent?): String? {
+    if (intent == null || intent.action != Intent.ACTION_PROCESS_TEXT) {
+        return null
+    }
+
+    val text = intent
+        .getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)
+        ?.toString()
+        ?.trim()
+
+    if (text.isNullOrBlank()) {
+        return null
+    }
+
+    // Clear so recomposition / config change does not re-trigger the search.
+    intent.removeExtra(Intent.EXTRA_PROCESS_TEXT)
+    intent.action = null
+
+    return text
 }
 
 private fun handleShortcutIntent(

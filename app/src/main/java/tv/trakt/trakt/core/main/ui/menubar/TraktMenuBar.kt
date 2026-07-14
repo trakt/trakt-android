@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -297,8 +298,13 @@ private fun SearchContent(
     }
 
     LaunchedEffect(searchInput.query) {
-        if (searchInput.query.isEmpty()) {
-            searchQuery.clearText()
+        when {
+            searchInput.query.isEmpty() -> {
+                searchQuery.clearText()
+            }
+            searchInput.query != searchQuery.text.toString() -> {
+                searchQuery.setTextAndPlaceCursorAtEnd(searchInput.query)
+            }
         }
     }
 
