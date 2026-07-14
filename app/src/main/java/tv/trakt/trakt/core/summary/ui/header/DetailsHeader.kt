@@ -155,11 +155,11 @@ internal fun DetailsHeader(
                     },
                     textAlign = TextAlign.Center,
                     color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.heading2,
+                    style = TraktTheme.typography.heading3,
                     maxLines = 1,
                     overflow = Ellipsis,
                     autoSize = TextAutoSize.StepBased(
-                        maxFontSize = TraktTheme.typography.heading2.fontSize,
+                        maxFontSize = TraktTheme.typography.heading3.fontSize,
                         minFontSize = 16.sp,
                         stepSize = 2.sp,
                     ),

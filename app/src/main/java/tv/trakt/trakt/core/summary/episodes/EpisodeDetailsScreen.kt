@@ -553,7 +553,7 @@ internal fun EpisodeDetailsContent(
                     }
 
                     item {
-                        EpisodeCommentsView(
+                        EpisodeActorsView(
                             viewModel = koinViewModel(
                                 parameters = {
                                     parametersOf(state.show, state.episode)
@@ -561,8 +561,7 @@ internal fun EpisodeDetailsContent(
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
-                            onMoreClick = onMoreCommentsClick,
-                            onUserClick = onNavigateToUser,
+                            onPersonClick = onPersonClick ?: {},
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(
@@ -575,7 +574,7 @@ internal fun EpisodeDetailsContent(
                     }
 
                     item {
-                        EpisodeActorsView(
+                        EpisodeCommentsView(
                             viewModel = koinViewModel(
                                 parameters = {
                                     parametersOf(state.show, state.episode)
@@ -583,7 +582,8 @@ internal fun EpisodeDetailsContent(
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
-                            onPersonClick = onPersonClick ?: {},
+                            onMoreClick = onMoreCommentsClick,
+                            onUserClick = onNavigateToUser,
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),

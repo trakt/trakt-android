@@ -683,14 +683,15 @@ internal fun ShowDetailsContent(
                     }
 
                     item {
-                        ShowCommentsView(
+                        ShowSeasonsView(
                             viewModel = koinViewModel(
                                 parameters = { parametersOf(show) },
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
-                            onMoreClick = onMoreCommentsClick,
-                            onUserClick = onNavigateToUser,
+                            user = state.user,
+                            onEpisodeClick = onEpisodeClick ?: {},
+                            onAllSeasonsClick = { onAllSeasonsClick?.invoke(show, it) },
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),
@@ -712,15 +713,14 @@ internal fun ShowDetailsContent(
                     }
 
                     item {
-                        ShowSeasonsView(
+                        ShowCommentsView(
                             viewModel = koinViewModel(
                                 parameters = { parametersOf(show) },
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
-                            user = state.user,
-                            onEpisodeClick = onEpisodeClick ?: {},
-                            onAllSeasonsClick = { onAllSeasonsClick?.invoke(show, it) },
+                            onMoreClick = onMoreCommentsClick,
+                            onUserClick = onNavigateToUser,
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),

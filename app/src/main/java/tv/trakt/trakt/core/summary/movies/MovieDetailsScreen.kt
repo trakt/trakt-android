@@ -635,6 +635,20 @@ internal fun MovieDetailsContent(
                     }
 
                     item {
+                        MovieActorsView(
+                            viewModel = koinViewModel(
+                                parameters = { parametersOf(movie) },
+                            ),
+                            headerPadding = sectionPadding,
+                            contentPadding = sectionPadding,
+                            onPersonClick = onPersonClick ?: {},
+                            modifier = Modifier
+                                .alpha(ratingAlphaMask)
+                                .padding(top = 32.dp),
+                        )
+                    }
+
+                    item {
                         MovieCommentsView(
                             viewModel = koinViewModel(
                                 parameters = { parametersOf(movie) },
@@ -643,20 +657,6 @@ internal fun MovieDetailsContent(
                             contentPadding = sectionPadding,
                             onMoreClick = onMoreCommentsClick,
                             onUserClick = onNavigateToUser,
-                            modifier = Modifier
-                                .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
-                        )
-                    }
-
-                    item {
-                        MovieActorsView(
-                            viewModel = koinViewModel(
-                                parameters = { parametersOf(movie) },
-                            ),
-                            headerPadding = sectionPadding,
-                            contentPadding = sectionPadding,
-                            onPersonClick = onPersonClick ?: {},
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),
