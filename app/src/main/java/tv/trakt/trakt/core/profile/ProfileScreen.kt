@@ -81,7 +81,6 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
-import tv.trakt.trakt.ui.components.vip.ThisMonthVipCard
 import tv.trakt.trakt.ui.extensions.isAtLeastLarge
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -233,42 +232,26 @@ private fun ProfileScreen(
             }
 
             if (state.user != null) {
-                if (state.user.isAnyVip) {
-                    item {
-                        ProfileStatsCard(
-                            user = state.user,
-                            stats = state.monthStats,
-                            containerImage = state.monthBackgroundUrl,
-                            modifier = Modifier
-                                .fillMaxWidth(
-                                    when {
-                                        windowClass.isAtLeastLarge() -> 0.5F
-                                        else -> 1F
-                                    },
-                                )
-                                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
-                                .padding(
-                                    bottom = when {
-                                        state.user.about.isNullOrBlank() -> TraktTheme.spacing.mainSectionVerticalSpace
-                                        else -> TraktTheme.spacing.mainSectionVerticalSpace / 1.5F
-                                    },
-                                ),
-                        )
-                    }
-                } else {
-                    item {
-                        ThisMonthVipCard(
-                            onClick = onVipClick,
-                            modifier = Modifier
-                                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
-                                .padding(
-                                    bottom = when {
-                                        state.user.about.isNullOrBlank() -> TraktTheme.spacing.mainSectionVerticalSpace
-                                        else -> TraktTheme.spacing.mainSectionVerticalSpace / 1.5F
-                                    },
-                                ),
-                        )
-                    }
+                item {
+                    ProfileStatsCard(
+                        user = state.user,
+                        stats = state.monthStats,
+                        containerImage = state.monthBackgroundUrl,
+                        modifier = Modifier
+                            .fillMaxWidth(
+                                when {
+                                    windowClass.isAtLeastLarge() -> 0.5F
+                                    else -> 1F
+                                },
+                            )
+                            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+                            .padding(
+                                bottom = when {
+                                    state.user.about.isNullOrBlank() -> TraktTheme.spacing.mainSectionVerticalSpace
+                                    else -> TraktTheme.spacing.mainSectionVerticalSpace / 1.5F
+                                },
+                            ),
+                    )
                 }
 
                 if (!state.user.about.isNullOrBlank()) {
