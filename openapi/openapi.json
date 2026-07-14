@@ -6741,6 +6741,2163 @@
         "operationId": "getCalendarsReleasesHot"
       }
     },
+    "/calendars/releases/hot/premieres/{start_date}/{days}": {
+      "get": {
+        "description": "#### ✨ Extended Info 🎚 Filters\nReturns upcoming show premieres during the requested UTC date range that are trending or highly anticipated. Curated global feed - daily-cadence formats (soap, talk, news, game shows) and specials are excluded.",
+        "summary": "Get hot premieres",
+        "tags": [
+          "calendars"
+        ],
+        "parameters": [
+          {
+            "name": "start_date",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The start date of the calendar. Must be formatted as \"YYYY-MM-DD\"."
+          },
+          {
+            "name": "days",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The number of days to retrieve."
+          },
+          {
+            "name": "extended",
+            "in": "query",
+            "description": "Extended information to include in the response.",
+            "schema": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "watchnow",
+            "in": "query",
+            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "favorites",
+                "any",
+                "any_all",
+                "free",
+                "free_all",
+                "subscriptions",
+                "subscriptions_all"
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "genres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "subgenres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ratings",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "runtimes",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "first_aired": {
+                        "type": "string"
+                      },
+                      "episode": {
+                        "type": "object",
+                        "properties": {
+                          "season": {
+                            "type": "integer"
+                          },
+                          "number": {
+                            "type": "integer"
+                          },
+                          "title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "first_aired": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "released": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "effective_release_date": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "number_abs": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "rating": {
+                            "type": "number",
+                            "format": "float",
+                            "nullable": true
+                          },
+                          "votes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "comment_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "available_translations": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "overview": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "episode_type": {
+                            "type": "string",
+                            "enum": [
+                              "standard",
+                              "series_premiere",
+                              "season_premiere",
+                              "mid_season_finale",
+                              "mid_season_premiere",
+                              "season_finale",
+                              "series_finale",
+                              "full_season",
+                              "multiple_episodes"
+                            ],
+                            "nullable": true
+                          },
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "tvdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "imdb": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "tmdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "plex": {
+                                "type": "object",
+                                "properties": {
+                                  "guid": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "slug": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "trakt"
+                            ]
+                          },
+                          "original_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "after_credits": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "during_credits": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "screenshot": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "screenshot"
+                            ],
+                            "nullable": true
+                          },
+                          "episodes": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "season": {
+                                  "type": "integer"
+                                },
+                                "number": {
+                                  "type": "integer"
+                                },
+                                "title": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "first_aired": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "released": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "effective_release_date": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "number_abs": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "rating": {
+                                  "type": "number",
+                                  "format": "float",
+                                  "nullable": true
+                                },
+                                "votes": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "comment_count": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "updated_at": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "available_translations": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "nullable": true
+                                },
+                                "runtime": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "overview": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "episode_type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "standard",
+                                    "series_premiere",
+                                    "season_premiere",
+                                    "mid_season_finale",
+                                    "mid_season_premiere",
+                                    "season_finale",
+                                    "series_finale"
+                                  ],
+                                  "nullable": true
+                                },
+                                "ids": {
+                                  "type": "object",
+                                  "properties": {
+                                    "trakt": {
+                                      "type": "integer"
+                                    },
+                                    "tvdb": {
+                                      "type": "integer",
+                                      "nullable": true
+                                    },
+                                    "imdb": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "tmdb": {
+                                      "type": "integer",
+                                      "nullable": true
+                                    },
+                                    "plex": {
+                                      "type": "object",
+                                      "properties": {
+                                        "guid": {
+                                          "type": "string",
+                                          "nullable": true
+                                        },
+                                        "slug": {
+                                          "type": "string",
+                                          "nullable": true
+                                        }
+                                      },
+                                      "nullable": true
+                                    }
+                                  },
+                                  "required": [
+                                    "trakt"
+                                  ]
+                                },
+                                "original_title": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "after_credits": {
+                                  "type": "boolean",
+                                  "nullable": true
+                                },
+                                "during_credits": {
+                                  "type": "boolean",
+                                  "nullable": true
+                                },
+                                "images": {
+                                  "type": "object",
+                                  "properties": {
+                                    "screenshot": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "screenshot"
+                                  ],
+                                  "nullable": true
+                                }
+                              },
+                              "required": [
+                                "season",
+                                "number",
+                                "ids"
+                              ]
+                            },
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "season",
+                          "number",
+                          "ids"
+                        ]
+                      },
+                      "show": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "year": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "tvdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "imdb": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "tmdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "plex": {
+                                "type": "object",
+                                "properties": {
+                                  "guid": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "slug": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "slug": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "trakt",
+                              "slug"
+                            ]
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "fanart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "logo": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "clearart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "banner": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "thumb": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "fanart",
+                              "poster",
+                              "logo",
+                              "clearart",
+                              "banner",
+                              "thumb"
+                            ],
+                            "nullable": true
+                          },
+                          "aired_episodes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "tagline": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "overview": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "first_aired": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "airs": {
+                            "type": "object",
+                            "properties": {
+                              "day": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "time": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "timezone": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          },
+                          "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "total_runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "certification": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "network": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "country": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "rating": {
+                            "type": "number",
+                            "format": "float",
+                            "nullable": true
+                          },
+                          "votes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "comment_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "trailer": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "homepage": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "language": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "languages": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "available_translations": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "original_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "colors": {
+                            "type": "object",
+                            "properties": {
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          },
+                          "social_ids": {
+                            "type": "object",
+                            "properties": {
+                              "twitter": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "facebook": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "instagram": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "wikipedia": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "ids"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "first_aired",
+                      "episode",
+                      "show"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "getCalendarsReleasesHotPremieres"
+      }
+    },
+    "/calendars/releases/hot/finales/{start_date}/{days}": {
+      "get": {
+        "description": "#### ✨ Extended Info 🎚 Filters\nReturns upcoming show finales during the requested UTC date range that are trending or highly anticipated. Curated global feed - daily-cadence formats (soap, talk, news, game shows) and specials are excluded.",
+        "summary": "Get hot finales",
+        "tags": [
+          "calendars"
+        ],
+        "parameters": [
+          {
+            "name": "start_date",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The start date of the calendar. Must be formatted as \"YYYY-MM-DD\"."
+          },
+          {
+            "name": "days",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The number of days to retrieve."
+          },
+          {
+            "name": "extended",
+            "in": "query",
+            "description": "Extended information to include in the response.",
+            "schema": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "watchnow",
+            "in": "query",
+            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "favorites",
+                "any",
+                "any_all",
+                "free",
+                "free_all",
+                "subscriptions",
+                "subscriptions_all"
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "genres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "subgenres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ratings",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "runtimes",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "first_aired": {
+                        "type": "string"
+                      },
+                      "episode": {
+                        "type": "object",
+                        "properties": {
+                          "season": {
+                            "type": "integer"
+                          },
+                          "number": {
+                            "type": "integer"
+                          },
+                          "title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "first_aired": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "released": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "effective_release_date": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "number_abs": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "rating": {
+                            "type": "number",
+                            "format": "float",
+                            "nullable": true
+                          },
+                          "votes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "comment_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "available_translations": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "overview": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "episode_type": {
+                            "type": "string",
+                            "enum": [
+                              "standard",
+                              "series_premiere",
+                              "season_premiere",
+                              "mid_season_finale",
+                              "mid_season_premiere",
+                              "season_finale",
+                              "series_finale",
+                              "full_season",
+                              "multiple_episodes"
+                            ],
+                            "nullable": true
+                          },
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "tvdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "imdb": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "tmdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "plex": {
+                                "type": "object",
+                                "properties": {
+                                  "guid": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "slug": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "trakt"
+                            ]
+                          },
+                          "original_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "after_credits": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "during_credits": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "screenshot": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "screenshot"
+                            ],
+                            "nullable": true
+                          },
+                          "episodes": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "season": {
+                                  "type": "integer"
+                                },
+                                "number": {
+                                  "type": "integer"
+                                },
+                                "title": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "first_aired": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "released": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "effective_release_date": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "number_abs": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "rating": {
+                                  "type": "number",
+                                  "format": "float",
+                                  "nullable": true
+                                },
+                                "votes": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "comment_count": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "updated_at": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "available_translations": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "nullable": true
+                                },
+                                "runtime": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "overview": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "episode_type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "standard",
+                                    "series_premiere",
+                                    "season_premiere",
+                                    "mid_season_finale",
+                                    "mid_season_premiere",
+                                    "season_finale",
+                                    "series_finale"
+                                  ],
+                                  "nullable": true
+                                },
+                                "ids": {
+                                  "type": "object",
+                                  "properties": {
+                                    "trakt": {
+                                      "type": "integer"
+                                    },
+                                    "tvdb": {
+                                      "type": "integer",
+                                      "nullable": true
+                                    },
+                                    "imdb": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "tmdb": {
+                                      "type": "integer",
+                                      "nullable": true
+                                    },
+                                    "plex": {
+                                      "type": "object",
+                                      "properties": {
+                                        "guid": {
+                                          "type": "string",
+                                          "nullable": true
+                                        },
+                                        "slug": {
+                                          "type": "string",
+                                          "nullable": true
+                                        }
+                                      },
+                                      "nullable": true
+                                    }
+                                  },
+                                  "required": [
+                                    "trakt"
+                                  ]
+                                },
+                                "original_title": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "after_credits": {
+                                  "type": "boolean",
+                                  "nullable": true
+                                },
+                                "during_credits": {
+                                  "type": "boolean",
+                                  "nullable": true
+                                },
+                                "images": {
+                                  "type": "object",
+                                  "properties": {
+                                    "screenshot": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "screenshot"
+                                  ],
+                                  "nullable": true
+                                }
+                              },
+                              "required": [
+                                "season",
+                                "number",
+                                "ids"
+                              ]
+                            },
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "season",
+                          "number",
+                          "ids"
+                        ]
+                      },
+                      "show": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "year": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "tvdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "imdb": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "tmdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "plex": {
+                                "type": "object",
+                                "properties": {
+                                  "guid": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "slug": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "slug": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "trakt",
+                              "slug"
+                            ]
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "fanart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "logo": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "clearart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "banner": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "thumb": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "fanart",
+                              "poster",
+                              "logo",
+                              "clearart",
+                              "banner",
+                              "thumb"
+                            ],
+                            "nullable": true
+                          },
+                          "aired_episodes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "tagline": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "overview": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "first_aired": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "airs": {
+                            "type": "object",
+                            "properties": {
+                              "day": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "time": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "timezone": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          },
+                          "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "total_runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "certification": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "network": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "country": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "rating": {
+                            "type": "number",
+                            "format": "float",
+                            "nullable": true
+                          },
+                          "votes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "comment_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "trailer": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "homepage": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "language": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "languages": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "available_translations": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "original_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "colors": {
+                            "type": "object",
+                            "properties": {
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          },
+                          "social_ids": {
+                            "type": "object",
+                            "properties": {
+                              "twitter": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "facebook": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "instagram": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "wikipedia": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "ids"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "first_aired",
+                      "episode",
+                      "show"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "getCalendarsReleasesHotFinales"
+      }
+    },
+    "/calendars/releases/hot/new/{start_date}/{days}": {
+      "get": {
+        "description": "#### ✨ Extended Info 🎚 Filters\nReturns upcoming series premieres during the requested UTC date range that are trending or highly anticipated. Curated global feed - daily-cadence formats (soap, talk, news, game shows) and specials are excluded.",
+        "summary": "Get hot new shows",
+        "tags": [
+          "calendars"
+        ],
+        "parameters": [
+          {
+            "name": "start_date",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The start date of the calendar. Must be formatted as \"YYYY-MM-DD\"."
+          },
+          {
+            "name": "days",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The number of days to retrieve."
+          },
+          {
+            "name": "extended",
+            "in": "query",
+            "description": "Extended information to include in the response.",
+            "schema": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "watchnow",
+            "in": "query",
+            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "favorites",
+                "any",
+                "any_all",
+                "free",
+                "free_all",
+                "subscriptions",
+                "subscriptions_all"
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "genres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "subgenres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ratings",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "runtimes",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "first_aired": {
+                        "type": "string"
+                      },
+                      "episode": {
+                        "type": "object",
+                        "properties": {
+                          "season": {
+                            "type": "integer"
+                          },
+                          "number": {
+                            "type": "integer"
+                          },
+                          "title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "first_aired": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "released": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "effective_release_date": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "number_abs": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "rating": {
+                            "type": "number",
+                            "format": "float",
+                            "nullable": true
+                          },
+                          "votes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "comment_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "available_translations": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "overview": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "episode_type": {
+                            "type": "string",
+                            "enum": [
+                              "standard",
+                              "series_premiere",
+                              "season_premiere",
+                              "mid_season_finale",
+                              "mid_season_premiere",
+                              "season_finale",
+                              "series_finale",
+                              "full_season",
+                              "multiple_episodes"
+                            ],
+                            "nullable": true
+                          },
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "tvdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "imdb": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "tmdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "plex": {
+                                "type": "object",
+                                "properties": {
+                                  "guid": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "slug": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "trakt"
+                            ]
+                          },
+                          "original_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "after_credits": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "during_credits": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "screenshot": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "screenshot"
+                            ],
+                            "nullable": true
+                          },
+                          "episodes": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "season": {
+                                  "type": "integer"
+                                },
+                                "number": {
+                                  "type": "integer"
+                                },
+                                "title": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "first_aired": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "released": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "effective_release_date": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "number_abs": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "rating": {
+                                  "type": "number",
+                                  "format": "float",
+                                  "nullable": true
+                                },
+                                "votes": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "comment_count": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "updated_at": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "available_translations": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "nullable": true
+                                },
+                                "runtime": {
+                                  "type": "integer",
+                                  "nullable": true
+                                },
+                                "overview": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "episode_type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "standard",
+                                    "series_premiere",
+                                    "season_premiere",
+                                    "mid_season_finale",
+                                    "mid_season_premiere",
+                                    "season_finale",
+                                    "series_finale"
+                                  ],
+                                  "nullable": true
+                                },
+                                "ids": {
+                                  "type": "object",
+                                  "properties": {
+                                    "trakt": {
+                                      "type": "integer"
+                                    },
+                                    "tvdb": {
+                                      "type": "integer",
+                                      "nullable": true
+                                    },
+                                    "imdb": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "tmdb": {
+                                      "type": "integer",
+                                      "nullable": true
+                                    },
+                                    "plex": {
+                                      "type": "object",
+                                      "properties": {
+                                        "guid": {
+                                          "type": "string",
+                                          "nullable": true
+                                        },
+                                        "slug": {
+                                          "type": "string",
+                                          "nullable": true
+                                        }
+                                      },
+                                      "nullable": true
+                                    }
+                                  },
+                                  "required": [
+                                    "trakt"
+                                  ]
+                                },
+                                "original_title": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "after_credits": {
+                                  "type": "boolean",
+                                  "nullable": true
+                                },
+                                "during_credits": {
+                                  "type": "boolean",
+                                  "nullable": true
+                                },
+                                "images": {
+                                  "type": "object",
+                                  "properties": {
+                                    "screenshot": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "screenshot"
+                                  ],
+                                  "nullable": true
+                                }
+                              },
+                              "required": [
+                                "season",
+                                "number",
+                                "ids"
+                              ]
+                            },
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "season",
+                          "number",
+                          "ids"
+                        ]
+                      },
+                      "show": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "year": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "tvdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "imdb": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "tmdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "plex": {
+                                "type": "object",
+                                "properties": {
+                                  "guid": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "slug": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "slug": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "trakt",
+                              "slug"
+                            ]
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "fanart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "logo": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "clearart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "banner": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "thumb": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "fanart",
+                              "poster",
+                              "logo",
+                              "clearart",
+                              "banner",
+                              "thumb"
+                            ],
+                            "nullable": true
+                          },
+                          "aired_episodes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "tagline": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "overview": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "first_aired": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "airs": {
+                            "type": "object",
+                            "properties": {
+                              "day": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "time": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "timezone": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          },
+                          "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "total_runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "certification": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "network": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "country": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "rating": {
+                            "type": "number",
+                            "format": "float",
+                            "nullable": true
+                          },
+                          "votes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "comment_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "trailer": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "homepage": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "language": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "languages": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "available_translations": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "original_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "colors": {
+                            "type": "object",
+                            "properties": {
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          },
+                          "social_ids": {
+                            "type": "object",
+                            "properties": {
+                              "twitter": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "facebook": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "instagram": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "wikipedia": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "ids"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "first_aired",
+                      "episode",
+                      "show"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "getCalendarsReleasesHotNew"
+      }
+    },
     "/checkin": {
       "post": {
         "description": "#### 🔒 OAuth Required\nCheck into a movie or episode. This should be tied to a user action to manually indicate they are watching something. The item will display as *watching* on the site, then automatically switch to *watched* status once the duration has elapsed. A unique history `id` (64-bit integer) will be returned and can be used to reference this checkin directly.\n\n#### JSON POST Data\n| Key | Type | Value |\n|---|---|---|\n| item * | object | `movie` or `episode` object. (see examples ->) |\n| `sharing`  | object | Control sharing to any connected social networks. (see below &#8595;) |\n| `message`  | string | Message used for sharing. If not sent, it will use the watching string in the user settings. |\n\n#### Sharing\nThe `sharing` object is optional and will apply the user's settings if not sent. If `sharing` is sent, each key will override the user's setting for that social network. Send `true` to post or `false` to not post on the indicated social network. You can see which social networks a user has connected with the [**/users/settings**](/reference/users/settings) method.\n\n| Key | Type |\n|---|---|\n| `twitter` | boolean |\n| `mastodon` | boolean |\n| `tumblr` | boolean |\n\n> ### Note\n> _If a checkin is already in progress, a `409` HTTP status code will returned. The response will contain an `expires_at` timestamp which is when the user can check in again._",
