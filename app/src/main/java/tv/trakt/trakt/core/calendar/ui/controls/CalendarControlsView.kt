@@ -157,8 +157,7 @@ internal fun CalendarControlsView(
                 val episodes = remember(availableItems, date) {
                     availableItems?.get(date)
                         ?.filterIsInstance<CalendarItem.EpisodeItem>()
-                        ?.flatMap { it.episodes }
-                        ?.size
+?.sumOf { it.episodes.size }
                 }
 
                 val movies = remember(availableItems, date) {
