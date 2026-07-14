@@ -775,9 +775,9 @@ private fun BoxScope.ReleasesDragChevrons(
                     y = 0,
                 )
             }
-            .alpha(
-                (dragOffset.floatValue / dragLimit).coerceIn(0F, 1F),
-            ),
+            .graphicsLayer {
+                alpha = (dragOffset.floatValue / dragLimit).coerceIn(0F, 1F)
+            },
     )
 
     Icon(
