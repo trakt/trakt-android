@@ -119,6 +119,7 @@
   <string name="button_label_movies">Pel·lícules</string>
   <string name="button_label_next_calendar_period">Pròxim període</string>
   <string name="button_label_next_episode">Següent episodi</string>
+  <string name="button_label_open_leaderboard">Obrir la classificació de seguidors</string>
   <string name="button_label_pick_match">Importar %s.</string>
   <string name="button_label_plex_connect">Connecta el teu compte de Plex</string>
   <string name="button_label_plex_disconnect">Desconnecta el teu compte de Plex</string>
@@ -537,6 +538,8 @@
   <string name="description_plex_servers">Tria el servidor de Plex per sincronitzar amb Trakt.</string>
   <string name="description_plex_sync">Connecta el teu compte de Plex per sincronitzar l\'historial de visualització, les puntuacions i les col·leccions amb Trakt.</string>
   <string name="description_plex_sync_settings">Aquesta configuració controla quins tipus de dades se sincronitzen amb Trakt.</string>
+  <string name="description_plex_vip_upsell_sync">Actualitza\'t a VIP per mantenir sincronitzats el teu historial de visualització de Plex, les puntuacions i les col·leccions amb Trakt.</string>
+  <string name="description_plex_vip_upsell_webhook">Actualitza\'t a VIP per registrar automàticament el que estàs veient en temps real amb els webhooks de Plex.</string>
   <string name="description_plex_webhook">Enregistra automàticament allò que estàs veient, valorant i afegint a la teva biblioteca en temps real.</string>
   <string name="description_preview_features">Prova les properes funcions abans que estiguin àmpliament disponibles. Les funcions de previsualització poden canviar a mesura que les perfeccionem.</string>
   <string name="description_skipped_items">Qualsevol cosa en vermell va fer que l\'element fos omès.</string>
@@ -646,6 +649,7 @@
   <string name="header_landing_track">Segueix</string>
   <string name="header_landing_welcome">Benvingut a Trakt</string>
   <string name="header_language">Idioma</string>
+  <string name="header_leaderboard">Pantheon</string>
   <string name="header_manage_lists">Gestiona llistes</string>
   <string name="header_network">Cadena</string>
   <string name="header_notes_placeholder">Encara no hi ha notes.</string>
@@ -666,6 +670,8 @@
   <string name="header_plex_servers">Selecciona el servidor</string>
   <string name="header_plex_sync_history">Historial de sincronització</string>
   <string name="header_plex_sync_settings">Configuració de sincronització de Plex</string>
+  <string name="header_plex_vip_upsell_sync">La sincronització de Plex és una característica VIP</string>
+  <string name="header_plex_vip_upsell_webhook">L\'scrobbling de Plex és una característica VIP</string>
   <string name="header_post_credits">Escenes post-crèdits</string>
   <string name="header_premiered">Estrenat</string>
   <string name="header_preview_features">Funcions de previsualització</string>
@@ -837,6 +843,7 @@
   <string name="label_plex_sync_as">Sincronitza com a</string>
   <string name="label_plex_webhook_connect_hint">Connecta el teu compte de Plex per obtenir la teva URL del webhook.</string>
   <string name="label_plex_webhook_url">URL del Webhook</string>
+  <string name="label_queued_action">Desat fora de línia, esperant per sincronitzar</string>
   <string name="label_ratings_season_chart">Valoracions de temporada al llarg del temps</string>
   <string name="label_report_reason_abusive">Abusiu</string>
   <string name="label_report_reason_adult">Contingut per a adults</string>
@@ -1117,25 +1124,23 @@
   <string name="page_title_year_in_review">%s en resum</string>
   <string name="page_title_year_to_date">Acumulat de l\'any</string>
   <string name="preview_feature_description_edit_mode">Habilita els controls per amagar o mostrar seccions configurables a tota l\'aplicació.</string>
-  <string name="preview_feature_description_month_in_review">Previsualitza el Resum del Mes, ara executant-se directament en V3.</string>
-  <string name="preview_feature_description_plex_sync">Connecta Plex per sincronitzar el teu historial de visualitzacions, valoracions i biblioteca amb Trakt. Inclou connexió, selecció de servidor i eines de sincronització.</string>
+  <string name="preview_feature_description_leaderboard">Classifica les persones que segueixes per temps de visionat i mira on quedes entre elles.</string>
   <string name="preview_feature_description_rewatch">Inicia sessions de revisió per a programes que ja has vist, fes un seguiment o marca els episodis com a vistos directament des del calaix de la sessió.</string>
   <string name="preview_feature_description_scoped_favorites">Delimita les llistes de preferits mostrant els preferits de l\'any actual als perfils i agrupant la llista completa de preferits per any.</string>
   <string name="preview_feature_description_smart_recommendations">Utilitza el nostre motor de nova generació per trobar pel·lícules i sèries recomanades més enllà del que és obvi.</string>
   <string name="preview_feature_description_smart_related">Utilitza el nostre motor de nova generació per trobar pel·lícules i sèries relacionades més enllà del que és obvi.</string>
-  <string name="preview_feature_description_year_in_review">Previsualitza el Resum de l\'Any, ara executant-se directament en V3.</string>
   <string name="preview_feature_title_edit_mode">Mode d\'edició</string>
-  <string name="preview_feature_title_month_in_review">Resum del Mes</string>
-  <string name="preview_feature_title_plex_sync">Sincronització de Plex</string>
+  <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Revisió</string>
   <string name="preview_feature_title_scoped_favorites">Preferits per àmbit</string>
   <string name="preview_feature_title_smart_recommendations">Recomanacions intel·ligents</string>
   <string name="preview_feature_title_smart_related">Relacionats intel·ligents</string>
-  <string name="preview_feature_title_year_in_review">Resum de l\'Any</string>
   <string name="reset_status_cleared">Llista de seguiment esborrada.</string>
   <string name="section_title_season_progress">Temporada %d progrés</string>
   <string name="section_title_seasons_overview">Visió general</string>
   <string name="section_title_specials_progress">Progrés dels especials</string>
+  <string name="stat_label_hours">hores</string>
+  <string name="stat_label_plays">reproduccions</string>
   <string name="stat_text_favorited">Preferits</string>
   <string name="stat_text_lists">Llistes</string>
   <string name="stat_text_plays">Reproduccions</string>
@@ -1177,6 +1182,7 @@
   <string name="tag_text_plays">%d reproduccions</string>
   <string name="tag_text_premiere">Estrena</string>
   <string name="tag_text_preview">Previsualització</string>
+  <string name="tag_text_queued">En cua</string>
   <string name="tag_text_released">Estrenat</string>
   <string name="tag_text_remaining_duration">%s restants</string>
   <string name="tag_text_remaining_episodes">%d restants</string>
@@ -1303,6 +1309,7 @@
   <string name="text_exporting">Exportant… %s</string>
   <string name="text_favorites_limit_reached">Pots seleccionar fins a %s serveis</string>
   <string name="text_first_play_this_month">Primera reproducció aquest mes</string>
+  <string name="text_following">Seguint</string>
   <string name="text_footer_category_community">Comunitat</string>
   <string name="text_footer_category_legal">Legal</string>
   <string name="text_footer_category_platform">Plataforma</string>
@@ -1351,6 +1358,9 @@
   <string name="text_landing_welcome">La teva nova llar, on les teves sèries i pel·lícules estan totes en un sol lloc.</string>
   <string name="text_language">Idioma</string>
   <string name="text_last_day">el darrer %s</string>
+  <string name="text_leaderboard_free_section">Membres gratuïts</string>
+  <string name="text_leaderboard_upsell_footer">Actualitza a VIP per veure la teva posició entre els teus amics</string>
+  <string name="text_leaderboard_you">Tu</string>
   <string name="text_library">Biblioteca</string>
   <string name="text_list_private">Privat</string>
   <string name="text_list_private_info">La llista només serà visible per a tu.</string>

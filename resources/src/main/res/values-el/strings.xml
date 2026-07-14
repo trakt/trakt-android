@@ -119,6 +119,7 @@
   <string name="button_label_movies">Ταινίες</string>
   <string name="button_label_next_calendar_period">Επόμενη περίοδος</string>
   <string name="button_label_next_episode">Επόμενο επεισόδιο</string>
+  <string name="button_label_open_leaderboard">Άνοιγμα πίνακα κατάταξης ακολούθων</string>
   <string name="button_label_pick_match">Εισαγωγή %s.</string>
   <string name="button_label_plex_connect">Συνδέστε τον λογαριασμό σας Plex</string>
   <string name="button_label_plex_disconnect">Αποσυνδέστε τον λογαριασμό σας Plex</string>
@@ -537,6 +538,8 @@
   <string name="description_plex_servers">Επιλέξτε τον διακομιστή Plex για συγχρονισμό με το Trakt.</string>
   <string name="description_plex_sync">Συνδέστε τον λογαριασμό σας Plex για συγχρονισμό ιστορικού παρακολούθησης, αξιολογήσεων και συλλογών με το Trakt.</string>
   <string name="description_plex_sync_settings">Αυτές οι ρυθμίσεις ελέγχουν ποιους τύπους δεδομένων θα συγχρονίζονται στο Trakt.</string>
+  <string name="description_plex_vip_upsell_sync">Αναβαθμίστε σε VIP για να διατηρείτε το ιστορικό παρακολούθησης, τις αξιολογήσεις και τις συλλογές σας Plex συγχρονισμένα με το Trakt.</string>
+  <string name="description_plex_vip_upsell_webhook">Αναβαθμίστε σε VIP για να κάνετε αυτόματη καταγραφή (scrobble) του τι παρακολουθείτε σε πραγματικό χρόνο με τα webhooks του Plex.</string>
   <string name="description_plex_webhook">Αυτόματος συγχρονισμός όσων παρακολουθείτε, βαθμολογείτε και προσθέτετε στη βιβλιοθήκη σας σε πραγματικό χρόνο.</string>
   <string name="description_preview_features">Δοκιμάστε επερχόμενες λειτουργίες πριν γίνουν ευρέως διαθέσιμες. Οι λειτουργίες προεπισκόπησης ενδέχεται να αλλάξουν καθώς τις βελτιώνουμε.</string>
   <string name="description_skipped_items">Οτιδήποτε με κόκκινο χρώμα προκάλεσε την παράλειψη του στοιχείου.</string>
@@ -646,6 +649,7 @@
   <string name="header_landing_track">Παρακολουθήστε</string>
   <string name="header_landing_welcome">Καλώς ορίσατε στο Trakt</string>
   <string name="header_language">Γλώσσα</string>
+  <string name="header_leaderboard">Πάνθεον</string>
   <string name="header_manage_lists">Διαχείριση λιστών</string>
   <string name="header_network">Κανάλι</string>
   <string name="header_notes_placeholder">Καμία σημείωση ακόμα.</string>
@@ -666,6 +670,8 @@
   <string name="header_plex_servers">Επιλογή διακομιστή</string>
   <string name="header_plex_sync_history">Ιστορικό συγχρονισμού</string>
   <string name="header_plex_sync_settings">Ρυθμίσεις συγχρονισμού Plex</string>
+  <string name="header_plex_vip_upsell_sync">Ο συγχρονισμός Plex είναι μια λειτουργία VIP</string>
+  <string name="header_plex_vip_upsell_webhook">Το scrobbling του Plex είναι μια λειτουργία VIP</string>
   <string name="header_post_credits">Μετά τους τίτλους</string>
   <string name="header_premiered">Πρεμιέρα</string>
   <string name="header_preview_features">Λειτουργίες Προεπισκόπησης</string>
@@ -837,6 +843,7 @@
   <string name="label_plex_sync_as">Συγχρονισμός ως</string>
   <string name="label_plex_webhook_connect_hint">Συνδέστε τον λογαριασμό σας Plex για να λάβετε το URL του webhook σας.</string>
   <string name="label_plex_webhook_url">URL Webhook</string>
+  <string name="label_queued_action">Αποθηκεύτηκε εκτός σύνδεσης, σε αναμονή συγχρονισμού</string>
   <string name="label_ratings_season_chart">Αξιολογήσεις σεζόν με την πάροδο του χρόνου</string>
   <string name="label_report_reason_abusive">Υβριστικό</string>
   <string name="label_report_reason_adult">Περιεχόμενο ενηλίκων</string>
@@ -1117,25 +1124,23 @@
   <string name="page_title_year_in_review">Ανασκόπηση του %s</string>
   <string name="page_title_year_to_date">Έτος μέχρι σήμερα</string>
   <string name="preview_feature_description_edit_mode">Ενεργοποιήστε τα χειριστήρια για απόκρυψη ή εμφάνιση διαμορφώσιμων ενοτήτων σε όλη την εφαρμογή.</string>
-  <string name="preview_feature_description_month_in_review">Προεπισκόπηση Μηνιαίας Ανασκόπησης, τώρα διαθέσιμη απευθείας στο V3.</string>
-  <string name="preview_feature_description_plex_sync">Συνδέστε το Plex για να συγχρονίσετε το ιστορικό παρακολούθησης, τις αξιολογήσεις και τη βιβλιοθήκη σας με το Trakt. Περιλαμβάνει σύνδεση, επιλογή διακομιστή και εργαλεία συγχρονισμού.</string>
+  <string name="preview_feature_description_leaderboard">Κατατάξτε τους ανθρώπους που ακολουθείτε με βάση τον χρόνο παρακολούθησης και δείτε πού βρίσκεστε ανάμεσά τους.</string>
   <string name="preview_feature_description_rewatch">Ξεκινήστε συνεδρίες επανάληψης παρακολούθησης για εκπομπές που έχετε ήδη δει, κάντε check-in ή επισημάνετε επεισόδια ως παρακολουθημένα απευθείας από το συρτάρι συνεδριών.</string>
   <string name="preview_feature_description_scoped_favorites">Οριοθετήστε τις λίστες αγαπημένων εμφανίζοντας τα αγαπημένα του τρέχοντος έτους στα προφίλ και ομαδοποιώντας την πλήρη λίστα αγαπημένων ανά έτος.</string>
   <string name="preview_feature_description_smart_recommendations">Χρησιμοποιήστε τον κινητήρα επόμενης γενιάς μας για να ανακαλύψετε προτεινόμενες ταινίες και σειρές πέρα από τα προφανή.</string>
   <string name="preview_feature_description_smart_related">Χρησιμοποιήστε τον κινητήρα επόμενης γενιάς μας για να ανακαλύψετε σχετικές ταινίες και σειρές πέρα από τα προφανή.</string>
-  <string name="preview_feature_description_year_in_review">Προεπισκόπηση Ετήσιας Ανασκόπησης, τώρα διαθέσιμη απευθείας στο V3.</string>
   <string name="preview_feature_title_edit_mode">Λειτουργία επεξεργασίας</string>
-  <string name="preview_feature_title_month_in_review">Μηνιαία Ανασκόπηση</string>
-  <string name="preview_feature_title_plex_sync">Συγχρονισμός Plex</string>
+  <string name="preview_feature_title_leaderboard">Πάνθεον</string>
   <string name="preview_feature_title_rewatch">Επανάληψη</string>
   <string name="preview_feature_title_scoped_favorites">Αγαπημένα με χρονικό πλαίσιο</string>
   <string name="preview_feature_title_smart_recommendations">Έξυπνες Προτάσεις</string>
   <string name="preview_feature_title_smart_related">Έξυπνα Σχετικά</string>
-  <string name="preview_feature_title_year_in_review">Ετήσια Ανασκόπηση</string>
   <string name="reset_status_cleared">Η λίστα παρακολούθησης εκκαθαρίστηκε.</string>
   <string name="section_title_season_progress">Πρόοδος Σεζόν %d</string>
   <string name="section_title_seasons_overview">Επισκόπηση</string>
   <string name="section_title_specials_progress">Πρόοδος ειδικών επεισοδίων</string>
+  <string name="stat_label_hours">ώρες</string>
+  <string name="stat_label_plays">προβολές</string>
   <string name="stat_text_favorited">Αγαπημένα</string>
   <string name="stat_text_lists">Λίστες</string>
   <string name="stat_text_plays">Προβολές</string>
@@ -1177,6 +1182,7 @@
   <string name="tag_text_plays">%d προβολές</string>
   <string name="tag_text_premiere">Πρεμιέρα</string>
   <string name="tag_text_preview">Προεπισκόπηση</string>
+  <string name="tag_text_queued">Σε ουρά</string>
   <string name="tag_text_released">Κυκλοφόρησε</string>
   <string name="tag_text_remaining_duration">%s απομένουν</string>
   <string name="tag_text_remaining_episodes">%d απομένουν</string>
@@ -1303,6 +1309,7 @@
   <string name="text_exporting">Εξαγωγή… %s</string>
   <string name="text_favorites_limit_reached">Μπορείτε να επιλέξετε έως και %s υπηρεσίες</string>
   <string name="text_first_play_this_month">Πρώτη προβολή αυτόν τον μήνα</string>
+  <string name="text_following">Ακολουθώντας</string>
   <string name="text_footer_category_community">Κοινότητα</string>
   <string name="text_footer_category_legal">Νομικά</string>
   <string name="text_footer_category_platform">Πλατφόρμα</string>
@@ -1351,6 +1358,9 @@
   <string name="text_landing_welcome">Το νέο σου σπίτι, όπου οι εκπομπές και οι ταινίες σου είναι όλα σε ένα μέρος.</string>
   <string name="text_language">Γλώσσα</string>
   <string name="text_last_day">την περασμένη %s</string>
+  <string name="text_leaderboard_free_section">Δωρεάν μέλη</string>
+  <string name="text_leaderboard_upsell_footer">Αναβαθμίστε σε VIP για να δείτε πού κατατάσσεστε μεταξύ των φίλων σας</string>
+  <string name="text_leaderboard_you">Εσείς</string>
   <string name="text_library">Βιβλιοθήκη</string>
   <string name="text_list_private">Ιδιωτικό</string>
   <string name="text_list_private_info">Η λίστα θα είναι ορατή μόνο σε εσάς.</string>

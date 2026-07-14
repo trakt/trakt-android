@@ -119,6 +119,7 @@
   <string name="button_label_movies">映画</string>
   <string name="button_label_next_calendar_period">次の期間</string>
   <string name="button_label_next_episode">次のエピソード</string>
+  <string name="button_label_open_leaderboard">フォロー中のランキングを開く</string>
   <string name="button_label_pick_match">%sをインポートする。</string>
   <string name="button_label_plex_connect">Plexアカウントを接続</string>
   <string name="button_label_plex_disconnect">Plexアカウントを切断</string>
@@ -537,6 +538,8 @@
   <string name="description_plex_servers">Traktと同期するPlexサーバーを選択してください。</string>
   <string name="description_plex_sync">Plexアカウントを接続して、視聴履歴、評価、コレクションをTraktと同期します。</string>
   <string name="description_plex_sync_settings">これらの設定は、Traktに同期するデータタイプを制御します。</string>
+  <string name="description_plex_vip_upsell_sync">Plexの視聴履歴、評価、コレクションをTraktと同期した状態に保つには、VIPにアップグレードしてください。</string>
+  <string name="description_plex_vip_upsell_webhook">Plexウェブフックを使用して、視聴中のコンテンツをリアルタイムで自動的にスクロブルするには、VIPにアップグレードしてください。</string>
   <string name="description_plex_webhook">視聴中、評価中、ライブラリに追加中のコンテンツをリアルタイムで自動的にスクロブルします。</string>
   <string name="description_preview_features">広く利用可能になる前に、今後の機能を試してください。プレビュー機能は、改善するにつれて変更される場合があります。</string>
   <string name="description_skipped_items">赤色の項目は、スキップされた原因を示しています。</string>
@@ -646,6 +649,7 @@
   <string name="header_landing_track">記録</string>
   <string name="header_landing_welcome">Traktへようこそ</string>
   <string name="header_language">言語</string>
+  <string name="header_leaderboard">パンテオン</string>
   <string name="header_manage_lists">リストを管理</string>
   <string name="header_network">放送局</string>
   <string name="header_notes_placeholder">まだノートはありません。</string>
@@ -666,6 +670,8 @@
   <string name="header_plex_servers">サーバーを選択</string>
   <string name="header_plex_sync_history">同期履歴</string>
   <string name="header_plex_sync_settings">Plex同期設定</string>
+  <string name="header_plex_vip_upsell_sync">Plex同期はVIP機能です</string>
+  <string name="header_plex_vip_upsell_webhook">PlexスクロブリングはVIP機能です</string>
   <string name="header_post_credits">ポストクレジット</string>
   <string name="header_premiered">初公開</string>
   <string name="header_preview_features">プレビュー機能</string>
@@ -837,6 +843,7 @@
   <string name="label_plex_sync_as">として同期</string>
   <string name="label_plex_webhook_connect_hint">Plexアカウントを接続して、Webhook URLを取得してください。</string>
   <string name="label_plex_webhook_url">Webhook URL</string>
+  <string name="label_queued_action">オフラインで保存済み、同期待機中</string>
   <string name="label_ratings_season_chart">シーズンの評価の推移</string>
   <string name="label_report_reason_abusive">不適切</string>
   <string name="label_report_reason_adult">成人向けコンテンツ</string>
@@ -1117,25 +1124,23 @@
   <string name="page_title_year_in_review">%s年のレビュー</string>
   <string name="page_title_year_to_date">今年これまでの統計</string>
   <string name="preview_feature_description_edit_mode">アプリ全体で設定可能なセクションの表示/非表示を制御する機能を有効にします。</string>
-  <string name="preview_feature_description_month_in_review">V3で直接実行される月間レビューをプレビューします。</string>
-  <string name="preview_feature_description_plex_sync">Plexを接続して、視聴履歴、評価、ライブラリをTraktに同期します。接続、サーバー選択、同期ツールが含まれます。</string>
+  <string name="preview_feature_description_leaderboard">フォローしている人の視聴時間でランキングを作成し、その中で自分がどこに位置するかを確認できます。</string>
   <string name="preview_feature_description_rewatch">既に視聴済みの番組の再視聴セッションを開始し、セッションドロワーから直接エピソードをチェックインまたは視聴済みとしてマークできます。</string>
   <string name="preview_feature_description_scoped_favorites">プロフィールに今年の「お気に入り」を表示し、お気に入りリスト全体を年別にグループ化することで、お気に入りリストを期間で区切ります。</string>
   <string name="preview_feature_description_smart_recommendations">当社の次世代エンジンを活用して、一般的なおすすめを超えた映画や番組を発見しましょう。</string>
   <string name="preview_feature_description_smart_related">当社の次世代エンジンを活用して、一般的な関連作を超えた映画や番組を発見しましょう。</string>
-  <string name="preview_feature_description_year_in_review">V3で直接実行される年間レビューをプレビューします。</string>
   <string name="preview_feature_title_edit_mode">編集モード</string>
-  <string name="preview_feature_title_month_in_review">月間レビュー</string>
-  <string name="preview_feature_title_plex_sync">Plex同期</string>
+  <string name="preview_feature_title_leaderboard">パンテオン</string>
   <string name="preview_feature_title_rewatch">再視聴</string>
   <string name="preview_feature_title_scoped_favorites">範囲指定されたお気に入り</string>
   <string name="preview_feature_title_smart_recommendations">スマートレコメンデーション</string>
   <string name="preview_feature_title_smart_related">スマート関連</string>
-  <string name="preview_feature_title_year_in_review">年間レビュー</string>
   <string name="reset_status_cleared">ウォッチリストをクリアしました。</string>
   <string name="section_title_season_progress">シーズン%dの進捗</string>
   <string name="section_title_seasons_overview">概要</string>
   <string name="section_title_specials_progress">スペシャルエピソードの進捗</string>
+  <string name="stat_label_hours">時間</string>
+  <string name="stat_label_plays">再生回数</string>
   <string name="stat_text_favorited">お気に入り</string>
   <string name="stat_text_lists">リスト</string>
   <string name="stat_text_plays">再生回数</string>
@@ -1177,6 +1182,7 @@
   <string name="tag_text_plays">%d回視聴</string>
   <string name="tag_text_premiere">プレミア</string>
   <string name="tag_text_preview">プレビュー</string>
+  <string name="tag_text_queued">キュー済み</string>
   <string name="tag_text_released">公開済み</string>
   <string name="tag_text_remaining_duration">残り%s</string>
   <string name="tag_text_remaining_episodes">残り%d話</string>
@@ -1303,6 +1309,7 @@
   <string name="text_exporting">エクスポート中… %s</string>
   <string name="text_favorites_limit_reached">最大%s個のサービスを選択できます</string>
   <string name="text_first_play_this_month">今月初視聴</string>
+  <string name="text_following">フォロー中</string>
   <string name="text_footer_category_community">コミュニティ</string>
   <string name="text_footer_category_legal">法務</string>
   <string name="text_footer_category_platform">プラットフォーム</string>
@@ -1351,6 +1358,9 @@
   <string name="text_landing_welcome">番組や映画がすべて一つにまとまる、あなたの新しいホームです。</string>
   <string name="text_language">言語</string>
   <string name="text_last_day">先%s</string>
+  <string name="text_leaderboard_free_section">無料メンバー</string>
+  <string name="text_leaderboard_upsell_footer">VIPにアップグレードして、友達の中でのあなたの順位を確認しましょう</string>
+  <string name="text_leaderboard_you">あなた</string>
   <string name="text_library">ライブラリ</string>
   <string name="text_list_private">プライベート</string>
   <string name="text_list_private_info">このリストはあなたにのみ表示されます。</string>

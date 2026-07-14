@@ -119,6 +119,7 @@
   <string name="button_label_movies">Film</string>
   <string name="button_label_next_calendar_period">Næste periode</string>
   <string name="button_label_next_episode">Næste afsnit</string>
+  <string name="button_label_open_leaderboard">Åbn følger-rangliste</string>
   <string name="button_label_pick_match">Importer %s.</string>
   <string name="button_label_plex_connect">Forbind din Plex-konto</string>
   <string name="button_label_plex_disconnect">Frakobl din Plex-konto</string>
@@ -537,6 +538,8 @@
   <string name="description_plex_servers">Vælg den Plex-server, der skal synkroniseres med Trakt.</string>
   <string name="description_plex_sync">Forbind din Plex-konto for at synkronisere set historik, bedømmelser og samlinger med Trakt.</string>
   <string name="description_plex_sync_settings">Disse indstillinger styrer, hvilke datatyper der synkroniseres med Trakt.</string>
+  <string name="description_plex_vip_upsell_sync">Opgrader til VIP for at holde din Plex-sehistorik, bedømmelser og samlinger synkroniseret med Trakt.</string>
+  <string name="description_plex_vip_upsell_webhook">Opgrader til VIP for automatisk at scrobble det, du ser, i realtid med Plex webhooks.</string>
   <string name="description_plex_webhook">Scrobble automatisk, hvad du ser, bedømmer og tilføjer til dit bibliotek i realtid.</string>
   <string name="description_preview_features">Prøv kommende funktioner, før de er bredt tilgængelige. Forhåndsviste funktioner kan ændre sig, når vi forfiner dem.</string>
   <string name="description_skipped_items">Alt i rødt fik elementet til at blive sprunget over.</string>
@@ -646,6 +649,7 @@
   <string name="header_landing_track">Registrer</string>
   <string name="header_landing_welcome">Velkommen til Trakt</string>
   <string name="header_language">Sprog</string>
+  <string name="header_leaderboard">Pantheon</string>
   <string name="header_manage_lists">Administrer lister</string>
   <string name="header_network">Netværk</string>
   <string name="header_notes_placeholder">Ingen noter endnu.</string>
@@ -666,6 +670,8 @@
   <string name="header_plex_servers">Vælg server</string>
   <string name="header_plex_sync_history">Synkroniseringshistorik</string>
   <string name="header_plex_sync_settings">Plex Synkroniseringsindstillinger</string>
+  <string name="header_plex_vip_upsell_sync">Plex-synkronisering er en VIP-funktion</string>
+  <string name="header_plex_vip_upsell_webhook">Plex scrobbling er en VIP-funktion</string>
   <string name="header_post_credits">Eftertekster</string>
   <string name="header_premiered">Premiere</string>
   <string name="header_preview_features">Forhåndsvisningsfunktioner</string>
@@ -837,6 +843,7 @@
   <string name="label_plex_sync_as">Synkroniser som</string>
   <string name="label_plex_webhook_connect_hint">Forbind din Plex-konto for at få din webhook-URL.</string>
   <string name="label_plex_webhook_url">Webhook-URL</string>
+  <string name="label_queued_action">Gemt offline, afventer synkronisering</string>
   <string name="label_ratings_season_chart">Sæsonbedømmelser over tid</string>
   <string name="label_report_reason_abusive">Krænkende</string>
   <string name="label_report_reason_adult">Voksenindhold</string>
@@ -1117,25 +1124,23 @@
   <string name="page_title_year_in_review">%s i overblik</string>
   <string name="page_title_year_to_date">År til dato</string>
   <string name="preview_feature_description_edit_mode">Aktiver kontroller til at skjule eller vise konfigurerbare sektioner i hele appen.</string>
-  <string name="preview_feature_description_month_in_review">Forhåndsvis månedsresumé, der nu kører direkte i V3.</string>
-  <string name="preview_feature_description_plex_sync">Forbind Plex for at synkronisere din sehistorik, bedømmelser og bibliotek til Trakt. Inkluderer forbindelse, servervalg og synkroniseringsværktøjer.</string>
+  <string name="preview_feature_description_leaderboard">Ranger de personer, du følger, efter set tid, og se hvor du lander blandt dem.</string>
   <string name="preview_feature_description_rewatch">Start gensynssessioner for serier, du allerede har set, tjek ind eller marker sete episoder direkte fra sessionsskuffen.</string>
   <string name="preview_feature_description_scoped_favorites">Tidsbegræns favoritlister ved at vise indeværende års favoritter på profiler og gruppere den fulde favoritliste efter år.</string>
   <string name="preview_feature_description_smart_recommendations">Brug vores næste-generations motor til at finde anbefalede film og serier ud over det åbenlyse.</string>
   <string name="preview_feature_description_smart_related">Brug vores næste-generations motor til at finde relaterede film og serier ud over det åbenlyse.</string>
-  <string name="preview_feature_description_year_in_review">Forhåndsvis årsresumé, der nu kører direkte i V3.</string>
   <string name="preview_feature_title_edit_mode">Redigeringstilstand</string>
-  <string name="preview_feature_title_month_in_review">Månedsresumé</string>
-  <string name="preview_feature_title_plex_sync">Plex Synkronisering</string>
+  <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Gensyn</string>
   <string name="preview_feature_title_scoped_favorites">Afgrænsede favoritter</string>
   <string name="preview_feature_title_smart_recommendations">Smarte anbefalinger</string>
   <string name="preview_feature_title_smart_related">Smart relateret</string>
-  <string name="preview_feature_title_year_in_review">Årsresumé</string>
   <string name="reset_status_cleared">Huskeliste ryddet.</string>
   <string name="section_title_season_progress">Sæson %d status</string>
   <string name="section_title_seasons_overview">Oversigt</string>
   <string name="section_title_specials_progress">Specials status</string>
+  <string name="stat_label_hours">timer</string>
+  <string name="stat_label_plays">afspilninger</string>
   <string name="stat_text_favorited">Favoritter</string>
   <string name="stat_text_lists">Lister</string>
   <string name="stat_text_plays">Afspilninger</string>
@@ -1177,6 +1182,7 @@
   <string name="tag_text_plays">%d visninger</string>
   <string name="tag_text_premiere">Premiere</string>
   <string name="tag_text_preview">Forhåndsvisning</string>
+  <string name="tag_text_queued">I kø</string>
   <string name="tag_text_released">Udgivet</string>
   <string name="tag_text_remaining_duration">%s tilbage</string>
   <string name="tag_text_remaining_episodes">%d tilbage</string>
@@ -1303,6 +1309,7 @@
   <string name="text_exporting">Eksporterer… %s</string>
   <string name="text_favorites_limit_reached">Du kan vælge op til %s tjenester</string>
   <string name="text_first_play_this_month">Første visning denne måned</string>
+  <string name="text_following">Følger</string>
   <string name="text_footer_category_community">Fællesskab</string>
   <string name="text_footer_category_legal">Juridisk</string>
   <string name="text_footer_category_platform">Platform</string>
@@ -1351,6 +1358,9 @@
   <string name="text_landing_welcome">Dit nye hjem, hvor dine serier og film er samlet på ét sted.</string>
   <string name="text_language">Sprog</string>
   <string name="text_last_day">sidste %s</string>
+  <string name="text_leaderboard_free_section">Gratis medlemmer</string>
+  <string name="text_leaderboard_upsell_footer">Opgrader til VIP for at se din placering blandt dine venner</string>
+  <string name="text_leaderboard_you">Dig</string>
   <string name="text_library">Bibliotek</string>
   <string name="text_list_private">Privat</string>
   <string name="text_list_private_info">Listen vil kun være synlig for dig.</string>

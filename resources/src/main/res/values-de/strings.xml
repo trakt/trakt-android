@@ -119,6 +119,7 @@
   <string name="button_label_movies">Filme</string>
   <string name="button_label_next_calendar_period">Nächster Zeitraum</string>
   <string name="button_label_next_episode">Nächste Episode</string>
+  <string name="button_label_open_leaderboard">Bestenliste der Follower öffnen</string>
   <string name="button_label_pick_match">Importieren Sie %s.</string>
   <string name="button_label_plex_connect">Verbinden Sie Ihr Plex-Konto</string>
   <string name="button_label_plex_disconnect">Trennen Sie Ihr Plex-Konto</string>
@@ -537,6 +538,8 @@
   <string name="description_plex_servers">Wählen Sie den Plex-Server, der mit Trakt synchronisiert werden soll.</string>
   <string name="description_plex_sync">Verbinden Sie Ihr Plex-Konto, um den Verlauf, Bewertungen und Sammlungen mit Trakt zu synchronisieren.</string>
   <string name="description_plex_sync_settings">Diese Einstellungen steuern, welche Datentypen mit Trakt synchronisiert werden.</string>
+  <string name="description_plex_vip_upsell_sync">Upgraden Sie auf VIP, um Ihren Plex-Anzeigeverlauf, Bewertungen und Sammlungen mit Trakt synchronisiert zu halten.</string>
+  <string name="description_plex_vip_upsell_webhook">Upgraden Sie auf VIP, um automatisch in Echtzeit mit Plex-Webhooks zu scrobbeln, was Sie gerade ansehen.</string>
   <string name="description_plex_webhook">Scrobble automatisch in Echtzeit, was Sie gerade ansehen, bewerten und Ihrer Bibliothek hinzufügen.</string>
   <string name="description_preview_features">Probieren Sie kommende Funktionen aus, bevor sie allgemein verfügbar sind. Vorschaufunktionen können sich ändern, während wir sie verfeinern.</string>
   <string name="description_skipped_items">Alles in Rot führte dazu, dass der Inhalt übersprungen wurde.</string>
@@ -646,6 +649,7 @@
   <string name="header_landing_track">Verfolgen</string>
   <string name="header_landing_welcome">Willkommen bei Trakt</string>
   <string name="header_language">Sprache</string>
+  <string name="header_leaderboard">Pantheon</string>
   <string name="header_manage_lists">Listen verwalten</string>
   <string name="header_network">Sender</string>
   <string name="header_notes_placeholder">Noch keine Notizen.</string>
@@ -666,6 +670,8 @@
   <string name="header_plex_servers">Server auswählen</string>
   <string name="header_plex_sync_history">Synchronisierungsverlauf</string>
   <string name="header_plex_sync_settings">Plex-Synchronisierungseinstellungen</string>
+  <string name="header_plex_vip_upsell_sync">Plex Sync ist eine VIP-Funktion</string>
+  <string name="header_plex_vip_upsell_webhook">Plex Scrobbling ist eine VIP-Funktion</string>
   <string name="header_post_credits">Nach dem Abspann</string>
   <string name="header_premiered">Premiere am</string>
   <string name="header_preview_features">Vorschau-Funktionen</string>
@@ -837,6 +843,7 @@
   <string name="label_plex_sync_as">Synchronisieren als</string>
   <string name="label_plex_webhook_connect_hint">Verbinden Sie Ihr Plex-Konto, um Ihre Webhook-URL zu erhalten.</string>
   <string name="label_plex_webhook_url">Webhook-URL</string>
+  <string name="label_queued_action">Offline gespeichert, wartet auf Synchronisierung</string>
   <string name="label_ratings_season_chart">Staffelbewertungen im Zeitverlauf</string>
   <string name="label_report_reason_abusive">Beleidigend</string>
   <string name="label_report_reason_adult">Inhalte für Erwachsene</string>
@@ -1117,25 +1124,23 @@
   <string name="page_title_year_in_review">%s im Rückblick</string>
   <string name="page_title_year_to_date">Jahresstatistik</string>
   <string name="preview_feature_description_edit_mode">Aktivieren Sie Steuerelemente zum Ausblenden oder Anzeigen konfigurierbarer Abschnitte in der gesamten App.</string>
-  <string name="preview_feature_description_month_in_review">Vorschau auf den Monatsrückblick, jetzt direkt in V3 verfügbar.</string>
-  <string name="preview_feature_description_plex_sync">Verbinden Sie Plex, um Ihren Wiedergabeverlauf, Ihre Bewertungen und Ihre Bibliothek mit Trakt zu synchronisieren. Beinhaltet Verbindung, Serverauswahl und Synchronisierungstools.</string>
+  <string name="preview_feature_description_leaderboard">Rangiere die Personen, denen du folgst, nach Wiedergabezeit und sieh, wo du unter ihnen landest.</string>
   <string name="preview_feature_description_rewatch">Starten Sie Wiederholungssitzungen für bereits gesehene Serien, checken Sie Episoden ein oder markieren Sie diese direkt aus dem Sitzungs-Drawer als gesehen.</string>
   <string name="preview_feature_description_scoped_favorites">Zeitlich begrenzte Favoritenlisten, indem Favoriten des aktuellen Jahres in Profilen angezeigt und die vollständige Favoritenliste nach Jahr gruppiert werden.</string>
   <string name="preview_feature_description_smart_recommendations">Nutze unsere Engine der nächsten Generation, um empfohlene Filme und Serien über das Offensichtliche hinaus aufzudecken.</string>
   <string name="preview_feature_description_smart_related">Nutze unsere Engine der nächsten Generation, um verwandte Filme und Serien über das Offensichtliche hinaus aufzudecken.</string>
-  <string name="preview_feature_description_year_in_review">Vorschau auf den Jahresrückblick, jetzt direkt in V3 verfügbar.</string>
   <string name="preview_feature_title_edit_mode">Bearbeitungsmodus</string>
-  <string name="preview_feature_title_month_in_review">Monatsrückblick</string>
-  <string name="preview_feature_title_plex_sync">Plex-Synchronisierung</string>
+  <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Wiederholung</string>
   <string name="preview_feature_title_scoped_favorites">Gefilterte Favoriten</string>
   <string name="preview_feature_title_smart_recommendations">Intelligente Empfehlungen</string>
   <string name="preview_feature_title_smart_related">Smarte Verknüpfungen</string>
-  <string name="preview_feature_title_year_in_review">Jahresrückblick</string>
   <string name="reset_status_cleared">Watchlist geleert.</string>
   <string name="section_title_season_progress">Staffel %d Fortschritt</string>
   <string name="section_title_seasons_overview">Übersicht</string>
   <string name="section_title_specials_progress">Spezialfolgen Fortschritt</string>
+  <string name="stat_label_hours">Stunden</string>
+  <string name="stat_label_plays">Wiedergaben</string>
   <string name="stat_text_favorited">Favoriten</string>
   <string name="stat_text_lists">Listen</string>
   <string name="stat_text_plays">Wiedergaben</string>
@@ -1177,6 +1182,7 @@
   <string name="tag_text_plays">%d Wiedergaben</string>
   <string name="tag_text_premiere">Premiere</string>
   <string name="tag_text_preview">Vorschau</string>
+  <string name="tag_text_queued">In Warteschlange</string>
   <string name="tag_text_released">Veröffentlicht</string>
   <string name="tag_text_remaining_duration">%s verbleibend</string>
   <string name="tag_text_remaining_episodes">%d übrig</string>
@@ -1303,6 +1309,7 @@
   <string name="text_exporting">Exportiere… %s</string>
   <string name="text_favorites_limit_reached">Sie können bis zu %s Dienste auswählen</string>
   <string name="text_first_play_this_month">Erste Wiedergabe diesen Monat</string>
+  <string name="text_following">Folge ich</string>
   <string name="text_footer_category_community">Community</string>
   <string name="text_footer_category_legal">Rechtliches</string>
   <string name="text_footer_category_platform">Plattform</string>
@@ -1351,6 +1358,9 @@
   <string name="text_landing_welcome">Ihr neues Zuhause, in dem all Ihre Serien und Filme an einem Ort vereint sind.</string>
   <string name="text_language">Sprache</string>
   <string name="text_last_day">letzten %s</string>
+  <string name="text_leaderboard_free_section">Kostenlose Mitglieder</string>
+  <string name="text_leaderboard_upsell_footer">Upgrade zu VIP, um zu sehen, wo du unter deinen Freunden rangierst</string>
+  <string name="text_leaderboard_you">Du</string>
   <string name="text_library">Bibliothek</string>
   <string name="text_list_private">Privat</string>
   <string name="text_list_private_info">Die Liste wird nur für dich sichtbar sein.</string>

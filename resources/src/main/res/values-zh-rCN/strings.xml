@@ -119,6 +119,7 @@
   <string name="button_label_movies">电影</string>
   <string name="button_label_next_calendar_period">下一周期</string>
   <string name="button_label_next_episode">下一集</string>
+  <string name="button_label_open_leaderboard">打开关注排行榜</string>
   <string name="button_label_pick_match">导入 %s。</string>
   <string name="button_label_plex_connect">连接您的Plex帐户</string>
   <string name="button_label_plex_disconnect">断开您的Plex帐户</string>
@@ -537,6 +538,8 @@
   <string name="description_plex_servers">选择要与Trakt同步的Plex服务器。</string>
   <string name="description_plex_sync">连接您的Plex帐户，将观看历史、评分和收藏与Trakt同步。</string>
   <string name="description_plex_sync_settings">这些设置控制哪些数据类型同步到Trakt。</string>
+  <string name="description_plex_vip_upsell_sync">升级到 VIP 以将您的 Plex 观看历史、评分和收藏与 Trakt 同步。</string>
+  <string name="description_plex_vip_upsell_webhook">升级到 VIP，使用 Plex Webhook 实时自动记录您正在观看的内容。</string>
   <string name="description_plex_webhook">自动实时同步您正在观看、评分和添加到媒体库的内容。</string>
   <string name="description_preview_features">在正式推出前试用即将发布的功能。预览功能可能会在我们改进时发生变化。</string>
   <string name="description_skipped_items">任何红色项目都导致了该项目被跳过。</string>
@@ -646,6 +649,7 @@
   <string name="header_landing_track">标记为已观看</string>
   <string name="header_landing_welcome">欢迎来到 Trakt</string>
   <string name="header_language">语言</string>
+  <string name="header_leaderboard">万神殿</string>
   <string name="header_manage_lists">管理列表</string>
   <string name="header_network">电视台</string>
   <string name="header_notes_placeholder">暂无笔记。</string>
@@ -666,6 +670,8 @@
   <string name="header_plex_servers">选择服务器</string>
   <string name="header_plex_sync_history">同步历史</string>
   <string name="header_plex_sync_settings">Plex同步设置</string>
+  <string name="header_plex_vip_upsell_sync">Plex 同步是一项 VIP 功能</string>
+  <string name="header_plex_vip_upsell_webhook">Plex 记录是一项 VIP 功能</string>
   <string name="header_post_credits">片尾彩蛋</string>
   <string name="header_premiered">首播</string>
   <string name="header_preview_features">预览功能</string>
@@ -837,6 +843,7 @@
   <string name="label_plex_sync_as">同步身份</string>
   <string name="label_plex_webhook_connect_hint">连接您的 Plex 帐户以获取您的 Webhook URL。</string>
   <string name="label_plex_webhook_url">Webhook URL</string>
+  <string name="label_queued_action">已离线保存，等待同步</string>
   <string name="label_ratings_season_chart">各季评分随时间变化</string>
   <string name="label_report_reason_abusive">辱骂</string>
   <string name="label_report_reason_adult">成人内容</string>
@@ -1117,25 +1124,23 @@
   <string name="page_title_year_in_review">%s 年回顾</string>
   <string name="page_title_year_to_date">年至今</string>
   <string name="preview_feature_description_edit_mode">启用控件，用于隐藏或显示应用程序中可配置的部分。</string>
-  <string name="preview_feature_description_month_in_review">预览月度回顾，现在可在 V3 中直接运行。</string>
-  <string name="preview_feature_description_plex_sync">连接 Plex 以将您的观看历史、评分和媒体库同步到 Trakt。包括连接、服务器选择和同步工具。</string>
+  <string name="preview_feature_description_leaderboard">根据观看时长对您关注的人进行排名，查看您在他们中的位置。</string>
   <string name="preview_feature_description_rewatch">开始重温您已看过的节目，直接从会话抽屉中签到或标记已观看剧集。</string>
   <string name="preview_feature_description_scoped_favorites">通过在个人资料上显示当年的收藏以及按年份分组完整的收藏列表来限制收藏列表的时间范围。</string>
   <string name="preview_feature_description_smart_recommendations">使用我们的下一代引擎，发现超越显而易见的推荐电影和节目。</string>
   <string name="preview_feature_description_smart_related">使用我们的下一代引擎，发现超越显而易见的电影和节目。</string>
-  <string name="preview_feature_description_year_in_review">预览年度回顾，现在可在 V3 中直接运行。</string>
   <string name="preview_feature_title_edit_mode">编辑模式</string>
-  <string name="preview_feature_title_month_in_review">月度回顾</string>
-  <string name="preview_feature_title_plex_sync">Plex同步</string>
+  <string name="preview_feature_title_leaderboard">万神殿</string>
   <string name="preview_feature_title_rewatch">重温</string>
   <string name="preview_feature_title_scoped_favorites">限定范围的收藏</string>
   <string name="preview_feature_title_smart_recommendations">智能推荐</string>
   <string name="preview_feature_title_smart_related">智能相关</string>
-  <string name="preview_feature_title_year_in_review">年度回顾</string>
   <string name="reset_status_cleared">待看列表已清除。</string>
   <string name="section_title_season_progress">第 %d 季 进度</string>
   <string name="section_title_seasons_overview">概览</string>
   <string name="section_title_specials_progress">特辑进度</string>
+  <string name="stat_label_hours">小时</string>
+  <string name="stat_label_plays">播放次数</string>
   <string name="stat_text_favorited">我的最爱</string>
   <string name="stat_text_lists">列表</string>
   <string name="stat_text_plays">播放次数</string>
@@ -1177,6 +1182,7 @@
   <string name="tag_text_plays">%d 次播放</string>
   <string name="tag_text_premiere">首映</string>
   <string name="tag_text_preview">预览</string>
+  <string name="tag_text_queued">已排队</string>
   <string name="tag_text_released">已上映</string>
   <string name="tag_text_remaining_duration">剩余 %s</string>
   <string name="tag_text_remaining_episodes">剩余 %d 集</string>
@@ -1303,6 +1309,7 @@
   <string name="text_exporting">正在导出… %s</string>
   <string name="text_favorites_limit_reached">您最多可以选择 %s 项服务</string>
   <string name="text_first_play_this_month">本月首次播放</string>
+  <string name="text_following">正在关注</string>
   <string name="text_footer_category_community">社区</string>
   <string name="text_footer_category_legal">法律</string>
   <string name="text_footer_category_platform">平台</string>
@@ -1351,6 +1358,9 @@
   <string name="text_landing_welcome">您的新家，所有节目和电影尽在一处。</string>
   <string name="text_language">语言</string>
   <string name="text_last_day">上 %s</string>
+  <string name="text_leaderboard_free_section">免费会员</string>
+  <string name="text_leaderboard_upsell_footer">升级为VIP，查看您在好友中的排名</string>
+  <string name="text_leaderboard_you">你</string>
   <string name="text_library">媒体库</string>
   <string name="text_list_private">私人</string>
   <string name="text_list_private_info">列表将仅对您可见。</string>

@@ -119,6 +119,7 @@
   <string name="button_label_movies">فیلم‌ها</string>
   <string name="button_label_next_calendar_period">دوره بعدی</string>
   <string name="button_label_next_episode">قسمت بعدی</string>
+  <string name="button_label_open_leaderboard">جدول رده‌بندی دنبال‌کنندگان را باز کنید</string>
   <string name="button_label_pick_match">وارد کردن %s.</string>
   <string name="button_label_plex_connect">حساب Plex خود را متصل کنید</string>
   <string name="button_label_plex_disconnect">حساب Plex خود را قطع کنید</string>
@@ -537,6 +538,8 @@
   <string name="description_plex_servers">سرور Plex را برای همگام‌سازی با Trakt انتخاب کنید.</string>
   <string name="description_plex_sync">حساب Plex خود را متصل کنید تا سابقه تماشا، امتیازات و مجموعه‌ها را با Trakt همگام‌سازی کنید.</string>
   <string name="description_plex_sync_settings">این تنظیمات کنترل می‌کنند که کدام انواع داده با Trakt همگام‌سازی شوند.</string>
+  <string name="description_plex_vip_upsell_sync">برای ارتقاء به VIP، تاریخچه تماشا، امتیازات و مجموعه‌های Plex خود را با Trakt همگام نگه دارید.</string>
+  <string name="description_plex_vip_upsell_webhook">برای ارتقاء به VIP، آنچه را که با وب‌هوک‌های Plex تماشا می‌کنید، به‌صورت خودکار و بلادرنگ اسکروبل کنید.</string>
   <string name="description_plex_webhook">آنچه را که تماشا می‌کنید، امتیاز می‌دهید و به کتابخانه خود اضافه می‌کنید، به‌طور خودکار و در زمان واقعی ثبت کنید.</string>
   <string name="description_preview_features">ویژگی‌های آتی را قبل از در دسترس قرار گرفتن عمومی امتحان کنید. ویژگی‌های پیش‌نمایش ممکن است با بهبود آنها تغییر کنند.</string>
   <string name="description_skipped_items">هر چیزی که به رنگ قرمز است باعث شده مورد مورد نظر رد شود.</string>
@@ -646,6 +649,7 @@
   <string name="header_landing_track">ردیابی</string>
   <string name="header_landing_welcome">به Trakt خوش آمدید</string>
   <string name="header_language">زبان</string>
+  <string name="header_leaderboard">پانتئون</string>
   <string name="header_manage_lists">مدیریت لیست‌ها</string>
   <string name="header_network">شبکه</string>
   <string name="header_notes_placeholder">هنوز یادداشتی وجود ندارد.</string>
@@ -666,6 +670,8 @@
   <string name="header_plex_servers">انتخاب سرور</string>
   <string name="header_plex_sync_history">تاریخچه همگام‌سازی</string>
   <string name="header_plex_sync_settings">تنظیمات همگام‌سازی Plex</string>
+  <string name="header_plex_vip_upsell_sync">همگام‌سازی Plex یک ویژگی VIP است</string>
+  <string name="header_plex_vip_upsell_webhook">اسکروبلینگ Plex یک ویژگی VIP است</string>
   <string name="header_post_credits">پس از تیتراژ</string>
   <string name="header_premiered">اولین نمایش</string>
   <string name="header_preview_features">ویژگی‌های پیش‌نمایش</string>
@@ -837,6 +843,7 @@
   <string name="label_plex_sync_as">همگام‌سازی به عنوان</string>
   <string name="label_plex_webhook_connect_hint">حساب Plex خود را متصل کنید تا URL وب‌هوک خود را دریافت کنید.</string>
   <string name="label_plex_webhook_url">URL وب‌هوک</string>
+  <string name="label_queued_action">ذخیره شد به صورت آفلاین، در انتظار همگام‌سازی</string>
   <string name="label_ratings_season_chart">رتبه‌بندی‌های فصل در طول زمان</string>
   <string name="label_report_reason_abusive">توهین‌آمیز</string>
   <string name="label_report_reason_adult">محتوای بزرگسالان</string>
@@ -1117,25 +1124,23 @@
   <string name="page_title_year_in_review">مرور سال %s</string>
   <string name="page_title_year_to_date">سال تا به امروز</string>
   <string name="preview_feature_description_edit_mode">کنترل‌هایی را برای پنهان کردن یا نمایش بخش‌های قابل تنظیم در سراسر برنامه فعال کنید.</string>
-  <string name="preview_feature_description_month_in_review">مرور ماه را پیش‌نمایش کنید، اکنون مستقیماً در V3 اجرا می‌شود.</string>
-  <string name="preview_feature_description_plex_sync">Plex را متصل کنید تا تاریخچه تماشا، امتیازات و کتابخانه خود را با Trakt همگام‌سازی کنید. شامل ابزارهای اتصال، انتخاب سرور و همگام‌سازی است.</string>
+  <string name="preview_feature_description_leaderboard">افرادی که دنبال می‌کنید را بر اساس زمان تماشا رتبه‌بندی کنید و ببینید در میان آن‌ها کجا قرار می‌گیرید.</string>
   <string name="preview_feature_description_rewatch">جلسات بازتماشا را برای سریال‌هایی که قبلاً دیده‌اید شروع کنید، قسمت‌های تماشا شده را مستقیماً از کشوی جلسه ثبت کنید یا علامت بزنید.</string>
   <string name="preview_feature_description_scoped_favorites">لیست‌های علاقه‌مندی را با نمایش علاقه‌مندی‌های سال جاری در پروفایل‌ها و گروه‌بندی لیست کامل علاقه‌مندی‌ها بر اساس سال، محدود کنید.</string>
   <string name="preview_feature_description_smart_recommendations">از موتور نسل بعدی ما برای نمایش فیلم‌ها و نمایش‌های توصیه شده فراتر از موارد بدیهی استفاده کنید.</string>
   <string name="preview_feature_description_smart_related">از موتور نسل بعدی ما برای نمایش فیلم‌ها و نمایش‌های مرتبط فراتر از موارد بدیهی استفاده کنید.</string>
-  <string name="preview_feature_description_year_in_review">مرور سال را پیش‌نمایش کنید، اکنون مستقیماً در V3 اجرا می‌شود.</string>
   <string name="preview_feature_title_edit_mode">حالت ویرایش</string>
-  <string name="preview_feature_title_month_in_review">مرور ماه</string>
-  <string name="preview_feature_title_plex_sync">همگام‌سازی پلکس</string>
+  <string name="preview_feature_title_leaderboard">پانتئون</string>
   <string name="preview_feature_title_rewatch">بازتماشا</string>
   <string name="preview_feature_title_scoped_favorites">علاقه‌مندی‌های محدود</string>
   <string name="preview_feature_title_smart_recommendations">توصیه‌های هوشمند</string>
   <string name="preview_feature_title_smart_related">مرتبط هوشمند</string>
-  <string name="preview_feature_title_year_in_review">مرور سال</string>
   <string name="reset_status_cleared">لیست تماشا پاک شد.</string>
   <string name="section_title_season_progress">فصل %d پیشرفت</string>
   <string name="section_title_seasons_overview">مرور کلی</string>
   <string name="section_title_specials_progress">پیشرفت قسمت‌های ویژه</string>
+  <string name="stat_label_hours">ساعات</string>
+  <string name="stat_label_plays">بازدیدها</string>
   <string name="stat_text_favorited">علاقه‌مندی‌ها</string>
   <string name="stat_text_lists">لیست‌ها</string>
   <string name="stat_text_plays">بازدیدها</string>
@@ -1177,6 +1182,7 @@
   <string name="tag_text_plays">%d پخش</string>
   <string name="tag_text_premiere">اولین پخش</string>
   <string name="tag_text_preview">پیش‌نمایش</string>
+  <string name="tag_text_queued">در صف</string>
   <string name="tag_text_released">منتشر شده</string>
   <string name="tag_text_remaining_duration">%s باقی مانده</string>
   <string name="tag_text_remaining_episodes">%d باقی مانده</string>
@@ -1303,6 +1309,7 @@
   <string name="text_exporting">در حال خروجی گرفتن… %s</string>
   <string name="text_favorites_limit_reached">شما می‌توانید تا %s سرویس را انتخاب کنید</string>
   <string name="text_first_play_this_month">اولین پخش در این ماه</string>
+  <string name="text_following">دنبال‌کنندگان</string>
   <string name="text_footer_category_community">جامعه</string>
   <string name="text_footer_category_legal">حقوقی</string>
   <string name="text_footer_category_platform">پلتفرم</string>
@@ -1351,6 +1358,9 @@
   <string name="text_landing_welcome">خانه جدید شما، جایی که همه نمایش\nها و فیلم\nهای شما در یک مکان هستند.</string>
   <string name="text_language">زبان</string>
   <string name="text_last_day">%s گذشته</string>
+  <string name="text_leaderboard_free_section">اعضای رایگان</string>
+  <string name="text_leaderboard_upsell_footer">برای مشاهده رتبه خود در میان دوستانتان، به VIP ارتقا دهید</string>
+  <string name="text_leaderboard_you">شما</string>
   <string name="text_library">کتابخانه</string>
   <string name="text_list_private">خصوصی</string>
   <string name="text_list_private_info">لیست فقط برای شما قابل مشاهده خواهد بود.</string>

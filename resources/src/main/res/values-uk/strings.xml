@@ -119,6 +119,7 @@
   <string name="button_label_movies">Фільми</string>
   <string name="button_label_next_calendar_period">Наступний період</string>
   <string name="button_label_next_episode">Наступний епізод</string>
+  <string name="button_label_open_leaderboard">Відкрити таблицю лідерів підписок</string>
   <string name="button_label_pick_match">Імпортувати %s.</string>
   <string name="button_label_plex_connect">Підключити обліковий запис Plex</string>
   <string name="button_label_plex_disconnect">Відключити обліковий запис Plex</string>
@@ -537,6 +538,8 @@
   <string name="description_plex_servers">Виберіть сервер Plex для синхронізації з Trakt.</string>
   <string name="description_plex_sync">Підключіть свій обліковий запис Plex, щоб синхронізувати історію переглядів, оцінки та колекції з Trakt.</string>
   <string name="description_plex_sync_settings">Ці налаштування визначають, які типи даних синхронізуються з Trakt.</string>
+  <string name="description_plex_vip_upsell_sync">Оновіть до VIP, щоб синхронізувати історію переглядів, оцінки та колекції Plex із Trakt.</string>
+  <string name="description_plex_vip_upsell_webhook">Оновіть до VIP, щоб автоматично скроббити те, що ви дивитеся, в режимі реального часу за допомогою вебхуків Plex.</string>
   <string name="description_plex_webhook">Автоматично скроблюйте те, що ви дивитеся, оцінюєте та додаєте до своєї бібліотеки в реальному часі.</string>
   <string name="description_preview_features">Спробуйте майбутні функції до того, як вони стануть загальнодоступними. Попередній перегляд функцій може змінюватися в міру їх удосконалення.</string>
   <string name="description_skipped_items">Будь-що червоним кольором призвело до пропуску елемента.</string>
@@ -646,6 +649,7 @@
   <string name="header_landing_track">Відстежуйте</string>
   <string name="header_landing_welcome">Ласкаво просимо до Trakt</string>
   <string name="header_language">Мова</string>
+  <string name="header_leaderboard">Пантеон</string>
   <string name="header_manage_lists">Керувати списками</string>
   <string name="header_network">Мережа</string>
   <string name="header_notes_placeholder">Нотаток ще немає.</string>
@@ -666,6 +670,8 @@
   <string name="header_plex_servers">Вибрати сервер</string>
   <string name="header_plex_sync_history">Історія синхронізацій</string>
   <string name="header_plex_sync_settings">Налаштування синхронізації Plex</string>
+  <string name="header_plex_vip_upsell_sync">Синхронізація Plex — це функція VIP</string>
+  <string name="header_plex_vip_upsell_webhook">Скроблення Plex — це функція VIP</string>
   <string name="header_post_credits">Після титрів</string>
   <string name="header_premiered">Прем\'єра відбулася</string>
   <string name="header_preview_features">Функції попереднього перегляду</string>
@@ -837,6 +843,7 @@
   <string name="label_plex_sync_as">Синхронізувати як</string>
   <string name="label_plex_webhook_connect_hint">Підключіть свій обліковий запис Plex, щоб отримати URL-адресу вебхука.</string>
   <string name="label_plex_webhook_url">URL-адреса вебхука</string>
+  <string name="label_queued_action">Збережено офлайн, очікує на синхронізацію</string>
   <string name="label_ratings_season_chart">Рейтинги сезонів з часом</string>
   <string name="label_report_reason_abusive">Образливий</string>
   <string name="label_report_reason_adult">Контент для дорослих</string>
@@ -1117,25 +1124,23 @@
   <string name="page_title_year_in_review">%s в огляді</string>
   <string name="page_title_year_to_date">Рік до сьогодні</string>
   <string name="preview_feature_description_edit_mode">Увімкніть елементи керування для приховування або відображення настроюваних розділів у всьому застосунку.</string>
-  <string name="preview_feature_description_month_in_review">Попередній перегляд Місяць у Підсумках, тепер працює безпосередньо у V3.</string>
-  <string name="preview_feature_description_plex_sync">Підключіть Plex для синхронізації історії переглядів, оцінок та бібліотеки з Trakt. Включає підключення, вибір сервера та інструменти синхронізації.</string>
+  <string name="preview_feature_description_leaderboard">Ранжуйте людей, за якими стежите, за часом перегляду та подивіться, яке місце ви посідаєте серед них.</string>
   <string name="preview_feature_description_rewatch">Почніть сеанси повторного перегляду для шоу, які ви вже бачили, реєструйте або відмічайте переглянуті серії безпосередньо з вікна сеансу.</string>
   <string name="preview_feature_description_scoped_favorites">Обмежте списки улюблених за часом, відображаючи улюблене поточного року в профілях та групуючи повний список улюблених за роками.</string>
   <string name="preview_feature_description_smart_recommendations">Використовуйте наш двигун нового покоління, щоб знаходити рекомендовані фільми та шоу, що виходять за рамки очевидного.</string>
   <string name="preview_feature_description_smart_related">Використовуйте наш двигун нового покоління, щоб знаходити пов\'язані фільми та шоу, що виходять за рамки очевидного.</string>
-  <string name="preview_feature_description_year_in_review">Попередній перегляд Рік у Підсумках, тепер працює безпосередньо у V3.</string>
   <string name="preview_feature_title_edit_mode">Режим редагування</string>
-  <string name="preview_feature_title_month_in_review">Місяць у Підсумках</string>
-  <string name="preview_feature_title_plex_sync">Синхронізація Plex</string>
+  <string name="preview_feature_title_leaderboard">Пантеон</string>
   <string name="preview_feature_title_rewatch">Повторний перегляд</string>
   <string name="preview_feature_title_scoped_favorites">Вибране за періодом</string>
   <string name="preview_feature_title_smart_recommendations">Розумні рекомендації</string>
   <string name="preview_feature_title_smart_related">Розумні пов\'язані</string>
-  <string name="preview_feature_title_year_in_review">Рік у Підсумках</string>
   <string name="reset_status_cleared">Список перегляду очищено.</string>
   <string name="section_title_season_progress">Прогрес сезону %d</string>
   <string name="section_title_seasons_overview">Огляд</string>
   <string name="section_title_specials_progress">Прогрес спецвипусків</string>
+  <string name="stat_label_hours">години</string>
+  <string name="stat_label_plays">перегляди</string>
   <string name="stat_text_favorited">Улюблені</string>
   <string name="stat_text_lists">Списки</string>
   <string name="stat_text_plays">Перегляди</string>
@@ -1177,6 +1182,7 @@
   <string name="tag_text_plays">%d переглядів</string>
   <string name="tag_text_premiere">Прем\'єра</string>
   <string name="tag_text_preview">Попередній перегляд</string>
+  <string name="tag_text_queued">У черзі</string>
   <string name="tag_text_released">Випущено</string>
   <string name="tag_text_remaining_duration">%s залишилось</string>
   <string name="tag_text_remaining_episodes">%d еп. залишилось</string>
@@ -1303,6 +1309,7 @@
   <string name="text_exporting">Експортування… %s</string>
   <string name="text_favorites_limit_reached">Ви можете вибрати до %s сервісів</string>
   <string name="text_first_play_this_month">Перший перегляд цього місяця</string>
+  <string name="text_following">Підписки</string>
   <string name="text_footer_category_community">Спільнота</string>
   <string name="text_footer_category_legal">Правова інформація</string>
   <string name="text_footer_category_platform">Платформа</string>
@@ -1351,6 +1358,9 @@
   <string name="text_landing_welcome">Ваш новий дім, де всі ваші серіали та фільми зібрані в одному місці.</string>
   <string name="text_language">Мова</string>
   <string name="text_last_day">минулого %s</string>
+  <string name="text_leaderboard_free_section">Безкоштовні учасники</string>
+  <string name="text_leaderboard_upsell_footer">Оновіть до VIP, щоб побачити своє місце серед друзів</string>
+  <string name="text_leaderboard_you">Ви</string>
   <string name="text_library">Бібліотека</string>
   <string name="text_list_private">Приватне</string>
   <string name="text_list_private_info">Список буде видно лише вам.</string>
