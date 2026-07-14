@@ -263,16 +263,16 @@ private fun HomeScreenContent(
                         onClick = onStreakClick,
                     )
                 }
-            }
 
-            if (state.user.user?.isVip != true) {
-                item {
-                    VipBanner(
-                        onClick = onVipClick,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(sectionPadding),
-                    )
+                if (!state.user.user.isVip) {
+                    item {
+                        VipBanner(
+                            onClick = onVipClick,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(sectionPadding),
+                        )
+                    }
                 }
             }
 
