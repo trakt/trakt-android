@@ -115,7 +115,7 @@ private fun ViewContent(
             },
             lineLimits = TextFieldLineLimits.MultiLine(
                 minHeightInLines = 5,
-                maxHeightInLines = Int.MAX_VALUE,
+                maxHeightInLines = 20,
             ),
             imeAction = ImeAction.Default,
             modifier = Modifier.fillMaxWidth(),
@@ -141,7 +141,7 @@ private fun ViewContent(
                     ?: stringResource(R.string.error_text_unexpected_error_short),
                 color = Red500,
                 style = TraktTheme.typography.paragraphSmaller,
-                maxLines = 10,
+                maxLines = 3,
                 overflow = Ellipsis,
                 modifier = Modifier
                     .padding(top = 26.dp)
