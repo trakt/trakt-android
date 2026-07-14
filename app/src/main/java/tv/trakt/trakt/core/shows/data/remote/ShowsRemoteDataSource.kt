@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.shows.data.remote
 
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.networking.CalendarMediaDto
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
@@ -9,7 +10,7 @@ import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.SeasonDto
-import tv.trakt.trakt.common.networking.ShowDto
+import tv.trakt.trakt.common.networking.ShowCalendarsDto
 import tv.trakt.trakt.common.networking.ShowStatsDto
 import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
@@ -28,7 +29,7 @@ internal interface ShowsRemoteDataSource {
         page: Int = 1,
         limit: Int,
         filters: GlobalFilter,
-    ): List<ShowDto>
+    ): List<ShowCalendarsDto>
 
     suspend fun getRecommended(
         limit: Int,
@@ -42,7 +43,13 @@ internal interface ShowsRemoteDataSource {
         filters: GlobalFilter,
     ): List<AnticipatedShowDto>
 
-    suspend fun getShowDetails(showId: TraktId): ShowDto
+    suspend fun getReleases(
+        startDate: Instant,
+        days: Int,
+        filters: GlobalFilter,
+    ): List<CalendarMediaDto>
+
+    suspend fun getShowDetails(showId: TraktId): ShowCalendarsDto
 
     suspend fun getExternalRatings(showId: TraktId): ExternalRatingsDto
 
@@ -64,7 +71,7 @@ internal interface ShowsRemoteDataSource {
 
     suspend fun getSentiments(showId: TraktId): V3SentimentResponse?
 
-    suspend fun getRelated(showId: TraktId): List<ShowDto>
+    suspend fun getRelated(showId: TraktId): List<ShowCalendarsDto>
 
     suspend fun getLists(
         showId: TraktId,

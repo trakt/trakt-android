@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.episodes.data.remote
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
+import tv.trakt.trakt.common.networking.EpisodeCalendarsDto
 import tv.trakt.trakt.common.networking.EpisodeDto
 import tv.trakt.trakt.common.networking.EpisodeStatsDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
@@ -18,7 +19,7 @@ internal interface EpisodesRemoteDataSource {
         showId: TraktId,
         season: Int,
         episode: Int,
-    ): EpisodeDto
+    ): EpisodeCalendarsDto
 
     /**
      * Retrieves all episodes for a specific season of a show.
@@ -28,7 +29,7 @@ internal interface EpisodesRemoteDataSource {
     suspend fun getSeason(
         showId: TraktId,
         season: Int,
-    ): List<EpisodeDto>
+    ): List<EpisodeCalendarsDto>
 
     /**
      * Retrieves the external ratings for a specific episode of a show.

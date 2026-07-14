@@ -10,7 +10,7 @@ import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.SeasonDto
-import tv.trakt.trakt.common.networking.ShowDto
+import tv.trakt.trakt.common.networking.ShowCalendarsDto
 import tv.trakt.trakt.common.networking.StreamingDto
 import java.time.Instant
 
@@ -24,7 +24,7 @@ internal interface ShowsRemoteDataSource {
         limit: Int,
         page: Int,
         years: Int? = null,
-    ): List<ShowDto>
+    ): List<ShowCalendarsDto>
 
     suspend fun getAnticipatedShows(
         limit: Int,
@@ -37,9 +37,9 @@ internal interface ShowsRemoteDataSource {
         page: Int,
     ): List<RecommendedShowDto>
 
-    suspend fun getRelatedShows(showId: TraktId): List<ShowDto>
+    suspend fun getRelatedShows(showId: TraktId): List<ShowCalendarsDto>
 
-    suspend fun getShowDetails(showId: TraktId): ShowDto?
+    suspend fun getShowDetails(showId: TraktId): ShowCalendarsDto
 
     suspend fun getShowExternalRatings(showId: TraktId): ExternalRatingsDto
 

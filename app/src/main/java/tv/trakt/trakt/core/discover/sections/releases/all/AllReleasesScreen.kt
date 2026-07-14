@@ -1,0 +1,852 @@
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+
+package tv.trakt.trakt.core.discover.sections.releases.all
+
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.awaitHorizontalTouchSlopOrCancellation
+import androidx.compose.foundation.gestures.horizontalDrag
+import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableFloatState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.positionChange
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import tv.trakt.trakt.LocalSnackbarState
+import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
+import tv.trakt.trakt.common.helpers.extensions.capitalize
+import tv.trakt.trakt.common.helpers.extensions.fullDayFormat
+import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
+import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
+import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.ui.theme.colors.Purple400
+import tv.trakt.trakt.core.calendar.model.CalendarItem
+import tv.trakt.trakt.core.calendar.model.CalendarItem.EpisodeItem
+import tv.trakt.trakt.core.calendar.model.CalendarItem.MovieItem
+import tv.trakt.trakt.core.calendar.ui.CalendarEpisodeItemView
+import tv.trakt.trakt.core.calendar.ui.CalendarMovieItemView
+import tv.trakt.trakt.core.calendar.ui.controls.CalendarControlsView
+import tv.trakt.trakt.core.filters.GlobalFiltersSheet
+import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
+import tv.trakt.trakt.helpers.SimpleScrollConnection
+import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
+import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
+import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
+import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
+import tv.trakt.trakt.ui.theme.TraktTheme
+import java.time.DayOfWeek.MONDAY
+import java.time.LocalDate
+import kotlin.math.absoluteValue
+import kotlin.math.roundToInt
+
+private const val MIN_ALPHA = 0.25F
+
+@Composable
+internal fun AllReleasesScreen(
+    viewModel: AllReleasesViewModel,
+    onNavigateBack: () -> Unit,
+    onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
+    onShowClick: (TraktId) -> Unit,
+    onMovieClick: (TraktId) -> Unit,
+) {
+    val scope = rememberCoroutineScope()
+
+    val context = LocalContext.current
+    val haptic = LocalHapticFeedback.current
+    val snackbar = LocalSnackbarState.current
+
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    var dateSelectionSheet by remember { mutableStateOf<CalendarItem?>(null) }
+    var confirmRemoveSheet by remember { mutableStateOf<CalendarItem?>(null) }
+    var filtersSheet by remember { mutableStateOf(false) }
+
+    LaunchedEffect(
+        state.navigateShow,
+        state.navigateMovie,
+        state.navigateEpisode,
+    ) {
+        state.navigateShow?.let {
+            onShowClick(it)
+            viewModel.clearNavigation()
+        }
+        state.navigateMovie?.let {
+            onMovieClick(it)
+            viewModel.clearNavigation()
+        }
+        state.navigateEpisode?.let {
+            onEpisodeClick(it.first, it.second)
+            viewModel.clearNavigation()
+        }
+    }
+
+    LaunchedEffect(state.info) {
+        if (state.info == null) return@LaunchedEffect
+        haptic.performHapticFeedback(Confirm)
+        with(scope) {
+            val job = launch {
+                state.info?.get(context)?.let {
+                    snackbar.showSnackbar(it)
+                }
+            }
+            delay(SNACK_DURATION_SHORT)
+            job.cancel()
+        }
+        viewModel.clearInfo()
+    }
+
+    AllReleasesScreen(
+        scope = scope,
+        state = state,
+        onTodayClick = viewModel::loadTodayData,
+        onNextWeekClick = viewModel::loadNextWeekData,
+        onPreviousWeekClick = viewModel::loadPreviousWeekData,
+        onShowClick = { item ->
+            if (state.loading.isLoading) return@AllReleasesScreen
+            viewModel.navigateToShow(item.show)
+        },
+        onMovieClick = { item ->
+            if (state.loading.isLoading) return@AllReleasesScreen
+            viewModel.navigateToMovie(item.movie)
+        },
+        onEpisodeClick = { item ->
+            if (state.loading.isLoading) return@AllReleasesScreen
+            viewModel.navigateToEpisode(item.show, item.episode)
+        },
+        onCheckClick = {
+            if (state.loading.isLoading) return@AllReleasesScreen
+            when (it) {
+                is EpisodeItem -> viewModel.addToHistory(it.episode)
+                is MovieItem -> viewModel.addToHistory(it.movie)
+            }
+        },
+        onCheckLongClick = {
+            if (state.loading.isLoading) return@AllReleasesScreen
+            dateSelectionSheet = it
+        },
+        onRemoveClick = { item ->
+            if (state.loading.isLoading) return@AllReleasesScreen
+            confirmRemoveSheet = item
+        },
+        onModeClick = { mode ->
+            state.filter?.let {
+                viewModel.setFilter(it.copy(mode = mode))
+            }
+        },
+        onFiltersClick = {
+            filtersSheet = true
+        },
+        onBackClick = onNavigateBack,
+    )
+
+    // Sheets
+
+    DateSelectionSheet(
+        active = dateSelectionSheet != null,
+        title = dateSelectionSheet?.title.orEmpty(),
+        subtitle = when (dateSelectionSheet) {
+            is EpisodeItem -> (dateSelectionSheet as EpisodeItem).episode.seasonEpisodeString()
+            else -> null
+        },
+        onResult = { date ->
+            if (dateSelectionSheet == null) return@DateSelectionSheet
+            (dateSelectionSheet as? EpisodeItem)?.let {
+                viewModel.addToHistory(
+                    episode = it.episode,
+                    customDate = date,
+                )
+            }
+            (dateSelectionSheet as? MovieItem)?.let {
+                viewModel.addToHistory(
+                    movie = it.movie,
+                    customDate = date,
+                )
+            }
+        },
+        onDismiss = {
+            dateSelectionSheet = null
+        },
+    )
+
+    RemoveConfirmationSheet(
+        active = confirmRemoveSheet != null,
+        onYes = {
+            (confirmRemoveSheet as? EpisodeItem)?.let {
+                viewModel.removeFromWatched(it.episode)
+            }
+            (confirmRemoveSheet as? MovieItem)?.let {
+                viewModel.removeFromWatched(it.movie)
+            }
+            confirmRemoveSheet = null
+        },
+        onNo = { confirmRemoveSheet = null },
+        title = stringResource(R.string.button_text_remove_from_history),
+        message = stringResource(
+            R.string.warning_prompt_remove_from_watched,
+            confirmRemoveSheet?.title.orEmpty(),
+        ),
+    )
+
+    GlobalFiltersSheet(
+        active = filtersSheet,
+        options = GlobalFiltersOptions(
+            global = false,
+            initial = state.filter,
+        ),
+        onUpdate = viewModel::setFilter,
+        onDismiss = {
+            filtersSheet = false
+        },
+    )
+}
+
+@Composable
+private fun AllReleasesScreen(
+    scope: CoroutineScope,
+    state: AllReleasesState,
+    modifier: Modifier = Modifier,
+    onTodayClick: () -> Unit = {},
+    onNextWeekClick: () -> Unit = {},
+    onPreviousWeekClick: () -> Unit = {},
+    onShowClick: (EpisodeItem) -> Unit = {},
+    onMovieClick: (MovieItem) -> Unit = {},
+    onEpisodeClick: (EpisodeItem) -> Unit = {},
+    onCheckClick: (CalendarItem) -> Unit = {},
+    onCheckLongClick: (CalendarItem) -> Unit = {},
+    onRemoveClick: (CalendarItem) -> Unit = {},
+    onModeClick: (MediaMode) -> Unit = {},
+    onFiltersClick: () -> Unit = {},
+    onBackClick: () -> Unit = {},
+) {
+    val scrollOffset = with(LocalDensity.current) { 48.dp.toPx().toInt() }
+
+    val contentPadding = PaddingValues(
+        start = TraktTheme.spacing.mainPageHorizontalSpace,
+        end = TraktTheme.spacing.mainPageHorizontalSpace,
+        top = WindowInsets.statusBars.asPaddingValues()
+            .calculateTopPadding()
+            .plus(176.dp),
+        bottom = WindowInsets.navigationBars.asPaddingValues()
+            .calculateBottomPadding()
+            .plus(TraktTheme.size.navigationBarHeight)
+            .plus(TraktTheme.spacing.mainPageBottomSpace),
+    )
+
+    val gridState = rememberLazyGridState()
+    val scrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
+        SimpleScrollConnection()
+    }
+
+    val itemsKeys by remember(state.items) {
+        derivedStateOf {
+            state.items?.keys?.toList() ?: EmptyImmutableList
+        }
+    }
+
+    val focusedDate by remember(itemsKeys) {
+        derivedStateOf {
+            val firstVisibleIndex = gridState.firstVisibleItemIndex
+            if (firstVisibleIndex < 0 || state.items.isNullOrEmpty()) {
+                return@derivedStateOf null
+            }
+
+            var accumulatedCount = 0
+            for (date in itemsKeys) {
+                val itemsForDate = state.items[date] ?: EmptyImmutableList
+                val itemCountForDate = when {
+                    itemsForDate.isNotEmpty() -> itemsForDate.size + 1
+                    else -> 2
+                }
+
+                if (firstVisibleIndex < accumulatedCount + itemCountForDate) {
+                    return@derivedStateOf date
+                }
+
+                accumulatedCount += itemCountForDate
+            }
+
+            null
+        }
+    }
+
+    val itemsKeysHash = remember { mutableIntStateOf(state.items?.keys.hashCode()) }
+    LaunchedEffect(state.items?.keys.hashCode()) {
+        val hash = state.items?.keys.hashCode()
+        if (itemsKeysHash.intValue != hash) {
+            itemsKeysHash.intValue = hash
+
+            val today = nowLocalDay()
+            val selectedStartDay = state.selectedStartDay
+            val selectedWeek = selectedStartDay..selectedStartDay.plusDays(6)
+
+            if (today in selectedWeek) {
+                scrollToDay(
+                    scope = scope,
+                    state = state,
+                    date = today,
+                    scrollOffset = scrollOffset,
+                    gridState = gridState,
+                )
+            } else {
+                gridState.scrollToItem(0)
+            }
+        }
+    }
+
+    // Observe scroll and clear focused day when user scrolls manually.
+    var lastTapFocusedDay by remember { mutableStateOf<LocalDate?>(null) }
+    LaunchedEffect(scrollConnection) {
+        snapshotFlow { scrollConnection.resultOffset }
+            .collect { offset ->
+                if (lastTapFocusedDay != null && offset != 0F) {
+                    lastTapFocusedDay = null
+                }
+            }
+    }
+
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(TraktTheme.colors.backgroundPrimary)
+            .nestedScroll(scrollConnection),
+    ) {
+        val dragLimit = with(LocalDensity.current) { 64.dp.toPx() }
+        val dragActionRatio = 0.9f
+        val dragOffset = remember { mutableFloatStateOf(0f) }
+
+        ReleasesDragChevrons(
+            dragOffset = dragOffset,
+            dragLimit = dragLimit,
+        )
+
+        AllReleasesContent(
+            state = state,
+            gridState = gridState,
+            contentPadding = contentPadding,
+            onEpisodeClick = onEpisodeClick,
+            onShowClick = onShowClick,
+            onMovieClick = onMovieClick,
+            onCheckClick = onCheckClick,
+            onCheckLongClick = onCheckLongClick,
+            onRemoveClick = onRemoveClick,
+            modifier = Modifier
+                .alpha(
+                    (1F - (dragOffset.floatValue.absoluteValue / dragLimit))
+                        .coerceIn(MIN_ALPHA, 1F),
+                )
+                .pointerInput(Unit) {
+                    awaitEachGesture {
+                        val down = awaitFirstDown()
+                        val change = awaitHorizontalTouchSlopOrCancellation(down.id) { change, over ->
+                            val originalOffset = dragOffset.floatValue
+                            val newValue = (originalOffset + over).coerceIn(-dragLimit, dragLimit)
+                            change.consume()
+                            dragOffset.floatValue = newValue
+                        }
+
+                        if (change != null) {
+                            horizontalDrag(change.id) {
+                                val originalOffset = dragOffset.floatValue
+                                val newValue = (originalOffset + it.positionChange().x)
+                                    .coerceIn(-dragLimit, dragLimit)
+                                it.consume()
+                                dragOffset.floatValue = newValue
+                            }
+                        }
+
+                        // Trigger actions if limits are met
+                        when {
+                            dragOffset.floatValue <= -(dragLimit * dragActionRatio) -> onNextWeekClick()
+                            dragOffset.floatValue >= (dragLimit * dragActionRatio) -> onPreviousWeekClick()
+                        }
+
+                        // Always reset offset on gesture end
+                        dragOffset.floatValue = 0F
+                    }
+                },
+        )
+
+        // Mask for the top content under the calendar controls.
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp)
+                .background(TraktTheme.colors.backgroundPrimary),
+        )
+
+        CalendarControlsView(
+            title = R.string.page_title_releases,
+            enabled = !state.loading.isLoading,
+            startDate = state.selectedStartDay,
+            focusedDate = focusedDate,
+            lastTapFocusedDate = lastTapFocusedDay,
+            availableItems = state.items,
+            availableDates = remember(state.items) {
+                state.items?.keys
+                    ?.filter { state.items[it]?.isNotEmpty() == true }
+                    ?.toImmutableSet()
+            },
+//            filtersContent = {
+//                Row(
+//                    horizontalArrangement = Arrangement.SpaceBetween,
+//                    verticalAlignment = CenterVertically,
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .padding(top = 12.dp),
+//                ) {
+//                    MediaModeFilters(
+//                        selected = state.filter?.mode ?: MediaMode.Media,
+//                        height = 32.dp,
+//                        onClick = onModeClick,
+//                    )
+//                    MediaFilterIcon(
+//                        active = state.filter?.isActive == true,
+//                        enabled = !state.loading.isLoading,
+//                        onClick = onFiltersClick,
+//                    )
+//                }
+//            },
+            onDayClick = { date ->
+                scrollToDay(
+                    scope = scope,
+                    state = state,
+                    date = date,
+                    scrollOffset = scrollOffset,
+                    gridState = gridState,
+                )
+                lastTapFocusedDay = date
+            },
+            onTodayClick = {
+                val today = nowLocalDay()
+                val selectedStartDay = state.selectedStartDay
+                val selectedWeek = selectedStartDay..selectedStartDay.plusDays(6)
+
+                if (today in selectedWeek) {
+                    scrollToDay(
+                        scope = scope,
+                        state = state,
+                        date = today,
+                        scrollOffset = scrollOffset,
+                        gridState = gridState,
+                    )
+                } else {
+                    onTodayClick()
+                }
+            },
+            onNextWeekClick = onNextWeekClick,
+            onPreviousWeekClick = onPreviousWeekClick,
+            onBackClick = onBackClick,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    top = WindowInsets.statusBars.asPaddingValues()
+                        .calculateTopPadding(),
+                    start = TraktTheme.spacing.mainPageHorizontalSpace,
+                    end = TraktTheme.spacing.mainPageHorizontalSpace,
+                )
+                .onClick(onClick = {}),
+        )
+    }
+}
+
+@Composable
+private fun AllReleasesContent(
+    modifier: Modifier = Modifier,
+    state: AllReleasesState,
+    gridState: LazyGridState,
+    contentPadding: PaddingValues,
+    onEpisodeClick: (EpisodeItem) -> Unit,
+    onShowClick: (EpisodeItem) -> Unit,
+    onMovieClick: (MovieItem) -> Unit,
+    onCheckClick: (CalendarItem) -> Unit,
+    onCheckLongClick: (CalendarItem) -> Unit,
+    onRemoveClick: (CalendarItem) -> Unit,
+) {
+    var animateIn by rememberSaveable { mutableStateOf(false) }
+
+    if (state.error != null) {
+        Text(
+            text = "${
+                stringResource(
+                    R.string.error_text_unexpected_error_short,
+                )
+            }\n\n${state.error}",
+            color = TraktTheme.colors.textSecondary,
+            style = TraktTheme.typography.meta,
+            maxLines = 10,
+            modifier = Modifier.padding(contentPadding),
+        )
+    } else if (state.items.isNullOrEmpty() && state.loading.isLoading) {
+        val today = remember { nowLocalDay() }
+        ContentLoadingGrid(
+            visible = state.loading.isLoading,
+            isFirstWeekDay = state.selectedStartDay == today,
+            contentPadding = contentPadding,
+        )
+    } else if (!state.items.isNullOrEmpty()) {
+        LaunchedEffect(Unit) {
+            delay(50)
+            animateIn = true
+        }
+
+        val animateInAlpha by animateFloatAsState(
+            targetValue = 1F,
+            animationSpec = tween(durationMillis = 250),
+            label = "initialAlpha",
+        )
+
+        ContentItemsGrid(
+            items = state.items,
+            itemsLoading = state.itemsLoading,
+            gridState = gridState,
+            contentPadding = contentPadding,
+            onShowClick = onShowClick,
+            onMovieClick = onMovieClick,
+            onEpisodeClick = onEpisodeClick,
+            onCheckClick = onCheckClick,
+            onCheckLongClick = onCheckLongClick,
+            onRemoveClick = onRemoveClick,
+            modifier = modifier
+                .alpha(
+                    when {
+                        state.loading.isLoading -> MIN_ALPHA
+                        else -> if (animateIn) animateInAlpha else 0F
+                    },
+                ),
+        )
+    } else if (state.items.isNullOrEmpty()) {
+        Text(
+            text = stringResource(R.string.list_placeholder_empty),
+            color = TraktTheme.colors.textSecondary,
+            style = TraktTheme.typography.heading6,
+            modifier = Modifier.padding(contentPadding),
+        )
+    }
+}
+
+@Composable
+private fun ContentItemsGrid(
+    modifier: Modifier = Modifier,
+    items: Map<LocalDate, ImmutableList<CalendarItem>?>,
+    itemsLoading: ImmutableSet<TraktId>?,
+    gridState: LazyGridState,
+    contentPadding: PaddingValues,
+    onShowClick: (EpisodeItem) -> Unit,
+    onMovieClick: (MovieItem) -> Unit,
+    onEpisodeClick: (EpisodeItem) -> Unit,
+    onCheckClick: (CalendarItem) -> Unit,
+    onCheckLongClick: (CalendarItem) -> Unit,
+    onRemoveClick: (CalendarItem) -> Unit,
+) {
+    LazyVerticalGrid(
+        state = gridState,
+        columns = GridCells.Fixed(TraktTheme.size.calendarGridColumns),
+        horizontalArrangement = spacedBy(TraktTheme.spacing.mainGridHorizontalSpace),
+        verticalArrangement = spacedBy(0.dp),
+        contentPadding = contentPadding,
+        overscrollEffect = null,
+        modifier = modifier,
+    ) {
+        items.keys.forEachIndexed { index, date ->
+            val gridItems = items[date] ?: EmptyImmutableList
+
+            item(
+                span = { GridItemSpan(maxLineSpan) },
+                key = "header_$date",
+            ) {
+                Row(
+                    horizontalArrangement = spacedBy(6.dp),
+                    verticalAlignment = CenterVertically,
+                    modifier = Modifier
+                        .padding(top = if (index == 0) 0.dp else 38.dp),
+                ) {
+                    val isToday = remember(date) { date == nowLocalDay() }
+                    if (isToday) {
+                        Box(
+                            modifier = Modifier
+                                .background(color = Purple400, shape = RoundedCornerShape(100))
+                                .size(3.dp, 16.dp),
+                        )
+                    }
+                    TraktHeader(
+                        title = date.format(fullDayFormat()).capitalize(),
+                        titleColor = when {
+                            gridItems.isNotEmpty() -> TraktTheme.colors.textPrimary
+                            else -> TraktTheme.colors.textSecondary
+                        },
+                    )
+                }
+            }
+
+            if (gridItems.isNotEmpty()) {
+                items(
+                    count = gridItems.size,
+                    key = { index -> gridItems[index].id.value },
+                ) { index ->
+                    val item = gridItems[index]
+                    if (item is EpisodeItem) {
+                        CalendarEpisodeItemView(
+                            item = item,
+                            itemLoading = itemsLoading?.contains(item.id) == true,
+                            onClick = { onEpisodeClick(item) },
+                            onShowClick = { onShowClick(item) },
+                            onCheckClick = { onCheckClick(item) },
+                            onCheckLongClick = { onCheckLongClick(item) },
+                            onRemoveClick = { onRemoveClick(item) },
+                            modifier = Modifier.padding(top = 14.dp),
+                        )
+                    }
+
+                    if (item is MovieItem) {
+                        CalendarMovieItemView(
+                            item = item,
+                            itemLoading = itemsLoading?.contains(item.id) == true,
+                            onClick = { onMovieClick(item) },
+                            onCheckClick = { onCheckClick(item) },
+                            onCheckLongClick = { onCheckLongClick(item) },
+                            onRemoveClick = { onRemoveClick(item) },
+                            modifier = Modifier.padding(top = 14.dp),
+                        )
+                    }
+                }
+            } else {
+                item(
+                    span = { GridItemSpan(maxLineSpan) },
+                    key = "empty_$date",
+                ) {
+                    Text(
+                        text = stringResource(R.string.text_calendar_placeholder_2),
+                        color = TraktTheme.colors.textSecondary,
+                        style = TraktTheme.typography.meta,
+                        modifier = Modifier.padding(top = 4.dp),
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ContentLoadingGrid(
+    visible: Boolean = true,
+    isFirstWeekDay: Boolean = false,
+    contentPadding: PaddingValues,
+) {
+    val infiniteTransition = rememberInfiniteTransition(label = "infiniteTransition")
+    val shimmerTransition by infiniteTransition
+        .animateColor(
+            initialValue = TraktTheme.colors.skeletonContainer,
+            targetValue = TraktTheme.colors.skeletonShimmer,
+            animationSpec = infiniteRepeatable(
+                animation = tween(durationMillis = 1000),
+                repeatMode = RepeatMode.Reverse,
+            ),
+            label = "shimmerTransition",
+        )
+
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(TraktTheme.size.calendarGridColumns),
+        horizontalArrangement = spacedBy(TraktTheme.spacing.mainGridHorizontalSpace),
+        verticalArrangement = spacedBy(TraktTheme.spacing.mainGridVerticalSpace),
+        contentPadding = PaddingValues(
+            top = when {
+                isFirstWeekDay -> contentPadding.calculateTopPadding()
+                else -> contentPadding.calculateTopPadding() - 8.dp
+            },
+            bottom = contentPadding.calculateBottomPadding(),
+            start = TraktTheme.spacing.mainPageHorizontalSpace,
+            end = TraktTheme.spacing.mainPageHorizontalSpace,
+        ),
+        overscrollEffect = null,
+        userScrollEnabled = false,
+        modifier = Modifier
+            .fillMaxSize()
+            .alpha(if (visible) 1F else 0F),
+    ) {
+        item(
+            span = { GridItemSpan(maxLineSpan) },
+        ) {
+            Box {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.5F)
+                        .height(20.dp)
+                        .background(shimmerTransition, CircleShape)
+                        .padding(bottom = TraktTheme.spacing.mainGridVerticalSpace),
+                )
+            }
+        }
+        items(count = 12) {
+            EpisodeSkeletonCard()
+        }
+    }
+}
+
+@Composable
+private fun BoxScope.ReleasesDragChevrons(
+    dragOffset: MutableFloatState,
+    dragLimit: Float,
+) {
+    val chevronOffsetLimit = with(LocalDensity.current) { 8.dp.toPx().toInt() }
+
+    Icon(
+        painter = painterResource(R.drawable.ic_chevron_right),
+        tint = TraktTheme.colors.textPrimary,
+        contentDescription = null,
+        modifier = Modifier
+            .align(Alignment.CenterStart)
+            .rotate(180F)
+            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+            .size(30.dp)
+            .offset {
+                IntOffset(
+                    x = chevronOffsetLimit - chevronOffsetLimit
+                        .times((dragOffset.floatValue / dragLimit).coerceIn(0F, 1F))
+                        .roundToInt(),
+                    y = 0,
+                )
+            }
+            .graphicsLayer {
+                alpha = (dragOffset.floatValue / dragLimit).coerceIn(0F, 1F)
+            },
+    )
+
+    Icon(
+        painter = painterResource(R.drawable.ic_chevron_right),
+        tint = TraktTheme.colors.textPrimary,
+        contentDescription = null,
+        modifier = Modifier
+            .align(Alignment.CenterEnd)
+            .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+            .size(30.dp)
+            .offset {
+                IntOffset(
+                    x = -chevronOffsetLimit
+                        .times((-dragOffset.floatValue / dragLimit).coerceIn(0F, 1F))
+                        .roundToInt(),
+                    y = 0,
+                )
+            }
+            .alpha(
+                (-dragOffset.floatValue / dragLimit)
+                    .coerceIn(0F, 1F),
+            ),
+    )
+}
+
+private fun scrollToDay(
+    state: AllReleasesState,
+    date: LocalDate,
+    scope: CoroutineScope,
+    scrollOffset: Int,
+    gridState: LazyGridState,
+) {
+    val items = state.items ?: return
+    var accumulatedCount = 0
+
+    for (itemDate in items.keys) {
+        if (itemDate == date) {
+            scope.launch {
+                val offset = when {
+                    accumulatedCount == 0 -> 0
+                    else -> scrollOffset
+                }
+                gridState.scrollToItem(accumulatedCount, offset)
+            }
+            return
+        }
+
+        val itemsForDate = items[itemDate] ?: EmptyImmutableList
+        accumulatedCount += when {
+            itemsForDate.isNotEmpty() -> itemsForDate.size + 1
+            else -> 2 // Include header and empty state item
+        }
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun Preview() {
+    TraktTheme {
+        AllReleasesScreen(
+            scope = rememberCoroutineScope(),
+            state = AllReleasesState(
+                selectedStartDay = LocalDate.now().with(MONDAY),
+                loading = LoadingState.Loading,
+            ),
+        )
+    }
+}

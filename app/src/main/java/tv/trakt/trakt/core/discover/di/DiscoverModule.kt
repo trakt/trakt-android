@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.discover.di
 
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.core.discover.DiscoverViewModel
@@ -10,6 +11,9 @@ import tv.trakt.trakt.core.discover.sections.all.usecases.GetAllDiscoverShowsUse
 import tv.trakt.trakt.core.discover.sections.anticipated.DiscoverAnticipatedViewModel
 import tv.trakt.trakt.core.discover.sections.popular.DiscoverPopularViewModel
 import tv.trakt.trakt.core.discover.sections.recommended.DiscoverRecommendedViewModel
+import tv.trakt.trakt.core.discover.sections.releases.DiscoverReleasesViewModel
+import tv.trakt.trakt.core.discover.sections.releases.all.AllReleasesViewModel
+import tv.trakt.trakt.core.discover.sections.releases.all.usecases.GetAllReleasesItemsUseCase
 import tv.trakt.trakt.core.discover.sections.trending.DiscoverTrendingViewModel
 
 internal val discoverModule = module {
@@ -143,4 +147,24 @@ internal val discoverModule = module {
             },
         )
     }
+
+    viewModel {
+        DiscoverReleasesViewModel(
+            filterManager = get(),
+            collapsingManager = get(),
+            getReleasesShowsUseCase = get(named("defaultReleasesShowsUseCase")),
+            getReleasesMoviesUseCase = get(named("defaultReleasesMoviesUseCase")),
+        )
+    }
+
+    factory {
+        GetAllReleasesItemsUseCase(
+            getReleasesShowsUseCase = get(named("defaultReleasesShowsUseCase")),
+            getReleasesMoviesUseCase = get(named("defaultReleasesMoviesUseCase")),
+            loadUserProgressUseCase = get(),
+            sessionManager = get(),
+        )
+    }
+
+    viewModelOf(::AllReleasesViewModel)
 }

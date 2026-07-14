@@ -12,7 +12,9 @@ class UserOtherListsApiClient(
         minimal: Boolean,
         pagination: Pagination,
     ): List<LikedListDto> {
-        val response = usersApi.getUsersLikesLists(
+        val response = usersApi.getUsersLikes(
+            id = "me",
+            type = "lists",
             extended = when {
                 minimal -> "min"
                 else -> "cloud9,images"

@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
@@ -83,7 +84,12 @@ internal fun EpisodeUpcomingItemView(
                         R.string.text_season_number,
                         item.episode.season,
                     )
-
+                    item.episodes.size > 1 -> stringResource(
+                        R.string.episode_footer_season_episode_range,
+                        item.episode.season,
+                        item.episodes.first().number,
+                        item.episodes.last().number,
+                    )
                     else -> item.episode.seasonEpisodeString()
                 }
 
@@ -109,7 +115,7 @@ private fun Preview() {
                 id = 1.toTraktId(),
                 releasedAt = Instant.now(),
                 show = PreviewData.show1,
-                episode = PreviewData.episode1,
+                episodes = persistentListOf(PreviewData.episode1),
             ),
             onClick = {},
             onShowClick = {},

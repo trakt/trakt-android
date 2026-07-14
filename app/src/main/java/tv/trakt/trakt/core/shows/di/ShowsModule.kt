@@ -33,6 +33,10 @@ import tv.trakt.trakt.core.discover.sections.recommended.data.local.shows.Recomm
 import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.core.discover.sections.recommended.usecase.shows.CustomGetRecommendedShowsUseCase
 import tv.trakt.trakt.core.discover.sections.recommended.usecase.shows.DefaultGetRecommendedShowsUseCase
+import tv.trakt.trakt.core.discover.sections.releases.data.local.shows.ReleasesShowsLocalDataSource
+import tv.trakt.trakt.core.discover.sections.releases.data.local.shows.ReleasesShowsStorage
+import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.DefaultGetReleasesShowsUseCase
+import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.GetReleasesShowsUseCase
 import tv.trakt.trakt.core.discover.sections.trending.data.local.shows.TrendingShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.trending.data.local.shows.TrendingShowsStorage
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingShowsUseCase
@@ -56,6 +60,12 @@ internal val showsDataModule = module {
         )
     }
 
+    single<ReleasesShowsLocalDataSource> {
+        ReleasesShowsStorage(
+            dataStore = get(named(SHOWS_PREFERENCES)),
+        )
+    }
+
     single<RecommendedShowsLocalDataSource> {
         RecommendedShowsStorage(
             dataStore = get(named(SHOWS_PREFERENCES)),
@@ -70,6 +80,12 @@ internal val showsDataModule = module {
 
     single<AnticipatedShowsLocalDataSource> {
         AnticipatedShowsStorage(
+            dataStore = get(named(SHOWS_PREFERENCES)),
+        )
+    }
+
+    single<ReleasesShowsLocalDataSource> {
+        ReleasesShowsStorage(
             dataStore = get(named(SHOWS_PREFERENCES)),
         )
     }
@@ -142,6 +158,17 @@ internal val showsModule = module {
             localAnticipatedSource = get(),
             localShowSource = get(),
             customThemeUseCase = get(),
+        )
+    }
+
+    factory<GetReleasesShowsUseCase>(
+        qualifier = named("defaultReleasesShowsUseCase"),
+    ) {
+        DefaultGetReleasesShowsUseCase(
+            remoteSource = get(),
+            localSource = get(),
+            localShowSource = get(),
+            localEpisodeSource = get(),
         )
     }
 

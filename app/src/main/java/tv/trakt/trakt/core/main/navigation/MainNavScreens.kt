@@ -17,6 +17,8 @@ import tv.trakt.trakt.core.discover.navigation.discoverScreen
 import tv.trakt.trakt.core.discover.navigation.navigateToDiscover
 import tv.trakt.trakt.core.discover.sections.all.navigation.discoverAllScreen
 import tv.trakt.trakt.core.discover.sections.all.navigation.navigateToDiscoverAll
+import tv.trakt.trakt.core.discover.sections.releases.all.navigation.allReleasesScreen
+import tv.trakt.trakt.core.discover.sections.releases.all.navigation.navigateToAllReleases
 import tv.trakt.trakt.core.home.navigation.homeScreen
 import tv.trakt.trakt.core.home.navigation.navigateToHome
 import tv.trakt.trakt.core.home.sections.activity.features.all.navigation.homeActivityPersonalScreen
@@ -155,6 +157,9 @@ internal fun NavGraphBuilder.discoverScreens(
         discoverScreen(
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToMovie = { navigateToMovie(it) },
+            onNavigateToEpisode = { showId, episode ->
+                navigateToEpisode(showId, episode)
+            },
             onNavigateToAllTrending = {
                 navigateToDiscoverAll(DiscoverSection.TRENDING)
             },
@@ -167,6 +172,9 @@ internal fun NavGraphBuilder.discoverScreens(
             onNavigateToAllRecommended = {
                 navigateToDiscoverAll(DiscoverSection.RECOMMENDED)
             },
+            onNavigateToAllReleases = {
+                navigateToAllReleases()
+            },
             onNavigateToVip = {
                 navigateToBilling()
             },
@@ -176,6 +184,14 @@ internal fun NavGraphBuilder.discoverScreens(
             onNavigateBack = { popBackStack() },
             onNavigateToShow = { navigateToShow(it) },
             onNavigateToMovie = { navigateToMovie(it) },
+        )
+        allReleasesScreen(
+            onNavigateBack = { popBackStack() },
+            onEpisodeClick = { showId, episode ->
+                navigateToEpisode(showId, episode)
+            },
+            onShowClick = { navigateToShow(it) },
+            onMovieClick = { navigateToMovie(it) },
         )
     }
 }

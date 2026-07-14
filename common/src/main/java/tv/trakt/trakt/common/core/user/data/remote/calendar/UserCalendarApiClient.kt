@@ -32,6 +32,7 @@ class UserCalendarApiClient(
             ignoreWatched = filters?.hideWatched,
             ignoreWatchlisted = filters?.hideWatchlist,
             ignoreCollected = null,
+            group = null,
         )
         return response.body()
     }

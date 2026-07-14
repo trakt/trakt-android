@@ -11,7 +11,7 @@ import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
-import tv.trakt.trakt.common.networking.MovieDto
+import tv.trakt.trakt.common.networking.MovieCalendarDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.common.networking.StreamingDto
 import java.time.Instant
@@ -56,7 +56,7 @@ internal class MoviesApiClient(
         limit: Int,
         page: Int,
         years: Int?,
-    ): List<MovieDto> {
+    ): List<MovieCalendarDto> {
         val response = api.getMoviesPopular(
             extended = "full,streaming_ids,cloud9,colors",
             limit = limit,
@@ -138,7 +138,7 @@ internal class MoviesApiClient(
         return response.body()
     }
 
-    override suspend fun getRelatedMovies(movieId: TraktId): List<MovieDto> {
+    override suspend fun getRelatedMovies(movieId: TraktId): List<MovieCalendarDto> {
         val response = api.getMoviesRelated(
             id = movieId.value.toString(),
             extended = "full,streaming_ids,cloud9,colors",
@@ -186,6 +186,7 @@ internal class MoviesApiClient(
             extended = "images",
             page = null,
             limit = 20.toString(),
+            language = null,
         )
 
         return response.body()
@@ -208,7 +209,7 @@ internal class MoviesApiClient(
         return response.body()
     }
 
-    override suspend fun getMovieDetails(movieId: TraktId): MovieDto {
+    override suspend fun getMovieDetails(movieId: TraktId): MovieCalendarDto {
         val response = api.getMoviesSummary(
             id = movieId.value.toString(),
             extended = "full,streaming_ids,cloud9,colors",

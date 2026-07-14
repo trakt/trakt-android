@@ -34,10 +34,12 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.discover.sections.anticipated.DiscoverAnticipatedView
 import tv.trakt.trakt.core.discover.sections.popular.DiscoverPopularView
 import tv.trakt.trakt.core.discover.sections.recommended.DiscoverRecommendedView
+import tv.trakt.trakt.core.discover.sections.releases.DiscoverReleasesView
 import tv.trakt.trakt.core.discover.sections.trending.DiscoverTrendingView
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.helpers.ScreenHeaderState
@@ -52,10 +54,12 @@ internal fun DiscoverScreen(
     viewModel: DiscoverViewModel,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
+    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToAllTrending: () -> Unit,
     onNavigateToAllPopular: () -> Unit,
     onNavigateToAllAnticipated: () -> Unit,
     onNavigateToAllRecommended: () -> Unit,
+    onNavigateToAllReleases: () -> Unit,
     onNavigateToVip: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -66,10 +70,12 @@ internal fun DiscoverScreen(
         state = state,
         onShowClick = onNavigateToShow,
         onMovieClick = onNavigateToMovie,
+        onEpisodeClick = onNavigateToEpisode,
         onMoreTrendingClick = onNavigateToAllTrending,
         onMorePopularClick = onNavigateToAllPopular,
         onMoreAnticipatedClick = onNavigateToAllAnticipated,
         onMoreRecommendedClick = onNavigateToAllRecommended,
+        onMoreReleasesClick = onNavigateToAllReleases,
         onVipClick = onNavigateToVip,
         onFiltersClick = {
             filtersSheet = true
@@ -90,10 +96,12 @@ private fun DiscoverScreen(
     modifier: Modifier = Modifier,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit = {},
+    onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
     onMoreTrendingClick: () -> Unit = {},
     onMorePopularClick: () -> Unit = {},
     onMoreAnticipatedClick: () -> Unit = {},
     onMoreRecommendedClick: () -> Unit = {},
+    onMoreReleasesClick: () -> Unit = {},
     onVipClick: () -> Unit = {},
     onFiltersClick: () -> Unit = {},
 ) {
@@ -158,6 +166,20 @@ private fun DiscoverScreen(
                     onShowClick = onShowClick,
                     onMovieClick = onMovieClick,
                     onMoreClick = onMoreTrendingClick,
+                )
+            }
+
+            item {
+                DiscoverReleasesView(
+                    viewModel = koinViewModel {
+                        parametersOf(customThemeEnabled)
+                    },
+                    headerPadding = sectionPadding,
+                    contentPadding = sectionPadding,
+                    onShowClick = onShowClick,
+                    onMovieClick = onMovieClick,
+                    onEpisodeClick = onEpisodeClick,
+                    onMoreClick = onMoreReleasesClick,
                 )
             }
 

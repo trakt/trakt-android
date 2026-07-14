@@ -27,16 +27,19 @@ internal enum class CollapsingKey(
     DISCOVER_MEDIA_POPULAR("key_discover_media_popular"),
     DISCOVER_MEDIA_ANTICIPATED("key_discover_media_anticipated"),
     DISCOVER_MEDIA_RECOMMENDED("key_discover_media_recommended"),
+    DISCOVER_MEDIA_RELEASES("key_discover_media_releases"),
 
     DISCOVER_SHOWS_TRENDING("key_discover_shows_trending"),
     DISCOVER_SHOWS_POPULAR("key_discover_shows_popular"),
     DISCOVER_SHOWS_ANTICIPATED("key_discover_shows_anticipated"),
     DISCOVER_SHOWS_RECOMMENDED("key_discover_shows_recommended"),
+    DISCOVER_SHOWS_RELEASES("key_discover_shows_releases"),
 
     DISCOVER_MOVIES_TRENDING("key_discover_movies_trending"),
     DISCOVER_MOVIES_POPULAR("key_discover_movies_popular"),
     DISCOVER_MOVIES_ANTICIPATED("key_discover_movies_anticipated"),
     DISCOVER_MOVIES_RECOMMENDED("key_discover_movies_recommended"),
+    DISCOVER_MOVIES_RELEASES("key_discover_movies_releases"),
 
     // Lists Screen
     LISTS_MEDIA_WATCHLIST("key_lists_media_watchlist"),

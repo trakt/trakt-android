@@ -53,6 +53,7 @@ internal fun ShowContextView(
     show: Show,
     viewModel: ShowContextViewModel,
     modifier: Modifier = Modifier,
+    showWatched: Boolean,
     onAddWatched: (Show) -> Unit,
     onAddWatchlist: (Show) -> Unit,
     onRemoveWatched: (Show) -> Unit,
@@ -89,7 +90,7 @@ internal fun ShowContextView(
     ShowContextViewContent(
         show = show,
         state = state,
-        modifier = modifier,
+        showWatched = showWatched,
         onWatchedClick = {
             when {
                 state.isWatched -> confirmRemoveWatchedSheet = true
@@ -102,6 +103,7 @@ internal fun ShowContextView(
                 else -> viewModel.addToWatchlist()
             }
         },
+        modifier = modifier,
     )
 
     ConfirmationSheet(
@@ -170,6 +172,7 @@ internal fun ShowContextView(
 private fun ShowContextViewContent(
     show: Show,
     state: ShowContextState,
+    showWatched: Boolean,
     modifier: Modifier = Modifier,
     onWatchedClick: () -> Unit = {},
     onWatchlistClick: () -> Unit = {},
@@ -213,6 +216,7 @@ private fun ShowContextViewContent(
             ShowActionButtons(
                 show = show,
                 state = state,
+                showWatched = showWatched,
                 onWatchedClick = onWatchedClick,
                 onWatchlistClick = onWatchlistClick,
                 modifier = Modifier
@@ -227,6 +231,7 @@ private fun ShowActionButtons(
     modifier: Modifier = Modifier,
     show: Show,
     state: ShowContextState,
+    showWatched: Boolean,
     onWatchedClick: () -> Unit,
     onWatchlistClick: () -> Unit,
 ) {
@@ -242,7 +247,7 @@ private fun ShowActionButtons(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
         modifier = modifier,
     ) {
-        if (isReleased) {
+        if (isReleased && showWatched) {
             if (state.isWatched) {
                 GhostButton(
                     enabled = !isLoadingOrDone,
@@ -312,6 +317,7 @@ private fun Preview() {
                     user = PreviewData.user1,
                 ),
                 show = PreviewData.show1,
+                showWatched = true,
             )
         }
     }

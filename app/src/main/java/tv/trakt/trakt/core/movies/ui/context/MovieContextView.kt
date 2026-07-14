@@ -49,6 +49,7 @@ internal fun MovieContextView(
     movie: Movie,
     viewModel: MovieContextViewModel,
     modifier: Modifier = Modifier,
+    showWatched: Boolean = true,
     onAddWatched: (Movie) -> Unit,
     onAddWatchlist: (Movie) -> Unit,
     onRemoveWatched: (Movie) -> Unit,
@@ -97,6 +98,7 @@ internal fun MovieContextView(
     MovieContextViewContent(
         movie = movie,
         state = state,
+        showWatched = showWatched,
         modifier = modifier,
         onWatchedClick = {
             when {
@@ -156,6 +158,7 @@ internal fun MovieContextView(
 private fun MovieContextViewContent(
     movie: Movie,
     state: MovieContextState,
+    showWatched: Boolean,
     modifier: Modifier = Modifier,
     onWatchedClick: () -> Unit = {},
     onWatchlistClick: () -> Unit = {},
@@ -199,6 +202,7 @@ private fun MovieContextViewContent(
             MovieActionButtons(
                 movie = movie,
                 state = state,
+                showWatched = showWatched,
                 onWatchedClick = onWatchedClick,
                 onWatchlistClick = onWatchlistClick,
                 modifier = Modifier
@@ -213,6 +217,7 @@ private fun MovieActionButtons(
     modifier: Modifier = Modifier,
     movie: Movie,
     state: MovieContextState,
+    showWatched: Boolean,
     onWatchedClick: () -> Unit,
     onWatchlistClick: () -> Unit,
 ) {
@@ -229,7 +234,7 @@ private fun MovieActionButtons(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
         modifier = modifier,
     ) {
-        if (isReleased) {
+        if (isReleased && showWatched) {
             if (state.isWatched) {
                 GhostButton(
                     enabled = !isLoadingOrDone,
@@ -303,6 +308,7 @@ private fun Preview() {
                     user = PreviewData.user1,
                 ),
                 movie = PreviewData.movie1,
+                showWatched = true,
             )
         }
     }
