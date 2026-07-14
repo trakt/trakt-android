@@ -538,7 +538,7 @@ private fun SettingsTracking(
             text = stringResource(R.string.text_settings_show_rating_prompt),
             description = stringResource(R.string.text_settings_show_rating_prompt_description),
             checked = ratePrompts,
-            enabled = !state.logoutLoading.isLoading,
+            enabled = !state.accountLoading.isLoading,
             onClick = {
                 onEnableRatePrompts(!ratePrompts)
             },
