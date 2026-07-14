@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +19,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -91,7 +93,7 @@ internal fun CommentCard(
     repliesButtonEnabled: Boolean = false,
     repliesCountEnabled: Boolean = true,
     repliesLoading: Boolean = false,
-    onClick: () -> Unit = {},
+    onClick: (() -> Unit)? = null,
     onRequestReactions: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onRepliesClick: (() -> Unit)? = null,
@@ -107,44 +109,58 @@ internal fun CommentCard(
         }
     }
 
+    val content: @Composable ColumnScope.() -> Unit = {
+        CommentCardContent(
+            user = user,
+            comment = comment,
+            replies = replies,
+            reactions = reactions,
+            userReactions = userReactions,
+            deleteEnabled = deleteEnabled,
+            replyEnabled = replyEnabled,
+            repliesButtonEnabled = repliesButtonEnabled,
+            repliesCountEnabled = repliesCountEnabled,
+            repliesLoading = repliesLoading,
+            onRequestReactions = onRequestReactions,
+            onReactionClick = onReactionClick,
+            onReplyClick = { onReplyClick?.invoke(comment) },
+            onReplyUserClick = { onReplyUserClick?.invoke(comment, it) },
+            onRepliesClick = onRepliesClick,
+            onDeleteClick = onDeleteClick,
+            onDeleteReplyClick = onDeleteReplyClick,
+            onUserClick = { onUserClick?.invoke(it) },
+        )
+    }
+
     val isUserComment = remember(user) {
         comment.user.ids.trakt == user?.ids?.trakt
     }
 
-    Card(
-        onClick = onClick,
-        modifier = modifier,
-        shape = RoundedCornerShape(24.dp),
-        colors = cardColors(
-            containerColor = TraktTheme.colors.commentContainer,
-        ),
-        border = when {
-            isUserComment -> BorderStroke(2.dp, TraktTheme.colors.accent)
-            else -> null
-        },
-        content = {
-            CommentCardContent(
-                user = user,
-                comment = comment,
-                replies = replies,
-                reactions = reactions,
-                userReactions = userReactions,
-                deleteEnabled = deleteEnabled,
-                replyEnabled = replyEnabled,
-                repliesButtonEnabled = repliesButtonEnabled,
-                repliesCountEnabled = repliesCountEnabled,
-                repliesLoading = repliesLoading,
-                onRequestReactions = onRequestReactions,
-                onReactionClick = onReactionClick,
-                onReplyClick = { onReplyClick?.invoke(comment) },
-                onReplyUserClick = { onReplyUserClick?.invoke(comment, it) },
-                onRepliesClick = onRepliesClick,
-                onDeleteClick = onDeleteClick,
-                onDeleteReplyClick = onDeleteReplyClick,
-                onUserClick = { onUserClick?.invoke(it) },
-            )
-        },
-    )
+    val shape = RoundedCornerShape(24.dp)
+    val colors = cardColors(containerColor = TraktTheme.colors.commentContainer)
+    val border = when {
+        isUserComment -> BorderStroke(2.dp, TraktTheme.colors.accent)
+        else -> null
+    }
+
+    if (onClick == null) {
+        Card(
+            modifier = modifier,
+            shape = shape,
+            colors = colors,
+            border = border,
+            content = content,
+        )
+    } else {
+        Card(
+            modifier = modifier,
+            onClick = onClick,
+            shape = shape,
+            colors = colors,
+            border = border,
+            content = content,
+        )
+    }
 }
 
 @Composable
@@ -190,26 +206,10 @@ private fun CommentCardContent(
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
-        Text(
+        CommentBody(
             text = comment.commentNoSpoilers,
-            style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.3.em),
-            color = TraktTheme.colors.textSecondary,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.then(
-                if (comment.hasSpoilers && !isUserComment && !isSpoilerRevealed) {
-                    Modifier
-                        .blur(4.dp)
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 14.dp, bottom = 20.dp)
-                        .onClick {
-                            isSpoilerRevealed = true
-                        }
-                } else {
-                    Modifier
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 14.dp, bottom = 20.dp)
-                },
-            ),
+            blurred = comment.hasSpoilers && !isUserComment && !isSpoilerRevealed,
+            onRevealSpoiler = { isSpoilerRevealed = true },
         )
 
         Spacer(modifier = Modifier.weight(1f))
@@ -247,6 +247,42 @@ private fun CommentCardContent(
                 onRequestReactions = onRequestReactions,
             )
         }
+    }
+}
+
+@Composable
+private fun CommentBody(
+    text: String,
+    blurred: Boolean,
+    onRevealSpoiler: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val body = @Composable {
+        Text(
+            text = text,
+            style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.3.em),
+            color = TraktTheme.colors.textSecondary,
+            overflow = TextOverflow.Ellipsis,
+            modifier = modifier.then(
+                if (blurred) {
+                    Modifier
+                        .blur(4.dp)
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 14.dp, bottom = 20.dp)
+                        .onClick { onRevealSpoiler() }
+                } else {
+                    Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 14.dp, bottom = 20.dp)
+                },
+            ),
+        )
+    }
+
+    if (blurred) {
+        body()
+    } else {
+        SelectionContainer { body() }
     }
 }
 

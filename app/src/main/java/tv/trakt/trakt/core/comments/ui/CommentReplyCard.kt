@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -38,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -87,30 +90,43 @@ internal fun CommentReplyCard(
         user?.ids?.trakt == reply.user.ids.trakt
     }
 
-    Card(
-        onClick = onClick ?: {},
-        modifier = modifier,
-        shape = RoundedCornerShape(22.dp),
-        colors = cardColors(
-            containerColor = TraktTheme.colors.commentReplyContainer,
-        ),
-        border = when {
-            isUserReply -> BorderStroke(2.dp, TraktTheme.colors.accent)
-            else -> null
-        },
-        content = {
-            CommentReplyCardContent(
-                user = user,
-                comment = reply,
-                reactions = reactions,
-                userReaction = userReaction,
-                onReactionClick = onReactionClick,
-                onReplyClick = onReplyClick,
-                onDeleteClick = onDeleteClick,
-                onUserClick = onUserClick,
-            )
-        },
-    )
+    val shape = RoundedCornerShape(22.dp)
+    val colors = cardColors(containerColor = TraktTheme.colors.commentReplyContainer)
+    val border = when {
+        isUserReply -> BorderStroke(2.dp, TraktTheme.colors.accent)
+        else -> null
+    }
+    val content: @Composable ColumnScope.() -> Unit = {
+        CommentReplyCardContent(
+            user = user,
+            comment = reply,
+            reactions = reactions,
+            userReaction = userReaction,
+            onReactionClick = onReactionClick,
+            onReplyClick = onReplyClick,
+            onDeleteClick = onDeleteClick,
+            onUserClick = onUserClick,
+        )
+    }
+
+    if (onClick == null) {
+        Card(
+            modifier = modifier,
+            shape = shape,
+            colors = colors,
+            border = border,
+            content = content,
+        )
+    } else {
+        Card(
+            modifier = modifier,
+            onClick = onClick,
+            shape = shape,
+            colors = colors,
+            border = border,
+            content = content,
+        )
+    }
 }
 
 @Composable
@@ -148,29 +164,10 @@ private fun CommentReplyCardContent(
             comment.commentNoSpoilers.highlightMentions(mentionsColor)
         }
 
-        Text(
+        CommentReplyBody(
             text = mentionsText,
-            style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.3.em),
-            color = TraktTheme.colors.textSecondary,
-            maxLines = Int.MAX_VALUE,
-            modifier = Modifier
-                .onClick {
-                    if (comment.hasSpoilers && !showSpoilers) {
-                        showSpoilers = true
-                    }
-                }
-                .then(
-                    if (comment.hasSpoilers && !isUserReply && !showSpoilers) {
-                        Modifier
-                            .blur(4.dp)
-                            .padding(top = 12.dp)
-                            .padding(horizontal = 16.dp)
-                    } else {
-                        Modifier
-                            .padding(top = 12.dp)
-                            .padding(horizontal = 16.dp)
-                    },
-                ),
+            blurred = comment.hasSpoilers && !isUserReply && !showSpoilers,
+            onRevealSpoiler = { showSpoilers = true },
         )
 
         CommentFooter(
@@ -187,6 +184,42 @@ private fun CommentReplyCardContent(
                     end = 20.dp,
                 ),
         )
+    }
+}
+
+@Composable
+private fun CommentReplyBody(
+    text: AnnotatedString,
+    blurred: Boolean,
+    onRevealSpoiler: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val body = @Composable {
+        Text(
+            text = text,
+            style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.3.em),
+            color = TraktTheme.colors.textSecondary,
+            maxLines = Int.MAX_VALUE,
+            modifier = modifier.then(
+                if (blurred) {
+                    Modifier
+                        .blur(4.dp)
+                        .padding(top = 12.dp)
+                        .padding(horizontal = 16.dp)
+                        .onClick { onRevealSpoiler() }
+                } else {
+                    Modifier
+                        .padding(top = 12.dp)
+                        .padding(horizontal = 16.dp)
+                },
+            ),
+        )
+    }
+
+    if (blurred) {
+        body()
+    } else {
+        SelectionContainer { body() }
     }
 }
 

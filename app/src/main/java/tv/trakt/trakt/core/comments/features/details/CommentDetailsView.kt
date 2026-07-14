@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -222,18 +223,20 @@ private fun CommentContent(
             modifier = Modifier.padding(top = 5.dp),
         )
 
-        Text(
-            text = comment.commentNoSpoilers,
-            style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.3.em),
-            color = TraktTheme.colors.textSecondary,
-            overflow = if (isCollapsed) TextOverflow.Ellipsis else TextOverflow.Clip,
-            maxLines = if (isCollapsed) 20 else Int.MAX_VALUE,
-            modifier = Modifier
-                .onClick {
-                    isCollapsed = !isCollapsed
-                }
-                .padding(top = 16.dp),
-        )
+        SelectionContainer {
+            Text(
+                text = comment.commentNoSpoilers,
+                style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.3.em),
+                color = TraktTheme.colors.textSecondary,
+                overflow = if (isCollapsed) TextOverflow.Ellipsis else TextOverflow.Clip,
+                maxLines = if (isCollapsed) 20 else Int.MAX_VALUE,
+                modifier = Modifier
+                    .onClick {
+                        isCollapsed = !isCollapsed
+                    }
+                    .padding(top = 16.dp),
+            )
+        }
 
         CommentFooter(
             user = user,
