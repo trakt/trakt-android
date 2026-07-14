@@ -292,7 +292,7 @@ internal fun HomeWatchlistContent(
                                 }
 
                                 HomeEmptyView(
-                                    text = stringResource(R.string.text_cta_watchlist_released),
+                                    text = stringResource(R.string.text_cta_start_watching_media),
                                     icon = R.drawable.ic_empty_watchlist,
                                     buttonText = when (state.filter?.mode) {
                                         MediaMode.Movies -> stringResource(R.string.link_text_discover_movies)

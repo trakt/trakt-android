@@ -48,7 +48,7 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 
 private val viewHeight = 72.dp
-private val viewShape = RoundedCornerShape(16.dp)
+private val viewShape = RoundedCornerShape(24.dp)
 
 @Composable
 internal fun HomeStreaksView(
@@ -88,7 +88,7 @@ private fun HomeStreaksContent(
             ) {
                 Row(
                     verticalAlignment = CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
                     modifier = Modifier
                         .weight(1f)
                         .padding(end = 16.dp),

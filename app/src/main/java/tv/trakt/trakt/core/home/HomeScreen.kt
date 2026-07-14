@@ -256,22 +256,22 @@ private fun HomeScreenContent(
                 )
             }
 
-            if (state.user.user != null && !state.user.user.isVip) {
+            if (state.user.user != null) {
+                item {
+                    HomeStreaksView(
+                        modifier = Modifier.padding(sectionPadding),
+                        onClick = onStreakClick,
+                    )
+                }
+            }
+
+            if (state.user.user?.isVip != true) {
                 item {
                     VipBanner(
                         onClick = onVipClick,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(sectionPadding),
-                    )
-                }
-            }
-
-            if (state.user.user != null) {
-                item {
-                    HomeStreaksView(
-                        modifier = Modifier.padding(sectionPadding),
-                        onClick = onStreakClick,
                     )
                 }
             }

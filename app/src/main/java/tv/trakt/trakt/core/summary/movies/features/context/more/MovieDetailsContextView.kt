@@ -46,7 +46,6 @@ import tv.trakt.trakt.core.summary.movies.features.context.more.MovieDetailsCont
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.buttons.WatchNowButton
-import tv.trakt.trakt.ui.components.vip.VipChip
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -315,10 +314,6 @@ private fun ActionButtons(
                 enabled = coverEnabled,
                 onClick = onCoverClick,
             )
-
-            if (!vip) {
-                VipChip()
-            }
         }
 
 //        GhostButton(

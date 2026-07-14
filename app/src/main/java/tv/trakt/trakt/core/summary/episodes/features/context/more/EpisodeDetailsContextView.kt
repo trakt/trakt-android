@@ -45,7 +45,6 @@ import tv.trakt.trakt.core.summary.episodes.features.context.more.EpisodeDetails
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.buttons.WatchNowButton
-import tv.trakt.trakt.ui.components.vip.VipChip
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -291,23 +290,19 @@ private fun ActionButtons(
                 enabled = coverEnabled,
                 onClick = onCoverClick,
             )
-
-            if (!vip) {
-                VipChip()
-            }
         }
 
-        GhostButton(
-            text = stringResource(R.string.button_text_share),
-            icon = painterResource(R.drawable.ic_share),
-            iconSize = 22.dp,
-            iconSpace = 15.dp,
-            modifier = Modifier
-                .graphicsLayer {
-                    translationX = -5.dp.toPx()
-                },
-            onClick = onShareClick,
-        )
+//        GhostButton(
+//            text = stringResource(R.string.button_text_share),
+//            icon = painterResource(R.drawable.ic_share),
+//            iconSize = 22.dp,
+//            iconSpace = 15.dp,
+//            modifier = Modifier
+//                .graphicsLayer {
+//                    translationX = -5.dp.toPx()
+//                },
+//            onClick = onShareClick,
+//        )
     }
 }
 
