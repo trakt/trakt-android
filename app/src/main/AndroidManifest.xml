@@ -181,6 +181,12 @@
     <package android:name="com.imdb.mobile" />
     <package android:name="com.justwatch.justwatch" />
     <package android:name="com.rottentomatoes.android" />
+
+    <!-- Misc. -->
+    <intent>
+      <action android:name="android.intent.action.PROCESS_TEXT" />
+      <data android:mimeType="text/plain" />
+    </intent>
   </queries>
 
 </manifest>
