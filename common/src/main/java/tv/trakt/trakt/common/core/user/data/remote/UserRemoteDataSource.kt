@@ -47,6 +47,8 @@ interface UserRemoteDataSource {
 
     suspend fun updateMultiplePlays(enabled: Boolean)
 
+    suspend fun updateRatingPrompts(enabled: Boolean)
+
     suspend fun updateCoverImage(
         mediaId: TraktId?,
         mediaType: MediaType?,

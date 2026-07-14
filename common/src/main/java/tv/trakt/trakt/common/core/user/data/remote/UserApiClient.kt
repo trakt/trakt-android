@@ -98,6 +98,18 @@ class UserApiClient(
         cacheMarkerProvider.invalidate()
     }
 
+    override suspend fun updateRatingPrompts(enabled: Boolean) {
+        usersApi.putUsersSaveSettings(
+            putUsersSaveSettingsRequest = PutUsersSaveSettingsRequest(
+                browsing = PutUsersSaveSettingsRequestBrowsing(
+                    showRatingPrompt = enabled,
+                ),
+            ),
+        )
+
+        cacheMarkerProvider.invalidate()
+    }
+
     override suspend fun updateCoverImage(
         mediaId: TraktId?,
         mediaType: MediaType?,

@@ -51,6 +51,7 @@ internal val ratingsDataModule = module {
             checkInManager = get(),
             userRatingsUseCase = get(),
             userFavoritesUseCase = get(),
+            updateUserSettingsUseCase = get(),
             userHistoryDataSource = get(),
         )
     }

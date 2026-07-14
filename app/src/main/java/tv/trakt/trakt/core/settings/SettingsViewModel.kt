@@ -32,6 +32,7 @@ import tv.trakt.trakt.core.notifications.usecases.UpdateNotificationsDeliveryUse
 import tv.trakt.trakt.core.settings.usecases.UpdateUserSettingsUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 import tv.trakt.trakt.resources.R
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class SettingsViewModel(
     private val appContext: Context,
@@ -70,7 +71,7 @@ internal class SettingsViewModel(
 
         sessionManager.observeProfile()
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach { user ->
                 userState.update { user }
             }
@@ -138,6 +139,21 @@ internal class SettingsViewModel(
             try {
                 accountLoadingState.update { Loading }
                 updateSettingsUseCase.updateMultiplePlays(enable)
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            } finally {
+                accountLoadingState.update { Done }
+            }
+        }
+    }
+
+    fun enableRatePrompts(enable: Boolean) {
+        viewModelScope.launch {
+            try {
+                accountLoadingState.update { Loading }
+                updateSettingsUseCase.updateRatingsPrompt(enable)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
