@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -103,7 +104,10 @@ private fun HomeStreaksContent(
                         ),
                         contentDescription = null,
                         modifier = Modifier
-                            .size(48.dp),
+                            .size(48.dp)
+                            .graphicsLayer {
+                                translationY = -1.dp.toPx()
+                            },
                     )
 
                     Text(
