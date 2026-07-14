@@ -203,8 +203,14 @@ internal class DefaultRatePromptManager(
     }
 
     override suspend fun onUserSuppress() {
-        updateUserSettingsUseCase.updateRatingsPrompt(false)
         clear()
+        try {
+            updateUserSettingsUseCase.updateRatingsPrompt(false)
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
+            }
+        }
     }
 
     override fun clear() {

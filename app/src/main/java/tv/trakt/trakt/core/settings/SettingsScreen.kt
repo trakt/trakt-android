@@ -499,6 +499,14 @@ private fun SettingsTracking(
     onEnableRatePrompts: (Boolean) -> Unit = {},
     onBlockedUsersClick: () -> Unit = {},
 ) {
+    val multiplePlays = remember(state.user?.settings) {
+        state.user?.settings?.watchOnlyOnce != true
+    }
+
+    val ratePrompts = remember(state.user?.settings) {
+        state.user?.settings?.ratingPrompts == true
+    }
+
     Column(
         verticalArrangement = spacedBy(SECTION_SPACING_DP.dp),
         modifier = modifier,
@@ -509,19 +517,11 @@ private fun SettingsTracking(
             titleStyle = TraktTheme.typography.heading6,
         )
 
-        val multiplePlays = remember(state.user?.settings) {
-            state.user?.settings?.watchOnlyOnce == false
-        }
-
-        val ratePrompts = remember(state.user?.settings) {
-            state.user?.settings?.ratingPrompts == true
-        }
-
         SettingsSwitchField(
             text = stringResource(R.string.text_settings_enable_multiple_plays),
             description = stringResource(R.string.text_settings_enable_multiple_plays_description),
             checked = multiplePlays,
-            enabled = !state.accountLoading.isLoading,
+            enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
             onClick = {
                 onEnableMultiplePlays(!multiplePlays)
             },
@@ -532,7 +532,7 @@ private fun SettingsTracking(
             text = stringResource(R.string.text_settings_show_rating_prompt),
             description = stringResource(R.string.text_settings_show_rating_prompt_description),
             checked = ratePrompts,
-            enabled = !state.accountLoading.isLoading,
+            enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
             onClick = {
                 onEnableRatePrompts(!ratePrompts)
             },
