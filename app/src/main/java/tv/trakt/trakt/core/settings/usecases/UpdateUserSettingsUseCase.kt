@@ -37,6 +37,13 @@ internal class UpdateUserSettingsUseCase(
         }
     }
 
+    suspend fun updateRatingsPrompt(enabled: Boolean) {
+        remoteSource.updateRatingPrompts(enabled)
+        remoteSource.getProfile().let {
+            sessionManager.saveProfile(it)
+        }
+    }
+
     suspend fun updateCoverImage(
         mediaId: TraktId?,
         mediaType: MediaType?,

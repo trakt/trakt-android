@@ -143,6 +143,7 @@ internal fun SettingsScreen(
         onSetLocation = viewModel::updateUserLocation,
         onSetAbout = viewModel::updateUserAbout,
         onEnableMultiplePlays = viewModel::enableMultiplePlays,
+        onEnableRatePrompts = viewModel::enableRatePrompts,
         onEnableNotifications = viewModel::enableNotifications,
         onSetDeliveryTime = viewModel::setNotificationDeliveryTime,
         onClearCoverImage = viewModel::clearCoverImage,
@@ -193,6 +194,7 @@ private fun SettingsScreenContent(
     onYounifyClick: () -> Unit = { },
     onBlockedUsersClick: () -> Unit = { },
     onEnableMultiplePlays: (Boolean) -> Unit = { },
+    onEnableRatePrompts: (Boolean) -> Unit = { },
     onEnableNotifications: (Boolean) -> Unit = { },
     onSetDeliveryTime: (DeliveryAdjustment) -> Unit = { },
     onLogoutClick: () -> Unit = { },
@@ -264,6 +266,7 @@ private fun SettingsScreenContent(
                 SettingsTracking(
                     state = state,
                     onEnableMultiplePlays = onEnableMultiplePlays,
+                    onEnableRatePrompts = onEnableRatePrompts,
                     onBlockedUsersClick = onBlockedUsersClick,
                 )
 
@@ -493,8 +496,17 @@ private fun SettingsTracking(
     state: SettingsState,
     modifier: Modifier = Modifier,
     onEnableMultiplePlays: (Boolean) -> Unit,
+    onEnableRatePrompts: (Boolean) -> Unit = {},
     onBlockedUsersClick: () -> Unit = {},
 ) {
+    val multiplePlays = remember(state.user?.settings) {
+        state.user?.settings?.watchOnlyOnce != true
+    }
+
+    val ratePrompts = remember(state.user?.settings) {
+        state.user?.settings?.ratingPrompts == true
+    }
+
     Column(
         verticalArrangement = spacedBy(SECTION_SPACING_DP.dp),
         modifier = modifier,
@@ -505,20 +517,24 @@ private fun SettingsTracking(
             titleStyle = TraktTheme.typography.heading6,
         )
 
-        val enabled = remember(state.user?.settings) {
-            when (state.user?.settings?.watchOnlyOnce) {
-                null -> false
-                else -> state.user.settings?.watchOnlyOnce == false
-            }
-        }
-
         SettingsSwitchField(
             text = stringResource(R.string.text_settings_enable_multiple_plays),
             description = stringResource(R.string.text_settings_enable_multiple_plays_description),
-            checked = enabled,
-            enabled = !state.accountLoading.isLoading,
+            checked = multiplePlays,
+            enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
             onClick = {
-                onEnableMultiplePlays(!enabled)
+                onEnableMultiplePlays(!multiplePlays)
+            },
+            modifier = Modifier.padding(top = SECTION_SPACING_DP.dp / 1.5F),
+        )
+
+        SettingsSwitchField(
+            text = stringResource(R.string.text_settings_show_rating_prompt),
+            description = stringResource(R.string.text_settings_show_rating_prompt_description),
+            checked = ratePrompts,
+            enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
+            onClick = {
+                onEnableRatePrompts(!ratePrompts)
             },
             modifier = Modifier.padding(top = SECTION_SPACING_DP.dp / 1.5F),
         )
@@ -947,6 +963,7 @@ private fun Preview() {
                 user = PreviewData.user1.copy(
                     settings = User.Settings(
                         watchOnlyOnce = true,
+                        ratingPrompts = false,
                         coverImage = null,
                     ),
                 ),

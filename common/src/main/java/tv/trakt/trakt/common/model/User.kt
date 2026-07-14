@@ -27,6 +27,7 @@ data class User(
     @Serializable
     data class Settings(
         val watchOnlyOnce: Boolean,
+        val ratingPrompts: Boolean,
         val coverImage: String?,
     )
 
@@ -90,6 +91,7 @@ fun Companion.fromDto(dto: UserSettingsDto): User {
         },
         settings = User.Settings(
             watchOnlyOnce = dto.browsing?.watchOnlyOnce ?: false,
+            ratingPrompts = dto.browsing?.showRatingPrompt ?: false,
             coverImage = dto.user.vipCoverImage,
         ),
     )
@@ -117,6 +119,7 @@ fun Companion.fromDto(dto: UserCommentsDto): User {
         streamings = null,
         settings = User.Settings(
             watchOnlyOnce = false,
+            ratingPrompts = false,
             coverImage = dto.vipCoverImage,
         ),
     )

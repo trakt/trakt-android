@@ -2,7 +2,6 @@ package tv.trakt.trakt.core.ratings.rateprompt
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
@@ -36,6 +35,7 @@ import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState.AskSuppress
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState.Idle
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState.UnratedMovies
+import tv.trakt.trakt.core.settings.usecases.UpdateUserSettingsUseCase
 import tv.trakt.trakt.core.user.usecases.lists.LoadUserFavoritesUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import kotlin.time.Duration.Companion.hours
@@ -46,7 +46,6 @@ private const val UNRATED_MOVIES_LIMIT = 5
 private val RECENTLY_WATCHED_DURATION = 24.hours.toJavaDuration()
 
 private val KEY_USER_DISMISS_COUNT = intPreferencesKey("key_dismiss_count")
-private val KEY_USER_SUPPRESSED = booleanPreferencesKey("key_user_suppressed")
 private val KEY_DISMISSED_MOVIES = stringSetPreferencesKey("key_dismissed_movies")
 
 /**
@@ -60,6 +59,7 @@ internal class DefaultRatePromptManager(
     private val dataStore: DataStore<Preferences>,
     private val userRatingsUseCase: LoadUserRatingsUseCase,
     private val userFavoritesUseCase: LoadUserFavoritesUseCase,
+    private val updateUserSettingsUseCase: UpdateUserSettingsUseCase,
     private val userHistoryDataSource: UserHistoryRemoteDataSource,
 ) : RatePromptManager {
     private val state = MutableStateFlow<RatePromptState>(Idle)
@@ -71,9 +71,8 @@ internal class DefaultRatePromptManager(
             return
         }
 
-        val preferences = dataStore.data.firstOrNull()
-        if (preferences?.get(KEY_USER_SUPPRESSED) ?: false) {
-            Timber.d("Rate prompt is suppressed due to max user dismissals.")
+        if (sessionManager.getProfile()?.settings?.ratingPrompts != true) {
+            Timber.d("Rate prompt is disabled.")
             return
         }
 
@@ -204,10 +203,14 @@ internal class DefaultRatePromptManager(
     }
 
     override suspend fun onUserSuppress() {
-        dataStore.edit {
-            it[KEY_USER_SUPPRESSED] = true
-        }
         clear()
+        try {
+            updateUserSettingsUseCase.updateRatingsPrompt(false)
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
+            }
+        }
     }
 
     override fun clear() {
