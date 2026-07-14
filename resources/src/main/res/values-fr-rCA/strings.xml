@@ -119,6 +119,7 @@
   <string name="button_label_movies">Films</string>
   <string name="button_label_next_calendar_period">Période suivante</string>
   <string name="button_label_next_episode">Épisode suivant</string>
+  <string name="button_label_open_leaderboard">Ouvrir le classement des abonnements</string>
   <string name="button_label_pick_match">Importer %s.</string>
   <string name="button_label_plex_connect">Connecter votre compte Plex</string>
   <string name="button_label_plex_disconnect">Déconnecter votre compte Plex</string>
@@ -537,6 +538,8 @@
   <string name="description_plex_servers">Choisissez le serveur Plex à synchroniser avec Trakt.</string>
   <string name="description_plex_sync">Connectez votre compte Plex pour synchroniser l\'historique de visionnage, les évaluations et les collections avec Trakt.</string>
   <string name="description_plex_sync_settings">Ces paramètres contrôlent les types de données synchronisés avec Trakt.</string>
+  <string name="description_plex_vip_upsell_sync">Passez au statut VIP pour synchroniser votre historique de visionnage, vos évaluations et vos collections Plex avec Trakt.</string>
+  <string name="description_plex_vip_upsell_webhook">Passez au statut VIP pour scrobbler automatiquement ce que vous regardez en temps réel avec les webhooks Plex.</string>
   <string name="description_plex_webhook">Scrobblez automatiquement ce que vous regardez, évaluez et ajoutez à votre bibliothèque en temps réel.</string>
   <string name="description_preview_features">Essayez les fonctionnalités à venir avant qu\'elles ne soient largement disponibles. Les fonctionnalités d\'aperçu peuvent changer au fur et à mesure que nous les affinons.</string>
   <string name="description_skipped_items">Tout ce qui est en rouge a fait en sorte que l\'élément soit ignoré.</string>
@@ -646,6 +649,7 @@
   <string name="header_landing_track">Suivre</string>
   <string name="header_landing_welcome">Bienvenue sur Trakt</string>
   <string name="header_language">Langue</string>
+  <string name="header_leaderboard">Panthéon</string>
   <string name="header_manage_lists">Gérer les listes</string>
   <string name="header_network">Réseau</string>
   <string name="header_notes_placeholder">Aucune note pour le moment.</string>
@@ -666,6 +670,8 @@
   <string name="header_plex_servers">Sélectionner un serveur</string>
   <string name="header_plex_sync_history">Historique de synchronisation</string>
   <string name="header_plex_sync_settings">Paramètres de synchronisation Plex</string>
+  <string name="header_plex_vip_upsell_sync">La synchronisation Plex est une fonctionnalité VIP</string>
+  <string name="header_plex_vip_upsell_webhook">Le scrobbling Plex est une fonctionnalité VIP</string>
   <string name="header_post_credits">Après générique</string>
   <string name="header_premiered">Première</string>
   <string name="header_preview_features">Fonctionnalités en avant-première</string>
@@ -837,6 +843,7 @@
   <string name="label_plex_sync_as">Synchroniser en tant que</string>
   <string name="label_plex_webhook_connect_hint">Connectez votre compte Plex pour obtenir votre URL de Webhook.</string>
   <string name="label_plex_webhook_url">URL du Webhook</string>
+  <string name="label_queued_action">Enregistré hors ligne, en attente de synchronisation</string>
   <string name="label_ratings_season_chart">Évaluations des saisons au fil du temps</string>
   <string name="label_report_reason_abusive">Abusif</string>
   <string name="label_report_reason_adult">Contenu adulte</string>
@@ -1117,25 +1124,23 @@
   <string name="page_title_year_in_review">Bilan de l\'année %s</string>
   <string name="page_title_year_to_date">Année à ce jour</string>
   <string name="preview_feature_description_edit_mode">Activez les commandes pour masquer ou afficher les sections configurables dans toute l\'application.</string>
-  <string name="preview_feature_description_month_in_review">Aperçu de la Rétrospective mensuelle, maintenant exécutée directement dans la V3.</string>
-  <string name="preview_feature_description_plex_sync">Connectez Plex pour synchroniser votre historique de visionnage, vos évaluations et votre bibliothèque avec Trakt. Inclut la connexion, la sélection du serveur et les outils de synchronisation.</string>
+  <string name="preview_feature_description_leaderboard">Classez les personnes que vous suivez par temps de visionnement et voyez où vous vous situez parmi elles.</string>
   <string name="preview_feature_description_rewatch">Démarrez des sessions de revisionnage pour les émissions que vous avez déjà vues, enregistrez-vous ou marquez les épisodes comme vus directement depuis le panneau de session.</string>
   <string name="preview_feature_description_scoped_favorites">Délimitez les listes de favoris en affichant les favoris de l\'année en cours sur les profils et en regroupant la liste complète des favoris par année.</string>
   <string name="preview_feature_description_smart_recommendations">Utilisez notre moteur de nouvelle génération pour dénicher des films et des émissions recommandés qui vont au-delà de l\'évidence.</string>
   <string name="preview_feature_description_smart_related">Utilisez notre moteur de nouvelle génération pour dénicher des films et des émissions liés qui vont au-delà de l\'évidence.</string>
-  <string name="preview_feature_description_year_in_review">Aperçu de la Rétrospective annuelle, maintenant exécutée directement dans la V3.</string>
   <string name="preview_feature_title_edit_mode">Mode édition</string>
-  <string name="preview_feature_title_month_in_review">Rétrospective mensuelle</string>
-  <string name="preview_feature_title_plex_sync">Synchronisation Plex</string>
+  <string name="preview_feature_title_leaderboard">Panthéon</string>
   <string name="preview_feature_title_rewatch">Revisionnage</string>
   <string name="preview_feature_title_scoped_favorites">Favoris ciblés</string>
   <string name="preview_feature_title_smart_recommendations">Recommandations intelligentes</string>
   <string name="preview_feature_title_smart_related">Suggestions intelligentes</string>
-  <string name="preview_feature_title_year_in_review">Rétrospective annuelle</string>
   <string name="reset_status_cleared">Liste de visionnement vidée.</string>
   <string name="section_title_season_progress">Progression de la saison %d</string>
   <string name="section_title_seasons_overview">Aperçu</string>
   <string name="section_title_specials_progress">Progression des épisodes spéciaux</string>
+  <string name="stat_label_hours">heures</string>
+  <string name="stat_label_plays">lectures</string>
   <string name="stat_text_favorited">Favoris</string>
   <string name="stat_text_lists">Listes</string>
   <string name="stat_text_plays">Lectures</string>
@@ -1177,6 +1182,7 @@
   <string name="tag_text_plays">%d lectures</string>
   <string name="tag_text_premiere">Première</string>
   <string name="tag_text_preview">Aperçu</string>
+  <string name="tag_text_queued">En file d\'attente</string>
   <string name="tag_text_released">Sorti</string>
   <string name="tag_text_remaining_duration">%s restant</string>
   <string name="tag_text_remaining_episodes">%d ép</string>
@@ -1303,6 +1309,7 @@
   <string name="text_exporting">Exportation en cours… %s</string>
   <string name="text_favorites_limit_reached">Vous pouvez sélectionner jusqu\'à %s services</string>
   <string name="text_first_play_this_month">Première lecture ce mois-ci</string>
+  <string name="text_following">Abonnements</string>
   <string name="text_footer_category_community">Communauté</string>
   <string name="text_footer_category_legal">Juridique</string>
   <string name="text_footer_category_platform">Plateforme</string>
@@ -1351,6 +1358,9 @@
   <string name="text_landing_welcome">Votre nouveau chez-vous, où vos séries et films sont tous au même endroit.</string>
   <string name="text_language">Langue</string>
   <string name="text_last_day">%s dernier</string>
+  <string name="text_leaderboard_free_section">Membres gratuits</string>
+  <string name="text_leaderboard_upsell_footer">Passez au statut VIP pour voir votre classement parmi vos amis</string>
+  <string name="text_leaderboard_you">Vous</string>
   <string name="text_library">Bibliothèque</string>
   <string name="text_list_private">Privé</string>
   <string name="text_list_private_info">La liste sera visible uniquement par vous.</string>

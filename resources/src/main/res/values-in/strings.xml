@@ -119,6 +119,7 @@
   <string name="button_label_movies">Film</string>
   <string name="button_label_next_calendar_period">Periode berikutnya</string>
   <string name="button_label_next_episode">Episode berikutnya</string>
+  <string name="button_label_open_leaderboard">Buka papan peringkat ikutan</string>
   <string name="button_label_pick_match">Impor %s.</string>
   <string name="button_label_plex_connect">Hubungkan akun Plex Anda</string>
   <string name="button_label_plex_disconnect">Putuskan sambungan akun Plex Anda</string>
@@ -537,6 +538,8 @@
   <string name="description_plex_servers">Pilih server Plex untuk disinkronkan dengan Trakt.</string>
   <string name="description_plex_sync">Hubungkan akun Plex Anda untuk menyinkronkan riwayat tontonan, rating, dan koleksi dengan Trakt.</string>
   <string name="description_plex_sync_settings">Pengaturan ini mengontrol jenis data yang disinkronkan ke Trakt.</string>
+  <string name="description_plex_vip_upsell_sync">Tingkatkan ke VIP untuk menjaga riwayat tontonan, rating, dan koleksi Plex Anda tetap tersinkronisasi dengan Trakt.</string>
+  <string name="description_plex_vip_upsell_webhook">Tingkatkan ke VIP untuk secara otomatis melakukan scrobble apa yang Anda tonton secara real time dengan webhook Plex.</string>
   <string name="description_plex_webhook">Scrobble secara otomatis apa yang sedang Anda tonton, nilai, dan tambahkan ke perpustakaan Anda secara real-time.</string>
   <string name="description_preview_features">Coba fitur mendatang sebelum tersedia secara luas. Fitur Pratinjau dapat berubah seiring kami menyempurnakannya.</string>
   <string name="description_skipped_items">Apa pun yang berwarna merah menyebabkan item dilewati.</string>
@@ -646,6 +649,7 @@
   <string name="header_landing_track">Lacak</string>
   <string name="header_landing_welcome">Selamat datang di Trakt</string>
   <string name="header_language">Bahasa</string>
+  <string name="header_leaderboard">Pantheon</string>
   <string name="header_manage_lists">Kelola daftar</string>
   <string name="header_network">Jaringan</string>
   <string name="header_notes_placeholder">Belum ada catatan.</string>
@@ -666,6 +670,8 @@
   <string name="header_plex_servers">Pilih Server</string>
   <string name="header_plex_sync_history">Riwayat Sinkronisasi</string>
   <string name="header_plex_sync_settings">Pengaturan Sinkronisasi Plex</string>
+  <string name="header_plex_vip_upsell_sync">Sinkronisasi Plex adalah fitur VIP</string>
+  <string name="header_plex_vip_upsell_webhook">Plex scrobbling adalah fitur VIP</string>
   <string name="header_post_credits">Pasca-Kredit</string>
   <string name="header_premiered">Ditayangkan Perdana</string>
   <string name="header_preview_features">Fitur Pratinjau</string>
@@ -837,6 +843,7 @@
   <string name="label_plex_sync_as">Sinkronkan sebagai</string>
   <string name="label_plex_webhook_connect_hint">Hubungkan akun Plex Anda untuk mendapatkan URL webhook Anda.</string>
   <string name="label_plex_webhook_url">URL Webhook</string>
+  <string name="label_queued_action">Disimpan secara offline, menunggu sinkronisasi</string>
   <string name="label_ratings_season_chart">Peringkat Musim Seiring Waktu</string>
   <string name="label_report_reason_abusive">Kasar</string>
   <string name="label_report_reason_adult">Konten dewasa</string>
@@ -1117,25 +1124,23 @@
   <string name="page_title_year_in_review">%s dalam tinjauan</string>
   <string name="page_title_year_to_date">Tahun Berjalan</string>
   <string name="preview_feature_description_edit_mode">Aktifkan kontrol untuk menyembunyikan atau menampilkan bagian yang dapat dikonfigurasi di seluruh aplikasi.</string>
-  <string name="preview_feature_description_month_in_review">Pratinjau Kilas Balik Bulanan, sekarang berjalan langsung di V3.</string>
-  <string name="preview_feature_description_plex_sync">Hubungkan Plex untuk menyinkronkan riwayat tontonan, penilaian, dan perpustakaan Anda ke Trakt. Termasuk koneksi, pemilihan server, dan alat sinkronisasi.</string>
+  <string name="preview_feature_description_leaderboard">Peringkat orang yang Anda ikuti berdasarkan waktu tonton dan lihat posisi Anda di antara mereka.</string>
   <string name="preview_feature_description_rewatch">Mulai sesi menonton ulang untuk acara yang sudah Anda tonton, check-in atau tandai episode yang sudah ditonton langsung dari panel sesi.</string>
   <string name="preview_feature_description_scoped_favorites">Batas waktu daftar favorit dengan menampilkan favorit tahun berjalan di profil dan mengelompokkan daftar favorit lengkap berdasarkan tahun.</string>
   <string name="preview_feature_description_smart_recommendations">Gunakan mesin generasi berikutnya kami untuk menampilkan film dan acara yang direkomendasikan melampaui yang biasa.</string>
   <string name="preview_feature_description_smart_related">Gunakan mesin generasi berikutnya kami untuk menampilkan film dan acara terkait yang melampaui yang biasa.</string>
-  <string name="preview_feature_description_year_in_review">Pratinjau Kilas Balik Tahunan, sekarang berjalan langsung di V3.</string>
   <string name="preview_feature_title_edit_mode">Mode Edit</string>
-  <string name="preview_feature_title_month_in_review">Kilas Balik Bulanan</string>
-  <string name="preview_feature_title_plex_sync">Sinkronisasi Plex</string>
+  <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Tonton Ulang</string>
   <string name="preview_feature_title_scoped_favorites">Favorit Terbatas</string>
   <string name="preview_feature_title_smart_recommendations">Rekomendasi Cerdas</string>
   <string name="preview_feature_title_smart_related">Terkait Cerdas</string>
-  <string name="preview_feature_title_year_in_review">Kilas Balik Tahunan</string>
   <string name="reset_status_cleared">Daftar tontonan dibersihkan.</string>
   <string name="section_title_season_progress">Musim %d kemajuan</string>
   <string name="section_title_seasons_overview">Ikhtisar</string>
   <string name="section_title_specials_progress">Kemajuan Spesial</string>
+  <string name="stat_label_hours">jam</string>
+  <string name="stat_label_plays">tontonan</string>
   <string name="stat_text_favorited">Favorit</string>
   <string name="stat_text_lists">Daftar</string>
   <string name="stat_text_plays">Tontonan</string>
@@ -1177,6 +1182,7 @@
   <string name="tag_text_plays">%d putar</string>
   <string name="tag_text_premiere">Premiere</string>
   <string name="tag_text_preview">Pratinjau</string>
+  <string name="tag_text_queued">Mengantre</string>
   <string name="tag_text_released">Dirilis</string>
   <string name="tag_text_remaining_duration">Tersisa %s</string>
   <string name="tag_text_remaining_episodes">Tersisa %d</string>
@@ -1303,6 +1309,7 @@
   <string name="text_exporting">Mengekspor… %s</string>
   <string name="text_favorites_limit_reached">Anda dapat memilih hingga %s layanan</string>
   <string name="text_first_play_this_month">Putaran pertama bulan ini</string>
+  <string name="text_following">Mengikuti</string>
   <string name="text_footer_category_community">Komunitas</string>
   <string name="text_footer_category_legal">Hukum</string>
   <string name="text_footer_category_platform">Platform</string>
@@ -1351,6 +1358,9 @@
   <string name="text_landing_welcome">Rumah baru Anda, tempat semua acara dan film Anda berada di satu tempat.</string>
   <string name="text_language">Bahasa</string>
   <string name="text_last_day">%s lalu</string>
+  <string name="text_leaderboard_free_section">Anggota gratis</string>
+  <string name="text_leaderboard_upsell_footer">Upgrade ke VIP untuk melihat peringkat Anda di antara teman-teman Anda</string>
+  <string name="text_leaderboard_you">Anda</string>
   <string name="text_library">Pustaka</string>
   <string name="text_list_private">Pribadi</string>
   <string name="text_list_private_info">Daftar hanya akan terlihat oleh Anda.</string>

@@ -119,6 +119,7 @@
   <string name="button_label_movies">Filmler</string>
   <string name="button_label_next_calendar_period">Sonraki dönem</string>
   <string name="button_label_next_episode">Sonraki bölüm</string>
+  <string name="button_label_open_leaderboard">Takip edilenler liderlik tablosunu aç</string>
   <string name="button_label_pick_match">%s İçe Aktar.</string>
   <string name="button_label_plex_connect">Plex hesabınızı bağlayın</string>
   <string name="button_label_plex_disconnect">Plex hesabınızın bağlantısını kes</string>
@@ -537,6 +538,8 @@
   <string name="description_plex_servers">Trakt ile senkronize edilecek Plex sunucusunu seçin.</string>
   <string name="description_plex_sync">İzleme geçmişinizi, derecelendirmelerinizi ve koleksiyonlarınızı Trakt ile senkronize etmek için Plex hesabınızı bağlayın.</string>
   <string name="description_plex_sync_settings">Bu ayarlar, hangi veri türlerinin Trakt ile senkronize edileceğini kontrol eder.</string>
+  <string name="description_plex_vip_upsell_sync">Plex izleme geçmişinizi, derecelendirmelerinizi ve koleksiyonlarınızı Trakt ile senkronize tutmak için VIP\'ye yükseltin.</string>
+  <string name="description_plex_vip_upsell_webhook">Plex web kancalarıyla izlediklerinizi gerçek zamanlı olarak otomatik scrobble etmek için VIP\'ye yükseltin.</string>
   <string name="description_plex_webhook">İzlediğiniz, derecelendirdiğiniz ve kütüphanenize eklediğiniz her şeyi gerçek zamanlı olarak otomatik olarak scrobble edin.</string>
   <string name="description_preview_features">Genel kullanıma sunulmadan önce gelecek özellikleri deneyin. Önizleme Özellikleri, onları geliştirdikçe değişebilir.</string>
   <string name="description_skipped_items">Kırmızıyla işaretlenmiş herhangi bir şey öğenin atlanmasına neden oldu.</string>
@@ -646,6 +649,7 @@
   <string name="header_landing_track">Takip Et</string>
   <string name="header_landing_welcome">Trakt\'e Hoş Geldiniz</string>
   <string name="header_language">Dil</string>
+  <string name="header_leaderboard">Pantheon</string>
   <string name="header_manage_lists">Listeleri yönet</string>
   <string name="header_network">Kanal</string>
   <string name="header_notes_placeholder">Henüz not yok.</string>
@@ -666,6 +670,8 @@
   <string name="header_plex_servers">Sunucu Seç</string>
   <string name="header_plex_sync_history">Senkronizasyon Geçmişi</string>
   <string name="header_plex_sync_settings">Plex Senkronizasyon Ayarları</string>
+  <string name="header_plex_vip_upsell_sync">Plex Senkronizasyonu bir VIP özelliğidir</string>
+  <string name="header_plex_vip_upsell_webhook">Plex scrobbling bir VIP özelliğidir</string>
   <string name="header_post_credits">Jenerik Sonrası</string>
   <string name="header_premiered">İlk Gösterim</string>
   <string name="header_preview_features">Önizleme Özellikleri</string>
@@ -837,6 +843,7 @@
   <string name="label_plex_sync_as">Şu şekilde senkronize et</string>
   <string name="label_plex_webhook_connect_hint">Webhook URL\'nizi almak için Plex hesabınızı bağlayın.</string>
   <string name="label_plex_webhook_url">Webhook URL\'si</string>
+  <string name="label_queued_action">Çevrimdışı kaydedildi, senkronize edilmesi bekleniyor</string>
   <string name="label_ratings_season_chart">Zaman içinde sezon derecelendirmeleri</string>
   <string name="label_report_reason_abusive">Kötüye Kullanım</string>
   <string name="label_report_reason_adult">Yetişkin içerik</string>
@@ -1117,25 +1124,23 @@
   <string name="page_title_year_in_review">%s Yılına Genel Bakış</string>
   <string name="page_title_year_to_date">Yıl Başından Bugüne</string>
   <string name="preview_feature_description_edit_mode">Uygulama genelinde yapılandırılabilir bölümleri gizleme veya gösterme kontrollerini etkinleştirin.</string>
-  <string name="preview_feature_description_month_in_review">Ayın İncelemesini önizleyin, şimdi doğrudan V3\'te çalışıyor.</string>
-  <string name="preview_feature_description_plex_sync">İzleme geçmişinizi, derecelendirmelerinizi ve kütüphanenizi Trakt ile senkronize etmek için Plex\'i bağlayın. Bağlantı, sunucu seçimi ve senkronizasyon araçlarını içerir.</string>
+  <string name="preview_feature_description_leaderboard">Takip ettiğin kişileri izleme süresine göre sırala ve aralarında nerede olduğunu gör.</string>
   <string name="preview_feature_description_rewatch">Halihazırda izlediğiniz diziler için yeniden izleme oturumları başlatın, izlenen bölümleri doğrudan oturum çekmecesinden kaydedin veya izlendi olarak işaretleyin.</string>
   <string name="preview_feature_description_scoped_favorites">Favori listelerini, profillerde güncel yılın favorilerini göstererek ve tüm favori listesini yıla göre gruplandırarak zaman kutucuklarına ayırın.</string>
   <string name="preview_feature_description_smart_recommendations">Sıradanlığın ötesinde önerilen film ve dizileri keşfetmek için yeni nesil motorumuzu kullanın.</string>
   <string name="preview_feature_description_smart_related">Sıradanlığın ötesinde ilgili film ve dizileri keşfetmek için yeni nesil motorumuzu kullanın.</string>
-  <string name="preview_feature_description_year_in_review">Yılın İncelemesini önizleyin, şimdi doğrudan V3\'te çalışıyor.</string>
   <string name="preview_feature_title_edit_mode">Düzenleme Modu</string>
-  <string name="preview_feature_title_month_in_review">Ayın İncelemesi</string>
-  <string name="preview_feature_title_plex_sync">Plex Senkronizasyonu</string>
+  <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Yeniden İzleme</string>
   <string name="preview_feature_title_scoped_favorites">Kapsamlı Favoriler</string>
   <string name="preview_feature_title_smart_recommendations">Akıllı Öneriler</string>
   <string name="preview_feature_title_smart_related">Akıllı İlişkili</string>
-  <string name="preview_feature_title_year_in_review">Yılın İncelemesi</string>
   <string name="reset_status_cleared">İzleme listesi temizlendi.</string>
   <string name="section_title_season_progress">Sezon %d ilerlemesi</string>
   <string name="section_title_seasons_overview">Genel Bakış</string>
   <string name="section_title_specials_progress">Özel bölümler ilerlemesi</string>
+  <string name="stat_label_hours">saat</string>
+  <string name="stat_label_plays">oynatma</string>
   <string name="stat_text_favorited">Favoriler</string>
   <string name="stat_text_lists">Listeler</string>
   <string name="stat_text_plays">Oynatma Sayısı</string>
@@ -1177,6 +1182,7 @@
   <string name="tag_text_plays">%d oynatma</string>
   <string name="tag_text_premiere">Gala</string>
   <string name="tag_text_preview">Önizleme</string>
+  <string name="tag_text_queued">Kuyrukta</string>
   <string name="tag_text_released">Yayınlandı</string>
   <string name="tag_text_remaining_duration">%s kaldı</string>
   <string name="tag_text_remaining_episodes">%d kaldı</string>
@@ -1303,6 +1309,7 @@
   <string name="text_exporting">Dışa aktarılıyor… %s</string>
   <string name="text_favorites_limit_reached">En fazla %s hizmet seçebilirsiniz</string>
   <string name="text_first_play_this_month">Bu ayın ilk izlemesi</string>
+  <string name="text_following">Takip Edilenler</string>
   <string name="text_footer_category_community">Topluluk</string>
   <string name="text_footer_category_legal">Yasal</string>
   <string name="text_footer_category_platform">Platform</string>
@@ -1351,6 +1358,9 @@
   <string name="text_landing_welcome">Dizilerinizin ve filmlerinizin tek bir yerde olduğu yeni eviniz.</string>
   <string name="text_language">Dil</string>
   <string name="text_last_day">geçen %s</string>
+  <string name="text_leaderboard_free_section">Ücretsiz üyeler</string>
+  <string name="text_leaderboard_upsell_footer">Arkadaşların arasında nerede sıralandığını görmek için VIP\'ye yükselt</string>
+  <string name="text_leaderboard_you">Sen</string>
   <string name="text_library">Kütüphane</string>
   <string name="text_list_private">Özel</string>
   <string name="text_list_private_info">Liste sadece size görünür olacaktır.</string>

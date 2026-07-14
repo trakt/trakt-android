@@ -119,6 +119,7 @@
   <string name="button_label_movies">Filmek</string>
   <string name="button_label_next_calendar_period">Következő időszak</string>
   <string name="button_label_next_episode">Következő epizód</string>
+  <string name="button_label_open_leaderboard">Követések ranglistájának megnyitása</string>
   <string name="button_label_pick_match">Importálja a(z) %s elemet.</string>
   <string name="button_label_plex_connect">Plex fiók csatlakoztatása</string>
   <string name="button_label_plex_disconnect">Plex fiók leválasztása</string>
@@ -537,6 +538,8 @@
   <string name="description_plex_servers">Válaszd ki a Plex szervert, amellyel szinkronizálni szeretnéd a Traktot.</string>
   <string name="description_plex_sync">Csatlakoztasd Plex fiókodat a megtekintési előzmények, értékelések és gyűjtemények szinkronizálásához a Trakttal.</string>
   <string name="description_plex_sync_settings">Ezek a beállítások szabályozzák, hogy mely adattípusok szinkronizálódnak a Traktba.</string>
+  <string name="description_plex_vip_upsell_sync">Frissíts VIP-re, hogy Plex megtekintési előzményeid, értékeléseid és gyűjteményeid szinkronban maradjanak a Trakttal.</string>
+  <string name="description_plex_vip_upsell_webhook">Frissíts VIP-re, hogy automatikusan scrobblingeld, amit valós időben nézel a Plex webhookok segítségével.</string>
   <string name="description_plex_webhook">Automatikusan szinkronizálja, amit néz, értékel, és hozzáad a könyvtárához valós időben.</string>
   <string name="description_preview_features">Próbáld ki a közelgő funkciókat, mielőtt széles körben elérhetővé válnak. Az előzetes funkciók változhatnak, ahogy finomítjuk őket.</string>
   <string name="description_skipped_items">Bármi, ami pirosan van jelölve, az elem kihagyását okozta.</string>
@@ -646,6 +649,7 @@
   <string name="header_landing_track">Láttam</string>
   <string name="header_landing_welcome">Üdvözöljük a Trakt-on</string>
   <string name="header_language">Nyelv</string>
+  <string name="header_leaderboard">Pantheon</string>
   <string name="header_manage_lists">Listák kezelése</string>
   <string name="header_network">Csatorna</string>
   <string name="header_notes_placeholder">Még nincsenek jegyzetek.</string>
@@ -666,6 +670,8 @@
   <string name="header_plex_servers">Szerver kiválasztása</string>
   <string name="header_plex_sync_history">Szinkronizálási előzmények</string>
   <string name="header_plex_sync_settings">Plex szinkronizálási beállítások</string>
+  <string name="header_plex_vip_upsell_sync">A Plex szinkronizálás VIP funkció.</string>
+  <string name="header_plex_vip_upsell_webhook">A Plex scrobbling VIP funkció.</string>
   <string name="header_post_credits">Stáblista utáni jelenetek</string>
   <string name="header_premiered">Premier</string>
   <string name="header_preview_features">Előnézeti funkciók</string>
@@ -837,6 +843,7 @@
   <string name="label_plex_sync_as">Szinkronizálás mint</string>
   <string name="label_plex_webhook_connect_hint">Csatlakoztassa Plex fiókját a webhook URL eléréséhez.</string>
   <string name="label_plex_webhook_url">Webhook URL</string>
+  <string name="label_queued_action">Offline mentve, szinkronizálásra vár</string>
   <string name="label_ratings_season_chart">Évadértékelések idővel</string>
   <string name="label_report_reason_abusive">Bántalmazó</string>
   <string name="label_report_reason_adult">Felnőtt tartalom</string>
@@ -1117,25 +1124,23 @@
   <string name="page_title_year_in_review">%s év áttekintése</string>
   <string name="page_title_year_to_date">Éves összesítés</string>
   <string name="preview_feature_description_edit_mode">Engedélyezze a vezérlőket a konfigurálható szakaszok elrejtéséhez vagy megjelenítéséhez az alkalmazásban.</string>
-  <string name="preview_feature_description_month_in_review">Előzetes Havi összefoglaló, mostantól közvetlenül a V3-ban fut.</string>
-  <string name="preview_feature_description_plex_sync">Csatlakoztassa a Plexet a megtekintési előzmények, értékelések és könyvtár szinkronizálásához a Traktba. Tartalmazza a csatlakozási, szerverválasztási és szinkronizálási eszközöket.</string>
+  <string name="preview_feature_description_leaderboard">Rangsorold a követett embereket a nézési idő alapján, és nézd meg, hol helyezkedsz el közöttük.</string>
   <string name="preview_feature_description_rewatch">Indíts újra nézési munkameneteket olyan műsorokhoz, amiket már láttál, jelentkezz be, vagy jelölj meg nézett epizódokat közvetlenül a munkamenet fiókból.</string>
   <string name="preview_feature_description_scoped_favorites">Időkorlátozza a kedvenc listákat azáltal, hogy megjeleníti az aktuális év kedvenceit a profilokon, és csoportosítja a teljes kedvencek listáját év szerint.</string>
   <string name="preview_feature_description_smart_recommendations">Használd következő generációs motorunkat, hogy a nyilvánvalón túlmutató ajánlott filmeket és sorozatokat fedezz fel.</string>
   <string name="preview_feature_description_smart_related">Használd következő generációs motorunkat, hogy a nyilvánvalón túlmutató kapcsolódó filmeket és sorozatokat fedezz fel.</string>
-  <string name="preview_feature_description_year_in_review">Előzetes Éves összefoglaló, mostantól közvetlenül a V3-ban fut.</string>
   <string name="preview_feature_title_edit_mode">Szerkesztési mód</string>
-  <string name="preview_feature_title_month_in_review">Havi összefoglaló</string>
-  <string name="preview_feature_title_plex_sync">Plex szinkronizálás</string>
+  <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Újra nézés</string>
   <string name="preview_feature_title_scoped_favorites">Korlátozott Kedvencek</string>
   <string name="preview_feature_title_smart_recommendations">Intelligens ajánlások</string>
   <string name="preview_feature_title_smart_related">Okos Kapcsolódó</string>
-  <string name="preview_feature_title_year_in_review">Éves összefoglaló</string>
   <string name="reset_status_cleared">Megnézendők listája kiürítve.</string>
   <string name="section_title_season_progress">%d. évad előrehaladása</string>
   <string name="section_title_seasons_overview">Áttekintés</string>
   <string name="section_title_specials_progress">Különkiadások előrehaladása</string>
+  <string name="stat_label_hours">órák</string>
+  <string name="stat_label_plays">lejátszások</string>
   <string name="stat_text_favorited">Kedvencek</string>
   <string name="stat_text_lists">Listák</string>
   <string name="stat_text_plays">Lejátszások</string>
@@ -1177,6 +1182,7 @@
   <string name="tag_text_plays">%d lejátszás</string>
   <string name="tag_text_premiere">Premier</string>
   <string name="tag_text_preview">Előnézet</string>
+  <string name="tag_text_queued">Sorban áll</string>
   <string name="tag_text_released">Megjelent</string>
   <string name="tag_text_remaining_duration">%s maradt</string>
   <string name="tag_text_remaining_episodes">%d epizód maradt</string>
@@ -1303,6 +1309,7 @@
   <string name="text_exporting">Exportálás… %s</string>
   <string name="text_favorites_limit_reached">Legfeljebb %s szolgáltatást választhat ki</string>
   <string name="text_first_play_this_month">Első lejátszás ebben a hónapban</string>
+  <string name="text_following">Követettek</string>
   <string name="text_footer_category_community">Közösség</string>
   <string name="text_footer_category_legal">Jogi</string>
   <string name="text_footer_category_platform">Platform</string>
@@ -1351,6 +1358,9 @@
   <string name="text_landing_welcome">Az új otthonod, ahol a sorozataid és filmjeid mind egy helyen vannak.</string>
   <string name="text_language">Nyelv</string>
   <string name="text_last_day">múlt %s</string>
+  <string name="text_leaderboard_free_section">Ingyenes tagok</string>
+  <string name="text_leaderboard_upsell_footer">Frissíts VIP-re, hogy lásd, hol helyezkedsz el a barátaid között</string>
+  <string name="text_leaderboard_you">Te</string>
   <string name="text_library">Könyvtár</string>
   <string name="text_list_private">Privát</string>
   <string name="text_list_private_info">A lista csak Ön számára lesz látható.</string>

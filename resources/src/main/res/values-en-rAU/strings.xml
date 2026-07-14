@@ -119,6 +119,7 @@
   <string name="button_label_movies">Movies</string>
   <string name="button_label_next_calendar_period">Next period</string>
   <string name="button_label_next_episode">Next episode</string>
+  <string name="button_label_open_leaderboard">Open follows leaderboard</string>
   <string name="button_label_pick_match">Import %s.</string>
   <string name="button_label_plex_connect">Connect your Plex account</string>
   <string name="button_label_plex_disconnect">Disconnect your Plex account</string>
@@ -537,6 +538,8 @@
   <string name="description_plex_servers">Choose the Plex server to sync with Trakt.</string>
   <string name="description_plex_sync">Connect your Plex account to sync watch history, ratings, and collections with Trakt.</string>
   <string name="description_plex_sync_settings">These settings control which data types sync to Trakt.</string>
+  <string name="description_plex_vip_upsell_sync">Upgrade to VIP to keep your Plex watch history, ratings, and collections synced with Trakt.</string>
+  <string name="description_plex_vip_upsell_webhook">Upgrade to VIP to automatically scrobble what you\'re watching in real time with Plex webhooks.</string>
   <string name="description_plex_webhook">Automatically scrobble what you\'re watching, rating, and adding to your library in real time.</string>
   <string name="description_preview_features">Try upcoming features before they\'re broadly available. Preview Features may change as we refine them.</string>
   <string name="description_skipped_items">Anything in red caused the item to be skipped.</string>
@@ -646,6 +649,7 @@
   <string name="header_landing_track">Track</string>
   <string name="header_landing_welcome">Welcome to Trakt</string>
   <string name="header_language">Language</string>
+  <string name="header_leaderboard">Pantheon</string>
   <string name="header_manage_lists">Manage lists</string>
   <string name="header_network">Network</string>
   <string name="header_notes_placeholder">No notes yet.</string>
@@ -666,6 +670,8 @@
   <string name="header_plex_servers">Select Server</string>
   <string name="header_plex_sync_history">Sync History</string>
   <string name="header_plex_sync_settings">Plex Sync Settings</string>
+  <string name="header_plex_vip_upsell_sync">Plex Sync is a VIP feature</string>
+  <string name="header_plex_vip_upsell_webhook">Plex scrobbling is a VIP feature</string>
   <string name="header_post_credits">Post Credits</string>
   <string name="header_premiered">Premiered</string>
   <string name="header_preview_features">Preview Features</string>
@@ -837,6 +843,7 @@
   <string name="label_plex_sync_as">Sync as</string>
   <string name="label_plex_webhook_connect_hint">Connect your Plex account to get your webhook URL.</string>
   <string name="label_plex_webhook_url">Webhook URL</string>
+  <string name="label_queued_action">Saved offline, waiting to sync</string>
   <string name="label_ratings_season_chart">Season ratings over time</string>
   <string name="label_report_reason_abusive">Abusive</string>
   <string name="label_report_reason_adult">Adult content</string>
@@ -1117,25 +1124,23 @@
   <string name="page_title_year_in_review">%s in review</string>
   <string name="page_title_year_to_date">Year to date</string>
   <string name="preview_feature_description_edit_mode">Enable controls for hiding or showing configurable sections across the app.</string>
-  <string name="preview_feature_description_month_in_review">Preview Month in Review, now running directly in V3.</string>
-  <string name="preview_feature_description_plex_sync">Connect Plex to sync your watch history, ratings, and library to Trakt. Includes connection, server selection, and sync tools.</string>
+  <string name="preview_feature_description_leaderboard">Rank the people you follow by watch time and see where you land among them.</string>
   <string name="preview_feature_description_rewatch">Start rewatching sessions for shows you\'ve already seen, check in or mark watched episodes directly from the session drawer.</string>
   <string name="preview_feature_description_scoped_favorites">Time-box favourite lists by showing current-year favourites on profiles and grouping the full favourites list by year.</string>
   <string name="preview_feature_description_smart_recommendations">Use our next-gen engine to surface recommended movies and shows beyond the obvious.</string>
   <string name="preview_feature_description_smart_related">Use our next-gen engine to surface related movies and shows beyond the obvious.</string>
-  <string name="preview_feature_description_year_in_review">Preview Year in Review, now running directly in V3.</string>
   <string name="preview_feature_title_edit_mode">Edit Mode</string>
-  <string name="preview_feature_title_month_in_review">Month In Review</string>
-  <string name="preview_feature_title_plex_sync">Plex Sync</string>
+  <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Rewatch</string>
   <string name="preview_feature_title_scoped_favorites">Scoped Favourites</string>
   <string name="preview_feature_title_smart_recommendations">Smart Recommendations</string>
   <string name="preview_feature_title_smart_related">Smart Related</string>
-  <string name="preview_feature_title_year_in_review">Year In Review</string>
   <string name="reset_status_cleared">Watchlist cleared.</string>
   <string name="section_title_season_progress">Season %d progress</string>
   <string name="section_title_seasons_overview">Overview</string>
   <string name="section_title_specials_progress">Specials progress</string>
+  <string name="stat_label_hours">hours</string>
+  <string name="stat_label_plays">plays</string>
   <string name="stat_text_favorited">Favourites</string>
   <string name="stat_text_lists">Lists</string>
   <string name="stat_text_plays">Plays</string>
@@ -1177,6 +1182,7 @@
   <string name="tag_text_plays">%d plays</string>
   <string name="tag_text_premiere">Premiere</string>
   <string name="tag_text_preview">Preview</string>
+  <string name="tag_text_queued">Queued</string>
   <string name="tag_text_released">Released</string>
   <string name="tag_text_remaining_duration">%s left</string>
   <string name="tag_text_remaining_episodes">%d left</string>
@@ -1303,6 +1309,7 @@
   <string name="text_exporting">Exporting… %s</string>
   <string name="text_favorites_limit_reached">You can select up to %s services</string>
   <string name="text_first_play_this_month">First play this month</string>
+  <string name="text_following">Following</string>
   <string name="text_footer_category_community">Community</string>
   <string name="text_footer_category_legal">Legal</string>
   <string name="text_footer_category_platform">Platform</string>
@@ -1351,6 +1358,9 @@
   <string name="text_landing_welcome">Your new home, where your shows and movies are all in one spot.</string>
   <string name="text_language">Language</string>
   <string name="text_last_day">last %s</string>
+  <string name="text_leaderboard_free_section">Free members</string>
+  <string name="text_leaderboard_upsell_footer">Upgrade to VIP to see where you rank amongst your friends</string>
+  <string name="text_leaderboard_you">You</string>
   <string name="text_library">Library</string>
   <string name="text_list_private">Private</string>
   <string name="text_list_private_info">List will be visible only to you.</string>

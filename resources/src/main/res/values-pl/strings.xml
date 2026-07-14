@@ -119,6 +119,7 @@
   <string name="button_label_movies">Filmy</string>
   <string name="button_label_next_calendar_period">Następny okres</string>
   <string name="button_label_next_episode">Następny odcinek</string>
+  <string name="button_label_open_leaderboard">Otwórz ranking obserwowanych</string>
   <string name="button_label_pick_match">Importuj %s.</string>
   <string name="button_label_plex_connect">Połącz swoje konto Plex</string>
   <string name="button_label_plex_disconnect">Odłącz swoje konto Plex</string>
@@ -537,6 +538,8 @@
   <string name="description_plex_servers">Wybierz serwer Plex do synchronizacji z Trakt.</string>
   <string name="description_plex_sync">Połącz swoje konto Plex, aby synchronizować historię oglądania, oceny i kolekcje z Trakt.</string>
   <string name="description_plex_sync_settings">Te ustawienia kontrolują, które typy danych synchronizują się z Trakt.</string>
+  <string name="description_plex_vip_upsell_sync">Uaktualnij do VIP, aby Twoja historia oglądania, oceny i kolekcje z Plex były synchronizowane z Trakt.</string>
+  <string name="description_plex_vip_upsell_webhook">Uaktualnij do VIP, aby automatycznie scrobble\'ować to, co oglądasz w czasie rzeczywistym, za pomocą webhooków Plex.</string>
   <string name="description_plex_webhook">Automatycznie skrobuj to, co oglądasz, oceniasz i dodajesz do swojej biblioteki w czasie rzeczywistym.</string>
   <string name="description_preview_features">Wypróbuj nadchodzące funkcje, zanim staną się szeroko dostępne. Funkcje podglądu mogą ulec zmianie w miarę ich udoskonalania.</string>
   <string name="description_skipped_items">Wszystko na czerwono spowodowało pominięcie elementu.</string>
@@ -646,6 +649,7 @@
   <string name="header_landing_track">Śledź</string>
   <string name="header_landing_welcome">Witaj w Trakt</string>
   <string name="header_language">Język</string>
+  <string name="header_leaderboard">Panteon</string>
   <string name="header_manage_lists">Zarządzaj listami</string>
   <string name="header_network">Stacja</string>
   <string name="header_notes_placeholder">Brak notatek.</string>
@@ -666,6 +670,8 @@
   <string name="header_plex_servers">Wybierz serwer</string>
   <string name="header_plex_sync_history">Historia synchronizacji</string>
   <string name="header_plex_sync_settings">Ustawienia synchronizacji Plex</string>
+  <string name="header_plex_vip_upsell_sync">Synchronizacja Plex to funkcja VIP</string>
+  <string name="header_plex_vip_upsell_webhook">Scrobbling Plex to funkcja VIP</string>
   <string name="header_post_credits">Po napisach</string>
   <string name="header_premiered">Premiera</string>
   <string name="header_preview_features">Wczesny dostęp</string>
@@ -837,6 +843,7 @@
   <string name="label_plex_sync_as">Synchronizuj jako</string>
   <string name="label_plex_webhook_connect_hint">Połącz swoje konto Plex, aby otrzymać adres URL webhooka.</string>
   <string name="label_plex_webhook_url">Adres URL webhooka</string>
+  <string name="label_queued_action">Zapisano offline, oczekiwanie na synchronizację</string>
   <string name="label_ratings_season_chart">Oceny sezonów w czasie</string>
   <string name="label_report_reason_abusive">Obraźliwe</string>
   <string name="label_report_reason_adult">Treści dla dorosłych</string>
@@ -1117,25 +1124,23 @@
   <string name="page_title_year_in_review">Podsumowanie roku %s</string>
   <string name="page_title_year_to_date">Od początku roku</string>
   <string name="preview_feature_description_edit_mode">Włącz sterowanie ukrywaniem lub pokazywaniem konfigurowalnych sekcji w całej aplikacji.</string>
-  <string name="preview_feature_description_month_in_review">Podgląd Podsumowania miesiąca, teraz działający bezpośrednio w V3.</string>
-  <string name="preview_feature_description_plex_sync">Połącz Plex, aby zsynchronizować swoją historię oglądania, oceny i bibliotekę z Trakt. Obejmuje połączenie, wybór serwera i narzędzia do synchronizacji.</string>
+  <string name="preview_feature_description_leaderboard">Oceniaj osoby, które obserwujesz, według czasu oglądania i sprawdź, gdzie znajdziesz się wśród nich.</string>
   <string name="preview_feature_description_rewatch">Rozpocznij sesje ponownego oglądania dla programów, które już widziałeś, melduj się lub oznaczaj obejrzane odcinki bezpośrednio z szuflady sesji.</string>
   <string name="preview_feature_description_scoped_favorites">Ograniczaj listy ulubionych czasowo, pokazując ulubione z bieżącego roku w profilach i grupując pełną listę ulubionych według roku.</string>
   <string name="preview_feature_description_smart_recommendations">Użyj naszego silnika nowej generacji, aby odkryć polecane filmy i programy wykraczające poza oczywiste.</string>
   <string name="preview_feature_description_smart_related">Użyj naszego silnika nowej generacji, aby odkryć powiązane filmy i programy wykraczające poza oczywiste.</string>
-  <string name="preview_feature_description_year_in_review">Podgląd Podsumowania roku, teraz działający bezpośrednio w V3.</string>
   <string name="preview_feature_title_edit_mode">Tryb edycji</string>
-  <string name="preview_feature_title_month_in_review">Podsumowanie miesiąca</string>
-  <string name="preview_feature_title_plex_sync">Synchronizacja Plex</string>
+  <string name="preview_feature_title_leaderboard">Panteon</string>
   <string name="preview_feature_title_rewatch">Ponowne oglądanie</string>
   <string name="preview_feature_title_scoped_favorites">Ulubione z podziałem</string>
   <string name="preview_feature_title_smart_recommendations">Inteligentne rekomendacje</string>
   <string name="preview_feature_title_smart_related">Inteligentne Powiązane</string>
-  <string name="preview_feature_title_year_in_review">Podsumowanie roku</string>
   <string name="reset_status_cleared">Lista obserwowanych usunięta.</string>
   <string name="section_title_season_progress">Sezon %d postęp</string>
   <string name="section_title_seasons_overview">Przegląd</string>
   <string name="section_title_specials_progress">Postęp odcinków specjalnych</string>
+  <string name="stat_label_hours">godziny</string>
+  <string name="stat_label_plays">odtworzenia</string>
   <string name="stat_text_favorited">Ulubione</string>
   <string name="stat_text_lists">Listy</string>
   <string name="stat_text_plays">Odtworzenia</string>
@@ -1177,6 +1182,7 @@
   <string name="tag_text_plays">%d odtworzeń</string>
   <string name="tag_text_premiere">Premiera</string>
   <string name="tag_text_preview">Podgląd</string>
+  <string name="tag_text_queued">W kolejce</string>
   <string name="tag_text_released">Dostępny</string>
   <string name="tag_text_remaining_duration">Pozostało %s</string>
   <string name="tag_text_remaining_episodes">%d odc.</string>
@@ -1303,6 +1309,7 @@
   <string name="text_exporting">Eksportowanie… %s</string>
   <string name="text_favorites_limit_reached">Możesz wybrać maksymalnie %s usług</string>
   <string name="text_first_play_this_month">Pierwsze odtworzenie w tym miesiącu</string>
+  <string name="text_following">Obserwowani</string>
   <string name="text_footer_category_community">Społeczność</string>
   <string name="text_footer_category_legal">Prawne</string>
   <string name="text_footer_category_platform">Platforma</string>
@@ -1351,6 +1358,9 @@
   <string name="text_landing_welcome">Twój nowy dom, gdzie wszystkie Twoje programy i filmy są w jednym miejscu.</string>
   <string name="text_language">Język</string>
   <string name="text_last_day">ostatnio %s</string>
+  <string name="text_leaderboard_free_section">Darmowi członkowie</string>
+  <string name="text_leaderboard_upsell_footer">Ulepsz do VIP, aby zobaczyć, gdzie plasujesz się wśród znajomych</string>
+  <string name="text_leaderboard_you">Ty</string>
   <string name="text_library">Biblioteka</string>
   <string name="text_list_private">Prywatne</string>
   <string name="text_list_private_info">Lista będzie widoczna tylko dla Ciebie.</string>
