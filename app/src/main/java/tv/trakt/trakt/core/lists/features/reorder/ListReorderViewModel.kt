@@ -133,6 +133,23 @@ internal class ListReorderViewModel(
         }
     }
 
+    fun moveToTop(index: Int) {
+        reorderItem(from = index, to = 0)
+    }
+
+    fun moveToBottom(index: Int) {
+        val lastIndex = itemsState.value?.lastIndex ?: return
+        reorderItem(from = index, to = lastIndex)
+    }
+
+    fun moveToPosition(
+        index: Int,
+        position: Int,
+    ) {
+        val size = itemsState.value?.size ?: return
+        reorderItem(from = index, to = position.coerceIn(1, size) - 1)
+    }
+
     fun applyChanges() {
         if (loadingState.value.isLoading) return
 

@@ -5,6 +5,8 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.KeyboardType.Companion.Text
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 
@@ -20,6 +22,7 @@ internal fun SingleInputSheet(
     initialInput: String? = null,
     nullable: Boolean = false,
     multiline: Boolean = false,
+    type: KeyboardType = Text,
     onApply: (String?) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -36,6 +39,7 @@ internal fun SingleInputSheet(
                 initialInput = initialInput,
                 nullable = nullable,
                 multiline = multiline,
+                type = type,
                 onApply = { value ->
                     scope
                         .launch { state.hide() }

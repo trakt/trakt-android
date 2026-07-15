@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization.Companion.None
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.KeyboardType.Companion.Text
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -57,6 +58,7 @@ internal fun InputField(
     borderColor: Color = TraktTheme.colors.accent,
     lineLimits: TextFieldLineLimits = SingleLine,
     imeAction: ImeAction = ImeAction.Done,
+    type: KeyboardType = Text,
     endSlot: @Composable (() -> Unit)? = null,
 ) {
     var isFocused by remember { mutableStateOf(false) }
@@ -77,7 +79,7 @@ internal fun InputField(
             else -> SolidColor(TraktTheme.colors.textSecondary)
         },
         keyboardOptions = KeyboardOptions(
-            keyboardType = Text,
+            keyboardType = type,
             capitalization = None,
             autoCorrectEnabled = false,
             imeAction = imeAction,

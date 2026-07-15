@@ -3,10 +3,12 @@
 package tv.trakt.trakt.core.lists.features.reorder
 
 import androidx.activity.compose.BackHandler
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -16,13 +18,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarDuration.Long
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -32,15 +39,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -68,6 +78,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
+import tv.trakt.trakt.ui.components.input.SingleInputSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
 
@@ -85,6 +96,7 @@ internal fun ListReorderScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var showExitConfirm by remember { mutableStateOf(false) }
+    var positionInputIndex by remember { mutableStateOf<Int?>(null) }
 
     LaunchedEffect(state.error) {
         if (state.error != null) {
@@ -121,8 +133,33 @@ internal fun ListReorderScreen(
         state = state,
         modifier = modifier,
         onMove = viewModel::reorderItem,
+        onMoveToTop = viewModel::moveToTop,
+        onMoveToBottom = viewModel::moveToBottom,
+        onMoveToPosition = { positionInputIndex = it },
         onApplyClick = viewModel::applyChanges,
         onBackClick = handleBack,
+    )
+
+    val positionItemTitle = positionInputIndex
+        ?.let { state.items?.getOrNull(it)?.title }
+        .orEmpty()
+
+    SingleInputSheet(
+        active = positionInputIndex != null,
+        title = stringResource(R.string.button_text_move_to_position),
+        description = stringResource(
+            R.string.dialog_prompt_move_to_position,
+            positionItemTitle,
+        ),
+        type = KeyboardType.Number,
+        onApply = { input ->
+            val index = positionInputIndex
+            val position = input?.trim()?.toIntOrNull()
+            if (index != null && position != null) {
+                viewModel.moveToPosition(index = index, position = position)
+            }
+        },
+        onDismiss = { positionInputIndex = null },
     )
 
     ConfirmationSheet(
@@ -147,6 +184,9 @@ internal fun ListReorderContent(
     state: ListReorderState,
     modifier: Modifier = Modifier,
     onMove: (from: Int, to: Int) -> Unit = { _, _ -> },
+    onMoveToTop: (index: Int) -> Unit = {},
+    onMoveToBottom: (index: Int) -> Unit = {},
+    onMoveToPosition: (index: Int) -> Unit = {},
     onApplyClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
@@ -223,26 +263,53 @@ internal fun ListReorderContent(
                     index = lazyIndex,
                 ) { isDragging ->
                     val indexState = rememberUpdatedState(lazyIndex)
+                    var menuExpanded by remember { mutableStateOf(false) }
 
-                    ListReorderMediaCard(
-                        rank = "#${index + 1}",
-                        title = item.title,
-                        subtitle = subtitle,
-                        contentImageUrl = item.images?.getPosterUrl(),
-                        containerImageUrl = item.images?.getFanartUrl(Images.Size.THUMB),
-                        shadow = when {
-                            isDragging -> 4.dp
-                            else -> 0.dp
-                        },
-                        handleModifier = Modifier.dragHandle(
-                            state = dragDropState,
-                            index = indexState,
-                            haptic = haptic,
-                        ),
-                        modifier = Modifier
-                            .alpha(if (loading) 0.33F else 1F)
-                            .padding(bottom = 12.dp),
-                    )
+                    Box {
+                        ListReorderMediaCard(
+                            rank = "#${index + 1}",
+                            title = item.title,
+                            subtitle = subtitle,
+                            contentImageUrl = item.images?.getPosterUrl(),
+                            containerImageUrl = item.images?.getFanartUrl(Images.Size.THUMB),
+                            shadow = when {
+                                isDragging -> 4.dp
+                                else -> 0.dp
+                            },
+                            handleModifier = Modifier.dragHandle(
+                                state = dragDropState,
+                                index = indexState,
+                                haptic = haptic,
+                            ),
+                            onClick = when {
+                                loading -> null
+                                else -> ({ menuExpanded = true })
+                            },
+                            modifier = Modifier
+                                .alpha(if (loading) 0.33F else 1F)
+                                .padding(bottom = 12.dp),
+                        )
+
+                        // Zero-size anchor at the card centre so the menu opens centred on it.
+                        Box(modifier = Modifier.align(Alignment.Center)) {
+                            ListReorderItemMenu(
+                                expanded = menuExpanded,
+                                onDismiss = { menuExpanded = false },
+                                onMoveToTop = {
+                                    menuExpanded = false
+                                    onMoveToTop(index)
+                                },
+                                onMoveToBottom = {
+                                    menuExpanded = false
+                                    onMoveToBottom(index)
+                                },
+                                onMoveToPosition = {
+                                    menuExpanded = false
+                                    onMoveToPosition(index)
+                                },
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -260,6 +327,68 @@ internal fun ListReorderContent(
             }
         }
     }
+}
+
+@Composable
+private fun ListReorderItemMenu(
+    expanded: Boolean,
+    onDismiss: () -> Unit,
+    onMoveToTop: () -> Unit,
+    onMoveToBottom: () -> Unit,
+    onMoveToPosition: () -> Unit,
+) {
+    DropdownMenu(
+        expanded = expanded,
+        containerColor = TraktTheme.colors.dialogContainer,
+        shape = RoundedCornerShape(16.dp),
+        onDismissRequest = onDismiss,
+    ) {
+        ListReorderMenuItem(
+            text = stringResource(R.string.button_text_move_to_top),
+            icon = R.drawable.ic_cheveron_down,
+            iconRotate = 180F,
+            onClick = onMoveToTop,
+        )
+        ListReorderMenuItem(
+            text = stringResource(R.string.button_text_move_to_position),
+            icon = R.drawable.ic_chevron_all,
+            onClick = onMoveToPosition,
+        )
+        ListReorderMenuItem(
+            text = stringResource(R.string.button_text_move_to_bottom),
+            icon = R.drawable.ic_cheveron_down,
+            onClick = onMoveToBottom,
+        )
+    }
+}
+
+@Composable
+private fun ListReorderMenuItem(
+    text: String,
+    @DrawableRes icon: Int,
+    iconRotate: Float = 0F,
+    onClick: () -> Unit,
+) {
+    DropdownMenuItem(
+        text = {
+            Text(
+                text = text,
+                style = TraktTheme.typography.buttonTertiary,
+                color = TraktTheme.colors.textPrimary,
+            )
+        },
+        onClick = onClick,
+        leadingIcon = {
+            Icon(
+                painter = painterResource(icon),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .size(22.dp)
+                    .rotate(iconRotate),
+            )
+        },
+    )
 }
 
 @Composable
