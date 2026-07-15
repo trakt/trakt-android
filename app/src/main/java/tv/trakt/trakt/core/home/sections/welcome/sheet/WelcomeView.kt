@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,13 +40,14 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_VIP_IMAGE_URL
-import tv.trakt.trakt.common.helpers.extensions.DeviceSheetPreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Purple600
 import tv.trakt.trakt.common.ui.theme.colors.Shade200
 import tv.trakt.trakt.common.ui.theme.colors.Shade910
@@ -55,6 +57,7 @@ import tv.trakt.trakt.ui.components.PARALLAX_RATIO
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.chips.InfoChip
+import tv.trakt.trakt.ui.components.vip.VipChip
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -71,6 +74,8 @@ private const val TV_TIME_GDPR_URL: String =
 internal fun WelcomeView(
     modifier: Modifier = Modifier,
     name: String? = null,
+    isVip: Boolean = false,
+    onVipClick: () -> Unit = {},
     onStartExploringClick: () -> Unit = {},
 ) {
     val preview = LocalInspectionMode.current
@@ -233,7 +238,7 @@ internal fun WelcomeView(
                 horizontalArrangement = spacedBy(4.dp),
                 modifier = Modifier
                     .align(CenterHorizontally)
-                    .padding(top = 24.dp, bottom = 24.dp)
+                    .padding(top = 26.dp, bottom = 24.dp)
                     .onClick {
                         uriHandler.openUri(Config.webDataImportUrl(null))
                     },
@@ -252,6 +257,29 @@ internal fun WelcomeView(
                     contentDescription = null,
                     tint = TraktTheme.colors.textPrimary,
                     modifier = Modifier.size(16.dp),
+                )
+            }
+
+            if (!isVip) {
+                HorizontalDivider(
+                    color = TraktTheme.colors.chipContainer,
+                    modifier = Modifier
+                        .padding(horizontal = 1.dp)
+                        .padding(bottom = 24.dp),
+                )
+
+                Text(
+                    text = stringResource(R.string.welcome_outro_heading),
+                    style = TraktTheme.typography.heading3,
+                    color = TraktTheme.colors.textPrimary,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 24.dp),
+                )
+
+                BecomeVipCard(
+                    modifier = Modifier.onClick(onClick = onVipClick),
                 )
             }
         }
@@ -356,6 +384,68 @@ private fun ImportTvTimeCard(
 }
 
 @Composable
+private fun BecomeVipCard(modifier: Modifier = Modifier) {
+    val shape = RoundedCornerShape(20.dp)
+    val radialGradient = remember {
+        object : ShaderBrush() {
+            override fun createShader(size: Size): Shader {
+                return RadialGradientShader(
+                    colors = listOf(
+                        Purple600,
+                        Shade910,
+                    ),
+                    center = Offset(size.width * 1.5F, -size.height / 1.5F),
+                    radius = size.width * 1.5F,
+                )
+            }
+        }
+    }
+
+    Row(
+        verticalAlignment = CenterVertically,
+        horizontalArrangement = spacedBy(16.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .shadow(elevation = 2.dp, shape = shape)
+            .border(width = 1.dp, color = TraktTheme.colors.accent, shape = shape)
+            .background(radialGradient, shape)
+            .padding(horizontal = 20.dp, vertical = 16.dp),
+    ) {
+        Column(
+            verticalArrangement = spacedBy(4.dp),
+            modifier = Modifier
+                .weight(1F)
+                .align(CenterVertically),
+        ) {
+            Text(
+                text = stringResource(R.string.welcome_vip_upsell_heading),
+                style = TraktTheme.typography.heading4,
+                color = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 2.dp),
+            )
+
+            Text(
+                text = stringResource(R.string.welcome_vip_upsell_description),
+                style = TraktTheme.typography.paragraphSmall,
+                color = Shade200,
+            )
+        }
+
+        VipChip(
+            text = stringResource(R.string.badge_text_get_vip),
+            icon = painterResource(R.drawable.ic_stars),
+            color = Purple500,
+            modifier = Modifier.shadow(
+                elevation = 1.dp,
+                shape = RoundedCornerShape(100),
+            ),
+        )
+    }
+}
+
+@Composable
 private fun ImportSourceCard(
     title: String,
     description: String,
@@ -393,7 +483,7 @@ private fun ImportSourceCard(
     }
 }
 
-@DeviceSheetPreview
+@Preview(heightDp = 2000)
 @Composable
 private fun Preview() {
     TraktTheme {

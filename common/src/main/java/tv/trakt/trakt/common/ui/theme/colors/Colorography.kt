@@ -46,6 +46,8 @@ val Purple800 = Color(0xFF551B6D)
 val Purple850 = Color(0xFF431D53)
 val Purple900 = Color(0xFF3F1251)
 val Purple920 = Color(0xFF3A1740)
+val Purple940 = Color(0xFF2D0F2E)
+val Purple1000 = Color(0xFF1D0A1C)
 
 // Red
 val Red40 = Color(0xFFFFEDEB)

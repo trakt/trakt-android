@@ -222,9 +222,11 @@ private fun HomeScreenContent(
                     ) {
                         if (bannerVisible) {
                             HomeWelcomeView(
+                                isVip = state.user.user?.isVip == true,
                                 onDiscoverClick = onShowsClick,
                                 onImportClick = { uriHandler.openUri(WEB_DATA_IMPORT_URL) },
                                 onDismissClick = onDismissWelcomeClick,
+                                onVipClick = onVipClick,
                             )
                         }
                     }

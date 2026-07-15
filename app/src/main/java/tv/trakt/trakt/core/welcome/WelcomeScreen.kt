@@ -58,9 +58,11 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.Config.WEB_ABOUT_US_URL
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.ui.theme.colors.Purple1000
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Purple900
 import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.common.ui.theme.colors.Shade800
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
@@ -262,8 +264,8 @@ private fun WelcomeFooter(
     onDismiss: () -> Unit = {},
 ) {
     val uriHandler = LocalUriHandler.current
-
     val shape = RoundedCornerShape(24.dp)
+
     Column(
         verticalArrangement = spacedBy(16.dp),
         modifier = modifier
@@ -277,53 +279,49 @@ private fun WelcomeFooter(
             .padding(bottom = 16.dp)
             .shadow(4.dp, shape)
             .clip(shape)
-            .background(Purple900)
+            .border(width = 1.dp, color = Shade800, shape = shape)
+            .background(Purple1000)
             .padding(
-                start = 16.dp,
-                end = 16.dp,
-                top = 10.dp,
-                bottom = 16.dp,
+                start = 18.dp,
+                end = 18.dp,
+                top = 16.dp,
+                bottom = 18.dp,
             ),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = spacedBy(6.dp),
         ) {
-            Text(
-                text = "15",
-                style = TraktTheme.typography.heading1.copy(
-                    fontSize = 48.sp,
-                ),
-                color = Color.White,
-                maxLines = 3,
-                modifier = Modifier.graphicsLayer {
-                    translationY = 2.dp.toPx()
-                },
-            )
-
-            Column {
-                val font = TraktTheme.typography.paragraphSmaller.copy(fontSize = 12.sp)
+            Column(
+                verticalArrangement = spacedBy(2.dp),
+                modifier = Modifier.weight(1F),
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = spacedBy(6.dp),
+                ) {
+                    Text(
+                        text = stringResource(R.string.header_landing_welcome),
+                        style = TraktTheme.typography.heading5,
+                        color = TraktTheme.colors.textPrimary,
+                        maxLines = 1,
+                    )
+                    Icon(
+                        painter = painterResource(R.drawable.ic_trakt_icon),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .size(16.dp)
+                            .align(Alignment.CenterVertically),
+                    )
+                }
                 Text(
-                    text = stringResource(R.string.text_landing_numbers_1),
-                    style = font,
-                    color = Color.White,
-                    maxLines = 1,
-                )
-                Text(
-                    text = stringResource(R.string.text_landing_numbers_2),
-                    style = font,
-                    color = Color.White,
-                    maxLines = 1,
-                )
-                Text(
-                    text = stringResource(R.string.text_landing_numbers_3),
-                    style = font,
-                    color = Color.White,
-                    maxLines = 1,
+                    text = stringResource(R.string.text_landing_welcome),
+                    style = TraktTheme.typography.paragraphSmaller,
+                    color = TraktTheme.colors.textPrimary,
+                    maxLines = 3,
                 )
             }
-
-            Spacer(modifier = Modifier.weight(1F))
 
             Box(
                 modifier = Modifier.onClick {
@@ -355,11 +353,13 @@ private fun WelcomeFooter(
         }
 
         PrimaryButton(
-            text = stringResource(R.string.button_text_continue),
+            text = stringResource(R.string.button_text_join_trakt_for_free),
             containerColor = Purple500,
             contentColor = Color.White,
             onClick = onDismiss,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .shadow(1.dp, RoundedCornerShape(16.dp)),
         )
     }
 }

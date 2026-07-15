@@ -18,11 +18,13 @@ import tv.trakt.trakt.ui.components.TraktBottomSheet
 internal fun WelcomeSheet(
     visible: Boolean,
     name: String? = null,
+    isVip: Boolean = false,
     state: SheetState = rememberBottomSheetState(
         initialValue = SheetValue.Hidden,
         enabledValues = setOf(SheetValue.Hidden, SheetValue.Expanded),
     ),
     onDismiss: () -> Unit = {},
+    onVipClick: () -> Unit = {},
     onGetStartedClick: () -> Unit = {},
 ) {
     val sheetScope = rememberCoroutineScope()
@@ -36,6 +38,14 @@ internal fun WelcomeSheet(
             WelcomeView(
                 modifier = Modifier.fillMaxHeight(0.9F),
                 name = name,
+                isVip = isVip,
+                onVipClick = {
+                    sheetScope.dismissWithAction(
+                        sheet = state,
+                        onDismiss = onDismiss,
+                        action = onVipClick,
+                    )
+                },
                 onStartExploringClick = {
                     sheetScope.dismissWithAction(
                         sheet = state,

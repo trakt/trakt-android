@@ -5,6 +5,7 @@ package tv.trakt.trakt.core.home.sections.welcome.banner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,13 +29,15 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.core.home.sections.welcome.sheet.WelcomeSheet
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
+import tv.trakt.trakt.ui.components.vip.VipChip
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val viewShape = RoundedCornerShape(20.dp)
@@ -41,7 +45,9 @@ private val viewShape = RoundedCornerShape(20.dp)
 @Composable
 internal fun HomeWelcomeView(
     modifier: Modifier = Modifier,
+    isVip: Boolean,
     onDiscoverClick: () -> Unit = {},
+    onVipClick: () -> Unit = {},
     onImportClick: () -> Unit = {},
     onDismissClick: () -> Unit = {},
 ) {
@@ -124,23 +130,86 @@ internal fun HomeWelcomeView(
                 .fillMaxWidth()
                 .padding(top = 20.dp),
         )
+
+        if (!isVip) {
+            HorizontalDivider(
+                color = TraktTheme.colors.chipContainer,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 22.dp, bottom = 14.dp)
+                    .padding(horizontal = 1.dp),
+            )
+
+            Row(
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = spacedBy(16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onClick(onClick = onVipClick),
+            ) {
+                Column(
+                    verticalArrangement = spacedBy(2.dp),
+                    modifier = Modifier
+                        .weight(1F)
+                        .align(CenterVertically),
+                ) {
+                    Text(
+                        text = stringResource(R.string.welcome_vip_upsell_heading),
+                        style = TraktTheme.typography.heading5,
+                        color = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 2.dp),
+                    )
+
+                    Text(
+                        text = stringResource(R.string.welcome_vip_upsell_description),
+                        style = TraktTheme.typography.paragraphSmaller,
+                        color = TraktTheme.colors.textSecondary,
+                    )
+                }
+
+                VipChip(
+                    text = stringResource(R.string.badge_text_get_vip),
+                    icon = painterResource(R.drawable.ic_stars),
+                    color = Purple500,
+                    modifier = Modifier.shadow(
+                        elevation = 1.dp,
+                        shape = RoundedCornerShape(100),
+                    ),
+                )
+            }
+        }
     }
 
     WelcomeSheet(
         visible = welcomeSheet,
+        isVip = isVip,
+        onVipClick = onVipClick,
         onGetStartedClick = onDiscoverClick,
         onDismiss = { welcomeSheet = false },
     )
 }
 
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-)
+@DevicePreview
 @Composable
 private fun Preview() {
     TraktTheme {
         HomeWelcomeView(
+            isVip = false,
+            modifier = Modifier
+                .width(450.dp)
+                .padding(32.dp),
+        )
+    }
+}
+
+@DevicePreview
+@Composable
+private fun Preview2() {
+    TraktTheme {
+        HomeWelcomeView(
+            isVip = true,
             modifier = Modifier
                 .width(450.dp)
                 .padding(32.dp),
