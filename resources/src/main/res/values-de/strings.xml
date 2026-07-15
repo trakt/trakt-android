@@ -207,6 +207,7 @@
   <string name="button_label_sort_release_date">Nach Veröffentlichungsdatum sortieren</string>
   <string name="button_label_sort_remaining">Sortieren nach verbleibenden Episoden oder Filmen</string>
   <string name="button_label_sort_runtime">Nach Laufzeit sortieren</string>
+  <string name="button_label_sort_smart">Nach smarter Reihenfolge sortieren</string>
   <string name="button_label_sort_title">Alphabetisch sortieren</string>
   <string name="button_label_star_rating">Mit %d Sternen bewerten.</string>
   <string name="button_label_start_import">Starten Sie den Import Ihrer Daten in Trakt.</string>
@@ -421,6 +422,7 @@
   <string name="button_text_sort_release_date">Veröffentlichungsdatum</string>
   <string name="button_text_sort_remaining">Verbleibend</string>
   <string name="button_text_sort_runtime">Laufzeit</string>
+  <string name="button_text_sort_smart">Smart</string>
   <string name="button_text_sort_title">Titel</string>
   <string name="button_text_start_import">Import starten</string>
   <string name="button_text_start_rewatching">Wiederholung starten</string>
@@ -777,6 +779,8 @@
   <string name="import_guide_tvtime_step_3">Sobald der Export bereit ist, erhältst du zwei E-Mails: eine mit einer .zip-Datei und eine weitere mit einem Passwort zum Entsperren.</string>
   <string name="import_guide_tvtime_step_4">Lade die entsperrte .zip-Datei hier hoch. Wenn die .zip-Datei nicht akzeptiert wird, entpacke sie und lade stattdessen die beiden tracking-prod-records .csv-Dateien (plus followed_tv_show.csv und ratings-live-votes.csv für deine Merkliste und Bewertungen) hoch.</string>
   <string name="import_guide_tvtime_title">Dein TV Time ist nicht im Weltall verloren! 🚀</string>
+  <string name="import_match_toggle_hint">Wir empfehlen die Standardeinstellung (Abgleich nach TVDB-ID). Aktivieren Sie dies nur, wenn Episoden falsch zugeordnet werden – die Ergebnisse können je nach Serie variieren.</string>
+  <string name="import_match_toggle_label">Episoden nach Staffel- und Episodennummer abgleichen</string>
   <string name="import_max_files">(max. %d Dateien erlaubt)</string>
   <string name="import_source_csv">CSV-Datei</string>
   <string name="import_source_json">JSON-Datei</string>
@@ -954,6 +958,12 @@
   <string name="list_placeholder_popular_lists">\"%s\" erscheint auf keiner beliebten Liste.</string>
   <string name="list_placeholder_ratings">Sie haben noch nichts bewertet.</string>
   <string name="list_placeholder_reviews">Sie haben noch keine Rezensionen geschrieben.</string>
+  <string name="list_summary_range_between">%1$s bis %2$s</string>
+  <string name="list_summary_range_from">%s und höher</string>
+  <string name="list_summary_range_labeled_between">%1$s %2$s bis %3$s</string>
+  <string name="list_summary_range_labeled_from">%1$s %2$s und höher</string>
+  <string name="list_summary_range_labeled_up_to">%1$s bis zu %2$s</string>
+  <string name="list_summary_range_up_to">Bis zu %s</string>
   <string name="list_title_activity">Aktivität</string>
   <string name="list_title_actors">Darsteller</string>
   <string name="list_title_anticipated_movies">Erwartete Filme</string>
@@ -1129,12 +1139,14 @@
   <string name="preview_feature_description_scoped_favorites">Zeitlich begrenzte Favoritenlisten, indem Favoriten des aktuellen Jahres in Profilen angezeigt und die vollständige Favoritenliste nach Jahr gruppiert werden.</string>
   <string name="preview_feature_description_smart_recommendations">Nutze unsere Engine der nächsten Generation, um empfohlene Filme und Serien über das Offensichtliche hinaus aufzudecken.</string>
   <string name="preview_feature_description_smart_related">Nutze unsere Engine der nächsten Generation, um verwandte Filme und Serien über das Offensichtliche hinaus aufzudecken.</string>
+  <string name="preview_feature_description_up_next_smart_sort">Testen Sie eine intelligentere Methode, um Ihr Weitersehen zu sortieren.</string>
   <string name="preview_feature_title_edit_mode">Bearbeitungsmodus</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Wiederholung</string>
   <string name="preview_feature_title_scoped_favorites">Gefilterte Favoriten</string>
   <string name="preview_feature_title_smart_recommendations">Intelligente Empfehlungen</string>
   <string name="preview_feature_title_smart_related">Smarte Verknüpfungen</string>
+  <string name="preview_feature_title_up_next_smart_sort">Weitersehen smarte Sortierung</string>
   <string name="reset_status_cleared">Watchlist geleert.</string>
   <string name="section_title_season_progress">Staffel %d Fortschritt</string>
   <string name="section_title_seasons_overview">Übersicht</string>
@@ -1906,6 +1918,7 @@
   <string name="welcome_import_imdb_description">Importieren Sie Ihre Bewertungen und Merklisten aus einem IMDb-Export.</string>
   <string name="welcome_import_letterboxd_description">Übertragen Sie Ihre Filme, Bewertungen und Merklisten von Letterboxd.</string>
   <string name="welcome_intro">Ihre Serien und Filme, alles an einem Ort. Verfolgen Sie, was Sie sehen, entdecken Sie, was als Nächstes kommt, und machen Sie genau dort weiter, wo Sie aufgehört haben; auf jedem Gerät, das Sie besitzen.</string>
+  <string name="welcome_outro_heading">Jetzt geht der Spaß los.</string>
   <string name="welcome_tvtime_badge">TV Time wird eingestellt</string>
   <string name="welcome_tvtime_body">TV Time schließt seine Pforten, aber Ihr Sehverlauf muss nicht mit ihm verschwinden. Bringen Sie alles zu Trakt und verfolgen Sie weiterhin Ihre Inhalte, ohne etwas zu verpassen.</string>
   <string name="welcome_tvtime_gdpr_cta">DSGVO-Export anfordern</string>
@@ -1913,6 +1926,8 @@
   <string name="welcome_tvtime_import_cta">Importieren von TV Time</string>
   <string name="welcome_tvtime_liberator_body">Exportieren Sie Ihre vollständige Historie mit der TV Time Liberator Browser-Erweiterung, oder laden Sie den offiziellen GDPR-Datenexport vom Datenschutzportal von TV Time hoch. Beides funktioniert.</string>
   <string name="welcome_tvtime_liberator_cta">TV Time Liberator herunterladen</string>
+  <string name="welcome_vip_upsell_description">Möchten Sie unsere Community unterstützen oder mehr aus Trakt herausholen?</string>
+  <string name="welcome_vip_upsell_heading">VIP werden</string>
   <string name="yir_2024_country_count">Anzahl der Länder</string>
   <string name="yir_2024_directed_by">Regie von</string>
   <string name="yir_2024_first_play">Erste Wiedergabe</string>

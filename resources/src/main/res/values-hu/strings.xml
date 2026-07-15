@@ -207,6 +207,7 @@
   <string name="button_label_sort_release_date">Rendezés megjelenés dátuma szerint</string>
   <string name="button_label_sort_remaining">Rendezés hátralévő epizódok vagy filmek szerint</string>
   <string name="button_label_sort_runtime">Rendezés játékidő szerint</string>
+  <string name="button_label_sort_smart">Rendezés okos sorrend szerint</string>
   <string name="button_label_sort_title">Rendezés betűrend szerint</string>
   <string name="button_label_star_rating">Értékelés %d csillaggal.</string>
   <string name="button_label_start_import">Kezdd el adataid importálását a Trakt-ra.</string>
@@ -421,6 +422,7 @@
   <string name="button_text_sort_release_date">Megjelenés dátuma</string>
   <string name="button_text_sort_remaining">Hátralévő</string>
   <string name="button_text_sort_runtime">Játékidő</string>
+  <string name="button_text_sort_smart">Okos</string>
   <string name="button_text_sort_title">Cím</string>
   <string name="button_text_start_import">Importálás indítása</string>
   <string name="button_text_start_rewatching">Kezdd el újra nézni</string>
@@ -777,6 +779,8 @@
   <string name="import_guide_tvtime_step_3">Amint az export elkészült, két e-mailt kap: egyet egy .zip fájllal, egy másikat pedig a feloldásához szükséges jelszóval.</string>
   <string name="import_guide_tvtime_step_4">Töltse fel a feloldott .zip fájlt ide. Ha a .zip nem fogadható el, bontsa ki, és töltse fel helyette a két tracking-prod-records .csv fájlt (valamint a followed_tv_show.csv és ratings-live-votes.csv fájlokat a figyelőlistájához és értékeléseihez).</string>
   <string name="import_guide_tvtime_title">A TV Time adataid nincsenek elveszve az űrben! 🚀</string>
+  <string name="import_match_toggle_hint">Az alapértelmezettet javasoljuk (egyeztetés TVDB azonosító alapján). Csak akkor kapcsolja be, ha egyes epizódok rossz bejegyzéshez kerülnek – az eredmények sorozatonként eltérőek lehetnek.</string>
+  <string name="import_match_toggle_label">Epizódok egyeztetése évad és epizódszám alapján</string>
   <string name="import_max_files">(max. %d fájl engedélyezett)</string>
   <string name="import_source_csv">CSV fájl</string>
   <string name="import_source_json">JSON fájl</string>
@@ -954,6 +958,12 @@
   <string name="list_placeholder_popular_lists">„%s” nem szerepel egyetlen népszerű listán sem.</string>
   <string name="list_placeholder_ratings">Még nem értékeltél semmit.</string>
   <string name="list_placeholder_reviews">Még nem írtál véleményt.</string>
+  <string name="list_summary_range_between">%1$s és %2$s között</string>
+  <string name="list_summary_range_from">%s és felette</string>
+  <string name="list_summary_range_labeled_between">%1$s %2$s és %3$s között</string>
+  <string name="list_summary_range_labeled_from">%1$s %2$s és felette</string>
+  <string name="list_summary_range_labeled_up_to">%1$s akár %2$s-ig</string>
+  <string name="list_summary_range_up_to">Akár %s-ig</string>
   <string name="list_title_activity">Tevékenység</string>
   <string name="list_title_actors">Színészek</string>
   <string name="list_title_anticipated_movies">Várt filmek</string>
@@ -1129,12 +1139,14 @@
   <string name="preview_feature_description_scoped_favorites">Időkorlátozza a kedvenc listákat azáltal, hogy megjeleníti az aktuális év kedvenceit a profilokon, és csoportosítja a teljes kedvencek listáját év szerint.</string>
   <string name="preview_feature_description_smart_recommendations">Használd következő generációs motorunkat, hogy a nyilvánvalón túlmutató ajánlott filmeket és sorozatokat fedezz fel.</string>
   <string name="preview_feature_description_smart_related">Használd következő generációs motorunkat, hogy a nyilvánvalón túlmutató kapcsolódó filmeket és sorozatokat fedezz fel.</string>
+  <string name="preview_feature_description_up_next_smart_sort">Próbálja ki a Megtekintés folytatása rendezésének egy okosabb módját.</string>
   <string name="preview_feature_title_edit_mode">Szerkesztési mód</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Újra nézés</string>
   <string name="preview_feature_title_scoped_favorites">Korlátozott Kedvencek</string>
   <string name="preview_feature_title_smart_recommendations">Intelligens ajánlások</string>
   <string name="preview_feature_title_smart_related">Okos Kapcsolódó</string>
+  <string name="preview_feature_title_up_next_smart_sort">Megtekintés folytatása - Okos Rendezés</string>
   <string name="reset_status_cleared">Megnézendők listája kiürítve.</string>
   <string name="section_title_season_progress">%d. évad előrehaladása</string>
   <string name="section_title_seasons_overview">Áttekintés</string>
@@ -1906,6 +1918,7 @@
   <string name="welcome_import_imdb_description">Importálja értékeléseit és figyelőlistáját egy IMDb exportból.</string>
   <string name="welcome_import_letterboxd_description">Hozza át filmjeit, értékeléseit és figyelőlistáját a Letterboxd-ról.</string>
   <string name="welcome_intro">Filmek és sorozatok, egy helyen. Kövesse nyomon, mit néz, fedezze fel, mi jön, és folytassa onnan, ahol abbahagyta; az összes eszközén.</string>
+  <string name="welcome_outro_heading">Most kezdődik az igazi szórakozás.</string>
   <string name="welcome_tvtime_badge">A TV Time leáll</string>
   <string name="welcome_tvtime_body">A TV Time bezárja kapuit, de a nézési előzményei nem kell, hogy eltűnjenek vele. Hozzon át mindent a Trakt-ra, és folytassa a követést zökkenőmentesen.</string>
   <string name="welcome_tvtime_gdpr_cta">GDPR export kérése</string>
@@ -1913,6 +1926,8 @@
   <string name="welcome_tvtime_import_cta">Importálás a TV Time-ról</string>
   <string name="welcome_tvtime_liberator_body">Exportálja teljes előzményeit a TV Time Liberator böngészőbővítménnyel, vagy töltse fel a hivatalos GDPR adatexportot a TV Time adatvédelmi portáljáról. Mindkét módszer működik.</string>
   <string name="welcome_tvtime_liberator_cta">TV Time Liberator beszerzése</string>
+  <string name="welcome_vip_upsell_description">Szeretné támogatni közösségünket, vagy többet kihozni a Traktból?</string>
+  <string name="welcome_vip_upsell_heading">Legyen VIP</string>
   <string name="yir_2024_country_count">Országok száma</string>
   <string name="yir_2024_directed_by">Rendezte</string>
   <string name="yir_2024_first_play">Első lejátszás</string>

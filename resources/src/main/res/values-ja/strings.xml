@@ -207,6 +207,7 @@
   <string name="button_label_sort_release_date">公開日でソート</string>
   <string name="button_label_sort_remaining">残りのエピソードまたは映画で並べ替え</string>
   <string name="button_label_sort_runtime">再生時間でソート</string>
+  <string name="button_label_sort_smart">スマート順でソート</string>
   <string name="button_label_sort_title">アルファベット順でソート</string>
   <string name="button_label_star_rating">星%dつで評価する</string>
   <string name="button_label_start_import">データをTraktにインポートを開始します。</string>
@@ -421,6 +422,7 @@
   <string name="button_text_sort_release_date">公開日</string>
   <string name="button_text_sort_remaining">残り</string>
   <string name="button_text_sort_runtime">上映時間</string>
+  <string name="button_text_sort_smart">スマート</string>
   <string name="button_text_sort_title">タイトル</string>
   <string name="button_text_start_import">インポートを開始</string>
   <string name="button_text_start_rewatching">再視聴を開始</string>
@@ -777,6 +779,8 @@
   <string name="import_guide_tvtime_step_3">エクスポートの準備が完了すると、2通のメールが届きます。1通は.zipファイル、もう1通はそのロックを解除するためのパスワードです。</string>
   <string name="import_guide_tvtime_step_4">ロック解除された.zipファイルをここにアップロードしてください。.zipが受け付けられない場合は、展開して2つのtracking-prod-records .csvファイル（ウォッチリストと評価のためにfollowed_tv_show.csvとratings-live-votes.csvも追加）をアップロードしてください。</string>
   <string name="import_guide_tvtime_title">あなたのTV Timeは迷子になりません！🚀</string>
+  <string name="import_match_toggle_hint">デフォルト（TVDB IDで照合）を推奨します。一部のエピソードが間違ったエントリに割り当てられた場合にのみこれをオンにしてください。結果は番組によって異なります。</string>
+  <string name="import_match_toggle_label">エピソードをシーズンとエピソード番号で照合</string>
   <string name="import_max_files">(最大%dファイルまで許可)</string>
   <string name="import_source_csv">CSVファイル</string>
   <string name="import_source_json">JSONファイル</string>
@@ -954,6 +958,12 @@
   <string name="list_placeholder_popular_lists">「%s」はどの人気リストにも表示されていません。</string>
   <string name="list_placeholder_ratings">まだ何も評価していません。</string>
   <string name="list_placeholder_reviews">まだレビューを書いていません。</string>
+  <string name="list_summary_range_between">%1$s～%2$s</string>
+  <string name="list_summary_range_from">%s以上</string>
+  <string name="list_summary_range_labeled_between">%1$s %2$s～%3$s</string>
+  <string name="list_summary_range_labeled_from">%1$s %2$s以上</string>
+  <string name="list_summary_range_labeled_up_to">%1$s %2$sまで</string>
+  <string name="list_summary_range_up_to">%sまで</string>
   <string name="list_title_activity">アクティビティ</string>
   <string name="list_title_actors">俳優</string>
   <string name="list_title_anticipated_movies">期待作映画</string>
@@ -1129,12 +1139,14 @@
   <string name="preview_feature_description_scoped_favorites">プロフィールに今年の「お気に入り」を表示し、お気に入りリスト全体を年別にグループ化することで、お気に入りリストを期間で区切ります。</string>
   <string name="preview_feature_description_smart_recommendations">当社の次世代エンジンを活用して、一般的なおすすめを超えた映画や番組を発見しましょう。</string>
   <string name="preview_feature_description_smart_related">当社の次世代エンジンを活用して、一般的な関連作を超えた映画や番組を発見しましょう。</string>
+  <string name="preview_feature_description_up_next_smart_sort">続きを視聴のよりスマートな並べ替えをお試しください。</string>
   <string name="preview_feature_title_edit_mode">編集モード</string>
   <string name="preview_feature_title_leaderboard">パンテオン</string>
   <string name="preview_feature_title_rewatch">再視聴</string>
   <string name="preview_feature_title_scoped_favorites">範囲指定されたお気に入り</string>
   <string name="preview_feature_title_smart_recommendations">スマートレコメンデーション</string>
   <string name="preview_feature_title_smart_related">スマート関連</string>
+  <string name="preview_feature_title_up_next_smart_sort">続きを視聴 スマートソート</string>
   <string name="reset_status_cleared">ウォッチリストをクリアしました。</string>
   <string name="section_title_season_progress">シーズン%dの進捗</string>
   <string name="section_title_seasons_overview">概要</string>
@@ -1906,6 +1918,7 @@
   <string name="welcome_import_imdb_description">IMDbのエクスポートから評価とウォッチリストをインポートします。</string>
   <string name="welcome_import_letterboxd_description">Letterboxdから映画、評価、ウォッチリストをインポートします。</string>
   <string name="welcome_intro">あなたの番組や映画をすべて1か所に。視聴履歴を追跡し、次に見るものを発見し、所有するあらゆるデバイスで中断した場所から再開できます。</string>
+  <string name="welcome_outro_heading">さあ、ここからが楽しい時間の始まりです。</string>
   <string name="welcome_tvtime_badge">TV Timeは終了します</string>
   <string name="welcome_tvtime_body">TV Timeは終了しますが、あなたの視聴履歴が一緒に消える必要はありません。すべてをTraktに移行して、滞りなく追跡を続けましょう。</string>
   <string name="welcome_tvtime_gdpr_cta">GDPRデータエクスポートをリクエスト</string>
@@ -1913,6 +1926,8 @@
   <string name="welcome_tvtime_import_cta">TV Timeからインポート</string>
   <string name="welcome_tvtime_liberator_body">TV Time Liberatorブラウザ拡張機能で完全な履歴をエクスポートするか、TV Timeのプライバシーポータルから公式のGDPRデータエクスポートをアップロードしてください。どちらの方法でも動作します。</string>
   <string name="welcome_tvtime_liberator_cta">TV Time Liberatorを入手</string>
+  <string name="welcome_vip_upsell_description">Traktコミュニティをサポートしたり、さらに活用したりしませんか？</string>
+  <string name="welcome_vip_upsell_heading">VIPになる</string>
   <string name="yir_2024_country_count">視聴国数</string>
   <string name="yir_2024_directed_by">監督</string>
   <string name="yir_2024_first_play">初再生</string>

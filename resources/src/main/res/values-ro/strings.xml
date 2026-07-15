@@ -207,6 +207,7 @@
   <string name="button_label_sort_release_date">Sortează după data lansării</string>
   <string name="button_label_sort_remaining">Sortare după episoade sau filme rămase</string>
   <string name="button_label_sort_runtime">Sortează după durată</string>
+  <string name="button_label_sort_smart">Sortează după ordine inteligentă</string>
   <string name="button_label_sort_title">Sortează alfabetic</string>
   <string name="button_label_star_rating">Evaluează cu %d stele.</string>
   <string name="button_label_start_import">Începe importul datelor tale în Trakt.</string>
@@ -421,6 +422,7 @@
   <string name="button_text_sort_release_date">Data lansării</string>
   <string name="button_text_sort_remaining">Rămas</string>
   <string name="button_text_sort_runtime">Durată</string>
+  <string name="button_text_sort_smart">Inteligent</string>
   <string name="button_text_sort_title">Titlu</string>
   <string name="button_text_start_import">Începe importul</string>
   <string name="button_text_start_rewatching">Începe revizionarea</string>
@@ -777,6 +779,8 @@
   <string name="import_guide_tvtime_step_3">Odată ce exportul este gata, vei primi două e-mailuri: unul cu un fișier .zip și altul cu o parolă pentru a-l debloca.</string>
   <string name="import_guide_tvtime_step_4">Încarcă fișierul .zip deblocat aici. Dacă fișierul .zip nu este acceptat, extrage-l și încarcă în schimb cele două fișiere .csv tracking-prod-records (plus followed_tv_show.csv și ratings-live-votes.csv pentru lista ta de vizionare și evaluări).</string>
   <string name="import_guide_tvtime_title">Timpul tău la TV nu este pierdut în spațiu! 🚀</string>
+  <string name="import_match_toggle_hint">Recomandăm setarea implicită (potrivire după ID-ul TVDB). Activează această opțiune doar dacă unele episoade ajung la intrarea greșită - rezultatele variază de la un serial la altul.</string>
+  <string name="import_match_toggle_label">Potrivește episoadele după sezon și numărul episodului</string>
   <string name="import_max_files">(maxim %d fișiere permise)</string>
   <string name="import_source_csv">Fișier CSV</string>
   <string name="import_source_json">Fișier JSON</string>
@@ -954,6 +958,12 @@
   <string name="list_placeholder_popular_lists">\"%s\" nu apare în nicio listă populară.</string>
   <string name="list_placeholder_ratings">Nu ai evaluat nimic încă.</string>
   <string name="list_placeholder_reviews">Nu ai scris nicio recenzie încă.</string>
+  <string name="list_summary_range_between">De la %1$s la %2$s</string>
+  <string name="list_summary_range_from">%s și peste</string>
+  <string name="list_summary_range_labeled_between">%1$s de la %2$s la %3$s</string>
+  <string name="list_summary_range_labeled_from">%1$s %2$s și peste</string>
+  <string name="list_summary_range_labeled_up_to">%1$s până la %2$s</string>
+  <string name="list_summary_range_up_to">Până la %s</string>
   <string name="list_title_activity">Activitate</string>
   <string name="list_title_actors">Actori</string>
   <string name="list_title_anticipated_movies">Filme anticipate</string>
@@ -1129,12 +1139,14 @@
   <string name="preview_feature_description_scoped_favorites">Organizează listele de favorite pe perioade, afișând favoritele din anul curent pe profile și grupând lista completă de favorite pe ani.</string>
   <string name="preview_feature_description_smart_recommendations">Utilizează motorul nostru de ultimă generație pentru a descoperi filme și seriale recomandate, dincolo de cele evidente.</string>
   <string name="preview_feature_description_smart_related">Utilizează motorul nostru de ultimă generație pentru a descoperi filme și seriale corelate, dincolo de cele evidente.</string>
+  <string name="preview_feature_description_up_next_smart_sort">Testează o modalitate mai inteligentă de a sorta elementele din Continuă vizionarea.</string>
   <string name="preview_feature_title_edit_mode">Mod editare</string>
   <string name="preview_feature_title_leaderboard">Panteon</string>
   <string name="preview_feature_title_rewatch">Revizionare</string>
   <string name="preview_feature_title_scoped_favorites">Favorite Contextuale</string>
   <string name="preview_feature_title_smart_recommendations">Recomandări inteligente</string>
   <string name="preview_feature_title_smart_related">Inteligent Corelate</string>
+  <string name="preview_feature_title_up_next_smart_sort">Sortare inteligentă pentru Continuă vizionarea</string>
   <string name="reset_status_cleared">Lista de vizionare a fost ștearsă.</string>
   <string name="section_title_season_progress">Sezonul %d progres</string>
   <string name="section_title_seasons_overview">Prezentare generală</string>
@@ -1906,6 +1918,7 @@
   <string name="welcome_import_imdb_description">Importă evaluările și lista de urmărire dintr-un export IMDb.</string>
   <string name="welcome_import_letterboxd_description">Transferă-ți filmele, evaluările și lista de urmărire de pe Letterboxd.</string>
   <string name="welcome_intro">Emisiunile și filmele tale, toate într-un singur loc. Urmărește ce vizionezi, descoperă ce urmează și continuă exact de unde ai rămas; pe fiecare dispozitiv pe care îl deții.</string>
+  <string name="welcome_outro_heading">Acum începe distracția.</string>
   <string name="welcome_tvtime_badge">TV Time se închide</string>
   <string name="welcome_tvtime_body">TV Time își închide porțile, dar istoricul tău de vizionare nu trebuie să dispară odată cu el. Transferă totul pe Trakt și continuă să urmărești fără să ratezi nimic.</string>
   <string name="welcome_tvtime_gdpr_cta">Solicită exportul GDPR</string>
@@ -1913,6 +1926,8 @@
   <string name="welcome_tvtime_import_cta">Importă de pe TV Time</string>
   <string name="welcome_tvtime_liberator_body">Exportă-ți istoricul complet cu extensia de browser TV Time Liberator, sau încarcă exportul oficial de date GDPR din portalul de confidențialitate TV Time. Ambele funcționează.</string>
   <string name="welcome_tvtime_liberator_cta">Descarcă TV Time Liberator</string>
+  <string name="welcome_vip_upsell_description">Vrei să susții comunitatea noastră sau să obții mai mult de la Trakt?</string>
+  <string name="welcome_vip_upsell_heading">Devino VIP</string>
   <string name="yir_2024_country_count">Număr de țări</string>
   <string name="yir_2024_directed_by">Regizat de</string>
   <string name="yir_2024_first_play">Prima Redare</string>

@@ -207,6 +207,7 @@
   <string name="button_label_sort_release_date">Сортировать по дате выхода</string>
   <string name="button_label_sort_remaining">Сортировать по оставшимся эпизодам или фильмам</string>
   <string name="button_label_sort_runtime">Сортировать по продолжительности</string>
+  <string name="button_label_sort_smart">Сортировать по умному порядку</string>
   <string name="button_label_sort_title">Сортировать по алфавиту</string>
   <string name="button_label_star_rating">Оценить на %d звезд.</string>
   <string name="button_label_start_import">Начать импорт ваших данных в Trakt.</string>
@@ -421,6 +422,7 @@
   <string name="button_text_sort_release_date">Дата выхода</string>
   <string name="button_text_sort_remaining">Оставшиеся</string>
   <string name="button_text_sort_runtime">Продолжительность</string>
+  <string name="button_text_sort_smart">Умные</string>
   <string name="button_text_sort_title">Название</string>
   <string name="button_text_start_import">Начать импорт</string>
   <string name="button_text_start_rewatching">Начать пересмотр</string>
@@ -777,6 +779,8 @@
   <string name="import_guide_tvtime_step_3">Как только экспорт будет готов, вы получите два электронных письма: одно с .zip-файлом, а другое с паролем для его разблокировки.</string>
   <string name="import_guide_tvtime_step_4">Загрузите разблокированный .zip-файл сюда. Если .zip не принимается, извлеките его и загрузите вместо этого два .csv-файла tracking-prod-records (плюс followed_tv_show.csv и ratings-live-votes.csv для вашего списка просмотра и оценок).</string>
   <string name="import_guide_tvtime_title">Ваше время на ТВ не потеряно в космосе! 🚀</string>
+  <string name="import_match_toggle_hint">Мы рекомендуем по умолчанию (сопоставление по ID TVDB). Включайте эту опцию только в том случае, если некоторые эпизоды попадают не на ту запись – результаты могут отличаться от сериала к сериалу.</string>
+  <string name="import_match_toggle_label">Сопоставлять эпизоды по номеру сезона и эпизода</string>
   <string name="import_max_files">(разрешено не более %d файлов)</string>
   <string name="import_source_csv">CSV-файл</string>
   <string name="import_source_json">JSON-файл</string>
@@ -954,6 +958,12 @@
   <string name="list_placeholder_popular_lists">\"%s\" не найден ни в одном популярном списке.</string>
   <string name="list_placeholder_ratings">Вы еще ничего не оценили.</string>
   <string name="list_placeholder_reviews">Вы еще не написали ни одного отзыва.</string>
+  <string name="list_summary_range_between">От %1$s до %2$s</string>
+  <string name="list_summary_range_from">От %s и выше</string>
+  <string name="list_summary_range_labeled_between">%1$s от %2$s до %3$s</string>
+  <string name="list_summary_range_labeled_from">%1$s от %2$s и выше</string>
+  <string name="list_summary_range_labeled_up_to">%1$s до %2$s</string>
+  <string name="list_summary_range_up_to">До %s</string>
   <string name="list_title_activity">Активность</string>
   <string name="list_title_actors">Актеры</string>
   <string name="list_title_anticipated_movies">Ожидаемые фильмы</string>
@@ -1129,12 +1139,14 @@
   <string name="preview_feature_description_scoped_favorites">Ограничивайте списки избранного по времени, показывая избранное текущего года в профилях и группируя полный список избранного по годам.</string>
   <string name="preview_feature_description_smart_recommendations">Используйте наш движок нового поколения, чтобы находить рекомендуемые фильмы и шоу, выходящие за рамки очевидного.</string>
   <string name="preview_feature_description_smart_related">Используйте наш движок нового поколения, чтобы находить связанные фильмы и шоу, выходящие за рамки очевидного.</string>
+  <string name="preview_feature_description_up_next_smart_sort">Попробуйте более умный способ сортировки раздела \"Смотреть дальше\".</string>
   <string name="preview_feature_title_edit_mode">Режим редактирования</string>
   <string name="preview_feature_title_leaderboard">Пантеон</string>
   <string name="preview_feature_title_rewatch">Пересмотр</string>
   <string name="preview_feature_title_scoped_favorites">Избранное по времени</string>
   <string name="preview_feature_title_smart_recommendations">Умные рекомендации</string>
   <string name="preview_feature_title_smart_related">Умные рекомендации</string>
+  <string name="preview_feature_title_up_next_smart_sort">Умная сортировка \"Смотреть дальше\"</string>
   <string name="reset_status_cleared">Список просмотра очищен.</string>
   <string name="section_title_season_progress">Прогресс сезона %d</string>
   <string name="section_title_seasons_overview">Обзор</string>
@@ -1906,6 +1918,7 @@
   <string name="welcome_import_imdb_description">Импортируйте свои оценки и список просмотра из экспорта IMDb.</string>
   <string name="welcome_import_letterboxd_description">Перенесите свои фильмы, оценки и список просмотра из Letterboxd.</string>
   <string name="welcome_intro">Ваши сериалы и фильмы — всё в одном месте. Отслеживайте просмотренное, узнавайте о новинках и продолжайте просмотр с того места, где остановились, на любом из ваших устройств.</string>
+  <string name="welcome_outro_heading">Теперь начинается самое интересное.</string>
   <string name="welcome_tvtime_badge">TV Time закрывается</string>
   <string name="welcome_tvtime_body">TV Time закрывается, но ваша история просмотров не должна исчезнуть вместе с ним. Перенесите всё в Trakt и продолжайте отслеживать без перерыва.</string>
   <string name="welcome_tvtime_gdpr_cta">Запросить экспорт данных GDPR</string>
@@ -1913,6 +1926,8 @@
   <string name="welcome_tvtime_import_cta">Импортировать из TV Time</string>
   <string name="welcome_tvtime_liberator_body">Экспортируйте полную историю с помощью расширения для браузера TV Time Liberator или загрузите официальный экспорт данных GDPR с портала конфиденциальности TV Time. Оба варианта работают.</string>
   <string name="welcome_tvtime_liberator_cta">Получить TV Time Liberator</string>
+  <string name="welcome_vip_upsell_description">Хотите поддержать наше сообщество или получить больше от Trakt?</string>
+  <string name="welcome_vip_upsell_heading">Станьте VIP</string>
   <string name="yir_2024_country_count">Количество стран</string>
   <string name="yir_2024_directed_by">Режиссер</string>
   <string name="yir_2024_first_play">Первый просмотр</string>

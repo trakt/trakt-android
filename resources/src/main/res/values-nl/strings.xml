@@ -207,6 +207,7 @@
   <string name="button_label_sort_release_date">Sorteren op releasedatum</string>
   <string name="button_label_sort_remaining">Sorteren op resterende afleveringen of films</string>
   <string name="button_label_sort_runtime">Sorteren op speelduur</string>
+  <string name="button_label_sort_smart">Sorteren op slimme volgorde</string>
   <string name="button_label_sort_title">Alfabetisch sorteren</string>
   <string name="button_label_star_rating">Beoordeel met %d sterren.</string>
   <string name="button_label_start_import">Start met het importeren van uw gegevens in Trakt.</string>
@@ -421,6 +422,7 @@
   <string name="button_text_sort_release_date">Releasedatum</string>
   <string name="button_text_sort_remaining">Resterend</string>
   <string name="button_text_sort_runtime">Speelduur</string>
+  <string name="button_text_sort_smart">Slim</string>
   <string name="button_text_sort_title">Titel</string>
   <string name="button_text_start_import">Import starten</string>
   <string name="button_text_start_rewatching">Opnieuw kijken starten</string>
@@ -777,6 +779,8 @@
   <string name="import_guide_tvtime_step_3">Zodra de export gereed is, ontvang je twee e-mails: één met een .zip-bestand en één met een wachtwoord om het te ontgrendelen.</string>
   <string name="import_guide_tvtime_step_4">Upload de ontgrendelde .zip hier. Als de .zip niet wordt geaccepteerd, pak deze dan uit en upload in plaats daarvan de twee tracking-prod-records .csv-bestanden (plus followed_tv_show.csv en ratings-live-votes.csv voor je volglijst en beoordelingen).</string>
   <string name="import_guide_tvtime_title">Je TV Time is niet verloren in de ruimte! 🚀</string>
+  <string name="import_match_toggle_hint">We raden de standaardinstelling aan (matchen op TVDB id). Schakel dit alleen in als sommige afleveringen op de verkeerde vermelding terechtkomen - de resultaten variëren per serie.</string>
+  <string name="import_match_toggle_label">Afleveringen matchen op seizoen en afleveringnummer</string>
   <string name="import_max_files">(max. %d bestanden toegestaan)</string>
   <string name="import_source_csv">CSV-bestand</string>
   <string name="import_source_json">JSON-bestand</string>
@@ -954,6 +958,12 @@
   <string name="list_placeholder_popular_lists">\"%s\" komt niet voor op populaire lijsten.</string>
   <string name="list_placeholder_ratings">Je hebt nog niets beoordeeld.</string>
   <string name="list_placeholder_reviews">Je hebt nog geen recensies geschreven.</string>
+  <string name="list_summary_range_between">%1$s tot %2$s</string>
+  <string name="list_summary_range_from">%s en hoger</string>
+  <string name="list_summary_range_labeled_between">%1$s %2$s tot %3$s</string>
+  <string name="list_summary_range_labeled_from">%1$s %2$s en hoger</string>
+  <string name="list_summary_range_labeled_up_to">%1$s tot %2$s</string>
+  <string name="list_summary_range_up_to">Tot %s</string>
   <string name="list_title_activity">Activiteit</string>
   <string name="list_title_actors">Acteurs</string>
   <string name="list_title_anticipated_movies">Verwachte films</string>
@@ -1129,12 +1139,14 @@
   <string name="preview_feature_description_scoped_favorites">Beperk favorietenlijsten door favorieten van het huidige jaar op profielen weer te geven en de volledige favorietenlijst per jaar te groeperen.</string>
   <string name="preview_feature_description_smart_recommendations">Gebruik onze next-gen engine om aanbevolen films en series te vinden die verder gaan dan het voor de hand liggende.</string>
   <string name="preview_feature_description_smart_related">Gebruik onze next-gen engine om gerelateerde films en series te vinden die verder gaan dan het voor de hand liggende.</string>
+  <string name="preview_feature_description_up_next_smart_sort">Probeer een slimmere manier om je \'Verder kijken\' te sorteren.</string>
   <string name="preview_feature_title_edit_mode">Bewerkmodus</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Opnieuw bekijken</string>
   <string name="preview_feature_title_scoped_favorites">Gerichte favorieten</string>
   <string name="preview_feature_title_smart_recommendations">Slimme aanbevelingen</string>
   <string name="preview_feature_title_smart_related">Slim Gerelateerd</string>
+  <string name="preview_feature_title_up_next_smart_sort">Verder kijken slim sorteren</string>
   <string name="reset_status_cleared">Kijklijst gewist.</string>
   <string name="section_title_season_progress">Seizoen %d voortgang</string>
   <string name="section_title_seasons_overview">Overzicht</string>
@@ -1906,6 +1918,7 @@
   <string name="welcome_import_imdb_description">Importeer je beoordelingen en volglijst vanuit een IMDb-export.</string>
   <string name="welcome_import_letterboxd_description">Breng je films, beoordelingen en volglijst over van Letterboxd.</string>
   <string name="welcome_intro">Je series en films, allemaal op één plek. Houd bij wat je kijkt, ontdek wat er nieuw is en ga verder waar je gebleven was; op al je apparaten.</string>
+  <string name="welcome_outro_heading">Nu begint het plezier.</string>
   <string name="welcome_tvtime_badge">TV Time stopt</string>
   <string name="welcome_tvtime_body">TV Time sluit de deuren, maar je kijkgeschiedenis hoeft niet verloren te gaan. Breng alles over naar Trakt en blijf bijhouden zonder iets te missen.</string>
   <string name="welcome_tvtime_gdpr_cta">GDPR-export aanvragen</string>
@@ -1913,6 +1926,8 @@
   <string name="welcome_tvtime_import_cta">Importeren vanuit TV Time</string>
   <string name="welcome_tvtime_liberator_body">Exporteer je volledige geschiedenis met de TV Time Liberator browserextensie, of upload de officiële AVG-gegevensexport van TV Time\'s privacyportaal. Beide werken.</string>
   <string name="welcome_tvtime_liberator_cta">Download TV Time Liberator</string>
+  <string name="welcome_vip_upsell_description">Wil je onze community steunen of meer uit Trakt halen?</string>
+  <string name="welcome_vip_upsell_heading">Word VIP</string>
   <string name="yir_2024_country_count">Aantal landen</string>
   <string name="yir_2024_directed_by">Geregisseerd door</string>
   <string name="yir_2024_first_play">Eerste afspeling</string>
