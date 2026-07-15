@@ -64,10 +64,8 @@ import com.android.billingclient.api.ProductDetails
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import tv.trakt.trakt.LocalBottomBarVisibility
-import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_BACKGROUND_VIP_IMAGE_URL
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
@@ -364,39 +362,62 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
                 .padding(top = 48.dp),
         ) {
             VipOfferItem(
-                text = stringResource(R.string.vip_text_vip_go_beyond_limits),
-                description = stringResource(R.string.vip_feature_description_increased_limits),
+                text = stringResource(R.string.vip_feature_title_recaps),
+                description = stringResource(R.string.vip_feature_description_recaps),
+                icon = painterResource(R.drawable.ic_calendar),
+                iconPadding = 2.dp,
+            )
+
+            VipOfferItem(
+                text = stringResource(R.string.vip_feature_title_bigger_watchlist),
+                description = stringResource(R.string.vip_feature_description_bigger_watchlist),
+                icon = painterResource(R.drawable.ic_bookmark_off),
+            )
+
+            VipOfferItem(
+                text = stringResource(R.string.vip_feature_title_bigger_library),
+                description = stringResource(R.string.vip_feature_description_bigger_library),
                 icon = painterResource(R.drawable.ic_vip_lists),
             )
 
             VipOfferItem(
-                text = stringResource(R.string.vip_feature_title_streaming_sync),
-                description = stringResource(R.string.vip_feature_description_streaming_sync),
+                text = stringResource(R.string.vip_feature_title_plex_sync),
+                description = stringResource(R.string.vip_feature_description_plex_sync),
                 icon = painterResource(R.drawable.ic_vip_stream_sync),
                 iconPadding = 2.dp,
             )
 
             VipOfferItem(
-                text = stringResource(R.string.vip_feature_title_mir),
-                description = stringResource(R.string.vip_feature_description_mir),
-                icon = painterResource(R.drawable.ic_vip_month),
-                iconPadding = 2.dp,
-            )
-
-            val trivia1 = stringResource(R.string.text_vip_upsell_dive_deeper)
-            val trivia2 = stringResource(R.string.vip_feature_description_trivia)
-            VipOfferItem(
-                text = stringResource(R.string.list_title_trivia),
-                description = "$trivia1 $trivia2",
-                icon = painterResource(R.drawable.ic_trivia),
-                iconPadding = 2.dp,
+                text = stringResource(R.string.vip_feature_title_streaming_services),
+                description = stringResource(R.string.vip_feature_description_streaming_services),
+                icon = painterResource(R.drawable.ic_shows_off),
+                iconPadding = 3.dp,
             )
 
             VipOfferItem(
-                text = stringResource(R.string.vip_feature_title_yir),
-                description = stringResource(R.string.vip_feature_description_yir, nowUtc().year),
-                icon = painterResource(R.drawable.ic_vip_stats),
-                iconPadding = 2.dp,
+                text = stringResource(R.string.vip_feature_title_more_lists),
+                description = stringResource(R.string.vip_feature_description_more_lists),
+                icon = painterResource(R.drawable.ic_lists_off),
+                iconPadding = 4.dp,
+            )
+
+            VipOfferItem(
+                text = stringResource(R.string.vip_feature_title_sentiment_trivia),
+                description = stringResource(R.string.vip_feature_description_sentiment_trivia),
+                icon = painterResource(R.drawable.ic_question),
+            )
+
+            VipOfferItem(
+                text = stringResource(R.string.vip_feature_title_api_apps),
+                description = stringResource(R.string.vip_feature_description_api_apps),
+                icon = painterResource(R.drawable.ic_plug),
+            )
+
+            VipOfferItem(
+                text = stringResource(R.string.vip_feature_title_support),
+                description = stringResource(R.string.vip_feature_description_support),
+                icon = painterResource(R.drawable.ic_comment),
+                iconPadding = 4.dp,
             )
 
             VipOfferItem(
@@ -414,41 +435,18 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
             )
         }
 
-        Row(
-            verticalAlignment = CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .padding(start = 7.dp, top = 36.dp)
-                .fillMaxWidth()
-                .onClick {
-                    uriHandler.openUri(Config.WEB_VIP_URL)
-                },
-        ) {
-            VipOfferItem(
-                text = stringResource(R.string.vip_feature_title_more_to_come),
-                description = stringResource(R.string.vip_feature_description_more_to_come),
-                modifier = Modifier
-                    .weight(1f, fill = false),
-            )
-
-            Icon(
-                painter = painterResource(R.drawable.ic_chevron_right),
-                tint = TraktTheme.colors.textPrimary,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(22.dp),
-            )
-        }
-
         Column(
             verticalArrangement = spacedBy(5.dp),
-            modifier = Modifier.padding(top = 56.dp),
+            modifier = Modifier
+                .padding(top = 56.dp)
+                .padding(horizontal = 8.dp),
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_heart_on),
                 tint = Red400,
                 contentDescription = null,
                 modifier = Modifier
+                    .padding(bottom = 2.dp)
                     .size(32.dp)
                     .align(CenterHorizontally),
             )
@@ -533,7 +531,7 @@ private fun VipOfferItem(
                 text = description,
                 style = TraktTheme.typography.paragraphSmaller,
                 color = TraktTheme.colors.textSecondary,
-                maxLines = 3,
+                maxLines = 5,
             )
         }
     }
@@ -755,6 +753,7 @@ private fun PaymentDialogContent(
     device = "id:pixel_6",
     showBackground = true,
     backgroundColor = 0xFF131517,
+    heightDp = 2000,
 )
 @Composable
 private fun Preview() {
