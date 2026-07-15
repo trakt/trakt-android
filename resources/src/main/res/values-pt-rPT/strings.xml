@@ -706,7 +706,7 @@
   <string name="header_stream_on">Ver em</string>
   <string name="header_streaming">Disponibilidade</string>
   <string name="header_streaming_services">Serviços de streaming</string>
-  <string name="header_streaming_sync">Sincronização com serviços de streaming</string>
+  <string name="header_streaming_sync">Sincronização de streaming</string>
   <string name="header_streaming_vip_services">Disponível com o VIP</string>
   <string name="header_studio">Estúdio</string>
   <string name="header_sync_detail">Sincronização %s</string>
@@ -1538,7 +1538,7 @@
   <string name="text_streaming_queued">Na fila</string>
   <string name="text_streaming_service_fallback">o teu serviço de streaming</string>
   <string name="text_streaming_service_logo_alt">Logótipo de %s</string>
-  <string name="text_streaming_sync">Sincronização com serviços de streaming</string>
+  <string name="text_streaming_sync">Sincronização de streaming</string>
   <string name="text_streaming_tmdb_pill">TMDB %s</string>
   <string name="text_table_history">Histórico</string>
   <string name="text_table_library">Biblioteca</string>
@@ -1861,7 +1861,7 @@
   <string name="vip_feature_title_sentiment">Opiniões</string>
   <string name="vip_feature_title_sentiment_trivia">Mais informações: opiniões e curiosidades</string>
   <string name="vip_feature_title_streaming_services">Sincroniza mais serviços de streaming</string>
-  <string name="vip_feature_title_streaming_sync">Sincronização com serviços de streaming</string>
+  <string name="vip_feature_title_streaming_sync">Sincronização de streaming</string>
   <string name="vip_feature_title_support">Melhor apoio: fórum e feedback</string>
   <string name="vip_feature_title_trivia">Curiosidades</string>
   <string name="vip_feature_title_unlock">Desbloqueia todo o potencial com</string>
