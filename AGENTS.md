@@ -1,6 +1,10 @@
 Before implementing anything, identify which domain you are working in and
 actively apply the corresponding rule file for that domain:
 
+- Do not spawn subagents unless explicitly requested.
+- Max subagents per task: 1.
+- Do not recurse into deeper agents (depth = 0).
+
 - Compose screens, composables, theme (`app/`, `tv/`, `common/.../ui/`):
   apply architecture.md, state-management.md, theming.md
 - Networking, Ktor client, OpenAPI mappers (`common/.../networking/`,

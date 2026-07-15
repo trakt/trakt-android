@@ -31,25 +31,14 @@ import tv.trakt.trakt.core.lists.features.reorder.ListReorderViewModel
 import tv.trakt.trakt.core.lists.features.reorder.data.ReorderUpdates
 import tv.trakt.trakt.core.lists.features.reorder.data.ReorderUpdatesStorage
 import tv.trakt.trakt.core.lists.features.reorder.usecase.ReorderListUseCase
-import tv.trakt.trakt.core.lists.sections.collaborations.ListsCollaborationsViewModel
-import tv.trakt.trakt.core.lists.sections.collaborations.data.local.items.ListsCollaborationsItemsLocalDataSource
-import tv.trakt.trakt.core.lists.sections.collaborations.data.local.items.ListsCollaborationsItemsStorage
 import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsStorage
-import tv.trakt.trakt.core.lists.sections.collaborations.usecases.GetCollaborationsListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.collaborations.usecases.GetCollaborationsListsUseCase
-import tv.trakt.trakt.core.lists.sections.liked.ListsLikedViewModel
-import tv.trakt.trakt.core.lists.sections.liked.data.local.items.ListsLikedItemsLocalDataSource
-import tv.trakt.trakt.core.lists.sections.liked.data.local.items.ListsLikedItemsStorage
 import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedLocalDataSource
 import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedStorage
-import tv.trakt.trakt.core.lists.sections.liked.usecases.GetLikedListItemsUseCase
 import tv.trakt.trakt.core.lists.sections.liked.usecases.GetLikedListsUseCase
 import tv.trakt.trakt.core.lists.sections.liked.usecases.manage.AddLikedListUseCase
 import tv.trakt.trakt.core.lists.sections.liked.usecases.manage.RemoveLikedListUseCase
-import tv.trakt.trakt.core.lists.sections.personal.ListsPersonalViewModel
-import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
-import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsStorage
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalStorage
 import tv.trakt.trakt.core.lists.sections.personal.features.all.AllPersonalListViewModel
@@ -80,9 +69,6 @@ internal val listsDataModule = module {
     singleOf(::ListsPersonalStorage) { bind<ListsPersonalLocalDataSource>() }
     singleOf(::ListsLikedStorage) { bind<ListsLikedLocalDataSource>() }
     singleOf(::ListsCollaborationsStorage) { bind<ListsCollaborationsLocalDataSource>() }
-    singleOf(::ListsPersonalItemsStorage) { bind<ListsPersonalItemsLocalDataSource>() }
-    singleOf(::ListsLikedItemsStorage) { bind<ListsLikedItemsLocalDataSource>() }
-    singleOf(::ListsCollaborationsItemsStorage) { bind<ListsCollaborationsItemsLocalDataSource>() }
     singleOf(::WatchlistUpdatesStorage) { bind<WatchlistUpdates>() }
     singleOf(::ReorderUpdatesStorage) { bind<ReorderUpdates>() }
 
@@ -101,8 +87,6 @@ internal val listsModule = module {
     factoryOf(::GetLikedListsUseCase)
     factoryOf(::GetCollaborationsListsUseCase)
     factoryOf(::GetPersonalListItemsUseCase)
-    factoryOf(::GetLikedListItemsUseCase)
-    factoryOf(::GetCollaborationsListItemsUseCase)
     factoryOf(::GetListItemsUseCase)
     factoryOf(::CreateListUseCase)
     factoryOf(::EditListUseCase)
@@ -121,9 +105,6 @@ internal val listsModule = module {
     viewModelOf(::AllWatchlistViewModel)
     viewModelOf(::AllPersonalListViewModel)
     viewModelOf(::AllListsViewModel)
-    viewModelOf(::ListsPersonalViewModel)
-    viewModelOf(::ListsLikedViewModel)
-    viewModelOf(::ListsCollaborationsViewModel)
     viewModelOf(::WatchlistShowContextViewModel)
     viewModelOf(::ListShowContextViewModel)
 

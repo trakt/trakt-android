@@ -31,13 +31,13 @@ import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsC
 import tv.trakt.trakt.core.lists.sections.collaborations.usecases.GetCollaborationsListsUseCase
 import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedLocalDataSource
 import tv.trakt.trakt.core.lists.sections.liked.usecases.GetLikedListsUseCase
-import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collaborations
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Personal
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 internal class ListsViewModel(
@@ -46,7 +46,6 @@ internal class ListsViewModel(
     private val getLikedListsUseCase: GetLikedListsUseCase,
     private val getCollaborationsListsUseCase: GetCollaborationsListsUseCase,
     private val localListsSource: ListsPersonalLocalDataSource,
-    private val localListsItemsSource: ListsPersonalItemsLocalDataSource,
     private val localLikedListsSource: ListsLikedLocalDataSource,
     private val localCollaborationsListsSource: ListsCollaborationsLocalDataSource,
     analytics: Analytics,
@@ -89,10 +88,9 @@ internal class ListsViewModel(
     private fun observeLists() {
         merge(
             localListsSource.observeUpdates(),
-            localListsItemsSource.observeUpdates(),
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 loadLocalData()
             }
@@ -103,7 +101,7 @@ internal class ListsViewModel(
             localCollaborationsListsSource.observeUpdates(),
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 loadData()
             }
