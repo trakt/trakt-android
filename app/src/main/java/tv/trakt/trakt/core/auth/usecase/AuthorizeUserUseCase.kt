@@ -12,8 +12,11 @@ internal class AuthorizeUserUseCase(
     private val remoteSource: AuthRemoteDataSource,
     private val tokenProvider: TokenProvider,
 ) {
-    suspend fun authorizeByCode(code: String) {
-        val token = remoteSource.getAccessToken(code)
+    suspend fun authorizeByCode(
+        code: String,
+        codeVerifier: String?,
+    ) {
+        val token = remoteSource.getAccessToken(code, codeVerifier)
         tokenProvider.saveToken(token)
         delay(500) // Small delay to ensure token is stored before proceeding.
         Timber.d("Received and stored access token!")

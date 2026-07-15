@@ -42,6 +42,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.WhatsNew
+import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.auth.usecase.AuthorizeUserUseCase
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
 import tv.trakt.trakt.core.checkin.data.CheckInManager
@@ -324,7 +325,10 @@ internal class MainViewModel(
 
                 dismissOnboarding()
 
-                authorizeUseCase.authorizeByCode(code)
+                authorizeUseCase.authorizeByCode(
+                    code = code,
+                    codeVerifier = ConfigAuth.consumeCodeVerifier(),
+                )
                 getUserUseCase.loadUserProfile()?.let {
                     analytics.setUserId(it.ids.trakt.value.toString())
                     analytics.logUserLogin()
