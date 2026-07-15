@@ -321,7 +321,7 @@ class ListsApiClient(
         listId: TraktId,
         itemsIds: List<Int>,
     ) {
-        listsApi.postUsersListsListReorder(
+        listsApi.postUsersListsListReorderItems(
             id = "me",
             listId = listId.value.toString(),
             postUsersListsReorderRequest = PostUsersListsReorderRequest(
