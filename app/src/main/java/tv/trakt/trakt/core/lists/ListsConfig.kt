@@ -19,5 +19,4 @@ internal object ListsConfig {
 
     const val LISTS_PAGE_LIMIT = 5
     const val LISTS_ALL_PAGE_LIMIT = 20
-    const val LISTS_FULL_PREVIEW_LIMIT = 5
 }
