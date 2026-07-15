@@ -16,10 +16,13 @@ class TranslationsApiClient(
         showId: TraktId,
         locale: Locale,
     ): TranslationDto? {
-        return showsApi.getShowsTranslations(
+        val result = showsApi.getShowsTranslations(
             id = showId.value.toString(),
             language = locale.language,
-        ).body().firstOrNull()
+        ).body()
+
+        return result
+            .selectForLocale(locale) { it.country }
     }
 
     override suspend fun getEpisodeTranslations(
@@ -27,21 +30,40 @@ class TranslationsApiClient(
         seasonEpisode: SeasonEpisode,
         locale: Locale,
     ): EpisodeTranslationDto? {
-        return showsApi.getShowsEpisodeTranslations(
+        val result = showsApi.getShowsEpisodeTranslations(
             id = showId.value.toString(),
             season = seasonEpisode.season,
             episode = seasonEpisode.episode,
             language = locale.language,
-        ).body().firstOrNull()
+        ).body()
+
+        return result
+            .selectForLocale(locale) { it.country }
     }
 
     override suspend fun getMovieTranslations(
         movieId: TraktId,
         locale: Locale,
     ): TranslationDto? {
-        return moviesApi.getMoviesTranslations(
+        val result = moviesApi.getMoviesTranslations(
             id = movieId.value.toString(),
             language = locale.language,
-        ).body().firstOrNull()
+        ).body()
+
+        return result
+            .selectForLocale(locale) { it.country }
+    }
+
+    private fun <T> List<T>.selectForLocale(
+        locale: Locale,
+        country: (T) -> String?,
+    ): T? {
+        if (locale.country.isBlank()) {
+            return firstOrNull()
+        }
+
+        return firstOrNull {
+            country(it).equals(locale.country, ignoreCase = true)
+        } ?: firstOrNull()
     }
 }
