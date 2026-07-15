@@ -22,7 +22,6 @@ import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
-import tv.trakt.trakt.common.helpers.extensions.interleave
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
@@ -102,8 +101,7 @@ internal class DiscoverReleasesViewModel(
 
             if (localShows.isNotEmpty() || localMovies.isNotEmpty()) {
                 itemsState.update {
-                    listOf(localShows, localMovies)
-                        .interleave()
+                    (localShows + localMovies)
                         .filter {
                             val releaseLocal = it.releasedAt?.toLocalDay() ?: LocalDate.MIN
                             releaseLocal >= startDay
@@ -126,14 +124,14 @@ internal class DiscoverReleasesViewModel(
             val showsAsync = async {
                 getReleasesShowsUseCase.getShows(
                     startDate = startDate.minus(1, DAYS),
-                    days = 31,
+                    days = 7,
                     filters = filterState.value,
                 )
             }
             val moviesAsync = async {
                 getReleasesMoviesUseCase.getMovies(
                     startDate = startDate.minus(1, DAYS),
-                    days = 31,
+                    days = 7,
                     filters = filterState.value,
                 )
             }
@@ -142,8 +140,7 @@ internal class DiscoverReleasesViewModel(
             val movies = if (filterState.value.mode.isMediaOrMovies) moviesAsync.await() else emptyList()
 
             itemsState.update {
-                listOf(shows, movies)
-                    .interleave()
+                (shows + movies)
                     .filter {
                         val releaseLocal = it.releasedAt?.toLocalDay() ?: LocalDate.MIN
                         releaseLocal >= startDay
