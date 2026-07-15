@@ -110,6 +110,18 @@ class UserApiClient(
         cacheMarkerProvider.invalidate()
     }
 
+    override suspend fun updatePrivateAccount(enabled: Boolean) {
+        usersApi.putUsersSaveSettings(
+            putUsersSaveSettingsRequest = PutUsersSaveSettingsRequest(
+                user = PutUsersSaveSettingsRequestUser(
+                    private = enabled,
+                ),
+            ),
+        )
+
+        cacheMarkerProvider.invalidate()
+    }
+
     override suspend fun updateCoverImage(
         mediaId: TraktId?,
         mediaType: MediaType?,

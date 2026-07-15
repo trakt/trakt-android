@@ -44,6 +44,13 @@ internal class UpdateUserSettingsUseCase(
         }
     }
 
+    suspend fun updatePrivateAccount(enabled: Boolean) {
+        remoteSource.updatePrivateAccount(enabled)
+        remoteSource.getProfile().let {
+            sessionManager.saveProfile(it)
+        }
+    }
+
     suspend fun updateCoverImage(
         mediaId: TraktId?,
         mediaType: MediaType?,

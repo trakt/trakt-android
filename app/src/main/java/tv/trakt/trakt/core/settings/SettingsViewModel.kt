@@ -164,6 +164,21 @@ internal class SettingsViewModel(
         }
     }
 
+    fun enablePrivateAccount(enable: Boolean) {
+        viewModelScope.launch {
+            try {
+                accountLoadingState.update { Loading }
+                updateSettingsUseCase.updatePrivateAccount(enable)
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            } finally {
+                accountLoadingState.update { Done }
+            }
+        }
+    }
+
     fun enableNotifications(enable: Boolean) {
         viewModelScope.launch {
             try {
