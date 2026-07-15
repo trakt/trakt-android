@@ -144,6 +144,7 @@ internal fun SettingsScreen(
         onSetAbout = viewModel::updateUserAbout,
         onEnableMultiplePlays = viewModel::enableMultiplePlays,
         onEnableRatePrompts = viewModel::enableRatePrompts,
+        onEnablePrivateAccount = viewModel::enablePrivateAccount,
         onEnableNotifications = viewModel::enableNotifications,
         onSetDeliveryTime = viewModel::setNotificationDeliveryTime,
         onClearCoverImage = viewModel::clearCoverImage,
@@ -195,6 +196,7 @@ private fun SettingsScreenContent(
     onBlockedUsersClick: () -> Unit = { },
     onEnableMultiplePlays: (Boolean) -> Unit = { },
     onEnableRatePrompts: (Boolean) -> Unit = { },
+    onEnablePrivateAccount: (Boolean) -> Unit = { },
     onEnableNotifications: (Boolean) -> Unit = { },
     onSetDeliveryTime: (DeliveryAdjustment) -> Unit = { },
     onLogoutClick: () -> Unit = { },
@@ -261,6 +263,7 @@ private fun SettingsScreenContent(
                     onSetLocation = onSetLocation,
                     onSetAbout = onSetAbout,
                     onClearCoverImage = onClearCoverImage,
+                    onEnablePrivateAccount = onEnablePrivateAccount,
                 )
 
                 SettingsTracking(
@@ -370,10 +373,15 @@ private fun SettingsAccount(
     onSetLocation: (String?) -> Unit = { },
     onSetAbout: (String?) -> Unit = { },
     onClearCoverImage: () -> Unit = { },
+    onEnablePrivateAccount: (Boolean) -> Unit = { },
 ) {
     var displayNameSheet by remember { mutableStateOf<String?>(null) }
     var locationSheet by remember { mutableStateOf<String?>(null) }
     var aboutSheet by remember { mutableStateOf<String?>(null) }
+
+    val privateAccount = remember(state.user) {
+        state.user?.isPrivate == true
+    }
 
     Column(
         verticalArrangement = spacedBy(SECTION_SPACING_DP.dp),
@@ -437,6 +445,16 @@ private fun SettingsAccount(
                 modifier = Modifier.padding(top = 8.dp),
             )
         }
+
+        SettingsSwitchField(
+            text = stringResource(R.string.text_private_account),
+            checked = privateAccount,
+            enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
+            onClick = {
+                onEnablePrivateAccount(!privateAccount)
+            },
+            modifier = Modifier.padding(top = SECTION_SPACING_DP.dp / 1.5F),
+        )
     }
 
     // Sheets
@@ -732,6 +750,7 @@ private fun SettingsNotifications(
         SettingsSwitchField(
             text = stringResource(R.string.text_settings_enable_notifications),
             checked = state.notifications,
+            enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
             onClick = {
                 if (state.notifications) {
                     onEnableNotifications(false)
