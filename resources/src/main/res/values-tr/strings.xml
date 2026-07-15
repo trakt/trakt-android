@@ -207,6 +207,7 @@
   <string name="button_label_sort_release_date">Yayın tarihine göre sırala</string>
   <string name="button_label_sort_remaining">Kalan bölümlere veya filmlere göre sırala</string>
   <string name="button_label_sort_runtime">Süreye göre sırala</string>
+  <string name="button_label_sort_smart">Akıllı sıralamaya göre sırala</string>
   <string name="button_label_sort_title">Alfabetik olarak sırala</string>
   <string name="button_label_star_rating">%d yıldızla derecelendir.</string>
   <string name="button_label_start_import">Verilerinizi Trakt\'a aktarmaya başlayın.</string>
@@ -421,6 +422,7 @@
   <string name="button_text_sort_release_date">Yayınlandığı Tarih</string>
   <string name="button_text_sort_remaining">Kalan</string>
   <string name="button_text_sort_runtime">Süre</string>
+  <string name="button_text_sort_smart">Akıllı</string>
   <string name="button_text_sort_title">Başlık</string>
   <string name="button_text_start_import">İçe Aktarmayı Başlat</string>
   <string name="button_text_start_rewatching">Yeniden İzlemeye Başla</string>
@@ -777,6 +779,8 @@
   <string name="import_guide_tvtime_step_3">Dışa aktarım hazır olduğunda iki e-posta alacaksınız: biri .zip dosyasıyla, diğeri ise onu açmak için bir şifreyle.</string>
   <string name="import_guide_tvtime_step_4">Kilidi açılmış .zip dosyasını buraya yükleyin. Eğer .zip kabul edilmezse, dosyayı çıkarın ve bunun yerine iki tracking-prod-records .csv dosyasını (izleme listeniz ve puanlarınız için ayrıca followed_tv_show.csv ve ratings-live-votes.csv) yükleyin.</string>
   <string name="import_guide_tvtime_title">TV Zamanınız uzayda kaybolmadı! 🚀</string>
+  <string name="import_match_toggle_hint">Varsayılanı (TVDB kimliğine göre eşleştir) öneriyoruz. Bunu yalnızca bazı bölümler yanlış girişe düşerse açın - sonuçlar diziden diziye değişir.</string>
+  <string name="import_match_toggle_label">Bölümleri sezon ve bölüm numarasına göre eşleştir</string>
   <string name="import_max_files">(en fazla %d dosyaya izin verilir)</string>
   <string name="import_source_csv">CSV Dosyası</string>
   <string name="import_source_json">JSON Dosyası</string>
@@ -954,6 +958,12 @@
   <string name="list_placeholder_popular_lists">\"%s\" herhangi bir popüler listede görünmüyor.</string>
   <string name="list_placeholder_ratings">Henüz hiçbir şeye puan vermediniz.</string>
   <string name="list_placeholder_reviews">Henüz hiçbir inceleme yazmadınız.</string>
+  <string name="list_summary_range_between">%1$s ila %2$s arası</string>
+  <string name="list_summary_range_from">%s ve üzeri</string>
+  <string name="list_summary_range_labeled_between">%1$s %2$s ila %3$s arası</string>
+  <string name="list_summary_range_labeled_from">%1$s %2$s ve üzeri</string>
+  <string name="list_summary_range_labeled_up_to">%1$s %2$s\'a kadar</string>
+  <string name="list_summary_range_up_to">%s\'a kadar</string>
   <string name="list_title_activity">Etkinlik</string>
   <string name="list_title_actors">Oyuncular</string>
   <string name="list_title_anticipated_movies">Beklenen Filmler</string>
@@ -1129,12 +1139,14 @@
   <string name="preview_feature_description_scoped_favorites">Favori listelerini, profillerde güncel yılın favorilerini göstererek ve tüm favori listesini yıla göre gruplandırarak zaman kutucuklarına ayırın.</string>
   <string name="preview_feature_description_smart_recommendations">Sıradanlığın ötesinde önerilen film ve dizileri keşfetmek için yeni nesil motorumuzu kullanın.</string>
   <string name="preview_feature_description_smart_related">Sıradanlığın ötesinde ilgili film ve dizileri keşfetmek için yeni nesil motorumuzu kullanın.</string>
+  <string name="preview_feature_description_up_next_smart_sort">İzlemeye Devam Edin listenizi sıralamak için daha akıllı bir yolu test edin.</string>
   <string name="preview_feature_title_edit_mode">Düzenleme Modu</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Yeniden İzleme</string>
   <string name="preview_feature_title_scoped_favorites">Kapsamlı Favoriler</string>
   <string name="preview_feature_title_smart_recommendations">Akıllı Öneriler</string>
   <string name="preview_feature_title_smart_related">Akıllı İlişkili</string>
+  <string name="preview_feature_title_up_next_smart_sort">İzlemeye Devam Et Akıllı Sıralama</string>
   <string name="reset_status_cleared">İzleme listesi temizlendi.</string>
   <string name="section_title_season_progress">Sezon %d ilerlemesi</string>
   <string name="section_title_seasons_overview">Genel Bakış</string>
@@ -1906,6 +1918,7 @@
   <string name="welcome_import_imdb_description">IMDb dışa aktarımından puanlarınızı ve izleme listenizi içe aktarın.</string>
   <string name="welcome_import_letterboxd_description">Filmlerinizi, puanlarınızı ve izleme listenizi Letterboxd\'dan taşıyın.</string>
   <string name="welcome_intro">Dizileriniz ve filmleriniz tek bir yerde. İzlediklerinizi takip edin, sonraki ne izleyeceğinizi keşfedin ve kaldığınız yerden devam edin; tüm cihazlarınızda.</string>
+  <string name="welcome_outro_heading">Şimdi eğlence başlıyor.</string>
   <string name="welcome_tvtime_badge">TV Time kapanıyor</string>
   <string name="welcome_tvtime_body">TV Time kapılarını kapatıyor, ancak izleme geçmişinizin onunla birlikte kaybolması gerekmiyor. Her şeyi Trakt\'e taşıyın ve hiçbir şeyi kaçırmadan takip etmeye devam edin.</string>
   <string name="welcome_tvtime_gdpr_cta">GDPR dışa aktarım isteği</string>
@@ -1913,6 +1926,8 @@
   <string name="welcome_tvtime_import_cta">TV Time\'dan içe aktar</string>
   <string name="welcome_tvtime_liberator_body">TV Time Liberator tarayıcı uzantısıyla tüm geçmişinizi dışa aktarın veya TV Time\'ın gizlilik portalından resmi GDPR veri dışa aktarımını yükleyin. Her ikisi de çalışır.</string>
   <string name="welcome_tvtime_liberator_cta">TV Time Liberator\'ı Edinin</string>
+  <string name="welcome_vip_upsell_description">Topluluğumuzu desteklemek veya Trakt\'tan daha fazlasını mı almak istiyorsunuz?</string>
+  <string name="welcome_vip_upsell_heading">VIP Olun</string>
   <string name="yir_2024_country_count">Ülke Sayısı</string>
   <string name="yir_2024_directed_by">Yönetmen</string>
   <string name="yir_2024_first_play">İlk Oynatma</string>

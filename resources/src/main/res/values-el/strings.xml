@@ -207,6 +207,7 @@
   <string name="button_label_sort_release_date">Ταξινόμηση κατά ημερομηνία κυκλοφορίας</string>
   <string name="button_label_sort_remaining">Ταξινόμηση κατά υπολειπόμενα επεισόδια ή ταινίες</string>
   <string name="button_label_sort_runtime">Ταξινόμηση κατά διάρκεια</string>
+  <string name="button_label_sort_smart">Ταξινόμηση κατά έξυπνη σειρά</string>
   <string name="button_label_sort_title">Ταξινόμηση αλφαβητικά</string>
   <string name="button_label_star_rating">Βαθμολογήστε με %d αστέρια.</string>
   <string name="button_label_start_import">Ξεκινήστε την εισαγωγή των δεδομένων σας στο Trakt.</string>
@@ -421,6 +422,7 @@
   <string name="button_text_sort_release_date">Ημερομηνία Κυκλοφορίας</string>
   <string name="button_text_sort_remaining">Υπολειπόμενα</string>
   <string name="button_text_sort_runtime">Διάρκεια</string>
+  <string name="button_text_sort_smart">Έξυπνα</string>
   <string name="button_text_sort_title">Τίτλος</string>
   <string name="button_text_start_import">Έναρξη εισαγωγής</string>
   <string name="button_text_start_rewatching">Έναρξη επανάληψης</string>
@@ -777,6 +779,8 @@
   <string name="import_guide_tvtime_step_3">Μόλις η εξαγωγή είναι έτοιμη, θα λάβετε δύο email: ένα με ένα αρχείο .zip και ένα άλλο με έναν κωδικό πρόσβασης για να το ξεκλειδώσετε.</string>
   <string name="import_guide_tvtime_step_4">Ανεβάστε το ξεκλειδωμένο .zip εδώ. Εάν το .zip δεν γίνει δεκτό, αποσυμπιέστε το και ανεβάστε αντ\' αυτού τα δύο αρχεία tracking-prod-records .csv (συν τα followed_tv_show.csv και ratings-live-votes.csv για τη λίστα παρακολούθησης και τις αξιολογήσεις σας).</string>
   <string name="import_guide_tvtime_title">Το TV Time σας δεν χάθηκε στο διάστημα! 🚀</string>
+  <string name="import_match_toggle_hint">Συνιστούμε την προεπιλογή (αντιστοίχιση με βάση το αναγνωριστικό TVDB). Ενεργοποιήστε το μόνο εάν κάποια επεισόδια καταλήγουν σε λανθασμένη καταχώριση - τα αποτελέσματα διαφέρουν ανάλογα με τη σειρά.</string>
+  <string name="import_match_toggle_label">Αντιστοίχιση επεισοδίων με βάση τον κύκλο και τον αριθμό επεισοδίου</string>
   <string name="import_max_files">(επιτρέπονται έως %d αρχεία)</string>
   <string name="import_source_csv">Αρχείο CSV</string>
   <string name="import_source_json">Αρχείο JSON</string>
@@ -954,6 +958,12 @@
   <string name="list_placeholder_popular_lists">Το \"%s\" δεν εμφανίζεται σε καμία δημοφιλή λίστα.</string>
   <string name="list_placeholder_ratings">Δεν έχετε βαθμολογήσει τίποτα ακόμα.</string>
   <string name="list_placeholder_reviews">Δεν έχετε γράψει ακόμα κριτικές.</string>
+  <string name="list_summary_range_between">Από %1$s έως %2$s</string>
+  <string name="list_summary_range_from">%s και πάνω</string>
+  <string name="list_summary_range_labeled_between">%1$s από %2$s έως %3$s</string>
+  <string name="list_summary_range_labeled_from">%1$s %2$s και πάνω</string>
+  <string name="list_summary_range_labeled_up_to">%1$s έως %2$s</string>
+  <string name="list_summary_range_up_to">Έως %s</string>
   <string name="list_title_activity">Δραστηριότητα</string>
   <string name="list_title_actors">Ηθοποιοί</string>
   <string name="list_title_anticipated_movies">Αναμενόμενες Ταινίες</string>
@@ -1129,12 +1139,14 @@
   <string name="preview_feature_description_scoped_favorites">Οριοθετήστε τις λίστες αγαπημένων εμφανίζοντας τα αγαπημένα του τρέχοντος έτους στα προφίλ και ομαδοποιώντας την πλήρη λίστα αγαπημένων ανά έτος.</string>
   <string name="preview_feature_description_smart_recommendations">Χρησιμοποιήστε τον κινητήρα επόμενης γενιάς μας για να ανακαλύψετε προτεινόμενες ταινίες και σειρές πέρα από τα προφανή.</string>
   <string name="preview_feature_description_smart_related">Χρησιμοποιήστε τον κινητήρα επόμενης γενιάς μας για να ανακαλύψετε σχετικές ταινίες και σειρές πέρα από τα προφανή.</string>
+  <string name="preview_feature_description_up_next_smart_sort">Δοκιμάστε έναν πιο έξυπνο τρόπο να ταξινομήσετε τη Συνέχιση Παρακολούθησης.</string>
   <string name="preview_feature_title_edit_mode">Λειτουργία επεξεργασίας</string>
   <string name="preview_feature_title_leaderboard">Πάνθεον</string>
   <string name="preview_feature_title_rewatch">Επανάληψη</string>
   <string name="preview_feature_title_scoped_favorites">Αγαπημένα με χρονικό πλαίσιο</string>
   <string name="preview_feature_title_smart_recommendations">Έξυπνες Προτάσεις</string>
   <string name="preview_feature_title_smart_related">Έξυπνα Σχετικά</string>
+  <string name="preview_feature_title_up_next_smart_sort">Συνέχιση Παρακολούθησης Έξυπνη Ταξινόμηση</string>
   <string name="reset_status_cleared">Η λίστα παρακολούθησης εκκαθαρίστηκε.</string>
   <string name="section_title_season_progress">Πρόοδος Σεζόν %d</string>
   <string name="section_title_seasons_overview">Επισκόπηση</string>
@@ -1906,6 +1918,7 @@
   <string name="welcome_import_imdb_description">Εισαγάγετε τις αξιολογήσεις και τη λίστα παρακολούθησής σας από εξαγωγή του IMDb.</string>
   <string name="welcome_import_letterboxd_description">Φέρτε τις ταινίες, τις αξιολογήσεις και τη λίστα παρακολούθησής σας από το Letterboxd.</string>
   <string name="welcome_intro">Οι σειρές και οι ταινίες σας, όλα σε ένα μέρος. Παρακολουθήστε τι βλέπετε, ανακαλύψτε τι ακολουθεί και συνεχίστε από εκεί που σταματήσατε, σε κάθε συσκευή που διαθέτετε.</string>
+  <string name="welcome_outro_heading">Τώρα αρχίζει η διασκέδαση.</string>
   <string name="welcome_tvtime_badge">Το TV Time κλείνει</string>
   <string name="welcome_tvtime_body">Το TV Time κλείνει τις πόρτες του, αλλά το ιστορικό παρακολούθησής σας δεν χρειάζεται να εξαφανιστεί μαζί του. Φέρτε τα όλα στο Trakt και συνεχίστε την παρακολούθηση χωρίς να χάσετε τίποτα.</string>
   <string name="welcome_tvtime_gdpr_cta">Αίτημα εξαγωγής δεδομένων GDPR</string>
@@ -1913,6 +1926,8 @@
   <string name="welcome_tvtime_import_cta">Εισαγωγή από το TV Time</string>
   <string name="welcome_tvtime_liberator_body">Εξαγάγετε το πλήρες ιστορικό σας με την επέκταση προγράμματος περιήγησης TV Time Liberator ή ανεβάστε την επίσημη εξαγωγή δεδομένων GDPR από την πύλη απορρήτου του TV Time. Οποιοδήποτε από τα δύο λειτουργεί.</string>
   <string name="welcome_tvtime_liberator_cta">Αποκτήστε το TV Time Liberator</string>
+  <string name="welcome_vip_upsell_description">Θέλετε να υποστηρίξετε την κοινότητά μας ή να αποκτήσετε περισσότερα από το Trakt;</string>
+  <string name="welcome_vip_upsell_heading">Γίνετε VIP</string>
   <string name="yir_2024_country_count">Πλήθος Χωρών</string>
   <string name="yir_2024_directed_by">Σκηνοθεσία</string>
   <string name="yir_2024_first_play">Πρώτη Προβολή</string>

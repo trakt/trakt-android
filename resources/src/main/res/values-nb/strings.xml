@@ -207,6 +207,7 @@
   <string name="button_label_sort_release_date">Sorter etter utgivelsesdato</string>
   <string name="button_label_sort_remaining">Sorter etter gjenstående episoder eller filmer</string>
   <string name="button_label_sort_runtime">Sorter etter spilletid</string>
+  <string name="button_label_sort_smart">Sorter etter smart rekkefølge</string>
   <string name="button_label_sort_title">Sorter alfabetisk</string>
   <string name="button_label_star_rating">Vurder med %d stjerner.</string>
   <string name="button_label_start_import">Begynn å importere dataen din til Trakt.</string>
@@ -421,6 +422,7 @@
   <string name="button_text_sort_release_date">Utgivelsesdato</string>
   <string name="button_text_sort_remaining">Gjenstår</string>
   <string name="button_text_sort_runtime">Spilletid</string>
+  <string name="button_text_sort_smart">Smart</string>
   <string name="button_text_sort_title">Tittel</string>
   <string name="button_text_start_import">Start import</string>
   <string name="button_text_start_rewatching">Start gjensyn</string>
@@ -777,6 +779,8 @@
   <string name="import_guide_tvtime_step_3">Når eksporten er klar, får du to e-poster: én med en .zip-fil og en annen med et passord for å låse den opp.</string>
   <string name="import_guide_tvtime_step_4">Last opp den ulåste .zip-filen her. Hvis .zip-filen ikke aksepteres, pakk den ut og last opp de to tracking-prod-records .csv-filene (pluss followed_tv_show.csv og ratings-live-votes.csv for din overvåkningsliste og rangeringer) i stedet.</string>
   <string name="import_guide_tvtime_title">Din TV Time er ikke borte i verdensrommet! 🚀</string>
+  <string name="import_match_toggle_hint">Vi anbefaler standardinnstillingen (match etter TVDB ID). Slå dette på bare hvis noen episoder havner på feil oppføring – resultatene varierer fra serie til serie.</string>
+  <string name="import_match_toggle_label">Match episoder etter sesong og episodenummer</string>
   <string name="import_max_files">(maks %d filer tillatt)</string>
   <string name="import_source_csv">CSV-fil</string>
   <string name="import_source_json">JSON-fil</string>
@@ -954,6 +958,12 @@
   <string name="list_placeholder_popular_lists">\"%s\" vises ikke på noen populære lister.</string>
   <string name="list_placeholder_ratings">Du har ikke vurdert noe ennå.</string>
   <string name="list_placeholder_reviews">Du har ikke skrevet noen anmeldelser ennå.</string>
+  <string name="list_summary_range_between">fra %1$s til %2$s</string>
+  <string name="list_summary_range_from">%s og oppover</string>
+  <string name="list_summary_range_labeled_between">%1$s fra %2$s til %3$s</string>
+  <string name="list_summary_range_labeled_from">%1$s %2$s og oppover</string>
+  <string name="list_summary_range_labeled_up_to">%1$s opp til %2$s</string>
+  <string name="list_summary_range_up_to">Opp til %s</string>
   <string name="list_title_activity">Aktivitet</string>
   <string name="list_title_actors">Skuespillere</string>
   <string name="list_title_anticipated_movies">Forventede filmer</string>
@@ -1129,12 +1139,14 @@
   <string name="preview_feature_description_scoped_favorites">Tidsbegrens favorittlister ved å vise inneværende års favoritter på profiler og gruppere den komplette favorittlisten etter år.</string>
   <string name="preview_feature_description_smart_recommendations">Bruk vår neste generasjons motor til å avdekke anbefalte filmer og serier utover det åpenbare.</string>
   <string name="preview_feature_description_smart_related">Bruk vår neste generasjons motor til å avdekke relaterte filmer og serier utover det åpenbare.</string>
+  <string name="preview_feature_description_up_next_smart_sort">Prøv en smartere måte å sortere din Fortsett å se.</string>
   <string name="preview_feature_title_edit_mode">Redigeringsmodus</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Gjensyn</string>
   <string name="preview_feature_title_scoped_favorites">Avgrensede favoritter</string>
   <string name="preview_feature_title_smart_recommendations">Smarte anbefalinger</string>
   <string name="preview_feature_title_smart_related">Smarte Relaterte</string>
+  <string name="preview_feature_title_up_next_smart_sort">Fortsett å se smart sortering</string>
   <string name="reset_status_cleared">Overvåkningsliste tømt.</string>
   <string name="section_title_season_progress">Sesong %d fremdrift</string>
   <string name="section_title_seasons_overview">Oversikt</string>
@@ -1906,6 +1918,7 @@
   <string name="welcome_import_imdb_description">Importer vurderingene og overvåkningslisten din fra en IMDb-eksport.</string>
   <string name="welcome_import_letterboxd_description">Ta med deg filmene, vurderingene og overvåkningslisten din fra Letterboxd.</string>
   <string name="welcome_intro">Seriene og filmene dine, alt på ett sted. Spor det du ser, oppdag hva som kommer, og fortsett der du slapp; på alle enheter du eier.</string>
+  <string name="welcome_outro_heading">Nå begynner moroa.</string>
   <string name="welcome_tvtime_badge">TV Time stenger ned</string>
   <string name="welcome_tvtime_body">TV Time stenger dørene, men visningshistorikken din trenger ikke å forsvinne med den. Flytt alt over til Trakt og fortsett sporingen uten å gå glipp av noe.</string>
   <string name="welcome_tvtime_gdpr_cta">Be om GDPR-eksport</string>
@@ -1913,6 +1926,8 @@
   <string name="welcome_tvtime_import_cta">Importer fra TV Time</string>
   <string name="welcome_tvtime_liberator_body">Eksporter hele historikken din med nettleserutvidelsen TV Time Liberator, eller last opp den offisielle GDPR-dataeksporten fra TV Times personvernportal. Begge deler fungerer.</string>
   <string name="welcome_tvtime_liberator_cta">Skaff TV Time Liberator</string>
+  <string name="welcome_vip_upsell_description">Vil du støtte fellesskapet vårt eller få mer ut av Trakt?</string>
+  <string name="welcome_vip_upsell_heading">Bli VIP</string>
   <string name="yir_2024_country_count">Antall land</string>
   <string name="yir_2024_directed_by">Regissert av</string>
   <string name="yir_2024_first_play">Første avspilling</string>

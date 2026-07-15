@@ -207,6 +207,7 @@
   <string name="button_label_sort_release_date">Urutkan berdasarkan tanggal rilis</string>
   <string name="button_label_sort_remaining">Urutkan berdasarkan sisa episode atau film</string>
   <string name="button_label_sort_runtime">Urutkan berdasarkan durasi</string>
+  <string name="button_label_sort_smart">Urutkan berdasarkan urutan cerdas</string>
   <string name="button_label_sort_title">Urutkan berdasarkan abjad</string>
   <string name="button_label_star_rating">Nilai dengan %d bintang.</string>
   <string name="button_label_start_import">Mulai mengimpor data Anda ke Trakt.</string>
@@ -421,6 +422,7 @@
   <string name="button_text_sort_release_date">Tanggal Rilis</string>
   <string name="button_text_sort_remaining">Tersisa</string>
   <string name="button_text_sort_runtime">Durasi</string>
+  <string name="button_text_sort_smart">Cerdas</string>
   <string name="button_text_sort_title">Judul</string>
   <string name="button_text_start_import">Mulai Impor</string>
   <string name="button_text_start_rewatching">Mulai menonton ulang</string>
@@ -777,6 +779,8 @@
   <string name="import_guide_tvtime_step_3">Setelah ekspor siap, Anda akan menerima dua email: satu dengan file .zip dan satu lagi dengan kata sandi untuk membukanya.</string>
   <string name="import_guide_tvtime_step_4">Unggah .zip yang sudah dibuka di sini. Jika .zip tidak diterima, ekstrak dan unggah dua file .csv tracking-prod-records (ditambah followed_tv_show.csv dan ratings-live-votes.csv untuk daftar tontonan dan peringkat Anda) sebagai gantinya.</string>
   <string name="import_guide_tvtime_title">TV Time Anda tidak hilang di angkasa! 🚀</string>
+  <string name="import_match_toggle_hint">Kami merekomendasikan default (cocokkan berdasarkan ID TVDB). Aktifkan ini hanya jika beberapa episode masuk ke entri yang salah - hasilnya bervariasi dari satu acara ke acara lain.</string>
+  <string name="import_match_toggle_label">Cocokkan episode berdasarkan musim dan nomor episode</string>
   <string name="import_max_files">(maks. %d berkas diizinkan)</string>
   <string name="import_source_csv">Berkas CSV</string>
   <string name="import_source_json">Berkas JSON</string>
@@ -954,6 +958,12 @@
   <string name="list_placeholder_popular_lists">\"%s\" tidak muncul di daftar populer mana pun.</string>
   <string name="list_placeholder_ratings">Anda belum memberi rating apa pun.</string>
   <string name="list_placeholder_reviews">Anda belum menulis ulasan apa pun.</string>
+  <string name="list_summary_range_between">%1$s hingga %2$s</string>
+  <string name="list_summary_range_from">%s dan ke atas</string>
+  <string name="list_summary_range_labeled_between">%1$s %2$s hingga %3$s</string>
+  <string name="list_summary_range_labeled_from">%1$s %2$s dan ke atas</string>
+  <string name="list_summary_range_labeled_up_to">%1$s hingga %2$s</string>
+  <string name="list_summary_range_up_to">Hingga %s</string>
   <string name="list_title_activity">Aktivitas</string>
   <string name="list_title_actors">Aktor</string>
   <string name="list_title_anticipated_movies">Film yang Dinantikan</string>
@@ -1129,12 +1139,14 @@
   <string name="preview_feature_description_scoped_favorites">Batas waktu daftar favorit dengan menampilkan favorit tahun berjalan di profil dan mengelompokkan daftar favorit lengkap berdasarkan tahun.</string>
   <string name="preview_feature_description_smart_recommendations">Gunakan mesin generasi berikutnya kami untuk menampilkan film dan acara yang direkomendasikan melampaui yang biasa.</string>
   <string name="preview_feature_description_smart_related">Gunakan mesin generasi berikutnya kami untuk menampilkan film dan acara terkait yang melampaui yang biasa.</string>
+  <string name="preview_feature_description_up_next_smart_sort">Coba cara yang lebih cerdas untuk mengurutkan Lanjutkan Menonton Anda.</string>
   <string name="preview_feature_title_edit_mode">Mode Edit</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Tonton Ulang</string>
   <string name="preview_feature_title_scoped_favorites">Favorit Terbatas</string>
   <string name="preview_feature_title_smart_recommendations">Rekomendasi Cerdas</string>
   <string name="preview_feature_title_smart_related">Terkait Cerdas</string>
+  <string name="preview_feature_title_up_next_smart_sort">Lanjutkan Menonton Urutan Cerdas</string>
   <string name="reset_status_cleared">Daftar tontonan dibersihkan.</string>
   <string name="section_title_season_progress">Musim %d kemajuan</string>
   <string name="section_title_seasons_overview">Ikhtisar</string>
@@ -1906,6 +1918,7 @@
   <string name="welcome_import_imdb_description">Impor penilaian dan daftar tontonan Anda dari ekspor IMDb.</string>
   <string name="welcome_import_letterboxd_description">Bawa film, penilaian, dan daftar tontonan Anda dari Letterboxd.</string>
   <string name="welcome_intro">Acara TV dan film Anda, semuanya di satu tempat. Lacak apa yang Anda tonton, temukan apa selanjutnya, dan lanjutkan persis di mana Anda tinggalkan; di setiap perangkat yang Anda miliki.</string>
+  <string name="welcome_outro_heading">Kini saatnya bersenang-senang.</string>
   <string name="welcome_tvtime_badge">TV Time akan ditutup</string>
   <string name="welcome_tvtime_body">TV Time akan ditutup, tetapi riwayat tontonan Anda tidak harus ikut hilang. Bawa semuanya ke Trakt dan terus lacak tanpa kehilangan jejak.</string>
   <string name="welcome_tvtime_gdpr_cta">Minta ekspor GDPR</string>
@@ -1913,6 +1926,8 @@
   <string name="welcome_tvtime_import_cta">Impor dari TV Time</string>
   <string name="welcome_tvtime_liberator_body">Ekspor riwayat lengkap Anda dengan ekstensi browser TV Time Liberator, atau unggah ekspor data GDPR resmi dari portal privasi TV Time. Keduanya berfungsi.</string>
   <string name="welcome_tvtime_liberator_cta">Dapatkan TV Time Liberator</string>
+  <string name="welcome_vip_upsell_description">Ingin mendukung komunitas kami atau mendapatkan lebih banyak dari Trakt?</string>
+  <string name="welcome_vip_upsell_heading">Jadilah VIP</string>
   <string name="yir_2024_country_count">Jumlah Negara</string>
   <string name="yir_2024_directed_by">Disutradarai Oleh</string>
   <string name="yir_2024_first_play">Tontonan Pertama</string>

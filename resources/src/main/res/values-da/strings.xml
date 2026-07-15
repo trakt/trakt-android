@@ -207,6 +207,7 @@
   <string name="button_label_sort_release_date">Sortér efter udgivelsesdato</string>
   <string name="button_label_sort_remaining">Sortér efter resterende afsnit eller film</string>
   <string name="button_label_sort_runtime">Sortér efter spilletid</string>
+  <string name="button_label_sort_smart">Sortér efter smart rækkefølge</string>
   <string name="button_label_sort_title">Sortér alfabetisk</string>
   <string name="button_label_star_rating">Bedøm med %d stjerner.</string>
   <string name="button_label_start_import">Start import af dine data til Trakt.</string>
@@ -421,6 +422,7 @@
   <string name="button_text_sort_release_date">Udgivelsesdato</string>
   <string name="button_text_sort_remaining">Resterende</string>
   <string name="button_text_sort_runtime">Spilletid</string>
+  <string name="button_text_sort_smart">Smart</string>
   <string name="button_text_sort_title">Titel</string>
   <string name="button_text_start_import">Start import</string>
   <string name="button_text_start_rewatching">Begynd at gense</string>
@@ -777,6 +779,8 @@
   <string name="import_guide_tvtime_step_3">Når eksporten er klar, modtager du to e-mails: en med en .zip-fil og en anden med et kodeord for at låse den op.</string>
   <string name="import_guide_tvtime_step_4">Upload den ulåste .zip her. Hvis .zip-filen ikke accepteres, skal du udpakke den og i stedet uploade de to tracking-prod-records .csv-filer (plus followed_tv_show.csv og ratings-live-votes.csv for din overvågningsliste og vurderinger).</string>
   <string name="import_guide_tvtime_title">Din TV Time er ikke tabt i rummet! 🚀</string>
+  <string name="import_match_toggle_hint">Vi anbefaler standardindstillingen (match efter TVDB id). Slå dette til kun hvis nogle afsnit havner på den forkerte post - resultaterne varierer fra serie til serie.</string>
+  <string name="import_match_toggle_label">Match afsnit efter sæson og afsnitsnummer</string>
   <string name="import_max_files">(maks. %d filer tilladt)</string>
   <string name="import_source_csv">CSV-fil</string>
   <string name="import_source_json">JSON-fil</string>
@@ -954,6 +958,12 @@
   <string name="list_placeholder_popular_lists">\"%s\" vises ikke på nogen populære lister.</string>
   <string name="list_placeholder_ratings">Du har ikke bedømt noget endnu.</string>
   <string name="list_placeholder_reviews">Du har ikke skrevet nogen anmeldelser endnu.</string>
+  <string name="list_summary_range_between">%1$s til %2$s</string>
+  <string name="list_summary_range_from">%s og opefter</string>
+  <string name="list_summary_range_labeled_between">%1$s %2$s til %3$s</string>
+  <string name="list_summary_range_labeled_from">%1$s %2$s og opefter</string>
+  <string name="list_summary_range_labeled_up_to">%1$s op til %2$s</string>
+  <string name="list_summary_range_up_to">Op til %s</string>
   <string name="list_title_activity">Aktivitet</string>
   <string name="list_title_actors">Skuespillere</string>
   <string name="list_title_anticipated_movies">Forventede film</string>
@@ -1129,12 +1139,14 @@
   <string name="preview_feature_description_scoped_favorites">Tidsbegræns favoritlister ved at vise indeværende års favoritter på profiler og gruppere den fulde favoritliste efter år.</string>
   <string name="preview_feature_description_smart_recommendations">Brug vores næste-generations motor til at finde anbefalede film og serier ud over det åbenlyse.</string>
   <string name="preview_feature_description_smart_related">Brug vores næste-generations motor til at finde relaterede film og serier ud over det åbenlyse.</string>
+  <string name="preview_feature_description_up_next_smart_sort">Test en smartere måde at sortere din \'Se videre\' på.</string>
   <string name="preview_feature_title_edit_mode">Redigeringstilstand</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Gensyn</string>
   <string name="preview_feature_title_scoped_favorites">Afgrænsede favoritter</string>
   <string name="preview_feature_title_smart_recommendations">Smarte anbefalinger</string>
   <string name="preview_feature_title_smart_related">Smart relateret</string>
+  <string name="preview_feature_title_up_next_smart_sort">Se videre Smart Sortering</string>
   <string name="reset_status_cleared">Huskeliste ryddet.</string>
   <string name="section_title_season_progress">Sæson %d status</string>
   <string name="section_title_seasons_overview">Oversigt</string>
@@ -1906,6 +1918,7 @@
   <string name="welcome_import_imdb_description">Importer dine bedømmelser og overvågningsliste fra en IMDb-eksport.</string>
   <string name="welcome_import_letterboxd_description">Overfør dine film, bedømmelser og overvågningsliste fra Letterboxd.</string>
   <string name="welcome_intro">Dine serier og film, alt samlet ét sted. Spor hvad du ser, opdag hvad der er nyt, og fortsæt hvor du slap; på tværs af alle dine enheder.</string>
+  <string name="welcome_outro_heading">Nu begynder det sjove.</string>
   <string name="welcome_tvtime_badge">TV Time lukker ned</string>
   <string name="welcome_tvtime_body">TV Time lukker sine døre, men din seerhistorik behøver ikke at forsvinde med det. Overfør alt til Trakt og fortsæt med at spore uden at gå glip af noget.</string>
   <string name="welcome_tvtime_gdpr_cta">Anmod om GDPR-eksport</string>
@@ -1913,6 +1926,8 @@
   <string name="welcome_tvtime_import_cta">Importer fra TV Time</string>
   <string name="welcome_tvtime_liberator_body">Eksporter din fulde historik med TV Time Liberator browserudvidelsen, eller upload den officielle GDPR-dataeksport fra TV Times privatlivsportal. Begge dele virker.</string>
   <string name="welcome_tvtime_liberator_cta">Hent TV Time Liberator</string>
+  <string name="welcome_vip_upsell_description">Vil du støtte vores fællesskab eller få mere ud af Trakt?</string>
+  <string name="welcome_vip_upsell_heading">Bliv VIP</string>
   <string name="yir_2024_country_count">Antal lande</string>
   <string name="yir_2024_directed_by">Instrueret af</string>
   <string name="yir_2024_first_play">Første afspilning</string>

@@ -207,6 +207,7 @@
   <string name="button_label_sort_release_date">按发布日期排序</string>
   <string name="button_label_sort_remaining">按剩余剧集或电影排序</string>
   <string name="button_label_sort_runtime">按运行时长排序</string>
+  <string name="button_label_sort_smart">按智能顺序排序</string>
   <string name="button_label_sort_title">按字母顺序排序</string>
   <string name="button_label_star_rating">用 %d 星评分。</string>
   <string name="button_label_start_import">开始将您的数据导入 Trakt。</string>
@@ -421,6 +422,7 @@
   <string name="button_text_sort_release_date">发布日期</string>
   <string name="button_text_sort_remaining">剩余</string>
   <string name="button_text_sort_runtime">时长</string>
+  <string name="button_text_sort_smart">智能</string>
   <string name="button_text_sort_title">标题</string>
   <string name="button_text_start_import">开始导入</string>
   <string name="button_text_start_rewatching">开始重新观看</string>
@@ -777,6 +779,8 @@
   <string name="import_guide_tvtime_step_3">导出准备好后，您会收到两封电子邮件：一封包含 .zip 文件，另一封包含解锁密码。</string>
   <string name="import_guide_tvtime_step_4">在此处上传已解锁的 .zip 文件。如果 .zip 文件不被接受，请解压缩它，并上传两个 tracking-prod-records .csv 文件（以及用于您的关注列表和评分的 followed_tv_show.csv 和 ratings-live-votes.csv）替代。</string>
   <string name="import_guide_tvtime_title">您的 TV Time 没有迷失在宇宙中！🚀</string>
+  <string name="import_match_toggle_hint">我们推荐默认设置（按TVDB ID匹配）。仅当某些剧集匹配到错误条目时才启用此功能 - 结果因节目而异。</string>
+  <string name="import_match_toggle_label">按季数和集数匹配剧集</string>
   <string name="import_max_files">（最多允许 %d 个文件）</string>
   <string name="import_source_csv">CSV 文件</string>
   <string name="import_source_json">JSON 文件</string>
@@ -954,6 +958,12 @@
   <string name="list_placeholder_popular_lists">“%s”未出现在任何热门列表中。</string>
   <string name="list_placeholder_ratings">你还没有评价过任何内容。</string>
   <string name="list_placeholder_reviews">您还没有撰写任何评论。</string>
+  <string name="list_summary_range_between">%1$s 至 %2$s</string>
+  <string name="list_summary_range_from">%s 及以上</string>
+  <string name="list_summary_range_labeled_between">%1$s %2$s 至 %3$s</string>
+  <string name="list_summary_range_labeled_from">%1$s %2$s 及以上</string>
+  <string name="list_summary_range_labeled_up_to">%1$s 最高 %2$s</string>
+  <string name="list_summary_range_up_to">最高 %s</string>
   <string name="list_title_activity">动态</string>
   <string name="list_title_actors">演员</string>
   <string name="list_title_anticipated_movies">最受期待的电影</string>
@@ -1129,12 +1139,14 @@
   <string name="preview_feature_description_scoped_favorites">通过在个人资料上显示当年的收藏以及按年份分组完整的收藏列表来限制收藏列表的时间范围。</string>
   <string name="preview_feature_description_smart_recommendations">使用我们的下一代引擎，发现超越显而易见的推荐电影和节目。</string>
   <string name="preview_feature_description_smart_related">使用我们的下一代引擎，发现超越显而易见的电影和节目。</string>
+  <string name="preview_feature_description_up_next_smart_sort">试用一种更智能的方式来对您的“继续观看”进行排序。</string>
   <string name="preview_feature_title_edit_mode">编辑模式</string>
   <string name="preview_feature_title_leaderboard">万神殿</string>
   <string name="preview_feature_title_rewatch">重温</string>
   <string name="preview_feature_title_scoped_favorites">限定范围的收藏</string>
   <string name="preview_feature_title_smart_recommendations">智能推荐</string>
   <string name="preview_feature_title_smart_related">智能相关</string>
+  <string name="preview_feature_title_up_next_smart_sort">继续观看智能排序</string>
   <string name="reset_status_cleared">待看列表已清除。</string>
   <string name="section_title_season_progress">第 %d 季 进度</string>
   <string name="section_title_seasons_overview">概览</string>
@@ -1906,6 +1918,7 @@
   <string name="welcome_import_imdb_description">从 IMDb 导出中导入您的评分和关注列表。</string>
   <string name="welcome_import_letterboxd_description">将您的电影、评分和关注列表从 Letterboxd 导入。</string>
   <string name="welcome_intro">您的节目和电影，尽在一处。追踪您观看的内容，发现接下来要看什么，并在您拥有的每台设备上从上次停止的地方继续。</string>
+  <string name="welcome_outro_heading">乐趣现在开始。</string>
   <string name="welcome_tvtime_badge">TV Time 正在关闭</string>
   <string name="welcome_tvtime_body">TV Time 正在关闭，但您的观看历史记录不必随之消失。将所有内容导入 Trakt，持续追踪，不错过任何精彩。</string>
   <string name="welcome_tvtime_gdpr_cta">请求 GDPR 导出</string>
@@ -1913,6 +1926,8 @@
   <string name="welcome_tvtime_import_cta">从 TV Time 导入</string>
   <string name="welcome_tvtime_liberator_body">使用 TV Time Liberator 浏览器扩展导出您的完整历史记录，或从 TV Time 的隐私门户上传官方 GDPR 数据导出。两者均可。</string>
   <string name="welcome_tvtime_liberator_cta">获取 TV Time Liberator</string>
+  <string name="welcome_vip_upsell_description">想要支持我们的社区或从 Trakt 获得更多？</string>
+  <string name="welcome_vip_upsell_heading">成为 VIP</string>
   <string name="yir_2024_country_count">国家数量</string>
   <string name="yir_2024_directed_by">导演</string>
   <string name="yir_2024_first_play">首次播放</string>

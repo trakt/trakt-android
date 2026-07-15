@@ -207,6 +207,7 @@
   <string name="button_label_sort_release_date">Sort by release date</string>
   <string name="button_label_sort_remaining">Sort by remaining episodes or movies</string>
   <string name="button_label_sort_runtime">Sort by runtime</string>
+  <string name="button_label_sort_smart">Sort by smart order</string>
   <string name="button_label_sort_title">Sort alphabetically</string>
   <string name="button_label_star_rating">Rate with %d stars.</string>
   <string name="button_label_start_import">Start importing your data into Trakt.</string>
@@ -421,6 +422,7 @@
   <string name="button_text_sort_release_date">Release Date</string>
   <string name="button_text_sort_remaining">Remaining</string>
   <string name="button_text_sort_runtime">Runtime</string>
+  <string name="button_text_sort_smart">Smart</string>
   <string name="button_text_sort_title">Title</string>
   <string name="button_text_start_import">Start Import</string>
   <string name="button_text_start_rewatching">Start rewatching</string>
@@ -777,6 +779,8 @@
   <string name="import_guide_tvtime_step_3">Once the export is ready you\'ll get two emails: one with a .zip file and another with a password to unlock it.</string>
   <string name="import_guide_tvtime_step_4">Upload the unlocked .zip here. If the .zip is not accepted, extract it and upload the two tracking-prod-records .csv files (plus followed_tv_show.csv and ratings-live-votes.csv for your watchlist and ratings) instead.</string>
   <string name="import_guide_tvtime_title">Your TV Time isn\'t lost in space! 🚀</string>
+  <string name="import_match_toggle_hint">We recommend the default (match by TVDB id). Turn this on only if some episodes land on the wrong entry - results vary from show to show.</string>
+  <string name="import_match_toggle_label">Match episodes by season and episode number</string>
   <string name="import_max_files">(max %d files allowed)</string>
   <string name="import_source_csv">CSV File</string>
   <string name="import_source_json">JSON File</string>
@@ -954,6 +958,12 @@
   <string name="list_placeholder_popular_lists">\"%s\" does not appear on any popular lists.</string>
   <string name="list_placeholder_ratings">You haven\'t rated anything yet.</string>
   <string name="list_placeholder_reviews">You haven\'t written any reviews yet.</string>
+  <string name="list_summary_range_between">%1$s to %2$s</string>
+  <string name="list_summary_range_from">%s and up</string>
+  <string name="list_summary_range_labeled_between">%1$s %2$s to %3$s</string>
+  <string name="list_summary_range_labeled_from">%1$s %2$s and up</string>
+  <string name="list_summary_range_labeled_up_to">%1$s up to %2$s</string>
+  <string name="list_summary_range_up_to">Up to %s</string>
   <string name="list_title_activity">Activity</string>
   <string name="list_title_actors">Actors</string>
   <string name="list_title_anticipated_movies">Anticipated Movies</string>
@@ -1129,12 +1139,14 @@
   <string name="preview_feature_description_scoped_favorites">Time-box favourite lists by showing current-year favourites on profiles and grouping the full favourites list by year.</string>
   <string name="preview_feature_description_smart_recommendations">Use our next-gen engine to surface recommended movies and shows beyond the obvious.</string>
   <string name="preview_feature_description_smart_related">Use our next-gen engine to surface related movies and shows beyond the obvious.</string>
+  <string name="preview_feature_description_up_next_smart_sort">Test a smarter way to sort your Continue Watching.</string>
   <string name="preview_feature_title_edit_mode">Edit Mode</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Rewatch</string>
   <string name="preview_feature_title_scoped_favorites">Scoped Favourites</string>
   <string name="preview_feature_title_smart_recommendations">Smart Recommendations</string>
   <string name="preview_feature_title_smart_related">Smart Related</string>
+  <string name="preview_feature_title_up_next_smart_sort">Continue Watching Smart Sort</string>
   <string name="reset_status_cleared">Watchlist cleared.</string>
   <string name="section_title_season_progress">Season %d progress</string>
   <string name="section_title_seasons_overview">Overview</string>
@@ -1906,6 +1918,7 @@
   <string name="welcome_import_imdb_description">Import your ratings and watchlist from an IMDb export.</string>
   <string name="welcome_import_letterboxd_description">Bring your films, ratings, and watchlist over from Letterboxd.</string>
   <string name="welcome_intro">Your shows and movies, all in one place. Track what you watch, discover what\'s next, and pick up right where you left off; across every device you own.</string>
+  <string name="welcome_outro_heading">Now the fun begins.</string>
   <string name="welcome_tvtime_badge">TV Time is shutting down</string>
   <string name="welcome_tvtime_body">TV Time is closing its doors, but your watch history doesn\'t have to disappear with it. Bring everything over to Trakt and keep tracking without missing a beat.</string>
   <string name="welcome_tvtime_gdpr_cta">Request GDPR export</string>
@@ -1913,6 +1926,8 @@
   <string name="welcome_tvtime_import_cta">Import from TV Time</string>
   <string name="welcome_tvtime_liberator_body">Export your full history with the TV Time Liberator browser extension, or upload the official GDPR data export from TV Time\'s privacy portal. Either one works.</string>
   <string name="welcome_tvtime_liberator_cta">Get TV Time Liberator</string>
+  <string name="welcome_vip_upsell_description">Want to support our community or get more from Trakt?</string>
+  <string name="welcome_vip_upsell_heading">Become a VIP</string>
   <string name="yir_2024_country_count">Country Count</string>
   <string name="yir_2024_directed_by">Directed By</string>
   <string name="yir_2024_first_play">First Play</string>

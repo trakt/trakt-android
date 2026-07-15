@@ -207,6 +207,7 @@
   <string name="button_label_sort_release_date">Ordena per data d\'estrena</string>
   <string name="button_label_sort_remaining">Ordenar per episodis o pel·lícules restants</string>
   <string name="button_label_sort_runtime">Ordena per durada</string>
+  <string name="button_label_sort_smart">Ordena per ordre intel·ligent</string>
   <string name="button_label_sort_title">Ordena alfabèticament</string>
   <string name="button_label_star_rating">Valora amb %d estrelles.</string>
   <string name="button_label_start_import">Comença a importar les teves dades a Trakt.</string>
@@ -421,6 +422,7 @@
   <string name="button_text_sort_release_date">Data d\'estrena</string>
   <string name="button_text_sort_remaining">Restant</string>
   <string name="button_text_sort_runtime">Durada</string>
+  <string name="button_text_sort_smart">Intel·ligent</string>
   <string name="button_text_sort_title">Títol</string>
   <string name="button_text_start_import">Inicia la importació</string>
   <string name="button_text_start_rewatching">Comença a revisionar</string>
@@ -777,6 +779,8 @@
   <string name="import_guide_tvtime_step_3">Un cop l\'exportació estigui llesta, rebràs dos correus electrònics: un amb un fitxer .zip i un altre amb una contrasenya per desbloquejar-lo.</string>
   <string name="import_guide_tvtime_step_4">Puja el fitxer .zip desbloquejat aquí. Si el fitxer .zip no s\'accepta, extreu-lo i puja els dos fitxers .csv tracking-prod-records (més followed_tv_show.csv i ratings-live-votes.csv per a la teva llista i valoracions) en el seu lloc.</string>
   <string name="import_guide_tvtime_title">El teu TV Time no s\'ha perdut a l\'espai! 🚀</string>
+  <string name="import_match_toggle_hint">Recomanem la configuració predeterminada (coincidència per ID de TVDB). Activa-ho només si alguns episodis apareixen a l\'entrada incorrecta: els resultats varien segons la sèrie.</string>
+  <string name="import_match_toggle_label">Fes coincidir els episodis per temporada i número d\'episodi</string>
   <string name="import_max_files">(màxim %d fitxers permesos)</string>
   <string name="import_source_csv">Fitxer CSV</string>
   <string name="import_source_json">Fitxer JSON</string>
@@ -954,6 +958,12 @@
   <string name="list_placeholder_popular_lists">\"%s\" no apareix en cap llista popular.</string>
   <string name="list_placeholder_ratings">Encara no has valorat res.</string>
   <string name="list_placeholder_reviews">Encara no has escrit cap ressenya.</string>
+  <string name="list_summary_range_between">de %1$s a %2$s</string>
+  <string name="list_summary_range_from">%s i més</string>
+  <string name="list_summary_range_labeled_between">%1$s de %2$s a %3$s</string>
+  <string name="list_summary_range_labeled_from">%1$s %2$s i més</string>
+  <string name="list_summary_range_labeled_up_to">%1$s fins a %2$s</string>
+  <string name="list_summary_range_up_to">Fins a %s</string>
   <string name="list_title_activity">Activitat</string>
   <string name="list_title_actors">Actors</string>
   <string name="list_title_anticipated_movies">Pel·lícules anticipades</string>
@@ -1129,12 +1139,14 @@
   <string name="preview_feature_description_scoped_favorites">Delimita les llistes de preferits mostrant els preferits de l\'any actual als perfils i agrupant la llista completa de preferits per any.</string>
   <string name="preview_feature_description_smart_recommendations">Utilitza el nostre motor de nova generació per trobar pel·lícules i sèries recomanades més enllà del que és obvi.</string>
   <string name="preview_feature_description_smart_related">Utilitza el nostre motor de nova generació per trobar pel·lícules i sèries relacionades més enllà del que és obvi.</string>
+  <string name="preview_feature_description_up_next_smart_sort">Prova una manera més intel·ligent d\'ordenar el teu \'Continua veient\'.</string>
   <string name="preview_feature_title_edit_mode">Mode d\'edició</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Revisió</string>
   <string name="preview_feature_title_scoped_favorites">Preferits per àmbit</string>
   <string name="preview_feature_title_smart_recommendations">Recomanacions intel·ligents</string>
   <string name="preview_feature_title_smart_related">Relacionats intel·ligents</string>
+  <string name="preview_feature_title_up_next_smart_sort">Continua veient: Ordre intel·ligent</string>
   <string name="reset_status_cleared">Llista de seguiment esborrada.</string>
   <string name="section_title_season_progress">Temporada %d progrés</string>
   <string name="section_title_seasons_overview">Visió general</string>
@@ -1906,6 +1918,7 @@
   <string name="welcome_import_imdb_description">Importa les teves valoracions i llista de seguiment d\'una exportació d\'IMDb.</string>
   <string name="welcome_import_letterboxd_description">Porta les teves pel·lícules, valoracions i llista de seguiment des de Letterboxd.</string>
   <string name="welcome_intro">Les teves sèries i pel·lícules, tot en un sol lloc. Fes un seguiment del que mires, descobreix el que ve després i reprèn on ho vas deixar; a tots els dispositius que tens.</string>
+  <string name="welcome_outro_heading">Ara comença la diversió.</string>
   <string name="welcome_tvtime_badge">TV Time tanca</string>
   <string name="welcome_tvtime_body">TV Time tanca les seves portes, però el teu historial de visualitzacions no ha de desaparèixer amb ella. Porta-ho tot a Trakt i segueix fent un seguiment sense perdre el ritme.</string>
   <string name="welcome_tvtime_gdpr_cta">Sol·licitar exportació de dades RGPD</string>
@@ -1913,6 +1926,8 @@
   <string name="welcome_tvtime_import_cta">Importa des de TV Time</string>
   <string name="welcome_tvtime_liberator_body">Exporta el teu historial complet amb l\'extensió de navegador TV Time Liberator, o puja l\'exportació oficial de dades GDPR del portal de privadesa de TV Time. Qualsevol de les dues opcions funciona.</string>
   <string name="welcome_tvtime_liberator_cta">Obtén TV Time Liberator</string>
+  <string name="welcome_vip_upsell_description">Vols donar suport a la nostra comunitat o obtenir més de Trakt?</string>
+  <string name="welcome_vip_upsell_heading">Converteix-te en VIP</string>
   <string name="yir_2024_country_count">Recompte de països</string>
   <string name="yir_2024_directed_by">Dirigit per</string>
   <string name="yir_2024_first_play">Primera reproducció</string>

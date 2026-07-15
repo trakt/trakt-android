@@ -207,6 +207,7 @@
   <string name="button_label_sort_release_date">مرتب‌سازی بر اساس تاریخ انتشار</string>
   <string name="button_label_sort_remaining">مرتب‌سازی بر اساس قسمت‌ها یا فیلم‌های باقی‌مانده</string>
   <string name="button_label_sort_runtime">مرتب‌سازی بر اساس مدت زمان</string>
+  <string name="button_label_sort_smart">مرتب\n\n\n\n‌سازی بر اساس ترتیب هوشمند</string>
   <string name="button_label_sort_title">مرتب‌سازی الفبایی</string>
   <string name="button_label_star_rating">امتیاز دادن با %d ستاره.</string>
   <string name="button_label_start_import">شروع وارد کردن داده‌های خود به Trakt.</string>
@@ -421,6 +422,7 @@
   <string name="button_text_sort_release_date">تاریخ انتشار</string>
   <string name="button_text_sort_remaining">باقی‌مانده</string>
   <string name="button_text_sort_runtime">مدت زمان</string>
+  <string name="button_text_sort_smart">هوشمند</string>
   <string name="button_text_sort_title">عنوان</string>
   <string name="button_text_start_import">شروع وارد کردن</string>
   <string name="button_text_start_rewatching">شروع بازتماشا</string>
@@ -777,6 +779,8 @@
   <string name="import_guide_tvtime_step_3">پس از آماده شدن خروجی، دو ایمیل دریافت خواهید کرد: یکی با یک فایل .zip و دیگری با رمز عبور برای باز کردن آن.</string>
   <string name="import_guide_tvtime_step_4">فایل .zip باز شده را اینجا بارگذاری کنید. اگر فایل .zip پذیرفته نشد، آن را استخراج کرده و به جای آن دو فایل .csv با نام tracking-prod-records (به علاوه followed_tv_show.csv و ratings-live-votes.csv برای لیست تماشا و امتیازات شما) را بارگذاری کنید.</string>
   <string name="import_guide_tvtime_title">زمان تلویزیون شما در فضا گم نشده است! 🚀</string>
+  <string name="import_match_toggle_hint">ما پیش‌فرض (مطابقت بر اساس شناسه TVDB) را توصیه می‌کنیم. این گزینه را تنها در صورتی فعال کنید که برخی قسمت‌ها در ورودی اشتباه قرار می‌گیرند - نتایج از یک نمایش به نمایش دیگر متفاوت است.</string>
+  <string name="import_match_toggle_label">قسمت‌ها را بر اساس شماره فصل و قسمت مطابقت دهید</string>
   <string name="import_max_files">(حداکثر %d فایل مجاز)</string>
   <string name="import_source_csv">فایل CSV</string>
   <string name="import_source_json">فایل JSON</string>
@@ -954,6 +958,12 @@
   <string name="list_placeholder_popular_lists">\"%s\" در هیچ لیست محبوبی ظاهر نمی‌شود.</string>
   <string name="list_placeholder_ratings">شما هنوز هیچ چیزی را امتیاز نداده‌اید.</string>
   <string name="list_placeholder_reviews">شما هنوز هیچ نقدی ننوشته‌اید.</string>
+  <string name="list_summary_range_between">از %1$s تا %2$s</string>
+  <string name="list_summary_range_from">%s و بیشتر</string>
+  <string name="list_summary_range_labeled_between">%1$s از %2$s تا %3$s</string>
+  <string name="list_summary_range_labeled_from">%1$s %2$s و بیشتر</string>
+  <string name="list_summary_range_labeled_up_to">%1$s تا %2$s</string>
+  <string name="list_summary_range_up_to">تا %s</string>
   <string name="list_title_activity">فعالیت</string>
   <string name="list_title_actors">بازیگران</string>
   <string name="list_title_anticipated_movies">فیلم‌های مورد انتظار</string>
@@ -1129,12 +1139,14 @@
   <string name="preview_feature_description_scoped_favorites">لیست‌های علاقه‌مندی را با نمایش علاقه‌مندی‌های سال جاری در پروفایل‌ها و گروه‌بندی لیست کامل علاقه‌مندی‌ها بر اساس سال، محدود کنید.</string>
   <string name="preview_feature_description_smart_recommendations">از موتور نسل بعدی ما برای نمایش فیلم‌ها و نمایش‌های توصیه شده فراتر از موارد بدیهی استفاده کنید.</string>
   <string name="preview_feature_description_smart_related">از موتور نسل بعدی ما برای نمایش فیلم‌ها و نمایش‌های مرتبط فراتر از موارد بدیهی استفاده کنید.</string>
+  <string name="preview_feature_description_up_next_smart_sort">راهی هوشمندانه‌تر برای مرتب\n\n\n\n‌سازی موارد در حال تماشای خود را آزمایش کنید.</string>
   <string name="preview_feature_title_edit_mode">حالت ویرایش</string>
   <string name="preview_feature_title_leaderboard">پانتئون</string>
   <string name="preview_feature_title_rewatch">بازتماشا</string>
   <string name="preview_feature_title_scoped_favorites">علاقه‌مندی‌های محدود</string>
   <string name="preview_feature_title_smart_recommendations">توصیه‌های هوشمند</string>
   <string name="preview_feature_title_smart_related">مرتبط هوشمند</string>
+  <string name="preview_feature_title_up_next_smart_sort">مرتب\n\n\n\n‌سازی هوشمند ادامه تماشا</string>
   <string name="reset_status_cleared">لیست تماشا پاک شد.</string>
   <string name="section_title_season_progress">فصل %d پیشرفت</string>
   <string name="section_title_seasons_overview">مرور کلی</string>
@@ -1906,6 +1918,7 @@
   <string name="welcome_import_imdb_description">امتیازات و لیست تماشای خود را از خروجی IMDb وارد کنید.</string>
   <string name="welcome_import_letterboxd_description">فیلم‌ها، امتیازات و لیست تماشای خود را از Letterboxd منتقل کنید.</string>
   <string name="welcome_intro">برنامه‌های تلویزیونی و فیلم‌های شما، همه در یک مکان. آنچه را تماشا می‌کنید پیگیری کنید، آنچه در ادامه می‌آید را کشف کنید، و از همان جایی که رها کردید ادامه دهید؛ در هر دستگاهی که دارید.</string>
+  <string name="welcome_outro_heading">حالا سرگرمی آغاز می	extquotesingle شود.</string>
   <string name="welcome_tvtime_badge">TV Time در حال تعطیل شدن است</string>
   <string name="welcome_tvtime_body">TV Time در حال بستن درهای خود است، اما تاریخچه تماشای شما نیازی به ناپدید شدن با آن ندارد. همه چیز را به Trakt منتقل کنید و بدون از دست دادن هیچ جزئیاتی به پیگیری ادامه دهید.</string>
   <string name="welcome_tvtime_gdpr_cta">درخواست خروجی GDPR</string>
@@ -1913,6 +1926,8 @@
   <string name="welcome_tvtime_import_cta">وارد کردن از TV Time</string>
   <string name="welcome_tvtime_liberator_body">تاریخچه کامل خود را با افزونه مرورگر TV Time Liberator خروجی بگیرید، یا خروجی داده رسمی GDPR را از پورتال حریم خصوصی TV Time بارگذاری کنید. هر دو روش کار می‌کنند.</string>
   <string name="welcome_tvtime_liberator_cta">TV Time Liberator را دریافت کنید</string>
+  <string name="welcome_vip_upsell_description">می	extquotesingle خواهید از انجمن ما حمایت کنید یا از Trakt بیشتر بهره	extquotesingle مند شوید؟</string>
+  <string name="welcome_vip_upsell_heading">یک VIP شوید</string>
   <string name="yir_2024_country_count">تعداد کشورها</string>
   <string name="yir_2024_directed_by">کارگردانی شده توسط</string>
   <string name="yir_2024_first_play">اولین پخش</string>

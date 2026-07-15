@@ -207,6 +207,7 @@
   <string name="button_label_sort_release_date">Ordenar por data de lançamento</string>
   <string name="button_label_sort_remaining">Ordenar por episódios ou filmes restantes</string>
   <string name="button_label_sort_runtime">Ordenar por duração</string>
+  <string name="button_label_sort_smart">Ordenar por ordem inteligente</string>
   <string name="button_label_sort_title">Ordenar em ordem alfabética</string>
   <string name="button_label_star_rating">Avaliar com %d estrelas.</string>
   <string name="button_label_start_import">Começar a importar seus dados para o Trakt.</string>
@@ -421,6 +422,7 @@
   <string name="button_text_sort_release_date">Data de Lançamento</string>
   <string name="button_text_sort_remaining">Restante</string>
   <string name="button_text_sort_runtime">Duração</string>
+  <string name="button_text_sort_smart">Inteligente</string>
   <string name="button_text_sort_title">Título</string>
   <string name="button_text_start_import">Iniciar Importação</string>
   <string name="button_text_start_rewatching">Começar a reassistir</string>
@@ -777,6 +779,8 @@
   <string name="import_guide_tvtime_step_3">Assim que a exportação estiver pronta, você receberá dois e-mails: um com um arquivo .zip e outro com uma senha para desbloqueá-lo.</string>
   <string name="import_guide_tvtime_step_4">Faça upload do .zip desbloqueado aqui. Se o .zip não for aceito, extraia-o e, em vez disso, faça upload dos dois arquivos .csv tracking-prod-records (mais followed_tv_show.csv e ratings-live-votes.csv para sua lista de observação e classificações).</string>
   <string name="import_guide_tvtime_title">Seu TV Time não está perdido no espaço! 🚀</string>
+  <string name="import_match_toggle_hint">Recomendamos o padrão (corresponder pelo ID do TVDB). Ative esta opção apenas se alguns episódios caírem na entrada errada - os resultados variam de série para série.</string>
+  <string name="import_match_toggle_label">Corresponder episódios por temporada e número do episódio</string>
   <string name="import_max_files">(máx. %d arquivos permitidos)</string>
   <string name="import_source_csv">Arquivo CSV</string>
   <string name="import_source_json">Arquivo JSON</string>
@@ -954,6 +958,12 @@
   <string name="list_placeholder_popular_lists">\"%s\" não aparece em nenhuma lista popular.</string>
   <string name="list_placeholder_ratings">Você ainda não avaliou nada.</string>
   <string name="list_placeholder_reviews">Você ainda não escreveu nenhuma crítica.</string>
+  <string name="list_summary_range_between">De %1$s a %2$s</string>
+  <string name="list_summary_range_from">%s e acima</string>
+  <string name="list_summary_range_labeled_between">%1$s de %2$s a %3$s</string>
+  <string name="list_summary_range_labeled_from">%1$s %2$s e acima</string>
+  <string name="list_summary_range_labeled_up_to">%1$s até %2$s</string>
+  <string name="list_summary_range_up_to">Até %s</string>
   <string name="list_title_activity">Atividade</string>
   <string name="list_title_actors">Atores</string>
   <string name="list_title_anticipated_movies">Filmes Mais Aguardados</string>
@@ -1129,12 +1139,14 @@
   <string name="preview_feature_description_scoped_favorites">Limite as listas de favoritos por tempo, mostrando os favoritos do ano atual nos perfis e agrupando a lista completa de favoritos por ano.</string>
   <string name="preview_feature_description_smart_recommendations">Use nosso mecanismo de próxima geração para descobrir filmes e séries recomendados, além do óbvio.</string>
   <string name="preview_feature_description_smart_related">Use nosso mecanismo de próxima geração para descobrir filmes e séries relacionados, além do óbvio.</string>
+  <string name="preview_feature_description_up_next_smart_sort">Experimente uma maneira mais inteligente de organizar o seu Continuar Assistindo.</string>
   <string name="preview_feature_title_edit_mode">Modo de edição</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Reassistir</string>
   <string name="preview_feature_title_scoped_favorites">Favoritos Restritos</string>
   <string name="preview_feature_title_smart_recommendations">Recomendações Inteligentes</string>
   <string name="preview_feature_title_smart_related">Relacionados Inteligentes</string>
+  <string name="preview_feature_title_up_next_smart_sort">Continuar Assistindo com Ordem Inteligente</string>
   <string name="reset_status_cleared">Lista para Assistir limpa.</string>
   <string name="section_title_season_progress">Progresso da temporada %d</string>
   <string name="section_title_seasons_overview">Visão Geral</string>
@@ -1906,6 +1918,7 @@
   <string name="welcome_import_imdb_description">Importe suas avaliações e lista de interesse de uma exportação do IMDb.</string>
   <string name="welcome_import_letterboxd_description">Traga seus filmes, avaliações e lista de interesse do Letterboxd.</string>
   <string name="welcome_intro">Suas séries e filmes, tudo em um só lugar. Acompanhe o que você assiste, descubra o que vem por aí e continue de onde parou; em todos os seus dispositivos.</string>
+  <string name="welcome_outro_heading">Agora a diversão começa.</string>
   <string name="welcome_tvtime_badge">TV Time está encerrando</string>
   <string name="welcome_tvtime_body">O TV Time está encerrando suas atividades, mas seu histórico de exibição não precisa desaparecer com ele. Traga tudo para o Trakt e continue acompanhando sem perder o ritmo.</string>
   <string name="welcome_tvtime_gdpr_cta">Solicitar exportação de dados GDPR</string>
@@ -1913,6 +1926,8 @@
   <string name="welcome_tvtime_import_cta">Importar do TV Time</string>
   <string name="welcome_tvtime_liberator_body">Exporte seu histórico completo com a extensão de navegador TV Time Liberator, ou faça upload da exportação oficial de dados GDPR do portal de privacidade do TV Time. Qualquer um funciona.</string>
   <string name="welcome_tvtime_liberator_cta">Obtenha o TV Time Liberator</string>
+  <string name="welcome_vip_upsell_description">Quer apoiar nossa comunidade ou ter mais do Trakt?</string>
+  <string name="welcome_vip_upsell_heading">Torne-se um VIP</string>
   <string name="yir_2024_country_count">Contagem de Países</string>
   <string name="yir_2024_directed_by">Dirigido por</string>
   <string name="yir_2024_first_play">Primeira Reprodução</string>
