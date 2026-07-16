@@ -82,6 +82,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.resources.R
 import kotlin.math.roundToInt
+import kotlin.time.Duration.Companion.milliseconds
 
 private val sections = listOf(
     "poster",
@@ -369,7 +370,7 @@ private fun MainContent(
                     initialFocused = true
 
                     focusRequesters["buttons"]?.requestFocus()
-                    delay(50)
+                    delay(50.milliseconds)
                     scrollState.scrollTo(0)
                 }
 
@@ -411,7 +412,7 @@ private fun MainContent(
                 onFocused = { onFocused("people") },
                 onClick = onPersonClicked,
                 modifier = Modifier
-                    .padding(top = 36.dp)
+                    .padding(top = 24.dp)
                     .focusProperties {
                         onEnter = {
                             focusRequesters["people"]?.requestFocus()
@@ -419,6 +420,22 @@ private fun MainContent(
                     }
                     .focusRestorer()
                     .focusRequester(focusRequesters.getValue("people")),
+            )
+        }
+
+        AnimatedVisibility(
+            visible = state.episodeComments?.isNotEmpty() == true,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            EpisodeCommentsList(
+                header = stringResource(R.string.list_title_comments),
+                comments = { state.episodeComments ?: emptyList<Comment>().toImmutableList() },
+                onFocused = { onFocused("comments") },
+                onClicked = onCommentClicked,
+                modifier = Modifier
+                    .padding(top = 36.dp)
+                    .focusRequester(focusRequesters.getValue("comments")),
             )
         }
 
@@ -443,22 +460,6 @@ private fun MainContent(
                     }
                     .focusRestorer()
                     .focusRequester(focusRequesters.getValue("season")),
-            )
-        }
-
-        AnimatedVisibility(
-            visible = state.episodeComments?.isNotEmpty() == true,
-            enter = fadeIn(),
-            exit = fadeOut(),
-        ) {
-            EpisodeCommentsList(
-                header = stringResource(R.string.list_title_comments),
-                comments = { state.episodeComments ?: emptyList<Comment>().toImmutableList() },
-                onFocused = { onFocused("comments") },
-                onClicked = onCommentClicked,
-                modifier = Modifier
-                    .padding(top = 36.dp)
-                    .focusRequester(focusRequesters.getValue("comments")),
             )
         }
 

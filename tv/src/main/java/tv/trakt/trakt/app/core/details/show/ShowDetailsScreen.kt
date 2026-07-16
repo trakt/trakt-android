@@ -87,6 +87,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.resources.R
 import java.time.ZonedDateTime
 import kotlin.math.roundToInt
+import kotlin.time.Duration.Companion.milliseconds
 
 private val sections = listOf(
     "poster",
@@ -349,14 +350,14 @@ private fun MainContent(
                     initialFocused = true
 
                     focusRequesters["buttons"]?.requestFocus()
-                    delay(50)
+                    delay(50.milliseconds)
                     scrollState.scrollTo(0)
                 }
 
                 ShowActionButtons(
                     streamingState = state.showStreamings,
                     collectionState = state.showCollection,
-                    watchAgainEnabled = state.user?.settings?.watchOnlyOnce != true,
+                    watchAgainEnabled = state.user.settings?.watchOnlyOnce != true,
                     onHistoryClick = onHistoryClick,
                     onRemoveHistoryClick = onRemoveAllHistoryClick,
                     onWatchlistClick = onWatchlistClick,
@@ -385,39 +386,6 @@ private fun MainContent(
         }
 
         AnimatedVisibility(
-            visible = state.showVideos?.isNotEmpty() == true,
-            enter = fadeIn(),
-            exit = fadeOut(),
-        ) {
-            ShowExtrasList(
-                header = stringResource(R.string.list_title_extras),
-                videos = { state.showVideos ?: emptyList<ExtraVideo>().toImmutableList() },
-                onFocused = { onFocused("extras") },
-                onClicked = onVideoClick,
-                modifier = Modifier
-                    .padding(top = 24.dp)
-                    .focusRequester(focusRequesters.getValue("extras")),
-            )
-        }
-
-        AnimatedVisibility(
-            visible = state.showCast?.isNotEmpty() == true,
-            enter = fadeIn(),
-            exit = fadeOut(),
-        ) {
-            ShowCastCrewList(
-                header = stringResource(R.string.list_title_actors),
-                cast = { state.showCast ?: emptyList<CastPerson>().toImmutableList() },
-                onFocused = { onFocused("people") },
-                onClick = onPersonClick,
-                modifier = Modifier
-                    .padding(top = 36.dp)
-                    .focusRestorer()
-                    .focusRequester(focusRequesters.getValue("people")),
-            )
-        }
-
-        AnimatedVisibility(
             visible = state.showSeasons.seasons.isNotEmpty(),
             enter = fadeIn(),
             exit = fadeOut(),
@@ -440,7 +408,7 @@ private fun MainContent(
                 onFocused = { onFocused("seasons") },
                 onSeasonClick = onSeasonClick,
                 modifier = Modifier
-                    .padding(top = 36.dp)
+                    .padding(top = 24.dp)
                     .focusRestorer()
                     .focusRequester(focusRequesters.getValue("seasons")),
             )
@@ -465,6 +433,23 @@ private fun MainContent(
         }
 
         AnimatedVisibility(
+            visible = state.showCast?.isNotEmpty() == true,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            ShowCastCrewList(
+                header = stringResource(R.string.list_title_actors),
+                cast = { state.showCast ?: emptyList<CastPerson>().toImmutableList() },
+                onFocused = { onFocused("people") },
+                onClick = onPersonClick,
+                modifier = Modifier
+                    .padding(top = 36.dp)
+                    .focusRestorer()
+                    .focusRequester(focusRequesters.getValue("people")),
+            )
+        }
+
+        AnimatedVisibility(
             visible = state.showComments?.isNotEmpty() == true,
             enter = fadeIn(),
             exit = fadeOut(),
@@ -477,6 +462,22 @@ private fun MainContent(
                 modifier = Modifier
                     .padding(top = 36.dp)
                     .focusRequester(focusRequesters.getValue("comments")),
+            )
+        }
+
+        AnimatedVisibility(
+            visible = state.showVideos?.isNotEmpty() == true,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            ShowExtrasList(
+                header = stringResource(R.string.list_title_extras),
+                videos = { state.showVideos ?: emptyList<ExtraVideo>().toImmutableList() },
+                onFocused = { onFocused("extras") },
+                onClicked = onVideoClick,
+                modifier = Modifier
+                    .padding(top = 36.dp)
+                    .focusRequester(focusRequesters.getValue("extras")),
             )
         }
 

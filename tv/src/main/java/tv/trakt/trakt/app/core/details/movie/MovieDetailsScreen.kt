@@ -87,6 +87,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.resources.R
 import java.time.ZonedDateTime
 import kotlin.math.roundToInt
+import kotlin.time.Duration.Companion.milliseconds
 
 private val sections = listOf(
     "poster",
@@ -346,7 +347,7 @@ private fun MainContent(
                     initialFocused = true
 
                     focusRequesters["buttons"]?.requestFocus()
-                    delay(50)
+                    delay(50.milliseconds)
                     scrollState.scrollTo(0)
                 }
 
@@ -377,22 +378,6 @@ private fun MainContent(
         }
 
         AnimatedVisibility(
-            visible = state.movieVideos?.isNotEmpty() == true,
-            enter = fadeIn(),
-            exit = fadeOut(),
-        ) {
-            MovieExtrasList(
-                header = stringResource(R.string.list_title_extras),
-                videos = { state.movieVideos ?: emptyList<ExtraVideo>().toImmutableList() },
-                onClicked = onVideoClick,
-                onFocused = { onFocused("extras") },
-                modifier = Modifier
-                    .padding(top = 32.dp)
-                    .focusRequester(focusRequesters.getValue("extras")),
-            )
-        }
-
-        AnimatedVisibility(
             visible = state.movieCast?.isNotEmpty() == true,
             enter = fadeIn(),
             exit = fadeOut(),
@@ -403,7 +388,7 @@ private fun MainContent(
                 onFocused = { onFocused("people") },
                 onClick = onPersonClick,
                 modifier = Modifier
-                    .padding(top = 36.dp)
+                    .padding(top = 32.dp)
                     .focusRestorer()
                     .focusRequester(focusRequesters.getValue("people")),
             )
@@ -422,6 +407,22 @@ private fun MainContent(
                 modifier = Modifier
                     .padding(top = 36.dp)
                     .focusRequester(focusRequesters.getValue("comments")),
+            )
+        }
+
+        AnimatedVisibility(
+            visible = state.movieVideos?.isNotEmpty() == true,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            MovieExtrasList(
+                header = stringResource(R.string.list_title_extras),
+                videos = { state.movieVideos ?: emptyList<ExtraVideo>().toImmutableList() },
+                onClicked = onVideoClick,
+                onFocused = { onFocused("extras") },
+                modifier = Modifier
+                    .padding(top = 36.dp)
+                    .focusRequester(focusRequesters.getValue("extras")),
             )
         }
 
