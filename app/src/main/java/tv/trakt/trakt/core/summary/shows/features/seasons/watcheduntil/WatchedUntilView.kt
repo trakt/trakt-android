@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.SpaceBetween
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
@@ -7,8 +8,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,8 +21,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
@@ -31,6 +36,7 @@ import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.timeFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -41,7 +47,6 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUn
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilAction.ReleaseDate
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
@@ -104,7 +109,7 @@ private fun WatchedUntilContent(
             WatchedTimestampsList(
                 episodes = state.episodes,
                 selectedAction = selectedAction,
-                modifier = Modifier.padding(top = 20.dp),
+                modifier = Modifier.padding(top = 24.dp),
             )
         } else if (state.episodes.isNullOrEmpty() && state.loading.isLoading) {
             FilmProgressIndicator(
@@ -112,16 +117,15 @@ private fun WatchedUntilContent(
                 color = TraktTheme.colors.textPrimary,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 24.dp)
-                    .padding(bottom = 8.dp),
+                    .padding(top = 24.dp),
             )
         }
 
         Column(
-            verticalArrangement = spacedBy(8.dp),
+            verticalArrangement = spacedBy(6.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 32.dp),
+                .padding(top = 24.dp),
         ) {
             PrimaryButton(
                 text = stringResource(R.string.button_text_mark_as_watched),
@@ -246,44 +250,109 @@ private fun ActionButtons(
     onOtherClick: () -> Unit = {},
 ) {
     Column(
-        verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace / 2),
-        modifier = modifier
-            .graphicsLayer {
-                translationX = -8.dp.toPx()
-            },
+        verticalArrangement = spacedBy(SegmentGap),
+        modifier = modifier,
     ) {
-        GhostButton(
-            enabled = enabled,
+        ActionSegment(
             text = stringResource(R.string.button_text_mark_as_watched_now),
             icon = painterResource(R.drawable.ic_check),
-            iconSize = 21.dp,
-            iconSpace = 16.dp,
-            onClick = onNowClick,
-            modifier = Modifier
-                .alpha(if (selected == Now) 1f else 0.25f),
-        )
-        GhostButton(
+            selected = selected == Now,
             enabled = enabled,
+            shape = SegmentPosition.Top.shape(),
+            onClick = onNowClick,
+        )
+        ActionSegment(
             text = stringResource(R.string.button_text_mark_as_watched_release_date),
             icon = painterResource(R.drawable.ic_calendar_time_trakt),
-            iconSize = 21.dp,
-            iconSpace = 17.dp,
-            onClick = onReleaseClick,
-            modifier = Modifier
-                .alpha(if (selected == ReleaseDate) 1f else 0.25f),
-        )
-        GhostButton(
+            selected = selected == ReleaseDate,
             enabled = enabled,
+            shape = SegmentPosition.Middle.shape(),
+            onClick = onReleaseClick,
+        )
+        ActionSegment(
             text = stringResource(R.string.button_text_mark_as_watched_other_date),
             icon = painterResource(R.drawable.ic_edit),
-            iconSize = 22.dp,
-            iconSpace = 16.dp,
+            selected = selected == OtherDate,
+            enabled = enabled,
+            shape = SegmentPosition.Bottom.shape(),
             onClick = onOtherClick,
-            modifier = Modifier
-                .alpha(if (selected == OtherDate) 1f else 0.25f),
         )
     }
 }
+
+@Composable
+private fun ActionSegment(
+    text: String,
+    icon: Painter,
+    selected: Boolean,
+    enabled: Boolean,
+    shape: Shape,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val containerColor = when {
+        selected -> TraktTheme.colors.accent
+        else -> TraktTheme.colors.primaryButtonContainerDisabled
+    }
+    val contentColor = when {
+        selected -> TraktTheme.colors.textPrimary
+        else -> TraktTheme.colors.textPrimary
+    }
+
+    Row(
+        horizontalArrangement = spacedBy(12.dp),
+        verticalAlignment = CenterVertically,
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(shape)
+            .background(containerColor)
+            .onClick(
+                enabled = enabled,
+                onClick = onClick,
+            )
+            .padding(
+                horizontal = 16.dp,
+                vertical = 12.dp,
+            ),
+    ) {
+        Icon(
+            painter = icon,
+            contentDescription = null,
+            tint = contentColor,
+            modifier = Modifier.size(21.dp),
+        )
+        Text(
+            text = text,
+            style = TraktTheme.typography.buttonPrimary,
+            color = contentColor,
+        )
+    }
+}
+
+private enum class SegmentPosition { Top, Middle, Bottom }
+
+private val SegmentGap = 4.dp
+private val SegmentCornerLarge = 16.dp
+private val SegmentCornerSmall = 6.dp
+
+private fun SegmentPosition.shape(): Shape =
+    when (this) {
+        SegmentPosition.Top -> RoundedCornerShape(
+            topStart = SegmentCornerLarge,
+            topEnd = SegmentCornerLarge,
+            bottomStart = SegmentCornerSmall,
+            bottomEnd = SegmentCornerSmall,
+        )
+
+        SegmentPosition.Middle -> RoundedCornerShape(SegmentCornerSmall)
+
+        SegmentPosition.Bottom -> RoundedCornerShape(
+            topStart = SegmentCornerSmall,
+            topEnd = SegmentCornerSmall,
+            bottomStart = SegmentCornerLarge,
+            bottomEnd = SegmentCornerLarge,
+        )
+    }
 
 @Preview(
     device = "id:pixel_5",
