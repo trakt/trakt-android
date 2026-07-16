@@ -15,12 +15,16 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import com.jakewharton.processphoenix.ProcessPhoenix
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
 import org.koin.androidx.compose.koinViewModel
@@ -30,9 +34,12 @@ import tv.trakt.trakt.app.TvSplashActivity
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_CUSTOM_THEME_ENABLED
 import tv.trakt.trakt.common.helpers.extensions.isTelevision
 import tv.trakt.trakt.common.ui.theme.colors.DarkColors
+import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.auth.ConfigAuth.OAUTH_REDIRECT_URI
+import tv.trakt.trakt.core.auth.Pkce
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
+import tv.trakt.trakt.core.auth.usecase.codeVerifierKey
 import tv.trakt.trakt.core.main.MainScreen
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase.CustomThemeConfig
@@ -43,6 +50,7 @@ internal val LocalBottomBarVisibility = compositionLocalOf { mutableStateOf(true
 internal val LocalCheckInVisibility = compositionLocalOf { mutableStateOf(true) }
 internal val LocalRatePromptVisibility = compositionLocalOf { mutableStateOf(true) }
 internal val LocalSnackbarState = compositionLocalOf { SnackbarHostState() }
+internal val LocalStartAuthorization = staticCompositionLocalOf { {} }
 
 internal class MainActivity : AppCompatActivity() {
     private val authPreferences: DataStore<Preferences> by lazy {
@@ -73,6 +81,7 @@ internal class MainActivity : AppCompatActivity() {
         )
 
         setContent {
+            val scope = rememberCoroutineScope()
             val bottomBarVisibility = remember { mutableStateOf(true) }
             val checkInVisibility = remember { mutableStateOf(true) }
             val ratePromptVisibility = remember { mutableStateOf(true) }
@@ -80,6 +89,18 @@ internal class MainActivity : AppCompatActivity() {
             val customThemeState = remember {
                 getCustomThemeConfig().also {
                     customThemeConfig = it
+                }
+            }
+
+            val uriHandler = LocalUriHandler.current
+            val startAuthorization = remember(uriHandler) {
+                {
+                    scope.launch {
+                        val codeVerifier = Pkce.generateCodeVerifier()
+                        authPreferences.edit { it[codeVerifierKey] = codeVerifier }
+                        uriHandler.openUri(ConfigAuth.authCodeUrl(codeVerifier))
+                    }
+                    Unit
                 }
             }
 
@@ -100,6 +121,7 @@ internal class MainActivity : AppCompatActivity() {
                     LocalCheckInVisibility provides checkInVisibility,
                     LocalRatePromptVisibility provides ratePromptVisibility,
                     LocalSnackbarState provides snackbarState,
+                    LocalStartAuthorization provides startAuthorization,
                 ) {
                     MainScreen(
                         viewModel = koinViewModel(),

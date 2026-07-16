@@ -42,9 +42,9 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.WhatsNew
-import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.auth.usecase.AuthorizeUserUseCase
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
+import tv.trakt.trakt.core.auth.usecase.codeVerifierKey
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source
 import tv.trakt.trakt.core.checkin.model.CheckInState
@@ -132,8 +132,12 @@ internal class MainViewModel(
         viewModelScope.launch {
             authorizePreferences.data.collect { preferences ->
                 preferences[authCodeKey]?.let { code ->
-                    authorizePreferences.edit { it.remove(authCodeKey) }
-                    authorizeUser(code)
+                    val codeVerifier = preferences[codeVerifierKey]
+                    authorizePreferences.edit {
+                        it.remove(authCodeKey)
+                        it.remove(codeVerifierKey)
+                    }
+                    authorizeUser(code, codeVerifier)
                 }
             }
         }
@@ -318,7 +322,9 @@ internal class MainViewModel(
         }
     }
 
-    private fun authorizeUser(code: String) {
+    private fun authorizeUser(
+        code: String,
+        codeVerifier: String?) {
         viewModelScope.launch {
             try {
                 loadingUserState.update { Loading }
@@ -327,7 +333,7 @@ internal class MainViewModel(
 
                 authorizeUseCase.authorizeByCode(
                     code = code,
-                    codeVerifier = ConfigAuth.consumeCodeVerifier(),
+                    codeVerifier = codeVerifier,
                 )
                 getUserUseCase.loadUserProfile()?.let {
                     analytics.setUserId(it.ids.trakt.value.toString())
