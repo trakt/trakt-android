@@ -54,7 +54,6 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CustomList
-import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.home.views.HomeEmptyView
@@ -87,7 +86,6 @@ internal fun ListsScreen(
     onNavigateToSearch: () -> Unit,
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
-    onNavigateToEpisode: (TraktId, Episode) -> Unit,
     onNavigateToWatchlist: () -> Unit,
     onNavigateToPersonalList: (CustomList) -> Unit,
     onNavigateToCustomList: (CustomList) -> Unit,
@@ -122,7 +120,6 @@ internal fun ListsScreen(
         onShowClick = onNavigateToShow,
         onMoviesClick = onNavigateToDiscover,
         onMovieClick = onNavigateToMovie,
-        onEpisodeClick = onNavigateToEpisode,
         onSearchListClick = onNavigateToSearch,
         onCreateListClick = { createListSheet = true },
         onEditListClick = { editListSheet = it },
@@ -166,7 +163,6 @@ private fun ListsScreenContent(
     onShowsClick: () -> Unit = {},
     onMoviesClick: () -> Unit = {},
     onMovieClick: (TraktId) -> Unit = {},
-    onEpisodeClick: (TraktId, Episode) -> Unit = { _, _ -> },
     onCreateListClick: () -> Unit = {},
     onSearchListClick: () -> Unit = {},
     onEditListClick: (CustomList) -> Unit = {},

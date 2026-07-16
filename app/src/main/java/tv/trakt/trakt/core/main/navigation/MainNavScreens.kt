@@ -398,9 +398,6 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
             onNavigateToDiscover = { navigateToDiscover() },
             onNavigateToSearch = { navigateToSearch() },
             onNavigateToMovie = { navigateToMovie(it) },
-            onNavigateToEpisode = { showId, episode ->
-                navigateToEpisode(showId, episode)
-            },
             onNavigateToWatchlist = { navigateToWatchlist() },
             onNavigateToPersonalList = {
                 navigateToPersonalList(
