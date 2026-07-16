@@ -270,9 +270,9 @@ internal fun ListReorderMediaCard(
                 tint = TraktTheme.colors.textPrimary,
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
+                    .then(handleModifier)
                     // Swallow taps on the handle so they don't reach the card's onClick.
                     .onClick(throttle = false) {}
-                    .then(handleModifier)
                     .padding(end = 12.dp)
                     .size(28.dp),
             )
