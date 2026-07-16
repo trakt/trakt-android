@@ -79,6 +79,7 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
 import tv.trakt.trakt.core.summary.shows.features.seasons.ui.ShowEpisodesList
 import tv.trakt.trakt.core.summary.shows.features.seasons.ui.ShowSeasonsList
+import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilSheet
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
@@ -88,6 +89,7 @@ import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
 import tv.trakt.trakt.ui.theme.TraktTheme
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 internal fun ShowSeasonsView(
@@ -112,6 +114,7 @@ internal fun ShowSeasonsView(
     var confirmRemoveSeasonSheet by remember { mutableStateOf(false) }
 
     var episodeDateSheet by remember { mutableStateOf<EpisodeItem?>(null) }
+    var episodeWatchedUntilSheet by remember { mutableStateOf<EpisodeItem?>(null) }
     var seasonDateSheet by remember { mutableStateOf(false) }
 
     ShowSeasonsContent(
@@ -120,7 +123,9 @@ internal fun ShowSeasonsView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onEpisodeClick = { onEpisodeClick(it.episode) },
+        onEpisodeClick = {
+            onEpisodeClick(it.episode)
+        },
         onSeasonClick = {
             if (it.season.number == state.items.selectedSeason?.number) {
                 onAllSeasonsClick(it.season.number)
@@ -134,8 +139,12 @@ internal fun ShowSeasonsView(
         onCheckEpisodeLongClick = {
             episodeDateSheet = it
         },
-        onRemoveEpisodeClick = {
-            confirmRemoveEpisodeSheet = it
+        onMoreClick = {
+            if (it.isWatched) {
+                confirmRemoveEpisodeSheet = it
+            } else {
+                episodeWatchedUntilSheet = it
+            }
         },
         onCheckSeasonClick = {
             confirmMarkSeasonSheet = true
@@ -147,6 +156,30 @@ internal fun ShowSeasonsView(
             onAllSeasonsClick(state.items.selectedSeason?.number)
         },
         onCollapse = viewModel::setCollapsed,
+    )
+
+    WatchedUntilSheet(
+        show = state.show,
+        episode = episodeWatchedUntilSheet?.episode,
+        onMarkAsWatched = {
+        },
+        onDismiss = {
+            episodeWatchedUntilSheet = null
+        },
+    )
+
+    ConfirmationSheet(
+        active = confirmMarkSeasonSheet,
+        onYes = {
+            confirmMarkSeasonSheet = false
+            seasonDateSheet = true
+        },
+        onNo = { confirmMarkSeasonSheet = false },
+        title = stringResource(R.string.button_text_track),
+        message = stringResource(
+            R.string.warning_prompt_mark_as_watched_multiple_episodes,
+            state.items.selectedSeasonEpisodes.count { !it.isWatched && it.episode.isReleased },
+        ),
     )
 
     RemoveConfirmationSheet(
@@ -162,20 +195,6 @@ internal fun ShowSeasonsView(
         message = stringResource(
             R.string.warning_prompt_remove_from_watched,
             "${confirmRemoveEpisodeSheet?.episode?.title}",
-        ),
-    )
-
-    ConfirmationSheet(
-        active = confirmMarkSeasonSheet,
-        onYes = {
-            confirmMarkSeasonSheet = false
-            seasonDateSheet = true
-        },
-        onNo = { confirmMarkSeasonSheet = false },
-        title = stringResource(R.string.button_text_track),
-        message = stringResource(
-            R.string.warning_prompt_mark_as_watched_multiple_episodes,
-            state.items.selectedSeasonEpisodes.count { !it.isWatched && it.episode.isReleased },
         ),
     )
 
@@ -240,7 +259,7 @@ internal fun ShowSeasonsView(
                     snack.showSnackbar(it)
                 }
             }
-            delay(SNACK_DURATION_SHORT)
+            delay(SNACK_DURATION_SHORT.milliseconds)
             job.cancel()
         }
 
@@ -259,7 +278,7 @@ private fun ShowSeasonsContent(
     onSeasonClick: ((SeasonItem) -> Unit)? = null,
     onCheckEpisodeClick: ((EpisodeItem) -> Unit)? = null,
     onCheckEpisodeLongClick: ((EpisodeItem) -> Unit)? = null,
-    onRemoveEpisodeClick: ((EpisodeItem) -> Unit)? = null,
+    onMoreClick: ((EpisodeItem) -> Unit)? = null,
     onCheckSeasonClick: (() -> Unit)? = null,
     onRemoveSeasonClick: (() -> Unit)? = null,
     onAllSeasonsClick: (() -> Unit)? = null,
@@ -400,7 +419,7 @@ private fun ShowSeasonsContent(
                                 },
                                 onCheckEpisodeClick = onCheckEpisodeClick,
                                 onCheckEpisodeLongClick = onCheckEpisodeLongClick,
-                                onRemoveEpisodeClick = onRemoveEpisodeClick,
+                                onMoreClick = onMoreClick,
                             )
                         }
                     }
@@ -495,7 +514,7 @@ private fun ContentList(
     onEpisodeClick: ((EpisodeItem) -> Unit)? = null,
     onCheckEpisodeClick: ((EpisodeItem) -> Unit)? = null,
     onCheckEpisodeLongClick: ((EpisodeItem) -> Unit)? = null,
-    onRemoveEpisodeClick: ((EpisodeItem) -> Unit)? = null,
+    onMoreClick: ((EpisodeItem) -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = spacedBy(20.dp),
@@ -519,7 +538,7 @@ private fun ContentList(
             onEpisodeClick = onEpisodeClick ?: {},
             onCheckClick = onCheckEpisodeClick ?: {},
             onCheckLongClick = onCheckEpisodeLongClick ?: {},
-            onRemoveClick = onRemoveEpisodeClick ?: {},
+            onMoreClick = onMoreClick ?: {},
             contentPadding = contentPadding,
             modifier = Modifier.fillMaxWidth(),
         )
