@@ -151,6 +151,7 @@ internal fun ListReorderScreen(
             R.string.dialog_prompt_move_to_position,
             positionItemTitle,
         ),
+        initialInput = positionInputIndex?.let { (it + 1).toString() },
         type = KeyboardType.Number,
         onApply = { input ->
             val index = positionInputIndex
