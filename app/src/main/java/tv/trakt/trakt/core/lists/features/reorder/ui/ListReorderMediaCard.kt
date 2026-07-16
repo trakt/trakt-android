@@ -54,6 +54,8 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
+import tv.trakt.trakt.common.helpers.extensions.ifOrElse
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.common.ui.theme.colors.Shade940
 import tv.trakt.trakt.resources.R
@@ -72,6 +74,7 @@ internal fun ListReorderMediaCard(
     corner: Dp = 16.dp,
     shadow: Dp = 0.dp,
     containerColor: Color = TraktTheme.colors.panelCardContainer,
+    onClick: (() -> Unit)? = null,
 ) {
     var isPosterError by remember { mutableStateOf(false) }
     var isContainerError by remember { mutableStateOf(false) }
@@ -80,6 +83,10 @@ internal fun ListReorderMediaCard(
         horizontalArrangement = spacedBy(0.dp),
         verticalAlignment = Alignment.Top,
         modifier = modifier
+            .ifOrElse(
+                condition = onClick != null,
+                isTrue = Modifier.onClick(indication = true) { onClick?.invoke() },
+            )
             .dropShadow(
                 shape = RoundedCornerShape(corner),
                 shadow = Shadow(
@@ -264,6 +271,8 @@ internal fun ListReorderMediaCard(
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
                     .then(handleModifier)
+                    // Swallow taps on the handle so they don't reach the card's onClick.
+                    .onClick(throttle = false) {}
                     .padding(end = 12.dp)
                     .size(28.dp),
             )

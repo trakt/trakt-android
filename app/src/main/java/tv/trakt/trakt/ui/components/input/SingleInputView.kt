@@ -12,6 +12,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.KeyboardType.Companion.Text
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.ui.components.InputField
@@ -26,6 +28,7 @@ internal fun SingleInputView(
     initialInput: String? = null,
     nullable: Boolean = false,
     multiline: Boolean = false,
+    type: KeyboardType = Text,
     onApply: (String?) -> Unit,
 ) {
     SingleInputContent(
@@ -34,6 +37,7 @@ internal fun SingleInputView(
         initialInput = initialInput,
         nullable = nullable,
         multiline = multiline,
+        type = type,
         onApplyClick = onApply,
     )
 }
@@ -45,6 +49,7 @@ private fun SingleInputContent(
     initialInput: String? = null,
     nullable: Boolean = false,
     multiline: Boolean = false,
+    type: KeyboardType = Text,
     onApplyClick: (String?) -> Unit = {},
 ) {
     val nameInputState = rememberTextFieldState(
@@ -80,6 +85,7 @@ private fun SingleInputContent(
 
                 else -> TextFieldLineLimits.SingleLine
             },
+            type = type,
             modifier = Modifier.fillMaxWidth(),
         )
 
