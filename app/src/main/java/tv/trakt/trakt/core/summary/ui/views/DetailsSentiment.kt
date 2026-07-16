@@ -49,7 +49,6 @@ import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.Sentiments.Overall.Mixed
 import tv.trakt.trakt.common.model.Sentiments.Overall.Negative
 import tv.trakt.trakt.common.model.Sentiments.Overall.Positive
-import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -62,13 +61,14 @@ internal fun DetailsSentiment(
     modifier: Modifier = Modifier,
 ) {
     val containerColor = TraktTheme.colors.sentimentsContainer
+    val containerColor2 = TraktTheme.colors.dialogContainer
     val radialGradient = remember {
         object : ShaderBrush() {
             override fun createShader(size: Size): Shader {
                 return RadialGradientShader(
                     colors = listOf(
                         containerColor,
-                        Shade920,
+                        containerColor2,
                     ),
                     center = Offset(size.width / 4, size.height * 1.5F),
                     radius = size.width * 1.2F,
