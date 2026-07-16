@@ -269,16 +269,12 @@ private fun MainNavHost(
                 },
             )
             homeWatchlistScreen(
-                onNavigateToMovie = { navigateToMovie(it) },
-                onNavigateToEpisode = { showId, episode ->
-                    navigateToEpisode(showId, episode)
-                },
+                onNavigateToShow = ::navigateToShow,
+                onNavigateToMovie = ::navigateToMovie,
             )
             homeSocialScreen(
-                onNavigateToEpisode = { showId, episode ->
-                    navigateToEpisode(showId, episode)
-                },
-                onNavigateToMovie = { navigateToMovie(it) },
+                onNavigateToEpisode = ::navigateToEpisode,
+                onNavigateToMovie = ::navigateToMovie,
             )
             profileScreen(
                 onNavigateToShow = { navigateToShow(it) },

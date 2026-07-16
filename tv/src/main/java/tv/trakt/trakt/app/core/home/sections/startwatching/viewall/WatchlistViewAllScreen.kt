@@ -43,18 +43,18 @@ import tv.trakt.trakt.app.core.home.sections.startwatching.model.WatchlistItem.S
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
-import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 internal fun WatchlistViewAllScreen(
     viewModel: WatchlistViewAllViewModel,
+    onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
-    onNavigateToEpisode: (TraktId, Episode) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -64,8 +64,8 @@ internal fun WatchlistViewAllScreen(
 
     WatchlistViewAllContent(
         state = state,
-        onEpisodeClick = { show, episode ->
-            onNavigateToEpisode(show.ids.trakt, episode)
+        onEpisodeClick = {
+            onNavigateToShow(it.ids.trakt)
         },
         onMovieClick = {
             onNavigateToMovie(it.ids.trakt)
@@ -80,7 +80,7 @@ internal fun WatchlistViewAllScreen(
 private fun WatchlistViewAllContent(
     state: WatchlistViewAllState,
     modifier: Modifier = Modifier,
-    onEpisodeClick: (Show, Episode) -> Unit,
+    onEpisodeClick: (Show) -> Unit,
     onMovieClick: (Movie) -> Unit,
     onLoadNextPage: () -> Unit,
 ) {
@@ -89,7 +89,7 @@ private fun WatchlistViewAllContent(
     val focusRequesters = remember { mutableMapOf<String, FocusRequester>() }
 
     LaunchedEffect(Unit) {
-        delay(500)
+        delay(500.milliseconds)
         focusRequesters[focusedItemId]?.requestSafeFocus()
     }
 
@@ -161,10 +161,7 @@ private fun WatchlistViewAllContent(
                         imageUrl = item.posterImage,
                         onClick = {
                             when (item) {
-                                is ShowItem -> onEpisodeClick(
-                                    item.show,
-                                    item.progress?.nextEpisode ?: return@VerticalMediaCard,
-                                )
+                                is ShowItem -> onEpisodeClick(item.show)
                                 is MovieItem -> onMovieClick(item.movie)
                             }
                         },
@@ -259,7 +256,7 @@ private fun Preview() {
     TraktTheme {
         WatchlistViewAllContent(
             state = WatchlistViewAllState(),
-            onEpisodeClick = { _, _ -> },
+            onEpisodeClick = {},
             onMovieClick = {},
             onLoadNextPage = {},
         )
