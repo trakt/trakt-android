@@ -198,10 +198,12 @@
   <string name="button_label_shows">Sèries</string>
   <string name="button_label_sort_added_date">Ordena per data d\'incorporació</string>
   <string name="button_label_sort_ascending">Ordena ascendent</string>
+  <string name="button_label_sort_created_date">Ordena per data de creació</string>
   <string name="button_label_sort_default">Ordena per ordre predeterminat</string>
   <string name="button_label_sort_descending">Ordena descendent</string>
   <string name="button_label_sort_list">Ordena la llista</string>
   <string name="button_label_sort_my_rating">Ordenar per la meva valoració</string>
+  <string name="button_label_sort_name">Ordena per nom</string>
   <string name="button_label_sort_rank">Ordena per posició</string>
   <string name="button_label_sort_rating">Ordena per valoració</string>
   <string name="button_label_sort_release_date">Ordena per data d\'estrena</string>
@@ -209,6 +211,7 @@
   <string name="button_label_sort_runtime">Ordena per durada</string>
   <string name="button_label_sort_smart">Ordena per ordre intel·ligent</string>
   <string name="button_label_sort_title">Ordena alfabèticament</string>
+  <string name="button_label_sort_updated_date">Ordena per data d\'actualització</string>
   <string name="button_label_star_rating">Valora amb %d estrelles.</string>
   <string name="button_label_start_import">Comença a importar les teves dades a Trakt.</string>
   <string name="button_label_start_rewatching">Comença a revisionar \"%s\"</string>
@@ -396,6 +399,7 @@
   <string name="button_text_remove_photo">Elimina la foto</string>
   <string name="button_text_renew_vip">Renovar</string>
   <string name="button_text_reorder">Reordenar</string>
+  <string name="button_text_reorder_lists">Reordenar llistes</string>
   <string name="button_text_report">Informar</string>
   <string name="button_text_report_comment">Informar</string>
   <string name="button_text_reset_all_filters">Restableix-ho tot</string>
@@ -414,9 +418,11 @@
   <string name="button_text_social">Social</string>
   <string name="button_text_sort_added_date">Data d\'incorporació</string>
   <string name="button_text_sort_asc">Asc</string>
+  <string name="button_text_sort_created_date">Data de creació</string>
   <string name="button_text_sort_default">Per defecte</string>
   <string name="button_text_sort_desc">Desc</string>
   <string name="button_text_sort_my_rating">La meva valoració</string>
+  <string name="button_text_sort_name">Nom</string>
   <string name="button_text_sort_rank">Posició</string>
   <string name="button_text_sort_rating">Valoració</string>
   <string name="button_text_sort_release_date">Data d\'estrena</string>
@@ -424,6 +430,7 @@
   <string name="button_text_sort_runtime">Durada</string>
   <string name="button_text_sort_smart">Intel·ligent</string>
   <string name="button_text_sort_title">Títol</string>
+  <string name="button_text_sort_updated_date">Data d\'actualització</string>
   <string name="button_text_start_import">Inicia la importació</string>
   <string name="button_text_start_rewatching">Comença a revisionar</string>
   <string name="button_text_stop_asking">Deixa de preguntar</string>
@@ -586,6 +593,7 @@
   <string name="error_text_locked_account_collection_limit">Aquest compte d\'usuari s\'ha bloquejat perquè la col·lecció ha superat el límit. Si us plau, <a>contacta amb el suport</a> per resoldre aquest problema.</string>
   <string name="error_text_locked_account_guide">Si us plau, visita la secció de <a>configuració avançada</a> per executar una anàlisi de l\'historial i desbloquejar el teu compte.</string>
   <string name="error_text_locked_account_persists">Si el problema persisteix, si us plau, <a>contacta amb el suport</a> per resoldre\'l.</string>
+  <string name="error_text_parental_guide_load_failed">Error de càrrega</string>
   <string name="error_text_payment_other">Hi ha hagut un error en processar el pagament. Torna-ho a provar o contacta amb el suport si ho necessites.</string>
   <string name="error_text_payment_unavailable">Hi ha hagut un error en processar el pagament. Sembla que no pots fer un pagament en aquest moment. Torna-ho a provar.</string>
   <string name="error_text_report_already_reported">Ja has informat d\'això.</string>
@@ -1135,6 +1143,7 @@
   <string name="page_title_year_to_date">Acumulat de l\'any</string>
   <string name="preview_feature_description_edit_mode">Habilita els controls per amagar o mostrar seccions configurables a tota l\'aplicació.</string>
   <string name="preview_feature_description_leaderboard">Classifica les persones que segueixes per temps de visionat i mira on quedes entre elles.</string>
+  <string name="preview_feature_description_parental_guide">Mostrar els nivells de risc de contingut al calaix de detalls per a pel·lícules, sèries i episodis.</string>
   <string name="preview_feature_description_rewatch">Inicia sessions de revisió per a programes que ja has vist, fes un seguiment o marca els episodis com a vistos directament des del calaix de la sessió.</string>
   <string name="preview_feature_description_scoped_favorites">Delimita les llistes de preferits mostrant els preferits de l\'any actual als perfils i agrupant la llista completa de preferits per any.</string>
   <string name="preview_feature_description_smart_recommendations">Utilitza el nostre motor de nova generació per trobar pel·lícules i sèries recomanades més enllà del que és obvi.</string>

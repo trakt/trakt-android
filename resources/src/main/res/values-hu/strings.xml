@@ -198,10 +198,12 @@
   <string name="button_label_shows">Sorozatok</string>
   <string name="button_label_sort_added_date">Rendezés hozzáadás dátuma szerint</string>
   <string name="button_label_sort_ascending">Rendezés növekvő sorrendben</string>
+  <string name="button_label_sort_created_date">Rendezés létrehozás dátuma szerint</string>
   <string name="button_label_sort_default">Rendezés alapértelmezett sorrend szerint</string>
   <string name="button_label_sort_descending">Rendezés csökkenő sorrendben</string>
   <string name="button_label_sort_list">Lista rendezése</string>
   <string name="button_label_sort_my_rating">Rendezés értékelésem szerint</string>
+  <string name="button_label_sort_name">Rendezés név szerint</string>
   <string name="button_label_sort_rank">Rendezés rang szerint</string>
   <string name="button_label_sort_rating">Rendezés értékelés szerint</string>
   <string name="button_label_sort_release_date">Rendezés megjelenés dátuma szerint</string>
@@ -209,6 +211,7 @@
   <string name="button_label_sort_runtime">Rendezés játékidő szerint</string>
   <string name="button_label_sort_smart">Rendezés okos sorrend szerint</string>
   <string name="button_label_sort_title">Rendezés betűrend szerint</string>
+  <string name="button_label_sort_updated_date">Rendezés frissítés dátuma szerint</string>
   <string name="button_label_star_rating">Értékelés %d csillaggal.</string>
   <string name="button_label_start_import">Kezdd el adataid importálását a Trakt-ra.</string>
   <string name="button_label_start_rewatching">Kezdd el újra nézni: \"%s\"</string>
@@ -396,6 +399,7 @@
   <string name="button_text_remove_photo">Fotó eltávolítása</string>
   <string name="button_text_renew_vip">Megújítás</string>
   <string name="button_text_reorder">Átrendezés</string>
+  <string name="button_text_reorder_lists">Listák átrendezése</string>
   <string name="button_text_report">Jelentés</string>
   <string name="button_text_report_comment">Jelentés</string>
   <string name="button_text_reset_all_filters">Összes visszaállítása</string>
@@ -414,9 +418,11 @@
   <string name="button_text_social">Közösségi</string>
   <string name="button_text_sort_added_date">Hozzáadás dátuma</string>
   <string name="button_text_sort_asc">Növekvő</string>
+  <string name="button_text_sort_created_date">Létrehozás dátuma</string>
   <string name="button_text_sort_default">Alapértelmezett</string>
   <string name="button_text_sort_desc">Csökkenő</string>
   <string name="button_text_sort_my_rating">Értékelésem</string>
+  <string name="button_text_sort_name">Név</string>
   <string name="button_text_sort_rank">Rang</string>
   <string name="button_text_sort_rating">Értékelés</string>
   <string name="button_text_sort_release_date">Megjelenés dátuma</string>
@@ -424,6 +430,7 @@
   <string name="button_text_sort_runtime">Játékidő</string>
   <string name="button_text_sort_smart">Okos</string>
   <string name="button_text_sort_title">Cím</string>
+  <string name="button_text_sort_updated_date">Frissítés dátuma</string>
   <string name="button_text_start_import">Importálás indítása</string>
   <string name="button_text_start_rewatching">Kezdd el újra nézni</string>
   <string name="button_text_stop_asking">Ne kérdezze többet</string>
@@ -586,6 +593,7 @@
   <string name="error_text_locked_account_collection_limit">Ez a felhasználói fiók zárolásra került, mert a gyűjtemény túllépte a limitet. Kérjük, <a>keresse fel az ügyfélszolgálatot</a> a probléma megoldásához.</string>
   <string name="error_text_locked_account_guide">Kérjük, keresd fel a <a>haladó beállítások</a> oldalt, az előzmények elemzéséhez és a fiók feloldásához.</string>
   <string name="error_text_locked_account_persists">Ha a probléma továbbra is fennáll, kérjük, <a>vedd fel a kapcsolatot az ügyfélszolgálattal</a> a probléma megoldásához.</string>
+  <string name="error_text_parental_guide_load_failed">Betöltési hiba</string>
   <string name="error_text_payment_other">Hiba történt a fizetés feldolgozása során. Kérjük, próbálja újra, vagy ha szükséges, lépjen kapcsolatba az ügyfélszolgálattal.</string>
   <string name="error_text_payment_unavailable">Hiba történt a fizetés feldolgozása során. Úgy tűnik, jelenleg nem tud fizetést végrehajtani. Kérjük, próbálja újra.</string>
   <string name="error_text_report_already_reported">Ezt már jelentetted.</string>
@@ -1135,6 +1143,7 @@
   <string name="page_title_year_to_date">Éves összesítés</string>
   <string name="preview_feature_description_edit_mode">Engedélyezze a vezérlőket a konfigurálható szakaszok elrejtéséhez vagy megjelenítéséhez az alkalmazásban.</string>
   <string name="preview_feature_description_leaderboard">Rangsorold a követett embereket a nézési idő alapján, és nézd meg, hol helyezkedsz el közöttük.</string>
+  <string name="preview_feature_description_parental_guide">Tartalomkockázati szintek megjelenítése a részletek panelen filmek, műsorok és epizódok esetén.</string>
   <string name="preview_feature_description_rewatch">Indíts újra nézési munkameneteket olyan műsorokhoz, amiket már láttál, jelentkezz be, vagy jelölj meg nézett epizódokat közvetlenül a munkamenet fiókból.</string>
   <string name="preview_feature_description_scoped_favorites">Időkorlátozza a kedvenc listákat azáltal, hogy megjeleníti az aktuális év kedvenceit a profilokon, és csoportosítja a teljes kedvencek listáját év szerint.</string>
   <string name="preview_feature_description_smart_recommendations">Használd következő generációs motorunkat, hogy a nyilvánvalón túlmutató ajánlott filmeket és sorozatokat fedezz fel.</string>

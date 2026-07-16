@@ -198,10 +198,12 @@
   <string name="button_label_shows">Series</string>
   <string name="button_label_sort_added_date">Ordenar por fecha de añadido</string>
   <string name="button_label_sort_ascending">Ordenar ascendente</string>
+  <string name="button_label_sort_created_date">Ordenar por fecha de creación</string>
   <string name="button_label_sort_default">Ordenar por orden predeterminado</string>
   <string name="button_label_sort_descending">Ordenar descendente</string>
   <string name="button_label_sort_list">Ordenar lista</string>
   <string name="button_label_sort_my_rating">Ordenar por mi calificación</string>
+  <string name="button_label_sort_name">Ordenar por nombre</string>
   <string name="button_label_sort_rank">Ordenar por clasificación</string>
   <string name="button_label_sort_rating">Ordenar por calificación</string>
   <string name="button_label_sort_release_date">Ordenar por fecha de lanzamiento</string>
@@ -209,6 +211,7 @@
   <string name="button_label_sort_runtime">Ordenar por duración</string>
   <string name="button_label_sort_smart">Ordenar por orden inteligente</string>
   <string name="button_label_sort_title">Ordenar alfabéticamente</string>
+  <string name="button_label_sort_updated_date">Ordenar por fecha de actualización</string>
   <string name="button_label_star_rating">Calificar con %d estrellas.</string>
   <string name="button_label_start_import">Comenzar a importar tus datos a Trakt.</string>
   <string name="button_label_start_rewatching">Empezar a volver a ver \"%s\"</string>
@@ -396,6 +399,7 @@
   <string name="button_text_remove_photo">Eliminar foto</string>
   <string name="button_text_renew_vip">Renovar</string>
   <string name="button_text_reorder">Reordenar</string>
+  <string name="button_text_reorder_lists">Reordenar listas</string>
   <string name="button_text_report">Reportar</string>
   <string name="button_text_report_comment">Reportar</string>
   <string name="button_text_reset_all_filters">Restablecer todo</string>
@@ -414,9 +418,11 @@
   <string name="button_text_social">Social</string>
   <string name="button_text_sort_added_date">Fecha de añadido</string>
   <string name="button_text_sort_asc">Asc.</string>
+  <string name="button_text_sort_created_date">Fecha de creación</string>
   <string name="button_text_sort_default">Predeterminado</string>
   <string name="button_text_sort_desc">Desc.</string>
   <string name="button_text_sort_my_rating">Mi calificación</string>
+  <string name="button_text_sort_name">Nombre</string>
   <string name="button_text_sort_rank">Clasificación</string>
   <string name="button_text_sort_rating">Calificación</string>
   <string name="button_text_sort_release_date">Fecha de lanzamiento</string>
@@ -424,6 +430,7 @@
   <string name="button_text_sort_runtime">Duración</string>
   <string name="button_text_sort_smart">Inteligentes</string>
   <string name="button_text_sort_title">Título</string>
+  <string name="button_text_sort_updated_date">Fecha de actualización</string>
   <string name="button_text_start_import">Iniciar importación</string>
   <string name="button_text_start_rewatching">Empezar a volver a ver</string>
   <string name="button_text_stop_asking">Dejar de preguntar</string>
@@ -586,6 +593,7 @@
   <string name="error_text_locked_account_collection_limit">Esta cuenta de usuario ha sido bloqueada porque la colección ha excedido el límite. Por favor, <a>contacta con soporte</a> para resolver este problema.</string>
   <string name="error_text_locked_account_guide">Por favor, visita la sección de <a>ajustes avanzados</a> para ejecutar un análisis de historial y desbloquear tu cuenta.</string>
   <string name="error_text_locked_account_persists">Si el problema persiste, por favor, <a>contacta con soporte</a> para resolver este problema.</string>
+  <string name="error_text_parental_guide_load_failed">Error de carga</string>
   <string name="error_text_payment_other">Se produjo un error al procesar tu pago. Inténtalo de nuevo o contacta con soporte si es necesario.</string>
   <string name="error_text_payment_unavailable">Se produjo un error al procesar tu pago. Parece que no puedes realizar un pago en este momento. Inténtalo de nuevo.</string>
   <string name="error_text_report_already_reported">Ya has reportado esto.</string>
@@ -1135,6 +1143,7 @@
   <string name="page_title_year_to_date">En lo que va del año</string>
   <string name="preview_feature_description_edit_mode">Habilita los controles para ocultar o mostrar secciones configurables en toda la aplicación.</string>
   <string name="preview_feature_description_leaderboard">Clasifica a las personas que sigues por tiempo de visualización y descubre tu posición entre ellas.</string>
+  <string name="preview_feature_description_parental_guide">Mostrar niveles de riesgo de contenido en el panel de detalles para películas, series y episodios.</string>
   <string name="preview_feature_description_rewatch">Inicia sesiones de re-visualización para programas que ya has visto, registra o marca los episodios como vistos directamente desde el cajón de la sesión.</string>
   <string name="preview_feature_description_scoped_favorites">Limita las listas de favoritos por tiempo mostrando los favoritos del año actual en los perfiles y agrupando la lista completa de favoritos por año.</string>
   <string name="preview_feature_description_smart_recommendations">Utiliza nuestro motor de próxima generación para descubrir películas y series recomendadas más allá de lo obvio.</string>

@@ -198,10 +198,12 @@
   <string name="button_label_shows">Shows</string>
   <string name="button_label_sort_added_date">Sort by date added</string>
   <string name="button_label_sort_ascending">Sort ascending</string>
+  <string name="button_label_sort_created_date">Sort by created date</string>
   <string name="button_label_sort_default">Sort by default order</string>
   <string name="button_label_sort_descending">Sort descending</string>
   <string name="button_label_sort_list">Sort list</string>
   <string name="button_label_sort_my_rating">Sort by my rating</string>
+  <string name="button_label_sort_name">Sort by name</string>
   <string name="button_label_sort_rank">Sort by rank</string>
   <string name="button_label_sort_rating">Sort by rating</string>
   <string name="button_label_sort_release_date">Sort by release date</string>
@@ -209,6 +211,7 @@
   <string name="button_label_sort_runtime">Sort by runtime</string>
   <string name="button_label_sort_smart">Sort by smart order</string>
   <string name="button_label_sort_title">Sort alphabetically</string>
+  <string name="button_label_sort_updated_date">Sort by updated date</string>
   <string name="button_label_star_rating">Rate with %d stars.</string>
   <string name="button_label_start_import">Start importing your data into Trakt.</string>
   <string name="button_label_start_rewatching">Start rewatching \"%s\"</string>
@@ -396,6 +399,7 @@
   <string name="button_text_remove_photo">Remove photo</string>
   <string name="button_text_renew_vip">Renew</string>
   <string name="button_text_reorder">Reorder</string>
+  <string name="button_text_reorder_lists">Reorder lists</string>
   <string name="button_text_report">Report</string>
   <string name="button_text_report_comment">Report</string>
   <string name="button_text_reset_all_filters">Reset all</string>
@@ -414,9 +418,11 @@
   <string name="button_text_social">Social</string>
   <string name="button_text_sort_added_date">Date Added</string>
   <string name="button_text_sort_asc">Asc</string>
+  <string name="button_text_sort_created_date">Created Date</string>
   <string name="button_text_sort_default">Default</string>
   <string name="button_text_sort_desc">Desc</string>
   <string name="button_text_sort_my_rating">My Rating</string>
+  <string name="button_text_sort_name">Name</string>
   <string name="button_text_sort_rank">Rank</string>
   <string name="button_text_sort_rating">Rating</string>
   <string name="button_text_sort_release_date">Release Date</string>
@@ -424,6 +430,7 @@
   <string name="button_text_sort_runtime">Runtime</string>
   <string name="button_text_sort_smart">Smart</string>
   <string name="button_text_sort_title">Title</string>
+  <string name="button_text_sort_updated_date">Updated Date</string>
   <string name="button_text_start_import">Start Import</string>
   <string name="button_text_start_rewatching">Start rewatching</string>
   <string name="button_text_stop_asking">Stop asking</string>
@@ -586,6 +593,7 @@
   <string name="error_text_locked_account_collection_limit">This user account has been locked because the collection has exceeded the limit. Please <a>contact support</a> to resolve this issue.</string>
   <string name="error_text_locked_account_guide">Please visit the <a>advanced settings</a> to run a history analysis and unlock your account.</string>
   <string name="error_text_locked_account_persists">If the issue persists, please <a>contact support</a> to resolve this issue.</string>
+  <string name="error_text_parental_guide_load_failed">Loading Error</string>
   <string name="error_text_payment_other">There was an error while processing your payment. Please try again or contact support if needed.</string>
   <string name="error_text_payment_unavailable">There was an error while processing your payment. It looks like you\'re unable to make a payment at this time. Please try again.</string>
   <string name="error_text_report_already_reported">You\'ve already reported this.</string>
@@ -1135,6 +1143,7 @@
   <string name="page_title_year_to_date">Year to date</string>
   <string name="preview_feature_description_edit_mode">Enable controls for hiding or showing configurable sections across the app.</string>
   <string name="preview_feature_description_leaderboard">Rank the people you follow by watch time and see where you land among them.</string>
+  <string name="preview_feature_description_parental_guide">Show content risk levels in the details drawer for movies, shows, and episodes.</string>
   <string name="preview_feature_description_rewatch">Start rewatching sessions for shows you\'ve already seen, check in or mark watched episodes directly from the session drawer.</string>
   <string name="preview_feature_description_scoped_favorites">Time-box favourite lists by showing current-year favourites on profiles and grouping the full favourites list by year.</string>
   <string name="preview_feature_description_smart_recommendations">Use our next-gen engine to surface recommended movies and shows beyond the obvious.</string>

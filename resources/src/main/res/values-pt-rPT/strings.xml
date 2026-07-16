@@ -16,7 +16,7 @@
   <string name="advanced_filter_label_release_year">Lançados entre %1$d e %2$d</string>
   <string name="advanced_filter_label_runtime">Duração entre %1$d e %2$d minutos.</string>
   <string name="badge_text_beta">Beta</string>
-  <string name="badge_text_get_vip">Obter o VIP</string>
+  <string name="badge_text_get_vip">Obter VIP</string>
   <string name="badge_text_more">e mais %d</string>
   <string name="button_connect_plex">Associar Plex</string>
   <string name="button_disconnect_plex">Desassociar</string>
@@ -198,10 +198,12 @@
   <string name="button_label_shows">Séries</string>
   <string name="button_label_sort_added_date">Ordenar por data de adição</string>
   <string name="button_label_sort_ascending">Ordenar por ordem crescente</string>
+  <string name="button_label_sort_created_date">Ordenar por data de criação</string>
   <string name="button_label_sort_default">Ordenar por ordem predefinida</string>
   <string name="button_label_sort_descending">Ordenar por ordem decrescente</string>
   <string name="button_label_sort_list">Ordenar lista</string>
   <string name="button_label_sort_my_rating">Ordenar pela minha classificação</string>
+  <string name="button_label_sort_name">Ordenar por nome</string>
   <string name="button_label_sort_rank">Ordenar por posição</string>
   <string name="button_label_sort_rating">Ordenar por classificação</string>
   <string name="button_label_sort_release_date">Ordenar por data de lançamento</string>
@@ -209,6 +211,7 @@
   <string name="button_label_sort_runtime">Ordenar por duração</string>
   <string name="button_label_sort_smart">Ordenar por ordem inteligente</string>
   <string name="button_label_sort_title">Ordenar alfabeticamente</string>
+  <string name="button_label_sort_updated_date">Ordenar por data de atualização</string>
   <string name="button_label_star_rating">Classificar com %d estrelas.</string>
   <string name="button_label_start_import">Inicia a importação dos teus dados para o Trakt.</string>
   <string name="button_label_start_rewatching">Começar a rever \"%s\"</string>
@@ -396,6 +399,7 @@
   <string name="button_text_remove_photo">Remover foto</string>
   <string name="button_text_renew_vip">Renovar</string>
   <string name="button_text_reorder">Reorganizar</string>
+  <string name="button_text_reorder_lists">Reordenar listas</string>
   <string name="button_text_report">Denunciar</string>
   <string name="button_text_report_comment">Denunciar</string>
   <string name="button_text_reset_all_filters">Repor tudo</string>
@@ -414,9 +418,11 @@
   <string name="button_text_social">Rede</string>
   <string name="button_text_sort_added_date">Data de adição</string>
   <string name="button_text_sort_asc">Cresc.</string>
+  <string name="button_text_sort_created_date">Data de criação</string>
   <string name="button_text_sort_default">Predefinido</string>
   <string name="button_text_sort_desc">Decresc.</string>
   <string name="button_text_sort_my_rating">A minha classificação</string>
+  <string name="button_text_sort_name">Nome</string>
   <string name="button_text_sort_rank">Posição</string>
   <string name="button_text_sort_rating">Classificação</string>
   <string name="button_text_sort_release_date">Data de lançamento</string>
@@ -424,6 +430,7 @@
   <string name="button_text_sort_runtime">Duração</string>
   <string name="button_text_sort_smart">Inteligentes</string>
   <string name="button_text_sort_title">Título</string>
+  <string name="button_text_sort_updated_date">Data de atualização</string>
   <string name="button_text_start_import">Iniciar importação</string>
   <string name="button_text_start_rewatching">Começar a rever</string>
   <string name="button_text_stop_asking">Deixar de perguntar</string>
@@ -586,6 +593,7 @@
   <string name="error_text_locked_account_collection_limit">Esta conta de utilizador foi bloqueada porque a coleção ultrapassou o limite. <a>Contacta o suporte</a> para resolver este problema.</string>
   <string name="error_text_locked_account_guide">Visita as <a>definições avançadas</a> para executar uma análise do histórico e desbloquear a tua conta.</string>
   <string name="error_text_locked_account_persists">Se o problema persistir, <a>contacta o suporte</a> para o resolver.</string>
+  <string name="error_text_parental_guide_load_failed">Erro ao carregar</string>
   <string name="error_text_payment_other">Ocorreu um erro ao processar o teu pagamento. Tenta novamente ou contacta o apoio ao cliente, se necessário.</string>
   <string name="error_text_payment_unavailable">Ocorreu um erro ao processar o teu pagamento. Neste momento, não é possível efetuar o pagamento. Tenta novamente.</string>
   <string name="error_text_report_already_reported">Já denunciaste este item.</string>
@@ -1135,6 +1143,7 @@
   <string name="page_title_year_to_date">Ano até ao momento</string>
   <string name="preview_feature_description_edit_mode">Ativa controlos para mostrar ou ocultar secções configuráveis em toda a app.</string>
   <string name="preview_feature_description_leaderboard">Ordena as pessoas que segues pelo tempo de visualização e vê em que posição ficas entre elas.</string>
+  <string name="preview_feature_description_parental_guide">Mostra os níveis de risco do conteúdo no painel de detalhes de filmes, séries e episódios.</string>
   <string name="preview_feature_description_rewatch">Inicia sessões de revisão para séries que já viste e regista a visualização ou marca episódios como vistos diretamente no painel da sessão.</string>
   <string name="preview_feature_description_scoped_favorites">Organiza a lista de favoritos mostrando os do ano atual no perfil e agrupando a lista completa por ano.</string>
   <string name="preview_feature_description_smart_recommendations">Utiliza o nosso motor de recomendação de nova geração para descobrir filmes e séries para além das recomendações mais óbvias.</string>

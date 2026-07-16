@@ -198,10 +198,12 @@
   <string name="button_label_shows">Acara</string>
   <string name="button_label_sort_added_date">Urutkan berdasarkan tanggal ditambahkan</string>
   <string name="button_label_sort_ascending">Urutkan menaik</string>
+  <string name="button_label_sort_created_date">Urutkan berdasarkan tanggal dibuat</string>
   <string name="button_label_sort_default">Urutkan berdasarkan urutan default</string>
   <string name="button_label_sort_descending">Urutkan menurun</string>
   <string name="button_label_sort_list">Urutkan daftar</string>
   <string name="button_label_sort_my_rating">Urutkan berdasarkan rating saya</string>
+  <string name="button_label_sort_name">Urutkan berdasarkan nama</string>
   <string name="button_label_sort_rank">Urutkan berdasarkan peringkat</string>
   <string name="button_label_sort_rating">Urutkan berdasarkan peringkat</string>
   <string name="button_label_sort_release_date">Urutkan berdasarkan tanggal rilis</string>
@@ -209,6 +211,7 @@
   <string name="button_label_sort_runtime">Urutkan berdasarkan durasi</string>
   <string name="button_label_sort_smart">Urutkan berdasarkan urutan cerdas</string>
   <string name="button_label_sort_title">Urutkan berdasarkan abjad</string>
+  <string name="button_label_sort_updated_date">Urutkan berdasarkan tanggal diperbarui</string>
   <string name="button_label_star_rating">Nilai dengan %d bintang.</string>
   <string name="button_label_start_import">Mulai mengimpor data Anda ke Trakt.</string>
   <string name="button_label_start_rewatching">Mulai menonton ulang \"%s\"</string>
@@ -396,6 +399,7 @@
   <string name="button_text_remove_photo">Hapus foto</string>
   <string name="button_text_renew_vip">Perbarui</string>
   <string name="button_text_reorder">Susun Ulang</string>
+  <string name="button_text_reorder_lists">Urutkan ulang daftar</string>
   <string name="button_text_report">Laporkan</string>
   <string name="button_text_report_comment">Laporkan</string>
   <string name="button_text_reset_all_filters">Setel ulang semua</string>
@@ -414,9 +418,11 @@
   <string name="button_text_social">Sosial</string>
   <string name="button_text_sort_added_date">Tanggal Ditambahkan</string>
   <string name="button_text_sort_asc">Naik</string>
+  <string name="button_text_sort_created_date">Tanggal Dibuat</string>
   <string name="button_text_sort_default">Default</string>
   <string name="button_text_sort_desc">Turun</string>
   <string name="button_text_sort_my_rating">Rating Saya</string>
+  <string name="button_text_sort_name">Nama</string>
   <string name="button_text_sort_rank">Peringkat</string>
   <string name="button_text_sort_rating">Peringkat</string>
   <string name="button_text_sort_release_date">Tanggal Rilis</string>
@@ -424,6 +430,7 @@
   <string name="button_text_sort_runtime">Durasi</string>
   <string name="button_text_sort_smart">Cerdas</string>
   <string name="button_text_sort_title">Judul</string>
+  <string name="button_text_sort_updated_date">Tanggal Diperbarui</string>
   <string name="button_text_start_import">Mulai Impor</string>
   <string name="button_text_start_rewatching">Mulai menonton ulang</string>
   <string name="button_text_stop_asking">Berhenti bertanya</string>
@@ -586,6 +593,7 @@
   <string name="error_text_locked_account_collection_limit">Akun pengguna ini telah dikunci karena koleksi telah melampaui batas. Harap <a>hubungi dukungan</a> untuk menyelesaikan masalah ini.</string>
   <string name="error_text_locked_account_guide">Silakan kunjungi <a>pengaturan lanjutan</a> untuk menjalankan analisis riwayat dan membuka kunci akun Anda.</string>
   <string name="error_text_locked_account_persists">Jika masalah berlanjut, silakan <a>hubungi dukungan</a> untuk menyelesaikan masalah ini.</string>
+  <string name="error_text_parental_guide_load_failed">Kesalahan Memuat</string>
   <string name="error_text_payment_other">Terjadi kesalahan saat memproses pembayaran Anda. Silakan coba lagi atau hubungi dukungan jika diperlukan.</string>
   <string name="error_text_payment_unavailable">Terjadi kesalahan saat memproses pembayaran Anda. Sepertinya Anda tidak dapat melakukan pembayaran saat ini. Silakan coba lagi.</string>
   <string name="error_text_report_already_reported">Anda sudah melaporkan ini.</string>
@@ -1135,6 +1143,7 @@
   <string name="page_title_year_to_date">Tahun Berjalan</string>
   <string name="preview_feature_description_edit_mode">Aktifkan kontrol untuk menyembunyikan atau menampilkan bagian yang dapat dikonfigurasi di seluruh aplikasi.</string>
   <string name="preview_feature_description_leaderboard">Peringkat orang yang Anda ikuti berdasarkan waktu tonton dan lihat posisi Anda di antara mereka.</string>
+  <string name="preview_feature_description_parental_guide">Tampilkan tingkat risiko konten di laci detail untuk film, acara, dan episode.</string>
   <string name="preview_feature_description_rewatch">Mulai sesi menonton ulang untuk acara yang sudah Anda tonton, check-in atau tandai episode yang sudah ditonton langsung dari panel sesi.</string>
   <string name="preview_feature_description_scoped_favorites">Batas waktu daftar favorit dengan menampilkan favorit tahun berjalan di profil dan mengelompokkan daftar favorit lengkap berdasarkan tahun.</string>
   <string name="preview_feature_description_smart_recommendations">Gunakan mesin generasi berikutnya kami untuk menampilkan film dan acara yang direkomendasikan melampaui yang biasa.</string>

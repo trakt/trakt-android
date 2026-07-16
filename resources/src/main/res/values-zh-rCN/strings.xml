@@ -198,10 +198,12 @@
   <string name="button_label_shows">剧集</string>
   <string name="button_label_sort_added_date">按添加日期排序</string>
   <string name="button_label_sort_ascending">升序排序</string>
+  <string name="button_label_sort_created_date">按创建日期排序</string>
   <string name="button_label_sort_default">按默认顺序排序</string>
   <string name="button_label_sort_descending">降序排序</string>
   <string name="button_label_sort_list">排序列表</string>
   <string name="button_label_sort_my_rating">按我的评分排序</string>
+  <string name="button_label_sort_name">按名称排序</string>
   <string name="button_label_sort_rank">按排名排序</string>
   <string name="button_label_sort_rating">按评分排序</string>
   <string name="button_label_sort_release_date">按发布日期排序</string>
@@ -209,6 +211,7 @@
   <string name="button_label_sort_runtime">按运行时长排序</string>
   <string name="button_label_sort_smart">按智能顺序排序</string>
   <string name="button_label_sort_title">按字母顺序排序</string>
+  <string name="button_label_sort_updated_date">按更新日期排序</string>
   <string name="button_label_star_rating">用 %d 星评分。</string>
   <string name="button_label_start_import">开始将您的数据导入 Trakt。</string>
   <string name="button_label_start_rewatching">开始重新观看“%s”</string>
@@ -396,6 +399,7 @@
   <string name="button_text_remove_photo">移除照片</string>
   <string name="button_text_renew_vip">续订</string>
   <string name="button_text_reorder">调整顺序</string>
+  <string name="button_text_reorder_lists">重新排序列表</string>
   <string name="button_text_report">举报</string>
   <string name="button_text_report_comment">举报</string>
   <string name="button_text_reset_all_filters">全部重置</string>
@@ -414,9 +418,11 @@
   <string name="button_text_social">社交</string>
   <string name="button_text_sort_added_date">添加日期</string>
   <string name="button_text_sort_asc">升序</string>
+  <string name="button_text_sort_created_date">创建日期</string>
   <string name="button_text_sort_default">默认</string>
   <string name="button_text_sort_desc">降序</string>
   <string name="button_text_sort_my_rating">我的评分</string>
+  <string name="button_text_sort_name">名称</string>
   <string name="button_text_sort_rank">排名</string>
   <string name="button_text_sort_rating">评分</string>
   <string name="button_text_sort_release_date">发布日期</string>
@@ -424,6 +430,7 @@
   <string name="button_text_sort_runtime">时长</string>
   <string name="button_text_sort_smart">智能</string>
   <string name="button_text_sort_title">标题</string>
+  <string name="button_text_sort_updated_date">更新日期</string>
   <string name="button_text_start_import">开始导入</string>
   <string name="button_text_start_rewatching">开始重新观看</string>
   <string name="button_text_stop_asking">停止询问</string>
@@ -586,6 +593,7 @@
   <string name="error_text_locked_account_collection_limit">此用户帐户已被锁定，因为收藏已超出限制。请<a>联系支持</a>以解决此问题。</string>
   <string name="error_text_locked_account_guide">请访问<a>高级设置</a>以运行历史分析并解锁您的账户。</string>
   <string name="error_text_locked_account_persists">如果问题仍然存在，请<a>联系支持</a>以解决此问题。</string>
+  <string name="error_text_parental_guide_load_failed">加载错误</string>
   <string name="error_text_payment_other">处理您的付款时出错。请重试或在需要时联系支持。</string>
   <string name="error_text_payment_unavailable">处理您的付款时出错。您当前似乎无法进行付款。请重试。</string>
   <string name="error_text_report_already_reported">您已举报过此内容。</string>
@@ -1135,6 +1143,7 @@
   <string name="page_title_year_to_date">年至今</string>
   <string name="preview_feature_description_edit_mode">启用控件，用于隐藏或显示应用程序中可配置的部分。</string>
   <string name="preview_feature_description_leaderboard">根据观看时长对您关注的人进行排名，查看您在他们中的位置。</string>
+  <string name="preview_feature_description_parental_guide">在电影、节目和剧集的详情抽屉中显示内容风险等级。</string>
   <string name="preview_feature_description_rewatch">开始重温您已看过的节目，直接从会话抽屉中签到或标记已观看剧集。</string>
   <string name="preview_feature_description_scoped_favorites">通过在个人资料上显示当年的收藏以及按年份分组完整的收藏列表来限制收藏列表的时间范围。</string>
   <string name="preview_feature_description_smart_recommendations">使用我们的下一代引擎，发现超越显而易见的推荐电影和节目。</string>

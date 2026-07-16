@@ -198,10 +198,12 @@
   <string name="button_label_shows">Serier</string>
   <string name="button_label_sort_added_date">Sortér efter tilføjet dato</string>
   <string name="button_label_sort_ascending">Sortér stigende</string>
+  <string name="button_label_sort_created_date">Sortér efter oprettelsesdato</string>
   <string name="button_label_sort_default">Sortér efter standardrækkefølge</string>
   <string name="button_label_sort_descending">Sortér faldende</string>
   <string name="button_label_sort_list">Sortér liste</string>
   <string name="button_label_sort_my_rating">Sortér efter min vurdering</string>
+  <string name="button_label_sort_name">Sortér efter navn</string>
   <string name="button_label_sort_rank">Sortér efter rang</string>
   <string name="button_label_sort_rating">Sortér efter bedømmelse</string>
   <string name="button_label_sort_release_date">Sortér efter udgivelsesdato</string>
@@ -209,6 +211,7 @@
   <string name="button_label_sort_runtime">Sortér efter spilletid</string>
   <string name="button_label_sort_smart">Sortér efter smart rækkefølge</string>
   <string name="button_label_sort_title">Sortér alfabetisk</string>
+  <string name="button_label_sort_updated_date">Sortér efter opdateringsdato</string>
   <string name="button_label_star_rating">Bedøm med %d stjerner.</string>
   <string name="button_label_start_import">Start import af dine data til Trakt.</string>
   <string name="button_label_start_rewatching">Begynd at gense \"%s\"</string>
@@ -396,6 +399,7 @@
   <string name="button_text_remove_photo">Fjern foto</string>
   <string name="button_text_renew_vip">Forny</string>
   <string name="button_text_reorder">Omarranger</string>
+  <string name="button_text_reorder_lists">Omarranger lister</string>
   <string name="button_text_report">Rapportér</string>
   <string name="button_text_report_comment">Rapportér</string>
   <string name="button_text_reset_all_filters">Nulstil alle</string>
@@ -414,9 +418,11 @@
   <string name="button_text_social">Social</string>
   <string name="button_text_sort_added_date">Tilføjet dato</string>
   <string name="button_text_sort_asc">Stig.</string>
+  <string name="button_text_sort_created_date">Oprettelsesdato</string>
   <string name="button_text_sort_default">Standard</string>
   <string name="button_text_sort_desc">Fald.</string>
   <string name="button_text_sort_my_rating">Min vurdering</string>
+  <string name="button_text_sort_name">Navn</string>
   <string name="button_text_sort_rank">Rang</string>
   <string name="button_text_sort_rating">Bedømmelse</string>
   <string name="button_text_sort_release_date">Udgivelsesdato</string>
@@ -424,6 +430,7 @@
   <string name="button_text_sort_runtime">Spilletid</string>
   <string name="button_text_sort_smart">Smart</string>
   <string name="button_text_sort_title">Titel</string>
+  <string name="button_text_sort_updated_date">Opdateringsdato</string>
   <string name="button_text_start_import">Start import</string>
   <string name="button_text_start_rewatching">Begynd at gense</string>
   <string name="button_text_stop_asking">Stop med at spørge</string>
@@ -586,6 +593,7 @@
   <string name="error_text_locked_account_collection_limit">Denne brugerkonto er blevet låst, fordi samlingen har overskredet grænsen. Venligst <a>kontakt support</a> for at løse dette problem.</string>
   <string name="error_text_locked_account_guide">Besøg venligst de <a>avancerede indstillinger</a> for at køre en historikanalyse og låse din konto op.</string>
   <string name="error_text_locked_account_persists">Hvis problemet fortsætter, venligst <a>kontakt support</a> for at løse dette problem.</string>
+  <string name="error_text_parental_guide_load_failed">Indlæsningsfejl</string>
   <string name="error_text_payment_other">Der opstod en fejl under behandlingen af din betaling. Prøv venligst igen, eller kontakt support, hvis det er nødvendigt.</string>
   <string name="error_text_payment_unavailable">Der opstod en fejl under behandlingen af din betaling. Det ser ud til, at du ikke kan foretage en betaling lige nu. Prøv venligst igen.</string>
   <string name="error_text_report_already_reported">Du har allerede rapporteret dette.</string>
@@ -1135,6 +1143,7 @@
   <string name="page_title_year_to_date">År til dato</string>
   <string name="preview_feature_description_edit_mode">Aktiver kontroller til at skjule eller vise konfigurerbare sektioner i hele appen.</string>
   <string name="preview_feature_description_leaderboard">Ranger de personer, du følger, efter set tid, og se hvor du lander blandt dem.</string>
+  <string name="preview_feature_description_parental_guide">Vis risikoniveauer for indhold i detaljeskuffen for film, serier og episoder.</string>
   <string name="preview_feature_description_rewatch">Start gensynssessioner for serier, du allerede har set, tjek ind eller marker sete episoder direkte fra sessionsskuffen.</string>
   <string name="preview_feature_description_scoped_favorites">Tidsbegræns favoritlister ved at vise indeværende års favoritter på profiler og gruppere den fulde favoritliste efter år.</string>
   <string name="preview_feature_description_smart_recommendations">Brug vores næste-generations motor til at finde anbefalede film og serier ud over det åbenlyse.</string>

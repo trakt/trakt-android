@@ -198,10 +198,12 @@
   <string name="button_label_shows">Σειρές</string>
   <string name="button_label_sort_added_date">Ταξινόμηση κατά ημερομηνία προσθήκης</string>
   <string name="button_label_sort_ascending">Ταξινόμηση αύξουσα</string>
+  <string name="button_label_sort_created_date">Ταξινόμηση κατά ημερομηνία δημιουργίας</string>
   <string name="button_label_sort_default">Ταξινόμηση με προεπιλεγμένη σειρά</string>
   <string name="button_label_sort_descending">Ταξινόμηση φθίνουσα</string>
   <string name="button_label_sort_list">Ταξινόμηση λίστας</string>
   <string name="button_label_sort_my_rating">Ταξινόμηση κατά τη βαθμολογία μου</string>
+  <string name="button_label_sort_name">Ταξινόμηση κατά όνομα</string>
   <string name="button_label_sort_rank">Ταξινόμηση κατά κατάταξη</string>
   <string name="button_label_sort_rating">Ταξινόμηση κατά βαθμολογία</string>
   <string name="button_label_sort_release_date">Ταξινόμηση κατά ημερομηνία κυκλοφορίας</string>
@@ -209,6 +211,7 @@
   <string name="button_label_sort_runtime">Ταξινόμηση κατά διάρκεια</string>
   <string name="button_label_sort_smart">Ταξινόμηση κατά έξυπνη σειρά</string>
   <string name="button_label_sort_title">Ταξινόμηση αλφαβητικά</string>
+  <string name="button_label_sort_updated_date">Ταξινόμηση κατά ημερομηνία ενημέρωσης</string>
   <string name="button_label_star_rating">Βαθμολογήστε με %d αστέρια.</string>
   <string name="button_label_start_import">Ξεκινήστε την εισαγωγή των δεδομένων σας στο Trakt.</string>
   <string name="button_label_start_rewatching">Έναρξη επανάληψης του \"%s\"</string>
@@ -396,6 +399,7 @@
   <string name="button_text_remove_photo">Αφαίρεση φωτογραφίας</string>
   <string name="button_text_renew_vip">Ανανέωση</string>
   <string name="button_text_reorder">Αναδιάταξη</string>
+  <string name="button_text_reorder_lists">Αναδιάταξη λιστών</string>
   <string name="button_text_report">Αναφορά</string>
   <string name="button_text_report_comment">Αναφορά</string>
   <string name="button_text_reset_all_filters">Επαναφορά όλων</string>
@@ -414,9 +418,11 @@
   <string name="button_text_social">Κοινωνικά</string>
   <string name="button_text_sort_added_date">Ημερομηνία Προσθήκης</string>
   <string name="button_text_sort_asc">Αύξουσα</string>
+  <string name="button_text_sort_created_date">Ημερομηνία Δημιουργίας</string>
   <string name="button_text_sort_default">Προεπιλογή</string>
   <string name="button_text_sort_desc">Φθίνουσα</string>
   <string name="button_text_sort_my_rating">Η βαθμολογία μου</string>
+  <string name="button_text_sort_name">Όνομα</string>
   <string name="button_text_sort_rank">Κατάταξη</string>
   <string name="button_text_sort_rating">Βαθμολογία</string>
   <string name="button_text_sort_release_date">Ημερομηνία Κυκλοφορίας</string>
@@ -424,6 +430,7 @@
   <string name="button_text_sort_runtime">Διάρκεια</string>
   <string name="button_text_sort_smart">Έξυπνα</string>
   <string name="button_text_sort_title">Τίτλος</string>
+  <string name="button_text_sort_updated_date">Ημερομηνία Ενημέρωσης</string>
   <string name="button_text_start_import">Έναρξη εισαγωγής</string>
   <string name="button_text_start_rewatching">Έναρξη επανάληψης</string>
   <string name="button_text_stop_asking">Σταμάτα να ρωτάς</string>
@@ -586,6 +593,7 @@
   <string name="error_text_locked_account_collection_limit">Αυτός ο λογαριασμός χρήστη έχει κλειδωθεί επειδή η συλλογή έχει υπερβεί το όριο. Παρακαλούμε <a>επικοινωνήστε με την υποστήριξη</a> για την επίλυση αυτού του ζητήματος.</string>
   <string name="error_text_locked_account_guide">Παρακαλούμε επισκεφθείτε τις <a>προηγμένες ρυθμίσεις</a> για να εκτελέσετε ανάλυση ιστορικού και να ξεκλειδώσετε τον λογαριασμό σας.</string>
   <string name="error_text_locked_account_persists">Εάν το πρόβλημα επιμένει, παρακαλούμε <a>επικοινωνήστε με την υποστήριξη</a> για να επιλύσετε αυτό το ζήτημα.</string>
+  <string name="error_text_parental_guide_load_failed">Σφάλμα Φόρτωσης</string>
   <string name="error_text_payment_other">Υπήρξε σφάλμα κατά την επεξεργασία της πληρωμής σας. Παρακαλώ δοκιμάστε ξανά ή επικοινωνήστε με την υποστήριξη εάν χρειάζεται.</string>
   <string name="error_text_payment_unavailable">Υπήρξε σφάλμα κατά την επεξεργασία της πληρωμής σας. Φαίνεται ότι δεν μπορείτε να πραγματοποιήσετε πληρωμή αυτή τη στιγμή. Παρακαλώ δοκιμάστε ξανά.</string>
   <string name="error_text_report_already_reported">Το έχετε ήδη αναφέρει.</string>
@@ -1135,6 +1143,7 @@
   <string name="page_title_year_to_date">Έτος μέχρι σήμερα</string>
   <string name="preview_feature_description_edit_mode">Ενεργοποιήστε τα χειριστήρια για απόκρυψη ή εμφάνιση διαμορφώσιμων ενοτήτων σε όλη την εφαρμογή.</string>
   <string name="preview_feature_description_leaderboard">Κατατάξτε τους ανθρώπους που ακολουθείτε με βάση τον χρόνο παρακολούθησης και δείτε πού βρίσκεστε ανάμεσά τους.</string>
+  <string name="preview_feature_description_parental_guide">Εμφάνιση επιπέδων κινδύνου περιεχομένου στο πλαίσιο λεπτομερειών για ταινίες, σειρές και επεισόδια.</string>
   <string name="preview_feature_description_rewatch">Ξεκινήστε συνεδρίες επανάληψης παρακολούθησης για εκπομπές που έχετε ήδη δει, κάντε check-in ή επισημάνετε επεισόδια ως παρακολουθημένα απευθείας από το συρτάρι συνεδριών.</string>
   <string name="preview_feature_description_scoped_favorites">Οριοθετήστε τις λίστες αγαπημένων εμφανίζοντας τα αγαπημένα του τρέχοντος έτους στα προφίλ και ομαδοποιώντας την πλήρη λίστα αγαπημένων ανά έτος.</string>
   <string name="preview_feature_description_smart_recommendations">Χρησιμοποιήστε τον κινητήρα επόμενης γενιάς μας για να ανακαλύψετε προτεινόμενες ταινίες και σειρές πέρα από τα προφανή.</string>

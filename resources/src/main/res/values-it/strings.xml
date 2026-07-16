@@ -198,10 +198,12 @@
   <string name="button_label_shows">Serie TV</string>
   <string name="button_label_sort_added_date">Ordina per data di aggiunta</string>
   <string name="button_label_sort_ascending">Ordina crescente</string>
+  <string name="button_label_sort_created_date">Ordina per data di creazione</string>
   <string name="button_label_sort_default">Ordina per ordine predefinito</string>
   <string name="button_label_sort_descending">Ordina decrescente</string>
   <string name="button_label_sort_list">Ordina lista</string>
   <string name="button_label_sort_my_rating">Ordina per la mia valutazione</string>
+  <string name="button_label_sort_name">Ordina per nome</string>
   <string name="button_label_sort_rank">Ordina per rango</string>
   <string name="button_label_sort_rating">Ordina per valutazione</string>
   <string name="button_label_sort_release_date">Ordina per data di uscita</string>
@@ -209,6 +211,7 @@
   <string name="button_label_sort_runtime">Ordina per durata</string>
   <string name="button_label_sort_smart">Ordina per ordine intelligente</string>
   <string name="button_label_sort_title">Ordina alfabeticamente</string>
+  <string name="button_label_sort_updated_date">Ordina per data di aggiornamento</string>
   <string name="button_label_star_rating">Valuta con %d stelle.</string>
   <string name="button_label_start_import">Avvia l\'importazione dei tuoi dati in Trakt.</string>
   <string name="button_label_start_rewatching">Inizia a riguardare \"%s\"</string>
@@ -396,6 +399,7 @@
   <string name="button_text_remove_photo">Rimuovi foto</string>
   <string name="button_text_renew_vip">Rinnova</string>
   <string name="button_text_reorder">Riordina</string>
+  <string name="button_text_reorder_lists">Riordina liste</string>
   <string name="button_text_report">Segnala</string>
   <string name="button_text_report_comment">Segnala</string>
   <string name="button_text_reset_all_filters">Reimposta tutto</string>
@@ -414,9 +418,11 @@
   <string name="button_text_social">Social</string>
   <string name="button_text_sort_added_date">Data di Aggiunta</string>
   <string name="button_text_sort_asc">Cresc.</string>
+  <string name="button_text_sort_created_date">Data di creazione</string>
   <string name="button_text_sort_default">Predefinito</string>
   <string name="button_text_sort_desc">Decr.</string>
   <string name="button_text_sort_my_rating">La mia valutazione</string>
+  <string name="button_text_sort_name">Nome</string>
   <string name="button_text_sort_rank">Rango</string>
   <string name="button_text_sort_rating">Valutazione</string>
   <string name="button_text_sort_release_date">Data di Uscita</string>
@@ -424,6 +430,7 @@
   <string name="button_text_sort_runtime">Durata</string>
   <string name="button_text_sort_smart">Intelligente</string>
   <string name="button_text_sort_title">Titolo</string>
+  <string name="button_text_sort_updated_date">Data di aggiornamento</string>
   <string name="button_text_start_import">Avvia importazione</string>
   <string name="button_text_start_rewatching">Inizia a riguardare</string>
   <string name="button_text_stop_asking">Smetti di chiedere</string>
@@ -586,6 +593,7 @@
   <string name="error_text_locked_account_collection_limit">Questo account utente è stato bloccato perché la collezione ha superato il limite. Si prega di <a>contattare il supporto</a> per risolvere questo problema.</string>
   <string name="error_text_locked_account_guide">Visita le <a>impostazioni avanzate</a> per eseguire un\'analisi della cronologia e sbloccare il tuo account.</string>
   <string name="error_text_locked_account_persists">Se il problema persiste, <a>contatta il supporto</a> per risolvere il problema.</string>
+  <string name="error_text_parental_guide_load_failed">Errore di caricamento</string>
   <string name="error_text_payment_other">Si è verificato un errore durante l\'elaborazione del pagamento. Riprova o contatta il supporto se necessario.</string>
   <string name="error_text_payment_unavailable">Si è verificato un errore durante l\'elaborazione del pagamento. Sembra che tu non possa effettuare un pagamento in questo momento. Riprova.</string>
   <string name="error_text_report_already_reported">Hai già segnalato questo elemento.</string>
@@ -1135,6 +1143,7 @@
   <string name="page_title_year_to_date">Dall\'inizio dell\'anno</string>
   <string name="preview_feature_description_edit_mode">Abilita i controlli per nascondere o mostrare sezioni configurabili in tutta l\'app.</string>
   <string name="preview_feature_description_leaderboard">Classifica le persone che segui in base al tempo di visione e scopri dove ti posizioni tra loro.</string>
+  <string name="preview_feature_description_parental_guide">Mostra i livelli di rischio dei contenuti nel cassetto dei dettagli per film, serie TV ed episodi.</string>
   <string name="preview_feature_description_rewatch">Avvia sessioni di riguardato per le serie TV che hai già visto, registrando la visione o contrassegnando gli episodi come guardati direttamente dal pannello della sessione.</string>
   <string name="preview_feature_description_scoped_favorites">Limita le liste dei preferiti per anno, mostrando i preferiti dell\'anno corrente sui profili e raggruppando l\'intera lista dei preferiti per anno.</string>
   <string name="preview_feature_description_smart_recommendations">Utilizza il nostro motore di nuova generazione per scoprire film e serie TV raccomandati che vanno oltre l\'ovvio.</string>

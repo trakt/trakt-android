@@ -198,10 +198,12 @@
   <string name="button_label_shows">Серіали</string>
   <string name="button_label_sort_added_date">Сортувати за датою додавання</string>
   <string name="button_label_sort_ascending">Сортувати за зростанням</string>
+  <string name="button_label_sort_created_date">Сортувати за датою створення</string>
   <string name="button_label_sort_default">Сортувати за типовим порядком</string>
   <string name="button_label_sort_descending">Сортувати за спаданням</string>
   <string name="button_label_sort_list">Сортувати список</string>
   <string name="button_label_sort_my_rating">Сортувати за моєю оцінкою</string>
+  <string name="button_label_sort_name">Сортувати за назвою</string>
   <string name="button_label_sort_rank">Сортувати за рангом</string>
   <string name="button_label_sort_rating">Сортувати за рейтингом</string>
   <string name="button_label_sort_release_date">Сортувати за датою випуску</string>
@@ -209,6 +211,7 @@
   <string name="button_label_sort_runtime">Сортувати за тривалістю</string>
   <string name="button_label_sort_smart">Сортувати за розумним порядком</string>
   <string name="button_label_sort_title">Сортувати за алфавітом</string>
+  <string name="button_label_sort_updated_date">Сортувати за датою оновлення</string>
   <string name="button_label_star_rating">Оцінити %d зірок.</string>
   <string name="button_label_start_import">Почати імпорт ваших даних у Trakt.</string>
   <string name="button_label_start_rewatching">Почати повторний перегляд \"%s\"</string>
@@ -396,6 +399,7 @@
   <string name="button_text_remove_photo">Видалити фото</string>
   <string name="button_text_renew_vip">Поновити</string>
   <string name="button_text_reorder">Перевпорядкувати</string>
+  <string name="button_text_reorder_lists">Змінити порядок списків</string>
   <string name="button_text_report">Повідомити</string>
   <string name="button_text_report_comment">Повідомити</string>
   <string name="button_text_reset_all_filters">Скинути все</string>
@@ -414,9 +418,11 @@
   <string name="button_text_social">Соціальне</string>
   <string name="button_text_sort_added_date">Дата додавання</string>
   <string name="button_text_sort_asc">Зрост.</string>
+  <string name="button_text_sort_created_date">Дата створення</string>
   <string name="button_text_sort_default">Типово</string>
   <string name="button_text_sort_desc">Спад.</string>
   <string name="button_text_sort_my_rating">Моя оцінка</string>
+  <string name="button_text_sort_name">Назва</string>
   <string name="button_text_sort_rank">Ранг</string>
   <string name="button_text_sort_rating">Рейтинг</string>
   <string name="button_text_sort_release_date">Дата випуску</string>
@@ -424,6 +430,7 @@
   <string name="button_text_sort_runtime">Тривалість</string>
   <string name="button_text_sort_smart">Розумний</string>
   <string name="button_text_sort_title">Назва</string>
+  <string name="button_text_sort_updated_date">Дата оновлення</string>
   <string name="button_text_start_import">Почати імпорт</string>
   <string name="button_text_start_rewatching">Почати повторний перегляд</string>
   <string name="button_text_stop_asking">Припинити питати</string>
@@ -586,6 +593,7 @@
   <string name="error_text_locked_account_collection_limit">Цей обліковий запис користувача заблоковано, оскільки колекція перевищила ліміт. Будь ласка, <a>зверніться до служби підтримки</a> для вирішення цієї проблеми.</string>
   <string name="error_text_locked_account_guide">Будь ласка, відвідайте <a>розширені налаштування</a>, щоб запустити аналіз історії та розблокувати свій обліковий запис.</string>
   <string name="error_text_locked_account_persists">Якщо проблема не зникне, будь ласка, <a>зверніться до служби підтримки</a> для вирішення цієї проблеми.</string>
+  <string name="error_text_parental_guide_load_failed">Помилка завантаження</string>
   <string name="error_text_payment_other">Виникла помилка під час обробки вашого платежу. Будь ласка, спробуйте ще раз або зверніться до служби підтримки, якщо потрібно.</string>
   <string name="error_text_payment_unavailable">Виникла помилка під час обробки вашого платежу. Схоже, наразі ви не можете здійснити платіж. Будь ласка, спробуйте ще раз.</string>
   <string name="error_text_report_already_reported">Ви вже повідомили про це.</string>
@@ -1135,6 +1143,7 @@
   <string name="page_title_year_to_date">Рік до сьогодні</string>
   <string name="preview_feature_description_edit_mode">Увімкніть елементи керування для приховування або відображення настроюваних розділів у всьому застосунку.</string>
   <string name="preview_feature_description_leaderboard">Ранжуйте людей, за якими стежите, за часом перегляду та подивіться, яке місце ви посідаєте серед них.</string>
+  <string name="preview_feature_description_parental_guide">Показувати рівні ризику вмісту у висувній панелі деталей для фільмів, серіалів та епізодів.</string>
   <string name="preview_feature_description_rewatch">Почніть сеанси повторного перегляду для шоу, які ви вже бачили, реєструйте або відмічайте переглянуті серії безпосередньо з вікна сеансу.</string>
   <string name="preview_feature_description_scoped_favorites">Обмежте списки улюблених за часом, відображаючи улюблене поточного року в профілях та групуючи повний список улюблених за роками.</string>
   <string name="preview_feature_description_smart_recommendations">Використовуйте наш двигун нового покоління, щоб знаходити рекомендовані фільми та шоу, що виходять за рамки очевидного.</string>
