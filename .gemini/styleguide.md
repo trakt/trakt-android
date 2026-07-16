@@ -14,8 +14,8 @@ Gemini uses when reviewing pull requests.
 - Coroutines + Flow. `StateFlow` for screen state; `SharedFlow` for
   one-shot events.
 - **DI: Koin 4.2.x** with module DSL. No Hilt, no Dagger.
-- Networking: Ktor 3.4.x + OpenAPI-generated client + Moshi for
-  generated DTOs + kotlinx.serialization for typed routes / protobuf.
+- Networking: Ktor 3.4.x + OpenAPI-generated client + kotlinx.serialization for typed routes /
+  protobuf.
 - Persistence: DataStore (Preferences / typed Proto). No
   SharedPreferences in new code, no Realm, no SQLDelight.
 - Images: Coil 3.x.
@@ -39,12 +39,12 @@ Gemini uses when reviewing pull requests.
   / `Json` for type names; `url`, `id`, `json` for properties.
 - **Package names** — lowercase, no underscores.
 - **File naming**:
-  - Composable screens → `*Screen.kt`
-  - ViewModels → `*ViewModel.kt`
-  - Sealed UI state → `*State.kt`
-  - Koin modules → `*Module.kt` under `di/`
-  - Mappers → `*Mapper.kt` or `mapTo*.kt`
-  - Tests → `*Test.kt` (JUnit) or matching class name + `Test` suffix
+    - Composable screens → `*Screen.kt`
+    - ViewModels → `*ViewModel.kt`
+    - Sealed UI state → `*State.kt`
+    - Koin modules → `*Module.kt` under `di/`
+    - Mappers → `*Mapper.kt` or `mapTo*.kt`
+    - Tests → `*Test.kt` (JUnit) or matching class name + `Test` suffix
 
 ## Commit standards
 

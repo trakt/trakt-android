@@ -38,7 +38,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
@@ -47,6 +46,7 @@ import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import tv.trakt.trakt.LocalStartAuthorization
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_2
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_3
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_4
@@ -56,7 +56,6 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
@@ -95,7 +94,7 @@ internal fun ListsScreen(
     onNavigateToAllLists: (PersonalListType) -> Unit,
     onNavigateToVip: () -> Unit,
 ) {
-    val uriHandler = LocalUriHandler.current
+    val startAuthorization = LocalStartAuthorization.current
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var createListSheet by remember { mutableStateOf(false) }
@@ -113,7 +112,7 @@ internal fun ListsScreen(
         },
         onProfileClick = {
             if (state.user.user == null) {
-                uriHandler.openUri(ConfigAuth.authCodeUrl)
+                startAuthorization()
             } else {
                 onNavigateToProfile()
             }

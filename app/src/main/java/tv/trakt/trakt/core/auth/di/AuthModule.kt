@@ -8,12 +8,14 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
+import io.ktor.client.HttpClientConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.core.auth.data.remote.AuthApiClient
 import tv.trakt.trakt.core.auth.data.remote.AuthRemoteDataSource
 import tv.trakt.trakt.core.auth.usecase.AuthorizeUserUseCase
@@ -29,7 +31,9 @@ val authModule = module {
 
     single<AuthRemoteDataSource> {
         AuthApiClient(
-            api = get(),
+            baseUrl = Config.WEB_AUTH_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
         )
     }
 

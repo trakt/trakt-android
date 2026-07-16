@@ -23,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,10 +30,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
+import tv.trakt.trakt.LocalStartAuthorization
 import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.resources.R
@@ -109,7 +108,7 @@ private fun HeaderBar(
     onVipClick: () -> Unit = {},
     onFilterClick: () -> Unit = {},
 ) {
-    val uriHandler = LocalUriHandler.current
+    val startAuthorization = LocalStartAuthorization.current
 
     val contentHeight = 36.dp
     val headerBarHeight = WindowInsets.statusBars.asPaddingValues()
@@ -164,9 +163,7 @@ private fun HeaderBar(
                         height = contentHeight,
                         loading = userLoading,
                         enabled = !userLoading,
-                        onClick = {
-                            uriHandler.openUri(ConfigAuth.authCodeUrl)
-                        },
+                        onClick = startAuthorization,
                     )
                 } else if (customTheme?.theme != null && customTheme.visible) {
                     TraktThemeSwitch(

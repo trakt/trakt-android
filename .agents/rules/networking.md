@@ -40,7 +40,7 @@ Rules:
 - New endpoints reuse existing `HttpClient` instances injected via Koin. No new `HttpClient` per call.
 - Logging via `Logger.SIMPLE` (Timber bridge) at `LogLevel.HEADERS` in debug, `LogLevel.NONE` in release.
 - File-based response cache under app's cache dir.
-- Use `ContentNegotiation` + `json()` for kotlinx.serialization, or `moshi()` where existing endpoints need it.
+- Use `ContentNegotiation` + `json()` for kotlinx.serialization where existing endpoints need it.
 
 ## Domain mappers
 
