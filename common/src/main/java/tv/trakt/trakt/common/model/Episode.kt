@@ -18,14 +18,15 @@ import tv.trakt.trakt.common.networking.EpisodeLikesDto
 import tv.trakt.trakt.common.networking.LastEpisodeDto
 import tv.trakt.trakt.resources.R
 import java.time.Instant
-import java.time.temporal.ChronoUnit
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.toJavaDuration
 
 // Grace window before an episode's air date during which it is already
 // considered aired. Absorbs timezone/scheduling skew so check-ins and
 // other aired-gated UI don't lag behind the actual broadcast.
-private const val AIR_BUFFER_HOURS = 24L
+private val AIR_DATE_BUFFER = 24.hours.toJavaDuration()
 
 @Immutable
 @Serializable
@@ -54,7 +55,7 @@ data class Episode(
 
     val isReleased: Boolean
         get() = releasedAt?.let {
-            !it.isAfter(nowUtcInstant().plus(AIR_BUFFER_HOURS, ChronoUnit.HOURS))
+            !it.isAfter(nowUtcInstant().plus(AIR_DATE_BUFFER))
         } ?: false
 
     val seasonEpisode: SeasonEpisode
