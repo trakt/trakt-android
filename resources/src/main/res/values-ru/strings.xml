@@ -198,10 +198,12 @@
   <string name="button_label_shows">Сериалы</string>
   <string name="button_label_sort_added_date">Сортировать по дате добавления</string>
   <string name="button_label_sort_ascending">Сортировать по возрастанию</string>
+  <string name="button_label_sort_created_date">Сортировать по дате создания</string>
   <string name="button_label_sort_default">Сортировать по умолчанию</string>
   <string name="button_label_sort_descending">Сортировать по убыванию</string>
   <string name="button_label_sort_list">Сортировать список</string>
   <string name="button_label_sort_my_rating">Сортировать по моей оценке</string>
+  <string name="button_label_sort_name">Сортировать по названию</string>
   <string name="button_label_sort_rank">Сортировать по рангу</string>
   <string name="button_label_sort_rating">Сортировать по рейтингу</string>
   <string name="button_label_sort_release_date">Сортировать по дате выхода</string>
@@ -209,6 +211,7 @@
   <string name="button_label_sort_runtime">Сортировать по продолжительности</string>
   <string name="button_label_sort_smart">Сортировать по умному порядку</string>
   <string name="button_label_sort_title">Сортировать по алфавиту</string>
+  <string name="button_label_sort_updated_date">Сортировать по дате обновления</string>
   <string name="button_label_star_rating">Оценить на %d звезд.</string>
   <string name="button_label_start_import">Начать импорт ваших данных в Trakt.</string>
   <string name="button_label_start_rewatching">Начать пересмотр \"%s\"</string>
@@ -396,6 +399,7 @@
   <string name="button_text_remove_photo">Удалить фото</string>
   <string name="button_text_renew_vip">Продлить</string>
   <string name="button_text_reorder">Переупорядочить</string>
+  <string name="button_text_reorder_lists">Переупорядочить списки</string>
   <string name="button_text_report">Пожаловаться</string>
   <string name="button_text_report_comment">Пожаловаться</string>
   <string name="button_text_reset_all_filters">Сбросить все</string>
@@ -414,9 +418,11 @@
   <string name="button_text_social">Социальные</string>
   <string name="button_text_sort_added_date">Дата добавления</string>
   <string name="button_text_sort_asc">По возр.</string>
+  <string name="button_text_sort_created_date">Дата создания</string>
   <string name="button_text_sort_default">По умолчанию</string>
   <string name="button_text_sort_desc">По убыв.</string>
   <string name="button_text_sort_my_rating">Моя оценка</string>
+  <string name="button_text_sort_name">Название</string>
   <string name="button_text_sort_rank">Ранг</string>
   <string name="button_text_sort_rating">Рейтинг</string>
   <string name="button_text_sort_release_date">Дата выхода</string>
@@ -424,6 +430,7 @@
   <string name="button_text_sort_runtime">Продолжительность</string>
   <string name="button_text_sort_smart">Умные</string>
   <string name="button_text_sort_title">Название</string>
+  <string name="button_text_sort_updated_date">Дата обновления</string>
   <string name="button_text_start_import">Начать импорт</string>
   <string name="button_text_start_rewatching">Начать пересмотр</string>
   <string name="button_text_stop_asking">Перестать спрашивать</string>
@@ -586,6 +593,7 @@
   <string name="error_text_locked_account_collection_limit">Эта учетная запись пользователя заблокирована, так как коллекция превысила лимит. Пожалуйста, <a>свяжитесь со службой поддержки</a> для решения этой проблемы.</string>
   <string name="error_text_locked_account_guide">Пожалуйста, посетите <a>расширенные настройки</a>, чтобы запустить анализ истории и разблокировать свою учетную запись.</string>
   <string name="error_text_locked_account_persists">Если проблема не исчезнет, пожалуйста, <a>свяжитесь со службой поддержки</a> для ее решения.</string>
+  <string name="error_text_parental_guide_load_failed">Ошибка загрузки</string>
   <string name="error_text_payment_other">Произошла ошибка при обработке вашего платежа. Пожалуйста, попробуйте еще раз или свяжитесь со службой поддержки, если это необходимо.</string>
   <string name="error_text_payment_unavailable">Произошла ошибка при обработке вашего платежа. Похоже, вы не можете совершить платеж прямо сейчас. Пожалуйста, попробуйте еще раз.</string>
   <string name="error_text_report_already_reported">Вы уже сообщили об этом.</string>
@@ -1135,6 +1143,7 @@
   <string name="page_title_year_to_date">С начала года</string>
   <string name="preview_feature_description_edit_mode">Включите элементы управления для скрытия или отображения настраиваемых разделов во всем приложении.</string>
   <string name="preview_feature_description_leaderboard">Оценивайте людей, на которых вы подписаны, по времени просмотра и смотрите, какое место вы занимаете среди них.</string>
+  <string name="preview_feature_description_parental_guide">Показывать уровни риска контента в выдвижной панели сведений для фильмов, сериалов и эпизодов.</string>
   <string name="preview_feature_description_rewatch">Начните сеансы пересмотра для шоу, которые вы уже видели, отмечайте просмотр или помечайте эпизоды как просмотренные прямо из панели сеанса.</string>
   <string name="preview_feature_description_scoped_favorites">Ограничивайте списки избранного по времени, показывая избранное текущего года в профилях и группируя полный список избранного по годам.</string>
   <string name="preview_feature_description_smart_recommendations">Используйте наш движок нового поколения, чтобы находить рекомендуемые фильмы и шоу, выходящие за рамки очевидного.</string>

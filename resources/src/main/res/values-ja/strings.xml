@@ -198,10 +198,12 @@
   <string name="button_label_shows">番組</string>
   <string name="button_label_sort_added_date">追加日でソート</string>
   <string name="button_label_sort_ascending">昇順でソート</string>
+  <string name="button_label_sort_created_date">作成日でソート</string>
   <string name="button_label_sort_default">デフォルト順でソート</string>
   <string name="button_label_sort_descending">降順でソート</string>
   <string name="button_label_sort_list">リストをソート</string>
   <string name="button_label_sort_my_rating">自分の評価でソート</string>
+  <string name="button_label_sort_name">名前でソート</string>
   <string name="button_label_sort_rank">順位でソート</string>
   <string name="button_label_sort_rating">評価でソート</string>
   <string name="button_label_sort_release_date">公開日でソート</string>
@@ -209,6 +211,7 @@
   <string name="button_label_sort_runtime">再生時間でソート</string>
   <string name="button_label_sort_smart">スマート順でソート</string>
   <string name="button_label_sort_title">アルファベット順でソート</string>
+  <string name="button_label_sort_updated_date">更新日でソート</string>
   <string name="button_label_star_rating">星%dつで評価する</string>
   <string name="button_label_start_import">データをTraktにインポートを開始します。</string>
   <string name="button_label_start_rewatching">「%s」の再視聴を開始</string>
@@ -396,6 +399,7 @@
   <string name="button_text_remove_photo">写真を削除</string>
   <string name="button_text_renew_vip">更新</string>
   <string name="button_text_reorder">並べ替え</string>
+  <string name="button_text_reorder_lists">リストを並べ替える</string>
   <string name="button_text_report">報告</string>
   <string name="button_text_report_comment">報告</string>
   <string name="button_text_reset_all_filters">全てリセット</string>
@@ -414,9 +418,11 @@
   <string name="button_text_social">ソーシャル</string>
   <string name="button_text_sort_added_date">追加日</string>
   <string name="button_text_sort_asc">昇順</string>
+  <string name="button_text_sort_created_date">作成日</string>
   <string name="button_text_sort_default">デフォルト</string>
   <string name="button_text_sort_desc">降順</string>
   <string name="button_text_sort_my_rating">自分の評価</string>
+  <string name="button_text_sort_name">名前</string>
   <string name="button_text_sort_rank">順位</string>
   <string name="button_text_sort_rating">評価</string>
   <string name="button_text_sort_release_date">公開日</string>
@@ -424,6 +430,7 @@
   <string name="button_text_sort_runtime">上映時間</string>
   <string name="button_text_sort_smart">スマート</string>
   <string name="button_text_sort_title">タイトル</string>
+  <string name="button_text_sort_updated_date">更新日</string>
   <string name="button_text_start_import">インポートを開始</string>
   <string name="button_text_start_rewatching">再視聴を開始</string>
   <string name="button_text_stop_asking">質問を停止</string>
@@ -586,6 +593,7 @@
   <string name="error_text_locked_account_collection_limit">このユーザーアカウントは、コレクションが上限を超過したためロックされました。この問題を解決するには、<a>サポートに連絡してください</a>。</string>
   <string name="error_text_locked_account_guide">履歴分析を実行してアカウントをロック解除するには、<a>詳細設定</a>をご覧ください。</string>
   <string name="error_text_locked_account_persists">問題が解決しない場合は、この問題を解決するため<a>サポートにお問い合わせください</a>。</string>
+  <string name="error_text_parental_guide_load_failed">読み込みエラー</string>
   <string name="error_text_payment_other">お支払い処理中にエラーが発生しました。もう一度お試しいただくか、必要であればサポートにお問い合わせください。</string>
   <string name="error_text_payment_unavailable">お支払い処理中にエラーが発生しました。現在、お支払いができないようです。もう一度お試しください。</string>
   <string name="error_text_report_already_reported">すでに報告済みです。</string>
@@ -1135,6 +1143,7 @@
   <string name="page_title_year_to_date">今年これまでの統計</string>
   <string name="preview_feature_description_edit_mode">アプリ全体で設定可能なセクションの表示/非表示を制御する機能を有効にします。</string>
   <string name="preview_feature_description_leaderboard">フォローしている人の視聴時間でランキングを作成し、その中で自分がどこに位置するかを確認できます。</string>
+  <string name="preview_feature_description_parental_guide">映画、番組、エピソードの詳細ドロワーにコンテンツのリスクレベルを表示します。</string>
   <string name="preview_feature_description_rewatch">既に視聴済みの番組の再視聴セッションを開始し、セッションドロワーから直接エピソードをチェックインまたは視聴済みとしてマークできます。</string>
   <string name="preview_feature_description_scoped_favorites">プロフィールに今年の「お気に入り」を表示し、お気に入りリスト全体を年別にグループ化することで、お気に入りリストを期間で区切ります。</string>
   <string name="preview_feature_description_smart_recommendations">当社の次世代エンジンを活用して、一般的なおすすめを超えた映画や番組を発見しましょう。</string>

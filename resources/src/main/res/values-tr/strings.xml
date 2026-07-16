@@ -198,10 +198,12 @@
   <string name="button_label_shows">Diziler</string>
   <string name="button_label_sort_added_date">Eklenme tarihine göre sırala</string>
   <string name="button_label_sort_ascending">Artan şekilde sırala</string>
+  <string name="button_label_sort_created_date">Oluşturma tarihine göre sırala</string>
   <string name="button_label_sort_default">Varsayılan sıraya göre sırala</string>
   <string name="button_label_sort_descending">Azalan şekilde sırala</string>
   <string name="button_label_sort_list">Listeyi sırala</string>
   <string name="button_label_sort_my_rating">Derecelendirmeme göre sırala</string>
+  <string name="button_label_sort_name">Ada göre sırala</string>
   <string name="button_label_sort_rank">Sıraya göre sırala</string>
   <string name="button_label_sort_rating">Derecelendirmeye göre sırala</string>
   <string name="button_label_sort_release_date">Yayın tarihine göre sırala</string>
@@ -209,6 +211,7 @@
   <string name="button_label_sort_runtime">Süreye göre sırala</string>
   <string name="button_label_sort_smart">Akıllı sıralamaya göre sırala</string>
   <string name="button_label_sort_title">Alfabetik olarak sırala</string>
+  <string name="button_label_sort_updated_date">Güncelleme tarihine göre sırala</string>
   <string name="button_label_star_rating">%d yıldızla derecelendir.</string>
   <string name="button_label_start_import">Verilerinizi Trakt\'a aktarmaya başlayın.</string>
   <string name="button_label_start_rewatching">Yeniden \"%s\" İzlemeye Başla</string>
@@ -396,6 +399,7 @@
   <string name="button_text_remove_photo">Fotoğrafı kaldır</string>
   <string name="button_text_renew_vip">Yenile</string>
   <string name="button_text_reorder">Yeniden sırala</string>
+  <string name="button_text_reorder_lists">Listeleri yeniden sırala</string>
   <string name="button_text_report">Bildir</string>
   <string name="button_text_report_comment">Bildir</string>
   <string name="button_text_reset_all_filters">Tümünü sıfırla</string>
@@ -414,9 +418,11 @@
   <string name="button_text_social">Sosyal</string>
   <string name="button_text_sort_added_date">Eklenme Tarihi</string>
   <string name="button_text_sort_asc">Artan</string>
+  <string name="button_text_sort_created_date">Oluşturma Tarihi</string>
   <string name="button_text_sort_default">Varsayılan</string>
   <string name="button_text_sort_desc">Azalan</string>
   <string name="button_text_sort_my_rating">Derecelendirmem</string>
+  <string name="button_text_sort_name">Ad</string>
   <string name="button_text_sort_rank">Sıra</string>
   <string name="button_text_sort_rating">Derecelendirme</string>
   <string name="button_text_sort_release_date">Yayınlandığı Tarih</string>
@@ -424,6 +430,7 @@
   <string name="button_text_sort_runtime">Süre</string>
   <string name="button_text_sort_smart">Akıllı</string>
   <string name="button_text_sort_title">Başlık</string>
+  <string name="button_text_sort_updated_date">Güncelleme Tarihi</string>
   <string name="button_text_start_import">İçe Aktarmayı Başlat</string>
   <string name="button_text_start_rewatching">Yeniden İzlemeye Başla</string>
   <string name="button_text_stop_asking">Sormayı bırak</string>
@@ -586,6 +593,7 @@
   <string name="error_text_locked_account_collection_limit">Bu kullanıcı hesabı, koleksiyon limiti aşıldığı için kilitlenmiştir. Lütfen bu sorunu çözmek için <a>destek ile iletişime geçin</a>.</string>
   <string name="error_text_locked_account_guide">Bir geçmiş analizi yapmak ve hesabınızın kilidini açmak için lütfen <a>gelişmiş ayarlara</a> gidin.</string>
   <string name="error_text_locked_account_persists">Sorun devam ederse, lütfen bu sorunu çözmek için <a>destek ile iletişime geçin</a>.</string>
+  <string name="error_text_parental_guide_load_failed">Yükleme Hatası</string>
   <string name="error_text_payment_other">Ödemeniz işlenirken bir hata oluştu. Lütfen tekrar deneyin veya gerekirse destek ile iletişime geçin.</string>
   <string name="error_text_payment_unavailable">Ödemeniz işlenirken bir hata oluştu. Şu anda ödeme yapamıyor gibi görünüyorsunuz. Lütfen tekrar deneyin.</string>
   <string name="error_text_report_already_reported">Bunu zaten bildirdiniz.</string>
@@ -1135,6 +1143,7 @@
   <string name="page_title_year_to_date">Yıl Başından Bugüne</string>
   <string name="preview_feature_description_edit_mode">Uygulama genelinde yapılandırılabilir bölümleri gizleme veya gösterme kontrollerini etkinleştirin.</string>
   <string name="preview_feature_description_leaderboard">Takip ettiğin kişileri izleme süresine göre sırala ve aralarında nerede olduğunu gör.</string>
+  <string name="preview_feature_description_parental_guide">Filmler, diziler ve bölümler için detay çekmecesinde içerik risk seviyelerini göster.</string>
   <string name="preview_feature_description_rewatch">Halihazırda izlediğiniz diziler için yeniden izleme oturumları başlatın, izlenen bölümleri doğrudan oturum çekmecesinden kaydedin veya izlendi olarak işaretleyin.</string>
   <string name="preview_feature_description_scoped_favorites">Favori listelerini, profillerde güncel yılın favorilerini göstererek ve tüm favori listesini yıla göre gruplandırarak zaman kutucuklarına ayırın.</string>
   <string name="preview_feature_description_smart_recommendations">Sıradanlığın ötesinde önerilen film ve dizileri keşfetmek için yeni nesil motorumuzu kullanın.</string>
