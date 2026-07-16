@@ -109,7 +109,7 @@ private fun WatchedUntilContent(
             WatchedTimestampsList(
                 episodes = state.episodes,
                 selectedAction = selectedAction,
-                modifier = Modifier.padding(top = 24.dp),
+                modifier = Modifier.padding(top = 32.dp),
             )
         } else if (state.episodes.isNullOrEmpty() && state.loading.isLoading) {
             FilmProgressIndicator(
@@ -117,7 +117,7 @@ private fun WatchedUntilContent(
                 color = TraktTheme.colors.textPrimary,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 24.dp),
+                    .padding(top = 32.dp),
             )
         }
 
@@ -125,7 +125,7 @@ private fun WatchedUntilContent(
             verticalArrangement = spacedBy(6.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 24.dp),
+                .padding(top = 32.dp),
         ) {
             PrimaryButton(
                 text = stringResource(R.string.button_text_mark_as_watched),
