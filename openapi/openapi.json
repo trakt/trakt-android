@@ -54306,6 +54306,1060 @@
         "operationId": "postUsersListsListReport"
       }
     },
+    "/users/{id}/smart-lists": {
+      "get": {
+        "description": "#### 🔓 OAuth Optional\nReturns all smart list definitions for a user. Use the [**/users/:id/smart-lists/:list_id/items**](#reference/users) method to get the dynamic items a specific smart list resolves to.",
+        "summary": "Get a user's smart lists",
+        "tags": [
+          "users",
+          "smartLists"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug that identifies the user, or \"me\" for the authenticated user."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "privacy": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "updated_at": {
+                        "type": "string"
+                      },
+                      "ids": {
+                        "type": "object",
+                        "properties": {
+                          "trakt": {
+                            "type": "integer"
+                          },
+                          "slug": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "trakt",
+                          "slug"
+                        ]
+                      },
+                      "images": {
+                        "type": "object",
+                        "properties": {
+                          "posters": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "posters"
+                        ]
+                      },
+                      "source": {
+                        "type": "string"
+                      },
+                      "media_type": {
+                        "type": "string"
+                      },
+                      "filters": {
+                        "type": "object",
+                        "properties": {
+                          "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "certifications": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "languages": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "countries": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "statuses": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "networks": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "watchnow": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "years": {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            },
+                            "maxItems": 2
+                          },
+                          "ratings": {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            },
+                            "maxItems": 2
+                          },
+                          "runtimes": {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            },
+                            "maxItems": 2
+                          },
+                          "imdb_ratings": {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            },
+                            "maxItems": 2
+                          },
+                          "rt_meters": {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            },
+                            "maxItems": 2
+                          },
+                          "rt_user_meters": {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            },
+                            "maxItems": 2
+                          },
+                          "ignore_watched": {
+                            "type": "boolean"
+                          },
+                          "ignore_watchlisted": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "privacy",
+                      "created_at",
+                      "updated_at",
+                      "ids",
+                      "images",
+                      "source",
+                      "media_type",
+                      "filters"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "getUsersSmartListsPersonal"
+      },
+      "post": {
+        "description": "#### 🔥 VIP Enhanced 🔒 OAuth Required\nCreate a new smart list. A smart list is a dynamic list driven by a `source` and `filters` rather than manually added items.\n\n#### JSON POST Data\n| Key | Type | Value |\n|---|---|---|\n| `name` * | string | Name of the smart list. |\n| `source` * | string | `trending`, `popular`, `anticipated`, `recommendations`, `discover` |\n| `media_type` * | string | `movies`, `shows`, `media` |\n| `filters` | object | Filter constraints applied to the source. |\n| `privacy` | string | `public`, `private`, `friends` |",
+        "summary": "Create smart list",
+        "tags": [
+          "users",
+          "smartLists"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source": {
+                    "type": "string",
+                    "enum": [
+                      "trending",
+                      "popular",
+                      "anticipated",
+                      "recommendations",
+                      "discover"
+                    ]
+                  },
+                  "media_type": {
+                    "type": "string",
+                    "enum": [
+                      "movies",
+                      "shows",
+                      "media"
+                    ]
+                  },
+                  "filters": {
+                    "type": "object",
+                    "properties": {
+                      "genres": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "subgenres": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "certifications": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "languages": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "countries": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "statuses": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "networks": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "watchnow": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "years": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        },
+                        "maxItems": 2
+                      },
+                      "ratings": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        },
+                        "maxItems": 2
+                      },
+                      "runtimes": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        },
+                        "maxItems": 2
+                      },
+                      "imdb_ratings": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        },
+                        "maxItems": 2
+                      },
+                      "rt_meters": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        },
+                        "maxItems": 2
+                      },
+                      "rt_user_meters": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        },
+                        "maxItems": 2
+                      },
+                      "ignore_watched": {
+                        "type": "boolean"
+                      },
+                      "ignore_watchlisted": {
+                        "type": "boolean"
+                      }
+                    }
+                  },
+                  "privacy": {
+                    "type": "string",
+                    "enum": [
+                      "public",
+                      "private",
+                      "friends"
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "source",
+                  "media_type"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ids": {
+                      "type": "object",
+                      "properties": {
+                        "trakt": {
+                          "type": "integer"
+                        },
+                        "slug": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "trakt",
+                        "slug"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "ids"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "postUsersSmartListsCreate"
+      }
+    },
+    "/users/{id}/smart-lists/{list_id}/": {
+      "get": {
+        "description": "#### 🔓 OAuth Optional\nReturns a single smart list definition. Use the [**/users/:id/smart-lists/:list_id/items**](#reference/users) method to get the dynamic items this smart list resolves to.",
+        "summary": "Get smart list",
+        "tags": [
+          "users",
+          "smartLists",
+          "smartList"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug that identifies the user, or \"me\" for the authenticated user."
+          },
+          {
+            "name": "list_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "privacy": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "ids": {
+                      "type": "object",
+                      "properties": {
+                        "trakt": {
+                          "type": "integer"
+                        },
+                        "slug": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "trakt",
+                        "slug"
+                      ]
+                    },
+                    "images": {
+                      "type": "object",
+                      "properties": {
+                        "posters": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": [
+                        "posters"
+                      ]
+                    },
+                    "source": {
+                      "type": "string"
+                    },
+                    "media_type": {
+                      "type": "string"
+                    },
+                    "filters": {
+                      "type": "object",
+                      "properties": {
+                        "genres": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "subgenres": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "certifications": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "languages": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "countries": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "statuses": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "networks": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "watchnow": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "years": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 2
+                        },
+                        "ratings": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 2
+                        },
+                        "runtimes": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 2
+                        },
+                        "imdb_ratings": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 2
+                        },
+                        "rt_meters": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 2
+                        },
+                        "rt_user_meters": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 2
+                        },
+                        "ignore_watched": {
+                          "type": "boolean"
+                        },
+                        "ignore_watchlisted": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "privacy",
+                    "created_at",
+                    "updated_at",
+                    "ids",
+                    "images",
+                    "source",
+                    "media_type",
+                    "filters"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "getUsersSmartListsSmartListSummary"
+      },
+      "put": {
+        "description": "#### 🔒 OAuth Required\nUpdate a smart list by sending 1 or more parameters. The `source`, `media_type`, `filters`, and `privacy` can all be changed; the slug is retained so existing references keep working.",
+        "summary": "Update smart list",
+        "tags": [
+          "users",
+          "smartLists",
+          "smartList"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug that identifies the user, or \"me\" for the authenticated user."
+          },
+          {
+            "name": "list_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "source": {
+                    "type": "string",
+                    "enum": [
+                      "trending",
+                      "popular",
+                      "anticipated",
+                      "recommendations",
+                      "discover"
+                    ]
+                  },
+                  "media_type": {
+                    "type": "string",
+                    "enum": [
+                      "movies",
+                      "shows",
+                      "media"
+                    ]
+                  },
+                  "filters": {
+                    "type": "object",
+                    "properties": {
+                      "genres": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "subgenres": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "certifications": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "languages": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "countries": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "statuses": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "networks": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "watchnow": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "years": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        },
+                        "maxItems": 2
+                      },
+                      "ratings": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        },
+                        "maxItems": 2
+                      },
+                      "runtimes": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        },
+                        "maxItems": 2
+                      },
+                      "imdb_ratings": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        },
+                        "maxItems": 2
+                      },
+                      "rt_meters": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        },
+                        "maxItems": 2
+                      },
+                      "rt_user_meters": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        },
+                        "maxItems": 2
+                      },
+                      "ignore_watched": {
+                        "type": "boolean"
+                      },
+                      "ignore_watchlisted": {
+                        "type": "boolean"
+                      }
+                    }
+                  },
+                  "privacy": {
+                    "type": "string",
+                    "enum": [
+                      "public",
+                      "private",
+                      "friends"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "privacy": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "ids": {
+                      "type": "object",
+                      "properties": {
+                        "trakt": {
+                          "type": "integer"
+                        },
+                        "slug": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "trakt",
+                        "slug"
+                      ]
+                    },
+                    "images": {
+                      "type": "object",
+                      "properties": {
+                        "posters": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": [
+                        "posters"
+                      ]
+                    },
+                    "source": {
+                      "type": "string"
+                    },
+                    "media_type": {
+                      "type": "string"
+                    },
+                    "filters": {
+                      "type": "object",
+                      "properties": {
+                        "genres": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "subgenres": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "certifications": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "languages": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "countries": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "statuses": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "networks": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "watchnow": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "years": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 2
+                        },
+                        "ratings": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 2
+                        },
+                        "runtimes": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 2
+                        },
+                        "imdb_ratings": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 2
+                        },
+                        "rt_meters": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 2
+                        },
+                        "rt_user_meters": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 2
+                        },
+                        "ignore_watched": {
+                          "type": "boolean"
+                        },
+                        "ignore_watchlisted": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "privacy",
+                    "created_at",
+                    "updated_at",
+                    "ids",
+                    "images",
+                    "source",
+                    "media_type",
+                    "filters"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "putUsersSmartListsSmartListUpdate"
+      },
+      "delete": {
+        "description": "#### 🔒 OAuth Required\nRemove a smart list.",
+        "summary": "Delete a user's smart list",
+        "tags": [
+          "users",
+          "smartLists",
+          "smartList"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The slug that identifies the user, or \"me\" for the authenticated user."
+          },
+          {
+            "name": "list_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "204",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "deleteUsersSmartListsSmartListDelete"
+      }
+    },
     "/users/hidden/{section}": {
       "post": {
         "description": "#### 🔒 OAuth Required\nHide items for a specific section. Here's what type of items can hidden for each section. You can optionally specify the `hidden_at` date for each item.\n\n#### Hideable Media Objects\n| Section | Objects |\n|---|---|---|\n| `calendar` | `movie`, `show` |\n| `progress_watched` | `show`, `season` |\n| `progress_collected` | `show`, `season` |\n| `recommendations` | `movie`, `show` |\n| `comments` | `user` |\n| `dropped` | `show` |\n\n#### JSON POST Data\n| Key | Type | Value |\n|---|---|---|\n| `movies` | array | Array of `movie` objects. (see examples ->) |\n| `shows` | array | Array of `show` objects. |\n| `seasons` | array | Array of `season` objects. |\n| `users` | array | Array of `user` objects. |",
@@ -126802,6 +127856,1002 @@
           }
         ],
         "operationId": "postListsReport"
+      }
+    },
+    "/smart-lists/{list_id}": {
+      "get": {
+        "description": "#### 🔓 OAuth Optional 😁 Emojis\nReturns a single smart list definition by its globally-unique slug. Use the [**/smart-lists/:list_id/items**](#reference/smart-lists) method to get the dynamic items this smart list resolves to.\n\n> ### Note\n> _Only public smart lists return data unless you send OAuth as the owner._",
+        "summary": "Get smart list",
+        "tags": [
+          "smart_lists"
+        ],
+        "parameters": [
+          {
+            "name": "list_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "privacy": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "ids": {
+                      "type": "object",
+                      "properties": {
+                        "trakt": {
+                          "type": "integer"
+                        },
+                        "slug": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "trakt",
+                        "slug"
+                      ]
+                    },
+                    "images": {
+                      "type": "object",
+                      "properties": {
+                        "posters": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": [
+                        "posters"
+                      ]
+                    },
+                    "source": {
+                      "type": "string"
+                    },
+                    "media_type": {
+                      "type": "string"
+                    },
+                    "filters": {
+                      "type": "object",
+                      "properties": {
+                        "genres": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "subgenres": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "certifications": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "languages": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "countries": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "statuses": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "networks": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "watchnow": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "years": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 2
+                        },
+                        "ratings": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 2
+                        },
+                        "runtimes": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 2
+                        },
+                        "imdb_ratings": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 2
+                        },
+                        "rt_meters": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 2
+                        },
+                        "rt_user_meters": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          },
+                          "maxItems": 2
+                        },
+                        "ignore_watched": {
+                          "type": "boolean"
+                        },
+                        "ignore_watchlisted": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "privacy",
+                    "created_at",
+                    "updated_at",
+                    "ids",
+                    "images",
+                    "source",
+                    "media_type",
+                    "filters"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "getSmart_listsSummary"
+      }
+    },
+    "/smart-lists/{list_id}/items/{type}/{sort_by}/{sort_how}": {
+      "get": {
+        "description": "#### 🔓 OAuth Optional 📄 Pagination ✨ Extended Info 🎚 Filters 😁 Emojis\nReturns the dynamic items a smart list resolves to. Use `type`, `sort_by`, and `sort_how` to control the returned item set and order, plus query filters and pagination to refine the result set.",
+        "summary": "Get smart list items",
+        "tags": [
+          "smart_lists"
+        ],
+        "parameters": [
+          {
+            "name": "list_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Smart list item type filter."
+          },
+          {
+            "name": "sort_by",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Sort by a specific property."
+          },
+          {
+            "name": "sort_how",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Sort direction."
+          },
+          {
+            "name": "extended",
+            "in": "query",
+            "description": "Extended information to include in the response.",
+            "schema": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "watchnow",
+            "in": "query",
+            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "favorites",
+                "any",
+                "any_all",
+                "free",
+                "free_all",
+                "subscriptions",
+                "subscriptions_all"
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "genres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "subgenres",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ratings",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "runtimes",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watched",
+            "in": "query",
+            "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_collected",
+            "in": "query",
+            "description": "Ignore collected items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watchlisted",
+            "in": "query",
+            "description": "Ignore watchlisted items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page number to retrieve",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of items per page, can be a number or the value all",
+            "schema": {
+              "nullable": true,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "rank": {
+                        "type": "integer"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "movie": {
+                        "type": "object",
+                        "properties": {
+                          "rank": {
+                            "type": "integer"
+                          },
+                          "id": {
+                            "type": "integer"
+                          },
+                          "listed_at": {
+                            "type": "string"
+                          },
+                          "notes": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "movie"
+                            ]
+                          },
+                          "movie": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string"
+                              },
+                              "year": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "slug": {
+                                    "type": "string"
+                                  },
+                                  "imdb": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "tmdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "plex": {
+                                    "type": "object",
+                                    "properties": {
+                                      "guid": {
+                                        "type": "string",
+                                        "nullable": true
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true
+                                      }
+                                    },
+                                    "nullable": true
+                                  }
+                                },
+                                "required": [
+                                  "trakt",
+                                  "slug"
+                                ]
+                              },
+                              "images": {
+                                "type": "object",
+                                "properties": {
+                                  "fanart": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "poster": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "logo": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "clearart": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "banner": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "thumb": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "fanart",
+                                  "poster",
+                                  "logo",
+                                  "clearart",
+                                  "banner",
+                                  "thumb"
+                                ],
+                                "nullable": true
+                              },
+                              "tagline": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "overview": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "released": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "country": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "rating": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
+                              "votes": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "comment_count": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "trailer": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "homepage": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "language": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "languages": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "available_translations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "genres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "subgenres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "certification": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "original_title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "after_credits": {
+                                "type": "boolean",
+                                "nullable": true
+                              },
+                              "during_credits": {
+                                "type": "boolean",
+                                "nullable": true
+                              },
+                              "colors": {
+                                "type": "object",
+                                "properties": {
+                                  "poster": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "social_ids": {
+                                "type": "object",
+                                "properties": {
+                                  "twitter": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "facebook": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "instagram": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "wikipedia": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "ids"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "rank",
+                          "id",
+                          "listed_at",
+                          "type",
+                          "movie"
+                        ],
+                        "nullable": true
+                      },
+                      "show": {
+                        "type": "object",
+                        "properties": {
+                          "rank": {
+                            "type": "integer"
+                          },
+                          "id": {
+                            "type": "integer"
+                          },
+                          "listed_at": {
+                            "type": "string"
+                          },
+                          "notes": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "show"
+                            ]
+                          },
+                          "show": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string"
+                              },
+                              "year": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "ids": {
+                                "type": "object",
+                                "properties": {
+                                  "trakt": {
+                                    "type": "integer"
+                                  },
+                                  "tvdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "imdb": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "tmdb": {
+                                    "type": "integer",
+                                    "nullable": true
+                                  },
+                                  "plex": {
+                                    "type": "object",
+                                    "properties": {
+                                      "guid": {
+                                        "type": "string",
+                                        "nullable": true
+                                      },
+                                      "slug": {
+                                        "type": "string",
+                                        "nullable": true
+                                      }
+                                    },
+                                    "nullable": true
+                                  },
+                                  "slug": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "trakt",
+                                  "slug"
+                                ]
+                              },
+                              "images": {
+                                "type": "object",
+                                "properties": {
+                                  "fanart": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "poster": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "logo": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "clearart": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "banner": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "thumb": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "fanart",
+                                  "poster",
+                                  "logo",
+                                  "clearart",
+                                  "banner",
+                                  "thumb"
+                                ],
+                                "nullable": true
+                              },
+                              "aired_episodes": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "tagline": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "overview": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "first_aired": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "airs": {
+                                "type": "object",
+                                "properties": {
+                                  "day": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "time": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "timezone": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "total_runtime": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "certification": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "network": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "country": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "status": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "rating": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
+                              "votes": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "comment_count": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "trailer": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "homepage": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "language": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "languages": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "available_translations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "genres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "subgenres": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              },
+                              "original_title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "colors": {
+                                "type": "object",
+                                "properties": {
+                                  "poster": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "social_ids": {
+                                "type": "object",
+                                "properties": {
+                                  "twitter": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "facebook": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "instagram": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "wikipedia": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "title",
+                              "ids"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "rank",
+                          "id",
+                          "listed_at",
+                          "type",
+                          "show"
+                        ],
+                        "nullable": true
+                      }
+                    },
+                    "required": [
+                      "rank",
+                      "type"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          },
+          {
+            "traktAPI": []
+          }
+        ],
+        "operationId": "getSmart_listsItems"
       }
     },
     "/comments/{id}": {
