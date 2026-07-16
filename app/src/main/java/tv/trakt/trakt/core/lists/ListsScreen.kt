@@ -47,8 +47,6 @@ import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
-import org.koin.androidx.compose.koinViewModel
-import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_2
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_3
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_4
@@ -61,10 +59,6 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.home.views.HomeEmptyView
-import tv.trakt.trakt.core.lists.ListsConfig.LISTS_FULL_PREVIEW_LIMIT
-import tv.trakt.trakt.core.lists.sections.collaborations.ListsCollaborationsView
-import tv.trakt.trakt.core.lists.sections.liked.ListsLikedView
-import tv.trakt.trakt.core.lists.sections.personal.ListsPersonalView
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collaborations
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
@@ -80,7 +74,7 @@ import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.components.mediacards.CustomListCard
-import tv.trakt.trakt.ui.components.mediacards.skeletons.CustomListItemsSkeleton
+import tv.trakt.trakt.ui.components.mediacards.skeletons.CustomListSkeletonCard
 import tv.trakt.trakt.ui.components.vip.VipBanner
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -211,10 +205,6 @@ private fun ListsScreenContent(
             .background(TraktTheme.colors.backgroundPrimary)
             .nestedScroll(headerState.connection),
     ) {
-        val listFullView = remember(state.lists?.size) {
-            (state.lists?.size ?: 0) <= LISTS_FULL_PREVIEW_LIMIT
-        }
-
         val listVisible = remember(state.lists?.size, state.listsLoading) {
             !state.lists.isNullOrEmpty() && state.listsLoading == Done
         }
@@ -284,121 +274,61 @@ private fun ListsScreenContent(
                 )
             }
 
-            val topVerticalPadding = 32.dp
+            val topVerticalPadding = 18.dp
             itemsIndexed(
                 items = state.lists ?: emptyList(),
                 key = { _, list -> list.ids.trakt.value },
             ) { index, list ->
                 val verticalPadding = when (index) {
                     0 -> topVerticalPadding
-                    else -> when {
-                        listFullView -> TraktTheme.spacing.mainSectionVerticalSpace
-                        else -> 18.dp
-                    }
+                    else -> 16.dp
                 }
                 when (state.filter) {
                     Personal if listVisible -> {
-                        if (listFullView) {
-                            ListsPersonalView(
-                                viewModel = koinViewModel(
-                                    key = list.ids.trakt.value.toString(),
-                                    parameters = { parametersOf(list.ids.trakt) },
-                                ),
-                                headerPadding = sectionPadding,
-                                contentPadding = sectionPadding,
-                                onShowClick = onShowClick,
-                                onMovieClick = onMovieClick,
-                                onEpisodeClick = onEpisodeClick,
-                                onMoreClick = { onEditListClick(list) },
-                                onAllClick = { onPersonalListClick(list) },
-                                modifier = Modifier.padding(
+                        CustomListCard(
+                            list = list,
+                            descriptionVisible = true,
+                            moreVisible = true,
+                            onClick = { onPersonalListClick(list) },
+                            onMoreClick = { onEditListClick(list) },
+                            modifier = Modifier
+                                .padding(
                                     top = verticalPadding,
-                                ),
-                            )
-                        } else {
-                            CustomListCard(
-                                list = list,
-                                descriptionVisible = true,
-                                moreVisible = true,
-                                onClick = { onPersonalListClick(list) },
-                                onMoreClick = { onEditListClick(list) },
-                                modifier = Modifier
-                                    .padding(
-                                        top = verticalPadding,
-                                        start = TraktTheme.spacing.mainPageHorizontalSpace,
-                                        end = TraktTheme.spacing.mainPageHorizontalSpace,
-                                    )
-                                    .aspectRatio(HorizontalImageAspectRatio),
-                            )
-                        }
+                                    start = TraktTheme.spacing.mainPageHorizontalSpace,
+                                    end = TraktTheme.spacing.mainPageHorizontalSpace,
+                                )
+                                .aspectRatio(HorizontalImageAspectRatio),
+                        )
                     }
                     Liked if listVisible -> {
-                        if (listFullView) {
-                            ListsLikedView(
-                                viewModel = koinViewModel(
-                                    key = list.ids.trakt.value.toString(),
-                                    parameters = { parametersOf(list.ids.trakt) },
-                                ),
-                                headerPadding = sectionPadding,
-                                contentPadding = sectionPadding,
-                                onShowClick = onShowClick,
-                                onMovieClick = onMovieClick,
-                                onEpisodeClick = onEpisodeClick,
-                                onAllClick = { onCustomListClick(list) },
-                                modifier = Modifier.padding(
+                        CustomListCard(
+                            list = list,
+                            liked = true,
+                            likesVisible = true,
+                            onClick = { onCustomListClick(list) },
+                            modifier = Modifier
+                                .padding(
                                     top = verticalPadding,
-                                ),
-                            )
-                        } else {
-                            CustomListCard(
-                                list = list,
-                                liked = true,
-                                likesVisible = true,
-                                onClick = { onCustomListClick(list) },
-                                modifier = Modifier
-                                    .padding(
-                                        top = verticalPadding,
-                                        start = TraktTheme.spacing.mainPageHorizontalSpace,
-                                        end = TraktTheme.spacing.mainPageHorizontalSpace,
-                                    )
-                                    .aspectRatio(HorizontalImageAspectRatio),
-                            )
-                        }
+                                    start = TraktTheme.spacing.mainPageHorizontalSpace,
+                                    end = TraktTheme.spacing.mainPageHorizontalSpace,
+                                )
+                                .aspectRatio(HorizontalImageAspectRatio),
+                        )
                     }
                     Collaborations if listVisible -> {
-                        if (listFullView) {
-                            ListsCollaborationsView(
-                                viewModel = koinViewModel(
-                                    key = list.ids.trakt.value.toString(),
-                                    parameters = { parametersOf(list.ids.trakt) },
-                                ),
-                                headerPadding = sectionPadding,
-                                contentPadding = sectionPadding,
-                                onShowClick = onShowClick,
-                                onMovieClick = onMovieClick,
-                                onEpisodeClick = onEpisodeClick,
-                                onAllClick = { onCustomListClick(list) },
-                                modifier = Modifier.padding(
+                        CustomListCard(
+                            list = list,
+                            onClick = { onCustomListClick(list) },
+                            modifier = Modifier
+                                .padding(
                                     top = verticalPadding,
-                                ),
-                            )
-                        } else {
-                            CustomListCard(
-                                list = list,
-                                onClick = { onCustomListClick(list) },
-                                modifier = Modifier
-                                    .padding(
-                                        top = verticalPadding,
-                                        start = TraktTheme.spacing.mainPageHorizontalSpace,
-                                        end = TraktTheme.spacing.mainPageHorizontalSpace,
-                                    )
-                                    .aspectRatio(HorizontalImageAspectRatio),
-                            )
-                        }
+                                    start = TraktTheme.spacing.mainPageHorizontalSpace,
+                                    end = TraktTheme.spacing.mainPageHorizontalSpace,
+                                )
+                                .aspectRatio(HorizontalImageAspectRatio),
+                        )
                     }
-                    else -> {
-                        // Noop
-                    }
+                    else -> {}
                 }
             }
 
@@ -426,11 +356,12 @@ private fun ListsScreenContent(
                         modifier = Modifier
                             .padding(top = topVerticalPadding),
                     ) {
-                        repeat(4) {
-                            CustomListItemsSkeleton(
-                                contentPadding = PaddingValues(
-                                    horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
-                                ),
+                        repeat(3) {
+                            CustomListSkeletonCard(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace)
+                                    .aspectRatio(HorizontalImageAspectRatio),
                             )
                         }
                     }

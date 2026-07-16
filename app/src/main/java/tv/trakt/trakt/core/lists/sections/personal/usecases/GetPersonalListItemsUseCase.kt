@@ -7,7 +7,6 @@ import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalLis
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
-import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaMode.Media
 import tv.trakt.trakt.common.model.MediaMode.Movies
 import tv.trakt.trakt.common.model.MediaMode.Shows
@@ -22,12 +21,10 @@ import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.ListItemDto
 import tv.trakt.trakt.core.lists.model.CustomListItem
-import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 
 internal class GetPersonalListItemsUseCase(
     private val remoteSource: UserPersonalListsRemoteDataSource,
-    private val localSource: ListsPersonalItemsLocalDataSource,
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
 ) {
     suspend fun getItems(
@@ -46,34 +43,13 @@ internal class GetPersonalListItemsUseCase(
         )
             .asyncMap(::mapListItem)
             .distinctBy { it.key }
-            .also {
-                localSource.setItems(
-                    listId = listId,
-                    items = it,
-                )
-            }.filter {
+            .filter {
                 when (filter.mode) {
                     Media -> true
                     Shows -> it is CustomListItem.ShowItem
                     Movies -> it is CustomListItem.MovieItem
                 }
             }.toImmutableList()
-    }
-
-    suspend fun getLocalItems(
-        listId: TraktId,
-        filter: MediaMode,
-    ): ImmutableList<CustomListItem> {
-        return localSource.getItems(listId)
-            .filter {
-                when (filter) {
-                    Media -> true
-                    Shows -> it is CustomListItem.ShowItem
-                    Movies -> it is CustomListItem.MovieItem
-                }
-            }
-            .distinctBy { it.key }
-            .toImmutableList()
     }
 
     suspend fun getRemoteItems(

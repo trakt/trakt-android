@@ -5,19 +5,12 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.user.data.remote.otherlists.UserOtherListsRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.CustomList
-import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsLocalDataSource
 
 internal class GetCollaborationsListsUseCase(
     private val remoteSource: UserOtherListsRemoteDataSource,
     private val localSource: ListsCollaborationsLocalDataSource,
 ) {
-    suspend fun getLocalList(listId: TraktId): CustomList? {
-        return localSource
-            .getLists()
-            .firstOrNull { it.ids.trakt == listId }
-    }
-
     suspend fun getLocalLists(): ImmutableList<CustomList> {
         return localSource.getLists()
             .toImmutableList()

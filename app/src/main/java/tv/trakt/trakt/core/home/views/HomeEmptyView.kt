@@ -111,7 +111,7 @@ internal fun HomeEmptyView(
                     brush = Brush.linearGradient(
                         colors = listOf(
                             Shade900,
-                            TraktTheme.colors.accent.copy(alpha = 0.33F),
+                            TraktTheme.colors.accent.copy(alpha = 0.3F),
                         ),
                     ),
                 )

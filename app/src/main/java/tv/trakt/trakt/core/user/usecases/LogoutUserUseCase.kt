@@ -19,11 +19,8 @@ import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialLo
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
-import tv.trakt.trakt.core.lists.sections.collaborations.data.local.items.ListsCollaborationsItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsLocalDataSource
-import tv.trakt.trakt.core.lists.sections.liked.data.local.items.ListsLikedItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedLocalDataSource
-import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalItemsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.profile.sections.activity.data.local.comments.ProfileCommentsLocalDataSource
@@ -57,11 +54,8 @@ internal class LogoutUserUseCase(
     private val localSocial: HomeSocialLocalDataSource,
     private val localPersonal: HomePersonalLocalDataSource,
     private val localListsPersonal: ListsPersonalLocalDataSource,
-    private val localListsItemsPersonal: ListsPersonalItemsLocalDataSource,
     private val localListsLiked: ListsLikedLocalDataSource,
-    private val localListsItemsLiked: ListsLikedItemsLocalDataSource,
     private val localListsCollab: ListsCollaborationsLocalDataSource,
-    private val localListsCollabItems: ListsCollaborationsItemsLocalDataSource,
     private val localRecommendedShows: RecommendedShowsLocalDataSource,
     private val localRecommendedMovies: RecommendedMoviesLocalDataSource,
     private val localUserProgress: UserProgressLocalDataSource,
@@ -104,11 +98,8 @@ internal class LogoutUserUseCase(
         localSocial.clear()
         localPersonal.clear()
         localListsPersonal.clear()
-        localListsItemsPersonal.clear()
         localListsLiked.clear()
-        localListsItemsLiked.clear()
         localListsCollab.clear()
-        localListsCollabItems.clear()
         localUserProgress.clear()
         localUserWatchlist.clear()
         localUserWatchlistMin.clear()
