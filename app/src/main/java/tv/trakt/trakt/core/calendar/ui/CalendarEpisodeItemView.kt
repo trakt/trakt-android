@@ -52,11 +52,6 @@ internal fun CalendarEpisodeItemView(
     onCheckLongClick: () -> Unit = {},
     onRemoveClick: () -> Unit = {},
 ) {
-    val isReleased = remember(item.releasedAt) {
-        val releasedAt = item.releasedAt
-        releasedAt != null && releasedAt.isBefore(nowUtcInstant())
-    }
-
     HorizontalMediaCard(
         modifier = modifier,
         title = "",
@@ -149,7 +144,7 @@ internal fun CalendarEpisodeItemView(
                     )
                 }
 
-                if (isReleased && !item.isFullSeason) {
+                if (item.episode.rememberReleased() && !item.isFullSeason) {
                     Box(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier
