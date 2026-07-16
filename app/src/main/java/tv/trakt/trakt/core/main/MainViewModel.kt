@@ -47,6 +47,7 @@ import tv.trakt.trakt.core.auth.usecase.authCodeKey
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source
 import tv.trakt.trakt.core.checkin.model.CheckInState
+import tv.trakt.trakt.core.main.usecases.DismissPaywallUseCase
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
 import tv.trakt.trakt.core.main.usecases.LoadWhatsNewUseCase
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
@@ -78,6 +79,7 @@ internal class MainViewModel(
     private val loadUserListsUseCase: LoadUserListsUseCase,
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
     private val dismissWelcomeUseCase: DismissWelcomeUseCase,
+    private val dismissPaywallUseCase: DismissPaywallUseCase,
     private val inAppReviewUseCase: RequestAppReviewUseCase,
     private val inAppUpdateManager: AppUpdateManager,
     private val errorsManager: GlobalErrorsManager,
@@ -93,6 +95,7 @@ internal class MainViewModel(
     private val welcomeState = MutableStateFlow(initialState.welcome)
     private val whatsNewState = MutableStateFlow(initialState.whatsNew)
     private val reviewState = MutableStateFlow(initialState.review)
+    private val paywallState = MutableStateFlow(initialState.paywall)
     private val updateState = MutableStateFlow(initialState.update)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -328,6 +331,7 @@ internal class MainViewModel(
                 getUserUseCase.loadUserProfile()?.let {
                     analytics.setUserId(it.ids.trakt.value.toString())
                     analytics.logUserLogin()
+                    dismissPaywall(it)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -423,6 +427,22 @@ internal class MainViewModel(
         }
     }
 
+    private fun dismissPaywall(user: User) {
+        viewModelScope.launch {
+            if (user.isAnyVip) {
+                paywallState.update { false }
+                dismissPaywallUseCase.dismissPaywall()
+            } else {
+                if (!dismissPaywallUseCase.isPaywallDismissed()) {
+                    paywallState.update { true }
+                    delay(500.milliseconds)
+                    dismissPaywallUseCase.dismissPaywall()
+                    paywallState.update { false }
+                }
+            }
+        }
+    }
+
     fun clearError() {
         errorsManager.clear()
     }
@@ -448,6 +468,7 @@ internal class MainViewModel(
         welcomeState,
         whatsNewState,
         reviewState,
+        paywallState,
         updateState,
         errorState,
     ) { state ->
@@ -460,8 +481,9 @@ internal class MainViewModel(
             welcome = state[5] as MainState.WelcomeState,
             whatsNew = state[6] as WhatsNew?,
             review = state[7] as Boolean?,
-            update = state[8] as AppUpdateResult?,
-            error = state[9] as Exception?,
+            paywall = state[8] as Boolean?,
+            update = state[9] as AppUpdateResult?,
+            error = state[10] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,
