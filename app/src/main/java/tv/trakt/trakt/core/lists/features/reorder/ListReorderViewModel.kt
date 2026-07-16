@@ -146,7 +146,7 @@ internal class ListReorderViewModel(
         index: Int,
         position: Int,
     ) {
-        val size = itemsState.value?.size ?: return
+        val size = itemsState.value?.size?.takeIf { it > 0 } ?: return
         reorderItem(from = index, to = position.coerceIn(1, size) - 1)
     }
 
