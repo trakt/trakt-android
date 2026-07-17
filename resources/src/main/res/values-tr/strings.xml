@@ -221,7 +221,7 @@
   <string name="button_label_sync_anyway">Çevrimdışı oynatmaları yine de ekle</string>
   <string name="button_label_sync_options">Senkronizasyon seçeneğini belirle</string>
   <string name="button_label_sync_streaming_service">%s senkronize et</string>
-  <string name="button_label_toggle_favorite_service">%s hizmetini favori olarak değiştir</string>
+  <string name="button_label_toggle_favorite_service">%s platformunu favorilere ekle</string>
   <string name="button_label_toggle_genre">%s türünü aç/kapat</string>
   <string name="button_label_toggle_search_lists">Listelerde ara</string>
   <string name="button_label_toggle_search_media">Medya ara</string>
@@ -552,9 +552,9 @@
   <string name="description_plex_webhook">İzlediğiniz, derecelendirdiğiniz ve kütüphanenize eklediğiniz her şeyi gerçek zamanlı olarak otomatik olarak scrobble edin.</string>
   <string name="description_preview_features">Genel kullanıma sunulmadan önce gelecek özellikleri deneyin. Önizleme Özellikleri, onları geliştirdikçe değişebilir.</string>
   <string name="description_skipped_items">Kırmızıyla işaretlenmiş herhangi bir şey öğenin atlanmasına neden oldu.</string>
-  <string name="description_streaming_services">Favorileriniz, en çok izlediğiniz hizmetlerde içerik bulmayı kolaylaştırır.</string>
+  <string name="description_streaming_services">Favorileriniz, en çok izlediğiniz platformlardaki içerikleri bulmanızı kolaylaştırır.</string>
   <string name="description_streaming_sync">İzleme geçmişinizi ve puanlarınızı otomatik olarak senkronize edin.</string>
-  <string name="description_streaming_vip_services">Bu yayın hizmetlerini bağlamak ve senkronize etmek için yükseltin.</string>
+  <string name="description_streaming_vip_services">Bu yayın platformlarını bağlamak ve senkronize etmek için yükseltin.</string>
   <string name="description_sync_detail">Bu senkronizasyon hakkında bazı ayrıntılar.</string>
   <string name="dialog_prompt_media_share_image_format">Paylaşmak için bir resim formatı seçin.</string>
   <string name="dialog_prompt_move_to_position">\"%s\" için yeni bir konum girin.</string>
@@ -713,7 +713,7 @@
   <string name="header_status">Durum</string>
   <string name="header_stream_on">Şurada yayınla</string>
   <string name="header_streaming">Mevcutluk</string>
-  <string name="header_streaming_services">Dijital Yayın Platformları</string>
+  <string name="header_streaming_services">Yayın Platformları</string>
   <string name="header_streaming_sync">Yayın Akışı Senkronizasyonu</string>
   <string name="header_streaming_vip_services">VIP ile Mevcut</string>
   <string name="header_studio">Stüdyo</string>
@@ -807,7 +807,7 @@
   <string name="input_placeholder_app_name">Uygulamam</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
-  <string name="input_placeholder_filter_services">Yayın hizmetlerini filtrele</string>
+  <string name="input_placeholder_filter_services">Yayın platformlarını filtrele</string>
   <string name="input_placeholder_lists_description">Açıklama (isteğe bağlı)</string>
   <string name="input_placeholder_lists_name">Ad</string>
   <string name="input_placeholder_note_drop">Bu başlığı neden bıraktınız?</string>
@@ -1264,7 +1264,7 @@
   <string name="text_calendar_placeholder_8">Programınız boş. Tadını çıkarın.</string>
   <string name="text_calendar_placeholder_9">Bu gün hiçbir etkinlik yok. Belki eski bir favoriyi tekrar ziyaret edersiniz.</string>
   <string name="text_calendar_placeholder_empty_period">Ekran karanlık. Film yok. Bölüm yok. Sadece siz ve sessizlik.</string>
-  <string name="text_clear_source_history">Tarih</string>
+  <string name="text_clear_source_history">Geçmiş</string>
   <string name="text_clear_source_library">Kütüphane</string>
   <string name="text_clear_source_ratings">Derecelendirmeler</string>
   <string name="text_clear_source_watchlist">İzleme Listesi</string>
@@ -1328,7 +1328,7 @@
   <string name="text_export_status_fetching">%s getiriliyor…</string>
   <string name="text_export_status_zipping">Dosyalar sıkıştırılıyor…</string>
   <string name="text_exporting">Dışa aktarılıyor… %s</string>
-  <string name="text_favorites_limit_reached">En fazla %s hizmet seçebilirsiniz</string>
+  <string name="text_favorites_limit_reached">En fazla %s platform seçebilirsiniz</string>
   <string name="text_first_play_this_month">Bu ayın ilk izlemesi</string>
   <string name="text_following">Takip Edilenler</string>
   <string name="text_footer_category_community">Topluluk</string>
@@ -1398,7 +1398,7 @@
   <string name="text_no_data_synced">Henüz hiçbir veri senkronize edilmedi.</string>
   <string name="text_no_paused_items">Duraklatılan öğe yok.</string>
   <string name="text_no_rating">Derecelendirme yok</string>
-  <string name="text_no_services_match_filter">Hiçbir hizmet filtrenizle eşleşmiyor.</string>
+  <string name="text_no_services_match_filter">Filtrenize uygun platform bulunamadı.</string>
   <string name="text_no_skipped_items">Atlanan öğe yok.</string>
   <string name="text_notification_episode_release">S%1$d • E%2$d şimdi mevcut.</string>
   <string name="text_notification_episodes_release">S%1$d • E%2$d-%3$d şimdi mevcut.</string>
