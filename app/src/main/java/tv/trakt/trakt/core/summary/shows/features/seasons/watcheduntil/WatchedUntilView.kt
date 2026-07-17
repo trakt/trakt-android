@@ -1,63 +1,50 @@
 package tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement.SpaceBetween
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight.Companion.W400
-import androidx.compose.ui.text.font.FontWeight.Companion.W600
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.extensions.longDateFormat
-import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
-import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.helpers.extensions.timeFormat
-import tv.trakt.trakt.common.helpers.extensions.toLocal
+import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
-import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilAction.Now
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilAction.OtherDate
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilAction.ReleaseDate
+import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.ui.ActionButtons
+import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.ui.OtherDateBoundButtons
+import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.ui.SegmentGap
+import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.ui.WatchedTimestampsList
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
+import tv.trakt.trakt.ui.components.dateselection.TraktDatePicker
+import tv.trakt.trakt.ui.components.dateselection.TraktTimePicker
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
 
-private enum class WatchedUntilAction {
+internal enum class WatchedUntilAction {
     Now,
     ReleaseDate,
     OtherDate,
 }
 
-private val TimestampsMaxHeight = 300.dp
+internal enum class OtherDateBound {
+    Start,
+    End,
+}
 
 @Composable
 internal fun WatchedUntilView(
@@ -81,6 +68,19 @@ private fun WatchedUntilContent(
     onMarkAsWatched: () -> Unit = {},
 ) {
     var selectedAction by remember { mutableStateOf(Now) }
+    var otherBound by remember { mutableStateOf<OtherDateBound?>(null) }
+    var otherAnchor by remember { mutableStateOf<Instant?>(null) }
+
+    // Bound the date picker is being opened for, and the date awaiting a time.
+    var pendingBound by remember { mutableStateOf<OtherDateBound?>(null) }
+    var pendingDate by remember { mutableStateOf<Instant?>(null) }
+
+    fun resetOtherDate() {
+        otherBound = null
+        otherAnchor = null
+        pendingBound = null
+        pendingDate = null
+    }
 
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -97,18 +97,47 @@ private fun WatchedUntilContent(
             modifier = Modifier.padding(bottom = 16.dp),
         )
 
-        ActionButtons(
-            enabled = !state.loading.isLoading,
-            selected = selectedAction,
-            onNowClick = { selectedAction = Now },
-            onReleaseClick = { selectedAction = ReleaseDate },
-            onOtherClick = { selectedAction = OtherDate },
-        )
+        Column(
+            verticalArrangement = spacedBy(0.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .animateContentSize(),
+        ) {
+            ActionButtons(
+                enabled = !state.loading.isLoading,
+                selected = selectedAction,
+                onNowClick = {
+                    selectedAction = Now
+                    resetOtherDate()
+                },
+                onReleaseClick = {
+                    selectedAction = ReleaseDate
+                    resetOtherDate()
+                },
+                onOtherClick = { selectedAction = OtherDate },
+            )
+
+            if (selectedAction == OtherDate) {
+                OtherDateBoundButtons(
+                    selected = otherBound,
+                    anchor = otherAnchor,
+                    enabled = !state.loading.isLoading,
+                    onBoundClick = { bound ->
+                        pendingBound = bound
+                        pendingDate = null
+                    },
+                    modifier = Modifier
+                        .padding(top = SegmentGap),
+                )
+            }
+        }
 
         if (!state.episodes.isNullOrEmpty()) {
             WatchedTimestampsList(
                 episodes = state.episodes,
                 selectedAction = selectedAction,
+                otherBound = otherBound,
+                otherAnchor = otherAnchor,
                 modifier = Modifier.padding(top = 32.dp),
             )
         } else if (state.episodes.isNullOrEmpty() && state.loading.isLoading) {
@@ -127,9 +156,10 @@ private fun WatchedUntilContent(
                 .fillMaxWidth()
                 .padding(top = 32.dp),
         ) {
+            val awaitingOtherDate = selectedAction == OtherDate && otherAnchor == null
             PrimaryButton(
                 text = stringResource(R.string.button_text_mark_as_watched),
-                enabled = !state.loading.isLoading,
+                enabled = !state.loading.isLoading && !awaitingOtherDate,
                 onClick = onMarkAsWatched,
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -143,216 +173,29 @@ private fun WatchedUntilContent(
             )
         }
     }
+
+    TraktDatePicker(
+        active = pendingBound != null && pendingDate == null,
+        onDateSelected = { pendingDate = it },
+        onDismiss = {
+            pendingBound = null
+            pendingDate = null
+        },
+    )
+
+    TraktTimePicker(
+        active = pendingDate != null,
+        selectedDate = pendingDate,
+        onDateTimeSelected = { dateTimeUtc ->
+            val localOffset = nowLocal().offset.totalSeconds
+            otherAnchor = dateTimeUtc.plusSeconds(-localOffset.toLong())
+            otherBound = pendingBound
+            pendingBound = null
+            pendingDate = null
+        },
+        onDismiss = { pendingDate = null },
+    )
 }
-
-@Composable
-private fun WatchedTimestampsList(
-    episodes: ImmutableList<Episode>,
-    selectedAction: WatchedUntilAction,
-    modifier: Modifier = Modifier,
-) {
-    val timestamps = remember(episodes, selectedAction) {
-        when (selectedAction) {
-            Now -> {
-                // Selected (last) episode is anchored to now; each earlier one
-                // is the next timestamp minus the runtime of the episode just
-                // watched (the later one).
-                var accumulated = nowUtcInstant()
-                val result = arrayOfNulls<Instant>(episodes.size)
-                for (index in episodes.indices.reversed()) {
-                    result[index] = accumulated
-                    accumulated = accumulated.minusMillis(
-                        episodes[index].runtime?.inWholeMilliseconds ?: 0,
-                    )
-                }
-                result.toList()
-            }
-
-            ReleaseDate, OtherDate -> {
-                episodes.map { it.releasedAt }
-            }
-        }
-    }
-
-    Column(
-        verticalArrangement = spacedBy(8.dp),
-        modifier = modifier,
-    ) {
-        Text(
-            text = stringResource(R.string.text_watch_until_here_preview_title),
-            style = TraktTheme.typography.meta.copy(fontWeight = W400),
-            color = TraktTheme.colors.textSecondary,
-            modifier = Modifier.padding(bottom = 4.dp),
-        )
-
-        Column(
-            verticalArrangement = spacedBy(12.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(max = TimestampsMaxHeight)
-                .verticalScroll(rememberScrollState()),
-        ) {
-            episodes.forEachIndexed { index, episode ->
-                EpisodeRow(
-                    episode = episode,
-                    timestamp = timestamps.getOrNull(index),
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun EpisodeRow(
-    episode: Episode,
-    timestamp: Instant?,
-    modifier: Modifier = Modifier,
-) {
-    val dateFormat = longDateFormat()
-    val timeFormat = timeFormat()
-
-    val timestampText = timestamp?.toLocal()?.let {
-        "${it.format(dateFormat)}  •  ${it.format(timeFormat)}"
-    }.orEmpty()
-
-    Row(
-        horizontalArrangement = SpaceBetween,
-        verticalAlignment = CenterVertically,
-        modifier = modifier.fillMaxWidth(),
-    ) {
-        Text(
-            text = stringResource(
-                R.string.episode_footer_season_episode,
-                episode.season,
-                episode.number,
-            ),
-            style = TraktTheme.typography.buttonPrimary.copy(
-                fontWeight = W600,
-            ),
-            color = TraktTheme.colors.textPrimary,
-        )
-
-        Text(
-            text = timestampText,
-            style = TraktTheme.typography.meta,
-            color = TraktTheme.colors.textSecondary,
-        )
-    }
-}
-
-@Composable
-private fun ActionButtons(
-    selected: WatchedUntilAction,
-    enabled: Boolean,
-    modifier: Modifier = Modifier,
-    onNowClick: () -> Unit = {},
-    onReleaseClick: () -> Unit = {},
-    onOtherClick: () -> Unit = {},
-) {
-    Column(
-        verticalArrangement = spacedBy(SegmentGap),
-        modifier = modifier,
-    ) {
-        ActionSegment(
-            text = stringResource(R.string.button_text_mark_as_watched_now),
-            icon = painterResource(R.drawable.ic_check),
-            selected = selected == Now,
-            enabled = enabled,
-            shape = SegmentPosition.Top.shape(),
-            onClick = onNowClick,
-        )
-        ActionSegment(
-            text = stringResource(R.string.button_text_mark_as_watched_release_date),
-            icon = painterResource(R.drawable.ic_calendar_time_trakt),
-            selected = selected == ReleaseDate,
-            enabled = enabled,
-            shape = SegmentPosition.Middle.shape(),
-            onClick = onReleaseClick,
-        )
-        ActionSegment(
-            text = stringResource(R.string.button_text_mark_as_watched_other_date),
-            icon = painterResource(R.drawable.ic_edit),
-            selected = selected == OtherDate,
-            enabled = enabled,
-            shape = SegmentPosition.Bottom.shape(),
-            onClick = onOtherClick,
-        )
-    }
-}
-
-@Composable
-private fun ActionSegment(
-    text: String,
-    icon: Painter,
-    selected: Boolean,
-    enabled: Boolean,
-    shape: Shape,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val containerColor = when {
-        selected -> TraktTheme.colors.accent
-        else -> TraktTheme.colors.primaryButtonContainerDisabled
-    }
-    val contentColor = when {
-        selected -> TraktTheme.colors.textPrimary
-        else -> TraktTheme.colors.textPrimary
-    }
-
-    Row(
-        horizontalArrangement = spacedBy(12.dp),
-        verticalAlignment = CenterVertically,
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(shape)
-            .background(containerColor)
-            .onClick(
-                enabled = enabled,
-                onClick = onClick,
-            )
-            .padding(
-                horizontal = 16.dp,
-                vertical = 12.dp,
-            ),
-    ) {
-        Icon(
-            painter = icon,
-            contentDescription = null,
-            tint = contentColor,
-            modifier = Modifier.size(21.dp),
-        )
-        Text(
-            text = text,
-            style = TraktTheme.typography.buttonPrimary,
-            color = contentColor,
-        )
-    }
-}
-
-private enum class SegmentPosition { Top, Middle, Bottom }
-
-private val SegmentGap = 4.dp
-private val SegmentCornerLarge = 16.dp
-private val SegmentCornerSmall = 6.dp
-
-private fun SegmentPosition.shape(): Shape =
-    when (this) {
-        SegmentPosition.Top -> RoundedCornerShape(
-            topStart = SegmentCornerLarge,
-            topEnd = SegmentCornerLarge,
-            bottomStart = SegmentCornerSmall,
-            bottomEnd = SegmentCornerSmall,
-        )
-
-        SegmentPosition.Middle -> RoundedCornerShape(SegmentCornerSmall)
-
-        SegmentPosition.Bottom -> RoundedCornerShape(
-            topStart = SegmentCornerSmall,
-            topEnd = SegmentCornerSmall,
-            bottomStart = SegmentCornerLarge,
-            bottomEnd = SegmentCornerLarge,
-        )
-    }
 
 @Preview(
     device = "id:pixel_5",

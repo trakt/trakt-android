@@ -324,7 +324,8 @@ internal class MainViewModel(
 
     private fun authorizeUser(
         code: String,
-        codeVerifier: String?) {
+        codeVerifier: String?,
+    ) {
         viewModelScope.launch {
             try {
                 loadingUserState.update { Loading }
