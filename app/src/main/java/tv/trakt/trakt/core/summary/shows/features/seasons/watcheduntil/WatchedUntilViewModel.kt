@@ -116,9 +116,6 @@ internal class WatchedUntilViewModel(
                     },
                 )
                 loadUserProgressUseCase.loadShowsProgress()
-                    .firstOrNull {
-                        it.showId == show.ids.trakt
-                    }
 
                 showDetailsUpdates.notifyUpdate(WatchedUntil)
                 analytics.progress.logAddWatchedMedia(

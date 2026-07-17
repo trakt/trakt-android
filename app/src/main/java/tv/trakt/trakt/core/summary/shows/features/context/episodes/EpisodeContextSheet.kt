@@ -25,8 +25,7 @@ internal fun EpisodeContextSheet(
     onRemoveClick: (EpisodeItem) -> Unit,
     onDismiss: () -> Unit,
 ) {
-    val sheetScope = rememberCoroutineScope()
-
+    val scope = rememberCoroutineScope()
     if (episodeItem != null) {
         TraktBottomSheet(
             sheetState = state,
@@ -37,30 +36,24 @@ internal fun EpisodeContextSheet(
                 watched = episodeItem.isWatched,
                 onTrackClick = {
                     onTrackClick(episodeItem)
-                    sheetScope.launch { state.hide() }
-                        .invokeOnCompletion {
-                            if (!state.isVisible) {
-                                onDismiss()
-                            }
-                        }
+                    scope.launch {
+                        state.hide()
+                        onDismiss()
+                    }
                 },
                 onWatchedUntilClick = {
                     onWatchedUntilClick(episodeItem)
-                    sheetScope.launch { state.hide() }
-                        .invokeOnCompletion {
-                            if (!state.isVisible) {
-                                onDismiss()
-                            }
-                        }
+                    scope.launch {
+                        state.hide()
+                        onDismiss()
+                    }
                 },
                 onRemoveClick = {
                     onRemoveClick(episodeItem)
-                    sheetScope.launch { state.hide() }
-                        .invokeOnCompletion {
-                            if (!state.isVisible) {
-                                onDismiss()
-                            }
-                        }
+                    scope.launch {
+                        state.hide()
+                        onDismiss()
+                    }
                 },
                 modifier = Modifier
                     .padding(bottom = 24.dp)

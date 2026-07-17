@@ -34,6 +34,7 @@ internal class GetWatchedUntilEpisodesUseCase(
                     val se = it.seasonEpisode
                     se.id <= selectedEpisode.seasonEpisode.id && !historyIds.contains(se.id)
                 }
+                .sortedBy { it.seasonEpisode.id }
                 .toImmutableList()
         }
 

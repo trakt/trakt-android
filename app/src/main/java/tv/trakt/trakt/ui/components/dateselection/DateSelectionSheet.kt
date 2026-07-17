@@ -141,7 +141,6 @@ internal fun DateSelectionSheet(
                     val localOffset = nowLocal().offset.totalSeconds
                     val localDateTime = dateTimeUtc.plusSeconds(-localOffset.toLong())
                     onResult(CustomDate(localDateTime))
-
                     Timber.d("Selected date time: UTC=$dateTimeUtc, Local=$localDateTime")
                 },
                 onDismiss = onDismiss,

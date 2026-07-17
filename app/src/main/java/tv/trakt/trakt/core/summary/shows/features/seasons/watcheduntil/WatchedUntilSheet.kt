@@ -6,6 +6,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -25,7 +26,6 @@ internal fun WatchedUntilSheet(
     onDismiss: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
-
     if (show != null && episode != null) {
         TraktBottomSheet(
             sheetState = state,
@@ -33,17 +33,17 @@ internal fun WatchedUntilSheet(
         ) {
             WatchedUntilView(
                 viewModel = koinViewModel(
-                    key = nextInt().toString(),
+                    key = remember(show, episode) {
+                        nextInt().toString()
+                    },
                     parameters = { parametersOf(show, episode) },
                 ),
                 onDismiss = {
                     scope.run {
-                        launch { state.hide() }
-                            .invokeOnCompletion {
-                                if (!state.isVisible) {
-                                    onDismiss()
-                                }
-                            }
+                        launch {
+                            state.hide()
+                            onDismiss()
+                        }
                     }
                 },
             )
