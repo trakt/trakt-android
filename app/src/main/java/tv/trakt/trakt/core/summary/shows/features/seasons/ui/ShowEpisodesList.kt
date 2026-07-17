@@ -182,7 +182,7 @@ internal fun ShowEpisodesList(
                                                 contentDescription = null,
                                                 tint = TraktTheme.colors.accent,
                                                 modifier = Modifier
-                                                    .size(19.dp)
+                                                    .size(20.dp)
                                                     .onClickCombined(
                                                         onClick = {
                                                             onCheckClick(item)
