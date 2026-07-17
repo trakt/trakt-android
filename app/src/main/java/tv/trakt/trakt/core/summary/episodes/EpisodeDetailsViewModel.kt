@@ -137,8 +137,8 @@ internal class EpisodeDetailsViewModel(
 
     private fun observeData() {
         merge(
-            showUpdatesSource.observeUpdates(Source.PROGRESS),
-            showUpdatesSource.observeUpdates(Source.SEASONS),
+            showUpdatesSource.observeUpdates(Source.Progress),
+            showUpdatesSource.observeUpdates(Source.Seasons),
             episodeUpdatesSource.observeUpdates(SEASON),
             episodeUpdatesSource.observeUpdates(HISTORY),
         )

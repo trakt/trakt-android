@@ -38,8 +38,8 @@ import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source
 import tv.trakt.trakt.core.summary.episodes.features.season.usecases.GetEpisodeSeasonUseCase
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.PROGRESS
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.SEASONS
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.Progress
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.Seasons
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.core.sync.model.ProgressItem
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
@@ -81,8 +81,8 @@ internal class EpisodeSeasonViewModel(
 
     private fun observeData() {
         merge(
-            showDetailsUpdates.observeUpdates(PROGRESS),
-            showDetailsUpdates.observeUpdates(SEASONS),
+            showDetailsUpdates.observeUpdates(Progress),
+            showDetailsUpdates.observeUpdates(Seasons),
             episodeDetailsUpdates.observeUpdates(Source.PROGRESS),
             episodeDetailsUpdates.observeUpdates(Source.HISTORY),
         )

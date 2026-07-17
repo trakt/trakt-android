@@ -78,8 +78,9 @@ internal class ProfileProgressViewModel(
     @OptIn(FlowPreview::class)
     private fun observeData() {
         merge(
-            showUpdates.observeUpdates(Source.PROGRESS),
-            showUpdates.observeUpdates(Source.SEASONS),
+            showUpdates.observeUpdates(Source.Progress),
+            showUpdates.observeUpdates(Source.Seasons),
+            showUpdates.observeUpdates(Source.WatchedUntil),
             episodeUpdates.observeUpdates(PROGRESS),
             episodeUpdates.observeUpdates(SEASON),
             episodeUpdates.observeUpdates(HISTORY),

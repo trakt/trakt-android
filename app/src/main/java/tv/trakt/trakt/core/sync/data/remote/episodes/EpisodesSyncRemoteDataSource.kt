@@ -21,6 +21,8 @@ internal interface EpisodesSyncRemoteDataSource {
         watchedAt: String,
     )
 
+    suspend fun addToHistory(episodes: List<Pair<TraktId, String>>)
+
     suspend fun removeEpisodeFromHistory(episodeId: Int)
 
     suspend fun removeSeasonFromHistory(seasonId: Int)

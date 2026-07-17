@@ -121,8 +121,9 @@ internal class AllWatchlistViewModel(
 
     private fun observeData() {
         merge(
-            showUpdatesSource.observeUpdates(Source.PROGRESS),
-            showUpdatesSource.observeUpdates(Source.SEASONS),
+            showUpdatesSource.observeUpdates(Source.Progress),
+            showUpdatesSource.observeUpdates(Source.Seasons),
+            showUpdatesSource.observeUpdates(Source.WatchedUntil),
             episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.PROGRESS),
             episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.SEASON),
             episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.HISTORY),

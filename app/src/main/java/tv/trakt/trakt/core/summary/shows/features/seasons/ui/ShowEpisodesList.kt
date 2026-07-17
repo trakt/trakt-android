@@ -55,7 +55,7 @@ internal fun ShowEpisodesList(
     onEpisodeClick: (episode: EpisodeItem) -> Unit,
     onCheckClick: (episode: EpisodeItem) -> Unit,
     onCheckLongClick: (episode: EpisodeItem) -> Unit,
-    onRemoveClick: (episode: EpisodeItem) -> Unit,
+    onMoreClick: (episode: EpisodeItem) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
@@ -103,14 +103,17 @@ internal fun ShowEpisodesList(
 
                     HorizontalMediaCard(
                         title = "",
-                        more = item.isWatched,
+                        more = item.isWatched || isReleased,
                         watched = item.isWatched,
-                        containerImageUrl = item.episode.images?.getScreenshotUrl()
-                            ?: show?.images?.getFanartUrl(),
+                        containerImageUrl = when {
+                            !isReleased -> show?.images?.getFanartUrl()
+                            else -> item.episode.images?.getScreenshotUrl()
+                                ?: show?.images?.getFanartUrl()
+                        },
                         onClick = { onEpisodeClick(item) },
                         onLongClick = {
-                            if (item.isWatched) {
-                                onRemoveClick(item)
+                            if (item.isWatched || isReleased) {
+                                onMoreClick(item)
                             }
                         },
                         cardContent = {

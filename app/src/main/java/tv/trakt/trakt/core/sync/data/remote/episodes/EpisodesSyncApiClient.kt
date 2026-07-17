@@ -101,6 +101,22 @@ internal class EpisodesSyncApiClient(
         cacheMarker.invalidate()
     }
 
+    override suspend fun addToHistory(episodes: List<Pair<TraktId, String>>) {
+        val request = PostUsersListsListAddRequest(
+            episodes = episodes.map { (episodeId, watchedAt) ->
+                PostUsersListsListAddRequestEpisodesInner(
+                    ids = PostUsersListsListAddRequestEpisodesInnerIds(
+                        trakt = episodeId.value,
+                        tvdb = -1,
+                    ),
+                    watchedAt = watchedAt,
+                )
+            },
+        )
+        syncApi.postSyncHistoryAdd(request)
+        cacheMarker.invalidate()
+    }
+
     override suspend fun removePlayFromHistory(playId: Long) {
         val request = PostSyncHistoryRemoveRequest(
             ids = listOf(playId),

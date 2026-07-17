@@ -35,6 +35,8 @@ import tv.trakt.trakt.core.summary.shows.features.related.usecases.GetShowRelate
 import tv.trakt.trakt.core.summary.shows.features.seasons.ShowSeasonsViewModel
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.AllShowSeasonsViewModel
 import tv.trakt.trakt.core.summary.shows.features.seasons.usecases.GetShowSeasonsUseCase
+import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilViewModel
+import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.usecases.GetWatchedUntilEpisodesUseCase
 import tv.trakt.trakt.core.summary.shows.features.sentiment.ShowSentimentViewModel
 import tv.trakt.trakt.core.summary.shows.features.sentiment.usecases.GetShowSentimentUseCase
 import tv.trakt.trakt.core.summary.shows.features.socials.GetShowSocialsUseCase
@@ -71,6 +73,7 @@ internal val showDetailsModule = module {
     factoryOf(::GetShowHistoryUseCase)
     factoryOf(::GetShowTriviaUseCase)
     factoryOf(::GetShowSocialsUseCase)
+    factoryOf(::GetWatchedUntilEpisodesUseCase)
 
     viewModelOf(::ShowInfoViewModel)
     viewModelOf(::ShowStreamingsViewModel)
@@ -85,6 +88,7 @@ internal val showDetailsModule = module {
     viewModelOf(::ShowDetailsListsViewModel)
     viewModelOf(::ShowHistoryViewModel)
     viewModelOf(::ShowTriviaViewModel)
+    viewModelOf(::WatchedUntilViewModel)
 
     viewModel {
         ShowDetailsViewModel(

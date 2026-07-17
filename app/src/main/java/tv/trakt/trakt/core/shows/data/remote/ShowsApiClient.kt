@@ -12,6 +12,7 @@ import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.RecommendedShowDto
+import tv.trakt.trakt.common.networking.SeasonDto
 import tv.trakt.trakt.common.networking.ShowCalendarsDto
 import tv.trakt.trakt.common.networking.ShowStatsDto
 import tv.trakt.trakt.common.networking.StreamingDto
@@ -306,7 +307,7 @@ internal class ShowsApiClient(
         return response.body()
     }
 
-    override suspend fun getSeasons(showId: TraktId): List<tv.trakt.trakt.common.networking.SeasonDto> {
+    override suspend fun getSeasons(showId: TraktId): List<SeasonDto> {
         val response = showsApi.getShowsSeasons(
             id = showId.value.toString(),
             extended = "full,cloud9",

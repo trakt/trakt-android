@@ -75,10 +75,12 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.core.summary.shows.features.context.episodes.EpisodeContextSheet
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
 import tv.trakt.trakt.core.summary.shows.features.seasons.ui.ShowSeasonsList
+import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilSheet
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -113,6 +115,8 @@ internal fun AllShowSeasonsScreen(
     var confirmMarkSeasonSheet by remember { mutableStateOf(false) }
     var confirmRemoveSeasonSheet by remember { mutableStateOf(false) }
     var episodeDateSheet by remember { mutableStateOf<EpisodeItem?>(null) }
+    var episodeWatchedUntilSheet by remember { mutableStateOf<EpisodeItem?>(null) }
+    var episodeContextSheet by remember { mutableStateOf<EpisodeItem?>(null) }
     var seasonDateSheet by remember { mutableStateOf(false) }
 
     AllShowSeasonsContent(
@@ -122,10 +126,34 @@ internal fun AllShowSeasonsScreen(
         onSeasonClick = viewModel::loadSeason,
         onCheckEpisodeClick = { viewModel.addToWatched(it.episode) },
         onCheckEpisodeLongClick = { episodeDateSheet = it },
-        onRemoveEpisodeClick = { confirmRemoveEpisodeSheet = it },
+        onMoreClick = { episodeContextSheet = it },
         onCheckSeasonClick = { confirmMarkSeasonSheet = true },
         onRemoveSeasonClick = { confirmRemoveSeasonSheet = true },
         onBackClick = onNavigateBack,
+    )
+
+    EpisodeContextSheet(
+        episodeItem = episodeContextSheet,
+        onTrackClick = {
+            episodeDateSheet = it
+        },
+        onWatchedUntilClick = {
+            episodeWatchedUntilSheet = it
+        },
+        onRemoveClick = {
+            confirmRemoveEpisodeSheet = it
+        },
+        onDismiss = {
+            episodeContextSheet = null
+        },
+    )
+
+    WatchedUntilSheet(
+        show = state.show,
+        episode = episodeWatchedUntilSheet?.episode,
+        onDismiss = {
+            episodeWatchedUntilSheet = null
+        },
     )
 
     RemoveConfirmationSheet(
@@ -223,7 +251,7 @@ private fun AllShowSeasonsContent(
     onSeasonClick: ((SeasonItem) -> Unit)? = null,
     onCheckEpisodeClick: ((EpisodeItem) -> Unit)? = null,
     onCheckEpisodeLongClick: ((EpisodeItem) -> Unit)? = null,
-    onRemoveEpisodeClick: ((EpisodeItem) -> Unit)? = null,
+    onMoreClick: ((EpisodeItem) -> Unit)? = null,
     onCheckSeasonClick: (() -> Unit)? = null,
     onRemoveSeasonClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
@@ -275,8 +303,6 @@ private fun AllShowSeasonsContent(
                         }
                     },
                     subtitle = state.show?.title,
-                    loading = state.loadingSeason.isLoading,
-                    more = state.items.isSelectedSeasonReleased,
                     onSeasonClick = {
                         onSeasonClick?.invoke(it)
                     },
@@ -346,7 +372,7 @@ private fun AllShowSeasonsContent(
                             onClick = onEpisodeClick,
                             onCheckClick = onCheckEpisodeClick,
                             onCheckLongClick = onCheckEpisodeLongClick,
-                            onRemoveClick = onRemoveEpisodeClick,
+                            onMoreClick = onMoreClick,
                             modifier = Modifier
                                 .padding(contentPadding)
                                 .padding(bottom = 12.dp)
@@ -364,8 +390,6 @@ private fun TitleBar(
     state: AllShowSeasonsState,
     title: String?,
     subtitle: String?,
-    loading: Boolean,
-    more: Boolean,
     onSeasonClick: (SeasonItem) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -467,7 +491,7 @@ private fun EpisodeListItem(
     onClick: ((EpisodeItem) -> Unit)?,
     onCheckClick: ((EpisodeItem) -> Unit)?,
     onCheckLongClick: ((EpisodeItem) -> Unit)?,
-    onRemoveClick: ((EpisodeItem) -> Unit)?,
+    onMoreClick: ((EpisodeItem) -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     val isReleased = episode.episode.rememberReleased()
@@ -479,10 +503,13 @@ private fun EpisodeListItem(
             episode.episode.season,
             episode.episode.number,
         ),
-        contentImageUrl = episode.episode.images?.getScreenshotUrl(Size.THUMB)
-            ?: show.images?.getFanartUrl(Size.THUMB),
+        contentImageUrl = when {
+            isReleased -> episode.episode.images?.getScreenshotUrl(Size.THUMB)
+                ?: show.images?.getFanartUrl(Size.THUMB)
+            else -> show.images?.getFanartUrl(Size.THUMB)
+        },
         containerImageUrl = null,
-        more = episode.isWatched && !episode.isLoading,
+        more = (episode.isWatched || isReleased) && !episode.isLoading,
         watched = episode.isWatched,
         footerContent = {
             Row(
@@ -550,7 +577,9 @@ private fun EpisodeListItem(
             }
         },
         onClick = { onClick?.invoke(episode) },
-        onLongClick = { if (episode.isWatched) onRemoveClick?.invoke(episode) },
+        onLongClick = {
+            if (episode.isWatched || isReleased) onMoreClick?.invoke(episode)
+        },
         onImageClick = { onClick?.invoke(episode) },
         modifier = modifier,
     )

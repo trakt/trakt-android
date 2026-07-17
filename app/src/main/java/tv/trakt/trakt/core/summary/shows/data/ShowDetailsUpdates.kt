@@ -9,8 +9,9 @@ internal interface ShowDetailsUpdates {
     fun observeUpdates(source: Source): Flow<Instant?>
 
     enum class Source {
-        PROGRESS,
-        SEASONS,
-        ALL_SEASONS,
+        Progress,
+        Seasons,
+        AllSeasons,
+        WatchedUntil,
     }
 }
