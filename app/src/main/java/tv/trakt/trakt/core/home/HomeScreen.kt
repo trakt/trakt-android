@@ -54,7 +54,6 @@ import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
-import tv.trakt.trakt.ui.components.vip.VipBanner
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -264,17 +263,6 @@ private fun HomeScreenContent(
                         modifier = Modifier.padding(sectionPadding),
                         onClick = onStreakClick,
                     )
-                }
-
-                if (!state.user.user.isVip) {
-                    item {
-                        VipBanner(
-                            onClick = onVipClick,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(sectionPadding),
-                        )
-                    }
                 }
             }
 

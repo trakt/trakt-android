@@ -73,7 +73,6 @@ import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
 import tv.trakt.trakt.ui.components.mediacards.CustomListCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.CustomListSkeletonCard
-import tv.trakt.trakt.ui.components.vip.VipBanner
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -241,17 +240,6 @@ private fun ListsScreenContent(
                     onProfileClick = onProfileClick,
                     onWatchlistClick = onWatchlistClick,
                 )
-            }
-
-            if (state.user.user != null && !state.user.user.isVip) {
-                item {
-                    VipBanner(
-                        onClick = onVipClick,
-                        modifier = Modifier
-                            .padding(sectionPadding)
-                            .padding(top = TraktTheme.spacing.mainSectionVerticalSpace),
-                    )
-                }
             }
 
             item(
