@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 @Preview(
     device = "id:pixel_7",
-    showBackground = false,
-    backgroundColor = 0xFFFFFF,
+    showBackground = true,
+    backgroundColor = 0xFF151418,
     locale = "us",
 )
 annotation class DevicePreview
@@ -17,7 +17,7 @@ annotation class DevicePreview
 @Preview(
     device = "id:pixel_7",
     showBackground = false,
-    backgroundColor = 0xFF212427,
+    backgroundColor = 0xFF201E23,
     locale = "us",
 )
 annotation class DeviceSheetPreview

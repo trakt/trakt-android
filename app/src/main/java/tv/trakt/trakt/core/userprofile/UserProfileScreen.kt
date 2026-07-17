@@ -95,6 +95,7 @@ import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.extensions.isAtLeastLarge
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -722,8 +723,6 @@ private fun FollowRequestView(
     onApproveClick: () -> Unit = {},
     onDenyClick: () -> Unit = {},
 ) {
-    val shape = RoundedCornerShape(24.dp)
-
     Box(
         contentAlignment = Center,
         modifier = modifier.animateContentSize(
@@ -734,8 +733,8 @@ private fun FollowRequestView(
             Column(
                 modifier = Modifier
                     .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace / 1.5F)
-                    .shadow(4.dp, shape)
-                    .background(TraktTheme.colors.dialogContainer, shape)
+                    .shadow(4.dp, DefaultCardShape)
+                    .background(TraktTheme.colors.dialogContainer, DefaultCardShape)
                     .padding(16.dp)
                     .animateContentSize(),
             ) {
@@ -798,7 +797,7 @@ private fun Preview1() {
     TraktTheme {
         TitleBar(
             user = PreviewData.user1.copy(
-                location = "AO jidoaij doasjd oiajsod ajsoidj aosidjo",
+                location = "Some Location",
             ),
             userBlocked = UserProfileState.BlockedState(
                 blocked = true,

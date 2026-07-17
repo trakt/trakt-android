@@ -57,6 +57,7 @@ import tv.trakt.trakt.common.model.CustomList.Type
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.ui.theme.colors.Purple900
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.VerticalImageAspectRatio
@@ -76,7 +77,7 @@ internal fun CustomListCard(
     Card(
         onClick = onClick,
         modifier = modifier,
-        shape = RoundedCornerShape(24.dp),
+        shape = DefaultCardShape,
         colors = cardColors(
             containerColor = TraktTheme.colors.customListContainer,
         ),
@@ -135,7 +136,7 @@ private fun CustomListContent(
                     list.type == Type.Official -> radialGradient
                     else -> SolidColor(containerColor)
                 },
-                shape = RoundedCornerShape(24.dp),
+                shape = DefaultCardShape,
             )
             .padding(vertical = 16.dp),
     ) {

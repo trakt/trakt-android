@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.material3.Icon
@@ -69,6 +68,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.vip.VipChip
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -241,7 +241,7 @@ internal fun HighlightsCard(
 ) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(24.dp),
+        shape = DefaultCardShape,
         colors = cardColors(
             containerColor = TraktTheme.colors.commentContainer,
         ),
@@ -279,7 +279,7 @@ internal fun ProsConsCard(
 
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(24.dp),
+        shape = DefaultCardShape,
         colors = cardColors(
             containerColor = TraktTheme.colors.commentContainer,
         ),
@@ -395,7 +395,7 @@ private fun GetVipView(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .padding(top = 8.dp, bottom = 4.dp)
-            .clip(RoundedCornerShape(22.dp))
+            .clip(DefaultCardShape)
             .background(radialGradient)
             .padding(start = 16.dp, end = 14.dp)
             .padding(vertical = 12.dp),

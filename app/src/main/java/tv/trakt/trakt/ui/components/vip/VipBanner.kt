@@ -33,6 +33,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -56,14 +57,12 @@ internal fun VipBanner(
         }
     }
 
-    val shape = RoundedCornerShape(24.dp)
-
     Box(
         modifier = modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
-            .shadow(2.dp, shape)
-            .clip(shape)
+            .shadow(2.dp, DefaultCardShape)
+            .clip(DefaultCardShape)
             .background(containerColor)
             .background(radialGradient)
             .onClick(onClick = onClick),

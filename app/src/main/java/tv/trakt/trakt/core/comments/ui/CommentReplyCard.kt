@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.cardColors
@@ -64,6 +63,7 @@ import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
 import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -90,7 +90,6 @@ internal fun CommentReplyCard(
         user?.ids?.trakt == reply.user.ids.trakt
     }
 
-    val shape = RoundedCornerShape(22.dp)
     val colors = cardColors(containerColor = TraktTheme.colors.commentReplyContainer)
     val border = when {
         isUserReply -> BorderStroke(2.dp, TraktTheme.colors.accent)
@@ -112,7 +111,7 @@ internal fun CommentReplyCard(
     if (onClick == null) {
         Card(
             modifier = modifier,
-            shape = shape,
+            shape = DefaultCardShape,
             colors = colors,
             border = border,
             content = content,
@@ -121,7 +120,7 @@ internal fun CommentReplyCard(
         Card(
             modifier = modifier,
             onClick = onClick,
-            shape = shape,
+            shape = DefaultCardShape,
             colors = colors,
             border = border,
             content = content,

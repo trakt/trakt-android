@@ -66,6 +66,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade800
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -264,7 +265,7 @@ private fun WelcomeFooter(
     onDismiss: () -> Unit = {},
 ) {
     val uriHandler = LocalUriHandler.current
-    val shape = RoundedCornerShape(24.dp)
+    val shape = DefaultCardShape
 
     Column(
         verticalArrangement = spacedBy(16.dp),

@@ -58,6 +58,7 @@ import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.vip.VipChip
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -293,8 +294,6 @@ private fun ImportTvTimeCard(
     onLiberatorClick: () -> Unit = {},
     onGdprClick: () -> Unit = {},
 ) {
-    val shape = RoundedCornerShape(20.dp)
-
     val radialGradient = remember {
         object : ShaderBrush() {
             override fun createShader(size: Size): Shader {
@@ -314,9 +313,9 @@ private fun ImportTvTimeCard(
         verticalArrangement = spacedBy(12.dp),
         modifier = modifier
             .fillMaxWidth()
-            .shadow(elevation = 2.dp, shape = shape)
-            .border(width = 1.dp, color = TraktTheme.colors.accent, shape = shape)
-            .background(radialGradient, shape)
+            .shadow(elevation = 2.dp, shape = DefaultCardShape)
+            .border(width = 1.dp, color = TraktTheme.colors.accent, shape = DefaultCardShape)
+            .background(radialGradient, DefaultCardShape)
             .padding(20.dp),
     ) {
         InfoChip(
@@ -385,7 +384,6 @@ private fun ImportTvTimeCard(
 
 @Composable
 private fun BecomeVipCard(modifier: Modifier = Modifier) {
-    val shape = RoundedCornerShape(20.dp)
     val radialGradient = remember {
         object : ShaderBrush() {
             override fun createShader(size: Size): Shader {
@@ -406,9 +404,9 @@ private fun BecomeVipCard(modifier: Modifier = Modifier) {
         horizontalArrangement = spacedBy(16.dp),
         modifier = modifier
             .fillMaxWidth()
-            .shadow(elevation = 2.dp, shape = shape)
-            .border(width = 1.dp, color = TraktTheme.colors.accent, shape = shape)
-            .background(radialGradient, shape)
+            .shadow(elevation = 2.dp, shape = DefaultCardShape)
+            .border(width = 1.dp, color = TraktTheme.colors.accent, shape = DefaultCardShape)
+            .background(radialGradient, DefaultCardShape)
             .padding(horizontal = 20.dp, vertical = 16.dp),
     ) {
         Column(
@@ -452,13 +450,12 @@ private fun ImportSourceCard(
     modifier: Modifier = Modifier,
     onImportClick: () -> Unit = {},
 ) {
-    val shape = RoundedCornerShape(20.dp)
     Column(
         verticalArrangement = spacedBy(12.dp),
         modifier = modifier
             .fillMaxWidth()
-            .shadow(elevation = 2.dp, shape = shape)
-            .background(TraktTheme.colors.dialogOnContainer, shape)
+            .shadow(elevation = 2.dp, shape = DefaultCardShape)
+            .background(TraktTheme.colors.dialogOnContainer, DefaultCardShape)
             .padding(20.dp),
     ) {
         Text(

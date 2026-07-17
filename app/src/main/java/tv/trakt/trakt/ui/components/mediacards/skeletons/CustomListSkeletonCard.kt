@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.annotation.ExperimentalCoilApi
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -63,7 +64,7 @@ private fun CustomListSkeletonCardContent(
     Card(
         onClick = {},
         modifier = modifier,
-        shape = RoundedCornerShape(24.dp),
+        shape = DefaultCardShape,
         colors = cardColors(
             containerColor = shimmerTransition,
         ),

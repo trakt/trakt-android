@@ -65,12 +65,11 @@ import tv.trakt.trakt.common.ui.theme.colors.Red600
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.ZonedDateTime
 import java.time.format.TextStyle
 import java.util.Locale
-
-private val cardShape = RoundedCornerShape(24.dp)
 
 @Composable
 internal fun ProfileStatsCard(
@@ -104,8 +103,8 @@ internal fun ProfileStatsCard(
 
     Box(
         modifier = modifier
-            .shadow(4.dp, cardShape)
-            .clip(cardShape)
+            .shadow(4.dp, DefaultCardShape)
+            .clip(DefaultCardShape)
             .background(containerColor),
     ) {
         containerImage?.let {

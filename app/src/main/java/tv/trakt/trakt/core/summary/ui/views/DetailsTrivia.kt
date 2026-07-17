@@ -51,9 +51,8 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toAnnotatedString
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.vip.VipChip
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
-
-private val triviaShape = RoundedCornerShape(24.dp)
 
 @Composable
 internal fun DetailsTrivia(
@@ -85,13 +84,13 @@ internal fun DetailsTrivia(
             .fillMaxWidth()
             .shadow(
                 elevation = 4.dp,
-                shape = triviaShape,
+                shape = DefaultCardShape,
                 ambientColor = DefaultShadowColor.copy(alpha = 0.66F),
                 spotColor = DefaultShadowColor.copy(alpha = 0.66F),
             )
             .background(
                 brush = radialGradient,
-                shape = triviaShape,
+                shape = DefaultCardShape,
             )
             .padding(20.dp),
     ) {
@@ -201,7 +200,7 @@ internal fun DetailsTriviaSkeleton(modifier: Modifier = Modifier) {
             .heightIn(min = 160.dp)
             .background(
                 color = shimmerTransition,
-                shape = triviaShape,
+                shape = DefaultCardShape,
             ),
     )
 }

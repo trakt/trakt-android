@@ -50,9 +50,8 @@ import tv.trakt.trakt.common.model.Sentiments.Overall.Mixed
 import tv.trakt.trakt.common.model.Sentiments.Overall.Negative
 import tv.trakt.trakt.common.model.Sentiments.Overall.Positive
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
-
-private val sentimentShape = RoundedCornerShape(24.dp)
 
 @Composable
 internal fun DetailsSentiment(
@@ -88,13 +87,13 @@ internal fun DetailsSentiment(
         modifier = modifier
             .shadow(
                 elevation = 4.dp,
-                shape = sentimentShape,
+                shape = DefaultCardShape,
                 ambientColor = DefaultShadowColor.copy(alpha = 0.66F),
                 spotColor = DefaultShadowColor.copy(alpha = 0.66F),
             )
             .background(
                 brush = radialGradient,
-                shape = sentimentShape,
+                shape = DefaultCardShape,
             )
             .padding(20.dp),
     ) {
@@ -185,7 +184,7 @@ internal fun DetailsSentimentSkeleton(modifier: Modifier = Modifier) {
             .heightIn(min = 180.dp)
             .background(
                 color = shimmerTransition,
-                shape = sentimentShape,
+                shape = DefaultCardShape,
             ),
     )
 }

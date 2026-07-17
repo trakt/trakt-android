@@ -8,10 +8,13 @@ import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
@@ -25,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -32,7 +36,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -42,9 +45,11 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceApp
@@ -56,6 +61,7 @@ import tv.trakt.trakt.core.summary.ui.views.DetailsStreamingItem
 import tv.trakt.trakt.core.summary.ui.views.DetailsStreamingSkeleton
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -206,20 +212,25 @@ private fun ContentLoading(
 
 @Composable
 private fun ContentEmpty(contentPadding: PaddingValues) {
-    Text(
-        text = stringResource(R.string.button_text_no_services),
-        color = TraktTheme.colors.textSecondary,
-        style = TraktTheme.typography.heading6,
-        modifier = Modifier.padding(contentPadding),
-    )
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(86.dp)
+            .padding(contentPadding)
+            .background(TraktTheme.colors.commentContainer, DefaultCardShape)
+            .padding(18.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = stringResource(R.string.button_text_no_services),
+            color = TraktTheme.colors.textSecondary,
+            style = TraktTheme.typography.heading6,
+        )
+    }
 }
 
 @OptIn(ExperimentalCoilApi::class)
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
+@DevicePreview
 @Composable
 private fun Preview() {
     TraktTheme {
@@ -229,6 +240,33 @@ private fun Preview() {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             MovieStreamingsContent(
                 state = MovieStreamingsState(
+                    items = StreamingsResult(
+                        streamings = EmptyImmutableList,
+                        justWatchLink = "https://www.justwatch.com",
+                        ranks = StreamingsResult.Ranks(
+                            rank = 1243,
+                            delta = 23,
+                            link = "https://www.justwatch.com",
+                        ),
+                    ),
+                ),
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalCoilApi::class)
+@DevicePreview
+@Composable
+private fun Preview2() {
+    TraktTheme {
+        val previewHandler = AsyncImagePreviewHandler {
+            ColorImage(Color.Blue.toArgb())
+        }
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            MovieStreamingsContent(
+                state = MovieStreamingsState(
+                    loading = LoadingState.Done,
                     items = StreamingsResult(
                         streamings = EmptyImmutableList,
                         justWatchLink = "https://www.justwatch.com",

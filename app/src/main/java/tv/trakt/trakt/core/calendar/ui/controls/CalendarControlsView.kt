@@ -47,6 +47,7 @@ import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.GhostButton
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.LocalDate
 import java.time.format.TextStyle
@@ -69,14 +70,12 @@ internal fun CalendarControlsView(
     onPreviousWeekClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
-    val shape = RoundedCornerShape(24.dp)
-
     Column(
         modifier = modifier
-            .shadow(6.dp, shape = shape)
+            .shadow(6.dp, shape = DefaultCardShape)
             .background(
                 color = TraktTheme.colors.dialogContainer,
-                shape = shape,
+                shape = DefaultCardShape,
             )
             .padding(top = 16.dp, bottom = 12.dp)
             .padding(horizontal = 12.dp),

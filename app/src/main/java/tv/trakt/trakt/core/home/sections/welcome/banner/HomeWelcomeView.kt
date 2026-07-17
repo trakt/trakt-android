@@ -38,9 +38,8 @@ import tv.trakt.trakt.core.home.sections.welcome.sheet.WelcomeSheet
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.vip.VipChip
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
-
-private val viewShape = RoundedCornerShape(20.dp)
 
 @Composable
 internal fun HomeWelcomeView(
@@ -56,8 +55,8 @@ internal fun HomeWelcomeView(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .shadow(2.dp, viewShape)
-            .background(TraktTheme.colors.dialogContainer, viewShape)
+            .shadow(2.dp, DefaultCardShape)
+            .background(TraktTheme.colors.dialogContainer, DefaultCardShape)
             .padding(18.dp),
     ) {
         Column(

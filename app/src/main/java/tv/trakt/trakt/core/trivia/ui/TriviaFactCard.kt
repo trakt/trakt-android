@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.material3.Text
@@ -21,6 +20,7 @@ import tv.trakt.trakt.common.helpers.extensions.toAnnotatedString
 import tv.trakt.trakt.common.model.trivia.TriviaFact
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -31,7 +31,7 @@ internal fun TriviaFactCard(
 ) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(24.dp),
+        shape = DefaultCardShape,
         colors = cardColors(
             containerColor = TraktTheme.colors.commentContainer,
         ),

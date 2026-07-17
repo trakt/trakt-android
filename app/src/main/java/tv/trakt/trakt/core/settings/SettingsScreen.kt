@@ -97,6 +97,7 @@ import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.input.SingleInputSheet
 import tv.trakt.trakt.ui.components.whatsnew.openPlayStore
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.util.Locale
 
@@ -928,12 +929,12 @@ private fun RateTraktView(modifier: Modifier = Modifier) {
             }
             .shadow(
                 elevation = 2.dp,
-                shape = RoundedCornerShape(22.dp),
+                shape = DefaultCardShape,
                 clip = false,
             )
             .background(
                 color = Purple600,
-                shape = RoundedCornerShape(22.dp),
+                shape = DefaultCardShape,
             )
             .padding(horizontal = 16.dp, vertical = 18.dp),
     ) {

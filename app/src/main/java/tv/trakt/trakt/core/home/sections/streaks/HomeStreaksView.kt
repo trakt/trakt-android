@@ -44,12 +44,13 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade700
 import tv.trakt.trakt.core.home.sections.streaks.model.MonthlyStreakData
 import tv.trakt.trakt.core.home.sections.streaks.model.MonthlyStreakData.StreakDataPoint
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.DayOfWeek
 import java.time.LocalDate
 
 private val viewHeight = 72.dp
-private val viewShape = RoundedCornerShape(24.dp)
+private val viewShape = DefaultCardShape
 
 @Composable
 internal fun HomeStreaksView(

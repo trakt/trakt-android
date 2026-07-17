@@ -62,6 +62,7 @@ import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val EmptyReactionsSummary = emptyMap<Int, ReactionsSummary>().toImmutableMap()
@@ -89,7 +90,7 @@ internal fun ProfileCommentItemView(
     Card(
         onClick = onClick,
         modifier = modifier,
-        shape = RoundedCornerShape(24.dp),
+        shape = DefaultCardShape,
         colors = cardColors(
             containerColor = TraktTheme.colors.commentContainer,
         ),

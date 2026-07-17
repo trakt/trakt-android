@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,6 +31,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -79,10 +79,10 @@ private fun CoverImageContent(
                 .fillMaxWidth()
                 .shadow(
                     elevation = 2.dp,
-                    shape = RoundedCornerShape(24.dp),
+                    shape = DefaultCardShape,
                     clip = false,
                 )
-                .clip(RoundedCornerShape(24.dp))
+                .clip(DefaultCardShape)
                 .background(TraktTheme.colors.skeletonContainer)
                 .aspectRatio(HorizontalImageAspectRatio),
         ) {

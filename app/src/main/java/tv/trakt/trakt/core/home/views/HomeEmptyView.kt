@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -46,6 +45,7 @@ import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.ui.theme.colors.Shade900
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
+import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
@@ -70,7 +70,7 @@ internal fun HomeEmptyView(
                 isFalse = Modifier,
             )
             .clip(
-                shape = RoundedCornerShape(24.dp),
+                shape = DefaultCardShape,
             ),
     ) {
         backgroundImage?.let {
@@ -146,7 +146,7 @@ internal fun HomeEmptyView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .dropShadow(
-                        shape = RoundedCornerShape(24.dp),
+                        shape = DefaultCardShape,
                         shadow = Shadow(
                             radius = 4.dp,
                             color = Color.Black,
