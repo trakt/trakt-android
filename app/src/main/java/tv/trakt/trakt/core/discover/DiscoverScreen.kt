@@ -204,7 +204,6 @@ private fun DiscoverScreen(
                     onMoreClick = onMorePopularClick,
                 )
             }
-
         }
 
         ScreenHeader(
