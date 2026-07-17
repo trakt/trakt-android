@@ -277,10 +277,10 @@ private fun ContentListItem(
     mode: MediaMode?,
     watched: Boolean,
     watchlist: Boolean,
+    watching: Boolean,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
-    watching: Boolean,
 ) {
     VerticalMediaCard(
         modifier = modifier,
