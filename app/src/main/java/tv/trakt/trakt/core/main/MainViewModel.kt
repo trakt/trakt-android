@@ -94,6 +94,7 @@ internal class MainViewModel(
     private val welcomeState = MutableStateFlow(initialState.welcome)
     private val whatsNewState = MutableStateFlow(initialState.whatsNew)
     private val reviewState = MutableStateFlow(initialState.review)
+    private val paywallState = MutableStateFlow(initialState.paywall)
     private val updateState = MutableStateFlow(initialState.update)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -338,6 +339,7 @@ internal class MainViewModel(
                 getUserUseCase.loadUserProfile()?.let {
                     analytics.setUserId(it.ids.trakt.value.toString())
                     analytics.logUserLogin()
+                    dismissPaywall(it)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -433,6 +435,16 @@ internal class MainViewModel(
         }
     }
 
+    private fun dismissPaywall(user: User) {
+        viewModelScope.launch {
+            if (user.isAnyVip) {
+                paywallState.update { false }
+            } else {
+                paywallState.update { true }
+            }
+        }
+    }
+
     fun clearError() {
         errorsManager.clear()
     }
@@ -449,6 +461,10 @@ internal class MainViewModel(
         updateState.update { null }
     }
 
+    fun clearPaywall() {
+        paywallState.update { false }
+    }
+
     val state = combine(
         userState,
         userVipState,
@@ -458,6 +474,7 @@ internal class MainViewModel(
         welcomeState,
         whatsNewState,
         reviewState,
+        paywallState,
         updateState,
         errorState,
     ) { state ->
@@ -470,8 +487,9 @@ internal class MainViewModel(
             welcome = state[5] as MainState.WelcomeState,
             whatsNew = state[6] as WhatsNew?,
             review = state[7] as Boolean?,
-            update = state[8] as AppUpdateResult?,
-            error = state[9] as Exception?,
+            paywall = state[8] as Boolean?,
+            update = state[9] as AppUpdateResult?,
+            error = state[10] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -191,6 +191,13 @@ internal fun MainScreen(
         }
     }
 
+    LaunchedEffect(state.paywall) {
+        if (state.paywall == true) {
+            navController.navigateToBilling()
+            viewModel.clearPaywall()
+        }
+    }
+
     LaunchedEffect(state.whatsNew) {
         whatsNewState = state.whatsNew
     }
