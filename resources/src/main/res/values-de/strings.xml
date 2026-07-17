@@ -1515,8 +1515,8 @@
   <string name="text_source">Quelle</string>
   <string name="text_spoiler">Spoiler</string>
   <string name="text_spoiler_alert">Spoiler-Alarm</string>
-  <string name="text_stats_day_count">%d-tägig</string>
-  <string name="text_stats_days_count">%d-tägig</string>
+  <string name="text_stats_day_count">%d-tägige</string>
+  <string name="text_stats_days_count">%d-tägige</string>
   <string name="text_stats_delta_down">-%d</string>
   <string name="text_stats_delta_same">Keine Änderung</string>
   <string name="text_stats_delta_up">+%d</string>
