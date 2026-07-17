@@ -30,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
@@ -72,6 +73,7 @@ internal fun VerticalMediaCard(
     more: Boolean = true,
     blackWhite: Boolean = false,
     watched: Boolean = false,
+    watching: Boolean = false,
     watchlist: Boolean = false,
     chipSpacing: Dp = 8.dp,
     chipContent: @Composable (Modifier) -> Unit = {},
@@ -245,7 +247,7 @@ internal fun VerticalMediaCard(
                 }
             }
 
-            if (watchlist || watched) {
+            if (watchlist || watched || watching) {
                 Row(
                     horizontalArrangement = spacedBy(4.dp),
                     modifier = Modifier
@@ -254,10 +256,11 @@ internal fun VerticalMediaCard(
                             translationY = 6.5.dp.toPx()
                         },
                 ) {
-                    if (watched) {
+                    if (watched || watching) {
                         CollectionChip(
                             iconRes = R.drawable.ic_check_double,
                             iconSize = 11.5.dp,
+                            halved = watching,
                         )
                     }
 
@@ -281,6 +284,7 @@ internal fun VerticalMediaCard(
 private fun CollectionChip(
     iconRes: Int,
     iconSize: Dp,
+    halved: Boolean = false,
 ) {
     val shape = RoundedCornerShape(100)
     Box(
@@ -291,8 +295,18 @@ private fun CollectionChip(
                 height = 16.dp,
             )
             .shadow(1.5.dp, shape)
-            .background(TraktTheme.colors.tagChipContainer, shape),
+            .clip(shape)
+            .background(TraktTheme.colors.tagChipContainer),
     ) {
+        if (halved) {
+            Box(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth(0.5f)
+                    .align(Alignment.CenterEnd)
+                    .background(TraktTheme.colors.tagChipContainerLight),
+            )
+        }
         Icon(
             painter = painterResource(iconRes),
             tint = TraktTheme.colors.tagChipContent,
@@ -343,6 +357,7 @@ private fun PosterPreviewChipPlaceholder() {
             title = "Placeholder",
             imageUrl = null,
             watchlist = true,
+            watching = true,
             modifier = Modifier
                 .padding(16.dp),
             chipContent = {

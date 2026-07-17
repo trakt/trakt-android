@@ -78,6 +78,7 @@ internal fun PanelMediaCard(
     shadow: Dp = 0.dp,
     more: Boolean = true,
     watched: Boolean = false,
+    watching: Boolean = false,
     watchlist: Boolean = false,
     enabled: Boolean = true,
     containerColor: Color = TraktTheme.colors.panelCardContainer,
@@ -198,7 +199,7 @@ internal fun PanelMediaCard(
                 }
             }
 
-            if (watchlist || watched) {
+            if (watchlist || watched || watching) {
                 val shape = RoundedCornerShape(100)
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(3.dp),
@@ -210,7 +211,7 @@ internal fun PanelMediaCard(
                             translationY = 5.dp.toPx()
                         },
                 ) {
-                    if (watched) {
+                    if (watched || watching) {
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
@@ -221,6 +222,17 @@ internal fun PanelMediaCard(
                                 .shadow(1.dp, shape)
                                 .background(TraktTheme.colors.tagChipContainer, shape),
                         ) {
+                            if (watching) {
+                                val shape =
+                                    RoundedCornerShape(topEnd = 100.dp, bottomEnd = 100.dp)
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxHeight()
+                                        .fillMaxWidth(0.5f)
+                                        .align(Alignment.CenterEnd)
+                                        .background(TraktTheme.colors.tagChipContainerLight, shape),
+                                )
+                            }
                             Icon(
                                 painter = painterResource(R.drawable.ic_check_double),
                                 tint = TraktTheme.colors.tagChipContent,

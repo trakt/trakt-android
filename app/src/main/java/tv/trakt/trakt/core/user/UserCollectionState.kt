@@ -51,4 +51,22 @@ internal data class UserCollectionState(
             }
         }
     }
+
+    fun isWatching(
+        traktId: TraktId,
+        type: MediaType?,
+        airedEpisodes: Int?,
+    ): Boolean {
+        return when (type) {
+            Show -> {
+                check(airedEpisodes != null) { "Aired episodes count must be provided for shows" }
+                if (airedEpisodes == 0) return false
+                val watchedPlays = watchedShowsPlays.getOrDefault(traktId, 0)
+                watchedPlays in 1 until airedEpisodes
+            }
+            else -> {
+                false
+            }
+        }
+    }
 }
