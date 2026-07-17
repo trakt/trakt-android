@@ -488,7 +488,7 @@ internal fun MovieDetailsContent(
                             isWatched || state.loadingProgress.isLoading -> null
                             else -> movie.credits
                         },
-                        playsCount = state.movieProgress?.plays,
+                        playsCount = state.movieProgress?.plays ?: 0,
                         loading = state.loading.isLoading ||
                             state.loadingProgress.isLoading,
                         onCreatorClick = onPersonClick ?: {},

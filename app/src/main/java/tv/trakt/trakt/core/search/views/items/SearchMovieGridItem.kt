@@ -31,6 +31,7 @@ internal fun SearchMovieGridItem(
     item: SearchItem.Movie,
     filter: SearchFilter,
     watched: Boolean,
+    watching: Boolean,
     watchlist: Boolean,
     onMovieClick: (Movie) -> Unit,
     onMovieLongClick: (Movie) -> Unit = {},
@@ -48,6 +49,7 @@ internal fun SearchMovieGridItem(
         title = item.movie.title,
         imageUrl = item.movie.images?.getPosterUrl(),
         watched = watched,
+        watching = watching,
         watchlist = watchlist,
         chipSpacing = 10.dp,
         chipContent = { modifier ->

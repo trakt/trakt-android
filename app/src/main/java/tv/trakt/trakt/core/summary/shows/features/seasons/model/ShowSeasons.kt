@@ -58,6 +58,7 @@ internal data class ShowSeasons(
 
                     it.copy(
                         isWatched = watchedCount == it.season.episodeCount,
+                        isWatching = watchedCount in 1 until (it.season.episodeCount ?: 0),
                         watchedEpisodes = watchedCount,
                         unwatchedEpisodes = (it.season.episodeCount ?: 0) - watchedCount,
                     )

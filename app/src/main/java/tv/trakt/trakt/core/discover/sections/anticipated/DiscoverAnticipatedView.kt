@@ -256,6 +256,7 @@ private fun ContentList(
                 item = item,
                 mode = mode,
                 watched = collection.isWatched(item.id, item.type, item.airedEpisodes),
+                watching = collection.isWatching(item.id, item.type, item.airedEpisodes),
                 watchlist = collection.isWatchlist(item.id, item.type),
                 modifier = Modifier.animateItem(
                     fadeInSpec = null,
@@ -274,6 +275,7 @@ private fun ContentListItem(
     mode: MediaMode?,
     watched: Boolean,
     watchlist: Boolean,
+    watching: Boolean,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
@@ -283,6 +285,7 @@ private fun ContentListItem(
         title = item.title,
         imageUrl = item.images?.getPosterUrl(),
         watched = watched,
+        watching = watching,
         watchlist = watchlist,
         onClick = onClick,
         onLongClick = onLongClick,

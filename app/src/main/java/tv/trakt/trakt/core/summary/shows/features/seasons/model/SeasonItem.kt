@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.model.Season
 internal data class SeasonItem(
     val season: Season,
     val isWatched: Boolean = false,
+    val isWatching: Boolean = false,
     val unwatchedEpisodes: Int = 0,
     val watchedEpisodes: Int = 0,
 )

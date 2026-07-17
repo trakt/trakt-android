@@ -43,6 +43,7 @@ internal fun ListsCustomItemView(
     showMediaIcon: Boolean = false,
     showMoreIcon: Boolean = false,
     watched: Boolean = false,
+    watching: Boolean = false,
     watchlist: Boolean = false,
     onMovieClick: (Movie) -> Unit,
     onShowClick: (Show) -> Unit,
@@ -54,6 +55,7 @@ internal fun ListsCustomItemView(
             ShowItemView(
                 item = item,
                 watched = watched,
+                watching = watching,
                 watchlist = watchlist,
                 showMoreIcon = showMoreIcon,
                 onShowClick = onShowClick,
@@ -67,6 +69,7 @@ internal fun ListsCustomItemView(
             MovieItemView(
                 item = item,
                 watched = watched,
+                watching = watching,
                 watchlist = watchlist,
                 showMoreIcon = showMoreIcon,
                 onMovieClick = onMovieClick,
@@ -100,6 +103,7 @@ internal fun ListsCustomItemView(
 private fun ShowItemView(
     item: ShowItem,
     watched: Boolean,
+    watching: Boolean,
     watchlist: Boolean,
     showMoreIcon: Boolean,
     onShowClick: (Show) -> Unit,
@@ -111,6 +115,7 @@ private fun ShowItemView(
     VerticalMediaCard(
         title = item.show.title,
         watched = watched,
+        watching = watching,
         watchlist = watchlist,
         more = showMoreIcon,
         imageUrl = item.images?.getPosterUrl(),
@@ -192,6 +197,7 @@ private fun ShowItemView(
 private fun MovieItemView(
     item: MovieItem,
     watched: Boolean,
+    watching: Boolean,
     watchlist: Boolean,
     showMoreIcon: Boolean,
     onMovieClick: (Movie) -> Unit,
@@ -206,6 +212,7 @@ private fun MovieItemView(
         title = item.movie.title,
         imageUrl = item.images?.getPosterUrl(),
         watched = watched,
+        watching = watching,
         watchlist = watchlist,
         more = showMoreIcon,
         onClick = { onMovieClick(item.movie) },
@@ -286,6 +293,7 @@ private fun SeasonItemView(
     VerticalMediaCard(
         title = stringResource(R.string.text_season_number, item.season.number),
         watched = false,
+        watching = false,
         watchlist = false,
         more = false,
         imageUrl = item.images?.getPosterUrl(),
@@ -352,6 +360,7 @@ private fun EpisodeItemView(
     VerticalMediaCard(
         title = item.show.title,
         watched = false,
+        watching = false,
         watchlist = false,
         more = false,
         imageUrl = item.show.images?.getPosterUrl(),

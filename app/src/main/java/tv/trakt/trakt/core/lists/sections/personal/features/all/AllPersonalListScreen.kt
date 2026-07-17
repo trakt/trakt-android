@@ -649,6 +649,7 @@ private fun ContentList(
                         enabled = !loading,
                         showIcon = true,
                         watched = collection.isWatched(item.id, item.type, item.show.airedEpisodes),
+                        watching = collection.isWatching(item.id, item.type, item.show.airedEpisodes),
                         watchlist = collection.isWatchlist(item.id, item.type),
                         onClick = { onClick(item) },
                         onLongClick = { onLongClick(item) },

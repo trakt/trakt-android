@@ -40,6 +40,9 @@ internal data class ShowDetailsState(
     ) {
         val isWatched: Boolean
             get() = plays != null && plays > 0
+
+        val isWatching: Boolean
+            get() = plays != null && plays > 0 && plays < aired
     }
 
     data class UserRatingsState(

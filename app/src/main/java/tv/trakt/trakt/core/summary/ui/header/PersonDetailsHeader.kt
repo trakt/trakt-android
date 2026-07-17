@@ -115,6 +115,8 @@ internal fun DetailsHeader(
         accentColor = Shade700,
         creditsCount = null,
         traktRatings = null,
+        watched = false,
+        watching = false,
         personImdb = person.ids.imdb,
         onImdbClick = {},
         onRottenClick = {},
