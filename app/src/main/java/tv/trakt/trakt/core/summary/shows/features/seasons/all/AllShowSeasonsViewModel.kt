@@ -45,6 +45,7 @@ import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.ALL_SEASONS
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.PROGRESS
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.SEASONS
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.WATCHED_UNTIL
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.navigation.AllShowSeasonsDestination
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
@@ -93,6 +94,7 @@ internal class AllShowSeasonsViewModel(
     private fun observeData() {
         merge(
             showDetailsUpdates.observeUpdates(PROGRESS),
+            showDetailsUpdates.observeUpdates(WATCHED_UNTIL),
             episodeDetailsUpdates.observeUpdates(Source.PROGRESS),
             episodeDetailsUpdates.observeUpdates(Source.SEASON),
             episodeDetailsUpdates.observeUpdates(Source.HISTORY),

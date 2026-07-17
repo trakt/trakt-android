@@ -157,6 +157,7 @@ internal class ShowDetailsViewModel(
     private fun observeData() {
         merge(
             showDetailsUpdates.observeUpdates(Source.SEASONS),
+            showDetailsUpdates.observeUpdates(Source.WATCHED_UNTIL),
             episodeDetailsUpdates.observeUpdates(HISTORY),
         )
             .distinctUntilChanged()

@@ -52,6 +52,12 @@ internal class UpdateEpisodeHistoryUseCase(
         )
     }
 
+    suspend fun addToHistory(episodes: List<Pair<TraktId, String>>) {
+        remoteSource.addToHistory(
+            episodes = episodes,
+        )
+    }
+
     suspend fun removeEpisodeFromHistory(episodeId: Int) {
         remoteSource.removeEpisodeFromHistory(
             episodeId = episodeId,

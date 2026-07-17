@@ -124,6 +124,7 @@ internal class AllActivityPersonalViewModel(
         merge(
             showUpdatesSource.observeUpdates(Source.PROGRESS),
             showUpdatesSource.observeUpdates(Source.SEASONS),
+            showUpdatesSource.observeUpdates(Source.WATCHED_UNTIL),
             episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.PROGRESS),
             episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.SEASON),
             episodeUpdatesSource.observeUpdates(EpisodeDetailsUpdates.Source.HISTORY),

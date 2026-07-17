@@ -74,6 +74,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toSlugId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.core.summary.shows.features.context.episodes.EpisodeContextSheet
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
@@ -115,6 +116,7 @@ internal fun ShowSeasonsView(
 
     var episodeDateSheet by remember { mutableStateOf<EpisodeItem?>(null) }
     var episodeWatchedUntilSheet by remember { mutableStateOf<EpisodeItem?>(null) }
+    var episodeContextSheet by remember { mutableStateOf<EpisodeItem?>(null) }
     var seasonDateSheet by remember { mutableStateOf(false) }
 
     ShowSeasonsContent(
@@ -140,11 +142,7 @@ internal fun ShowSeasonsView(
             episodeDateSheet = it
         },
         onMoreClick = {
-            if (it.isWatched) {
-                confirmRemoveEpisodeSheet = it
-            } else {
-                episodeWatchedUntilSheet = it
-            }
+            episodeContextSheet = it
         },
         onCheckSeasonClick = {
             confirmMarkSeasonSheet = true
@@ -156,6 +154,22 @@ internal fun ShowSeasonsView(
             onAllSeasonsClick(state.items.selectedSeason?.number)
         },
         onCollapse = viewModel::setCollapsed,
+    )
+
+    EpisodeContextSheet(
+        episodeItem = episodeContextSheet,
+        onTrackClick = {
+            episodeDateSheet = it
+        },
+        onWatchedUntilClick = {
+            episodeWatchedUntilSheet = it
+        },
+        onRemoveClick = {
+            confirmRemoveEpisodeSheet = it
+        },
+        onDismiss = {
+            episodeContextSheet = null
+        },
     )
 
     WatchedUntilSheet(

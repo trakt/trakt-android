@@ -37,6 +37,7 @@ import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.ALL_SEASONS
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.PROGRESS
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.SEASONS
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.WATCHED_UNTIL
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons.Helpers.markWatchedEpisodes
@@ -47,6 +48,7 @@ import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import tv.trakt.trakt.resources.R
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 internal class ShowSeasonsViewModel(
@@ -82,12 +84,13 @@ internal class ShowSeasonsViewModel(
         merge(
             showDetailsUpdates.observeUpdates(PROGRESS),
             showDetailsUpdates.observeUpdates(ALL_SEASONS),
+            showDetailsUpdates.observeUpdates(WATCHED_UNTIL),
             episodeDetailsUpdates.observeUpdates(Source.PROGRESS),
             episodeDetailsUpdates.observeUpdates(Source.SEASON),
             episodeDetailsUpdates.observeUpdates(Source.HISTORY),
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
             }

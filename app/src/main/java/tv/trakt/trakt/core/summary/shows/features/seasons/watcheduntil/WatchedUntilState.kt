@@ -11,6 +11,7 @@ import tv.trakt.trakt.common.model.Show
 internal data class WatchedUntilState(
     val show: Show? = null,
     val episodes: ImmutableList<Episode>? = null,
+    val success: Boolean? = null,
     val loading: LoadingState = Idle,
     val error: Exception? = null,
 )

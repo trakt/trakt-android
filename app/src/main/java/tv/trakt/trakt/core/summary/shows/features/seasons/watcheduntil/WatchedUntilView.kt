@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,10 +55,16 @@ internal fun WatchedUntilView(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    LaunchedEffect(state.success) {
+        if (state.success == true) {
+            onDismiss()
+        }
+    }
+
     WatchedUntilContent(
         state = state,
         onCancel = onDismiss,
-        onMarkAsWatched = onMarkAsWatched,
+        onConfirm = viewModel::addToWatched,
     )
 }
 
@@ -65,7 +72,11 @@ internal fun WatchedUntilView(
 private fun WatchedUntilContent(
     state: WatchedUntilState,
     onCancel: () -> Unit = {},
-    onMarkAsWatched: () -> Unit = {},
+    onConfirm: (
+        action: WatchedUntilAction,
+        otherBound: OtherDateBound?,
+        otherAnchor: Instant?,
+    ) -> Unit = { _, _, _ -> },
 ) {
     var selectedAction by remember { mutableStateOf(Now) }
     var otherBound by remember { mutableStateOf<OtherDateBound?>(null) }
@@ -160,7 +171,7 @@ private fun WatchedUntilContent(
             PrimaryButton(
                 text = stringResource(R.string.button_text_mark_as_watched),
                 enabled = !state.loading.isLoading && !awaitingOtherDate,
-                onClick = onMarkAsWatched,
+                onClick = { onConfirm(selectedAction, otherBound, otherAnchor) },
                 modifier = Modifier.fillMaxWidth(),
             )
 

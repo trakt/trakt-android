@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.ui
+package tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.helpers
 
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant

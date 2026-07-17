@@ -105,8 +105,11 @@ internal fun ShowEpisodesList(
                         title = "",
                         more = item.isWatched || isReleased,
                         watched = item.isWatched,
-                        containerImageUrl = item.episode.images?.getScreenshotUrl()
-                            ?: show?.images?.getFanartUrl(),
+                        containerImageUrl = when {
+                            !isReleased -> show?.images?.getFanartUrl()
+                            else -> item.episode.images?.getScreenshotUrl()
+                                ?: show?.images?.getFanartUrl()
+                        },
                         onClick = { onEpisodeClick(item) },
                         onLongClick = {
                             if (item.isWatched || isReleased) {

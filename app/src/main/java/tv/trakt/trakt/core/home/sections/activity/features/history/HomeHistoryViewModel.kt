@@ -143,6 +143,7 @@ internal class HomeHistoryViewModel(
             allActivitySource.observeUpdates(),
             showUpdates.observeUpdates(Source.PROGRESS),
             showUpdates.observeUpdates(Source.SEASONS),
+            showUpdates.observeUpdates(Source.WATCHED_UNTIL),
             episodeUpdates.observeUpdates(PROGRESS),
             episodeUpdates.observeUpdates(SEASON),
             episodeUpdates.observeUpdates(CALENDAR),

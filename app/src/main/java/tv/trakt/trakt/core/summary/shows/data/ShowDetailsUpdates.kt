@@ -12,5 +12,6 @@ internal interface ShowDetailsUpdates {
         PROGRESS,
         SEASONS,
         ALL_SEASONS,
+        WATCHED_UNTIL,
     }
 }
