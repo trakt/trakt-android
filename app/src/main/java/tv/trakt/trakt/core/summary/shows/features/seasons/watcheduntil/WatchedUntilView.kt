@@ -51,7 +51,6 @@ internal enum class OtherDateBound {
 internal fun WatchedUntilView(
     viewModel: WatchedUntilViewModel,
     onDismiss: () -> Unit = {},
-    onMarkAsWatched: () -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -115,7 +114,7 @@ private fun WatchedUntilContent(
                 .animateContentSize(),
         ) {
             ActionButtons(
-                enabled = !state.loading.isLoading,
+                enabled = !state.loading.isLoading && !state.loadingWatched.isLoading,
                 selected = selectedAction,
                 onNowClick = {
                     selectedAction = Now
@@ -132,7 +131,7 @@ private fun WatchedUntilContent(
                 OtherDateBoundButtons(
                     selected = otherBound,
                     anchor = otherAnchor,
-                    enabled = !state.loading.isLoading,
+                    enabled = !state.loading.isLoading && !state.loadingWatched.isLoading,
                     onBoundClick = { bound ->
                         pendingBound = bound
                         pendingDate = null
@@ -170,14 +169,17 @@ private fun WatchedUntilContent(
             val awaitingOtherDate = selectedAction == OtherDate && otherAnchor == null
             PrimaryButton(
                 text = stringResource(R.string.button_text_mark_as_watched),
-                enabled = !state.loading.isLoading && !awaitingOtherDate,
+                enabled = !state.loading.isLoading &&
+                    !state.loadingWatched.isLoading &&
+                    !awaitingOtherDate,
+                loading = state.loadingWatched.isLoading && !awaitingOtherDate,
                 onClick = { onConfirm(selectedAction, otherBound, otherAnchor) },
                 modifier = Modifier.fillMaxWidth(),
             )
 
             PrimaryButton(
                 text = stringResource(R.string.button_text_cancel),
-                enabled = !state.loading.isLoading,
+                enabled = !state.loading.isLoading && !state.loadingWatched.isLoading,
                 onClick = onCancel,
                 containerColor = TraktTheme.colors.primaryButtonContainerDisabled,
                 modifier = Modifier.fillMaxWidth(),

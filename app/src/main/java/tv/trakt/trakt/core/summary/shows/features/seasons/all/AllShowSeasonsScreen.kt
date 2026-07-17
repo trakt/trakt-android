@@ -151,8 +151,6 @@ internal fun AllShowSeasonsScreen(
     WatchedUntilSheet(
         show = state.show,
         episode = episodeWatchedUntilSheet?.episode,
-        onMarkAsWatched = {
-        },
         onDismiss = {
             episodeWatchedUntilSheet = null
         },
@@ -305,8 +303,6 @@ private fun AllShowSeasonsContent(
                         }
                     },
                     subtitle = state.show?.title,
-                    loading = state.loadingSeason.isLoading,
-                    more = state.items.isSelectedSeasonReleased,
                     onSeasonClick = {
                         onSeasonClick?.invoke(it)
                     },
@@ -394,8 +390,6 @@ private fun TitleBar(
     state: AllShowSeasonsState,
     title: String?,
     subtitle: String?,
-    loading: Boolean,
-    more: Boolean,
     onSeasonClick: (SeasonItem) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,

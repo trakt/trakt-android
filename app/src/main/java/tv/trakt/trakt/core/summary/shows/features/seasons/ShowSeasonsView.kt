@@ -175,8 +175,6 @@ internal fun ShowSeasonsView(
     WatchedUntilSheet(
         show = state.show,
         episode = episodeWatchedUntilSheet?.episode,
-        onMarkAsWatched = {
-        },
         onDismiss = {
             episodeWatchedUntilSheet = null
         },

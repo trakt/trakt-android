@@ -156,8 +156,8 @@ internal class ShowDetailsViewModel(
 
     private fun observeData() {
         merge(
-            showDetailsUpdates.observeUpdates(Source.SEASONS),
-            showDetailsUpdates.observeUpdates(Source.WATCHED_UNTIL),
+            showDetailsUpdates.observeUpdates(Source.Seasons),
+            showDetailsUpdates.observeUpdates(Source.WatchedUntil),
             episodeDetailsUpdates.observeUpdates(HISTORY),
         )
             .distinctUntilChanged()
@@ -442,7 +442,7 @@ internal class ShowDetailsViewModel(
                     )
                 }
 
-                showDetailsUpdates.notifyUpdate(Source.PROGRESS)
+                showDetailsUpdates.notifyUpdate(Source.Progress)
 
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_added)
@@ -489,7 +489,7 @@ internal class ShowDetailsViewModel(
                     it?.copy(plays = 0)
                 }
 
-                showDetailsUpdates.notifyUpdate(Source.PROGRESS)
+                showDetailsUpdates.notifyUpdate(Source.Progress)
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_removed)
                 }

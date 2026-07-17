@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -13,6 +14,7 @@ import timber.log.Timber
 import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.analytics.Analytics
+import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -20,7 +22,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.WATCHED_UNTIL
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.WatchedUntil
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.helpers.computeWatchedTimestamps
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.usecases.GetWatchedUntilEpisodesUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
@@ -43,6 +45,7 @@ internal class WatchedUntilViewModel(
     private val episodesState = MutableStateFlow(initialState.episodes)
     private val successState = MutableStateFlow(initialState.success)
     private val loadingState = MutableStateFlow(initialState.loading)
+    private val loadingWatchedState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
     init {
@@ -50,7 +53,7 @@ internal class WatchedUntilViewModel(
     }
 
     private fun loadData() {
-        if (loadingState.value.isLoading) {
+        if (loadingState.value.isLoading || loadingWatchedState.value.isLoading) {
             return
         }
 
@@ -81,7 +84,7 @@ internal class WatchedUntilViewModel(
         otherBound: OtherDateBound?,
         otherAnchor: Instant?,
     ) {
-        if (loadingState.value.isLoading) {
+        if (loadingState.value.isLoading || loadingWatchedState.value.isLoading) {
             return
         }
 
@@ -105,6 +108,7 @@ internal class WatchedUntilViewModel(
 
             try {
                 loadingState.update { Loading }
+                loadingWatchedState.update { Loading }
 
                 updateEpisodeHistoryUseCase.addToHistory(
                     episodes = entries.map { (episodeId, watchedAt) ->
@@ -116,7 +120,7 @@ internal class WatchedUntilViewModel(
                         it.showId == show.ids.trakt
                     }
 
-                showDetailsUpdates.notifyUpdate(WATCHED_UNTIL)
+                showDetailsUpdates.notifyUpdate(WatchedUntil)
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "episode",
                     source = "watched_until",
@@ -129,24 +133,27 @@ internal class WatchedUntilViewModel(
                     errorState.update { error }
                     Timber.recordError(error)
                 }
-            } finally {
                 loadingState.update { Done }
+                loadingWatchedState.update { Done }
             }
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     val state = combine(
         episodesState,
         successState,
         loadingState,
+        loadingWatchedState,
         errorState,
-    ) { s1, s2, s3, s4 ->
+    ) { state ->
         WatchedUntilState(
             show = show,
-            episodes = s1,
-            success = s2,
-            loading = s3,
-            error = s4,
+            episodes = state[0] as ImmutableList<Episode>?,
+            success = state[1] as Boolean?,
+            loading = state[2] as LoadingState,
+            loadingWatched = state[3] as LoadingState,
+            error = state[4] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

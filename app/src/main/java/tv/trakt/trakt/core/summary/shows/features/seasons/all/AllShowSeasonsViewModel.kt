@@ -42,10 +42,10 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.ALL_SEASONS
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.PROGRESS
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.SEASONS
-import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.WATCHED_UNTIL
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.AllSeasons
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.Progress
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.Seasons
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.WatchedUntil
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.navigation.AllShowSeasonsDestination
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
@@ -94,8 +94,8 @@ internal class AllShowSeasonsViewModel(
 
     private fun observeData() {
         merge(
-            showDetailsUpdates.observeUpdates(PROGRESS),
-            showDetailsUpdates.observeUpdates(WATCHED_UNTIL),
+            showDetailsUpdates.observeUpdates(Progress),
+            showDetailsUpdates.observeUpdates(WatchedUntil),
             episodeDetailsUpdates.observeUpdates(Source.PROGRESS),
             episodeDetailsUpdates.observeUpdates(Source.SEASON),
             episodeDetailsUpdates.observeUpdates(Source.HISTORY),
@@ -269,8 +269,8 @@ internal class AllShowSeasonsViewModel(
                     )
                 }
 
-                showDetailsUpdates.notifyUpdate(SEASONS)
-                showDetailsUpdates.notifyUpdate(ALL_SEASONS)
+                showDetailsUpdates.notifyUpdate(Seasons)
+                showDetailsUpdates.notifyUpdate(AllSeasons)
 
                 infoState.update { DynamicStringResource(R.string.text_info_history_added) }
                 analytics.progress.logAddWatchedMedia(
@@ -331,8 +331,8 @@ internal class AllShowSeasonsViewModel(
                     )
                 }
 
-                showDetailsUpdates.notifyUpdate(SEASONS)
-                showDetailsUpdates.notifyUpdate(ALL_SEASONS)
+                showDetailsUpdates.notifyUpdate(Seasons)
+                showDetailsUpdates.notifyUpdate(AllSeasons)
 
                 infoState.update { DynamicStringResource(R.string.text_info_history_added) }
                 analytics.progress.logAddWatchedMedia(
@@ -384,8 +384,8 @@ internal class AllShowSeasonsViewModel(
                     )
                 }
 
-                showDetailsUpdates.notifyUpdate(SEASONS)
-                showDetailsUpdates.notifyUpdate(ALL_SEASONS)
+                showDetailsUpdates.notifyUpdate(Seasons)
+                showDetailsUpdates.notifyUpdate(AllSeasons)
 
                 infoState.update { DynamicStringResource(R.string.text_info_history_removed) }
                 analytics.progress.logRemoveWatchedMedia(
@@ -435,8 +435,8 @@ internal class AllShowSeasonsViewModel(
                     )
                 }
 
-                showDetailsUpdates.notifyUpdate(SEASONS)
-                showDetailsUpdates.notifyUpdate(ALL_SEASONS)
+                showDetailsUpdates.notifyUpdate(Seasons)
+                showDetailsUpdates.notifyUpdate(AllSeasons)
 
                 infoState.update { DynamicStringResource(R.string.text_info_history_removed) }
                 analytics.progress.logRemoveWatchedMedia(

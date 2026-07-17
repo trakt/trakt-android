@@ -22,7 +22,6 @@ internal fun WatchedUntilSheet(
     ),
     show: Show?,
     episode: Episode?,
-    onMarkAsWatched: () -> Unit = {},
     onDismiss: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
@@ -37,7 +36,6 @@ internal fun WatchedUntilSheet(
                     key = nextInt().toString(),
                     parameters = { parametersOf(show, episode) },
                 ),
-                onMarkAsWatched = onMarkAsWatched,
                 onDismiss = {
                     scope.run {
                         launch { state.hide() }

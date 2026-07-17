@@ -13,5 +13,6 @@ internal data class WatchedUntilState(
     val episodes: ImmutableList<Episode>? = null,
     val success: Boolean? = null,
     val loading: LoadingState = Idle,
+    val loadingWatched: LoadingState = Idle,
     val error: Exception? = null,
 )
