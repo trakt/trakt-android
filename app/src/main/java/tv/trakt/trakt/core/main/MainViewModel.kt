@@ -47,7 +47,6 @@ import tv.trakt.trakt.core.auth.usecase.authCodeKey
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source
 import tv.trakt.trakt.core.checkin.model.CheckInState
-import tv.trakt.trakt.core.main.usecases.DismissPaywallUseCase
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
 import tv.trakt.trakt.core.main.usecases.LoadWhatsNewUseCase
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
@@ -79,7 +78,6 @@ internal class MainViewModel(
     private val loadUserListsUseCase: LoadUserListsUseCase,
     private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
     private val dismissWelcomeUseCase: DismissWelcomeUseCase,
-    private val dismissPaywallUseCase: DismissPaywallUseCase,
     private val inAppReviewUseCase: RequestAppReviewUseCase,
     private val inAppUpdateManager: AppUpdateManager,
     private val errorsManager: GlobalErrorsManager,
@@ -431,14 +429,8 @@ internal class MainViewModel(
         viewModelScope.launch {
             if (user.isAnyVip) {
                 paywallState.update { false }
-                dismissPaywallUseCase.dismissPaywall()
             } else {
-                if (!dismissPaywallUseCase.isPaywallDismissed()) {
-                    paywallState.update { true }
-                    delay(500.milliseconds)
-                    dismissPaywallUseCase.dismissPaywall()
-                    paywallState.update { false }
-                }
+                paywallState.update { true }
             }
         }
     }
@@ -457,6 +449,12 @@ internal class MainViewModel(
 
     fun clearInAppUpdate() {
         updateState.update { null }
+    }
+
+    fun clearPaywall() {
+        viewModelScope.launch {
+            paywallState.update { false }
+        }
     }
 
     val state = combine(
