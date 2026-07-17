@@ -452,9 +452,7 @@ internal class MainViewModel(
     }
 
     fun clearPaywall() {
-        viewModelScope.launch {
-            paywallState.update { false }
-        }
+        paywallState.update { false }
     }
 
     val state = combine(
