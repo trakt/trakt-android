@@ -56,6 +56,7 @@ import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.resources.R
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 internal class AllShowSeasonsViewModel(
@@ -100,7 +101,7 @@ internal class AllShowSeasonsViewModel(
             episodeDetailsUpdates.observeUpdates(Source.HISTORY),
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
             }
