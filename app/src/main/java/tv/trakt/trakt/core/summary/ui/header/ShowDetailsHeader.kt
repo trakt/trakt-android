@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -37,9 +36,9 @@ internal fun DetailsHeader(
     showTranslation: MediaTranslation?,
     ratings: ExternalRating?,
     creator: Person?,
-    airedCount: Int,
-    playsCount: Int,
     loading: Boolean,
+    watched: Boolean,
+    watching: Boolean,
     onCreatorClick: (Person) -> Unit,
     onShareClick: () -> Unit,
     onShareImageClick: () -> Unit,
@@ -49,20 +48,14 @@ internal fun DetailsHeader(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-
     val isReleased = show.rememberReleased()
-
-    val playsCount = remember(airedCount, playsCount) {
-        if (airedCount == 0) {
-            return@remember 0
-        }
-        playsCount / airedCount
-    }
 
     DetailsHeader(
         title = show.title,
         titleTranslation = showTranslation?.title,
         status = show.status,
+        watched = watched,
+        watching = watching,
         date = {
             Text(
                 text = when {
@@ -132,7 +125,7 @@ internal fun DetailsHeader(
         externalRatingsVisible = true,
         externalRottenVisible = true,
         externalRatings = ratings,
-        playsCount = playsCount,
+        playsCount = null,
         episodesCount = show.airedEpisodes,
         creditsCount = null,
         certification = show.certification,

@@ -54,6 +54,8 @@ internal fun DetailsHeader(
         title = movie.title,
         titleTranslation = movieTranslation?.title,
         status = movie.status,
+        watched = (playsCount ?: 0) > 0,
+        watching = false,
         date = {
             Text(
                 text = when {
@@ -122,8 +124,8 @@ internal fun DetailsHeader(
         externalRatingsVisible = true,
         externalRottenVisible = true,
         externalRatings = ratings,
-        playsCount = playsCount,
         creditsCount = creditsCount,
+        playsCount = playsCount,
         episodesCount = null,
         certification = movie.certification,
         loading = loading,

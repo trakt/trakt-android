@@ -531,8 +531,8 @@ internal fun ShowDetailsContent(
                         showTranslation = state.showTranslation,
                         ratings = state.showRatings,
                         creator = state.showCreator,
-                        airedCount = state.showProgress?.aired ?: 0,
-                        playsCount = state.showProgress?.plays ?: 0,
+                        watched = state.showProgress?.isWatched == true,
+                        watching = state.showProgress?.isWatching == true,
                         loading = state.loading.isLoading ||
                             state.loadingProgress.isLoading,
                         onCreatorClick = onPersonClick ?: {},

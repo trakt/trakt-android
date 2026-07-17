@@ -76,6 +76,8 @@ internal fun DetailsHeader(
     episodesCount: Int?,
     creditsCount: Int?,
     playsCount: Int?,
+    watched: Boolean,
+    watching: Boolean,
     personImdb: ImdbId? = null,
     loading: Boolean,
     extraRightColumn: @Composable (() -> Unit)? = null,
@@ -98,6 +100,8 @@ internal fun DetailsHeader(
                 imagePlaceholderUrl = imagePlaceholderUrl,
                 accentColor = accentColor,
                 loading = loading,
+                watched = watched,
+                watching = watching,
                 creditsCount = creditsCount,
                 playsCount = playsCount,
                 personImdb = personImdb,
@@ -112,6 +116,8 @@ internal fun DetailsHeader(
                 imageUrl = imageUrl,
                 accentColor = accentColor,
                 loading = loading,
+                watched = watched,
+                watching = watching,
                 creditsCount = creditsCount,
                 playsCount = playsCount,
                 onShareClick = onShareClick,
@@ -279,8 +285,10 @@ internal fun DetailsHeader(
 
 @Composable
 internal fun PosterChipsGroup(
-    creditsCount: Int?,
-    playsCount: Int?,
+    watched: Boolean,
+    watching: Boolean,
+    creditsCount: Int,
+    playsCount: Int,
     personImdb: ImdbId?,
     onWatchedChipClick: () -> Unit = {},
 ) {
@@ -288,15 +296,16 @@ internal fun PosterChipsGroup(
         horizontalArrangement = spacedBy(6.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (creditsCount != null && creditsCount > 0) {
+        if (creditsCount > 0) {
             PosterChip(
                 text = "${stringResource(R.string.header_post_credits)} • $creditsCount".uppercase(),
             )
         }
 
-        if (playsCount != null && playsCount > 0) {
+        if (watched || watching) {
             PosterChip(
                 text = when {
+                    watching -> stringResource(R.string.tag_text_started)
                     playsCount > 1 -> "${stringResource(R.string.tag_text_watched)} • $playsCount"
                     else -> stringResource(R.string.tag_text_watched)
                 },
@@ -440,10 +449,12 @@ private fun Preview() {
             accentColor = null,
             traktRatings = 72,
             episodesCount = 23,
-            playsCount = 0,
             creditsCount = 0,
+            playsCount = 2,
             runtime = null,
             loading = false,
+            watched = true,
+            watching = false,
             externalRatingsVisible = true,
             externalRottenVisible = true,
             externalRatings = ExternalRating(
@@ -509,10 +520,12 @@ private fun Preview2() {
             certification = "PG-13",
             accentColor = null,
             traktRatings = 72,
-            playsCount = 0,
             creditsCount = 0,
+            playsCount = 0,
             episodesCount = null,
             loading = false,
+            watched = false,
+            watching = false,
             externalRatingsVisible = true,
             externalRottenVisible = true,
             externalRatings = ExternalRating(
