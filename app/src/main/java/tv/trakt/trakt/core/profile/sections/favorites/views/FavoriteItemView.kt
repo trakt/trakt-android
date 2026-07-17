@@ -35,6 +35,7 @@ internal fun FavoriteItemView(
     showMediaIcon: Boolean = false,
     showMore: Boolean = false,
     watched: Boolean = false,
+    watching: Boolean = false,
     watchlist: Boolean = false,
     onShowClick: () -> Unit = {},
     onMovieClick: () -> Unit = {},
@@ -49,6 +50,7 @@ internal fun FavoriteItemView(
                 imageUrl = item.images?.getPosterUrl(),
                 more = showMore,
                 watched = watched,
+                watching = watching,
                 watchlist = watchlist,
                 onClick = onShowClick,
                 onLongClick = onShowLongClick,
@@ -134,6 +136,7 @@ internal fun FavoriteItemView(
                 onClick = onMovieClick,
                 more = showMore,
                 watched = watched,
+                watching = watching,
                 watchlist = watchlist,
                 onLongClick = onMovieLongClick,
                 chipContent = { modifier ->

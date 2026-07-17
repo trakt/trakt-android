@@ -182,6 +182,7 @@ private fun ContentList(
                 title = item.title,
                 imageUrl = item.images?.getPosterUrl(),
                 watched = collection.isWatched(item.ids.trakt, MediaType.Movie, null),
+                watching = collection.isWatching(item.ids.trakt, MediaType.Movie, null),
                 watchlist = collection.isWatchlist(item.ids.trakt, MediaType.Movie),
                 onClick = { onClick?.invoke(item) },
                 onLongClick = { onLongClick?.invoke(item) },

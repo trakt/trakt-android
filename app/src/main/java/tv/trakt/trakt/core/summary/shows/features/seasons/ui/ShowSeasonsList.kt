@@ -92,6 +92,7 @@ internal fun ShowSeasonsList(
                 blackWhite = !isSelected,
                 more = isSelected,
                 watched = item.isWatched,
+                watching = item.isWatching,
                 onClick = {
                     onSeasonClick(item)
                 },

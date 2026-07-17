@@ -31,6 +31,7 @@ internal fun SearchShowGridItem(
     item: SearchItem.Show,
     filter: SearchFilter,
     watched: Boolean,
+    watching: Boolean,
     watchlist: Boolean,
     onShowClick: (Show) -> Unit,
     onShowLongClick: (Show) -> Unit,
@@ -48,6 +49,7 @@ internal fun SearchShowGridItem(
         title = item.show.title,
         imageUrl = item.show.images?.getPosterUrl(),
         watched = watched,
+        watching = watching,
         watchlist = watchlist,
         chipSpacing = 10.dp,
         chipContent = { modifier ->
