@@ -220,17 +220,16 @@ internal fun PanelMediaCard(
                                     height = 16.dp,
                                 )
                                 .shadow(1.dp, shape)
+                                .clip(shape)
                                 .background(TraktTheme.colors.tagChipContainer, shape),
                         ) {
                             if (watching) {
-                                val shape =
-                                    RoundedCornerShape(topEnd = 100.dp, bottomEnd = 100.dp)
                                 Box(
                                     modifier = Modifier
                                         .fillMaxHeight()
                                         .fillMaxWidth(0.5f)
                                         .align(Alignment.CenterEnd)
-                                        .background(TraktTheme.colors.tagChipContainerLight, shape),
+                                        .background(TraktTheme.colors.tagChipContainerLight),
                                 )
                             }
                             Icon(
