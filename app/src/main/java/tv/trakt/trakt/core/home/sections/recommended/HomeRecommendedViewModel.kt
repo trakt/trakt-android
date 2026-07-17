@@ -1,6 +1,6 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package tv.trakt.trakt.core.discover.sections.recommended
+package tv.trakt.trakt.core.home.sections.recommended
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -29,19 +29,19 @@ import tv.trakt.trakt.common.model.MediaMode.Movies
 import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.model.DiscoverItem
-import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedMoviesUseCase
-import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
+import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedMoviesUseCase
+import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
-internal class DiscoverRecommendedViewModel(
+internal class HomeRecommendedViewModel(
     private val filterManager: GlobalFilterManager,
     private val getRecommendedShowsUseCase: GetRecommendedShowsUseCase,
     private val getRecommendedMoviesUseCase: GetRecommendedMoviesUseCase,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
-    private val initialState = DiscoverRecommendedState()
+    private val initialState = HomeRecommendedState()
 
     private val filterState = MutableStateFlow(filterManager.getFilter())
     private val collapseState = MutableStateFlow(isCollapsed())
@@ -152,7 +152,7 @@ internal class DiscoverRecommendedViewModel(
         loadingState,
         errorState,
     ) { state ->
-        DiscoverRecommendedState(
+        HomeRecommendedState(
             items = state[0] as ImmutableList<DiscoverItem>?,
             filter = state[1] as GlobalFilter?,
             collapsed = state[2] as Boolean,

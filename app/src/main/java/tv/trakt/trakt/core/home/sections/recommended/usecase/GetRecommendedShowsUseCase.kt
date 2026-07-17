@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.discover.sections.recommended.usecase
+package tv.trakt.trakt.core.home.sections.recommended.usecase
 
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter

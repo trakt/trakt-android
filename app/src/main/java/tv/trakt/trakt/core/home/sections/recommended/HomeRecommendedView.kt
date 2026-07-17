@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package tv.trakt.trakt.core.discover.sections.recommended
+package tv.trakt.trakt.core.home.sections.recommended
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
@@ -67,9 +67,9 @@ import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCa
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun DiscoverRecommendedView(
+internal fun HomeRecommendedView(
     modifier: Modifier = Modifier,
-    viewModel: DiscoverRecommendedViewModel,
+    viewModel: HomeRecommendedViewModel,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     collection: UserCollectionState,
@@ -82,7 +82,7 @@ internal fun DiscoverRecommendedView(
     var contextShowSheet by remember { mutableStateOf<Show?>(null) }
     var contextMovieSheet by remember { mutableStateOf<Movie?>(null) }
 
-    DiscoverRecommendedContent(
+    HomeRecommendedContent(
         state = state,
         collectionState = collection,
         modifier = modifier,
@@ -102,7 +102,7 @@ internal fun DiscoverRecommendedView(
         },
         onLongClick = {
             if (state.loading.isLoading) {
-                return@DiscoverRecommendedContent
+                return@HomeRecommendedContent
             }
             when (it) {
                 is ShowItem -> contextShowSheet = it.show
@@ -123,8 +123,8 @@ internal fun DiscoverRecommendedView(
 }
 
 @Composable
-internal fun DiscoverRecommendedContent(
-    state: DiscoverRecommendedState,
+internal fun HomeRecommendedContent(
+    state: HomeRecommendedState,
     collectionState: UserCollectionState,
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
@@ -364,8 +364,8 @@ private fun ContentListItem(
 @Composable
 private fun Preview() {
     TraktTheme {
-        DiscoverRecommendedContent(
-            state = DiscoverRecommendedState(
+        HomeRecommendedContent(
+            state = HomeRecommendedState(
                 loading = Idle,
             ),
             collectionState = UserCollectionState.Default,

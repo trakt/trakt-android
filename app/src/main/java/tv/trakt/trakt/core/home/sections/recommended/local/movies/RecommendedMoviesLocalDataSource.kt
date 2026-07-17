@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.discover.sections.recommended.data.local.movies
+package tv.trakt.trakt.core.home.sections.recommended.local.movies
 
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 

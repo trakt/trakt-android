@@ -10,7 +10,6 @@ import tv.trakt.trakt.core.discover.sections.all.usecases.GetAllDiscoverMoviesUs
 import tv.trakt.trakt.core.discover.sections.all.usecases.GetAllDiscoverShowsUseCase
 import tv.trakt.trakt.core.discover.sections.anticipated.DiscoverAnticipatedViewModel
 import tv.trakt.trakt.core.discover.sections.popular.DiscoverPopularViewModel
-import tv.trakt.trakt.core.discover.sections.recommended.DiscoverRecommendedViewModel
 import tv.trakt.trakt.core.discover.sections.releases.DiscoverReleasesViewModel
 import tv.trakt.trakt.core.discover.sections.releases.all.AllReleasesViewModel
 import tv.trakt.trakt.core.discover.sections.releases.all.usecases.GetAllReleasesItemsUseCase
@@ -129,21 +128,6 @@ internal val discoverModule = module {
             getPopularMoviesUseCase = when {
                 customTheme -> get(named("customPopularMoviesUseCase"))
                 else -> get(named("defaultPopularMoviesUseCase"))
-            },
-        )
-    }
-
-    viewModel { (customTheme: Boolean) ->
-        DiscoverRecommendedViewModel(
-            filterManager = get(),
-            collapsingManager = get(),
-            getRecommendedShowsUseCase = when {
-                customTheme -> get(named("customRecommendedShowsUseCase"))
-                else -> get(named("defaultRecommendedShowsUseCase"))
-            },
-            getRecommendedMoviesUseCase = when {
-                customTheme -> get(named("customRecommendedMoviesUseCase"))
-                else -> get(named("defaultRecommendedMoviesUseCase"))
             },
         )
     }

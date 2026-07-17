@@ -33,6 +33,7 @@ import tv.trakt.trakt.core.home.sections.activity.features.social.HomeSocialView
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetSocialActivityUseCase
 import tv.trakt.trakt.core.home.sections.activity.views.context.ActivityItemContextViewModel
+import tv.trakt.trakt.core.home.sections.recommended.HomeRecommendedViewModel
 import tv.trakt.trakt.core.home.sections.streaks.HomeStreaksViewModel
 import tv.trakt.trakt.core.home.sections.streaks.all.StreaksViewModel
 import tv.trakt.trakt.core.home.sections.streaks.data.DefaultStreaksManager
@@ -195,6 +196,21 @@ internal val homeModule = module {
             filterManager = get(),
             collapsingManager = get(),
             watchlistUpdates = get(),
+        )
+    }
+
+    viewModel { (customTheme: Boolean) ->
+        HomeRecommendedViewModel(
+            filterManager = get(),
+            collapsingManager = get(),
+            getRecommendedShowsUseCase = when {
+                customTheme -> get(named("customRecommendedShowsUseCase"))
+                else -> get(named("defaultRecommendedShowsUseCase"))
+            },
+            getRecommendedMoviesUseCase = when {
+                customTheme -> get(named("customRecommendedMoviesUseCase"))
+                else -> get(named("defaultRecommendedMoviesUseCase"))
+            },
         )
     }
 }

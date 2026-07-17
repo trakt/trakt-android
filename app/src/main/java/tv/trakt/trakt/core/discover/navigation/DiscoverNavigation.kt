@@ -20,7 +20,6 @@ internal fun NavGraphBuilder.discoverScreen(
     onNavigateToAllTrending: () -> Unit = {},
     onNavigateToAllPopular: () -> Unit = {},
     onNavigateToAllAnticipated: () -> Unit = {},
-    onNavigateToAllRecommended: () -> Unit = {},
     onNavigateToAllReleases: () -> Unit = {},
     onNavigateToVip: () -> Unit = {},
 ) {
@@ -33,7 +32,6 @@ internal fun NavGraphBuilder.discoverScreen(
             onNavigateToAllTrending = onNavigateToAllTrending,
             onNavigateToAllPopular = onNavigateToAllPopular,
             onNavigateToAllAnticipated = onNavigateToAllAnticipated,
-            onNavigateToAllRecommended = onNavigateToAllRecommended,
             onNavigateToAllReleases = onNavigateToAllReleases,
             onNavigateToVip = onNavigateToVip,
         )

@@ -2,6 +2,7 @@
 
 package tv.trakt.trakt.core.home
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -35,7 +36,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalStartAuthorization
+import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.common.Config.WEB_DATA_IMPORT_URL
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.model.Episode
@@ -44,6 +48,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.home.sections.activity.features.history.HomeHistoryView
 import tv.trakt.trakt.core.home.sections.activity.features.social.HomeSocialView
+import tv.trakt.trakt.core.home.sections.recommended.HomeRecommendedView
 import tv.trakt.trakt.core.home.sections.streaks.HomeStreaksView
 import tv.trakt.trakt.core.home.sections.streaks.all.StreaksSheet
 import tv.trakt.trakt.core.home.sections.upcoming.HomeUpcomingView
@@ -68,6 +73,7 @@ internal fun HomeScreen(
     onNavigateToAllWatchlist: () -> Unit,
     onNavigateToAllPersonal: () -> Unit,
     onNavigateToAllSocial: () -> Unit,
+    onNavigateToAllRecommended: () -> Unit,
     onNavigateToVip: () -> Unit,
     onNavigateToCalendar: () -> Unit,
     onNavigateToUser: (User) -> Unit,
@@ -103,6 +109,7 @@ internal fun HomeScreen(
         onMoreWatchlistClick = onNavigateToAllWatchlist,
         onMorePersonalClick = onNavigateToAllPersonal,
         onMoreSocialClick = onNavigateToAllSocial,
+        onMoreRecommendedClick = onNavigateToAllRecommended,
         onCalendarClick = onNavigateToCalendar,
         onVipClick = onNavigateToVip,
         onUserClick = onNavigateToUser,
@@ -140,6 +147,7 @@ private fun HomeScreenContent(
     onMoreWatchlistClick: () -> Unit = {},
     onMorePersonalClick: () -> Unit = {},
     onMoreSocialClick: () -> Unit = {},
+    onMoreRecommendedClick: () -> Unit = {},
     onShowClick: (TraktId) -> Unit = {},
     onShowsClick: () -> Unit = {},
     onMoviesClick: () -> Unit = {},
@@ -153,6 +161,8 @@ private fun HomeScreenContent(
     onDismissWelcomeClick: () -> Unit = {},
 ) {
     val uriHandler = LocalUriHandler.current
+    val activity = LocalActivity.current
+    val customThemeEnabled = (activity as? MainActivity)?.customThemeConfig?.enabled == true
 
     val headerState = rememberHeaderState()
     val lazyListState = rememberLazyListState(
@@ -277,6 +287,22 @@ private fun HomeScreenContent(
                     onMovieClick = onMovieClick,
                     onCalendarClick = onCalendarClick,
                 )
+            }
+
+            if (state.user.user != null) {
+                item {
+                    HomeRecommendedView(
+                        viewModel = koinViewModel {
+                            parametersOf(customThemeEnabled)
+                        },
+                        collection = state.collection,
+                        headerPadding = sectionPadding,
+                        contentPadding = sectionPadding,
+                        onShowClick = onShowClick,
+                        onMovieClick = onMovieClick,
+                        onMoreClick = onMoreRecommendedClick,
+                    )
+                }
             }
 
             if (state.user.user != null) {

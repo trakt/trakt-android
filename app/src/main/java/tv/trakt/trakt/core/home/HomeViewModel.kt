@@ -26,6 +26,7 @@ import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeState.UserState
 import tv.trakt.trakt.core.home.sections.welcome.usecases.DismissWelcomeBannerUseCase
 import tv.trakt.trakt.core.home.sections.welcome.usecases.GetUserUsageUseCase
+import tv.trakt.trakt.core.user.CollectionStateProvider
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
@@ -34,6 +35,7 @@ internal class HomeViewModel(
     private val getUserUsageUseCase: GetUserUsageUseCase,
     private val filterManager: GlobalFilterManager,
     private val sessionManager: SessionManager,
+    private val collectionStateProvider: CollectionStateProvider,
     analytics: Analytics,
 ) : ViewModel() {
     private val initialState = HomeState()
@@ -46,6 +48,7 @@ internal class HomeViewModel(
     init {
         observeUser()
         observeMode()
+        observeCollection()
 
         analytics.logScreenView(screenName = "home")
         analytics.logMediaMode(mode = initialMode.name)
@@ -72,6 +75,10 @@ internal class HomeViewModel(
                 modeState.update { value.mode }
             }
             .launchIn(viewModelScope)
+    }
+
+    private fun observeCollection() {
+        collectionStateProvider.launchIn(viewModelScope)
     }
 
     fun loadData() {
@@ -106,11 +113,13 @@ internal class HomeViewModel(
         modeState,
         userState,
         welcomeBannerState,
-    ) { s1, s2, s3 ->
+        collectionStateProvider.stateFlow,
+    ) { s1, s2, s3, s4 ->
         HomeState(
             mode = s1,
             user = s2,
             welcomeBanner = s3,
+            collection = s4,
         )
     }.stateIn(
         scope = viewModelScope,

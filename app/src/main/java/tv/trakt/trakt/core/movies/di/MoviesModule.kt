@@ -28,11 +28,6 @@ import tv.trakt.trakt.core.discover.sections.popular.data.local.movies.PopularMo
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.movies.CustomGetPopularMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.movies.DefaultGetPopularMoviesUseCase
-import tv.trakt.trakt.core.discover.sections.recommended.data.local.movies.RecommendedMoviesLocalDataSource
-import tv.trakt.trakt.core.discover.sections.recommended.data.local.movies.RecommendedMoviesStorage
-import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedMoviesUseCase
-import tv.trakt.trakt.core.discover.sections.recommended.usecase.movies.CustomGetRecommendedMoviesUseCase
-import tv.trakt.trakt.core.discover.sections.recommended.usecase.movies.DefaultGetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.releases.data.local.movies.ReleasesMoviesLocalDataSource
 import tv.trakt.trakt.core.discover.sections.releases.data.local.movies.ReleasesMoviesStorage
 import tv.trakt.trakt.core.discover.sections.releases.usecases.movies.DefaultGetReleasesMoviesUseCase
@@ -41,6 +36,11 @@ import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.Trending
 import tv.trakt.trakt.core.discover.sections.trending.data.local.movies.TrendingMoviesStorage
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.trending.usecases.movies.DefaultGetTrendingMoviesUseCase
+import tv.trakt.trakt.core.home.sections.recommended.local.movies.RecommendedMoviesLocalDataSource
+import tv.trakt.trakt.core.home.sections.recommended.local.movies.RecommendedMoviesStorage
+import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedMoviesUseCase
+import tv.trakt.trakt.core.home.sections.recommended.usecase.movies.CustomGetRecommendedMoviesUseCase
+import tv.trakt.trakt.core.home.sections.recommended.usecase.movies.DefaultGetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.movies.data.remote.MoviesApiClient
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.core.movies.ui.context.MovieContextViewModel

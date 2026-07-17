@@ -37,7 +37,6 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.discover.sections.anticipated.DiscoverAnticipatedView
 import tv.trakt.trakt.core.discover.sections.popular.DiscoverPopularView
-import tv.trakt.trakt.core.discover.sections.recommended.DiscoverRecommendedView
 import tv.trakt.trakt.core.discover.sections.releases.DiscoverReleasesView
 import tv.trakt.trakt.core.discover.sections.trending.DiscoverTrendingView
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
@@ -56,7 +55,6 @@ internal fun DiscoverScreen(
     onNavigateToAllTrending: () -> Unit,
     onNavigateToAllPopular: () -> Unit,
     onNavigateToAllAnticipated: () -> Unit,
-    onNavigateToAllRecommended: () -> Unit,
     onNavigateToAllReleases: () -> Unit,
     onNavigateToVip: () -> Unit,
 ) {
@@ -72,7 +70,6 @@ internal fun DiscoverScreen(
         onMoreTrendingClick = onNavigateToAllTrending,
         onMorePopularClick = onNavigateToAllPopular,
         onMoreAnticipatedClick = onNavigateToAllAnticipated,
-        onMoreRecommendedClick = onNavigateToAllRecommended,
         onMoreReleasesClick = onNavigateToAllReleases,
         onVipClick = onNavigateToVip,
         onFiltersClick = {
@@ -98,7 +95,6 @@ private fun DiscoverScreen(
     onMoreTrendingClick: () -> Unit = {},
     onMorePopularClick: () -> Unit = {},
     onMoreAnticipatedClick: () -> Unit = {},
-    onMoreRecommendedClick: () -> Unit = {},
     onMoreReleasesClick: () -> Unit = {},
     onVipClick: () -> Unit = {},
     onFiltersClick: () -> Unit = {},
@@ -209,21 +205,6 @@ private fun DiscoverScreen(
                 )
             }
 
-            if (state.user.isAuthenticated) {
-                item {
-                    DiscoverRecommendedView(
-                        viewModel = koinViewModel {
-                            parametersOf(customThemeEnabled)
-                        },
-                        collection = state.collection,
-                        headerPadding = sectionPadding,
-                        contentPadding = sectionPadding,
-                        onShowClick = onShowClick,
-                        onMovieClick = onMovieClick,
-                        onMoreClick = onMoreRecommendedClick,
-                    )
-                }
-            }
         }
 
         ScreenHeader(

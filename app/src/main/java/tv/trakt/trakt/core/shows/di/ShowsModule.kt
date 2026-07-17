@@ -28,11 +28,6 @@ import tv.trakt.trakt.core.discover.sections.popular.data.local.shows.PopularSho
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularShowsUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.shows.CustomGetPopularShowsUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.shows.DefaultGetPopularShowsUseCase
-import tv.trakt.trakt.core.discover.sections.recommended.data.local.shows.RecommendedShowsLocalDataSource
-import tv.trakt.trakt.core.discover.sections.recommended.data.local.shows.RecommendedShowsStorage
-import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedShowsUseCase
-import tv.trakt.trakt.core.discover.sections.recommended.usecase.shows.CustomGetRecommendedShowsUseCase
-import tv.trakt.trakt.core.discover.sections.recommended.usecase.shows.DefaultGetRecommendedShowsUseCase
 import tv.trakt.trakt.core.discover.sections.releases.data.local.shows.ReleasesShowsLocalDataSource
 import tv.trakt.trakt.core.discover.sections.releases.data.local.shows.ReleasesShowsStorage
 import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.DefaultGetReleasesShowsUseCase
@@ -43,6 +38,11 @@ import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingShowsU
 import tv.trakt.trakt.core.discover.sections.trending.usecases.shows.DefaultGetTrendingShowsUseCase
 import tv.trakt.trakt.core.episodes.data.remote.EpisodesApiClient
 import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
+import tv.trakt.trakt.core.home.sections.recommended.local.shows.RecommendedShowsLocalDataSource
+import tv.trakt.trakt.core.home.sections.recommended.local.shows.RecommendedShowsStorage
+import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase
+import tv.trakt.trakt.core.home.sections.recommended.usecase.shows.CustomGetRecommendedShowsUseCase
+import tv.trakt.trakt.core.home.sections.recommended.usecase.shows.DefaultGetRecommendedShowsUseCase
 import tv.trakt.trakt.core.shows.data.remote.ShowsApiClient
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.core.shows.ui.context.ShowContextViewModel

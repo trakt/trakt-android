@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.discover.sections.recommended.usecase.shows
+package tv.trakt.trakt.core.home.sections.recommended.usecase.shows
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -9,8 +9,8 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
 import tv.trakt.trakt.core.discover.model.DiscoverItem
-import tv.trakt.trakt.core.discover.sections.recommended.data.local.shows.RecommendedShowsLocalDataSource
-import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedShowsUseCase
+import tv.trakt.trakt.core.home.sections.recommended.local.shows.RecommendedShowsLocalDataSource
+import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 

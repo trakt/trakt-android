@@ -12,10 +12,10 @@ import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.core.billing.data.remote.BillingRemoteDataSource
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
-import tv.trakt.trakt.core.discover.sections.recommended.data.local.movies.RecommendedMoviesLocalDataSource
-import tv.trakt.trakt.core.discover.sections.recommended.data.local.shows.RecommendedShowsLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialLocalDataSource
+import tv.trakt.trakt.core.home.sections.recommended.local.movies.RecommendedMoviesLocalDataSource
+import tv.trakt.trakt.core.home.sections.recommended.local.shows.RecommendedShowsLocalDataSource
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource

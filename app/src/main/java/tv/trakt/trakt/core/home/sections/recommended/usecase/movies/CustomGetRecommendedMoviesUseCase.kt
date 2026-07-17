@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.discover.sections.recommended.usecase.movies
+package tv.trakt.trakt.core.home.sections.recommended.usecase.movies
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -9,14 +9,16 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
 import tv.trakt.trakt.core.discover.model.DiscoverItem
-import tv.trakt.trakt.core.discover.sections.recommended.data.local.movies.RecommendedMoviesLocalDataSource
-import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedMoviesUseCase
+import tv.trakt.trakt.core.home.sections.recommended.local.movies.RecommendedMoviesLocalDataSource
+import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedMoviesUseCase
+import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
 
-internal class DefaultGetRecommendedMoviesUseCase(
+internal class CustomGetRecommendedMoviesUseCase(
     private val remoteSource: MoviesRemoteDataSource,
     private val localRecommendedSource: RecommendedMoviesLocalDataSource,
     private val localMovieSource: MovieLocalDataSource,
+    private val customThemeUseCase: CustomThemeUseCase,
 ) : GetRecommendedMoviesUseCase {
     override suspend fun getLocalMovies(): ImmutableList<DiscoverItem.MovieItem> {
         return localRecommendedSource.getMovies()
@@ -33,7 +35,10 @@ internal class DefaultGetRecommendedMoviesUseCase(
         skipLocal: Boolean,
         filters: GlobalFilter,
     ): ImmutableList<DiscoverItem.MovieItem> {
-        return remoteSource.getRecommended(limit = limit, filters = filters)
+        return remoteSource.getRecommended(
+            limit = limit,
+            filters = filters,
+        )
             .asyncMap {
                 DiscoverItem.MovieItem(
                     movie = Movie.fromDto(it),

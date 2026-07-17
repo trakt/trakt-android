@@ -11,8 +11,8 @@ import tv.trakt.trakt.core.discover.model.DiscoverSection.RECOMMENDED
 import tv.trakt.trakt.core.discover.model.DiscoverSection.TRENDING
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularMoviesUseCase
-import tv.trakt.trakt.core.discover.sections.recommended.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingMoviesUseCase
+import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedMoviesUseCase
 
 internal class GetAllDiscoverMoviesUseCase(
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,

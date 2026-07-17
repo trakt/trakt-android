@@ -109,6 +109,9 @@ internal fun NavGraphBuilder.homeScreens(
             onNavigateToAllPersonal = { navigateToAllActivityPersonal(filtersEnabled = true) },
             onNavigateToAllSocial = { navigateToAllActivitySocial() },
             onNavigateToAllWatchlist = { navigateToAllHomeWatchlist() },
+            onNavigateToAllRecommended = {
+                navigateToDiscoverAll(DiscoverSection.RECOMMENDED)
+            },
             onNavigateToVip = { navigateToBilling() },
             onNavigateToUser = { navigateToUserProfile(it) },
         )
@@ -168,9 +171,6 @@ internal fun NavGraphBuilder.discoverScreens(
             },
             onNavigateToAllAnticipated = {
                 navigateToDiscoverAll(DiscoverSection.ANTICIPATED)
-            },
-            onNavigateToAllRecommended = {
-                navigateToDiscoverAll(DiscoverSection.RECOMMENDED)
             },
             onNavigateToAllReleases = {
                 navigateToAllReleases()
