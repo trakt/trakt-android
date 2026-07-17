@@ -457,6 +457,7 @@ private fun ContentList(
                         sorting = listSorting,
                         enabled = !loading,
                         watched = collection.isWatched(item.id, Show, item.airedEpisodes),
+                        watching = collection.isWatching(item.id, Show, item.airedEpisodes),
                         onClick = { onClick(item) },
                         onLongClick = { onLongClick(item) },
                         modifier = Modifier

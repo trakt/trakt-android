@@ -622,6 +622,7 @@ private fun ContentList(
                             shadow = shadow,
                             enabled = !loading,
                             watched = collectionState.isWatched(item.id, item.type, item.show.airedEpisodes),
+                            watching = collectionState.isWatching(item.id, item.type, item.show.airedEpisodes),
                             watchlist = collectionState.isWatchlist(item.id, item.type),
                             showIcon = true,
                             onClick = { onClick(item) },
