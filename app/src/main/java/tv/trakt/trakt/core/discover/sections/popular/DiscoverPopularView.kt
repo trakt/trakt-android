@@ -38,14 +38,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
@@ -61,6 +60,7 @@ import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.core.user.UserCollectionState
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.EmptyListCard
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
@@ -185,11 +185,17 @@ internal fun DiscoverPopularContent(
                                 maxLines = 10,
                                 modifier = Modifier.padding(contentPadding),
                             )
+                        } else if (state.items.isNullOrEmpty()) {
+                            EmptyListCard(
+                                height = 221.dp,
+                                modifier = Modifier
+                                    .padding(contentPadding),
+                            )
                         } else {
                             ContentList(
                                 mode = state.filter?.mode,
                                 collection = collectionState,
-                                listItems = (state.items ?: emptyList()).toImmutableList(),
+                                listItems = state.items,
                                 contentPadding = contentPadding,
                                 onClick = onClick,
                                 onLongClick = onLongClick,
@@ -356,17 +362,26 @@ private fun ContentListItem(
     )
 }
 
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
+@DevicePreview
 @Composable
 private fun Preview() {
     TraktTheme {
         DiscoverPopularContent(
             state = DiscoverPopularState(
                 loading = Idle,
+            ),
+            collectionState = UserCollectionState.Default,
+        )
+    }
+}
+
+@DevicePreview
+@Composable
+private fun PreviewLoading() {
+    TraktTheme {
+        DiscoverPopularContent(
+            state = DiscoverPopularState(
+                loading = Done,
             ),
             collectionState = UserCollectionState.Default,
         )

@@ -30,9 +30,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -47,6 +47,7 @@ import tv.trakt.trakt.core.discover.sections.releases.views.MovieReleasesItemVie
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.EmptyListCard
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -168,9 +169,15 @@ internal fun DiscoverReleasesContent(
                                 maxLines = 10,
                                 modifier = Modifier.padding(contentPadding),
                             )
+                        } else if (state.items.isNullOrEmpty()) {
+                            EmptyListCard(
+                                height = 150.dp,
+                                modifier = Modifier
+                                    .padding(contentPadding),
+                            )
                         } else {
                             ContentList(
-                                listItems = (state.items ?: emptyList()).toImmutableList(),
+                                listItems = state.items,
                                 contentPadding = contentPadding,
                                 onShowClick = onShowClick,
                                 onMovieClick = onMovieClick,
