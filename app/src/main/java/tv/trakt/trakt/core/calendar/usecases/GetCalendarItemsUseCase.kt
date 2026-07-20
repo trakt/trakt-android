@@ -92,7 +92,7 @@ internal class GetCalendarItemsUseCase(
             val weekShowsData = showsData.filter {
                 val date = it.episode.effectiveReleaseDate ?: it.firstAired
                 val localDate = date.toInstant().toLocalDay()
-                localDate in weekStart..weekEnd
+                it.episode.season > 0 && localDate in weekStart..weekEnd
             }
 
             val episodes = weekShowsData

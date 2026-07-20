@@ -84,7 +84,9 @@ internal class GetUpcomingUseCase(
             startDate = nowLocalDay().minusDays(DAYS_OFFSET),
             days = DAYS_RANGE,
             filters = filter,
-        )
+        ).filter {
+            it.episode.season > 0
+        }
 
         val now = nowLocal().truncatedTo(DAYS)
 
