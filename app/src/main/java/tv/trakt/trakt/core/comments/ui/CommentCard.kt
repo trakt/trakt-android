@@ -41,6 +41,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -62,8 +63,10 @@ import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.capitalize
+import tv.trakt.trakt.common.helpers.extensions.googleTranslateActivityInfo
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.openGoogleTranslate
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
@@ -76,6 +79,7 @@ import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.util.Locale
 
 private val EmptyReactionsSummary = emptyMap<Int, ReactionsSummary>().toImmutableMap()
 private val EmptyReactions = emptyMap<Int, Reaction?>().toImmutableMap()
@@ -462,6 +466,7 @@ private fun CommentFooter(
     onReplyClick: (() -> Unit)? = null,
     onRepliesClick: (() -> Unit)? = null,
 ) {
+    val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val tooltipState = rememberTooltipState(isPersistent = true)
 
@@ -547,9 +552,27 @@ private fun CommentFooter(
             }
 
             Row(
-                horizontalArrangement = spacedBy(24.dp),
+                horizontalArrangement = spacedBy(20.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
+                if (comment.rememberTranslatable()) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_translate),
+                        contentDescription = "Replies",
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .size(18.dp)
+                            .onClick {
+                                val activityInfo = context.googleTranslateActivityInfo()
+                                activityInfo?.let {
+                                    context.openGoogleTranslate(
+                                        activity = activityInfo,
+                                        text = comment.comment.trim(),
+                                    )
+                                }
+                            },
+                    )
+                }
                 if (repliesCountEnabled && comment.replies > 0) {
                     Row(
                         horizontalArrangement = spacedBy(2.dp),
@@ -614,7 +637,7 @@ fun CommentPreview() {
                 CommentCard(
                     onClick = {},
                     user = PreviewData.user1,
-                    comment = PreviewData.comment1.copy(userRating = 10),
+                    comment = PreviewData.comment1.copy(userRating = 10, language = Locale.SIMPLIFIED_CHINESE),
                     replies = listOf(PreviewData.comment1).toImmutableList(),
                     modifier = Modifier
                         .height(400.dp),

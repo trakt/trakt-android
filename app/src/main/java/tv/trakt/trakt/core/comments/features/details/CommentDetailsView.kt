@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.W700
@@ -58,8 +59,10 @@ import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.capitalize
+import tv.trakt.trakt.common.helpers.extensions.googleTranslateActivityInfo
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.openGoogleTranslate
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.TraktId
@@ -400,6 +403,7 @@ private fun CommentFooter(
     onReplyClick: (() -> Unit)? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
 ) {
+    val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val tooltipState = rememberTooltipState(isPersistent = true)
 
@@ -436,17 +440,41 @@ private fun CommentFooter(
             )
         }
 
-        if (reactionsEnabled) {
-            Icon(
-                painter = painterResource(R.drawable.ic_comment_plus),
-                contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
-                modifier = Modifier
-                    .size(18.dp)
-                    .onClick {
-                        onReplyClick?.invoke()
-                    },
-            )
+        Row(
+            horizontalArrangement = spacedBy(20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            if (comment.rememberTranslatable()) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_translate),
+                    contentDescription = "Replies",
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .size(18.dp)
+                        .onClick {
+                            val activityInfo = context.googleTranslateActivityInfo()
+                            activityInfo?.let {
+                                context.openGoogleTranslate(
+                                    activity = activityInfo,
+                                    text = comment.comment.trim(),
+                                )
+                            }
+                        },
+                )
+            }
+
+            if (reactionsEnabled) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_comment_plus),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .size(18.dp)
+                        .onClick {
+                            onReplyClick?.invoke()
+                        },
+                )
+            }
         }
     }
 }

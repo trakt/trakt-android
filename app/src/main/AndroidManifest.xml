@@ -181,6 +181,9 @@
     <package android:name="com.imdb.mobile" />
     <package android:name="com.justwatch.justwatch" />
     <package android:name="com.rottentomatoes.android" />
+
+    <!-- Misc. -->
+    <package android:name="com.google.android.apps.translate" />
   </queries>
 
 </manifest>
