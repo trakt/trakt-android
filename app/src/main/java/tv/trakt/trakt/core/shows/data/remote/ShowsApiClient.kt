@@ -250,10 +250,15 @@ internal class ShowsApiClient(
     }
 
     override suspend fun getSentiments(showId: TraktId): V3SentimentResponse? {
-        val response = v3Api.getShowSentiment(
-            showId = showId,
-        )
-        return response
+        return try {
+            v3Api.getShowSentiment(showId)
+        } catch (error: Exception) {
+            // 404 means no sentiment data is available for this show, so we return null.
+            if (error.getHttpCode() == 404) {
+                return null
+            }
+            throw error
+        }
     }
 
     override suspend fun getRelated(showId: TraktId): List<ShowCalendarsDto> {

@@ -268,10 +268,15 @@ internal class MoviesApiClient(
     }
 
     override suspend fun getSentiments(movieId: TraktId): V3SentimentResponse? {
-        val response = v3Api.getMovieSentiment(
-            movieId = movieId,
-        )
-        return response
+        return try {
+            v3Api.getMovieSentiment(movieId)
+        } catch (error: Exception) {
+            // 404 means no sentiment data is available for this movie, so we return null.
+            if (error.getHttpCode() == 404) {
+                return null
+            }
+            throw error
+        }
     }
 
     override suspend fun getComments(
