@@ -106888,12 +106888,12 @@
                         "type": "string"
                       },
                       "country": {
-                        "type": "string"
+                        "type": "string",
+                        "nullable": true
                       }
                     },
                     "required": [
-                      "language",
-                      "country"
+                      "language"
                     ]
                   }
                 }

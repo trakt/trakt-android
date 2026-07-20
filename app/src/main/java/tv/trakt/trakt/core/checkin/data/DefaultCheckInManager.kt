@@ -38,6 +38,7 @@ import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.resources.R
 import kotlin.time.Clock.System.now
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
 
@@ -86,7 +87,7 @@ internal class DefaultCheckInManager(
             )
             cacheMarkerProvider.invalidate()
 
-            delay(300)
+            delay(500.milliseconds)
             val watching = userRemoteDataSource.getWatchingNow()
             if (watching == null) {
                 Timber.d("No active watching found after check-in.")
@@ -143,7 +144,7 @@ internal class DefaultCheckInManager(
             checkInRemoteDataSource.postMovieCheckIn(movieId)
             cacheMarkerProvider.invalidate()
 
-            delay(300)
+            delay(500.milliseconds)
             val watching = userRemoteDataSource.getWatchingNow()
             if (watching == null) {
                 Timber.d("No active watching found after check-in.")
