@@ -6,10 +6,10 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import tv.trakt.trakt.common.core.home.model.UpNextItem
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.home.sections.upnext.model.UpNextItem
 import java.time.Instant
 
 internal class HomeUpNextStorage : HomeUpNextLocalDataSource {

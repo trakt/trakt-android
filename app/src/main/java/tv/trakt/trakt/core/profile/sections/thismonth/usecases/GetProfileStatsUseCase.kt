@@ -2,10 +2,10 @@ package tv.trakt.trakt.core.profile.sections.thismonth.usecases
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
-import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import java.time.Instant
 import java.time.ZonedDateTime
 

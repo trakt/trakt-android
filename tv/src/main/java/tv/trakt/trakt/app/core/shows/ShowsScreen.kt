@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -26,15 +28,16 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
-import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalViewAllCard
@@ -43,9 +46,11 @@ import tv.trakt.trakt.app.core.shows.model.AnticipatedShow
 import tv.trakt.trakt.app.core.shows.model.TrendingShow
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.resources.R
@@ -140,6 +145,7 @@ private fun ShowsScreenContent(
                     TrendingShowsList(
                         header = stringResource(R.string.list_title_trending),
                         shows = state.trendingShows,
+                        collection = state.collection,
                         isLoading = state.isLoading,
                         onViewAllClick = onViewAllTrendingClick,
                         onShowClick = onShowClick,
@@ -159,6 +165,7 @@ private fun ShowsScreenContent(
                         RecommendedShowsList(
                             header = stringResource(R.string.list_title_recommended),
                             shows = state.recommendedShows,
+                            collection = state.collection,
                             isLoading = state.isLoading,
                             onViewAllClick = onViewAllRecommendedClick,
                             onShowClick = onShowClick,
@@ -177,6 +184,7 @@ private fun ShowsScreenContent(
                     AnticipatedShowsList(
                         header = stringResource(R.string.list_title_most_anticipated),
                         shows = state.anticipatedShows,
+                        collection = state.collection,
                         isLoading = state.isLoading,
                         onViewAllClick = onViewAllAnticipatedClick,
                         onShowClick = onShowClick,
@@ -194,6 +202,7 @@ private fun ShowsScreenContent(
                     PopularShowsList(
                         header = stringResource(R.string.list_title_most_popular),
                         shows = state.popularShows,
+                        collection = state.collection,
                         isLoading = state.isLoading,
                         onViewAllClick = onViewAllPopularClick,
                         onShowClick = onShowClick,
@@ -227,6 +236,7 @@ private fun ShowsScreenContent(
 private fun TrendingShowsList(
     header: String,
     shows: ImmutableList<TrendingShow>?,
+    collection: UserCollectionState,
     isLoading: Boolean,
     onShowFocus: (Show) -> Unit,
     onShowClick: (TraktId) -> Unit,
@@ -268,15 +278,36 @@ private fun TrendingShowsList(
                 ) { (watchers, show) ->
                     HorizontalMediaCard(
                         title = show.title,
+                        watched = collection.isWatched(show.ids.trakt, MediaType.Show, show.airedEpisodes),
+                        watching = collection.isWatching(show.ids.trakt, MediaType.Show, show.airedEpisodes),
+                        watchlist = collection.isWatchlist(show.ids.trakt, MediaType.Show),
                         onClick = { onShowClick(show.ids.trakt) },
                         containerImageUrl = show.images?.getFanartUrl(),
                         contentImageUrl = show.images?.getLogoUrl(),
                         paletteColor = show.colors?.colors?.second,
                         footerContent = {
-                            InfoChip(
-                                text = rememberThousandsFormat(watchers),
-                                iconPainter = painterResource(R.drawable.ic_person),
-                            )
+                            Column(
+                                verticalArrangement = spacedBy(1.dp),
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = spacedBy(5.dp),
+                                ) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.ic_person_double),
+                                        contentDescription = null,
+                                        tint = TraktTheme.colors.textPrimary,
+                                        modifier = Modifier.size(12.dp),
+                                    )
+                                    Text(
+                                        text = rememberThousandsFormat(watchers),
+                                        style = TraktTheme.typography.cardTitle,
+                                        color = TraktTheme.colors.textPrimary,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                    )
+                                }
+                            }
                         },
                         modifier = Modifier.onFocusChanged {
                             if (it.hasFocus) {
@@ -302,6 +333,7 @@ private fun TrendingShowsList(
 private fun RecommendedShowsList(
     header: String,
     shows: ImmutableList<Show>?,
+    collection: UserCollectionState,
     isLoading: Boolean,
     onShowFocus: (Show) -> Unit,
     onShowClick: (TraktId) -> Unit,
@@ -339,14 +371,27 @@ private fun RecommendedShowsList(
                 ) { show ->
                     HorizontalMediaCard(
                         title = show.title,
+                        watched = collection.isWatched(show.ids.trakt, MediaType.Show, show.airedEpisodes),
+                        watching = collection.isWatching(show.ids.trakt, MediaType.Show, show.airedEpisodes),
+                        watchlist = collection.isWatchlist(show.ids.trakt, MediaType.Show),
                         onClick = { onShowClick(show.ids.trakt) },
                         containerImageUrl = show.images?.getFanartUrl(),
                         contentImageUrl = show.images?.getLogoUrl(),
                         paletteColor = show.colors?.colors?.second,
                         footerContent = {
-                            InfoChip(
-                                text = stringResource(R.string.tag_text_number_of_episodes, show.airedEpisodes),
-                            )
+                            Column(
+                                verticalArrangement = spacedBy(1.dp),
+                            ) {
+                                val episodes =
+                                    stringResource(R.string.tag_text_number_of_episodes, show.airedEpisodes)
+                                Text(
+                                    text = show.year?.let { "$it  •  $episodes" } ?: episodes,
+                                    style = TraktTheme.typography.cardTitle,
+                                    color = TraktTheme.colors.textPrimary,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            }
                         },
                         modifier = Modifier.onFocusChanged {
                             if (it.hasFocus) {
@@ -372,6 +417,7 @@ private fun RecommendedShowsList(
 private fun AnticipatedShowsList(
     header: String,
     shows: List<AnticipatedShow>?,
+    collection: UserCollectionState,
     isLoading: Boolean,
     onFocusedShow: (Show) -> Unit,
     onShowClick: (TraktId) -> Unit,
@@ -409,15 +455,36 @@ private fun AnticipatedShowsList(
                 ) { (listCount, show) ->
                     HorizontalMediaCard(
                         title = show.title,
+                        watched = collection.isWatched(show.ids.trakt, MediaType.Show, show.airedEpisodes),
+                        watching = collection.isWatching(show.ids.trakt, MediaType.Show, show.airedEpisodes),
+                        watchlist = collection.isWatchlist(show.ids.trakt, MediaType.Show),
                         onClick = { onShowClick(show.ids.trakt) },
                         containerImageUrl = show.images?.getFanartUrl(),
                         contentImageUrl = show.images?.getLogoUrl(),
                         paletteColor = show.colors?.colors?.second,
                         footerContent = {
-                            InfoChip(
-                                text = rememberThousandsFormat(listCount),
-                                iconPainter = painterResource(R.drawable.ic_star),
-                            )
+                            Column(
+                                verticalArrangement = spacedBy(1.dp),
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = spacedBy(2.dp),
+                                ) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.ic_bookmark_off),
+                                        contentDescription = null,
+                                        tint = TraktTheme.colors.textPrimary,
+                                        modifier = Modifier.size(16.dp),
+                                    )
+                                    Text(
+                                        text = rememberThousandsFormat(listCount),
+                                        style = TraktTheme.typography.cardTitle,
+                                        color = TraktTheme.colors.textPrimary,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                    )
+                                }
+                            }
                         },
                         modifier = Modifier.onFocusChanged {
                             if (it.hasFocus) {
@@ -443,6 +510,7 @@ private fun AnticipatedShowsList(
 private fun PopularShowsList(
     header: String,
     shows: ImmutableList<Show>?,
+    collection: UserCollectionState,
     isLoading: Boolean,
     onShowFocus: (Show) -> Unit,
     onShowClick: (TraktId) -> Unit,
@@ -477,14 +545,27 @@ private fun PopularShowsList(
                 ) { show ->
                     HorizontalMediaCard(
                         title = show.title,
+                        watched = collection.isWatched(show.ids.trakt, MediaType.Show, show.airedEpisodes),
+                        watching = collection.isWatching(show.ids.trakt, MediaType.Show, show.airedEpisodes),
+                        watchlist = collection.isWatchlist(show.ids.trakt, MediaType.Show),
                         onClick = { onShowClick(show.ids.trakt) },
                         containerImageUrl = show.images?.getFanartUrl(),
                         contentImageUrl = show.images?.getLogoUrl(),
                         paletteColor = show.colors?.colors?.second,
                         footerContent = {
-                            InfoChip(
-                                text = stringResource(R.string.tag_text_number_of_episodes, show.airedEpisodes),
-                            )
+                            Column(
+                                verticalArrangement = spacedBy(1.dp),
+                            ) {
+                                val episodes =
+                                    stringResource(R.string.tag_text_number_of_episodes, show.airedEpisodes)
+                                Text(
+                                    text = show.year?.let { "$it  •  $episodes" } ?: episodes,
+                                    style = TraktTheme.typography.cardTitle,
+                                    color = TraktTheme.colors.textPrimary,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            }
                         },
                         modifier = Modifier.onFocusChanged {
                             if (it.hasFocus) {

@@ -15,10 +15,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.LocalSnackbarState
+import tv.trakt.trakt.common.core.home.model.UpNextItem
+import tv.trakt.trakt.common.core.home.model.UpNextMovie
+import tv.trakt.trakt.common.core.home.model.UpNextShow
 import tv.trakt.trakt.core.home.sections.upnext.features.context.UpNextItemContextView
-import tv.trakt.trakt.core.home.sections.upnext.model.UpNextItem
-import tv.trakt.trakt.core.home.sections.upnext.model.UpNextMovie
-import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT

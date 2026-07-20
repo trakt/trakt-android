@@ -3,6 +3,10 @@ package tv.trakt.trakt.core.home.sections.upnext.usecases
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
+import tv.trakt.trakt.common.core.home.model.Progress
+import tv.trakt.trakt.common.core.home.model.UpNextItem
+import tv.trakt.trakt.common.core.home.model.UpNextMovie
+import tv.trakt.trakt.common.core.home.model.UpNextShow
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
@@ -14,10 +18,6 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
-import tv.trakt.trakt.core.home.sections.upnext.model.Progress
-import tv.trakt.trakt.core.home.sections.upnext.model.UpNextItem
-import tv.trakt.trakt.core.home.sections.upnext.model.UpNextMovie
-import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
 import tv.trakt.trakt.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
 import tv.trakt.trakt.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
 

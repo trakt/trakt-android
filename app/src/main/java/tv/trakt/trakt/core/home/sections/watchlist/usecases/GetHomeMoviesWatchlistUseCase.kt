@@ -2,6 +2,8 @@ package tv.trakt.trakt.core.home.sections.watchlist.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.home.watchlist.data.HomeWatchlistLocalDataSource
+import tv.trakt.trakt.common.core.lists.model.WatchlistItem
 import tv.trakt.trakt.common.core.user.data.remote.watchlist.UserWatchlistRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
@@ -12,8 +14,6 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.sorting.SortOrder
 import tv.trakt.trakt.common.model.sorting.SortType
 import tv.trakt.trakt.common.model.sorting.Sorting
-import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 
 internal class GetHomeMoviesWatchlistUseCase(
     private val homeWatchlistLocalSource: HomeWatchlistLocalDataSource,

@@ -2,8 +2,9 @@ package tv.trakt.trakt.app.core.shows.features.popular
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -31,7 +32,6 @@ import androidx.tv.material3.Text
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import tv.trakt.trakt.app.common.ui.GenericErrorView
-import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.shows.ShowsConfig.SHOWS_NEXT_PAGE_OFFSET
@@ -40,10 +40,12 @@ import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 internal fun ShowsPopularScreen(
@@ -71,7 +73,7 @@ private fun ShowsPopularContent(
     val focusRequesters = remember { mutableMapOf<Int, FocusRequester>() }
 
     LaunchedEffect(Unit) {
-        delay(500)
+        delay(500.milliseconds)
         focusRequesters[focusedShowId]?.requestSafeFocus()
     }
 
@@ -94,8 +96,8 @@ private fun ShowsPopularContent(
         val gridSpace = TraktTheme.spacing.mainGridSpace
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = TraktTheme.size.verticalMediaCardSize),
-            horizontalArrangement = Arrangement.spacedBy(gridSpace),
-            verticalArrangement = Arrangement.spacedBy(gridSpace * 2),
+            horizontalArrangement = spacedBy(gridSpace),
+            verticalArrangement = spacedBy(gridSpace * 2),
             contentPadding = PaddingValues(
                 start = TraktTheme.spacing.mainContentStartSpace,
                 end = TraktTheme.spacing.mainContentEndSpace,
@@ -129,25 +131,40 @@ private fun ShowsPopularContent(
                     key = { index -> state.shows[index].ids.trakt.value },
                 ) { index ->
                     val show = state.shows[index]
-                    val focusRequester = focusRequesters.getOrPut(show.ids.trakt.value) {
-                        FocusRequester()
+
+                    val focusRequester = remember(show.ids.trakt.value) {
+                        focusRequesters.getOrPut(show.ids.trakt.value) {
+                            FocusRequester()
+                        }
                     }
 
                     VerticalMediaCard(
                         title = show.title,
                         imageUrl = show.images?.getPosterUrl(),
+                        watched = state.collection.isWatched(show.ids.trakt, MediaType.Show, show.airedEpisodes),
+                        watching = state.collection.isWatching(show.ids.trakt, MediaType.Show, show.airedEpisodes),
+                        watchlist = state.collection.isWatchlist(show.ids.trakt, MediaType.Show),
                         onClick = {
                             if (!state.isLoadingPage) {
                                 onShowClick(show.ids.trakt)
                             }
                         },
                         chipContent = {
-                            InfoChip(
-                                text = stringResource(
+                            Column(
+                                verticalArrangement = spacedBy(1.dp),
+                            ) {
+                                val episodes = stringResource(
                                     R.string.tag_text_number_of_episodes,
                                     show.airedEpisodes,
-                                ),
-                            )
+                                )
+                                Text(
+                                    text = show.year?.let { "$it  •  $episodes" } ?: episodes,
+                                    style = TraktTheme.typography.cardTitle,
+                                    color = TraktTheme.colors.textPrimary,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            }
                         },
                         modifier = Modifier
                             .focusRequester(focusRequester)

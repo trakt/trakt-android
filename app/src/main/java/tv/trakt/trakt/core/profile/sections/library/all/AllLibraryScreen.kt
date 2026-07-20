@@ -44,12 +44,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.core.library.LibraryItem
+import tv.trakt.trakt.common.core.library.LibraryItem.EpisodeItem
+import tv.trakt.trakt.common.core.library.LibraryItem.MovieItem
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.library.model.LibraryFilter
-import tv.trakt.trakt.core.library.model.LibraryItem
-import tv.trakt.trakt.core.library.model.LibraryItem.EpisodeItem
-import tv.trakt.trakt.core.library.model.LibraryItem.MovieItem
 import tv.trakt.trakt.core.profile.sections.library.all.views.AllLibraryEpisodeView
 import tv.trakt.trakt.core.profile.sections.library.all.views.AllLibraryMovieView
 import tv.trakt.trakt.helpers.SimpleScrollConnection

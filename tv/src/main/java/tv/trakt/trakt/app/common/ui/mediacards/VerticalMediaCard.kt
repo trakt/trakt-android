@@ -2,9 +2,11 @@ package tv.trakt.trakt.app.common.ui.mediacards
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,7 +23,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -35,6 +40,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.tv.material3.Border
 import androidx.tv.material3.Card
 import androidx.tv.material3.CardDefaults
@@ -58,6 +64,9 @@ internal fun VerticalMediaCard(
     modifier: Modifier = Modifier,
     width: Dp = Dp.Unspecified,
     corner: Dp = 12.dp,
+    watched: Boolean = false,
+    watching: Boolean = false,
+    watchlist: Boolean = false,
     chipContent: @Composable () -> Unit = {},
     onClick: () -> Unit = {},
 ) {
@@ -67,106 +76,193 @@ internal fun VerticalMediaCard(
     }
 
     var isError by remember(imageUrl) { mutableStateOf(false) }
+    var isFocused by remember { mutableStateOf(false) }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
-            .widthIn(max = cardWidth),
+            .widthIn(max = cardWidth)
+            .onFocusChanged { isFocused = it.isFocused },
     ) {
-        Card(
-            onClick = onClick,
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(CardDefaults.VerticalImageAspectRatio),
-            shape = CardDefaults.shape(
-                shape = RoundedCornerShape(corner),
-            ),
-            border = CardDefaults.border(
-                focusedBorder = Border(
-                    border = BorderStroke(width = (2.75).dp, color = TraktTheme.colors.accent),
+        Box {
+            Card(
+                onClick = onClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(CardDefaults.VerticalImageAspectRatio),
+                shape = CardDefaults.shape(
                     shape = RoundedCornerShape(corner),
                 ),
-            ),
-            colors = CardDefaults.colors(
-                containerColor = TraktTheme.colors.placeholderContainer,
-                focusedContainerColor = TraktTheme.colors.placeholderContainer,
-            ),
-            scale = CardDefaults.scale(
-                focusedScale = 1.04f,
-            ),
-            content = {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    if (imageUrl != null && !isError) {
-                        AsyncImage(
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(imageUrl)
-                                .crossfade(true)
-                                .build(),
-                            contentDescription = "Card image",
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.align(Alignment.Center),
-                            onError = { isError = true },
-                        )
-                    } else {
-                        Image(
-                            painter = painterResource(R.drawable.ic_placeholder_vertical_border),
-                            contentDescription = title,
-                            contentScale = ContentScale.Fit,
-                            colorFilter = ColorFilter.tint(TraktTheme.colors.placeholderContent),
-                            modifier = Modifier
-                                .padding(5.dp)
-                                .align(Alignment.Center),
-                        )
-                        Icon(
-                            painter = painterResource(R.drawable.ic_placeholder_trakt),
-                            contentDescription = title,
-                            tint = TraktTheme.colors.placeholderContent,
-                            modifier = Modifier
-                                .size(80.dp)
-                                .align(Alignment.TopEnd)
-                                .graphicsLayer {
-                                    translationX = 8.dp.toPx()
-                                    translationY = -8.dp.toPx()
-                                },
-                        )
-
-                        if ((imageUrl == null || isError) && title.isNotBlank()) {
-                            Box(
+                border = CardDefaults.border(
+                    focusedBorder = Border(
+                        border = BorderStroke(width = (2.75).dp, color = TraktTheme.colors.accent),
+                        shape = RoundedCornerShape(corner),
+                    ),
+                ),
+                colors = CardDefaults.colors(
+                    containerColor = TraktTheme.colors.placeholderContainer,
+                    focusedContainerColor = TraktTheme.colors.placeholderContainer,
+                ),
+                scale = CardDefaults.scale(
+                    focusedScale = 1.04f,
+                ),
+                content = {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                    ) {
+                        if (imageUrl != null && !isError) {
+                            AsyncImage(
+                                model = ImageRequest.Builder(LocalContext.current)
+                                    .data(imageUrl)
+                                    .crossfade(true)
+                                    .build(),
+                                contentDescription = "Card image",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.align(Alignment.Center),
+                                onError = { isError = true },
+                            )
+                        } else {
+                            Image(
+                                painter = painterResource(R.drawable.ic_placeholder_vertical_border),
+                                contentDescription = title,
+                                contentScale = ContentScale.Fit,
+                                colorFilter = ColorFilter.tint(TraktTheme.colors.placeholderContent),
                                 modifier = Modifier
-                                    .align(Alignment.BottomCenter)
-                                    .fillMaxWidth()
-                                    .fillMaxHeight(0.33f)
-                                    .drawWithCache {
-                                        onDrawBehind {
-                                            drawRect(
-                                                brush = Brush.verticalGradient(
-                                                    0f to Color.Transparent,
-                                                    1f to Color(0xFA212427),
-                                                ),
-                                            )
-                                        }
+                                    .padding(5.dp)
+                                    .align(Alignment.Center),
+                            )
+                            Icon(
+                                painter = painterResource(R.drawable.ic_placeholder_trakt),
+                                contentDescription = title,
+                                tint = TraktTheme.colors.placeholderContent,
+                                modifier = Modifier
+                                    .size(80.dp)
+                                    .align(Alignment.TopEnd)
+                                    .graphicsLayer {
+                                        translationX = 8.dp.toPx()
+                                        translationY = -8.dp.toPx()
                                     },
                             )
-                        }
 
-                        Text(
-                            text = title.uppercase(),
-                            style = TraktTheme.typography.buttonTertiary,
-                            color = TraktTheme.colors.textPrimary,
-                            textAlign = TextAlign.Center,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier
-                                .align(Alignment.BottomCenter)
-                                .padding(horizontal = 12.dp, vertical = 14.dp),
+                            if ((imageUrl == null || isError) && title.isNotBlank()) {
+                                Box(
+                                    modifier = Modifier
+                                        .align(Alignment.BottomCenter)
+                                        .fillMaxWidth()
+                                        .fillMaxHeight(0.33f)
+                                        .drawWithCache {
+                                            onDrawBehind {
+                                                drawRect(
+                                                    brush = Brush.verticalGradient(
+                                                        0f to Color.Transparent,
+                                                        1f to Color(0xFA212427),
+                                                    ),
+                                                )
+                                            }
+                                        },
+                                )
+                            }
+
+                            Text(
+                                text = title.uppercase(),
+                                style = TraktTheme.typography.buttonTertiary,
+                                color = TraktTheme.colors.textPrimary,
+                                textAlign = TextAlign.Center,
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier
+                                    .align(Alignment.BottomCenter)
+                                    .padding(horizontal = 12.dp, vertical = 14.dp),
+                            )
+                        }
+                    }
+                },
+            )
+
+            if (watchlist || watched || watching) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    modifier = Modifier
+                        .zIndex(99F)
+                        .align(Alignment.BottomCenter)
+                        .graphicsLayer {
+                            translationY = 7.5.dp.toPx()
+                        },
+                ) {
+                    if (watched || watching) {
+                        CollectionChip(
+                            iconRes = R.drawable.ic_check_double,
+                            iconSize = 11.5.dp,
+                            focused = isFocused,
+                            halved = watching,
+                        )
+                    }
+
+                    if (watchlist) {
+                        CollectionChip(
+                            iconRes = R.drawable.ic_bookmark_on,
+                            iconSize = 11.5.dp,
+                            focused = isFocused,
                         )
                     }
                 }
-            },
-        )
+            }
+        }
+
         chipContent()
+    }
+}
+
+@Composable
+private fun CollectionChip(
+    iconRes: Int,
+    iconSize: Dp,
+    focused: Boolean = false,
+    halved: Boolean = false,
+) {
+    val shape = RoundedCornerShape(100)
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .size(
+                width = 24.dp,
+                height = 16.dp,
+            )
+            .shadow(
+                when (focused) {
+                    true -> 0.dp
+                    else -> 1.5.dp
+                },
+                shape,
+            )
+            .clip(shape)
+            .background(
+                when (focused) {
+                    true -> TraktTheme.colors.accent
+                    else -> TraktTheme.colors.tagChipContainer
+                },
+            ),
+    ) {
+        if (halved) {
+            Box(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth(0.5f)
+                    .align(Alignment.CenterEnd)
+                    .background(
+                        when (focused) {
+                            true -> TraktTheme.colors.accent
+                            else -> TraktTheme.colors.tagChipContainerLight
+                        },
+                    ),
+            )
+        }
+        Icon(
+            painter = painterResource(iconRes),
+            tint = TraktTheme.colors.tagChipContent,
+            contentDescription = null,
+            modifier = Modifier.size(iconSize),
+        )
     }
 }
 
@@ -182,6 +278,8 @@ private fun PosterPreview() {
             VerticalMediaCard(
                 title = "Placeholder",
                 imageUrl = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/4iWjGghUj2uyHo2Hyw8NFBvsNGm.jpg",
+                watched = true,
+                watchlist = true,
                 modifier = Modifier.padding(16.dp),
             )
         }

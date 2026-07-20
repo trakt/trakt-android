@@ -12,10 +12,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.app.core.shows.ShowsConfig.SHOWS_PAGE_LIMIT
 import tv.trakt.trakt.app.core.shows.usecase.GetPopularShowsUseCase
+import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 
 internal class ShowsPopularViewAllViewModel(
     private val getItemsUseCase: GetPopularShowsUseCase,
+    private val collectionStateProvider: CollectionStateProvider,
 ) : ViewModel() {
     private val initialState = ShowsPopularViewAllState()
 
@@ -29,6 +31,13 @@ internal class ShowsPopularViewAllViewModel(
 
     init {
         loadData()
+
+        observeData()
+    }
+
+    private fun observeData() {
+        collectionStateProvider
+            .launchIn(viewModelScope)
     }
 
     private fun loadData() {
@@ -86,13 +95,15 @@ internal class ShowsPopularViewAllViewModel(
         loadingState,
         loadingPageState,
         showsState,
+        collectionStateProvider.stateFlow,
         errorState,
-    ) { s1, s2, s3, s4 ->
+    ) { s1, s2, s3, s4, s5 ->
         ShowsPopularViewAllState(
             isLoading = s1,
             isLoadingPage = s2,
             shows = s3,
-            error = s4,
+            collection = s4,
+            error = s5,
         )
     }.stateIn(
         scope = viewModelScope,

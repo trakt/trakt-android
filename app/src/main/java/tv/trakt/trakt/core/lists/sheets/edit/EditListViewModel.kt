@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.core.user.data.local.UserListsLocalDataSource
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
@@ -16,7 +17,6 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.lists.sheets.edit.usecases.EditListUseCase
-import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
 
 internal class EditListViewModel(
     private val editListUseCase: EditListUseCase,

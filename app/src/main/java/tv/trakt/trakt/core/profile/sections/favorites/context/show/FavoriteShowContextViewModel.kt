@@ -10,12 +10,13 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.user.data.local.favorites.UserFavoritesLocalDataSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
@@ -23,7 +24,6 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.favorites.FavoritesUpdates
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.CONTEXT_SHEET
 import tv.trakt.trakt.core.sync.usecases.UpdateShowFavoritesUseCase
-import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesLocalDataSource
 
 internal class FavoriteShowContextViewModel(
     private val show: Show,

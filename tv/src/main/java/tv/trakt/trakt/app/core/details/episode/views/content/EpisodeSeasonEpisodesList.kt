@@ -26,13 +26,14 @@ import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.resources.R
+import java.time.Instant
 
 @Composable
 internal fun EpisodeSeasonEpisodesList(
     header1: String,
     header2: String,
     show: Show?,
-    episodes: () -> ImmutableList<Episode>,
+    episodes: () -> ImmutableList<Pair<Episode, Instant?>>,
     onFocused: () -> Unit,
     onClicked: (Episode) -> Unit,
     modifier: Modifier = Modifier,
@@ -67,25 +68,29 @@ internal fun EpisodeSeasonEpisodesList(
         ) {
             items(
                 items = episodes(),
-                key = { item -> item.ids.trakt.value },
-            ) { episode ->
+                key = { (episode, _) -> episode.ids.trakt.value },
+            ) { (episode, timestamp) ->
                 HorizontalMediaCard(
                     title = "",
-                    containerImageUrl = episode.images?.getScreenshotUrl()
-                        ?: show?.images?.getFanartUrl(),
+                    watched = timestamp != null,
+                    containerImageUrl = when (episode.rememberReleased()) {
+                        true -> episode.images?.getScreenshotUrl() ?: show?.images?.getFanartUrl()
+                        false -> show?.images?.getFanartUrl()
+                    },
                     onClick = { onClicked(episode) },
                     cardContent = {
                         if (!episode.rememberReleased()) {
                             InfoChip(
                                 text = episode.releasedAt?.toLocal()?.relativeDateTimeString() ?: "",
                                 iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
-                                containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
+                                containerColor = TraktTheme.colors.chipContainerOnContent,
                             )
                         } else {
                             val runtime = episode.runtime?.inWholeMinutes
                             if (runtime != null) {
                                 InfoChip(
                                     text = rememberDurationFormat(runtime),
+                                    containerColor = TraktTheme.colors.chipContainerOnContent,
                                 )
                             }
                         }

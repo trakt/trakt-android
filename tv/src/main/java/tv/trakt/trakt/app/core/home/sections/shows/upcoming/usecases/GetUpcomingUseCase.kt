@@ -63,7 +63,9 @@ internal class GetUpcomingUseCase(
         val remoteShows = remoteUserSource.getUserShowsCalendar(
             startDate = nowLocalDay().minusDays(DAYS_OFFSET),
             days = DAYS_RANGE,
-        )
+        ).filter {
+            it.episode.season > 0
+        }
 
         val fullSeasonItems = remoteShows
             .groupBy { it.show.ids.trakt }

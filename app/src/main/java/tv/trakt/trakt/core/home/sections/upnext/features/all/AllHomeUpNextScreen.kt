@@ -47,6 +47,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.common.core.home.model.UpNextItem
+import tv.trakt.trakt.common.core.home.model.UpNextMovie
+import tv.trakt.trakt.common.core.home.model.UpNextShow
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -60,9 +63,6 @@ import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.core.home.sections.upnext.features.all.ui.AllUpNextMovieView
 import tv.trakt.trakt.core.home.sections.upnext.features.all.ui.AllUpNextShowView
 import tv.trakt.trakt.core.home.sections.upnext.features.context.sheets.UpNextItemContextSheet
-import tv.trakt.trakt.core.home.sections.upnext.model.UpNextItem
-import tv.trakt.trakt.core.home.sections.upnext.model.UpNextMovie
-import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaFilterIcon
@@ -111,7 +111,7 @@ internal fun AllHomeUpNextScreen(
             if (!it.loading && it is UpNextShow && it.progress.nextEpisode != null) {
                 onNavigateToEpisode(
                     it.show.ids.trakt,
-                    it.progress.nextEpisode,
+                    it.progress.nextEpisode as Episode,
                 )
             }
 

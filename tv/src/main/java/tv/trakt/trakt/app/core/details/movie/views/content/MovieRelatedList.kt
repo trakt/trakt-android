@@ -9,11 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
-import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
@@ -59,10 +59,16 @@ internal fun MovieRelatedList(
                     paletteColor = movie.colors?.colors?.second,
                     onClick = { onClick(movie) },
                     footerContent = {
-                        val runtime = movie.runtime?.inWholeMinutes
-                        if (runtime != null) {
-                            InfoChip(
-                                text = rememberDurationFormat(runtime),
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(1.dp),
+                        ) {
+                            Text(
+                                text = movie.yearString +
+                                    "  •  ${rememberDurationFormat(movie.runtime?.inWholeMinutes)}",
+                                style = TraktTheme.typography.cardTitle,
+                                color = TraktTheme.colors.textPrimary,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
                             )
                         }
                     },

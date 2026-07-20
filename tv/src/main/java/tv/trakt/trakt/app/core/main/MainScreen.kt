@@ -26,6 +26,8 @@ import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle.Event.ON_RESUME
+import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -133,6 +135,10 @@ internal fun MainScreen(
             navController.navigateToAuth()
             localSnackbar.showSnackbar(localRes.getString(R.string.text_info_signed_out))
         }
+    }
+
+    LifecycleEventEffect(ON_RESUME) {
+        viewModel.loadData()
     }
 
     ModalNavigationDrawer(

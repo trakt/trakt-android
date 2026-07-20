@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.sorting.Sorting
 
 internal class GetListsShowsWatchlistUseCase(
     private val remoteSyncSource: ShowsSyncRemoteDataSource,
@@ -20,10 +21,8 @@ internal class GetListsShowsWatchlistUseCase(
             page = page,
             limit = limit,
             extended = "full,cloud9,colors,streaming_ids",
-            sort = "added",
-        ).sortedByDescending {
-            it.listedAt
-        }.asyncMap {
+            sorting = Sorting.RecentlyAdded,
+        ).asyncMap {
             Show.fromDto(it.show)
         }
 

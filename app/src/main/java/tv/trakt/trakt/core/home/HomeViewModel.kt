@@ -16,17 +16,17 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_WELCOME_BANNER_ENABLED
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
+import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeState.UserState
 import tv.trakt.trakt.core.home.sections.welcome.usecases.DismissWelcomeBannerUseCase
 import tv.trakt.trakt.core.home.sections.welcome.usecases.GetUserUsageUseCase
-import tv.trakt.trakt.core.user.CollectionStateProvider
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)

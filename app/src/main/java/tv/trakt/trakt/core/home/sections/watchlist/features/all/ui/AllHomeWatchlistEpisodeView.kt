@@ -3,8 +3,8 @@ package tv.trakt.trakt.core.home.sections.watchlist.features.all.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import tv.trakt.trakt.common.core.lists.model.WatchlistItem
 import tv.trakt.trakt.common.model.Images.Size.THUMB
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.shows.ui.ShowMetaFooter
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 

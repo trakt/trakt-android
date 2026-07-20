@@ -1,5 +1,7 @@
 package tv.trakt.trakt.app.core.lists.di
 
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.app.core.lists.ListsViewModel
@@ -13,8 +15,12 @@ import tv.trakt.trakt.app.core.lists.usecases.GetListsPersonalUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsShowsWatchlistUseCase
 import tv.trakt.trakt.app.core.lists.usecases.liked.AddLikedListUseCase
 import tv.trakt.trakt.app.core.lists.usecases.liked.RemoveLikedListUseCase
+import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
+import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdatesStorage
 
 internal val listsModule = module {
+    singleOf(::WatchlistUpdatesStorage) { bind<WatchlistUpdates>() }
+
     factory {
         GetListsShowsWatchlistUseCase(
             remoteSyncSource = get(),
@@ -92,6 +98,7 @@ internal val listsModule = module {
         PersonalListViewModel(
             savedStateHandle = get(),
             getListItemsUseCase = get(),
+            collectionStateProvider = get(),
         )
     }
 }

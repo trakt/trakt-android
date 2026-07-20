@@ -20,15 +20,17 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.user.CollectionStateProvider
+import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
+import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
@@ -52,8 +54,6 @@ import tv.trakt.trakt.core.search.usecase.GetBirthdayPeopleUseCase
 import tv.trakt.trakt.core.search.usecase.GetSearchResultsUseCase
 import tv.trakt.trakt.core.search.usecase.popular.GetPopularSearchUseCase
 import tv.trakt.trakt.core.search.usecase.popular.PostUserSearchUseCase
-import tv.trakt.trakt.core.user.CollectionStateProvider
-import tv.trakt.trakt.core.user.UserCollectionState
 
 @OptIn(FlowPreview::class)
 internal class SearchViewModel(

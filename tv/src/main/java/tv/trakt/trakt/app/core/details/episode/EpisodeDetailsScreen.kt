@@ -70,6 +70,7 @@ import tv.trakt.trakt.app.core.details.episode.views.header.EpisodeHeader
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.people.navigation.PersonDestination
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Comment
@@ -448,7 +449,7 @@ private fun MainContent(
                 header1 = "${stringResource(R.string.list_title_seasons)} / ",
                 header2 = stringResource(R.string.text_season_number, state.episodeDetails?.season ?: 0),
                 show = state.showDetails,
-                episodes = { state.episodeSeason ?: emptyList<Episode>().toImmutableList() },
+                episodes = { state.episodeSeason ?: EmptyImmutableList },
                 onFocused = { onFocused("season") },
                 onClicked = onEpisodeClicked,
                 modifier = Modifier

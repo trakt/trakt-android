@@ -21,13 +21,19 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.lists.model.WatchlistItem
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.user.CollectionStateProvider
+import tv.trakt.trakt.common.core.user.UserCollectionState
+import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
+import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.AllWatchlist
+import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaMode.Media
 import tv.trakt.trakt.common.model.MediaMode.Movies
@@ -40,15 +46,9 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.lists.ListsConfig.WATCHLIST_SECTION_LIMIT
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetMoviesWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetShowsWatchlistUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.usecases.GetWatchlistUseCase
-import tv.trakt.trakt.core.user.CollectionStateProvider
-import tv.trakt.trakt.core.user.UserCollectionState
-import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.AllWatchlist
-import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 

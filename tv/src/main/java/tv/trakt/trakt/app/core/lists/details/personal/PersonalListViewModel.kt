@@ -15,12 +15,14 @@ import kotlinx.coroutines.launch
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_PAGE_LIMIT
 import tv.trakt.trakt.app.core.lists.details.personal.navigation.PersonalListDestination
 import tv.trakt.trakt.app.core.lists.details.personal.usecases.GetPersonalListItemsUseCase
+import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.toTraktId
 
 internal class PersonalListViewModel(
     savedStateHandle: SavedStateHandle,
     private val getListItemsUseCase: GetPersonalListItemsUseCase,
+    private val collectionStateProvider: CollectionStateProvider,
 ) : ViewModel() {
     private val initialState = PersonalListState()
 
@@ -36,6 +38,13 @@ internal class PersonalListViewModel(
 
     init {
         loadData()
+
+        observeData()
+    }
+
+    private fun observeData() {
+        collectionStateProvider
+            .launchIn(viewModelScope)
     }
 
     private fun loadData() {
@@ -91,13 +100,15 @@ internal class PersonalListViewModel(
         loadingState,
         loadingPageState,
         itemsState,
+        collectionStateProvider.stateFlow,
         errorState,
-    ) { s1, s2, s3, s4 ->
+    ) { s1, s2, s3, s4, s5 ->
         PersonalListState(
             isLoading = s1,
             isLoadingPage = s2,
             items = s3,
-            error = s4,
+            collection = s4,
+            error = s5,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -5,11 +5,13 @@ import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -26,18 +28,20 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.LocalSnackbarState
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.buttons.LikeButton
-import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.lists.details.CustomListDetailsConfig.CUSTOM_LIST_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.core.details.lists.details.CustomListDetailsConfig.CUSTOM_LIST_PAGE_LIMIT
@@ -49,6 +53,7 @@ import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
@@ -178,13 +183,24 @@ private fun CustomListMediaContent(
                     key = { index -> state.items[index].key },
                 ) { index ->
                     val item = state.items[index]
-                    val focusRequester = focusRequesters.getOrPut(item.key) {
-                        FocusRequester()
+                    val focusRequester = remember(item.key) {
+                        focusRequesters.getOrPut(item.key) {
+                            FocusRequester()
+                        }
                     }
+
+                    val mediaType = when (item) {
+                        is ListMediaItem.ShowItem -> MediaType.Show
+                        is ListMediaItem.MovieItem -> MediaType.Movie
+                    }
+                    val airedEpisodes = (item as? ListMediaItem.ShowItem)?.show?.airedEpisodes
 
                     VerticalMediaCard(
                         title = item.title,
                         imageUrl = item.images?.getPosterUrl(),
+                        watched = state.collection.isWatched(item.id, mediaType, airedEpisodes),
+                        watching = state.collection.isWatching(item.id, mediaType, airedEpisodes),
+                        watchlist = state.collection.isWatchlist(item.id, mediaType),
                         onClick = {
                             if (!state.isLoadingPage) {
                                 when (item) {
@@ -194,21 +210,50 @@ private fun CustomListMediaContent(
                             }
                         },
                         chipContent = {
-                            when (item) {
-                                is ListMediaItem.ShowItem -> {
-                                    val episodes = item.show.airedEpisodes
-                                    if (episodes > 0) {
-                                        InfoChip(
-                                            text = stringResource(R.string.tag_text_number_of_episodes, episodes),
-                                        )
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(1.dp),
+                            ) {
+                                val iconRes = when (item) {
+                                    is ListMediaItem.ShowItem -> R.drawable.ic_shows_off
+                                    is ListMediaItem.MovieItem -> R.drawable.ic_movies_off
+                                }
+                                val text = when (item) {
+                                    is ListMediaItem.ShowItem -> {
+                                        val show = item.show
+                                        val episodes = show.airedEpisodes.takeIf { it > 0 }
+                                            ?.let { stringResource(R.string.tag_text_number_of_episodes, it) }
+                                        listOfNotNull(show.year?.toString(), episodes)
+                                            .joinToString("  •  ")
+                                    }
+
+                                    is ListMediaItem.MovieItem -> {
+                                        val movie = item.movie
+                                        movie.yearString +
+                                            "  •  ${rememberDurationFormat(movie.runtime?.inWholeMinutes)}"
                                     }
                                 }
+                                if (text.isNotEmpty()) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(iconRes),
+                                            contentDescription = null,
+                                            tint = TraktTheme.colors.textPrimary,
+                                            modifier = Modifier
+                                                .size(12.dp)
+                                                .graphicsLayer {
+                                                    translationY = -0.5.dp.toPx()
+                                                },
+                                        )
 
-                                is ListMediaItem.MovieItem -> {
-                                    val runtime = item.movie.runtime?.inWholeMinutes
-                                    if (runtime != null) {
-                                        InfoChip(
-                                            text = rememberDurationFormat(runtime),
+                                        Text(
+                                            text = text,
+                                            style = TraktTheme.typography.cardTitle,
+                                            color = TraktTheme.colors.textPrimary,
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis,
                                         )
                                     }
                                 }

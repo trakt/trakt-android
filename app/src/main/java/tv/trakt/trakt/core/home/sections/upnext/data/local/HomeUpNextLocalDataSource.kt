@@ -1,8 +1,8 @@
 package tv.trakt.trakt.core.home.sections.upnext.data.local
 
 import kotlinx.coroutines.flow.Flow
+import tv.trakt.trakt.common.core.home.model.UpNextItem
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.home.sections.upnext.model.UpNextItem
 import java.time.Instant
 
 internal interface HomeUpNextLocalDataSource {

@@ -3,7 +3,9 @@ package tv.trakt.trakt.app.core.movies.features.popular
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -31,15 +33,16 @@ import androidx.tv.material3.Text
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import tv.trakt.trakt.app.common.ui.GenericErrorView
-import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.movies.MoviesConfig.MOVIES_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.core.movies.MoviesConfig.MOVIES_PAGE_LIMIT
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
@@ -128,23 +131,33 @@ private fun MoviesPopularContent(
                     key = { index -> state.movies[index].ids.trakt.value },
                 ) { index ->
                     val movie = state.movies[index]
-                    val focusRequester = focusRequesters.getOrPut(movie.ids.trakt.value) {
-                        FocusRequester()
+                    val focusRequester = remember(movie.ids.trakt.value) {
+                        focusRequesters.getOrPut(movie.ids.trakt.value) {
+                            FocusRequester()
+                        }
                     }
-
                     VerticalMediaCard(
                         title = movie.title,
                         imageUrl = movie.images?.getPosterUrl(),
+                        watched = state.collection.isWatched(movie.ids.trakt, MediaType.Movie, null),
+                        watching = state.collection.isWatching(movie.ids.trakt, MediaType.Movie, null),
+                        watchlist = state.collection.isWatchlist(movie.ids.trakt, MediaType.Movie),
                         onClick = {
                             if (!state.isLoadingPage) {
                                 onMovieClick(movie.ids.trakt)
                             }
                         },
                         chipContent = {
-                            movie.runtime?.let { runtime ->
-                                InfoChip(
-                                    text = "${runtime.inWholeMinutes} min",
-                                    modifier = Modifier,
+                            Column(
+                                verticalArrangement = spacedBy(1.dp),
+                            ) {
+                                Text(
+                                    text = movie.yearString +
+                                        "  •  ${rememberDurationFormat(movie.runtime?.inWholeMinutes)}",
+                                    style = TraktTheme.typography.cardTitle,
+                                    color = TraktTheme.colors.textPrimary,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
                                 )
                             }
                         },

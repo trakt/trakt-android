@@ -19,7 +19,6 @@ import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.show.models.ShowSeasons
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.resources.R
 
@@ -30,7 +29,7 @@ internal fun ShowSeasonsList(
     show: Show?,
     seasons: () -> ShowSeasons,
     onFocused: () -> Unit,
-    onSeasonClick: (Season) -> Unit,
+    onSeasonClick: (ShowSeasons.SeasonItem) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -63,12 +62,14 @@ internal fun ShowSeasonsList(
         ) {
             items(
                 items = seasons().seasons,
-                key = { item -> item.ids.trakt.value },
+                key = { item -> item.season.ids.trakt.value },
             ) { item ->
-                val seasonPosterUrl = item.images?.getPosterUrl()
+                val seasonPosterUrl = item.season.images?.getPosterUrl()
                 val showPosterUrl = show?.images?.getPosterUrl()
                 VerticalMediaCard(
                     title = "",
+                    watched = item.watched,
+                    watching = item.watching,
                     imageUrl = seasonPosterUrl ?: showPosterUrl,
                     onClick = { onSeasonClick(item) },
                     chipContent = {
@@ -76,8 +77,8 @@ internal fun ShowSeasonsList(
                             verticalArrangement = Arrangement.spacedBy(1.dp),
                         ) {
                             val seasonTitle = when {
-                                item.isSpecial -> stringResource(R.string.text_season_specials)
-                                else -> stringResource(R.string.text_season_number, item.number)
+                                item.season.isSpecial -> stringResource(R.string.text_season_specials)
+                                else -> stringResource(R.string.text_season_number, item.season.number)
                             }
 
                             Text(
@@ -88,7 +89,7 @@ internal fun ShowSeasonsList(
                                 overflow = TextOverflow.Ellipsis,
                             )
 
-                            item.episodeCount?.let {
+                            item.season.episodeCount?.let {
                                 Text(
                                     text = stringResource(R.string.tag_text_number_of_episodes, it),
                                     style = TraktTheme.typography.cardSubtitle,

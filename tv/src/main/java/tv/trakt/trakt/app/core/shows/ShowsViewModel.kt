@@ -23,6 +23,8 @@ import tv.trakt.trakt.app.core.shows.usecase.GetPopularShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetTrendingShowsUseCase
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.user.CollectionStateProvider
+import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
@@ -38,6 +40,7 @@ internal class ShowsViewModel(
     private val getRecommendedShowsUseCase: GetRecommendedShowsUseCase,
     private val sessionManager: SessionManager,
     private val appLifecycleProvider: AppLifecycleProvider,
+    private val collectionStateProvider: CollectionStateProvider,
 ) : ViewModel() {
     private val initialState = ShowsState()
 
@@ -54,6 +57,12 @@ internal class ShowsViewModel(
     init {
         loadData()
         observeApp()
+        observeData()
+    }
+
+    private fun observeData() {
+        collectionStateProvider
+            .launchIn(viewModelScope)
     }
 
     private fun observeApp() {
@@ -123,6 +132,7 @@ internal class ShowsViewModel(
         anticipatedShowsState,
         recommendedShowsState,
         userState,
+        collectionStateProvider.stateFlow,
         errorState,
     ) { state ->
         ShowsState(
@@ -132,7 +142,8 @@ internal class ShowsViewModel(
             anticipatedShows = state[3] as ImmutableList<AnticipatedShow>?,
             recommendedShows = state[4] as ImmutableList<Show>?,
             user = state[5] as User?,
-            error = state[6] as Exception?,
+            collection = state[6] as UserCollectionState,
+            error = state[7] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

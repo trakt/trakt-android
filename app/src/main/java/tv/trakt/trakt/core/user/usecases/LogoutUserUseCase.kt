@@ -6,7 +6,16 @@ import io.ktor.client.plugins.auth.authProvider
 import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.home.watchlist.data.HomeWatchlistLocalDataSource
+import tv.trakt.trakt.common.core.user.data.local.UserListsLocalDataSource
+import tv.trakt.trakt.common.core.user.data.local.UserProgressLocalDataSource
+import tv.trakt.trakt.common.core.user.data.local.favorites.UserFavoritesLocalDataSource
+import tv.trakt.trakt.common.core.user.data.local.library.UserLibraryLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.liked.UserLikedListsLocalDataSource
+import tv.trakt.trakt.common.core.user.data.local.ratings.UserRatingsLocalDataSource
+import tv.trakt.trakt.common.core.user.data.local.reactions.UserReactionsLocalDataSource
+import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
+import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.core.billing.data.remote.BillingRemoteDataSource
@@ -18,7 +27,6 @@ import tv.trakt.trakt.core.home.sections.recommended.local.movies.RecommendedMov
 import tv.trakt.trakt.core.home.sections.recommended.local.shows.RecommendedShowsLocalDataSource
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
-import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
 import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.liked.data.local.lists.ListsLikedLocalDataSource
 import tv.trakt.trakt.core.lists.sections.personal.data.local.ListsPersonalLocalDataSource
@@ -30,14 +38,6 @@ import tv.trakt.trakt.core.profile.sections.progress.data.local.dropped.Progress
 import tv.trakt.trakt.core.profile.sections.progress.data.local.watching.ProgressWatchingLocalDataSource
 import tv.trakt.trakt.core.profile.sections.screentime.data.local.ProfileScreenTimeLocalDataSource
 import tv.trakt.trakt.core.settings.features.younify.data.remote.YounifyRemoteDataSource
-import tv.trakt.trakt.core.user.data.local.UserListsLocalDataSource
-import tv.trakt.trakt.core.user.data.local.UserProgressLocalDataSource
-import tv.trakt.trakt.core.user.data.local.favorites.UserFavoritesLocalDataSource
-import tv.trakt.trakt.core.user.data.local.library.UserLibraryLocalDataSource
-import tv.trakt.trakt.core.user.data.local.ratings.UserRatingsLocalDataSource
-import tv.trakt.trakt.core.user.data.local.reactions.UserReactionsLocalDataSource
-import tv.trakt.trakt.core.user.data.local.watchlist.UserWatchlistLocalDataSource
-import tv.trakt.trakt.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 
 internal class LogoutUserUseCase(

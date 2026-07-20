@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.serialization.json.Json
 import timber.log.Timber
 import tv.trakt.trakt.BuildConfig
-import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.firebase.FirebaseConfig
+import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.model.WhatsNew
 
 internal class LoadWhatsNewUseCase(

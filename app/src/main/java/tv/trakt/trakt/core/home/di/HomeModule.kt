@@ -19,6 +19,8 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import tv.trakt.trakt.common.core.home.watchlist.data.HomeWatchlistLocalDataSource
+import tv.trakt.trakt.common.core.home.watchlist.data.HomeWatchlistStorage
 import tv.trakt.trakt.core.home.HomeViewModel
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalStorage
@@ -52,8 +54,6 @@ import tv.trakt.trakt.core.home.sections.upnext.features.context.UpNextItemConte
 import tv.trakt.trakt.core.home.sections.upnext.usecases.DropPlaybackUseCase
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.HomeWatchlistViewModel
-import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistLocalDataSource
-import tv.trakt.trakt.core.home.sections.watchlist.data.local.HomeWatchlistStorage
 import tv.trakt.trakt.core.home.sections.watchlist.features.all.AllHomeWatchlistViewModel
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeMoviesWatchlistUseCase

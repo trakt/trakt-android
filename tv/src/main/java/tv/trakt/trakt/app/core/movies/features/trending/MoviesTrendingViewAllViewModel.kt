@@ -12,10 +12,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.app.core.movies.MoviesConfig.MOVIES_PAGE_LIMIT
 import tv.trakt.trakt.app.core.movies.usecase.GetTrendingMoviesUseCase
+import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 
 internal class MoviesTrendingViewAllViewModel(
     private val getItemsUseCase: GetTrendingMoviesUseCase,
+    private val collectionStateProvider: CollectionStateProvider,
 ) : ViewModel() {
     private val initialState = MoviesTrendingViewAllState()
 
@@ -29,6 +31,13 @@ internal class MoviesTrendingViewAllViewModel(
 
     init {
         loadData()
+
+        observeData()
+    }
+
+    private fun observeData() {
+        collectionStateProvider
+            .launchIn(viewModelScope)
     }
 
     private fun loadData() {
@@ -86,13 +95,15 @@ internal class MoviesTrendingViewAllViewModel(
         loadingState,
         loadingPageState,
         moviesState,
+        collectionStateProvider.stateFlow,
         errorState,
-    ) { s1, s2, s3, s4 ->
+    ) { s1, s2, s3, s4, s5 ->
         MoviesTrendingViewAllState(
             isLoading = s1,
             isLoadingPage = s2,
             movies = s3,
-            error = s4,
+            collection = s4,
+            error = s5,
         )
     }.stateIn(
         scope = viewModelScope,

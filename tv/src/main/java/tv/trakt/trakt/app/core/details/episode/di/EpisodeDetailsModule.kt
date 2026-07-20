@@ -99,7 +99,9 @@ internal val episodeDetailsModule = module {
             changeHistoryUseCase = get(),
             appReviewUseCase = get(),
             dropPlaybackUseCase = get(),
+            loadUserProgressUseCase = get(),
             scrobbleUpdates = get(),
+            progressUpdates = get(),
         )
     }
 }

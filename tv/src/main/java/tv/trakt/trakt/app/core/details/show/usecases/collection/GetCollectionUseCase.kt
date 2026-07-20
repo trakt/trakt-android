@@ -8,6 +8,7 @@ import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 
 internal class GetCollectionUseCase(
@@ -65,7 +66,7 @@ internal class GetCollectionUseCase(
 
         if (localWatchlist == null) {
             val remoteWatchlist = remoteSource
-                .getWatchlist(sort = "added")
+                .getWatchlist(Sorting.RecentlyAdded)
                 .asyncMap { it.show.ids.trakt.toTraktId() }
                 .toSet()
 

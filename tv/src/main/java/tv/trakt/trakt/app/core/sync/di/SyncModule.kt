@@ -2,6 +2,7 @@ package tv.trakt.trakt.app.core.sync.di
 
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.workmanager.dsl.worker
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates
 import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdatesStorage
@@ -19,6 +20,7 @@ import tv.trakt.trakt.app.core.sync.data.remote.movies.MoviesSyncApiClient
 import tv.trakt.trakt.app.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
 import tv.trakt.trakt.app.core.sync.data.remote.shows.ShowsSyncApiClient
 import tv.trakt.trakt.app.core.sync.data.remote.shows.ShowsSyncRemoteDataSource
+import tv.trakt.trakt.common.core.user.CollectionStateProvider
 
 internal val syncModule = module {
     single<ShowsSyncRemoteDataSource> {
@@ -63,6 +65,8 @@ internal val syncModule = module {
     single<ScrobbleUpdates> {
         ScrobbleUpdatesStorage()
     }
+
+    singleOf(::CollectionStateProvider)
 
     worker {
         PostScrobbleStartWorker(

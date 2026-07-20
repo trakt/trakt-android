@@ -2,6 +2,8 @@ package tv.trakt.trakt.core.lists.sections.watchlist.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.lists.model.WatchlistItem
+import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
 import tv.trakt.trakt.common.core.user.data.remote.watchlist.UserWatchlistRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
@@ -12,9 +14,7 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.lists.sections.watchlist.model.getWatchlistSorting
-import tv.trakt.trakt.core.user.data.local.watchlist.UserWatchlistLocalDataSource
 
 internal class GetShowsWatchlistUseCase(
     private val remoteSource: UserWatchlistRemoteDataSource,

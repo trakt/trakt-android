@@ -3,10 +3,14 @@ package tv.trakt.trakt.app.core.shows.features.anticipated
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -17,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
@@ -28,11 +33,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import tv.trakt.trakt.app.common.ui.GenericErrorView
-import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.shows.ShowsConfig.SHOWS_NEXT_PAGE_OFFSET
@@ -43,6 +48,7 @@ import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
@@ -132,23 +138,47 @@ private fun ShowsAnticipatedContent(
                     key = { index -> state.shows[index].show.ids.trakt.value },
                 ) { index ->
                     val anticipatedShow = state.shows[index]
-                    val focusRequester = focusRequesters.getOrPut(anticipatedShow.show.ids.trakt.value) {
-                        FocusRequester()
+                    val show = anticipatedShow.show
+                    val focusRequester = remember(show.ids.trakt.value) {
+                        focusRequesters.getOrPut(show.ids.trakt.value) {
+                            FocusRequester()
+                        }
                     }
 
                     VerticalMediaCard(
-                        title = anticipatedShow.show.title,
-                        imageUrl = anticipatedShow.show.images?.getPosterUrl(),
+                        title = show.title,
+                        imageUrl = show.images?.getPosterUrl(),
+                        watched = state.collection.isWatched(show.ids.trakt, MediaType.Show, show.airedEpisodes),
+                        watching = state.collection.isWatching(show.ids.trakt, MediaType.Show, show.airedEpisodes),
+                        watchlist = state.collection.isWatchlist(show.ids.trakt, MediaType.Show),
                         onClick = {
                             if (!state.isLoadingPage) {
                                 onShowClick(anticipatedShow.show.ids.trakt)
                             }
                         },
                         chipContent = {
-                            InfoChip(
-                                text = rememberThousandsFormat(anticipatedShow.listCount),
-                                iconPainter = painterResource(R.drawable.ic_star),
-                            )
+                            Column(
+                                verticalArrangement = spacedBy(1.dp),
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = spacedBy(2.dp),
+                                ) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.ic_bookmark_off),
+                                        contentDescription = null,
+                                        tint = TraktTheme.colors.textPrimary,
+                                        modifier = Modifier.size(16.dp),
+                                    )
+                                    Text(
+                                        text = rememberThousandsFormat(anticipatedShow.listCount),
+                                        style = TraktTheme.typography.cardTitle,
+                                        color = TraktTheme.colors.textPrimary,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                    )
+                                }
+                            }
                         },
                         modifier = Modifier
                             .focusRequester(focusRequester)

@@ -4,6 +4,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import tv.trakt.trakt.common.core.favorites.FavoriteItem
+import tv.trakt.trakt.common.core.favorites.getFavoriteSorting
 import tv.trakt.trakt.common.core.user.data.remote.favorites.UserFavoritesRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
@@ -13,8 +15,6 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.sorting.Sorting
-import tv.trakt.trakt.core.favorites.model.FavoriteItem
-import tv.trakt.trakt.core.favorites.model.getFavoriteSorting
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 
 internal class GetUserProfileFavoritesUseCase(

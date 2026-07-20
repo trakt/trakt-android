@@ -8,6 +8,7 @@ import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestShowsInner
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.ProgressShowDto
 import tv.trakt.trakt.common.networking.SyncAddHistoryResponseDto
@@ -61,7 +62,7 @@ internal class ShowsSyncApiClient(
     }
 
     override suspend fun getWatchlist(
-        sort: String,
+        sorting: Sorting,
         page: Int?,
         limit: Int?,
         extended: String?,
@@ -69,7 +70,7 @@ internal class ShowsSyncApiClient(
     ): List<WatchlistShowDto> {
         val response = usersApi.getUsersWatchlistShows(
             id = "me",
-            sort = sort,
+            sort = "",
             extended = extended,
             page = page,
             limit = limit,
@@ -81,8 +82,8 @@ internal class ShowsSyncApiClient(
             endDate = null,
             subgenres = null,
             hide = hide,
-            sortBy = null,
-            sortHow = null,
+            sortBy = sorting.type.value,
+            sortHow = sorting.order.value,
             runtimes = null,
             countries = null,
             certifications = null,

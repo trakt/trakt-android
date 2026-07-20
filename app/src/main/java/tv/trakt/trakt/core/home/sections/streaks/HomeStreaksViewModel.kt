@@ -15,11 +15,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdates
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.sections.streaks.data.StreaksManager
-import tv.trakt.trakt.core.user.usecases.progress.updates.ProgressUpdates
 import kotlin.time.Duration.Companion.milliseconds
 
 internal class HomeStreaksViewModel(

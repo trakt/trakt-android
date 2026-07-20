@@ -26,10 +26,18 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.lists.model.WatchlistItem
+import tv.trakt.trakt.common.core.lists.model.WatchlistItem.MovieItem
+import tv.trakt.trakt.common.core.lists.model.WatchlistItem.ShowItem
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
+import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
+import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.AllWatchlist
+import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
+import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
+import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -38,6 +46,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
+import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.MediaMode
@@ -56,16 +65,7 @@ import tv.trakt.trakt.core.home.HomeConfig.HOME_WATCHLIST_LIMIT
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.AddHomeHistoryUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeMoviesWatchlistUseCase
 import tv.trakt.trakt.core.home.sections.watchlist.usecases.GetHomeShowsWatchlistUseCase
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.MovieItem
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem.ShowItem
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
-import tv.trakt.trakt.core.user.data.local.watchlist.UserWatchlistLocalDataSource
-import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.AllWatchlist
-import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates.Source.Default
-import tv.trakt.trakt.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
-import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.resources.R
 
 @OptIn(FlowPreview::class)

@@ -6,6 +6,8 @@ import tv.trakt.trakt.app.core.details.show.models.ShowSeasons
 import tv.trakt.trakt.app.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
+import tv.trakt.trakt.common.core.sync.model.ProgressItem.ShowItem
+import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Season
@@ -16,6 +18,7 @@ internal class GetShowSeasonsUseCase(
     private val remoteShowsSource: ShowsRemoteDataSource,
     private val remoteEpisodesSource: EpisodesRemoteDataSource,
     private val localEpisodeSource: EpisodeLocalDataSource,
+    private val loadUserProgressUseCase: LoadUserProgressUseCase,
 ) {
     suspend fun getAllSeasons(showId: TraktId): ShowSeasons {
         val remoteSeasons = remoteShowsSource.getShowSeasons(showId)
@@ -23,25 +26,52 @@ internal class GetShowSeasonsUseCase(
             .filter { (it.episodeCount ?: 0) > 0 }
             .sortedBy { it.number }
 
-        val selectedSeason = remoteSeasons
-            .firstOrNull { !it.isSpecial }
-            ?: remoteSeasons.firstOrNull()
+        val progress = when (loadUserProgressUseCase.isShowsLoaded()) {
+            true -> loadUserProgressUseCase.loadLocalShows()
+            false -> loadUserProgressUseCase.loadShowsProgress(notifyUpdate = false)
+        }.firstOrNull {
+            it.showId == showId
+        }
+
+        val mappedSeasons = remoteSeasons
+            .map {
+                ShowSeasons.SeasonItem(
+                    season = it,
+                    watching = isSeasonWatching(it, progress?.seasons),
+                    watched = isSeasonWatched(it, progress?.seasons),
+                )
+            }
+            .toImmutableList()
+
+        val selectedSeason = mappedSeasons
+            .firstOrNull { !it.season.isSpecial }
+            ?: mappedSeasons.firstOrNull()
 
         if (selectedSeason != null) {
-            val episodes = remoteEpisodesSource.getEpisodeSeason(showId, selectedSeason.number)
-                .asyncMap { Episode.fromDto(it) }
+            val episodes = remoteEpisodesSource
+                .getEpisodeSeason(showId, selectedSeason.season.number)
+                .asyncMap {
+                    val episode = Episode.fromDto(it)
+                    ShowSeasons.EpisodeItem(
+                        episode = episode,
+                        watched = progress?.isEpisodeWatched(
+                            selectedSeason.season.number,
+                            episode.ids.trakt,
+                        ) == true,
+                    )
+                }
 
             return ShowSeasons(
-                seasons = remoteSeasons.toImmutableList(),
+                seasons = mappedSeasons,
                 selectedSeason = selectedSeason,
                 selectedSeasonEpisodes = episodes.toImmutableList(),
             ).also {
-                localEpisodeSource.upsertEpisodes(episodes)
+                localEpisodeSource.upsertEpisodes(episodes.map { it.episode })
             }
         }
 
         return ShowSeasons(
-            seasons = remoteSeasons.toImmutableList(),
+            seasons = mappedSeasons.toImmutableList(),
             selectedSeason = selectedSeason,
         )
     }
@@ -49,12 +79,55 @@ internal class GetShowSeasonsUseCase(
     suspend fun getSeason(
         showId: TraktId,
         season: Int,
-    ): ImmutableList<Episode> {
+    ): ImmutableList<ShowSeasons.EpisodeItem> {
+        val progress = when (loadUserProgressUseCase.isShowsLoaded()) {
+            true -> loadUserProgressUseCase.loadLocalShows()
+            false -> loadUserProgressUseCase.loadShowsProgress(notifyUpdate = false)
+        }.firstOrNull {
+            it.showId == showId
+        }
+
         return remoteEpisodesSource.getEpisodeSeason(showId, season)
-            .asyncMap { Episode.fromDto(it) }
+            .asyncMap {
+                val episode = Episode.fromDto(it)
+                ShowSeasons.EpisodeItem(
+                    episode = episode,
+                    watched = progress?.isEpisodeWatched(
+                        seasonNumber = season,
+                        episodeId = episode.ids.trakt,
+                    ) == true,
+                )
+            }
             .toImmutableList()
             .also {
-                localEpisodeSource.upsertEpisodes(it)
+                localEpisodeSource.upsertEpisodes(it.map { item -> item.episode })
             }
+    }
+
+    private fun isSeasonWatched(
+        season: Season,
+        progress: ImmutableList<ShowItem.Season>?,
+    ): Boolean {
+        val total = season.episodeCount ?: 0
+        return total > 0 && watchedEpisodeCount(season, progress) == total
+    }
+
+    private fun isSeasonWatching(
+        season: Season,
+        progress: ImmutableList<ShowItem.Season>?,
+    ): Boolean {
+        val total = season.episodeCount ?: 0
+        return watchedEpisodeCount(season, progress) in 1 until total
+    }
+
+    private fun watchedEpisodeCount(
+        season: Season,
+        progress: ImmutableList<ShowItem.Season>?,
+    ): Int {
+        return progress
+            ?.firstOrNull { it.number == season.number }
+            ?.episodes
+            ?.count { it.plays.isNotEmpty() }
+            ?: 0
     }
 }

@@ -3,10 +3,14 @@ package tv.trakt.trakt.app.core.movies.features.anticipated
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -17,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
@@ -28,11 +33,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import tv.trakt.trakt.app.common.ui.GenericErrorView
-import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.movies.MoviesConfig.MOVIES_NEXT_PAGE_OFFSET
@@ -43,10 +48,12 @@ import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 internal fun MoviesAnticipatedScreen(
@@ -74,7 +81,7 @@ private fun MoviesAnticipatedContent(
     val focusRequesters = remember { mutableMapOf<Int, FocusRequester>() }
 
     LaunchedEffect(Unit) {
-        delay(250)
+        delay(250.milliseconds)
         focusRequesters[focusedMovieId]?.requestSafeFocus()
     }
 
@@ -132,23 +139,45 @@ private fun MoviesAnticipatedContent(
                     key = { index -> state.movies[index].movie.ids.trakt.value },
                 ) { index ->
                     val anticipatedMovie = state.movies[index]
-                    val focusRequester = focusRequesters.getOrPut(anticipatedMovie.movie.ids.trakt.value) {
-                        FocusRequester()
+                    val focusRequester = remember(anticipatedMovie.movie.ids.trakt.value) {
+                        focusRequesters.getOrPut(anticipatedMovie.movie.ids.trakt.value) {
+                            FocusRequester()
+                        }
                     }
-
                     VerticalMediaCard(
                         title = anticipatedMovie.movie.title,
                         imageUrl = anticipatedMovie.movie.images?.getPosterUrl(),
+                        watched = state.collection.isWatched(anticipatedMovie.movie.ids.trakt, MediaType.Movie, null),
+                        watching = state.collection.isWatching(anticipatedMovie.movie.ids.trakt, MediaType.Movie, null),
+                        watchlist = state.collection.isWatchlist(anticipatedMovie.movie.ids.trakt, MediaType.Movie),
                         onClick = {
                             if (!state.isLoadingPage) {
                                 onMovieClick(anticipatedMovie.movie.ids.trakt)
                             }
                         },
                         chipContent = {
-                            InfoChip(
-                                text = rememberThousandsFormat(anticipatedMovie.listCount),
-                                iconPainter = painterResource(R.drawable.ic_star),
-                            )
+                            Column(
+                                verticalArrangement = spacedBy(1.dp),
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = spacedBy(2.dp),
+                                ) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.ic_bookmark_off),
+                                        contentDescription = null,
+                                        tint = TraktTheme.colors.textPrimary,
+                                        modifier = Modifier.size(16.dp),
+                                    )
+                                    Text(
+                                        text = rememberThousandsFormat(anticipatedMovie.listCount),
+                                        style = TraktTheme.typography.cardTitle,
+                                        color = TraktTheme.colors.textPrimary,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                    )
+                                }
+                            }
                         },
                         modifier = Modifier
                             .focusRequester(focusRequester)
