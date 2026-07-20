@@ -84,7 +84,11 @@ private fun CreateListContent(
         }
     }
 
-    var selectedPrivacy by remember { mutableStateOf(Public) }
+    var selectedPrivacy by remember { mutableStateOf(state.initialPrivacy) }
+
+    LaunchedEffect(state.initialPrivacy) {
+        selectedPrivacy = state.initialPrivacy
+    }
 
     Column(
         verticalArrangement = spacedBy(8.dp),

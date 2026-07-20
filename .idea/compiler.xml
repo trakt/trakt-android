@@ -2,6 +2,9 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="11">
+      <module name="Trakt.buildSrc" target="21" />
+      <module name="Trakt.buildSrc.main" target="21" />
+      <module name="Trakt.buildSrc.test" target="21" />
       <module name="Trakt.common.strings" target="21" />
     </bytecodeTargetLevel>
   </component>
