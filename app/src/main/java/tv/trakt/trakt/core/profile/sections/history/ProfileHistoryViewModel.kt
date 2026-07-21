@@ -57,6 +57,7 @@ import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class ProfileHistoryViewModel(
     private val getPersonalActivityUseCase: GetPersonalActivityUseCase,
@@ -110,7 +111,7 @@ internal class ProfileHistoryViewModel(
             checkInUpdate.observeUpdates(),
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
             }.launchIn(viewModelScope)
@@ -121,7 +122,7 @@ internal class ProfileHistoryViewModel(
             ratingsUpdates.observeUpdates(POST_RATING),
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 loadUserRatingData(ignoreErrors = true)
             }.launchIn(viewModelScope)

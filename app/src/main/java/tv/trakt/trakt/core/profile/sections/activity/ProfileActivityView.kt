@@ -64,6 +64,8 @@ import tv.trakt.trakt.core.profile.sections.activity.ui.ratings.ProfileRatingEpi
 import tv.trakt.trakt.core.profile.sections.activity.ui.ratings.ProfileRatingMovieItemView
 import tv.trakt.trakt.core.profile.sections.activity.ui.ratings.ProfileRatingShowItemView
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.EmptyHorizontalDoubleHeight
+import tv.trakt.trakt.ui.components.EmptyListCard
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.components.chips.FilterChipGroup
@@ -206,11 +208,14 @@ internal fun ProfileActivityContent(
 
                             (state.filter == Ratings && state.ratingItems?.isEmpty() == true) ||
                                 (state.filter == Comments && state.commentItems?.isEmpty() == true) -> {
-                                Text(
-                                    text = stringResource(R.string.list_placeholder_empty),
-                                    color = TraktTheme.colors.textSecondary,
-                                    style = TraktTheme.typography.heading6,
-                                    modifier = Modifier.padding(headerPadding),
+                                EmptyListCard(
+                                    height = when {
+                                        state.filter == Ratings -> EmptyHorizontalDoubleHeight
+                                        else -> TraktTheme.size.commentCardSize
+                                    },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(contentPadding),
                                 )
                             }
 

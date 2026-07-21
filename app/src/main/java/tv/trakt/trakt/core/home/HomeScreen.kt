@@ -301,6 +301,7 @@ private fun HomeScreenContent(
                         onShowClick = onShowClick,
                         onMovieClick = onMovieClick,
                         onMoreClick = onMoreRecommendedClick,
+                        onEmptyClick = onShowsClick,
                     )
                 }
             }

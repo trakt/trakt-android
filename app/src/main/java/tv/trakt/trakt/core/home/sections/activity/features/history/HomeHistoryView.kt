@@ -49,6 +49,8 @@ import tv.trakt.trakt.core.home.sections.activity.sheets.HomeActivityItemSheet
 import tv.trakt.trakt.core.home.sections.activity.views.ActivityEpisodeItemView
 import tv.trakt.trakt.core.home.sections.activity.views.ActivityMovieItemView
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.EmptyHorizontalDoubleHeight
+import tv.trakt.trakt.ui.components.EmptyListCard
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -198,10 +200,8 @@ internal fun HomeHistoryContent(
                             }
 
                             state.items?.isEmpty() == true -> {
-                                Text(
-                                    text = stringResource(R.string.list_placeholder_empty),
-                                    color = TraktTheme.colors.textSecondary,
-                                    style = TraktTheme.typography.heading6,
+                                EmptyListCard(
+                                    height = EmptyHorizontalDoubleHeight,
                                     modifier = Modifier.padding(contentPadding),
                                 )
                             }

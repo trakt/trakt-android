@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -41,12 +42,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.firebase.Firebase
+import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.user.UserCollectionState
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_5
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
@@ -58,6 +63,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.model.DiscoverItem.MovieItem
 import tv.trakt.trakt.core.discover.model.DiscoverItem.ShowItem
+import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.resources.R
@@ -76,6 +82,7 @@ internal fun HomeRecommendedView(
     onShowClick: (TraktId) -> Unit = {},
     onMovieClick: (TraktId) -> Unit = {},
     onMoreClick: () -> Unit = {},
+    onEmptyClick: () -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -89,6 +96,7 @@ internal fun HomeRecommendedView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onCollapse = viewModel::setCollapsed,
+        onEmptyClick = onEmptyClick,
         onMoreClick = {
             if (!state.loading.isLoading) {
                 onMoreClick()
@@ -132,6 +140,7 @@ internal fun HomeRecommendedContent(
     onClick: (DiscoverItem) -> Unit = {},
     onLongClick: (DiscoverItem) -> Unit = {},
     onMoreClick: () -> Unit = {},
+    onEmptyClick: () -> Unit = {},
     onCollapse: (collapsed: Boolean) -> Unit = {},
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
@@ -173,27 +182,57 @@ internal fun HomeRecommendedContent(
                     }
 
                     Done -> {
-                        if (state.error != null) {
-                            Text(
-                                text = "${
-                                    stringResource(
-                                        R.string.error_text_unexpected_error_short,
-                                    )
-                                }\n\n${state.error}",
-                                color = TraktTheme.colors.textSecondary,
-                                style = TraktTheme.typography.meta,
-                                maxLines = 10,
-                                modifier = Modifier.padding(contentPadding),
-                            )
-                        } else {
-                            ContentList(
-                                mode = state.filter?.mode,
-                                collection = collectionState,
-                                listItems = (state.items ?: emptyList()).toImmutableList(),
-                                contentPadding = contentPadding,
-                                onClick = onClick,
-                                onLongClick = onLongClick,
-                            )
+                        when {
+                            state.error != null -> {
+                                Text(
+                                    text = "${
+                                        stringResource(
+                                            R.string.error_text_unexpected_error_short,
+                                        )
+                                    }\n\n${state.error}",
+                                    color = TraktTheme.colors.textSecondary,
+                                    style = TraktTheme.typography.meta,
+                                    maxLines = 10,
+                                    modifier = Modifier.padding(contentPadding),
+                                )
+                            }
+
+                            state.items?.isEmpty() == true -> {
+                                val inspection = LocalInspectionMode.current
+                                val imageUrl = remember(inspection) {
+                                    when {
+                                        inspection -> null
+                                        else -> Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_5)
+                                    }
+                                }
+
+                                HomeEmptyView(
+                                    text = stringResource(R.string.text_cta_recommended),
+                                    icon = R.drawable.ic_empty_upnext,
+                                    buttonText = stringResource(R.string.link_text_discover_media),
+                                    backgroundImageUrl = imageUrl,
+                                    backgroundImage = when (imageUrl) {
+                                        null -> R.drawable.ic_splash_background_2
+                                        else -> null
+                                    },
+                                    onClick = onEmptyClick,
+                                    height = (226.25).dp,
+                                    modifier = Modifier
+                                        .padding(contentPadding)
+                                        .padding(bottom = 6.dp),
+                                )
+                            }
+
+                            else -> {
+                                ContentList(
+                                    mode = state.filter?.mode,
+                                    collection = collectionState,
+                                    listItems = (state.items ?: emptyList()).toImmutableList(),
+                                    contentPadding = contentPadding,
+                                    onClick = onClick,
+                                    onLongClick = onLongClick,
+                                )
+                            }
                         }
                     }
                 }
@@ -366,7 +405,8 @@ private fun Preview() {
     TraktTheme {
         HomeRecommendedContent(
             state = HomeRecommendedState(
-                loading = Idle,
+                loading = Done,
+                items = EmptyImmutableList,
             ),
             collectionState = UserCollectionState.Default,
         )

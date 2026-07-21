@@ -15,22 +15,27 @@
 
   <entry>
     <key>mobile_empty_image_1</key>
-    <value>https://walter-r2.trakt.tv/images/shows/000/150/469/fanarts/medium/8a02e4c084.jpg.webp</value>
+    <value>https://media.trakt.tv/images/shows/000/150/469/fanarts/medium/8a02e4c084.jpg.webp</value>
   </entry>
 
   <entry>
     <key>mobile_empty_image_2</key>
-    <value>https://walter-r2.trakt.tv/images/movies/000/729/817/fanarts/medium/2934c87271.jpg.webp</value>
+    <value>https://media.trakt.tv/images/movies/000/729/817/fanarts/medium/2934c87271.jpg.webp</value>
   </entry>
 
   <entry>
     <key>mobile_empty_image_3</key>
-    <value>https://walter-r2.trakt.tv/images/shows/000/001/390/posters/thumb/93df9cd612.jpg.webp</value>
+    <value>https://media.trakt.tv/images/shows/000/001/390/posters/thumb/93df9cd612.jpg.webp</value>
   </entry>
 
   <entry>
     <key>mobile_empty_image_4</key>
-    <value>https://walter-r2.trakt.tv/images/shows/000/162/206/fanarts/medium/2d467422a7.jpg.webp</value>
+    <value>https://media.trakt.tv/images/shows/000/162/206/fanarts/medium/2d467422a7.jpg.webp</value>
+  </entry>
+
+  <entry>
+    <key>mobile_empty_image_5</key>
+    <value>https://media.trakt.tv/images/shows/000/154/997/fanarts/medium/9400ecb8e2.jpg.webp</value>
   </entry>
 
   <!-- TV -->

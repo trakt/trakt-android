@@ -43,6 +43,8 @@ import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter
 import tv.trakt.trakt.core.profile.sections.progress.views.ProgressFilters
 import tv.trakt.trakt.core.profile.sections.progress.views.ProgressItemView
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.EmptyListCard
+import tv.trakt.trakt.ui.components.EmptyVerticalSingleHeight
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -150,10 +152,8 @@ internal fun ProfileProgressContent(
                             }
 
                             state.items?.isEmpty() == true && state.loading.isDone -> {
-                                Text(
-                                    text = stringResource(R.string.list_placeholder_empty),
-                                    color = TraktTheme.colors.textSecondary,
-                                    style = TraktTheme.typography.heading6,
+                                EmptyListCard(
+                                    height = EmptyVerticalSingleHeight,
                                     modifier = Modifier.padding(contentPadding),
                                 )
                             }

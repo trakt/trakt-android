@@ -48,8 +48,9 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.sheets.HomeActivityItemSheet
 import tv.trakt.trakt.core.home.sections.activity.views.ActivityEpisodeItemView
 import tv.trakt.trakt.core.home.sections.activity.views.ActivityMovieItemView
-import tv.trakt.trakt.core.home.views.HomeEmptySocialView
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.EmptyHorizontalDoubleHeight
+import tv.trakt.trakt.ui.components.EmptyListCard
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -198,9 +199,9 @@ internal fun ProfileHistoryContent(
                             }
 
                             state.items?.isEmpty() == true -> {
-                                HomeEmptySocialView(
-                                    modifier = Modifier
-                                        .padding(contentPadding),
+                                EmptyListCard(
+                                    height = EmptyHorizontalDoubleHeight,
+                                    modifier = Modifier.padding(contentPadding),
                                 )
                             }
 

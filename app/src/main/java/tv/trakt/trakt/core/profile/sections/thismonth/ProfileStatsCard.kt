@@ -61,7 +61,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.common.ui.theme.colors.Purple600
+import tv.trakt.trakt.common.ui.theme.colors.Purple700
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
 import tv.trakt.trakt.resources.R
@@ -89,7 +89,7 @@ internal fun ProfileStatsCard(
         verticalGradient(
             0F to Color.Transparent,
             0.7F to Color.Transparent,
-            1F to Purple600.copy(alpha = 0.4F),
+            1F to Purple700.copy(alpha = 0.4F),
         )
     }
 

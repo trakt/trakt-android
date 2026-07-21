@@ -54,6 +54,8 @@ import tv.trakt.trakt.core.profile.sections.favorites.context.movie.FavoriteMovi
 import tv.trakt.trakt.core.profile.sections.favorites.context.show.FavoriteShowContextSheet
 import tv.trakt.trakt.core.profile.sections.library.views.LibraryItemView
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.EmptyListCard
+import tv.trakt.trakt.ui.components.EmptyVerticalDoubleHeight
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.components.chips.FilterChipGroup
@@ -186,10 +188,8 @@ private fun ProfileLibraryView(
                             }
 
                             state.items?.isEmpty() == true -> {
-                                Text(
-                                    text = stringResource(R.string.list_placeholder_empty),
-                                    color = TraktTheme.colors.textSecondary,
-                                    style = TraktTheme.typography.heading6,
+                                EmptyListCard(
+                                    height = EmptyVerticalDoubleHeight,
                                     modifier = Modifier.padding(contentPadding),
                                 )
                             }
