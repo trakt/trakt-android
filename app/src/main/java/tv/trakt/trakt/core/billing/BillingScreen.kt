@@ -48,7 +48,6 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
@@ -70,7 +69,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.common.ui.theme.colors.Red400
+import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.billing.model.InternalVersionError
 import tv.trakt.trakt.core.billing.model.VipBillingError
@@ -320,8 +319,6 @@ private fun TitleBar(modifier: Modifier = Modifier) {
 
 @Composable
 private fun VipOfferView(modifier: Modifier = Modifier) {
-    val uriHandler = LocalUriHandler.current
-
     Column(
         modifier = modifier,
     ) {
@@ -443,7 +440,7 @@ private fun VipOfferView(modifier: Modifier = Modifier) {
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_heart_on),
-                tint = Red400,
+                tint = Purple400,
                 contentDescription = null,
                 modifier = Modifier
                     .padding(bottom = 2.dp)
@@ -693,7 +690,7 @@ private fun PaymentDialogContent(
             .fillMaxWidth()
             .shadow(2.dp, buttonShape)
             .background(
-                color = Red500,
+                color = TraktTheme.colors.vipAccent,
                 shape = buttonShape,
             )
             .padding(14.dp)

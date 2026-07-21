@@ -30,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.common.ui.theme.colors.Purple600
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.DefaultCardShape
@@ -47,10 +47,10 @@ internal fun VipBanner(
             override fun createShader(size: Size): Shader {
                 return RadialGradientShader(
                     colors = listOf(
-                        Red500,
+                        Purple600,
                         containerColor,
                     ),
-                    center = Offset(size.width * 1.5F, -size.height * 3.5F),
+                    center = Offset(size.width * 1.5F, -size.height * 4F),
                     radius = size.width * 1.75F,
                 )
             }

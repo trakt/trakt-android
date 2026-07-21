@@ -39,7 +39,7 @@ val DarkColors: TraktColors = TraktColors(
     triviaAccent = Purple40,
     detailsStatus1 = Purple300,
     detailsStatus2 = Purple100,
-    vipAccent = Red500,
+    vipAccent = Purple500,
     separator = Shade800,
     // Buttons
     primaryButtonContainer = Purple500,

@@ -18,7 +18,7 @@ import androidx.core.text.HtmlCompat
 import androidx.core.text.HtmlCompat.FROM_HTML_MODE_LEGACY
 import tv.trakt.trakt.common.helpers.extensions.toAnnotatedString
 import tv.trakt.trakt.common.model.trivia.TriviaFact
-import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -45,7 +45,7 @@ internal fun TriviaFactCard(
             if (spoilerVisible && fact.spoiler) {
                 Text(
                     text = stringResource(R.string.text_spoiler),
-                    color = Red500,
+                    color = Red400,
                     style = TraktTheme.typography.meta.copy(lineHeight = 1.4.em),
                 )
             }
