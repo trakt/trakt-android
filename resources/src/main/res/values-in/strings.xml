@@ -729,6 +729,7 @@
   <string name="heading_branding_default_logos">Latar Belakang Terang</string>
   <string name="heading_branding_questions">Pertanyaan?</string>
   <string name="heading_branding_requirements">Persyaratan Branding</string>
+  <string name="heading_community_apps">Aplikasi Komunitas</string>
   <string name="heading_connected_apps">Aplikasi Terhubung</string>
   <string name="heading_create_api_application">Buat aplikasi</string>
   <string name="heading_edit_api_application">Edit aplikasi</string>
@@ -893,6 +894,7 @@
   <string name="label_stats_screen_time_total">Total</string>
   <string name="label_stats_shows">Acara</string>
   <string name="label_streaming_country">Negara</string>
+  <string name="limit_title_connected_apps">Aplikasi Terhubung</string>
   <string name="limit_title_digital_library">Perpustakaan Digital</string>
   <string name="limit_title_offline_library">Perpustakaan Offline</string>
   <string name="limit_title_personal_lists">Daftar Pribadi</string>
@@ -1827,6 +1829,7 @@
   <string name="tv_time_report_submit_text">Kirim laporan</string>
   <string name="tv_time_report_success">Terima kasih! Laporan Anda telah dikirim. Kami akan memeriksanya.</string>
   <string name="tv_time_report_upload_prompt">Letakkan ekspor TV Time Anda di sini, atau klik untuk memilih file</string>
+  <string name="usage_title_connected_apps">Aplikasi Terhubung</string>
   <string name="usage_title_library">Pustaka</string>
   <string name="usage_title_lists">Daftar</string>
   <string name="validation_text_app_name">Harap masukkan nama aplikasi.</string>
@@ -1875,6 +1878,8 @@
   <string name="vip_feature_title_vip_status">Status VIP</string>
   <string name="vip_feature_title_yir">Kilas Balik Tahunan</string>
   <string name="vip_text_vip_go_beyond_limits">Melampaui batas Anda</string>
+  <string name="warning_connected_apps_limit">Anda telah mencapai batas aplikasi yang terhubung. Tingkatkan ke VIP untuk menghubungkan lebih banyak.</string>
+  <string name="warning_connected_apps_limit_vip">Anda telah mencapai batas aplikasi yang terhubung</string>
   <string name="warning_prompt_block_user">Blokir %s?</string>
   <string name="warning_prompt_block_user_detail">Mereka tidak lagi dapat mengikuti Anda atau melihat aktivitas Anda.</string>
   <string name="warning_prompt_cancel_clear">Meninggalkan halaman akan menghentikan penghapusan data Anda. Apakah Anda yakin?</string>

@@ -729,6 +729,7 @@
   <string name="heading_branding_default_logos">Sfondo chiaro</string>
   <string name="heading_branding_questions">Domande?</string>
   <string name="heading_branding_requirements">Requisiti del marchio</string>
+  <string name="heading_community_apps">App della Community</string>
   <string name="heading_connected_apps">App Connesse</string>
   <string name="heading_create_api_application">Crea applicazione</string>
   <string name="heading_edit_api_application">Modifica applicazione</string>
@@ -893,6 +894,7 @@
   <string name="label_stats_screen_time_total">Totale</string>
   <string name="label_stats_shows">Serie TV</string>
   <string name="label_streaming_country">Paese</string>
+  <string name="limit_title_connected_apps">App Connesse</string>
   <string name="limit_title_digital_library">Libreria digitale</string>
   <string name="limit_title_offline_library">Libreria offline</string>
   <string name="limit_title_personal_lists">Liste personali</string>
@@ -1827,6 +1829,7 @@
   <string name="tv_time_report_submit_text">Invia segnalazione</string>
   <string name="tv_time_report_success">Grazie! La tua segnalazione è stata inviata. Daremo un\'occhiata.</string>
   <string name="tv_time_report_upload_prompt">Trascina qui il tuo export di TV Time, o clicca per scegliere i file</string>
+  <string name="usage_title_connected_apps">App Connesse</string>
   <string name="usage_title_library">Libreria</string>
   <string name="usage_title_lists">Liste</string>
   <string name="validation_text_app_name">Inserisci un nome per l\'applicazione.</string>
@@ -1875,6 +1878,8 @@
   <string name="vip_feature_title_vip_status">Stato VIP</string>
   <string name="vip_feature_title_yir">Riepilogo dell\'anno</string>
   <string name="vip_text_vip_go_beyond_limits">Supera i tuoi limiti</string>
+  <string name="warning_connected_apps_limit">Hai raggiunto il limite di app connesse. Esegui l\'upgrade a VIP per connetterne di più.</string>
+  <string name="warning_connected_apps_limit_vip">Hai raggiunto il limite di app connesse</string>
   <string name="warning_prompt_block_user">Bloccare %s?</string>
   <string name="warning_prompt_block_user_detail">Non potranno più seguirti o vedere la tua attività.</string>
   <string name="warning_prompt_cancel_clear">L\'allontanamento interromperà la cancellazione dei tuoi dati. Sei sicuro?</string>

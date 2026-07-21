@@ -729,6 +729,7 @@
   <string name="heading_branding_default_logos">Heller Hintergrund</string>
   <string name="heading_branding_questions">Fragen?</string>
   <string name="heading_branding_requirements">Branding-Anforderungen</string>
+  <string name="heading_community_apps">Community-Apps</string>
   <string name="heading_connected_apps">Verbundene Apps</string>
   <string name="heading_create_api_application">Anwendung erstellen</string>
   <string name="heading_edit_api_application">Anwendung bearbeiten</string>
@@ -893,6 +894,7 @@
   <string name="label_stats_screen_time_total">Gesamt</string>
   <string name="label_stats_shows">Serien</string>
   <string name="label_streaming_country">Land</string>
+  <string name="limit_title_connected_apps">Verbundene Apps</string>
   <string name="limit_title_digital_library">Digitale Bibliothek</string>
   <string name="limit_title_offline_library">Offline-Bibliothek</string>
   <string name="limit_title_personal_lists">Persönliche Listen</string>
@@ -1827,6 +1829,7 @@
   <string name="tv_time_report_submit_text">Bericht senden</string>
   <string name="tv_time_report_success">Danke! Dein Bericht wurde gesendet. Wir werden ihn uns ansehen.</string>
   <string name="tv_time_report_upload_prompt">Ziehe deinen TV Time Export hierher oder klicke, um Dateien auszuwählen</string>
+  <string name="usage_title_connected_apps">Verbundene Apps</string>
   <string name="usage_title_library">Bibliothek</string>
   <string name="usage_title_lists">Listen</string>
   <string name="validation_text_app_name">Bitte geben Sie einen Anwendungsnamen ein.</string>
@@ -1875,6 +1878,8 @@
   <string name="vip_feature_title_vip_status">VIP-Status</string>
   <string name="vip_feature_title_yir">Jahresrückblick</string>
   <string name="vip_text_vip_go_beyond_limits">Gehe über deine Grenzen hinaus</string>
+  <string name="warning_connected_apps_limit">Sie haben Ihr Limit für verbundene Apps erreicht. Upgraden Sie auf VIP, um weitere zu verbinden.</string>
+  <string name="warning_connected_apps_limit_vip">Sie haben Ihr Limit für verbundene Apps erreicht</string>
   <string name="warning_prompt_block_user">%s blockieren?</string>
   <string name="warning_prompt_block_user_detail">Sie können Ihnen dann nicht mehr folgen oder Ihre Aktivitäten sehen.</string>
   <string name="warning_prompt_cancel_clear">Wenn Sie weg navigieren, wird das Löschen Ihrer Daten abgebrochen. Sind Sie sicher?</string>

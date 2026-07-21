@@ -729,6 +729,7 @@
   <string name="heading_branding_default_logos">Fons clar</string>
   <string name="heading_branding_questions">Preguntes?</string>
   <string name="heading_branding_requirements">Requisits de marca</string>
+  <string name="heading_community_apps">Aplicacions de la comunitat</string>
   <string name="heading_connected_apps">Aplicacions connectades</string>
   <string name="heading_create_api_application">Crea una aplicació</string>
   <string name="heading_edit_api_application">Edita l\'aplicació</string>
@@ -893,6 +894,7 @@
   <string name="label_stats_screen_time_total">Total</string>
   <string name="label_stats_shows">Sèries</string>
   <string name="label_streaming_country">País</string>
+  <string name="limit_title_connected_apps">Aplicacions connectades</string>
   <string name="limit_title_digital_library">Biblioteca digital</string>
   <string name="limit_title_offline_library">Biblioteca fora de línia</string>
   <string name="limit_title_personal_lists">Llistes personals</string>
@@ -1827,6 +1829,7 @@
   <string name="tv_time_report_submit_text">Envia informe</string>
   <string name="tv_time_report_success">Gràcies! El vostre informe ha estat enviat. Hi farem una ullada.</string>
   <string name="tv_time_report_upload_prompt">Arrossegueu la vostra exportació de TV Time aquí o feu clic per triar fitxers</string>
+  <string name="usage_title_connected_apps">Aplicacions connectades</string>
   <string name="usage_title_library">Biblioteca</string>
   <string name="usage_title_lists">Llistes</string>
   <string name="validation_text_app_name">Si us plau, introdueix un nom d\'aplicació.</string>
@@ -1875,6 +1878,8 @@
   <string name="vip_feature_title_vip_status">Estat VIP</string>
   <string name="vip_feature_title_yir">Resum de l\'Any</string>
   <string name="vip_text_vip_go_beyond_limits">Vés més enllà dels teus límits</string>
+  <string name="warning_connected_apps_limit">Has arribat al límit d\'aplicacions connectades. Actualitza a VIP per connectar-ne més.</string>
+  <string name="warning_connected_apps_limit_vip">Has arribat al límit d\'aplicacions connectades</string>
   <string name="warning_prompt_block_user">Bloquejar %s?</string>
   <string name="warning_prompt_block_user_detail">Ja no et podran seguir ni veure la teva activitat.</string>
   <string name="warning_prompt_cancel_clear">Si te\'n vas, s\'aturarà l\'eliminació de les teves dades. Estàs segur?</string>

@@ -729,6 +729,7 @@
   <string name="heading_branding_default_logos">Ανοιχτό Φόντο</string>
   <string name="heading_branding_questions">Ερωτήσεις;</string>
   <string name="heading_branding_requirements">Απαιτήσεις Επωνυμίας</string>
+  <string name="heading_community_apps">Εφαρμογές Κοινότητας</string>
   <string name="heading_connected_apps">Συνδεδεμένες Εφαρμογές</string>
   <string name="heading_create_api_application">Δημιουργία εφαρμογής</string>
   <string name="heading_edit_api_application">Επεξεργασία εφαρμογής</string>
@@ -893,6 +894,7 @@
   <string name="label_stats_screen_time_total">Σύνολο</string>
   <string name="label_stats_shows">Σειρές</string>
   <string name="label_streaming_country">Χώρα</string>
+  <string name="limit_title_connected_apps">Συνδεδεμένες Εφαρμογές</string>
   <string name="limit_title_digital_library">Ψηφιακή Βιβλιοθήκη</string>
   <string name="limit_title_offline_library">Βιβλιοθήκη εκτός σύνδεσης</string>
   <string name="limit_title_personal_lists">Προσωπικές Λίστες</string>
@@ -1827,6 +1829,7 @@
   <string name="tv_time_report_submit_text">Υποβολή αναφοράς</string>
   <string name="tv_time_report_success">Ευχαριστούμε! Η αναφορά σας έχει σταλεί. Θα τη δούμε.</string>
   <string name="tv_time_report_upload_prompt">Σύρετε την εξαγωγή σας από το TV Time εδώ, ή κάντε κλικ για να επιλέξετε αρχεία</string>
+  <string name="usage_title_connected_apps">Συνδεδεμένες Εφαρμογές</string>
   <string name="usage_title_library">Βιβλιοθήκη</string>
   <string name="usage_title_lists">Λίστες</string>
   <string name="validation_text_app_name">Παρακαλώ εισάγετε ένα όνομα εφαρμογής.</string>
@@ -1875,6 +1878,8 @@
   <string name="vip_feature_title_vip_status">Κατάσταση VIP</string>
   <string name="vip_feature_title_yir">Ετήσια Ανασκόπηση</string>
   <string name="vip_text_vip_go_beyond_limits">Ξεπεράστε τα όριά σας</string>
+  <string name="warning_connected_apps_limit">Έχετε φτάσει το όριο των συνδεδεμένων εφαρμογών σας. Αναβαθμίστε σε VIP για να συνδέσετε περισσότερες.</string>
+  <string name="warning_connected_apps_limit_vip">Έχετε φτάσει το όριο των συνδεδεμένων εφαρμογών σας</string>
   <string name="warning_prompt_block_user">Αποκλεισμός %s;</string>
   <string name="warning_prompt_block_user_detail">Δεν θα μπορούν πλέον να σας ακολουθούν ή να βλέπουν τη δραστηριότητά σας.</string>
   <string name="warning_prompt_cancel_clear">Η απομάκρυνση θα σταματήσει την εκκαθάριση των δεδομένων σας. Είστε σίγουροι;</string>

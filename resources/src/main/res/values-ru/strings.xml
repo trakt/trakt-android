@@ -729,6 +729,7 @@
   <string name="heading_branding_default_logos">Светлый фон</string>
   <string name="heading_branding_questions">Вопросы?</string>
   <string name="heading_branding_requirements">Требования к брендингу</string>
+  <string name="heading_community_apps">Приложения сообщества</string>
   <string name="heading_connected_apps">Подключенные приложения</string>
   <string name="heading_create_api_application">Создать приложение</string>
   <string name="heading_edit_api_application">Редактировать приложение</string>
@@ -893,6 +894,7 @@
   <string name="label_stats_screen_time_total">Всего</string>
   <string name="label_stats_shows">Сериалы</string>
   <string name="label_streaming_country">Страна</string>
+  <string name="limit_title_connected_apps">Подключенные приложения</string>
   <string name="limit_title_digital_library">Цифровая библиотека</string>
   <string name="limit_title_offline_library">Офлайн-библиотека</string>
   <string name="limit_title_personal_lists">Личные списки</string>
@@ -1827,6 +1829,7 @@
   <string name="tv_time_report_submit_text">Отправить жалобу</string>
   <string name="tv_time_report_success">Спасибо! Ваш отчет отправлен. Мы разберемся.</string>
   <string name="tv_time_report_upload_prompt">Перетащите ваш экспорт TV Time сюда или нажмите, чтобы выбрать файлы</string>
+  <string name="usage_title_connected_apps">Подключенные приложения</string>
   <string name="usage_title_library">Библиотека</string>
   <string name="usage_title_lists">Списки</string>
   <string name="validation_text_app_name">Пожалуйста, введите имя приложения.</string>
@@ -1875,6 +1878,8 @@
   <string name="vip_feature_title_vip_status">VIP-статус</string>
   <string name="vip_feature_title_yir">Обзор года</string>
   <string name="vip_text_vip_go_beyond_limits">Преодолейте свои ограничения</string>
+  <string name="warning_connected_apps_limit">Вы достигли лимита подключенных приложений. Обновитесь до VIP, чтобы подключить больше.</string>
+  <string name="warning_connected_apps_limit_vip">Вы достигли лимита подключенных приложений</string>
   <string name="warning_prompt_block_user">Заблокировать **%s**?</string>
   <string name="warning_prompt_block_user_detail">Они больше не смогут отслеживать вас или видеть вашу активность.</string>
   <string name="warning_prompt_cancel_clear">Переход на другую страницу остановит очистку ваших данных. Вы уверены?</string>

@@ -729,6 +729,7 @@
   <string name="heading_branding_default_logos">Light Background</string>
   <string name="heading_branding_questions">Questions?</string>
   <string name="heading_branding_requirements">Branding Requirements</string>
+  <string name="heading_community_apps">Community Apps</string>
   <string name="heading_connected_apps">Connected Apps</string>
   <string name="heading_create_api_application">Create application</string>
   <string name="heading_edit_api_application">Edit application</string>
@@ -893,6 +894,7 @@
   <string name="label_stats_screen_time_total">Total</string>
   <string name="label_stats_shows">Shows</string>
   <string name="label_streaming_country">Country</string>
+  <string name="limit_title_connected_apps">Connected Apps</string>
   <string name="limit_title_digital_library">Digital Library</string>
   <string name="limit_title_offline_library">Offline Library</string>
   <string name="limit_title_personal_lists">Personal Lists</string>
@@ -1827,6 +1829,7 @@
   <string name="tv_time_report_submit_text">Send report</string>
   <string name="tv_time_report_success">Thanks! Your report has been sent. We\'ll take a look.</string>
   <string name="tv_time_report_upload_prompt">Drop your TV Time export here, or click to choose files</string>
+  <string name="usage_title_connected_apps">Connected Apps</string>
   <string name="usage_title_library">Library</string>
   <string name="usage_title_lists">Lists</string>
   <string name="validation_text_app_name">Please enter an application name.</string>
@@ -1875,6 +1878,8 @@
   <string name="vip_feature_title_vip_status">VIP Status</string>
   <string name="vip_feature_title_yir">Year in Review</string>
   <string name="vip_text_vip_go_beyond_limits">Go beyond your limits</string>
+  <string name="warning_connected_apps_limit">You\'ve reached your connected apps limit. Upgrade to VIP to connect more.</string>
+  <string name="warning_connected_apps_limit_vip">You\'ve reached your connected apps limit</string>
   <string name="warning_prompt_block_user">Block %s?</string>
   <string name="warning_prompt_block_user_detail">They will no longer be able to follow you or see your activity.</string>
   <string name="warning_prompt_cancel_clear">Navigating away will stop clearing your data. Are you sure?</string>
