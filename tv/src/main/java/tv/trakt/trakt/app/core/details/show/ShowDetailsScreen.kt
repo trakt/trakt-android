@@ -57,6 +57,7 @@ import tv.trakt.trakt.app.LocalDrawerVisibility
 import tv.trakt.trakt.app.LocalSnackbarState
 import tv.trakt.trakt.app.common.ui.ConfirmationDialog
 import tv.trakt.trakt.app.core.details.comments.CommentDetailsDialog
+import tv.trakt.trakt.app.core.details.show.models.ShowSeasons
 import tv.trakt.trakt.app.core.details.show.views.content.ShowCastCrewList
 import tv.trakt.trakt.app.core.details.show.views.content.ShowCommentsList
 import tv.trakt.trakt.app.core.details.show.views.content.ShowCustomsList
@@ -80,7 +81,6 @@ import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.Person
-import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Red400
@@ -190,7 +190,7 @@ private fun ShowDetailsScreenContent(
     onHistoryClick: (DateSelectionResult) -> Unit,
     onRemoveAllHistoryClick: () -> Unit,
     onWatchlistClick: () -> Unit,
-    onSeasonClick: (Season) -> Unit,
+    onSeasonClick: (ShowSeasons.SeasonItem) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val drawerVisibility = LocalDrawerVisibility.current
@@ -317,7 +317,7 @@ private fun MainContent(
     onFocused: (String) -> Unit,
     onShowClick: (Show) -> Unit,
     onPersonClick: (Person) -> Unit,
-    onSeasonClick: (Season) -> Unit,
+    onSeasonClick: (ShowSeasons.SeasonItem) -> Unit,
     onEpisodeClick: (episode: Episode) -> Unit,
     onCommentClick: (Comment) -> Unit,
     onListClick: (CustomList) -> Unit,
@@ -395,8 +395,8 @@ private fun MainContent(
 
             val headerCurrentSeason = state.showSeasons.selectedSeason?.let {
                 when {
-                    it.isSpecial -> stringResource(R.string.text_season_specials)
-                    else -> stringResource(R.string.text_season_number, it.number)
+                    it.season.isSpecial -> stringResource(R.string.text_season_specials)
+                    else -> stringResource(R.string.text_season_number, it.season.number)
                 }
             }
 

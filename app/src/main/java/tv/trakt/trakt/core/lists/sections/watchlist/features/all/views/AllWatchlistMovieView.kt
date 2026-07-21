@@ -3,11 +3,11 @@ package tv.trakt.trakt.core.lists.sections.watchlist.features.all.views
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import tv.trakt.trakt.common.core.lists.model.WatchlistItem
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.sorting.SortType.Runtime
 import tv.trakt.trakt.common.model.sorting.SortType.UserRating
 import tv.trakt.trakt.common.model.sorting.Sorting
-import tv.trakt.trakt.core.lists.sections.watchlist.model.WatchlistItem
 import tv.trakt.trakt.core.movies.ui.MovieMetaFooter
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 

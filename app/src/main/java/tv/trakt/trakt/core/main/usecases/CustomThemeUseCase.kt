@@ -9,10 +9,10 @@ import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.coroutines.flow.first
 import kotlinx.serialization.json.Json
 import timber.log.Timber
-import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_CUSTOM_THEME_ENABLED
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_CUSTOM_THEME_JSON
+import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.ui.theme.model.CustomTheme
 
 internal val KEY_CUSTOM_THEME_USER_ENABLED = booleanPreferencesKey("key_custom_theme_user_enabled")

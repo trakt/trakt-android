@@ -1,3 +1,5 @@
+@file:OptIn(FlowPreview::class)
+
 package tv.trakt.trakt.app.core.details.show
 
 import androidx.appcompat.app.AppCompatDelegate
@@ -7,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -15,6 +18,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -41,6 +49,11 @@ import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.core.translations.usecase.GetShowTranslationsUseCase
 import tv.trakt.trakt.common.core.tutorials.TutorialsManager
 import tv.trakt.trakt.common.core.tutorials.model.TutorialKey
+import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
+import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source
+import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
+import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdates
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.StaticStringResource
 import tv.trakt.trakt.common.helpers.StringResource
@@ -52,13 +65,13 @@ import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Ids
-import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.resources.R
 import java.util.Locale
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class ShowDetailsViewModel(
     savedStateHandle: SavedStateHandle,
@@ -76,6 +89,10 @@ internal class ShowDetailsViewModel(
     private val getCollectionUseCase: GetCollectionUseCase,
     private val historyUseCase: ChangeHistoryUseCase,
     private val watchlistUseCase: ChangeWatchlistUseCase,
+    private val loadUserProgressUseCase: LoadUserProgressUseCase,
+    private val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
+    private val watchlistUpdates: WatchlistUpdates,
+    private val progressUpdates: ProgressUpdates,
     private val sessionManager: SessionManager,
     private val tutorialsManager: TutorialsManager,
 ) : ViewModel() {
@@ -101,6 +118,18 @@ internal class ShowDetailsViewModel(
 
     init {
         loadData(show.showId.toTraktId())
+        observeProgress()
+    }
+
+    private fun observeProgress() {
+        progressUpdates.observeUpdates()
+            .distinctUntilChanged()
+            .filterNotNull()
+            .debounce(300.milliseconds)
+            .onEach {
+                loadSeasons(show.showId.toTraktId())
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun loadData(showId: TraktId) {
@@ -214,9 +243,9 @@ internal class ShowDetailsViewModel(
         }
     }
 
-    fun loadSeason(season: Season) {
+    fun loadSeason(season: ShowSeasons.SeasonItem) {
         loadingJob = viewModelScope.launch {
-            delay(250)
+            delay(250.milliseconds)
             showSeasonsState.update {
                 it.copy(isSeasonLoading = true)
             }
@@ -224,7 +253,7 @@ internal class ShowDetailsViewModel(
 
         viewModelScope.launch {
             if (showSeasonsState.value.isSeasonLoading ||
-                season.number == showSeasonsState.value.selectedSeason?.number
+                season.season.number == showSeasonsState.value.selectedSeason?.season?.number
             ) {
                 loadingJob?.cancel()
                 return@launch
@@ -237,7 +266,7 @@ internal class ShowDetailsViewModel(
 
                 val episodes = getSeasonsUseCase.getSeason(
                     showId = show.showId.toTraktId(),
-                    season = season.number,
+                    season = season.season.number,
                 )
 
                 showSeasonsState.update {
@@ -419,6 +448,9 @@ internal class ShowDetailsViewModel(
                     customDate = customDate,
                 )
 
+                loadUserProgressUseCase.loadShowsProgress()
+                progressUpdates.notifyUpdate()
+
                 showCollectionState.update {
                     it.copy(
                         isWatchlist = false,
@@ -448,6 +480,9 @@ internal class ShowDetailsViewModel(
                 showCollectionState.update { it.copy(isWatchedLoading = true) }
 
                 historyUseCase.removeFromHistory(show.showId.toTraktId())
+
+                loadUserProgressUseCase.loadShowsProgress()
+                progressUpdates.notifyUpdate()
 
                 showCollectionState.update {
                     it.copy(
@@ -489,6 +524,9 @@ internal class ShowDetailsViewModel(
                     }
                     showSnackMessage(DynamicStringResource(R.string.text_info_watchlist_added))
                 }
+
+                loadUserWatchlistUseCase.loadWatchlist()
+                watchlistUpdates.notifyUpdate(Source.Default)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))

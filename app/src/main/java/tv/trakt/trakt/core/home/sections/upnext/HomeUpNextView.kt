@@ -36,6 +36,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.common.core.home.model.UpNextItem
+import tv.trakt.trakt.common.core.home.model.UpNextMovie
+import tv.trakt.trakt.common.core.home.model.UpNextShow
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_1
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
@@ -47,9 +50,6 @@ import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
 import tv.trakt.trakt.core.home.sections.upnext.features.context.sheets.UpNextItemContextSheet
-import tv.trakt.trakt.core.home.sections.upnext.model.UpNextItem
-import tv.trakt.trakt.core.home.sections.upnext.model.UpNextMovie
-import tv.trakt.trakt.core.home.sections.upnext.model.UpNextShow
 import tv.trakt.trakt.core.home.sections.upnext.ui.HomeUpNextMovieView
 import tv.trakt.trakt.core.home.sections.upnext.ui.HomeUpNextShowView
 import tv.trakt.trakt.core.home.views.HomeEmptyView

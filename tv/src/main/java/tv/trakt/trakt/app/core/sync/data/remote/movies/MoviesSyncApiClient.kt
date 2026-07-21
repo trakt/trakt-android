@@ -9,6 +9,7 @@ import org.openapitools.client.models.PostSyncHistoryRemoveRequest
 import org.openapitools.client.models.PostUsersListsListAddRequest
 import org.openapitools.client.models.PostUsersListsListAddRequestMoviesInner
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.ProgressMovieDto
 import tv.trakt.trakt.common.networking.WatchlistMovieDto
@@ -134,7 +135,7 @@ internal class MoviesSyncApiClient(
     }
 
     override suspend fun getWatchlist(
-        sort: String,
+        sorting: Sorting,
         page: Int?,
         limit: Int?,
         extended: String?,
@@ -142,7 +143,7 @@ internal class MoviesSyncApiClient(
     ): List<WatchlistMovieDto> {
         val response = usersApi.getUsersWatchlistMovies(
             id = "me",
-            sort = sort,
+            sort = "",
             extended = extended,
             page = page,
             limit = limit,
@@ -155,8 +156,8 @@ internal class MoviesSyncApiClient(
             subgenres = null,
             hide = hide,
             runtimes = null,
-            sortBy = null,
-            sortHow = null,
+            sortBy = sorting.type.value,
+            sortHow = sorting.order.value,
             countries = null,
             certifications = null,
         )

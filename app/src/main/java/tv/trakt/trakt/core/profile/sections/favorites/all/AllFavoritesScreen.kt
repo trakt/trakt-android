@@ -45,6 +45,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
+import tv.trakt.trakt.common.core.favorites.FavoriteItem
+import tv.trakt.trakt.common.core.favorites.FavoriteItem.MovieItem
+import tv.trakt.trakt.common.core.favorites.FavoriteItem.ShowItem
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -59,9 +62,6 @@ import tv.trakt.trakt.common.model.sorting.SortType.Default
 import tv.trakt.trakt.common.model.sorting.SortType.Released
 import tv.trakt.trakt.common.model.sorting.SortType.Title
 import tv.trakt.trakt.common.model.sorting.Sorting
-import tv.trakt.trakt.core.favorites.model.FavoriteItem
-import tv.trakt.trakt.core.favorites.model.FavoriteItem.MovieItem
-import tv.trakt.trakt.core.favorites.model.FavoriteItem.ShowItem
 import tv.trakt.trakt.core.profile.sections.favorites.all.views.AllFavoritesMovieView
 import tv.trakt.trakt.core.profile.sections.favorites.all.views.AllFavoritesShowView
 import tv.trakt.trakt.core.profile.sections.favorites.context.movie.FavoriteMovieContextSheet

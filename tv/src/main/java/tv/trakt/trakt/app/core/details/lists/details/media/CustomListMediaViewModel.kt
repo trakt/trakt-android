@@ -21,6 +21,8 @@ import tv.trakt.trakt.app.core.details.lists.details.media.navigation.CustomList
 import tv.trakt.trakt.app.core.details.lists.details.media.usecases.GetListItemsUseCase
 import tv.trakt.trakt.app.core.lists.usecases.liked.AddLikedListUseCase
 import tv.trakt.trakt.app.core.lists.usecases.liked.RemoveLikedListUseCase
+import tv.trakt.trakt.common.core.user.CollectionStateProvider
+import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.StringResource
@@ -35,6 +37,7 @@ internal class CustomListMediaViewModel(
     private val getUserLikedListsUseCase: LoadUserLikedListsUseCase,
     private val addLikedListUseCase: AddLikedListUseCase,
     private val removeLikedListUseCase: RemoveLikedListUseCase,
+    private val collectionStateProvider: CollectionStateProvider,
 ) : ViewModel() {
     val destination = savedStateHandle.toRoute<CustomListMediaDestination>()
     private val destinationType = MediaType.entries.find { it.value == destination.listType }
@@ -54,6 +57,12 @@ internal class CustomListMediaViewModel(
     init {
         loadData()
         loadLikeData()
+        observeData()
+    }
+
+    private fun observeData() {
+        collectionStateProvider
+            .launchIn(viewModelScope)
     }
 
     private fun loadData() {
@@ -200,6 +209,7 @@ internal class CustomListMediaViewModel(
         loadingPageState,
         likeState,
         itemsState,
+        collectionStateProvider.stateFlow,
         infoState,
         errorState,
     ) { state ->
@@ -208,8 +218,9 @@ internal class CustomListMediaViewModel(
             isLoadingPage = state[1] as Boolean,
             like = state[2] as CustomListMediaState.LikedState,
             items = state[3] as? ImmutableList<ListMediaItem>,
-            info = state[4] as? StringResource,
-            error = state[5] as? Exception,
+            collection = state[4] as UserCollectionState,
+            info = state[5] as? StringResource,
+            error = state[6] as? Exception,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -21,6 +21,8 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.common.core.lists.data.remote.ListsApiClient
 import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteDataSource
+import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
+import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdatesStorage
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.core.lists.ListsViewModel
@@ -59,8 +61,6 @@ import tv.trakt.trakt.core.lists.sheets.create.CreateListViewModel
 import tv.trakt.trakt.core.lists.sheets.create.usecases.CreateListUseCase
 import tv.trakt.trakt.core.lists.sheets.edit.EditListViewModel
 import tv.trakt.trakt.core.lists.sheets.edit.usecases.EditListUseCase
-import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdates
-import tv.trakt.trakt.core.user.data.local.watchlist.WatchlistUpdatesStorage
 
 internal const val LISTS_PREFERENCES = "lists_preferences_mobile"
 

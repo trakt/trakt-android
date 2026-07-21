@@ -2,9 +2,9 @@ package tv.trakt.trakt.core.userprofile.sections.favorites
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
+import tv.trakt.trakt.common.core.favorites.FavoriteItem
+import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.core.favorites.model.FavoriteItem
-import tv.trakt.trakt.core.user.UserCollectionState
 
 @Immutable
 internal data class UserProfileFavoritesState(

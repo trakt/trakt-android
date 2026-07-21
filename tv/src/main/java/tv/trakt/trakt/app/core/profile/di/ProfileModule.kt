@@ -1,6 +1,9 @@
 package tv.trakt.trakt.app.core.profile.di
 
 import androidx.lifecycle.SavedStateHandle
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -21,8 +24,12 @@ import tv.trakt.trakt.app.core.profile.sections.library.ProfileLibraryViewModel
 import tv.trakt.trakt.app.core.profile.sections.library.usecases.GetProfileLibraryUseCase
 import tv.trakt.trakt.app.core.profile.sections.library.viewall.ProfileLibraryViewAllViewModel
 import tv.trakt.trakt.app.core.profile.usecases.LogoutProfileUseCase
+import tv.trakt.trakt.common.core.user.data.local.UserProgressLocalDataSource
+import tv.trakt.trakt.common.core.user.data.local.UserProgressStorage
 import tv.trakt.trakt.common.core.user.data.local.liked.UserLikedListsLocalDataSource
 import tv.trakt.trakt.common.core.user.data.local.liked.UserLikedListsStorage
+import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
+import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalStorage
 import tv.trakt.trakt.common.core.user.data.remote.UserApiClient
 import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
 import tv.trakt.trakt.common.core.user.data.remote.calendar.UserCalendarApiClient
@@ -42,6 +49,10 @@ import tv.trakt.trakt.common.core.user.data.remote.social.UserSocialRemoteDataSo
 import tv.trakt.trakt.common.core.user.data.remote.watchlist.UserWatchlistApiClient
 import tv.trakt.trakt.common.core.user.data.remote.watchlist.UserWatchlistRemoteDataSource
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
+import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
+import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdates
+import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdatesStorage
 
 internal val profileDataModule = module {
     single<ProfileRemoteDataSource> {
@@ -114,6 +125,10 @@ internal val profileDataModule = module {
     single<UserLikedListsLocalDataSource> {
         UserLikedListsStorage()
     }
+
+    singleOf(::UserWatchlistMinimalStorage) { bind<UserWatchlistMinimalLocalDataSource>() }
+    singleOf(::ProgressUpdatesStorage) { bind<ProgressUpdates>() }
+    singleOf(::UserProgressStorage) { bind<UserProgressLocalDataSource>() }
 }
 
 internal val profileModule = module {
@@ -175,6 +190,9 @@ internal val profileModule = module {
             localSource = get(),
         )
     }
+
+    factoryOf(::LoadUserWatchlistUseCase)
+    factoryOf(::LoadUserProgressUseCase)
 
     viewModel { (_: SavedStateHandle) ->
         ProfileViewModel(

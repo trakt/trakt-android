@@ -14,6 +14,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.streamings.StreamingService
+import java.time.Instant
 
 @Immutable
 internal data class EpisodeDetailsState(
@@ -25,7 +26,7 @@ internal data class EpisodeDetailsState(
     val episodeStreamings: StreamingsState = StreamingsState(),
     val episodeComments: ImmutableList<Comment>? = null,
     val episodeRelated: ImmutableList<Show>? = null,
-    val episodeSeason: ImmutableList<Episode>? = null,
+    val episodeSeason: ImmutableList<Pair<Episode, Instant?>>? = null,
     val episodeHistory: HistoryState = HistoryState(),
     val episodeTranslation: MediaTranslation? = null,
     val isLoading: Boolean = false,

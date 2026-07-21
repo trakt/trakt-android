@@ -1,6 +1,7 @@
 package tv.trakt.trakt.app.core.sync.data.remote.movies
 
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.ProgressMovieDto
 import tv.trakt.trakt.common.networking.WatchlistMovieDto
 
@@ -11,7 +12,7 @@ internal interface MoviesSyncRemoteDataSource {
     ): List<ProgressMovieDto>
 
     suspend fun getWatchlist(
-        sort: String = "rank",
+        sorting: Sorting = Sorting.Default,
         page: Int? = null,
         limit: Int? = null,
         extended: String? = null,

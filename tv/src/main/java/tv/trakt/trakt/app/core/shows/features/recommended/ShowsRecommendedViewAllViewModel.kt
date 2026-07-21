@@ -9,12 +9,14 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.app.core.shows.usecase.GetRecommendedShowsUseCase
+import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 
 private const val ALL_ITEMS_LIMIT = 100
 
 internal class ShowsRecommendedViewAllViewModel(
     private val getItemsUseCase: GetRecommendedShowsUseCase,
+    private val collectionStateProvider: CollectionStateProvider,
 ) : ViewModel() {
     private val initialState = ShowsRecommendedViewAllState()
 
@@ -24,6 +26,13 @@ internal class ShowsRecommendedViewAllViewModel(
 
     init {
         loadData()
+
+        observeData()
+    }
+
+    private fun observeData() {
+        collectionStateProvider
+            .launchIn(viewModelScope)
     }
 
     private fun loadData() {
@@ -49,12 +58,14 @@ internal class ShowsRecommendedViewAllViewModel(
     val state = combine(
         loadingState,
         showsState,
+        collectionStateProvider.stateFlow,
         errorState,
-    ) { s1, s2, s3 ->
+    ) { s1, s2, s3, s4 ->
         ShowsRecommendedViewAllState(
             isLoading = s1,
             shows = s2,
-            error = s3,
+            collection = s3,
+            error = s4,
         )
     }.stateIn(
         scope = viewModelScope,

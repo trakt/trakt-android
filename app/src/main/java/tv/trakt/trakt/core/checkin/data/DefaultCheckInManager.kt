@@ -10,9 +10,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import timber.log.Timber
-import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.data.remote.UserRemoteDataSource
+import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
+import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
@@ -34,8 +36,6 @@ import tv.trakt.trakt.core.checkin.model.expiresAt
 import tv.trakt.trakt.core.checkin.model.id
 import tv.trakt.trakt.core.checkin.model.startedAt
 import tv.trakt.trakt.core.checkin.model.type
-import tv.trakt.trakt.core.user.usecases.lists.LoadUserWatchlistUseCase
-import tv.trakt.trakt.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.resources.R
 import kotlin.time.Clock.System.now
 import kotlin.time.Duration.Companion.milliseconds

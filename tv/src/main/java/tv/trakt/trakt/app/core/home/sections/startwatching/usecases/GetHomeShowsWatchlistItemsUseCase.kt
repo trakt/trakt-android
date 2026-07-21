@@ -9,6 +9,9 @@ import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.pagination.Pagination
+import tv.trakt.trakt.common.model.sorting.SortOrder
+import tv.trakt.trakt.common.model.sorting.SortType
+import tv.trakt.trakt.common.model.sorting.Sorting
 
 private val SortComparator =
     compareByDescending<WatchlistItem> { it.released }
@@ -22,10 +25,13 @@ internal class GetHomeShowsWatchlistItemsUseCase(
         val nowDay = nowLocal().toString()
 
         val response = remoteSyncSource.getWatchlist(
+            sorting = Sorting(
+                type = SortType.Released,
+                order = SortOrder.Desc,
+            ),
             page = pagination.page,
             limit = pagination.limit,
             extended = "full,cloud9,colors,streaming_ids",
-            sort = "released",
             hide = "unreleased",
         ).filter {
             !it.show.firstAired.isNullOrBlank() && it.show.firstAired!! <= nowDay

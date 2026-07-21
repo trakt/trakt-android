@@ -23,6 +23,8 @@ import tv.trakt.trakt.app.core.movies.usecase.GetPopularMoviesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetTrendingMoviesUseCase
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.user.CollectionStateProvider
+import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
@@ -39,6 +41,7 @@ internal class MoviesViewModel(
     private val getRecommendedMoviesUseCase: GetRecommendedMoviesUseCase,
     private val sessionManager: SessionManager,
     private val appLifecycleProvider: AppLifecycleProvider,
+    private val collectionStateProvider: CollectionStateProvider,
 ) : ViewModel() {
     private val initialState = MoviesState()
 
@@ -54,6 +57,8 @@ internal class MoviesViewModel(
 
     init {
         loadData()
+
+        observeData()
         observeApp()
     }
 
@@ -66,6 +71,11 @@ internal class MoviesViewModel(
             .onEach {
                 loadData(showLoading = false)
             }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeData() {
+        collectionStateProvider
             .launchIn(viewModelScope)
     }
 
@@ -120,16 +130,18 @@ internal class MoviesViewModel(
         anticipatedMoviesState,
         recommendedMoviesState,
         userState,
+        collectionStateProvider.stateFlow,
         errorState,
-    ) { s ->
+    ) { state ->
         MoviesState(
-            isLoading = s[0] as Boolean,
-            trendingMovies = s[1] as ImmutableList<TrendingMovie>?,
-            popularMovies = s[2] as ImmutableList<Movie>?,
-            anticipatedMovies = s[3] as ImmutableList<AnticipatedMovie>?,
-            recommendedMovies = s[4] as ImmutableList<Movie>?,
-            user = s[5] as User?,
-            error = s[6] as Exception?,
+            isLoading = state[0] as Boolean,
+            trendingMovies = state[1] as ImmutableList<TrendingMovie>?,
+            popularMovies = state[2] as ImmutableList<Movie>?,
+            anticipatedMovies = state[3] as ImmutableList<AnticipatedMovie>?,
+            recommendedMovies = state[4] as ImmutableList<Movie>?,
+            user = state[5] as User?,
+            collection = state[6] as UserCollectionState,
+            error = state[7] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -3,12 +3,12 @@ package tv.trakt.trakt.core.summary.people
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
+import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.summary.people.model.PersonCreditItem
-import tv.trakt.trakt.core.user.UserCollectionState
 
 @Immutable
 internal data class PersonDetailsState(

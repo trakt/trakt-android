@@ -20,6 +20,7 @@ import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.EpisodeSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
+import tv.trakt.trakt.app.core.details.show.models.ShowSeasons.EpisodeItem
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
@@ -33,7 +34,7 @@ import tv.trakt.trakt.resources.R
 internal fun ShowEpisodesList(
     isLoading: Boolean,
     show: Show?,
-    episodes: () -> ImmutableList<Episode>,
+    episodes: () -> ImmutableList<EpisodeItem>,
     onFocused: () -> Unit,
     onEpisodeClick: (episode: Episode) -> Unit,
     modifier: Modifier = Modifier,
@@ -67,25 +68,29 @@ internal fun ShowEpisodesList(
             ) {
                 items(
                     items = episodes(),
-                    key = { item -> item.ids.trakt.value },
-                ) { episode ->
+                    key = { item -> item.episode.ids.trakt.value },
+                ) { (episode, watched) ->
                     HorizontalMediaCard(
                         title = "",
-                        containerImageUrl = episode.images?.getScreenshotUrl()
-                            ?: show?.images?.getFanartUrl(),
+                        watched = watched,
+                        containerImageUrl = when (episode.rememberReleased()) {
+                            true -> episode.images?.getScreenshotUrl() ?: show?.images?.getFanartUrl()
+                            false -> show?.images?.getFanartUrl()
+                        },
                         onClick = { onEpisodeClick(episode) },
                         cardContent = {
                             if (!episode.rememberReleased()) {
                                 InfoChip(
                                     text = episode.releasedAt?.toLocal()?.relativeDateTimeString() ?: "",
                                     iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
-                                    containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
+                                    containerColor = TraktTheme.colors.chipContainerOnContent,
                                 )
                             } else {
                                 val runtime = episode.runtime?.inWholeMinutes
                                 if (runtime != null) {
                                     InfoChip(
                                         text = rememberDurationFormat(runtime),
+                                        containerColor = TraktTheme.colors.chipContainerOnContent,
                                     )
                                 }
                             }

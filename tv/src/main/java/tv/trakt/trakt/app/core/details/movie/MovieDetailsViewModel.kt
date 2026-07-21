@@ -47,6 +47,11 @@ import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.core.translations.usecase.GetMovieTranslationsUseCase
 import tv.trakt.trakt.common.core.tutorials.TutorialsManager
 import tv.trakt.trakt.common.core.tutorials.model.TutorialKey
+import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
+import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Source
+import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
+import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
+import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdates
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.StaticStringResource
@@ -65,6 +70,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.resources.R
 import java.util.Locale
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class MovieDetailsViewModel(
     savedStateHandle: SavedStateHandle,
@@ -83,6 +89,10 @@ internal class MovieDetailsViewModel(
     private val historyUseCase: ChangeHistoryUseCase,
     private val appReviewUseCase: RequestAppReviewUseCase,
     private val getTranslationsUseCase: GetMovieTranslationsUseCase,
+    private val watchlistUpdates: WatchlistUpdates,
+    private val progressUpdates: ProgressUpdates,
+    private val loadUserProgressUseCase: LoadUserProgressUseCase,
+    private val loadUserWatchlistUseCase: LoadUserWatchlistUseCase,
     private val scrobbleUpdates: ScrobbleUpdates,
     private val sessionManager: SessionManager,
     private val tutorialsManager: TutorialsManager,
@@ -150,7 +160,7 @@ internal class MovieDetailsViewModel(
             scrobbleUpdates.observeUpdates(SCROBBLE_STOP_WORKER),
         )
             .distinctUntilChanged()
-            .debounce(250)
+            .debounce(250.milliseconds)
             .onEach {
                 val movie = movieDetailsState.value ?: return@onEach
                 val user = userState.value ?: return@onEach
@@ -366,6 +376,8 @@ internal class MovieDetailsViewModel(
                     plays = movieCollectionState.value.historyCount,
                     customDate = customDate,
                 )
+                loadUserProgressUseCase.loadMoviesProgress()
+                progressUpdates.notifyUpdate()
 
                 movieCollectionState.update {
                     it.copy(
@@ -396,6 +408,8 @@ internal class MovieDetailsViewModel(
                 movieCollectionState.update { it.copy(isHistoryLoading = true) }
 
                 historyUseCase.removeFromHistory(movie.movieId.toTraktId())
+                loadUserProgressUseCase.loadMoviesProgress()
+                progressUpdates.notifyUpdate()
 
                 movieCollectionState.update {
                     it.copy(
@@ -437,6 +451,9 @@ internal class MovieDetailsViewModel(
                     }
                     showSnackMessage(DynamicStringResource(R.string.text_info_watchlist_added))
                 }
+
+                loadUserWatchlistUseCase.loadWatchlist()
+                watchlistUpdates.notifyUpdate(Source.Default)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     showSnackMessage(StaticStringResource(error.toString()))

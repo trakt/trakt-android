@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.lists.sections.watchlist.model
 
+import tv.trakt.trakt.common.core.lists.model.WatchlistItem
 import tv.trakt.trakt.common.model.sorting.SortOrder.Asc
 import tv.trakt.trakt.common.model.sorting.SortOrder.Desc
 import tv.trakt.trakt.common.model.sorting.SortType.Added

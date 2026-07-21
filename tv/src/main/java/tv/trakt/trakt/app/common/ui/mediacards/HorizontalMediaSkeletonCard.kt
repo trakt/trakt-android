@@ -6,6 +6,7 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,12 +19,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Border
 import androidx.tv.material3.Card
 import androidx.tv.material3.CardDefaults
-import tv.trakt.trakt.app.common.ui.chips.InfoChip
+import androidx.tv.material3.Text
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 
 @Composable
@@ -76,13 +78,35 @@ internal fun HorizontalMediaSkeletonCard(
         )
 
         Column(
-            verticalArrangement = Arrangement.spacedBy(2.dp),
+            verticalArrangement = Arrangement.spacedBy(3.dp),
         ) {
-            InfoChip(
+            Text(
                 text = "",
-                containerColor = shimmerTransition,
-                modifier = Modifier.fillMaxWidth(0.33F),
+                style = TraktTheme.typography.cardTitle,
+                color = TraktTheme.colors.textPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .fillMaxWidth(0.33F)
+                    .background(
+                        color = shimmerTransition,
+                        shape = RoundedCornerShape(100),
+                    ),
             )
+
+//            Text(
+//                text = "",
+//                style = TraktTheme.typography.cardSubtitle,
+//                color = TraktTheme.colors.textSecondary,
+//                maxLines = 1,
+//                overflow = TextOverflow.Ellipsis,
+//                modifier = Modifier
+//                    .fillMaxWidth(0.66F)
+//                    .background(
+//                        color = shimmerTransition,
+//                        shape = RoundedCornerShape(100),
+//                    ),
+//            )
         }
     }
 }

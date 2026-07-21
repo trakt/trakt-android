@@ -4,9 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -23,15 +26,17 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import kotlinx.coroutines.delay
 import tv.trakt.trakt.app.common.ui.GenericErrorView
-import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_NEXT_PAGE_OFFSET
@@ -41,9 +46,11 @@ import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 internal fun PersonalListScreen(
@@ -76,7 +83,7 @@ private fun PersonalListContent(
     val focusRequesters = remember { mutableMapOf<String, FocusRequester>() }
 
     LaunchedEffect(Unit) {
-        delay(500)
+        delay(500.milliseconds)
         focusRequesters[focusedItemId]?.requestSafeFocus()
     }
 
@@ -146,20 +153,48 @@ private fun PersonalListContent(
                         VerticalMediaCard(
                             title = show.title,
                             imageUrl = show.images?.getPosterUrl(),
+                            watched = state.collection.isWatched(show.ids.trakt, MediaType.Show, show.airedEpisodes),
+                            watching = state.collection.isWatching(show.ids.trakt, MediaType.Show, show.airedEpisodes),
+                            watchlist = state.collection.isWatchlist(show.ids.trakt, MediaType.Show),
                             onClick = {
                                 if (!state.isLoadingPage) {
                                     onShowClick(show.ids.trakt)
                                 }
                             },
                             chipContent = {
-                                val episodes = show.airedEpisodes
-                                if (episodes > 0) {
-                                    InfoChip(
-                                        text = stringResource(
-                                            R.string.tag_text_number_of_episodes,
-                                            episodes,
-                                        ),
-                                    )
+                                Column(
+                                    verticalArrangement = Arrangement.spacedBy(1.dp),
+                                ) {
+                                    val episodes = show.airedEpisodes.takeIf { it > 0 }
+                                        ?.let { stringResource(R.string.tag_text_number_of_episodes, it) }
+                                    val text = listOfNotNull(show.year?.toString(), episodes)
+                                        .joinToString("  •  ")
+
+                                    if (text.isNotEmpty()) {
+                                        Row(
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                        ) {
+                                            Icon(
+                                                painter = painterResource(R.drawable.ic_shows_off),
+                                                contentDescription = null,
+                                                tint = TraktTheme.colors.textPrimary,
+                                                modifier = Modifier
+                                                    .size(12.dp)
+                                                    .graphicsLayer {
+                                                        translationY = -0.5.dp.toPx()
+                                                    },
+                                            )
+
+                                            Text(
+                                                text = text,
+                                                style = TraktTheme.typography.cardTitle,
+                                                color = TraktTheme.colors.textPrimary,
+                                                maxLines = 1,
+                                                overflow = TextOverflow.Ellipsis,
+                                            )
+                                        }
+                                    }
                                 }
                             },
                             modifier = Modifier
@@ -183,14 +218,42 @@ private fun PersonalListContent(
                         VerticalMediaCard(
                             title = movie.title,
                             imageUrl = movie.images?.getPosterUrl(),
+                            watched = state.collection.isWatched(movie.ids.trakt, MediaType.Movie, null),
+                            watching = state.collection.isWatching(movie.ids.trakt, MediaType.Movie, null),
+                            watchlist = state.collection.isWatchlist(movie.ids.trakt, MediaType.Movie),
                             onClick = {
                                 if (!state.isLoadingPage) {
                                     onMovieClick(movie.ids.trakt)
                                 }
                             },
                             chipContent = {
-                                movie.runtime?.inWholeMinutes?.let {
-                                    InfoChip(text = rememberDurationFormat(it))
+                                Column(
+                                    verticalArrangement = Arrangement.spacedBy(1.dp),
+                                ) {
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(3.dp),
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(R.drawable.ic_movies_off),
+                                            contentDescription = null,
+                                            tint = TraktTheme.colors.textPrimary,
+                                            modifier = Modifier
+                                                .size(12.dp)
+                                                .graphicsLayer {
+                                                    translationY = -0.5.dp.toPx()
+                                                },
+                                        )
+
+                                        Text(
+                                            text = movie.yearString +
+                                                "  •  ${rememberDurationFormat(movie.runtime?.inWholeMinutes)}",
+                                            style = TraktTheme.typography.cardTitle,
+                                            color = TraktTheme.colors.textPrimary,
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis,
+                                        )
+                                    }
                                 }
                             },
                             modifier = Modifier

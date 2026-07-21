@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.sorting.Sorting
 
 internal class GetListsMoviesWatchlistUseCase(
     private val remoteSyncSource: MoviesSyncRemoteDataSource,
@@ -20,10 +21,8 @@ internal class GetListsMoviesWatchlistUseCase(
             page = page,
             limit = limit,
             extended = "full,cloud9,colors,streaming_ids",
-            sort = "added",
-        ).sortedByDescending {
-            it.listedAt
-        }.asyncMap {
+            sorting = Sorting.RecentlyAdded,
+        ).asyncMap {
             Movie.fromDto(it.movie)
         }
 

@@ -1,12 +1,12 @@
 package tv.trakt.trakt.core.home.sections.watchlist.usecases
 
+import tv.trakt.trakt.common.core.user.data.local.watchlist.UserWatchlistLocalDataSource
+import tv.trakt.trakt.common.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
-import tv.trakt.trakt.core.user.data.local.watchlist.UserWatchlistLocalDataSource
-import tv.trakt.trakt.core.user.data.local.watchlist.minimal.UserWatchlistMinimalLocalDataSource
 
 internal class AddHomeHistoryUseCase(
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,

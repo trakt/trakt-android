@@ -20,11 +20,12 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
-import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
@@ -103,7 +104,7 @@ private fun ContentList(
         itemsIndexed(
             items = items(),
             key = { _, item -> item.ids.trakt.value },
-        ) { index, item ->
+        ) { _, item ->
             HorizontalMediaCard(
                 title = item.title,
                 containerImageUrl = item.images?.getFanartUrl(),
@@ -111,9 +112,16 @@ private fun ContentList(
                 paletteColor = item.colors?.colors?.second,
                 onClick = { onClick(item) },
                 footerContent = {
-                    item.runtime?.let {
-                        InfoChip(
-                            text = rememberDurationFormat(it.inWholeMinutes),
+                    Column(
+                        verticalArrangement = spacedBy(1.dp),
+                    ) {
+                        Text(
+                            text = item.yearString +
+                                "  •  ${rememberDurationFormat(item.runtime?.inWholeMinutes)}",
+                            style = TraktTheme.typography.cardTitle,
+                            color = TraktTheme.colors.textPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 },

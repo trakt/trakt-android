@@ -1,6 +1,7 @@
 package tv.trakt.trakt.app.core.sync.data.remote.shows
 
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.ProgressShowDto
 import tv.trakt.trakt.common.networking.SyncAddHistoryResponseDto
 import tv.trakt.trakt.common.networking.WatchlistShowDto
@@ -15,7 +16,7 @@ internal interface ShowsSyncRemoteDataSource {
     ): List<ProgressShowDto>
 
     suspend fun getWatchlist(
-        sort: String = "rank",
+        sorting: Sorting = Sorting.Default,
         page: Int? = null,
         limit: Int? = null,
         extended: String? = null,

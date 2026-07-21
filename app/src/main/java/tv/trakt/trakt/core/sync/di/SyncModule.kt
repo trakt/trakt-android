@@ -4,6 +4,7 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
+import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.core.sync.data.remote.episodes.EpisodesSyncApiClient
 import tv.trakt.trakt.core.sync.data.remote.episodes.EpisodesSyncRemoteDataSource
 import tv.trakt.trakt.core.sync.data.remote.movies.MoviesSyncApiClient
@@ -17,7 +18,6 @@ import tv.trakt.trakt.core.sync.usecases.UpdateMovieWatchlistUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowFavoritesUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowWatchlistUseCase
-import tv.trakt.trakt.core.user.CollectionStateProvider
 
 internal val syncModule = module {
     singleOf(::ShowsSyncApiClient) { bind<ShowsSyncRemoteDataSource>() }

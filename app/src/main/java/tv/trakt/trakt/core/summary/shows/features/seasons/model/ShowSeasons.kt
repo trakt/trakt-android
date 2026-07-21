@@ -3,9 +3,9 @@ package tv.trakt.trakt.core.summary.shows.features.seasons.model
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.sync.model.ProgressItem.ShowItem
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.model.Season
-import tv.trakt.trakt.core.sync.model.ProgressItem.ShowItem
 
 @Immutable
 internal data class ShowSeasons(

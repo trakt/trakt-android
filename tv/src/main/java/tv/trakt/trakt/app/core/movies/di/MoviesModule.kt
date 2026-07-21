@@ -66,30 +66,35 @@ internal val moviesModule = module {
             getRecommendedMoviesUseCase = get(),
             sessionManager = get(),
             appLifecycleProvider = get(),
+            collectionStateProvider = get(),
         )
     }
 
     viewModel {
         MoviesTrendingViewAllViewModel(
             getItemsUseCase = get(),
+            collectionStateProvider = get(),
         )
     }
 
     viewModel {
         MoviesPopularViewAllViewModel(
             getItemsUseCase = get(),
+            collectionStateProvider = get(),
         )
     }
 
     viewModel {
         MoviesAnticipatedViewAllViewModel(
             getItemsUseCase = get(),
+            collectionStateProvider = get(),
         )
     }
 
     viewModel {
         MoviesRecommendedViewAllViewModel(
             getItemsUseCase = get(),
+            collectionStateProvider = get(),
         )
     }
 }

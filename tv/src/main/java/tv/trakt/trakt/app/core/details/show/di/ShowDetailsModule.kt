@@ -105,6 +105,7 @@ internal val showDetailsModule = module {
             remoteShowsSource = get(),
             remoteEpisodesSource = get(),
             localEpisodeSource = get(),
+            loadUserProgressUseCase = get(),
         )
     }
 
@@ -125,8 +126,12 @@ internal val showDetailsModule = module {
             getSeasonsUseCase = get(),
             watchlistUseCase = get(),
             historyUseCase = get(),
+            progressUpdates = get(),
             sessionManager = get(),
             tutorialsManager = get(),
+            loadUserProgressUseCase = get(),
+            loadUserWatchlistUseCase = get(),
+            watchlistUpdates = get(),
         )
     }
 }

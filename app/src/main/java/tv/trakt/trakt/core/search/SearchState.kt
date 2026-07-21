@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.search
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
+import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
@@ -10,7 +11,6 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.model.SearchItem
-import tv.trakt.trakt.core.user.UserCollectionState
 
 @Immutable
 internal data class SearchState(

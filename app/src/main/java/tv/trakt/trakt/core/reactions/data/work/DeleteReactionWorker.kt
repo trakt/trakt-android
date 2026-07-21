@@ -12,9 +12,9 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import tv.trakt.trakt.analytics.crashlytics.recordError
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.analytics.Analytics
+import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
 import tv.trakt.trakt.core.reactions.usecases.DeleteCommentReactionUseCase
 import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase

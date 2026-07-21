@@ -27,7 +27,6 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.app.common.ui.EpisodeProgressBar
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.chips.FinaleChip
-import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.chips.PremiereChip
 import tv.trakt.trakt.app.common.ui.mediacards.EpisodeSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
@@ -227,30 +226,20 @@ private fun ContentShowListItem(
                     item.progress.nextEpisode?.isFinale(item.progress.isLatestAired) == true -> FinaleChip()
                 }
 
-                Row(
-                    horizontalArrangement = spacedBy(2.dp),
-                ) {
-                    val runtime = item.progress.nextEpisode?.runtime?.inWholeMinutes
-                    if (runtime != null) {
-                        InfoChip(
-                            text = rememberDurationFormat(runtime),
-                            containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
-                        )
-                    }
-
-                    val remainingEpisodes = remember(item.progress.completed, item.progress.aired) {
-                        item.progress.remainingEpisodes
-                    }
-                    val remainingPercent = remember(item.progress.completed, item.progress.aired) {
-                        item.progress.remainingPercent
-                    }
-
-                    EpisodeProgressBar(
-                        startText = stringResource(R.string.tag_text_remaining_episodes, remainingEpisodes),
-                        containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
-                        progress = remainingPercent,
-                    )
+                val remainingEpisodes = remember(item.progress.completed, item.progress.aired) {
+                    item.progress.remainingEpisodes
                 }
+
+                val remainingPercent = remember(item.progress.completed, item.progress.aired) {
+                    item.progress.remainingPercent
+                }
+
+                EpisodeProgressBar(
+                    startText = rememberDurationFormat(item.progress.nextEpisode?.runtime?.inWholeMinutes),
+                    endText = stringResource(R.string.tag_text_remaining_episodes, remainingEpisodes),
+                    containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
+                    progress = remainingPercent,
+                )
             }
         },
         footerContent = {

@@ -66,30 +66,35 @@ internal val showsModule = module {
             getRecommendedShowsUseCase = get(),
             sessionManager = get(),
             appLifecycleProvider = get(),
+            collectionStateProvider = get(),
         )
     }
 
     viewModel {
         ShowsTrendingViewAllViewModel(
             getItemsUseCase = get(),
+            collectionStateProvider = get(),
         )
     }
 
     viewModel {
         ShowsPopularViewAllViewModel(
             getItemsUseCase = get(),
+            collectionStateProvider = get(),
         )
     }
 
     viewModel {
         ShowsAnticipatedViewAllViewModel(
             getItemsUseCase = get(),
+            collectionStateProvider = get(),
         )
     }
 
     viewModel {
         ShowsRecommendedViewAllViewModel(
             getItemsUseCase = get(),
+            collectionStateProvider = get(),
         )
     }
 }

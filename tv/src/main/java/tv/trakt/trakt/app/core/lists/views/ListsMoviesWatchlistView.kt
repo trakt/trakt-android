@@ -12,12 +12,13 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
-import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalViewAllCard
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_SECTION_LIMIT
@@ -106,9 +107,16 @@ private fun ContentList(
                 paletteColor = item.colors?.colors?.second,
                 onClick = { onClick(item) },
                 footerContent = {
-                    item.runtime?.let {
-                        InfoChip(
-                            text = rememberDurationFormat(it.inWholeMinutes),
+                    Column(
+                        verticalArrangement = spacedBy(1.dp),
+                    ) {
+                        Text(
+                            text = item.yearString +
+                                "  •  ${rememberDurationFormat(item.runtime?.inWholeMinutes)}",
+                            style = TraktTheme.typography.cardTitle,
+                            color = TraktTheme.colors.textPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 },

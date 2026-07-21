@@ -9,6 +9,9 @@ import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.pagination.Pagination
+import tv.trakt.trakt.common.model.sorting.SortOrder
+import tv.trakt.trakt.common.model.sorting.SortType
+import tv.trakt.trakt.common.model.sorting.Sorting
 
 private val SortComparator =
     compareByDescending<WatchlistItem> { it.released }
@@ -25,7 +28,10 @@ internal class GetHomeMoviesWatchlistItemsUseCase(
             page = pagination.page,
             limit = pagination.limit,
             extended = "full,cloud9,colors,streaming_ids",
-            sort = "released",
+            sorting = Sorting(
+                type = SortType.Released,
+                order = SortOrder.Desc,
+            ),
             hide = "unreleased",
         ).filter {
             !it.movie.released.isNullOrBlank() && it.movie.released!! <= nowDay
