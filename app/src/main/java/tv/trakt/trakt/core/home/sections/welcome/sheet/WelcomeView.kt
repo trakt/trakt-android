@@ -1,6 +1,5 @@
 package tv.trakt.trakt.core.home.sections.welcome.sheet
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -340,12 +339,6 @@ private fun ImportTvTimeCard(
             color = TraktTheme.colors.textPrimary,
         )
 
-        Text(
-            text = stringResource(R.string.welcome_tvtime_liberator_body),
-            style = TraktTheme.typography.paragraphSmall,
-            color = Shade200,
-        )
-
         Column(
             verticalArrangement = spacedBy(4.dp),
             modifier = Modifier
@@ -354,26 +347,6 @@ private fun ImportTvTimeCard(
             PrimaryButton(
                 text = stringResource(R.string.welcome_tvtime_import_cta),
                 onClick = onImportClick,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-            )
-
-            PrimaryButton(
-                text = stringResource(R.string.welcome_tvtime_liberator_cta),
-                onClick = onLiberatorClick,
-                border = BorderStroke(width = 1.dp, color = TraktTheme.colors.textPrimary),
-                containerColor = Color.Transparent,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-            )
-
-            PrimaryButton(
-                text = stringResource(R.string.welcome_tvtime_gdpr_cta),
-                onClick = onGdprClick,
-                border = BorderStroke(width = 1.dp, color = TraktTheme.colors.textPrimary),
-                containerColor = Color.Transparent,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp),

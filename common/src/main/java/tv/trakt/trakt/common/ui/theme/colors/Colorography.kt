@@ -30,6 +30,7 @@ val Shade930 = Color(0xFF0F0E11)
 val Shade940 = Color(0xFF09090C)
 
 // Purple
+val Purple40 = Color(0xFFFDEDFE)
 val Purple50 = Color(0xFFFAF1FF)
 val Purple60 = Color(0xFFF7E9FE)
 val Purple70 = Color(0xFFF5E2FE)

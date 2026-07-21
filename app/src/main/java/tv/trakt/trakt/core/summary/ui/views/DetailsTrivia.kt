@@ -175,6 +175,7 @@ private fun GetVipView(onVipClick: () -> Unit) {
 
         VipChip(
             text = stringResource(R.string.badge_text_get_vip),
+            color = TraktTheme.colors.accent,
             onClick = onVipClick,
         )
     }
