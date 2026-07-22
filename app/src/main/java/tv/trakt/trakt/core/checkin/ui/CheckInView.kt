@@ -262,7 +262,7 @@ private fun ExpandedView(
                     .padding(vertical = 2.dp),
             ) {
                 Text(
-                    text = stringResource(R.string.button_text_checkin).uppercaseWords(),
+                    text = stringResource(R.string.button_text_checkin),
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.cardTitle.copy(
                         fontWeight = W400,
