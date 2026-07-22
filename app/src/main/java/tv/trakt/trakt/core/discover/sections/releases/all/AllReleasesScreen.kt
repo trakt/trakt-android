@@ -312,6 +312,12 @@ private fun AllReleasesScreen(
         }
     }
 
+    val atTop by remember {
+        derivedStateOf {
+            gridState.firstVisibleItemIndex == 0 && gridState.firstVisibleItemScrollOffset == 0
+        }
+    }
+
     val focusedDate by remember(itemsKeys) {
         derivedStateOf {
             val firstVisibleIndex = gridState.firstVisibleItemIndex
@@ -481,6 +487,7 @@ private fun AllReleasesScreen(
 
             CalendarControlsView(
                 enabled = !state.loading.isLoading,
+                expanded = atTop,
                 startDate = state.selectedStartDay,
                 focusedDate = focusedDate,
                 lastTapFocusedDate = lastTapFocusedDay,

@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.calendar.ui.controls
 
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -61,6 +62,7 @@ internal fun CalendarControlsView(
     availableDates: ImmutableSet<LocalDate>? = null,
     availableItems: ImmutableMap<LocalDate, ImmutableList<CalendarItem>>? = null,
     enabled: Boolean = false,
+    expanded: Boolean = true,
     onDayClick: (LocalDate) -> Unit = {},
     onTodayClick: () -> Unit = {},
     onNextWeekClick: () -> Unit = {},
@@ -73,52 +75,55 @@ internal fun CalendarControlsView(
                 color = TraktTheme.colors.dialogContainer,
                 shape = DefaultCardShape,
             )
-            .padding(top = 16.dp, bottom = 12.dp)
+            .padding(top = 12.dp, bottom = 11.dp)
             .padding(horizontal = 12.dp),
     ) {
-        Row(
-            horizontalArrangement = spacedBy(8.dp),
-            verticalAlignment = CenterVertically,
-            modifier = Modifier
-                .align(End),
+        AnimatedVisibility(
+            visible = expanded,
+            modifier = Modifier.align(End),
         ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_chevron_right),
-                tint = TraktTheme.colors.textPrimary,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(24.dp)
-                    .rotate(180F)
-                    .onClick(throttle = false) {
-                        onPreviousWeekClick()
-                    },
-            )
-            GhostButton(
-                text = stringResource(R.string.button_text_reset_calendar_period),
-                onClick = { onTodayClick() },
-                fillWidth = false,
-                uppercase = false,
-                modifier = Modifier
-                    .height(24.dp),
-            )
-            Icon(
-                painter = painterResource(R.drawable.ic_chevron_right),
-                tint = TraktTheme.colors.textPrimary,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(24.dp)
-                    .onClick(throttle = false) {
-                        onNextWeekClick()
-                    },
-            )
+            Row(
+                horizontalArrangement = spacedBy(8.dp),
+                verticalAlignment = CenterVertically,
+                modifier = Modifier.padding(bottom = 8.dp),
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_chevron_right),
+                    tint = TraktTheme.colors.textPrimary,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .rotate(180F)
+                        .onClick(throttle = false) {
+                            onPreviousWeekClick()
+                        },
+                )
+                GhostButton(
+                    text = stringResource(R.string.button_text_reset_calendar_period),
+                    onClick = { onTodayClick() },
+                    fillWidth = false,
+                    uppercase = false,
+                    modifier = Modifier
+                        .height(24.dp),
+                )
+                Icon(
+                    painter = painterResource(R.drawable.ic_chevron_right),
+                    tint = TraktTheme.colors.textPrimary,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .onClick(throttle = false) {
+                            onNextWeekClick()
+                        },
+                )
+            }
         }
 
         Row(
             verticalAlignment = CenterVertically,
             horizontalArrangement = spacedBy(4.dp),
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 12.dp),
+                .fillMaxWidth(),
         ) {
             for (day in 0..6) {
                 val date = remember(startDate) {
@@ -222,7 +227,7 @@ private fun DayRowItem(
                 .capitalize(),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.meta.copy(
-                fontSize = 12.sp,
+                fontSize = 11.sp,
             ),
             maxLines = 1,
             modifier = Modifier
@@ -233,7 +238,7 @@ private fun DayRowItem(
             text = itemDate.dayOfMonth.toString(),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.meta.copy(
-                fontSize = 14.sp,
+                fontSize = 13.sp,
                 fontWeight = W800,
             ),
             maxLines = 1,
@@ -247,7 +252,7 @@ private fun DayRowItem(
                 .capitalize(),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.meta.copy(
-                fontSize = 12.sp,
+                fontSize = 11.sp,
             ),
             maxLines = 1,
             modifier = Modifier
@@ -331,6 +336,7 @@ private fun Preview3() {
             startDate = now.minusDays(3L),
             focusedDate = now.minusDays(2L),
             enabled = true,
+            expanded = false,
             availableDates = persistentSetOf(
                 now.minusDays(2L),
                 now,
