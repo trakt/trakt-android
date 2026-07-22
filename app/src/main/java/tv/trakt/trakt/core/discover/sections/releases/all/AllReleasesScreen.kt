@@ -113,7 +113,8 @@ import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.time.Duration.Companion.milliseconds
 
-private const val MIN_ALPHA = 0.25F
+private const val MinAlpha = 0.25F
+// private val ControlsCollapseHeight = 40.dp
 
 @Composable
 internal fun AllReleasesScreen(
@@ -286,20 +287,9 @@ private fun AllReleasesScreen(
     onFiltersClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
-    val topOffset = 39.dp
-    val scrollOffset = with(LocalDensity.current) { topOffset.toPx().toInt() }
-
-    val contentPadding = PaddingValues(
-        start = TraktTheme.spacing.mainPageHorizontalSpace,
-        end = TraktTheme.spacing.mainPageHorizontalSpace,
-        top = WindowInsets.statusBars.asPaddingValues()
-            .calculateTopPadding()
-            .plus(topOffset + 170.dp),
-        bottom = WindowInsets.navigationBars.asPaddingValues()
-            .calculateBottomPadding()
-            .plus(TraktTheme.size.navigationBarHeight)
-            .plus(TraktTheme.spacing.mainPageBottomSpace),
-    )
+    val scrollOffset = with(LocalDensity.current) {
+        70.dp.toPx().toInt()
+    }
 
     val gridState = rememberLazyGridState()
     val scrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
@@ -317,6 +307,18 @@ private fun AllReleasesScreen(
             gridState.firstVisibleItemIndex == 0 && gridState.firstVisibleItemScrollOffset == 0
         }
     }
+
+    val contentPadding = PaddingValues(
+        start = TraktTheme.spacing.mainPageHorizontalSpace,
+        end = TraktTheme.spacing.mainPageHorizontalSpace,
+        top = WindowInsets.statusBars.asPaddingValues()
+            .calculateTopPadding()
+            .plus(202.dp),
+        bottom = WindowInsets.navigationBars.asPaddingValues()
+            .calculateBottomPadding()
+            .plus(TraktTheme.size.navigationBarHeight)
+            .plus(TraktTheme.spacing.mainPageBottomSpace),
+    )
 
     val focusedDate by remember(itemsKeys) {
         derivedStateOf {
@@ -407,7 +409,7 @@ private fun AllReleasesScreen(
             modifier = Modifier
                 .alpha(
                     (1F - (dragOffset.floatValue.absoluteValue / dragLimit))
-                        .coerceIn(MIN_ALPHA, 1F),
+                        .coerceIn(MinAlpha, 1F),
                 )
                 .pointerInput(Unit) {
                     awaitEachGesture {
@@ -594,7 +596,7 @@ private fun AllReleasesContent(
             modifier = modifier
                 .alpha(
                     when {
-                        state.loading.isLoading -> MIN_ALPHA
+                        state.loading.isLoading -> MinAlpha
                         else -> if (animateIn) animateInAlpha else 0F
                     },
                 ),
