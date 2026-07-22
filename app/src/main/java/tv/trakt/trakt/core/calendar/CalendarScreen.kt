@@ -17,8 +17,10 @@ import androidx.compose.foundation.gestures.horizontalDrag
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -84,6 +86,7 @@ import tv.trakt.trakt.common.helpers.extensions.fullDayFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.core.calendar.model.CalendarItem
@@ -92,8 +95,11 @@ import tv.trakt.trakt.core.calendar.model.CalendarItem.MovieItem
 import tv.trakt.trakt.core.calendar.ui.CalendarEpisodeItemView
 import tv.trakt.trakt.core.calendar.ui.CalendarMovieItemView
 import tv.trakt.trakt.core.calendar.ui.controls.CalendarControlsView
+import tv.trakt.trakt.core.filters.GlobalFiltersSheet
+import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
@@ -125,6 +131,7 @@ internal fun CalendarScreen(
 
     var dateSelectionSheet by remember { mutableStateOf<CalendarItem?>(null) }
     var confirmRemoveSheet by remember { mutableStateOf<CalendarItem?>(null) }
+    var filtersSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(
         state.navigateShow,
@@ -193,6 +200,9 @@ internal fun CalendarScreen(
             if (state.loading.isLoading) return@CalendarScreen
             confirmRemoveSheet = item
         },
+        onFiltersClick = {
+            filtersSheet = true
+        },
         onBackClick = onNavigateBack,
     )
 
@@ -243,6 +253,18 @@ internal fun CalendarScreen(
             confirmRemoveSheet?.title.orEmpty(),
         ),
     )
+
+    GlobalFiltersSheet(
+        active = filtersSheet,
+        options = GlobalFiltersOptions(
+            global = false,
+            initial = state.filter,
+        ),
+        onUpdate = viewModel::setFilter,
+        onDismiss = {
+            filtersSheet = false
+        },
+    )
 }
 
 @Composable
@@ -259,21 +281,10 @@ private fun CalendarScreen(
     onCheckClick: (CalendarItem) -> Unit = {},
     onCheckLongClick: (CalendarItem) -> Unit = {},
     onRemoveClick: (CalendarItem) -> Unit = {},
+    onFiltersClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
-    val scrollOffset = with(LocalDensity.current) { 48.dp.toPx().toInt() }
-
-    val contentPadding = PaddingValues(
-        start = TraktTheme.spacing.mainPageHorizontalSpace,
-        end = TraktTheme.spacing.mainPageHorizontalSpace,
-        top = WindowInsets.statusBars.asPaddingValues()
-            .calculateTopPadding()
-            .plus(176.dp),
-        bottom = WindowInsets.navigationBars.asPaddingValues()
-            .calculateBottomPadding()
-            .plus(TraktTheme.size.navigationBarHeight)
-            .plus(TraktTheme.spacing.mainPageBottomSpace),
-    )
+    val scrollOffset = with(LocalDensity.current) { 70.dp.toPx().toInt() }
 
     val gridState = rememberLazyGridState()
     val scrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
@@ -285,6 +296,24 @@ private fun CalendarScreen(
             state.items?.keys?.toList() ?: EmptyImmutableList
         }
     }
+
+    val atTop by remember {
+        derivedStateOf {
+            gridState.firstVisibleItemIndex == 0 && gridState.firstVisibleItemScrollOffset == 0
+        }
+    }
+
+    val contentPadding = PaddingValues(
+        start = TraktTheme.spacing.mainPageHorizontalSpace,
+        end = TraktTheme.spacing.mainPageHorizontalSpace,
+        top = WindowInsets.statusBars.asPaddingValues()
+            .calculateTopPadding()
+            .plus(202.dp),
+        bottom = WindowInsets.navigationBars.asPaddingValues()
+            .calculateBottomPadding()
+            .plus(TraktTheme.size.navigationBarHeight)
+            .plus(TraktTheme.spacing.mainPageBottomSpace),
+    )
 
     val focusedDate by remember(itemsKeys) {
         derivedStateOf {
@@ -413,50 +442,11 @@ private fun CalendarScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(100.dp)
+                .height(132.dp)
                 .background(TraktTheme.colors.backgroundPrimary),
         )
 
-        CalendarControlsView(
-            enabled = !state.loading.isLoading,
-            startDate = state.selectedStartDay,
-            focusedDate = focusedDate,
-            lastTapFocusedDate = lastTapFocusedDay,
-            availableItems = state.items,
-            availableDates = remember(state.items) {
-                state.items?.keys
-                    ?.filter { state.items[it]?.isNotEmpty() == true }
-                    ?.toImmutableSet()
-            },
-            onDayClick = { date ->
-                scrollToDay(
-                    scope = scope,
-                    state = state,
-                    date = date,
-                    scrollOffset = scrollOffset,
-                    gridState = gridState,
-                )
-                lastTapFocusedDay = date
-            },
-            onTodayClick = {
-                val today = nowLocalDay()
-                val selectedStartDay = state.selectedStartDay
-                val selectedWeek = selectedStartDay..selectedStartDay.plusDays(6)
-
-                if (today in selectedWeek) {
-                    scrollToDay(
-                        scope = scope,
-                        state = state,
-                        date = today,
-                        scrollOffset = scrollOffset,
-                        gridState = gridState,
-                    )
-                } else {
-                    onTodayClick()
-                }
-            },
-            onNextWeekClick = onNextWeekClick,
-            onPreviousWeekClick = onPreviousWeekClick,
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
@@ -464,9 +454,80 @@ private fun CalendarScreen(
                         .calculateTopPadding(),
                     start = TraktTheme.spacing.mainPageHorizontalSpace,
                     end = TraktTheme.spacing.mainPageHorizontalSpace,
+                ),
+        ) {
+            Row(
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = spacedBy(12.dp),
+                modifier = Modifier
+                    .padding(start = 2.dp, bottom = 12.dp)
+                    .onClick(onClick = onBackClick),
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_back_arrow),
+                    tint = TraktTheme.colors.textPrimary,
+                    contentDescription = null,
                 )
-                .onClick(onClick = {}),
-        )
+                TraktHeader(
+                    title = stringResource(R.string.page_title_calendar),
+                    subtitle = state.filter?.mode?.let {
+                        stringResource(it.displayRes)
+                    } ?: stringResource(MediaMode.Media.displayRes),
+                )
+                Spacer(modifier = Modifier.weight(1F))
+                MediaFilterIcon(
+                    active = state.filter?.isActive == true,
+                    enabled = state.loading.isDone,
+                    onClick = onFiltersClick,
+                )
+            }
+
+            CalendarControlsView(
+                enabled = !state.loading.isLoading,
+                expanded = atTop,
+                startDate = state.selectedStartDay,
+                focusedDate = focusedDate,
+                lastTapFocusedDate = lastTapFocusedDay,
+                availableItems = state.items,
+                availableDates = remember(state.items) {
+                    state.items?.keys
+                        ?.filter { state.items[it]?.isNotEmpty() == true }
+                        ?.toImmutableSet()
+                },
+                onDayClick = { date ->
+                    scrollToDay(
+                        scope = scope,
+                        state = state,
+                        date = date,
+                        scrollOffset = scrollOffset,
+                        gridState = gridState,
+                    )
+                    lastTapFocusedDay = date
+                },
+                onTodayClick = {
+                    val today = nowLocalDay()
+                    val selectedStartDay = state.selectedStartDay
+                    val selectedWeek = selectedStartDay..selectedStartDay.plusDays(6)
+
+                    if (today in selectedWeek) {
+                        scrollToDay(
+                            scope = scope,
+                            state = state,
+                            date = today,
+                            scrollOffset = scrollOffset,
+                            gridState = gridState,
+                        )
+                    } else {
+                        onTodayClick()
+                    }
+                },
+                onNextWeekClick = onNextWeekClick,
+                onPreviousWeekClick = onPreviousWeekClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onClick(onClick = {}),
+            )
+        }
     }
 }
 
@@ -671,8 +732,8 @@ private fun ContentLoadingGrid(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainGridVerticalSpace),
         contentPadding = PaddingValues(
             top = when {
-                isFirstWeekDay -> contentPadding.calculateTopPadding()
-                else -> contentPadding.calculateTopPadding() - 8.dp
+                isFirstWeekDay -> contentPadding.calculateTopPadding() + 8.dp
+                else -> contentPadding.calculateTopPadding() + 8.dp
             },
             bottom = contentPadding.calculateBottomPadding(),
             start = TraktTheme.spacing.mainPageHorizontalSpace,

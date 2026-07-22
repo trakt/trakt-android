@@ -17,6 +17,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.calendar.model.CalendarItem
 import java.time.DayOfWeek.MONDAY
@@ -40,7 +41,10 @@ internal class GetCalendarItemsUseCase(
     private val remoteUserSource: UserCalendarRemoteDataSource,
     private val sessionManager: SessionManager,
 ) {
-    suspend fun getCalendarItems(day: LocalDate): ImmutableMap<LocalDate, ImmutableList<CalendarItem>> {
+    suspend fun getCalendarItems(
+        day: LocalDate,
+        filters: GlobalFilter,
+    ): ImmutableMap<LocalDate, ImmutableList<CalendarItem>> {
         return coroutineScope {
             if (!sessionManager.isAuthenticated()) {
                 return@coroutineScope persistentMapOf()
@@ -54,12 +58,14 @@ internal class GetCalendarItemsUseCase(
                 remoteUserSource.getShowsCalendar(
                     startDate = weekStart.minusDays(DAYS_OFFSET),
                     days = DAYS_RANGE,
+                    filters = filters,
                 )
             }
             val moviesDataAsync = async {
                 remoteUserSource.getMoviesCalendar(
                     startDate = weekStart.minusDays(DAYS_OFFSET),
                     days = DAYS_RANGE,
+                    filters = filters,
                 )
             }
 
@@ -81,8 +87,8 @@ internal class GetCalendarItemsUseCase(
                 }
             }
 
-            val showsData = showsDataAsync.await()
-            val moviesData = moviesDataAsync.await()
+            val showsData = if (filters.mode.isMediaOrShows) showsDataAsync.await() else emptyList()
+            val moviesData = if (filters.mode.isMediaOrMovies) moviesDataAsync.await() else emptyList()
 
             val showsProgress = showsProgressAsync.await()
                 .associateBy { it.showId }
