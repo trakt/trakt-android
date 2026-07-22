@@ -270,7 +270,7 @@ private fun DayRowItem(
                     painter = painterResource(R.drawable.ic_shows_off),
                     tint = TraktTheme.colors.textSecondary,
                     contentDescription = null,
-                    modifier = Modifier.size(9.dp),
+                    modifier = Modifier.size(8.dp),
                 )
             }
             if (moviesCount > 0) {
@@ -278,7 +278,7 @@ private fun DayRowItem(
                     painter = painterResource(R.drawable.ic_movies_off),
                     tint = TraktTheme.colors.textSecondary,
                     contentDescription = null,
-                    modifier = Modifier.size(9.dp),
+                    modifier = Modifier.size(8.dp),
                 )
             }
             val restCount = (episodesCount + moviesCount) - when {
