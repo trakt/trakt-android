@@ -729,6 +729,7 @@
   <string name="heading_branding_default_logos">Світлий фон</string>
   <string name="heading_branding_questions">Запитання?</string>
   <string name="heading_branding_requirements">Вимоги до брендингу</string>
+  <string name="heading_community_apps">Застосунки спільноти</string>
   <string name="heading_connected_apps">Підключені застосунки</string>
   <string name="heading_create_api_application">Створити програму</string>
   <string name="heading_edit_api_application">Редагувати програму</string>
@@ -893,6 +894,7 @@
   <string name="label_stats_screen_time_total">Усього</string>
   <string name="label_stats_shows">Серіали</string>
   <string name="label_streaming_country">Країна</string>
+  <string name="limit_title_connected_apps">Підключені застосунки</string>
   <string name="limit_title_digital_library">Цифрова бібліотека</string>
   <string name="limit_title_offline_library">Офлайн-бібліотека</string>
   <string name="limit_title_personal_lists">Особисті списки</string>
@@ -1827,6 +1829,7 @@
   <string name="tv_time_report_submit_text">Надіслати звіт</string>
   <string name="tv_time_report_success">Дякуємо! Ваш звіт надіслано. Ми розглянемо його.</string>
   <string name="tv_time_report_upload_prompt">Перетягніть ваш експорт TV Time сюди або натисніть, щоб вибрати файли</string>
+  <string name="usage_title_connected_apps">Підключені застосунки</string>
   <string name="usage_title_library">Бібліотека</string>
   <string name="usage_title_lists">Списки</string>
   <string name="validation_text_app_name">Будь ласка, введіть назву програми.</string>
@@ -1875,6 +1878,8 @@
   <string name="vip_feature_title_vip_status">VIP Статус</string>
   <string name="vip_feature_title_yir">Рік у Підсумках</string>
   <string name="vip_text_vip_go_beyond_limits">Перевершіть свої можливості</string>
+  <string name="warning_connected_apps_limit">Ви досягли ліміту підключених застосунків. Оновіть до VIP, щоб підключити більше.</string>
+  <string name="warning_connected_apps_limit_vip">Ви досягли ліміту підключених застосунків</string>
   <string name="warning_prompt_block_user">Заблокувати %s?</string>
   <string name="warning_prompt_block_user_detail">Вони більше не зможуть стежити за вами або бачити вашу активність.</string>
   <string name="warning_prompt_cancel_clear">Відхід звідси зупинить очищення ваших даних. Ви впевнені?</string>

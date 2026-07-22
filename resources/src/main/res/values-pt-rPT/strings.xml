@@ -381,7 +381,7 @@
   <string name="button_text_player_resume">Retomar</string>
   <string name="button_text_player_subtitles_off">Desativar</string>
   <string name="button_text_popular_comments">Populares</string>
-  <string name="button_text_progress_completed">Concluídas</string>
+  <string name="button_text_progress_completed">Em dia</string>
   <string name="button_text_progress_dropped">Deixadas de ver</string>
   <string name="button_text_progress_in_progress">A decorrer</string>
   <string name="button_text_raw_export">Exportar agora</string>
@@ -729,6 +729,7 @@
   <string name="heading_branding_default_logos">Fundo claro</string>
   <string name="heading_branding_questions">Tens dúvidas?</string>
   <string name="heading_branding_requirements">Requisitos de marca</string>
+  <string name="heading_community_apps">Apps da comunidade</string>
   <string name="heading_connected_apps">Apps associadas</string>
   <string name="heading_create_api_application">Criar aplicação</string>
   <string name="heading_edit_api_application">Editar aplicação</string>
@@ -887,12 +888,13 @@
   <string name="label_stats_hours">Horas</string>
   <string name="label_stats_movies">Filmes</string>
   <string name="label_stats_plays">Visualizações</string>
-  <string name="label_stats_previous_streak">Última sequência</string>
+  <string name="label_stats_previous_streak">Sequência anterior</string>
   <string name="label_stats_ratings">Classificações</string>
   <string name="label_stats_screen_time_share">Horas acordado</string>
   <string name="label_stats_screen_time_total">Total</string>
   <string name="label_stats_shows">Séries</string>
   <string name="label_streaming_country">País</string>
+  <string name="limit_title_connected_apps">Apps associadas</string>
   <string name="limit_title_digital_library">Biblioteca digital</string>
   <string name="limit_title_offline_library">Biblioteca offline</string>
   <string name="limit_title_personal_lists">Listas pessoais</string>
@@ -958,7 +960,7 @@
   <string name="list_placeholder_no_filter_results">Que pena, não há resultados. Talvez o filtro tenha sido demasiado restritivo.</string>
   <string name="list_placeholder_no_ratings_activity">Ainda não há atividade. <a>Queres deixar uma classificação?</a></string>
   <string name="list_placeholder_no_review_activity">Ainda não há atividade. <a>Queres deixar uma crítica?</a></string>
-  <string name="list_placeholder_personal_list_empty">Ainda não há nada nesta lista.</string>
+  <string name="list_placeholder_personal_list_empty">Ainda não tens nada aqui.</string>
   <string name="list_placeholder_personal_list_empty_movies">Ainda não há filmes nesta lista.</string>
   <string name="list_placeholder_personal_list_empty_shows">Ainda não há séries nesta lista.</string>
   <string name="list_placeholder_popular_lists">\"%s\" não aparece em nenhuma lista popular.</string>
@@ -1529,7 +1531,7 @@
   <string name="text_stats_time_morning">Manhã</string>
   <string name="text_stats_today">Hoje</string>
   <string name="text_stats_was_last_week">foi %s na semana passada</string>
-  <string name="text_stats_watching_streak">sequência</string>
+  <string name="text_stats_watching_streak">seguidos</string>
   <string name="text_stats_weeks_ago">há %d sem.</string>
   <string name="text_stats_weeks_short">%d sem.</string>
   <string name="text_stream">Streaming</string>
@@ -1827,6 +1829,7 @@
   <string name="tv_time_report_submit_text">Enviar relatório</string>
   <string name="tv_time_report_success">Obrigado! O teu relatório foi enviado. Vamos analisá-lo.</string>
   <string name="tv_time_report_upload_prompt">Arrasta a tua exportação do TV Time para aqui ou clica para escolher os ficheiros</string>
+  <string name="usage_title_connected_apps">Apps associadas</string>
   <string name="usage_title_library">Biblioteca</string>
   <string name="usage_title_lists">Listas</string>
   <string name="validation_text_app_name">Introduz um nome para a aplicação.</string>
@@ -1875,6 +1878,8 @@
   <string name="vip_feature_title_vip_status">Estatuto VIP</string>
   <string name="vip_feature_title_yir">Resumo do ano</string>
   <string name="vip_text_vip_go_beyond_limits">Vai além dos teus limites</string>
+  <string name="warning_connected_apps_limit">Atingiste o limite de apps associadas. Atualiza para VIP para poderes associar mais.</string>
+  <string name="warning_connected_apps_limit_vip">Atingiste o limite de apps associadas</string>
   <string name="warning_prompt_block_user">Bloquear %s?</string>
   <string name="warning_prompt_block_user_detail">Esse utilizador deixará de poder seguir-te e de ver a tua atividade.</string>
   <string name="warning_prompt_cancel_clear">Sair desta página interromperá a limpeza dos teus dados. Tens a certeza?</string>

@@ -729,6 +729,7 @@
   <string name="heading_branding_default_logos">Jasne tło</string>
   <string name="heading_branding_questions">Masz pytania?</string>
   <string name="heading_branding_requirements">Wymagania dotyczące marki</string>
+  <string name="heading_community_apps">Aplikacje społecznościowe</string>
   <string name="heading_connected_apps">Połączone aplikacje</string>
   <string name="heading_create_api_application">Utwórz aplikację</string>
   <string name="heading_edit_api_application">Edytuj aplikację</string>
@@ -893,6 +894,7 @@
   <string name="label_stats_screen_time_total">Łącznie</string>
   <string name="label_stats_shows">Seriale</string>
   <string name="label_streaming_country">Kraj</string>
+  <string name="limit_title_connected_apps">Połączone aplikacje</string>
   <string name="limit_title_digital_library">Biblioteka cyfrowa</string>
   <string name="limit_title_offline_library">Biblioteka offline</string>
   <string name="limit_title_personal_lists">Listy osobiste</string>
@@ -1827,6 +1829,7 @@
   <string name="tv_time_report_submit_text">Wyślij zgłoszenie</string>
   <string name="tv_time_report_success">Dziękujemy! Twoje zgłoszenie zostało wysłane. Sprawdzimy to.</string>
   <string name="tv_time_report_upload_prompt">Upuść swój eksport z TV Time tutaj lub kliknij, aby wybrać pliki</string>
+  <string name="usage_title_connected_apps">Połączone aplikacje</string>
   <string name="usage_title_library">Biblioteka</string>
   <string name="usage_title_lists">Listy</string>
   <string name="validation_text_app_name">Wprowadź nazwę aplikacji.</string>
@@ -1875,6 +1878,8 @@
   <string name="vip_feature_title_vip_status">Status VIP</string>
   <string name="vip_feature_title_yir">Podsumowanie roku</string>
   <string name="vip_text_vip_go_beyond_limits">Przekrocz swoje granice</string>
+  <string name="warning_connected_apps_limit">Osiągnąłeś limit połączonych aplikacji. Przejdź na VIP, aby połączyć więcej.</string>
+  <string name="warning_connected_apps_limit_vip">Osiągnąłeś limit połączonych aplikacji</string>
   <string name="warning_prompt_block_user">Zablokować %s?</string>
   <string name="warning_prompt_block_user_detail">Nie będą już mogli obserwować ciebie ani twojej aktywności.</string>
   <string name="warning_prompt_cancel_clear">Opuszczenie strony spowoduje zatrzymanie usuwania danych. Czy chcesz kontynuować?</string>

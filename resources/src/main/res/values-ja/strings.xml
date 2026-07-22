@@ -729,6 +729,7 @@
   <string name="heading_branding_default_logos">明るい背景</string>
   <string name="heading_branding_questions">ご質問はありますか？</string>
   <string name="heading_branding_requirements">ブランド要件</string>
+  <string name="heading_community_apps">コミュニティアプリ</string>
   <string name="heading_connected_apps">接続済みアプリ</string>
   <string name="heading_create_api_application">アプリケーションを作成</string>
   <string name="heading_edit_api_application">アプリケーションを編集</string>
@@ -893,6 +894,7 @@
   <string name="label_stats_screen_time_total">合計</string>
   <string name="label_stats_shows">番組</string>
   <string name="label_streaming_country">国</string>
+  <string name="limit_title_connected_apps">接続済みアプリ</string>
   <string name="limit_title_digital_library">デジタルライブラリ</string>
   <string name="limit_title_offline_library">オフラインライブラリ</string>
   <string name="limit_title_personal_lists">個人リスト</string>
@@ -1827,6 +1829,7 @@
   <string name="tv_time_report_submit_text">報告を送信</string>
   <string name="tv_time_report_success">ありがとうございます！レポートが送信されました。確認させていただきます。</string>
   <string name="tv_time_report_upload_prompt">TV Timeのエクスポートをここにドロップするか、クリックしてファイルを選択してください</string>
+  <string name="usage_title_connected_apps">接続済みアプリ</string>
   <string name="usage_title_library">ライブラリ</string>
   <string name="usage_title_lists">リスト</string>
   <string name="validation_text_app_name">アプリケーション名を入力してください。</string>
@@ -1875,6 +1878,8 @@
   <string name="vip_feature_title_vip_status">VIPステータス</string>
   <string name="vip_feature_title_yir">年間レビュー</string>
   <string name="vip_text_vip_go_beyond_limits">限界のその先へ</string>
+  <string name="warning_connected_apps_limit">接続済みアプリの上限に達しました。VIPにアップグレードすると、さらに接続できます。</string>
+  <string name="warning_connected_apps_limit_vip">接続済みアプリの上限に達しました</string>
   <string name="warning_prompt_block_user">%sをブロックしますか？</string>
   <string name="warning_prompt_block_user_detail">そのユーザーはあなたをフォローしたり、あなたのアクティビティを閲覧したりできなくなります。</string>
   <string name="warning_prompt_cancel_clear">別の画面に移動すると、データのクリアが停止されます。よろしいですか？</string>

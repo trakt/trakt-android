@@ -729,6 +729,7 @@
   <string name="heading_branding_default_logos">Világos háttér</string>
   <string name="heading_branding_questions">Kérdések?</string>
   <string name="heading_branding_requirements">Márkaépítési követelmények</string>
+  <string name="heading_community_apps">Közösségi alkalmazások</string>
   <string name="heading_connected_apps">Csatlakoztatott alkalmazások</string>
   <string name="heading_create_api_application">Alkalmazás létrehozása</string>
   <string name="heading_edit_api_application">Alkalmazás szerkesztése</string>
@@ -893,6 +894,7 @@
   <string name="label_stats_screen_time_total">Összesen</string>
   <string name="label_stats_shows">Sorozatok</string>
   <string name="label_streaming_country">Ország</string>
+  <string name="limit_title_connected_apps">Csatlakoztatott alkalmazások</string>
   <string name="limit_title_digital_library">Digitális könyvtár</string>
   <string name="limit_title_offline_library">Offline könyvtár</string>
   <string name="limit_title_personal_lists">Személyes listák</string>
@@ -1827,6 +1829,7 @@
   <string name="tv_time_report_submit_text">Jelentés elküldése</string>
   <string name="tv_time_report_success">Köszönjük! Jelentésed elküldve. Megnézzük.</string>
   <string name="tv_time_report_upload_prompt">Húzd ide a TV Time exportodat, vagy kattints a fájlok kiválasztásához</string>
+  <string name="usage_title_connected_apps">Csatlakoztatott alkalmazások</string>
   <string name="usage_title_library">Könyvtár</string>
   <string name="usage_title_lists">Listák</string>
   <string name="validation_text_app_name">Kérjük, adj meg egy alkalmazásnevet.</string>
@@ -1875,6 +1878,8 @@
   <string name="vip_feature_title_vip_status">VIP státusz</string>
   <string name="vip_feature_title_yir">Éves összefoglaló</string>
   <string name="vip_text_vip_go_beyond_limits">Lépd át a határaidat</string>
+  <string name="warning_connected_apps_limit">Elérte a csatlakoztatott alkalmazásokra vonatkozó korlátot. Frissítsen VIP-re, hogy többet csatlakoztathasson.</string>
+  <string name="warning_connected_apps_limit_vip">Elérte a csatlakoztatott alkalmazásokra vonatkozó korlátot</string>
   <string name="warning_prompt_block_user">Blokkolod %s nevű felhasználót?</string>
   <string name="warning_prompt_block_user_detail">Nem tudnak többé követni, és nem láthatják a tevékenységedet.</string>
   <string name="warning_prompt_cancel_clear">Ha elnavigálsz az oldalról, az adatok törlése megszakad. Biztosan kilépsz?</string>

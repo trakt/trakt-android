@@ -729,6 +729,7 @@
   <string name="heading_branding_default_logos">Fundo Claro</string>
   <string name="heading_branding_questions">Perguntas?</string>
   <string name="heading_branding_requirements">Requisitos de Marca</string>
+  <string name="heading_community_apps">Aplicativos da Comunidade</string>
   <string name="heading_connected_apps">Aplicativos Conectados</string>
   <string name="heading_create_api_application">Criar aplicativo</string>
   <string name="heading_edit_api_application">Editar aplicativo</string>
@@ -893,6 +894,7 @@
   <string name="label_stats_screen_time_total">Total</string>
   <string name="label_stats_shows">Séries</string>
   <string name="label_streaming_country">País</string>
+  <string name="limit_title_connected_apps">Aplicativos Conectados</string>
   <string name="limit_title_digital_library">Biblioteca Digital</string>
   <string name="limit_title_offline_library">Biblioteca Offline</string>
   <string name="limit_title_personal_lists">Listas Pessoais</string>
@@ -1827,6 +1829,7 @@
   <string name="tv_time_report_submit_text">Enviar relatório</string>
   <string name="tv_time_report_success">Obrigado! Seu relatório foi enviado. Daremos uma olhada.</string>
   <string name="tv_time_report_upload_prompt">Arraste sua exportação do TV Time aqui, ou clique para escolher os arquivos</string>
+  <string name="usage_title_connected_apps">Aplicativos Conectados</string>
   <string name="usage_title_library">Biblioteca</string>
   <string name="usage_title_lists">Listas</string>
   <string name="validation_text_app_name">Por favor, insira um nome de aplicativo.</string>
@@ -1875,6 +1878,8 @@
   <string name="vip_feature_title_vip_status">Status VIP</string>
   <string name="vip_feature_title_yir">Retrospectiva do Ano</string>
   <string name="vip_text_vip_go_beyond_limits">Vá além dos seus limites</string>
+  <string name="warning_connected_apps_limit">Você atingiu o seu limite de aplicativos conectados. Faça upgrade para VIP para conectar mais.</string>
+  <string name="warning_connected_apps_limit_vip">Você atingiu o seu limite de aplicativos conectados</string>
   <string name="warning_prompt_block_user">Bloquear %s?</string>
   <string name="warning_prompt_block_user_detail">Eles não poderão mais seguir você ou ver sua atividade.</string>
   <string name="warning_prompt_cancel_clear">Sair interromperá a limpeza dos seus dados. Tem certeza?</string>

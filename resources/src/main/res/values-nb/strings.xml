@@ -729,6 +729,7 @@
   <string name="heading_branding_default_logos">Lys bakgrunn</string>
   <string name="heading_branding_questions">Spørsmål?</string>
   <string name="heading_branding_requirements">Merkevarekrav</string>
+  <string name="heading_community_apps">Fellesskapsapper</string>
   <string name="heading_connected_apps">Tilkoblede apper</string>
   <string name="heading_create_api_application">Opprett applikasjon</string>
   <string name="heading_edit_api_application">Rediger applikasjon</string>
@@ -893,6 +894,7 @@
   <string name="label_stats_screen_time_total">Totalt</string>
   <string name="label_stats_shows">Serier</string>
   <string name="label_streaming_country">Land</string>
+  <string name="limit_title_connected_apps">Tilkoblede apper</string>
   <string name="limit_title_digital_library">Digitalt bibliotek</string>
   <string name="limit_title_offline_library">Frakoblet bibliotek</string>
   <string name="limit_title_personal_lists">Personlige lister</string>
@@ -1827,6 +1829,7 @@
   <string name="tv_time_report_submit_text">Send rapport</string>
   <string name="tv_time_report_success">Takk! Rapporten din er sendt. Vi tar en titt.</string>
   <string name="tv_time_report_upload_prompt">Dra TV Time-eksportfilen din hit, eller klikk for å velge filer</string>
+  <string name="usage_title_connected_apps">Tilkoblede apper</string>
   <string name="usage_title_library">Bibliotek</string>
   <string name="usage_title_lists">Lister</string>
   <string name="validation_text_app_name">Vennligst oppgi et applikasjonsnavn.</string>
@@ -1875,6 +1878,8 @@
   <string name="vip_feature_title_vip_status">VIP-status</string>
   <string name="vip_feature_title_yir">Året i retrospekt</string>
   <string name="vip_text_vip_go_beyond_limits">Gå utover dine grenser</string>
+  <string name="warning_connected_apps_limit">Du har nådd grensen for tilkoblede apper. Oppgrader til VIP for å koble til flere.</string>
+  <string name="warning_connected_apps_limit_vip">Du har nådd grensen for tilkoblede apper</string>
   <string name="warning_prompt_block_user">Blokker %s?</string>
   <string name="warning_prompt_block_user_detail">De vil ikke lenger kunne følge deg eller se aktiviteten din.</string>
   <string name="warning_prompt_cancel_clear">Navigering bort vil stoppe tømmingen av dataene dine. Er du sikker?</string>

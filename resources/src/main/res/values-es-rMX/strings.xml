@@ -729,6 +729,7 @@
   <string name="heading_branding_default_logos">Fondo claro</string>
   <string name="heading_branding_questions">¿Preguntas?</string>
   <string name="heading_branding_requirements">Requisitos de marca</string>
+  <string name="heading_community_apps">Aplicaciones de la comunidad</string>
   <string name="heading_connected_apps">Aplicaciones conectadas</string>
   <string name="heading_create_api_application">Crear aplicación</string>
   <string name="heading_edit_api_application">Editar aplicación</string>
@@ -893,6 +894,7 @@
   <string name="label_stats_screen_time_total">Total</string>
   <string name="label_stats_shows">Series</string>
   <string name="label_streaming_country">País</string>
+  <string name="limit_title_connected_apps">Aplicaciones conectadas</string>
   <string name="limit_title_digital_library">Biblioteca digital</string>
   <string name="limit_title_offline_library">Biblioteca sin conexión</string>
   <string name="limit_title_personal_lists">Listas personales</string>
@@ -1827,6 +1829,7 @@
   <string name="tv_time_report_submit_text">Enviar reporte</string>
   <string name="tv_time_report_success">¡Gracias! Tu reporte ha sido enviado. Le echaremos un vistazo.</string>
   <string name="tv_time_report_upload_prompt">Arrastra tu exportación de TV Time aquí, o haz clic para elegir archivos</string>
+  <string name="usage_title_connected_apps">Aplicaciones conectadas</string>
   <string name="usage_title_library">Biblioteca</string>
   <string name="usage_title_lists">Listas</string>
   <string name="validation_text_app_name">Ingresa un nombre de aplicación.</string>
@@ -1875,6 +1878,8 @@
   <string name="vip_feature_title_vip_status">Estado VIP</string>
   <string name="vip_feature_title_yir">Resumen Anual</string>
   <string name="vip_text_vip_go_beyond_limits">Supera tus límites</string>
+  <string name="warning_connected_apps_limit">Has alcanzado tu límite de aplicaciones conectadas. Actualiza a VIP para conectar más.</string>
+  <string name="warning_connected_apps_limit_vip">Has alcanzado tu límite de aplicaciones conectadas</string>
   <string name="warning_prompt_block_user">¿Bloquear a %s?</string>
   <string name="warning_prompt_block_user_detail">Ya no podrán seguirte ni ver tu actividad.</string>
   <string name="warning_prompt_cancel_clear">Si sales, se detendrá la eliminación de tus datos. ¿Estás seguro?</string>

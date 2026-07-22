@@ -729,6 +729,7 @@
   <string name="heading_branding_default_logos">Lichte achtergrond</string>
   <string name="heading_branding_questions">Vragen?</string>
   <string name="heading_branding_requirements">Brandingvereisten</string>
+  <string name="heading_community_apps">Community-apps</string>
   <string name="heading_connected_apps">Verbonden apps</string>
   <string name="heading_create_api_application">Applicatie aanmaken</string>
   <string name="heading_edit_api_application">Applicatie bewerken</string>
@@ -893,6 +894,7 @@
   <string name="label_stats_screen_time_total">Totaal</string>
   <string name="label_stats_shows">Series</string>
   <string name="label_streaming_country">Land</string>
+  <string name="limit_title_connected_apps">Verbonden apps</string>
   <string name="limit_title_digital_library">Digitale bibliotheek</string>
   <string name="limit_title_offline_library">Offline bibliotheek</string>
   <string name="limit_title_personal_lists">Persoonlijke lijsten</string>
@@ -1827,6 +1829,7 @@
   <string name="tv_time_report_submit_text">Rapport verzenden</string>
   <string name="tv_time_report_success">Bedankt! Je rapport is verzonden. We zullen ernaar kijken.</string>
   <string name="tv_time_report_upload_prompt">Sleep je TV Time export hierheen, of klik om bestanden te kiezen</string>
+  <string name="usage_title_connected_apps">Verbonden apps</string>
   <string name="usage_title_library">Bibliotheek</string>
   <string name="usage_title_lists">Lijsten</string>
   <string name="validation_text_app_name">Voer een applicatienaam in.</string>
@@ -1875,6 +1878,8 @@
   <string name="vip_feature_title_vip_status">VIP-status</string>
   <string name="vip_feature_title_yir">Jaaroverzicht</string>
   <string name="vip_text_vip_go_beyond_limits">Ga verder dan je grenzen</string>
+  <string name="warning_connected_apps_limit">U heeft de limiet voor gekoppelde apps bereikt. Upgrade naar VIP om meer te koppelen.</string>
+  <string name="warning_connected_apps_limit_vip">U heeft de limiet voor gekoppelde apps bereikt</string>
   <string name="warning_prompt_block_user">Blokkeer %s?</string>
   <string name="warning_prompt_block_user_detail">Zij kunnen je niet langer volgen of je activiteit zien.</string>
   <string name="warning_prompt_cancel_clear">Wegnavigeren stopt het wissen van je gegevens. Weet je het zeker?</string>
