@@ -410,7 +410,7 @@ private fun SettingsAccount(
         }
 
         SettingsValueField(
-            text = stringResource(R.string.text_display_name).uppercaseWords(),
+            text = stringResource(R.string.text_display_name),
             value = state.user?.name,
             enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
             onClick = {
@@ -428,7 +428,7 @@ private fun SettingsAccount(
         )
 
         SettingsValueField(
-            text = stringResource(R.string.text_about).uppercaseWords(),
+            text = stringResource(R.string.text_about),
             value = state.user?.about,
             enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
             onClick = {
@@ -462,7 +462,7 @@ private fun SettingsAccount(
 
     SingleInputSheet(
         active = displayNameSheet != null,
-        title = stringResource(R.string.text_display_name).uppercaseWords(),
+        title = stringResource(R.string.text_display_name),
         description = stringResource(R.string.input_prompt_display_name),
         initialInput = displayNameSheet,
         nullable = true,
@@ -494,7 +494,7 @@ private fun SettingsAccount(
 
     SingleInputSheet(
         active = aboutSheet != null,
-        title = stringResource(R.string.text_about).uppercaseWords(),
+        title = stringResource(R.string.text_about),
         description = stringResource(R.string.input_prompt_about),
         initialInput = aboutSheet,
         nullable = true,
