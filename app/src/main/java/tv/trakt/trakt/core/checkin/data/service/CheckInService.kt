@@ -162,7 +162,7 @@ internal class CheckInService : Service() {
             .Builder(applicationContext, TraktNotificationChannel.CHECK_IN.id)
             .setForegroundServiceBehavior(FOREGROUND_SERVICE_IMMEDIATE)
             .setSmallIcon(R.drawable.ic_trakt_icon_notification)
-            .setSubText(getString(R.string.button_text_checkin).uppercaseWords())
+            .setSubText(getString(R.string.button_text_checkin))
             .setContentTitle(data.title)
             .setContentText("$endsAtText ($contentText)")
             .setShowWhen(false)
