@@ -62,8 +62,6 @@ import java.time.DayOfWeek.MONDAY
 import java.time.LocalDate
 import kotlin.time.Duration.Companion.milliseconds
 
-private const val RELEASES_WINDOW_DAYS = 30L
-
 @OptIn(FlowPreview::class)
 @Suppress("UNCHECKED_CAST")
 internal class AllReleasesViewModel(
@@ -488,7 +486,6 @@ internal class AllReleasesViewModel(
     override fun onCleared() {
         processingJob?.cancel()
         processingJob = null
-        super.onCleared()
     }
 
     val state = combine(

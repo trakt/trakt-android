@@ -41,8 +41,10 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarItemsUseCase
+import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.CALENDAR
@@ -57,12 +59,14 @@ import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.resources.R
 import java.time.DayOfWeek.MONDAY
 import java.time.LocalDate
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 @Suppress("UNCHECKED_CAST")
 internal class CalendarViewModel(
     private val sessionManager: SessionManager,
     private val ratePromptManager: RatePromptManager,
+    private val filterManager: GlobalFilterManager,
     private val getCalendarItemsUseCase: GetCalendarItemsUseCase,
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
@@ -80,6 +84,7 @@ internal class CalendarViewModel(
     )
 
     private val selectedStartDayState = MutableStateFlow(initialState.selectedStartDay)
+    private val filterState = MutableStateFlow(filterManager.getFilter())
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val itemsLoadingState = MutableStateFlow(initialState.itemsLoading)
@@ -99,6 +104,7 @@ internal class CalendarViewModel(
         loadData()
 
         observeUser()
+        observeFilters()
         observeData()
     }
 
@@ -108,6 +114,15 @@ internal class CalendarViewModel(
             .debounce(200)
             .onEach { user ->
                 userState.update { user }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeFilters() {
+        filterManager.observeFilter()
+            .onEach { value ->
+                filterState.update { value }
+                loadData()
             }
             .launchIn(viewModelScope)
     }
@@ -124,7 +139,7 @@ internal class CalendarViewModel(
             movieUpdates.observeUpdates(MovieDetailsUpdates.Source.History),
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 loadData()
             }.launchIn(viewModelScope)
@@ -150,7 +165,10 @@ internal class CalendarViewModel(
                 loadingState.update { Loading }
                 itemsState.update {
                     val currentDay = selectedStartDayState.value
-                    getCalendarItemsUseCase.getCalendarItems(currentDay)
+                    getCalendarItemsUseCase.getCalendarItems(
+                        day = currentDay,
+                        filters = filterState.value,
+                    )
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -181,6 +199,11 @@ internal class CalendarViewModel(
     fun loadPreviousWeekData() {
         val newStartDay = selectedStartDayState.value.minusWeeks(1)
         selectedStartDayState.update { newStartDay }
+        loadData()
+    }
+
+    fun setFilter(filter: GlobalFilter) {
+        filterState.update { filter }
         loadData()
     }
 
@@ -463,11 +486,11 @@ internal class CalendarViewModel(
     override fun onCleared() {
         processingJob?.cancel()
         processingJob = null
-        super.onCleared()
     }
 
     val state = combine(
         selectedStartDayState,
+        filterState,
         userState,
         itemsState,
         itemsLoadingState,
@@ -480,15 +503,16 @@ internal class CalendarViewModel(
     ) { states ->
         CalendarState(
             selectedStartDay = states[0] as LocalDate,
-            user = states[1] as User?,
-            items = states[2] as ImmutableMap<LocalDate, ImmutableList<CalendarItem>>?,
-            itemsLoading = states[3] as ImmutableSet<TraktId>?,
-            navigateShow = states[4] as TraktId?,
-            navigateMovie = states[5] as TraktId?,
-            navigateEpisode = states[6] as Pair<TraktId, Episode>?,
-            loading = states[7] as LoadingState,
-            info = states[8] as DynamicStringResource?,
-            error = states[9] as Exception?,
+            filter = states[1] as GlobalFilter?,
+            user = states[2] as User?,
+            items = states[3] as ImmutableMap<LocalDate, ImmutableList<CalendarItem>>?,
+            itemsLoading = states[4] as ImmutableSet<TraktId>?,
+            navigateShow = states[5] as TraktId?,
+            navigateMovie = states[6] as TraktId?,
+            navigateEpisode = states[7] as Pair<TraktId, Episode>?,
+            loading = states[8] as LoadingState,
+            info = states[9] as DynamicStringResource?,
+            error = states[10] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,
