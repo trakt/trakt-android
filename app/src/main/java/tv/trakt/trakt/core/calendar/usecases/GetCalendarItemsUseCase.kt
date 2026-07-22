@@ -20,21 +20,13 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.calendar.model.CalendarItem
+import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType
 import java.time.DayOfWeek.MONDAY
 import java.time.DayOfWeek.SUNDAY
 import java.time.LocalDate
 
 private const val DAYS_OFFSET = 1L
 private const val DAYS_RANGE = 8
-
-// A same-day batch is a full season when it spans more than one episode and
-// carries both the season premiere and the season finale.
-private fun List<Episode>.isFullSeason(): Boolean {
-    if (size <= 1) return false
-    val hasPremiere = any { it.type?.isPremiere == true }
-    val hasFinale = any { it.type?.isFinale == true }
-    return hasPremiere && hasFinale
-}
 
 internal class GetCalendarItemsUseCase(
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
@@ -44,6 +36,7 @@ internal class GetCalendarItemsUseCase(
     suspend fun getCalendarItems(
         day: LocalDate,
         filters: GlobalFilter,
+        type: ReleaseType,
     ): ImmutableMap<LocalDate, ImmutableList<CalendarItem>> {
         return coroutineScope {
             if (!sessionManager.isAuthenticated()) {
@@ -132,19 +125,25 @@ internal class GetCalendarItemsUseCase(
                         isFullSeason = episodeModels.isFullSeason(),
                     )
                 }
+                .filter { item -> item.isReleaseType(type) }
 
-            val movies = moviesData
-                .filter {
-                    val localDate = LocalDate.parse(it.released)
-                    localDate in weekStart..weekEnd
-                }
-                .asyncMap {
-                    val id = it.movie.ids.trakt.toTraktId()
-                    CalendarItem.MovieItem(
-                        watched = moviesProgress.containsKey(id),
-                        movie = Movie.fromDto(it.movie),
-                    )
-                }
+            // Release type applies to episodes only; movies show for All only.
+            val movies = if (type != ReleaseType.All) {
+                emptyList()
+            } else {
+                moviesData
+                    .filter {
+                        val localDate = LocalDate.parse(it.released)
+                        localDate in weekStart..weekEnd
+                    }
+                    .asyncMap {
+                        val id = it.movie.ids.trakt.toTraktId()
+                        CalendarItem.MovieItem(
+                            watched = moviesProgress.containsKey(id),
+                            movie = Movie.fromDto(it.movie),
+                        )
+                    }
+            }
 
             // Group by day
             val itemsByDay = (episodes + movies)
@@ -163,5 +162,24 @@ internal class GetCalendarItemsUseCase(
 
             result.toImmutableMap()
         }
+    }
+}
+
+// A same-day batch is a full season when it spans more than one episode and
+// carries both the season premiere and the season finale.
+private fun List<Episode>.isFullSeason(): Boolean {
+    if (size <= 1) return false
+    val hasPremiere = any { it.type?.isPremiere == true }
+    val hasFinale = any { it.type?.isFinale == true }
+    return hasPremiere && hasFinale
+}
+
+// A grouped episode item matches Premiere/Finale when any of its episodes carries
+// that type; All matches everything.
+private fun CalendarItem.EpisodeItem.isReleaseType(type: ReleaseType): Boolean {
+    return when (type) {
+        ReleaseType.All -> true
+        ReleaseType.Premiere -> episodes.any { it.type?.isPremiere == true }
+        ReleaseType.Finale -> episodes.any { it.type?.isFinale == true }
     }
 }

@@ -46,6 +46,7 @@ internal fun CalendarEpisodeItemView(
     item: CalendarItem.EpisodeItem,
     modifier: Modifier = Modifier,
     itemLoading: Boolean = false,
+    midReleases: Boolean = false,
     onClick: () -> Unit,
     onShowClick: () -> Unit,
     onCheckClick: () -> Unit = {},
@@ -72,8 +73,8 @@ internal fun CalendarEpisodeItemView(
                 }
 
                 when {
-                    item.episode.isPremiere() -> PremiereChip(modifier = shadowModifier)
-                    item.episode.isFinale() -> FinaleChip(modifier = shadowModifier)
+                    item.episode.isPremiere(isLatestAired = midReleases) -> PremiereChip(modifier = shadowModifier)
+                    item.episode.isFinale(isLatestAired = midReleases) -> FinaleChip(modifier = shadowModifier)
                 }
 
                 timeString?.let {

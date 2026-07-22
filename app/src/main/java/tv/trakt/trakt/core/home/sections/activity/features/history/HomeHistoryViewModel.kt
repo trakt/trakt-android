@@ -55,9 +55,9 @@ import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates.Source.POST_RATING
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.CALENDAR
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.HISTORY
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Progress
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Season
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
@@ -144,10 +144,10 @@ internal class HomeHistoryViewModel(
             showUpdates.observeUpdates(Source.Progress),
             showUpdates.observeUpdates(Source.Seasons),
             showUpdates.observeUpdates(Source.WatchedUntil),
-            episodeUpdates.observeUpdates(PROGRESS),
-            episodeUpdates.observeUpdates(SEASON),
+            episodeUpdates.observeUpdates(Progress),
+            episodeUpdates.observeUpdates(Season),
             episodeUpdates.observeUpdates(CALENDAR),
-            episodeUpdates.observeUpdates(HISTORY),
+            episodeUpdates.observeUpdates(History),
             movieUpdates.observeUpdates(MovieDetailsUpdates.Source.Progress),
             movieUpdates.observeUpdates(MovieDetailsUpdates.Source.History),
             checkInUpdates.observeUpdates(),

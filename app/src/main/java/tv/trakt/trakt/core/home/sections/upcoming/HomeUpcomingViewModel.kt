@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -33,6 +32,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Episode
@@ -42,8 +42,10 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.core.calendar.model.CalendarItem
+import tv.trakt.trakt.core.calendar.usecases.GetCalendarTypeUseCase
+import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
-import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
@@ -51,6 +53,7 @@ import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.CALENDAR
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
+import kotlin.time.Duration.Companion.milliseconds
 
 @Suppress("UNCHECKED_CAST")
 @OptIn(FlowPreview::class)
@@ -58,6 +61,7 @@ internal class HomeUpcomingViewModel(
     private val appContext: Context,
     private val filterManager: GlobalFilterManager,
     private val getUpcomingUseCase: GetUpcomingUseCase,
+    private val getCalendarTypeUseCase: GetCalendarTypeUseCase,
     private val homeUpNextSource: HomeUpNextLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
@@ -73,6 +77,7 @@ internal class HomeUpcomingViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialMode)
+    private val typeState = MutableStateFlow(initialState.type)
     private val collapseState = MutableStateFlow(isCollapsed())
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
@@ -109,7 +114,7 @@ internal class HomeUpcomingViewModel(
             sessionManager.observeProfile()
                 .drop(1)
                 .distinctUntilChanged()
-                .debounce(200)
+                .debounce(200.milliseconds)
                 .collect { user ->
                     userState.update { user }
                     loadData()
@@ -126,7 +131,7 @@ internal class HomeUpcomingViewModel(
             episodeUpdates.observeUpdates(CALENDAR),
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
             }.launchIn(viewModelScope)
@@ -140,8 +145,11 @@ internal class HomeUpcomingViewModel(
             }
 
             try {
+                typeState.update { getCalendarTypeUseCase.getType() }
+
                 val localItems = getUpcomingUseCase.getLocalUpcoming(
                     filter = filterState.value,
+                    type = typeState.value,
                 )
 
                 if (localItems.isNotEmpty()) {
@@ -152,9 +160,10 @@ internal class HomeUpcomingViewModel(
                 }
 
                 itemsState.update {
-                    delay(200) // Blinking workaround (Upcoming endpoint is HTTP-Cacheable)
+                    delay(200.milliseconds) // Blinking workaround (Upcoming endpoint is HTTP-Cacheable)
                     getUpcomingUseCase.getUpcoming(
                         filter = filterState.value,
+                        type = typeState.value,
                     )
                 }
 
@@ -175,9 +184,7 @@ internal class HomeUpcomingViewModel(
 
     private suspend fun loadEmptyIfNeeded(): Boolean {
         if (!sessionManager.isAuthenticated()) {
-            itemsState.update {
-                emptyList<HomeUpcomingItem>().toImmutableList()
-            }
+            itemsState.update { EmptyImmutableList }
             loadingState.update { Done }
             return true
         } else {
@@ -224,6 +231,16 @@ internal class HomeUpcomingViewModel(
         }
     }
 
+    fun setType(type: ReleaseType) {
+        if (type == typeState.value || loadingState.value.isLoading) {
+            return
+        }
+        viewModelScope.launch {
+            getCalendarTypeUseCase.setType(type)
+            loadData()
+        }
+    }
+
     fun setCollapsed(collapsed: Boolean) {
         collapseState.update { collapsed }
 
@@ -267,17 +284,19 @@ internal class HomeUpcomingViewModel(
         navigateEpisode,
         navigateMovie,
         errorState,
+        typeState,
     ) { state ->
         HomeUpcomingState(
             loading = state[0] as LoadingState,
             user = state[1] as User?,
-            items = state[2] as ImmutableList<HomeUpcomingItem>?,
+            items = state[2] as ImmutableList<CalendarItem>?,
             filter = state[3] as GlobalFilter?,
             collapsed = state[4] as Boolean,
             navigateShow = state[5] as TraktId?,
             navigateEpisode = state[6] as Pair<TraktId, Episode>?,
             navigateMovie = state[7] as TraktId?,
             error = state[8] as Exception?,
+            type = state[9] as ReleaseType,
         )
     }.stateIn(
         scope = viewModelScope,

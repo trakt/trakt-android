@@ -16,9 +16,10 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
-import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem.EpisodeItem
-import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem.MovieItem
+import tv.trakt.trakt.core.calendar.model.CalendarItem
+import tv.trakt.trakt.core.calendar.model.CalendarItem.EpisodeItem
+import tv.trakt.trakt.core.calendar.model.CalendarItem.MovieItem
+import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType
 import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.core.notifications.TraktNotificationChannel
 import tv.trakt.trakt.core.notifications.model.DeliveryAdjustment
@@ -86,10 +87,11 @@ internal class ScheduleNotificationsWorker(
             }
 
             delay(3.seconds)
-            var upcomingItems = getUpcomingUseCase.getLocalUpcoming(GlobalFilter.Default)
+            // Notifications cover all upcoming items regardless of the UI type filter.
+            var upcomingItems = getUpcomingUseCase.getLocalUpcoming(GlobalFilter.Default, ReleaseType.All)
             if (upcomingItems.isEmpty() || forceRemote) {
                 try {
-                    upcomingItems = getUpcomingUseCase.getUpcoming(GlobalFilter.Default)
+                    upcomingItems = getUpcomingUseCase.getUpcoming(GlobalFilter.Default, ReleaseType.All)
                 } catch (error: Exception) {
                     Timber.recordError(error)
                 }
@@ -104,7 +106,7 @@ internal class ScheduleNotificationsWorker(
             val deliveryAdjustment = notificationsDeliveryUseCase.getDeliveryTime()
 
             val futureItems = upcomingItems
-                .filter { it.releasedAt.isAfter(nowUtc) }
+                .filter { it.releasedAt?.isAfter(nowUtc) == true }
 
             // Post notifications for movies
             futureItems
@@ -121,7 +123,7 @@ internal class ScheduleNotificationsWorker(
                 .filterIsInstance<EpisodeItem>()
                 .groupBy { episode ->
                     val showId = episode.show.ids.trakt.value
-                    val releaseDate = episode.releasedAt.truncatedTo(ChronoUnit.MINUTES)
+                    val releaseDate = episode.releasedAt?.truncatedTo(ChronoUnit.MINUTES)
                     showId to releaseDate
                 }
 
@@ -153,13 +155,18 @@ internal class ScheduleNotificationsWorker(
     }
 
     private fun postNotification(
-        item: HomeUpcomingItem,
+        item: CalendarItem,
         deliveryAdjustment: DeliveryAdjustment,
     ) {
-        var targetDate = item.releasedAt.truncatedTo(ChronoUnit.MINUTES).toLocal()
+        var targetDate = item.releasedAt?.truncatedTo(ChronoUnit.MINUTES)?.toLocal()
         if (deliveryAdjustment != DeliveryAdjustment.DISABLED) {
             Timber.d("Applying delivery adjustment: ${deliveryAdjustment.duration}")
-            targetDate = targetDate.minus(deliveryAdjustment.duration.toJavaDuration())
+            targetDate = targetDate?.minus(deliveryAdjustment.duration.toJavaDuration())
+        }
+
+        if (targetDate == null) {
+            Timber.d("Target date is null for item: ${item.id.value}, skipping notification.")
+            return
         }
 
         // Adjust notifications scheduled between 00:00 and 06:00 to 10:00 local time.
@@ -222,10 +229,15 @@ internal class ScheduleNotificationsWorker(
         val firstEpisode = episodes.first()
         val lastEpisode = episodes.last()
 
-        var targetDate = firstEpisode.releasedAt.truncatedTo(ChronoUnit.MINUTES).toLocal()
+        var targetDate = firstEpisode.releasedAt?.truncatedTo(ChronoUnit.MINUTES)?.toLocal()
         if (deliveryAdjustment != DeliveryAdjustment.DISABLED) {
             Timber.d("Applying delivery adjustment: ${deliveryAdjustment.duration}")
-            targetDate = targetDate.minus(deliveryAdjustment.duration.toJavaDuration())
+            targetDate = targetDate?.minus(deliveryAdjustment.duration.toJavaDuration())
+        }
+
+        if (targetDate == null) {
+            Timber.d("Target date is null for grouped episodes, skipping notification.")
+            return
         }
 
         // Adjust notifications scheduled between 00:00 and 06:00 to 10:00 local time.

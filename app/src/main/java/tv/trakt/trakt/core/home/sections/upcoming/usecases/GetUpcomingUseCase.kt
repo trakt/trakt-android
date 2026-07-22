@@ -19,15 +19,14 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.calendar.model.CalendarItem
+import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
-import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
 import java.time.LocalDate
-import java.time.ZoneId
 import java.time.temporal.ChronoUnit.DAYS
 
 private const val DAYS_OFFSET = 1L
-private const val DAYS_RANGE = 14
+private const val DAYS_RANGE = 30
 
 // A same-day batch is a full season when it spans more than one episode and
 // carries both the season premiere and the season finale.
@@ -42,20 +41,27 @@ internal class GetUpcomingUseCase(
     private val remoteUserSource: UserCalendarRemoteDataSource,
     private val localDataSource: HomeUpcomingLocalDataSource,
 ) {
-    suspend fun getLocalUpcoming(filter: GlobalFilter): ImmutableList<HomeUpcomingItem> {
+    suspend fun getLocalUpcoming(
+        filter: GlobalFilter,
+        type: ReleaseType,
+    ): ImmutableList<CalendarItem> {
         return localDataSource.getItems()
             .filter {
                 when (filter.mode) {
                     Media -> true
-                    Shows -> it is HomeUpcomingItem.EpisodeItem
-                    Movies -> it is HomeUpcomingItem.MovieItem
+                    Shows -> it is CalendarItem.EpisodeItem
+                    Movies -> it is CalendarItem.MovieItem
                 }
             }
+            .filterByType(type)
             .sortedBy { it.releasedAt }
             .toImmutableList()
     }
 
-    suspend fun getUpcoming(filter: GlobalFilter): ImmutableList<HomeUpcomingItem> {
+    suspend fun getUpcoming(
+        filter: GlobalFilter,
+        type: ReleaseType,
+    ): ImmutableList<CalendarItem> {
         return coroutineScope {
             val showsAsync = async { getShows(filter) }
             val moviesAsync = async { getMovies(filter) }
@@ -71,15 +77,16 @@ internal class GetUpcomingUseCase(
                 .filter {
                     when (filter.mode) {
                         Media -> true
-                        Shows -> it is HomeUpcomingItem.EpisodeItem
-                        Movies -> it is HomeUpcomingItem.MovieItem
+                        Shows -> it is CalendarItem.EpisodeItem
+                        Movies -> it is CalendarItem.MovieItem
                     }
                 }
+                .filterByType(type)
                 .toImmutableList()
         }
     }
 
-    private suspend fun getShows(filter: GlobalFilter): List<HomeUpcomingItem.EpisodeItem> {
+    private suspend fun getShows(filter: GlobalFilter): List<CalendarItem.EpisodeItem> {
         val remoteShows = remoteUserSource.getShowsCalendar(
             startDate = nowLocalDay().minusDays(DAYS_OFFSET),
             days = DAYS_RANGE,
@@ -113,17 +120,16 @@ internal class GetUpcomingUseCase(
                     .map { (_, episode, _) -> episode }
                     .toImmutableList()
 
-                HomeUpcomingItem.EpisodeItem(
-                    id = episodes.first().ids.trakt,
-                    releasedAt = sorted.first().third,
-                    episodes = episodes,
+                CalendarItem.EpisodeItem(
                     show = show,
+                    episodes = episodes,
                     isFullSeason = episodes.isFullSeason(),
+                    watched = false,
                 )
             }
     }
 
-    private suspend fun getMovies(filter: GlobalFilter): List<HomeUpcomingItem.MovieItem> {
+    private suspend fun getMovies(filter: GlobalFilter): List<CalendarItem.MovieItem> {
         val remoteMovies = remoteUserSource.getMoviesCalendar(
             startDate = nowLocalDay().minusDays(DAYS_OFFSET),
             days = DAYS_RANGE,
@@ -138,14 +144,30 @@ internal class GetUpcomingUseCase(
                     return@asyncMap null
                 }
 
-                HomeUpcomingItem.MovieItem(
-                    id = it.movie.ids.trakt.toTraktId(),
-                    releasedAt = releaseDay.atStartOfDay(ZoneId.systemDefault()).toInstant(),
+                CalendarItem.MovieItem(
                     movie = Movie.fromDto(it.movie),
+                    watched = false,
                 )
             }
 
         return moviesList
             .filterNotNull()
+    }
+
+    // Release type applies to episodes only; Premiere/Finale keep grouped episode
+    // items containing a matching episode and drop movies entirely.
+    private fun List<CalendarItem>.filterByType(type: ReleaseType): List<CalendarItem> {
+        if (type == ReleaseType.All) {
+            return this
+        }
+        return filter { item ->
+            item is CalendarItem.EpisodeItem &&
+                item.episodes.any { episode ->
+                    when (type) {
+                        ReleaseType.Premiere -> episode.type?.isPremiere == true
+                        ReleaseType.Finale -> episode.type?.isFinale == true
+                    }
+                }
+        }
     }
 }

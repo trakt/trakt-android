@@ -7,6 +7,7 @@ import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.CalendarMediaDto
+import tv.trakt.trakt.common.networking.CalendarShowDto
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
@@ -107,7 +108,7 @@ internal class ShowsApiClient(
             countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
             ignoreWatched = true,
             ignoreWatchlisted = filters.hideWatchlist,
-            ignoreCollected = null,
+            ignoreCollected = true,
             startDate = null,
             endDate = null,
         )
@@ -173,6 +174,50 @@ internal class ShowsApiClient(
         )
 
         return response.body()
+    }
+
+    override suspend fun getReleasesPremieres(
+        startDate: Instant,
+        days: Int,
+        filters: GlobalFilter,
+    ): List<CalendarShowDto> {
+        return calendarsApi.getCalendarsReleasesHotPremieres(
+            extended = "full,images,colors",
+            startDate = startDate.truncatedTo(DAYS).toString(),
+            endDate = null,
+            days = days,
+            watchnow = filters.availability?.joinToString(",") { it.slug },
+            genres = filters.genre?.joinToString(",") { it.slug },
+            subgenres = filters.subgenre?.joinToString(","),
+            years = filters.years?.let { "${it.first}-${it.second}" },
+            ratings = filters.rating?.let { "${it.first}-${it.second}" },
+            runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
+            certifications = filters.certification?.joinToString(",") { it.slug },
+            countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
+            startDate2 = null,
+        ).body()
+    }
+
+    override suspend fun getReleasesFinales(
+        startDate: Instant,
+        days: Int,
+        filters: GlobalFilter,
+    ): List<CalendarShowDto> {
+        return calendarsApi.getCalendarsReleasesHotFinales(
+            extended = "full,images,colors",
+            startDate = startDate.truncatedTo(DAYS).toString(),
+            endDate = null,
+            days = days,
+            watchnow = filters.availability?.joinToString(",") { it.slug },
+            genres = filters.genre?.joinToString(",") { it.slug },
+            subgenres = filters.subgenre?.joinToString(","),
+            years = filters.years?.let { "${it.first}-${it.second}" },
+            ratings = filters.rating?.let { "${it.first}-${it.second}" },
+            runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
+            certifications = filters.certification?.joinToString(",") { it.slug },
+            countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
+            startDate2 = null,
+        ).body()
     }
 
     override suspend fun getShowDetails(showId: TraktId): ShowCalendarsDto {

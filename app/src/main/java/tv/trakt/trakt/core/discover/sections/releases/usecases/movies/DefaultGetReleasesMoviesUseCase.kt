@@ -17,6 +17,10 @@ internal class DefaultGetReleasesMoviesUseCase(
     private val localSource: ReleasesMoviesLocalDataSource,
     private val localMovieSource: MovieLocalDataSource,
 ) : GetReleasesMoviesUseCase {
+    override suspend fun clearLocal() {
+        localSource.clear()
+    }
+
     override suspend fun getLocalMovies(): ImmutableList<CalendarItem.MovieItem> {
         return localSource.getMovies()
             .toImmutableList()

@@ -45,13 +45,15 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.core.discover.sections.releases.all.usecases.GetAllReleasesItemsUseCase
+import tv.trakt.trakt.core.discover.sections.releases.usecases.GetReleasesTypeUseCase
+import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.CALENDAR
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.HISTORY
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Progress
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Season
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
@@ -69,6 +71,7 @@ internal class AllReleasesViewModel(
     private val ratePromptManager: RatePromptManager,
     private val filterManager: GlobalFilterManager,
     private val getAllReleasesItemsUseCase: GetAllReleasesItemsUseCase,
+    private val getReleasesTypeUseCase: GetReleasesTypeUseCase,
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
@@ -86,6 +89,7 @@ internal class AllReleasesViewModel(
 
     private val selectedStartDayState = MutableStateFlow(initialState.selectedStartDay)
     private val filterState = MutableStateFlow(filterManager.getFilter())
+    private val typeState = MutableStateFlow(initialState.type)
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val itemsLoadingState = MutableStateFlow(initialState.itemsLoading)
@@ -99,6 +103,9 @@ internal class AllReleasesViewModel(
 
     private var dataJob: Job? = null
     private var processingJob: Job? = null
+
+    // Seed the type from the persisted selection once; changes here stay in-memory only.
+    private var typeSeeded = false
 
     init {
         loadUser()
@@ -137,9 +144,9 @@ internal class AllReleasesViewModel(
             showUpdates.observeUpdates(Source.Progress),
             showUpdates.observeUpdates(Source.Seasons),
             showUpdates.observeUpdates(Source.WatchedUntil),
-            episodeUpdates.observeUpdates(PROGRESS),
-            episodeUpdates.observeUpdates(SEASON),
-            episodeUpdates.observeUpdates(HISTORY),
+            episodeUpdates.observeUpdates(Progress),
+            episodeUpdates.observeUpdates(Season),
+            episodeUpdates.observeUpdates(History),
             movieUpdates.observeUpdates(MovieDetailsUpdates.Source.Progress),
             movieUpdates.observeUpdates(MovieDetailsUpdates.Source.History),
         )
@@ -165,9 +172,15 @@ internal class AllReleasesViewModel(
                 loadingState.update { Loading }
                 errorState.update { null }
 
+                if (!typeSeeded) {
+                    typeSeeded = true
+                    typeState.update { getReleasesTypeUseCase.getType() }
+                }
+
                 val items = getAllReleasesItemsUseCase.getReleaseItems(
                     startDay = selectedStartDayState.value,
                     filters = filterState.value,
+                    type = typeState.value,
                 )
 
                 itemsState.update { items }
@@ -202,6 +215,14 @@ internal class AllReleasesViewModel(
 
     fun setFilter(filter: GlobalFilter) {
         filterState.update { filter }
+        loadData()
+    }
+
+    fun setType(type: ReleaseType) {
+        if (type == typeState.value || loadingState.value.isLoading) {
+            return
+        }
+        typeState.update { type }
         loadData()
     }
 
@@ -500,6 +521,7 @@ internal class AllReleasesViewModel(
         loadingState,
         infoState,
         errorState,
+        typeState,
     ) { states ->
         AllReleasesState(
             selectedStartDay = states[0] as LocalDate,
@@ -513,6 +535,7 @@ internal class AllReleasesViewModel(
             loading = states[8] as LoadingState,
             info = states[9] as DynamicStringResource?,
             error = states[10] as Exception?,
+            type = states[11] as ReleaseType,
         )
     }.stateIn(
         scope = viewModelScope,

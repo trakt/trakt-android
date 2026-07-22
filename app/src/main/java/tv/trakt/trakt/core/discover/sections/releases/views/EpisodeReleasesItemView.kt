@@ -31,6 +31,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun EpisodeReleasesItemView(
     item: CalendarItem.EpisodeItem,
     modifier: Modifier = Modifier,
+    midReleases: Boolean = false,
     onClick: () -> Unit,
     onShowClick: () -> Unit,
     onLongClick: () -> Unit = {},
@@ -49,17 +50,14 @@ internal fun EpisodeReleasesItemView(
             ) {
                 val shadowModifier = Modifier.shadow(2.dp, RoundedCornerShape(100))
                 when {
-                    item.episode.isPremiere() -> PremiereChip(modifier = shadowModifier)
-                    item.episode.isFinale() -> FinaleChip(modifier = shadowModifier)
+                    item.episode.isPremiere(isLatestAired = midReleases) -> PremiereChip(modifier = shadowModifier)
+                    item.episode.isFinale(isLatestAired = midReleases) -> FinaleChip(modifier = shadowModifier)
                 }
 
                 item.releasedAt?.let { releasedAt ->
                     InfoChip(
                         text = releasedAt.toLocal().relativeDateTimeString(),
-                        iconPainter = when {
-                            item.episode.isReleased -> painterResource(R.drawable.ic_calendar_check)
-                            else -> painterResource(R.drawable.ic_calendar_upcoming)
-                        },
+                        iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
                         containerColor = TraktTheme.colors.chipContainerOnContent,
                         modifier = shadowModifier,
                     )

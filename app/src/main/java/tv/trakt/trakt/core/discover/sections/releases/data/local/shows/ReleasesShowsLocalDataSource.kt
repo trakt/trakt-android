@@ -6,4 +6,6 @@ internal interface ReleasesShowsLocalDataSource {
     suspend fun setItems(items: List<CalendarItem.EpisodeItem>)
 
     suspend fun getItems(): List<CalendarItem.EpisodeItem>
+
+    suspend fun clear()
 }

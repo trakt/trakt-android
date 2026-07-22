@@ -8,19 +8,19 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
+import tv.trakt.trakt.core.calendar.model.CalendarItem
 import java.time.Instant
 
 internal class HomeUpcomingStorage : HomeUpcomingLocalDataSource {
     private val mutex = Mutex()
 
-    private val storage = mutableMapOf<TraktId, HomeUpcomingItem>()
+    private val storage = mutableMapOf<TraktId, CalendarItem>()
     private val updatedAt = MutableSharedFlow<Instant?>(
         replay = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
 
-    override suspend fun setItems(items: List<HomeUpcomingItem>) {
+    override suspend fun setItems(items: List<CalendarItem>) {
         mutex.withLock {
             with(storage) {
                 clear()
@@ -29,7 +29,7 @@ internal class HomeUpcomingStorage : HomeUpcomingLocalDataSource {
         }
     }
 
-    override suspend fun getItems(): List<HomeUpcomingItem> {
+    override suspend fun getItems(): List<CalendarItem> {
         return mutex.withLock {
             storage.values.toList()
         }
@@ -41,12 +41,12 @@ internal class HomeUpcomingStorage : HomeUpcomingLocalDataSource {
     ) {
         mutex.withLock {
             val toRemove = storage.values
-                .filterIsInstance<HomeUpcomingItem.EpisodeItem>()
+                .filterIsInstance<CalendarItem.EpisodeItem>()
                 .filter { it.show.ids.trakt in showIds }
                 .map { it.id }
 
             toRemove.forEach { id ->
-                if (storage[id] is HomeUpcomingItem.EpisodeItem) {
+                if (storage[id] is CalendarItem.EpisodeItem) {
                     storage.remove(id)
                 }
             }

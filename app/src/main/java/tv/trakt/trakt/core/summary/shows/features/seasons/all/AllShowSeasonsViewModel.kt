@@ -96,9 +96,9 @@ internal class AllShowSeasonsViewModel(
         merge(
             showDetailsUpdates.observeUpdates(Progress),
             showDetailsUpdates.observeUpdates(WatchedUntil),
-            episodeDetailsUpdates.observeUpdates(Source.PROGRESS),
-            episodeDetailsUpdates.observeUpdates(Source.SEASON),
-            episodeDetailsUpdates.observeUpdates(Source.HISTORY),
+            episodeDetailsUpdates.observeUpdates(Source.Progress),
+            episodeDetailsUpdates.observeUpdates(Source.Season),
+            episodeDetailsUpdates.observeUpdates(Source.History),
         )
             .distinctUntilChanged()
             .debounce(200.milliseconds)

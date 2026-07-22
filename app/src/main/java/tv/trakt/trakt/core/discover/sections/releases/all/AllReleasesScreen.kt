@@ -15,12 +15,12 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.awaitHorizontalTouchSlopOrCancellation
 import androidx.compose.foundation.gestures.horizontalDrag
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Arrangement.SpaceBetween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -86,6 +86,7 @@ import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.fullDayFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.onEmptyClick
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.TraktId
@@ -96,12 +97,15 @@ import tv.trakt.trakt.core.calendar.model.CalendarItem.MovieItem
 import tv.trakt.trakt.core.calendar.ui.CalendarEpisodeItemView
 import tv.trakt.trakt.core.calendar.ui.CalendarMovieItemView
 import tv.trakt.trakt.core.calendar.ui.controls.CalendarControlsView
+import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaFilterIcon
 import tv.trakt.trakt.ui.components.TraktHeader
+import tv.trakt.trakt.ui.components.chips.FilterChip
+import tv.trakt.trakt.ui.components.chips.FilterChipGroup
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
@@ -114,6 +118,10 @@ import kotlin.math.roundToInt
 import kotlin.time.Duration.Companion.milliseconds
 
 private val MinAlpha = 0.25F
+
+// Height reserved for the release-type filter row sitting between the header and
+// the calendar controls; folded into the top mask and grid content padding.
+private val FiltersRowHeight = 40.dp
 
 @Composable
 internal fun AllReleasesScreen(
@@ -205,6 +213,7 @@ internal fun AllReleasesScreen(
         onFiltersClick = {
             filtersSheet = true
         },
+        onTypeClick = viewModel::setType,
         onBackClick = onNavigateBack,
     )
 
@@ -284,6 +293,7 @@ private fun AllReleasesScreen(
     onCheckLongClick: (CalendarItem) -> Unit = {},
     onRemoveClick: (CalendarItem) -> Unit = {},
     onFiltersClick: () -> Unit = {},
+    onTypeClick: (ReleaseType) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val scrollOffset = with(LocalDensity.current) {
@@ -312,7 +322,8 @@ private fun AllReleasesScreen(
         end = TraktTheme.spacing.mainPageHorizontalSpace,
         top = WindowInsets.statusBars.asPaddingValues()
             .calculateTopPadding()
-            .plus(202.dp),
+            .plus(202.dp)
+            .plus(FiltersRowHeight),
         bottom = WindowInsets.navigationBars.asPaddingValues()
             .calculateBottomPadding()
             .plus(TraktTheme.size.navigationBarHeight)
@@ -446,8 +457,9 @@ private fun AllReleasesScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(132.dp)
-                .background(TraktTheme.colors.backgroundPrimary),
+                .height(132.dp + FiltersRowHeight)
+                .background(TraktTheme.colors.backgroundPrimary)
+                .onEmptyClick(),
         )
 
         Column(
@@ -478,11 +490,33 @@ private fun AllReleasesScreen(
                         stringResource(it.displayRes)
                     } ?: stringResource(MediaMode.Media.displayRes),
                 )
-                Spacer(modifier = Modifier.weight(1F))
+            }
+
+            Row(
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 13.dp),
+            ) {
+                FilterChipGroup(
+                    paddingVertical = PaddingValues.Zero,
+                ) {
+                    for (type in ReleaseType.entries) {
+                        FilterChip(
+                            selected = state.type == type,
+                            text = stringResource(type.displayRes),
+                            onClick = { onTypeClick(type) },
+                        )
+                    }
+                }
+
                 MediaFilterIcon(
                     active = state.filter?.isActive == true,
                     enabled = state.loading.isDone,
                     onClick = onFiltersClick,
+                    modifier = Modifier
+                        .padding(bottom = 1.dp),
                 )
             }
 
@@ -674,6 +708,7 @@ private fun ContentItemsGrid(
                         CalendarEpisodeItemView(
                             item = item,
                             itemLoading = itemsLoading?.contains(item.id) == true,
+                            midReleases = true,
                             onClick = { onEpisodeClick(item) },
                             onShowClick = { onShowClick(item) },
                             onCheckClick = { onCheckClick(item) },

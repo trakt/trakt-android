@@ -6,6 +6,8 @@ import tv.trakt.trakt.core.calendar.model.CalendarItem
 import java.time.Instant
 
 internal interface GetReleasesMoviesUseCase {
+    suspend fun clearLocal()
+
     suspend fun getLocalMovies(): ImmutableList<CalendarItem>
 
     suspend fun getMovies(

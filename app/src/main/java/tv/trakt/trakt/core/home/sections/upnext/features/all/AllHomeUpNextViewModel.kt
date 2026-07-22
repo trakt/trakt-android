@@ -48,9 +48,9 @@ import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.HISTORY
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Progress
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Season
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
@@ -117,9 +117,9 @@ internal class AllHomeUpNextViewModel(
             showUpdates.observeUpdates(Source.Progress),
             showUpdates.observeUpdates(Source.Seasons),
             showUpdates.observeUpdates(Source.WatchedUntil),
-            episodeUpdates.observeUpdates(PROGRESS),
-            episodeUpdates.observeUpdates(SEASON),
-            episodeUpdates.observeUpdates(HISTORY),
+            episodeUpdates.observeUpdates(Progress),
+            episodeUpdates.observeUpdates(Season),
+            episodeUpdates.observeUpdates(History),
             movieUpdates.observeUpdates(MovieDetailsUpdates.Source.Progress),
             movieUpdates.observeUpdates(MovieDetailsUpdates.Source.History),
             checkInUpdates.observeUpdates().filterNot { it.first == AllHomeUpNext },

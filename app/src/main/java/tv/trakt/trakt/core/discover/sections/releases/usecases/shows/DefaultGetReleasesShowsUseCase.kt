@@ -11,6 +11,9 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.calendar.model.CalendarItem.EpisodeItem
 import tv.trakt.trakt.core.discover.sections.releases.data.local.shows.ReleasesShowsLocalDataSource
+import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType.All
+import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType.Finale
+import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType.Premiere
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 import java.time.Instant
 
@@ -20,6 +23,10 @@ internal class DefaultGetReleasesShowsUseCase(
     private val localShowSource: ShowLocalDataSource,
     private val localEpisodeSource: EpisodeLocalDataSource,
 ) : GetReleasesShowsUseCase {
+    override suspend fun clearLocal() {
+        localSource.clear()
+    }
+
     override suspend fun getLocalShows(): ImmutableList<EpisodeItem> {
         return localSource.getItems()
             .toImmutableList()
@@ -34,14 +41,34 @@ internal class DefaultGetReleasesShowsUseCase(
         days: Int,
         skipLocal: Boolean,
         filters: GlobalFilter,
+        type: ReleaseType,
     ): ImmutableList<EpisodeItem> {
-        return remoteSource.getReleases(
-            startDate = startDate,
-            days = days,
-            filters = filters,
-        )
-            .filter { (it.episode?.season ?: 0) > 0 }
-            .map { Show.fromDto(it.show!!) to Episode.fromDto(it.episode!!) }
+        val data = when (type) {
+            All -> remoteSource.getReleases(
+                startDate = startDate,
+                days = days,
+                filters = filters,
+            ).map {
+                Show.fromDto(it.show!!) to Episode.fromDto(it.episode!!)
+            }
+            Premiere -> remoteSource.getReleasesPremieres(
+                startDate = startDate,
+                days = days,
+                filters = filters,
+            ).map {
+                Show.fromDto(it.show) to Episode.fromDto(it.episode)
+            }
+            Finale -> remoteSource.getReleasesFinales(
+                startDate = startDate,
+                days = days,
+                filters = filters,
+            ).map {
+                Show.fromDto(it.show) to Episode.fromDto(it.episode)
+            }
+        }
+
+        return data
+            .filter { it.second.season > 0 }
             // Group a show's episodes that share the same release day into one item,
             // so a same-day batch renders as a single card with a combined list.
             .groupBy { (show, episode) -> show.ids.trakt to episode.releasedAt?.toLocalDay() }

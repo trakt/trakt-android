@@ -187,6 +187,7 @@ internal val homeModule = module {
         HomeUpcomingViewModel(
             appContext = androidApplication(),
             getUpcomingUseCase = get(),
+            getCalendarTypeUseCase = get(),
             homeUpNextSource = get(),
             showLocalDataSource = get(),
             episodeLocalDataSource = get(),

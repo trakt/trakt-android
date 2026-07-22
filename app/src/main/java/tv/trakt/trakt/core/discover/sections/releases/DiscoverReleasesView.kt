@@ -42,6 +42,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.calendar.model.CalendarItem
+import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType
 import tv.trakt.trakt.core.discover.sections.releases.views.EpisodeReleasesItemView
 import tv.trakt.trakt.core.discover.sections.releases.views.MovieReleasesItemView
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
@@ -49,6 +50,8 @@ import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EmptyListCard
 import tv.trakt.trakt.ui.components.TraktSectionHeader
+import tv.trakt.trakt.ui.components.chips.FilterChip
+import tv.trakt.trakt.ui.components.chips.FilterChipGroup
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -82,6 +85,7 @@ internal fun DiscoverReleasesView(
         onShowClick = onShowClick,
         onMovieClick = onMovieClick,
         onEpisodeClick = onEpisodeClick,
+        onTypeClick = viewModel::setType,
         onLongClick = {
             if (state.loading.isLoading) {
                 return@DiscoverReleasesContent
@@ -115,6 +119,7 @@ internal fun DiscoverReleasesContent(
     onShowClick: (TraktId) -> Unit = {},
     onMovieClick: (TraktId) -> Unit = {},
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
+    onTypeClick: (ReleaseType) -> Unit = {},
     onLongClick: (CalendarItem) -> Unit = {},
     onMoreClick: () -> Unit = {},
     onCollapse: (collapsed: Boolean) -> Unit = {},
@@ -144,6 +149,12 @@ internal fun DiscoverReleasesContent(
         )
 
         if (state.collapsed != true) {
+            ContentFilters(
+                selected = state.type,
+                headerPadding = headerPadding,
+                onTypeClick = onTypeClick,
+            )
+
             Crossfade(
                 targetState = state.loading,
                 animationSpec = tween(200),
@@ -188,6 +199,26 @@ internal fun DiscoverReleasesContent(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun ContentFilters(
+    selected: ReleaseType,
+    headerPadding: PaddingValues,
+    onTypeClick: (ReleaseType) -> Unit,
+) {
+    FilterChipGroup(
+        paddingHorizontal = headerPadding,
+        paddingVertical = PaddingValues(bottom = 3.dp),
+    ) {
+        for (type in ReleaseType.entries) {
+            FilterChip(
+                selected = selected == type,
+                text = stringResource(type.displayRes),
+                onClick = { onTypeClick(type) },
+            )
         }
     }
 }
@@ -256,6 +287,7 @@ private fun ContentList(
                 is CalendarItem.EpisodeItem -> {
                     EpisodeReleasesItemView(
                         item = item,
+                        midReleases = true,
                         onClick = { onEpisodeClick(item.show.ids.trakt, item.episode) },
                         onShowClick = { onShowClick(item.show.ids.trakt) },
                         onLongClick = { onLongClick(item) },

@@ -49,6 +49,14 @@ internal class ReleasesShowsStorage(
         }
     }
 
+    override suspend fun clear() {
+        ensureInitialized()
+        mutex.withLock {
+            showsCache.clear()
+            dataStore.edit { it.remove(KEY_RELEASES_SHOWS) }
+        }
+    }
+
     private suspend fun ensureInitialized() {
         if (!isInitialized) {
             mutex.withLock {

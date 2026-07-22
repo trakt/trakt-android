@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
@@ -43,12 +44,15 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
+import tv.trakt.trakt.core.calendar.model.CalendarItem
+import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType
 import tv.trakt.trakt.core.home.sections.upcoming.views.EpisodeUpcomingItemView
 import tv.trakt.trakt.core.home.sections.upcoming.views.MovieUpcomingItemView
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
+import tv.trakt.trakt.ui.components.chips.FilterChip
+import tv.trakt.trakt.ui.components.chips.FilterChipGroup
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -93,6 +97,7 @@ internal fun HomeUpcomingView(
         contentPadding = contentPadding,
         onCollapse = viewModel::setCollapsed,
         onCalendarClick = onCalendarClick,
+        onTypeClick = viewModel::setType,
         onEmptyClick = {
             when (state.filter?.mode) {
                 MediaMode.Movies -> onMoviesClick()
@@ -117,11 +122,12 @@ internal fun HomeUpcomingContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onClick: (HomeUpcomingItem.EpisodeItem) -> Unit = {},
-    onShowClick: (HomeUpcomingItem.EpisodeItem) -> Unit = {},
+    onClick: (CalendarItem.EpisodeItem) -> Unit = {},
+    onShowClick: (CalendarItem.EpisodeItem) -> Unit = {},
     onMovieClick: (Movie) -> Unit = {},
     onEmptyClick: () -> Unit = {},
     onCalendarClick: () -> Unit = {},
+    onTypeClick: (ReleaseType) -> Unit = {},
     onCollapse: (collapsed: Boolean) -> Unit = {},
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
@@ -150,6 +156,14 @@ internal fun HomeUpcomingContent(
         )
 
         if (state.collapsed != true) {
+            if (state.user != null) {
+                ContentFilters(
+                    selected = state.type,
+                    headerPadding = headerPadding,
+                    onTypeClick = onTypeClick,
+                )
+            }
+
             Crossfade(
                 targetState = state.loading,
                 animationSpec = tween(200),
@@ -218,6 +232,26 @@ internal fun HomeUpcomingContent(
 }
 
 @Composable
+private fun ContentFilters(
+    selected: ReleaseType,
+    headerPadding: PaddingValues,
+    onTypeClick: (ReleaseType) -> Unit,
+) {
+    FilterChipGroup(
+        paddingVertical = PaddingValues(bottom = 3.dp),
+        paddingHorizontal = headerPadding,
+    ) {
+        for (type in ReleaseType.entries) {
+            FilterChip(
+                selected = selected == type,
+                text = stringResource(type.displayRes),
+                onClick = { onTypeClick(type) },
+            )
+        }
+    }
+}
+
+@Composable
 private fun ContentLoadingList(
     visible: Boolean = true,
     contentPadding: PaddingValues,
@@ -237,11 +271,11 @@ private fun ContentLoadingList(
 
 @Composable
 private fun ContentList(
-    listItems: ImmutableList<HomeUpcomingItem>,
+    listItems: ImmutableList<CalendarItem>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
-    onClick: (HomeUpcomingItem.EpisodeItem) -> Unit,
-    onShowClick: (HomeUpcomingItem.EpisodeItem) -> Unit,
+    onClick: (CalendarItem.EpisodeItem) -> Unit,
+    onShowClick: (CalendarItem.EpisodeItem) -> Unit,
     onMovieClick: (Movie) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
@@ -265,7 +299,7 @@ private fun ContentList(
             key = { it.id.value },
         ) { item ->
             when (item) {
-                is HomeUpcomingItem.MovieItem -> {
+                is CalendarItem.MovieItem -> {
                     MovieUpcomingItemView(
                         item = item,
                         onClick = { onMovieClick(item.movie) },
@@ -276,9 +310,10 @@ private fun ContentList(
                     )
                 }
 
-                is HomeUpcomingItem.EpisodeItem -> {
+                is CalendarItem.EpisodeItem -> {
                     EpisodeUpcomingItemView(
                         item = item,
+                        midReleases = true,
                         onClick = { onClick(item) },
                         onShowClick = { onShowClick(item) },
                         modifier = Modifier.animateItem(

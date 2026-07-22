@@ -38,8 +38,8 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.Episode
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates.Source.POST_RATING
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.HISTORY
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Progress
 import tv.trakt.trakt.core.summary.episodes.features.history.navigation.EpisodeHistoryDestination
 import tv.trakt.trakt.core.summary.episodes.features.history.usecases.GetEpisodeHistoryUseCase
 import tv.trakt.trakt.core.summary.episodes.features.history.usecases.HISTORY_PAGE_LIMIT
@@ -93,7 +93,7 @@ internal class EpisodeHistoryViewModel(
 
     private fun observeLists() {
         merge(
-            episodeDetailsUpdates.observeUpdates(PROGRESS),
+            episodeDetailsUpdates.observeUpdates(Progress),
         )
             .distinctUntilChanged()
             .debounce(200.milliseconds)
@@ -240,7 +240,7 @@ internal class EpisodeHistoryViewModel(
 
                 updateHistoryUseCase.removePlayFromHistory(item.id)
                 loadProgressUseCase.loadShowsProgress()
-                episodeDetailsUpdates.notifyUpdate(HISTORY)
+                episodeDetailsUpdates.notifyUpdate(History)
 
                 itemsState.update { items ->
                     (items ?: emptyMap())
