@@ -38,7 +38,6 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.extensions.toLocal
-import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
@@ -162,7 +161,7 @@ internal class CheckInService : Service() {
             .Builder(applicationContext, TraktNotificationChannel.CHECK_IN.id)
             .setForegroundServiceBehavior(FOREGROUND_SERVICE_IMMEDIATE)
             .setSmallIcon(R.drawable.ic_trakt_icon_notification)
-            .setSubText(getString(R.string.button_text_checkin).uppercaseWords())
+            .setSubText(getString(R.string.button_text_checkin))
             .setContentTitle(data.title)
             .setContentText("$endsAtText ($contentText)")
             .setShowWhen(false)

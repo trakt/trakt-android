@@ -78,7 +78,6 @@ import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
@@ -410,7 +409,7 @@ private fun SettingsAccount(
         }
 
         SettingsValueField(
-            text = stringResource(R.string.text_display_name).uppercaseWords(),
+            text = stringResource(R.string.text_display_name),
             value = state.user?.name,
             enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
             onClick = {
@@ -428,7 +427,7 @@ private fun SettingsAccount(
         )
 
         SettingsValueField(
-            text = stringResource(R.string.text_about).uppercaseWords(),
+            text = stringResource(R.string.text_about),
             value = state.user?.about,
             enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
             onClick = {
@@ -462,7 +461,7 @@ private fun SettingsAccount(
 
     SingleInputSheet(
         active = displayNameSheet != null,
-        title = stringResource(R.string.text_display_name).uppercaseWords(),
+        title = stringResource(R.string.text_display_name),
         description = stringResource(R.string.input_prompt_display_name),
         initialInput = displayNameSheet,
         nullable = true,
@@ -494,7 +493,7 @@ private fun SettingsAccount(
 
     SingleInputSheet(
         active = aboutSheet != null,
-        title = stringResource(R.string.text_about).uppercaseWords(),
+        title = stringResource(R.string.text_about),
         description = stringResource(R.string.input_prompt_about),
         initialInput = aboutSheet,
         nullable = true,

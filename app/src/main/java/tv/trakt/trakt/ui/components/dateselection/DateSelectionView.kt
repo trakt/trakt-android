@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.notifications.NotificationsRationaleSheet
@@ -185,7 +184,7 @@ private fun ActionButtons(
     ) {
         if (nowWatchingVisible) {
             GhostButton(
-                text = stringResource(R.string.button_text_checkin).uppercaseWords(),
+                text = stringResource(R.string.button_text_checkin),
                 icon = painterResource(R.drawable.ic_eye),
                 iconSize = 22.dp,
                 iconSpace = 16.dp,
