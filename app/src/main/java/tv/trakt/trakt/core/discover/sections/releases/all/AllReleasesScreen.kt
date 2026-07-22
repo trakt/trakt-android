@@ -113,8 +113,7 @@ import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.time.Duration.Companion.milliseconds
 
-private const val MinAlpha = 0.25F
-// private val ControlsCollapseHeight = 40.dp
+private val MinAlpha = 0.25F
 
 @Composable
 internal fun AllReleasesScreen(

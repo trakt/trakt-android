@@ -54,19 +54,27 @@ internal class GetCalendarItemsUseCase(
                 with(MONDAY) to with(SUNDAY)
             }
 
-            val showsDataAsync = async {
-                remoteUserSource.getShowsCalendar(
-                    startDate = weekStart.minusDays(DAYS_OFFSET),
-                    days = DAYS_RANGE,
-                    filters = filters,
-                )
+            val showsDataAsync = if (filters.mode.isMediaOrShows) {
+                async {
+                    remoteUserSource.getShowsCalendar(
+                        startDate = weekStart.minusDays(DAYS_OFFSET),
+                        days = DAYS_RANGE,
+                        filters = filters,
+                    )
+                }
+            } else {
+                null
             }
-            val moviesDataAsync = async {
-                remoteUserSource.getMoviesCalendar(
-                    startDate = weekStart.minusDays(DAYS_OFFSET),
-                    days = DAYS_RANGE,
-                    filters = filters,
-                )
+            val moviesDataAsync = if (filters.mode.isMediaOrMovies) {
+                async {
+                    remoteUserSource.getMoviesCalendar(
+                        startDate = weekStart.minusDays(DAYS_OFFSET),
+                        days = DAYS_RANGE,
+                        filters = filters,
+                    )
+                }
+            } else {
+                null
             }
 
             val showsProgressAsync = async {
@@ -87,8 +95,8 @@ internal class GetCalendarItemsUseCase(
                 }
             }
 
-            val showsData = if (filters.mode.isMediaOrShows) showsDataAsync.await() else emptyList()
-            val moviesData = if (filters.mode.isMediaOrMovies) moviesDataAsync.await() else emptyList()
+            val showsData = showsDataAsync?.await().orEmpty()
+            val moviesData = moviesDataAsync?.await().orEmpty()
 
             val showsProgress = showsProgressAsync.await()
                 .associateBy { it.showId }

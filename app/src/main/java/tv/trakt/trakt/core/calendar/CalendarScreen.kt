@@ -111,7 +111,7 @@ import java.time.LocalDate
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
-private const val MIN_ALPHA = 0.25F
+private val MinAlpha = 0.25F
 
 @Composable
 internal fun CalendarScreen(
@@ -404,7 +404,7 @@ private fun CalendarScreen(
             modifier = Modifier
                 .alpha(
                     (1F - (dragOffset.floatValue.absoluteValue / dragLimit))
-                        .coerceIn(MIN_ALPHA, 1F),
+                        .coerceIn(MinAlpha, 1F),
                 )
                 .pointerInput(Unit) {
                     awaitEachGesture {
@@ -591,7 +591,7 @@ private fun CalendarContent(
             modifier = modifier
                 .alpha(
                     when {
-                        state.loading.isLoading -> MIN_ALPHA
+                        state.loading.isLoading -> MinAlpha
                         else -> if (animateIn) animateInAlpha else 0F
                     },
                 ),
