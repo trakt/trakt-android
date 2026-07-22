@@ -1,6 +1,5 @@
 package tv.trakt.trakt.core.calendar.ui.controls
 
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -23,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
+import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
@@ -45,7 +45,6 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -55,7 +54,6 @@ import java.util.Locale
 
 @Composable
 internal fun CalendarControlsView(
-    @StringRes title: Int,
     startDate: LocalDate,
     modifier: Modifier = Modifier,
     focusedDate: LocalDate? = null,
@@ -63,12 +61,10 @@ internal fun CalendarControlsView(
     availableDates: ImmutableSet<LocalDate>? = null,
     availableItems: ImmutableMap<LocalDate, ImmutableList<CalendarItem>>? = null,
     enabled: Boolean = false,
-    filtersContent: (@Composable () -> Unit)? = null,
     onDayClick: (LocalDate) -> Unit = {},
     onTodayClick: () -> Unit = {},
     onNextWeekClick: () -> Unit = {},
     onPreviousWeekClick: () -> Unit = {},
-    onBackClick: () -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -81,72 +77,48 @@ internal fun CalendarControlsView(
             .padding(horizontal = 12.dp),
     ) {
         Row(
+            horizontalArrangement = spacedBy(8.dp),
             verticalAlignment = CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .padding(start = 2.dp)
-                .fillMaxWidth(),
+                .align(End),
         ) {
-            Row(
-                verticalAlignment = CenterVertically,
-                horizontalArrangement = spacedBy(12.dp),
+            Icon(
+                painter = painterResource(R.drawable.ic_chevron_right),
+                tint = TraktTheme.colors.textPrimary,
+                contentDescription = null,
                 modifier = Modifier
-                    .onClick(onClick = onBackClick),
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_back_arrow),
-                    tint = TraktTheme.colors.textPrimary,
-                    contentDescription = null,
-                )
-                TraktHeader(
-                    title = stringResource(title),
-                )
-            }
-
-            Row(
-                horizontalArrangement = spacedBy(8.dp),
-                verticalAlignment = CenterVertically,
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_chevron_right),
-                    tint = TraktTheme.colors.textPrimary,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(24.dp)
-                        .rotate(180F)
-                        .onClick(throttle = false) {
-                            onPreviousWeekClick()
-                        },
-                )
-                GhostButton(
-                    text = stringResource(R.string.button_text_reset_calendar_period),
-                    onClick = { onTodayClick() },
-                    fillWidth = false,
-                    uppercase = false,
-                    modifier = Modifier
-                        .height(24.dp),
-                )
-                Icon(
-                    painter = painterResource(R.drawable.ic_chevron_right),
-                    tint = TraktTheme.colors.textPrimary,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(24.dp)
-                        .onClick(throttle = false) {
-                            onNextWeekClick()
-                        },
-                )
-            }
+                    .size(24.dp)
+                    .rotate(180F)
+                    .onClick(throttle = false) {
+                        onPreviousWeekClick()
+                    },
+            )
+            GhostButton(
+                text = stringResource(R.string.button_text_reset_calendar_period),
+                onClick = { onTodayClick() },
+                fillWidth = false,
+                uppercase = false,
+                modifier = Modifier
+                    .height(24.dp),
+            )
+            Icon(
+                painter = painterResource(R.drawable.ic_chevron_right),
+                tint = TraktTheme.colors.textPrimary,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(24.dp)
+                    .onClick(throttle = false) {
+                        onNextWeekClick()
+                    },
+            )
         }
-
-        filtersContent?.invoke()
 
         Row(
             verticalAlignment = CenterVertically,
             horizontalArrangement = spacedBy(4.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp),
+                .padding(top = 12.dp),
         ) {
             for (day in 0..6) {
                 val date = remember(startDate) {
@@ -222,7 +194,7 @@ private fun DayRowItem(
 
     Column(
         horizontalAlignment = CenterHorizontally,
-        verticalArrangement = spacedBy(4.dp),
+        verticalArrangement = spacedBy(3.dp),
         modifier = modifier
             .background(
                 color = animatedColor,
@@ -244,23 +216,18 @@ private fun DayRowItem(
                 onDayClick(itemDate)
             },
     ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(3.dp),
-            verticalAlignment = CenterVertically,
-        ) {
-            Text(
-                text = itemDate.dayOfWeek
-                    .getDisplayName(TextStyle.SHORT_STANDALONE, configurationLocale)
-                    .capitalize(),
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.meta.copy(
-                    fontSize = 12.sp,
-                ),
-                maxLines = 1,
-                modifier = Modifier
-                    .alpha(if (dayAvailable) 1F else 0.25F),
-            )
-        }
+        Text(
+            text = itemDate.dayOfWeek
+                .getDisplayName(TextStyle.SHORT_STANDALONE, configurationLocale)
+                .capitalize(),
+            color = TraktTheme.colors.textPrimary,
+            style = TraktTheme.typography.meta.copy(
+                fontSize = 12.sp,
+            ),
+            maxLines = 1,
+            modifier = Modifier
+                .alpha(if (dayAvailable) 1F else 0.25F),
+        )
 
         Text(
             text = itemDate.dayOfMonth.toString(),
@@ -335,7 +302,6 @@ private fun Preview() {
     val now = LocalDate.now()
     TraktTheme {
         CalendarControlsView(
-            title = R.string.page_title_calendar,
             startDate = now.minusDays(3L),
             focusedDate = now,
         )
@@ -348,7 +314,6 @@ private fun Preview2() {
     val today = LocalDate.now()
     TraktTheme {
         CalendarControlsView(
-            title = R.string.page_title_calendar,
             startDate = today.minusDays(3L),
             focusedDate = today,
             enabled = true,
@@ -363,7 +328,6 @@ private fun Preview3() {
     TraktTheme {
         val now = nowLocalDay()
         CalendarControlsView(
-            title = R.string.page_title_calendar,
             startDate = now.minusDays(3L),
             focusedDate = now.minusDays(2L),
             enabled = true,

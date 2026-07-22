@@ -418,7 +418,6 @@ private fun CalendarScreen(
         )
 
         CalendarControlsView(
-            title = R.string.page_title_calendar,
             enabled = !state.loading.isLoading,
             startDate = state.selectedStartDay,
             focusedDate = focusedDate,
@@ -458,7 +457,6 @@ private fun CalendarScreen(
             },
             onNextWeekClick = onNextWeekClick,
             onPreviousWeekClick = onPreviousWeekClick,
-            onBackClick = onBackClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
