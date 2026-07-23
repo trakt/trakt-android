@@ -81,6 +81,7 @@
   <string name="button_label_edit_list">Listád szerkesztése: %s</string>
   <string name="button_label_edit_mode">Szerkesztési mód</string>
   <string name="button_label_edit_note">Jegyzet szerkesztése</string>
+  <string name="button_label_exclude_option">%s kizárása</string>
   <string name="button_label_exit_edit_mode">Szerkesztési módból kilépés</string>
   <string name="button_label_expand_category">%s kibontása</string>
   <string name="button_label_expand_media_overview">„%s” ismertetőjőnek kibontása</string>
@@ -100,6 +101,7 @@
   <string name="button_label_home">Vissza a kezdőlapra</string>
   <string name="button_label_import_more">Visszaállítás és új importálás indítása.</string>
   <string name="button_label_import_selected">Importálja a fent kiválasztott filmtalálatokat.</string>
+  <string name="button_label_include_option">%s belefoglalása</string>
   <string name="button_label_join_trakt">Csatlakozz a trakt.tv-hez, hogy nyomon követhesd, mit nézel</string>
   <string name="button_label_library">Könyvtár</string>
   <string name="button_label_like_list">%s kedvelése</string>
@@ -1054,6 +1056,7 @@
   <string name="mir_title_month_in_review">Havi összefoglaló</string>
   <string name="notes_placeholder_text">Hagyj egy jegyzetet, amikor legközelebb kedvencnek jelölsz vagy eldobsz egy címet.</string>
   <string name="notice_delete_account_vip">Mivel aktív Trakt VIP tag vagy, kérjük, <a>mondd le VIP tagságodat</a> fiókod törlése előtt.</string>
+  <string name="option_label_excluded">%s (kizárva az eredményekből)</string>
   <string name="option_text_africa">Afrika</string>
   <string name="option_text_all">Összes</string>
   <string name="option_text_all_digital_releases">Összes digitális kiadás</string>
@@ -1065,6 +1068,7 @@
   <string name="option_text_certification_unrated">Besorolatlan</string>
   <string name="option_text_comment_language_all">Minden nyelv</string>
   <string name="option_text_europe">Európa</string>
+  <string name="option_text_excluded">-%s</string>
   <string name="option_text_latin_america">Latin-Amerika</string>
   <string name="option_text_middle_east">Közel-Kelet</string>
   <string name="option_text_my_favorites">Kedvenceim</string>

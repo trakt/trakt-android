@@ -81,6 +81,7 @@
   <string name="button_label_edit_list">Изменить список %s</string>
   <string name="button_label_edit_mode">Режим редактирования</string>
   <string name="button_label_edit_note">Редактировать заметку</string>
+  <string name="button_label_exclude_option">Исключить %s</string>
   <string name="button_label_exit_edit_mode">Выйти из режима редактирования</string>
   <string name="button_label_expand_category">Развернуть %s</string>
   <string name="button_label_expand_media_overview">Развернуть обзор \"%s\"</string>
@@ -100,6 +101,7 @@
   <string name="button_label_home">Вернуться на главную страницу</string>
   <string name="button_label_import_more">Сбросить и начать новый импорт.</string>
   <string name="button_label_import_selected">Импортировать выбранные вами совпадения фильмов.</string>
+  <string name="button_label_include_option">Включить %s</string>
   <string name="button_label_join_trakt">Присоединяйтесь к trakt.tv, чтобы отслеживать, что вы смотрите</string>
   <string name="button_label_library">Библиотека</string>
   <string name="button_label_like_list">Нравится %s</string>
@@ -1054,6 +1056,7 @@
   <string name="mir_title_month_in_review">Обзор месяца</string>
   <string name="notes_placeholder_text">Оставьте заметку в следующий раз, когда вы добавите в избранное или откажетесь от просмотра.</string>
   <string name="notice_delete_account_vip">Поскольку вы являетесь активным VIP-пользователем Trakt, пожалуйста, <a>отмените свою VIP-подписку</a> перед удалением аккаунта.</string>
+  <string name="option_label_excluded">%s (исключено из результатов)</string>
   <string name="option_text_africa">Африка</string>
   <string name="option_text_all">Все</string>
   <string name="option_text_all_digital_releases">Все цифровые релизы</string>
@@ -1065,6 +1068,7 @@
   <string name="option_text_certification_unrated">Без рейтинга</string>
   <string name="option_text_comment_language_all">Все языки</string>
   <string name="option_text_europe">Европа</string>
+  <string name="option_text_excluded">-%s</string>
   <string name="option_text_latin_america">Латинская Америка</string>
   <string name="option_text_middle_east">Ближний Восток</string>
   <string name="option_text_my_favorites">Мои избранные</string>

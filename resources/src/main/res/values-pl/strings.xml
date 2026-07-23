@@ -81,6 +81,7 @@
   <string name="button_label_edit_list">Edytuj listę %s</string>
   <string name="button_label_edit_mode">Tryb edycji</string>
   <string name="button_label_edit_note">Edytuj notatkę</string>
+  <string name="button_label_exclude_option">Wyklucz %s</string>
   <string name="button_label_exit_edit_mode">Wyjdź z trybu edycji</string>
   <string name="button_label_expand_category">Rozwiń %s</string>
   <string name="button_label_expand_media_overview">Rozwiń opis \"%s\"</string>
@@ -100,6 +101,7 @@
   <string name="button_label_home">Wróć do strony głównej</string>
   <string name="button_label_import_more">Zresetuj i rozpocznij nowy import.</string>
   <string name="button_label_import_selected">Importuj dopasowania filmów, które wybrałeś powyżej.</string>
+  <string name="button_label_include_option">Uwzględnij %s</string>
   <string name="button_label_join_trakt">Dołącz do trakt.tv aby śledzić to, co oglądasz</string>
   <string name="button_label_library">Biblioteka</string>
   <string name="button_label_like_list">Polub %s</string>
@@ -1054,6 +1056,7 @@
   <string name="mir_title_month_in_review">Podsumowanie miesiąca</string>
   <string name="notes_placeholder_text">Zostaw notatkę następnym razem, gdy dodasz do ulubionych lub porzucisz tytuł.</string>
   <string name="notice_delete_account_vip">Ponieważ jesteś aktywnym Trakt VIP, proszę <a>anuluj swoje członkostwo VIP</a> przed usunięciem konta.</string>
+  <string name="option_label_excluded">%s (wykluczone z wyników)</string>
   <string name="option_text_africa">Afryka</string>
   <string name="option_text_all">Wszystkie</string>
   <string name="option_text_all_digital_releases">Wszystkie wydania cyfrowe</string>
@@ -1065,6 +1068,7 @@
   <string name="option_text_certification_unrated">Brak certyfikacji</string>
   <string name="option_text_comment_language_all">Wszystkie języki</string>
   <string name="option_text_europe">Europa</string>
+  <string name="option_text_excluded">-%s</string>
   <string name="option_text_latin_america">Ameryka Łacińska</string>
   <string name="option_text_middle_east">Bliski Wschód</string>
   <string name="option_text_my_favorites">Moje ulubione</string>
