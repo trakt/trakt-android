@@ -183,14 +183,14 @@ internal class CommentsViewModel(
                 movieId = destination.mediaId.toTraktId(),
                 user = userState.value,
                 filter = filter,
-                limit = 100,
+                limit = 250,
             )
 
             MediaType.Show -> getShowCommentsUseCase.getComments(
                 showId = destination.mediaId.toTraktId(),
                 user = userState.value,
                 filter = filter,
-                limit = 100,
+                limit = 250,
             )
 
             MediaType.Episode -> getEpisodeCommentsUseCase.getComments(
@@ -201,7 +201,7 @@ internal class CommentsViewModel(
                 ),
                 user = userState.value,
                 filter = filter,
-                limit = 100,
+                limit = 250,
             )
 
             else -> throw IllegalArgumentException("Unsupported media type: ${destination.mediaType}")

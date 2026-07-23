@@ -19,7 +19,7 @@ internal class DeleteRatingUseCase(
             Movie -> remoteSource.deleteMovieRating(id = mediaId)
             Show -> remoteSource.deleteShowRating(id = mediaId)
             Episode -> remoteSource.deleteEpisodeRating(id = mediaId)
-            Season -> throw IllegalStateException("Rating a season is not supported")
+            Season -> remoteSource.deleteSeasonRating(id = mediaId)
         }
     }
 }

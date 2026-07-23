@@ -21,8 +21,9 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 internal val EmptyVerticalSingleHeight = 219.dp
 internal val EmptyVerticalDoubleHeight = 233.dp
-
 internal val EmptyHorizontalDoubleHeight = 150.dp
+
+internal val EmptyVerticalPanelHeight = 139.dp
 
 @Composable
 internal fun EmptyListCard(

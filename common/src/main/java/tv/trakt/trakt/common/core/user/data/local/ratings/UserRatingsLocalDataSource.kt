@@ -21,6 +21,11 @@ interface UserRatingsLocalDataSource {
         notify: Boolean = false,
     )
 
+    suspend fun setSeasons(
+        seasons: List<UserRating>,
+        notify: Boolean = false,
+    )
+
     suspend fun removeShows(
         ids: Set<TraktId>,
         notify: Boolean = false,
@@ -36,17 +41,26 @@ interface UserRatingsLocalDataSource {
         notify: Boolean = false,
     )
 
+    suspend fun removeSeasons(
+        ids: Set<TraktId>,
+        notify: Boolean = false,
+    )
+
     suspend fun containsShow(id: TraktId): Boolean
 
     suspend fun containsMovie(id: TraktId): Boolean
 
     suspend fun containsEpisode(id: TraktId): Boolean
 
+    suspend fun containsSeason(id: TraktId): Boolean
+
     suspend fun isShowsLoaded(): Boolean
 
     suspend fun isMoviesLoaded(): Boolean
 
     suspend fun isEpisodesLoaded(): Boolean
+
+    suspend fun isSeasonsLoaded(): Boolean
 
     suspend fun getAll(): List<UserRating>
 
@@ -55,6 +69,8 @@ interface UserRatingsLocalDataSource {
     suspend fun getMovies(): List<UserRating>
 
     suspend fun getEpisodes(): List<UserRating>
+
+    suspend fun getSeasons(): List<UserRating>
 
     fun observeUpdates(): Flow<Instant?>
 

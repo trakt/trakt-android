@@ -84,12 +84,36 @@ internal interface EpisodesRemoteDataSource {
     ): List<CommentDto>
 
     /**
+     * Retrieves the comments for a specific season of a show.
+     *
+     * @param showId The Trakt ID of the show.
+     * @param season The season number.
+     * @param limit The maximum number of comments to retrieve.
+     * @param sort The sort order for comments (e.g., "likes", "newest").
+     * @return A list of [CommentDto] objects representing the comments for the season.
+     */
+    suspend fun getSeasonComments(
+        showId: TraktId,
+        season: Int,
+        limit: Int = 20,
+        sort: String = "likes",
+    ): List<CommentDto>
+
+    /**
      * Retrieves the cast and crew for a specific episode of a show.
      */
     suspend fun getCastCrew(
         showId: TraktId,
         season: Int,
         episode: Int,
+    ): CastCrewDto
+
+    /**
+     * Retrieves the sentiments for a specific season of a show.
+     */
+    suspend fun getCastCrew(
+        showId: TraktId,
+        season: Int,
     ): CastCrewDto
 
     /**

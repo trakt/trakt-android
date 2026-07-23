@@ -175,6 +175,7 @@ object PreviewData {
                 "walter-r2.trakt.tv/images/movies/000/142/611/fanarts/medium/5248d0dfec.jpg.webp",
             ).toImmutableList(),
         ),
+        overview = "Lorem ipsum dolor sit amet",
         firstAired = ZonedDateTime.now(),
         updatedAt = ZonedDateTime.now(),
     )

@@ -58,6 +58,7 @@ import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.comments.features.details.CommentDetailsSheet
 import tv.trakt.trakt.core.profile.sections.activity.all.ui.ProfileAllActivityEpisodeItem
 import tv.trakt.trakt.core.profile.sections.activity.all.ui.ProfileAllActivityMovieItem
+import tv.trakt.trakt.core.profile.sections.activity.all.ui.ProfileAllActivitySeasonItem
 import tv.trakt.trakt.core.profile.sections.activity.all.ui.ProfileAllActivityShowItem
 import tv.trakt.trakt.core.profile.sections.activity.all.ui.filters.ProfileActivityFilters
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter
@@ -67,6 +68,7 @@ import tv.trakt.trakt.core.profile.sections.activity.model.ProfileCommentItem
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileRatingItem
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileRatingItem.EpisodeItem
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileRatingItem.MovieItem
+import tv.trakt.trakt.core.profile.sections.activity.model.ProfileRatingItem.SeasonItem
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileRatingItem.ShowItem
 import tv.trakt.trakt.core.profile.sections.activity.ui.comments.ProfileCommentItemView
 import tv.trakt.trakt.helpers.SimpleScrollConnection
@@ -109,6 +111,7 @@ internal fun ProfileAllActivityScreen(
                 is ShowItem -> viewModel.navigateToShow(item.show)
                 is MovieItem -> viewModel.navigateToMovie(item.movie)
                 is EpisodeItem -> viewModel.navigateToEpisode(item.show, item.episode)
+                is SeasonItem -> viewModel.navigateToShow(item.show)
             }
         },
         onRatingShowClick = viewModel::navigateToShow,
@@ -332,6 +335,12 @@ private fun ContentList(
                             modifier = itemModifier,
                         )
                         is EpisodeItem -> ProfileAllActivityEpisodeItem(
+                            item = item,
+                            onClick = { onRatingClick(item) },
+                            onShowClick = { onRatingShowClick(item.show) },
+                            modifier = itemModifier,
+                        )
+                        is SeasonItem -> ProfileAllActivitySeasonItem(
                             item = item,
                             onClick = { onRatingClick(item) },
                             onShowClick = { onRatingShowClick(item.show) },

@@ -15,7 +15,7 @@ import tv.trakt.trakt.core.comments.model.CommentsFilter
 internal data class MovieCommentsState(
     val movie: Movie? = null,
     val items: ImmutableList<Comment>? = null,
-    val filter: CommentsFilter = CommentsFilter.POPULAR,
+    val filter: CommentsFilter = CommentsFilter.Popular,
     val reactions: ImmutableMap<Int, ReactionsSummary>? = null,
     val userReactions: ImmutableMap<Int, Reaction?>? = null,
     val loading: LoadingState = LoadingState.Idle,

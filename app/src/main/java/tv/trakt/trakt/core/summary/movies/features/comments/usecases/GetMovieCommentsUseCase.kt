@@ -7,8 +7,8 @@ import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.comments.model.CommentsFilter
-import tv.trakt.trakt.core.comments.model.CommentsFilter.POPULAR
-import tv.trakt.trakt.core.comments.model.CommentsFilter.RECENT
+import tv.trakt.trakt.core.comments.model.CommentsFilter.Popular
+import tv.trakt.trakt.core.comments.model.CommentsFilter.Recent
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
 
 internal class GetMovieCommentsUseCase(
@@ -17,15 +17,15 @@ internal class GetMovieCommentsUseCase(
     suspend fun getComments(
         movieId: TraktId,
         user: User? = null,
-        filter: CommentsFilter = POPULAR,
+        filter: CommentsFilter = Popular,
         limit: Int = 20,
     ): ImmutableList<Comment> {
         val remoteComments = remoteSource.getComments(
             movieId = movieId,
             limit = limit,
             sort = when (filter) {
-                POPULAR -> "likes"
-                RECENT -> "newest"
+                Popular -> "likes"
+                Recent -> "newest"
             },
         ).asyncMap {
             Comment.fromDto(it)

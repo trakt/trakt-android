@@ -34,6 +34,12 @@ internal class LoadUserRatingsUseCase(
             .toImmutableMap()
     }
 
+    suspend fun loadLocalSeasons(): ImmutableMap<TraktId, UserRating> {
+        return localSource.getSeasons()
+            .associateBy { it.mediaId }
+            .toImmutableMap()
+    }
+
     suspend fun isShowsLoaded(): Boolean {
         return localSource.isShowsLoaded()
     }
@@ -44,6 +50,10 @@ internal class LoadUserRatingsUseCase(
 
     suspend fun isEpisodesLoaded(): Boolean {
         return localSource.isEpisodesLoaded()
+    }
+
+    suspend fun isSeasonsLoaded(): Boolean {
+        return localSource.isSeasonsLoaded()
     }
 
     suspend fun loadShows(): ImmutableMap<TraktId, UserRating> {
@@ -89,6 +99,22 @@ internal class LoadUserRatingsUseCase(
             }
             .also {
                 localSource.setEpisodes(it)
+            }
+            .associateBy { it.mediaId }
+            .toImmutableMap()
+    }
+
+    suspend fun loadSeasons(): ImmutableMap<TraktId, UserRating> {
+        return remoteSource.getRatingsSeasons()
+            .asyncMap {
+                UserRating(
+                    mediaId = it.season!!.ids.trakt.toTraktId(),
+                    mediaType = MediaType.Season,
+                    rating = it.rating,
+                )
+            }
+            .also {
+                localSource.setSeasons(it)
             }
             .associateBy { it.mediaId }
             .toImmutableMap()

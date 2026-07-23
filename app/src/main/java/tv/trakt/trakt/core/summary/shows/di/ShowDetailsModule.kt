@@ -34,6 +34,8 @@ import tv.trakt.trakt.core.summary.shows.features.related.ShowRelatedViewModel
 import tv.trakt.trakt.core.summary.shows.features.related.usecases.GetShowRelatedUseCase
 import tv.trakt.trakt.core.summary.shows.features.seasons.ShowSeasonsViewModel
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.AllShowSeasonsViewModel
+import tv.trakt.trakt.core.summary.shows.features.seasons.all.usecases.GetSeasonCommentsUseCase
+import tv.trakt.trakt.core.summary.shows.features.seasons.all.usecases.GetSeasonPeopleUseCase
 import tv.trakt.trakt.core.summary.shows.features.seasons.usecases.GetShowSeasonsUseCase
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilViewModel
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.usecases.GetWatchedUntilEpisodesUseCase
@@ -64,6 +66,8 @@ internal val showDetailsModule = module {
     factoryOf(::GetShowSeasonsUseCase)
     factoryOf(::GetShowExtrasUseCase)
     factoryOf(::GetShowActorsUseCase)
+    factoryOf(::GetSeasonPeopleUseCase)
+    factoryOf(::GetSeasonCommentsUseCase)
     factoryOf(::GetShowRelatedUseCase)
     factoryOf(::GetShowStreamingsUseCase)
     factoryOf(::GetShowStreamingUseCase)
@@ -79,7 +83,29 @@ internal val showDetailsModule = module {
     viewModelOf(::ShowStreamingsViewModel)
     viewModelOf(::ShowExtrasViewModel)
     viewModelOf(::ShowSeasonsViewModel)
-    viewModelOf(::AllShowSeasonsViewModel)
+    viewModel {
+        AllShowSeasonsViewModel(
+            savedStateHandle = get(),
+            appContext = androidApplication(),
+            getShowDetailsUseCase = get(),
+            getSeasonsUseCase = get(),
+            getSeasonsPeopleUseCase = get(),
+            getSeasonCommentsUseCase = get(),
+            getCommentRepliesUseCase = get(),
+            getCommentReactionsUseCase = get(),
+            loadUserReactionsUseCase = get(),
+            loadUserRatingsUseCase = get(),
+            reactionsUpdates = get(),
+            ratingsUpdates = get(),
+            loadUserProgressUseCase = get(),
+            updateEpisodeHistoryUseCase = get(),
+            episodeLocalDataSource = get(),
+            showDetailsUpdates = get(),
+            episodeDetailsUpdates = get(),
+            sessionManager = get(),
+            analytics = get(),
+        )
+    }
     viewModelOf(::ShowActorsViewModel)
     viewModelOf(::ShowRelatedViewModel)
     viewModelOf(::ShowListsViewModel)

@@ -8,8 +8,8 @@ import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.comments.model.CommentsFilter
-import tv.trakt.trakt.core.comments.model.CommentsFilter.POPULAR
-import tv.trakt.trakt.core.comments.model.CommentsFilter.RECENT
+import tv.trakt.trakt.core.comments.model.CommentsFilter.Popular
+import tv.trakt.trakt.core.comments.model.CommentsFilter.Recent
 import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
 
 internal class GetEpisodeCommentsUseCase(
@@ -19,7 +19,7 @@ internal class GetEpisodeCommentsUseCase(
         showId: TraktId,
         seasonEpisode: SeasonEpisode,
         user: User? = null,
-        filter: CommentsFilter = POPULAR,
+        filter: CommentsFilter = Popular,
         limit: Int = 20,
     ): ImmutableList<Comment> {
         val remoteComments = remoteSource.getEpisodeComments(
@@ -28,8 +28,8 @@ internal class GetEpisodeCommentsUseCase(
             episode = seasonEpisode.episode,
             limit = limit,
             sort = when (filter) {
-                POPULAR -> "likes"
-                RECENT -> "newest"
+                Popular -> "likes"
+                Recent -> "newest"
             },
         ).asyncMap {
             Comment.fromDto(it)

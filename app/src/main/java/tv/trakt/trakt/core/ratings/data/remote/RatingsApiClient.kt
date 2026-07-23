@@ -6,12 +6,15 @@ import org.openapitools.client.models.PostCheckinStartRequestOneOfOneOfEpisodeId
 import org.openapitools.client.models.PostSyncRatingsAddRequest
 import org.openapitools.client.models.PostSyncRatingsAddRequestEpisodesInner
 import org.openapitools.client.models.PostSyncRatingsAddRequestMoviesInner
+import org.openapitools.client.models.PostSyncRatingsAddRequestSeasonsInner
 import org.openapitools.client.models.PostSyncRatingsAddRequestShowsInner
 import org.openapitools.client.models.PostSyncRatingsRemoveRequest
 import org.openapitools.client.models.PostSyncRatingsRemoveRequestEpisodesInner
 import org.openapitools.client.models.PostSyncRatingsRemoveRequestMoviesInner
+import org.openapitools.client.models.PostSyncRatingsRemoveRequestSeasonsInner
 import org.openapitools.client.models.PostSyncRatingsRemoveRequestShowsInner
 import org.openapitools.client.models.PostUsersListsListAddRequestEpisodesInnerIds
+import org.openapitools.client.models.PostUsersListsListAddRequestSeasonsInnerIds
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
@@ -81,6 +84,26 @@ internal class RatingsApiClient(
         cacheMarker.invalidate()
     }
 
+    override suspend fun postSeasonRating(
+        id: TraktId,
+        rating: Int,
+    ) {
+        val request = PostSyncRatingsAddRequest(
+            seasons = listOf(
+                PostSyncRatingsAddRequestSeasonsInner(
+                    rating = rating,
+                    ids = PostUsersListsListAddRequestSeasonsInnerIds(
+                        trakt = id.value,
+                        tmdb = null,
+                        tvdb = -1,
+                    ),
+                ),
+            ),
+        )
+        ratingsApi.postSyncRatingsAdd(request)
+        cacheMarker.invalidate()
+    }
+
     override suspend fun deleteMovieRating(id: TraktId) {
         ratingsApi.postSyncRatingsRemove(
             PostSyncRatingsRemoveRequest(
@@ -106,6 +129,23 @@ internal class RatingsApiClient(
                     PostSyncRatingsRemoveRequestEpisodesInner(
                         ids = PostUsersListsListAddRequestEpisodesInnerIds(
                             trakt = id.value,
+                            tvdb = -1,
+                        ),
+                    ),
+                ),
+            ),
+        )
+        cacheMarker.invalidate()
+    }
+
+    override suspend fun deleteSeasonRating(id: TraktId) {
+        ratingsApi.postSyncRatingsRemove(
+            PostSyncRatingsRemoveRequest(
+                seasons = listOf(
+                    PostSyncRatingsRemoveRequestSeasonsInner(
+                        ids = PostUsersListsListAddRequestSeasonsInnerIds(
+                            trakt = id.value,
+                            tmdb = null,
                             tvdb = -1,
                         ),
                     ),

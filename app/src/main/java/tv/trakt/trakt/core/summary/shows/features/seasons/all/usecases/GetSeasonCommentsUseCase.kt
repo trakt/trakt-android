@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.summary.shows.features.comments.usecases
+package tv.trakt.trakt.core.summary.shows.features.seasons.all.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -9,19 +9,21 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.model.CommentsFilter.Popular
 import tv.trakt.trakt.core.comments.model.CommentsFilter.Recent
-import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
+import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
 
-internal class GetShowCommentsUseCase(
-    private val remoteSource: ShowsRemoteDataSource,
+internal class GetSeasonCommentsUseCase(
+    private val remoteSource: EpisodesRemoteDataSource,
 ) {
     suspend fun getComments(
         showId: TraktId,
+        season: Int,
         user: User? = null,
         filter: CommentsFilter = Popular,
         limit: Int = 20,
     ): ImmutableList<Comment> {
-        val remoteComments = remoteSource.getComments(
+        val remoteComments = remoteSource.getSeasonComments(
             showId = showId,
+            season = season,
             limit = limit,
             sort = when (filter) {
                 Popular -> "likes"

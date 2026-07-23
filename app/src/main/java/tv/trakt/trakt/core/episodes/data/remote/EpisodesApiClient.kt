@@ -104,6 +104,24 @@ internal class EpisodesApiClient(
         return response.body()
     }
 
+    override suspend fun getSeasonComments(
+        showId: TraktId,
+        season: Int,
+        limit: Int,
+        sort: String,
+    ): List<CommentDto> {
+        val response = showsApi.getShowsSeasonComments(
+            id = showId.value.toString(),
+            season = season,
+            sort = sort,
+            extended = "full,images,vip",
+            page = null,
+            limit = limit.toString(),
+            language = null,
+        )
+        return response.body()
+    }
+
     override suspend fun getCastCrew(
         showId: TraktId,
         season: Int,
@@ -113,6 +131,18 @@ internal class EpisodesApiClient(
             id = showId.value.toString(),
             season = season,
             episode = episode,
+            extended = "cloud9,full",
+        )
+        return response.body()
+    }
+
+    override suspend fun getCastCrew(
+        showId: TraktId,
+        season: Int,
+    ): CastCrewDto {
+        val response = showsApi.getShowsSeasonPeople(
+            id = showId.value.toString(),
+            season = season,
             extended = "cloud9,full",
         )
         return response.body()

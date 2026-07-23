@@ -19,7 +19,7 @@ internal data class CommentsState(
     val media: MediaState? = null,
     val comments: ImmutableList<Comment>? = null,
     val replies: ImmutableMap<Int, ImmutableList<Comment>>? = null,
-    val filter: CommentsFilter = CommentsFilter.POPULAR,
+    val filter: CommentsFilter = CommentsFilter.Popular,
     val reactions: ImmutableMap<Int, ReactionsSummary>? = null,
     val userReactions: ImmutableMap<Int, Reaction?>? = null,
     val user: User? = null,

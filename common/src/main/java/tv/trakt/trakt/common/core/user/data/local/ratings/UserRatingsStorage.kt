@@ -16,6 +16,7 @@ class UserRatingsStorage : UserRatingsLocalDataSource {
     private var showsStorage: MutableMap<TraktId, UserRating>? = null
     private var moviesStorage: MutableMap<TraktId, UserRating>? = null
     private var episodesStorage: MutableMap<TraktId, UserRating>? = null
+    private var seasonsStorage: MutableMap<TraktId, UserRating>? = null
 
     private val updatedAt = MutableSharedFlow<Instant?>(
         replay = 1,
@@ -81,6 +82,26 @@ class UserRatingsStorage : UserRatingsLocalDataSource {
         }
     }
 
+    override suspend fun setSeasons(
+        seasons: List<UserRating>,
+        notify: Boolean,
+    ) {
+        mutex.withLock {
+            if (seasonsStorage == null) {
+                seasonsStorage = mutableMapOf()
+            }
+
+            seasonsStorage?.let { storage ->
+                storage.clear()
+                storage.putAll(seasons.associateBy { it.mediaId })
+            }
+
+            if (notify) {
+                updatedAt.tryEmit(Instant.now())
+            }
+        }
+    }
+
     override fun observeUpdates(): Flow<Instant?> {
         return updatedAt.asSharedFlow()
     }
@@ -103,6 +124,12 @@ class UserRatingsStorage : UserRatingsLocalDataSource {
         }
     }
 
+    override suspend fun containsSeason(id: TraktId): Boolean {
+        return mutex.withLock {
+            seasonsStorage?.containsKey(id) == true
+        }
+    }
+
     override suspend fun isMoviesLoaded(): Boolean {
         return mutex.withLock {
             moviesStorage != null
@@ -121,12 +148,19 @@ class UserRatingsStorage : UserRatingsLocalDataSource {
         }
     }
 
+    override suspend fun isSeasonsLoaded(): Boolean {
+        return mutex.withLock {
+            seasonsStorage != null
+        }
+    }
+
     override suspend fun getAll(): List<UserRating> {
         return mutex.withLock {
             val movies = moviesStorage?.values ?: emptyList()
             val shows = showsStorage?.values ?: emptyList()
             val episodes = episodesStorage?.values ?: emptyList()
-            (movies + shows + episodes)
+            val seasons = seasonsStorage?.values ?: emptyList()
+            (movies + shows + episodes + seasons)
         }
     }
 
@@ -145,6 +179,12 @@ class UserRatingsStorage : UserRatingsLocalDataSource {
     override suspend fun getEpisodes(): List<UserRating> {
         return mutex.withLock {
             episodesStorage?.values?.toList() ?: emptyList()
+        }
+    }
+
+    override suspend fun getSeasons(): List<UserRating> {
+        return mutex.withLock {
+            seasonsStorage?.values?.toList() ?: emptyList()
         }
     }
 
@@ -199,14 +239,33 @@ class UserRatingsStorage : UserRatingsLocalDataSource {
         }
     }
 
+    override suspend fun removeSeasons(
+        ids: Set<TraktId>,
+        notify: Boolean,
+    ) {
+        mutex.withLock {
+            seasonsStorage?.let { storage ->
+                ids.forEach { id ->
+                    storage.remove(id)
+                }
+            }
+
+            if (notify) {
+                updatedAt.tryEmit(Instant.now())
+            }
+        }
+    }
+
     override fun clear() {
         moviesStorage?.clear()
         showsStorage?.clear()
         episodesStorage?.clear()
+        seasonsStorage?.clear()
 
         moviesStorage = null
         showsStorage = null
         episodesStorage = null
+        seasonsStorage = null
 
         updatedAt.tryEmit(null)
     }

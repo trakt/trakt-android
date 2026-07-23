@@ -23,4 +23,11 @@ internal interface RatingsRemoteDataSource {
     )
 
     suspend fun deleteEpisodeRating(id: TraktId)
+
+    suspend fun postSeasonRating(
+        id: TraktId,
+        rating: Int,
+    )
+
+    suspend fun deleteSeasonRating(id: TraktId)
 }
