@@ -48,8 +48,10 @@ internal class DefaultGetReleasesShowsUseCase(
                 startDate = startDate,
                 days = days,
                 filters = filters,
-            ).map {
-                Show.fromDto(it.show!!) to Episode.fromDto(it.episode!!)
+            ).mapNotNull {
+                val show = it.show ?: return@mapNotNull null
+                val episode = it.episode ?: return@mapNotNull null
+                Show.fromDto(show) to Episode.fromDto(episode)
             }
             Premiere -> remoteSource.getReleasesPremieres(
                 startDate = startDate,

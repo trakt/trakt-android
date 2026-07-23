@@ -54,7 +54,7 @@ import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSo
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates.Source.POST_RATING
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.CALENDAR
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Calendar
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Progress
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Season
@@ -146,7 +146,7 @@ internal class HomeHistoryViewModel(
             showUpdates.observeUpdates(Source.WatchedUntil),
             episodeUpdates.observeUpdates(Progress),
             episodeUpdates.observeUpdates(Season),
-            episodeUpdates.observeUpdates(CALENDAR),
+            episodeUpdates.observeUpdates(Calendar),
             episodeUpdates.observeUpdates(History),
             movieUpdates.observeUpdates(MovieDetailsUpdates.Source.Progress),
             movieUpdates.observeUpdates(MovieDetailsUpdates.Source.History),

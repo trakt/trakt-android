@@ -50,7 +50,7 @@ import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.CALENDAR
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Calendar
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Progress
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Season
@@ -251,7 +251,7 @@ internal class AllReleasesViewModel(
                     customDate = customDate,
                 )
                 loadUserProgressUseCase.loadShowsProgress()
-                episodeUpdates.notifyUpdate(CALENDAR)
+                episodeUpdates.notifyUpdate(Calendar)
 
                 itemsState.update {
                     val currentItems = it ?: return@update it
@@ -310,7 +310,7 @@ internal class AllReleasesViewModel(
                     customDate = customDate,
                 )
                 loadUserProgressUseCase.loadMoviesProgress()
-                episodeUpdates.notifyUpdate(CALENDAR)
+                episodeUpdates.notifyUpdate(Calendar)
 
                 itemsState.update {
                     val currentItems = it ?: return@update it
@@ -365,7 +365,7 @@ internal class AllReleasesViewModel(
             try {
                 updateEpisodeHistoryUseCase.removeEpisodeFromHistory(episode.ids.trakt.value)
                 loadUserProgressUseCase.loadShowsProgress()
-                episodeUpdates.notifyUpdate(CALENDAR)
+                episodeUpdates.notifyUpdate(Calendar)
 
                 itemsState.update {
                     val currentItems = it ?: return@update it
@@ -417,7 +417,7 @@ internal class AllReleasesViewModel(
             try {
                 updateMovieHistoryUseCase.removeAllFromHistory(movie.ids.trakt)
                 loadUserProgressUseCase.loadMoviesProgress()
-                episodeUpdates.notifyUpdate(CALENDAR)
+                episodeUpdates.notifyUpdate(Calendar)
 
                 itemsState.update {
                     val currentItems = it ?: return@update it

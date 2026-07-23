@@ -50,7 +50,7 @@ import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.CALENDAR
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Calendar
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import kotlin.time.Duration.Companion.milliseconds
@@ -128,7 +128,7 @@ internal class HomeUpcomingViewModel(
             homeUpNextSource.observeUpdates(),
             watchlistUpdates.observeUpdates(Default),
             watchlistUpdates.observeUpdates(AllWatchlist),
-            episodeUpdates.observeUpdates(CALENDAR),
+            episodeUpdates.observeUpdates(Calendar),
         )
             .distinctUntilChanged()
             .debounce(200.milliseconds)
