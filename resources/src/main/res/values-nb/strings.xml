@@ -81,6 +81,7 @@
   <string name="button_label_edit_list">Rediger listen din %s</string>
   <string name="button_label_edit_mode">Redigeringsmodus</string>
   <string name="button_label_edit_note">Rediger notat</string>
+  <string name="button_label_exclude_option">Ekskluder %s</string>
   <string name="button_label_exit_edit_mode">Avslutt redigeringsmodus</string>
   <string name="button_label_expand_category">Utvid %s</string>
   <string name="button_label_expand_media_overview">Utvid \"%s\" oversikt</string>
@@ -100,6 +101,7 @@
   <string name="button_label_home">Gå tilbake til hjemmesiden</string>
   <string name="button_label_import_more">Tilbakestill og start en ny import.</string>
   <string name="button_label_import_selected">Importer filmmatchene du valgte ovenfor.</string>
+  <string name="button_label_include_option">Inkluder %s</string>
   <string name="button_label_join_trakt">Bli med på trakt.tv for å holde oversikt over hva du ser på</string>
   <string name="button_label_library">Bibliotek</string>
   <string name="button_label_like_list">Lik %s</string>
@@ -1054,6 +1056,7 @@
   <string name="mir_title_month_in_review">Måneden i retrospekt</string>
   <string name="notes_placeholder_text">Legg igjen et notat neste gang du favoritter eller dropper en tittel.</string>
   <string name="notice_delete_account_vip">Siden du er en aktiv Trakt VIP, vennligst <a>kanseller ditt VIP-medlemskap</a> før du sletter kontoen din.</string>
+  <string name="option_label_excluded">%s (ekskludert fra resultater)</string>
   <string name="option_text_africa">Afrika</string>
   <string name="option_text_all">Alle</string>
   <string name="option_text_all_digital_releases">Alle digitale utgivelser</string>
@@ -1065,6 +1068,7 @@
   <string name="option_text_certification_unrated">Uklassifisert</string>
   <string name="option_text_comment_language_all">Alle språk</string>
   <string name="option_text_europe">Europa</string>
+  <string name="option_text_excluded">-%s</string>
   <string name="option_text_latin_america">Latin-Amerika</string>
   <string name="option_text_middle_east">Midtøsten</string>
   <string name="option_text_my_favorites">Mine favoritter</string>

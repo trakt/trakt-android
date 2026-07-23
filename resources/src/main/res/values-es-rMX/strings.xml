@@ -81,6 +81,7 @@
   <string name="button_label_edit_list">Editar tu lista %s</string>
   <string name="button_label_edit_mode">Modo de edición</string>
   <string name="button_label_edit_note">Editar nota</string>
+  <string name="button_label_exclude_option">Excluir %s</string>
   <string name="button_label_exit_edit_mode">Salir del modo de edición</string>
   <string name="button_label_expand_category">Expandir %s</string>
   <string name="button_label_expand_media_overview">Expandir descripción general de \"%s\"</string>
@@ -100,6 +101,7 @@
   <string name="button_label_home">Volver a la página de inicio</string>
   <string name="button_label_import_more">Restablecer e iniciar una nueva importación.</string>
   <string name="button_label_import_selected">Importa las coincidencias de películas que seleccionaste arriba.</string>
+  <string name="button_label_include_option">Incluir %s</string>
   <string name="button_label_join_trakt">Únete a trakt.tv para llevar un registro de lo que estás viendo</string>
   <string name="button_label_library">Biblioteca</string>
   <string name="button_label_like_list">Me gusta %s</string>
@@ -1054,6 +1056,7 @@
   <string name="mir_title_month_in_review">Resumen Mensual</string>
   <string name="notes_placeholder_text">Deja una nota la próxima vez que marques como favorito o abandones un título.</string>
   <string name="notice_delete_account_vip">Ya que eres un VIP activo de Trakt, por favor <a>cancela tu membresía VIP</a> antes de eliminar tu cuenta.</string>
+  <string name="option_label_excluded">%s (excluido de los resultados)</string>
   <string name="option_text_africa">África</string>
   <string name="option_text_all">Todos</string>
   <string name="option_text_all_digital_releases">Todos los lanzamientos digitales</string>
@@ -1065,6 +1068,7 @@
   <string name="option_text_certification_unrated">Sin clasificación</string>
   <string name="option_text_comment_language_all">Todos los idiomas</string>
   <string name="option_text_europe">Europa</string>
+  <string name="option_text_excluded">-%s</string>
   <string name="option_text_latin_america">Latinoamérica</string>
   <string name="option_text_middle_east">Medio Oriente</string>
   <string name="option_text_my_favorites">Mis favoritos</string>

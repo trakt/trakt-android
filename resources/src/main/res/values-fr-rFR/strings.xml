@@ -81,6 +81,7 @@
   <string name="button_label_edit_list">Modifier votre liste %s</string>
   <string name="button_label_edit_mode">Mode édition</string>
   <string name="button_label_edit_note">Modifier la note</string>
+  <string name="button_label_exclude_option">Exclure %s</string>
   <string name="button_label_exit_edit_mode">Quitter le mode édition</string>
   <string name="button_label_expand_category">Développer %s</string>
   <string name="button_label_expand_media_overview">Développer l\'aperçu de \"%s\"</string>
@@ -100,6 +101,7 @@
   <string name="button_label_home">Retour à la page d\'accueil</string>
   <string name="button_label_import_more">Réinitialiser et démarrer une nouvelle importation.</string>
   <string name="button_label_import_selected">Importer les correspondances de films que vous avez sélectionnées ci-dessus.</string>
+  <string name="button_label_include_option">Inclure %s</string>
   <string name="button_label_join_trakt">Rejoignez trakt.tv pour suivre ce que vous regardez</string>
   <string name="button_label_library">Bibliothèque</string>
   <string name="button_label_like_list">J\'aime %s</string>
@@ -437,7 +439,7 @@
   <string name="button_text_stop_check_in">Arrêter le visionnage</string>
   <string name="button_text_stop_clear">Arrêter le vidage</string>
   <string name="button_text_stop_rewatching">Arrêter de revoir</string>
-  <string name="button_text_stream">Diffuser</string>
+  <string name="button_text_stream">Regarder</string>
   <string name="button_text_stream_on">Diffuser sur</string>
   <string name="button_text_submit_report">Envoyer</string>
   <string name="button_text_sync_all_data">Synchroniser toutes les données</string>
@@ -1054,6 +1056,7 @@
   <string name="mir_title_month_in_review">Bilan mensuel</string>
   <string name="notes_placeholder_text">Laissez une note la prochaine fois que vous ajoutez ou supprimez un titre.</string>
   <string name="notice_delete_account_vip">Puisque vous êtes un membre VIP Trakt actif, veuillez <a>annuler votre abonnement VIP</a> avant de supprimer votre compte.</string>
+  <string name="option_label_excluded">%s (exclu des résultats)</string>
   <string name="option_text_africa">Afrique</string>
   <string name="option_text_all">Tous</string>
   <string name="option_text_all_digital_releases">Toutes les sorties numériques</string>
@@ -1065,6 +1068,7 @@
   <string name="option_text_certification_unrated">Non classé</string>
   <string name="option_text_comment_language_all">Toutes les langues</string>
   <string name="option_text_europe">Europe</string>
+  <string name="option_text_excluded">-%s</string>
   <string name="option_text_latin_america">Amérique latine</string>
   <string name="option_text_middle_east">Moyen-Orient</string>
   <string name="option_text_my_favorites">Mes favoris</string>
@@ -1534,7 +1538,7 @@
   <string name="text_stats_watching_streak">série</string>
   <string name="text_stats_weeks_ago">Il y a %d sem.</string>
   <string name="text_stats_weeks_short">%d sem.</string>
-  <string name="text_stream">Diffuser</string>
+  <string name="text_stream">Regarder</string>
   <string name="text_streaming_count_episodes">%s épisodes</string>
   <string name="text_streaming_count_movies">%s films</string>
   <string name="text_streaming_count_paused">%s en pause</string>

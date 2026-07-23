@@ -81,6 +81,7 @@
   <string name="button_label_edit_list">Editar sua lista %s</string>
   <string name="button_label_edit_mode">Modo de edição</string>
   <string name="button_label_edit_note">Editar nota</string>
+  <string name="button_label_exclude_option">Excluir %s</string>
   <string name="button_label_exit_edit_mode">Sair do modo de edição</string>
   <string name="button_label_expand_category">Expandir %s</string>
   <string name="button_label_expand_media_overview">Expandir visão geral de \"%s\"</string>
@@ -100,6 +101,7 @@
   <string name="button_label_home">Voltar para a página inicial</string>
   <string name="button_label_import_more">Redefinir e iniciar uma nova importação.</string>
   <string name="button_label_import_selected">Importe as correspondências de filmes que você escolheu acima.</string>
+  <string name="button_label_include_option">Incluir %s</string>
   <string name="button_label_join_trakt">Cadastre-se no trakt.tv para acompanhar o que você está assistindo</string>
   <string name="button_label_library">Biblioteca</string>
   <string name="button_label_like_list">Curtir %s</string>
@@ -1054,6 +1056,7 @@
   <string name="mir_title_month_in_review">Retrospectiva do Mês</string>
   <string name="notes_placeholder_text">Deixe uma nota na próxima vez que você favoritar ou abandonar um título.</string>
   <string name="notice_delete_account_vip">Como você é um VIP Trakt ativo, por favor, <a>cancele sua assinatura VIP</a> antes de excluir sua conta.</string>
+  <string name="option_label_excluded">%s (excluído dos resultados)</string>
   <string name="option_text_africa">África</string>
   <string name="option_text_all">Todos</string>
   <string name="option_text_all_digital_releases">Todos os lançamentos digitais</string>
@@ -1065,6 +1068,7 @@
   <string name="option_text_certification_unrated">Não Classificado</string>
   <string name="option_text_comment_language_all">Todos os idiomas</string>
   <string name="option_text_europe">Europa</string>
+  <string name="option_text_excluded">-%s</string>
   <string name="option_text_latin_america">América Latina</string>
   <string name="option_text_middle_east">Oriente Médio</string>
   <string name="option_text_my_favorites">Meus favoritos</string>

@@ -81,6 +81,7 @@
   <string name="button_label_edit_list">Editează lista ta %s</string>
   <string name="button_label_edit_mode">Mod editare</string>
   <string name="button_label_edit_note">Editează notă</string>
+  <string name="button_label_exclude_option">Exclude %s</string>
   <string name="button_label_exit_edit_mode">Ieși din modul de editare</string>
   <string name="button_label_expand_category">Extinde %s</string>
   <string name="button_label_expand_media_overview">Extinde prezentarea generală a \"%s\"</string>
@@ -100,6 +101,7 @@
   <string name="button_label_home">Înapoi la pagina principală</string>
   <string name="button_label_import_more">Resetează și începe un nou import.</string>
   <string name="button_label_import_selected">Importă filmele selectate mai sus.</string>
+  <string name="button_label_include_option">Include %s</string>
   <string name="button_label_join_trakt">Alătură-te trakt.tv pentru a ține evidența a ceea ce urmărești</string>
   <string name="button_label_library">Bibliotecă</string>
   <string name="button_label_like_list">Apreciază %s</string>
@@ -1054,6 +1056,7 @@
   <string name="mir_title_month_in_review">Retrospectiva Lunii</string>
   <string name="notes_placeholder_text">Lasă o notă data viitoare când adaugi la favorite sau renunți la un titlu.</string>
   <string name="notice_delete_account_vip">Deoarece ești un VIP Trakt activ, te rugăm să <a>anulezi abonamentul tău VIP</a> înainte de a-ți șterge contul.</string>
+  <string name="option_label_excluded">%s (exclus din rezultate)</string>
   <string name="option_text_africa">Africa</string>
   <string name="option_text_all">Toate</string>
   <string name="option_text_all_digital_releases">Toate lansările digitale</string>
@@ -1065,6 +1068,7 @@
   <string name="option_text_certification_unrated">Neclasificat</string>
   <string name="option_text_comment_language_all">Toate limbile</string>
   <string name="option_text_europe">Europa</string>
+  <string name="option_text_excluded">-%s</string>
   <string name="option_text_latin_america">America Latină</string>
   <string name="option_text_middle_east">Orientul Mijlociu</string>
   <string name="option_text_my_favorites">Favoritele mele</string>

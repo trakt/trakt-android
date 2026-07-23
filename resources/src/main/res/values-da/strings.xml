@@ -81,6 +81,7 @@
   <string name="button_label_edit_list">Rediger din liste %s</string>
   <string name="button_label_edit_mode">Redigeringstilstand</string>
   <string name="button_label_edit_note">Rediger note</string>
+  <string name="button_label_exclude_option">Udeluk %s</string>
   <string name="button_label_exit_edit_mode">Afslut redigeringstilstand</string>
   <string name="button_label_expand_category">Udvid %s</string>
   <string name="button_label_expand_media_overview">Udvid \"%s\" oversigt</string>
@@ -100,6 +101,7 @@
   <string name="button_label_home">Gå tilbage til hjemmesiden</string>
   <string name="button_label_import_more">Nulstil og start en ny import.</string>
   <string name="button_label_import_selected">Importer de filmmatches, du valgte ovenfor.</string>
+  <string name="button_label_include_option">Medtag %s</string>
   <string name="button_label_join_trakt">Tilmeld dig trakt.tv for at holde styr på, hvad du ser</string>
   <string name="button_label_library">Bibliotek</string>
   <string name="button_label_like_list">Synes godt om %s</string>
@@ -1054,6 +1056,7 @@
   <string name="mir_title_month_in_review">Månedsresumé</string>
   <string name="notes_placeholder_text">Efterlad en note næste gang du favoritter eller dropper en titel.</string>
   <string name="notice_delete_account_vip">Da du er en aktiv Trakt VIP, bedes du <a>annullere dit VIP-medlemskab</a> før du sletter din konto.</string>
+  <string name="option_label_excluded">%s (udelukket fra resultater)</string>
   <string name="option_text_africa">Afrika</string>
   <string name="option_text_all">Alle</string>
   <string name="option_text_all_digital_releases">Alle digitale udgivelser</string>
@@ -1065,6 +1068,7 @@
   <string name="option_text_certification_unrated">Uklassificeret</string>
   <string name="option_text_comment_language_all">Alle sprog</string>
   <string name="option_text_europe">Europa</string>
+  <string name="option_text_excluded">-%s</string>
   <string name="option_text_latin_america">Latinamerika</string>
   <string name="option_text_middle_east">Mellemøsten</string>
   <string name="option_text_my_favorites">Mine favoritter</string>
