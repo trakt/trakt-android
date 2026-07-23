@@ -47,21 +47,26 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun UserProfileFavoritesView(
     modifier: Modifier = Modifier,
-    viewModel: UserProfileFavoritesViewModel,
+    viewModel: UserProfileFavoritesViewModel?,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     onShowClick: ((Show) -> Unit)? = null,
     onMovieClick: ((Movie) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    val collectedState = viewModel?.state?.collectAsStateWithLifecycle()?.value
+    val state = when {
+        collectedState == null -> UserProfileFavoritesState(loading = Loading)
+        collectedState.loading == Idle -> collectedState.copy(loading = Loading)
+        else -> collectedState
+    }
 
     UserProfileFavoritesContent(
         state = state,
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onCollapse = viewModel::setCollapsed,
+        onCollapse = { viewModel?.setCollapsed(it) },
         onShowClick = { onShowClick?.invoke(it) },
         onMovieClick = { onMovieClick?.invoke(it) },
         onMoreClick = onMoreClick,

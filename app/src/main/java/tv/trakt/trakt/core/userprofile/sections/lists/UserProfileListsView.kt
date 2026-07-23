@@ -50,21 +50,26 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun UserProfileListsView(
     modifier: Modifier = Modifier,
-    viewModel: UserProfileListsViewModel,
+    viewModel: UserProfileListsViewModel?,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     onListClick: (CustomList) -> Unit,
     onMoreClick: (PersonalListType) -> Unit = {},
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    val collectedState = viewModel?.state?.collectAsStateWithLifecycle()?.value
+    val state = when {
+        collectedState == null -> UserProfileListsState(loading = Loading)
+        collectedState.loading == Idle -> collectedState.copy(loading = Loading)
+        else -> collectedState
+    }
 
     UserProfileListsContent(
         state = state,
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onCollapse = viewModel::setCollapsed,
-        onFilterClick = viewModel::setFilter,
+        onCollapse = { viewModel?.setCollapsed(it) },
+        onFilterClick = { viewModel?.setFilter(it) },
         onListClick = onListClick,
         onMoreClick = {
             if (state.loading.isLoading) {

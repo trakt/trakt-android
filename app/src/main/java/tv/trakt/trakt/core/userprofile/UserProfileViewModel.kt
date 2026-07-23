@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import timber.log.Timber
+import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
@@ -49,6 +50,7 @@ import tv.trakt.trakt.resources.R
 
 internal class UserProfileViewModel(
     savedStateHandle: SavedStateHandle,
+    private val sessionManager: SessionManager,
     private val getUserProfileUseCase: GetUserProfileDetailsUseCase,
     private val getUserMonthUseCase: GetUserProfileMonthUseCase,
     private val getBlockedUsersUseCase: GetBlockedUsersUseCase,
@@ -68,6 +70,8 @@ internal class UserProfileViewModel(
     private val initialState = UserProfileState(user = user)
 
     private val userState = MutableStateFlow(initialState.user)
+    private val isCurrentUserState = MutableStateFlow(initialState.isCurrentUser)
+    private val accessCheckingState = MutableStateFlow(initialState.accessChecking)
     private val userBlockedState = MutableStateFlow(initialState.userBlocked)
     private val userFollowedState = MutableStateFlow(initialState.userFollowing)
     private val userRequestState = MutableStateFlow(initialState.userRequest)
@@ -80,64 +84,103 @@ internal class UserProfileViewModel(
     private val navigateEpisodeState = MutableStateFlow(initialState.navigateEpisode)
 
     private var processingJob: Job? = null
+    private var profileContentLoadStarted = false
 
     init {
         loadData()
     }
 
     private fun loadData() {
-        if (user.isPrivate) {
-            with(viewModelScope) {
-                launch { loadFollowingStatus() }
-                launch { loadBlockedStatus() }
+        viewModelScope.launch {
+            val isCurrentUser = loadCurrentUserStatus()
+            if (isCurrentUser) {
+                accessCheckingState.update { false }
+                userFollowedState.update { it.copy(loading = false) }
+                userBlockedState.update { it.copy(loading = false) }
+                loadProfileContent()
+                return@launch
             }
-            return
-        }
 
+            launch {
+                loadBlockedStatus()
+            }
+
+            if (!user.isPrivate) {
+                loadProfileContent()
+                launch {
+                    loadFollowingStatus()
+                }
+                return@launch
+            }
+
+            val isFollowing = loadFollowingStatus()
+            accessCheckingState.update { false }
+            if (isFollowing) {
+                loadProfileContent()
+            }
+        }
+    }
+
+    private suspend fun loadCurrentUserStatus(): Boolean {
+        return try {
+            val isCurrentUser = sessionManager.getProfile()?.ids?.trakt == user.ids.trakt
+            isCurrentUserState.update { isCurrentUser }
+            isCurrentUser
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
+            }
+            false
+        }
+    }
+
+    private fun loadProfileContent() {
+        if (profileContentLoadStarted) return
+        profileContentLoadStarted = true
+
+        loadMonthBackground()
         with(viewModelScope) {
-            loadMonthBackground()
             launch { loadDetails() }
             launch { loadMonthStats() }
-            launch { loadFollowingStatus() }
             launch { loadRequestStatus() }
-            launch { loadBlockedStatus() }
         }
     }
 
-    private fun loadFollowingStatus() {
-        viewModelScope.launch {
-            try {
-                val social = getSocialUseCase.loadFollowingIds()
-                userFollowedState.update {
-                    it.copy(
-                        following = social.contains(user.ids.trakt),
-                        loading = false,
-                    )
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-                userFollowedState.update {
-                    it.copy(loading = false)
-                }
+    private suspend fun loadFollowingStatus(): Boolean {
+        return try {
+            val isFollowing = getSocialUseCase.loadFollowingIds()
+                .contains(user.ids.trakt)
+
+            userFollowedState.update {
+                it.copy(
+                    following = isFollowing,
+                    loading = false,
+                )
             }
+
+            isFollowing
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
+            }
+            userFollowedState.update {
+                it.copy(loading = false)
+            }
+            false
         }
     }
 
-    private fun loadRequestStatus() {
-        viewModelScope.launch {
-            try {
-                userRequestState.update {
-                    UserFollowRequestState(
-                        getSocialRequestsUseCase.loadRequests()
-                            .find { it.user.ids.trakt == user.ids.trakt },
-                    )
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
+    private suspend fun loadRequestStatus() {
+        try {
+            userRequestState.update {
+                UserFollowRequestState(
+                    getSocialRequestsUseCase.loadRequests()
+                        .find { it.user.ids.trakt == user.ids.trakt },
+                )
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
             }
         }
     }
@@ -241,6 +284,7 @@ internal class UserProfileViewModel(
                         when (result) {
                             Approved -> {
                                 userFollowedState.update { it.copy(following = true) }
+                                loadProfileContent()
                                 infoState.update {
                                     DynamicStringResource(
                                         R.string.text_info_following,
@@ -410,6 +454,8 @@ internal class UserProfileViewModel(
 
     val state = combine(
         userState,
+        isCurrentUserState,
+        accessCheckingState,
         userBlockedState,
         userFollowedState,
         userRequestState,
@@ -422,15 +468,17 @@ internal class UserProfileViewModel(
     ) { states ->
         UserProfileState(
             user = states[0] as User,
-            userBlocked = states[1] as UserProfileState.BlockedState,
-            userFollowing = states[2] as UserProfileState.FollowingState,
-            userRequest = states[3] as UserFollowRequestState,
-            monthStats = states[4] as? UserProfileState.MonthlyStats,
-            loading = states[5] as LoadingState,
-            navigateShow = states[6] as? TraktId,
-            navigateMovie = states[7] as? TraktId,
-            navigateEpisode = states[8] as? Pair<TraktId, Episode>,
-            info = states[9] as? StringResource,
+            isCurrentUser = states[1] as Boolean,
+            accessChecking = states[2] as Boolean,
+            userBlocked = states[3] as UserProfileState.BlockedState,
+            userFollowing = states[4] as UserProfileState.FollowingState,
+            userRequest = states[5] as UserFollowRequestState,
+            monthStats = states[6] as? UserProfileState.MonthlyStats,
+            loading = states[7] as LoadingState,
+            navigateShow = states[8] as? TraktId,
+            navigateMovie = states[9] as? TraktId,
+            navigateEpisode = states[10] as? Pair<TraktId, Episode>,
+            info = states[11] as? StringResource,
         )
     }.stateIn(
         scope = viewModelScope,

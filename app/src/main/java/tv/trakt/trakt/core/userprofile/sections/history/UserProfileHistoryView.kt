@@ -49,7 +49,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun UserProfileHistoryView(
     modifier: Modifier = Modifier,
-    viewModel: UserProfileHistoryViewModel,
+    viewModel: UserProfileHistoryViewModel?,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     onShowClick: ((Show) -> Unit)? = null,
@@ -57,14 +57,19 @@ internal fun UserProfileHistoryView(
     onMovieClick: ((Movie) -> Unit)? = null,
     onMoreClick: () -> Unit = {},
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    val collectedState = viewModel?.state?.collectAsStateWithLifecycle()?.value
+    val state = when {
+        collectedState == null -> UserProfileHistoryState(loading = Loading)
+        collectedState.loading == Idle -> collectedState.copy(loading = Loading)
+        else -> collectedState
+    }
 
     UserProfileHistoryContent(
         state = state,
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onCollapse = viewModel::setCollapsed,
+        onCollapse = { viewModel?.setCollapsed(it) },
         onShowClick = { onShowClick?.invoke(it) },
         onEpisodeClick = { show, episode -> onEpisodeClick?.invoke(show, episode) },
         onMovieClick = { onMovieClick?.invoke(it) },

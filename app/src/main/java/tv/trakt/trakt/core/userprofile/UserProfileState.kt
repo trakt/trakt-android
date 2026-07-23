@@ -12,6 +12,8 @@ import tv.trakt.trakt.core.user.model.UserFollowRequest
 @Immutable
 internal data class UserProfileState(
     val user: User,
+    val isCurrentUser: Boolean = false,
+    val accessChecking: Boolean = user.isPrivate,
     val userBlocked: BlockedState = BlockedState(),
     val userFollowing: FollowingState = FollowingState(),
     val userRequest: UserFollowRequestState = UserFollowRequestState(),
@@ -22,6 +24,20 @@ internal data class UserProfileState(
     val loading: LoadingState = LoadingState.Idle,
     val info: StringResource? = null,
 ) {
+    val access: Access
+        get() = when {
+            !user.isPrivate || isCurrentUser -> Access.Granted
+            accessChecking -> Access.Checking
+            userFollowing.following -> Access.Granted
+            else -> Access.Denied
+        }
+
+    enum class Access {
+        Checking,
+        Granted,
+        Denied,
+    }
+
     data class MonthlyStats(
         val stats: ProfileStats?,
         val backgroundUrl: String?,

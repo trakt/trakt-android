@@ -52,20 +52,25 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun UserProfileSocialView(
     modifier: Modifier = Modifier,
-    viewModel: UserProfileSocialViewModel,
+    viewModel: UserProfileSocialViewModel?,
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     onUserClick: ((User) -> Unit)? = null,
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    val collectedState = viewModel?.state?.collectAsStateWithLifecycle()?.value
+    val state = when {
+        collectedState == null -> UserProfileSocialState(loading = Loading)
+        collectedState.loading == Idle -> collectedState.copy(loading = Loading)
+        else -> collectedState
+    }
 
     UserProfileSocialContent(
         state = state,
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
-        onCollapse = viewModel::setCollapsed,
-        onFilterClick = viewModel::setFilter,
+        onCollapse = { viewModel?.setCollapsed(it) },
+        onFilterClick = { viewModel?.setFilter(it) },
         onUserClick = { onUserClick?.invoke(it) },
     )
 }

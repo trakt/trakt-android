@@ -269,6 +269,7 @@ private fun UserProfileContent(
             item {
                 TitleBar(
                     user = state.user,
+                    isCurrentUser = state.isCurrentUser,
                     userBlocked = state.userBlocked,
                     userFollowing = state.userFollowing,
                     onBack = onNavigateBack,
@@ -279,17 +280,14 @@ private fun UserProfileContent(
                 )
             }
 
-            if (state.user.isPrivate) {
-                userProfilePrivateContent(
-                    state = state,
-                    windowClass = windowClass,
-                    onToggleFollowRequest = onToggleFollowRequest,
-                )
-            } else {
-                userProfilePublicContent(
+            when (state.access) {
+                UserProfileState.Access.Checking,
+                UserProfileState.Access.Granted,
+                -> userProfilePublicContent(
                     state = state,
                     windowClass = windowClass,
                     sectionPadding = sectionPadding,
+                    accessChecking = state.access == UserProfileState.Access.Checking,
                     onToggleFollowRequest = onToggleFollowRequest,
                     onNavigateToShow = onNavigateToShow,
                     onNavigateToEpisode = onNavigateToEpisode,
@@ -300,6 +298,11 @@ private fun UserProfileContent(
                     onNavigateToList = onNavigateToList,
                     onNavigateToUser = onNavigateToUser,
                 )
+                UserProfileState.Access.Denied -> userProfilePrivateContent(
+                    state = state,
+                    windowClass = windowClass,
+                    onToggleFollowRequest = onToggleFollowRequest,
+                )
             }
         }
     }
@@ -309,6 +312,7 @@ private fun LazyListScope.userProfilePublicContent(
     state: UserProfileState,
     windowClass: WindowSizeClass,
     sectionPadding: PaddingValues,
+    accessChecking: Boolean,
     onToggleFollowRequest: (approved: Boolean) -> Unit,
     onNavigateToShow: (Show) -> Unit,
     onNavigateToEpisode: (Show, Episode) -> Unit,
@@ -319,9 +323,9 @@ private fun LazyListScope.userProfilePublicContent(
     onNavigateToList: (CustomList) -> Unit,
     onNavigateToUser: (User) -> Unit,
 ) {
-    item {
+    item(key = "follow-request") {
         FollowRequestView(
-            visible = state.userRequest.request != null,
+            visible = !accessChecking && state.userRequest.request != null,
             request = state.userRequest.request,
             loading = state.userRequest.loading,
             onApproveClick = { onToggleFollowRequest(true) },
@@ -333,13 +337,13 @@ private fun LazyListScope.userProfilePublicContent(
     }
 
     if (state.user.isAnyVip) {
-        item {
+        item(key = "profile-stats") {
             ProfileStatsCard(
-                loading = state.monthStats?.loading ?: true,
+                loading = accessChecking || state.monthStats?.loading ?: true,
                 user = state.user,
                 stats = state.monthStats?.stats,
                 showAllStats = false,
-                containerImage = state.monthStats?.backgroundUrl,
+                containerImage = state.monthStats?.backgroundUrl.takeUnless { accessChecking },
                 modifier = Modifier
                     .fillMaxWidth(
                         when {
@@ -358,8 +362,8 @@ private fun LazyListScope.userProfilePublicContent(
         }
     }
 
-    if (!state.user.about.isNullOrBlank()) {
-        item {
+    item(key = "about") {
+        if (!accessChecking && !state.user.about.isNullOrBlank()) {
             var expanded by rememberSaveable { mutableStateOf(false) }
 
             Column(
@@ -394,11 +398,14 @@ private fun LazyListScope.userProfilePublicContent(
         }
     }
 
-    item {
+    item(key = "favorites") {
         UserProfileFavoritesView(
-            viewModel = koinViewModel(
-                parameters = { parametersOf(state.user.ids.trakt) },
-            ),
+            viewModel = when {
+                accessChecking -> null
+                else -> koinViewModel(
+                    parameters = { parametersOf(state.user.ids.trakt) },
+                )
+            },
             headerPadding = sectionPadding,
             contentPadding = sectionPadding,
             onShowClick = onNavigateToShow,
@@ -409,11 +416,14 @@ private fun LazyListScope.userProfilePublicContent(
         )
     }
 
-    item {
+    item(key = "history") {
         UserProfileHistoryView(
-            viewModel = koinViewModel(
-                parameters = { parametersOf(state.user.ids.trakt) },
-            ),
+            viewModel = when {
+                accessChecking -> null
+                else -> koinViewModel(
+                    parameters = { parametersOf(state.user.ids.trakt) },
+                )
+            },
             headerPadding = sectionPadding,
             contentPadding = sectionPadding,
             onShowClick = onNavigateToShow,
@@ -425,11 +435,14 @@ private fun LazyListScope.userProfilePublicContent(
         )
     }
 
-    item {
+    item(key = "lists") {
         UserProfileListsView(
-            viewModel = koinViewModel(
-                parameters = { parametersOf(state.user.ids.trakt) },
-            ),
+            viewModel = when {
+                accessChecking -> null
+                else -> koinViewModel(
+                    parameters = { parametersOf(state.user.ids.trakt) },
+                )
+            },
             headerPadding = sectionPadding,
             contentPadding = sectionPadding,
             onListClick = onNavigateToList,
@@ -439,11 +452,14 @@ private fun LazyListScope.userProfilePublicContent(
         )
     }
 
-    item {
+    item(key = "social") {
         UserProfileSocialView(
-            viewModel = koinViewModel(
-                parameters = { parametersOf(state.user.ids.trakt) },
-            ),
+            viewModel = when {
+                accessChecking -> null
+                else -> koinViewModel(
+                    parameters = { parametersOf(state.user.ids.trakt) },
+                )
+            },
             headerPadding = sectionPadding,
             contentPadding = sectionPadding,
             onUserClick = onNavigateToUser,
@@ -516,6 +532,7 @@ private fun LazyListScope.userProfilePrivateContent(
 @Composable
 private fun TitleBar(
     user: User?,
+    isCurrentUser: Boolean = false,
     userBlocked: UserProfileState.BlockedState?,
     userFollowing: UserProfileState.FollowingState?,
     modifier: Modifier = Modifier,
@@ -629,7 +646,7 @@ private fun TitleBar(
             }
         }
 
-        if (user != null) {
+        if (user != null && !isCurrentUser) {
             Box {
                 var showMenu by remember { mutableStateOf(false) }
 
