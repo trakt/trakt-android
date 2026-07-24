@@ -27,7 +27,6 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -62,7 +61,7 @@ internal fun DetailsHeaderSocialHorizontalChip(
                         .size(size)
                         .border(
                             width = 1.25.dp,
-                            color = if (user.isAnyVip) Red500 else Color.Transparent,
+                            color = if (user.isAnyVip) TraktTheme.colors.vipAccent else Color.Transparent,
                             shape = CircleShape,
                         )
                         .clip(CircleShape),
