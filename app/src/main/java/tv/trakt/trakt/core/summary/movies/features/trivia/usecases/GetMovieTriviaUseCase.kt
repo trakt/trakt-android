@@ -7,7 +7,7 @@ import tv.trakt.trakt.common.model.trivia.Trivia
 import tv.trakt.trakt.common.model.trivia.TriviaFact
 import tv.trakt.trakt.common.networking.api.v3.V3Api
 
-private const val SUMMARY_LIMIT = 5
+private const val SUMMARY_LIMIT = 3
 
 internal class GetMovieTriviaUseCase(
     private val v3Api: V3Api,
