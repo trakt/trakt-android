@@ -119,7 +119,7 @@ internal fun TvListControls(
                     size = HeaderControlSize,
                     iconSize = HeaderControlIconSize,
                     containerColor = TraktTheme.colors.chipContainer,
-                    focusedScale = HeaderControlFocusedScale,
+                    focusedScale = HEADER_CONTROL_FOCUSED_SCALE,
                     onClick = {
                         onSortingApplied(
                             state.sorting.copy(order = state.sorting.order.toggle()),
@@ -142,7 +142,7 @@ internal fun TvListControls(
                     size = HeaderControlSize,
                     iconSize = HeaderControlIconSize,
                     containerColor = Color.Transparent,
-                    focusedScale = HeaderControlFocusedScale,
+                    focusedScale = HEADER_CONTROL_FOCUSED_SCALE,
                     onClick = {
                         activeDialog = TvListDialog.Filters
                     },
@@ -253,7 +253,7 @@ private fun TvMediaModeSelector(
                     pressedContentColor = TraktTheme.colors.textPrimary,
                 ),
                 scale = ButtonDefaults.scale(
-                    focusedScale = MediaSelectorFocusedScale,
+                    focusedScale = MEDIA_SELECTOR_FOCUSED_SCALE,
                 ),
                 onClick = {
                     if (!isSelected) {
@@ -307,7 +307,7 @@ private enum class TvListDialog {
 private val SortTypeControlWidth = 132.dp
 private val HeaderControlSize = 42.dp
 private val HeaderControlIconSize = 20.dp
-private const val HeaderControlFocusedScale = 1.04F
+private const val HEADER_CONTROL_FOCUSED_SCALE = 1.04F
 private val SplitButtonSpacing = 3.dp
 private val FilterIndicatorInset = 4.dp
 private val FilterIndicatorSize = 6.dp
@@ -318,4 +318,4 @@ private val MediaSelectorContentSpacing = 6.dp
 private val MediaSelectorButtonHeight = 40.dp
 private val MediaSelectorIconSize = 18.dp
 private val MediaSelectorFocusedBorderWidth = 2.75.dp
-private const val MediaSelectorFocusedScale = 1.04F
+private const val MEDIA_SELECTOR_FOCUSED_SCALE = 1.04F
