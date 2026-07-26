@@ -5,9 +5,7 @@ import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -25,21 +23,19 @@ import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.tv.material3.Text
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_NEXT_PAGE_OFFSET
-import tv.trakt.trakt.app.core.lists.filters.TvListControls
 import tv.trakt.trakt.app.core.lists.filters.TvListControlsState
 import tv.trakt.trakt.app.core.lists.filters.TvListEmptyState
 import tv.trakt.trakt.app.core.lists.filters.TvListFilterConfiguration
+import tv.trakt.trakt.app.core.lists.filters.TvListHeader
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Ids
@@ -111,34 +107,18 @@ private fun ShowsWatchlistContent(
             ),
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    Text(
-                        text = stringResource(R.string.list_title_watchlist_shows),
-                        color = TraktTheme.colors.textPrimary,
-                        style = TraktTheme.typography.heading4,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier
-                            .weight(1F)
-                            .focusProperties {
-                                down = focusRequesters.values.firstOrNull() ?: FocusRequester.Default
-                            }
-                            .focusable(),
-                    )
-
-                    TvListControls(
-                        state = TvListControlsState(
-                            filter = state.filter,
-                            sorting = state.sorting,
-                            configuration = TvListFilterConfiguration.ShowsWatchlist,
-                        ),
-                        onFilterApplied = onFilterApplied,
-                        onSortingApplied = onSortingApplied,
-                    )
-                }
+                TvListHeader(
+                    title = stringResource(R.string.list_title_watchlist_shows),
+                    controlsState = TvListControlsState(
+                        filter = state.filter,
+                        sorting = state.sorting,
+                        configuration = TvListFilterConfiguration.ShowsWatchlist,
+                    ),
+                    downFocusRequester = focusRequesters.values.firstOrNull()
+                        ?: FocusRequester.Default,
+                    onFilterApplied = onFilterApplied,
+                    onSortingApplied = onSortingApplied,
+                )
             }
 
             if (state.isLoading && state.shows.isNullOrEmpty()) {

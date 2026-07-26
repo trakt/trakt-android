@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -42,10 +41,10 @@ import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_NEXT_PAGE_OFFSET
 import tv.trakt.trakt.app.core.lists.details.personal.model.PersonalListItem
-import tv.trakt.trakt.app.core.lists.filters.TvListControls
 import tv.trakt.trakt.app.core.lists.filters.TvListControlsState
 import tv.trakt.trakt.app.core.lists.filters.TvListEmptyState
 import tv.trakt.trakt.app.core.lists.filters.TvListFilterConfiguration
+import tv.trakt.trakt.app.core.lists.filters.TvListHeader
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
@@ -127,34 +126,18 @@ private fun PersonalListContent(
             ),
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    Text(
-                        text = listName,
-                        color = TraktTheme.colors.textPrimary,
-                        style = TraktTheme.typography.heading4,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier
-                            .weight(1F)
-                            .focusProperties {
-                                down = focusRequesters.values.firstOrNull() ?: FocusRequester.Default
-                            }
-                            .focusable(),
-                    )
-
-                    TvListControls(
-                        state = TvListControlsState(
-                            filter = state.filter,
-                            sorting = state.sorting,
-                            configuration = TvListFilterConfiguration.MixedList,
-                        ),
-                        onFilterApplied = onFilterApplied,
-                        onSortingApplied = onSortingApplied,
-                    )
-                }
+                TvListHeader(
+                    title = listName,
+                    controlsState = TvListControlsState(
+                        filter = state.filter,
+                        sorting = state.sorting,
+                        configuration = TvListFilterConfiguration.MixedList,
+                    ),
+                    downFocusRequester = focusRequesters.values.firstOrNull()
+                        ?: FocusRequester.Default,
+                    onFilterApplied = onFilterApplied,
+                    onSortingApplied = onSortingApplied,
+                )
             }
 
             if (state.isLoading && state.items.isNullOrEmpty()) {
