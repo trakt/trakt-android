@@ -23,14 +23,14 @@ internal val listsModule = module {
 
     factory {
         GetListsShowsWatchlistUseCase(
-            remoteSyncSource = get(),
+            remoteSource = get(),
             localShowSource = get(),
         )
     }
 
     factory {
         GetListsMoviesWatchlistUseCase(
-            remoteSyncSource = get(),
+            remoteSource = get(),
             localMovieSource = get(),
         )
     }

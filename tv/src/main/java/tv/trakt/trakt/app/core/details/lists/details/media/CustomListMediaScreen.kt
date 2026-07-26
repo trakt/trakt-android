@@ -44,9 +44,12 @@ import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.buttons.LikeButton
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.lists.details.CustomListDetailsConfig.CUSTOM_LIST_NEXT_PAGE_OFFSET
-import tv.trakt.trakt.app.core.details.lists.details.CustomListDetailsConfig.CUSTOM_LIST_PAGE_LIMIT
 import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
+import tv.trakt.trakt.app.core.lists.filters.TvListControls
+import tv.trakt.trakt.app.core.lists.filters.TvListControlsState
+import tv.trakt.trakt.app.core.lists.filters.TvListEmptyState
+import tv.trakt.trakt.app.core.lists.filters.TvListFilterConfiguration
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
@@ -56,6 +59,8 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 
@@ -73,12 +78,15 @@ internal fun CustomListMediaScreen(
     CustomListMediaContent(
         state = state,
         listName = viewModel.destination.listName,
+        filterConfiguration = viewModel.filterConfiguration,
         onLikeClick = {
             viewModel.setLiked(!state.like.isLiked)
         },
         onShowClick = onNavigateToShow,
         onMovieClick = onNavigateToMovie,
         onLoadNextPage = { viewModel.loadMoreData() },
+        onFilterApplied = viewModel::applyFilter,
+        onSortingApplied = viewModel::applySorting,
     )
 
     LaunchedEffect(state.info) {
@@ -93,11 +101,14 @@ internal fun CustomListMediaScreen(
 private fun CustomListMediaContent(
     state: CustomListMediaState,
     listName: String,
+    filterConfiguration: TvListFilterConfiguration,
     modifier: Modifier = Modifier,
     onLikeClick: () -> Unit,
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onLoadNextPage: () -> Unit,
+    onFilterApplied: (GlobalFilter) -> Unit,
+    onSortingApplied: (Sorting) -> Unit,
 ) {
     var focusedItem by remember { mutableStateOf<ListMediaItem?>(null) }
     var focusedItemKey by rememberSaveable { mutableStateOf<String?>(null) }
@@ -161,13 +172,28 @@ private fun CustomListMediaContent(
                             .focusable(),
                     )
 
-                    LikeButton(
-                        text = rememberThousandsFormat(state.like.likesCount),
-                        liked = state.like.isLiked,
-                        loading = state.like.isLoading,
-                        enabled = !state.like.isLoading,
-                        onClick = onLikeClick,
-                    )
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(TraktTheme.spacing.mainGridSpace),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        LikeButton(
+                            text = rememberThousandsFormat(state.like.likesCount),
+                            liked = state.like.isLiked,
+                            loading = state.like.isLoading,
+                            enabled = !state.like.isLoading,
+                            onClick = onLikeClick,
+                        )
+
+                        TvListControls(
+                            state = TvListControlsState(
+                                filter = state.filter,
+                                sorting = state.sorting,
+                                configuration = filterConfiguration,
+                            ),
+                            onFilterApplied = onFilterApplied,
+                            onSortingApplied = onSortingApplied,
+                        )
+                    }
                 }
             }
 
@@ -275,6 +301,13 @@ private fun CustomListMediaContent(
                             },
                     )
                 }
+            } else if (!state.isLoading) {
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    TvListEmptyState(
+                        filter = state.filter,
+                        modifier = Modifier.focusable(),
+                    )
+                }
             }
 
             if (state.isLoadingPage) {
@@ -305,7 +338,7 @@ private fun loadNextPageIfNeeded(
     index: Int,
     onLoadNextPage: () -> Unit,
 ) {
-    if (size >= CUSTOM_LIST_PAGE_LIMIT && index >= size - CUSTOM_LIST_NEXT_PAGE_OFFSET) {
+    if (index >= (size - CUSTOM_LIST_NEXT_PAGE_OFFSET).coerceAtLeast(0)) {
         onLoadNextPage()
     }
 }
@@ -327,6 +360,7 @@ private fun Preview() {
     TraktTheme {
         CustomListMediaContent(
             listName = "Custom List",
+            filterConfiguration = TvListFilterConfiguration.MixedList,
             state = CustomListMediaState(
                 items = (
                     (1..10).map {
@@ -344,6 +378,8 @@ private fun Preview() {
             onMovieClick = {},
             onLikeClick = {},
             onLoadNextPage = {},
+            onFilterApplied = {},
+            onSortingApplied = {},
         )
     }
 }

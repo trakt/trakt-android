@@ -2,96 +2,130 @@ package tv.trakt.trakt.app.core.lists.details.movies
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.collections.immutable.plus
-import kotlinx.collections.immutable.toPersistentList
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_PAGE_LIMIT
+import tv.trakt.trakt.app.core.lists.filters.TvListFilterConfiguration
+import tv.trakt.trakt.app.core.lists.filters.TvListRequest
 import tv.trakt.trakt.app.core.lists.usecases.GetListsMoviesWatchlistUseCase
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.sorting.Sorting
 
 internal class MoviesWatchlistViewModel(
     private val getListItemsUseCase: GetListsMoviesWatchlistUseCase,
 ) : ViewModel() {
-    private val initialState = MoviesWatchlistState()
+    private val filterConfiguration = TvListFilterConfiguration.MoviesWatchlist
+    private val _state = MutableStateFlow(MoviesWatchlistState())
+    val state = _state.asStateFlow()
 
-    private val loadingState = MutableStateFlow(initialState.isLoading)
-    private val loadingPageState = MutableStateFlow(initialState.isLoadingPage)
-    private val moviesState = MutableStateFlow(initialState.movies)
-    private val errorState = MutableStateFlow(initialState.error)
-
-    private var nextDataPage: Int = 1
-    private var hasMoreData: Boolean = true
+    private var requestJob: Job? = null
+    private var nextDataPage = 1
+    private var hasMoreData = true
 
     init {
-        loadData()
+        reload()
     }
 
-    private fun loadData() {
-        viewModelScope.launch {
+    fun applyFilter(filter: GlobalFilter) {
+        _state.update {
+            it.copy(filter = filterConfiguration.normalize(filter))
+        }
+        reload()
+    }
+
+    fun applySorting(sorting: Sorting) {
+        _state.update {
+            it.copy(sorting = sorting)
+        }
+        reload()
+    }
+
+    private fun reload() {
+        requestJob?.cancel()
+        nextDataPage = 1
+        hasMoreData = true
+        _state.update {
+            it.copy(
+                isLoading = true,
+                isLoadingPage = false,
+                error = null,
+            )
+        }
+
+        val request = _state.value.toRequest(page = 1)
+        requestJob = viewModelScope.launch {
             try {
-                loadingState.update { true }
-                val movies = getListItemsUseCase.getMovies(LISTS_PAGE_LIMIT)
-                moviesState.update { movies }
-                nextDataPage += 1
+                val page = getListItemsUseCase.getMovies(request)
+                nextDataPage = page.nextPage
+                hasMoreData = page.hasMore
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        movies = page.items,
+                    )
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            error = error,
+                        )
+                    }
                 }
-            } finally {
-                loadingState.update { false }
             }
         }
     }
 
     fun loadNextDataPage() {
-        if (loadingPageState.value || !hasMoreData) {
-            return
+        val currentState = _state.value
+        if (currentState.isLoading || currentState.isLoadingPage || !hasMoreData) return
+
+        _state.update {
+            it.copy(
+                isLoadingPage = true,
+                error = null,
+            )
         }
-        viewModelScope.launch {
+        val request = _state.value.toRequest(page = nextDataPage)
+        requestJob = viewModelScope.launch {
             try {
-                loadingPageState.update { true }
-
-                val movies = getListItemsUseCase.getMovies(
-                    limit = LISTS_PAGE_LIMIT,
-                    page = nextDataPage,
-                )
-
-                moviesState.update {
-                    it?.toPersistentList()?.plus(movies)
+                val page = getListItemsUseCase.getMovies(request)
+                nextDataPage = page.nextPage
+                hasMoreData = page.hasMore
+                _state.update { state ->
+                    state.copy(
+                        isLoadingPage = false,
+                        movies = (
+                            state.movies.orEmpty() + page.items
+                        ).distinctBy { it.ids.trakt }
+                            .toImmutableList(),
+                    )
                 }
-
-                hasMoreData = (movies.size >= LISTS_PAGE_LIMIT)
-                nextDataPage += 1
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
+                    _state.update {
+                        it.copy(
+                            isLoadingPage = false,
+                            error = error,
+                        )
+                    }
                 }
-            } finally {
-                loadingPageState.update { false }
             }
         }
     }
 
-    val state = combine(
-        loadingState,
-        loadingPageState,
-        moviesState,
-        errorState,
-    ) { s1, s2, s3, s4 ->
-        MoviesWatchlistState(
-            isLoading = s1,
-            isLoadingPage = s2,
-            movies = s3,
-            error = s4,
+    private fun MoviesWatchlistState.toRequest(page: Int): TvListRequest {
+        return TvListRequest(
+            page = page,
+            limit = LISTS_PAGE_LIMIT,
+            filter = filter,
+            sorting = sorting,
         )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = initialState,
-    )
+    }
 }

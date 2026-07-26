@@ -1,33 +1,32 @@
-@file:Suppress("UNCHECKED_CAST")
-
 package tv.trakt.trakt.app.core.details.lists.details.media
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.app.core.details.lists.details.CustomListDetailsConfig.CUSTOM_LIST_PAGE_LIMIT
-import tv.trakt.trakt.app.core.details.lists.details.media.model.ListMediaItem
 import tv.trakt.trakt.app.core.details.lists.details.media.navigation.CustomListMediaDestination
 import tv.trakt.trakt.app.core.details.lists.details.media.usecases.GetListItemsUseCase
+import tv.trakt.trakt.app.core.lists.filters.TvListFilterConfiguration
+import tv.trakt.trakt.app.core.lists.filters.TvListRequest
 import tv.trakt.trakt.app.core.lists.usecases.liked.AddLikedListUseCase
 import tv.trakt.trakt.app.core.lists.usecases.liked.RemoveLikedListUseCase
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
-import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserLikedListsUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
-import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaType
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.resources.R
 
@@ -41,190 +40,225 @@ internal class CustomListMediaViewModel(
 ) : ViewModel() {
     val destination = savedStateHandle.toRoute<CustomListMediaDestination>()
     private val destinationType = MediaType.entries.find { it.value == destination.listType }
-
-    private val initialState = CustomListMediaState()
-
-    private val loadingState = MutableStateFlow(initialState.isLoading)
-    private val loadingPageState = MutableStateFlow(initialState.isLoadingPage)
-    private val likeState = MutableStateFlow(initialState.like.copy(likesCount = destination.listLikes))
-    private val itemsState = MutableStateFlow(initialState.items)
-    private val infoState = MutableStateFlow(initialState.info)
-    private val errorState = MutableStateFlow(initialState.error)
-
-    private var dataPage: Int = 1
-    private var hasMoreData: Boolean = true
-
-    init {
-        loadData()
-        loadLikeData()
-        observeData()
+    val filterConfiguration = when (destinationType) {
+        MediaType.Show -> TvListFilterConfiguration.ShowsList
+        MediaType.Movie -> TvListFilterConfiguration.MoviesList
+        MediaType.Season,
+        MediaType.Episode,
+        null,
+        -> TvListFilterConfiguration.MixedList
     }
 
-    private fun observeData() {
-        collectionStateProvider
+    private val _state = MutableStateFlow(
+        CustomListMediaState(
+            like = CustomListMediaState.LikedState(
+                likesCount = destination.listLikes,
+            ),
+            filter = filterConfiguration.defaultFilter,
+        ),
+    )
+    val state = _state.asStateFlow()
+
+    private var requestJob: Job? = null
+    private var nextDataPage = 1
+    private var hasMoreData = true
+
+    init {
+        observeCollection()
+        reload()
+        loadLikeData()
+    }
+
+    fun applyFilter(filter: GlobalFilter) {
+        _state.update {
+            it.copy(filter = filterConfiguration.normalize(filter))
+        }
+        reload()
+    }
+
+    fun applySorting(sorting: Sorting) {
+        _state.update {
+            it.copy(sorting = sorting)
+        }
+        reload()
+    }
+
+    private fun observeCollection() {
+        collectionStateProvider.launchIn(viewModelScope)
+        collectionStateProvider.stateFlow
+            .onEach { collection ->
+                _state.update { it.copy(collection = collection) }
+            }
             .launchIn(viewModelScope)
     }
 
-    private fun loadData() {
-        viewModelScope.launch {
-            try {
-                loadingState.update { true }
-
-                itemsState.update {
-                    when (destinationType) {
-                        MediaType.Show -> getListItemsUseCase.getShowListItems(
-                            listId = destination.listId.toTraktId(),
-                            page = dataPage,
-                        )
-                        MediaType.Movie -> getListItemsUseCase.getMovieListItems(
-                            listId = destination.listId.toTraktId(),
-                            page = dataPage,
-                        )
-                        else -> getListItemsUseCase.getListItems(
-                            listId = destination.listId.toTraktId(),
-                            page = dataPage,
-                        )
-                    }
-                }
-
-                dataPage += 1
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.e(error, "Error loading media for list: ${destination.listId} $error")
-                }
-            } finally {
-                loadingState.update { false }
-            }
+    private fun reload() {
+        requestJob?.cancel()
+        nextDataPage = 1
+        hasMoreData = true
+        _state.update {
+            it.copy(
+                isLoading = true,
+                isLoadingPage = false,
+                error = null,
+            )
         }
-    }
 
-    private fun loadLikeData() {
-        viewModelScope.launch {
+        val request = _state.value.toRequest(page = 1)
+        requestJob = viewModelScope.launch {
             try {
-                likeState.update { it.copy(isLoading = true) }
-
-                val likedLists = getUserLikedListsUseCase.loadIfNeeded()
-                likeState.update {
+                val page = getListItemsUseCase.getListItems(
+                    listId = destination.listId.toTraktId(),
+                    request = request,
+                )
+                nextDataPage = page.nextPage
+                hasMoreData = page.hasMore
+                _state.update {
                     it.copy(
-                        isLiked = likedLists.containsKey(destination.listId.toTraktId()),
+                        isLoading = false,
+                        items = page.items,
                     )
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    Timber.e(error, "Error loading like state for list: ${destination.listId} $error")
-                }
-            } finally {
-                likeState.update {
-                    it.copy(isLoading = false)
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            error = error,
+                        )
+                    }
+                    Timber.e(error, "Error loading media for list: %s", destination.listId)
                 }
             }
         }
     }
 
     fun loadMoreData() {
-        if (loadingPageState.value || !hasMoreData) {
-            return
+        val currentState = _state.value
+        if (currentState.isLoading || currentState.isLoadingPage || !hasMoreData) return
+
+        _state.update {
+            it.copy(
+                isLoadingPage = true,
+                error = null,
+            )
         }
-        viewModelScope.launch {
+        val request = _state.value.toRequest(page = nextDataPage)
+        requestJob = viewModelScope.launch {
             try {
-                loadingPageState.update { true }
-
-                val items = when (destinationType) {
-                    MediaType.Show -> getListItemsUseCase.getShowListItems(
-                        listId = destination.listId.toTraktId(),
-                        page = dataPage,
-                    )
-                    MediaType.Movie -> getListItemsUseCase.getMovieListItems(
-                        listId = destination.listId.toTraktId(),
-                        page = dataPage,
-                    )
-                    else -> getListItemsUseCase.getListItems(
-                        listId = destination.listId.toTraktId(),
-                        page = dataPage,
+                val page = getListItemsUseCase.getListItems(
+                    listId = destination.listId.toTraktId(),
+                    request = request,
+                )
+                nextDataPage = page.nextPage
+                hasMoreData = page.hasMore
+                _state.update { state ->
+                    state.copy(
+                        isLoadingPage = false,
+                        items = (
+                            state.items.orEmpty() + page.items
+                        ).distinctBy { it.key }
+                            .toImmutableList(),
                     )
                 }
-
-                itemsState.update { items ->
-                    items
-                        ?.plus(items)
-                        ?.distinctBy { it.key }
-                        ?.toImmutableList()
-                }
-
-                hasMoreData = (items.size >= CUSTOM_LIST_PAGE_LIMIT)
-                dataPage += 1
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.e("Error loading next page of media for list: ${destination.listId} $error")
+                    _state.update {
+                        it.copy(
+                            isLoadingPage = false,
+                            error = error,
+                        )
+                    }
+                    Timber.e(error, "Error loading next media page for list: %s", destination.listId)
                 }
-            } finally {
-                loadingPageState.update { false }
+            }
+        }
+    }
+
+    private fun loadLikeData() {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(like = it.like.copy(isLoading = true))
+            }
+            try {
+                val likedLists = getUserLikedListsUseCase.loadIfNeeded()
+                _state.update {
+                    it.copy(
+                        like = it.like.copy(
+                            isLiked = likedLists.containsKey(destination.listId.toTraktId()),
+                            isLoading = false,
+                        ),
+                    )
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    _state.update {
+                        it.copy(like = it.like.copy(isLoading = false))
+                    }
+                    Timber.e(error, "Error loading like state for list: %s", destination.listId)
+                }
             }
         }
     }
 
     fun setLiked(liked: Boolean) {
-        if (likeState.value.isLiked == liked || likeState.value.isLoading) {
-            return
-        }
+        val currentLike = _state.value.like
+        if (currentLike.isLiked == liked || currentLike.isLoading) return
 
         viewModelScope.launch {
+            _state.update {
+                it.copy(like = it.like.copy(isLoading = true))
+            }
             try {
-                likeState.update { it.copy(isLoading = true) }
-
                 val traktId = destination.listId.toTraktId()
                 if (liked) {
                     addLikedListUseCase.addToLiked(traktId)
-                    likeState.update { it.copy(likesCount = it.likesCount + 1) }
-                    infoState.update { DynamicStringResource(R.string.text_info_liked_added) }
                 } else {
                     removeLikedListUseCase.removeFromLiked(traktId)
-                    likeState.update { it.copy(likesCount = (it.likesCount - 1).coerceAtLeast(0)) }
-                    infoState.update { DynamicStringResource(R.string.text_info_liked_removed) }
                 }
 
-                likeState.update {
+                _state.update {
+                    val likesCount = when (liked) {
+                        true -> it.like.likesCount + 1
+                        false -> (it.like.likesCount - 1).coerceAtLeast(0)
+                    }
                     it.copy(
-                        isLiked = liked,
-                        isLoading = false,
+                        like = it.like.copy(
+                            likesCount = likesCount,
+                            isLiked = liked,
+                            isLoading = false,
+                        ),
+                        info = DynamicStringResource(
+                            when (liked) {
+                                true -> R.string.text_info_liked_added
+                                false -> R.string.text_info_liked_removed
+                            },
+                        ),
                     )
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
-                    likeState.update { it.copy(isLoading = false) }
+                    _state.update {
+                        it.copy(
+                            like = it.like.copy(isLoading = false),
+                            error = error,
+                        )
+                    }
                 }
             }
         }
     }
 
     fun clearInfo() {
-        infoState.update { null }
+        _state.update { it.copy(info = null) }
     }
 
-    val state = combine(
-        loadingState,
-        loadingPageState,
-        likeState,
-        itemsState,
-        collectionStateProvider.stateFlow,
-        infoState,
-        errorState,
-    ) { state ->
-        CustomListMediaState(
-            isLoading = state[0] as Boolean,
-            isLoadingPage = state[1] as Boolean,
-            like = state[2] as CustomListMediaState.LikedState,
-            items = state[3] as? ImmutableList<ListMediaItem>,
-            collection = state[4] as UserCollectionState,
-            info = state[5] as? StringResource,
-            error = state[6] as? Exception,
+    private fun CustomListMediaState.toRequest(page: Int): TvListRequest {
+        return TvListRequest(
+            page = page,
+            limit = CUSTOM_LIST_PAGE_LIMIT,
+            filter = filter,
+            sorting = sorting,
         )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = initialState,
-    )
+    }
 }

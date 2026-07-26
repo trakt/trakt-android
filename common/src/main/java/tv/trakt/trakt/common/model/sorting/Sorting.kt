@@ -1,5 +1,8 @@
 package tv.trakt.trakt.common.model.sorting
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class Sorting(
     val type: SortType,
     val order: SortOrder,

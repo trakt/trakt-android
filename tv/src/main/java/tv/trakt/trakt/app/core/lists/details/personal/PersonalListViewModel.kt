@@ -4,19 +4,23 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import kotlinx.collections.immutable.plus
-import kotlinx.collections.immutable.toPersistentList
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_PAGE_LIMIT
 import tv.trakt.trakt.app.core.lists.details.personal.navigation.PersonalListDestination
 import tv.trakt.trakt.app.core.lists.details.personal.usecases.GetPersonalListItemsUseCase
+import tv.trakt.trakt.app.core.lists.filters.TvListFilterConfiguration
+import tv.trakt.trakt.app.core.lists.filters.TvListRequest
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.model.toTraktId
 
 internal class PersonalListViewModel(
@@ -24,95 +28,131 @@ internal class PersonalListViewModel(
     private val getListItemsUseCase: GetPersonalListItemsUseCase,
     private val collectionStateProvider: CollectionStateProvider,
 ) : ViewModel() {
-    private val initialState = PersonalListState()
-
-    private val loadingState = MutableStateFlow(initialState.isLoading)
-    private val loadingPageState = MutableStateFlow(initialState.isLoadingPage)
-    private val itemsState = MutableStateFlow(initialState.items)
-    private val errorState = MutableStateFlow(initialState.error)
-
     val destination = savedStateHandle.toRoute<PersonalListDestination>()
+    val filterConfiguration = TvListFilterConfiguration.MixedList
 
-    private var nextDataPage: Int = 1
-    private var hasMoreData: Boolean = true
+    private val _state = MutableStateFlow(PersonalListState())
+    val state = _state.asStateFlow()
+
+    private var requestJob: Job? = null
+    private var nextDataPage = 1
+    private var hasMoreData = true
 
     init {
-        loadData()
-
-        observeData()
+        observeCollection()
+        reload()
     }
 
-    private fun observeData() {
-        collectionStateProvider
+    fun applyFilter(filter: GlobalFilter) {
+        _state.update {
+            it.copy(filter = filterConfiguration.normalize(filter))
+        }
+        reload()
+    }
+
+    fun applySorting(sorting: Sorting) {
+        _state.update {
+            it.copy(sorting = sorting)
+        }
+        reload()
+    }
+
+    private fun observeCollection() {
+        collectionStateProvider.launchIn(viewModelScope)
+        collectionStateProvider.stateFlow
+            .onEach { collection ->
+                _state.update { it.copy(collection = collection) }
+            }
             .launchIn(viewModelScope)
     }
 
-    private fun loadData() {
-        viewModelScope.launch {
+    private fun reload() {
+        requestJob?.cancel()
+        nextDataPage = 1
+        hasMoreData = true
+        _state.update {
+            it.copy(
+                isLoading = true,
+                isLoadingPage = false,
+                error = null,
+            )
+        }
+
+        val request = _state.value.toRequest(page = 1)
+        requestJob = viewModelScope.launch {
             try {
-                loadingState.update { true }
-                val items = getListItemsUseCase.getListItems(
+                val page = getListItemsUseCase.getListItems(
                     listId = destination.listId.toTraktId(),
-                    page = nextDataPage,
+                    request = request,
                 )
-                itemsState.update { items }
-                nextDataPage += 1
+                nextDataPage = page.nextPage
+                hasMoreData = page.hasMore
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        items = page.items,
+                    )
+                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            error = error,
+                        )
+                    }
                 }
-            } finally {
-                loadingState.update { false }
             }
         }
     }
 
     fun loadNextDataPage() {
-        if (loadingPageState.value || !hasMoreData) {
-            return
+        val currentState = _state.value
+        if (currentState.isLoading || currentState.isLoadingPage || !hasMoreData) return
+
+        _state.update {
+            it.copy(
+                isLoadingPage = true,
+                error = null,
+            )
         }
-        viewModelScope.launch {
+        val request = _state.value.toRequest(page = nextDataPage)
+        requestJob = viewModelScope.launch {
             try {
-                loadingPageState.update { true }
-
-                val shows = getListItemsUseCase.getListItems(
+                val page = getListItemsUseCase.getListItems(
                     listId = destination.listId.toTraktId(),
-                    page = nextDataPage,
+                    request = request,
                 )
-
-                itemsState.update {
-                    it?.toPersistentList()?.plus(shows)
+                nextDataPage = page.nextPage
+                hasMoreData = page.hasMore
+                _state.update { state ->
+                    state.copy(
+                        isLoadingPage = false,
+                        items = (
+                            state.items.orEmpty() + page.items
+                        ).distinctBy { it.id }
+                            .toImmutableList(),
+                    )
                 }
-
-                hasMoreData = (shows.size >= PERSONAL_LIST_PAGE_LIMIT)
-                nextDataPage += 1
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    errorState.update { error }
+                    _state.update {
+                        it.copy(
+                            isLoadingPage = false,
+                            error = error,
+                        )
+                    }
                 }
-            } finally {
-                loadingPageState.update { false }
             }
         }
     }
 
-    val state = combine(
-        loadingState,
-        loadingPageState,
-        itemsState,
-        collectionStateProvider.stateFlow,
-        errorState,
-    ) { s1, s2, s3, s4, s5 ->
-        PersonalListState(
-            isLoading = s1,
-            isLoadingPage = s2,
-            items = s3,
-            collection = s4,
-            error = s5,
+    private fun PersonalListState.toRequest(page: Int): TvListRequest {
+        return TvListRequest(
+            page = page,
+            limit = PERSONAL_LIST_PAGE_LIMIT,
+            filter = filter,
+            sorting = sorting,
         )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = initialState,
-    )
+    }
 }

@@ -5,7 +5,9 @@ import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -34,7 +36,10 @@ import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_NEXT_PAGE_OFFSET
-import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_PAGE_LIMIT
+import tv.trakt.trakt.app.core.lists.filters.TvListControls
+import tv.trakt.trakt.app.core.lists.filters.TvListControlsState
+import tv.trakt.trakt.app.core.lists.filters.TvListEmptyState
+import tv.trakt.trakt.app.core.lists.filters.TvListFilterConfiguration
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -43,6 +48,8 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 
@@ -57,6 +64,8 @@ internal fun MoviesWatchlistScreen(
         state = state,
         onMovieClick = onNavigateToMovie,
         onLoadNextPage = { viewModel.loadNextDataPage() },
+        onFilterApplied = viewModel::applyFilter,
+        onSortingApplied = viewModel::applySorting,
     )
 }
 
@@ -66,6 +75,8 @@ private fun MoviesWatchlistContent(
     modifier: Modifier = Modifier,
     onMovieClick: (TraktId) -> Unit,
     onLoadNextPage: () -> Unit,
+    onFilterApplied: (GlobalFilter) -> Unit,
+    onSortingApplied: (Sorting) -> Unit,
 ) {
     var focusedMovie by remember { mutableStateOf<Movie?>(null) }
     var focusedMovieId by rememberSaveable { mutableStateOf<Int?>(null) }
@@ -101,17 +112,34 @@ private fun MoviesWatchlistContent(
             ),
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
-                Text(
-                    text = stringResource(R.string.list_title_watchlist_movies),
-                    color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.heading4,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .focusProperties {
-                            down = focusRequesters.values.firstOrNull() ?: FocusRequester.Default
-                        }
-                        .focusable(),
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(
+                        text = stringResource(R.string.list_title_watchlist_movies),
+                        color = TraktTheme.colors.textPrimary,
+                        style = TraktTheme.typography.heading4,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier
+                            .weight(1F)
+                            .focusProperties {
+                                down = focusRequesters.values.firstOrNull() ?: FocusRequester.Default
+                            }
+                            .focusable(),
+                    )
+
+                    TvListControls(
+                        state = TvListControlsState(
+                            filter = state.filter,
+                            sorting = state.sorting,
+                            configuration = TvListFilterConfiguration.MoviesWatchlist,
+                        ),
+                        onFilterApplied = onFilterApplied,
+                        onSortingApplied = onSortingApplied,
+                    )
+                }
             }
 
             if (state.isLoading && state.movies.isNullOrEmpty()) {
@@ -126,8 +154,10 @@ private fun MoviesWatchlistContent(
                     key = { index -> state.movies[index].ids.trakt.value },
                 ) { index ->
                     val movie = state.movies[index]
-                    val focusRequester = focusRequesters.getOrPut(movie.ids.trakt.value) {
-                        FocusRequester()
+                    val focusRequester = remember(movie.ids.trakt.value) {
+                        focusRequesters.getOrPut(movie.ids.trakt.value) {
+                            FocusRequester()
+                        }
                     }
 
                     VerticalMediaCard(
@@ -162,6 +192,13 @@ private fun MoviesWatchlistContent(
                             },
                     )
                 }
+            } else if (!state.isLoading) {
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    TvListEmptyState(
+                        filter = state.filter,
+                        modifier = Modifier.focusable(),
+                    )
+                }
             }
 
             if (state.isLoadingPage) {
@@ -192,7 +229,7 @@ private fun loadNextPageIfNeeded(
     index: Int,
     onLoadNextPage: () -> Unit,
 ) {
-    if (size >= LISTS_PAGE_LIMIT && index >= size - LISTS_NEXT_PAGE_OFFSET) {
+    if (index >= (size - LISTS_NEXT_PAGE_OFFSET).coerceAtLeast(0)) {
         onLoadNextPage()
     }
 }
@@ -214,6 +251,8 @@ private fun Preview() {
             ),
             onMovieClick = {},
             onLoadNextPage = {},
+            onFilterApplied = {},
+            onSortingApplied = {},
         )
     }
 }
