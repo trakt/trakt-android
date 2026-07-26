@@ -81,6 +81,7 @@
   <string name="button_label_edit_list">Bewerk je lijst %s</string>
   <string name="button_label_edit_mode">Bewerkmodus</string>
   <string name="button_label_edit_note">Notitie bewerken</string>
+  <string name="button_label_exclude_option">%s uitsluiten</string>
   <string name="button_label_exit_edit_mode">Bewerkmodus verlaten</string>
   <string name="button_label_expand_category">%s uitvouwen</string>
   <string name="button_label_expand_media_overview">Vouw overzicht van \"%s\" uit</string>
@@ -100,6 +101,7 @@
   <string name="button_label_home">Terug naar de startpagina gaan</string>
   <string name="button_label_import_more">Reset en start een nieuwe import.</string>
   <string name="button_label_import_selected">Importeer de filmmatches die je hierboven hebt gekozen.</string>
+  <string name="button_label_include_option">%s opnemen</string>
   <string name="button_label_join_trakt">Lid worden van trakt.tv om bij te houden wat je kijkt</string>
   <string name="button_label_library">Bibliotheek</string>
   <string name="button_label_like_list">Vind ik leuk: %s</string>
@@ -1054,6 +1056,7 @@
   <string name="mir_title_month_in_review">Maandoverzicht</string>
   <string name="notes_placeholder_text">Laat een notitie achter de volgende keer dat u een titel favoriet of laat vallen.</string>
   <string name="notice_delete_account_vip">Aangezien je een actieve Trakt VIP bent, gelieve <a>je VIP-lidmaatschap op te zeggen</a> voordat je je account verwijdert.</string>
+  <string name="option_label_excluded">%s (uitgesloten van resultaten)</string>
   <string name="option_text_africa">Afrika</string>
   <string name="option_text_all">Alles</string>
   <string name="option_text_all_digital_releases">Alle digitale releases</string>
@@ -1065,6 +1068,7 @@
   <string name="option_text_certification_unrated">Niet beoordeeld</string>
   <string name="option_text_comment_language_all">Alle talen</string>
   <string name="option_text_europe">Europa</string>
+  <string name="option_text_excluded">-%s</string>
   <string name="option_text_latin_america">Latijns-Amerika</string>
   <string name="option_text_middle_east">Midden-Oosten</string>
   <string name="option_text_my_favorites">Mijn favorieten</string>

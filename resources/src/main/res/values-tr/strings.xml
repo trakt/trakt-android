@@ -81,6 +81,7 @@
   <string name="button_label_edit_list">%s listenizi düzenle</string>
   <string name="button_label_edit_mode">Düzenleme modu</string>
   <string name="button_label_edit_note">Notu düzenle</string>
+  <string name="button_label_exclude_option">%s Hariç Tut</string>
   <string name="button_label_exit_edit_mode">Düzenleme modundan çık</string>
   <string name="button_label_expand_category">%s genişlet</string>
   <string name="button_label_expand_media_overview">\"%s\" genel bakışını genişlet</string>
@@ -100,6 +101,7 @@
   <string name="button_label_home">Ana sayfaya geri dön</string>
   <string name="button_label_import_more">Sıfırla ve yeni bir içe aktarma başlat.</string>
   <string name="button_label_import_selected">Yukarıda seçtiğiniz film eşleşmelerini içe aktarın.</string>
+  <string name="button_label_include_option">%s Dahil Et</string>
   <string name="button_label_join_trakt">İzlediklerinizi takip etmek için trakt.tv\'ye katılın</string>
   <string name="button_label_library">Kütüphane</string>
   <string name="button_label_like_list">%s listesini beğen</string>
@@ -657,7 +659,7 @@
   <string name="header_landing_discover">Keşfet</string>
   <string name="header_landing_share">Paylaş</string>
   <string name="header_landing_track">Takip Et</string>
-  <string name="header_landing_welcome">Trakt\'e Hoş Geldiniz</string>
+  <string name="header_landing_welcome">Trakt\'a Hoş Geldiniz</string>
   <string name="header_language">Dil</string>
   <string name="header_leaderboard">Pantheon</string>
   <string name="header_manage_lists">Listeleri yönet</string>
@@ -1054,6 +1056,7 @@
   <string name="mir_title_month_in_review">Ayın İncelemesi</string>
   <string name="notes_placeholder_text">Bir dahaki sefere bir başlığı favorilediğinizde veya bıraktığınızda bir not bırakın.</string>
   <string name="notice_delete_account_vip">Aktif bir Trakt VIP üyesi olduğunuz için, hesabınızı silmeden önce lütfen <a>VIP üyeliğinizi iptal edin</a>.</string>
+  <string name="option_label_excluded">%s (sonuçlardan hariç tutuldu)</string>
   <string name="option_text_africa">Afrika</string>
   <string name="option_text_all">Tümü</string>
   <string name="option_text_all_digital_releases">Tüm dijital yayınlar</string>
@@ -1065,6 +1068,7 @@
   <string name="option_text_certification_unrated">Derecelendirilmemiş</string>
   <string name="option_text_comment_language_all">Tüm diller</string>
   <string name="option_text_europe">Avrupa</string>
+  <string name="option_text_excluded">-%s</string>
   <string name="option_text_latin_america">Latin Amerika</string>
   <string name="option_text_middle_east">Orta Doğu</string>
   <string name="option_text_my_favorites">Favorilerim</string>
@@ -1919,7 +1923,7 @@
   <string name="warning_smart_lists_limit">Akıllı liste limitinize ulaştınız</string>
   <string name="welcome_banner_action">Verilerinizi içe aktarın</string>
   <string name="welcome_banner_description">Trakt\'a yeni mi geldiniz? <a>Karşılama sayfamıza</a> göz atın. Başka bir hizmette zaten takip mi ediyorsunuz? İzleme geçmişinizi, izleme listenizi ve puanlarınızı sadece birkaç dakikada yanınızda getirin.</string>
-  <string name="welcome_banner_heading">Trakt\'e Hoş Geldiniz</string>
+  <string name="welcome_banner_heading">Trakt\'a Hoş Geldiniz</string>
   <string name="welcome_get_started">Keşfetmeye Başla</string>
   <string name="welcome_greeting">Trakt\'e Hoş Geldiniz, %s</string>
   <string name="welcome_greeting_generic">Trakt\'e Hoş Geldiniz</string>

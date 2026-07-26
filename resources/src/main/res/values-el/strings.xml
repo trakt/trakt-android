@@ -81,6 +81,7 @@
   <string name="button_label_edit_list">Επεξεργασία της λίστας σας %s</string>
   <string name="button_label_edit_mode">Λειτουργία επεξεργασίας</string>
   <string name="button_label_edit_note">Επεξεργασία σημείωσης</string>
+  <string name="button_label_exclude_option">Εξαίρεση %s</string>
   <string name="button_label_exit_edit_mode">Έξοδος από λειτουργία επεξεργασίας</string>
   <string name="button_label_expand_category">Ανάπτυξη %s</string>
   <string name="button_label_expand_media_overview">Ανάπτυξη επισκόπησης \"%s\"</string>
@@ -100,6 +101,7 @@
   <string name="button_label_home">Επιστροφή στην αρχική σελίδα</string>
   <string name="button_label_import_more">Επαναφορά και έναρξη νέας εισαγωγής.</string>
   <string name="button_label_import_selected">Εισαγάγετε τις αντιστοιχίσεις ταινιών που επιλέξατε παραπάνω.</string>
+  <string name="button_label_include_option">Συμπερίληψη %s</string>
   <string name="button_label_join_trakt">Εγγραφείτε στο trakt.tv για να παρακολουθείτε τι βλέπετε</string>
   <string name="button_label_library">Βιβλιοθήκη</string>
   <string name="button_label_like_list">Μου αρέσει %s</string>
@@ -1054,6 +1056,7 @@
   <string name="mir_title_month_in_review">Μηνιαία Ανασκόπηση</string>
   <string name="notes_placeholder_text">Αφήστε μια σημείωση την επόμενη φορά που θα βάλετε στα αγαπημένα ή θα απορρίψετε έναν τίτλο.</string>
   <string name="notice_delete_account_vip">Εφόσον είστε ενεργό Trakt VIP, παρακαλούμε <a>ακυρώστε τη συνδρομή VIP</a> πριν διαγράψετε τον λογαριασμό σας.</string>
+  <string name="option_label_excluded">%s (εξαιρούμενο από τα αποτελέσματα)</string>
   <string name="option_text_africa">Αφρική</string>
   <string name="option_text_all">Όλα</string>
   <string name="option_text_all_digital_releases">Όλες οι ψηφιακές κυκλοφορίες</string>
@@ -1065,6 +1068,7 @@
   <string name="option_text_certification_unrated">Αταξινόμητο</string>
   <string name="option_text_comment_language_all">Όλες οι γλώσσες</string>
   <string name="option_text_europe">Ευρώπη</string>
+  <string name="option_text_excluded">-%s</string>
   <string name="option_text_latin_america">Λατινική Αμερική</string>
   <string name="option_text_middle_east">Μέση Ανατολή</string>
   <string name="option_text_my_favorites">Τα αγαπημένα μου</string>

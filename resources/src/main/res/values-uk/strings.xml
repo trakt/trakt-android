@@ -81,6 +81,7 @@
   <string name="button_label_edit_list">Редагувати ваш список %s</string>
   <string name="button_label_edit_mode">Режим редагування</string>
   <string name="button_label_edit_note">Редагувати примітку</string>
+  <string name="button_label_exclude_option">Виключити %s</string>
   <string name="button_label_exit_edit_mode">Вийти з режиму редагування</string>
   <string name="button_label_expand_category">Розгорнути %s</string>
   <string name="button_label_expand_media_overview">Розгорнути огляд \"%s\"</string>
@@ -100,6 +101,7 @@
   <string name="button_label_home">Повернутися на домашню сторінку</string>
   <string name="button_label_import_more">Скинути та розпочати новий імпорт.</string>
   <string name="button_label_import_selected">Імпортувати вибрані вами вище збіги фільмів.</string>
+  <string name="button_label_include_option">Включити %s</string>
   <string name="button_label_join_trakt">Приєднайтеся до trakt.tv, щоб відстежувати, що ви дивитесь</string>
   <string name="button_label_library">Бібліотека</string>
   <string name="button_label_like_list">Сподобалася %s</string>
@@ -1054,6 +1056,7 @@
   <string name="mir_title_month_in_review">Місяць у Підсумках</string>
   <string name="notes_placeholder_text">Залиште нотатку наступного разу, коли ви додаєте в улюблені або відмовляєтеся від назви.</string>
   <string name="notice_delete_account_vip">Оскільки ви є активним VIP-користувачем Trakt, будь ласка, <a>скасуйте своє VIP-членство</a> перед видаленням облікового запису.</string>
+  <string name="option_label_excluded">%s (виключено з результатів)</string>
   <string name="option_text_africa">Африка</string>
   <string name="option_text_all">Всі</string>
   <string name="option_text_all_digital_releases">Всі цифрові релізи</string>
@@ -1065,6 +1068,7 @@
   <string name="option_text_certification_unrated">Без рейтингу</string>
   <string name="option_text_comment_language_all">Усі мови</string>
   <string name="option_text_europe">Європа</string>
+  <string name="option_text_excluded">-%s</string>
   <string name="option_text_latin_america">Латинська Америка</string>
   <string name="option_text_middle_east">Близький Схід</string>
   <string name="option_text_my_favorites">Мої улюблені</string>

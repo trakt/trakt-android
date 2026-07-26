@@ -81,6 +81,7 @@
   <string name="button_label_edit_list">Redigera din lista %s</string>
   <string name="button_label_edit_mode">Redigeringsläge</string>
   <string name="button_label_edit_note">Redigera anteckning</string>
+  <string name="button_label_exclude_option">Exkludera %s</string>
   <string name="button_label_exit_edit_mode">Avsluta redigeringsläge</string>
   <string name="button_label_expand_category">Visa %s</string>
   <string name="button_label_expand_media_overview">Expandera översikt för \"%s\"</string>
@@ -100,6 +101,7 @@
   <string name="button_label_home">Gå tillbaka till startsidan</string>
   <string name="button_label_import_more">Återställ och starta en ny import.</string>
   <string name="button_label_import_selected">Importera de filmmatchningar du valde ovan.</string>
+  <string name="button_label_include_option">Inkludera %s</string>
   <string name="button_label_join_trakt">Gå med i trakt.tv för att hålla koll på vad du tittar på</string>
   <string name="button_label_library">Bibliotek</string>
   <string name="button_label_like_list">Gilla %s</string>
@@ -1054,6 +1056,7 @@
   <string name="mir_title_month_in_review">Månadsöversikt</string>
   <string name="notes_placeholder_text">Lämna en anteckning nästa gång du markerar en titel som favorit eller släpper den.</string>
   <string name="notice_delete_account_vip">Eftersom du är en aktiv Trakt VIP, vänligen <a>avsluta ditt VIP-medlemskap</a> innan du tar bort ditt konto.</string>
+  <string name="option_label_excluded">%s (exkluderad från resultat)</string>
   <string name="option_text_africa">Afrika</string>
   <string name="option_text_all">Alla</string>
   <string name="option_text_all_digital_releases">Alla digitala utgivningar</string>
@@ -1065,6 +1068,7 @@
   <string name="option_text_certification_unrated">Oklassificerad</string>
   <string name="option_text_comment_language_all">Alla språk</string>
   <string name="option_text_europe">Europa</string>
+  <string name="option_text_excluded">-%s</string>
   <string name="option_text_latin_america">Latinamerika</string>
   <string name="option_text_middle_east">Mellanöstern</string>
   <string name="option_text_my_favorites">Mina favoriter</string>

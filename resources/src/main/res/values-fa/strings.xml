@@ -81,6 +81,7 @@
   <string name="button_label_edit_list">ویرایش لیست شما %s</string>
   <string name="button_label_edit_mode">حالت ویرایش</string>
   <string name="button_label_edit_note">ویرایش یادداشت</string>
+  <string name="button_label_exclude_option">حذف %s</string>
   <string name="button_label_exit_edit_mode">خروج از حالت ویرایش</string>
   <string name="button_label_expand_category">گسترش %s</string>
   <string name="button_label_expand_media_overview">نمای کلی \"%s\" را گسترش دهید</string>
@@ -100,6 +101,7 @@
   <string name="button_label_home">بازگشت به صفحه اصلی</string>
   <string name="button_label_import_more">بازنشانی و شروع یک وارد کردن جدید.</string>
   <string name="button_label_import_selected">فیلم‌های مطابق انتخاب شده در بالا را وارد کنید.</string>
+  <string name="button_label_include_option">شامل %s</string>
   <string name="button_label_join_trakt">به trakt.tv بپیوندید تا آنچه را تماشا می‌کنید پیگیری کنید</string>
   <string name="button_label_library">کتابخانه</string>
   <string name="button_label_like_list">پسندیدن %s</string>
@@ -1054,6 +1056,7 @@
   <string name="mir_title_month_in_review">مرور ماه</string>
   <string name="notes_placeholder_text">دفعه بعد که عنوانی را به لیست علاقه خود اضافه می‌کنید یا آن را رها می‌کنید، یک یادداشت بگذارید.</string>
   <string name="notice_delete_account_vip">از آنجایی که شما یک VIP فعال Trakt هستید، لطفاً قبل از حذف حساب کاربری خود، <a>عضویت VIP خود را لغو کنید</a>.</string>
+  <string name="option_label_excluded">%s (حذف‌شده از نتایج)</string>
   <string name="option_text_africa">آفریقا</string>
   <string name="option_text_all">همه</string>
   <string name="option_text_all_digital_releases">همه نسخه‌های دیجیتال</string>
@@ -1065,6 +1068,7 @@
   <string name="option_text_certification_unrated">بدون رتبه</string>
   <string name="option_text_comment_language_all">همه زبان‌ها</string>
   <string name="option_text_europe">اروپا</string>
+  <string name="option_text_excluded">-%s</string>
   <string name="option_text_latin_america">آمریکای لاتین</string>
   <string name="option_text_middle_east">خاورمیانه</string>
   <string name="option_text_my_favorites">علاقه‌مندی‌های من</string>

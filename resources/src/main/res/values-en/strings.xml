@@ -81,6 +81,7 @@
   <string name="button_label_edit_list">Edit your list %s</string>
   <string name="button_label_edit_mode">Edit mode</string>
   <string name="button_label_edit_note">Edit note</string>
+  <string name="button_label_exclude_option">Exclude %s</string>
   <string name="button_label_exit_edit_mode">Exit edit mode</string>
   <string name="button_label_expand_category">Expand %s</string>
   <string name="button_label_expand_media_overview">Expand \"%s\" overview</string>
@@ -100,6 +101,7 @@
   <string name="button_label_home">Go back to the homepage</string>
   <string name="button_label_import_more">Reset and start a new import.</string>
   <string name="button_label_import_selected">Import the movie matches you picked above.</string>
+  <string name="button_label_include_option">Include %s</string>
   <string name="button_label_join_trakt">Join trakt.tv to keep track of what you\'re watching</string>
   <string name="button_label_library">Library</string>
   <string name="button_label_like_list">Like %s</string>
@@ -1054,6 +1056,7 @@
   <string name="mir_title_month_in_review">Month in Review</string>
   <string name="notes_placeholder_text">Leave a note the next time you favorite or drop a title.</string>
   <string name="notice_delete_account_vip">Since you\'re an active Trakt VIP, please <a>cancel your VIP membership</a> before deleting your account.</string>
+  <string name="option_label_excluded">%s (excluded from results)</string>
   <string name="option_text_africa">Africa</string>
   <string name="option_text_all">All</string>
   <string name="option_text_all_digital_releases">All digital releases</string>
@@ -1065,6 +1068,7 @@
   <string name="option_text_certification_unrated">Unrated</string>
   <string name="option_text_comment_language_all">All languages</string>
   <string name="option_text_europe">Europe</string>
+  <string name="option_text_excluded">-%s</string>
   <string name="option_text_latin_america">Latin America</string>
   <string name="option_text_middle_east">Middle East</string>
   <string name="option_text_my_favorites">My favorites</string>

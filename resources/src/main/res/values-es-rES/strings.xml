@@ -81,6 +81,7 @@
   <string name="button_label_edit_list">Editar tu lista %s</string>
   <string name="button_label_edit_mode">Modo de edición</string>
   <string name="button_label_edit_note">Editar nota</string>
+  <string name="button_label_exclude_option">Excluir %s</string>
   <string name="button_label_exit_edit_mode">Salir del modo de edición</string>
   <string name="button_label_expand_category">Expandir %s</string>
   <string name="button_label_expand_media_overview">Expandir resumen de \"%s\"</string>
@@ -100,6 +101,7 @@
   <string name="button_label_home">Volver a la página de inicio</string>
   <string name="button_label_import_more">Restablecer e iniciar una nueva importación.</string>
   <string name="button_label_import_selected">Importar las coincidencias de películas que seleccionaste arriba.</string>
+  <string name="button_label_include_option">Incluir %s</string>
   <string name="button_label_join_trakt">Únete a trakt.tv para llevar un registro de lo que estás viendo</string>
   <string name="button_label_library">Biblioteca</string>
   <string name="button_label_like_list">Me gusta %s</string>
@@ -533,7 +535,7 @@
   <string name="description_clear_data">Eliminar permanentemente los datos de tu cuenta de Trakt.</string>
   <string name="description_connected_apps">Aplicaciones de terceros que has autorizado para acceder a tu cuenta Trakt.</string>
   <string name="description_create_api_application">Registra una nueva aplicación OAuth para acceder a la API de Trakt.</string>
-  <string name="description_data_syncs">Sincronizaciones de datos recientes de tus servicios de streaming conectados.</string>
+  <string name="description_data_syncs">Sincronizaciones recientes de datos de tus servicios de streaming conectados.</string>
   <string name="description_delete_account">Tu información personal será eliminada y tus datos estadísticos serán anonimizados.</string>
   <string name="description_edit_api_application">Actualiza los detalles de tu aplicación OAuth, URIs de redirección y permisos.</string>
   <string name="description_export">Obtén una exportación de tus datos de usuario en un solo archivo ZIP. Este proceso puede tardar un poco.</string>
@@ -1054,6 +1056,7 @@
   <string name="mir_title_month_in_review">Tu mes en Trakt</string>
   <string name="notes_placeholder_text">Deja una nota la próxima vez que marques un título como favorito o lo abandones.</string>
   <string name="notice_delete_account_vip">Ya que eres un VIP activo de Trakt, por favor <a>cancela tu membresía VIP</a> antes de eliminar tu cuenta.</string>
+  <string name="option_label_excluded">%s (excluido de los resultados)</string>
   <string name="option_text_africa">África</string>
   <string name="option_text_all">Todo</string>
   <string name="option_text_all_digital_releases">Todos los lanzamientos digitales</string>
@@ -1065,6 +1068,7 @@
   <string name="option_text_certification_unrated">Sin clasificar</string>
   <string name="option_text_comment_language_all">Todos los idiomas</string>
   <string name="option_text_europe">Europa</string>
+  <string name="option_text_excluded">-%s</string>
   <string name="option_text_latin_america">Latinoamérica</string>
   <string name="option_text_middle_east">Oriente Medio</string>
   <string name="option_text_my_favorites">Mis favoritos</string>
@@ -1210,7 +1214,7 @@
   <string name="tag_text_reviewed">Reseñado</string>
   <string name="tag_text_rewatching">Re-visualización</string>
   <string name="tag_text_season_finale">Final de temporada</string>
-  <string name="tag_text_season_premiere">Estreno de temporada</string>
+  <string name="tag_text_season_premiere">Estreno de la temporada</string>
   <string name="tag_text_series_finale">Final de la serie</string>
   <string name="tag_text_series_premiere">Estreno de la serie</string>
   <string name="tag_text_shows">Series</string>
@@ -1395,7 +1399,7 @@
   <string name="text_no_api_applications">No has creado ninguna aplicación API.</string>
   <string name="text_no_blocked_users">No has bloqueado a nadie.</string>
   <string name="text_no_connected_apps">No has conectado ninguna aplicación.</string>
-  <string name="text_no_data_synced">Aún no se han sincronizado datos.</string>
+  <string name="text_no_data_synced">Los datos aún no se han sincronizado.</string>
   <string name="text_no_paused_items">No hay elementos pausados.</string>
   <string name="text_no_rating">Sin calificación</string>
   <string name="text_no_services_match_filter">Ningún servicio coincide con tu filtro.</string>
