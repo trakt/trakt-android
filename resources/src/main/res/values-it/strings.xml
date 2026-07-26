@@ -5,7 +5,7 @@
   <string name="about_feature_description_community">Segui gli amici, scopri cosa sta guardando il team e trova i preferiti condivisi. Guardare insieme è meglio.</string>
   <string name="about_feature_description_discover">Ricevi raccomandazioni personalizzate basate sui tuoi gusti. Esplora titoli di tendenza e liste curate dalla community di Trakt.</string>
   <string name="about_feature_description_rate_review">Condividi le tue opinioni con valutazioni e commenti. Scopri come i tuoi gusti si confrontano con milioni di altri spettatori.</string>
-  <string name="about_feature_description_scrobble">Traccia automaticamente ciò che guardi su centinaia di app e media server. Non perdere mai traccia dei tuoi progressi.</string>
+  <string name="about_feature_description_scrobble">Traccia automaticamente ciò che guardi su app di streaming e media server. Non perdere mai traccia dei tuoi progressi.</string>
   <string name="about_feature_title_any_device">Qualsiasi dispositivo, qualsiasi piattaforma</string>
   <string name="about_feature_title_calendar">Non perdere mai un episodio</string>
   <string name="about_feature_title_community">Una community di spettatori</string>
@@ -912,6 +912,7 @@
   <string name="link_label_discover_shows">Scopri serie TV</string>
   <string name="link_label_get_vip">Sblocca funzionalità VIP</string>
   <string name="link_label_github">GitHub</string>
+  <string name="link_label_history_all">Torna alla cronologia completa</string>
   <string name="link_label_install_pwa">Installa PWA</string>
   <string name="link_label_ios_app">App iOS</string>
   <string name="link_label_open_preview_feature">Apri %s</string>
@@ -1338,6 +1339,8 @@
   <string name="text_footer_category_community">Community</string>
   <string name="text_footer_category_legal">Legale</string>
   <string name="text_footer_category_platform">Piattaforma</string>
+  <string name="text_history_sync_filter">ID sincronizzazione %d</string>
+  <string name="text_history_sync_filter_with_source">ID sincronizzazione %1$d (%2$s)</string>
   <string name="text_hours_watched">%d ore</string>
   <string name="text_info_blocked">%s è stato bloccato.</string>
   <string name="text_info_cover_removed">L\'immagine di copertina è stata rimossa.</string>
@@ -1833,7 +1836,7 @@
   <string name="tv_time_report_submit_text">Invia segnalazione</string>
   <string name="tv_time_report_success">Grazie! La tua segnalazione è stata inviata. Daremo un\'occhiata.</string>
   <string name="tv_time_report_upload_prompt">Trascina qui il tuo export di TV Time, o clicca per scegliere i file</string>
-  <string name="usage_title_connected_apps">App Connesse</string>
+  <string name="usage_title_connected_apps">App</string>
   <string name="usage_title_library">Libreria</string>
   <string name="usage_title_lists">Liste</string>
   <string name="validation_text_app_name">Inserisci un nome per l\'applicazione.</string>
@@ -1845,7 +1848,7 @@
   <string name="validation_text_settings_field">%s è richiesto</string>
   <string name="vip_feature_description_api_apps">Connetti più app e servizi di terze parti tramite l\'API di Trakt per migliorare la tua esperienza.</string>
   <string name="vip_feature_description_bigger_library">Archivia più della tua cronologia di visione con limiti della libreria espansi e progettati per durare una vita.</string>
-  <string name="vip_feature_description_bigger_watchlist">Espandi la capacità della tua watchlist per tenere traccia di tutto ciò che vuoi guardare senza limiti.</string>
+  <string name="vip_feature_description_bigger_watchlist">Espandi la capacità della tua watchlist per tenere traccia di tutto ciò che vuoi guardare.</string>
   <string name="vip_feature_description_early_access">Ottieni accesso anticipato a nuove versioni delle app Trakt e a funzionalità inedite prima di chiunque altro.</string>
   <string name="vip_feature_description_global_wtw">Scopri dove serie e film sono disponibili in streaming in qualsiasi parte del mondo, non solo nella tua regione.</string>
   <string name="vip_feature_description_increased_limits">Goditi limiti più alti per le tue liste, valutazioni e altre funzionalità.</string>

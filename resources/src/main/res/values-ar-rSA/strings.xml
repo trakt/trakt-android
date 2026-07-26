@@ -5,7 +5,7 @@
   <string name="about_feature_description_community">اتبع الأصدقاء، واطلع على ما يشاهده الفريق، واكتشف المفضلة المشتركة. المشاهدة معًا أفضل.</string>
   <string name="about_feature_description_discover">احصل على توصيات مخصصة بناءً على ذوقك. استكشف العناوين الشائعة والقوائم المنسقة من مجتمع Trakt.</string>
   <string name="about_feature_description_rate_review">مشاركة آرائكم مع التقييمات والتعليقات. انظر كيف يقارن ذوقك بملايين المشاهدين الآخرين.</string>
-  <string name="about_feature_description_scrobble">قم بتمرير ما تشاهده تلقائيًا عبر مئات التطبيقات وخوادم الوسائط. لا تفقد مسار التقدم المحرز الخاص بك.</string>
+  <string name="about_feature_description_scrobble">قم بالتدوين التلقائي لما تشاهده عبر تطبيقات البث وخوادم الوسائط. لا تفقد مسار تقدمك أبدًا.</string>
   <string name="about_feature_title_any_device">أي جهاز، أي منصة</string>
   <string name="about_feature_title_calendar">لا تفوت أي حلقة</string>
   <string name="about_feature_title_community">مجتمع المراقبين</string>
@@ -141,7 +141,7 @@
   <string name="button_label_plex_toggle_episode_watched">تبديل المزامنة المشاهدة للحلقات</string>
   <string name="button_label_plex_toggle_movie_library">تبديل مزامنة المكتبة للأفلام</string>
   <string name="button_label_plex_toggle_movie_rated">تبديل مزامنة التقييمات للأفلام</string>
-  <string name="button_label_plex_toggle_movie_watched">تبديل المزامنة المشاهدة للأفلام</string>
+  <string name="button_label_plex_toggle_movie_watched">تبديل مزامنة للأفلام التي شاهدتها</string>
   <string name="button_label_plex_toggle_movie_watchlist">تبديل مزامنة قائمة المشاهدة للأفلام</string>
   <string name="button_label_plex_toggle_season_rated">تبديل مزامنة التقييمات للمواسم</string>
   <string name="button_label_plex_toggle_show_rated">تبديل مزامنة التقييمات للعروض</string>
@@ -912,6 +912,7 @@
   <string name="link_label_discover_shows">اكتشف المسلسلات</string>
   <string name="link_label_get_vip">فتح ميزات VIP</string>
   <string name="link_label_github">GitHub</string>
+  <string name="link_label_history_all">العودة إلى السجل الكامل</string>
   <string name="link_label_install_pwa">تثبيت PWA</string>
   <string name="link_label_ios_app">تطبيق iOS</string>
   <string name="link_label_open_preview_feature">فتح %s</string>
@@ -1338,6 +1339,8 @@
   <string name="text_footer_category_community">المجتمع</string>
   <string name="text_footer_category_legal">قانوني</string>
   <string name="text_footer_category_platform">منصة</string>
+  <string name="text_history_sync_filter">معرف المزامنة %d</string>
+  <string name="text_history_sync_filter_with_source">معرف المزامنة %1$d (%2$s)</string>
   <string name="text_hours_watched">%d ساعة</string>
   <string name="text_info_blocked">تم حظر %s.</string>
   <string name="text_info_cover_removed">تم مسح صورة الغلاف.</string>
@@ -1402,7 +1405,7 @@
   <string name="text_no_data_synced">لم تتم مزامنة أي بيانات حتى الآن.</string>
   <string name="text_no_paused_items">لا توجد عناصر متوقفة مؤقتًا.</string>
   <string name="text_no_rating">لا يوجد تقييم</string>
-  <string name="text_no_services_match_filter">لا توجد خدمات تتطابق مع الفلتر الخاص بك.</string>
+  <string name="text_no_services_match_filter">لا خِدمات تطابق تصفيتك.</string>
   <string name="text_no_skipped_items">لا توجد عناصر تم تخطيها.</string>
   <string name="text_notification_episode_release">م%1$d • ح%2$d متاح الآن.</string>
   <string name="text_notification_episodes_release">م%1$d • ح%2$d-%3$d متاحة الآن.</string>
@@ -1833,7 +1836,7 @@
   <string name="tv_time_report_submit_text">إرسال التقرير</string>
   <string name="tv_time_report_success">شكرًا! لقد تم إرسال التقرير الخاص بك. سوف نلقي نظرة.</string>
   <string name="tv_time_report_upload_prompt">أسقط ملف تصدير TV Time الخاص بك هنا، أو انقر لاختيار الملفات</string>
-  <string name="usage_title_connected_apps">التطبيقات المتصلة</string>
+  <string name="usage_title_connected_apps">التطبيقات</string>
   <string name="usage_title_library">مكتبة</string>
   <string name="usage_title_lists">القوائم</string>
   <string name="validation_text_app_name">الرجاء إدخال اسم التطبيق.</string>
@@ -1845,7 +1848,7 @@
   <string name="validation_text_settings_field">%s مطلوب</string>
   <string name="vip_feature_description_api_apps">قم بتوصيل المزيد من تطبيقات وخدمات الطرف الثالث من خلال Trakt API لتحسين تجربتك.</string>
   <string name="vip_feature_description_bigger_library">قم بتخزين المزيد من سجل العرض الخاص بك مع حدود المكتبة الموسعة المصممة لتدوم مدى الحياة.</string>
-  <string name="vip_feature_description_bigger_watchlist">قم بتوسيع سعة قائمة المشاهدة الخاصة بك لتتبع كل ما تريد مشاهدته بلا حدود.</string>
+  <string name="vip_feature_description_bigger_watchlist">وسّع سعة قائمة مشاهدتك لتتبع كل ما ترغب في مشاهدته.</string>
   <string name="vip_feature_description_early_access">احصل على وصول مبكر إلى الإصدارات الجديدة من تطبيقات Trakt والميزات الجديدة تمامًا قبل أي شخص آخر.</string>
   <string name="vip_feature_description_global_wtw">تعرف على الأماكن التي تتوفر فيها العروض والأفلام للبث في أي مكان في العالم، وليس منطقتك فقط.</string>
   <string name="vip_feature_description_increased_limits">استمتع بحدود أعلى لقوائمك وتقييماتك والميزات الأخرى.</string>
@@ -1862,7 +1865,7 @@
   <string name="vip_feature_description_trivia">احصل على المزيد من المعلومات التافهة والأفكار حول الأفلام والعروض التي تشاهدها.</string>
   <string name="vip_feature_description_vip_status">أظهر حالة VIP الخاصة بك عبر التطبيقات وموقع الويب.</string>
   <string name="vip_feature_description_yir">الكثير من الإحصائيات عن كل عام كنت فيه عضوًا.</string>
-  <string name="vip_feature_title_api_apps">المزيد من تطبيقات API متصلة</string>
+  <string name="vip_feature_title_api_apps">المزيد من التطبيقات المتصلة</string>
   <string name="vip_feature_title_bigger_library">المكتبة الكبرى</string>
   <string name="vip_feature_title_bigger_watchlist">قائمة مراقبة أكبر</string>
   <string name="vip_feature_title_early_access">الوصول المبكر</string>
