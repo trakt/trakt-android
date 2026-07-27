@@ -25,6 +25,7 @@ import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates.Source.POST_RATING
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import java.util.concurrent.TimeUnit.SECONDS
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
 
@@ -123,12 +124,12 @@ internal class PostRatingWorker(
                     )
                 }
 
-                delay(500)
+                delay(500.milliseconds)
                 when (mediaType) {
                     MediaType.Show -> loadUserRatingUseCase.loadShows()
                     MediaType.Movie -> loadUserRatingUseCase.loadMovies()
                     MediaType.Episode -> loadUserRatingUseCase.loadEpisodes()
-                    else -> throw IllegalStateException("Rating is not supported")
+                    MediaType.Season -> loadUserRatingUseCase.loadSeasons()
                 }
 
                 ratingsUpdates.notifyUpdate(POST_RATING)

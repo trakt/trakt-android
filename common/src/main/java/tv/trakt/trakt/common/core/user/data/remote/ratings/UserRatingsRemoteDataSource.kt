@@ -10,5 +10,7 @@ interface UserRatingsRemoteDataSource {
 
     suspend fun getRatingsEpisodes(): List<UserRatingDto>
 
+    suspend fun getRatingsSeasons(): List<UserRatingDto>
+
     suspend fun getAllRatings(pagination: Pagination): List<UserRatingDto>
 }

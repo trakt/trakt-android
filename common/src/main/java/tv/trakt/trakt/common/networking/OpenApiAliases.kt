@@ -53,6 +53,7 @@ import org.openapitools.client.models.GetUsersLikes200ResponseInnerOneOfAllOfOne
 import org.openapitools.client.models.GetUsersListsListItemsAll200ResponseInner
 import org.openapitools.client.models.GetUsersListsPersonal200ResponseInner
 import org.openapitools.client.models.GetUsersRatingsMovies200ResponseInner
+import org.openapitools.client.models.GetUsersRatingsMovies200ResponseInnerOneOf3Season
 import org.openapitools.client.models.GetUsersReactionsComments200ResponseInner
 import org.openapitools.client.models.GetUsersReactionsComments200ResponseInnerCommentUser
 import org.openapitools.client.models.GetUsersRequestsFollow200ResponseInner
@@ -85,6 +86,10 @@ typealias EpisodeCalendarsDto = GetCalendarsShows200ResponseInnerEpisodeEpisodes
 typealias EpisodeCalendarDto = GetCalendarsShows200ResponseInnerEpisode
 typealias LastEpisodeDto = GetSyncProgressUpNextStandard200ResponseInnerProgressNextEpisode
 
+typealias SeasonDto = GetShowsSeasons200ResponseInner
+typealias SeasonRatingDto = GetUsersRatingsMovies200ResponseInnerOneOf3Season
+typealias SeasonLikesDto = GetUsersLikes200ResponseInnerOneOfAllOfOneOf3Season
+
 typealias ImagesDto = GetCalendarsShows200ResponseInnerShowImages
 typealias ExtraVideoDto = GetMoviesVideos200ResponseInner
 typealias CastCrewDto = GetMoviesPeople200Response
@@ -96,9 +101,7 @@ typealias PersonSearchDto = GetSearchQuery200ResponseInnerOneOf2Person
 typealias TrendingSearchDto = GetSearchTrending200ResponseInner
 typealias CommentDto = GetUsersComments200ResponseInnerComment
 typealias CommentAllDto = GetUsersComments200ResponseInner
-typealias SeasonDto = GetShowsSeasons200ResponseInner
 
-typealias SeasonLikesDto = GetUsersLikes200ResponseInnerOneOfAllOfOneOf3Season
 typealias ListDto = GetUsersListsPersonal200ResponseInner
 typealias LikedListDto = GetUsersLikes200ResponseInner
 typealias ListMovieItemDto = GetUsersWatchlistMovies200ResponseInner

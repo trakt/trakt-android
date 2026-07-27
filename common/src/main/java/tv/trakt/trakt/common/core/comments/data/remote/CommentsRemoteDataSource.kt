@@ -17,6 +17,12 @@ interface CommentsRemoteDataSource {
         spoiler: Boolean,
     ): CommentDto
 
+    suspend fun postSeasonComment(
+        seasonId: TraktId,
+        text: String,
+        spoiler: Boolean,
+    ): CommentDto
+
     suspend fun postEpisodeComment(
         episodeId: TraktId,
         text: String,

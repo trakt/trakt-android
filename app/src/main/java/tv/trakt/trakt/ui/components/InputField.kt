@@ -54,6 +54,7 @@ internal fun InputField(
     loading: Boolean = false,
     enabled: Boolean = true,
     height: Dp = 48.dp,
+    border: Dp = 2.dp,
     containerColor: Color = TraktTheme.colors.inputContainer.copy(alpha = 0.8F),
     borderColor: Color = TraktTheme.colors.accent,
     lineLimits: TextFieldLineLimits = SingleLine,
@@ -96,7 +97,7 @@ internal fun InputField(
                         shape = RoundedCornerShape(16.dp),
                     )
                     .border(
-                        width = 2.dp,
+                        width = border,
                         color = when {
                             isFocused -> borderColor
                             else -> TraktTheme.colors.chipContainer

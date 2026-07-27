@@ -7,6 +7,7 @@ import org.openapitools.client.models.PostCommentsPostRequestAllOfOneOfMovie
 import org.openapitools.client.models.PostCommentsPostRequestAllOfOneOfMovieIds
 import org.openapitools.client.models.PostCommentsReplyRequest
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
 class CommentsApiClient(
@@ -18,7 +19,7 @@ class CommentsApiClient(
         showId: TraktId,
         text: String,
         spoiler: Boolean,
-    ): tv.trakt.trakt.common.networking.CommentDto {
+    ): CommentDto {
         val request = PostCommentsPostRequest(
             comment = text,
             spoiler = spoiler,
@@ -39,7 +40,7 @@ class CommentsApiClient(
         movieId: TraktId,
         text: String,
         spoiler: Boolean,
-    ): tv.trakt.trakt.common.networking.CommentDto {
+    ): CommentDto {
         val request = PostCommentsPostRequest(
             comment = text,
             spoiler = spoiler,
@@ -56,11 +57,32 @@ class CommentsApiClient(
         return result.body()
     }
 
+    override suspend fun postSeasonComment(
+        seasonId: TraktId,
+        text: String,
+        spoiler: Boolean,
+    ): CommentDto {
+        val request = PostCommentsPostRequest(
+            comment = text,
+            spoiler = spoiler,
+            season = PostCommentsPostRequestAllOfOneOfMovie(
+                ids = PostCommentsPostRequestAllOfOneOfMovieIds(
+                    trakt = seasonId.value,
+                ),
+            ),
+        )
+
+        val result = authorizedApi.postCommentsPost(request)
+        cacheMarker.invalidate()
+
+        return result.body()
+    }
+
     override suspend fun postEpisodeComment(
         episodeId: TraktId,
         text: String,
         spoiler: Boolean,
-    ): tv.trakt.trakt.common.networking.CommentDto {
+    ): CommentDto {
         val request = PostCommentsPostRequest(
             comment = text,
             spoiler = spoiler,
@@ -81,7 +103,7 @@ class CommentsApiClient(
         commentId: TraktId,
         text: String,
         spoiler: Boolean,
-    ): tv.trakt.trakt.common.networking.CommentDto {
+    ): CommentDto {
         val request = PostCommentsReplyRequest(
             comment = text,
             spoiler = spoiler,
@@ -101,7 +123,7 @@ class CommentsApiClient(
         cacheMarker.invalidate()
     }
 
-    override suspend fun getCommentReplies(commentId: Int): List<tv.trakt.trakt.common.networking.CommentDto> {
+    override suspend fun getCommentReplies(commentId: Int): List<CommentDto> {
         val response = api.getCommentsReplies(
             id = commentId.toString(),
             page = null,

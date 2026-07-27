@@ -6,6 +6,7 @@ import tv.trakt.trakt.common.core.user.data.remote.ratings.UserRatingsRemoteData
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.pagination.Pagination
@@ -44,6 +45,12 @@ internal class GetProfileRatingsUseCase(
                     "episode" -> ProfileRatingItem.EpisodeItem(
                         show = Show.fromDto(it.show!!),
                         episode = Episode.fromDto(it.episode!!),
+                        rating = it.rating,
+                        ratedAt = it.ratedAt.toInstant(),
+                    )
+                    "season" -> ProfileRatingItem.SeasonItem(
+                        show = Show.fromDto(it.show!!),
+                        season = Season.fromDto(it.season!!),
                         rating = it.rating,
                         ratedAt = it.ratedAt.toInstant(),
                     )

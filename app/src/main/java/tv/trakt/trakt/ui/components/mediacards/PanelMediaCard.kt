@@ -68,12 +68,13 @@ import tv.trakt.trakt.ui.theme.VerticalImageAspectRatio
 
 @Composable
 internal fun PanelMediaCard(
+    modifier: Modifier = Modifier,
     title: String,
     titleOriginal: String?,
     subtitle: String,
+    subtitleMaxLines: Int = 1,
     contentImageUrl: String?,
     containerImageUrl: String?,
-    modifier: Modifier = Modifier,
     corner: Dp = 16.dp,
     shadow: Dp = 0.dp,
     more: Boolean = true,
@@ -349,7 +350,7 @@ internal fun PanelMediaCard(
                             text = subtitle,
                             style = TraktTheme.typography.cardSubtitle.copy(fontSize = 12.sp),
                             color = TraktTheme.colors.textSecondary,
-                            maxLines = 1,
+                            maxLines = subtitleMaxLines,
                             overflow = TextOverflow.Ellipsis,
                         )
                     }

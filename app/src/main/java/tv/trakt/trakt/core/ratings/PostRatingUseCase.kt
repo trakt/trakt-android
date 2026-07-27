@@ -32,7 +32,10 @@ internal class PostRatingUseCase(
                 rating = rating,
             )
 
-            Season -> throw IllegalStateException("Rating a season is not supported")
+            Season -> remoteSource.postSeasonRating(
+                id = mediaId,
+                rating = rating,
+            )
         }
     }
 }

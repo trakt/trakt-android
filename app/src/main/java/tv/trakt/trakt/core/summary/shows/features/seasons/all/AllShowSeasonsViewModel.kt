@@ -1,11 +1,17 @@
 package tv.trakt.trakt.core.summary.shows.features.seasons.all
 
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableMap
+import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,6 +27,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.comments.usecases.GetCommentReactionsUseCase
+import tv.trakt.trakt.common.core.comments.usecases.GetCommentRepliesUseCase
 import tv.trakt.trakt.common.core.episodes.data.local.EpisodeLocalDataSource
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
@@ -29,17 +37,25 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableSet
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.isNotNull
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.reactions.Reaction
+import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.comments.model.CommentsFilter
+import tv.trakt.trakt.core.ratings.data.RatingsUpdates
+import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
@@ -47,22 +63,39 @@ import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.AllSeaso
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.Progress
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.Seasons
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.WatchedUntil
+import tv.trakt.trakt.core.summary.shows.features.seasons.all.helpers.SeasonRatingController
+import tv.trakt.trakt.core.summary.shows.features.seasons.all.helpers.SeasonReactionsController
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.navigation.AllShowSeasonsDestination
+import tv.trakt.trakt.core.summary.shows.features.seasons.all.usecases.GetSeasonCommentsUseCase
+import tv.trakt.trakt.core.summary.shows.features.seasons.all.usecases.GetSeasonPeopleUseCase
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonItem
+import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonsMode
+import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonsPeopleMode
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons.Helpers.markWatchedEpisodes
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons.Helpers.markWatchedSeasons
 import tv.trakt.trakt.core.summary.shows.features.seasons.usecases.GetShowSeasonsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
+import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
+import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase
 import tv.trakt.trakt.resources.R
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 internal class AllShowSeasonsViewModel(
     savedStateHandle: SavedStateHandle,
+    private val appContext: Context,
     private val getShowDetailsUseCase: GetShowDetailsUseCase,
     private val getSeasonsUseCase: GetShowSeasonsUseCase,
+    private val getSeasonsPeopleUseCase: GetSeasonPeopleUseCase,
+    private val getSeasonCommentsUseCase: GetSeasonCommentsUseCase,
+    private val getCommentRepliesUseCase: GetCommentRepliesUseCase,
+    private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
+    private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
+    private val loadUserRatingsUseCase: LoadUserRatingsUseCase,
+    private val reactionsUpdates: ReactionsUpdates,
+    private val ratingsUpdates: RatingsUpdates,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
@@ -79,6 +112,9 @@ internal class AllShowSeasonsViewModel(
     private val backgroundState = MutableStateFlow(destination.backgroundUrl)
     private val userState = MutableStateFlow(initialState.user)
     private val showState = MutableStateFlow(initialState.show)
+    private val modeState = MutableStateFlow(initialState.mode)
+    private val peopleModeState = MutableStateFlow(initialState.peopleMode)
+    private val commentsFilterState = MutableStateFlow(initialState.commentsMode)
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingEpisodeState = MutableStateFlow(initialState.loadingEpisode)
@@ -86,6 +122,28 @@ internal class AllShowSeasonsViewModel(
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
+
+    private val reactions = SeasonReactionsController(
+        scope = viewModelScope,
+        appContext = appContext,
+        getCommentReactionsUseCase = getCommentReactionsUseCase,
+        loadUserReactionsUseCase = loadUserReactionsUseCase,
+        sessionManager = sessionManager,
+        reactionsUpdates = reactionsUpdates,
+    )
+
+    private val rating = SeasonRatingController(
+        scope = viewModelScope,
+        appContext = appContext,
+        loadUserRatingsUseCase = loadUserRatingsUseCase,
+        sessionManager = sessionManager,
+        ratingsUpdates = ratingsUpdates,
+        currentSeason = { itemsState.value.selectedSeason },
+    )
+
+    private var seasonPeopleJob: Job? = null
+    private var seasonCommentsJob: Job? = null
+    private var seasonRepliesJob: Job? = null
 
     init {
         loadData()
@@ -129,6 +187,8 @@ internal class AllShowSeasonsViewModel(
                         ?: getShowDetailsUseCase.getShow(showId)
                 }
 
+                reactions.loadUserReactions()
+
                 val watched = when {
                     userState.isNotNull() -> {
                         val isLoaded = loadUserProgressUseCase.isShowsLoaded()
@@ -161,6 +221,10 @@ internal class AllShowSeasonsViewModel(
                             checkable = userState.value != null,
                         ),
                     )
+                }
+
+                itemsState.value.selectedSeason?.let {
+                    rating.loadSeasonUserRating(it)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -219,6 +283,8 @@ internal class AllShowSeasonsViewModel(
                         isSeasonLoading = false,
                     )
                 }
+
+                rating.loadSeasonUserRating(season.season)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
@@ -227,6 +293,214 @@ internal class AllShowSeasonsViewModel(
                     }
                 }
             }
+        }
+    }
+
+    fun loadSeasonPeople(
+        season: Season,
+        clear: Boolean,
+    ) {
+        if (modeState.value != SeasonsMode.Info) {
+            return
+        }
+
+        seasonPeopleJob?.cancel()
+        seasonPeopleJob = viewModelScope.launch {
+            try {
+                itemsState.update {
+                    if (clear) {
+                        it.copy(
+                            selectedSeasonCast = EmptyImmutableList,
+                            selectedSeasonCrew = EmptyImmutableList,
+                            isSeasonPeopleLoading = true,
+                        )
+                    } else {
+                        it.copy(
+                            isSeasonPeopleLoading = true,
+                        )
+                    }
+                }
+
+                val people = getSeasonsPeopleUseCase.getCastCrew(
+                    showId = showId,
+                    season = season.number,
+                )
+
+                itemsState.update {
+                    it.copy(
+                        selectedSeasonCast = people.cast,
+                        selectedSeasonCrew = people.crew,
+                    )
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            } finally {
+                seasonPeopleJob = null
+                itemsState.update {
+                    it.copy(
+                        isSeasonPeopleLoading = false,
+                    )
+                }
+            }
+        }
+    }
+
+    fun loadSeasonComments(
+        season: Season,
+        clear: Boolean,
+    ) {
+        if (modeState.value != SeasonsMode.Reviews) {
+            return
+        }
+
+        seasonCommentsJob?.cancel()
+        seasonCommentsJob = viewModelScope.launch {
+            try {
+                itemsState.update {
+                    if (clear) {
+                        it.copy(
+                            selectedSeasonComments = EmptyImmutableList,
+                            selectedSeasonReplies = persistentMapOf(),
+                            selectedSeasonRepliesLoading = EmptyImmutableSet,
+                            isSeasonCommentsLoading = true,
+                        )
+                    } else {
+                        it.copy(
+                            isSeasonCommentsLoading = true,
+                        )
+                    }
+                }
+
+                val comments = getSeasonCommentsUseCase.getComments(
+                    showId = showId,
+                    season = season.number,
+                    user = userState.value,
+                    filter = commentsFilterState.value,
+                )
+
+                itemsState.update {
+                    it.copy(
+                        selectedSeasonComments = comments,
+                    )
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            } finally {
+                seasonCommentsJob = null
+                itemsState.update {
+                    it.copy(
+                        isSeasonCommentsLoading = false,
+                    )
+                }
+            }
+        }
+    }
+
+    fun loadSeasonCommentReplies(commentId: Int) {
+        // Already loading replies.
+        if (seasonRepliesJob?.isActive == true) {
+            return
+        }
+
+        // Replies already loaded for this comment: collapse them.
+        if (itemsState.value.selectedSeasonReplies.containsKey(commentId)) {
+            itemsState.update {
+                val mutable = it.selectedSeasonReplies.toMutableMap()
+                mutable.remove(commentId)
+                it.copy(selectedSeasonReplies = mutable.toImmutableMap())
+            }
+            return
+        }
+
+        seasonRepliesJob = viewModelScope.launch {
+            try {
+                itemsState.update {
+                    val mutable = it.selectedSeasonRepliesLoading.toMutableSet()
+                    mutable.add(commentId)
+                    it.copy(selectedSeasonRepliesLoading = mutable.toImmutableSet())
+                }
+
+                val replies = getCommentRepliesUseCase.getCommentReplies(commentId)
+
+                itemsState.update {
+                    val mutable = it.selectedSeasonReplies.toMutableMap()
+                    mutable[commentId] = replies
+                    it.copy(selectedSeasonReplies = mutable.toImmutableMap())
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            } finally {
+                seasonRepliesJob = null
+                itemsState.update {
+                    val mutable = it.selectedSeasonRepliesLoading.toMutableSet()
+                    mutable.remove(commentId)
+                    it.copy(selectedSeasonRepliesLoading = mutable.toImmutableSet())
+                }
+            }
+        }
+    }
+
+    fun loadSeasonCommentReactions(commentId: Int) = reactions.loadSeasonCommentReactions(commentId)
+
+    fun setSeasonCommentReaction(
+        reaction: Reaction,
+        commentId: Int,
+    ) = reactions.setSeasonCommentReaction(reaction = reaction, commentId = commentId)
+
+    fun setMode(mode: SeasonsMode) {
+        modeState.update { mode }
+        itemsState.value.selectedSeason?.let {
+            loadSeasonPeople(
+                season = it,
+                clear = false,
+            )
+            loadSeasonComments(
+                season = it,
+                clear = false,
+            )
+        }
+    }
+
+    fun addSeasonComment(comment: Comment) {
+        itemsState.update { it.addComment(comment) }
+    }
+
+    fun deleteSeasonComment(commentId: TraktId) {
+        itemsState.update { it.deleteComment(commentId) }
+    }
+
+    fun addSeasonReply(reply: Comment) {
+        itemsState.update { it.addReply(reply) }
+    }
+
+    fun deleteSeasonReply(
+        parentId: TraktId,
+        replyId: TraktId,
+    ) {
+        itemsState.update { it.deleteReply(parentId = parentId, replyId = replyId) }
+    }
+
+    fun setPeopleMode(peopleMode: SeasonsPeopleMode) {
+        peopleModeState.update { peopleMode }
+    }
+
+    fun setCommentsFilter(filter: CommentsFilter) {
+        if (commentsFilterState.value == filter) {
+            return
+        }
+
+        commentsFilterState.update { filter }
+        itemsState.value.selectedSeason?.let {
+            loadSeasonComments(
+                season = it,
+                clear = true,
+            )
         }
     }
 
@@ -481,6 +755,10 @@ internal class AllShowSeasonsViewModel(
         }
     }
 
+    fun addSeasonRating(newRating: Int) = rating.addSeasonRating(newRating)
+
+    fun removeSeasonRating() = rating.removeSeasonRating()
+
     fun clearInfo() {
         infoState.update { null }
     }
@@ -493,6 +771,9 @@ internal class AllShowSeasonsViewModel(
     val state = combine(
         showState,
         userState,
+        modeState,
+        peopleModeState,
+        commentsFilterState,
         backgroundState,
         itemsState,
         loadingState,
@@ -501,18 +782,27 @@ internal class AllShowSeasonsViewModel(
         navigateEpisode,
         infoState,
         errorState,
+        reactions.commentReactions,
+        reactions.userReactions,
+        rating.rating,
     ) { state ->
         AllShowSeasonsState(
             show = state[0] as Show?,
             user = state[1] as User?,
-            backgroundUrl = state[2] as String?,
-            items = state[3] as ShowSeasons,
-            loading = state[4] as LoadingState,
-            loadingEpisode = state[5] as LoadingState,
-            loadingSeason = state[6] as LoadingState,
-            navigateEpisode = state[7] as Pair<TraktId, Episode>?,
-            info = state[8] as StringResource?,
-            error = state[9] as Exception?,
+            mode = state[2] as SeasonsMode,
+            peopleMode = state[3] as SeasonsPeopleMode,
+            commentsMode = state[4] as CommentsFilter,
+            backgroundUrl = state[5] as String?,
+            items = state[6] as ShowSeasons,
+            loading = state[7] as LoadingState,
+            loadingEpisode = state[8] as LoadingState,
+            loadingSeason = state[9] as LoadingState,
+            navigateEpisode = state[10] as Pair<TraktId, Episode>?,
+            info = state[11] as StringResource?,
+            error = state[12] as Exception?,
+            commentReactions = state[13] as ImmutableMap<Int, ReactionsSummary>,
+            userReactions = state[14] as ImmutableMap<Int, Reaction?>,
+            seasonUserRating = state[15] as AllShowSeasonsState.UserRatingState,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -10,6 +10,6 @@ enum class CommentsFilter(
     @param:StringRes val displayRes: Int,
     @param:DrawableRes val iconRes: Int,
 ) {
-    POPULAR(R.string.text_sort_comments_popular, R.drawable.ic_popular),
-    RECENT(R.string.text_sort_comments_recent, R.drawable.ic_recent),
+    Popular(R.string.text_sort_comments_popular, R.drawable.ic_popular),
+    Recent(R.string.text_sort_comments_recent, R.drawable.ic_recent),
 }

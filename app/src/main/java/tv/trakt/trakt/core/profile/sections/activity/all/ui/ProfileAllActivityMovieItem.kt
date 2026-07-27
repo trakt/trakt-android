@@ -106,7 +106,7 @@ internal fun ProfileAllActivityMovieItem(
     widthDp = 400,
 )
 @Composable
-private fun ProfileAllActivityMovieItemPreview() {
+private fun Preview() {
     TraktTheme {
         ProfileAllActivityMovieItem(
             item = ProfileRatingItem.MovieItem(

@@ -106,7 +106,7 @@ internal fun ProfileAllActivityShowItem(
     widthDp = 400,
 )
 @Composable
-private fun ProfileAllActivityShowItemPreview() {
+private fun Preview() {
     TraktTheme {
         ProfileAllActivityShowItem(
             item = ProfileRatingItem.ShowItem(

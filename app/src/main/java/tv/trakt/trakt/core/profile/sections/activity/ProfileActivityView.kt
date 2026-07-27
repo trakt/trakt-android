@@ -62,6 +62,7 @@ import tv.trakt.trakt.core.profile.sections.activity.model.ProfileRatingItem
 import tv.trakt.trakt.core.profile.sections.activity.ui.comments.ProfileCommentItemView
 import tv.trakt.trakt.core.profile.sections.activity.ui.ratings.ProfileRatingEpisodeItemView
 import tv.trakt.trakt.core.profile.sections.activity.ui.ratings.ProfileRatingMovieItemView
+import tv.trakt.trakt.core.profile.sections.activity.ui.ratings.ProfileRatingSeasonItemView
 import tv.trakt.trakt.core.profile.sections.activity.ui.ratings.ProfileRatingShowItemView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EmptyHorizontalDoubleHeight
@@ -366,6 +367,18 @@ private fun RatingsContentList(
                     ProfileRatingEpisodeItemView(
                         item = item,
                         onClick = { onEpisodeClick(item.show, item.episode) },
+                        onShowClick = { onShowClick(item.show) },
+                        modifier = Modifier
+                            .animateItem(
+                                fadeInSpec = null,
+                                fadeOutSpec = null,
+                            ),
+                    )
+                }
+
+                is ProfileRatingItem.SeasonItem -> {
+                    ProfileRatingSeasonItemView(
+                        item = item,
                         onShowClick = { onShowClick(item.show) },
                         modifier = Modifier
                             .animateItem(

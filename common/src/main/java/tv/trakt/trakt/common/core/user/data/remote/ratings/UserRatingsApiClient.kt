@@ -40,6 +40,19 @@ class UserRatingsApiClient(
         return response.body()
     }
 
+    override suspend fun getRatingsSeasons(): List<UserRatingDto> {
+        val response = usersApi.getUsersRatingsTypedRating(
+            id = "me",
+            type = "seasons",
+            rating = "",
+            extended = null,
+            page = null,
+            limit = null,
+        )
+
+        return response.body()
+    }
+
     override suspend fun getAllRatings(pagination: Pagination): List<UserRatingDto> {
         val response = usersApi.getUsersRatingsAll(
             id = "me",

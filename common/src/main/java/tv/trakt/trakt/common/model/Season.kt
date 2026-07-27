@@ -5,6 +5,7 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.networking.SeasonDto
 import tv.trakt.trakt.common.networking.SeasonLikesDto
+import tv.trakt.trakt.common.networking.SeasonRatingDto
 import java.time.ZonedDateTime
 
 @Immutable
@@ -14,6 +15,7 @@ data class Season(
     val rating: Rating,
     val episodeCount: Int?,
     val images: Images?,
+    val overview: String?,
     val firstAired: ZonedDateTime?,
     val updatedAt: ZonedDateTime?,
 ) {
@@ -38,6 +40,7 @@ fun Season.Companion.fromDto(dto: SeasonDto): Season {
         images = dto.images?.let {
             Images(poster = it.poster.toImmutableList())
         },
+        overview = dto.overview,
         firstAired = dto.firstAired?.toZonedDateTime(),
         updatedAt = dto.updatedAt?.toZonedDateTime(),
     )
@@ -58,7 +61,24 @@ fun Season.Companion.fromDto(dto: SeasonLikesDto): Season {
         images = dto.images?.let {
             Images(poster = it.poster.toImmutableList())
         },
+        overview = dto.overview,
         firstAired = dto.firstAired?.toZonedDateTime(),
         updatedAt = dto.updatedAt?.toZonedDateTime(),
+    )
+}
+
+fun Season.Companion.fromDto(dto: SeasonRatingDto): Season {
+    return Season(
+        ids = Ids(
+            trakt = dto.ids.trakt.toTraktId(),
+            slug = "".toSlugId(),
+        ),
+        number = dto.number,
+        rating = Rating(0F, 0),
+        episodeCount = dto.airedEpisodes,
+        images = null,
+        overview = null,
+        firstAired = null,
+        updatedAt = null,
     )
 }

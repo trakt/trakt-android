@@ -20,9 +20,6 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.MediaType
-import tv.trakt.trakt.common.model.MediaType.Episode
-import tv.trakt.trakt.common.model.MediaType.Movie
-import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.comments.usecases.PostCommentUseCase
@@ -73,28 +70,14 @@ internal class PostCommentViewModel(
             try {
                 loadingState.update { Loading }
                 delay(1.seconds)
+
                 resultState.update {
-                    when (mediaType) {
-                        Show -> postCommentUseCase.postShowComment(
-                            showId = mediaId,
-                            comment = comment,
-                            spoiler = spoiler,
-                        )
-
-                        Movie -> postCommentUseCase.postMovieComment(
-                            movieId = mediaId,
-                            comment = comment,
-                            spoiler = spoiler,
-                        )
-
-                        Episode -> postCommentUseCase.postEpisodeComment(
-                            episodeId = mediaId,
-                            comment = comment,
-                            spoiler = spoiler,
-                        )
-
-                        else -> throw IllegalStateException("Invalid media type for new comment.")
-                    }
+                    postCommentUseCase.postComment(
+                        type = mediaType,
+                        mediaId = mediaId,
+                        comment = comment,
+                        spoiler = spoiler,
+                    )
                 }
 
                 analytics.comments.logCommentAdd(
