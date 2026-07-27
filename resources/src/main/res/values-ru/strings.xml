@@ -5,7 +5,7 @@
   <string name="about_feature_description_community">Подписывайтесь на друзей, смотрите, что смотрит команда, и открывайте общие избранные. Смотреть вместе лучше.</string>
   <string name="about_feature_description_discover">Получайте персонализированные рекомендации на основе ваших вкусов. Исследуйте трендовые названия и отобранные списки от сообщества Trakt.</string>
   <string name="about_feature_description_rate_review">Делитесь своим мнением с помощью оценок и комментариев. Посмотрите, как ваш вкус соотносится со вкусом миллионов других зрителей.</string>
-  <string name="about_feature_description_scrobble">Автоматически скробблите то, что вы смотрите, в сотнях приложений и медиасерверов. Никогда не теряйте отслеживание своего прогресса.</string>
+  <string name="about_feature_description_scrobble">Автоматически скробблите то, что вы смотрите, в потоковых приложениях и медиасерверах. Никогда не теряйте отслеживание своего прогресса.</string>
   <string name="about_feature_title_any_device">Любое устройство, любая платформа</string>
   <string name="about_feature_title_calendar">Никогда не пропустите эпизод</string>
   <string name="about_feature_title_community">Сообщество зрителей</string>
@@ -912,6 +912,7 @@
   <string name="link_label_discover_shows">Найти сериалы</string>
   <string name="link_label_get_vip">Разблокировать VIP-функции</string>
   <string name="link_label_github">GitHub</string>
+  <string name="link_label_history_all">Вернуться к полной истории</string>
   <string name="link_label_install_pwa">Установить PWA</string>
   <string name="link_label_ios_app">Приложение iOS</string>
   <string name="link_label_open_preview_feature">Открыть %s</string>
@@ -1338,6 +1339,8 @@
   <string name="text_footer_category_community">Сообщество</string>
   <string name="text_footer_category_legal">Право</string>
   <string name="text_footer_category_platform">Платформа</string>
+  <string name="text_history_sync_filter">Идентификатор синхронизации %d</string>
+  <string name="text_history_sync_filter_with_source">Идентификатор синхронизации %1$d (%2$s)</string>
   <string name="text_hours_watched">%d часов</string>
   <string name="text_info_blocked">%s заблокирован.</string>
   <string name="text_info_cover_removed">Обложка удалена.</string>
@@ -1833,7 +1836,7 @@
   <string name="tv_time_report_submit_text">Отправить жалобу</string>
   <string name="tv_time_report_success">Спасибо! Ваш отчет отправлен. Мы разберемся.</string>
   <string name="tv_time_report_upload_prompt">Перетащите ваш экспорт TV Time сюда или нажмите, чтобы выбрать файлы</string>
-  <string name="usage_title_connected_apps">Подключенные приложения</string>
+  <string name="usage_title_connected_apps">Приложения</string>
   <string name="usage_title_library">Библиотека</string>
   <string name="usage_title_lists">Списки</string>
   <string name="validation_text_app_name">Пожалуйста, введите имя приложения.</string>
@@ -1845,7 +1848,7 @@
   <string name="validation_text_settings_field">%s обязателен</string>
   <string name="vip_feature_description_api_apps">Подключайте больше сторонних приложений и сервисов через Trakt API, чтобы улучшить свой опыт.</string>
   <string name="vip_feature_description_bigger_library">Храните больше истории просмотров с расширенными лимитами библиотеки, рассчитанными на всю жизнь.</string>
-  <string name="vip_feature_description_bigger_watchlist">Расширьте возможности своего списка просмотра, чтобы отслеживать все, что вы хотите посмотреть, без ограничений.</string>
+  <string name="vip_feature_description_bigger_watchlist">Расширьте возможности своего списка просмотра, чтобы отслеживать все, что вы хотите посмотреть.</string>
   <string name="vip_feature_description_early_access">Получите ранний доступ к новым версиям приложений Trakt и совершенно новым функциям раньше всех.</string>
   <string name="vip_feature_description_global_wtw">Узнайте, где шоу и фильмы доступны для стриминга в любой точке мира, а не только в вашем регионе.</string>
   <string name="vip_feature_description_increased_limits">Наслаждайтесь более высокими лимитами для ваших списков, оценок и других функций.</string>
@@ -1862,7 +1865,7 @@
   <string name="vip_feature_description_trivia">Получите больше интересных фактов и информации о фильмах и сериалах, которые вы смотрите.</string>
   <string name="vip_feature_description_vip_status">Покажите свой VIP-статус во всех приложениях и на сайте.</string>
   <string name="vip_feature_description_yir">Множество статистики за каждый год вашего членства.</string>
-  <string name="vip_feature_title_api_apps">Больше подключенных API-приложений</string>
+  <string name="vip_feature_title_api_apps">Больше подключенных приложений</string>
   <string name="vip_feature_title_bigger_library">Большая библиотека</string>
   <string name="vip_feature_title_bigger_watchlist">Больший список просмотра</string>
   <string name="vip_feature_title_early_access">Ранний доступ</string>

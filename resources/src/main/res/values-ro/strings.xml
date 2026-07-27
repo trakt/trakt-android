@@ -5,7 +5,7 @@
   <string name="about_feature_description_community">Urmărește prieteni, vezi ce vizionează echipa și descoperă favorite comune. Vizionarea împreună este mai bună.</string>
   <string name="about_feature_description_discover">Obține recomandări personalizate bazate pe gusturile tale. Explorează titluri în tendințe și liste curatoriate din comunitatea Trakt.</string>
   <string name="about_feature_description_rate_review">Împărtășește-ți opiniile cu evaluări și comentarii. Vezi cum se compară gusturile tale cu cele ale milioanelor de alți spectatori.</string>
-  <string name="about_feature_description_scrobble">Scrobblează automat ceea ce vizionezi pe sute de aplicații și servere media. Nu-ți pierde niciodată progresul.</string>
+  <string name="about_feature_description_scrobble">Scrobblează automat ceea ce vizionezi pe aplicații de streaming și servere media. Nu-ți pierde niciodată progresul.</string>
   <string name="about_feature_title_any_device">Orice dispozitiv, orice platformă</string>
   <string name="about_feature_title_calendar">Nu rata niciun episod</string>
   <string name="about_feature_title_community">O comunitate de spectatori</string>
@@ -912,6 +912,7 @@
   <string name="link_label_discover_shows">Descoperă seriale</string>
   <string name="link_label_get_vip">Deblochează funcții VIP</string>
   <string name="link_label_github">GitHub</string>
+  <string name="link_label_history_all">Înapoi la istoricul complet</string>
   <string name="link_label_install_pwa">Instalează PWA</string>
   <string name="link_label_ios_app">Aplicație iOS</string>
   <string name="link_label_open_preview_feature">Deschide %s</string>
@@ -1338,6 +1339,8 @@
   <string name="text_footer_category_community">Comunitate</string>
   <string name="text_footer_category_legal">Legal</string>
   <string name="text_footer_category_platform">Platformă</string>
+  <string name="text_history_sync_filter">ID sincronizare %d</string>
+  <string name="text_history_sync_filter_with_source">ID sincronizare %1$d (%2$s)</string>
   <string name="text_hours_watched">%d ore</string>
   <string name="text_info_blocked">%s a fost blocat.</string>
   <string name="text_info_cover_removed">Imaginea de copertă a fost ștearsă.</string>
@@ -1833,7 +1836,7 @@
   <string name="tv_time_report_submit_text">Trimite raportul</string>
   <string name="tv_time_report_success">Mulțumim! Raportul tău a fost trimis. Vom arunca o privire.</string>
   <string name="tv_time_report_upload_prompt">Trage exportul tău TV Time aici, sau click pentru a alege fișiere</string>
-  <string name="usage_title_connected_apps">Aplicații conectate</string>
+  <string name="usage_title_connected_apps">Aplicații</string>
   <string name="usage_title_library">Bibliotecă</string>
   <string name="usage_title_lists">Liste</string>
   <string name="validation_text_app_name">Te rugăm să introduci un nume de aplicație.</string>
@@ -1845,7 +1848,7 @@
   <string name="validation_text_settings_field">%s este necesar</string>
   <string name="vip_feature_description_api_apps">Conectează mai multe aplicații și servicii terțe prin API-ul Trakt pentru a-ți îmbunătăți experiența.</string>
   <string name="vip_feature_description_bigger_library">Stochează mai mult din istoricul tău de vizionare cu limite de bibliotecă extinse, concepute să dureze o viață.</string>
-  <string name="vip_feature_description_bigger_watchlist">Extinde-ți capacitatea listei de vizionare pentru a ține evidența a tot ceea ce vrei să vizionezi, fără limite.</string>
+  <string name="vip_feature_description_bigger_watchlist">Extinde-ți capacitatea listei de vizionare pentru a ține evidența a tot ceea ce vrei să vizionezi.</string>
   <string name="vip_feature_description_early_access">Obține acces timpuriu la noile versiuni ale aplicațiilor Trakt și la funcții noi-nouțe înainte de oricine altcineva.</string>
   <string name="vip_feature_description_global_wtw">Vezi unde sunt disponibile seriale și filme pentru streaming oriunde în lume, nu doar în regiunea ta.</string>
   <string name="vip_feature_description_increased_limits">Beneficiază de limite mai mari pentru listele, evaluările și alte funcții.</string>
@@ -1862,7 +1865,7 @@
   <string name="vip_feature_description_trivia">Obține mai multe curiozități și informații despre filmele și serialele pe care le vizionezi.</string>
   <string name="vip_feature_description_vip_status">Afișează-ți statutul VIP în toate aplicațiile și pe site.</string>
   <string name="vip_feature_description_yir">Multe statistici pentru fiecare an de când ești membru.</string>
-  <string name="vip_feature_title_api_apps">Mai multe aplicații API conectate</string>
+  <string name="vip_feature_title_api_apps">Mai multe aplicații conectate</string>
   <string name="vip_feature_title_bigger_library">Bibliotecă mai mare</string>
   <string name="vip_feature_title_bigger_watchlist">Listă de vizionare mai mare</string>
   <string name="vip_feature_title_early_access">Acces Timpuriu</string>

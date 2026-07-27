@@ -5,7 +5,7 @@
   <string name="about_feature_description_community">Ακολουθήστε φίλους, δείτε τι παρακολουθεί η ομάδα και ανακαλύψτε κοινά αγαπημένα. Το να βλέπετε μαζί είναι καλύτερο.</string>
   <string name="about_feature_description_discover">Λάβετε εξατομικευμένες προτάσεις με βάση το γούστο σας. Εξερευνήστε δημοφιλείς τίτλους και επιμελημένες λίστες από την κοινότητα Trakt.</string>
   <string name="about_feature_description_rate_review">Μοιραστείτε τις απόψεις σας με αξιολογήσεις και σχόλια. Δείτε πώς συγκρίνεται το γούστο σας με εκατομμύρια άλλους θεατές.</string>
-  <string name="about_feature_description_scrobble">Καταγράψτε αυτόματα ό,τι παρακολουθείτε σε εκατοντάδες εφαρμογές και διακομιστές πολυμέσων. Μην χάνετε ποτέ την πρόοδό σας.</string>
+  <string name="about_feature_description_scrobble">Καταγράψτε αυτόματα ό,τι παρακολουθείτε σε εφαρμογές ροής και διακομιστές πολυμέσων. Μην χάνετε ποτέ την πρόοδό σας.</string>
   <string name="about_feature_title_any_device">Οποιαδήποτε Συσκευή, Οποιαδήποτε Πλατφόρμα</string>
   <string name="about_feature_title_calendar">Μην Χάσετε Ποτέ ένα Επεισόδιο</string>
   <string name="about_feature_title_community">Μια Κοινότητα Θεατών</string>
@@ -912,6 +912,7 @@
   <string name="link_label_discover_shows">Ανακαλύψτε σειρές</string>
   <string name="link_label_get_vip">Ξεκλειδώστε λειτουργίες VIP</string>
   <string name="link_label_github">GitHub</string>
+  <string name="link_label_history_all">Επιστροφή στο πλήρες ιστορικό</string>
   <string name="link_label_install_pwa">Εγκατάσταση PWA</string>
   <string name="link_label_ios_app">Εφαρμογή iOS</string>
   <string name="link_label_open_preview_feature">Άνοιγμα %s</string>
@@ -1338,6 +1339,8 @@
   <string name="text_footer_category_community">Κοινότητα</string>
   <string name="text_footer_category_legal">Νομικά</string>
   <string name="text_footer_category_platform">Πλατφόρμα</string>
+  <string name="text_history_sync_filter">Αναγνωριστικό συγχρονισμού %d</string>
+  <string name="text_history_sync_filter_with_source">Αναγνωριστικό συγχρονισμού %1$d (%2$s)</string>
   <string name="text_hours_watched">%d ώρες</string>
   <string name="text_info_blocked">Ο/Η %s έχει αποκλειστεί.</string>
   <string name="text_info_cover_removed">Η εικόνα εξωφύλλου έχει αφαιρεθεί.</string>
@@ -1833,7 +1836,7 @@
   <string name="tv_time_report_submit_text">Υποβολή αναφοράς</string>
   <string name="tv_time_report_success">Ευχαριστούμε! Η αναφορά σας έχει σταλεί. Θα τη δούμε.</string>
   <string name="tv_time_report_upload_prompt">Σύρετε την εξαγωγή σας από το TV Time εδώ, ή κάντε κλικ για να επιλέξετε αρχεία</string>
-  <string name="usage_title_connected_apps">Συνδεδεμένες Εφαρμογές</string>
+  <string name="usage_title_connected_apps">Εφαρμογές</string>
   <string name="usage_title_library">Βιβλιοθήκη</string>
   <string name="usage_title_lists">Λίστες</string>
   <string name="validation_text_app_name">Παρακαλώ εισάγετε ένα όνομα εφαρμογής.</string>
@@ -1845,7 +1848,7 @@
   <string name="validation_text_settings_field">Το %s είναι υποχρεωτικό</string>
   <string name="vip_feature_description_api_apps">Συνδέστε περισσότερες εφαρμογές και υπηρεσίες τρίτων μέσω του Trakt API για να βελτιώσετε την εμπειρία σας.</string>
   <string name="vip_feature_description_bigger_library">Αποθηκεύστε περισσότερο από το ιστορικό προβολών σας με διευρυμένα όρια βιβλιοθήκης σχεδιασμένα να διαρκούν μια ζωή.</string>
-  <string name="vip_feature_description_bigger_watchlist">Επεκτείνετε τη χωρητικότητα της λίστας παρακολούθησής σας για να παρακολουθείτε όλα όσα θέλετε να δείτε χωρίς όρια.</string>
+  <string name="vip_feature_description_bigger_watchlist">Επεκτείνετε τη χωρητικότητα της λίστας παρακολούθησής σας για να παρακολουθείτε όλα όσα θέλετε να δείτε.</string>
   <string name="vip_feature_description_early_access">Αποκτήστε πρόωρη πρόσβαση σε νέες εκδόσεις εφαρμογών Trakt και ολοκαίνουργιες λειτουργίες πριν από οποιονδήποτε άλλο.</string>
   <string name="vip_feature_description_global_wtw">Δείτε πού είναι διαθέσιμες οι σειρές και οι ταινίες για ροή οπουδήποτε στον κόσμο, όχι μόνο στην περιοχή σας.</string>
   <string name="vip_feature_description_increased_limits">Απολαύστε υψηλότερα όρια για τις λίστες, τις αξιολογήσεις και άλλες λειτουργίες σας.</string>

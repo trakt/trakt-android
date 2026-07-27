@@ -5,7 +5,7 @@
   <string name="about_feature_description_community">友達をフォローし、チームが何を観ているかを確認し、共有のお気に入りを発見しましょう。一緒に観る方が楽しいです。</string>
   <string name="about_feature_description_discover">あなたの好みに基づいたパーソナライズされたおすすめを取得します。トレンドのタイトルやTraktコミュニティからの厳選されたリストを探索しましょう。</string>
   <string name="about_feature_description_rate_review">評価やコメントで意見を共有しましょう。あなたの好みが何百万人もの他の視聴者とどのように比較されるかを確認できます。</string>
-  <string name="about_feature_description_scrobble">何百ものアプリやメディアサーバーで視聴しているものを自動的にスクロブルします。進捗状況を見失うことはありません。</string>
+  <string name="about_feature_description_scrobble">ストリーミングアプリやメディアサーバーで視聴したものを自動的にスクロブルします。進捗状況を見失うことはありません。</string>
   <string name="about_feature_title_any_device">あらゆるデバイス、あらゆるプラットフォーム</string>
   <string name="about_feature_title_calendar">エピソードを見逃さない</string>
   <string name="about_feature_title_community">視聴者のコミュニティ</string>
@@ -912,6 +912,7 @@
   <string name="link_label_discover_shows">番組を見つける</string>
   <string name="link_label_get_vip">VIP機能をアンロック</string>
   <string name="link_label_github">GitHub</string>
+  <string name="link_label_history_all">すべての履歴に戻る</string>
   <string name="link_label_install_pwa">PWAをインストール</string>
   <string name="link_label_ios_app">iOSアプリ</string>
   <string name="link_label_open_preview_feature">%s を開く</string>
@@ -1338,6 +1339,8 @@
   <string name="text_footer_category_community">コミュニティ</string>
   <string name="text_footer_category_legal">法務</string>
   <string name="text_footer_category_platform">プラットフォーム</string>
+  <string name="text_history_sync_filter">同期ID %d</string>
+  <string name="text_history_sync_filter_with_source">同期ID %1$d (%2$s)</string>
   <string name="text_hours_watched">%d時間</string>
   <string name="text_info_blocked">%sをブロックしました。</string>
   <string name="text_info_cover_removed">カバー画像がクリアされました。</string>
@@ -1833,7 +1836,7 @@
   <string name="tv_time_report_submit_text">報告を送信</string>
   <string name="tv_time_report_success">ありがとうございます！レポートが送信されました。確認させていただきます。</string>
   <string name="tv_time_report_upload_prompt">TV Timeのエクスポートをここにドロップするか、クリックしてファイルを選択してください</string>
-  <string name="usage_title_connected_apps">接続済みアプリ</string>
+  <string name="usage_title_connected_apps">アプリ</string>
   <string name="usage_title_library">ライブラリ</string>
   <string name="usage_title_lists">リスト</string>
   <string name="validation_text_app_name">アプリケーション名を入力してください。</string>
@@ -1845,7 +1848,7 @@
   <string name="validation_text_settings_field">%sは必須です</string>
   <string name="vip_feature_description_api_apps">Trakt APIを介して、さらに多くのサードパーティアプリやサービスを接続し、体験を向上させましょう。</string>
   <string name="vip_feature_description_bigger_library">生涯使えるように設計された拡張ライブラリ制限で、より多くの視聴履歴を保存できます。</string>
-  <string name="vip_feature_description_bigger_watchlist">ウォッチリストの容量を拡張し、観たいものを無制限に追跡できます。</string>
+  <string name="vip_feature_description_bigger_watchlist">ウォッチリストの容量を拡張して、観たいものをすべて追跡しましょう。</string>
   <string name="vip_feature_description_early_access">誰よりも早く、新しいバージョンのTraktアプリや新機能に早期アクセスできます。</string>
   <string name="vip_feature_description_global_wtw">お住まいの地域だけでなく、世界中のどこで番組や映画がストリーミング可能かを確認できます。</string>
   <string name="vip_feature_description_increased_limits">リスト、評価、その他の機能でより高い制限を楽しめます。</string>
@@ -1862,7 +1865,7 @@
   <string name="vip_feature_description_trivia">視聴する映画や番組について、より多くのトリビアや洞察を得られます。</string>
   <string name="vip_feature_description_vip_status">アプリやウェブサイト全体でVIPステータスを誇示しましょう。</string>
   <string name="vip_feature_description_yir">メンバーになってからの各年の豊富な統計情報。</string>
-  <string name="vip_feature_title_api_apps">より多くのAPIアプリに接続</string>
+  <string name="vip_feature_title_api_apps">より多くのアプリを接続</string>
   <string name="vip_feature_title_bigger_library">ライブラリの拡張</string>
   <string name="vip_feature_title_bigger_watchlist">ウォッチリストの拡張</string>
   <string name="vip_feature_title_early_access">早期アクセス</string>
