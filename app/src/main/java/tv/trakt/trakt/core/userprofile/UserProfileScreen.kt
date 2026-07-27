@@ -280,22 +280,21 @@ private fun UserProfileContent(
                 )
             }
 
-            if (state.user.isPrivate && !state.userFollowing.following) {
-                if (!state.userFollowing.loading) {
-                    userProfilePrivateContent(
-                        state = state,
-                        windowClass = windowClass,
-                        onToggleFollowRequest = onToggleFollowRequest,
+            val isPrivate = state.user.isPrivate && !state.userFollowing.following
+            if (isPrivate && state.userFollowing.loading) {
+                item {
+                    FilmProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 32.dp),
                     )
-                } else {
-                    item {
-                        FilmProgressIndicator(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 32.dp),
-                        )
-                    }
                 }
+            } else if (isPrivate) {
+                userProfilePrivateContent(
+                    state = state,
+                    windowClass = windowClass,
+                    onToggleFollowRequest = onToggleFollowRequest,
+                )
             } else {
                 userProfilePublicContent(
                     state = state,

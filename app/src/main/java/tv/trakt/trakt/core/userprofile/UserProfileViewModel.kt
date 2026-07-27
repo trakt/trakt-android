@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -91,9 +92,7 @@ internal class UserProfileViewModel(
                 launch {
                     loadFollowingStatus()
                     if (userFollowedState.value.following) {
-                        loadMonthBackground()
-                        launch { loadDetails() }
-                        launch { loadMonthStats() }
+                        loadProfileContent()
                     }
                 }
                 launch { loadBlockedStatus() }
@@ -106,13 +105,17 @@ internal class UserProfileViewModel(
 
     private fun loadPublicData() {
         with(viewModelScope) {
-            loadMonthBackground()
-            launch { loadDetails() }
-            launch { loadMonthStats() }
+            loadProfileContent()
             launch { loadFollowingStatus() }
             launch { loadRequestStatus() }
             launch { loadBlockedStatus() }
         }
+    }
+
+    private fun CoroutineScope.loadProfileContent() {
+        loadMonthBackground()
+        launch { loadDetails() }
+        launch { loadMonthStats() }
     }
 
     private suspend fun loadFollowingStatus() {
