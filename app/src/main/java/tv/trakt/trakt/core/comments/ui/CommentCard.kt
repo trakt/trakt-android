@@ -74,6 +74,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
+import tv.trakt.trakt.core.comments.features.report.ReportCommentSheet
 import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
 import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
 import tv.trakt.trakt.resources.R
@@ -113,6 +114,8 @@ internal fun CommentCard(
         }
     }
 
+    var reportActive by remember { mutableStateOf(false) }
+
     val content: @Composable ColumnScope.() -> Unit = {
         CommentCardContent(
             user = user,
@@ -132,6 +135,7 @@ internal fun CommentCard(
             onRepliesClick = onRepliesClick,
             onDeleteClick = onDeleteClick,
             onDeleteReplyClick = onDeleteReplyClick,
+            onReportClick = { reportActive = true },
             onUserClick = { onUserClick?.invoke(it) },
         )
     }
@@ -164,6 +168,12 @@ internal fun CommentCard(
             content = content,
         )
     }
+
+    ReportCommentSheet(
+        active = reportActive,
+        comment = comment,
+        onDismiss = { reportActive = false },
+    )
 }
 
 @Composable
@@ -186,6 +196,7 @@ private fun CommentCardContent(
     onRepliesClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
+    onReportClick: (() -> Unit)? = null,
     onRequestReactions: ((Comment) -> Unit)? = null,
 ) {
     var isSpoilerRevealed by remember { mutableStateOf(false) }
@@ -206,6 +217,7 @@ private fun CommentCardContent(
             deleteEnabled = deleteEnabled,
             onUserClick = onUserClick,
             onDeleteClick = onDeleteClick,
+            onReportClick = onReportClick,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
@@ -333,6 +345,7 @@ private fun CommentHeader(
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
+    onReportClick: (() -> Unit)? = null,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -446,6 +459,11 @@ private fun CommentHeader(
                         },
                 )
             }
+
+            CommentDropdown(
+                containerColor = TraktTheme.colors.dialogOnContainer,
+                onReportClick = onReportClick,
+            )
         }
     }
 }

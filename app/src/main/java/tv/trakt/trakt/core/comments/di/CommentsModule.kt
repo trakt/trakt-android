@@ -33,10 +33,12 @@ import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentViewMode
 import tv.trakt.trakt.core.comments.features.details.CommentDetailsViewModel
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentViewModel
 import tv.trakt.trakt.core.comments.features.postreply.PostReplyViewModel
+import tv.trakt.trakt.core.comments.features.report.ReportCommentViewModel
 import tv.trakt.trakt.core.comments.usecases.DeleteCommentUseCase
 import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
 import tv.trakt.trakt.core.comments.usecases.PostCommentUseCase
 import tv.trakt.trakt.core.comments.usecases.PostReplyUseCase
+import tv.trakt.trakt.core.comments.usecases.ReportCommentUseCase
 
 internal const val COMMENTS_PREFERENCES = "comments_preferences_mobile"
 
@@ -64,6 +66,7 @@ internal val commentsModule = module {
     factoryOf(::PostCommentUseCase)
     factoryOf(::PostReplyUseCase)
     factoryOf(::DeleteCommentUseCase)
+    factoryOf(::ReportCommentUseCase)
 
     factory {
         GetCommentsFilterUseCase(
@@ -125,6 +128,13 @@ internal val commentsModule = module {
             commentId = commentId,
             deleteCommentUseCase = get(),
             analytics = get(),
+        )
+    }
+
+    viewModel { (comment: Comment) ->
+        ReportCommentViewModel(
+            comment = comment,
+            reportCommentUseCase = get(),
         )
     }
 }

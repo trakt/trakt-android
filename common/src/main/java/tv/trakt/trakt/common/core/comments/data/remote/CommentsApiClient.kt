@@ -6,6 +6,7 @@ import org.openapitools.client.models.PostCommentsPostRequest
 import org.openapitools.client.models.PostCommentsPostRequestAllOfOneOfMovie
 import org.openapitools.client.models.PostCommentsPostRequestAllOfOneOfMovieIds
 import org.openapitools.client.models.PostCommentsReplyRequest
+import org.openapitools.client.models.PostCommentsReportRequest
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
@@ -116,6 +117,23 @@ class CommentsApiClient(
         cacheMarker.invalidate()
 
         return result.body()
+    }
+
+    override suspend fun postReport(
+        commentId: Int,
+        reason: String,
+        message: String,
+    ) {
+        val request = PostCommentsReportRequest(
+            reason = PostCommentsReportRequest.Reason.entries.first { it.value == reason },
+            message = message.ifBlank { null },
+        )
+
+        authorizedApi.postCommentsReport(
+            id = commentId.toString(),
+            postCommentsReportRequest = request,
+        )
+        cacheMarker.invalidate()
     }
 
     override suspend fun deleteComment(commentId: TraktId) {

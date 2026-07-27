@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="button_search_selection" translatable="false">Trakt search</string>
   <string name="translated_value_library_plex" translatable="false">Plex</string>
   <string name="header_whats_new" translatable="false">What\'s New</string>
   <string name="header_rate_us_1" translatable="false">Loving Trakt so far?</string>

@@ -40,7 +40,10 @@
       "Bash(android layout *)",
       "Bash(chmod +x *)",
       "Bash(bash *)",
-      "Bash(./gradlew :app:assembleInternalDebug)"
+      "Bash(./gradlew :app:assembleInternalDebug)",
+      "Bash(claude mcp *)",
+      "Bash(claude --version)",
+      "mcp__gog__gmail_search"
     ]
   }
 }
