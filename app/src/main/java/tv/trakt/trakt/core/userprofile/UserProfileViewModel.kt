@@ -88,12 +88,23 @@ internal class UserProfileViewModel(
     private fun loadData() {
         if (user.isPrivate) {
             with(viewModelScope) {
-                launch { loadFollowingStatus() }
+                launch {
+                    loadFollowingStatus()
+                    if (userFollowedState.value.following) {
+                        loadMonthBackground()
+                        launch { loadDetails() }
+                        launch { loadMonthStats() }
+                    }
+                }
                 launch { loadBlockedStatus() }
             }
             return
         }
 
+        loadPublicData()
+    }
+
+    private fun loadPublicData() {
         with(viewModelScope) {
             loadMonthBackground()
             launch { loadDetails() }
@@ -104,23 +115,21 @@ internal class UserProfileViewModel(
         }
     }
 
-    private fun loadFollowingStatus() {
-        viewModelScope.launch {
-            try {
-                val social = getSocialUseCase.loadFollowingIds()
-                userFollowedState.update {
-                    it.copy(
-                        following = social.contains(user.ids.trakt),
-                        loading = false,
-                    )
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-                userFollowedState.update {
-                    it.copy(loading = false)
-                }
+    private suspend fun loadFollowingStatus() {
+        try {
+            val social = getSocialUseCase.loadFollowingIds()
+            userFollowedState.update {
+                it.copy(
+                    following = social.contains(user.ids.trakt),
+                    loading = false,
+                )
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
+            }
+            userFollowedState.update {
+                it.copy(loading = false)
             }
         }
     }
