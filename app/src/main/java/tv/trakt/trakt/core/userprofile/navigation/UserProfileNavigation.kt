@@ -45,6 +45,12 @@ internal fun NavGraphBuilder.userProfileScreen(
     }
 }
 
-internal fun NavController.navigateToUserProfile(user: User) {
+internal fun NavController.navigateToUserProfile(
+    user: User,
+    currentUserId: TraktId?,
+) {
+    if (user.ids.trakt == currentUserId) {
+        return
+    }
     navigate(route = UserProfileDestination(userJson = Json.encodeToString(user)))
 }
