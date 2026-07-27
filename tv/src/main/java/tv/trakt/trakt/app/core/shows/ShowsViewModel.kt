@@ -16,11 +16,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.app.Config.REFRESH_DATA_THRESHOLD_MINUTES
+import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.app.core.shows.model.AnticipatedShow
 import tv.trakt.trakt.app.core.shows.model.TrendingShow
 import tv.trakt.trakt.app.core.shows.usecase.GetAnticipatedShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetPopularShowsUseCase
-import tv.trakt.trakt.app.core.shows.usecase.GetRecommendedShowsUseCase
+import tv.trakt.trakt.app.core.shows.usecase.GetShowsReleasesUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetTrendingShowsUseCase
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
@@ -37,7 +38,7 @@ internal class ShowsViewModel(
     private val getTrendingShowsUseCase: GetTrendingShowsUseCase,
     private val getPopularShowsUseCase: GetPopularShowsUseCase,
     private val getAnticipatedShowsUseCase: GetAnticipatedShowsUseCase,
-    private val getRecommendedShowsUseCase: GetRecommendedShowsUseCase,
+    private val getReleasesShowsUseCase: GetShowsReleasesUseCase,
     private val sessionManager: SessionManager,
     private val appLifecycleProvider: AppLifecycleProvider,
     private val collectionStateProvider: CollectionStateProvider,
@@ -49,7 +50,7 @@ internal class ShowsViewModel(
     private val trendingShowsState = MutableStateFlow(initialState.trendingShows)
     private val popularShowsState = MutableStateFlow(initialState.popularShows)
     private val anticipatedShowsState = MutableStateFlow(initialState.anticipatedShows)
-    private val recommendedShowsState = MutableStateFlow(initialState.recommendedShows)
+    private val releasesShowsState = MutableStateFlow(initialState.releasesShows)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var loadedAt: ZonedDateTime? = null
@@ -92,24 +93,17 @@ internal class ShowsViewModel(
                     val trendingShowsAsync = async { getTrendingShowsUseCase.getTrendingShows() }
                     val popularShowsAsync = async { getPopularShowsUseCase.getPopularShows() }
                     val anticipatedShowsAsync = async { getAnticipatedShowsUseCase.getAnticipatedShows() }
-
-                    val recommendedShowsAsync = async {
-                        if (sessionManager.isAuthenticated()) {
-                            getRecommendedShowsUseCase.getRecommendedShows()
-                        } else {
-                            null
-                        }
-                    }
+                    val releasesShowsAsync = async { getReleasesShowsUseCase.getReleases() }
 
                     val trendingShows = trendingShowsAsync.await()
                     val popularShows = popularShowsAsync.await()
                     val anticipatedShows = anticipatedShowsAsync.await()
-                    val recommendedShows = recommendedShowsAsync.await()
+                    val releasesShows = releasesShowsAsync.await()
 
                     trendingShowsState.value = trendingShows
                     popularShowsState.value = popularShows
                     anticipatedShowsState.value = anticipatedShows
-                    recommendedShowsState.value = recommendedShows
+                    releasesShowsState.value = releasesShows
                 }
 
                 loadedAt = nowUtc()
@@ -130,7 +124,7 @@ internal class ShowsViewModel(
         trendingShowsState,
         popularShowsState,
         anticipatedShowsState,
-        recommendedShowsState,
+        releasesShowsState,
         userState,
         collectionStateProvider.stateFlow,
         errorState,
@@ -140,7 +134,7 @@ internal class ShowsViewModel(
             trendingShows = state[1] as ImmutableList<TrendingShow>?,
             popularShows = state[2] as ImmutableList<Show>?,
             anticipatedShows = state[3] as ImmutableList<AnticipatedShow>?,
-            recommendedShows = state[4] as ImmutableList<Show>?,
+            releasesShows = state[4] as ImmutableList<HomeUpcomingItem.EpisodeItem>?,
             user = state[5] as User?,
             collection = state[6] as UserCollectionState,
             error = state[7] as Exception?,

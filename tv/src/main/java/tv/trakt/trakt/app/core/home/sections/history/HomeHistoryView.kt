@@ -57,11 +57,18 @@ internal fun HomeHistoryView(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onFocused: (SyncHistoryItem?) -> Unit = {},
+    onLoaded: () -> Unit = {},
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToViewAll: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(state.isLoading) {
+        if (!state.isLoading && state.items != null) {
+            onLoaded()
+        }
+    }
 
     val focusRequesters = remember {
         sections.associateBy(

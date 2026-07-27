@@ -3,6 +3,7 @@ package tv.trakt.trakt.app.core.shows.data.remote
 import tv.trakt.trakt.app.core.shows.data.remote.model.response.AnticipatedShowDto
 import tv.trakt.trakt.app.core.shows.data.remote.model.response.TrendingShowDto
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.networking.CalendarMediaDto
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
@@ -36,6 +37,11 @@ internal interface ShowsRemoteDataSource {
         limit: Int,
         page: Int,
     ): List<RecommendedShowDto>
+
+    suspend fun getReleases(
+        startDate: Instant,
+        days: Int,
+    ): List<CalendarMediaDto>
 
     suspend fun getRelatedShows(showId: TraktId): List<ShowCalendarsDto>
 

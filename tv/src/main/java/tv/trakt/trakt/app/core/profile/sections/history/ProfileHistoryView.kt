@@ -8,10 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -73,13 +70,18 @@ internal fun ProfileHistoryView(
         viewModel.updateData()
     }
 
+    LaunchedEffect(state.isLoading) {
+        if (!state.isLoading && state.items != null) {
+            onLoaded()
+        }
+    }
+
     ProfileHistoryContent(
         state = state,
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         focusRequesters = focusRequesters,
-        onLoaded = onLoaded,
         onFocused = onFocused,
         onViewAllClick = onViewAllClick,
         onClick = {
@@ -99,12 +101,10 @@ internal fun ProfileHistoryContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     focusRequesters: Map<String, FocusRequester> = emptyMap(),
-    onLoaded: () -> Unit = {},
     onFocused: (SyncHistoryItem?) -> Unit = {},
     onClick: (SyncHistoryItem) -> Unit = {},
     onViewAllClick: () -> Unit = {},
 ) {
-    var hasLoaded by rememberSaveable { mutableStateOf(false) }
 
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
@@ -121,6 +121,7 @@ internal fun ProfileHistoryContent(
             state.isLoading -> {
                 ContentLoadingList(
                     contentPadding = contentPadding,
+                    onFocused = { onFocused(null) },
                 )
             }
 
@@ -134,12 +135,6 @@ internal fun ProfileHistoryContent(
             }
 
             else -> {
-                LaunchedEffect(Unit) {
-                    if (state.items != null && !hasLoaded) {
-                        onLoaded()
-                        hasLoaded = true
-                    }
-                }
                 ContentList(
                     items = { state.items ?: emptyList<SyncHistoryItem>().toImmutableList() },
                     onFocused = onFocused,
@@ -262,12 +257,21 @@ private fun ContentListItem(
 }
 
 @Composable
-private fun ContentLoadingList(contentPadding: PaddingValues) {
+private fun ContentLoadingList(
+    contentPadding: PaddingValues,
+    onFocused: () -> Unit,
+) {
     PositionFocusLazyRow(
         contentPadding = contentPadding,
     ) {
         items(count = 10) {
-            EpisodeSkeletonCard()
+            EpisodeSkeletonCard(
+                modifier = Modifier.onFocusChanged {
+                    if (it.isFocused) {
+                        onFocused()
+                    }
+                },
+            )
         }
     }
 }

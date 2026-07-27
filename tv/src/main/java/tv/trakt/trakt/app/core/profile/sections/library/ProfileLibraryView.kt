@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -46,6 +47,7 @@ internal fun ProfileLibraryView(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onFocused: (LibraryItem?) -> Unit = {},
+    onLoaded: () -> Unit = {},
     onMovieClick: (TraktId) -> Unit,
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     onViewAllClick: () -> Unit,
@@ -57,6 +59,12 @@ internal fun ProfileLibraryView(
             keySelector = { it },
             valueTransform = { FocusRequester() },
         )
+    }
+
+    LaunchedEffect(state.isLoading) {
+        if (!state.isLoading && state.items != null) {
+            onLoaded()
+        }
     }
 
     ProfileLibraryContent(
@@ -113,6 +121,7 @@ internal fun ProfileLibraryContent(
             state.isLoading -> {
                 ContentLoadingList(
                     contentPadding = contentPadding,
+                    onFocused = { onFocused(null) },
                 )
             }
 
@@ -244,12 +253,21 @@ private fun ContentListItem(
 }
 
 @Composable
-private fun ContentLoadingList(contentPadding: PaddingValues) {
+private fun ContentLoadingList(
+    contentPadding: PaddingValues,
+    onFocused: () -> Unit,
+) {
     PositionFocusLazyRow(
         contentPadding = contentPadding,
     ) {
         items(count = 10) {
-            EpisodeSkeletonCard()
+            EpisodeSkeletonCard(
+                modifier = Modifier.onFocusChanged {
+                    if (it.isFocused) {
+                        onFocused()
+                    }
+                },
+            )
         }
     }
 }

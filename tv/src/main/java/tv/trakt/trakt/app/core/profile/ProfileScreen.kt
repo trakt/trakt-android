@@ -27,12 +27,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.focusRestorer
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
@@ -47,14 +50,15 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import kotlinx.coroutines.delay
 import tv.trakt.trakt.app.BuildConfig
 import tv.trakt.trakt.app.common.ui.buttons.PrimaryButton
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
-import tv.trakt.trakt.app.core.profile.sections.favorites.movies.ProfileFavoriteMoviesView
-import tv.trakt.trakt.app.core.profile.sections.favorites.shows.ProfileFavoriteShowsView
+import tv.trakt.trakt.app.core.profile.sections.favorites.ProfileFavoritesView
 import tv.trakt.trakt.app.core.profile.sections.history.ProfileHistoryView
 import tv.trakt.trakt.app.core.profile.sections.library.ProfileLibraryView
 import tv.trakt.trakt.app.core.profile.sections.library.model.LibraryItem
+import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
@@ -62,12 +66,12 @@ import tv.trakt.trakt.common.model.Images.Size.FULL
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.resources.R
+import kotlin.time.Duration.Companion.milliseconds
 
 private val sections = listOf(
     "header",
+    "favorites",
     "history",
-    "favoriteShows",
-    "favoriteMovies",
     "library",
 )
 
@@ -78,8 +82,7 @@ internal fun ProfileScreen(
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToHistoryViewAll: () -> Unit,
-    onNavigateToFavShowsViewAll: () -> Unit,
-    onNavigateToFavMoviesViewAll: () -> Unit,
+    onNavigateToFavoritesViewAll: () -> Unit,
     onNavigateToLibraryViewAll: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -90,8 +93,7 @@ internal fun ProfileScreen(
         onShowClick = onNavigateToShow,
         onEpisodeClick = onNavigateToEpisode,
         onHistoryViewAllClick = onNavigateToHistoryViewAll,
-        onFavShowsViewAll = onNavigateToFavShowsViewAll,
-        onFavMoviesViewAll = onNavigateToFavMoviesViewAll,
+        onFavoritesViewAll = onNavigateToFavoritesViewAll,
         onLibraryViewAll = onNavigateToLibraryViewAll,
         onLogoutClick = {
             viewModel.logout()
@@ -99,6 +101,7 @@ internal fun ProfileScreen(
     )
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun ProfileScreenContent(
     state: ProfileState,
@@ -107,11 +110,11 @@ private fun ProfileScreenContent(
     onShowClick: (TraktId) -> Unit,
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     onHistoryViewAllClick: () -> Unit,
-    onFavShowsViewAll: () -> Unit,
-    onFavMoviesViewAll: () -> Unit,
+    onFavoritesViewAll: () -> Unit,
     onLibraryViewAll: () -> Unit,
     onLogoutClick: () -> Unit,
 ) {
+    var focusedInitial by rememberSaveable { mutableStateOf(false) }
     var focusedSection by rememberSaveable { mutableStateOf<String?>(null) }
     var focusedImageUrl by remember { mutableStateOf<String?>(null) }
 
@@ -122,9 +125,22 @@ private fun ProfileScreenContent(
         )
     }
 
+    // When a section swaps its loading skeletons for real content, the focused
+    // skeleton is disposed and focus would be lost. Re-request focus on the
+    // section the user was on.
+    val refocusOnLoad: (String) -> Unit = { section ->
+        if (focusedSection == section) {
+            focusRequesters[section]?.requestSafeFocus()
+        }
+    }
+
     LaunchedEffect(Unit) {
-        runCatching {
-            focusRequesters["header"]?.requestFocus()
+        if (focusedSection == null) {
+            focusedSection = "header"
+            focusRequesters["header"]?.requestSafeFocus()
+        } else {
+            delay(500.milliseconds)
+            focusRequesters[focusedSection]?.requestSafeFocus()
         }
     }
 
@@ -156,7 +172,18 @@ private fun ProfileScreenContent(
                 vertical = TraktTheme.spacing.mainContentVerticalSpace + 8.dp,
             ),
             modifier = Modifier
-                .focusRestorer(),
+                .focusRestorer()
+                .focusProperties {
+                    // Prevent focus escaping the list vertically (e.g. to the side
+                    // menu) when a fast D-pad scroll targets a not-yet-focusable item.
+                    exit = { direction ->
+                        when (direction) {
+                            FocusDirection.Down, FocusDirection.Up -> FocusRequester.Cancel
+                            else -> FocusRequester.Default
+                        }
+                    }
+                }
+                .focusGroup(),
         ) {
             item {
                 Row(
@@ -170,6 +197,12 @@ private fun ProfileScreenContent(
                         state = state,
                         modifier = Modifier
                             .focusRequester(focusRequesters.getValue("header"))
+                            .onFocusChanged {
+                                if (it.isFocused) {
+                                    focusedSection = "header"
+                                    focusedImageUrl = null
+                                }
+                            }
                             .focusable(),
                     )
 
@@ -194,21 +227,42 @@ private fun ProfileScreenContent(
             }
 
             item {
+                ProfileFavoritesView(
+                    headerPadding = sectionPadding,
+                    contentPadding = sectionPadding,
+                    onLoaded = {
+                        if (!focusedInitial) {
+                            focusedInitial = true
+                            focusedSection = "favorites"
+                            focusRequesters["favorites"]?.requestSafeFocus()
+                        } else {
+                            refocusOnLoad("favorites")
+                        }
+                    },
+                    onFocused = { item ->
+                        focusedSection = "favorites"
+                        focusedImageUrl = item?.fullFanartImage
+                    },
+                    onShowClick = onShowClick,
+                    onMovieClick = onMovieClick,
+                    onViewAllClick = onFavoritesViewAll,
+                    modifier = Modifier
+                        .focusRequester(focusRequesters.getValue("favorites")),
+                )
+            }
+
+            item {
                 ProfileHistoryView(
                     headerPadding = sectionPadding,
                     contentPadding = sectionPadding,
                     onMovieClick = onMovieClick,
                     onEpisodeClick = onEpisodeClick,
                     onViewAllClick = onHistoryViewAllClick,
-                    onLoaded = {
-                        focusRequesters
-                            .getValue("history")
-                            .requestFocus()
-                    },
                     onFocused = { item ->
                         focusedSection = "history"
                         focusedImageUrl = item?.backdropImageUrl
                     },
+                    onLoaded = { refocusOnLoad("history") },
                     modifier = Modifier
                         .focusRequester(focusRequesters.getValue("history")),
                 )
@@ -226,41 +280,12 @@ private fun ProfileScreenContent(
                             null -> null
                         }
                     },
+                    onLoaded = { refocusOnLoad("library") },
                     onMovieClick = onMovieClick,
                     onEpisodeClick = onEpisodeClick,
                     onViewAllClick = onLibraryViewAll,
                     modifier = Modifier
                         .focusRequester(focusRequesters.getValue("library")),
-                )
-            }
-
-            item {
-                ProfileFavoriteShowsView(
-                    headerPadding = sectionPadding,
-                    contentPadding = sectionPadding,
-                    onFocused = { item ->
-                        focusedSection = "favoriteShows"
-                        focusedImageUrl = item?.images?.getFanartUrl(FULL)
-                    },
-                    onShowClick = onShowClick,
-                    onViewAllClick = onFavShowsViewAll,
-                    modifier = Modifier
-                        .focusRequester(focusRequesters.getValue("favoriteShows")),
-                )
-            }
-
-            item {
-                ProfileFavoriteMoviesView(
-                    headerPadding = sectionPadding,
-                    contentPadding = sectionPadding,
-                    onFocused = { item ->
-                        focusedSection = "favoriteMovies"
-                        focusedImageUrl = item?.images?.getFanartUrl(FULL)
-                    },
-                    onMovieClick = onMovieClick,
-                    onViewAllClick = onFavMoviesViewAll,
-                    modifier = Modifier
-                        .focusRequester(focusRequesters.getValue("favoriteMovies")),
                 )
             }
         }
@@ -354,8 +379,7 @@ private fun Preview() {
                 onShowClick = {},
                 onEpisodeClick = { _, _ -> },
                 onHistoryViewAllClick = {},
-                onFavShowsViewAll = {},
-                onFavMoviesViewAll = {},
+                onFavoritesViewAll = {},
                 onLibraryViewAll = {},
                 onLogoutClick = {},
             )

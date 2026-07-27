@@ -10,12 +10,10 @@ import org.koin.dsl.module
 import tv.trakt.trakt.app.core.profile.ProfileViewModel
 import tv.trakt.trakt.app.core.profile.data.remote.ProfileApiClient
 import tv.trakt.trakt.app.core.profile.data.remote.ProfileRemoteDataSource
-import tv.trakt.trakt.app.core.profile.sections.favorites.movies.ProfileFavoriteMoviesViewModel
-import tv.trakt.trakt.app.core.profile.sections.favorites.movies.usecases.GetFavoriteMoviesUseCase
-import tv.trakt.trakt.app.core.profile.sections.favorites.movies.viewall.ProfileFavoriteMoviesViewAllViewModel
-import tv.trakt.trakt.app.core.profile.sections.favorites.shows.ProfileFavoriteShowsViewModel
-import tv.trakt.trakt.app.core.profile.sections.favorites.shows.usecases.GetFavoriteShowsUseCase
-import tv.trakt.trakt.app.core.profile.sections.favorites.shows.viewall.ProfileFavoriteShowsViewAllViewModel
+import tv.trakt.trakt.app.core.profile.sections.favorites.ProfileFavoritesViewModel
+import tv.trakt.trakt.app.core.profile.sections.favorites.usecases.GetFavoriteMoviesUseCase
+import tv.trakt.trakt.app.core.profile.sections.favorites.usecases.GetFavoriteShowsUseCase
+import tv.trakt.trakt.app.core.profile.sections.favorites.viewall.ProfileFavoritesViewAllViewModel
 import tv.trakt.trakt.app.core.profile.sections.history.ProfileHistoryViewModel
 import tv.trakt.trakt.app.core.profile.sections.history.usecases.GetProfileHistoryUseCase
 import tv.trakt.trakt.app.core.profile.sections.history.usecases.SyncProfileHistoryUseCase
@@ -218,28 +216,19 @@ internal val profileModule = module {
     }
 
     viewModel {
-        ProfileFavoriteShowsViewModel(
+        ProfileFavoritesViewModel(
             getFavoriteShowsCase = get(),
+            getFavoriteMoviesCase = get(),
+            collectionStateProvider = get(),
             appLifecycleProvider = get(),
         )
     }
 
     viewModel {
-        ProfileFavoriteShowsViewAllViewModel(
+        ProfileFavoritesViewAllViewModel(
             getFavoriteShowsCase = get(),
-        )
-    }
-
-    viewModel {
-        ProfileFavoriteMoviesViewModel(
             getFavoriteMoviesCase = get(),
-            appLifecycleProvider = get(),
-        )
-    }
-
-    viewModel {
-        ProfileFavoriteMoviesViewAllViewModel(
-            getFavoriteMoviesCase = get(),
+            collectionStateProvider = get(),
         )
     }
 

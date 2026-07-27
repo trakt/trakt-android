@@ -83,10 +83,4 @@ sealed class ProgressItem(
             is ShowItem -> showId
             is MovieItem -> movie.ids.trakt
         }
-
-    val key: String
-        get() = when (this) {
-            is ShowItem -> "${showId.value}-progress-show"
-            is MovieItem -> "${movie.ids.trakt.value}-progress-movie"
-        }
 }

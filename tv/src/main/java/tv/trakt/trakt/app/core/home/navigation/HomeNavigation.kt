@@ -20,6 +20,7 @@ internal fun NavGraphBuilder.homeScreen(
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToUpNext: () -> Unit,
     onNavigateToWatchlist: () -> Unit,
+    onNavigateToRecommended: () -> Unit,
     onNavigateToSocialActivity: () -> Unit,
     onNavigateToHistory: () -> Unit,
 ) {
@@ -32,6 +33,7 @@ internal fun NavGraphBuilder.homeScreen(
             onNavigateToEpisode = onNavigateToEpisode,
             onNavigateToUpNext = onNavigateToUpNext,
             onNavigateToWatchlist = onNavigateToWatchlist,
+            onNavigateToRecommended = onNavigateToRecommended,
             onNavigateToSocialActivity = onNavigateToSocialActivity,
             onNavigateToHistory = onNavigateToHistory,
         )

@@ -38,17 +38,24 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
+import tv.trakt.trakt.app.common.ui.chips.FinaleChip
+import tv.trakt.trakt.app.common.ui.chips.InfoChip
+import tv.trakt.trakt.app.common.ui.chips.PremiereChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalViewAllCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
+import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.app.core.shows.model.AnticipatedShow
 import tv.trakt.trakt.app.core.shows.model.TrendingShow
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.core.user.UserCollectionState
+import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
@@ -59,30 +66,32 @@ private val sections = listOf(
     "initial",
     "content",
     "trending",
+    "releases",
     "hot",
     "popular",
     "anticipated",
-    "recommended",
 )
 
 @Composable
 internal fun ShowsScreen(
     viewModel: ShowsViewModel,
     onNavigateToShow: (TraktId) -> Unit,
+    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToTrending: () -> Unit,
+    onNavigateToReleases: () -> Unit,
     onNavigateToPopular: () -> Unit,
     onNavigateToAnticipated: () -> Unit,
-    onNavigateToRecommended: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     ShowsScreenContent(
         state = state,
         onShowClick = onNavigateToShow,
+        onEpisodeClick = onNavigateToEpisode,
         onViewAllTrendingClick = onNavigateToTrending,
+        onViewAllReleasesClick = onNavigateToReleases,
         onViewAllPopularClick = onNavigateToPopular,
         onViewAllAnticipatedClick = onNavigateToAnticipated,
-        onViewAllRecommendedClick = onNavigateToRecommended,
     )
 }
 
@@ -91,10 +100,11 @@ private fun ShowsScreenContent(
     state: ShowsState,
     modifier: Modifier = Modifier,
     onShowClick: (TraktId) -> Unit,
+    onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit = { _, _ -> },
     onViewAllTrendingClick: () -> Unit,
+    onViewAllReleasesClick: () -> Unit = {},
     onViewAllPopularClick: () -> Unit,
     onViewAllAnticipatedClick: () -> Unit,
-    onViewAllRecommendedClick: () -> Unit,
 ) {
     var focusedShow by remember { mutableStateOf<Show?>(null) }
     var focusedSection by rememberSaveable { mutableStateOf<String?>(null) }
@@ -160,24 +170,22 @@ private fun ShowsScreenContent(
                     )
                 }
 
-                if (state.user != null) {
-                    item {
-                        RecommendedShowsList(
-                            header = stringResource(R.string.list_title_recommended),
-                            shows = state.recommendedShows,
-                            collection = state.collection,
-                            isLoading = state.isLoading,
-                            onViewAllClick = onViewAllRecommendedClick,
-                            onShowClick = onShowClick,
-                            onShowFocus = {
-                                focusedShow = it
-                                focusedSection = "recommended"
-                            },
-                            modifier = Modifier
-                                .focusGroup()
-                                .focusRequester(focusRequesters.getValue("recommended")),
-                        )
-                    }
+                item {
+                    ReleasesShowsList(
+                        header = stringResource(R.string.list_title_releases),
+                        episodes = state.releasesShows,
+                        isLoading = state.isLoading,
+                        onViewAllClick = onViewAllReleasesClick,
+                        onClick = { item -> onEpisodeClick(item.show.ids.trakt, item.episode) },
+                        onFocused = {
+                            focusedShow = it.show
+                            focusedSection = "releases"
+                        },
+                        focusRequesters = focusRequesters,
+                        modifier = Modifier
+                            .focusGroup()
+                            .focusRequester(focusRequesters.getValue("releases")),
+                    )
                 }
 
                 item {
@@ -330,16 +338,18 @@ private fun TrendingShowsList(
 }
 
 @Composable
-private fun RecommendedShowsList(
+private fun ReleasesShowsList(
     header: String,
-    shows: ImmutableList<Show>?,
-    collection: UserCollectionState,
+    episodes: ImmutableList<HomeUpcomingItem.EpisodeItem>?,
     isLoading: Boolean,
-    onShowFocus: (Show) -> Unit,
-    onShowClick: (TraktId) -> Unit,
+    onFocused: (HomeUpcomingItem.EpisodeItem) -> Unit,
+    onClick: (HomeUpcomingItem.EpisodeItem) -> Unit,
     onViewAllClick: () -> Unit,
+    focusRequesters: Map<String, FocusRequester>,
     modifier: Modifier = Modifier,
 ) {
+    var isFocusable by rememberSaveable { mutableStateOf(true) }
+
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
         modifier = modifier,
@@ -348,7 +358,11 @@ private fun RecommendedShowsList(
             text = header,
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading5,
-            modifier = Modifier.padding(start = TraktTheme.spacing.mainContentStartSpace),
+            modifier = Modifier
+                .padding(start = TraktTheme.spacing.mainContentStartSpace)
+                .focusRequester(focusRequesters.getValue("initial"))
+                .focusable(isFocusable)
+                .onFocusChanged { isFocusable = false },
         )
 
         PositionFocusLazyRow(
@@ -359,45 +373,77 @@ private fun RecommendedShowsList(
         ) {
             if (isLoading) {
                 items(count = 10) {
-                    HorizontalMediaSkeletonCard(
-                        modifier = Modifier
-                            .focusProperties { canFocus = false },
-                    )
+                    HorizontalMediaSkeletonCard()
                 }
-            } else if (!shows.isNullOrEmpty()) {
+            } else if (!episodes.isNullOrEmpty()) {
                 items(
-                    items = shows,
-                    key = { item -> item.ids.trakt.value },
-                ) { show ->
+                    items = episodes,
+                    key = { item -> item.show.ids.trakt.value },
+                ) { item ->
                     HorizontalMediaCard(
-                        title = show.title,
-                        watched = collection.isWatched(show.ids.trakt, MediaType.Show, show.airedEpisodes),
-                        watching = collection.isWatching(show.ids.trakt, MediaType.Show, show.airedEpisodes),
-                        watchlist = collection.isWatchlist(show.ids.trakt, MediaType.Show),
-                        onClick = { onShowClick(show.ids.trakt) },
-                        containerImageUrl = show.images?.getFanartUrl(),
-                        contentImageUrl = show.images?.getLogoUrl(),
-                        paletteColor = show.colors?.colors?.second,
+                        title = "",
+                        containerImageUrl = item.images?.getFanartUrl(),
+                        onClick = { onClick(item) },
+                        cardContent = {
+                            Column(
+                                verticalArrangement = spacedBy(2.dp),
+                            ) {
+                                when {
+                                    item.episode.isPremiere() -> PremiereChip()
+                                    item.episode.isFinale() -> FinaleChip()
+                                }
+
+                                InfoChip(
+                                    text = item.releaseAt?.toLocal()?.relativeDateTimeString() ?: "TBA",
+                                    iconPainter = when {
+                                        item.episode.isReleased -> painterResource(R.drawable.ic_calendar_check)
+                                        else -> painterResource(R.drawable.ic_calendar_upcoming)
+                                    },
+                                    containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
+                                )
+                            }
+                        },
                         footerContent = {
                             Column(
                                 verticalArrangement = spacedBy(1.dp),
                             ) {
-                                val episodes =
-                                    stringResource(R.string.tag_text_number_of_episodes, show.airedEpisodes)
                                 Text(
-                                    text = show.year?.let { "$it  •  $episodes" } ?: episodes,
+                                    text = item.title,
                                     style = TraktTheme.typography.cardTitle,
                                     color = TraktTheme.colors.textPrimary,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
                                 )
+
+                                val subtitle = when {
+                                    item.isFullSeason -> stringResource(
+                                        R.string.text_season_number,
+                                        item.episode.season,
+                                    )
+                                    item.episodes.size > 1 -> stringResource(
+                                        R.string.episode_footer_season_episode_range,
+                                        item.episode.season,
+                                        item.episodes.first().number,
+                                        item.episodes.last().number,
+                                    )
+                                    else -> item.episode.seasonEpisodeString()
+                                }
+
+                                Text(
+                                    text = subtitle,
+                                    style = TraktTheme.typography.cardSubtitle,
+                                    color = TraktTheme.colors.textSecondary,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
                             }
                         },
-                        modifier = Modifier.onFocusChanged {
-                            if (it.hasFocus) {
-                                onShowFocus(show)
-                            }
-                        },
+                        modifier = Modifier
+                            .onFocusChanged {
+                                if (it.isFocused) {
+                                    onFocused(item)
+                                }
+                            },
                     )
                 }
 
@@ -612,7 +658,6 @@ private fun Preview() {
             onViewAllTrendingClick = {},
             onViewAllPopularClick = {},
             onViewAllAnticipatedClick = {},
-            onViewAllRecommendedClick = {},
         )
     }
 }
@@ -643,7 +688,6 @@ private fun Preview2() {
             onViewAllTrendingClick = {},
             onViewAllPopularClick = {},
             onViewAllAnticipatedClick = {},
-            onViewAllRecommendedClick = {},
         )
     }
 }

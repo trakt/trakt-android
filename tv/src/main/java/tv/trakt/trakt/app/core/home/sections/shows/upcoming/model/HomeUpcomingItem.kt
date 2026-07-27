@@ -1,6 +1,7 @@
 package tv.trakt.trakt.app.core.home.sections.shows.upcoming.model
 
 import androidx.compose.runtime.Immutable
+import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
@@ -18,9 +19,12 @@ internal sealed interface HomeUpcomingItem {
     @Immutable
     data class EpisodeItem(
         val show: Show,
-        val episode: Episode,
+        val episodes: ImmutableList<Episode>,
         val isFullSeason: Boolean,
-    ) : HomeUpcomingItem
+    ) : HomeUpcomingItem {
+        val episode: Episode
+            get() = episodes.first()
+    }
 
     val id: Int
         get() = when (this) {

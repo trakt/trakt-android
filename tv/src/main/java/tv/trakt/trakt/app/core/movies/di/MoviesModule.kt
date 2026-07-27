@@ -7,9 +7,10 @@ import tv.trakt.trakt.app.core.movies.data.remote.MoviesApiClient
 import tv.trakt.trakt.app.core.movies.data.remote.MoviesRemoteDataSource
 import tv.trakt.trakt.app.core.movies.features.anticipated.MoviesAnticipatedViewAllViewModel
 import tv.trakt.trakt.app.core.movies.features.popular.MoviesPopularViewAllViewModel
-import tv.trakt.trakt.app.core.movies.features.recommended.MoviesRecommendedViewAllViewModel
+import tv.trakt.trakt.app.core.movies.features.releases.MoviesReleasesViewAllViewModel
 import tv.trakt.trakt.app.core.movies.features.trending.MoviesTrendingViewAllViewModel
 import tv.trakt.trakt.app.core.movies.usecase.GetAnticipatedMoviesUseCase
+import tv.trakt.trakt.app.core.movies.usecase.GetMoviesReleasesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetPopularMoviesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetTrendingMoviesUseCase
@@ -21,6 +22,7 @@ internal val moviesDataModule = module {
         MoviesApiClient(
             api = get(),
             recommendationsApi = get(),
+            calendarsApi = get(),
         )
     }
 
@@ -58,15 +60,28 @@ internal val moviesModule = module {
         )
     }
 
+    factory {
+        GetMoviesReleasesUseCase(
+            remoteSource = get(),
+            localMovieSource = get(),
+        )
+    }
+
     viewModel {
         MoviesViewModel(
             getTrendingMoviesUseCase = get(),
             getPopularMoviesUseCase = get(),
             getAnticipatedMoviesUseCase = get(),
-            getRecommendedMoviesUseCase = get(),
+            getReleasesMoviesUseCase = get(),
             sessionManager = get(),
             appLifecycleProvider = get(),
             collectionStateProvider = get(),
+        )
+    }
+
+    viewModel {
+        MoviesReleasesViewAllViewModel(
+            getItemsUseCase = get(),
         )
     }
 
@@ -86,13 +101,6 @@ internal val moviesModule = module {
 
     viewModel {
         MoviesAnticipatedViewAllViewModel(
-            getItemsUseCase = get(),
-            collectionStateProvider = get(),
-        )
-    }
-
-    viewModel {
-        MoviesRecommendedViewAllViewModel(
             getItemsUseCase = get(),
             collectionStateProvider = get(),
         )

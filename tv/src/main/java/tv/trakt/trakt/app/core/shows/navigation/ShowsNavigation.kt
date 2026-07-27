@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.app.core.shows.ShowsScreen
 import tv.trakt.trakt.common.helpers.extensions.popUpToTop
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 
 @Serializable
@@ -14,19 +15,21 @@ internal data object ShowsDestination
 
 internal fun NavGraphBuilder.showsScreen(
     onNavigateToShow: (TraktId) -> Unit,
+    onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToTrending: () -> Unit,
+    onNavigateToReleases: () -> Unit,
     onNavigateToPopular: () -> Unit,
     onNavigateToAnticipated: () -> Unit,
-    onNavigateToRecommended: () -> Unit,
 ) {
     composable<ShowsDestination> {
         ShowsScreen(
             viewModel = koinViewModel(),
             onNavigateToShow = onNavigateToShow,
+            onNavigateToEpisode = onNavigateToEpisode,
             onNavigateToTrending = onNavigateToTrending,
+            onNavigateToReleases = onNavigateToReleases,
             onNavigateToPopular = onNavigateToPopular,
             onNavigateToAnticipated = onNavigateToAnticipated,
-            onNavigateToRecommended = onNavigateToRecommended,
         )
     }
 }

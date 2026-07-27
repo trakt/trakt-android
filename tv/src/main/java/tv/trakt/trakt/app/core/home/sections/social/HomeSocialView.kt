@@ -6,11 +6,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -38,11 +39,18 @@ internal fun HomeSocialView(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onFocused: (SocialActivityItem?) -> Unit = {},
+    onLoaded: () -> Unit = {},
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToMovie: (movieId: TraktId) -> Unit,
     onNavigateToViewAll: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(state.isLoading) {
+        if (!state.isLoading && state.items != null) {
+            onLoaded()
+        }
+    }
 
     HomeSocialContent(
         state = state,
@@ -82,6 +90,7 @@ internal fun HomeSocialContent(
             state.isLoading -> {
                 ContentLoadingList(
                     contentPadding = contentPadding,
+                    onFocused = { onFocused(null) },
                 )
             }
 
@@ -168,6 +177,7 @@ private fun ContentList(
 @Composable
 private fun ContentLoadingList(
     contentPadding: PaddingValues,
+    onFocused: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     PositionFocusLazyRow(
@@ -176,8 +186,10 @@ private fun ContentLoadingList(
     ) {
         items(count = 10) {
             EpisodeSkeletonCard(
-                modifier = Modifier.focusProperties {
-                    canFocus = false
+                modifier = Modifier.onFocusChanged {
+                    if (it.isFocused) {
+                        onFocused()
+                    }
                 },
             )
         }
