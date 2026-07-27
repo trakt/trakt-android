@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -63,6 +62,7 @@ import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.core.comments.features.report.ReportCommentSheet
 import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
 import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
 import tv.trakt.trakt.resources.R
@@ -89,6 +89,8 @@ internal fun CommentReplyCard(
         }
     }
 
+    var reportActive by remember { mutableStateOf(false) }
+
     val isUserReply = remember(reply.user) {
         user?.ids?.trakt == reply.user.ids.trakt
     }
@@ -107,6 +109,7 @@ internal fun CommentReplyCard(
             onReactionClick = onReactionClick,
             onReplyClick = onReplyClick,
             onDeleteClick = onDeleteClick,
+            onReportClick = { reportActive = true },
             onUserClick = onUserClick,
         )
     }
@@ -129,6 +132,12 @@ internal fun CommentReplyCard(
             content = content,
         )
     }
+
+    ReportCommentSheet(
+        active = reportActive,
+        comment = reply,
+        onDismiss = { reportActive = false },
+    )
 }
 
 @Composable
@@ -142,6 +151,7 @@ private fun CommentReplyCardContent(
     onReactionClick: ((Reaction) -> Unit)? = null,
     onReplyClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
+    onReportClick: (() -> Unit)? = null,
 ) {
     var showSpoilers by remember { mutableStateOf(false) }
 
@@ -158,6 +168,7 @@ private fun CommentReplyCardContent(
             comment = comment,
             onUserClick = onUserClick,
             onDeleteClick = onDeleteClick,
+            onReportClick = onReportClick,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
@@ -232,6 +243,7 @@ private fun CommentHeader(
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
+    onReportClick: (() -> Unit)? = null,
 ) {
     val isUserReply = remember {
         user?.ids?.trakt == comment.user.ids.trakt
@@ -239,79 +251,93 @@ private fun CommentHeader(
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(10.dp),
-        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = modifier.fillMaxWidth(),
     ) {
-        Box(
-            modifier = Modifier
-                .size(36.dp)
-                .onClick {
-                    onUserClick?.invoke(comment.user)
-                },
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = spacedBy(10.dp),
+            modifier = Modifier.weight(1f, fill = false),
         ) {
-            val avatarBorder = when {
-                comment.user.isAnyVip -> TraktTheme.colors.vipAccent
-                else -> Color.Transparent
-            }
-            val avatar = comment.user.images?.avatar?.full
-            if (avatar != null) {
-                AsyncImage(
-                    model = avatar,
-                    contentDescription = "User avatar",
-                    contentScale = ContentScale.Crop,
-                    error = painterResource(R.drawable.ic_person_placeholder),
-                    modifier = Modifier
-                        .border(2.dp, avatarBorder, CircleShape)
-                        .clip(CircleShape),
-                )
-            } else {
-                Image(
-                    painter = painterResource(R.drawable.ic_person_placeholder),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .border(2.dp, avatarBorder, CircleShape)
-                        .clip(CircleShape),
-                )
-            }
-        }
-
-        Column(verticalArrangement = spacedBy(2.dp)) {
-            Row(
-                horizontalArrangement = spacedBy(4.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = comment.user.displayName,
-                    style = TraktTheme.typography.paragraph.copy(fontWeight = FontWeight.W600),
-                    color = TraktTheme.colors.textPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.onClick {
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .onClick {
                         onUserClick?.invoke(comment.user)
                     },
+            ) {
+                val avatarBorder = when {
+                    comment.user.isAnyVip -> TraktTheme.colors.vipAccent
+                    else -> Color.Transparent
+                }
+                val avatar = comment.user.images?.avatar?.full
+                if (avatar != null) {
+                    AsyncImage(
+                        model = avatar,
+                        contentDescription = "User avatar",
+                        contentScale = ContentScale.Crop,
+                        error = painterResource(R.drawable.ic_person_placeholder),
+                        modifier = Modifier
+                            .border(2.dp, avatarBorder, CircleShape)
+                            .clip(CircleShape),
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(R.drawable.ic_person_placeholder),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .border(2.dp, avatarBorder, CircleShape)
+                            .clip(CircleShape),
+                    )
+                }
+            }
+
+            Column(verticalArrangement = spacedBy(2.dp)) {
+                Row(
+                    horizontalArrangement = spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = comment.user.displayName,
+                        style = TraktTheme.typography.paragraph.copy(fontWeight = FontWeight.W600),
+                        color = TraktTheme.colors.textPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.onClick {
+                            onUserClick?.invoke(comment.user)
+                        },
+                    )
+                }
+                Text(
+                    text = comment.createdAt.format(longDateTimeFormat()).capitalize(),
+                    style = TraktTheme.typography.meta,
+                    color = TraktTheme.colors.textSecondary
+                        .copy(alpha = 0.66f),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
-            Text(
-                text = comment.createdAt.format(longDateTimeFormat()).capitalize(),
-                style = TraktTheme.typography.meta,
-                color = TraktTheme.colors.textSecondary
-                    .copy(alpha = 0.66f),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
         }
 
-        if (isUserReply) {
-            Spacer(modifier = Modifier.weight(1f))
-            Icon(
-                painter = painterResource(R.drawable.ic_trash),
-                contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
-                modifier = Modifier
-                    .size(20.dp)
-                    .onClick {
-                        onDeleteClick?.invoke()
-                    },
+        Row(
+            horizontalArrangement = spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            if (isUserReply) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_trash),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .onClick {
+                            onDeleteClick?.invoke()
+                        },
+                )
+            }
+
+            CommentDropdown(
+                onReportClick = onReportClick,
             )
         }
     }

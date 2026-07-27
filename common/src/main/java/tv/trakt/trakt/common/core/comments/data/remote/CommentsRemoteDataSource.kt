@@ -35,6 +35,12 @@ interface CommentsRemoteDataSource {
         spoiler: Boolean,
     ): CommentDto
 
+    suspend fun postReport(
+        commentId: Int,
+        reason: String,
+        message: String,
+    )
+
     suspend fun deleteComment(commentId: TraktId)
 
     suspend fun getCommentReplies(commentId: Int): List<CommentDto>
