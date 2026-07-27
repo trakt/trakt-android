@@ -46,8 +46,7 @@ internal class AllShowSeasonsSheetState {
 }
 
 @Composable
-internal fun rememberAllShowSeasonsSheetState(): AllShowSeasonsSheetState =
-    remember { AllShowSeasonsSheetState() }
+internal fun rememberAllShowSeasonsSheetState(): AllShowSeasonsSheetState = remember { AllShowSeasonsSheetState() }
 
 @Composable
 internal fun AllShowSeasonsSheets(

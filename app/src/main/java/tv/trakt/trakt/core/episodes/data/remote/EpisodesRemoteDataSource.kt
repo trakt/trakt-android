@@ -109,7 +109,7 @@ internal interface EpisodesRemoteDataSource {
     ): CastCrewDto
 
     /**
-     * Retrieves the sentiments for a specific season of a show.
+     * Retrieves the cast and crew for a specific season of a show.
      */
     suspend fun getCastCrew(
         showId: TraktId,

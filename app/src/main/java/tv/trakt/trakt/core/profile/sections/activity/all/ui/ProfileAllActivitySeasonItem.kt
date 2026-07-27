@@ -110,7 +110,7 @@ internal fun ProfileAllActivitySeasonItem(
     widthDp = 400,
 )
 @Composable
-private fun ProfileAllActivityMovieItemPreview() {
+private fun Preview() {
     TraktTheme {
         ProfileAllActivitySeasonItem(
             item = ProfileRatingItem.SeasonItem(

@@ -14,7 +14,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -47,23 +46,16 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.Episode
-import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates
-import tv.trakt.trakt.core.ratings.data.RatingsUpdates.Source.POST_RATING
-import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
-import tv.trakt.trakt.core.reactions.data.ReactionsUpdates.Source.ALL_COMMENTS
-import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
-import tv.trakt.trakt.core.reactions.data.work.PostReactionWorker
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
@@ -71,6 +63,8 @@ import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.AllSeaso
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.Progress
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.Seasons
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source.WatchedUntil
+import tv.trakt.trakt.core.summary.shows.features.seasons.all.helpers.SeasonRatingController
+import tv.trakt.trakt.core.summary.shows.features.seasons.all.helpers.SeasonReactionsController
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.navigation.AllShowSeasonsDestination
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.usecases.GetSeasonCommentsUseCase
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.usecases.GetSeasonPeopleUseCase
@@ -87,7 +81,6 @@ import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase
 import tv.trakt.trakt.resources.R
 import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.Duration.Companion.seconds
 
 @OptIn(FlowPreview::class)
 internal class AllShowSeasonsViewModel(
@@ -122,8 +115,6 @@ internal class AllShowSeasonsViewModel(
     private val modeState = MutableStateFlow(initialState.mode)
     private val peopleModeState = MutableStateFlow(initialState.peopleMode)
     private val commentsFilterState = MutableStateFlow(initialState.commentsMode)
-    private val commentReactionsState = MutableStateFlow(initialState.commentReactions)
-    private val userReactionsState = MutableStateFlow(initialState.userReactions)
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingEpisodeState = MutableStateFlow(initialState.loadingEpisode)
@@ -131,13 +122,28 @@ internal class AllShowSeasonsViewModel(
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
-    private val seasonUserRatingState = MutableStateFlow(initialState.seasonUserRating)
+
+    private val reactions = SeasonReactionsController(
+        scope = viewModelScope,
+        appContext = appContext,
+        getCommentReactionsUseCase = getCommentReactionsUseCase,
+        loadUserReactionsUseCase = loadUserReactionsUseCase,
+        sessionManager = sessionManager,
+        reactionsUpdates = reactionsUpdates,
+    )
+
+    private val rating = SeasonRatingController(
+        scope = viewModelScope,
+        appContext = appContext,
+        loadUserRatingsUseCase = loadUserRatingsUseCase,
+        sessionManager = sessionManager,
+        ratingsUpdates = ratingsUpdates,
+        currentSeason = { itemsState.value.selectedSeason },
+    )
 
     private var seasonPeopleJob: Job? = null
     private var seasonCommentsJob: Job? = null
     private var seasonRepliesJob: Job? = null
-    private var reactionJob: Job? = null
-    private var ratingJob: Job? = null
 
     init {
         loadData()
@@ -156,22 +162,6 @@ internal class AllShowSeasonsViewModel(
             .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
-            }
-            .launchIn(viewModelScope)
-
-        reactionsUpdates.observeUpdates(ALL_COMMENTS)
-            .distinctUntilChanged()
-            .debounce(200.milliseconds)
-            .onEach {
-                updateSeasonCommentReactions(it.first)
-            }
-            .launchIn(viewModelScope)
-
-        ratingsUpdates.observeUpdates(POST_RATING)
-            .distinctUntilChanged()
-            .debounce(200.milliseconds)
-            .onEach {
-                refreshSeasonUserRating()
             }
             .launchIn(viewModelScope)
     }
@@ -197,7 +187,7 @@ internal class AllShowSeasonsViewModel(
                         ?: getShowDetailsUseCase.getShow(showId)
                 }
 
-                loadUserReactions()
+                reactions.loadUserReactions()
 
                 val watched = when {
                     userState.isNotNull() -> {
@@ -234,7 +224,7 @@ internal class AllShowSeasonsViewModel(
                 }
 
                 itemsState.value.selectedSeason?.let {
-                    loadSeasonUserRating(it)
+                    rating.loadSeasonUserRating(it)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -294,7 +284,7 @@ internal class AllShowSeasonsViewModel(
                     )
                 }
 
-                loadSeasonUserRating(season.season)
+                rating.loadSeasonUserRating(season.season)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
@@ -456,160 +446,12 @@ internal class AllShowSeasonsViewModel(
         }
     }
 
-    private suspend fun loadUserReactions() {
-        if (!sessionManager.isAuthenticated()) {
-            return
-        }
-        try {
-            val userReactions = when {
-                loadUserReactionsUseCase.isLoaded() -> loadUserReactionsUseCase.loadLocalReactions()
-                else -> loadUserReactionsUseCase.loadReactions()
-            }
-            userReactionsState.update { userReactions }
-        } catch (error: Exception) {
-            error.rethrowCancellation {
-                Timber.recordError(error)
-            }
-        }
-    }
-
-    fun loadSeasonCommentReactions(commentId: Int) {
-        if (commentReactionsState.value.containsKey(commentId)) {
-            return
-        }
-
-        viewModelScope.launch {
-            try {
-                val reactions = getCommentReactionsUseCase.getReactions(commentId)
-                commentReactionsState.update { current ->
-                    val mutable = current.toMutableMap()
-                    mutable[commentId] = reactions
-                    mutable.toImmutableMap()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
-    }
+    fun loadSeasonCommentReactions(commentId: Int) = reactions.loadSeasonCommentReactions(commentId)
 
     fun setSeasonCommentReaction(
         reaction: Reaction,
         commentId: Int,
-    ) {
-        reactionJob?.cancel()
-        reactionJob = viewModelScope.launch {
-            try {
-                val userReaction = userReactionsState.value[commentId]
-
-                userReactionsState.update {
-                    val mutable = it.toMutableMap()
-                    mutable[commentId] = when {
-                        userReaction == reaction -> null
-                        else -> reaction
-                    }
-                    mutable.toImmutableMap()
-                }
-
-                commentReactionsState.update { current ->
-                    val mutable = current.toMutableMap()
-                    val summary = mutable[commentId] ?: ReactionsSummary(
-                        reactionsCount = 0,
-                        distribution = persistentMapOf(),
-                    )
-                    val updatedReactions = summary.copy(
-                        reactionsCount = when (userReaction) {
-                            reaction -> summary.reactionsCount - 1
-                            null -> summary.reactionsCount + 1
-                            else -> summary.reactionsCount
-                        }.coerceAtLeast(0),
-                        distribution = summary.distribution
-                            .toMutableMap()
-                            .apply {
-                                // Add or increment the picked reaction (unless toggling it off).
-                                if (userReaction != reaction) {
-                                    this[reaction] = (this[reaction] ?: 0) + 1
-                                }
-                                // Decrement the previously selected reaction, if any.
-                                userReaction?.let { previous ->
-                                    this[previous] = ((this[previous] ?: 0) - 1).coerceAtLeast(0)
-                                }
-                            }
-                            .filterValues { it > 0 }
-                            .toImmutableMap(),
-                    )
-                    mutable[commentId] = updatedReactions
-                    mutable.toImmutableMap()
-                }
-
-                // Debounce to avoid multiple rapid calls.
-                delay(1.seconds)
-                if (reaction == userReaction) {
-                    deleteReactionWork(commentId = commentId)
-                } else {
-                    postReactionWork(commentId = commentId, reaction = reaction)
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
-    }
-
-    private fun updateSeasonCommentReactions(commentId: Int) {
-        viewModelScope.launch {
-            try {
-                if (!sessionManager.isAuthenticated()) {
-                    return@launch
-                }
-
-                val reactions = getCommentReactionsUseCase.getReactions(commentId)
-                val userReactions = when {
-                    loadUserReactionsUseCase.isLoaded() -> loadUserReactionsUseCase.loadLocalReactions()
-                    else -> loadUserReactionsUseCase.loadReactions()
-                }
-
-                userReactionsState.update { userReactions }
-                commentReactionsState.update { current ->
-                    val mutable = current.toMutableMap()
-                    mutable[commentId] = reactions
-                    mutable.toImmutableMap()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
-    }
-
-    private suspend fun postReactionWork(
-        commentId: Int,
-        reaction: Reaction,
-    ) {
-        if (!sessionManager.isAuthenticated()) {
-            return
-        }
-        PostReactionWorker.scheduleOneTime(
-            appContext = appContext,
-            commentId = commentId,
-            reaction = reaction,
-            source = ALL_COMMENTS,
-        )
-    }
-
-    private suspend fun deleteReactionWork(commentId: Int) {
-        if (!sessionManager.isAuthenticated()) {
-            return
-        }
-        DeleteReactionWorker.scheduleOneTime(
-            appContext = appContext,
-            commentId = commentId,
-            source = ALL_COMMENTS,
-        )
-    }
+    ) = reactions.setSeasonCommentReaction(reaction = reaction, commentId = commentId)
 
     fun setMode(mode: SeasonsMode) {
         modeState.update { mode }
@@ -626,70 +468,22 @@ internal class AllShowSeasonsViewModel(
     }
 
     fun addSeasonComment(comment: Comment) {
-        itemsState.update {
-            val mutable = it.selectedSeasonComments.toMutableList()
-            mutable.add(0, comment)
-            it.copy(selectedSeasonComments = mutable.toImmutableList())
-        }
+        itemsState.update { it.addComment(comment) }
     }
 
     fun deleteSeasonComment(commentId: TraktId) {
-        itemsState.update {
-            it.copy(
-                selectedSeasonComments = it.selectedSeasonComments
-                    .filterNot { comment -> comment.id == commentId.value }
-                    .toImmutableList(),
-            )
-        }
+        itemsState.update { it.deleteComment(commentId) }
     }
 
     fun addSeasonReply(reply: Comment) {
-        itemsState.update {
-            val replies = it.selectedSeasonReplies.toMutableMap()
-            val current = replies[reply.parentId]?.toMutableList() ?: mutableListOf()
-            current.add(reply)
-            replies[reply.parentId] = current.toImmutableList()
-
-            val comments = it.selectedSeasonComments.map { comment ->
-                if (comment.id == reply.parentId) {
-                    comment.copy(replies = comment.replies + 1)
-                } else {
-                    comment
-                }
-            }.toImmutableList()
-
-            it.copy(
-                selectedSeasonReplies = replies.toImmutableMap(),
-                selectedSeasonComments = comments,
-            )
-        }
+        itemsState.update { it.addReply(reply) }
     }
 
     fun deleteSeasonReply(
         parentId: TraktId,
         replyId: TraktId,
     ) {
-        itemsState.update {
-            val replies = it.selectedSeasonReplies.toMutableMap()
-            replies[parentId.value]?.let { current ->
-                replies[parentId.value] = current
-                    .filterNot { reply -> reply.id == replyId.value }
-                    .toImmutableList()
-            }
-
-            val comments = it.selectedSeasonComments.map { comment ->
-                if (comment.id == parentId.value) {
-                    comment.copy(replies = (comment.replies - 1).coerceAtLeast(0))
-                } else {
-                    comment
-                }
-            }.toImmutableList()
-
-            it.copy(
-                selectedSeasonReplies = replies.toImmutableMap(),
-                selectedSeasonComments = comments,
-            )
-        }
+        itemsState.update { it.deleteReply(parentId = parentId, replyId = replyId) }
     }
 
     fun setPeopleMode(peopleMode: SeasonsPeopleMode) {
@@ -961,117 +755,9 @@ internal class AllShowSeasonsViewModel(
         }
     }
 
-    // Ratings
+    fun addSeasonRating(newRating: Int) = rating.addSeasonRating(newRating)
 
-    private fun loadSeasonUserRating(season: Season) {
-        viewModelScope.launch {
-            if (!sessionManager.isAuthenticated()) {
-                return@launch
-            }
-            try {
-                seasonUserRatingState.update { it.copy(loading = Loading) }
-
-                if (!loadUserRatingsUseCase.isSeasonsLoaded()) {
-                    loadUserRatingsUseCase.loadSeasons()
-                }
-
-                seasonUserRatingState.update {
-                    AllShowSeasonsState.UserRatingState(
-                        rating = loadUserRatingsUseCase.loadLocalSeasons()[season.ids.trakt],
-                        loading = Done,
-                    )
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                    seasonUserRatingState.update { it.copy(loading = Done) }
-                }
-            }
-        }
-    }
-
-    private fun refreshSeasonUserRating() {
-        val season = itemsState.value.selectedSeason ?: return
-        viewModelScope.launch {
-            if (!sessionManager.isAuthenticated()) {
-                return@launch
-            }
-            try {
-                val rating = loadUserRatingsUseCase.loadLocalSeasons()[season.ids.trakt]
-                seasonUserRatingState.update {
-                    it.copy(rating = rating, loading = Done)
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
-    }
-
-    fun addSeasonRating(newRating: Int) {
-        val season = itemsState.value.selectedSeason ?: return
-        ratingJob?.cancel()
-        ratingJob = viewModelScope.launch {
-            if (!sessionManager.isAuthenticated()) {
-                return@launch
-            }
-
-            if (seasonUserRatingState.value.rating?.rating == newRating) {
-                return@launch
-            }
-
-            seasonUserRatingState.update {
-                AllShowSeasonsState.UserRatingState(
-                    rating = UserRating(
-                        mediaId = season.ids.trakt,
-                        mediaType = MediaType.Season,
-                        rating = newRating,
-                    ),
-                    loading = Done,
-                )
-            }
-
-            PostRatingWorker.scheduleOneTime(
-                appContext = appContext,
-                mediaId = season.ids.trakt,
-                mediaType = MediaType.Season,
-                rating = newRating,
-            )
-        }
-    }
-
-    fun removeSeasonRating() {
-        val season = itemsState.value.selectedSeason ?: return
-        ratingJob?.cancel()
-        ratingJob = viewModelScope.launch {
-            if (!sessionManager.isAuthenticated()) {
-                return@launch
-            }
-
-            if (seasonUserRatingState.value.rating?.rating == 0) {
-                return@launch
-            }
-
-            seasonUserRatingState.update {
-                AllShowSeasonsState.UserRatingState(
-                    rating = UserRating(
-                        mediaId = season.ids.trakt,
-                        mediaType = MediaType.Season,
-                        rating = 0,
-                    ),
-                    loading = Done,
-                )
-            }
-
-            PostRatingWorker.scheduleOneTime(
-                appContext = appContext,
-                mediaId = season.ids.trakt,
-                mediaType = MediaType.Season,
-                rating = 0, // A rating of 0 indicates removal of rating
-            )
-        }
-    }
+    fun removeSeasonRating() = rating.removeSeasonRating()
 
     fun clearInfo() {
         infoState.update { null }
@@ -1096,9 +782,9 @@ internal class AllShowSeasonsViewModel(
         navigateEpisode,
         infoState,
         errorState,
-        commentReactionsState,
-        userReactionsState,
-        seasonUserRatingState,
+        reactions.commentReactions,
+        reactions.userReactions,
+        rating.rating,
     ) { state ->
         AllShowSeasonsState(
             show = state[0] as Show?,
