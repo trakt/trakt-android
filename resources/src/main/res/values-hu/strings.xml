@@ -5,7 +5,7 @@
   <string name="about_feature_description_community">Kövesd barátaidat, nézd meg, mit néz a csapat, és fedezz fel közös kedvenceket. Együtt nézni jobb.</string>
   <string name="about_feature_description_discover">Kapj személyre szabott ajánlásokat ízlésed alapján. Fedezz fel felkapott címeket és kurátori listákat a Trakt közösségtől.</string>
   <string name="about_feature_description_rate_review">Oszd meg véleményedet értékelésekkel és hozzászólásokkal. Nézd meg, hogyan hasonlít az ízlésed más nézők millióihoz.</string>
-  <string name="about_feature_description_scrobble">Automatikusan „scrobble”-ölje, amit több száz alkalmazáson és médiaszerveren keresztül néz. Soha ne veszítsd el a haladásodat.</string>
+  <string name="about_feature_description_scrobble">Automatikusan „scrobble”-ölje, amit streamelő alkalmazásokon és médiaszervereken keresztül néz. Soha ne veszítsd el a haladásodat.</string>
   <string name="about_feature_title_any_device">Bármilyen eszköz, bármilyen platform</string>
   <string name="about_feature_title_calendar">Soha ne maradj le egy epizódról sem</string>
   <string name="about_feature_title_community">Nézők Közössége</string>
@@ -912,6 +912,7 @@
   <string name="link_label_discover_shows">Sorozatok felfedezése</string>
   <string name="link_label_get_vip">VIP funkciók feloldása</string>
   <string name="link_label_github">GitHub</string>
+  <string name="link_label_history_all">Vissza a teljes előzményekhez</string>
   <string name="link_label_install_pwa">PWA telepítése</string>
   <string name="link_label_ios_app">iOS alkalmazás</string>
   <string name="link_label_open_preview_feature">%s megnyitása</string>
@@ -1338,6 +1339,8 @@
   <string name="text_footer_category_community">Közösség</string>
   <string name="text_footer_category_legal">Jogi</string>
   <string name="text_footer_category_platform">Platform</string>
+  <string name="text_history_sync_filter">Szinkronizálási azonosító: %d</string>
+  <string name="text_history_sync_filter_with_source">Szinkronizálási azonosító: %1$d (%2$s)</string>
   <string name="text_hours_watched">%d óra</string>
   <string name="text_info_blocked">%s blokkolva lett.</string>
   <string name="text_info_cover_removed">Borítókép törölve.</string>
@@ -1833,7 +1836,7 @@
   <string name="tv_time_report_submit_text">Jelentés elküldése</string>
   <string name="tv_time_report_success">Köszönjük! Jelentésed elküldve. Megnézzük.</string>
   <string name="tv_time_report_upload_prompt">Húzd ide a TV Time exportodat, vagy kattints a fájlok kiválasztásához</string>
-  <string name="usage_title_connected_apps">Csatlakoztatott alkalmazások</string>
+  <string name="usage_title_connected_apps">Alkalmazások</string>
   <string name="usage_title_library">Könyvtár</string>
   <string name="usage_title_lists">Listák</string>
   <string name="validation_text_app_name">Kérjük, adj meg egy alkalmazásnevet.</string>
@@ -1845,7 +1848,7 @@
   <string name="validation_text_settings_field">A(z) %s mező kitöltése kötelező</string>
   <string name="vip_feature_description_api_apps">Csatlakoztass több harmadik féltől származó alkalmazást és szolgáltatást a Trakt API-n keresztül, hogy javítsd az élményedet.</string>
   <string name="vip_feature_description_bigger_library">Tárolj több nézési előzményt a megnövelt könyvtári korlátokkal, amelyek egy életre szólnak.</string>
-  <string name="vip_feature_description_bigger_watchlist">Bővítsd a megnézendők listájának kapacitását, hogy korlátok nélkül nyomon követhesd mindazt, amit meg szeretnél nézni.</string>
+  <string name="vip_feature_description_bigger_watchlist">Bővítsd a megnézendők listájának kapacitását, hogy nyomon követhesd mindazt, amit meg szeretnél nézni.</string>
   <string name="vip_feature_description_early_access">Szerezz korai hozzáférést a Trakt alkalmazások új verzióihoz, és próbáld ki a legfrissebb funkciókat mindenki más előtt!</string>
   <string name="vip_feature_description_global_wtw">Nézd meg, hol érhetők el sorozatok és filmek streamelésre a világ bármely pontján, nem csak a te régiódban.</string>
   <string name="vip_feature_description_increased_limits">Élvezd a magasabb limiteket a listáidnál, az értékeléseidnél és más funkcióknál is!</string>
@@ -1862,7 +1865,7 @@
   <string name="vip_feature_description_trivia">Tudj meg több érdekességet és betekintést a filmekről és sorozatokról, amiket nézel.</string>
   <string name="vip_feature_description_vip_status">Mutasd meg VIP státuszodat az alkalmazásokban és a weboldalon.</string>
   <string name="vip_feature_description_yir">Rengeteg statisztika minden évről, amióta tag vagy.</string>
-  <string name="vip_feature_title_api_apps">Több API alkalmazás csatlakoztatva</string>
+  <string name="vip_feature_title_api_apps">Több alkalmazás csatlakoztatva</string>
   <string name="vip_feature_title_bigger_library">Nagyobb könyvtár</string>
   <string name="vip_feature_title_bigger_watchlist">Nagyobb megnézendők listája</string>
   <string name="vip_feature_title_early_access">Korai hozzáférés</string>

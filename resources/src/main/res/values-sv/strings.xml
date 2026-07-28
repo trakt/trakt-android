@@ -5,7 +5,7 @@
   <string name="about_feature_description_community">Följ vänner, se vad teamet tittar på och upptäck gemensamma favoriter. Att titta tillsammans är bättre.</string>
   <string name="about_feature_description_discover">Få personliga rekommendationer baserade på din smak. Utforska trendande titlar och kurerade listor från Trakt-communityn.</string>
   <string name="about_feature_description_rate_review">Dela dina åsikter med betyg och kommentarer. Se hur din smak jämförs med miljontals andra tittare.</string>
-  <string name="about_feature_description_scrobble">Skrobla automatiskt vad du tittar på över hundratals appar och mediaservrar. Tappa aldrig bort din framgång.</string>
+  <string name="about_feature_description_scrobble">Skrobla automatiskt vad du tittar på över streamingappar och mediaservrar. Tappa aldrig bort din framgång.</string>
   <string name="about_feature_title_any_device">Alla enheter, alla plattformar</string>
   <string name="about_feature_title_calendar">Missa aldrig ett avsnitt</string>
   <string name="about_feature_title_community">En gemenskap av tittare</string>
@@ -912,6 +912,7 @@
   <string name="link_label_discover_shows">Upptäck serier</string>
   <string name="link_label_get_vip">Lås upp VIP-funktioner</string>
   <string name="link_label_github">GitHub</string>
+  <string name="link_label_history_all">Tillbaka till hela historiken</string>
   <string name="link_label_install_pwa">Installera PWA</string>
   <string name="link_label_ios_app">iOS-app</string>
   <string name="link_label_open_preview_feature">Öppna %s</string>
@@ -1338,6 +1339,8 @@
   <string name="text_footer_category_community">Community</string>
   <string name="text_footer_category_legal">Juridiskt</string>
   <string name="text_footer_category_platform">Plattform</string>
+  <string name="text_history_sync_filter">Synkroniserings-ID %d</string>
+  <string name="text_history_sync_filter_with_source">Synkroniserings-ID %1$d (%2$s)</string>
   <string name="text_hours_watched">%d timmar</string>
   <string name="text_info_blocked">%s har blockerats.</string>
   <string name="text_info_cover_removed">Omslagsbilden har rensats.</string>
@@ -1833,7 +1836,7 @@
   <string name="tv_time_report_submit_text">Skicka rapport</string>
   <string name="tv_time_report_success">Tack! Din rapport har skickats. Vi tar en titt.</string>
   <string name="tv_time_report_upload_prompt">Släpp din TV Time-export här, eller klicka för att välja filer</string>
-  <string name="usage_title_connected_apps">Anslutna appar</string>
+  <string name="usage_title_connected_apps">Appar</string>
   <string name="usage_title_library">Bibliotek</string>
   <string name="usage_title_lists">Listor</string>
   <string name="validation_text_app_name">Vänligen ange ett applikationsnamn.</string>
@@ -1845,7 +1848,7 @@
   <string name="validation_text_settings_field">%s krävs</string>
   <string name="vip_feature_description_api_apps">Anslut fler tredjepartsappar och tjänster via Trakt API för att förbättra din upplevelse.</string>
   <string name="vip_feature_description_bigger_library">Lagra mer av din tittarhistorik med utökade biblioteksgränser utformade för att räcka en livstid.</string>
-  <string name="vip_feature_description_bigger_watchlist">Utöka din tittarlistas kapacitet för att hålla koll på allt du vill titta på, utan gränser.</string>
+  <string name="vip_feature_description_bigger_watchlist">Utöka din tittarlistas kapacitet för att hålla koll på allt du vill titta på.</string>
   <string name="vip_feature_description_early_access">Få tidig åtkomst till nya versioner av Trakt-appar och helt nya funktioner före alla andra.</string>
   <string name="vip_feature_description_global_wtw">Se var serier och filmer finns att streama var som helst i världen, inte bara i din region.</string>
   <string name="vip_feature_description_increased_limits">Njut av högre gränser för dina listor, betyg och andra funktioner.</string>
@@ -1862,7 +1865,7 @@
   <string name="vip_feature_description_trivia">Få mer trivia och insikter om filmerna och serierna du tittar på.</string>
   <string name="vip_feature_description_vip_status">Visa upp din VIP-status i apparna och på webbplatsen.</string>
   <string name="vip_feature_description_yir">Massor av statistik för varje år du har varit medlem.</string>
-  <string name="vip_feature_title_api_apps">Fler API-appar anslutna</string>
+  <string name="vip_feature_title_api_apps">Fler appar anslutna</string>
   <string name="vip_feature_title_bigger_library">Större bibliotek</string>
   <string name="vip_feature_title_bigger_watchlist">Större tittarlista</string>
   <string name="vip_feature_title_early_access">Tidig åtkomst</string>

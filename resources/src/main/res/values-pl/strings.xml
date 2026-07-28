@@ -5,7 +5,7 @@
   <string name="about_feature_description_community">Obserwuj znajomych, zobacz, co ogląda zespół i odkrywaj wspólne ulubione filmy i seriale. Wspólne oglądanie to jest to!</string>
   <string name="about_feature_description_discover">Otrzymuj spersonalizowane rekomendacje oparte na Twoim guście. Odkrywaj popularne tytuły i wyselekcjonowane listy ze społeczności Trakt.</string>
   <string name="about_feature_description_rate_review">Podziel się swoimi opiniami za pomocą ocen i komentarzy. Zobacz, jak Twój gust wypada w porównaniu z milionami innych widzów.</string>
-  <string name="about_feature_description_scrobble">Automatycznie dodawaj to, co oglądasz w setkach aplikacji i na serwerach multimedialnych. Nigdy nie trać postępów.</string>
+  <string name="about_feature_description_scrobble">Automatycznie dodawaj to, co oglądasz w aplikacjach streamingowych i na serwerach multimedialnych. Nigdy nie trać postępów.</string>
   <string name="about_feature_title_any_device">Każde urządzenie, każda platforma</string>
   <string name="about_feature_title_calendar">Nie przegap żadnego odcinka</string>
   <string name="about_feature_title_community">Globalna społeczność</string>
@@ -912,6 +912,7 @@
   <string name="link_label_discover_shows">Odkryj seriale</string>
   <string name="link_label_get_vip">Odblokuj funkcje VIP</string>
   <string name="link_label_github">GitHub</string>
+  <string name="link_label_history_all">Powrót do pełnej historii</string>
   <string name="link_label_install_pwa">Zainstaluj PWA</string>
   <string name="link_label_ios_app">Aplikacja iOS</string>
   <string name="link_label_open_preview_feature">Otwórz %s</string>
@@ -1338,6 +1339,8 @@
   <string name="text_footer_category_community">Społeczność</string>
   <string name="text_footer_category_legal">Prawne</string>
   <string name="text_footer_category_platform">Platforma</string>
+  <string name="text_history_sync_filter">Identyfikator synchronizacji %d</string>
+  <string name="text_history_sync_filter_with_source">Identyfikator synchronizacji %1$d (%2$s)</string>
   <string name="text_hours_watched">%d godzin</string>
   <string name="text_info_blocked">%s został zablokowany.</string>
   <string name="text_info_cover_removed">Obraz tła został zresetowany.</string>
@@ -1833,7 +1836,7 @@
   <string name="tv_time_report_submit_text">Wyślij zgłoszenie</string>
   <string name="tv_time_report_success">Dziękujemy! Twoje zgłoszenie zostało wysłane. Sprawdzimy to.</string>
   <string name="tv_time_report_upload_prompt">Upuść swój eksport z TV Time tutaj lub kliknij, aby wybrać pliki</string>
-  <string name="usage_title_connected_apps">Połączone aplikacje</string>
+  <string name="usage_title_connected_apps">Aplikacje</string>
   <string name="usage_title_library">Biblioteka</string>
   <string name="usage_title_lists">Listy</string>
   <string name="validation_text_app_name">Wprowadź nazwę aplikacji.</string>
@@ -1845,7 +1848,7 @@
   <string name="validation_text_settings_field">%s jest wymagane</string>
   <string name="vip_feature_description_api_apps">Połącz więcej aplikacji i usług zewnętrznych poprzez Trakt API.</string>
   <string name="vip_feature_description_bigger_library">Przechowuj więcej historii oglądania dzięki rozszerzonym limitom kolekcji.</string>
-  <string name="vip_feature_description_bigger_watchlist">Zwiększ pojemność swojej listy obserwowanych, aby śledzić wszystko, co chcesz obejrzeć - bez ograniczeń.</string>
+  <string name="vip_feature_description_bigger_watchlist">Zwiększ pojemność swojej listy obserwowanych, aby śledzić wszystko, co chcesz obejrzeć.</string>
   <string name="vip_feature_description_early_access">Uzyskaj wczesny dostęp do nowych wersji aplikacji Trakt i zupełnie nowych funkcji.</string>
   <string name="vip_feature_description_global_wtw">Zobacz, gdzie dostępne są seriale i filmy w dowolnym miejscu świata, a nie tylko w twoim regionie.</string>
   <string name="vip_feature_description_increased_limits">Ciesz się wyższymi limitami dla swoich list, ocen i innych funkcji.</string>
@@ -1862,7 +1865,7 @@
   <string name="vip_feature_description_trivia">Odblokuj więcej ciekawostek i analiz na temat filmów i seriali, które oglądasz.</string>
   <string name="vip_feature_description_vip_status">Pokaż swój status VIP w aplikacjach i stronie internetowej.</string>
   <string name="vip_feature_description_yir">Mnóstwo statystyk z każdego roku oglądania.</string>
-  <string name="vip_feature_title_api_apps">Więcej połączonych aplikacji API</string>
+  <string name="vip_feature_title_api_apps">Więcej połączonych aplikacji</string>
   <string name="vip_feature_title_bigger_library">Większa biblioteka</string>
   <string name="vip_feature_title_bigger_watchlist">Większa lista obserwowanych</string>
   <string name="vip_feature_title_early_access">Wczesny dostęp</string>

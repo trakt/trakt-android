@@ -5,7 +5,7 @@
   <string name="about_feature_description_community">دوستان خود را دنبال کنید، ببینید تیم چه چیزی تماشا می‌کند، و موارد مورد علاقه مشترک را کشف کنید. تماشا کردن با هم بهتر است.</string>
   <string name="about_feature_description_discover">توصیه‌های شخصی‌سازی شده بر اساس سلیقه خود دریافت کنید. عناوین پرطرفدار و لیست‌های انتخاب شده از جامعه Trakt را کاوش کنید.</string>
   <string name="about_feature_description_rate_review">نظرات خود را با امتیازات و نظرات به اشتراک بگذارید. ببینید سلیقه شما چگونه با میلیون‌ها تماشاگر دیگر مقایسه می‌شود.</string>
-  <string name="about_feature_description_scrobble">آنچه را که تماشا می‌کنید، به طور خودکار در صدها برنامه و سرور رسانه ثبت کنید. هرگز پیشرفت خود را از دست ندهید.</string>
+  <string name="about_feature_description_scrobble">آنچه را که در برنامه‌های پخش جریانی و سرورهای رسانه تماشا می‌کنید، به طور خودکار ثبت کنید. هرگز پیشرفت خود را از دست ندهید.</string>
   <string name="about_feature_title_any_device">هر دستگاهی، هر پلتفرمی</string>
   <string name="about_feature_title_calendar">هرگز یک قسمت را از دست ندهید</string>
   <string name="about_feature_title_community">جامعه‌ای از تماشاگران</string>
@@ -912,6 +912,7 @@
   <string name="link_label_discover_shows">برنامه‌ها را کشف کنید</string>
   <string name="link_label_get_vip">ویژگی‌های VIP را باز کنید</string>
   <string name="link_label_github">گیت‌هاب</string>
+  <string name="link_label_history_all">بازگشت به تاریخچه کامل</string>
   <string name="link_label_install_pwa">نصب PWA</string>
   <string name="link_label_ios_app">برنامه iOS</string>
   <string name="link_label_open_preview_feature">%s را باز کن</string>
@@ -1338,6 +1339,8 @@
   <string name="text_footer_category_community">جامعه</string>
   <string name="text_footer_category_legal">حقوقی</string>
   <string name="text_footer_category_platform">پلتفرم</string>
+  <string name="text_history_sync_filter">شناسه همگام\nA\n سازی %d</string>
+  <string name="text_history_sync_filter_with_source">شناسه همگام\nA\n سازی %1$d (%2$s)</string>
   <string name="text_hours_watched">%d ساعت</string>
   <string name="text_info_blocked">%s مسدود شد.</string>
   <string name="text_info_cover_removed">تصویر جلد پاک شد.</string>
@@ -1833,7 +1836,7 @@
   <string name="tv_time_report_submit_text">ارسال گزارش</string>
   <string name="tv_time_report_success">متشکریم! گزارش شما ارسال شد. ما آن را بررسی خواهیم کرد.</string>
   <string name="tv_time_report_upload_prompt">فایل خروجی TV Time خود را اینجا رها کنید، یا برای انتخاب فایل‌ها کلیک کنید</string>
-  <string name="usage_title_connected_apps">برنامه‌های متصل</string>
+  <string name="usage_title_connected_apps">برنامه‌ها</string>
   <string name="usage_title_library">کتابخانه</string>
   <string name="usage_title_lists">لیست‌ها</string>
   <string name="validation_text_app_name">لطفاً نام برنامه را وارد کنید.</string>
@@ -1845,7 +1848,7 @@
   <string name="validation_text_settings_field">%s مورد نیاز است</string>
   <string name="vip_feature_description_api_apps">برنامه‌ها و سرویس‌های شخص ثالث بیشتری را از طریق Trakt API متصل کنید تا تجربه خود را بهبود بخشید.</string>
   <string name="vip_feature_description_bigger_library">بیشتر از تاریخچه تماشای خود را با محدودیت‌های کتابخانه گسترش‌یافته که برای یک عمر طراحی شده‌اند، ذخیره کنید.</string>
-  <string name="vip_feature_description_bigger_watchlist">ظرفیت لیست تماشای خود را گسترش دهید تا بدون محدودیت، هر آنچه می‌خواهید تماشا کنید را پیگیری کنید.</string>
+  <string name="vip_feature_description_bigger_watchlist">ظرفیت لیست تماشای خود را گسترش دهید تا هر آنچه می‌خواهید تماشا کنید را پیگیری کنید.</string>
   <string name="vip_feature_description_early_access">قبل از دیگران به نسخه‌های جدید برنامه‌های Trakt و ویژگی‌های کاملاً جدید دسترسی زودهنگام پیدا کنید.</string>
   <string name="vip_feature_description_global_wtw">ببینید نمایش‌ها و فیلم‌ها در کجای جهان برای پخش آنلاین در دسترس هستند، نه فقط در منطقه شما.</string>
   <string name="vip_feature_description_increased_limits">از محدودیت‌های بالاتر برای لیست‌ها، امتیازات و سایر ویژگی‌های خود لذت ببرید.</string>
@@ -1862,7 +1865,7 @@
   <string name="vip_feature_description_trivia">اطلاعات بیشتر و بینش‌های عمیق‌تر درباره فیلم‌ها و نمایش‌هایی که تماشا می‌کنید، دریافت کنید.</string>
   <string name="vip_feature_description_vip_status">وضعیت VIP خود را در سراسر برنامه‌ها و وب‌سایت به نمایش بگذارید.</string>
   <string name="vip_feature_description_yir">آمار فراوان برای هر سال که عضو بوده‌اید.</string>
-  <string name="vip_feature_title_api_apps">برنامه‌های API متصل بیشتر</string>
+  <string name="vip_feature_title_api_apps">برنامه‌های متصل بیشتر</string>
   <string name="vip_feature_title_bigger_library">کتابخانه بزرگ‌تر</string>
   <string name="vip_feature_title_bigger_watchlist">لیست تماشای بزرگ‌تر</string>
   <string name="vip_feature_title_early_access">دسترسی زودهنگام</string>

@@ -5,7 +5,7 @@
   <string name="about_feature_description_community">Segueix amics, veu què està mirant l\'equip i descobreix preferits compartits. Veure junts és millor.</string>
   <string name="about_feature_description_discover">Rep recomanacions personalitzades segons els teus gustos. Explora títols de tendència i llistes seleccionades de la comunitat Trakt.</string>
   <string name="about_feature_description_rate_review">Comparteix les teves opinions amb valoracions i comentaris. Veure com els teus gustos es comparen amb milions d\'altres espectadors.</string>
-  <string name="about_feature_description_scrobble">Fes un seguiment automàtic del que veus a centenars d\'aplicacions i servidors multimèdia. No perdis mai el fil del teu progrés.</string>
+  <string name="about_feature_description_scrobble">Fes un seguiment automàtic del que veus a les aplicacions de streaming i servidors multimèdia. No perdis mai el fil del teu progrés.</string>
   <string name="about_feature_title_any_device">Qualsevol dispositiu, qualsevol plataforma</string>
   <string name="about_feature_title_calendar">No et perdis cap episodi</string>
   <string name="about_feature_title_community">Una comunitat d\'espectadors</string>
@@ -912,6 +912,7 @@
   <string name="link_label_discover_shows">Descobreix sèries</string>
   <string name="link_label_get_vip">Desbloqueja les funcions VIP</string>
   <string name="link_label_github">GitHub</string>
+  <string name="link_label_history_all">Tornar a l\'historial complet</string>
   <string name="link_label_install_pwa">Instal·la PWA</string>
   <string name="link_label_ios_app">Aplicació iOS</string>
   <string name="link_label_open_preview_feature">Obre %s</string>
@@ -1338,6 +1339,8 @@
   <string name="text_footer_category_community">Comunitat</string>
   <string name="text_footer_category_legal">Legal</string>
   <string name="text_footer_category_platform">Plataforma</string>
+  <string name="text_history_sync_filter">ID de sincronització %d</string>
+  <string name="text_history_sync_filter_with_source">ID de sincronització %1$d (%2$s)</string>
   <string name="text_hours_watched">%d hores</string>
   <string name="text_info_blocked">%s ha estat bloquejat.</string>
   <string name="text_info_cover_removed">La imatge de portada s\'ha esborrat.</string>
@@ -1833,7 +1836,7 @@
   <string name="tv_time_report_submit_text">Envia informe</string>
   <string name="tv_time_report_success">Gràcies! El vostre informe ha estat enviat. Hi farem una ullada.</string>
   <string name="tv_time_report_upload_prompt">Arrossegueu la vostra exportació de TV Time aquí o feu clic per triar fitxers</string>
-  <string name="usage_title_connected_apps">Aplicacions connectades</string>
+  <string name="usage_title_connected_apps">Aplicacions</string>
   <string name="usage_title_library">Biblioteca</string>
   <string name="usage_title_lists">Llistes</string>
   <string name="validation_text_app_name">Si us plau, introdueix un nom d\'aplicació.</string>
@@ -1845,7 +1848,7 @@
   <string name="validation_text_settings_field">Es requereix %s</string>
   <string name="vip_feature_description_api_apps">Connecta més aplicacions i serveis de tercers a través de l\'API de Trakt per millorar la teva experiència.</string>
   <string name="vip_feature_description_bigger_library">Emmagatzema més del teu historial de visualització amb límits de biblioteca ampliats dissenyats per durar tota la vida.</string>
-  <string name="vip_feature_description_bigger_watchlist">Amplia la capacitat de la teva llista de seguiment per fer un seguiment de tot el que vols veure sense límits.</string>
+  <string name="vip_feature_description_bigger_watchlist">Amplia la capacitat de la teva llista de seguiment per fer un seguiment de tot el que vols veure.</string>
   <string name="vip_feature_description_early_access">Obtén accés anticipat a les noves versions de les aplicacions de Trakt i a funcions noves abans que ningú.</string>
   <string name="vip_feature_description_global_wtw">Veure on estan disponibles les sèries i pel·lícules per reproduir en qualsevol part del món, no només a la teva regió.</string>
   <string name="vip_feature_description_increased_limits">Gaudeix de límits més alts per a les teves llistes, valoracions i altres funcions.</string>
@@ -1862,7 +1865,7 @@
   <string name="vip_feature_description_trivia">Obtén més curiositats i informació sobre les pel·lícules i sèries que veus.</string>
   <string name="vip_feature_description_vip_status">Mostra el teu estat VIP a totes les aplicacions i al lloc web.</string>
   <string name="vip_feature_description_yir">Moltes estadístiques de cada any que has estat membre.</string>
-  <string name="vip_feature_title_api_apps">Més APPs API connectades</string>
+  <string name="vip_feature_title_api_apps">Més APPs connectades</string>
   <string name="vip_feature_title_bigger_library">Biblioteca més gran</string>
   <string name="vip_feature_title_bigger_watchlist">Llista de seguiment més gran</string>
   <string name="vip_feature_title_early_access">Accés anticipat</string>

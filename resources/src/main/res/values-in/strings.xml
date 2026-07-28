@@ -5,7 +5,7 @@
   <string name="about_feature_description_community">Ikuti teman, lihat apa yang ditonton tim, dan temukan favorit bersama. Menonton bersama lebih baik.</string>
   <string name="about_feature_description_discover">Dapatkan rekomendasi yang dipersonalisasi berdasarkan selera Anda. Jelajahi judul yang sedang tren dan daftar pilihan dari komunitas Trakt.</string>
   <string name="about_feature_description_rate_review">Bagikan pendapat Anda dengan penilaian dan komentar. Lihat bagaimana selera Anda dibandingkan dengan jutaan penonton lainnya.</string>
-  <string name="about_feature_description_scrobble">Secara otomatis scrobble apa yang Anda tonton di ratusan aplikasi dan server media. Jangan pernah kehilangan jejak kemajuan Anda.</string>
+  <string name="about_feature_description_scrobble">Secara otomatis scrobble apa yang Anda tonton di seluruh aplikasi streaming dan server media. Jangan pernah kehilangan jejak kemajuan Anda.</string>
   <string name="about_feature_title_any_device">Perangkat Apa Pun, Platform Apa Pun</string>
   <string name="about_feature_title_calendar">Jangan Pernah Lewatkan Episode</string>
   <string name="about_feature_title_community">Komunitas Penonton</string>
@@ -912,6 +912,7 @@
   <string name="link_label_discover_shows">Temukan acara</string>
   <string name="link_label_get_vip">Buka fitur VIP</string>
   <string name="link_label_github">GitHub</string>
+  <string name="link_label_history_all">Kembali ke riwayat lengkap</string>
   <string name="link_label_install_pwa">Pasang PWA</string>
   <string name="link_label_ios_app">Aplikasi iOS</string>
   <string name="link_label_open_preview_feature">Buka %s</string>
@@ -1338,6 +1339,8 @@
   <string name="text_footer_category_community">Komunitas</string>
   <string name="text_footer_category_legal">Hukum</string>
   <string name="text_footer_category_platform">Platform</string>
+  <string name="text_history_sync_filter">ID Sinkronisasi %d</string>
+  <string name="text_history_sync_filter_with_source">ID Sinkronisasi %1$d (%2$s)</string>
   <string name="text_hours_watched">%d jam</string>
   <string name="text_info_blocked">%s telah diblokir.</string>
   <string name="text_info_cover_removed">Gambar sampul telah dihapus.</string>
@@ -1833,7 +1836,7 @@
   <string name="tv_time_report_submit_text">Kirim laporan</string>
   <string name="tv_time_report_success">Terima kasih! Laporan Anda telah dikirim. Kami akan memeriksanya.</string>
   <string name="tv_time_report_upload_prompt">Letakkan ekspor TV Time Anda di sini, atau klik untuk memilih file</string>
-  <string name="usage_title_connected_apps">Aplikasi Terhubung</string>
+  <string name="usage_title_connected_apps">Aplikasi</string>
   <string name="usage_title_library">Pustaka</string>
   <string name="usage_title_lists">Daftar</string>
   <string name="validation_text_app_name">Harap masukkan nama aplikasi.</string>
@@ -1845,7 +1848,7 @@
   <string name="validation_text_settings_field">%s wajib diisi</string>
   <string name="vip_feature_description_api_apps">Hubungkan lebih banyak aplikasi dan layanan pihak ketiga melalui Trakt API untuk meningkatkan pengalaman Anda.</string>
   <string name="vip_feature_description_bigger_library">Simpan lebih banyak riwayat tontonan Anda dengan batas perpustakaan yang diperluas yang dirancang untuk bertahan seumur hidup.</string>
-  <string name="vip_feature_description_bigger_watchlist">Perluas kapasitas daftar tontonan Anda untuk melacak semua yang ingin Anda tonton tanpa batas.</string>
+  <string name="vip_feature_description_bigger_watchlist">Perluas kapasitas daftar tontonan Anda untuk melacak semua yang ingin Anda tonton.</string>
   <string name="vip_feature_description_early_access">Dapatkan akses awal ke versi baru aplikasi Trakt dan fitur baru sebelum orang lain.</string>
   <string name="vip_feature_description_global_wtw">Lihat di mana acara dan film tersedia untuk streaming di mana saja di dunia, tidak hanya di wilayah Anda.</string>
   <string name="vip_feature_description_increased_limits">Nikmati batas yang lebih tinggi untuk daftar, penilaian, dan fitur lainnya.</string>
@@ -1862,7 +1865,7 @@
   <string name="vip_feature_description_trivia">Dapatkan lebih banyak trivia dan wawasan tentang film dan acara yang Anda tonton.</string>
   <string name="vip_feature_description_vip_status">Pamerkan status VIP Anda di seluruh aplikasi dan situs web.</string>
   <string name="vip_feature_description_yir">Banyak statistik untuk setiap tahun Anda menjadi anggota.</string>
-  <string name="vip_feature_title_api_apps">Lebih Banyak Aplikasi API Terhubung</string>
+  <string name="vip_feature_title_api_apps">Lebih Banyak Aplikasi Terhubung</string>
   <string name="vip_feature_title_bigger_library">Perpustakaan Lebih Besar</string>
   <string name="vip_feature_title_bigger_watchlist">Daftar Tontonan Lebih Besar</string>
   <string name="vip_feature_title_early_access">Akses Awal</string>

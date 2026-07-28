@@ -5,7 +5,7 @@
   <string name="about_feature_description_community">Segue amigos, vê o que a equipa está a ver e descobre favoritos em comum. Ver em conjunto é melhor.</string>
   <string name="about_feature_description_discover">Obtém recomendações personalizadas com base nos teus gostos. Explora títulos em destaque e listas selecionadas pela comunidade Trakt.</string>
   <string name="about_feature_description_rate_review">Partilha as tuas opiniões com classificações e comentários. Descobre como os teus gostos se comparam aos de milhões de outros espectadores.</string>
-  <string name="about_feature_description_scrobble">Regista automaticamente o que vês em centenas de apps e servidores multimédia. Nunca percas o controlo do teu progresso.</string>
+  <string name="about_feature_description_scrobble">Regista automaticamente o que vês em apps de streaming e servidores multimédia. Nunca percas o controlo do teu progresso.</string>
   <string name="about_feature_title_any_device">Qualquer dispositivo, qualquer plataforma</string>
   <string name="about_feature_title_calendar">Nunca percas um episódio</string>
   <string name="about_feature_title_community">Uma comunidade de espectadores</string>
@@ -636,7 +636,7 @@
   <string name="header_device_auth_code_instruction">e introduz o seguinte código:</string>
   <string name="header_device_auth_qr_instruction">Lê o código QR ou inicia sessão em:</string>
   <string name="header_device_auth_try_again">A ativação foi recusada, expirou ou ocorreu algo inesperado. Tenta novamente.</string>
-  <string name="header_director">Realizador</string>
+  <string name="header_director">Realizadores</string>
   <string name="header_display">Apresentação</string>
   <string name="header_episode_type">Tipo</string>
   <string name="header_expected_premiere">Estreia prevista</string>
@@ -644,7 +644,7 @@
   <string name="header_export">Exportar</string>
   <string name="header_favorite_genres">Géneros favoritos</string>
   <string name="header_filters">Filtros</string>
-  <string name="header_genre">Género</string>
+  <string name="header_genre">Géneros</string>
   <string name="header_get_notified">Ativa as notificações!</string>
   <string name="header_get_trakt_app">Obtém a app do Trakt</string>
   <string name="header_height">Altura</string>
@@ -660,7 +660,7 @@
   <string name="header_landing_share">Partilha</string>
   <string name="header_landing_track">Regista</string>
   <string name="header_landing_welcome">Bem-vindo ao Trakt</string>
-  <string name="header_language">Idioma</string>
+  <string name="header_language">Idiomas</string>
   <string name="header_leaderboard">Pantheon</string>
   <string name="header_manage_lists">Gerir listas</string>
   <string name="header_network">Rede</string>
@@ -718,11 +718,11 @@
   <string name="header_streaming_services">Serviços de streaming</string>
   <string name="header_streaming_sync">Sincronização de streaming</string>
   <string name="header_streaming_vip_services">Disponível com o VIP</string>
-  <string name="header_studio">Estúdio</string>
+  <string name="header_studio">Estúdios</string>
   <string name="header_sync_detail">Sincronização %s</string>
   <string name="header_target">Alvo</string>
   <string name="header_total_runtime">Duração total</string>
-  <string name="header_writer">Guionista</string>
+  <string name="header_writer">Guionistas</string>
   <string name="heading_api_applications">Aplicações API</string>
   <string name="heading_apps_settings">Aplicações</string>
   <string name="heading_blocked_users">Utilizadores bloqueados</string>
@@ -912,6 +912,7 @@
   <string name="link_label_discover_shows">Descobrir séries</string>
   <string name="link_label_get_vip">Desbloquear funcionalidades VIP</string>
   <string name="link_label_github">GitHub</string>
+  <string name="link_label_history_all">Voltar ao histórico completo</string>
   <string name="link_label_install_pwa">Instalar PWA</string>
   <string name="link_label_ios_app">App iOS</string>
   <string name="link_label_open_preview_feature">Abrir %s</string>
@@ -1338,6 +1339,8 @@
   <string name="text_footer_category_community">Comunidade</string>
   <string name="text_footer_category_legal">Legal</string>
   <string name="text_footer_category_platform">Plataforma</string>
+  <string name="text_history_sync_filter">Sincronização %d</string>
+  <string name="text_history_sync_filter_with_source">Sincronização %1$d (%2$s)</string>
   <string name="text_hours_watched">%d horas</string>
   <string name="text_info_blocked">Bloqueaste %s.</string>
   <string name="text_info_cover_removed">A imagem de capa foi removida.</string>
@@ -1833,7 +1836,7 @@
   <string name="tv_time_report_submit_text">Enviar relatório</string>
   <string name="tv_time_report_success">Obrigado! O teu relatório foi enviado. Vamos analisá-lo.</string>
   <string name="tv_time_report_upload_prompt">Arrasta a tua exportação do TV Time para aqui ou clica para escolher os ficheiros</string>
-  <string name="usage_title_connected_apps">Apps associadas</string>
+  <string name="usage_title_connected_apps">Apps</string>
   <string name="usage_title_library">Biblioteca</string>
   <string name="usage_title_lists">Listas</string>
   <string name="validation_text_app_name">Introduz um nome para a aplicação.</string>
@@ -1845,7 +1848,7 @@
   <string name="validation_text_settings_field">%s é obrigatório</string>
   <string name="vip_feature_description_api_apps">Associa mais apps e serviços de terceiros através da API do Trakt para melhorares a tua experiência.</string>
   <string name="vip_feature_description_bigger_library">Guarda mais do teu histórico de visualizações com limites de biblioteca alargados pensados para durar uma vida inteira.</string>
-  <string name="vip_feature_description_bigger_watchlist">Expande a tua lista para ver e guarda tudo o que queres ver sem limites.</string>
+  <string name="vip_feature_description_bigger_watchlist">Aumenta a capacidade da tua lista para ver e acompanha tudo o que queres ver.</string>
   <string name="vip_feature_description_early_access">Obtém acesso antecipado a novas versões das apps do Trakt e a funcionalidades totalmente novas antes de todos os outros.</string>
   <string name="vip_feature_description_global_wtw">Descobre onde ver séries e filmes em streaming em qualquer parte do mundo, não apenas na tua região.</string>
   <string name="vip_feature_description_increased_limits">Aproveita limites superiores para as tuas listas, classificações e outras funcionalidades.</string>
@@ -1862,7 +1865,7 @@
   <string name="vip_feature_description_trivia">Obtém mais curiosidades e insights sobre os filmes e séries que vês.</string>
   <string name="vip_feature_description_vip_status">Mostra o teu estatuto VIP nas apps e no site.</string>
   <string name="vip_feature_description_yir">Muitas estatísticas para cada ano em que foste membro.</string>
-  <string name="vip_feature_title_api_apps">Mais aplicações API associadas</string>
+  <string name="vip_feature_title_api_apps">Mais apps associadas</string>
   <string name="vip_feature_title_bigger_library">Biblioteca maior</string>
   <string name="vip_feature_title_bigger_watchlist">Lista para ver maior</string>
   <string name="vip_feature_title_early_access">Acesso antecipado</string>
@@ -1878,7 +1881,7 @@
   <string name="vip_feature_title_streaming_sync">Sincronização de streaming</string>
   <string name="vip_feature_title_support">Melhor apoio: fórum e feedback</string>
   <string name="vip_feature_title_trivia">Curiosidades</string>
-  <string name="vip_feature_title_unlock">Desbloqueia todo o potencial com</string>
+  <string name="vip_feature_title_unlock">Desbloqueia todo o potencial com o</string>
   <string name="vip_feature_title_vip_status">Estatuto VIP</string>
   <string name="vip_feature_title_yir">Resumo do ano</string>
   <string name="vip_text_vip_go_beyond_limits">Vai além dos teus limites</string>

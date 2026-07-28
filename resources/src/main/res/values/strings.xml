@@ -5,7 +5,7 @@
   <string name="about_feature_description_community">Follow friends, see what the team is watching, and discover shared favourites. Watching together is better.</string>
   <string name="about_feature_description_discover">Get personalized recommendations based on your taste. Explore trending titles and curated lists from the Trakt community.</string>
   <string name="about_feature_description_rate_review">Share your opinions with ratings and comments. See how your taste compares to millions of other watchers.</string>
-  <string name="about_feature_description_scrobble">Automatically scrobble what you watch across hundreds of apps and media servers. Never lose track of your progress.</string>
+  <string name="about_feature_description_scrobble">Automatically scrobble what you watch across streaming apps and media servers. Never lose track of your progress.</string>
   <string name="about_feature_title_any_device">Any Device, Any Platform</string>
   <string name="about_feature_title_calendar">Never Miss an Episode</string>
   <string name="about_feature_title_community">A Community of Watchers</string>
@@ -81,6 +81,7 @@
   <string name="button_label_edit_list">Edit your list %s</string>
   <string name="button_label_edit_mode">Edit mode</string>
   <string name="button_label_edit_note">Edit note</string>
+  <string name="button_label_exclude_option">Exclude %s</string>
   <string name="button_label_exit_edit_mode">Exit edit mode</string>
   <string name="button_label_expand_category">Expand %s</string>
   <string name="button_label_expand_media_overview">Expand \"%s\" overview</string>
@@ -100,6 +101,7 @@
   <string name="button_label_home">Go back to the homepage</string>
   <string name="button_label_import_more">Reset and start a new import.</string>
   <string name="button_label_import_selected">Import the movie matches you picked above.</string>
+  <string name="button_label_include_option">Include %s</string>
   <string name="button_label_join_trakt">Join trakt.tv to keep track of what you\'re watching</string>
   <string name="button_label_library">Library</string>
   <string name="button_label_like_list">Like %s</string>
@@ -910,6 +912,7 @@
   <string name="link_label_discover_shows">Discover shows</string>
   <string name="link_label_get_vip">Unlock VIP features</string>
   <string name="link_label_github">GitHub</string>
+  <string name="link_label_history_all">Back to full history</string>
   <string name="link_label_install_pwa">Install PWA</string>
   <string name="link_label_ios_app">iOS App</string>
   <string name="link_label_open_preview_feature">Open %s</string>
@@ -1054,6 +1057,7 @@
   <string name="mir_title_month_in_review">Month in Review</string>
   <string name="notes_placeholder_text">Leave a note the next time you favorite or drop a title.</string>
   <string name="notice_delete_account_vip">Since you\'re an active Trakt VIP, please <a>cancel your VIP membership</a> before deleting your account.</string>
+  <string name="option_label_excluded">%s (excluded from results)</string>
   <string name="option_text_africa">Africa</string>
   <string name="option_text_all">All</string>
   <string name="option_text_all_digital_releases">All digital releases</string>
@@ -1065,6 +1069,7 @@
   <string name="option_text_certification_unrated">Unrated</string>
   <string name="option_text_comment_language_all">All languages</string>
   <string name="option_text_europe">Europe</string>
+  <string name="option_text_excluded">-%s</string>
   <string name="option_text_latin_america">Latin America</string>
   <string name="option_text_middle_east">Middle East</string>
   <string name="option_text_my_favorites">My favorites</string>
@@ -1221,7 +1226,7 @@
   <string name="tag_text_watch_count">Watch count</string>
   <string name="tag_text_watched">Watched</string>
   <string name="tag_text_watchlisted">Watchlisted</string>
-  <string name="text_about">About me</string>
+  <string name="text_about">About Me</string>
   <string name="text_about_tagline">Trakt automatically tracks what you\'re watching across all your devices and apps — giving you a single place to see your entire watch history, discover what\'s next, and connect with a community of millions of movie and TV lovers around the world.</string>
   <string name="text_about_user">About %s</string>
   <string name="text_after_credits">After credits</string>
@@ -1317,7 +1322,7 @@
   <string name="text_directed_by_plain">Directed by %s</string>
   <string name="text_directed_by_short">Directed by</string>
   <string name="text_display_email">Email</string>
-  <string name="text_display_name">Display name</string>
+  <string name="text_display_name">Display Name</string>
   <string name="text_duplicate_plays">duplicate plays</string>
   <string name="text_during_credits">During credits</string>
   <string name="text_edit_mode_toggle_sections">Hide/show sections</string>
@@ -1334,6 +1339,8 @@
   <string name="text_footer_category_community">Community</string>
   <string name="text_footer_category_legal">Legal</string>
   <string name="text_footer_category_platform">Platform</string>
+  <string name="text_history_sync_filter">Sync ID %d</string>
+  <string name="text_history_sync_filter_with_source">Sync ID %1$d (%2$s)</string>
   <string name="text_hours_watched">%d hours</string>
   <string name="text_info_blocked">%s has been blocked.</string>
   <string name="text_info_cover_removed">Cover image has been cleared.</string>
@@ -1829,7 +1836,7 @@
   <string name="tv_time_report_submit_text">Send report</string>
   <string name="tv_time_report_success">Thanks! Your report has been sent. We\'ll take a look.</string>
   <string name="tv_time_report_upload_prompt">Drop your TV Time export here, or click to choose files</string>
-  <string name="usage_title_connected_apps">Connected Apps</string>
+  <string name="usage_title_connected_apps">Apps</string>
   <string name="usage_title_library">Library</string>
   <string name="usage_title_lists">Lists</string>
   <string name="validation_text_app_name">Please enter an application name.</string>
@@ -1841,7 +1848,7 @@
   <string name="validation_text_settings_field">%s is required</string>
   <string name="vip_feature_description_api_apps">Connect more third-party apps and services through the Trakt API to enhance your experience.</string>
   <string name="vip_feature_description_bigger_library">Store more of your viewing history with expanded library limits designed to last a lifetime.</string>
-  <string name="vip_feature_description_bigger_watchlist">Expand your watchlist capacity to keep track of everything you want to watch without limits.</string>
+  <string name="vip_feature_description_bigger_watchlist">Expand your watchlist capacity to keep track of everything you want to watch.</string>
   <string name="vip_feature_description_early_access">Get early access to new versions of Trakt apps and brand new features before anyone else.</string>
   <string name="vip_feature_description_global_wtw">See where shows and movies are available to stream anywhere in the world, not just your region.</string>
   <string name="vip_feature_description_increased_limits">Enjoy higher limits for your lists, ratings, and other features.</string>
@@ -1858,7 +1865,7 @@
   <string name="vip_feature_description_trivia">Get more trivia and insights about the movies and shows you watch.</string>
   <string name="vip_feature_description_vip_status">Show off your VIP status throughout the apps and website.</string>
   <string name="vip_feature_description_yir">Lots of stats for every year you\'ve been a member.</string>
-  <string name="vip_feature_title_api_apps">More API Apps Connected</string>
+  <string name="vip_feature_title_api_apps">More Apps Connected</string>
   <string name="vip_feature_title_bigger_library">Bigger Library</string>
   <string name="vip_feature_title_bigger_watchlist">Bigger Watchlist</string>
   <string name="vip_feature_title_early_access">Early Access</string>
