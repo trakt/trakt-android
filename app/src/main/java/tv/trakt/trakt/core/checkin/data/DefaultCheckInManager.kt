@@ -87,11 +87,15 @@ internal class DefaultCheckInManager(
             )
             cacheMarkerProvider.invalidate()
 
-            delay(500.milliseconds)
-            val watching = userRemoteDataSource.getWatchingNow()
+            delay(300.milliseconds)
+            var watching = userRemoteDataSource.getWatchingNow()
             if (watching == null) {
-                Timber.d("No active watching found after check-in.")
-                throw Exception("No active watching now found after check-in.")
+                // Wait a bit longer for the check-in to be reflected in replica.
+                delay(2.seconds)
+                watching = userRemoteDataSource.getWatchingNow()
+                if (watching == null) {
+                    throw Exception("Oops! No active watching now found after check-in.")
+                }
             }
 
             watching.episode?.let { dto ->
@@ -144,11 +148,15 @@ internal class DefaultCheckInManager(
             checkInRemoteDataSource.postMovieCheckIn(movieId)
             cacheMarkerProvider.invalidate()
 
-            delay(500.milliseconds)
-            val watching = userRemoteDataSource.getWatchingNow()
+            delay(300.milliseconds)
+            var watching = userRemoteDataSource.getWatchingNow()
             if (watching == null) {
-                Timber.d("No active watching found after check-in.")
-                throw Exception("No active watching now found after check-in.")
+                // Wait a bit longer for the check-in to be reflected in replica.
+                delay(2.seconds)
+                watching = userRemoteDataSource.getWatchingNow()
+                if (watching == null) {
+                    throw Exception("Oops! No active watching now found after check-in.")
+                }
             }
 
             watching.movie?.let { dto ->
