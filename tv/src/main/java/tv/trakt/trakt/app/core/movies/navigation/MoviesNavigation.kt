@@ -15,18 +15,18 @@ internal data object MoviesDestination
 internal fun NavGraphBuilder.moviesScreen(
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToTrending: () -> Unit,
+    onNavigateToReleases: () -> Unit,
     onNavigateToPopular: () -> Unit,
     onNavigateToAnticipated: () -> Unit,
-    onNavigateToRecommended: () -> Unit,
 ) {
     composable<MoviesDestination> {
         MoviesScreen(
             viewModel = koinViewModel(),
             onNavigateToMovie = onNavigateToMovie,
             onNavigateToTrending = onNavigateToTrending,
+            onNavigateToReleases = onNavigateToReleases,
             onNavigateToPopular = onNavigateToPopular,
             onNavigateToAnticipated = onNavigateToAnticipated,
-            onNavigateToRecommended = onNavigateToRecommended,
         )
     }
 }

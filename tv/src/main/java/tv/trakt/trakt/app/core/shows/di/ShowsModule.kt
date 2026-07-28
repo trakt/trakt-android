@@ -7,11 +7,12 @@ import tv.trakt.trakt.app.core.shows.data.remote.ShowsApiClient
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.app.core.shows.features.anticipated.ShowsAnticipatedViewAllViewModel
 import tv.trakt.trakt.app.core.shows.features.popular.ShowsPopularViewAllViewModel
-import tv.trakt.trakt.app.core.shows.features.recommended.ShowsRecommendedViewAllViewModel
+import tv.trakt.trakt.app.core.shows.features.releases.ShowsReleasesViewAllViewModel
 import tv.trakt.trakt.app.core.shows.features.trending.ShowsTrendingViewAllViewModel
 import tv.trakt.trakt.app.core.shows.usecase.GetAnticipatedShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetPopularShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetRecommendedShowsUseCase
+import tv.trakt.trakt.app.core.shows.usecase.GetShowsReleasesUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetTrendingShowsUseCase
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowStorage
@@ -21,6 +22,7 @@ internal val showsDataModule = module {
         ShowsApiClient(
             api = get(),
             recommendationsApi = get(),
+            calendarsApi = get(),
         )
     }
 
@@ -58,15 +60,29 @@ internal val showsModule = module {
         )
     }
 
+    factory {
+        GetShowsReleasesUseCase(
+            remoteSource = get(),
+            localShowSource = get(),
+            localEpisodeSource = get(),
+        )
+    }
+
     viewModel {
         ShowsViewModel(
             getTrendingShowsUseCase = get(),
             getPopularShowsUseCase = get(),
             getAnticipatedShowsUseCase = get(),
-            getRecommendedShowsUseCase = get(),
+            getReleasesShowsUseCase = get(),
             sessionManager = get(),
             appLifecycleProvider = get(),
             collectionStateProvider = get(),
+        )
+    }
+
+    viewModel {
+        ShowsReleasesViewAllViewModel(
+            getItemsUseCase = get(),
         )
     }
 
@@ -86,13 +102,6 @@ internal val showsModule = module {
 
     viewModel {
         ShowsAnticipatedViewAllViewModel(
-            getItemsUseCase = get(),
-            collectionStateProvider = get(),
-        )
-    }
-
-    viewModel {
-        ShowsRecommendedViewAllViewModel(
             getItemsUseCase = get(),
             collectionStateProvider = get(),
         )

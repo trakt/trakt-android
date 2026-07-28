@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
@@ -44,6 +45,7 @@ internal fun HomeUpcomingView(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onFocused: (HomeUpcomingItem?) -> Unit = {},
+    onLoaded: () -> Unit = {},
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToMovie: (movieId: TraktId) -> Unit,
 ) {
@@ -51,6 +53,12 @@ internal fun HomeUpcomingView(
 
     LifecycleEventEffect(ON_CREATE) {
         viewModel.updateData()
+    }
+
+    LaunchedEffect(state.isLoading) {
+        if (!state.isLoading && state.items != null) {
+            onLoaded()
+        }
     }
 
     HomeUpcomingContent(
@@ -228,6 +236,12 @@ private fun ContentListItem(
                             item.isFullSeason -> stringResource(
                                 R.string.text_season_number,
                                 item.episode.season,
+                            )
+                            item.episodes.size > 1 -> stringResource(
+                                R.string.episode_footer_season_episode_range,
+                                item.episode.season,
+                                item.episodes.first().number,
+                                item.episodes.last().number,
                             )
                             else -> item.episode.seasonEpisodeString()
                         }

@@ -1,11 +1,13 @@
 package tv.trakt.trakt.app.core.shows.data.remote
 
+import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.ShowsApi
 import tv.trakt.trakt.app.core.shows.data.remote.model.response.AnticipatedShowDto
 import tv.trakt.trakt.app.core.shows.data.remote.model.response.TrendingShowDto
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.networking.CalendarMediaDto
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
@@ -16,10 +18,12 @@ import tv.trakt.trakt.common.networking.SeasonDto
 import tv.trakt.trakt.common.networking.ShowCalendarsDto
 import tv.trakt.trakt.common.networking.StreamingDto
 import java.time.Instant
+import java.time.temporal.ChronoUnit.DAYS
 
 internal class ShowsApiClient(
     private val api: ShowsApi,
     private val recommendationsApi: RecommendationsApi,
+    private val calendarsApi: CalendarsApi,
 ) : ShowsRemoteDataSource {
     override suspend fun getTrendingShows(
         limit: Int,
@@ -134,6 +138,31 @@ internal class ShowsApiClient(
             runtimes = null,
             countries = null,
             certifications = null,
+        )
+
+        return response.body()
+    }
+
+    override suspend fun getReleases(
+        startDate: Instant,
+        days: Int,
+    ): List<CalendarMediaDto> {
+        val response = calendarsApi.getCalendarsReleasesHot(
+            extended = "full,images,colors",
+            startDate = startDate.truncatedTo(DAYS).toString(),
+            days = days,
+            watchnow = null,
+            genres = null,
+            subgenres = null,
+            years = null,
+            ratings = null,
+            startDate2 = null,
+            endDate = null,
+            runtimes = null,
+            countries = null,
+            certifications = null,
+            type = "show",
+            group = null,
         )
 
         return response.body()

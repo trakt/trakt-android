@@ -3,6 +3,7 @@ package tv.trakt.trakt.app.core.movies.data.remote
 import tv.trakt.trakt.app.core.movies.data.remote.model.response.AnticipatedMovieDto
 import tv.trakt.trakt.app.core.movies.data.remote.model.response.TrendingMovieDto
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.networking.CalendarMediaDto
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
@@ -35,6 +36,11 @@ internal interface MoviesRemoteDataSource {
         limit: Int,
         page: Int,
     ): List<RecommendedMovieDto>
+
+    suspend fun getReleases(
+        startDate: Instant,
+        days: Int,
+    ): List<CalendarMediaDto>
 
     suspend fun getMovieDetails(movieId: TraktId): MovieCalendarDto
 

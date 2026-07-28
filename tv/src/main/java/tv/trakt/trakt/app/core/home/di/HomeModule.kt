@@ -4,6 +4,8 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tv.trakt.trakt.app.core.home.HomeViewModel
 import tv.trakt.trakt.app.core.home.sections.history.HomeHistoryViewModel
+import tv.trakt.trakt.app.core.home.sections.recommended.HomeRecommendedViewModel
+import tv.trakt.trakt.app.core.home.sections.recommended.viewall.RecommendedViewAllViewModel
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.HomeUpcomingViewModel
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.usecases.GetUpcomingUseCase
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.HomeUpNextViewModel
@@ -137,6 +139,24 @@ internal val homeModule = module {
             syncHistoryCase = get(),
             scrobbleUpdates = get(),
             appLifecycleProvider = get(),
+        )
+    }
+
+    viewModel {
+        HomeRecommendedViewModel(
+            getRecommendedShowsUseCase = get(),
+            getRecommendedMoviesUseCase = get(),
+            sessionManager = get(),
+            collectionStateProvider = get(),
+            appLifecycleProvider = get(),
+        )
+    }
+
+    viewModel {
+        RecommendedViewAllViewModel(
+            getRecommendedShowsUseCase = get(),
+            getRecommendedMoviesUseCase = get(),
+            collectionStateProvider = get(),
         )
     }
 }

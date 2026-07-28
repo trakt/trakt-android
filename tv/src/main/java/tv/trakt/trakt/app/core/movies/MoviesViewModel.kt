@@ -16,11 +16,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.app.Config.REFRESH_DATA_THRESHOLD_MINUTES
+import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
+import tv.trakt.trakt.app.core.movies.MoviesConfig.MOVIES_SECTION_LIMIT
 import tv.trakt.trakt.app.core.movies.model.AnticipatedMovie
 import tv.trakt.trakt.app.core.movies.model.TrendingMovie
 import tv.trakt.trakt.app.core.movies.usecase.GetAnticipatedMoviesUseCase
+import tv.trakt.trakt.app.core.movies.usecase.GetMoviesReleasesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetPopularMoviesUseCase
-import tv.trakt.trakt.app.core.movies.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetTrendingMoviesUseCase
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
@@ -38,7 +40,7 @@ internal class MoviesViewModel(
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
     private val getAnticipatedMoviesUseCase: GetAnticipatedMoviesUseCase,
-    private val getRecommendedMoviesUseCase: GetRecommendedMoviesUseCase,
+    private val getReleasesMoviesUseCase: GetMoviesReleasesUseCase,
     private val sessionManager: SessionManager,
     private val appLifecycleProvider: AppLifecycleProvider,
     private val collectionStateProvider: CollectionStateProvider,
@@ -49,7 +51,7 @@ internal class MoviesViewModel(
     private val trendingMoviesState = MutableStateFlow(initialState.trendingMovies)
     private val popularMoviesState = MutableStateFlow(initialState.popularMovies)
     private val anticipatedMoviesState = MutableStateFlow(initialState.anticipatedMovies)
-    private val recommendedMoviesState = MutableStateFlow(initialState.recommendedMovies)
+    private val releasesMoviesState = MutableStateFlow(initialState.releasesMovies)
     private val userState = MutableStateFlow(initialState.user)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -91,24 +93,19 @@ internal class MoviesViewModel(
                     val trendingMoviesAsync = async { getTrendingMoviesUseCase.getTrendingMovies(10) }
                     val popularMoviesAsync = async { getPopularMoviesUseCase.getPopularMovies() }
                     val anticipatedMoviesAsync = async { getAnticipatedMoviesUseCase.getAnticipatedMovies() }
-
-                    val recommendedMoviesAsync = async {
-                        if (sessionManager.isAuthenticated()) {
-                            getRecommendedMoviesUseCase.getRecommendedMovies()
-                        } else {
-                            null
-                        }
+                    val releasesMoviesAsync = async {
+                        getReleasesMoviesUseCase.getReleases(limit = MOVIES_SECTION_LIMIT)
                     }
 
                     val trendingMovies = trendingMoviesAsync.await()
                     val popularMovies = popularMoviesAsync.await()
                     val anticipatedMovies = anticipatedMoviesAsync.await()
-                    val recommendedMovies = recommendedMoviesAsync.await()
+                    val releasesMovies = releasesMoviesAsync.await()
 
                     trendingMoviesState.value = trendingMovies
                     popularMoviesState.value = popularMovies
                     anticipatedMoviesState.value = anticipatedMovies
-                    recommendedMoviesState.value = recommendedMovies
+                    releasesMoviesState.value = releasesMovies
                 }
 
                 loadedAt = nowUtc()
@@ -128,7 +125,7 @@ internal class MoviesViewModel(
         trendingMoviesState,
         popularMoviesState,
         anticipatedMoviesState,
-        recommendedMoviesState,
+        releasesMoviesState,
         userState,
         collectionStateProvider.stateFlow,
         errorState,
@@ -138,7 +135,7 @@ internal class MoviesViewModel(
             trendingMovies = state[1] as ImmutableList<TrendingMovie>?,
             popularMovies = state[2] as ImmutableList<Movie>?,
             anticipatedMovies = state[3] as ImmutableList<AnticipatedMovie>?,
-            recommendedMovies = state[4] as ImmutableList<Movie>?,
+            releasesMovies = state[4] as ImmutableList<HomeUpcomingItem.MovieItem>?,
             user = state[5] as User?,
             collection = state[6] as UserCollectionState,
             error = state[7] as Exception?,

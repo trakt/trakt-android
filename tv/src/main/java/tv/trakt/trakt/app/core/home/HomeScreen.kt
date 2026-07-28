@@ -18,7 +18,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
@@ -31,6 +33,7 @@ import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.home.HomeState.AuthenticationState.AUTHENTICATED
 import tv.trakt.trakt.app.core.home.HomeState.AuthenticationState.UNAUTHENTICATED
 import tv.trakt.trakt.app.core.home.sections.history.HomeHistoryView
+import tv.trakt.trakt.app.core.home.sections.recommended.HomeRecommendedView
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.HomeUpcomingView
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.HomeUpNextView
 import tv.trakt.trakt.app.core.home.sections.social.HomeSocialView
@@ -40,10 +43,12 @@ import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.TraktId
+import kotlin.time.Duration.Companion.milliseconds
 
 private val sections = listOf(
     "upNext",
     "upcomingSchedule",
+    "recommended",
     "watchlist",
     "socialActivity",
     "history",
@@ -58,6 +63,7 @@ internal fun HomeScreen(
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToUpNext: () -> Unit,
     onNavigateToWatchlist: () -> Unit,
+    onNavigateToRecommended: () -> Unit,
     onNavigateToSocialActivity: () -> Unit,
     onNavigateToHistory: () -> Unit,
 ) {
@@ -77,13 +83,14 @@ internal fun HomeScreen(
             onNavigateToShow = onNavigateToShow,
             onNavigateToUpNext = onNavigateToUpNext,
             onNavigateToWatchlist = onNavigateToWatchlist,
+            onNavigateToRecommended = onNavigateToRecommended,
             onNavigateToSocialActivity = onNavigateToSocialActivity,
             onNavigateToHistory = onNavigateToHistory,
         )
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 private fun HomeScreenContent(
     state: HomeState,
@@ -93,6 +100,7 @@ private fun HomeScreenContent(
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToUpNext: () -> Unit,
     onNavigateToWatchlist: () -> Unit,
+    onNavigateToRecommended: () -> Unit,
     onNavigateToSocialActivity: () -> Unit,
     onNavigateToHistory: () -> Unit,
 ) {
@@ -107,12 +115,21 @@ private fun HomeScreenContent(
         )
     }
 
+    // When a section swaps its loading skeletons for real content, the focused
+    // skeleton is disposed and focus would be lost. Re-request focus on the
+    // section the user was on.
+    val refocusOnLoad: (String) -> Unit = { section ->
+        if (focusedSection == section) {
+            focusRequesters[section]?.requestSafeFocus()
+        }
+    }
+
     LaunchedEffect(Unit) {
         if (focusedSection == null) {
             focusedSection = "upNext"
             focusRequesters["upNext"]?.requestSafeFocus()
         } else {
-            delay(500)
+            delay(500.milliseconds)
             focusRequesters[focusedSection]?.requestSafeFocus()
         }
     }
@@ -152,6 +169,16 @@ private fun HomeScreenContent(
             ),
             modifier = Modifier
                 .focusRestorer()
+                .focusProperties {
+                    // Prevent focus escaping the list vertically (e.g. to the side
+                    // menu) when a fast D-pad scroll targets a not-yet-focusable item.
+                    exit = { direction ->
+                        when (direction) {
+                            FocusDirection.Down, FocusDirection.Up -> FocusRequester.Cancel
+                            else -> FocusRequester.Default
+                        }
+                    }
+                }
                 .focusGroup(),
         ) {
             item {
@@ -165,6 +192,8 @@ private fun HomeScreenContent(
                         if (!focusedInitial) {
                             focusedInitial = true
                             focusRequesters["upNext"]?.requestSafeFocus()
+                        } else {
+                            refocusOnLoad("upNext")
                         }
                     },
                     onFocused = { images ->
@@ -187,6 +216,7 @@ private fun HomeScreenContent(
                         focusedSection = "watchlist"
                         focusedImageUrl = item?.fullFanartImage
                     },
+                    onLoaded = { refocusOnLoad("watchlist") },
                     modifier = Modifier
                         .focusRequester(focusRequesters.getValue("watchlist")),
                 )
@@ -202,8 +232,26 @@ private fun HomeScreenContent(
                         focusedSection = "upcomingSchedule"
                         focusedImageUrl = show?.images?.getFanartUrl(Size.FULL)
                     },
+                    onLoaded = { refocusOnLoad("upcomingSchedule") },
                     modifier = Modifier
                         .focusRequester(focusRequesters.getValue("upcomingSchedule")),
+                )
+            }
+
+            item {
+                HomeRecommendedView(
+                    headerPadding = sectionPadding,
+                    contentPadding = sectionPadding,
+                    onNavigateToShow = onNavigateToShow,
+                    onNavigateToMovie = onNavigateToMovie,
+                    onNavigateToViewAll = onNavigateToRecommended,
+                    onFocused = { item ->
+                        focusedSection = "recommended"
+                        focusedImageUrl = item?.fullFanartImage
+                    },
+                    onLoaded = { refocusOnLoad("recommended") },
+                    modifier = Modifier
+                        .focusRequester(focusRequesters.getValue("recommended")),
                 )
             }
 
@@ -218,6 +266,7 @@ private fun HomeScreenContent(
                         focusedSection = "history"
                         focusedImageUrl = item?.backdropImageUrl
                     },
+                    onLoaded = { refocusOnLoad("history") },
                     modifier = Modifier
                         .focusRequester(focusRequesters.getValue("history")),
                 )
@@ -234,6 +283,7 @@ private fun HomeScreenContent(
                         focusedSection = "socialActivity"
                         focusedImageUrl = item?.images?.getFanartUrl(Size.FULL)
                     },
+                    onLoaded = { refocusOnLoad("socialActivity") },
                     modifier = Modifier
                         .focusRequester(focusRequesters.getValue("socialActivity")),
                 )
@@ -257,6 +307,7 @@ private fun MainScreenPreview() {
             onNavigateToEpisode = { _, _ -> },
             onNavigateToUpNext = {},
             onNavigateToWatchlist = {},
+            onNavigateToRecommended = {},
             onNavigateToSocialActivity = {},
             onNavigateToHistory = {},
         )

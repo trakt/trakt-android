@@ -51,6 +51,8 @@ import tv.trakt.trakt.app.core.details.show.navigation.showDetailsScreen
 import tv.trakt.trakt.app.core.home.navigation.HomeDestination
 import tv.trakt.trakt.app.core.home.navigation.homeScreen
 import tv.trakt.trakt.app.core.home.navigation.navigateToHome
+import tv.trakt.trakt.app.core.home.sections.recommended.navigation.homeRecommendedScreen
+import tv.trakt.trakt.app.core.home.sections.recommended.navigation.navigateToHomeRecommended
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.navigation.homeUpNextScreen
 import tv.trakt.trakt.app.core.home.sections.shows.upnext.navigation.navigateToHomeUpNext
 import tv.trakt.trakt.app.core.home.sections.social.navigation.homeSocialScreen
@@ -71,8 +73,8 @@ import tv.trakt.trakt.app.core.movies.features.anticipated.navigation.moviesAnti
 import tv.trakt.trakt.app.core.movies.features.anticipated.navigation.navigateToMoviesAnticipated
 import tv.trakt.trakt.app.core.movies.features.popular.navigation.moviesPopularScreen
 import tv.trakt.trakt.app.core.movies.features.popular.navigation.navigateToMoviesPopular
-import tv.trakt.trakt.app.core.movies.features.recommended.navigation.moviesRecommendedScreen
-import tv.trakt.trakt.app.core.movies.features.recommended.navigation.navigateToMoviesRecommended
+import tv.trakt.trakt.app.core.movies.features.releases.navigation.moviesReleasesScreen
+import tv.trakt.trakt.app.core.movies.features.releases.navigation.navigateToMoviesReleases
 import tv.trakt.trakt.app.core.movies.features.trending.navigation.moviesTrendingScreen
 import tv.trakt.trakt.app.core.movies.features.trending.navigation.navigateToMoviesTrending
 import tv.trakt.trakt.app.core.movies.navigation.moviesScreen
@@ -81,10 +83,8 @@ import tv.trakt.trakt.app.core.people.navigation.personDetailsScreen
 import tv.trakt.trakt.app.core.player.navigateToPlayer
 import tv.trakt.trakt.app.core.profile.navigation.navigateToProfile
 import tv.trakt.trakt.app.core.profile.navigation.profileScreen
-import tv.trakt.trakt.app.core.profile.sections.favorites.movies.viewall.navigation.navigateToProfileFavoriteMoviesViewAll
-import tv.trakt.trakt.app.core.profile.sections.favorites.movies.viewall.navigation.profileFavoriteMoviesViewAllScreen
-import tv.trakt.trakt.app.core.profile.sections.favorites.shows.viewall.navigation.navigateToProfileFavoriteShowsViewAll
-import tv.trakt.trakt.app.core.profile.sections.favorites.shows.viewall.navigation.profileFavoriteShowsViewAllScreen
+import tv.trakt.trakt.app.core.profile.sections.favorites.viewall.navigation.navigateToProfileFavoritesViewAll
+import tv.trakt.trakt.app.core.profile.sections.favorites.viewall.navigation.profileFavoritesViewAllScreen
 import tv.trakt.trakt.app.core.profile.sections.history.viewall.navigation.navigateToProfileHistoryViewAll
 import tv.trakt.trakt.app.core.profile.sections.history.viewall.navigation.profileHistoryViewAllScreen
 import tv.trakt.trakt.app.core.profile.sections.library.viewall.navigation.navigateToProfileLibraryViewAll
@@ -94,8 +94,8 @@ import tv.trakt.trakt.app.core.shows.features.anticipated.navigation.navigateToS
 import tv.trakt.trakt.app.core.shows.features.anticipated.navigation.showsAnticipatedScreen
 import tv.trakt.trakt.app.core.shows.features.popular.navigation.navigateToShowsPopular
 import tv.trakt.trakt.app.core.shows.features.popular.navigation.showsPopularScreen
-import tv.trakt.trakt.app.core.shows.features.recommended.navigation.navigateToShowsRecommended
-import tv.trakt.trakt.app.core.shows.features.recommended.navigation.showsRecommendedScreen
+import tv.trakt.trakt.app.core.shows.features.releases.navigation.navigateToShowsReleases
+import tv.trakt.trakt.app.core.shows.features.releases.navigation.showsReleasesScreen
 import tv.trakt.trakt.app.core.shows.features.trending.navigation.navigateToShowsTrending
 import tv.trakt.trakt.app.core.shows.features.trending.navigation.showsTrendingScreen
 import tv.trakt.trakt.app.core.shows.navigation.showsScreen
@@ -265,6 +265,7 @@ private fun MainNavHost(
                 },
                 onNavigateToUpNext = { navigateToHomeUpNext() },
                 onNavigateToWatchlist = { navigateToHomeWatchlist() },
+                onNavigateToRecommended = { navigateToHomeRecommended() },
                 onNavigateToSocialActivity = { navigateToHomeSocial() },
                 onNavigateToHistory = { navigateToProfileHistoryViewAll() },
             )
@@ -275,6 +276,10 @@ private fun MainNavHost(
                 },
             )
             homeWatchlistScreen(
+                onNavigateToShow = ::navigateToShow,
+                onNavigateToMovie = ::navigateToMovie,
+            )
+            homeRecommendedScreen(
                 onNavigateToShow = ::navigateToShow,
                 onNavigateToMovie = ::navigateToMovie,
             )
@@ -289,8 +294,7 @@ private fun MainNavHost(
                     navigateToEpisode(showId, episodeId)
                 },
                 onNavigateToHistoryViewAll = { navigateToProfileHistoryViewAll() },
-                onNavigateToFavShowsViewAll = { navigateToProfileFavoriteShowsViewAll() },
-                onNavigateToFavMoviesViewAll = { navigateToProfileFavoriteMoviesViewAll() },
+                onNavigateToFavoritesViewAll = { navigateToProfileFavoritesViewAll() },
                 onNavigateToLibraryViewAll = { navigateToProfileLibraryViewAll() },
             )
             profileHistoryViewAllScreen(
@@ -299,10 +303,8 @@ private fun MainNavHost(
                     navigateToEpisode(showId, episode)
                 },
             )
-            profileFavoriteShowsViewAllScreen(
+            profileFavoritesViewAllScreen(
                 onNavigateToShow = { navigateToShow(it) },
-            )
-            profileFavoriteMoviesViewAllScreen(
                 onNavigateToMovie = { navigateToMovie(it) },
             )
             profileLibraryViewAllScreen(
@@ -313,13 +315,21 @@ private fun MainNavHost(
             )
             showsScreen(
                 onNavigateToShow = { navigateToShow(it) },
+                onNavigateToEpisode = { showId, episode ->
+                    navigateToEpisode(showId, episode)
+                },
                 onNavigateToTrending = { navigateToShowsTrending() },
+                onNavigateToReleases = { navigateToShowsReleases() },
                 onNavigateToPopular = { navigateToShowsPopular() },
                 onNavigateToAnticipated = { navigateToShowsAnticipated() },
-                onNavigateToRecommended = { navigateToShowsRecommended() },
             )
             showsTrendingScreen(
                 onNavigateToShow = { navigateToShow(it) },
+            )
+            showsReleasesScreen(
+                onNavigateToEpisode = { showId, episode ->
+                    navigateToEpisode(showId, episode)
+                },
             )
             showsPopularScreen(
                 onNavigateToShow = { navigateToShow(it) },
@@ -327,26 +337,23 @@ private fun MainNavHost(
             showsAnticipatedScreen(
                 onNavigateToShow = { navigateToShow(it) },
             )
-            showsRecommendedScreen(
-                onNavigateToShow = { navigateToShow(it) },
-            )
             moviesScreen(
                 onNavigateToMovie = { navigateToMovie(it) },
                 onNavigateToTrending = { navigateToMoviesTrending() },
+                onNavigateToReleases = { navigateToMoviesReleases() },
                 onNavigateToPopular = { navigateToMoviesPopular() },
                 onNavigateToAnticipated = { navigateToMoviesAnticipated() },
-                onNavigateToRecommended = { navigateToMoviesRecommended() },
             )
             moviesTrendingScreen(
+                onNavigateToMovie = { navigateToMovie(it) },
+            )
+            moviesReleasesScreen(
                 onNavigateToMovie = { navigateToMovie(it) },
             )
             moviesPopularScreen(
                 onNavigateToMovie = { navigateToMovie(it) },
             )
             moviesAnticipatedScreen(
-                onNavigateToMovie = { navigateToMovie(it) },
-            )
-            moviesRecommendedScreen(
                 onNavigateToMovie = { navigateToMovie(it) },
             )
             listsScreen(

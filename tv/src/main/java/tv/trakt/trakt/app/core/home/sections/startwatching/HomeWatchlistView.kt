@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
@@ -44,6 +45,7 @@ internal fun HomeWatchlistView(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onFocused: (WatchlistItem?) -> Unit = {},
+    onLoaded: () -> Unit = {},
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToViewAll: () -> Unit,
@@ -52,6 +54,12 @@ internal fun HomeWatchlistView(
 
     LifecycleEventEffect(ON_CREATE) {
         viewModel.updateData()
+    }
+
+    LaunchedEffect(state.isLoading) {
+        if (!state.isLoading && state.items != null) {
+            onLoaded()
+        }
     }
 
     HomeWatchlistContent(

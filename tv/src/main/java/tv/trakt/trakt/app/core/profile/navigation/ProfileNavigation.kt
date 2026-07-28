@@ -18,8 +18,7 @@ internal fun NavGraphBuilder.profileScreen(
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToHistoryViewAll: () -> Unit,
-    onNavigateToFavShowsViewAll: () -> Unit,
-    onNavigateToFavMoviesViewAll: () -> Unit,
+    onNavigateToFavoritesViewAll: () -> Unit,
     onNavigateToLibraryViewAll: () -> Unit,
 ) {
     composable<ProfileDestination> {
@@ -29,8 +28,7 @@ internal fun NavGraphBuilder.profileScreen(
             onNavigateToShow = onNavigateToShow,
             onNavigateToEpisode = onNavigateToEpisode,
             onNavigateToHistoryViewAll = onNavigateToHistoryViewAll,
-            onNavigateToFavShowsViewAll = onNavigateToFavShowsViewAll,
-            onNavigateToFavMoviesViewAll = onNavigateToFavMoviesViewAll,
+            onNavigateToFavoritesViewAll = onNavigateToFavoritesViewAll,
             onNavigateToLibraryViewAll = onNavigateToLibraryViewAll,
         )
     }

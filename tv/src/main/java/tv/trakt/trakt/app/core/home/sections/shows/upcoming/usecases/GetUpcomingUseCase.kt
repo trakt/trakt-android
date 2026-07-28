@@ -12,8 +12,8 @@ import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
-import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.helpers.extensions.toLocal
+import tv.trakt.trakt.common.helpers.extensions.toLocalDay
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -23,9 +23,6 @@ import java.time.temporal.ChronoUnit.DAYS
 
 private const val DAYS_OFFSET = 1L
 private const val DAYS_RANGE = 14
-
-private val premiereValues = listOf("season_premiere", "series_premiere")
-private val finaleValues = listOf("season_finale", "series_finale")
 
 internal class GetUpcomingUseCase(
     private val remoteUserSource: ProfileRemoteDataSource,
@@ -49,7 +46,7 @@ internal class GetUpcomingUseCase(
                     val movieItems = it.filterIsInstance<HomeUpcomingItem.MovieItem>()
 
                     val shows = episodeItems.asyncMap { item -> item.show }
-                    val episodes = episodeItems.asyncMap { item -> item.episode }
+                    val episodes = episodeItems.flatMap { item -> item.episodes }
                     val movies = movieItems.asyncMap { item -> item.movie }
 
                     localShowSource.upsertShows(shows)
@@ -63,53 +60,35 @@ internal class GetUpcomingUseCase(
         val remoteShows = remoteUserSource.getUserShowsCalendar(
             startDate = nowLocalDay().minusDays(DAYS_OFFSET),
             days = DAYS_RANGE,
-        ).filter {
-            it.episode.season > 0
-        }
-
-        val fullSeasonItems = remoteShows
-            .groupBy { it.show.ids.trakt }
-            .filter { (_, episodes) ->
-                val isSeasonPremiere = episodes.any {
-                    it.episode.episodeType?.value in premiereValues
-                }
-
-                val isSeasonFinale = episodes.any {
-                    it.episode.episodeType?.value in finaleValues
-                }
-
-                return@filter episodes.size > 1 && isSeasonPremiere && isSeasonFinale
-            }
+        )
 
         val now = nowLocal().truncatedTo(DAYS)
-        val showsList = remoteShows
-            .asyncMap {
-                val releaseAt = (it.episode.effectiveReleaseDate ?: it.episode.firstAired)
-                    ?.toInstant()
-                    ?.toLocal()
 
-                if (releaseAt == null) {
-                    return@asyncMap null
-                }
+        return remoteShows
+            .mapNotNull {
+                val episode = Episode.fromDto(it.episode)
+                if (episode.season <= 0) return@mapNotNull null
 
-                if (releaseAt.isBefore(now)) {
-                    return@asyncMap null
-                }
+                val releaseAt = episode.releasedAt?.toLocal() ?: return@mapNotNull null
+                if (releaseAt.isBefore(now)) return@mapNotNull null
 
-                val isFullSeason = fullSeasonItems[it.show.ids.trakt] != null
-                if (isFullSeason && it.episode.number > 1) {
-                    return@asyncMap null
-                }
+                Show.fromDto(it.show) to episode
+            }
+            // Group a show's episodes that share the same release day into one item,
+            // so a same-day batch renders as a single card with a combined list.
+            .groupBy { (show, episode) -> show.ids.trakt to episode.releasedAt?.toLocalDay() }
+            .map { (_, entries) ->
+                val episodes = entries
+                    .map { (_, episode) -> episode }
+                    .sortedBy { it.number }
+                    .toImmutableList()
 
                 HomeUpcomingItem.EpisodeItem(
-                    episode = Episode.fromDto(it.episode),
-                    show = Show.fromDto(it.show),
-                    isFullSeason = isFullSeason,
+                    show = entries.first().first,
+                    episodes = episodes,
+                    isFullSeason = episodes.isFullSeason(),
                 )
             }
-
-        return showsList
-            .filterNotNull()
     }
 
     private suspend fun getMovies(): List<HomeUpcomingItem.MovieItem> {
@@ -134,4 +113,13 @@ internal class GetUpcomingUseCase(
         return moviesList
             .filterNotNull()
     }
+}
+
+// A same-day batch is a full season when it spans more than one episode and
+// carries both the season premiere and the season finale.
+private fun List<Episode>.isFullSeason(): Boolean {
+    if (size <= 1) return false
+    val hasPremiere = any { it.type?.isPremiere == true }
+    val hasFinale = any { it.type?.isFinale == true }
+    return hasPremiere && hasFinale
 }

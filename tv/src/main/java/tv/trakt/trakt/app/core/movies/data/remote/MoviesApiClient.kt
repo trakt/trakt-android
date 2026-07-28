@@ -1,11 +1,13 @@
 package tv.trakt.trakt.app.core.movies.data.remote
 
+import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.MoviesApi
 import org.openapitools.client.apis.RecommendationsApi
 import tv.trakt.trakt.app.core.movies.data.remote.model.response.AnticipatedMovieDto
 import tv.trakt.trakt.app.core.movies.data.remote.model.response.TrendingMovieDto
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.networking.CalendarMediaDto
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
@@ -15,10 +17,12 @@ import tv.trakt.trakt.common.networking.MovieCalendarDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.common.networking.StreamingDto
 import java.time.Instant
+import java.time.temporal.ChronoUnit.DAYS
 
 internal class MoviesApiClient(
     private val api: MoviesApi,
     private val recommendationsApi: RecommendationsApi,
+    private val calendarsApi: CalendarsApi,
 ) : MoviesRemoteDataSource {
     override suspend fun getTrendingMovies(
         limit: Int,
@@ -133,6 +137,31 @@ internal class MoviesApiClient(
             runtimes = null,
             countries = null,
             certifications = null,
+        )
+
+        return response.body()
+    }
+
+    override suspend fun getReleases(
+        startDate: Instant,
+        days: Int,
+    ): List<CalendarMediaDto> {
+        val response = calendarsApi.getCalendarsReleasesHot(
+            extended = "full,images,colors",
+            startDate = startDate.truncatedTo(DAYS).toString(),
+            days = days,
+            watchnow = null,
+            genres = null,
+            subgenres = null,
+            years = null,
+            ratings = null,
+            startDate2 = null,
+            endDate = null,
+            runtimes = null,
+            countries = null,
+            certifications = null,
+            type = "movie",
+            group = null,
         )
 
         return response.body()

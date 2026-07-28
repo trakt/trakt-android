@@ -34,20 +34,25 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
+import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalViewAllCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
+import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.app.core.movies.model.AnticipatedMovie
 import tv.trakt.trakt.app.core.movies.model.TrendingMovie
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.core.user.UserCollectionState
+import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.MediaType.Movie
@@ -59,10 +64,10 @@ private val sections = listOf(
     "initial",
     "content",
     "trending",
+    "releases",
     "hot",
     "popular",
     "anticipated",
-    "recommended",
 )
 
 @Composable
@@ -70,9 +75,9 @@ internal fun MoviesScreen(
     viewModel: MoviesViewModel,
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToTrending: () -> Unit,
+    onNavigateToReleases: () -> Unit,
     onNavigateToPopular: () -> Unit,
     onNavigateToAnticipated: () -> Unit,
-    onNavigateToRecommended: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -80,9 +85,9 @@ internal fun MoviesScreen(
         state = state,
         onMovieClick = onNavigateToMovie,
         onViewAllTrendingClick = onNavigateToTrending,
+        onViewAllReleasesClick = onNavigateToReleases,
         onViewAllPopularClick = onNavigateToPopular,
         onViewAllAnticipatedClick = onNavigateToAnticipated,
-        onViewAllRecommendedClick = onNavigateToRecommended,
     )
 }
 
@@ -92,9 +97,9 @@ private fun MoviesScreenContent(
     modifier: Modifier = Modifier,
     onMovieClick: (TraktId) -> Unit,
     onViewAllTrendingClick: () -> Unit,
+    onViewAllReleasesClick: () -> Unit = {},
     onViewAllPopularClick: () -> Unit,
     onViewAllAnticipatedClick: () -> Unit,
-    onViewAllRecommendedClick: () -> Unit,
 ) {
     var focusedMovie by remember { mutableStateOf<Movie?>(null) }
     var focusedSection by rememberSaveable { mutableStateOf<String?>(null) }
@@ -161,24 +166,22 @@ private fun MoviesScreenContent(
                     )
                 }
 
-                if (state.user != null) {
-                    item {
-                        StandardMoviesList(
-                            header = stringResource(R.string.list_title_recommended),
-                            movies = state.recommendedMovies,
-                            collection = state.collection,
-                            isLoading = state.isLoading,
-                            onViewAllClick = onViewAllRecommendedClick,
-                            onMovieFocus = {
-                                focusedMovie = it
-                                focusedSection = "recommended"
-                            },
-                            onMovieClick = onMovieClick,
-                            modifier = Modifier
-                                .focusGroup()
-                                .focusRequester(focusRequesters.getValue("recommended")),
-                        )
-                    }
+                item {
+                    ReleasesMoviesList(
+                        header = stringResource(R.string.list_title_releases),
+                        movies = state.releasesMovies,
+                        isLoading = state.isLoading,
+                        onViewAllClick = onViewAllReleasesClick,
+                        onClick = { item -> onMovieClick(item.movie.ids.trakt) },
+                        onFocused = {
+                            focusedMovie = it.movie
+                            focusedSection = "releases"
+                        },
+                        focusRequesters = focusRequesters,
+                        modifier = Modifier
+                            .focusGroup()
+                            .focusRequester(focusRequesters.getValue("releases")),
+                    )
                 }
 
                 item {
@@ -323,6 +326,112 @@ private fun TrendingMoviesList(
                                 onMovieFocus(movie)
                             }
                         },
+                    )
+                }
+
+                item {
+                    HorizontalViewAllCard(
+                        onClick = onViewAllClick,
+                    )
+                }
+
+                emptyFocusListItems()
+            }
+        }
+    }
+}
+
+@Composable
+private fun ReleasesMoviesList(
+    header: String,
+    movies: ImmutableList<HomeUpcomingItem.MovieItem>?,
+    isLoading: Boolean,
+    onFocused: (HomeUpcomingItem.MovieItem) -> Unit,
+    onClick: (HomeUpcomingItem.MovieItem) -> Unit,
+    onViewAllClick: () -> Unit,
+    focusRequesters: Map<String, FocusRequester>,
+    modifier: Modifier = Modifier,
+) {
+    var isFocusable by rememberSaveable { mutableStateOf(true) }
+
+    Column(
+        verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
+        modifier = modifier,
+    ) {
+        Text(
+            text = header,
+            color = TraktTheme.colors.textPrimary,
+            style = TraktTheme.typography.heading5,
+            modifier = Modifier
+                .padding(start = TraktTheme.spacing.mainContentStartSpace)
+                .focusRequester(focusRequesters.getValue("initial"))
+                .focusable(isFocusable)
+                .onFocusChanged { isFocusable = false },
+        )
+
+        PositionFocusLazyRow(
+            contentPadding = PaddingValues(
+                start = TraktTheme.spacing.mainContentStartSpace,
+                end = 32.dp,
+            ),
+        ) {
+            if (isLoading) {
+                items(count = 10) {
+                    HorizontalMediaSkeletonCard()
+                }
+            } else if (!movies.isNullOrEmpty()) {
+                items(
+                    items = movies,
+                    key = { item -> item.movie.ids.trakt.value },
+                ) { item ->
+                    HorizontalMediaCard(
+                        title = "",
+                        containerImageUrl = item.images?.getFanartUrl(),
+                        onClick = { onClick(item) },
+                        cardContent = {
+                            Column(
+                                verticalArrangement = spacedBy(2.dp),
+                            ) {
+                                InfoChip(
+                                    text = item.releaseAt?.toLocal()?.relativeDateTimeString() ?: "TBA",
+                                    iconPainter = when {
+                                        item.movie.isReleased -> painterResource(R.drawable.ic_calendar_check)
+                                        else -> painterResource(R.drawable.ic_calendar_upcoming)
+                                    },
+                                    containerColor = TraktTheme.colors.chipContainer.copy(alpha = 0.7F),
+                                )
+                            }
+                        },
+                        footerContent = {
+                            Column(
+                                verticalArrangement = spacedBy(1.dp),
+                            ) {
+                                Text(
+                                    text = item.title,
+                                    style = TraktTheme.typography.cardTitle,
+                                    color = TraktTheme.colors.textPrimary,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+
+                                Text(
+                                    text = when (item.movie.runtime) {
+                                        null -> stringResource(R.string.translated_value_type_movie)
+                                        else -> rememberDurationFormat(item.movie.runtime?.inWholeMinutes)
+                                    },
+                                    style = TraktTheme.typography.cardSubtitle,
+                                    color = TraktTheme.colors.textSecondary,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            }
+                        },
+                        modifier = Modifier
+                            .onFocusChanged {
+                                if (it.isFocused) {
+                                    onFocused(item)
+                                }
+                            },
                     )
                 }
 
@@ -539,7 +648,6 @@ private fun Preview() {
             onViewAllTrendingClick = {},
             onViewAllPopularClick = {},
             onViewAllAnticipatedClick = {},
-            onViewAllRecommendedClick = {},
         )
     }
 }
@@ -570,7 +678,6 @@ private fun Preview2() {
             onViewAllTrendingClick = {},
             onViewAllPopularClick = {},
             onViewAllAnticipatedClick = {},
-            onViewAllRecommendedClick = {},
         )
     }
 }
