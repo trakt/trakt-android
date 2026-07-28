@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.search.data.remote
+package tv.trakt.trakt.common.core.search.data.remote
 
 import io.ktor.client.call.body
 import org.openapitools.client.apis.SearchApi
@@ -8,7 +8,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.SearchItemDto
 import tv.trakt.trakt.common.networking.TrendingSearchDto
 
-internal class SearchApiClient(
+class SearchApiClient(
     private val api: SearchApi,
     private val authorizedApi: SearchApi,
 ) : SearchRemoteDataSource {

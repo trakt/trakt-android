@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.search.usecase.popular
 
+import tv.trakt.trakt.common.core.search.data.remote.SearchRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.toInstant
@@ -12,7 +13,6 @@ import tv.trakt.trakt.core.search.data.local.model.PopularMovieEntity
 import tv.trakt.trakt.core.search.data.local.model.PopularShowEntity
 import tv.trakt.trakt.core.search.data.local.model.create
 import tv.trakt.trakt.core.search.data.local.popular.PopularSearchLocalDataSource
-import tv.trakt.trakt.core.search.data.remote.SearchRemoteDataSource
 import java.time.temporal.ChronoUnit.HOURS
 
 private const val POPULAR_SEARCH_LIMIT = 36
