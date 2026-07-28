@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.search.usecase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
+import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.networking.SearchItemDto
 import tv.trakt.trakt.core.search.data.remote.SearchRemoteDataSource
 import kotlin.coroutines.cancellation.CancellationException
@@ -123,15 +124,15 @@ internal class GetSearchResultsUseCase(
      * The exact pass is an enrichment of the fuzzy one, so its failure degrades the
      * results instead of failing the whole search.
      */
-    private suspend fun exactOrEmpty(
-        fetch: suspend () -> List<SearchItemDto>,
-    ): List<SearchItemDto> = try {
-        fetch()
-    } catch (cancellation: CancellationException) {
-        throw cancellation
-    } catch (error: Exception) {
-        Timber.w(error, "Exact search failed, falling back to fuzzy results only")
-        emptyList()
+    private suspend fun exactOrEmpty(fetch: suspend () -> List<SearchItemDto>): List<SearchItemDto> {
+        return try {
+            fetch()
+        } catch (cancellation: CancellationException) {
+            throw cancellation
+        } catch (error: Exception) {
+            Timber.recordError(error)
+            emptyList()
+        }
     }
 
     private fun getDistinctKey(dto: SearchItemDto): String {

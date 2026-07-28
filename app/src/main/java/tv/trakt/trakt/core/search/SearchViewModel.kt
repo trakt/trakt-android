@@ -54,6 +54,8 @@ import tv.trakt.trakt.core.search.usecase.GetBirthdayPeopleUseCase
 import tv.trakt.trakt.core.search.usecase.GetSearchResultsUseCase
 import tv.trakt.trakt.core.search.usecase.popular.GetPopularSearchUseCase
 import tv.trakt.trakt.core.search.usecase.popular.PostUserSearchUseCase
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 internal class SearchViewModel(
@@ -124,7 +126,7 @@ internal class SearchViewModel(
     private fun observeLists() {
         likedListsLocalDataSource.observeUpdates()
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach { loadLikedLists() }
             .launchIn(viewModelScope)
     }
@@ -390,7 +392,7 @@ internal class SearchViewModel(
             clearJobs()
 
             if (searchInput.query.isNotBlank()) {
-                onSearchQuery(searchInput.query, 0)
+                onSearchQuery(searchInput.query, Duration.ZERO)
             } else {
                 initialJob = viewModelScope.launch {
                     try {
@@ -416,7 +418,7 @@ internal class SearchViewModel(
 
     private fun onSearchQuery(
         query: String,
-        debounce: Long = 350,
+        debounce: Duration = 350.milliseconds,
     ) {
         if (query.isBlank()) {
             searchingState.update { false }
@@ -544,7 +546,6 @@ internal class SearchViewModel(
         }
 
         viewModelScope.launch {
-//            peopleLocalDataSource.upsertPeople(listOf(person))
             navigateList.update { list }
             postUserSearch(list)
         }
