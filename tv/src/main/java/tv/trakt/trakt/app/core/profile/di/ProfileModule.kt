@@ -219,7 +219,6 @@ internal val profileModule = module {
         ProfileFavoritesViewModel(
             getFavoriteShowsCase = get(),
             getFavoriteMoviesCase = get(),
-            collectionStateProvider = get(),
             appLifecycleProvider = get(),
         )
     }
@@ -228,7 +227,6 @@ internal val profileModule = module {
         ProfileFavoritesViewAllViewModel(
             getFavoriteShowsCase = get(),
             getFavoriteMoviesCase = get(),
-            collectionStateProvider = get(),
         )
     }
 

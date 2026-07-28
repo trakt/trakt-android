@@ -21,8 +21,6 @@ import tv.trakt.trakt.app.core.profile.ProfileConfig.PROFILE_FAVORITES_SECTION_L
 import tv.trakt.trakt.app.core.profile.sections.favorites.model.interleaveFavorites
 import tv.trakt.trakt.app.core.profile.sections.favorites.usecases.GetFavoriteMoviesUseCase
 import tv.trakt.trakt.app.core.profile.sections.favorites.usecases.GetFavoriteShowsUseCase
-import tv.trakt.trakt.common.core.user.CollectionStateProvider
-import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider
@@ -32,7 +30,6 @@ import java.time.ZonedDateTime
 internal class ProfileFavoritesViewModel(
     private val getFavoriteShowsCase: GetFavoriteShowsUseCase,
     private val getFavoriteMoviesCase: GetFavoriteMoviesUseCase,
-    private val collectionStateProvider: CollectionStateProvider,
     private val appLifecycleProvider: AppLifecycleProvider,
 ) : ViewModel() {
     private val initialState = ProfileFavoritesState()
@@ -46,12 +43,6 @@ internal class ProfileFavoritesViewModel(
     init {
         loadData()
         observeApp()
-        observeData()
-    }
-
-    private fun observeData() {
-        collectionStateProvider
-            .launchIn(viewModelScope)
     }
 
     private fun observeApp() {
@@ -102,13 +93,11 @@ internal class ProfileFavoritesViewModel(
     val state: StateFlow<ProfileFavoritesState> = combine(
         loadingState,
         itemsState,
-        collectionStateProvider.stateFlow,
         errorState,
-    ) { loading, items, _, error ->
+    ) { loading, items, error ->
         ProfileFavoritesState(
             isLoading = loading,
             items = items,
-            collection = UserCollectionState.Default,
             error = error,
         )
     }.stateIn(

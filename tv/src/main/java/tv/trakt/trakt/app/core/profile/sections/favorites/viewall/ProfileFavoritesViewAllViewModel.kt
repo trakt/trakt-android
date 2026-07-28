@@ -15,14 +15,11 @@ import tv.trakt.trakt.app.core.profile.ProfileConfig.FAVORITES_ALL_PAGE_LIMIT
 import tv.trakt.trakt.app.core.profile.sections.favorites.model.interleaveFavorites
 import tv.trakt.trakt.app.core.profile.sections.favorites.usecases.GetFavoriteMoviesUseCase
 import tv.trakt.trakt.app.core.profile.sections.favorites.usecases.GetFavoriteShowsUseCase
-import tv.trakt.trakt.common.core.user.CollectionStateProvider
-import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 
 internal class ProfileFavoritesViewAllViewModel(
     private val getFavoriteShowsCase: GetFavoriteShowsUseCase,
     private val getFavoriteMoviesCase: GetFavoriteMoviesUseCase,
-    private val collectionStateProvider: CollectionStateProvider,
 ) : ViewModel() {
     private val initialState = ProfileFavoritesViewAllState()
 
@@ -32,12 +29,6 @@ internal class ProfileFavoritesViewAllViewModel(
 
     init {
         loadData()
-        observeData()
-    }
-
-    private fun observeData() {
-        collectionStateProvider
-            .launchIn(viewModelScope)
     }
 
     private fun loadData() {
@@ -73,13 +64,11 @@ internal class ProfileFavoritesViewAllViewModel(
     val state = combine(
         loadingState,
         itemsState,
-        collectionStateProvider.stateFlow,
         errorState,
-    ) { loading, items, _, error ->
+    ) { loading, items, error ->
         ProfileFavoritesViewAllState(
             isLoading = loading,
             items = items,
-            collection = UserCollectionState.Default,
             error = error,
         )
     }.stateIn(

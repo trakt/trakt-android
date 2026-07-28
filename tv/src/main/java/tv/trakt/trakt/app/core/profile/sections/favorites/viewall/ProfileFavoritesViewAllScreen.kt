@@ -142,9 +142,6 @@ private fun ProfileFavoritesViewAllContent(
                     VerticalMediaCard(
                         title = item.title,
                         imageUrl = item.posterImage,
-                        watched = state.collection.isWatched(item.id, item.mediaType, item.airedEpisodes),
-                        watching = state.collection.isWatching(item.id, item.mediaType, item.airedEpisodes),
-                        watchlist = state.collection.isWatchlist(item.id, item.mediaType),
                         onClick = { onClick(item) },
                         chipContent = {
                             FavoriteCardChip(item = item)

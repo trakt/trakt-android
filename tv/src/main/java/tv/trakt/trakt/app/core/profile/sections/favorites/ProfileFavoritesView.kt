@@ -30,7 +30,6 @@ import tv.trakt.trakt.app.core.profile.ProfileConfig.PROFILE_FAVORITES_SECTION_L
 import tv.trakt.trakt.app.core.profile.sections.favorites.model.FavoriteItem
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.resources.R
@@ -125,7 +124,6 @@ internal fun ProfileFavoritesContent(
             else -> {
                 ContentList(
                     items = { state.items ?: emptyList<FavoriteItem>().toImmutableList() },
-                    collection = state.collection,
                     onFocused = onFocused,
                     onClick = onClick,
                     onViewAllClick = onViewAllClick,
@@ -140,7 +138,6 @@ internal fun ProfileFavoritesContent(
 @Composable
 private fun ContentList(
     items: () -> ImmutableList<FavoriteItem>,
-    collection: UserCollectionState,
     onFocused: (FavoriteItem?) -> Unit,
     onClick: (FavoriteItem) -> Unit,
     onViewAllClick: () -> Unit,
@@ -159,7 +156,6 @@ private fun ContentList(
         ) { item ->
             ContentListItem(
                 item = item,
-                collection = collection,
                 onClick = { onClick(item) },
                 onFocused = onFocused,
             )
@@ -187,7 +183,6 @@ private fun ContentList(
 @Composable
 private fun ContentListItem(
     item: FavoriteItem,
-    collection: UserCollectionState,
     onClick: () -> Unit,
     onFocused: (FavoriteItem) -> Unit,
 ) {
@@ -195,9 +190,6 @@ private fun ContentListItem(
         width = TraktTheme.size.verticalMediaBigCardSize,
         title = item.title,
         imageUrl = item.posterImage,
-        watched = collection.isWatched(item.id, item.mediaType, item.airedEpisodes),
-        watching = collection.isWatching(item.id, item.mediaType, item.airedEpisodes),
-        watchlist = collection.isWatchlist(item.id, item.mediaType),
         onClick = onClick,
         chipContent = {
             FavoriteCardChip(item = item)
