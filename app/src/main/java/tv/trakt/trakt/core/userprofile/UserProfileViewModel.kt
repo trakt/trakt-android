@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -88,39 +89,50 @@ internal class UserProfileViewModel(
     private fun loadData() {
         if (user.isPrivate) {
             with(viewModelScope) {
-                launch { loadFollowingStatus() }
+                launch {
+                    loadFollowingStatus()
+                    if (userFollowedState.value.following) {
+                        loadProfileContent()
+                    }
+                }
                 launch { loadBlockedStatus() }
             }
             return
         }
 
+        loadPublicData()
+    }
+
+    private fun loadPublicData() {
         with(viewModelScope) {
-            loadMonthBackground()
-            launch { loadDetails() }
-            launch { loadMonthStats() }
+            loadProfileContent()
             launch { loadFollowingStatus() }
             launch { loadRequestStatus() }
             launch { loadBlockedStatus() }
         }
     }
 
-    private fun loadFollowingStatus() {
-        viewModelScope.launch {
-            try {
-                val social = getSocialUseCase.loadFollowingIds()
-                userFollowedState.update {
-                    it.copy(
-                        following = social.contains(user.ids.trakt),
-                        loading = false,
-                    )
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-                userFollowedState.update {
-                    it.copy(loading = false)
-                }
+    private fun CoroutineScope.loadProfileContent() {
+        loadMonthBackground()
+        launch { loadDetails() }
+        launch { loadMonthStats() }
+    }
+
+    private suspend fun loadFollowingStatus() {
+        try {
+            val social = getSocialUseCase.loadFollowingIds()
+            userFollowedState.update {
+                it.copy(
+                    following = social.contains(user.ids.trakt),
+                    loading = false,
+                )
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
+            }
+            userFollowedState.update {
+                it.copy(loading = false)
             }
         }
     }

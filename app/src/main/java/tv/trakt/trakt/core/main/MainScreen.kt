@@ -160,7 +160,7 @@ internal fun MainScreen(
 
     LaunchedUpdateEffect(state.user) {
         when {
-            state.user != null && state.loadingUser == Done -> {
+            state.user != null && state.userLoading == Done -> {
                 viewModel.clearLoadingUser()
                 localSnackbar.showSnackbar(
                     message = localRes.getString(R.string.text_info_signed_in),
@@ -363,7 +363,8 @@ private fun MainScreenContent(
                     MainNavHost(
                         navController = navController,
                         customThemeEnabled = customThemeConfig?.enabled == true,
-                        userLoading = state.loadingUser.isLoading,
+                        userId = state.user?.ids?.trakt,
+                        userLoading = state.userLoading.isLoading,
                         searchInput = searchState.searchInput,
                         onSearchLoading = searchState.onSearchLoading,
                     )

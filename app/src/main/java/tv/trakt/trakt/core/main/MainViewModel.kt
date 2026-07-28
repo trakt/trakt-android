@@ -90,7 +90,7 @@ internal class MainViewModel(
     private val userVipState = MutableStateFlow(initialState.userVipStatus)
     private val checkInState = MutableStateFlow(initialState.checkIn)
     private val ratePromptState = MutableStateFlow(initialState.ratePrompt)
-    private val loadingUserState = MutableStateFlow(initialState.loadingUser)
+    private val loadingUserState = MutableStateFlow(initialState.userLoading)
     private val welcomeState = MutableStateFlow(initialState.welcome)
     private val whatsNewState = MutableStateFlow(initialState.whatsNew)
     private val reviewState = MutableStateFlow(initialState.review)
@@ -120,10 +120,8 @@ internal class MainViewModel(
             .debounce(200.milliseconds)
             .onEach { user ->
                 val currentUser = userState.value
-
                 userState.update { user }
                 userVipState.update { currentUser?.isVip to user?.isVip }
-
                 Timber.d("Observed user change: $user")
             }
             .launchIn(viewModelScope)
@@ -484,7 +482,7 @@ internal class MainViewModel(
             userVipStatus = state[1] as Pair<Boolean?, Boolean?>?,
             checkIn = state[2] as CheckInState?,
             ratePrompt = state[3] as RatePromptState?,
-            loadingUser = state[4] as LoadingState,
+            userLoading = state[4] as LoadingState,
             welcome = state[5] as MainState.WelcomeState,
             whatsNew = state[6] as WhatsNew?,
             review = state[7] as Boolean?,

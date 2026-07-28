@@ -79,6 +79,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.common.ui.theme.colors.Red60
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
@@ -279,7 +280,16 @@ private fun UserProfileContent(
                 )
             }
 
-            if (state.user.isPrivate) {
+            val isPrivate = state.user.isPrivate && !state.userFollowing.following
+            if (isPrivate && state.userFollowing.loading) {
+                item {
+                    FilmProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 32.dp),
+                    )
+                }
+            } else if (isPrivate) {
                 userProfilePrivateContent(
                     state = state,
                     windowClass = windowClass,
