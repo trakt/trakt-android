@@ -105,7 +105,6 @@ internal fun ProfileHistoryContent(
     onClick: (SyncHistoryItem) -> Unit = {},
     onViewAllClick: () -> Unit = {},
 ) {
-
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),
         modifier = modifier,

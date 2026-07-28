@@ -21,8 +21,8 @@ import tv.trakt.trakt.app.core.movies.MoviesConfig.MOVIES_SECTION_LIMIT
 import tv.trakt.trakt.app.core.movies.model.AnticipatedMovie
 import tv.trakt.trakt.app.core.movies.model.TrendingMovie
 import tv.trakt.trakt.app.core.movies.usecase.GetAnticipatedMoviesUseCase
-import tv.trakt.trakt.app.core.movies.usecase.GetMoviesReleasesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetPopularMoviesUseCase
+import tv.trakt.trakt.app.core.movies.usecase.GetReleasesMoviesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetTrendingMoviesUseCase
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
@@ -40,7 +40,7 @@ internal class MoviesViewModel(
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
     private val getAnticipatedMoviesUseCase: GetAnticipatedMoviesUseCase,
-    private val getReleasesMoviesUseCase: GetMoviesReleasesUseCase,
+    private val getReleasesMoviesUseCase: GetReleasesMoviesUseCase,
     private val sessionManager: SessionManager,
     private val appLifecycleProvider: AppLifecycleProvider,
     private val collectionStateProvider: CollectionStateProvider,

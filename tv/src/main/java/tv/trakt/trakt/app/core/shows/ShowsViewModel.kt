@@ -21,7 +21,7 @@ import tv.trakt.trakt.app.core.shows.model.AnticipatedShow
 import tv.trakt.trakt.app.core.shows.model.TrendingShow
 import tv.trakt.trakt.app.core.shows.usecase.GetAnticipatedShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetPopularShowsUseCase
-import tv.trakt.trakt.app.core.shows.usecase.GetShowsReleasesUseCase
+import tv.trakt.trakt.app.core.shows.usecase.GetReleasesShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetTrendingShowsUseCase
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.user.CollectionStateProvider
@@ -38,7 +38,7 @@ internal class ShowsViewModel(
     private val getTrendingShowsUseCase: GetTrendingShowsUseCase,
     private val getPopularShowsUseCase: GetPopularShowsUseCase,
     private val getAnticipatedShowsUseCase: GetAnticipatedShowsUseCase,
-    private val getReleasesShowsUseCase: GetShowsReleasesUseCase,
+    private val getReleasesShowsUseCase: GetReleasesShowsUseCase,
     private val sessionManager: SessionManager,
     private val appLifecycleProvider: AppLifecycleProvider,
     private val collectionStateProvider: CollectionStateProvider,

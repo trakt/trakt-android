@@ -10,9 +10,9 @@ import tv.trakt.trakt.app.core.movies.features.popular.MoviesPopularViewAllViewM
 import tv.trakt.trakt.app.core.movies.features.releases.MoviesReleasesViewAllViewModel
 import tv.trakt.trakt.app.core.movies.features.trending.MoviesTrendingViewAllViewModel
 import tv.trakt.trakt.app.core.movies.usecase.GetAnticipatedMoviesUseCase
-import tv.trakt.trakt.app.core.movies.usecase.GetMoviesReleasesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetPopularMoviesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetRecommendedMoviesUseCase
+import tv.trakt.trakt.app.core.movies.usecase.GetReleasesMoviesUseCase
 import tv.trakt.trakt.app.core.movies.usecase.GetTrendingMoviesUseCase
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.movies.data.local.MovieStorage
@@ -61,7 +61,7 @@ internal val moviesModule = module {
     }
 
     factory {
-        GetMoviesReleasesUseCase(
+        GetReleasesMoviesUseCase(
             remoteSource = get(),
             localMovieSource = get(),
         )

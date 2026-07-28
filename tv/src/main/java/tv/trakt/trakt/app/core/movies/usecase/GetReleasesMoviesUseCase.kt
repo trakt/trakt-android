@@ -15,7 +15,7 @@ import java.time.temporal.ChronoUnit.DAYS
 private const val DAYS_OFFSET = 1L
 private const val DAYS_RANGE = 14
 
-internal class GetMoviesReleasesUseCase(
+internal class GetReleasesMoviesUseCase(
     private val remoteSource: MoviesRemoteDataSource,
     private val localMovieSource: MovieLocalDataSource,
 ) {

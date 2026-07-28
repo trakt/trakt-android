@@ -12,7 +12,7 @@ import tv.trakt.trakt.app.core.shows.features.trending.ShowsTrendingViewAllViewM
 import tv.trakt.trakt.app.core.shows.usecase.GetAnticipatedShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetPopularShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetRecommendedShowsUseCase
-import tv.trakt.trakt.app.core.shows.usecase.GetShowsReleasesUseCase
+import tv.trakt.trakt.app.core.shows.usecase.GetReleasesShowsUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetTrendingShowsUseCase
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.core.shows.data.local.ShowStorage
@@ -61,7 +61,7 @@ internal val showsModule = module {
     }
 
     factory {
-        GetShowsReleasesUseCase(
+        GetReleasesShowsUseCase(
             remoteSource = get(),
             localShowSource = get(),
             localEpisodeSource = get(),

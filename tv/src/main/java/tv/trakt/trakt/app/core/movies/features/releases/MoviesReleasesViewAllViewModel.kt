@@ -8,11 +8,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import tv.trakt.trakt.app.core.movies.usecase.GetMoviesReleasesUseCase
+import tv.trakt.trakt.app.core.movies.usecase.GetReleasesMoviesUseCase
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 
 internal class MoviesReleasesViewAllViewModel(
-    private val getItemsUseCase: GetMoviesReleasesUseCase,
+    private val getItemsUseCase: GetReleasesMoviesUseCase,
 ) : ViewModel() {
     private val initialState = MoviesReleasesViewAllState()
 
