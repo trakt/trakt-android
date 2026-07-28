@@ -1,5 +1,17 @@
 package tv.trakt.trakt.core.discover.di
 
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
+import androidx.datastore.preferences.SharedPreferencesMigration
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.preferencesDataStoreFile
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
@@ -13,9 +25,24 @@ import tv.trakt.trakt.core.discover.sections.popular.DiscoverPopularViewModel
 import tv.trakt.trakt.core.discover.sections.releases.DiscoverReleasesViewModel
 import tv.trakt.trakt.core.discover.sections.releases.all.AllReleasesViewModel
 import tv.trakt.trakt.core.discover.sections.releases.all.usecases.GetAllReleasesItemsUseCase
+import tv.trakt.trakt.core.discover.sections.releases.usecases.GetReleasesTypeUseCase
 import tv.trakt.trakt.core.discover.sections.trending.DiscoverTrendingViewModel
 
+internal const val DISCOVER_PREFERENCES = "discover_preferences_mobile"
+
 internal val discoverModule = module {
+
+    single<DataStore<Preferences>>(named(DISCOVER_PREFERENCES)) {
+        createStore(
+            context = androidApplication(),
+        )
+    }
+
+    factory {
+        GetReleasesTypeUseCase(
+            dataStore = get(named(DISCOVER_PREFERENCES)),
+        )
+    }
 
     factory(
         qualifier = named("defaultAllDiscoverShowsUseCase"),
@@ -138,6 +165,7 @@ internal val discoverModule = module {
             collapsingManager = get(),
             getReleasesShowsUseCase = get(named("defaultReleasesShowsUseCase")),
             getReleasesMoviesUseCase = get(named("defaultReleasesMoviesUseCase")),
+            getReleasesTypeUseCase = get(),
         )
     }
 
@@ -151,4 +179,15 @@ internal val discoverModule = module {
     }
 
     viewModelOf(::AllReleasesViewModel)
+}
+
+private fun createStore(context: Context): DataStore<Preferences> {
+    return PreferenceDataStoreFactory.create(
+        corruptionHandler = ReplaceFileCorruptionHandler(
+            produceNewData = { emptyPreferences() },
+        ),
+        migrations = listOf(SharedPreferencesMigration(context, DISCOVER_PREFERENCES)),
+        scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
+        produceFile = { context.preferencesDataStoreFile(DISCOVER_PREFERENCES) },
+    )
 }

@@ -49,6 +49,14 @@ internal class ReleasesMoviesStorage(
         }
     }
 
+    override suspend fun clear() {
+        ensureInitialized()
+        mutex.withLock {
+            moviesCache.clear()
+            dataStore.edit { it.remove(KEY_RELEASES_MOVIES) }
+        }
+    }
+
     private suspend fun ensureInitialized() {
         if (!isInitialized) {
             mutex.withLock {

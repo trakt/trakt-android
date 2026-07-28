@@ -53,9 +53,9 @@ import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source.EpisodeDet
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.episodes.EpisodeDetailsState.UserRatingsState
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.HISTORY
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Progress
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Season
 import tv.trakt.trakt.core.summary.episodes.features.actors.usecases.GetEpisodeDirectorUseCase
 import tv.trakt.trakt.core.summary.episodes.features.socials.GetEpisodeSocialsUseCase
 import tv.trakt.trakt.core.summary.episodes.navigation.EpisodeDetailsDestination
@@ -139,8 +139,8 @@ internal class EpisodeDetailsViewModel(
         merge(
             showUpdatesSource.observeUpdates(Source.Progress),
             showUpdatesSource.observeUpdates(Source.Seasons),
-            episodeUpdatesSource.observeUpdates(SEASON),
-            episodeUpdatesSource.observeUpdates(HISTORY),
+            episodeUpdatesSource.observeUpdates(Season),
+            episodeUpdatesSource.observeUpdates(History),
         )
             .distinctUntilChanged()
             .debounce(200.milliseconds)
@@ -454,7 +454,7 @@ internal class EpisodeDetailsViewModel(
                     state?.copy(plays = progress?.plays?.size)
                 }
 
-                episodeUpdatesSource.notifyUpdate(PROGRESS)
+                episodeUpdatesSource.notifyUpdate(Progress)
 
                 if (response.added.episodes != 0) {
                     infoState.update { DynamicStringResource(R.string.text_info_history_added) }
@@ -501,7 +501,7 @@ internal class EpisodeDetailsViewModel(
                     state?.copy(plays = 0)
                 }
 
-                episodeUpdatesSource.notifyUpdate(PROGRESS)
+                episodeUpdatesSource.notifyUpdate(Progress)
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_removed)
                 }

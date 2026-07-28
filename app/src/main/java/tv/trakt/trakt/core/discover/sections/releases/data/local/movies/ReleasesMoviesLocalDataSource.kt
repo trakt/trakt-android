@@ -6,4 +6,6 @@ internal interface ReleasesMoviesLocalDataSource {
     suspend fun setMovies(movies: List<CalendarItem.MovieItem>)
 
     suspend fun getMovies(): List<CalendarItem.MovieItem>
+
+    suspend fun clear()
 }

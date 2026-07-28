@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.shows.data.remote
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.CalendarMediaDto
+import tv.trakt.trakt.common.networking.CalendarShowDto
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.ExternalRatingsDto
@@ -48,6 +49,18 @@ internal interface ShowsRemoteDataSource {
         days: Int,
         filters: GlobalFilter,
     ): List<CalendarMediaDto>
+
+    suspend fun getReleasesPremieres(
+        startDate: Instant,
+        days: Int,
+        filters: GlobalFilter,
+    ): List<CalendarShowDto>
+
+    suspend fun getReleasesFinales(
+        startDate: Instant,
+        days: Int,
+        filters: GlobalFilter,
+    ): List<CalendarShowDto>
 
     suspend fun getShowDetails(showId: TraktId): ShowCalendarsDto
 

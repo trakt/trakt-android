@@ -44,13 +44,15 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarItemsUseCase
+import tv.trakt.trakt.core.calendar.usecases.GetCalendarTypeUseCase
+import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.CALENDAR
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.HISTORY
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Calendar
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Progress
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Season
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
@@ -68,6 +70,7 @@ internal class CalendarViewModel(
     private val ratePromptManager: RatePromptManager,
     private val filterManager: GlobalFilterManager,
     private val getCalendarItemsUseCase: GetCalendarItemsUseCase,
+    private val getCalendarTypeUseCase: GetCalendarTypeUseCase,
     private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
@@ -85,6 +88,7 @@ internal class CalendarViewModel(
 
     private val selectedStartDayState = MutableStateFlow(initialState.selectedStartDay)
     private val filterState = MutableStateFlow(filterManager.getFilter())
+    private val typeState = MutableStateFlow(initialState.type)
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val itemsLoadingState = MutableStateFlow(initialState.itemsLoading)
@@ -98,6 +102,9 @@ internal class CalendarViewModel(
 
     private var dataJob: Job? = null
     private var processingJob: Job? = null
+
+    // Seed the type from the persisted calendar selection once; changes here stay in-memory only.
+    private var typeSeeded = false
 
     init {
         loadUser()
@@ -132,9 +139,9 @@ internal class CalendarViewModel(
             showUpdates.observeUpdates(Source.Progress),
             showUpdates.observeUpdates(Source.Seasons),
             showUpdates.observeUpdates(Source.WatchedUntil),
-            episodeUpdates.observeUpdates(PROGRESS),
-            episodeUpdates.observeUpdates(SEASON),
-            episodeUpdates.observeUpdates(HISTORY),
+            episodeUpdates.observeUpdates(Progress),
+            episodeUpdates.observeUpdates(Season),
+            episodeUpdates.observeUpdates(History),
             movieUpdates.observeUpdates(MovieDetailsUpdates.Source.Progress),
             movieUpdates.observeUpdates(MovieDetailsUpdates.Source.History),
         )
@@ -163,11 +170,18 @@ internal class CalendarViewModel(
 
             try {
                 loadingState.update { Loading }
+
+                if (!typeSeeded) {
+                    typeSeeded = true
+                    typeState.update { getCalendarTypeUseCase.getType() }
+                }
+
                 itemsState.update {
                     val currentDay = selectedStartDayState.value
                     getCalendarItemsUseCase.getCalendarItems(
                         day = currentDay,
                         filters = filterState.value,
+                        type = typeState.value,
                     )
                 }
             } catch (error: Exception) {
@@ -207,6 +221,14 @@ internal class CalendarViewModel(
         loadData()
     }
 
+    fun setType(type: ReleaseType) {
+        if (type == typeState.value || loadingState.value.isLoading) {
+            return
+        }
+        typeState.update { type }
+        loadData()
+    }
+
     // Mutations
 
     fun addToHistory(
@@ -232,7 +254,7 @@ internal class CalendarViewModel(
                     customDate = customDate,
                 )
                 loadUserProgressUseCase.loadShowsProgress()
-                episodeUpdates.notifyUpdate(CALENDAR)
+                episodeUpdates.notifyUpdate(Calendar)
 
                 itemsState.update {
                     val currentItems = it ?: return@update it
@@ -291,7 +313,7 @@ internal class CalendarViewModel(
                     customDate = customDate,
                 )
                 loadUserProgressUseCase.loadMoviesProgress()
-                episodeUpdates.notifyUpdate(CALENDAR)
+                episodeUpdates.notifyUpdate(Calendar)
 
                 itemsState.update {
                     val currentItems = it ?: return@update it
@@ -346,7 +368,7 @@ internal class CalendarViewModel(
             try {
                 updateEpisodeHistoryUseCase.removeEpisodeFromHistory(episode.ids.trakt.value)
                 loadUserProgressUseCase.loadShowsProgress()
-                episodeUpdates.notifyUpdate(CALENDAR)
+                episodeUpdates.notifyUpdate(Calendar)
 
                 itemsState.update {
                     val currentItems = it ?: return@update it
@@ -398,7 +420,7 @@ internal class CalendarViewModel(
             try {
                 updateMovieHistoryUseCase.removeAllFromHistory(movie.ids.trakt)
                 loadUserProgressUseCase.loadMoviesProgress()
-                episodeUpdates.notifyUpdate(CALENDAR)
+                episodeUpdates.notifyUpdate(Calendar)
 
                 itemsState.update {
                     val currentItems = it ?: return@update it
@@ -500,6 +522,7 @@ internal class CalendarViewModel(
         loadingState,
         infoState,
         errorState,
+        typeState,
     ) { states ->
         CalendarState(
             selectedStartDay = states[0] as LocalDate,
@@ -513,6 +536,7 @@ internal class CalendarViewModel(
             loading = states[8] as LoadingState,
             info = states[9] as DynamicStringResource?,
             error = states[10] as Exception?,
+            type = states[11] as ReleaseType,
         )
     }.stateIn(
         scope = viewModelScope,

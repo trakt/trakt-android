@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -259,44 +260,57 @@ private fun DayRowItem(
                 .alpha(if (dayAvailable) 1F else 0.25F),
         )
 
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(2.dp),
-            verticalAlignment = CenterVertically,
-            modifier = Modifier
-                .heightIn(min = 12.dp),
-        ) {
-            if (episodesCount > 0) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_shows_off),
-                    tint = TraktTheme.colors.textSecondary,
-                    contentDescription = null,
-                    modifier = Modifier.size(8.dp),
-                )
-            }
-            if (moviesCount > 0) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_movies_off),
-                    tint = TraktTheme.colors.textSecondary,
-                    contentDescription = null,
-                    modifier = Modifier.size(8.dp),
-                )
-            }
-            val restCount = (episodesCount + moviesCount) - when {
-                episodesCount > 0 && moviesCount > 0 -> 2
-                episodesCount > 0 || moviesCount > 0 -> 1
-                else -> 0
-            }
+        if (enabled) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                verticalAlignment = CenterVertically,
+                modifier = Modifier
+                    .heightIn(min = 12.dp),
+            ) {
+                if (episodesCount > 0) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_shows_off),
+                        tint = TraktTheme.colors.textSecondary,
+                        contentDescription = null,
+                        modifier = Modifier.size(8.dp),
+                    )
+                }
+                if (moviesCount > 0) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_movies_off),
+                        tint = TraktTheme.colors.textSecondary,
+                        contentDescription = null,
+                        modifier = Modifier.size(8.dp),
+                    )
+                }
+                val restCount = (episodesCount + moviesCount) - when {
+                    episodesCount > 0 && moviesCount > 0 -> 2
+                    episodesCount > 0 || moviesCount > 0 -> 1
+                    else -> 0
+                }
 
-            if (restCount > 0) {
-                Text(
-                    text = "+$restCount",
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.meta.copy(
-                        fontSize = 10.sp,
-                    ),
-                    maxLines = 1,
-                )
+                if (restCount > 0) {
+                    Text(
+                        text = "+$restCount",
+                        color = TraktTheme.colors.textSecondary,
+                        style = TraktTheme.typography.meta.copy(
+                            fontSize = 10.sp,
+                        ),
+                        maxLines = 1,
+                    )
+                }
             }
+        } else {
+            Box(
+                modifier = Modifier
+                    .padding(horizontal = 4.dp)
+                    .fillMaxWidth()
+                    .background(
+                        color = TraktTheme.colors.textSecondary.copy(alpha = 0.2F),
+                        shape = RoundedCornerShape(100),
+                    )
+                    .heightIn(min = 12.dp),
+            )
         }
     }
 }

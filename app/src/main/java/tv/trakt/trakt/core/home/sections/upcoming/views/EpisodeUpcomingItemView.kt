@@ -19,20 +19,19 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
-import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
+import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.FinaleChip
 import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.chips.PremiereChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
-import java.time.Instant
 
 @Composable
 internal fun EpisodeUpcomingItemView(
-    item: HomeUpcomingItem.EpisodeItem,
+    item: CalendarItem.EpisodeItem,
     modifier: Modifier = Modifier,
+    midReleases: Boolean = false,
     onClick: () -> Unit,
     onShowClick: () -> Unit,
 ) {
@@ -50,16 +49,13 @@ internal fun EpisodeUpcomingItemView(
             ) {
                 val shadowModifier = Modifier.shadow(2.dp, RoundedCornerShape(100))
                 when {
-                    item.episode.isPremiere() -> PremiereChip(modifier = shadowModifier)
-                    item.episode.isFinale() -> FinaleChip(modifier = shadowModifier)
+                    item.episode.isPremiere(isLatestAired = midReleases) -> PremiereChip(modifier = shadowModifier)
+                    item.episode.isFinale(isLatestAired = midReleases) -> FinaleChip(modifier = shadowModifier)
                 }
 
                 InfoChip(
-                    text = item.releasedAt.toLocal().relativeDateTimeString(),
-                    iconPainter = when {
-                        item.episode.isReleased -> painterResource(R.drawable.ic_calendar_check)
-                        else -> painterResource(R.drawable.ic_calendar_upcoming)
-                    },
+                    text = item.releasedAt?.toLocal()?.relativeDateTimeString() ?: "N/A",
+                    iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
                     containerColor = TraktTheme.colors.chipContainerOnContent,
                     modifier = shadowModifier,
                 )
@@ -111,11 +107,10 @@ internal fun EpisodeUpcomingItemView(
 private fun Preview() {
     TraktTheme {
         EpisodeUpcomingItemView(
-            item = HomeUpcomingItem.EpisodeItem(
-                id = 1.toTraktId(),
-                releasedAt = Instant.now(),
+            item = CalendarItem.EpisodeItem(
                 show = PreviewData.show1,
                 episodes = persistentListOf(PreviewData.episode1),
+                watched = false,
             ),
             onClick = {},
             onShowClick = {},

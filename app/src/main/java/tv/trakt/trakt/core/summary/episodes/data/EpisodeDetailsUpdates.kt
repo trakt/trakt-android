@@ -9,10 +9,10 @@ internal interface EpisodeDetailsUpdates {
     fun observeUpdates(source: Source): Flow<Instant?>
 
     enum class Source {
-        HOME,
-        PROGRESS,
-        HISTORY,
-        SEASON,
-        CALENDAR,
+        Home,
+        Progress,
+        History,
+        Season,
+        Calendar,
     }
 }

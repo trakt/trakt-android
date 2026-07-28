@@ -13,6 +13,8 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.core.discover.sections.releases.usecases.movies.GetReleasesMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.GetReleasesShowsUseCase
+import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType
+import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType.Finale
 import java.time.DayOfWeek.MONDAY
 import java.time.LocalDate
 import java.time.ZoneOffset.UTC
@@ -30,9 +32,10 @@ internal class GetAllReleasesItemsUseCase(
     suspend fun getReleaseItems(
         startDay: LocalDate,
         filters: GlobalFilter,
+        type: ReleaseType,
     ): ImmutableMap<LocalDate, ImmutableList<CalendarItem>> {
         val weekStart = startDay.with(MONDAY)
-        val rawItems = loadItems(weekStart, filters)
+        val rawItems = loadItems(weekStart, filters, type)
 
         val itemsByDay = markWatched(rawItems)
             .filter { it.releasedAt != null }
@@ -52,6 +55,7 @@ internal class GetAllReleasesItemsUseCase(
     private suspend fun loadItems(
         weekStart: LocalDate,
         filters: GlobalFilter,
+        type: ReleaseType,
     ): List<CalendarItem> {
         return coroutineScope {
             // Backend works in UTC dates; fetch a UTC window padded by one day on
@@ -67,6 +71,7 @@ internal class GetAllReleasesItemsUseCase(
                     days = FETCH_DAYS,
                     filters = filters,
                     skipLocal = true,
+                    type = type,
                 )
             }
 
@@ -80,7 +85,8 @@ internal class GetAllReleasesItemsUseCase(
             }
 
             val shows = if (filters.mode.isMediaOrShows) showsAsync.await() else emptyList()
-            val movies = if (filters.mode.isMediaOrMovies) moviesAsync.await() else emptyList()
+            // Release type applies to episodes only; movies are excluded for Finale.
+            val movies = if (type != Finale && filters.mode.isMediaOrMovies) moviesAsync.await() else emptyList()
 
             shows + movies
         }

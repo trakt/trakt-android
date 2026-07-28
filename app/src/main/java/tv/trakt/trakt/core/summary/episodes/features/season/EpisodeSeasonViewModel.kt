@@ -83,8 +83,8 @@ internal class EpisodeSeasonViewModel(
         merge(
             showDetailsUpdates.observeUpdates(Progress),
             showDetailsUpdates.observeUpdates(Seasons),
-            episodeDetailsUpdates.observeUpdates(Source.PROGRESS),
-            episodeDetailsUpdates.observeUpdates(Source.HISTORY),
+            episodeDetailsUpdates.observeUpdates(Source.Progress),
+            episodeDetailsUpdates.observeUpdates(Source.History),
         )
             .distinctUntilChanged()
             .debounce(200L)
@@ -198,7 +198,7 @@ internal class EpisodeSeasonViewModel(
                     )
                 }
 
-                episodeDetailsUpdates.notifyUpdate(Source.SEASON)
+                episodeDetailsUpdates.notifyUpdate(Source.Season)
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_added)
                 }
@@ -249,7 +249,7 @@ internal class EpisodeSeasonViewModel(
                     )
                 }
 
-                episodeDetailsUpdates.notifyUpdate(Source.SEASON)
+                episodeDetailsUpdates.notifyUpdate(Source.Season)
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_removed)
                 }

@@ -30,8 +30,10 @@ import tv.trakt.trakt.common.model.MediaMode.Movies
 import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.calendar.model.CalendarItem
+import tv.trakt.trakt.core.discover.sections.releases.usecases.GetReleasesTypeUseCase
 import tv.trakt.trakt.core.discover.sections.releases.usecases.movies.GetReleasesMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.GetReleasesShowsUseCase
+import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
@@ -42,11 +44,13 @@ internal class DiscoverReleasesViewModel(
     private val filterManager: GlobalFilterManager,
     private val getReleasesShowsUseCase: GetReleasesShowsUseCase,
     private val getReleasesMoviesUseCase: GetReleasesMoviesUseCase,
+    private val getReleasesTypeUseCase: GetReleasesTypeUseCase,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = DiscoverReleasesState()
 
     private val filterState = MutableStateFlow(filterManager.getFilter())
+    private val typeState = MutableStateFlow(ReleaseType.All)
     private val collapseState = MutableStateFlow(isCollapsed())
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -74,6 +78,7 @@ internal class DiscoverReleasesViewModel(
         dataJob?.cancel()
         dataJob = viewModelScope.launch {
             try {
+                loadType()
                 loadLocalData()
                 loadRemoteData()
             } catch (error: Exception) {
@@ -86,6 +91,10 @@ internal class DiscoverReleasesViewModel(
                 dataJob = null
             }
         }
+    }
+
+    private suspend fun loadType() {
+        typeState.update { getReleasesTypeUseCase.getType() }
     }
 
     private suspend fun loadLocalData() {
@@ -124,20 +133,25 @@ internal class DiscoverReleasesViewModel(
             val showsAsync = async {
                 getReleasesShowsUseCase.getShows(
                     startDate = startDate.minus(1, DAYS),
-                    days = 7,
+                    days = 14,
                     filters = filterState.value,
+                    type = typeState.value,
                 )
             }
             val moviesAsync = async {
                 getReleasesMoviesUseCase.getMovies(
                     startDate = startDate.minus(1, DAYS),
-                    days = 7,
+                    days = 14,
                     filters = filterState.value,
                 )
             }
 
             val shows = if (filterState.value.mode.isMediaOrShows) showsAsync.await() else emptyList()
-            val movies = if (filterState.value.mode.isMediaOrMovies) moviesAsync.await() else emptyList()
+            val movies = if (typeState.value != ReleaseType.Finale && filterState.value.mode.isMediaOrMovies) {
+                moviesAsync.await()
+            } else {
+                emptyList()
+            }
 
             itemsState.update {
                 (shows + movies)
@@ -148,6 +162,20 @@ internal class DiscoverReleasesViewModel(
                     .sortedBy { it.releasedAt }
                     .toImmutableList()
             }
+        }
+    }
+
+    fun setType(type: ReleaseType) {
+        if (type == typeState.value || loadingState.value.isLoading) {
+            return
+        }
+        viewModelScope.launch {
+            getReleasesTypeUseCase.setType(type)
+            // Local caches are not release-type aware, so clear them on change to
+            // avoid briefly serving stale items from the previously selected type.
+            getReleasesShowsUseCase.clearLocal()
+            getReleasesMoviesUseCase.clearLocal()
+            loadData()
         }
     }
 
@@ -181,6 +209,7 @@ internal class DiscoverReleasesViewModel(
     val state = combine(
         itemsState,
         filterState,
+        typeState,
         collapseState,
         loadingState,
         errorState,
@@ -188,9 +217,10 @@ internal class DiscoverReleasesViewModel(
         DiscoverReleasesState(
             items = state[0] as ImmutableList<CalendarItem>?,
             filter = state[1] as GlobalFilter?,
-            collapsed = state[2] as Boolean,
-            loading = state[3] as LoadingState,
-            error = state[4] as Exception?,
+            type = state[2] as ReleaseType,
+            collapsed = state[3] as Boolean,
+            loading = state[4] as LoadingState,
+            error = state[5] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

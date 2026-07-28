@@ -107,7 +107,7 @@ internal class MoviesApiClient(
             certifications = filters.certification?.joinToString(",") { it.slug },
             ignoreWatched = true,
             ignoreWatchlisted = filters.hideWatchlist,
-            ignoreCollected = null,
+            ignoreCollected = true,
             startDate = null,
             endDate = null,
             countries = filters.countries?.joinToString(",") ?: filters.region?.slug,

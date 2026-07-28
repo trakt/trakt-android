@@ -38,9 +38,9 @@ import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressComplete
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressDroppedUseCase
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressWatchingUseCase
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.HISTORY
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.PROGRESS
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.SEASON
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Progress
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Season
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
@@ -81,9 +81,9 @@ internal class ProfileProgressViewModel(
             showUpdates.observeUpdates(Source.Progress),
             showUpdates.observeUpdates(Source.Seasons),
             showUpdates.observeUpdates(Source.WatchedUntil),
-            episodeUpdates.observeUpdates(PROGRESS),
-            episodeUpdates.observeUpdates(SEASON),
-            episodeUpdates.observeUpdates(HISTORY),
+            episodeUpdates.observeUpdates(Progress),
+            episodeUpdates.observeUpdates(Season),
+            episodeUpdates.observeUpdates(History),
         )
             .distinctUntilChanged()
             .debounce(200.milliseconds)

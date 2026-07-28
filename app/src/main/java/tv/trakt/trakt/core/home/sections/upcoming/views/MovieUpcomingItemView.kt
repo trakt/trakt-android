@@ -14,17 +14,15 @@ import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.core.home.sections.upcoming.model.HomeUpcomingItem
+import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
-import java.time.Instant
 
 @Composable
 internal fun MovieUpcomingItemView(
-    item: HomeUpcomingItem.MovieItem,
+    item: CalendarItem.MovieItem,
     modifier: Modifier = Modifier,
     onClick: (TraktId) -> Unit = { },
 ) {
@@ -35,11 +33,8 @@ internal fun MovieUpcomingItemView(
         onClick = { onClick(item.movie.ids.trakt) },
         cardContent = {
             InfoChip(
-                text = item.releasedAt.toLocal().relativeDateTimeString(),
-                iconPainter = when {
-                    item.movie.isReleased -> painterResource(R.drawable.ic_calendar_check)
-                    else -> painterResource(R.drawable.ic_calendar_upcoming)
-                },
+                text = item.releasedAt?.toLocal()?.relativeDateTimeString() ?: "N/A",
+                iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
                 containerColor = TraktTheme.colors.chipContainerOnContent,
             )
         },
@@ -73,10 +68,9 @@ internal fun MovieUpcomingItemView(
 private fun Preview() {
     TraktTheme {
         MovieUpcomingItemView(
-            item = HomeUpcomingItem.MovieItem(
-                id = 1.toTraktId(),
-                releasedAt = Instant.now(),
+            item = CalendarItem.MovieItem(
                 movie = PreviewData.movie1,
+                watched = false,
             ),
         )
     }

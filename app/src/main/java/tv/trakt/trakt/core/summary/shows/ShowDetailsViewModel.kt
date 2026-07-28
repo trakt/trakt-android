@@ -69,7 +69,7 @@ import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.AddPersonalLi
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
-import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.HISTORY
+import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
 import tv.trakt.trakt.core.summary.shows.ShowDetailsState.UserRatingsState
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
@@ -158,7 +158,7 @@ internal class ShowDetailsViewModel(
         merge(
             showDetailsUpdates.observeUpdates(Source.Seasons),
             showDetailsUpdates.observeUpdates(Source.WatchedUntil),
-            episodeDetailsUpdates.observeUpdates(HISTORY),
+            episodeDetailsUpdates.observeUpdates(History),
         )
             .distinctUntilChanged()
             .debounce(200.milliseconds)
