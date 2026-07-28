@@ -5,11 +5,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -30,6 +35,7 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.resources.R
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun ShowEpisodesList(
     isLoading: Boolean,
@@ -39,6 +45,8 @@ internal fun ShowEpisodesList(
     onEpisodeClick: (episode: Episode) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val firstItem = remember { FocusRequester() }
+
     Column(
         horizontalAlignment = Alignment.Start,
         modifier = modifier
@@ -61,15 +69,16 @@ internal fun ShowEpisodesList(
             }
         } else {
             PositionFocusLazyRow(
+                modifier = Modifier.focusRestorer(firstItem),
                 contentPadding = PaddingValues(
                     start = TraktTheme.spacing.mainContentStartSpace,
                     end = TraktTheme.spacing.mainContentEndSpace,
                 ),
             ) {
-                items(
+                itemsIndexed(
                     items = episodes(),
-                    key = { item -> item.episode.ids.trakt.value },
-                ) { (episode, watched) ->
+                    key = { _, item -> item.episode.ids.trakt.value },
+                ) { index, (episode, watched) ->
                     HorizontalMediaCard(
                         title = "",
                         watched = watched,
@@ -117,6 +126,9 @@ internal fun ShowEpisodesList(
                             }
                         },
                         modifier = Modifier
+                            .then(
+                                if (index == 0) Modifier.focusRequester(firstItem) else Modifier,
+                            )
                             .onFocusChanged {
                                 if (it.isFocused) {
                                     onFocused()

@@ -34,7 +34,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush.Companion.horizontalGradient
 import androidx.compose.ui.graphics.Color
@@ -389,7 +388,6 @@ private fun MainContent(
                 onClick = onPersonClick,
                 modifier = Modifier
                     .padding(top = 32.dp)
-                    .focusRestorer()
                     .focusRequester(focusRequesters.getValue("people")),
             )
         }
@@ -438,7 +436,6 @@ private fun MainContent(
                 onClick = onMovieClick,
                 modifier = Modifier
                     .padding(top = 36.dp)
-                    .focusGroup()
                     .focusRequester(focusRequesters.getValue("related")),
             )
         }

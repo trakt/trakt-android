@@ -4,10 +4,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -21,6 +26,7 @@ import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.Person
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun MovieCastCrewList(
     header: String,
@@ -29,6 +35,8 @@ internal fun MovieCastCrewList(
     onClick: (Person) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val firstItem = remember { FocusRequester() }
+
     Column(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -44,15 +52,16 @@ internal fun MovieCastCrewList(
         )
 
         PositionFocusLazyRow(
+            modifier = Modifier.focusRestorer(firstItem),
             contentPadding = PaddingValues(
                 start = TraktTheme.spacing.mainContentStartSpace,
                 end = TraktTheme.spacing.mainContentEndSpace,
             ),
         ) {
-            items(
+            itemsIndexed(
                 items = cast(),
-                key = { item -> item.person.ids.trakt.value },
-            ) { person ->
+                key = { _, item -> item.person.ids.trakt.value },
+            ) { index, person ->
                 VerticalMediaCard(
                     title = person.person.name,
                     imageUrl = person.person.images?.getHeadshotUrl(THUMB),
@@ -82,6 +91,9 @@ internal fun MovieCastCrewList(
                         }
                     },
                     modifier = Modifier
+                        .then(
+                            if (index == 0) Modifier.focusRequester(firstItem) else Modifier,
+                        )
                         .onFocusChanged {
                             if (it.isFocused) {
                                 onFocused()
