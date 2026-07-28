@@ -308,8 +308,9 @@ private fun NavigationProfileItem(
             Box(
                 modifier = Modifier.size(28.dp),
             ) {
+                val vipColor = TraktTheme.colors.vipAccent
                 val borderColor = remember(profile.isAnyVip) {
-                    if (profile.isAnyVip) Color.Red else Color.White
+                    if (profile.isAnyVip) vipColor else Color.White
                 }
                 if (profile.hasAvatar) {
                     AsyncImage(

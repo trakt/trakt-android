@@ -201,7 +201,7 @@ private fun CustomListHeader(
             Box(
                 modifier = Modifier.size(36.dp),
             ) {
-                val avatarBorder = if (list.user.isAnyVip) Color.Red else Color.Transparent
+                val avatarBorder = if (list.user.isAnyVip) TraktTheme.colors.vipAccent else Color.Transparent
                 val avatar = list.user.images?.avatar?.full
                 if (avatar != null) {
                     AsyncImage(

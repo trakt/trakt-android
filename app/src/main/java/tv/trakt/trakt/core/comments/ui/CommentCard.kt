@@ -430,19 +430,18 @@ private fun CommentHeader(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(3.dp),
                 ) {
-                    Text(
-                        text = rating,
-                        style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
-                        color = TraktTheme.colors.textPrimary,
-                        maxLines = 1,
-                    )
-
                     Icon(
                         painter = painterResource(R.drawable.ic_star_trakt_on),
                         contentDescription = null,
                         tint = Color.White,
                         modifier = Modifier
                             .size(15.dp),
+                    )
+                    Text(
+                        text = rating,
+                        style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
+                        color = TraktTheme.colors.textPrimary,
+                        maxLines = 1,
                     )
                 }
             }

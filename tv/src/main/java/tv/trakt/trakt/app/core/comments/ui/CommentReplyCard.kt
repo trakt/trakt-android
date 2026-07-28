@@ -2,8 +2,8 @@ package tv.trakt.trakt.app.core.comments.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -41,13 +40,11 @@ import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
-import tv.trakt.trakt.app.common.ui.TvVipChip
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
-import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.resources.R
 
 @Composable
@@ -139,8 +136,12 @@ private fun CommentHeader(comment: Comment) {
         Box(
             modifier = Modifier.size(36.dp),
         ) {
-            val avatarBorder = if (comment.user.isAnyVip) Color.Red else Color.Transparent
             val avatar = comment.user.images?.avatar?.full
+            val avatarBorder = when {
+                comment.user.isAnyVip -> TraktTheme.colors.vipAccent
+                else -> Color.Transparent
+            }
+
             if (avatar != null) {
                 AsyncImage(
                     model = avatar,
@@ -148,7 +149,7 @@ private fun CommentHeader(comment: Comment) {
                     contentScale = ContentScale.Crop,
                     error = painterResource(R.drawable.ic_person_placeholder),
                     modifier = Modifier
-                        .border(2.dp, avatarBorder, CircleShape)
+                        .border(2.5.dp, avatarBorder, CircleShape)
                         .clip(CircleShape),
                 )
             } else {
@@ -156,25 +157,8 @@ private fun CommentHeader(comment: Comment) {
                     painter = painterResource(R.drawable.ic_person_placeholder),
                     contentDescription = null,
                     modifier = Modifier
-                        .border(2.dp, avatarBorder, CircleShape)
+                        .border(2.5.dp, avatarBorder, CircleShape)
                         .clip(CircleShape),
-                )
-            }
-
-            comment.userLiteRating?.let {
-                Icon(
-                    painter = painterResource(it.iconRes),
-                    contentDescription = it.name,
-                    tint = it.tint,
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .graphicsLayer {
-                            translationX = 4.dp.toPx()
-                            translationY = -4.dp.toPx()
-                        }
-                        .background(Shade500, shape = CircleShape)
-                        .size(18.dp)
-                        .padding(3.dp),
                 )
             }
         }
@@ -191,9 +175,6 @@ private fun CommentHeader(comment: Comment) {
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-                if (comment.user.isAnyVip) {
-                    TvVipChip()
-                }
             }
             Text(
                 text = comment.createdAt.format(longDateTimeFormat()).capitalize(),
@@ -202,6 +183,29 @@ private fun CommentHeader(comment: Comment) {
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
+        }
+
+        comment.user5Rating?.let {
+            Spacer(modifier = Modifier.weight(1F))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(3.dp),
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_star_trakt_on),
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier
+                        .size(15.dp),
+                )
+                Text(
+                    text = it,
+                    style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
+                    color = TraktTheme.colors.textPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
         }
     }
 }

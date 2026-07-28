@@ -332,8 +332,9 @@ private fun ProfileAvatar(
         modifier = modifier
             .size(44.dp),
     ) {
+        val vipColor = TraktTheme.colors.vipAccent
         val borderColor = remember(profile?.isAnyVip) {
-            if (profile?.isAnyVip == true) Color.Red else Color.Transparent
+            if (profile?.isAnyVip == true) vipColor else Color.Transparent
         }
         if (profile?.hasAvatar == true) {
             AsyncImage(

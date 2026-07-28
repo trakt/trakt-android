@@ -4,10 +4,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.focusable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -36,12 +38,12 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -56,7 +58,6 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.ImmutableList
 import org.koin.androidx.compose.koinViewModel
-import tv.trakt.trakt.app.common.ui.TvVipChip
 import tv.trakt.trakt.app.core.comments.ui.CommentReplyCard
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.capitalize
@@ -65,7 +66,6 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.common.ui.theme.colors.Shade500
 import tv.trakt.trakt.resources.R
 
 @Composable
@@ -212,7 +212,7 @@ private fun CommentHeader(
             modifier = Modifier
                 .size(36.dp),
         ) {
-            val avatarBorder = if (comment.user.isAnyVip) Color.Red else Color.Transparent
+            val avatarBorder = if (comment.user.isAnyVip) TraktTheme.colors.vipAccent else Color.Transparent
             val avatar = comment.user.images?.avatar?.full
             if (avatar != null) {
                 AsyncImage(
@@ -221,7 +221,7 @@ private fun CommentHeader(
                     contentScale = ContentScale.Crop,
                     error = painterResource(R.drawable.ic_person_placeholder),
                     modifier = Modifier
-                        .border(2.dp, avatarBorder, CircleShape)
+                        .border(2.5.dp, avatarBorder, CircleShape)
                         .clip(CircleShape),
                 )
             } else {
@@ -229,25 +229,8 @@ private fun CommentHeader(
                     painter = painterResource(R.drawable.ic_person_placeholder),
                     contentDescription = null,
                     modifier = Modifier
-                        .border(2.dp, avatarBorder, CircleShape)
+                        .border(2.5.dp, avatarBorder, CircleShape)
                         .clip(CircleShape),
-                )
-            }
-
-            comment.userLiteRating?.let {
-                Icon(
-                    painter = painterResource(it.iconRes),
-                    contentDescription = it.name,
-                    tint = it.tint,
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .graphicsLayer {
-                            translationX = 4.dp.toPx()
-                            translationY = -4.dp.toPx()
-                        }
-                        .background(Shade500, shape = CircleShape)
-                        .size(18.dp)
-                        .padding(3.dp),
                 )
             }
         }
@@ -264,9 +247,6 @@ private fun CommentHeader(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-                if (comment.user.isAnyVip) {
-                    TvVipChip()
-                }
             }
             Text(
                 text = comment.createdAt.format(longDateTimeFormat()).capitalize(),
@@ -275,6 +255,29 @@ private fun CommentHeader(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
+        }
+
+        comment.user5Rating?.let {
+            Spacer(modifier = Modifier.weight(1F))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_star_trakt_on),
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier
+                        .size(16.dp),
+                )
+                Text(
+                    text = it,
+                    style = TraktTheme.typography.paragraph.copy(fontWeight = W700),
+                    color = TraktTheme.colors.textPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
         }
     }
 }
