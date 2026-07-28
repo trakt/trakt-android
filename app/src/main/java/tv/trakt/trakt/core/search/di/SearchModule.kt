@@ -8,24 +8,23 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import androidx.lifecycle.SavedStateHandle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.factoryOf
-import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import tv.trakt.trakt.common.core.search.data.remote.SearchApiClient
+import tv.trakt.trakt.common.core.search.data.remote.SearchRemoteDataSource
+import tv.trakt.trakt.common.core.search.usecase.GetSearchResultsUseCase
 import tv.trakt.trakt.core.search.SearchViewModel
 import tv.trakt.trakt.core.search.data.local.people.SearchPeopleLocalDataSource
 import tv.trakt.trakt.core.search.data.local.people.SearchPeopleStorage
 import tv.trakt.trakt.core.search.data.local.popular.PopularSearchLocalDataSource
 import tv.trakt.trakt.core.search.data.local.popular.PopularSearchStorage
-import tv.trakt.trakt.core.search.data.remote.SearchApiClient
-import tv.trakt.trakt.core.search.data.remote.SearchRemoteDataSource
 import tv.trakt.trakt.core.search.usecase.GetBirthdayPeopleUseCase
-import tv.trakt.trakt.core.search.usecase.GetSearchResultsUseCase
 import tv.trakt.trakt.core.search.usecase.popular.GetPopularSearchUseCase
 import tv.trakt.trakt.core.search.usecase.popular.PostUserSearchUseCase
 
@@ -59,28 +58,12 @@ internal val searchDataModule = module {
 }
 
 internal val searchModule = module {
-
     factoryOf(::GetSearchResultsUseCase)
     factoryOf(::GetPopularSearchUseCase)
     factoryOf(::PostUserSearchUseCase)
     factoryOf(::GetBirthdayPeopleUseCase)
 
-    viewModel { (_: SavedStateHandle) ->
-        SearchViewModel(
-            postUserSearchUseCase = get(),
-            getPopularSearchesUseCase = get(),
-            getSearchResultsUseCase = get(),
-            getBirthdayPeopleUseCase = get(),
-            loadUserLikedListsUseCase = get(),
-            showLocalDataSource = get(),
-            movieLocalDataSource = get(),
-            peopleLocalDataSource = get(),
-            likedListsLocalDataSource = get(),
-            collectionStateProvider = get(),
-            sessionManager = get(),
-            analytics = get(),
-        )
-    }
+    viewModelOf(::SearchViewModel)
 }
 
 private fun createStore(context: Context): DataStore<Preferences> {

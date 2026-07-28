@@ -1,8 +1,8 @@
 package tv.trakt.trakt.core.search.usecase.popular
 
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.search.data.remote.SearchRemoteDataSource
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.search.data.remote.SearchRemoteDataSource
 
 internal class PostUserSearchUseCase(
     private val remoteSource: SearchRemoteDataSource,

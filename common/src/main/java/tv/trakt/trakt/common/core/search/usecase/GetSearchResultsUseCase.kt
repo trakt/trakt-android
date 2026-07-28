@@ -1,11 +1,11 @@
-package tv.trakt.trakt.core.search.usecase
+package tv.trakt.trakt.common.core.search.usecase
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
+import tv.trakt.trakt.common.core.search.data.remote.SearchRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.networking.SearchItemDto
-import tv.trakt.trakt.core.search.data.remote.SearchRemoteDataSource
 import kotlin.coroutines.cancellation.CancellationException
 
 private const val DEFAULT_SEARCH_LIMIT = 50
@@ -19,7 +19,7 @@ private const val DEFAULT_EXACT_SEARCH_LIMIT = 20
  */
 private const val CONFIDENT_EXACT_SCORE = 0.5
 
-internal class GetSearchResultsUseCase(
+class GetSearchResultsUseCase(
     private val remoteSource: SearchRemoteDataSource,
 ) {
     suspend fun getSearchResults(query: String): List<SearchItemDto> {

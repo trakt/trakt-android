@@ -20,17 +20,19 @@ import timber.log.Timber
 import tv.trakt.trakt.app.core.movies.usecase.GetTrendingMoviesUseCase
 import tv.trakt.trakt.app.core.search.SearchState.SearchResult
 import tv.trakt.trakt.app.core.search.SearchState.State
-import tv.trakt.trakt.app.core.search.usecase.GetSearchResultsUseCase
 import tv.trakt.trakt.app.core.search.usecase.recents.AddRecentSearchUseCase
 import tv.trakt.trakt.app.core.search.usecase.recents.GetRecentSearchUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetTrendingShowsUseCase
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
+import tv.trakt.trakt.common.core.search.usecase.GetSearchResultsUseCase
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.fromDto
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class SearchViewModel(
     private val getSearchResultsUseCase: GetSearchResultsUseCase,
@@ -143,12 +145,14 @@ internal class SearchViewModel(
             try {
                 searchingState.update { true }
 
-                delay(500) // Throttle user input
+                delay(500.milliseconds) // Throttle user input
                 getSearchResultsUseCase.getSearchResults(query).run {
                     searchResultState.update {
                         SearchResult(
-                            shows = shows,
-                            movies = movies,
+                            shows = mapNotNull { dto -> dto.show?.let { Show.fromDto(it) } }
+                                .toImmutableList(),
+                            movies = mapNotNull { dto -> dto.movie?.let { Movie.fromDto(it) } }
+                                .toImmutableList(),
                         )
                     }
                 }

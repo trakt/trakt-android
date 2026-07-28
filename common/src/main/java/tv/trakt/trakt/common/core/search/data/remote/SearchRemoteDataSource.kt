@@ -1,14 +1,15 @@
-package tv.trakt.trakt.core.search.data.remote
+package tv.trakt.trakt.common.core.search.data.remote
 
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.SearchItemDto
 import tv.trakt.trakt.common.networking.TrendingSearchDto
 
-internal interface SearchRemoteDataSource {
-    suspend fun getPeople(
+interface SearchRemoteDataSource {
+    suspend fun getShowsMovies(
         query: String,
         limit: Int,
-        extended: String = "full,cloud9",
+        exact: Boolean = false,
+        extended: String = "full,cloud9,colors,streaming_ids",
     ): List<SearchItemDto>
 
     suspend fun getShows(
@@ -25,14 +26,13 @@ internal interface SearchRemoteDataSource {
         extended: String = "full,cloud9,colors,streaming_ids",
     ): List<SearchItemDto>
 
-    suspend fun getShowsMovies(
+    suspend fun getLists(
         query: String,
         limit: Int,
-        exact: Boolean = false,
-        extended: String = "full,cloud9,colors,streaming_ids",
+        extended: String = "full,cloud9",
     ): List<SearchItemDto>
 
-    suspend fun getLists(
+    suspend fun getPeople(
         query: String,
         limit: Int,
         extended: String = "full,cloud9",
