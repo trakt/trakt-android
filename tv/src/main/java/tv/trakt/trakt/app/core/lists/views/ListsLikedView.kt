@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -39,6 +40,7 @@ internal fun ListsLikedView(
     items: ImmutableList<CustomList>?,
     isLoading: Boolean,
     focusRequesters: Map<String, FocusRequester>,
+    onLoaded: () -> Unit = {},
     onFocused: (CustomList?) -> Unit,
     onClick: (CustomList) -> Unit,
 ) {
@@ -46,6 +48,12 @@ internal fun ListsLikedView(
         start = TraktTheme.spacing.mainContentStartSpace,
         end = TraktTheme.spacing.mainContentEndSpace,
     )
+
+    LaunchedEffect(isLoading) {
+        if (!isLoading && items != null) {
+            onLoaded()
+        }
+    }
 
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),

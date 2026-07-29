@@ -25,6 +25,7 @@ import androidx.lifecycle.Lifecycle.Event.ON_CREATE
 import androidx.lifecycle.Lifecycle.Event.ON_START
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.delay
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaSkeletonCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
@@ -32,13 +33,14 @@ import tv.trakt.trakt.app.core.lists.views.ListsLikedView
 import tv.trakt.trakt.app.core.lists.views.ListsMoviesWatchlistView
 import tv.trakt.trakt.app.core.lists.views.ListsPersonalView
 import tv.trakt.trakt.app.core.lists.views.ListsShowsWatchlistView
+import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.TraktId
+import kotlin.time.Duration.Companion.milliseconds
 
 private val sections = listOf(
-    "initial",
     "shows",
     "movies",
     "personal",
@@ -88,6 +90,7 @@ internal fun ListsScreenContent(
     onShowViewAllClick: () -> Unit = {},
     onMovieViewAllClick: () -> Unit = {},
 ) {
+    var focusedInitial by rememberSaveable { mutableStateOf(false) }
     var focusedSection by rememberSaveable { mutableStateOf<String?>(null) }
     var focusedImageUrl by remember { mutableStateOf<String?>(null) }
 
@@ -98,8 +101,23 @@ internal fun ListsScreenContent(
         )
     }
 
+    // When a section swaps its loading skeletons for real content, the focused
+    // skeleton is disposed and focus would be lost. Re-request focus on the
+    // section the user was on.
+    val refocusOnLoad: (String) -> Unit = { section ->
+        if (focusedSection == section) {
+            focusRequesters[section]?.requestSafeFocus()
+        }
+    }
+
     LaunchedEffect(Unit) {
-        focusRequesters["initial"]?.requestFocus()
+        if (focusedSection == null) {
+            focusedSection = "shows"
+            focusRequesters["shows"]?.requestSafeFocus()
+        } else {
+            delay(500.milliseconds)
+            focusRequesters[focusedSection]?.requestSafeFocus()
+        }
     }
 
     Box(
@@ -109,7 +127,7 @@ internal fun ListsScreenContent(
             .background(TraktTheme.colors.backgroundPrimary)
             .focusProperties {
                 onEnter = {
-                    focusRequesters[focusedSection]?.requestFocus()
+                    focusRequesters[focusedSection]?.requestSafeFocus()
                 }
             },
     ) {
@@ -133,6 +151,14 @@ internal fun ListsScreenContent(
                     items = state.watchlistShows,
                     isLoading = state.loadingLists.loadingWatchlist,
                     focusRequesters = focusRequesters,
+                    onLoaded = {
+                        if (!focusedInitial) {
+                            focusedInitial = true
+                            focusRequesters["shows"]?.requestSafeFocus()
+                        } else {
+                            refocusOnLoad("shows")
+                        }
+                    },
                     onFocused = {
                         focusedSection = "shows"
                         focusedImageUrl = it?.images?.getFanartUrl(Images.Size.FULL)
@@ -149,6 +175,7 @@ internal fun ListsScreenContent(
                     items = state.watchlistMovies,
                     isLoading = state.loadingLists.loadingWatchlist,
                     focusRequesters = focusRequesters,
+                    onLoaded = { refocusOnLoad("movies") },
                     onFocused = {
                         focusedSection = "movies"
                         focusedImageUrl = it?.images?.getFanartUrl(Images.Size.FULL)
@@ -166,6 +193,7 @@ internal fun ListsScreenContent(
                     isLoading = state.loadingLists.loadingPersonal ||
                         state.loadingLists.loadingWatchlist,
                     focusRequesters = focusRequesters,
+                    onLoaded = { refocusOnLoad("personal") },
                     onFocused = {
                         focusedSection = "personal"
                         focusedImageUrl = null
@@ -182,6 +210,7 @@ internal fun ListsScreenContent(
                     isLoading = state.loadingLists.loadingLiked ||
                         state.loadingLists.loadingWatchlist,
                     focusRequesters = focusRequesters,
+                    onLoaded = { refocusOnLoad("liked") },
                     onFocused = {
                         focusedSection = "liked"
                         focusedImageUrl = null

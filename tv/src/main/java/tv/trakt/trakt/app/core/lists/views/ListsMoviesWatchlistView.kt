@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -34,6 +35,7 @@ internal fun ListsMoviesWatchlistView(
     items: ImmutableList<Movie>?,
     isLoading: Boolean,
     focusRequesters: Map<String, FocusRequester>,
+    onLoaded: () -> Unit = {},
     onFocused: (Movie?) -> Unit,
     onClick: (Movie) -> Unit,
     onViewAllClick: () -> Unit,
@@ -42,6 +44,12 @@ internal fun ListsMoviesWatchlistView(
         start = TraktTheme.spacing.mainContentStartSpace,
         end = TraktTheme.spacing.mainContentEndSpace,
     )
+
+    LaunchedEffect(isLoading) {
+        if (!isLoading && items != null) {
+            onLoaded()
+        }
+    }
 
     Column(
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowHeaderSpace),

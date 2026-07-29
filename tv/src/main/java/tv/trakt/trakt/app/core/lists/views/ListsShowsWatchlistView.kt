@@ -1,7 +1,6 @@
 package tv.trakt.trakt.app.core.lists.views
 
 import androidx.compose.foundation.focusGroup
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,10 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -38,6 +33,7 @@ internal fun ListsShowsWatchlistView(
     items: ImmutableList<Show>?,
     isLoading: Boolean,
     focusRequesters: Map<String, FocusRequester>,
+    onLoaded: () -> Unit = {},
     onFocused: (Show?) -> Unit,
     onClick: (Show) -> Unit,
     onViewAllClick: () -> Unit,
@@ -47,14 +43,9 @@ internal fun ListsShowsWatchlistView(
         end = TraktTheme.spacing.mainContentEndSpace,
     )
 
-    var isFocusable by rememberSaveable { mutableStateOf(true) }
-
-    LaunchedEffect(items) {
-        if (items != null) {
-            isFocusable = false
-            focusRequesters
-                .getValue("shows")
-                .requestFocus()
+    LaunchedEffect(isLoading) {
+        if (!isLoading && items != null) {
+            onLoaded()
         }
     }
 
@@ -68,10 +59,7 @@ internal fun ListsShowsWatchlistView(
             text = stringResource(R.string.list_title_watchlist_shows),
             color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.heading5,
-            modifier = Modifier
-                .padding(contentPadding)
-                .focusRequester(focusRequesters["initial"] ?: FocusRequester.Default)
-                .focusable(isFocusable),
+            modifier = Modifier.padding(contentPadding),
         )
 
         when {
