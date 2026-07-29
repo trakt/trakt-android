@@ -5,7 +5,7 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.calendar.model.CalendarItem
-import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType
+import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 
 @Immutable
 internal data class DiscoverReleasesState(

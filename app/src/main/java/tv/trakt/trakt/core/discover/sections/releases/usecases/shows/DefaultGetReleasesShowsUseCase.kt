@@ -11,9 +11,10 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.calendar.model.CalendarItem.EpisodeItem
 import tv.trakt.trakt.core.discover.sections.releases.data.local.shows.ReleasesShowsLocalDataSource
-import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType.All
-import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType.Finale
-import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType.Premiere
+import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
+import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType.All
+import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType.Finale
+import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType.Premiere
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 import java.time.Instant
 

@@ -4,7 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.first
-import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType
+import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 
 private val KEY_CALENDAR_TYPE = stringPreferencesKey("key_calendar_release_type")
 

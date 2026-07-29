@@ -20,7 +20,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.calendar.model.CalendarItem
-import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType
+import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit.DAYS

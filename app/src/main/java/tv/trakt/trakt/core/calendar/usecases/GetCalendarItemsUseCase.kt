@@ -20,7 +20,7 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.calendar.model.CalendarItem
-import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType
+import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import java.time.DayOfWeek.MONDAY
 import java.time.DayOfWeek.SUNDAY
 import java.time.LocalDate

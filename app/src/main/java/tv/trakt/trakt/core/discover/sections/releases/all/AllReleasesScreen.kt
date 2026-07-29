@@ -97,7 +97,7 @@ import tv.trakt.trakt.core.calendar.model.CalendarItem.MovieItem
 import tv.trakt.trakt.core.calendar.ui.CalendarEpisodeItemView
 import tv.trakt.trakt.core.calendar.ui.CalendarMovieItemView
 import tv.trakt.trakt.core.calendar.ui.controls.CalendarControlsView
-import tv.trakt.trakt.core.discover.sections.releases.usecases.shows.ReleaseType
+import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
 import tv.trakt.trakt.helpers.SimpleScrollConnection
@@ -505,7 +505,15 @@ private fun AllReleasesScreen(
                     for (type in ReleaseType.entries) {
                         FilterChip(
                             selected = state.type == type,
-                            text = stringResource(type.displayRes),
+                            text = stringResource(type.textRes),
+                            leadingContent = {
+                                Icon(
+                                    painter = painterResource(type.iconRes),
+                                    contentDescription = null,
+                                    tint = TraktTheme.colors.textPrimary,
+                                    modifier = Modifier.size(type.iconSize),
+                                )
+                            },
                             onClick = { onTypeClick(type) },
                         )
                     }
