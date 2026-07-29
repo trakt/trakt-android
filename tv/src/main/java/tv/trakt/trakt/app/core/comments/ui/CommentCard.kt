@@ -165,7 +165,7 @@ private fun CommentHeader(
             }
         }
 
-        Column(verticalArrangement = spacedBy(3.dp)) {
+        Column(verticalArrangement = spacedBy(1.dp)) {
             Row(
                 horizontalArrangement = spacedBy(4.dp),
                 verticalAlignment = Alignment.CenterVertically,
