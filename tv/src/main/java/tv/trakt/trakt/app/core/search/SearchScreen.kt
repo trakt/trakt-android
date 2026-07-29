@@ -6,6 +6,7 @@ import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -256,6 +257,12 @@ private fun SearchScreenContent(
                     )
                 }
             }
+
+            Spacer(
+                modifier = Modifier
+                    .focusProperties { canFocus = false }
+                    .padding(bottom = TraktTheme.spacing.mainContentVerticalSpace),
+            )
         }
     }
 }
