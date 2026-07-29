@@ -50,7 +50,7 @@ data class Images(
         }
     }
 
-    fun getPostersUrl(size: Size = Size.THUMB): List<String>? {
+    fun getPostersUrl(size: Size = Size.THUMB): List<String> {
         return posters
             .filter { !it.contains("placeholder") }
             .map {
@@ -72,17 +72,6 @@ data class Images(
                 append(it)
             }
                 .replace(imageSizeRegex, "/${size.value}/")
-        }
-    }
-
-    fun getLogoUrl(size: Size = Size.MEDIUM): String? {
-        return logo.firstOrNull()?.let {
-            buildString {
-                if (!it.startsWith("https://")) {
-                    append("https://")
-                }
-                append(it)
-            }.replace(imageSizeRegex, "/${size.value}/")
         }
     }
 

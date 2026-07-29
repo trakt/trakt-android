@@ -44,11 +44,15 @@ import tv.trakt.trakt.app.common.ui.chips.PremiereChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalViewAllCard
+import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
+import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaSkeletonCard
+import tv.trakt.trakt.app.common.ui.mediacards.VerticalViewAllCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.app.core.shows.model.AnticipatedShow
 import tv.trakt.trakt.app.core.shows.model.TrendingShow
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
+import tv.trakt.trakt.app.helpers.extensions.emptyFocusListVerticalItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
@@ -277,23 +281,21 @@ private fun TrendingShowsList(
         ) {
             if (isLoading) {
                 items(count = 10) {
-                    HorizontalMediaSkeletonCard()
+                    VerticalMediaSkeletonCard()
                 }
             } else if (!shows.isNullOrEmpty()) {
                 items(
                     items = shows,
                     key = { item -> item.show.ids.trakt.value },
                 ) { (watchers, show) ->
-                    HorizontalMediaCard(
+                    VerticalMediaCard(
                         title = show.title,
                         watched = collection.isWatched(show.ids.trakt, MediaType.Show, show.airedEpisodes),
                         watching = collection.isWatching(show.ids.trakt, MediaType.Show, show.airedEpisodes),
                         watchlist = collection.isWatchlist(show.ids.trakt, MediaType.Show),
                         onClick = { onShowClick(show.ids.trakt) },
-                        containerImageUrl = show.images?.getFanartUrl(),
-                        contentImageUrl = show.images?.getLogoUrl(),
-                        paletteColor = show.colors?.colors?.second,
-                        footerContent = {
+                        imageUrl = show.images?.getPosterUrl(),
+                        chipContent = {
                             Column(
                                 verticalArrangement = spacedBy(1.dp),
                             ) {
@@ -326,12 +328,12 @@ private fun TrendingShowsList(
                 }
 
                 item {
-                    HorizontalViewAllCard(
+                    VerticalViewAllCard(
                         onClick = onViewAllClick,
                     )
                 }
 
-                emptyFocusListItems()
+                emptyFocusListVerticalItems()
             }
         }
     }
@@ -373,7 +375,10 @@ private fun ReleasesShowsList(
         ) {
             if (isLoading) {
                 items(count = 10) {
-                    HorizontalMediaSkeletonCard()
+                    HorizontalMediaSkeletonCard(
+                        footer1 = true,
+                        footer2 = true,
+                    )
                 }
             } else if (!episodes.isNullOrEmpty()) {
                 items(
@@ -489,7 +494,7 @@ private fun AnticipatedShowsList(
         ) {
             if (isLoading) {
                 items(count = 10) {
-                    HorizontalMediaSkeletonCard(
+                    VerticalMediaSkeletonCard(
                         modifier = Modifier
                             .focusProperties { canFocus = false },
                     )
@@ -499,16 +504,14 @@ private fun AnticipatedShowsList(
                     items = shows,
                     key = { item -> item.show.ids.trakt.value },
                 ) { (listCount, show) ->
-                    HorizontalMediaCard(
+                    VerticalMediaCard(
                         title = show.title,
                         watched = collection.isWatched(show.ids.trakt, MediaType.Show, show.airedEpisodes),
                         watching = collection.isWatching(show.ids.trakt, MediaType.Show, show.airedEpisodes),
                         watchlist = collection.isWatchlist(show.ids.trakt, MediaType.Show),
                         onClick = { onShowClick(show.ids.trakt) },
-                        containerImageUrl = show.images?.getFanartUrl(),
-                        contentImageUrl = show.images?.getLogoUrl(),
-                        paletteColor = show.colors?.colors?.second,
-                        footerContent = {
+                        imageUrl = show.images?.getPosterUrl(),
+                        chipContent = {
                             Column(
                                 verticalArrangement = spacedBy(1.dp),
                             ) {
@@ -541,12 +544,12 @@ private fun AnticipatedShowsList(
                 }
 
                 item {
-                    HorizontalViewAllCard(
+                    VerticalViewAllCard(
                         onClick = onViewAllClick,
                     )
                 }
 
-                emptyFocusListItems()
+                emptyFocusListVerticalItems()
             }
         }
     }
@@ -582,23 +585,21 @@ private fun PopularShowsList(
         ) {
             if (isLoading) {
                 items(count = 10) {
-                    HorizontalMediaSkeletonCard()
+                    VerticalMediaSkeletonCard()
                 }
             } else if (!shows.isNullOrEmpty()) {
                 items(
                     items = shows,
                     key = { item -> item.ids.trakt.value },
                 ) { show ->
-                    HorizontalMediaCard(
+                    VerticalMediaCard(
                         title = show.title,
                         watched = collection.isWatched(show.ids.trakt, MediaType.Show, show.airedEpisodes),
                         watching = collection.isWatching(show.ids.trakt, MediaType.Show, show.airedEpisodes),
                         watchlist = collection.isWatchlist(show.ids.trakt, MediaType.Show),
                         onClick = { onShowClick(show.ids.trakt) },
-                        containerImageUrl = show.images?.getFanartUrl(),
-                        contentImageUrl = show.images?.getLogoUrl(),
-                        paletteColor = show.colors?.colors?.second,
-                        footerContent = {
+                        imageUrl = show.images?.getPosterUrl(),
+                        chipContent = {
                             Column(
                                 verticalArrangement = spacedBy(1.dp),
                             ) {
@@ -622,12 +623,12 @@ private fun PopularShowsList(
                 }
 
                 item {
-                    HorizontalViewAllCard(
+                    VerticalViewAllCard(
                         onClick = onViewAllClick,
                     )
                 }
 
-                emptyFocusListItems()
+                emptyFocusListVerticalItems()
             }
         }
     }

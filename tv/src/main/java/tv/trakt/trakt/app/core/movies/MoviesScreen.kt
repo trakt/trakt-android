@@ -42,11 +42,15 @@ import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalViewAllCard
+import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
+import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaSkeletonCard
+import tv.trakt.trakt.app.common.ui.mediacards.VerticalViewAllCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
 import tv.trakt.trakt.app.core.movies.model.AnticipatedMovie
 import tv.trakt.trakt.app.core.movies.model.TrendingMovie
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
+import tv.trakt.trakt.app.helpers.extensions.emptyFocusListVerticalItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
@@ -281,23 +285,21 @@ private fun TrendingMoviesList(
         ) {
             if (isLoading) {
                 items(count = 10) {
-                    HorizontalMediaSkeletonCard()
+                    VerticalMediaSkeletonCard()
                 }
             } else if (!movies.isNullOrEmpty()) {
                 items(
                     items = movies,
                     key = { item -> item.movie.ids.trakt.value },
                 ) { (watchers, movie) ->
-                    HorizontalMediaCard(
+                    VerticalMediaCard(
                         title = movie.title,
                         watched = collection.isWatched(movie.ids.trakt, Movie, null),
                         watching = collection.isWatching(movie.ids.trakt, Movie, null),
                         watchlist = collection.isWatchlist(movie.ids.trakt, Movie),
                         onClick = { onMovieClick(movie.ids.trakt) },
-                        containerImageUrl = movie.images?.getFanartUrl(),
-                        contentImageUrl = movie.images?.getLogoUrl(),
-                        paletteColor = movie.colors?.colors?.second,
-                        footerContent = {
+                        imageUrl = movie.images?.getPosterUrl(),
+                        chipContent = {
                             Column(
                                 verticalArrangement = spacedBy(1.dp),
                             ) {
@@ -330,12 +332,12 @@ private fun TrendingMoviesList(
                 }
 
                 item {
-                    HorizontalViewAllCard(
+                    VerticalViewAllCard(
                         onClick = onViewAllClick,
                     )
                 }
 
-                emptyFocusListItems()
+                emptyFocusListVerticalItems()
             }
         }
     }
@@ -377,7 +379,10 @@ private fun ReleasesMoviesList(
         ) {
             if (isLoading) {
                 items(count = 10) {
-                    HorizontalMediaSkeletonCard()
+                    HorizontalMediaSkeletonCard(
+                        footer1 = true,
+                        footer2 = true,
+                    )
                 }
             } else if (!movies.isNullOrEmpty()) {
                 items(
@@ -477,7 +482,7 @@ private fun StandardMoviesList(
         ) {
             if (isLoading) {
                 items(count = 10) {
-                    HorizontalMediaSkeletonCard(
+                    VerticalMediaSkeletonCard(
                         modifier = Modifier
                             .focusProperties { canFocus = false },
                     )
@@ -487,16 +492,14 @@ private fun StandardMoviesList(
                     items = movies,
                     key = { item -> item.ids.trakt.value },
                 ) { movie ->
-                    HorizontalMediaCard(
+                    VerticalMediaCard(
                         title = movie.title,
                         watched = collection.isWatched(movie.ids.trakt, Movie, null),
                         watching = collection.isWatching(movie.ids.trakt, Movie, null),
                         watchlist = collection.isWatchlist(movie.ids.trakt, Movie),
                         onClick = { onMovieClick(movie.ids.trakt) },
-                        containerImageUrl = movie.images?.getFanartUrl(),
-                        contentImageUrl = movie.images?.getLogoUrl(),
-                        paletteColor = movie.colors?.colors?.second,
-                        footerContent = {
+                        imageUrl = movie.images?.getPosterUrl(),
+                        chipContent = {
                             Column(
                                 verticalArrangement = spacedBy(1.dp),
                             ) {
@@ -519,12 +522,12 @@ private fun StandardMoviesList(
                 }
 
                 item {
-                    HorizontalViewAllCard(
+                    VerticalViewAllCard(
                         onClick = onViewAllClick,
                     )
                 }
 
-                emptyFocusListItems()
+                emptyFocusListVerticalItems()
             }
         }
     }
@@ -560,7 +563,7 @@ private fun AnticipatedMoviesList(
         ) {
             if (isLoading) {
                 items(count = 10) {
-                    HorizontalMediaSkeletonCard(
+                    VerticalMediaSkeletonCard(
                         modifier = Modifier
                             .focusProperties { canFocus = false },
                     )
@@ -570,16 +573,14 @@ private fun AnticipatedMoviesList(
                     items = movies,
                     key = { item -> item.movie.ids.trakt.value },
                 ) { (listCount, movie) ->
-                    HorizontalMediaCard(
+                    VerticalMediaCard(
                         title = movie.title,
                         watched = collection.isWatched(movie.ids.trakt, Movie, null),
                         watching = collection.isWatching(movie.ids.trakt, Movie, null),
                         watchlist = collection.isWatchlist(movie.ids.trakt, Movie),
                         onClick = { onMovieClick(movie.ids.trakt) },
-                        containerImageUrl = movie.images?.getFanartUrl(),
-                        contentImageUrl = movie.images?.getLogoUrl(),
-                        paletteColor = movie.colors?.colors?.second,
-                        footerContent = {
+                        imageUrl = movie.images?.getPosterUrl(),
+                        chipContent = {
                             Column(
                                 verticalArrangement = spacedBy(1.dp),
                             ) {
@@ -612,12 +613,12 @@ private fun AnticipatedMoviesList(
                 }
 
                 item {
-                    HorizontalViewAllCard(
+                    VerticalViewAllCard(
                         onClick = onViewAllClick,
                     )
                 }
 
-                emptyFocusListItems()
+                emptyFocusListVerticalItems()
             }
         }
     }

@@ -28,7 +28,7 @@ import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalViewAllCard
 import tv.trakt.trakt.app.core.profile.ProfileConfig.PROFILE_FAVORITES_SECTION_LIMIT
 import tv.trakt.trakt.app.core.profile.sections.favorites.model.FavoriteItem
-import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
+import tv.trakt.trakt.app.helpers.extensions.emptyFocusListVerticalItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.TraktId
@@ -176,7 +176,7 @@ private fun ContentList(
             }
         }
 
-        emptyFocusListItems()
+        emptyFocusListVerticalItems()
     }
 }
 
@@ -253,8 +253,9 @@ private fun ContentLoadingList(
         items(count = 10) {
             VerticalMediaSkeletonCard(
                 width = TraktTheme.size.verticalMediaBigCardSize,
+                footer1 = true,
+                footer2 = true,
                 modifier = Modifier
-                    .padding(bottom = 10.dp)
                     .onFocusChanged {
                         if (it.isFocused) {
                             onFocused()

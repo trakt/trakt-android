@@ -186,7 +186,7 @@ internal fun VerticalMediaCard(
                         .zIndex(99F)
                         .align(Alignment.BottomCenter)
                         .graphicsLayer {
-                            translationY = 7.5.dp.toPx()
+                            translationY = 7.dp.toPx()
                         },
                 ) {
                     if (watched || watching) {

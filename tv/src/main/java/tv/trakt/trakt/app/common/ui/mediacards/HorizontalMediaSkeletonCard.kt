@@ -8,6 +8,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -19,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,6 +34,8 @@ import tv.trakt.trakt.app.ui.theme.TraktTheme
 internal fun HorizontalMediaSkeletonCard(
     modifier: Modifier = Modifier,
     shimmer: Boolean = true,
+    footer1: Boolean = true,
+    footer2: Boolean = false,
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "infiniteTransition")
     val shimmerTransition by infiniteTransition
@@ -78,35 +82,42 @@ internal fun HorizontalMediaSkeletonCard(
         )
 
         Column(
-            verticalArrangement = Arrangement.spacedBy(3.dp),
+            verticalArrangement = spacedBy(1.dp),
         ) {
-            Text(
-                text = "",
-                style = TraktTheme.typography.cardTitle,
-                color = TraktTheme.colors.textPrimary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier
-                    .fillMaxWidth(0.33F)
-                    .background(
-                        color = shimmerTransition,
-                        shape = RoundedCornerShape(100),
-                    ),
-            )
+            if (footer1) {
+                Text(
+                    text = "",
+                    style = TraktTheme.typography.cardTitle,
+                    color = TraktTheme.colors.textPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .fillMaxWidth(0.75F)
+                        .background(
+                            color = shimmerTransition,
+                            shape = RoundedCornerShape(100),
+                        ),
+                )
+            }
 
-//            Text(
-//                text = "",
-//                style = TraktTheme.typography.cardSubtitle,
-//                color = TraktTheme.colors.textSecondary,
-//                maxLines = 1,
-//                overflow = TextOverflow.Ellipsis,
-//                modifier = Modifier
-//                    .fillMaxWidth(0.66F)
-//                    .background(
-//                        color = shimmerTransition,
-//                        shape = RoundedCornerShape(100),
-//                    ),
-//            )
+            if (footer2) {
+                Text(
+                    text = "",
+                    style = TraktTheme.typography.cardSubtitle,
+                    color = TraktTheme.colors.textPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .graphicsLayer {
+                            translationY = 1.dp.toPx()
+                        }
+                        .fillMaxWidth(0.5F)
+                        .background(
+                            color = shimmerTransition,
+                            shape = RoundedCornerShape(100),
+                        ),
+                )
+            }
         }
     }
 }

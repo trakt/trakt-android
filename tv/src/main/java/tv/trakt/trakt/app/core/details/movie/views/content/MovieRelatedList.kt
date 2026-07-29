@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
-import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
+import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
@@ -61,13 +61,11 @@ internal fun MovieRelatedList(
                 items = movies(),
                 key = { _, item -> item.ids.trakt.value },
             ) { index, movie ->
-                HorizontalMediaCard(
+                VerticalMediaCard(
                     title = movie.title,
-                    containerImageUrl = movie.images?.getFanartUrl(),
-                    contentImageUrl = movie.images?.getLogoUrl(),
-                    paletteColor = movie.colors?.colors?.second,
+                    imageUrl = movie.images?.getPosterUrl(),
                     onClick = { onClick(movie) },
-                    footerContent = {
+                    chipContent = {
                         Column(
                             verticalArrangement = Arrangement.spacedBy(1.dp),
                         ) {

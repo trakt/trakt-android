@@ -19,11 +19,11 @@ import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
-import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
-import tv.trakt.trakt.app.common.ui.mediacards.HorizontalViewAllCard
+import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
+import tv.trakt.trakt.app.common.ui.mediacards.VerticalViewAllCard
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_SECTION_LIMIT
 import tv.trakt.trakt.app.core.lists.ListsContentLoading
-import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
+import tv.trakt.trakt.app.helpers.extensions.emptyFocusListVerticalItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.Movie
@@ -100,13 +100,11 @@ private fun ContentList(
             items = listItems(),
             key = { it.ids.trakt.value },
         ) { item ->
-            HorizontalMediaCard(
+            VerticalMediaCard(
                 title = item.title,
-                containerImageUrl = item.images?.getFanartUrl(),
-                contentImageUrl = item.images?.getLogoUrl(),
-                paletteColor = item.colors?.colors?.second,
+                imageUrl = item.images?.getPosterUrl(),
                 onClick = { onClick(item) },
-                footerContent = {
+                chipContent = {
                     Column(
                         verticalArrangement = spacedBy(1.dp),
                     ) {
@@ -131,7 +129,7 @@ private fun ContentList(
 
         if (listItems().size >= LISTS_SECTION_LIMIT) {
             item {
-                HorizontalViewAllCard(
+                VerticalViewAllCard(
                     onClick = onViewAllClick,
                     modifier = Modifier
                         .onFocusChanged {
@@ -143,7 +141,7 @@ private fun ContentList(
             }
         }
 
-        emptyFocusListItems()
+        emptyFocusListVerticalItems()
     }
 }
 

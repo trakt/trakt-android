@@ -210,12 +210,12 @@ private fun ContentLoadingList(
 ) {
     PositionFocusLazyRow(
         contentPadding = contentPadding,
-        modifier = Modifier
-            .padding(bottom = 10.dp),
     ) {
         items(count = 10) {
             VerticalMediaSkeletonCard(
                 width = TraktTheme.size.verticalMediaBigCardSize,
+                footer1 = true,
+                footer2 = true,
                 modifier = Modifier
                     .onFocusChanged {
                         if (it.isFocused) {

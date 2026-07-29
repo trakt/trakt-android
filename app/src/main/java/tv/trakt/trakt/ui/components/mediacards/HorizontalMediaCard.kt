@@ -318,7 +318,6 @@ private fun Preview() {
                 HorizontalMediaCard(
                     title = "The Mandalorian",
                     containerImageUrl = PreviewData.show1.images?.getFanartUrl(),
-                    contentImageUrl = PreviewData.show1.images?.getLogoUrl(),
                     cardContent = {
                         InfoChip(
                             text = "1h 45m",
@@ -338,7 +337,6 @@ private fun Preview() {
                 HorizontalMediaCard(
                     title = "Empty",
                     containerImageUrl = PreviewData.show1.images?.getFanartUrl(),
-                    contentImageUrl = PreviewData.show1.images?.getLogoUrl(),
                     paletteColor = Color(0xFF292525),
                 )
 

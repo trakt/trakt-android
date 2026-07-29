@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
-import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
+import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.Show
@@ -53,13 +53,11 @@ internal fun EpisodeRelatedList(
                 items = shows(),
                 key = { it.ids.trakt.value },
             ) { show ->
-                HorizontalMediaCard(
+                VerticalMediaCard(
                     title = show.title,
-                    containerImageUrl = show.images?.getFanartUrl(),
-                    contentImageUrl = show.images?.getLogoUrl(),
-                    paletteColor = show.colors?.colors?.second,
+                    imageUrl = show.images?.getPosterUrl(),
                     onClick = { onClicked(show) },
-                    footerContent = {
+                    chipContent = {
                         Column(
                             verticalArrangement = Arrangement.spacedBy(1.dp),
                         ) {

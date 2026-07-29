@@ -26,7 +26,7 @@ import androidx.lifecycle.Lifecycle.Event.ON_START
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
-import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaSkeletonCard
+import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaSkeletonCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.lists.views.ListsLikedView
 import tv.trakt.trakt.app.core.lists.views.ListsMoviesWatchlistView
@@ -201,7 +201,7 @@ internal fun ListsContentLoading(contentPadding: PaddingValues) {
         contentPadding = contentPadding,
     ) {
         items(count = 10) {
-            HorizontalMediaSkeletonCard()
+            VerticalMediaSkeletonCard()
         }
     }
 }

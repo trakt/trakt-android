@@ -12,7 +12,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.tv.material3.Text
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
-import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaSkeletonCard
+import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaSkeletonCard
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 
@@ -56,7 +56,7 @@ private fun ContentList(contentPadding: PaddingValues) {
         contentPadding = contentPadding,
     ) {
         items(count = 10) {
-            HorizontalMediaSkeletonCard()
+            VerticalMediaSkeletonCard()
         }
     }
 }

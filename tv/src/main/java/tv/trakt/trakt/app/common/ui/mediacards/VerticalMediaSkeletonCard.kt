@@ -6,7 +6,9 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -18,13 +20,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Border
 import androidx.tv.material3.Card
 import androidx.tv.material3.CardDefaults
-import tv.trakt.trakt.app.common.ui.chips.InfoChip
+import androidx.tv.material3.Text
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 
 @Composable
@@ -33,7 +38,8 @@ internal fun VerticalMediaSkeletonCard(
     width: Dp = Dp.Unspecified,
     corner: Dp = 12.dp,
     shimmer: Boolean = true,
-    chip: Boolean = true,
+    footer1: Boolean = true,
+    footer2: Boolean = false,
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "infiniteTransition")
     val shimmerTransition by infiniteTransition
@@ -82,12 +88,38 @@ internal fun VerticalMediaSkeletonCard(
                 Box(modifier = Modifier.fillMaxSize())
             },
         )
-        if (chip) {
-            InfoChip(
-                text = "",
-                containerColor = shimmerTransition,
-                modifier = Modifier.fillMaxWidth(0.5F),
-            )
+
+        Column(
+            verticalArrangement = spacedBy(1.dp),
+        ) {
+            if (footer1) {
+                Text(
+                    text = "Text",
+                    style = TraktTheme.typography.cardTitle,
+                    color = Color.Transparent,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .fillMaxWidth(0.75F)
+                        .background(color = shimmerTransition, shape = RoundedCornerShape(100)),
+                )
+            }
+
+            if (footer2) {
+                Text(
+                    text = "Text",
+                    style = TraktTheme.typography.cardSubtitle,
+                    color = Color.Transparent,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .graphicsLayer {
+                            translationY = 1.dp.toPx()
+                        }
+                        .fillMaxWidth(0.5F)
+                        .background(color = shimmerTransition, shape = RoundedCornerShape(100)),
+                )
+            }
         }
     }
 }

@@ -27,8 +27,8 @@ import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
-import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
-import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
+import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
+import tv.trakt.trakt.app.helpers.extensions.emptyFocusListVerticalItems
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.Show
@@ -106,13 +106,11 @@ private fun ContentList(
             items = items(),
             key = { _, item -> item.ids.trakt.value },
         ) { _, item ->
-            HorizontalMediaCard(
+            VerticalMediaCard(
                 title = item.title,
-                containerImageUrl = item.images?.getFanartUrl(),
-                contentImageUrl = item.images?.getLogoUrl(),
-                paletteColor = item.colors?.colors?.second,
+                imageUrl = item.images?.getPosterUrl(),
                 onClick = { onClick(item) },
-                footerContent = {
+                chipContent = {
                     Column(
                         verticalArrangement = spacedBy(1.dp),
                     ) {
@@ -120,15 +118,14 @@ private fun ContentList(
                             ?.let { stringResource(R.string.tag_text_number_of_episodes, it) }
                         val text = listOfNotNull(item.year?.toString(), episodes)
                             .joinToString("  •  ")
-                        if (text.isNotEmpty()) {
-                            Text(
-                                text = text,
-                                style = TraktTheme.typography.cardTitle,
-                                color = TraktTheme.colors.textPrimary,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                        }
+
+                        Text(
+                            text = text.ifBlank { stringResource(R.string.translated_value_type_show) },
+                            style = TraktTheme.typography.cardTitle,
+                            color = TraktTheme.colors.textPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
                     }
                 },
                 modifier = Modifier
@@ -140,6 +137,6 @@ private fun ContentList(
             )
         }
 
-        emptyFocusListItems()
+        emptyFocusListVerticalItems()
     }
 }

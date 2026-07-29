@@ -3,7 +3,9 @@ package tv.trakt.trakt.app.core.lists.details.shows
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -30,7 +32,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.common.ui.GenericErrorView
-import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_NEXT_PAGE_OFFSET
@@ -138,9 +139,23 @@ private fun ShowsWatchlistContent(
                             }
                         },
                         chipContent = {
-                            InfoChip(
-                                text = stringResource(R.string.tag_text_number_of_episodes, show.airedEpisodes),
-                            )
+                            Column(
+                                verticalArrangement = spacedBy(1.dp),
+                            ) {
+                                val episodes = show.airedEpisodes.takeIf { it > 0 }
+                                    ?.let { stringResource(R.string.tag_text_number_of_episodes, it) }
+                                val text = listOfNotNull(show.year?.toString(), episodes)
+                                    .joinToString("  •  ")
+                                if (text.isNotEmpty()) {
+                                    Text(
+                                        text = text,
+                                        style = TraktTheme.typography.cardTitle,
+                                        color = TraktTheme.colors.textPrimary,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                    )
+                                }
+                            }
                         },
                         modifier = Modifier
                             .focusRequester(focusRequester)

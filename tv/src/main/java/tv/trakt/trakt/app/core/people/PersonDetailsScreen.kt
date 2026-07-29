@@ -46,8 +46,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
-import tv.trakt.trakt.app.common.ui.chips.InfoChip
-import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
+import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.details.ui.PosterImage
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
@@ -339,18 +338,29 @@ private fun ShowCreditsList(
                 items = shows,
                 key = { it.ids.trakt.value },
             ) { show ->
-                HorizontalMediaCard(
+                VerticalMediaCard(
                     title = show.title,
-                    containerImageUrl = show.images?.getFanartUrl(),
-                    contentImageUrl = show.images?.getLogoUrl(),
-                    paletteColor = show.colors?.colors?.second,
+                    imageUrl = show.images?.getPosterUrl(),
                     onClick = { onClicked(show) },
-                    footerContent = {
-                        val episodes = show.airedEpisodes
-                        if (episodes > 0) {
-                            InfoChip(
-                                text = stringResource(R.string.tag_text_number_of_episodes, show.airedEpisodes),
-                            )
+                    chipContent = {
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(1.dp),
+                        ) {
+                            val episodes = show.airedEpisodes.takeIf { it > 0 }
+                                ?.let { stringResource(R.string.tag_text_number_of_episodes, it) }
+
+                            val text = listOfNotNull(show.year?.toString(), episodes)
+                                .joinToString(" • ")
+
+                            if (text.isNotEmpty()) {
+                                Text(
+                                    text = text,
+                                    style = TraktTheme.typography.cardTitle,
+                                    color = TraktTheme.colors.textPrimary,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            }
                         }
                     },
                     modifier = Modifier
@@ -399,17 +409,26 @@ private fun MovieCreditsList(
                 items = movies,
                 key = { it.ids.trakt.value },
             ) { movie ->
-                HorizontalMediaCard(
+                VerticalMediaCard(
                     title = movie.title,
-                    containerImageUrl = movie.images?.getFanartUrl(),
-                    contentImageUrl = movie.images?.getLogoUrl(),
-                    paletteColor = movie.colors?.colors?.second,
+                    imageUrl = movie.images?.getPosterUrl(),
                     onClick = { onClicked(movie) },
-                    footerContent = {
-                        val runtime = movie.runtime?.inWholeMinutes
-                        if (runtime != null) {
-                            InfoChip(
-                                text = rememberDurationFormat(runtime),
+                    chipContent = {
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(1.dp),
+                        ) {
+                            Text(
+                                text = buildString {
+                                    append(movie.yearString)
+                                    movie.runtime?.inWholeMinutes?.let {
+                                        if (isNotEmpty()) append(" • ")
+                                        append(rememberDurationFormat(it))
+                                    }
+                                },
+                                style = TraktTheme.typography.cardTitle,
+                                color = TraktTheme.colors.textPrimary,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
                             )
                         }
                     },
