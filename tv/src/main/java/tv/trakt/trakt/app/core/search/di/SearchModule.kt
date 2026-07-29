@@ -9,10 +9,6 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.app.core.main.di.createStore
 import tv.trakt.trakt.app.core.search.SearchViewModel
-import tv.trakt.trakt.app.core.search.data.local.RecentSearchLocalDataSource
-import tv.trakt.trakt.app.core.search.data.local.RecentSearchStorage
-import tv.trakt.trakt.app.core.search.usecase.recents.AddRecentSearchUseCase
-import tv.trakt.trakt.app.core.search.usecase.recents.GetRecentSearchUseCase
 import tv.trakt.trakt.common.core.search.data.remote.SearchApiClient
 import tv.trakt.trakt.common.core.search.data.remote.SearchRemoteDataSource
 import tv.trakt.trakt.common.core.search.usecase.GetSearchResultsUseCase
@@ -27,12 +23,6 @@ internal val searchDataModule = module {
         )
     }
 
-    single<RecentSearchLocalDataSource> {
-        RecentSearchStorage(
-            dataStore = get(named(SEARCH_PREFERENCES)),
-        )
-    }
-
     single<DataStore<Preferences>>(named(SEARCH_PREFERENCES)) {
         createStore(
             context = androidContext(),
@@ -43,8 +33,6 @@ internal val searchDataModule = module {
 
 internal val searchModule = module {
     factoryOf(::GetSearchResultsUseCase)
-    factoryOf(::GetRecentSearchUseCase)
-    factoryOf(::AddRecentSearchUseCase)
 
     viewModelOf(::SearchViewModel)
 }

@@ -25,12 +25,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListVerticalItems
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.core.user.UserCollectionState
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
+import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.resources.R
 
@@ -38,6 +40,7 @@ import tv.trakt.trakt.resources.R
 internal fun SearchShowsView(
     header: String,
     items: ImmutableList<Show>?,
+    collection: UserCollectionState,
     focusRequesters: Map<String, FocusRequester>,
     onFocused: (Show?) -> Unit,
     onClick: (Show) -> Unit,
@@ -77,7 +80,8 @@ internal fun SearchShowsView(
         )
 
         ContentList(
-            items = { items ?: emptyList<Show>().toImmutableList() },
+            items = { items ?: EmptyImmutableList },
+            collection = collection,
             state = state,
             onFocused = onFocused,
             onClick = onClick,
@@ -90,6 +94,7 @@ internal fun SearchShowsView(
 @Composable
 private fun ContentList(
     items: () -> ImmutableList<Show>,
+    collection: UserCollectionState,
     state: LazyListState,
     onFocused: (Show?) -> Unit,
     onClick: (Show) -> Unit,
@@ -108,6 +113,9 @@ private fun ContentList(
         ) { _, item ->
             VerticalMediaCard(
                 title = item.title,
+                watched = collection.isWatched(item.ids.trakt, Show, item.airedEpisodes),
+                watching = collection.isWatching(item.ids.trakt, Show, item.airedEpisodes),
+                watchlist = collection.isWatchlist(item.ids.trakt, Show),
                 imageUrl = item.images?.getPosterUrl(),
                 onClick = { onClick(item) },
                 chipContent = {

@@ -158,7 +158,7 @@ private fun SearchScreenContent(
             }
 
             when {
-                state.searching && (state.state == State.RECENTS || state.state == State.TRENDING) -> {
+                state.searching && (state.state == State.TRENDING) -> {
                     SearchLoadingView(
                         header = stringResource(R.string.page_title_shows),
                         focusRequesters = focusRequesters,
@@ -169,42 +169,13 @@ private fun SearchScreenContent(
                     )
                 }
 
-                state.state == State.RECENTS && state.recentsResult != null -> {
-                    with(state.recentsResult) {
-                        if (!shows.isNullOrEmpty()) {
-                            SearchShowsView(
-                                header = stringResource(R.string.list_title_recently_searched_shows),
-                                items = shows,
-                                focusRequesters = focusRequesters,
-                                onFocused = {
-                                    focusedSection = "shows"
-                                    focusedImageUrl = it?.images?.getFanartUrl(Size.FULL)
-                                },
-                                onClick = onShowClick,
-                            )
-                        }
-
-                        if (!movies.isNullOrEmpty()) {
-                            SearchMoviesView(
-                                header = stringResource(R.string.list_title_recently_searched_movies),
-                                items = movies,
-                                focusRequesters = focusRequesters,
-                                onFocused = {
-                                    focusedSection = "movies"
-                                    focusedImageUrl = it?.images?.getFanartUrl(Size.FULL)
-                                },
-                                onClick = onMovieClick,
-                            )
-                        }
-                    }
-                }
-
                 state.state == State.TRENDING && state.trendingResult != null -> {
                     with(state.trendingResult) {
                         if (!shows.isNullOrEmpty()) {
                             SearchShowsView(
-                                header = stringResource(R.string.list_title_trending_shows),
+                                header = stringResource(R.string.list_title_popular_shows),
                                 items = shows,
+                                collection = state.collection,
                                 focusRequesters = focusRequesters,
                                 onFocused = {
                                     focusedSection = "shows"
@@ -216,8 +187,9 @@ private fun SearchScreenContent(
 
                         if (!movies.isNullOrEmpty()) {
                             SearchMoviesView(
-                                header = stringResource(R.string.list_title_trending_movies),
+                                header = stringResource(R.string.list_title_popular_movies),
                                 items = movies,
+                                collection = state.collection,
                                 focusRequesters = focusRequesters,
                                 onFocused = {
                                     focusedSection = "movies"
@@ -235,6 +207,7 @@ private fun SearchScreenContent(
                     SearchShowsView(
                         header = stringResource(R.string.page_title_shows),
                         items = shows,
+                        collection = state.collection,
                         focusRequesters = focusRequesters,
                         onFocused = {
                             focusedSection = "shows"
@@ -248,6 +221,7 @@ private fun SearchScreenContent(
                     SearchMoviesView(
                         header = stringResource(R.string.page_title_movies),
                         items = movies,
+                        collection = state.collection,
                         focusRequesters = focusRequesters,
                         onFocused = {
                             focusedSection = "movies"

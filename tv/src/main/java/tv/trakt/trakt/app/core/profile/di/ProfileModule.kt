@@ -139,7 +139,6 @@ internal val profileModule = module {
             showsSyncLocalDataSource = get(),
             moviesSyncLocalDataSource = get(),
             episodesSyncLocalDataSource = get(),
-            recentSearchLocalDataSource = get(),
         )
     }
 

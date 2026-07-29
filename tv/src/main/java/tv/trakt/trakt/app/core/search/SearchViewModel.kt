@@ -11,7 +11,6 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -20,12 +19,12 @@ import timber.log.Timber
 import tv.trakt.trakt.app.core.movies.usecase.GetTrendingMoviesUseCase
 import tv.trakt.trakt.app.core.search.SearchState.SearchResult
 import tv.trakt.trakt.app.core.search.SearchState.State
-import tv.trakt.trakt.app.core.search.usecase.recents.AddRecentSearchUseCase
-import tv.trakt.trakt.app.core.search.usecase.recents.GetRecentSearchUseCase
 import tv.trakt.trakt.app.core.shows.usecase.GetTrendingShowsUseCase
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.core.search.usecase.GetSearchResultsUseCase
 import tv.trakt.trakt.common.core.shows.data.local.ShowLocalDataSource
+import tv.trakt.trakt.common.core.user.CollectionStateProvider
+import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.BACKGROUND_IMAGE_URL
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -36,18 +35,16 @@ import kotlin.time.Duration.Companion.milliseconds
 
 internal class SearchViewModel(
     private val getSearchResultsUseCase: GetSearchResultsUseCase,
-    private val addRecentSearchUseCase: AddRecentSearchUseCase,
-    private val getRecentSearchUseCase: GetRecentSearchUseCase,
     private val getTrendingShowsUseCase: GetTrendingShowsUseCase,
     private val getTrendingMoviesUseCase: GetTrendingMoviesUseCase,
     private val showLocalSource: ShowLocalDataSource,
     private val movieLocalSource: MovieLocalDataSource,
+    private val collectionProvider: CollectionStateProvider,
 ) : ViewModel() {
     private val initialState = SearchState()
 
     private val screenState = MutableStateFlow(initialState.state)
     private val trendingResultState = MutableStateFlow(initialState.trendingResult)
-    private val recentsResultState = MutableStateFlow(initialState.recentsResult)
     private val searchResultState = MutableStateFlow(initialState.searchResult)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val navigateMovie = MutableStateFlow(initialState.navigateMovie)
@@ -59,7 +56,14 @@ internal class SearchViewModel(
 
     init {
         loadBackground()
-        loadRecentlySearched()
+        loadTrendingSearches()
+
+        observeData()
+    }
+
+    private fun observeData() {
+        collectionProvider
+            .launchIn(viewModelScope)
     }
 
     private fun loadBackground() {
@@ -67,46 +71,12 @@ internal class SearchViewModel(
         backgroundState.update { configUrl }
     }
 
-    private fun loadRecentlySearched() {
-        viewModelScope.launch {
-            try {
-                val recentShowsAsync = async { getRecentSearchUseCase.getRecentShows() }
-                val recentMoviesAsync = async { getRecentSearchUseCase.getRecentMovies() }
-
-                val recentShows = recentShowsAsync.await()
-                val recentMovies = recentMoviesAsync.await()
-
-                if (recentShows.isEmpty() && recentMovies.isEmpty()) {
-                    loadTrendingSearches()
-                    return@launch
-                }
-
-                if (searchingState.value || screenState.value == State.SEARCH_RESULTS) {
-                    return@launch
-                }
-
-                recentsResultState.update {
-                    SearchResult(
-                        shows = recentShows,
-                        movies = recentMovies,
-                    )
-                }
-
-                screenState.update { State.RECENTS }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.e(error, "Error loading recent searches!")
-                }
-            }
-        }
-    }
-
     private fun loadTrendingSearches() {
         viewModelScope.launch {
             try {
                 val (shows, movies) = coroutineScope {
-                    val showsAsync = async { getTrendingShowsUseCase.getTrendingShows(10) }
-                    val moviesAsync = async { getTrendingMoviesUseCase.getTrendingMovies(10) }
+                    val showsAsync = async { getTrendingShowsUseCase.getTrendingShows(20) }
+                    val moviesAsync = async { getTrendingMoviesUseCase.getTrendingMovies(20) }
 
                     val shows = showsAsync.await()
                     val movies = moviesAsync.await()
@@ -176,7 +146,6 @@ internal class SearchViewModel(
         }
         viewModelScope.launch {
             showLocalSource.upsertShows(listOf(show))
-            addRecentSearchUseCase.addRecentSearchShow(show)
             navigateShow.update { show }
         }
     }
@@ -187,7 +156,6 @@ internal class SearchViewModel(
         }
         viewModelScope.launch {
             movieLocalSource.upsertMovies(listOf(movie))
-            addRecentSearchUseCase.addRecentSearchMovie(movie)
             navigateMovie.update { movie }
         }
     }
@@ -202,27 +170,26 @@ internal class SearchViewModel(
         searchJob = null
     }
 
-    @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<SearchState> = combine(
+    val state = combine(
         screenState,
         searchResultState,
-        recentsResultState,
         trendingResultState,
         navigateShow,
         navigateMovie,
         backgroundState,
         searchingState,
+        collectionProvider.stateFlow,
         errorState,
     ) { state ->
         SearchState(
             state = state[0] as State,
             searchResult = state[1] as SearchResult?,
-            recentsResult = state[2] as SearchResult?,
-            trendingResult = state[3] as SearchResult?,
-            navigateShow = state[4] as Show?,
-            navigateMovie = state[5] as Movie?,
-            backgroundUrl = state[6] as String?,
-            searching = state[7] as Boolean,
+            trendingResult = state[2] as SearchResult?,
+            navigateShow = state[3] as Show?,
+            navigateMovie = state[4] as Movie?,
+            backgroundUrl = state[5] as String?,
+            searching = state[6] as Boolean,
+            collection = state[7] as UserCollectionState,
             error = state[8] as Exception?,
         )
     }.stateIn(
