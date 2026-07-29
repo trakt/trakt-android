@@ -26,7 +26,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -73,6 +72,7 @@ import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.ui.CommentCard
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.EmptyListCard
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.components.chips.FilterChipGroup
@@ -249,14 +249,17 @@ private fun MovieCommentsContent(
                             contentPadding = contentPadding,
                         )
                     }
-
                     Done -> {
                         Column(
                             verticalArrangement = spacedBy(0.dp),
                         ) {
                             if (state.items?.isEmpty() == true) {
-                                ContentEmpty(
-                                    contentPadding = headerPadding,
+                                EmptyListCard(
+                                    text = stringResource(R.string.list_placeholder_comments),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(TraktTheme.size.commentCardSize)
+                                        .padding(contentPadding),
                                 )
                             } else {
                                 ContentList(
@@ -393,16 +396,6 @@ private fun ContentLoading(
             )
         }
     }
-}
-
-@Composable
-private fun ContentEmpty(contentPadding: PaddingValues) {
-    Text(
-        text = stringResource(R.string.list_placeholder_comments),
-        color = TraktTheme.colors.textSecondary,
-        style = TraktTheme.typography.heading6,
-        modifier = Modifier.padding(contentPadding),
-    )
 }
 
 @OptIn(ExperimentalCoilApi::class)

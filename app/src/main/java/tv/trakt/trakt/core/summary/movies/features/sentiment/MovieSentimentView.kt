@@ -122,7 +122,7 @@ private fun MovieSentimentContent(
                     }
 
                     Done -> {
-                        if (state.sentiment != null) {
+                        if (state.sentiment != null && !state.sentiment.isEmpty) {
                             DetailsSentiment(
                                 vip = state.user?.isAnyVip == true,
                                 sentiments = state.sentiment,

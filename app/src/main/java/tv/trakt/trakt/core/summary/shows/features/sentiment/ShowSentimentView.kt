@@ -121,7 +121,7 @@ private fun ShowSentimentContent(
                         )
                     }
                     Done -> {
-                        if (state.sentiment != null) {
+                        if (state.sentiment != null && !state.sentiment.isEmpty) {
                             DetailsSentiment(
                                 vip = state.user?.isAnyVip == true,
                                 sentiments = state.sentiment,

@@ -18,6 +18,9 @@ data class Sentiments(
     @Serializable(with = ImmutableListSerializer::class)
     val cons: ImmutableList<Theme> = EmptyImmutableList,
 ) {
+    val isEmpty: Boolean
+        get() = pros.isEmpty() && cons.isEmpty()
+
     enum class Overall(
         val value: String,
         val displayTextRes: Int,
