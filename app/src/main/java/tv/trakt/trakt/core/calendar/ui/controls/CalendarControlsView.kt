@@ -8,7 +8,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -301,15 +300,21 @@ private fun DayRowItem(
                 }
             }
         } else {
-            Box(
+            Text(
+                text = "",
+                color = TraktTheme.colors.textSecondary,
+                style = TraktTheme.typography.meta.copy(
+                    fontSize = 9.sp,
+                ),
+                maxLines = 1,
                 modifier = Modifier
-                    .padding(horizontal = 4.dp)
+                    .padding(top = 1.33.dp)
+                    .padding(horizontal = 8.dp)
                     .fillMaxWidth()
                     .background(
-                        color = TraktTheme.colors.textSecondary.copy(alpha = 0.2F),
+                        color = TraktTheme.colors.textSecondary.copy(alpha = 0.25F),
                         shape = RoundedCornerShape(100),
-                    )
-                    .heightIn(min = 12.dp),
+                    ),
             )
         }
     }
