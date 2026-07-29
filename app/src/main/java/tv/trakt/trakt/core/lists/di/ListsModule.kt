@@ -61,6 +61,7 @@ import tv.trakt.trakt.core.lists.sheets.create.CreateListViewModel
 import tv.trakt.trakt.core.lists.sheets.create.usecases.CreateListUseCase
 import tv.trakt.trakt.core.lists.sheets.edit.EditListViewModel
 import tv.trakt.trakt.core.lists.sheets.edit.usecases.EditListUseCase
+import tv.trakt.trakt.core.lists.usecases.GetListsFilterUseCase
 
 internal const val LISTS_PREFERENCES = "lists_preferences_mobile"
 
@@ -95,6 +96,12 @@ internal val listsModule = module {
     factoryOf(::AddLikedListUseCase)
     factoryOf(::RemoveLikedListUseCase)
     factoryOf(::ReorderListUseCase)
+
+    factory {
+        GetListsFilterUseCase(
+            dataStore = get(named(LISTS_PREFERENCES)),
+        )
+    }
 
     viewModelOf(::ListsViewModel)
     viewModelOf(::ListsWatchlistViewModel)

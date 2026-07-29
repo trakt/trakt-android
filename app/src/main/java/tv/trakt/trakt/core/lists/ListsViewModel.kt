@@ -37,6 +37,7 @@ import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collab
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Personal
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
+import tv.trakt.trakt.core.lists.usecases.GetListsFilterUseCase
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
@@ -48,6 +49,7 @@ internal class ListsViewModel(
     private val localListsSource: ListsPersonalLocalDataSource,
     private val localLikedListsSource: ListsLikedLocalDataSource,
     private val localCollaborationsListsSource: ListsCollaborationsLocalDataSource,
+    private val getFilterUseCase: GetListsFilterUseCase,
     analytics: Analytics,
 ) : ViewModel() {
     private val initialState = ListsState()
@@ -70,19 +72,18 @@ internal class ListsViewModel(
     }
 
     private fun observeUser() {
-        viewModelScope.launch {
-            sessionManager.observeProfile()
-                .distinctUntilChanged()
-                .collect { user ->
-                    userState.update {
-                        UserState(
-                            user = user,
-                            loading = Done,
-                        )
-                    }
-                    loadData()
+        sessionManager.observeProfile()
+            .distinctUntilChanged()
+            .onEach { user ->
+                userState.update {
+                    UserState(
+                        user = user,
+                        loading = Done,
+                    )
                 }
-        }
+                loadData()
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun observeLists() {
@@ -134,6 +135,8 @@ internal class ListsViewModel(
     fun loadData() {
         dataJob?.cancel()
         dataJob = viewModelScope.launch {
+            loadFilter()
+
             if (loadEmptyIfNeeded()) {
                 return@launch
             }
@@ -180,6 +183,12 @@ internal class ListsViewModel(
         }
     }
 
+    private suspend fun loadFilter(): PersonalListType {
+        val filter = getFilterUseCase.getFilter()
+        filterState.update { filter }
+        return filter
+    }
+
     fun setFilter(filter: PersonalListType) {
         if (filterState.value == filter) {
             return
@@ -189,7 +198,10 @@ internal class ListsViewModel(
         listsState.update { null }
         listsLoadingState.update { Idle }
 
-        loadData()
+        viewModelScope.launch {
+            getFilterUseCase.setFilter(filter)
+            loadData()
+        }
     }
 
     private suspend fun loadEmptyIfNeeded(): Boolean {
