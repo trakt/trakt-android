@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+#
+# Pre-push hook: run ktlint before allowing a push.
+# Mirrors the CI ktlint step in .github/workflows/master.yml.
+#
+# Bypass once with:  git push --no-verify
+
+set -euo pipefail
+
+cd "$(git rev-parse --show-toplevel)"
+
+# Prefer the pinned CI binary (./ktlint) so local matches CI exactly;
+# fall back to a ktlint on PATH (e.g. Homebrew).
+if [ -x ./ktlint ]; then
+  KTLINT=./ktlint
+elif command -v ktlint >/dev/null 2>&1; then
+  KTLINT=ktlint
+else
+  echo "pre-push: ktlint not found."
+  echo "  Install it (brew install ktlint) or drop the CI binary at ./ktlint"
+  echo "  (see .github/workflows/master.yml), or push with --no-verify to skip."
+  exit 1
+fi
+
+echo "pre-push: running $KTLINT ..."
+if ! "$KTLINT"; then
+  echo
+  echo "pre-push: ktlint failed. Fix issues (try: $KTLINT --format) or push with --no-verify."
+  exit 1
+fi
+
+echo "pre-push: ktlint passed."
