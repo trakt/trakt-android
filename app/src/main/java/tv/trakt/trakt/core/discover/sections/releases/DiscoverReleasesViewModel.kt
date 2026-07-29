@@ -106,7 +106,11 @@ internal class DiscoverReleasesViewModel(
             val localMoviesAsync = async { getReleasesMoviesUseCase.getLocalMovies() }
 
             val localShows = if (filterState.value.mode.isMediaOrShows) localShowsAsync.await() else emptyList()
-            val localMovies = if (filterState.value.mode.isMediaOrMovies) localMoviesAsync.await() else emptyList()
+            val localMovies = if (filterState.value.mode.isMediaOrMovies && typeState.value != ReleaseType.Finale) {
+                localMoviesAsync.await()
+            } else {
+                emptyList()
+            }
 
             if (localShows.isNotEmpty() || localMovies.isNotEmpty()) {
                 itemsState.update {
