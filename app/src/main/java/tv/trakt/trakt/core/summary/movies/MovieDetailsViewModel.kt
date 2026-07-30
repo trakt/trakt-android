@@ -431,7 +431,16 @@ internal class MovieDetailsViewModel(
 
                 userWatchlistLocalSource.removeMovies(ids = setOf(movieId))
                 userWatchlistMinLocalSource.removeMovies(ids = setOf(movieId))
+
                 watchlistUpdates.notifyUpdate(Default)
+                movieDetailsUpdates.notifyUpdate(Source.Progress)
+
+                movieProgressState.update {
+                    it?.copy(
+                        plays = it.plays + 1,
+                        inWatchlist = false,
+                    )
+                }
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",

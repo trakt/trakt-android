@@ -364,13 +364,14 @@ internal class HomeWatchlistViewModel(
                     currentItems.toImmutableList()
                 }
 
-                removeItem(
-                    item = currentItems[itemIndex],
-                )
                 checkInManager.startMovie(
                     movieId = movieId,
                     source = Source.HomeWatchlist,
                     context = appContext,
+                )
+
+                removeItem(
+                    item = currentItems[itemIndex],
                 )
 
                 analytics.progress.logAddWatchedMedia(
