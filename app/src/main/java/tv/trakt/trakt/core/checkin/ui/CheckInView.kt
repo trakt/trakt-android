@@ -76,6 +76,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
 import kotlin.math.roundToLong
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 private val viewShape = RoundedCornerShape(20.dp)
 private val viewPadding = 7.dp
@@ -131,7 +132,7 @@ internal fun CheckInView(
 
     LaunchedEffect(Unit) {
         while (true) {
-            delay(1000L)
+            delay(1.seconds)
             timestamp = nowUtcInstant()
         }
     }

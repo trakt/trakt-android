@@ -32,7 +32,6 @@ import org.koin.android.ext.android.inject
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_NOT_FOUND
-import tv.trakt.trakt.common.helpers.extensions.durationFormat
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.recordError
@@ -54,7 +53,6 @@ import java.time.Instant
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
-import kotlin.math.roundToLong
 import kotlin.time.Duration.Companion.seconds
 
 private const val SERVICE_ID = 997
@@ -134,14 +132,12 @@ internal class CheckInService : Service() {
 
     private fun setNotification(data: CheckInServiceData): Notification {
         val now = nowUtcInstant().epochSecond
+        val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+
         val startedAt = data.startedAt.epochSecond
         val expiresAt = data.expiresAt.epochSecond
+        val afterCredits = data.afterCredits
 
-        val progress = ((now - startedAt).toFloat() / (expiresAt - startedAt).toFloat()) * 100f
-        val minutesLeft = ((expiresAt - now) / 60F).roundToLong().coerceAtLeast(1)
-        val secondsLeft = (expiresAt - now).coerceAtLeast(0)
-
-        val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
         val endsAt = data.expiresAt.toLocal().format(
             DateTimeFormatter
                 .ofLocalizedTime(FormatStyle.SHORT)
@@ -149,10 +145,13 @@ internal class CheckInService : Service() {
         )
 
         // Ensure progress is at least 1 to show the progress bar
+        val progress = ((now - startedAt).toFloat() / (expiresAt - startedAt).toFloat()) * 100f
         val normalizedProgress = progress.toInt().coerceIn(1, 100)
-        val contentText = when {
-            secondsLeft > 60 -> getString(R.string.tag_text_remaining_duration, minutesLeft.durationFormat())
-            else -> getString(R.string.tag_text_remaining_duration, "<${1L.durationFormat()}")
+
+        val creditsText = if (afterCredits > 0) {
+            "  •  $afterCredits ${getString(R.string.header_post_credits)}"
+        } else {
+            ""
         }
 
         val endsAtText = getString(R.string.text_ends_at, endsAt)
@@ -163,7 +162,7 @@ internal class CheckInService : Service() {
             .setSmallIcon(R.drawable.ic_trakt_icon_notification)
             .setSubText(getString(R.string.button_text_checkin))
             .setContentTitle(data.title)
-            .setContentText("$endsAtText ($contentText)")
+            .setContentText("$endsAtText$creditsText")
             .setShowWhen(false)
             .setAutoCancel(false)
             .setProgress(100, normalizedProgress, false)

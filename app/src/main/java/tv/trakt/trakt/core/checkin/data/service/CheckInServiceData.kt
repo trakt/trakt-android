@@ -12,6 +12,7 @@ internal data class CheckInServiceData(
     val mediaImage: String?,
     val startedAt: Instant,
     val expiresAt: Instant,
+    val afterCredits: Int,
     val extraId: Int? = null,
     val extraValue1: Int? = null,
     val extraValue2: Int? = null,
@@ -27,6 +28,7 @@ internal data class CheckInServiceData(
         const val EXTRA_ID = "extraId"
         const val EXTRA_VALUE_1 = "extraValue1"
         const val EXTRA_VALUE_2 = "extraValue2"
+        const val AFTER_CREDITS = "afterCredits"
 
         fun fromBundle(bundle: Bundle): CheckInServiceData {
             return CheckInServiceData(
@@ -37,6 +39,7 @@ internal data class CheckInServiceData(
                 mediaType = MediaType.valueOf(bundle.getString(MEDIA_TYPE)!!),
                 startedAt = Instant.ofEpochMilli(bundle.getLong(STARTED_AT)),
                 expiresAt = Instant.ofEpochMilli(bundle.getLong(EXPIRES_AT)),
+                afterCredits = bundle.getInt(AFTER_CREDITS, 0),
                 extraId = bundle.getInt(EXTRA_ID).takeIf { bundle.containsKey(EXTRA_ID) },
                 extraValue1 = bundle.getInt(EXTRA_VALUE_1).takeIf { bundle.containsKey(EXTRA_VALUE_1) },
                 extraValue2 = bundle.getInt(EXTRA_VALUE_2).takeIf { bundle.containsKey(EXTRA_VALUE_2) },
@@ -53,6 +56,7 @@ internal data class CheckInServiceData(
             putString(MEDIA_TYPE, mediaType.name)
             putLong(STARTED_AT, startedAt.toEpochMilli())
             putLong(EXPIRES_AT, expiresAt.toEpochMilli())
+            putInt(AFTER_CREDITS, afterCredits)
             extraId?.let { putInt(EXTRA_ID, it) }
             extraValue1?.let { putInt(EXTRA_VALUE_1, it) }
             extraValue2?.let { putInt(EXTRA_VALUE_2, it) }

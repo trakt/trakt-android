@@ -32,6 +32,7 @@ import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source
 import tv.trakt.trakt.core.checkin.model.CheckInState
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveEpisode
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveMovie
+import tv.trakt.trakt.core.checkin.model.afterCredits
 import tv.trakt.trakt.core.checkin.model.expiresAt
 import tv.trakt.trakt.core.checkin.model.id
 import tv.trakt.trakt.core.checkin.model.startedAt
@@ -390,6 +391,7 @@ internal class DefaultCheckInManager(
             },
             startedAt = startedAt,
             expiresAt = expiresAt,
+            afterCredits = state.afterCredits,
             extraId = episodeState?.show?.ids?.trakt?.value,
             extraValue1 = episodeState?.episode?.season,
             extraValue2 = episodeState?.episode?.number,

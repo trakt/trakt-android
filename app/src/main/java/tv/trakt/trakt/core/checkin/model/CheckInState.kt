@@ -100,3 +100,11 @@ val CheckInState.expiresAt: Instant?
             else -> null
         }
     }
+
+val CheckInState.afterCredits: Int
+    get() {
+        return when (this) {
+            is ActiveMovie -> movie.credits ?: 0
+            else -> 0
+        }
+    }
