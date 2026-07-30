@@ -1,5 +1,6 @@
 package tv.trakt.trakt.common.networking.client
 
+import com.google.firebase.crashlytics.CustomKeysAndValues
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
@@ -36,6 +37,7 @@ import tv.trakt.trakt.common.auth.TokenProvider
 import tv.trakt.trakt.common.auth.model.TraktAccessToken
 import tv.trakt.trakt.common.auth.model.TraktRefreshToken
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.time.Duration.Companion.milliseconds
@@ -190,7 +192,15 @@ internal fun HttpClientConfig<*>.applyAuthorizationConfig(
                         // 4xx = refresh token rejected by server, session is dead.
                         sessionManager.clear()
                         tokenProvider.clear()
+
                         Timber.e(error, "Refresh token rejected, clearing session")
+                        Timber.recordError(
+                            error = error,
+                            keysValues = CustomKeysAndValues.Builder()
+                                .putString("message", "Refresh token rejected.")
+                                .build(),
+                        )
+
                         return@withLock null
                     } catch (error: Exception) {
                         // Transient failure (offline, timeout, 5xx) — keep session,

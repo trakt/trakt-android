@@ -33,6 +33,7 @@ import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
+import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.MediaType.Show
@@ -46,6 +47,7 @@ import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.util.Locale
 import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.hours
 
 @Composable
 internal fun MediaSocialItemCard(
@@ -134,16 +136,29 @@ internal fun MediaSocialItemCard(
                         .padding(end = 4.dp),
                 ) {
                     item.watched?.let {
+                        val showText = buildString {
+                            append(stringResource(R.string.text_play_count, it.plays))
+                            it.duration?.let { duration ->
+                                append("  •  ")
+                                append(rememberDurationFormat(duration.inWholeMinutes))
+                            }
+                        }
+
+                        val movieText = buildString {
+                            if (it.plays > 1) {
+                                append(stringResource(R.string.text_play_count, it.plays))
+                            } else {
+                                append(stringResource(R.string.tag_text_watched))
+                            }
+                        }
+
                         InfoChip(
                             iconPainter = painterResource(R.drawable.ic_check_double),
                             iconPadding = 1.dp,
-                            text = stringResource(
-                                when (item.type) {
-                                    Show -> R.string.tag_text_number_of_episodes
-                                    else -> R.string.text_play_count
-                                },
-                                it.plays,
-                            ),
+                            text = when {
+                                item.type == Show -> showText
+                                else -> movieText
+                            },
                         )
                     }
 
@@ -201,6 +216,7 @@ private fun PosterPreview() {
                         lastWatchedAt = nowUtcInstant().minusSeconds(3.days.inWholeSeconds),
                         lastUpdatedAt = nowUtcInstant().minusSeconds(3.days.inWholeSeconds),
                         plays = 3,
+                        duration = 5.hours,
                         rated = Rated(
                             rating = 8,
                             ratedAt = nowUtcInstant().minusSeconds(3.days.inWholeSeconds),

@@ -22,6 +22,8 @@ data class V3MediaSocialResponse(
         @SerialName("last_updated_at")
         val lastUpdatedAt: String?,
         val plays: Int,
+        @SerialName("minutes_watched")
+        val minutesWatched: Int?,
         @SerialName("rating")
         val rated: Rated?,
         @SerialName("comment")

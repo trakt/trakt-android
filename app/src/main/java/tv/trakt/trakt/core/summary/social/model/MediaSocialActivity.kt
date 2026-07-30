@@ -9,6 +9,9 @@ import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.api.v3.model.V3MediaSocialResponse
 import java.time.Instant
+import kotlin.time.Duration
+import kotlin.time.DurationUnit.MINUTES
+import kotlin.time.toDuration
 
 @Immutable
 internal data class MediaSocialActivity(
@@ -31,6 +34,7 @@ internal data class MediaSocialActivity(
         val lastWatchedAt: Instant,
         val lastUpdatedAt: Instant?,
         val plays: Int,
+        val duration: Duration?,
         val rated: Rated?,
         val commented: Commented?,
     ) {
@@ -69,6 +73,7 @@ internal data class MediaSocialActivity(
                         lastWatchedAt = watched.lastWatchedAt.toInstant(),
                         lastUpdatedAt = watched.lastUpdatedAt?.toInstant(),
                         plays = watched.plays,
+                        duration = watched.minutesWatched?.toDuration(MINUTES),
                         rated = watched.rated?.let { rated ->
                             Watched.Rated(
                                 rating = rated.rating,

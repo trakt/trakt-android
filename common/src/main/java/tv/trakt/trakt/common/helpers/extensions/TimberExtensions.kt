@@ -1,6 +1,7 @@
 package tv.trakt.trakt.common.helpers.extensions
 
 import com.google.firebase.Firebase
+import com.google.firebase.crashlytics.CustomKeysAndValues
 import com.google.firebase.crashlytics.crashlytics
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.HttpRequestTimeoutException
@@ -26,9 +27,13 @@ private val ignoredExceptions = arrayOf(
 )
 
 /**
- * Records the given [error] to Crashlytics.
+ * Records an error to Firebase Crashlytics if it's not in the ignored exceptions list.
+ * Ignores errors in DEBUG builds and certain HTTP errors (400-401).
  */
-fun Timber.Forest.recordError(error: Exception) {
+fun Timber.Forest.recordError(
+    error: Exception,
+    keysValues: CustomKeysAndValues? = null,
+) {
     Timber.e(error)
 
     if (BuildConfig.DEBUG) {
@@ -49,6 +54,11 @@ fun Timber.Forest.recordError(error: Exception) {
         }
     }
 
-    Firebase.crashlytics.recordException(error)
+    if (keysValues != null) {
+        Firebase.crashlytics.recordException(error, keysValues)
+    } else {
+        Firebase.crashlytics.recordException(error)
+    }
+
     Timber.d("Recorded error to Crashlytics: $error")
 }

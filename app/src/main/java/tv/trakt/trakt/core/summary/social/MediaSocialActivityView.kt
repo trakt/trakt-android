@@ -48,6 +48,7 @@ import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.util.Locale
 import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.hours
 
 @Composable
 internal fun MediaSocialActivityView(
@@ -164,6 +165,7 @@ private fun Preview() {
                     lastWatchedAt = nowUtcInstant().minusSeconds(3.days.inWholeSeconds),
                     lastUpdatedAt = nowUtcInstant().minusSeconds(3.days.inWholeSeconds),
                     plays = 3,
+                    duration = 5.hours,
                     rated = MediaSocialActivity.Watched.Rated(
                         rating = 8,
                         ratedAt = nowUtcInstant().minusSeconds(3.days.inWholeSeconds),
