@@ -2,6 +2,7 @@ package tv.trakt.trakt.common.networking.client
 
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.call.body
+import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.UserAgent
@@ -96,6 +97,7 @@ internal fun HttpClientConfig<*>.applyConfig(
             BuildConfig.DEBUG -> LogLevel.ALL
             else -> LogLevel.NONE
         }
+        sanitizeHeader { !BuildConfig.DEBUG && it == HttpHeaders.Authorization }
     }
 
     install(CacheBusterPlugin) {
@@ -121,19 +123,23 @@ internal fun HttpClientConfig<*>.applyAuthorizationConfig(
         bearer {
             loadTokens {
                 Timber.d("Loading auth tokens")
-                val token = tokenProvider.getToken()
-                    ?: throw IllegalStateException("No auth token available")
-                BearerTokens(
-                    accessToken = token.accessToken,
-                    refreshToken = token.refreshToken,
-                )
+                tokenProvider.getToken()?.let { token ->
+                    BearerTokens(
+                        accessToken = token.accessToken,
+                        refreshToken = token.refreshToken,
+                    )
+                }
             }
 
             refreshTokens {
                 Timber.d("Refresh tokens requested")
                 mutex.withLock {
                     val oldTokens = this.oldTokens
-                    val currentTokens = tokenProvider.getToken()!!
+                    val currentTokens = tokenProvider.getToken()
+                    if (currentTokens == null) {
+                        Timber.d("No auth token available, skipping refresh")
+                        return@withLock null
+                    }
 
                     if (oldTokens?.accessToken != currentTokens.accessToken) {
                         Timber.d("Tokens already refreshed by another request")
@@ -143,12 +149,19 @@ internal fun HttpClientConfig<*>.applyAuthorizationConfig(
                         )
                     }
 
+                    if (currentTokens.refreshToken.isBlank()) {
+                        sessionManager.clear()
+                        tokenProvider.clear()
+                        Timber.e("Blank refresh token, clearing session")
+                        return@withLock null
+                    }
+
                     try {
                         Timber.d("Refreshing auth tokens")
                         val newTokens = client.post("${Config.WEB_AUTH_URL}oauth/token") {
                             setBody(
                                 TraktRefreshToken(
-                                    refreshToken = oldTokens.refreshToken ?: "",
+                                    refreshToken = currentTokens.refreshToken,
                                     clientId = BuildConfig.TRAKT_API_KEY,
                                     clientSecret = BuildConfig.TRAKT_API_SECRET,
                                     type = "refresh_token",
@@ -171,12 +184,18 @@ internal fun HttpClientConfig<*>.applyAuthorizationConfig(
                         ).also {
                             Timber.d("Auth tokens refreshed successfully")
                         }
+                    } catch (error: CancellationException) {
+                        throw error
+                    } catch (error: ClientRequestException) {
+                        // 4xx = refresh token rejected by server, session is dead.
+                        sessionManager.clear()
+                        tokenProvider.clear()
+                        Timber.e(error, "Refresh token rejected, clearing session")
+                        return@withLock null
                     } catch (error: Exception) {
-                        if (error !is CancellationException) {
-                            sessionManager.clear()
-                            tokenProvider.clear()
-                            Timber.e(error, "Failed to refresh auth tokens")
-                        }
+                        // Transient failure (offline, timeout, 5xx) — keep session,
+                        // fail only this request; refresh retries on next 401.
+                        Timber.w(error, "Failed to refresh auth tokens, keeping session")
                         return@withLock null
                     }
                 }
