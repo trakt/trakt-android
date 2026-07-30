@@ -5,6 +5,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.FirebaseAnalytics.Event.LOGIN
 import com.google.firebase.analytics.FirebaseAnalytics.Event.SCREEN_VIEW
 import com.google.firebase.analytics.FirebaseAnalytics.Param
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 
 // Android V3 events identifier
@@ -22,7 +23,8 @@ private const val PARAMETER_RATING = "rating_value"
 private fun eventName(name: String) = "$EVENT_NAME_PREFIX$name"
 
 internal class FirebaseAnalytics(
-    private val firebase: FirebaseAnalytics,
+    private val firebaseAnalytics: FirebaseAnalytics,
+    private val firebaseCrashlytics: FirebaseCrashlytics,
     override val reactions: Analytics.Reactions,
     override val ratings: Analytics.Ratings,
     override val comments: Analytics.Comments,
@@ -41,32 +43,33 @@ internal class FirebaseAnalytics(
     }
 
     override fun setUserId(userId: String?) {
-        firebase.setUserId(userId)
+        firebaseAnalytics.setUserId(userId)
+        userId?.let { firebaseCrashlytics.setUserId(it) }
     }
 
     override fun logScreenView(screenName: String) {
-        firebase.logEvent(
+        firebaseAnalytics.logEvent(
             eventName(SCREEN_VIEW),
             bundleOf(Param.SCREEN_NAME to screenName),
         )
     }
 
     override fun logUserLogin() {
-        firebase.logEvent(
+        firebaseAnalytics.logEvent(
             eventName(LOGIN),
             null,
         )
     }
 
     override fun logUserLogout() {
-        firebase.logEvent(
+        firebaseAnalytics.logEvent(
             eventName(LOGOUT),
             null,
         )
     }
 
     override fun logMediaModeClick(mode: String) {
-        firebase.logEvent(
+        firebaseAnalytics.logEvent(
             eventName(MEDIA_MODE_CLICK),
             bundleOf(
                 PARAMETER_MEDIA_TYPE to mode.lowercase(),
@@ -75,7 +78,7 @@ internal class FirebaseAnalytics(
     }
 
     override fun logMediaMode(mode: String) {
-        firebase.logEvent(
+        firebaseAnalytics.logEvent(
             eventName(MEDIA_MODE),
             bundleOf(
                 PARAMETER_MEDIA_TYPE to mode.lowercase(),
