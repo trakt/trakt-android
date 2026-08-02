@@ -12,9 +12,14 @@
   <string name="about_feature_title_discover">اكتشف ما يجب مشاهدته</string>
   <string name="about_feature_title_rate_review">التقييم والمراجعة</string>
   <string name="about_feature_title_scrobble">مسار العروض والأفلام</string>
+  <string name="action_open_system_settings_tvos">فتح الإعدادات</string>
   <string name="advanced_filter_label_ratings">تقييم من %1$s إلى %2$s</string>
   <string name="advanced_filter_label_release_year">صدر في %1$d إلى %2$d</string>
   <string name="advanced_filter_label_runtime">مدة التشغيل من %1$d إلى %2$d دقيقة.</string>
+  <string name="auto_tracking_card_action">ربط خدماتك</string>
+  <string name="auto_tracking_card_detail_scrobble">السكربل التلقائي عند مشاهدة وتقييم أشياء جديدة.</string>
+  <string name="auto_tracking_card_detail_sync">مزامنة سجل المشاهدة والتقييمات الحالية.</string>
+  <string name="auto_tracking_card_heading">تتبع تلقائي عبر خدمات البث الخاصة بك</string>
   <string name="badge_text_beta">نسخة تجريبية</string>
   <string name="badge_text_get_vip">احصل على VIP</string>
   <string name="badge_text_more">و %d آخر</string>
@@ -28,6 +33,7 @@
   <string name="button_label_add_to_favorites">إضافة \"%s\" إلى مفضّلتك</string>
   <string name="button_label_add_to_personal_list">إضافة \"%1$s\" إلى %2$s</string>
   <string name="button_label_add_to_watchlist">أضِف \"%s\" إلى قائمة المشاهدة</string>
+  <string name="button_label_all_time_stats">عرض الإحصائيات الشاملة</string>
   <string name="button_label_apply">تطبيق التغييرات</string>
   <string name="button_label_approve_follow_request">الموافقة على طلب المتابعة من %s</string>
   <string name="button_label_back">العودة</string>
@@ -59,8 +65,6 @@
   <string name="button_label_comment_replies">ردود المراجعة</string>
   <string name="button_label_comment_reply">الرد على %s</string>
   <string name="button_label_connect_streaming_service">ربط %s</string>
-  <string name="button_label_cookie_accept">قبول جميع ملفات تعريف الارتباط</string>
-  <string name="button_label_cookie_accept_functional_only">قبول ملفات تعريف الارتباط الوظيفية فقط</string>
   <string name="button_label_copied">تم النسخ</string>
   <string name="button_label_copy">نسخ</string>
   <string name="button_label_create_app">إنشاء التطبيق</string>
@@ -163,11 +167,7 @@
   <string name="button_label_react">تفاعل بـ %s</string>
   <string name="button_label_read_more">اقرأ المزيد</string>
   <string name="button_label_recent_comments">أحدث المراجعات</string>
-  <string name="button_label_recommendation_smart">توصيات ذكية</string>
-  <string name="button_label_recommendation_standard">التوصيات القياسية</string>
   <string name="button_label_reject_follow_request">رفض طلب المتابعة من %s</string>
-  <string name="button_label_related_smart">الذكية ذات الصلة</string>
-  <string name="button_label_related_standard">ذات صلة بالمعيار</string>
   <string name="button_label_remove_from_favorites">إزالة \"%s\" من مفضّلتك</string>
   <string name="button_label_remove_from_history">أزِل هذه المُشاهدة لِـ \"%s\" من سجلّك</string>
   <string name="button_label_remove_from_list">إزالة \"%s\" من القائمة</string>
@@ -236,6 +236,7 @@
   <string name="button_label_unfollow">إلغاء متابعة %s</string>
   <string name="button_label_unlike_list">إلغاء الإعجاب بـ %s</string>
   <string name="button_label_unlink_streaming_service">إلغاء ربط %s</string>
+  <string name="button_label_unread_preview_features">ميزات المعاينة (ميزات جديدة متاحة)</string>
   <string name="button_label_upload_photo">تحميل صورة شخصية جديدة</string>
   <string name="button_label_user_profile">ملفّ المستخدم</string>
   <string name="button_label_view_all_activity">عرض كافة الأنشطة</string>
@@ -274,6 +275,8 @@
   <string name="button_label_watch_until_here_anchor_end">تعامل مع التاريخ المختار على أنه نهاية الشراهة</string>
   <string name="button_label_watch_until_here_anchor_start">تعامل مع التاريخ المختار على أنه بداية الشراهة</string>
   <string name="button_label_watched_until_here">حدِّد \"%s\" كمُشاهَد حتى هنا</string>
+  <string name="button_label_year_in_review">عرض ملخص %s الخاص بك</string>
+  <string name="button_label_year_to_date">عرض إحصائياتك منذ بداية العام</string>
   <string name="button_plex_authorized">لقد قمت بتوصيل Plex</string>
   <string name="button_plex_sync_now">المزامنة الآن</string>
   <string name="button_plex_toggle_scrobble">التمرير</string>
@@ -286,6 +289,7 @@
   <string name="button_text_add_review">أضف مراجعة</string>
   <string name="button_text_add_streaming_service">إضافة خدمة البث</string>
   <string name="button_text_add_to_favorites">أضف إلى المفضلة</string>
+  <string name="button_text_all_time_stats">عرض كافة الإحصائيات</string>
   <string name="button_text_apply">قدم</string>
   <string name="button_text_approve_follow_request">الموافقة على الطلب</string>
   <string name="button_text_block">حظر</string>
@@ -305,8 +309,6 @@
   <string name="button_text_comment_replies">%d رد</string>
   <string name="button_text_connect">تواصل</string>
   <string name="button_text_continue">متابعة</string>
-  <string name="button_text_cookie_accept">قبول الكل</string>
-  <string name="button_text_cookie_accept_functional_only">وظائف فقط</string>
   <string name="button_text_create">إنشاء</string>
   <string name="button_text_create_list">قائمة</string>
   <string name="button_text_cta_create_list">إنشاء قائمة</string>
@@ -337,6 +339,7 @@
   <string name="button_text_followers">متابعون</string>
   <string name="button_text_following">متابعة</string>
   <string name="button_text_get_vip">احصل على</string>
+  <string name="button_text_hide">إخفاء</string>
   <string name="button_text_hide_description">إخفاء الوصف</string>
   <string name="button_text_hide_details">إخفاء التفاصيل</string>
   <string name="button_text_hide_recommendation">إخفاء التوصية</string>
@@ -388,12 +391,8 @@
   <string name="button_text_progress_in_progress">قيد التنفيذ</string>
   <string name="button_text_raw_export">تصدير الآن</string>
   <string name="button_text_recent_comments">الأخيرة</string>
-  <string name="button_text_recommendation_smart">ذكي</string>
-  <string name="button_text_recommendation_standard">قياسي</string>
   <string name="button_text_reconnect">إعادة الاتصال</string>
   <string name="button_text_reject_follow_request">رفض الطلب</string>
-  <string name="button_text_related_smart">ذكي</string>
-  <string name="button_text_related_standard">قياسي</string>
   <string name="button_text_remove_from_favorites">إزالة من المفضلة</string>
   <string name="button_text_remove_from_history">إزالة من سجل المشاهدة</string>
   <string name="button_text_remove_from_list">إزالة من القائمة</string>
@@ -476,6 +475,8 @@
   <string name="button_text_watched_until_here">شاهدت حتى هنا</string>
   <string name="button_text_watchlist">قائمة المشاهدة</string>
   <string name="button_text_where_to_watch">أين تشاهد</string>
+  <string name="button_text_year_in_review">ملخص %s</string>
+  <string name="button_text_year_to_date">منذ بداية العام</string>
   <string name="button_text_yes">نعم</string>
   <string name="button_text_younify_fix">اصلاح</string>
   <string name="button_text_younify_send_logs">إرسال السجلات</string>
@@ -506,6 +507,7 @@
   <string name="confirmation_title_disconnect_plex">قطع اتصال Plex؟</string>
   <string name="confirmation_title_drop_movie">إيقاف متابعة الفيلم؟</string>
   <string name="confirmation_title_drop_show">إيقاف متابعة المسلسل؟</string>
+  <string name="confirmation_title_hide">تأكيد الإخفاء</string>
   <string name="confirmation_title_hide_recommendation">هل تريد إخفاء التوصية؟</string>
   <string name="confirmation_title_log_out">تسجيل الخروج؟</string>
   <string name="confirmation_title_mark_as_watched">وضع علامة كمشاهدة؟</string>
@@ -558,6 +560,7 @@
   <string name="description_streaming_sync">مزامنة سجل المشاهدة والتقييمات تلقائيًا.</string>
   <string name="description_streaming_vip_services">قم بالترقية للاتصال بخدمات البث هذه ومزامنتها.</string>
   <string name="description_sync_detail">بعض التفاصيل حول هذه المزامنة.</string>
+  <string name="dialog_prompt_hide_auto_tracking">يمكنك دائمًا الوصول إلى التتبع التلقائي من الإعدادات.</string>
   <string name="dialog_prompt_media_share_image_format">اختر تنسيق الصورة لمشاركتها.</string>
   <string name="dialog_prompt_move_to_position">أدخل موضعاً جديداً لـ \"%s\".</string>
   <string name="dialog_prompt_younify_data_sync">هل ترغب في استيراد بياناتك الحالية إلى حساب Trakt الخاص بك، أم ترغب فقط في مزامنة البيانات الجديدة من الآن فصاعدًا؟</string>
@@ -586,6 +589,7 @@
   <string name="dropdown_label_person_position">القسم</string>
   <string name="episode_footer_season_episode">S%1$d • E%2$d</string>
   <string name="episode_footer_season_episode_range">S%1$d • E%2$d-%3$d</string>
+  <string name="error_search_partial_results">قد تكون بعض النتائج مفقودة</string>
   <string name="error_text_404">(لا بأس، حتى أمهر الأبطال يضلّون الطريق أحيانًا.)</string>
   <string name="error_text_delete_account">حدث خطأ أثناء حذف حسابك. يرجى المحاولة مرة أخرى.</string>
   <string name="error_text_email">فشل تحديث البريد الإلكتروني. تأكد من أنه عنوان صالح.</string>
@@ -708,10 +712,13 @@
   <string name="header_settings_tracking">تتبع</string>
   <string name="header_settings_translations">الترجمات</string>
   <string name="header_skipped_items">العناصر التي تم تخطيها (%s)</string>
+  <string name="header_stats_contributions">المساهمات</string>
   <string name="header_stats_graph_peak">ساعات الذروة</string>
   <string name="header_stats_graph_screen_time_daily">الانهيار اليومي</string>
   <string name="header_stats_graph_shows_movies">العروض مقابل الأفلام</string>
   <string name="header_stats_monthly">احصائيات شهرية</string>
+  <string name="header_stats_progress">التقدم</string>
+  <string name="header_stats_watched">شاهدت</string>
   <string name="header_status">الحالة</string>
   <string name="header_stream_on">البث على</string>
   <string name="header_streaming">التوفر</string>
@@ -723,6 +730,7 @@
   <string name="header_target">الهدف</string>
   <string name="header_total_runtime">إجمالي مدّة العرض</string>
   <string name="header_writer">الكاتب</string>
+  <string name="heading_api_application_vip_only">يتطلب إنشاء تطبيقات جديدة Trakt VIP</string>
   <string name="heading_api_applications">تطبيقات API</string>
   <string name="heading_apps_settings">التطبيقات</string>
   <string name="heading_blocked_users">المستخدمون المحظورون</string>
@@ -808,6 +816,7 @@
   <string name="input_placeholder_app_name">طلبي</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
+  <string name="input_placeholder_filter">تصفية</string>
   <string name="input_placeholder_filter_services">تصفية خدمات البث</string>
   <string name="input_placeholder_lists_description">الوصف (اختياري)</string>
   <string name="input_placeholder_lists_name">الاسم</string>
@@ -819,7 +828,7 @@
   <string name="input_placeholder_search">البحث عن مسلسلات وأفلام…</string>
   <string name="input_placeholder_search_credit_members">ابحث عن الاسم أو الشخصية أو الوظيفة…</string>
   <string name="input_placeholder_search_lists">قوائم البحث…</string>
-  <string name="input_placeholder_search_movies">بحث عن افلام…</string>
+  <string name="input_placeholder_search_movies">البحث عن الأفلام…</string>
   <string name="input_placeholder_search_people">بحث عن الناس…</string>
   <string name="input_placeholder_search_shows">البحث عن مسلسلات…</string>
   <string name="input_prompt_about">أخبرنا قليلا عن نفسك.</string>
@@ -858,6 +867,7 @@
   <string name="label_plex_webhook_url">عنوان URL للويب هوك</string>
   <string name="label_queued_action">تم الحفظ في وضع عدم الاتصال، في انتظار المزامنة</string>
   <string name="label_ratings_season_chart">تقييمات الموسم مع مرور الوقت</string>
+  <string name="label_registered_accounts">حسابات مسجلة</string>
   <string name="label_report_reason_abusive">مسيئة</string>
   <string name="label_report_reason_adult">محتوى للبالغين</string>
   <string name="label_report_reason_bigotry">التعصب</string>
@@ -887,6 +897,7 @@
   <string name="label_stats_days_active">أيام النشاط</string>
   <string name="label_stats_dropped_streaks">الخطوط المسقطة</string>
   <string name="label_stats_episodes">الحلقات</string>
+  <string name="label_stats_finished">مكتمل</string>
   <string name="label_stats_hours">ساعات</string>
   <string name="label_stats_movies">أفلام</string>
   <string name="label_stats_plays">مشاهدات</string>
@@ -1053,6 +1064,10 @@
   <string name="match_pill_anchor">تطابق:</string>
   <string name="match_pill_aria_label">%1$d% تطابق، %2$s. فتح تفاصيل التطابق.</string>
   <string name="match_pill_loading_aria_label">جارٍ حساب نتيجة التطابق</string>
+  <string name="mir_banner_body">ملخصك الشهري جاهز. إليك ما شاهدته في %s.</string>
+  <string name="mir_banner_body_short">ملخص %s جاهز.</string>
+  <string name="mir_banner_explore">استكشف</string>
+  <string name="mir_banner_in_review">ملخص</string>
   <string name="mir_share_text">اطلع على ملخص الشهر %s الخاص بي على Trakt</string>
   <string name="mir_title_month_in_review">شهر في المراجعة</string>
   <string name="notes_placeholder_text">اترك ملاحظة في المرة القادمة التي تفضل فيها أو توقف متابعة عنوان.</string>
@@ -1151,17 +1166,14 @@
   <string name="preview_feature_description_parental_guide">اعرض مستويات خطورة المحتوى في درج التفاصيل للأفلام والعروض والحلقات.</string>
   <string name="preview_feature_description_rewatch">ابدأ في إعادة مشاهدة الجلسات للعروض التي شاهدتها بالفعل، أو قم بتسجيل الدخول أو وضع علامة على الحلقات التي تمت مشاهدتها مباشرة من درج الجلسة.</string>
   <string name="preview_feature_description_scoped_favorites">قوائم المفضلة في المربع الزمني من خلال إظهار مفضلات العام الحالي في الملفات الشخصية وتجميع قائمة المفضلة الكاملة حسب السنة.</string>
-  <string name="preview_feature_description_smart_recommendations">استخدم محركنا من الجيل التالي لعرض الأفلام والعروض الموصى بها بما يتجاوز ما هو واضح.</string>
-  <string name="preview_feature_description_smart_related">استخدم محركنا من الجيل التالي لعرض الأفلام والعروض ذات الصلة بما يتجاوز ما هو واضح.</string>
   <string name="preview_feature_description_up_next_smart_sort">اختبر طريقة أكثر ذكاءً لفرز متابعة المشاهدة.</string>
   <string name="preview_feature_title_edit_mode">تعديل الوضع</string>
   <string name="preview_feature_title_leaderboard">البانثيون</string>
   <string name="preview_feature_title_rewatch">إعادة المشاهدة</string>
   <string name="preview_feature_title_scoped_favorites">نطاق المفضلة</string>
-  <string name="preview_feature_title_smart_recommendations">توصيات ذكية</string>
-  <string name="preview_feature_title_smart_related">الذكية ذات الصلة</string>
   <string name="preview_feature_title_up_next_smart_sort">متابعة مشاهدة الفرز الذكي</string>
   <string name="reset_status_cleared">تم مسح قائمة المشاهدة.</string>
+  <string name="screen_account_settings_language_system_message_tvos">يستخدم Trakt إعدادات لغة Apple TV الخاصة بك. لتحديثها، انتقل إلى:\n\nإعدادات Apple TV &gt; عام &gt; لغات Apple TV</string>
   <string name="section_title_season_progress">تقدم الموسم %d</string>
   <string name="section_title_seasons_overview">نظرة عامة</string>
   <string name="section_title_specials_progress">تقدّم الحلقات الخاصة</string>
@@ -1170,6 +1182,7 @@
   <string name="stat_text_favorited">المفضلة</string>
   <string name="stat_text_lists">القوائم</string>
   <string name="stat_text_plays">مشاهدات</string>
+  <string name="stat_text_time_watched">شاهدت</string>
   <string name="stat_text_watchers">مراقبون</string>
   <string name="switch_label_mark_as_spoiler">وضع علامة كحرق</string>
   <string name="switch_label_multiple_watches">تمكين أو تعطيل ساعات متعددة</string>
@@ -1204,6 +1217,7 @@
   <string name="tag_text_most_popular">الأكثر شعبية</string>
   <string name="tag_text_movies">أفلام</string>
   <string name="tag_text_new">جديد</string>
+  <string name="tag_text_new_preview_feature">جديد</string>
   <string name="tag_text_number_of_episodes">%d حلقة</string>
   <string name="tag_text_plays">%d مشاهدة</string>
   <string name="tag_text_premiere">العرض الأول</string>
@@ -1223,6 +1237,7 @@
   <string name="tag_text_started">بدأت</string>
   <string name="tag_text_tba">قريباً</string>
   <string name="tag_text_vip">VIP</string>
+  <string name="tag_text_vip_preview">معاينة VIP</string>
   <string name="tag_text_watch_count">عدد المشاهدات</string>
   <string name="tag_text_watched">شاهدت</string>
   <string name="tag_text_watchlisted">قائمة المشاهدة</string>
@@ -1234,6 +1249,7 @@
   <string name="text_all_settings">جميع الإعدادات</string>
   <string name="text_all_time">طوال الوقت</string>
   <string name="text_analytics">تحليلات</string>
+  <string name="text_api_application_vip_only">يمكن لأعضاء VIP تسجيل تطبيقات OAuth غير محدودة.</string>
   <string name="text_app_connected_on">متصل %s</string>
   <string name="text_app_created_on">تم الإنشاء في %s</string>
   <string name="text_app_last_used">آخر استخدام: %s</string>
@@ -1280,7 +1296,6 @@
   <string name="text_connection_status_connected_title">متصل بـ %s</string>
   <string name="text_connection_status_error_message">حدث خطأ ما. يرجى المحاولة مرة أخرى.</string>
   <string name="text_connection_status_error_title">تعذر توصيل %s</string>
-  <string name="text_cookie_notice">يستخدم Trakt الكو🍪🍪كيز لتحسين تجربتك بشكل عام. يمكنك <a>قراءة المزيد من المعلومات</a> هنا.</string>
   <string name="text_copyright_crafted_by">مصنوعة يدويًا في جميع أنحاء العالم.</string>
   <string name="text_copyright_notice">جميع الحقوق محفوظة.</string>
   <string name="text_created_by">إنشاء <a>%s</a></string>
@@ -1365,6 +1380,7 @@
   <string name="text_info_not_following">لم تعد تتابع %s.</string>
   <string name="text_info_reply_added">تمت إضافة الرد.</string>
   <string name="text_info_reply_deleted">تم حذف الرد.</string>
+  <string name="text_info_report_sent">تم إرسال التقرير.</string>
   <string name="text_info_review_added">تمت إضافة المراجعة.</string>
   <string name="text_info_review_deleted">تم حذف المراجعة.</string>
   <string name="text_info_show_dropped">تم إيقاف متابعة المسلسل.</string>
@@ -1395,6 +1411,8 @@
   <string name="text_list_public">عام</string>
   <string name="text_list_public_info">ستكون القائمة مرئية لجميع المستخدمين.</string>
   <string name="text_location">الموقع</string>
+  <string name="text_member_count_accessible">أكثر من %s حسابات Trakt مسجلة</string>
+  <string name="text_member_count_tagline">أشخاص يتتبعون ما يشاهدونه، والعدد في ازدياد</string>
   <string name="text_member_since">منذ %s</string>
   <string name="text_movies_watched">%s من الأفلام</string>
   <string name="text_next_day">%s القادم</string>
@@ -1441,6 +1459,7 @@
   <string name="text_placeholder_generic">لا شيء لنرى هنا.</string>
   <string name="text_placeholder_preview_features">لا توجد حاليا أي ميزات المعاينة. التحقق مرة أخرى في وقت لاحق.</string>
   <string name="text_play_count">%d مشاهدة</string>
+  <string name="text_plays_watched">%s يلعب</string>
   <string name="text_plex_auth_waiting">تم فتح صفحة ترخيص Plex. أكمل تسجيل الدخول هناك، ثم انقر فوق الزر أدناه.</string>
   <string name="text_plex_synced_summary">تمت مزامنة البيانات %1$s مرات. آخر مزامنة أجريتها كانت في %2$s.</string>
   <string name="text_plex_tv_library_description">قم بتمكين Trakt Plex Sync للوصول إلى مكتبة وسائط خادم Plex الخاصة بك.</string>
@@ -1620,6 +1639,7 @@
   <string name="text_vip_upsell_default_description_2">العام قيد المراجعة والمزيد.</string>
   <string name="text_vip_upsell_dive_deeper">اغوص أعمق.</string>
   <string name="text_vip_upsell_more_lists">إنشاء المزيد من القوائم.</string>
+  <string name="text_vip_upsell_more_stats">افتح المزيد من الإحصائيات مع VIP</string>
   <string name="text_vip_upsell_preview_features">قم بالترقية إلى VIP لفتح ميزات المعاينة.</string>
   <string name="text_vip_upsell_sentiment">قم بالترقية إلى VIP لفتح المزيد من الأفكار.</string>
   <string name="text_vip_upsell_smart_lists">قم بالترقية إلى VIP لفتح حدود أعلى.</string>

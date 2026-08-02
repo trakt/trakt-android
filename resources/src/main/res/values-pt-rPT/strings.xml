@@ -12,9 +12,14 @@
   <string name="about_feature_title_discover">Descobre o que ver</string>
   <string name="about_feature_title_rate_review">Classifica e escreve críticas</string>
   <string name="about_feature_title_scrobble">Regista séries e filmes</string>
+  <string name="action_open_system_settings_tvos">Abrir Definições</string>
   <string name="advanced_filter_label_ratings">Classificação entre %1$s e %2$s</string>
   <string name="advanced_filter_label_release_year">Lançados entre %1$d e %2$d</string>
   <string name="advanced_filter_label_runtime">Duração entre %1$d e %2$d minutos.</string>
+  <string name="auto_tracking_card_action">Associa os teus serviços</string>
+  <string name="auto_tracking_card_detail_scrobble">Scrobble automático quando vês e classificas novos conteúdos.</string>
+  <string name="auto_tracking_card_detail_sync">Sincroniza o teu histórico de visualizações e as tuas classificações.</string>
+  <string name="auto_tracking_card_heading">Acompanha automaticamente a tua atividade nos teus serviços de streaming</string>
   <string name="badge_text_beta">Beta</string>
   <string name="badge_text_get_vip">Obter VIP</string>
   <string name="badge_text_more">e mais %d</string>
@@ -28,6 +33,7 @@
   <string name="button_label_add_to_favorites">Adiciona \"%s\" aos teus favoritos</string>
   <string name="button_label_add_to_personal_list">Adicionar \"%1$s\" a %2$s</string>
   <string name="button_label_add_to_watchlist">Adicionar \"%s\" à tua lista para ver</string>
+  <string name="button_label_all_time_stats">Ver as estatísticas de sempre</string>
   <string name="button_label_apply">Aplicar alterações</string>
   <string name="button_label_approve_follow_request">Aceitar pedido de %s</string>
   <string name="button_label_back">Voltar</string>
@@ -59,8 +65,6 @@
   <string name="button_label_comment_replies">Respostas à crítica</string>
   <string name="button_label_comment_reply">Responder a %s</string>
   <string name="button_label_connect_streaming_service">Associar %s</string>
-  <string name="button_label_cookie_accept">Aceitar todos os cookies</string>
-  <string name="button_label_cookie_accept_functional_only">Aceitar apenas cookies funcionais</string>
   <string name="button_label_copied">Copiado</string>
   <string name="button_label_copy">Copiar</string>
   <string name="button_label_create_app">Criar aplicação</string>
@@ -163,11 +167,7 @@
   <string name="button_label_react">Reagir com %s</string>
   <string name="button_label_read_more">Ler mais</string>
   <string name="button_label_recent_comments">Críticas recentes</string>
-  <string name="button_label_recommendation_smart">Recomendações inteligentes</string>
-  <string name="button_label_recommendation_standard">Recomendações padrão</string>
   <string name="button_label_reject_follow_request">Recusar pedido de %s</string>
-  <string name="button_label_related_smart">Recomendações inteligentes</string>
-  <string name="button_label_related_standard">Recomendações padrão</string>
   <string name="button_label_remove_from_favorites">Remove \"%s\" dos teus favoritos</string>
   <string name="button_label_remove_from_history">Remover esta visualização de \"%s\" do teu histórico</string>
   <string name="button_label_remove_from_list">Remover \"%s\" da lista</string>
@@ -236,6 +236,7 @@
   <string name="button_label_unfollow">Deixar de seguir %s</string>
   <string name="button_label_unlike_list">Remover gosto de %s</string>
   <string name="button_label_unlink_streaming_service">Desassociar %s</string>
+  <string name="button_label_unread_preview_features">Funcionalidades em pré-visualização (novas funcionalidades disponíveis)</string>
   <string name="button_label_upload_photo">Carregar uma nova foto de perfil</string>
   <string name="button_label_user_profile">Perfil</string>
   <string name="button_label_view_all_activity">Ver toda a atividade</string>
@@ -274,6 +275,8 @@
   <string name="button_label_watch_until_here_anchor_end">Considerar a data escolhida como o fim da maratona</string>
   <string name="button_label_watch_until_here_anchor_start">Considerar a data escolhida como o início da maratona</string>
   <string name="button_label_watched_until_here">Marcar \"%s\" como visto até aqui</string>
+  <string name="button_label_year_in_review">Vê o teu resumo de %s</string>
+  <string name="button_label_year_to_date">Ver as tuas estatísticas deste ano</string>
   <string name="button_plex_authorized">Já associei o Plex</string>
   <string name="button_plex_sync_now">Sincronizar agora</string>
   <string name="button_plex_toggle_scrobble">Scrobble</string>
@@ -286,6 +289,7 @@
   <string name="button_text_add_review">Adicionar crítica</string>
   <string name="button_text_add_streaming_service">Adicionar serviço de streaming</string>
   <string name="button_text_add_to_favorites">Adicionar aos favoritos</string>
+  <string name="button_text_all_time_stats">Ver todas as estatísticas</string>
   <string name="button_text_apply">Aplicar</string>
   <string name="button_text_approve_follow_request">Aceitar pedido</string>
   <string name="button_text_block">Bloquear</string>
@@ -305,8 +309,6 @@
   <string name="button_text_comment_replies">%d respostas</string>
   <string name="button_text_connect">Associar</string>
   <string name="button_text_continue">Continuar</string>
-  <string name="button_text_cookie_accept">Aceitar todos</string>
-  <string name="button_text_cookie_accept_functional_only">Apenas funcionais</string>
   <string name="button_text_create">Criar</string>
   <string name="button_text_create_list">Lista</string>
   <string name="button_text_cta_create_list">Criar lista</string>
@@ -337,6 +339,7 @@
   <string name="button_text_followers">Seguidores</string>
   <string name="button_text_following">A seguir</string>
   <string name="button_text_get_vip">Obter</string>
+  <string name="button_text_hide">Ocultar</string>
   <string name="button_text_hide_description">Ocultar descrição</string>
   <string name="button_text_hide_details">Ocultar detalhes</string>
   <string name="button_text_hide_recommendation">Ocultar recomendação</string>
@@ -388,12 +391,8 @@
   <string name="button_text_progress_in_progress">A decorrer</string>
   <string name="button_text_raw_export">Exportar agora</string>
   <string name="button_text_recent_comments">Recentes</string>
-  <string name="button_text_recommendation_smart">Inteligentes</string>
-  <string name="button_text_recommendation_standard">Padrão</string>
   <string name="button_text_reconnect">Voltar a associar</string>
   <string name="button_text_reject_follow_request">Recusar pedido</string>
-  <string name="button_text_related_smart">Inteligentes</string>
-  <string name="button_text_related_standard">Padrão</string>
   <string name="button_text_remove_from_favorites">Remover dos favoritos</string>
   <string name="button_text_remove_from_history">Remover do histórico</string>
   <string name="button_text_remove_from_list">Remover da lista</string>
@@ -476,6 +475,8 @@
   <string name="button_text_watched_until_here">Marcar como visto até aqui</string>
   <string name="button_text_watchlist">Lista para ver</string>
   <string name="button_text_where_to_watch">Onde ver</string>
+  <string name="button_text_year_in_review">Resumo de %s</string>
+  <string name="button_text_year_to_date">Este ano</string>
   <string name="button_text_yes">Sim</string>
   <string name="button_text_younify_fix">Corrigir</string>
   <string name="button_text_younify_send_logs">Enviar registos</string>
@@ -506,6 +507,7 @@
   <string name="confirmation_title_disconnect_plex">Desassociar o Plex?</string>
   <string name="confirmation_title_drop_movie">Deixar de seguir o filme?</string>
   <string name="confirmation_title_drop_show">Deixar de seguir a série?</string>
+  <string name="confirmation_title_hide">Confirmar ocultação</string>
   <string name="confirmation_title_hide_recommendation">Ocultar recomendação?</string>
   <string name="confirmation_title_log_out">Terminar sessão?</string>
   <string name="confirmation_title_mark_as_watched">Marcar como visto?</string>
@@ -558,6 +560,7 @@
   <string name="description_streaming_sync">Sincroniza automaticamente o teu histórico de visualizações e as tuas classificações.</string>
   <string name="description_streaming_vip_services">Faz o upgrade para associares e sincronizares estes serviços de streaming.</string>
   <string name="description_sync_detail">Alguns detalhes sobre esta sincronização.</string>
+  <string name="dialog_prompt_hide_auto_tracking">Podes sempre aceder ao Acompanhamento automático nas definições.</string>
   <string name="dialog_prompt_media_share_image_format">Escolhe um formato de imagem para partilhar.</string>
   <string name="dialog_prompt_move_to_position">Introduz uma nova posição para \"%s\".</string>
   <string name="dialog_prompt_younify_data_sync">Queres importar os teus dados existentes para a tua conta Trakt ou sincronizar apenas os novos dados a partir de agora?</string>
@@ -586,6 +589,7 @@
   <string name="dropdown_label_person_position">Posição</string>
   <string name="episode_footer_season_episode">T%1$d • E%2$d</string>
   <string name="episode_footer_season_episode_range">T%1$d • E%2$d-%3$d</string>
+  <string name="error_search_partial_results">Podem faltar alguns resultados</string>
   <string name="error_text_404">(Não te preocupes, acontece! Até a Força às vezes fica desequilibrada.)</string>
   <string name="error_text_delete_account">Ocorreu um erro ao eliminar a tua conta. Tenta novamente.</string>
   <string name="error_text_email">Não foi possível atualizar o e-mail. Certifica-te de que é um endereço válido.</string>
@@ -626,7 +630,7 @@
   <string name="header_community_sentiment">Opiniões</string>
   <string name="header_country">País</string>
   <string name="header_create_smart_list">Criar lista inteligente</string>
-  <string name="header_creator">Criador</string>
+  <string name="header_creator">Criadores</string>
   <string name="header_current_plan">Plano atual</string>
   <string name="header_data_syncs">Sincronizações de dados</string>
   <string name="header_date_of_death">Data de falecimento</string>
@@ -708,10 +712,13 @@
   <string name="header_settings_tracking">Registo</string>
   <string name="header_settings_translations">Traduções</string>
   <string name="header_skipped_items">%s itens ignorados</string>
+  <string name="header_stats_contributions">Contribuições</string>
   <string name="header_stats_graph_peak">Horas de maior atividade</string>
   <string name="header_stats_graph_screen_time_daily">Detalhe diário</string>
   <string name="header_stats_graph_shows_movies">Séries vs. Filmes</string>
   <string name="header_stats_monthly">Estatísticas mensais</string>
+  <string name="header_stats_progress">Progresso</string>
+  <string name="header_stats_watched">Visto</string>
   <string name="header_status">Estado</string>
   <string name="header_stream_on">Ver em</string>
   <string name="header_streaming">Disponibilidade</string>
@@ -723,6 +730,7 @@
   <string name="header_target">Alvo</string>
   <string name="header_total_runtime">Duração total</string>
   <string name="header_writer">Guionistas</string>
+  <string name="heading_api_application_vip_only">Precisas do Trakt VIP para criares novas apps</string>
   <string name="heading_api_applications">Aplicações API</string>
   <string name="heading_apps_settings">Aplicações</string>
   <string name="heading_blocked_users">Utilizadores bloqueados</string>
@@ -808,6 +816,7 @@
   <string name="input_placeholder_app_name">A minha aplicação</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
+  <string name="input_placeholder_filter">Filtrar</string>
   <string name="input_placeholder_filter_services">Filtrar serviços de streaming</string>
   <string name="input_placeholder_lists_description">Descrição (opcional)</string>
   <string name="input_placeholder_lists_name">Nome</string>
@@ -858,6 +867,7 @@
   <string name="label_plex_webhook_url">URL do webhook</string>
   <string name="label_queued_action">Guardado offline, a aguardar sincronização</string>
   <string name="label_ratings_season_chart">Classificações das temporadas ao longo do tempo</string>
+  <string name="label_registered_accounts">Contas registadas</string>
   <string name="label_report_reason_abusive">Abusivo</string>
   <string name="label_report_reason_adult">Conteúdo para adultos</string>
   <string name="label_report_reason_bigotry">Discurso de ódio</string>
@@ -887,6 +897,7 @@
   <string name="label_stats_days_active">Dias com atividade</string>
   <string name="label_stats_dropped_streaks">Sequências interrompidas</string>
   <string name="label_stats_episodes">Episódios</string>
+  <string name="label_stats_finished">Concluídas</string>
   <string name="label_stats_hours">Horas</string>
   <string name="label_stats_movies">Filmes</string>
   <string name="label_stats_plays">Visualizações</string>
@@ -1053,6 +1064,10 @@
   <string name="match_pill_anchor">Compatibilidade:</string>
   <string name="match_pill_aria_label">%1$d% de compatibilidade, %2$s. Abre os detalhes da compatibilidade.</string>
   <string name="match_pill_loading_aria_label">A calcular a compatibilidade</string>
+  <string name="mir_banner_body">O teu resumo mensal está pronto. Eis o que viste em %s.</string>
+  <string name="mir_banner_body_short">O teu resumo de %s está pronto.</string>
+  <string name="mir_banner_explore">Explorar</string>
+  <string name="mir_banner_in_review">Em resumo</string>
   <string name="mir_share_text">Vê o meu resumo de %s no Trakt</string>
   <string name="mir_title_month_in_review">Resumo do mês</string>
   <string name="notes_placeholder_text">Da próxima vez que adicionares um título aos favoritos ou parares de o ver, deixa uma nota.</string>
@@ -1098,7 +1113,7 @@
   <string name="page_title_anticipated_media">Mais aguardados</string>
   <string name="page_title_anticipated_movies">Filmes mais aguardados</string>
   <string name="page_title_anticipated_shows">Séries mais aguardadas</string>
-  <string name="page_title_automatic_tracking">Monitorização automática</string>
+  <string name="page_title_automatic_tracking">Acompanhamento automático</string>
   <string name="page_title_branding">Marca</string>
   <string name="page_title_calendar">Calendário</string>
   <string name="page_title_create_list">Criar lista</string>
@@ -1151,17 +1166,14 @@
   <string name="preview_feature_description_parental_guide">Mostra os níveis de risco do conteúdo no painel de detalhes de filmes, séries e episódios.</string>
   <string name="preview_feature_description_rewatch">Inicia sessões de revisão para séries que já viste e regista a visualização ou marca episódios como vistos diretamente no painel da sessão.</string>
   <string name="preview_feature_description_scoped_favorites">Organiza a lista de favoritos mostrando os do ano atual no perfil e agrupando a lista completa por ano.</string>
-  <string name="preview_feature_description_smart_recommendations">Utiliza o nosso motor de recomendação de nova geração para descobrir filmes e séries para além das recomendações mais óbvias.</string>
-  <string name="preview_feature_description_smart_related">Utiliza o nosso motor de nova geração para descobrires recomendações personalizadas de filmes e séries que vão além do óbvio.</string>
   <string name="preview_feature_description_up_next_smart_sort">Experimenta uma forma mais inteligente de ordenar o Continuar a ver.</string>
   <string name="preview_feature_title_edit_mode">Modo de edição</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Rever</string>
   <string name="preview_feature_title_scoped_favorites">Favoritos por ano</string>
-  <string name="preview_feature_title_smart_recommendations">Recomendações inteligentes</string>
-  <string name="preview_feature_title_smart_related">Recomendações inteligentes</string>
   <string name="preview_feature_title_up_next_smart_sort">Ordenação inteligente do Continuar a ver</string>
   <string name="reset_status_cleared">Lista para ver limpa.</string>
+  <string name="screen_account_settings_language_system_message_tvos">O Trakt utiliza o idioma definido na Apple TV. Para o alterares, vai a:\n\nDefinições &gt; Geral &gt; Idiomas da Apple TV</string>
   <string name="section_title_season_progress">Progresso da temporada %d</string>
   <string name="section_title_seasons_overview">Visão geral</string>
   <string name="section_title_specials_progress">Progresso dos especiais</string>
@@ -1170,6 +1182,7 @@
   <string name="stat_text_favorited">Favoritos</string>
   <string name="stat_text_lists">Listas</string>
   <string name="stat_text_plays">Visualizações</string>
+  <string name="stat_text_time_watched">Tempo de visualização</string>
   <string name="stat_text_watchers">Espectadores</string>
   <string name="switch_label_mark_as_spoiler">Marcar como spoiler</string>
   <string name="switch_label_multiple_watches">Ativar ou desativar várias visualizações</string>
@@ -1186,7 +1199,7 @@
   <string name="tab_text_plex_sync">Sincronização</string>
   <string name="tab_text_plex_webhook">Webhook</string>
   <string name="tab_text_seasons_episodes">Episódios</string>
-  <string name="tab_text_seasons_info">Informações</string>
+  <string name="tab_text_seasons_info">Info.</string>
   <string name="tab_text_seasons_reviews">Críticas</string>
   <string name="tab_text_simple_filters">Simples</string>
   <string name="tag_label_progress">Progresso</string>
@@ -1204,6 +1217,7 @@
   <string name="tag_text_most_popular">Mais popular</string>
   <string name="tag_text_movies">Filmes</string>
   <string name="tag_text_new">Novo</string>
+  <string name="tag_text_new_preview_feature">Novo</string>
   <string name="tag_text_number_of_episodes">%d epis.</string>
   <string name="tag_text_plays">%d visualizações</string>
   <string name="tag_text_premiere">Estreia</string>
@@ -1223,6 +1237,7 @@
   <string name="tag_text_started">Iniciada</string>
   <string name="tag_text_tba">Por anunciar</string>
   <string name="tag_text_vip">VIP</string>
+  <string name="tag_text_vip_preview">Pré-visualização VIP</string>
   <string name="tag_text_watch_count">N.º de visualizações</string>
   <string name="tag_text_watched">Visto</string>
   <string name="tag_text_watchlisted">Na lista para ver</string>
@@ -1234,10 +1249,11 @@
   <string name="text_all_settings">Todas as definições</string>
   <string name="text_all_time">Desde sempre</string>
   <string name="text_analytics">Dados analíticos</string>
+  <string name="text_api_application_vip_only">Os membros VIP podem registar um número ilimitado de aplicações OAuth.</string>
   <string name="text_app_connected_on">Associada a %s</string>
   <string name="text_app_created_on">Criada a %s</string>
   <string name="text_app_last_used">Utilizada pela última vez a %s</string>
-  <string name="text_automatic_tracking">Monitorização automática</string>
+  <string name="text_automatic_tracking">Acompanhamento automático</string>
   <string name="text_avatar">Imagem de perfil</string>
   <string name="text_billing_already_vip">Agora és Trakt VIP!\nObrigado pelo teu apoio e aproveita.</string>
   <string name="text_billing_disclaimer">O pagamento começa no final do período experimental. A subscrição renova-se automaticamente e é cobrada a cada %s até ser cancelada. Cancela a qualquer momento através do centro de subscrições do Google Play.</string>
@@ -1280,7 +1296,6 @@
   <string name="text_connection_status_connected_title">Associado a %s</string>
   <string name="text_connection_status_error_message">Ocorreu um erro. Tenta novamente.</string>
   <string name="text_connection_status_error_title">Não foi possível associar %s</string>
-  <string name="text_cookie_notice">O Trakt utiliza C🍪🍪KIES para melhorar a tua experiência. Podes <a>ler mais informações</a> aqui.</string>
   <string name="text_copyright_crafted_by">Criado com dedicação em todo o mundo.</string>
   <string name="text_copyright_notice">Todos os direitos reservados.</string>
   <string name="text_created_by">Criada por <a>%s</a></string>
@@ -1365,6 +1380,7 @@
   <string name="text_info_not_following">Já não segues %s.</string>
   <string name="text_info_reply_added">Resposta adicionada.</string>
   <string name="text_info_reply_deleted">Resposta eliminada.</string>
+  <string name="text_info_report_sent">Denúncia enviada.</string>
   <string name="text_info_review_added">Crítica adicionada.</string>
   <string name="text_info_review_deleted">Crítica eliminada.</string>
   <string name="text_info_show_dropped">Deixaste de ver a série.</string>
@@ -1395,6 +1411,8 @@
   <string name="text_list_public">Pública</string>
   <string name="text_list_public_info">Todos os utilizadores podem ver esta lista.</string>
   <string name="text_location">Localização</string>
+  <string name="text_member_count_accessible">Mais de %s contas registadas no Trakt</string>
+  <string name="text_member_count_tagline">pessoas a acompanhar o que vêem… e a contar</string>
   <string name="text_member_since">Desde %s</string>
   <string name="text_movies_watched">%s filmes</string>
   <string name="text_next_day">%s seguinte</string>
@@ -1441,6 +1459,7 @@
   <string name="text_placeholder_generic">Nada para ver aqui.</string>
   <string name="text_placeholder_preview_features">De momento, não existem funcionalidades em pré-visualização. Volta mais tarde.</string>
   <string name="text_play_count">%d visualizações</string>
+  <string name="text_plays_watched">%s visualizações</string>
   <string name="text_plex_auth_waiting">Foi aberta uma página de autorização do Plex. Inicia sessão nessa página e, depois, clica no botão abaixo.</string>
   <string name="text_plex_synced_summary">Os dados foram sincronizados %1$s vezes. A tua sincronização mais recente foi a %2$s.</string>
   <string name="text_plex_tv_library_description">Ativa a sincronização Trakt Plex para acederes à biblioteca de multimédia do teu servidor Plex.</string>
@@ -1620,6 +1639,7 @@
   <string name="text_vip_upsell_default_description_2">Resumo do ano e muito mais.</string>
   <string name="text_vip_upsell_dive_deeper">Explora mais a fundo.</string>
   <string name="text_vip_upsell_more_lists">Cria mais listas.</string>
+  <string name="text_vip_upsell_more_stats">Desbloqueia mais estatísticas com o VIP</string>
   <string name="text_vip_upsell_preview_features">Atualiza para VIP para desbloqueares as funcionalidades em pré-visualização.</string>
   <string name="text_vip_upsell_sentiment">Atualiza para VIP para desbloqueares mais Insights.</string>
   <string name="text_vip_upsell_smart_lists">Atualiza para VIP para desbloqueares limites superiores.</string>
@@ -1796,7 +1816,7 @@
   <string name="translated_value_status_planned">Planeado</string>
   <string name="translated_value_status_post_production">Pós-produção</string>
   <string name="translated_value_status_released">Lançado</string>
-  <string name="translated_value_status_returning_series">Série de regresso</string>
+  <string name="translated_value_status_returning_series">Continua</string>
   <string name="translated_value_status_rumored">Rumores</string>
   <string name="translated_value_status_unknown">Desconhecido</string>
   <string name="translated_value_status_upcoming">A estrear</string>

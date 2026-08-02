@@ -12,9 +12,14 @@
   <string name="about_feature_title_discover">Узнайте, что посмотреть</string>
   <string name="about_feature_title_rate_review">Оценить и просмотреть</string>
   <string name="about_feature_title_scrobble">Отслеживать шоу и фильмы</string>
+  <string name="action_open_system_settings_tvos">Открыть настройки</string>
   <string name="advanced_filter_label_ratings">Рейтинг от %1$s до %2$s</string>
   <string name="advanced_filter_label_release_year">Выпущен в %1$d — %2$d</string>
   <string name="advanced_filter_label_runtime">Продолжительность от %1$d до %2$d минут.</string>
+  <string name="auto_tracking_card_action">Подключить сервисы</string>
+  <string name="auto_tracking_card_detail_scrobble">Автоматический скробблинг при просмотре и оценке нового контента.</string>
+  <string name="auto_tracking_card_detail_sync">Синхронизируйте вашу существующую историю просмотров и оценки.</string>
+  <string name="auto_tracking_card_heading">Автоматическое отслеживание на ваших стриминговых сервисах</string>
   <string name="badge_text_beta">Бета</string>
   <string name="badge_text_get_vip">VIP</string>
   <string name="badge_text_more">и еще %d</string>
@@ -28,6 +33,7 @@
   <string name="button_label_add_to_favorites">Добавить \"%s\" в избранное</string>
   <string name="button_label_add_to_personal_list">Добавить \"%1$s\" в %2$s</string>
   <string name="button_label_add_to_watchlist">Добавить \"%s\" в список просмотра</string>
+  <string name="button_label_all_time_stats">Посмотреть всю статистику</string>
   <string name="button_label_apply">Применить изменения</string>
   <string name="button_label_approve_follow_request">Одобрить запрос на подписку от %s</string>
   <string name="button_label_back">Назад</string>
@@ -59,8 +65,6 @@
   <string name="button_label_comment_replies">Ответы на отзыв</string>
   <string name="button_label_comment_reply">Ответить %s</string>
   <string name="button_label_connect_streaming_service">Подключить %s</string>
-  <string name="button_label_cookie_accept">Принять все файлы cookie</string>
-  <string name="button_label_cookie_accept_functional_only">Принять только функциональные файлы cookie</string>
   <string name="button_label_copied">Скопировано</string>
   <string name="button_label_copy">Копировать</string>
   <string name="button_label_create_app">Создать приложение</string>
@@ -163,11 +167,7 @@
   <string name="button_label_react">Отреагировать как %s</string>
   <string name="button_label_read_more">Читать далее</string>
   <string name="button_label_recent_comments">Недавние отзывы</string>
-  <string name="button_label_recommendation_smart">Умные рекомендации</string>
-  <string name="button_label_recommendation_standard">Стандартные рекомендации</string>
   <string name="button_label_reject_follow_request">Отклонить запрос на подписку от %s</string>
-  <string name="button_label_related_smart">Умные рекомендации</string>
-  <string name="button_label_related_standard">Стандартные рекомендации</string>
   <string name="button_label_remove_from_favorites">Удалить \"%s\" из избранного</string>
   <string name="button_label_remove_from_history">Удалить этот просмотр \"%s\" из истории просмотров</string>
   <string name="button_label_remove_from_list">Удалить \"%s\" из списка</string>
@@ -236,6 +236,7 @@
   <string name="button_label_unfollow">Отписаться от %s</string>
   <string name="button_label_unlike_list">Не нравится %s</string>
   <string name="button_label_unlink_streaming_service">Отключить %s</string>
+  <string name="button_label_unread_preview_features">Функции предварительного просмотра (доступны новые функции)</string>
   <string name="button_label_upload_photo">Загрузить новое фото профиля</string>
   <string name="button_label_user_profile">Профиль пользователя</string>
   <string name="button_label_view_all_activity">Просмотреть всю активность</string>
@@ -274,6 +275,8 @@
   <string name="button_label_watch_until_here_anchor_end">Считать выбранную дату окончанием просмотра запоем</string>
   <string name="button_label_watch_until_here_anchor_start">Считать выбранную дату началом просмотра запоем</string>
   <string name="button_label_watched_until_here">Отметить \"%s\" как просмотренное досюда</string>
+  <string name="button_label_year_in_review">Просмотреть ваш обзор за %s</string>
+  <string name="button_label_year_to_date">Посмотреть с начала года</string>
   <string name="button_plex_authorized">Я подключил Plex</string>
   <string name="button_plex_sync_now">Синхронизировать сейчас</string>
   <string name="button_plex_toggle_scrobble">Скробблинг</string>
@@ -286,6 +289,7 @@
   <string name="button_text_add_review">Добавить отзыв</string>
   <string name="button_text_add_streaming_service">Добавить стриминговый сервис</string>
   <string name="button_text_add_to_favorites">Добавить в избранное</string>
+  <string name="button_text_all_time_stats">Посмотреть всю статистику</string>
   <string name="button_text_apply">Применить</string>
   <string name="button_text_approve_follow_request">Одобрить запрос</string>
   <string name="button_text_block">Заблокировать</string>
@@ -305,8 +309,6 @@
   <string name="button_text_comment_replies">%d ответов</string>
   <string name="button_text_connect">Подключить</string>
   <string name="button_text_continue">Продолжить</string>
-  <string name="button_text_cookie_accept">Принять все</string>
-  <string name="button_text_cookie_accept_functional_only">Только функциональные</string>
   <string name="button_text_create">Создать</string>
   <string name="button_text_create_list">Список</string>
   <string name="button_text_cta_create_list">Создать список</string>
@@ -337,6 +339,7 @@
   <string name="button_text_followers">Подписчики</string>
   <string name="button_text_following">Подписки</string>
   <string name="button_text_get_vip">Получить</string>
+  <string name="button_text_hide">Скрыть</string>
   <string name="button_text_hide_description">Скрыть описание</string>
   <string name="button_text_hide_details">Скрыть подробности</string>
   <string name="button_text_hide_recommendation">Скрыть рекомендацию</string>
@@ -388,12 +391,8 @@
   <string name="button_text_progress_in_progress">В процессе</string>
   <string name="button_text_raw_export">Экспортировать сейчас</string>
   <string name="button_text_recent_comments">Недавние</string>
-  <string name="button_text_recommendation_smart">Умные</string>
-  <string name="button_text_recommendation_standard">Стандарт</string>
   <string name="button_text_reconnect">Переподключить</string>
   <string name="button_text_reject_follow_request">Отклонить запрос</string>
-  <string name="button_text_related_smart">Умные</string>
-  <string name="button_text_related_standard">Стандарт</string>
   <string name="button_text_remove_from_favorites">Удалить из избранного</string>
   <string name="button_text_remove_from_history">Удалить из истории</string>
   <string name="button_text_remove_from_list">Удалить из списка</string>
@@ -476,6 +475,8 @@
   <string name="button_text_watched_until_here">Просмотрено досюда</string>
   <string name="button_text_watchlist">Список просмотра</string>
   <string name="button_text_where_to_watch">Где посмотреть</string>
+  <string name="button_text_year_in_review">%s в обзоре</string>
+  <string name="button_text_year_to_date">С начала года</string>
   <string name="button_text_yes">Да</string>
   <string name="button_text_younify_fix">Исправить</string>
   <string name="button_text_younify_send_logs">Отправить логи</string>
@@ -506,6 +507,7 @@
   <string name="confirmation_title_disconnect_plex">Отключить Plex?</string>
   <string name="confirmation_title_drop_movie">Бросить фильм?</string>
   <string name="confirmation_title_drop_show">Бросить сериал?</string>
+  <string name="confirmation_title_hide">Подтвердить скрытие</string>
   <string name="confirmation_title_hide_recommendation">Скрыть рекомендацию?</string>
   <string name="confirmation_title_log_out">Выйти из аккаунта?</string>
   <string name="confirmation_title_mark_as_watched">Отметить как просмотренное?</string>
@@ -558,6 +560,7 @@
   <string name="description_streaming_sync">Автоматически синхронизируйте историю просмотров и оценки.</string>
   <string name="description_streaming_vip_services">Обновите, чтобы подключить и синхронизировать эти потоковые сервисы.</string>
   <string name="description_sync_detail">Некоторые сведения об этой синхронизации.</string>
+  <string name="dialog_prompt_hide_auto_tracking">Вы всегда можете получить доступ к Автоматическому отслеживанию в настройках.</string>
   <string name="dialog_prompt_media_share_image_format">Выберите формат изображения для публикации.</string>
   <string name="dialog_prompt_move_to_position">Введите новую позицию для \"%s\".</string>
   <string name="dialog_prompt_younify_data_sync">Хотите ли вы импортировать существующие данные в свой аккаунт Trakt или только синхронизировать новые данные с этого момента?</string>
@@ -586,6 +589,7 @@
   <string name="dropdown_label_person_position">Должность</string>
   <string name="episode_footer_season_episode">С%1$d • Э%2$d</string>
   <string name="episode_footer_season_episode_range">С%1$d • Э%2$d-%3$d</string>
+  <string name="error_search_partial_results">Некоторые результаты могут отсутствовать</string>
   <string name="error_text_404">(Не волнуйтесь, это бывает! Даже Сила иногда выходит из равновесия.)</string>
   <string name="error_text_delete_account">При удалении аккаунта произошла ошибка. Пожалуйста, попробуйте еще раз.</string>
   <string name="error_text_email">Не удалось обновить электронную почту. Убедитесь, что это действительный адрес.</string>
@@ -708,10 +712,13 @@
   <string name="header_settings_tracking">Отслеживание</string>
   <string name="header_settings_translations">Переводы</string>
   <string name="header_skipped_items">%s пропущенных элементов</string>
+  <string name="header_stats_contributions">Вклад</string>
   <string name="header_stats_graph_peak">Пиковые часы</string>
   <string name="header_stats_graph_screen_time_daily">Разбивка по дням</string>
   <string name="header_stats_graph_shows_movies">Сериалы против фильмов</string>
   <string name="header_stats_monthly">Ежемесячная статистика</string>
+  <string name="header_stats_progress">Прогресс</string>
+  <string name="header_stats_watched">Просмотрено</string>
   <string name="header_status">Статус</string>
   <string name="header_stream_on">Смотреть на</string>
   <string name="header_streaming">Доступность</string>
@@ -723,6 +730,7 @@
   <string name="header_target">Цель</string>
   <string name="header_total_runtime">Общая продолжительность</string>
   <string name="header_writer">Сценарист</string>
+  <string name="heading_api_application_vip_only">Для создания новых приложений требуется Trakt VIP</string>
   <string name="heading_api_applications">API-приложения</string>
   <string name="heading_apps_settings">Приложения</string>
   <string name="heading_blocked_users">Заблокированные пользователи</string>
@@ -808,6 +816,7 @@
   <string name="input_placeholder_app_name">Мое приложение</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
+  <string name="input_placeholder_filter">Фильтр</string>
   <string name="input_placeholder_filter_services">Фильтровать стриминговые сервисы</string>
   <string name="input_placeholder_lists_description">Описание (необязательно)</string>
   <string name="input_placeholder_lists_name">Название</string>
@@ -858,6 +867,7 @@
   <string name="label_plex_webhook_url">URL вебхука</string>
   <string name="label_queued_action">Сохранено офлайн, ожидание синхронизации</string>
   <string name="label_ratings_season_chart">Динамика рейтингов сезонов</string>
+  <string name="label_registered_accounts">Зарегистрированные аккаунты</string>
   <string name="label_report_reason_abusive">Оскорбительный</string>
   <string name="label_report_reason_adult">Контент для взрослых</string>
   <string name="label_report_reason_bigotry">Фанатизм</string>
@@ -887,6 +897,7 @@
   <string name="label_stats_days_active">Активные дни</string>
   <string name="label_stats_dropped_streaks">Прерванные серии</string>
   <string name="label_stats_episodes">Эпизоды</string>
+  <string name="label_stats_finished">Просмотрено</string>
   <string name="label_stats_hours">Часы</string>
   <string name="label_stats_movies">Фильмы</string>
   <string name="label_stats_plays">Просмотры</string>
@@ -1053,6 +1064,10 @@
   <string name="match_pill_anchor">Совпадение:</string>
   <string name="match_pill_aria_label">%1$d% совпадения, %2$s. Открыть подробности совпадения.</string>
   <string name="match_pill_loading_aria_label">Вычисляется оценка соответствия</string>
+  <string name="mir_banner_body">Ваш ежемесячный обзор готов. Вот что вы посмотрели в %s.</string>
+  <string name="mir_banner_body_short">Ваш обзор за %s готов.</string>
+  <string name="mir_banner_explore">Изучить</string>
+  <string name="mir_banner_in_review">В обзоре</string>
   <string name="mir_share_text">Оцените мой %s Обзор месяца на Trakt</string>
   <string name="mir_title_month_in_review">Обзор месяца</string>
   <string name="notes_placeholder_text">Оставьте заметку в следующий раз, когда вы добавите в избранное или откажетесь от просмотра.</string>
@@ -1151,17 +1166,14 @@
   <string name="preview_feature_description_parental_guide">Показывать уровни риска контента в выдвижной панели сведений для фильмов, сериалов и эпизодов.</string>
   <string name="preview_feature_description_rewatch">Начните сеансы пересмотра для шоу, которые вы уже видели, отмечайте просмотр или помечайте эпизоды как просмотренные прямо из панели сеанса.</string>
   <string name="preview_feature_description_scoped_favorites">Ограничивайте списки избранного по времени, показывая избранное текущего года в профилях и группируя полный список избранного по годам.</string>
-  <string name="preview_feature_description_smart_recommendations">Используйте наш движок нового поколения, чтобы находить рекомендуемые фильмы и шоу, выходящие за рамки очевидного.</string>
-  <string name="preview_feature_description_smart_related">Используйте наш движок нового поколения, чтобы находить связанные фильмы и шоу, выходящие за рамки очевидного.</string>
   <string name="preview_feature_description_up_next_smart_sort">Попробуйте более умный способ сортировки раздела \"Смотреть дальше\".</string>
   <string name="preview_feature_title_edit_mode">Режим редактирования</string>
   <string name="preview_feature_title_leaderboard">Пантеон</string>
   <string name="preview_feature_title_rewatch">Пересмотр</string>
   <string name="preview_feature_title_scoped_favorites">Избранное по времени</string>
-  <string name="preview_feature_title_smart_recommendations">Умные рекомендации</string>
-  <string name="preview_feature_title_smart_related">Умные рекомендации</string>
   <string name="preview_feature_title_up_next_smart_sort">Умная сортировка \"Смотреть дальше\"</string>
   <string name="reset_status_cleared">Список просмотра очищен.</string>
+  <string name="screen_account_settings_language_system_message_tvos">Trakt использует языковые настройки вашего Apple TV. Чтобы обновить их, перейдите:\n\nНастройки Apple TV &gt; Основные &gt; Языки Apple TV</string>
   <string name="section_title_season_progress">Прогресс сезона %d</string>
   <string name="section_title_seasons_overview">Обзор</string>
   <string name="section_title_specials_progress">Прогресс спецвыпусков</string>
@@ -1170,6 +1182,7 @@
   <string name="stat_text_favorited">Избранное</string>
   <string name="stat_text_lists">Списки</string>
   <string name="stat_text_plays">Просмотры</string>
+  <string name="stat_text_time_watched">Просмотрено</string>
   <string name="stat_text_watchers">Зрители</string>
   <string name="switch_label_mark_as_spoiler">Отметить как спойлер</string>
   <string name="switch_label_multiple_watches">Включить или отключить несколько просмотров</string>
@@ -1204,6 +1217,7 @@
   <string name="tag_text_most_popular">Самые популярные</string>
   <string name="tag_text_movies">Фильмы</string>
   <string name="tag_text_new">Новое</string>
+  <string name="tag_text_new_preview_feature">Новое</string>
   <string name="tag_text_number_of_episodes">%d эп.</string>
   <string name="tag_text_plays">%d просмотров</string>
   <string name="tag_text_premiere">Премьера</string>
@@ -1223,6 +1237,7 @@
   <string name="tag_text_started">Начато</string>
   <string name="tag_text_tba">Уточняется</string>
   <string name="tag_text_vip">VIP</string>
+  <string name="tag_text_vip_preview">VIP Предпросмотр</string>
   <string name="tag_text_watch_count">Кол-во просмотров</string>
   <string name="tag_text_watched">Просмотрено</string>
   <string name="tag_text_watchlisted">В списке просмотра</string>
@@ -1234,6 +1249,7 @@
   <string name="text_all_settings">Все настройки</string>
   <string name="text_all_time">За все время</string>
   <string name="text_analytics">Аналитика</string>
+  <string name="text_api_application_vip_only">VIP-пользователи могут регистрировать неограниченное количество OAuth-приложений.</string>
   <string name="text_app_connected_on">Подключено %s</string>
   <string name="text_app_created_on">Создано %s</string>
   <string name="text_app_last_used">Последнее использование %s</string>
@@ -1280,7 +1296,6 @@
   <string name="text_connection_status_connected_title">Подключено к %s</string>
   <string name="text_connection_status_error_message">Что-то пошло не так. Пожалуйста, попробуйте еще раз.</string>
   <string name="text_connection_status_error_title">Не удалось подключить %s</string>
-  <string name="text_cookie_notice">Trakt использует C🍪🍪KIES для улучшения вашего общего опыта. Вы можете <a>прочитать больше информации</a> здесь.</string>
   <string name="text_copyright_crafted_by">Сделано вручную по всему миру.</string>
   <string name="text_copyright_notice">Все права защищены.</string>
   <string name="text_created_by">Создан <a>%s</a></string>
@@ -1365,6 +1380,7 @@
   <string name="text_info_not_following">Вы больше не подписаны на %s.</string>
   <string name="text_info_reply_added">Ответ был добавлен.</string>
   <string name="text_info_reply_deleted">Ответ был удален.</string>
+  <string name="text_info_report_sent">Отчет был отправлен.</string>
   <string name="text_info_review_added">Отзыв был добавлен.</string>
   <string name="text_info_review_deleted">Отзыв был удален.</string>
   <string name="text_info_show_dropped">Сериал был заброшен.</string>
@@ -1395,6 +1411,8 @@
   <string name="text_list_public">Публичный</string>
   <string name="text_list_public_info">Список будет виден всем пользователям.</string>
   <string name="text_location">Местоположение</string>
+  <string name="text_member_count_accessible">Более %s зарегистрированных аккаунтов Trakt</string>
+  <string name="text_member_count_tagline">люди, отслеживающие просмотренное, и их число растет</string>
   <string name="text_member_since">С %s</string>
   <string name="text_movies_watched">%s фильмов</string>
   <string name="text_next_day">в следующий %s</string>
@@ -1441,6 +1459,7 @@
   <string name="text_placeholder_generic">Здесь ничего нет.</string>
   <string name="text_placeholder_preview_features">В настоящее время нет предварительных функций. Проверьте позже.</string>
   <string name="text_play_count">%d просмотров</string>
+  <string name="text_plays_watched">%s просмотров</string>
   <string name="text_plex_auth_waiting">Открыта страница авторизации Plex. Завершите вход там, затем нажмите кнопку ниже.</string>
   <string name="text_plex_synced_summary">Данные синхронизировались %1$s раз. Ваша последняя синхронизация была %2$s.</string>
   <string name="text_plex_tv_library_description">Включите синхронизацию Trakt Plex, чтобы получить доступ к медиатеке вашего сервера Plex.</string>
@@ -1620,6 +1639,7 @@
   <string name="text_vip_upsell_default_description_2">Годовой обзор и многое другое.</string>
   <string name="text_vip_upsell_dive_deeper">Погрузитесь глубже.</string>
   <string name="text_vip_upsell_more_lists">Создайте больше списков.</string>
+  <string name="text_vip_upsell_more_stats">Откройте больше статистики с VIP</string>
   <string name="text_vip_upsell_preview_features">Обновите до VIP, чтобы разблокировать предварительные функции.</string>
   <string name="text_vip_upsell_sentiment">Обновите до VIP, чтобы получить больше информации.</string>
   <string name="text_vip_upsell_smart_lists">Обновите до VIP, чтобы разблокировать более высокие лимиты.</string>

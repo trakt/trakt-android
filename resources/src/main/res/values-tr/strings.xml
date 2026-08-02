@@ -12,9 +12,14 @@
   <string name="about_feature_title_discover">Ne İzleyeceğinizi Keşfedin</string>
   <string name="about_feature_title_rate_review">Derecelendir &amp; İncele</string>
   <string name="about_feature_title_scrobble">Dizileri ve Filmleri Takip Et</string>
+  <string name="action_open_system_settings_tvos">Ayarları Aç</string>
   <string name="advanced_filter_label_ratings">%1$s ila %2$s arası Derecelendirme</string>
   <string name="advanced_filter_label_release_year">%1$d ila %2$d yılları arasında yayınlandı</string>
   <string name="advanced_filter_label_runtime">%1$d ila %2$d dakika oynatma süresi.</string>
+  <string name="auto_tracking_card_action">Hizmetlerinizi Bağlayın</string>
+  <string name="auto_tracking_card_detail_scrobble">Yeni içerikleri izlediğinizde ve puanladığınızda otomatik scrobble.</string>
+  <string name="auto_tracking_card_detail_sync">Mevcut izleme geçmişinizi ve puanlarınızı senkronize edin.</string>
+  <string name="auto_tracking_card_heading">Yayın hizmetlerinizde otomatik olarak takip edin</string>
   <string name="badge_text_beta">Beta</string>
   <string name="badge_text_get_vip">VIP Ol</string>
   <string name="badge_text_more">ve %d daha</string>
@@ -28,6 +33,7 @@
   <string name="button_label_add_to_favorites">\"%s\" Favorilerinize ekle</string>
   <string name="button_label_add_to_personal_list">\"%1$s\" öğesini %2$s listesine ekle</string>
   <string name="button_label_add_to_watchlist">\"%s\" İzleme Listenize ekle</string>
+  <string name="button_label_all_time_stats">Tüm zamanların istatistiklerini görüntüle</string>
   <string name="button_label_apply">Değişiklikleri uygula</string>
   <string name="button_label_approve_follow_request">%s kullanıcısından gelen takip isteğini onayla</string>
   <string name="button_label_back">Geri</string>
@@ -59,8 +65,6 @@
   <string name="button_label_comment_replies">Yorum Yanıtları</string>
   <string name="button_label_comment_reply">%s kullanıcısına yanıtla</string>
   <string name="button_label_connect_streaming_service">%s bağla</string>
-  <string name="button_label_cookie_accept">Tüm çerezleri kabul et</string>
-  <string name="button_label_cookie_accept_functional_only">Sadece işlevsel çerezleri kabul et</string>
   <string name="button_label_copied">Kopyalandı</string>
   <string name="button_label_copy">Kopyala</string>
   <string name="button_label_create_app">Uygulama oluştur</string>
@@ -163,11 +167,7 @@
   <string name="button_label_react">%s ile tepki ver</string>
   <string name="button_label_read_more">Daha fazla oku</string>
   <string name="button_label_recent_comments">En yeni yorumlar</string>
-  <string name="button_label_recommendation_smart">Akıllı öneriler</string>
-  <string name="button_label_recommendation_standard">Standart öneriler</string>
   <string name="button_label_reject_follow_request">%s kullanıcısından gelen takip isteğini reddet</string>
-  <string name="button_label_related_smart">Akıllı İlişkili</string>
-  <string name="button_label_related_standard">Standart İlişkili</string>
   <string name="button_label_remove_from_favorites">\"%s\" Favorilerinizden kaldır</string>
   <string name="button_label_remove_from_history">\"%s\" öğesinin bu oynatmasını Geçmişinizden kaldır</string>
   <string name="button_label_remove_from_list">\"%s\" listeden kaldır</string>
@@ -236,6 +236,7 @@
   <string name="button_label_unfollow">%s takibi bırak</string>
   <string name="button_label_unlike_list">%s listesini beğenmekten vazgeç</string>
   <string name="button_label_unlink_streaming_service">%s bağlantısını kes</string>
+  <string name="button_label_unread_preview_features">Önizleme Özellikleri (yeni özellikler mevcut)</string>
   <string name="button_label_upload_photo">Yeni bir profil fotoğrafı yükle</string>
   <string name="button_label_user_profile">Kullanıcı Profili</string>
   <string name="button_label_view_all_activity">Tüm etkinliği görüntüle</string>
@@ -274,6 +275,8 @@
   <string name="button_label_watch_until_here_anchor_end">Seçilen tarihi art arda izlemenin bitişi olarak kabul et</string>
   <string name="button_label_watch_until_here_anchor_start">Seçilen tarihi art arda izlemenin başlangıcı olarak kabul et</string>
   <string name="button_label_watched_until_here">\"%s\" buraya kadar izlendi olarak işaretle</string>
+  <string name="button_label_year_in_review">%s incelemenizi görüntüle</string>
+  <string name="button_label_year_to_date">Yıl başından bugüne olanı görüntüle</string>
   <string name="button_plex_authorized">Plex\'i bağladım</string>
   <string name="button_plex_sync_now">Şimdi Senkronize Et</string>
   <string name="button_plex_toggle_scrobble">Scrobble</string>
@@ -286,6 +289,7 @@
   <string name="button_text_add_review">Yorum Ekle</string>
   <string name="button_text_add_streaming_service">Yayın platformu ekle</string>
   <string name="button_text_add_to_favorites">Favorilere Ekle</string>
+  <string name="button_text_all_time_stats">Tüm İstatistikleri Görüntüle</string>
   <string name="button_text_apply">Uygula</string>
   <string name="button_text_approve_follow_request">İsteği Onayla</string>
   <string name="button_text_block">Engelle</string>
@@ -305,8 +309,6 @@
   <string name="button_text_comment_replies">%d yanıt</string>
   <string name="button_text_connect">Bağlan</string>
   <string name="button_text_continue">Devam Et</string>
-  <string name="button_text_cookie_accept">Tümünü kabul et</string>
-  <string name="button_text_cookie_accept_functional_only">Sadece işlevsel</string>
   <string name="button_text_create">Oluştur</string>
   <string name="button_text_create_list">Liste</string>
   <string name="button_text_cta_create_list">Liste oluştur</string>
@@ -337,6 +339,7 @@
   <string name="button_text_followers">Takipçiler</string>
   <string name="button_text_following">Takip Edilenler</string>
   <string name="button_text_get_vip">Al</string>
+  <string name="button_text_hide">Gizle</string>
   <string name="button_text_hide_description">Açıklamayı Gizle</string>
   <string name="button_text_hide_details">Detayları Gizle</string>
   <string name="button_text_hide_recommendation">Öneriyi gizle</string>
@@ -388,12 +391,8 @@
   <string name="button_text_progress_in_progress">Devam Ediyor</string>
   <string name="button_text_raw_export">Şimdi dışa aktar</string>
   <string name="button_text_recent_comments">En Yeni</string>
-  <string name="button_text_recommendation_smart">Akıllı</string>
-  <string name="button_text_recommendation_standard">Standart</string>
   <string name="button_text_reconnect">Yeniden Bağlan</string>
   <string name="button_text_reject_follow_request">İsteği Reddet</string>
-  <string name="button_text_related_smart">Akıllı</string>
-  <string name="button_text_related_standard">Standart</string>
   <string name="button_text_remove_from_favorites">Favorilerden Kaldır</string>
   <string name="button_text_remove_from_history">Geçmişten kaldır</string>
   <string name="button_text_remove_from_list">Listeden kaldır</string>
@@ -476,6 +475,8 @@
   <string name="button_text_watched_until_here">Buraya Kadar İzlendi</string>
   <string name="button_text_watchlist">İzleme Listesi</string>
   <string name="button_text_where_to_watch">Nereden izlenir</string>
+  <string name="button_text_year_in_review">%s Yılına Genel Bakış</string>
+  <string name="button_text_year_to_date">Yıl Başından Bugüne</string>
   <string name="button_text_yes">Evet</string>
   <string name="button_text_younify_fix">Düzelt</string>
   <string name="button_text_younify_send_logs">Günlükleri Gönder</string>
@@ -506,6 +507,7 @@
   <string name="confirmation_title_disconnect_plex">Plex bağlantısı kesilsin mi?</string>
   <string name="confirmation_title_drop_movie">Filmi bırak?</string>
   <string name="confirmation_title_drop_show">Diziyi bırak?</string>
+  <string name="confirmation_title_hide">Gizlemeyi Onayla</string>
   <string name="confirmation_title_hide_recommendation">Öneriyi gizle?</string>
   <string name="confirmation_title_log_out">Çıkış Yap?</string>
   <string name="confirmation_title_mark_as_watched">İzlendi olarak işaretle?</string>
@@ -545,7 +547,7 @@
   <string name="description_paused_items">Bu öğelerin en az %80\'i izlenmedi.</string>
   <string name="description_plex_home_users">Kendi oynatmalarınız her zaman senkronize edilir. Diğer Plex Aile kullanıcı adlarını da senkronize etmek için ekleyin.</string>
   <string name="description_plex_manual_sync">Plex izleme geçmişinizin Trakt ile hemen senkronizasyonunu tetikleyin.</string>
-  <string name="description_plex_scrobbler_settings">Bu ayarlar, Trakt\'e gerçek zamanlı olarak nelerin scrobble edileceğini kontrol eder.</string>
+  <string name="description_plex_scrobbler_settings">Bu ayarlar, Trakt\'a gerçek zamanlı olarak nelerin scrobble edileceğini kontrol eder.</string>
   <string name="description_plex_servers">Trakt ile senkronize edilecek Plex sunucusunu seçin.</string>
   <string name="description_plex_sync">İzleme geçmişinizi, derecelendirmelerinizi ve koleksiyonlarınızı Trakt ile senkronize etmek için Plex hesabınızı bağlayın.</string>
   <string name="description_plex_sync_settings">Bu ayarlar, hangi veri türlerinin Trakt ile senkronize edileceğini kontrol eder.</string>
@@ -558,6 +560,7 @@
   <string name="description_streaming_sync">İzleme geçmişinizi ve puanlarınızı otomatik olarak senkronize edin.</string>
   <string name="description_streaming_vip_services">Bu yayın platformlarını bağlamak ve senkronize etmek için yükseltin.</string>
   <string name="description_sync_detail">Bu senkronizasyon hakkında bazı ayrıntılar.</string>
+  <string name="dialog_prompt_hide_auto_tracking">Otomatik Takip\'e her zaman ayarlardan erişebilirsiniz.</string>
   <string name="dialog_prompt_media_share_image_format">Paylaşmak için bir resim formatı seçin.</string>
   <string name="dialog_prompt_move_to_position">\"%s\" için yeni bir konum girin.</string>
   <string name="dialog_prompt_younify_data_sync">Mevcut verilerinizi Trakt hesabınıza aktarmak ister misiniz, yoksa yalnızca bundan sonraki yeni verileri mi senkronize etmek istersiniz?</string>
@@ -586,6 +589,7 @@
   <string name="dropdown_label_person_position">Pozisyon</string>
   <string name="episode_footer_season_episode">S%1$d • B%2$d</string>
   <string name="episode_footer_season_episode_range">S%1$d • B%2$d-%3$d</string>
+  <string name="error_search_partial_results">Bazı sonuçlar eksik olabilir</string>
   <string name="error_text_404">(Merak etmeyin, olur böyle şeyler! Güç bile bazen hizadan sapar.)</string>
   <string name="error_text_delete_account">Hesabınızı silerken bir şeyler ters gitti. Lütfen tekrar deneyin.</string>
   <string name="error_text_email">E-posta güncellemesi başarısız oldu. Geçerli bir adres olduğundan emin olun.</string>
@@ -708,10 +712,13 @@
   <string name="header_settings_tracking">Takip</string>
   <string name="header_settings_translations">Çeviriler</string>
   <string name="header_skipped_items">%s Atlanan Öğe</string>
+  <string name="header_stats_contributions">Katkılar</string>
   <string name="header_stats_graph_peak">Yoğun Saatler</string>
   <string name="header_stats_graph_screen_time_daily">Günlük Döküm</string>
   <string name="header_stats_graph_shows_movies">Diziler ve Filmler</string>
   <string name="header_stats_monthly">Aylık İstatistikler</string>
+  <string name="header_stats_progress">İlerleme</string>
+  <string name="header_stats_watched">İzlendi</string>
   <string name="header_status">Durum</string>
   <string name="header_stream_on">Şurada yayınla</string>
   <string name="header_streaming">Mevcutluk</string>
@@ -723,6 +730,7 @@
   <string name="header_target">Hedef</string>
   <string name="header_total_runtime">Toplam Süre</string>
   <string name="header_writer">Yazar</string>
+  <string name="heading_api_application_vip_only">Yeni uygulamalar oluşturmak için Trakt VIP gereklidir.</string>
   <string name="heading_api_applications">API Uygulamaları</string>
   <string name="heading_apps_settings">Uygulamalar</string>
   <string name="heading_blocked_users">Engellenen Kullanıcılar</string>
@@ -784,8 +792,8 @@
   <string name="import_guide_letterboxd_step_2"><a>Letterboxd Dışa Aktarma ayarlarınızı</a> açın</string>
   <string name="import_guide_letterboxd_step_3">Letterboxd dışa aktarım verilerinizi bir zip dosyası olarak indirin ve buraya yükleyin</string>
   <string name="import_guide_letterboxd_title">Letterboxd günlüğünüzü Trakt\'a getirin! 🎬</string>
-  <string name="import_guide_tvtime_description">TV Time verilerinizi Trakt\'e şu şekilde aktarabilirsiniz:</string>
-  <string name="import_guide_tvtime_step_1">TV Time hizmeti kapanmadan önce verilerinizi dışa aktardıysanız, yine de Trakt\'e aktarabilirsiniz.</string>
+  <string name="import_guide_tvtime_description">TV Time verilerinizi Trakt\'a şu şekilde aktarabilirsiniz:</string>
+  <string name="import_guide_tvtime_step_1">TV Time kapanmadan önce verilerinizi dışa aktardıysanız, bu verileri hâlâ Trakt\'a aktarabilirsiniz.</string>
   <string name="import_guide_tvtime_step_2">Dışa aktarılan .zip dosyasını buraya yükleyin. Eğer .zip kabul edilmezse, dosyayı çıkarın ve bunun yerine iki tracking-prod-records .csv dosyasını (izleme listeniz ve puanlarınız için ayrıca followed_tv_show.csv ve ratings-live-votes.csv) yükleyin.</string>
   <string name="import_guide_tvtime_title">TV Zamanınız uzayda kaybolmadı! 🚀</string>
   <string name="import_match_toggle_hint">Varsayılanı (TVDB kimliğine göre eşleştir) öneriyoruz. Bunu yalnızca bazı bölümler yanlış girişe düşerse açın - sonuçlar diziden diziye değişir.</string>
@@ -808,6 +816,7 @@
   <string name="input_placeholder_app_name">Uygulamam</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
+  <string name="input_placeholder_filter">Filtre</string>
   <string name="input_placeholder_filter_services">Yayın platformlarını filtrele</string>
   <string name="input_placeholder_lists_description">Açıklama (isteğe bağlı)</string>
   <string name="input_placeholder_lists_name">Ad</string>
@@ -858,6 +867,7 @@
   <string name="label_plex_webhook_url">Webhook URL\'si</string>
   <string name="label_queued_action">Çevrimdışı kaydedildi, senkronize edilmesi bekleniyor</string>
   <string name="label_ratings_season_chart">Zaman içinde sezon derecelendirmeleri</string>
+  <string name="label_registered_accounts">Kayıtlı hesaplar</string>
   <string name="label_report_reason_abusive">Kötüye Kullanım</string>
   <string name="label_report_reason_adult">Yetişkin içerik</string>
   <string name="label_report_reason_bigotry">Bağnazlık</string>
@@ -887,6 +897,7 @@
   <string name="label_stats_days_active">Aktif Günler</string>
   <string name="label_stats_dropped_streaks">Bırakılan Seriler</string>
   <string name="label_stats_episodes">Bölümler</string>
+  <string name="label_stats_finished">Tamamlandı</string>
   <string name="label_stats_hours">Saat</string>
   <string name="label_stats_movies">Filmler</string>
   <string name="label_stats_plays">Oynatma Sayısı</string>
@@ -1053,6 +1064,10 @@
   <string name="match_pill_anchor">Uyum:</string>
   <string name="match_pill_aria_label">%1$d% eşleşme, %2$s. Eşleşme detaylarını aç.</string>
   <string name="match_pill_loading_aria_label">Eşleşme puanı hesaplanıyor</string>
+  <string name="mir_banner_body">Aylık özetiniz hazır. İşte %s ayında izledikleriniz.</string>
+  <string name="mir_banner_body_short">%s özetiniz hazır.</string>
+  <string name="mir_banner_explore">Keşfet</string>
+  <string name="mir_banner_in_review">Genel Bakış</string>
   <string name="mir_share_text">Trakt\'teki %s Ayın Özeti\'me göz atın</string>
   <string name="mir_title_month_in_review">Ayın İncelemesi</string>
   <string name="notes_placeholder_text">Bir dahaki sefere bir başlığı favorilediğinizde veya bıraktığınızda bir not bırakın.</string>
@@ -1151,17 +1166,14 @@
   <string name="preview_feature_description_parental_guide">Filmler, diziler ve bölümler için detay çekmecesinde içerik risk seviyelerini göster.</string>
   <string name="preview_feature_description_rewatch">Halihazırda izlediğiniz diziler için yeniden izleme oturumları başlatın, izlenen bölümleri doğrudan oturum çekmecesinden kaydedin veya izlendi olarak işaretleyin.</string>
   <string name="preview_feature_description_scoped_favorites">Favori listelerini, profillerde güncel yılın favorilerini göstererek ve tüm favori listesini yıla göre gruplandırarak zaman kutucuklarına ayırın.</string>
-  <string name="preview_feature_description_smart_recommendations">Sıradanlığın ötesinde önerilen film ve dizileri keşfetmek için yeni nesil motorumuzu kullanın.</string>
-  <string name="preview_feature_description_smart_related">Sıradanlığın ötesinde ilgili film ve dizileri keşfetmek için yeni nesil motorumuzu kullanın.</string>
   <string name="preview_feature_description_up_next_smart_sort">İzlemeye Devam Edin listenizi sıralamak için daha akıllı bir yolu test edin.</string>
   <string name="preview_feature_title_edit_mode">Düzenleme Modu</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Yeniden İzleme</string>
   <string name="preview_feature_title_scoped_favorites">Kapsamlı Favoriler</string>
-  <string name="preview_feature_title_smart_recommendations">Akıllı Öneriler</string>
-  <string name="preview_feature_title_smart_related">Akıllı İlişkili</string>
   <string name="preview_feature_title_up_next_smart_sort">İzlemeye Devam Et Akıllı Sıralama</string>
   <string name="reset_status_cleared">İzleme listesi temizlendi.</string>
+  <string name="screen_account_settings_language_system_message_tvos">Trakt, Apple TV dil ayarlarınızı kullanır. Güncellemek için şu adrese gidin:\n\nApple TV Ayarları &gt; Genel &gt; Apple TV Dilleri</string>
   <string name="section_title_season_progress">Sezon %d ilerlemesi</string>
   <string name="section_title_seasons_overview">Genel Bakış</string>
   <string name="section_title_specials_progress">Özel bölümler ilerlemesi</string>
@@ -1170,6 +1182,7 @@
   <string name="stat_text_favorited">Favoriler</string>
   <string name="stat_text_lists">Listeler</string>
   <string name="stat_text_plays">Oynatma Sayısı</string>
+  <string name="stat_text_time_watched">İzlendi</string>
   <string name="stat_text_watchers">İzleyiciler</string>
   <string name="switch_label_mark_as_spoiler">Spoiler olarak işaretle</string>
   <string name="switch_label_multiple_watches">Birden fazla izlemeyi etkinleştir veya devre dışı bırak</string>
@@ -1204,6 +1217,7 @@
   <string name="tag_text_most_popular">En popüler</string>
   <string name="tag_text_movies">Filmler</string>
   <string name="tag_text_new">Yeni</string>
+  <string name="tag_text_new_preview_feature">Yeni</string>
   <string name="tag_text_number_of_episodes">%d böl.</string>
   <string name="tag_text_plays">%d oynatma</string>
   <string name="tag_text_premiere">Gala</string>
@@ -1223,6 +1237,7 @@
   <string name="tag_text_started">Başlandı</string>
   <string name="tag_text_tba">Belirsiz</string>
   <string name="tag_text_vip">VIP</string>
+  <string name="tag_text_vip_preview">VIP Önizleme</string>
   <string name="tag_text_watch_count">İzlenme sayısı</string>
   <string name="tag_text_watched">İzlendi</string>
   <string name="tag_text_watchlisted">İzleme Listesinde</string>
@@ -1234,6 +1249,7 @@
   <string name="text_all_settings">Tüm Ayarlar</string>
   <string name="text_all_time">Tüm zamanlar</string>
   <string name="text_analytics">Analitik</string>
+  <string name="text_api_application_vip_only">VIP üyeleri sınırsız OAuth uygulaması kaydedebilir.</string>
   <string name="text_app_connected_on">%s tarihinde bağlandı</string>
   <string name="text_app_created_on">%s tarihinde oluşturuldu</string>
   <string name="text_app_last_used">Son kullanım %s</string>
@@ -1280,7 +1296,6 @@
   <string name="text_connection_status_connected_title">%s ile bağlantı kuruldu</string>
   <string name="text_connection_status_error_message">Bir şeyler ters gitti. Lütfen tekrar deneyin.</string>
   <string name="text_connection_status_error_title">%s bağlanılamadı</string>
-  <string name="text_cookie_notice">Trakt, genel deneyiminizi geliştirmek için Ç🍪🍪KİLER kullanır. Daha fazla bilgiyi <a>buradan okuyabilirsiniz</a>.</string>
   <string name="text_copyright_crafted_by">Dünyanın dört bir yanında özenle hazırlandı.</string>
   <string name="text_copyright_notice">Tüm hakları saklıdır.</string>
   <string name="text_created_by">Yaratan: <a>%s</a></string>
@@ -1365,6 +1380,7 @@
   <string name="text_info_not_following">%s kullanıcısını artık takip etmiyorsunuz.</string>
   <string name="text_info_reply_added">Yanıt eklendi.</string>
   <string name="text_info_reply_deleted">Yanıt silindi.</string>
+  <string name="text_info_report_sent">Rapor gönderildi.</string>
   <string name="text_info_review_added">Yorum eklendi.</string>
   <string name="text_info_review_deleted">Yorum silindi.</string>
   <string name="text_info_show_dropped">Dizi bırakıldı.</string>
@@ -1395,6 +1411,8 @@
   <string name="text_list_public">Herkese Açık</string>
   <string name="text_list_public_info">Liste tüm kullanıcılara görünür olacaktır.</string>
   <string name="text_location">Konum</string>
+  <string name="text_member_count_accessible">%s üzerinde kayıtlı Trakt hesabı</string>
+  <string name="text_member_count_tagline">izlediklerini takip eden ve saymaya devam eden kişiler</string>
   <string name="text_member_since">%s tarihinden beri</string>
   <string name="text_movies_watched">%s film</string>
   <string name="text_next_day">gelecek %s</string>
@@ -1441,6 +1459,7 @@
   <string name="text_placeholder_generic">Gösterilecek hiçbir şey yok.</string>
   <string name="text_placeholder_preview_features">Şu anda herhangi bir önizleme özelliği bulunmamaktadır. Daha sonra tekrar kontrol edin.</string>
   <string name="text_play_count">%d oynatma</string>
+  <string name="text_plays_watched">%s oynatma</string>
   <string name="text_plex_auth_waiting">Bir Plex yetkilendirme sayfası açıldı. Oturum açma işlemini orada tamamlayın, ardından aşağıdaki düğmeye tıklayın.</string>
   <string name="text_plex_synced_summary">Veriler %1$s kez senkronize edildi. En son senkronizasyonunuz %2$s tarihinde gerçekleşti.</string>
   <string name="text_plex_tv_library_description">Plex sunucusu medya kitaplığınıza erişmek için Trakt Plex Senkronizasyonunu etkinleştirin.</string>
@@ -1556,7 +1575,7 @@
   <string name="text_streaming_service_logo_alt">%s logosu</string>
   <string name="text_streaming_sync">Yayın Akışı Senkronizasyonu</string>
   <string name="text_streaming_tmdb_pill">TMDB %s</string>
-  <string name="text_table_history">Tarih</string>
+  <string name="text_table_history">Geçmiş</string>
   <string name="text_table_library">Kütüphane</string>
   <string name="text_table_ratings">Derecelendirmeler</string>
   <string name="text_table_watchlist">İzleme Listesi</string>
@@ -1620,6 +1639,7 @@
   <string name="text_vip_upsell_default_description_2">Yıl İncelemesi ve daha fazlası.</string>
   <string name="text_vip_upsell_dive_deeper">Daha derine inin.</string>
   <string name="text_vip_upsell_more_lists">Daha fazla liste oluşturun.</string>
+  <string name="text_vip_upsell_more_stats">VIP ile daha fazla istatistiğin kilidini aç</string>
   <string name="text_vip_upsell_preview_features">Önizleme özelliklerini açmak için VIP\'e yükseltin.</string>
   <string name="text_vip_upsell_sentiment">Daha fazla bilgi edinmek için VIP\'e yükseltin.</string>
   <string name="text_vip_upsell_smart_lists">Daha yüksek limitleri açmak için VIP\'e yükseltin.</string>
@@ -1928,8 +1948,8 @@
   <string name="welcome_banner_description">Trakt\'a yeni mi geldiniz? <a>Karşılama sayfamıza</a> göz atın. Başka bir hizmette zaten takip mi ediyorsunuz? İzleme geçmişinizi, izleme listenizi ve puanlarınızı sadece birkaç dakikada yanınızda getirin.</string>
   <string name="welcome_banner_heading">Trakt\'a Hoş Geldiniz</string>
   <string name="welcome_get_started">Keşfetmeye Başla</string>
-  <string name="welcome_greeting">Trakt\'e Hoş Geldiniz, %s</string>
-  <string name="welcome_greeting_generic">Trakt\'e Hoş Geldiniz</string>
+  <string name="welcome_greeting">Trakt\'a Hoş Geldiniz, %s</string>
+  <string name="welcome_greeting_generic">Trakt\'a Hoş Geldiniz</string>
   <string name="welcome_import_action">%s servisinden içe aktar</string>
   <string name="welcome_import_browse_all">Tüm içe aktarma seçeneklerini gör</string>
   <string name="welcome_import_description">İzleme geçmişinizi, izleme listenizi ve puanlarınızı yanınızda getirin. İçe aktarma yalnızca birkaç dakika sürer.</string>
@@ -1939,7 +1959,7 @@
   <string name="welcome_intro">Dizileriniz ve filmleriniz tek bir yerde. İzlediklerinizi takip edin, sonraki ne izleyeceğinizi keşfedin ve kaldığınız yerden devam edin; tüm cihazlarınızda.</string>
   <string name="welcome_outro_heading">Şimdi eğlence başlıyor.</string>
   <string name="welcome_tvtime_badge">TV Time kapandı</string>
-  <string name="welcome_tvtime_body">TV Time kapılarını kapattı, ancak izleme geçmişinizin onunla birlikte kaybolması gerekmiyor. Verilerinizi kapanmadan önce kaydettiyseniz, Trakt\'e taşıyın ve hiçbir şeyi kaçırmadan takip etmeye devam edin.</string>
+  <string name="welcome_tvtime_body">TV Time kapılarını kapattı ama izleme geçmişiniz onunla birlikte kaybolmak zorunda değil. Kapanmadan önce verilerinizi dışa aktardıysanız, bunları Trakt\'a taşıyın ve ara vermeden takibe devam edin.</string>
   <string name="welcome_tvtime_heading">TV Time\'dan mı geliyorsunuz? Evinizdesiniz.</string>
   <string name="welcome_tvtime_import_cta">TV Time\'dan içe aktar</string>
   <string name="welcome_vip_upsell_description">Topluluğumuzu desteklemek veya Trakt\'tan daha fazlasını mı almak istiyorsunuz?</string>
