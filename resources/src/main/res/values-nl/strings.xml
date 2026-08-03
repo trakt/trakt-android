@@ -12,9 +12,14 @@
   <string name="about_feature_title_discover">Ontdek wat te kijken</string>
   <string name="about_feature_title_rate_review">Beoordeel &amp; recenseer</string>
   <string name="about_feature_title_scrobble">Volg series &amp; films</string>
+  <string name="action_open_system_settings_tvos">Open instellingen</string>
   <string name="advanced_filter_label_ratings">Beoordeling van %1$s tot %2$s</string>
   <string name="advanced_filter_label_release_year">Uitgebracht in %1$d tot %2$d</string>
   <string name="advanced_filter_label_runtime">Speelduur van %1$d tot %2$d minuten.</string>
+  <string name="auto_tracking_card_action">Verbind uw diensten</string>
+  <string name="auto_tracking_card_detail_scrobble">Automatisch scrobblen wanneer u nieuwe dingen bekijkt en beoordeelt.</string>
+  <string name="auto_tracking_card_detail_sync">Synchroniseer uw bestaande kijkgeschiedenis en beoordelingen.</string>
+  <string name="auto_tracking_card_heading">Automatisch bijhouden via uw streamingdiensten</string>
   <string name="badge_text_beta">Bèta</string>
   <string name="badge_text_get_vip">Word VIP</string>
   <string name="badge_text_more">en %d meer</string>
@@ -28,6 +33,7 @@
   <string name="button_label_add_to_favorites">\"%s\" toevoegen aan je favorieten</string>
   <string name="button_label_add_to_personal_list">Voeg \"%1$s\" toe aan %2$s</string>
   <string name="button_label_add_to_watchlist">\"%s\" aan je kijklijst toevoegen</string>
+  <string name="button_label_all_time_stats">Bekijk alle statistieken</string>
   <string name="button_label_apply">Wijzigingen toepassen</string>
   <string name="button_label_approve_follow_request">Volgverzoek van %s goedkeuren</string>
   <string name="button_label_back">Terug</string>
@@ -59,8 +65,6 @@
   <string name="button_label_comment_replies">Recensie reacties</string>
   <string name="button_label_comment_reply">Reageer op %s</string>
   <string name="button_label_connect_streaming_service">Verbind %s</string>
-  <string name="button_label_cookie_accept">Accepteer alle cookies</string>
-  <string name="button_label_cookie_accept_functional_only">Accepteer alleen functionele cookies</string>
   <string name="button_label_copied">Gekopieerd</string>
   <string name="button_label_copy">Kopiëren</string>
   <string name="button_label_create_app">Applicatie aanmaken</string>
@@ -163,11 +167,7 @@
   <string name="button_label_react">Reageer met %s</string>
   <string name="button_label_read_more">Lees meer</string>
   <string name="button_label_recent_comments">Recente recensies</string>
-  <string name="button_label_recommendation_smart">Slimme aanbevelingen</string>
-  <string name="button_label_recommendation_standard">Standaard aanbevelingen</string>
   <string name="button_label_reject_follow_request">Volgverzoek van %s afwijzen</string>
-  <string name="button_label_related_smart">Slim gerelateerd</string>
-  <string name="button_label_related_standard">Standaard gerelateerd</string>
   <string name="button_label_remove_from_favorites">\"%s\" uit je favorieten verwijderen</string>
   <string name="button_label_remove_from_history">Deze weergave van \"%s\" uit je kijkgeschiedenis verwijderen</string>
   <string name="button_label_remove_from_list">Verwijder \"%s\" uit lijst</string>
@@ -236,6 +236,7 @@
   <string name="button_label_unfollow">Ontvolg %s</string>
   <string name="button_label_unlike_list">Vind ik niet meer leuk: %s</string>
   <string name="button_label_unlink_streaming_service">Ontkoppel %s</string>
+  <string name="button_label_unread_preview_features">Preview-functies (nieuwe functies beschikbaar)</string>
   <string name="button_label_upload_photo">Upload een nieuwe profielfoto</string>
   <string name="button_label_user_profile">Gebruikersprofiel</string>
   <string name="button_label_view_all_activity">Bekijk alle activiteit</string>
@@ -274,6 +275,8 @@
   <string name="button_label_watch_until_here_anchor_end">Behandel de gekozen datum als het einde van de bingewatchsessie</string>
   <string name="button_label_watch_until_here_anchor_start">Behandel de gekozen datum als de start van de bingewatchsessie</string>
   <string name="button_label_watched_until_here">\"%s\" als tot hier bekeken markeren</string>
+  <string name="button_label_year_in_review">Bekijk uw %s overzicht</string>
+  <string name="button_label_year_to_date">Bekijk uw jaar tot nu toe</string>
   <string name="button_plex_authorized">Ik heb Plex verbonden</string>
   <string name="button_plex_sync_now">Nu synchroniseren</string>
   <string name="button_plex_toggle_scrobble">Scrobbelen</string>
@@ -286,6 +289,7 @@
   <string name="button_text_add_review">Recensie toevoegen</string>
   <string name="button_text_add_streaming_service">Streamingdienst toevoegen</string>
   <string name="button_text_add_to_favorites">Aan favorieten toevoegen</string>
+  <string name="button_text_all_time_stats">Bekijk alle statistieken</string>
   <string name="button_text_apply">Toepassen</string>
   <string name="button_text_approve_follow_request">Verzoek goedkeuren</string>
   <string name="button_text_block">Blokkeren</string>
@@ -305,8 +309,6 @@
   <string name="button_text_comment_replies">%d reacties</string>
   <string name="button_text_connect">Verbinden</string>
   <string name="button_text_continue">Verder</string>
-  <string name="button_text_cookie_accept">Accepteer alles</string>
-  <string name="button_text_cookie_accept_functional_only">Alleen functioneel</string>
   <string name="button_text_create">Maken</string>
   <string name="button_text_create_list">Lijst</string>
   <string name="button_text_cta_create_list">Lijst maken</string>
@@ -337,6 +339,7 @@
   <string name="button_text_followers">Volgers</string>
   <string name="button_text_following">Volgend</string>
   <string name="button_text_get_vip">Word</string>
+  <string name="button_text_hide">Verbergen</string>
   <string name="button_text_hide_description">Verberg beschrijving</string>
   <string name="button_text_hide_details">Verberg details</string>
   <string name="button_text_hide_recommendation">Aanbeveling verbergen</string>
@@ -388,12 +391,8 @@
   <string name="button_text_progress_in_progress">Bezig</string>
   <string name="button_text_raw_export">Nu exporteren</string>
   <string name="button_text_recent_comments">Recent</string>
-  <string name="button_text_recommendation_smart">Slim</string>
-  <string name="button_text_recommendation_standard">Standaard</string>
   <string name="button_text_reconnect">Opnieuw verbinden</string>
   <string name="button_text_reject_follow_request">Verzoek afwijzen</string>
-  <string name="button_text_related_smart">Slim</string>
-  <string name="button_text_related_standard">Standaard</string>
   <string name="button_text_remove_from_favorites">Uit favorieten verwijderen</string>
   <string name="button_text_remove_from_history">Verwijderen uit geschiedenis</string>
   <string name="button_text_remove_from_list">Verwijderen uit lijst</string>
@@ -476,6 +475,8 @@
   <string name="button_text_watched_until_here">Tot hier bekeken</string>
   <string name="button_text_watchlist">Kijklijst</string>
   <string name="button_text_where_to_watch">Waar te bekijken</string>
+  <string name="button_text_year_in_review">%s in overzicht</string>
+  <string name="button_text_year_to_date">Jaar tot nu toe</string>
   <string name="button_text_yes">Ja</string>
   <string name="button_text_younify_fix">Repareer</string>
   <string name="button_text_younify_send_logs">Logs verzenden</string>
@@ -506,6 +507,7 @@
   <string name="confirmation_title_disconnect_plex">Plex ontkoppelen?</string>
   <string name="confirmation_title_drop_movie">Film stopzetten?</string>
   <string name="confirmation_title_drop_show">Serie stopzetten?</string>
+  <string name="confirmation_title_hide">Verbergen bevestigen</string>
   <string name="confirmation_title_hide_recommendation">Aanbeveling verbergen?</string>
   <string name="confirmation_title_log_out">Afmelden?</string>
   <string name="confirmation_title_mark_as_watched">Markeren als bekeken?</string>
@@ -558,6 +560,7 @@
   <string name="description_streaming_sync">Synchroniseer automatisch je kijkgeschiedenis en beoordelingen.</string>
   <string name="description_streaming_vip_services">Upgrade om deze streamingdiensten te koppelen en te synchroniseren.</string>
   <string name="description_sync_detail">Enkele details over deze synchronisatie.</string>
+  <string name="dialog_prompt_hide_auto_tracking">U kunt automatische tracking altijd openen via de instellingen.</string>
   <string name="dialog_prompt_media_share_image_format">Kies een afbeeldingsformaat om te delen.</string>
   <string name="dialog_prompt_move_to_position">Voer een nieuwe positie in voor \"%s\".</string>
   <string name="dialog_prompt_younify_data_sync">Wil je je bestaande gegevens importeren naar je Trakt-account, of alleen nieuwe gegevens synchroniseren vanaf nu?</string>
@@ -586,6 +589,7 @@
   <string name="dropdown_label_person_position">Functie</string>
   <string name="episode_footer_season_episode">S%1$d • A%2$d</string>
   <string name="episode_footer_season_episode_range">S%1$d • A%2$d-%3$d</string>
+  <string name="error_search_partial_results">Sommige resultaten ontbreken mogelijk</string>
   <string name="error_text_404">(Geen zorgen, kan gebeuren! Zelfs de Force is soms uit balans.)</string>
   <string name="error_text_delete_account">Er is iets misgegaan bij het verwijderen van je account. Probeer het opnieuw.</string>
   <string name="error_text_email">E-mailupdate mislukt. Zorg ervoor dat het een geldig adres is.</string>
@@ -708,10 +712,13 @@
   <string name="header_settings_tracking">Bijhouden</string>
   <string name="header_settings_translations">Vertalingen</string>
   <string name="header_skipped_items">%s overgeslagen items</string>
+  <string name="header_stats_contributions">Bijdragen</string>
   <string name="header_stats_graph_peak">Piekuren</string>
   <string name="header_stats_graph_screen_time_daily">Dagelijkse uitsplitsing</string>
   <string name="header_stats_graph_shows_movies">Series vs. Films</string>
   <string name="header_stats_monthly">Maandelijkse Statistieken</string>
+  <string name="header_stats_progress">Voortgang</string>
+  <string name="header_stats_watched">Bekeken</string>
   <string name="header_status">Status</string>
   <string name="header_stream_on">Streamen op</string>
   <string name="header_streaming">Beschikbaarheid</string>
@@ -723,6 +730,7 @@
   <string name="header_target">Doel</string>
   <string name="header_total_runtime">Totale speelduur</string>
   <string name="header_writer">Schrijver</string>
+  <string name="heading_api_application_vip_only">Nieuwe apps maken vereist Trakt VIP</string>
   <string name="heading_api_applications">API-applicaties</string>
   <string name="heading_apps_settings">Applicaties</string>
   <string name="heading_blocked_users">Geblokkeerde gebruikers</string>
@@ -808,6 +816,7 @@
   <string name="input_placeholder_app_name">Mijn applicatie</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
+  <string name="input_placeholder_filter">Filter</string>
   <string name="input_placeholder_filter_services">Streamingdiensten filteren</string>
   <string name="input_placeholder_lists_description">Beschrijving (optioneel)</string>
   <string name="input_placeholder_lists_name">Naam</string>
@@ -858,6 +867,7 @@
   <string name="label_plex_webhook_url">Webhook-URL</string>
   <string name="label_queued_action">Offline opgeslagen, wachtend op synchronisatie</string>
   <string name="label_ratings_season_chart">Seizoenbeoordelingen over tijd</string>
+  <string name="label_registered_accounts">Geregistreerde accounts</string>
   <string name="label_report_reason_abusive">Beledigend</string>
   <string name="label_report_reason_adult">Erotische inhoud</string>
   <string name="label_report_reason_bigotry">Onverdraagzaamheid</string>
@@ -887,6 +897,7 @@
   <string name="label_stats_days_active">Actieve Dagen</string>
   <string name="label_stats_dropped_streaks">Verloren Reeksen</string>
   <string name="label_stats_episodes">Afleveringen</string>
+  <string name="label_stats_finished">Voltooid</string>
   <string name="label_stats_hours">Uren</string>
   <string name="label_stats_movies">Films</string>
   <string name="label_stats_plays">Bekeken</string>
@@ -1053,6 +1064,10 @@
   <string name="match_pill_anchor">Overeenkomst:</string>
   <string name="match_pill_aria_label">%1$d% match, %2$s. Open matchdetails.</string>
   <string name="match_pill_loading_aria_label">Matchscore berekenen</string>
+  <string name="mir_banner_body">Je maandelijkse overzicht is klaar. Dit is wat je hebt gekeken in %s.</string>
+  <string name="mir_banner_body_short">Je %s overzicht is klaar.</string>
+  <string name="mir_banner_explore">Ontdek</string>
+  <string name="mir_banner_in_review">In overzicht</string>
   <string name="mir_share_text">Bekijk mijn %s Maandoverzicht op Trakt</string>
   <string name="mir_title_month_in_review">Maandoverzicht</string>
   <string name="notes_placeholder_text">Laat een notitie achter de volgende keer dat u een titel favoriet of laat vallen.</string>
@@ -1151,17 +1166,14 @@
   <string name="preview_feature_description_parental_guide">Toon risiconiveaus van de inhoud in het detailscherm voor films, series en afleveringen.</string>
   <string name="preview_feature_description_rewatch">Start nieuwe kijkbeurten voor series die je al hebt gezien, check in of markeer afleveringen als bekeken, direct vanuit het sessiepaneel.</string>
   <string name="preview_feature_description_scoped_favorites">Beperk favorietenlijsten door favorieten van het huidige jaar op profielen weer te geven en de volledige favorietenlijst per jaar te groeperen.</string>
-  <string name="preview_feature_description_smart_recommendations">Gebruik onze next-gen engine om aanbevolen films en series te vinden die verder gaan dan het voor de hand liggende.</string>
-  <string name="preview_feature_description_smart_related">Gebruik onze next-gen engine om gerelateerde films en series te vinden die verder gaan dan het voor de hand liggende.</string>
   <string name="preview_feature_description_up_next_smart_sort">Probeer een slimmere manier om je \'Verder kijken\' te sorteren.</string>
   <string name="preview_feature_title_edit_mode">Bewerkmodus</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Opnieuw bekijken</string>
   <string name="preview_feature_title_scoped_favorites">Gerichte favorieten</string>
-  <string name="preview_feature_title_smart_recommendations">Slimme aanbevelingen</string>
-  <string name="preview_feature_title_smart_related">Slim Gerelateerd</string>
   <string name="preview_feature_title_up_next_smart_sort">Verder kijken slim sorteren</string>
   <string name="reset_status_cleared">Kijklijst gewist.</string>
+  <string name="screen_account_settings_language_system_message_tvos">Trakt gebruikt de taalinstellingen van uw Apple TV. Om deze bij te werken, gaat u naar:\n\nApple TV Instellingen &gt; Algemeen &gt; Apple TV Talen</string>
   <string name="section_title_season_progress">Seizoen %d voortgang</string>
   <string name="section_title_seasons_overview">Overzicht</string>
   <string name="section_title_specials_progress">Specials voortgang</string>
@@ -1170,6 +1182,7 @@
   <string name="stat_text_favorited">Favorieten</string>
   <string name="stat_text_lists">Lijsten</string>
   <string name="stat_text_plays">Bekeken</string>
+  <string name="stat_text_time_watched">Bekeken</string>
   <string name="stat_text_watchers">Kijkers</string>
   <string name="switch_label_mark_as_spoiler">Markeer als spoiler</string>
   <string name="switch_label_multiple_watches">Meerdere kijkbeurten in- of uitschakelen</string>
@@ -1204,6 +1217,7 @@
   <string name="tag_text_most_popular">Meest populair</string>
   <string name="tag_text_movies">Films</string>
   <string name="tag_text_new">Nieuw</string>
+  <string name="tag_text_new_preview_feature">Nieuw</string>
   <string name="tag_text_number_of_episodes">%d afl.</string>
   <string name="tag_text_plays">%d weergaven</string>
   <string name="tag_text_premiere">Première</string>
@@ -1223,6 +1237,7 @@
   <string name="tag_text_started">Gestart</string>
   <string name="tag_text_tba">N.n.b.</string>
   <string name="tag_text_vip">VIP</string>
+  <string name="tag_text_vip_preview">VIP Voorbeeld</string>
   <string name="tag_text_watch_count">Aantal bekeken</string>
   <string name="tag_text_watched">Bekeken</string>
   <string name="tag_text_watchlisted">Op kijklijst</string>
@@ -1234,6 +1249,7 @@
   <string name="text_all_settings">Alle instellingen</string>
   <string name="text_all_time">Altijd</string>
   <string name="text_analytics">Analytics</string>
+  <string name="text_api_application_vip_only">VIP-leden kunnen een onbeperkt aantal OAuth-applicaties registreren.</string>
   <string name="text_app_connected_on">Verbonden op %s</string>
   <string name="text_app_created_on">Aangemaakt op %s</string>
   <string name="text_app_last_used">Laatst gebruikt op %s</string>
@@ -1280,7 +1296,6 @@
   <string name="text_connection_status_connected_title">Verbonden met %s</string>
   <string name="text_connection_status_error_message">Er is iets misgegaan. Probeer het opnieuw.</string>
   <string name="text_connection_status_error_title">Kon geen verbinding maken met %s</string>
-  <string name="text_cookie_notice">Trakt gebruikt C🍪🍪KIES om je algehele ervaring te verbeteren. Je kunt <a>hier meer informatie lezen</a>.</string>
   <string name="text_copyright_crafted_by">Handgemaakt over de hele wereld.</string>
   <string name="text_copyright_notice">Alle rechten voorbehouden.</string>
   <string name="text_created_by">Gemaakt door <a>%s</a></string>
@@ -1365,6 +1380,7 @@
   <string name="text_info_not_following">Je volgt %s niet langer.</string>
   <string name="text_info_reply_added">Reactie is toegevoegd.</string>
   <string name="text_info_reply_deleted">Reactie is verwijderd.</string>
+  <string name="text_info_report_sent">Melding is ingediend.</string>
   <string name="text_info_review_added">Recensie is toegevoegd.</string>
   <string name="text_info_review_deleted">Recensie is verwijderd.</string>
   <string name="text_info_show_dropped">Serie is gestopt.</string>
@@ -1395,6 +1411,8 @@
   <string name="text_list_public">Openbaar</string>
   <string name="text_list_public_info">Lijst is zichtbaar voor alle gebruikers.</string>
   <string name="text_location">Locatie</string>
+  <string name="text_member_count_accessible">Meer dan %s geregistreerde Trakt accounts</string>
+  <string name="text_member_count_tagline">mensen die bijhouden wat ze kijken, en het aantal loopt op</string>
   <string name="text_member_since">Sinds %s</string>
   <string name="text_movies_watched">%s films</string>
   <string name="text_next_day">volgende %s</string>
@@ -1441,6 +1459,7 @@
   <string name="text_placeholder_generic">Niets te zien hier.</string>
   <string name="text_placeholder_preview_features">Er zijn momenteel geen preview-functies. Kom later terug.</string>
   <string name="text_play_count">%d weergaven</string>
+  <string name="text_plays_watched">%s weergaven</string>
   <string name="text_plex_auth_waiting">Er is een Plex-autorisatiepagina geopend. Voltooi de aanmelding daar en klik vervolgens op de onderstaande knop.</string>
   <string name="text_plex_synced_summary">Gegevens zijn %1$s keer gesynchroniseerd. Je meest recente synchronisatie was %2$s.</string>
   <string name="text_plex_tv_library_description">Schakel Trakt Plex Sync in om toegang te krijgen tot de mediabibliotheek van je Plex-server.</string>
@@ -1620,6 +1639,7 @@
   <string name="text_vip_upsell_default_description_2">Jaaroverzicht &amp; meer.</string>
   <string name="text_vip_upsell_dive_deeper">Duik dieper.</string>
   <string name="text_vip_upsell_more_lists">Maak meer lijsten.</string>
+  <string name="text_vip_upsell_more_stats">Ontgrendel meer statistieken met VIP</string>
   <string name="text_vip_upsell_preview_features">Upgrade naar VIP om preview-functies te ontgrendelen.</string>
   <string name="text_vip_upsell_sentiment">Upgrade naar VIP om meer inzichten te ontgrendelen.</string>
   <string name="text_vip_upsell_smart_lists">Upgrade naar VIP om hogere limieten te ontgrendelen.</string>

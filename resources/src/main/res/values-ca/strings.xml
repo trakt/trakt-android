@@ -12,9 +12,14 @@
   <string name="about_feature_title_discover">Descobreix què veure</string>
   <string name="about_feature_title_rate_review">Valora i comenta</string>
   <string name="about_feature_title_scrobble">Fes un seguiment de sèries i pel·lícules</string>
+  <string name="action_open_system_settings_tvos">Obre els ajustos</string>
   <string name="advanced_filter_label_ratings">Valoració de %1$s a %2$s</string>
   <string name="advanced_filter_label_release_year">Estrenat entre %1$d i %2$d</string>
   <string name="advanced_filter_label_runtime">Durada de %1$d a %2$d minuts.</string>
+  <string name="auto_tracking_card_action">Connecta els teus serveis</string>
+  <string name="auto_tracking_card_detail_scrobble">Enregistrament automàtic quan mires i valores coses noves.</string>
+  <string name="auto_tracking_card_detail_sync">Sincronitza l\'historial de visualitzacions i les valoracions existents.</string>
+  <string name="auto_tracking_card_heading">Fes un seguiment automàtic a tots els teus serveis de streaming</string>
   <string name="badge_text_beta">Beta</string>
   <string name="badge_text_get_vip">Obtén VIP</string>
   <string name="badge_text_more">i %d més</string>
@@ -28,6 +33,7 @@
   <string name="button_label_add_to_favorites">Afegeix \"%s\" als teus Preferits</string>
   <string name="button_label_add_to_personal_list">Afegeix \"%1$s\" a %2$s</string>
   <string name="button_label_add_to_watchlist">Afegeix \"%s\" a la teva Llista de seguiment</string>
+  <string name="button_label_all_time_stats">Mostra totes les estadístiques</string>
   <string name="button_label_apply">Aplica els canvis</string>
   <string name="button_label_approve_follow_request">Aprovar sol·licitud de seguiment de %s</string>
   <string name="button_label_back">Enrere</string>
@@ -59,8 +65,6 @@
   <string name="button_label_comment_replies">Respostes a la ressenya</string>
   <string name="button_label_comment_reply">Respon a %s</string>
   <string name="button_label_connect_streaming_service">Connecta %s</string>
-  <string name="button_label_cookie_accept">Accepta totes les cookies</string>
-  <string name="button_label_cookie_accept_functional_only">Accepta només les cookies funcionals</string>
   <string name="button_label_copied">Copiat</string>
   <string name="button_label_copy">Copia</string>
   <string name="button_label_create_app">Crea una aplicació</string>
@@ -163,11 +167,7 @@
   <string name="button_label_react">Reacciona amb %s</string>
   <string name="button_label_read_more">Llegeix més</string>
   <string name="button_label_recent_comments">Ressenyes recents</string>
-  <string name="button_label_recommendation_smart">Recomanacions intel·ligents</string>
-  <string name="button_label_recommendation_standard">Recomanacions estàndard</string>
   <string name="button_label_reject_follow_request">Rebutjar sol·licitud de seguiment de %s</string>
-  <string name="button_label_related_smart">Relacionats intel·ligents</string>
-  <string name="button_label_related_standard">Relacionats estàndard</string>
   <string name="button_label_remove_from_favorites">Elimina \"%s\" dels teus Preferits</string>
   <string name="button_label_remove_from_history">Eliminar aquesta reproducció de \"%s\" del teu historial de visualitzacions</string>
   <string name="button_label_remove_from_list">Elimina \"%s\" de la llista</string>
@@ -236,6 +236,7 @@
   <string name="button_label_unfollow">Deixa de seguir %s</string>
   <string name="button_label_unlike_list">Ja no m\'agrada %s</string>
   <string name="button_label_unlink_streaming_service">Desvincula %s</string>
+  <string name="button_label_unread_preview_features">Funcionalitats de previsualització (noves funcionalitats disponibles)</string>
   <string name="button_label_upload_photo">Puja una nova foto de perfil</string>
   <string name="button_label_user_profile">Perfil d\'usuari</string>
   <string name="button_label_view_all_activity">Veure tota l\'activitat</string>
@@ -274,6 +275,8 @@
   <string name="button_label_watch_until_here_anchor_end">Considera la data seleccionada com el final de la marató</string>
   <string name="button_label_watch_until_here_anchor_start">Considera la data seleccionada com l\'inici de la marató</string>
   <string name="button_label_watched_until_here">Marca \"%s\" com a vist fins aquí</string>
+  <string name="button_label_year_in_review">Veure el teu resum de %s</string>
+  <string name="button_label_year_to_date">Veure el teu acumulats de l\'any</string>
   <string name="button_plex_authorized">He connectat Plex</string>
   <string name="button_plex_sync_now">Sincronitza ara</string>
   <string name="button_plex_toggle_scrobble">Scrobble</string>
@@ -286,6 +289,7 @@
   <string name="button_text_add_review">Afegeix ressenya</string>
   <string name="button_text_add_streaming_service">Afegir servei de streaming</string>
   <string name="button_text_add_to_favorites">Afegeix a Preferits</string>
+  <string name="button_text_all_time_stats">Mostra totes les estadístiques</string>
   <string name="button_text_apply">Aplica</string>
   <string name="button_text_approve_follow_request">Aprovar sol·licitud</string>
   <string name="button_text_block">Bloquejar</string>
@@ -305,8 +309,6 @@
   <string name="button_text_comment_replies">%d respostes</string>
   <string name="button_text_connect">Connecta</string>
   <string name="button_text_continue">Continua</string>
-  <string name="button_text_cookie_accept">Accepta-ho tot</string>
-  <string name="button_text_cookie_accept_functional_only">Només funcionals</string>
   <string name="button_text_create">Crea</string>
   <string name="button_text_create_list">Llista</string>
   <string name="button_text_cta_create_list">Crea llista</string>
@@ -337,6 +339,7 @@
   <string name="button_text_followers">Seguidors</string>
   <string name="button_text_following">Seguint</string>
   <string name="button_text_get_vip">Obtén</string>
+  <string name="button_text_hide">Amaga</string>
   <string name="button_text_hide_description">Oculta la descripció</string>
   <string name="button_text_hide_details">Oculta els detalls</string>
   <string name="button_text_hide_recommendation">Amaga la recomanació</string>
@@ -388,12 +391,8 @@
   <string name="button_text_progress_in_progress">En curs</string>
   <string name="button_text_raw_export">Exporta ara</string>
   <string name="button_text_recent_comments">Recents</string>
-  <string name="button_text_recommendation_smart">Intel·ligent</string>
-  <string name="button_text_recommendation_standard">Estàndard</string>
   <string name="button_text_reconnect">Torna a connectar</string>
   <string name="button_text_reject_follow_request">Rebutjar sol·licitud</string>
-  <string name="button_text_related_smart">Intel·ligent</string>
-  <string name="button_text_related_standard">Estàndard</string>
   <string name="button_text_remove_from_favorites">Elimina de Preferits</string>
   <string name="button_text_remove_from_history">Eliminar de l\'historial</string>
   <string name="button_text_remove_from_list">Elimina de la llista</string>
@@ -476,6 +475,8 @@
   <string name="button_text_watched_until_here">Vist fins aquí</string>
   <string name="button_text_watchlist">Llista de seguiment</string>
   <string name="button_text_where_to_watch">On veure</string>
+  <string name="button_text_year_in_review">%s en resum</string>
+  <string name="button_text_year_to_date">Acumulat de l\'any</string>
   <string name="button_text_yes">Sí</string>
   <string name="button_text_younify_fix">Arregla</string>
   <string name="button_text_younify_send_logs">Envia registres</string>
@@ -506,6 +507,7 @@
   <string name="confirmation_title_disconnect_plex">Desconnectar Plex?</string>
   <string name="confirmation_title_drop_movie">Abandonar la pel·lícula?</string>
   <string name="confirmation_title_drop_show">Abandonar la sèrie?</string>
+  <string name="confirmation_title_hide">Confirma amagar</string>
   <string name="confirmation_title_hide_recommendation">Amagar la recomanació?</string>
   <string name="confirmation_title_log_out">Tanca la sessió?</string>
   <string name="confirmation_title_mark_as_watched">Marcar com a vist?</string>
@@ -558,6 +560,7 @@
   <string name="description_streaming_sync">Sincronitza automàticament el teu historial vist i les puntuacions.</string>
   <string name="description_streaming_vip_services">Actualitza per connectar i sincronitzar aquests serveis de streaming.</string>
   <string name="description_sync_detail">Alguns detalls sobre aquesta sincronització.</string>
+  <string name="dialog_prompt_hide_auto_tracking">Sempre pots accedir al Seguiment automàtic des dels ajustos.</string>
   <string name="dialog_prompt_media_share_image_format">Tria un format d\'imatge per compartir.</string>
   <string name="dialog_prompt_move_to_position">Introdueix una nova posició per a \"%s\".</string>
   <string name="dialog_prompt_younify_data_sync">Vols importar les teves dades existents al teu compte de Trakt, o només sincronitzar noves dades a partir d\'ara?</string>
@@ -586,6 +589,7 @@
   <string name="dropdown_label_person_position">Càrrec</string>
   <string name="episode_footer_season_episode">T%1$d • E%2$d</string>
   <string name="episode_footer_season_episode_range">T%1$d • E%2$d-%3$d</string>
+  <string name="error_search_partial_results">És possible que faltin alguns resultats</string>
   <string name="error_text_404">(No et preocupis, passa! Fins i tot la Força de vegades està desalineada.)</string>
   <string name="error_text_delete_account">Alguna cosa ha anat malament en suprimir el teu compte. Si us plau, torna a intentar-ho.</string>
   <string name="error_text_email">L\'actualització del correu electrònic ha fallat. Assegura\'t que sigui una adreça vàlida.</string>
@@ -708,10 +712,13 @@
   <string name="header_settings_tracking">Seguiment</string>
   <string name="header_settings_translations">Traduccions</string>
   <string name="header_skipped_items">%s elements omesos</string>
+  <string name="header_stats_contributions">Contribucions</string>
   <string name="header_stats_graph_peak">Hores punta</string>
   <string name="header_stats_graph_screen_time_daily">Desglossament diari</string>
   <string name="header_stats_graph_shows_movies">Sèries vs Pel·lícules</string>
   <string name="header_stats_monthly">Estadístiques mensuals</string>
+  <string name="header_stats_progress">Progrés</string>
+  <string name="header_stats_watched">Vist</string>
   <string name="header_status">Estat</string>
   <string name="header_stream_on">En streaming a</string>
   <string name="header_streaming">Disponibilitat</string>
@@ -723,6 +730,7 @@
   <string name="header_target">Objectiu</string>
   <string name="header_total_runtime">Durada total</string>
   <string name="header_writer">Guionista</string>
+  <string name="heading_api_application_vip_only">Crear noves aplicacions requereix Trakt VIP</string>
   <string name="heading_api_applications">Aplicacions d\'API</string>
   <string name="heading_apps_settings">Aplicacions</string>
   <string name="heading_blocked_users">Usuaris bloquejats</string>
@@ -808,6 +816,7 @@
   <string name="input_placeholder_app_name">La meva aplicació</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
+  <string name="input_placeholder_filter">Filtre</string>
   <string name="input_placeholder_filter_services">Filtrar serveis de streaming</string>
   <string name="input_placeholder_lists_description">Descripció (opcional)</string>
   <string name="input_placeholder_lists_name">Nom</string>
@@ -858,6 +867,7 @@
   <string name="label_plex_webhook_url">URL del Webhook</string>
   <string name="label_queued_action">Desat fora de línia, esperant per sincronitzar</string>
   <string name="label_ratings_season_chart">Valoracions de temporada al llarg del temps</string>
+  <string name="label_registered_accounts">Comptes registrats</string>
   <string name="label_report_reason_abusive">Abusiu</string>
   <string name="label_report_reason_adult">Contingut per a adults</string>
   <string name="label_report_reason_bigotry">Fanatisme</string>
@@ -887,6 +897,7 @@
   <string name="label_stats_days_active">Dies actius</string>
   <string name="label_stats_dropped_streaks">Ratxes abandonades</string>
   <string name="label_stats_episodes">Episodis</string>
+  <string name="label_stats_finished">Finalitzat</string>
   <string name="label_stats_hours">Hores</string>
   <string name="label_stats_movies">Pel·lícules</string>
   <string name="label_stats_plays">Reproduccions</string>
@@ -1053,6 +1064,10 @@
   <string name="match_pill_anchor">Coincidència:</string>
   <string name="match_pill_aria_label">%1$d% de coincidència, %2$s. Obre els detalls de la coincidència.</string>
   <string name="match_pill_loading_aria_label">Calculant la puntuació de coincidència</string>
+  <string name="mir_banner_body">El teu resum mensual està llest. Aquí teniu el que vau veure a %s.</string>
+  <string name="mir_banner_body_short">El teu resum de %s està llest.</string>
+  <string name="mir_banner_explore">Explorar</string>
+  <string name="mir_banner_in_review">En resum</string>
   <string name="mir_share_text">Fes un cop d\'ull al meu resum del mes %s a Trakt</string>
   <string name="mir_title_month_in_review">Resum del Mes</string>
   <string name="notes_placeholder_text">Deixa una nota la propera vegada que marquis com a favorit o abandonis un títol.</string>
@@ -1151,17 +1166,14 @@
   <string name="preview_feature_description_parental_guide">Mostrar els nivells de risc de contingut al calaix de detalls per a pel·lícules, sèries i episodis.</string>
   <string name="preview_feature_description_rewatch">Inicia sessions de revisió per a programes que ja has vist, fes un seguiment o marca els episodis com a vistos directament des del calaix de la sessió.</string>
   <string name="preview_feature_description_scoped_favorites">Delimita les llistes de preferits mostrant els preferits de l\'any actual als perfils i agrupant la llista completa de preferits per any.</string>
-  <string name="preview_feature_description_smart_recommendations">Utilitza el nostre motor de nova generació per trobar pel·lícules i sèries recomanades més enllà del que és obvi.</string>
-  <string name="preview_feature_description_smart_related">Utilitza el nostre motor de nova generació per trobar pel·lícules i sèries relacionades més enllà del que és obvi.</string>
   <string name="preview_feature_description_up_next_smart_sort">Prova una manera més intel·ligent d\'ordenar el teu \'Continua veient\'.</string>
   <string name="preview_feature_title_edit_mode">Mode d\'edició</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Revisió</string>
   <string name="preview_feature_title_scoped_favorites">Preferits per àmbit</string>
-  <string name="preview_feature_title_smart_recommendations">Recomanacions intel·ligents</string>
-  <string name="preview_feature_title_smart_related">Relacionats intel·ligents</string>
   <string name="preview_feature_title_up_next_smart_sort">Continua veient: Ordre intel·ligent</string>
   <string name="reset_status_cleared">Llista de seguiment esborrada.</string>
+  <string name="screen_account_settings_language_system_message_tvos">Trakt utilitza la configuració d\'idioma de l\'Apple TV. Per actualitzar-la, ves a:\nAjustos de l\'Apple TV &gt; General &gt; Idiomes de l\'Apple TV</string>
   <string name="section_title_season_progress">Temporada %d progrés</string>
   <string name="section_title_seasons_overview">Visió general</string>
   <string name="section_title_specials_progress">Progrés dels especials</string>
@@ -1170,6 +1182,7 @@
   <string name="stat_text_favorited">Preferits</string>
   <string name="stat_text_lists">Llistes</string>
   <string name="stat_text_plays">Reproduccions</string>
+  <string name="stat_text_time_watched">Vist</string>
   <string name="stat_text_watchers">Espectadors</string>
   <string name="switch_label_mark_as_spoiler">Marca com a spoiler</string>
   <string name="switch_label_multiple_watches">Habilita o deshabilita múltiples visualitzacions</string>
@@ -1204,6 +1217,7 @@
   <string name="tag_text_most_popular">Més popular</string>
   <string name="tag_text_movies">Pel·lícules</string>
   <string name="tag_text_new">Nou</string>
+  <string name="tag_text_new_preview_feature">Nou</string>
   <string name="tag_text_number_of_episodes">%d ep.</string>
   <string name="tag_text_plays">%d reproduccions</string>
   <string name="tag_text_premiere">Estrena</string>
@@ -1223,6 +1237,7 @@
   <string name="tag_text_started">Iniciat</string>
   <string name="tag_text_tba">P.C.A.</string>
   <string name="tag_text_vip">VIP</string>
+  <string name="tag_text_vip_preview">Previsualització VIP</string>
   <string name="tag_text_watch_count">Compte de vists</string>
   <string name="tag_text_watched">Vist</string>
   <string name="tag_text_watchlisted">A la llista de seguiment</string>
@@ -1234,6 +1249,7 @@
   <string name="text_all_settings">Totes les configuracions</string>
   <string name="text_all_time">De tots els temps</string>
   <string name="text_analytics">Analítiques</string>
+  <string name="text_api_application_vip_only">Els membres VIP poden registrar aplicacions OAuth il·limitades.</string>
   <string name="text_app_connected_on">Connectada %s</string>
   <string name="text_app_created_on">Creat el %s</string>
   <string name="text_app_last_used">Últim ús %s</string>
@@ -1280,7 +1296,6 @@
   <string name="text_connection_status_connected_title">Connectat a %s</string>
   <string name="text_connection_status_error_message">Alguna cosa ha anat malament. Si us plau, torna a intentar-ho.</string>
   <string name="text_connection_status_error_title">No s\'ha pogut connectar %s</string>
-  <string name="text_cookie_notice">Trakt utilitza C🍪🍪KIES per millorar la teva experiència general. Pots <a>llegir més informació</a> aquí.</string>
   <string name="text_copyright_crafted_by">Fet a mà arreu del món.</string>
   <string name="text_copyright_notice">Tots els drets reservats.</string>
   <string name="text_created_by">Creada per <a>%s</a></string>
@@ -1365,6 +1380,7 @@
   <string name="text_info_not_following">Ja no segueixes %s.</string>
   <string name="text_info_reply_added">La resposta ha estat afegida.</string>
   <string name="text_info_reply_deleted">La resposta ha estat suprimida.</string>
+  <string name="text_info_report_sent">L\'informe s\'ha enviat.</string>
   <string name="text_info_review_added">La ressenya ha estat afegida.</string>
   <string name="text_info_review_deleted">La ressenya ha estat suprimida.</string>
   <string name="text_info_show_dropped">La sèrie ha estat abandonada.</string>
@@ -1395,6 +1411,8 @@
   <string name="text_list_public">Públic</string>
   <string name="text_list_public_info">La llista serà visible per a tots els usuaris.</string>
   <string name="text_location">Ubicació</string>
+  <string name="text_member_count_accessible">Més de %s comptes registrats a Trakt</string>
+  <string name="text_member_count_tagline">persones fent seguiment del que veuen, i comptant</string>
   <string name="text_member_since">Des de %s</string>
   <string name="text_movies_watched">%s pel·lícules</string>
   <string name="text_next_day">el pròxim %s</string>
@@ -1441,6 +1459,7 @@
   <string name="text_placeholder_generic">Res a veure aquí.</string>
   <string name="text_placeholder_preview_features">Actualment no hi ha funcions de previsualització. Torna-hi més tard.</string>
   <string name="text_play_count">%d reproduccions</string>
+  <string name="text_plays_watched">%s reproduccions</string>
   <string name="text_plex_auth_waiting">S\'ha obert una pàgina d\'autorització de Plex. Completa l\'inici de sessió allà i, a continuació, fes clic al botó de sota.</string>
   <string name="text_plex_synced_summary">Les dades s\'han sincronitzat %1$s vegades. La teva sincronització més recent va ser %2$s.</string>
   <string name="text_plex_tv_library_description">Activa la sincronització de Trakt Plex per accedir a la teva biblioteca multimèdia del servidor Plex.</string>
@@ -1620,6 +1639,7 @@
   <string name="text_vip_upsell_default_description_2">Any en resum i més.</string>
   <string name="text_vip_upsell_dive_deeper">Aprofundeix.</string>
   <string name="text_vip_upsell_more_lists">Crea més llistes.</string>
+  <string name="text_vip_upsell_more_stats">Desbloqueja més estadístiques amb VIP</string>
   <string name="text_vip_upsell_preview_features">Actualitza a VIP per desbloquejar les funcions de previsualització.</string>
   <string name="text_vip_upsell_sentiment">Actualitza a VIP per desbloquejar més informació.</string>
   <string name="text_vip_upsell_smart_lists">Actualitza a VIP per desbloquejar límits més alts.</string>

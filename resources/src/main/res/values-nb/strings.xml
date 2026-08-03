@@ -12,9 +12,14 @@
   <string name="about_feature_title_discover">Oppdag hva du skal se</string>
   <string name="about_feature_title_rate_review">Vurder og anmeld</string>
   <string name="about_feature_title_scrobble">Spor serier og filmer</string>
+  <string name="action_open_system_settings_tvos">Åpne innstillinger</string>
   <string name="advanced_filter_label_ratings">Vurdering fra %1$s til %2$s</string>
   <string name="advanced_filter_label_release_year">Utgitt i %1$d til %2$d</string>
   <string name="advanced_filter_label_runtime">Spilletid fra %1$d til %2$d minutter.</string>
+  <string name="auto_tracking_card_action">Koble til tjenestene dine</string>
+  <string name="auto_tracking_card_detail_scrobble">Automatisk \'scrobbling\' når du ser og vurderer nye ting.</string>
+  <string name="auto_tracking_card_detail_sync">Synkroniser din eksisterende sett-historikk og vurderinger.</string>
+  <string name="auto_tracking_card_heading">Automatisk sporing på tvers av strømmetjenestene dine</string>
   <string name="badge_text_beta">Beta</string>
   <string name="badge_text_get_vip">Få VIP</string>
   <string name="badge_text_more">og %d mer</string>
@@ -28,6 +33,7 @@
   <string name="button_label_add_to_favorites">Legg til \"%s\" i favorittene dine</string>
   <string name="button_label_add_to_personal_list">Legg til \"%1$s\" i %2$s</string>
   <string name="button_label_add_to_watchlist">Legg til \"%s\" i ønskelisten din</string>
+  <string name="button_label_all_time_stats">Vis all-tids statistikk</string>
   <string name="button_label_apply">Bruk endringer</string>
   <string name="button_label_approve_follow_request">Godkjenn følgeforspørsel fra %s</string>
   <string name="button_label_back">Tilbake</string>
@@ -59,8 +65,6 @@
   <string name="button_label_comment_replies">Svar på anmeldelse</string>
   <string name="button_label_comment_reply">Svar til %s</string>
   <string name="button_label_connect_streaming_service">Koble til %s</string>
-  <string name="button_label_cookie_accept">Godta alle informasjonskapsler</string>
-  <string name="button_label_cookie_accept_functional_only">Godta kun funksjonelle informasjonskapsler</string>
   <string name="button_label_copied">Kopiert</string>
   <string name="button_label_copy">Kopier</string>
   <string name="button_label_create_app">Opprett applikasjon</string>
@@ -163,11 +167,7 @@
   <string name="button_label_react">Reager med %s</string>
   <string name="button_label_read_more">Les mer</string>
   <string name="button_label_recent_comments">Nyeste anmeldelser</string>
-  <string name="button_label_recommendation_smart">Smarte anbefalinger</string>
-  <string name="button_label_recommendation_standard">Standardanbefalinger</string>
   <string name="button_label_reject_follow_request">Avslå følgeforspørsel fra %s</string>
-  <string name="button_label_related_smart">Smarte relaterte</string>
-  <string name="button_label_related_standard">Standard relaterte</string>
   <string name="button_label_remove_from_favorites">Fjern \"%s\" fra favorittene dine</string>
   <string name="button_label_remove_from_history">Fjern denne avspillingen av \"%s\" fra sett-historikken din</string>
   <string name="button_label_remove_from_list">Fjern \"%s\" fra listen</string>
@@ -236,6 +236,7 @@
   <string name="button_label_unfollow">Slutt å følge %s</string>
   <string name="button_label_unlike_list">Ikke lik %s</string>
   <string name="button_label_unlink_streaming_service">Fjern kobling for %s</string>
+  <string name="button_label_unread_preview_features">Forhåndsfunksjoner (nye funksjoner tilgjengelig)</string>
   <string name="button_label_upload_photo">Last opp et nytt profilbilde</string>
   <string name="button_label_user_profile">Brukerprofil</string>
   <string name="button_label_view_all_activity">Vis all aktivitet</string>
@@ -274,6 +275,8 @@
   <string name="button_label_watch_until_here_anchor_end">Behandle valgt dato som slutten på maratonet</string>
   <string name="button_label_watch_until_here_anchor_start">Behandle valgt dato som starten på maratonet</string>
   <string name="button_label_watched_until_here">Merk \"%s\" som sett til hit</string>
+  <string name="button_label_year_in_review">Se din %s i retrospekt</string>
+  <string name="button_label_year_to_date">Vis ditt år til dato</string>
   <string name="button_plex_authorized">Jeg har koblet til Plex</string>
   <string name="button_plex_sync_now">Synkroniser nå</string>
   <string name="button_plex_toggle_scrobble">Skrobble</string>
@@ -286,6 +289,7 @@
   <string name="button_text_add_review">Legg til anmeldelse</string>
   <string name="button_text_add_streaming_service">Legg til strømmetjeneste</string>
   <string name="button_text_add_to_favorites">Legg til i favoritter</string>
+  <string name="button_text_all_time_stats">Vis all statistikk</string>
   <string name="button_text_apply">Bruk</string>
   <string name="button_text_approve_follow_request">Godkjenn forespørsel</string>
   <string name="button_text_block">Blokker</string>
@@ -305,8 +309,6 @@
   <string name="button_text_comment_replies">%d svar</string>
   <string name="button_text_connect">Koble til</string>
   <string name="button_text_continue">Fortsett</string>
-  <string name="button_text_cookie_accept">Godta alle</string>
-  <string name="button_text_cookie_accept_functional_only">Kun funksjonelle</string>
   <string name="button_text_create">Opprett</string>
   <string name="button_text_create_list">Liste</string>
   <string name="button_text_cta_create_list">Opprett liste</string>
@@ -337,6 +339,7 @@
   <string name="button_text_followers">Følgere</string>
   <string name="button_text_following">Følger</string>
   <string name="button_text_get_vip">Få</string>
+  <string name="button_text_hide">Skjul</string>
   <string name="button_text_hide_description">Skjul beskrivelse</string>
   <string name="button_text_hide_details">Skjul detaljer</string>
   <string name="button_text_hide_recommendation">Skjul anbefaling</string>
@@ -388,12 +391,8 @@
   <string name="button_text_progress_in_progress">Pågår</string>
   <string name="button_text_raw_export">Eksporter nå</string>
   <string name="button_text_recent_comments">Nyeste</string>
-  <string name="button_text_recommendation_smart">Smart</string>
-  <string name="button_text_recommendation_standard">Standard</string>
   <string name="button_text_reconnect">Koble til igjen</string>
   <string name="button_text_reject_follow_request">Avslå forespørsel</string>
-  <string name="button_text_related_smart">Smart</string>
-  <string name="button_text_related_standard">Standard</string>
   <string name="button_text_remove_from_favorites">Fjern fra favoritter</string>
   <string name="button_text_remove_from_history">Fjern fra historikk</string>
   <string name="button_text_remove_from_list">Fjern fra liste</string>
@@ -476,6 +475,8 @@
   <string name="button_text_watched_until_here">Sett til hit</string>
   <string name="button_text_watchlist">Ønskeliste</string>
   <string name="button_text_where_to_watch">Hvor kan du se</string>
+  <string name="button_text_year_in_review">Året %s i tilbakeblikk</string>
+  <string name="button_text_year_to_date">År til dato</string>
   <string name="button_text_yes">Ja</string>
   <string name="button_text_younify_fix">Fiks</string>
   <string name="button_text_younify_send_logs">Send logger</string>
@@ -506,6 +507,7 @@
   <string name="confirmation_title_disconnect_plex">Koble fra Plex?</string>
   <string name="confirmation_title_drop_movie">Dropp film?</string>
   <string name="confirmation_title_drop_show">Dropp serie?</string>
+  <string name="confirmation_title_hide">Bekreft skjuling</string>
   <string name="confirmation_title_hide_recommendation">Skjul anbefaling?</string>
   <string name="confirmation_title_log_out">Logg ut?</string>
   <string name="confirmation_title_mark_as_watched">Merk som sett?</string>
@@ -558,6 +560,7 @@
   <string name="description_streaming_sync">Synkroniser automatisk din sett historie og rangeringer.</string>
   <string name="description_streaming_vip_services">Oppgrader for å koble til og synkronisere disse strømmetjenestene.</string>
   <string name="description_sync_detail">Noen detaljer om denne synkroniseringen.</string>
+  <string name="dialog_prompt_hide_auto_tracking">Du kan alltid få tilgang til automatisk sporing fra innstillingene.</string>
   <string name="dialog_prompt_media_share_image_format">Velg et bildeformat å dele.</string>
   <string name="dialog_prompt_move_to_position">Angi en ny posisjon for \"%s\".</string>
   <string name="dialog_prompt_younify_data_sync">Vil du importere eksisterende data til Trakt-kontoen din, eller bare synkronisere nye data fra nå av?</string>
@@ -586,6 +589,7 @@
   <string name="dropdown_label_person_position">Stilling</string>
   <string name="episode_footer_season_episode">S%1$d • E%2$d</string>
   <string name="episode_footer_season_episode_range">S%1$d • E%2$d-%3$d</string>
+  <string name="error_search_partial_results">Noen resultater mangler kanskje</string>
   <string name="error_text_404">(Ikke bekymre deg, det skjer! Selv Kraften er noen ganger i ubalanse.)</string>
   <string name="error_text_delete_account">Noe gikk galt under slettingen av kontoen din. Vennligst prøv igjen.</string>
   <string name="error_text_email">E-postoppdatering mislyktes. Sørg for at det er en gyldig adresse.</string>
@@ -708,10 +712,13 @@
   <string name="header_settings_tracking">Sporing</string>
   <string name="header_settings_translations">Oversettelser</string>
   <string name="header_skipped_items">%s elementer hoppet over</string>
+  <string name="header_stats_contributions">Bidrag</string>
   <string name="header_stats_graph_peak">Topptimer</string>
   <string name="header_stats_graph_screen_time_daily">Daglig oversikt</string>
   <string name="header_stats_graph_shows_movies">Serier vs. Filmer</string>
   <string name="header_stats_monthly">Månedlig statistikk</string>
+  <string name="header_stats_progress">Fremdrift</string>
+  <string name="header_stats_watched">Sett</string>
   <string name="header_status">Status</string>
   <string name="header_stream_on">Strøm på</string>
   <string name="header_streaming">Tilgjengelighet</string>
@@ -723,6 +730,7 @@
   <string name="header_target">Mål</string>
   <string name="header_total_runtime">Total spilletid</string>
   <string name="header_writer">Forfatter</string>
+  <string name="heading_api_application_vip_only">Oppretting av nye apper krever Trakt VIP</string>
   <string name="heading_api_applications">API-applikasjoner</string>
   <string name="heading_apps_settings">Applikasjoner</string>
   <string name="heading_blocked_users">Blokkerte brukere</string>
@@ -808,6 +816,7 @@
   <string name="input_placeholder_app_name">Min applikasjon</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
+  <string name="input_placeholder_filter">Filter</string>
   <string name="input_placeholder_filter_services">Filtrer strømmetjenester</string>
   <string name="input_placeholder_lists_description">Beskrivelse (valgfritt)</string>
   <string name="input_placeholder_lists_name">Navn</string>
@@ -858,6 +867,7 @@
   <string name="label_plex_webhook_url">Webhook-URL</string>
   <string name="label_queued_action">Lagret uten nett, venter på synkronisering</string>
   <string name="label_ratings_season_chart">Sesongvurderinger over tid</string>
+  <string name="label_registered_accounts">Registrerte kontoer</string>
   <string name="label_report_reason_abusive">Krenkende</string>
   <string name="label_report_reason_adult">Voksent innhold</string>
   <string name="label_report_reason_bigotry">Bigotteri</string>
@@ -887,6 +897,7 @@
   <string name="label_stats_days_active">Aktive dager</string>
   <string name="label_stats_dropped_streaks">Avbrutte streker</string>
   <string name="label_stats_episodes">Episoder</string>
+  <string name="label_stats_finished">Fullført</string>
   <string name="label_stats_hours">Timer</string>
   <string name="label_stats_movies">Filmer</string>
   <string name="label_stats_plays">Avspillinger</string>
@@ -1053,6 +1064,10 @@
   <string name="match_pill_anchor">Treff:</string>
   <string name="match_pill_aria_label">%1$d% match, %2$s. Åpne matchdetaljer.</string>
   <string name="match_pill_loading_aria_label">Beregner treffscore</string>
+  <string name="mir_banner_body">Din månedlige oppsummering er klar. Her er hva du så i %s.</string>
+  <string name="mir_banner_body_short">Din %s oppsummering er klar.</string>
+  <string name="mir_banner_explore">Utforsk</string>
+  <string name="mir_banner_in_review">I retrospekt</string>
   <string name="mir_share_text">Sjekk ut mitt %s Måned i tilbakeblikk på Trakt</string>
   <string name="mir_title_month_in_review">Måneden i retrospekt</string>
   <string name="notes_placeholder_text">Legg igjen et notat neste gang du favoritter eller dropper en tittel.</string>
@@ -1151,17 +1166,14 @@
   <string name="preview_feature_description_parental_guide">Vis risikonivåer for innhold i detaljskuffen for filmer, serier og episoder.</string>
   <string name="preview_feature_description_rewatch">Start gjensynsøkter for serier du allerede har sett, sjekk inn eller merk episoder som sett direkte fra gjensynsskuffen.</string>
   <string name="preview_feature_description_scoped_favorites">Tidsbegrens favorittlister ved å vise inneværende års favoritter på profiler og gruppere den komplette favorittlisten etter år.</string>
-  <string name="preview_feature_description_smart_recommendations">Bruk vår neste generasjons motor til å avdekke anbefalte filmer og serier utover det åpenbare.</string>
-  <string name="preview_feature_description_smart_related">Bruk vår neste generasjons motor til å avdekke relaterte filmer og serier utover det åpenbare.</string>
   <string name="preview_feature_description_up_next_smart_sort">Prøv en smartere måte å sortere din Fortsett å se.</string>
   <string name="preview_feature_title_edit_mode">Redigeringsmodus</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Gjensyn</string>
   <string name="preview_feature_title_scoped_favorites">Avgrensede favoritter</string>
-  <string name="preview_feature_title_smart_recommendations">Smarte anbefalinger</string>
-  <string name="preview_feature_title_smart_related">Smarte Relaterte</string>
   <string name="preview_feature_title_up_next_smart_sort">Fortsett å se smart sortering</string>
   <string name="reset_status_cleared">Overvåkningsliste tømt.</string>
+  <string name="screen_account_settings_language_system_message_tvos">Trakt bruker Apple TV-språkinnstillingene dine. For å oppdatere, gå til:Apple TV-innstillinger &gt; Generelt &gt; Apple TV-språk</string>
   <string name="section_title_season_progress">Sesong %d fremdrift</string>
   <string name="section_title_seasons_overview">Oversikt</string>
   <string name="section_title_specials_progress">Spesialer fremdrift</string>
@@ -1170,6 +1182,7 @@
   <string name="stat_text_favorited">Favoritter</string>
   <string name="stat_text_lists">Lister</string>
   <string name="stat_text_plays">Avspillinger</string>
+  <string name="stat_text_time_watched">Sett</string>
   <string name="stat_text_watchers">Seere</string>
   <string name="switch_label_mark_as_spoiler">Merk som spoiler</string>
   <string name="switch_label_multiple_watches">Aktiver eller deaktiver flere visninger</string>
@@ -1204,6 +1217,7 @@
   <string name="tag_text_most_popular">Mest populær</string>
   <string name="tag_text_movies">Filmer</string>
   <string name="tag_text_new">Ny</string>
+  <string name="tag_text_new_preview_feature">Ny</string>
   <string name="tag_text_number_of_episodes">%d ep.</string>
   <string name="tag_text_plays">%d avspillinger</string>
   <string name="tag_text_premiere">Premiere</string>
@@ -1223,6 +1237,7 @@
   <string name="tag_text_started">Startet</string>
   <string name="tag_text_tba">TBA</string>
   <string name="tag_text_vip">VIP</string>
+  <string name="tag_text_vip_preview">VIP Forhåndsvisning</string>
   <string name="tag_text_watch_count">Antall sett</string>
   <string name="tag_text_watched">Sett</string>
   <string name="tag_text_watchlisted">Ønskelistet</string>
@@ -1234,6 +1249,7 @@
   <string name="text_all_settings">Alle innstillinger</string>
   <string name="text_all_time">Totalt</string>
   <string name="text_analytics">Analyse</string>
+  <string name="text_api_application_vip_only">VIP-medlemmer kan registrere et ubegrenset antall OAuth-applikasjoner</string>
   <string name="text_app_connected_on">Koblet til %s</string>
   <string name="text_app_created_on">Opprettet %s</string>
   <string name="text_app_last_used">Sist brukt %s</string>
@@ -1280,7 +1296,6 @@
   <string name="text_connection_status_connected_title">Koblet til %s</string>
   <string name="text_connection_status_error_message">Noe gikk galt. Vennligst prøv igjen.</string>
   <string name="text_connection_status_error_title">Kunne ikke koble til %s</string>
-  <string name="text_cookie_notice">Trakt bruker C🍪🍪KIES for å forbedre din totale opplevelse. Du kan <a>lese mer informasjon</a> her.</string>
   <string name="text_copyright_crafted_by">Håndlaget rundt om i verden.</string>
   <string name="text_copyright_notice">Alle rettigheter forbeholdes.</string>
   <string name="text_created_by">Skapt av <a>%s</a></string>
@@ -1365,6 +1380,7 @@
   <string name="text_info_not_following">Du følger ikke lenger %s.</string>
   <string name="text_info_reply_added">Svaret er lagt til.</string>
   <string name="text_info_reply_deleted">Svaret er slettet.</string>
+  <string name="text_info_report_sent">Rapporten er sendt inn.</string>
   <string name="text_info_review_added">Anmeldelsen er lagt til.</string>
   <string name="text_info_review_deleted">Anmeldelsen er slettet.</string>
   <string name="text_info_show_dropped">Serien er droppet.</string>
@@ -1395,6 +1411,8 @@
   <string name="text_list_public">Offentlig</string>
   <string name="text_list_public_info">Listen vil være synlig for alle brukere.</string>
   <string name="text_location">Sted</string>
+  <string name="text_member_count_accessible">Over %s registrerte Trakt-kontoer</string>
+  <string name="text_member_count_tagline">folk som sporer hva de ser på, og antallet øker</string>
   <string name="text_member_since">Siden %s</string>
   <string name="text_movies_watched">%s filmer</string>
   <string name="text_next_day">neste %s</string>
@@ -1441,6 +1459,7 @@
   <string name="text_placeholder_generic">Ingenting å se her.</string>
   <string name="text_placeholder_preview_features">Det er for øyeblikket ingen forhåndsvisningsfunksjoner. Kom tilbake senere.</string>
   <string name="text_play_count">%d avspillinger</string>
+  <string name="text_plays_watched">%s avspillinger</string>
   <string name="text_plex_auth_waiting">En Plex-autoriseringsside har blitt åpnet. Fullfør innloggingen der, og klikk deretter på knappen nedenfor.</string>
   <string name="text_plex_synced_summary">Data har synkronisert %1$s ganger. Din siste synkronisering var %2$s.</string>
   <string name="text_plex_tv_library_description">Aktiver Trakt Plex-synkronisering for å få tilgang til mediesamlingen din på Plex-serveren.</string>
@@ -1620,6 +1639,7 @@
   <string name="text_vip_upsell_default_description_2">Året i retrospekt og mer.</string>
   <string name="text_vip_upsell_dive_deeper">Dykk dypere.</string>
   <string name="text_vip_upsell_more_lists">Opprett flere lister.</string>
+  <string name="text_vip_upsell_more_stats">Lås opp mer statistikk med VIP</string>
   <string name="text_vip_upsell_preview_features">Oppgrader til VIP for å låse opp forhåndsvisningsfunksjoner.</string>
   <string name="text_vip_upsell_sentiment">Oppgrader til VIP for å låse opp flere innsikter.</string>
   <string name="text_vip_upsell_smart_lists">Oppgrader til VIP for å låse opp høyere grenser.</string>

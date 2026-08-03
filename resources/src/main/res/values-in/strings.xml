@@ -12,9 +12,14 @@
   <string name="about_feature_title_discover">Temukan Apa yang Akan Ditonton</string>
   <string name="about_feature_title_rate_review">Nilai &amp; Ulas</string>
   <string name="about_feature_title_scrobble">Lacak Acara &amp; Film</string>
+  <string name="action_open_system_settings_tvos">Buka Pengaturan</string>
   <string name="advanced_filter_label_ratings">Rating %1$s hingga %2$s</string>
   <string name="advanced_filter_label_release_year">Dirilis pada tahun %1$d hingga %2$d</string>
   <string name="advanced_filter_label_runtime">Durasi %1$d hingga %2$d menit.</string>
+  <string name="auto_tracking_card_action">Hubungkan Layanan Anda</string>
+  <string name="auto_tracking_card_detail_scrobble">Scrobbling otomatis saat Anda menonton dan menilai hal baru.</string>
+  <string name="auto_tracking_card_detail_sync">Sinkronkan riwayat tontonan dan peringkat Anda yang sudah ada.</string>
+  <string name="auto_tracking_card_heading">Lacak secara otomatis di seluruh layanan streaming Anda</string>
   <string name="badge_text_beta">Beta</string>
   <string name="badge_text_get_vip">Dapatkan VIP</string>
   <string name="badge_text_more">dan %d lainnya</string>
@@ -28,6 +33,7 @@
   <string name="button_label_add_to_favorites">Tambahkan \"%s\" ke Favorit Anda</string>
   <string name="button_label_add_to_personal_list">Tambahkan \"%1$s\" ke %2$s</string>
   <string name="button_label_add_to_watchlist">Tambahkan \"%s\" ke Daftar Tontonan Anda</string>
+  <string name="button_label_all_time_stats">Lihat semua statistik sepanjang masa</string>
   <string name="button_label_apply">Terapkan perubahan</string>
   <string name="button_label_approve_follow_request">Setujui permintaan ikuti dari %s</string>
   <string name="button_label_back">Kembali</string>
@@ -59,8 +65,6 @@
   <string name="button_label_comment_replies">Balasan Ulasan</string>
   <string name="button_label_comment_reply">Balas ke %s</string>
   <string name="button_label_connect_streaming_service">Hubungkan %s</string>
-  <string name="button_label_cookie_accept">Terima semua cookie</string>
-  <string name="button_label_cookie_accept_functional_only">Terima hanya cookie fungsional</string>
   <string name="button_label_copied">Tersalin</string>
   <string name="button_label_copy">Salin</string>
   <string name="button_label_create_app">Buat aplikasi</string>
@@ -163,11 +167,7 @@
   <string name="button_label_react">Bereaksi dengan %s</string>
   <string name="button_label_read_more">Baca selengkapnya</string>
   <string name="button_label_recent_comments">Ulasan terbaru</string>
-  <string name="button_label_recommendation_smart">Rekomendasi cerdas</string>
-  <string name="button_label_recommendation_standard">Rekomendasi standar</string>
   <string name="button_label_reject_follow_request">Tolak permintaan ikuti dari %s</string>
-  <string name="button_label_related_smart">Terkait Cerdas</string>
-  <string name="button_label_related_standard">Terkait Standar</string>
   <string name="button_label_remove_from_favorites">Hapus \"%s\" dari Favorit Anda</string>
   <string name="button_label_remove_from_history">Hapus tontonan \"%s\" ini dari Riwayat Tontonan Anda</string>
   <string name="button_label_remove_from_list">Hapus \"%s\" dari daftar</string>
@@ -236,6 +236,7 @@
   <string name="button_label_unfollow">Berhenti mengikuti %s</string>
   <string name="button_label_unlike_list">Tidak menyukai %s</string>
   <string name="button_label_unlink_streaming_service">Putuskan %s</string>
+  <string name="button_label_unread_preview_features">Fitur Pratinjau (fitur baru tersedia)</string>
   <string name="button_label_upload_photo">Unggah foto profil baru</string>
   <string name="button_label_user_profile">Profil Pengguna</string>
   <string name="button_label_view_all_activity">Lihat semua aktivitas</string>
@@ -274,6 +275,8 @@
   <string name="button_label_watch_until_here_anchor_end">Perlakukan tanggal yang dipilih sebagai akhir tontonan maraton</string>
   <string name="button_label_watch_until_here_anchor_start">Perlakukan tanggal yang dipilih sebagai awal tontonan maraton</string>
   <string name="button_label_watched_until_here">Tandai \"%s\" sudah ditonton sampai sini</string>
+  <string name="button_label_year_in_review">Lihat kilas balik %s Anda</string>
+  <string name="button_label_year_to_date">Lihat tahun berjalan Anda</string>
   <string name="button_plex_authorized">Saya telah menghubungkan Plex</string>
   <string name="button_plex_sync_now">Sinkronkan Sekarang</string>
   <string name="button_plex_toggle_scrobble">Scrobble</string>
@@ -286,6 +289,7 @@
   <string name="button_text_add_review">Tambahkan Ulasan</string>
   <string name="button_text_add_streaming_service">Tambahkan layanan streaming</string>
   <string name="button_text_add_to_favorites">Tambahkan ke Favorit</string>
+  <string name="button_text_all_time_stats">Lihat Semua Statistik</string>
   <string name="button_text_apply">Terapkan</string>
   <string name="button_text_approve_follow_request">Setujui Permintaan</string>
   <string name="button_text_block">Blokir</string>
@@ -305,8 +309,6 @@
   <string name="button_text_comment_replies">%d balasan</string>
   <string name="button_text_connect">Hubungkan</string>
   <string name="button_text_continue">Lanjutkan</string>
-  <string name="button_text_cookie_accept">Terima semua</string>
-  <string name="button_text_cookie_accept_functional_only">Hanya fungsional</string>
   <string name="button_text_create">Buat</string>
   <string name="button_text_create_list">Daftar</string>
   <string name="button_text_cta_create_list">Buat daftar</string>
@@ -337,6 +339,7 @@
   <string name="button_text_followers">Pengikut</string>
   <string name="button_text_following">Mengikuti</string>
   <string name="button_text_get_vip">Dapatkan</string>
+  <string name="button_text_hide">Sembunyikan</string>
   <string name="button_text_hide_description">Sembunyikan Deskripsi</string>
   <string name="button_text_hide_details">Sembunyikan Detail</string>
   <string name="button_text_hide_recommendation">Sembunyikan rekomendasi</string>
@@ -369,7 +372,7 @@
   <string name="button_text_media_share_type_image">Gambar</string>
   <string name="button_text_media_share_type_link">Tautan</string>
   <string name="button_text_meet_team">Temui tim</string>
-  <string name="button_text_month_in_review">%s dalam kilas balik</string>
+  <string name="button_text_month_in_review">%s dalam Kilas Balik</string>
   <string name="button_text_more">%d lainnya</string>
   <string name="button_text_move_to_bottom">Pindahkan ke Bawah</string>
   <string name="button_text_move_to_position">Pindahkan ke…</string>
@@ -388,12 +391,8 @@
   <string name="button_text_progress_in_progress">Sedang Berlangsung</string>
   <string name="button_text_raw_export">Ekspor sekarang</string>
   <string name="button_text_recent_comments">Terbaru</string>
-  <string name="button_text_recommendation_smart">Cerdas</string>
-  <string name="button_text_recommendation_standard">Standar</string>
   <string name="button_text_reconnect">Hubungkan Kembali</string>
   <string name="button_text_reject_follow_request">Tolak Permintaan</string>
-  <string name="button_text_related_smart">Cerdas</string>
-  <string name="button_text_related_standard">Standar</string>
   <string name="button_text_remove_from_favorites">Hapus dari Favorit</string>
   <string name="button_text_remove_from_history">Hapus dari Riwayat Tontonan</string>
   <string name="button_text_remove_from_list">Hapus dari daftar</string>
@@ -476,6 +475,8 @@
   <string name="button_text_watched_until_here">Ditonton sampai sini</string>
   <string name="button_text_watchlist">Daftar Tontonan</string>
   <string name="button_text_where_to_watch">Tempat menonton</string>
+  <string name="button_text_year_in_review">%s dalam Kilas Balik</string>
+  <string name="button_text_year_to_date">Tahun Berjalan</string>
   <string name="button_text_yes">Ya</string>
   <string name="button_text_younify_fix">Perbaiki</string>
   <string name="button_text_younify_send_logs">Kirim Log</string>
@@ -506,6 +507,7 @@
   <string name="confirmation_title_disconnect_plex">Putuskan sambungan Plex?</string>
   <string name="confirmation_title_drop_movie">Hentikan pelacakan film?</string>
   <string name="confirmation_title_drop_show">Hentikan pelacakan acara?</string>
+  <string name="confirmation_title_hide">Konfirmasi Sembunyikan</string>
   <string name="confirmation_title_hide_recommendation">Sembunyikan rekomendasi?</string>
   <string name="confirmation_title_log_out">Keluar?</string>
   <string name="confirmation_title_mark_as_watched">Tandai sebagai sudah ditonton?</string>
@@ -558,6 +560,7 @@
   <string name="description_streaming_sync">Secara otomatis menyinkronkan riwayat tontonan dan rating Anda.</string>
   <string name="description_streaming_vip_services">Tingkatkan untuk menghubungkan dan menyinkronkan layanan streaming ini.</string>
   <string name="description_sync_detail">Beberapa detail tentang sinkronisasi ini.</string>
+  <string name="dialog_prompt_hide_auto_tracking">Anda selalu dapat mengakses Pelacakan Otomatis dari pengaturan.</string>
   <string name="dialog_prompt_media_share_image_format">Pilih format gambar untuk dibagikan.</string>
   <string name="dialog_prompt_move_to_position">Masukkan posisi baru untuk \"%s\".</string>
   <string name="dialog_prompt_younify_data_sync">Apakah Anda ingin mengimpor data yang ada ke akun Trakt Anda, atau hanya menyinkronkan data baru mulai sekarang?</string>
@@ -586,6 +589,7 @@
   <string name="dropdown_label_person_position">Posisi</string>
   <string name="episode_footer_season_episode">M%1$d • E%2$d</string>
   <string name="episode_footer_season_episode_range">M%1$d • E%2$d-%3$d</string>
+  <string name="error_search_partial_results">Beberapa hasil mungkin hilang</string>
   <string name="error_text_404">(Jangan khawatir, itu terjadi! Bahkan Kekuatan pun terkadang tidak selaras.)</string>
   <string name="error_text_delete_account">Terjadi kesalahan saat menghapus akun Anda. Harap coba lagi.</string>
   <string name="error_text_email">Pembaruan email gagal. Pastikan alamatnya valid.</string>
@@ -708,10 +712,13 @@
   <string name="header_settings_tracking">Pelacakan</string>
   <string name="header_settings_translations">Terjemahan</string>
   <string name="header_skipped_items">%s Item Dilewati</string>
+  <string name="header_stats_contributions">Kontribusi</string>
   <string name="header_stats_graph_peak">Jam Puncak</string>
   <string name="header_stats_graph_screen_time_daily">Rincian Harian</string>
   <string name="header_stats_graph_shows_movies">Acara vs Film</string>
   <string name="header_stats_monthly">Statistik Bulanan</string>
+  <string name="header_stats_progress">Kemajuan</string>
+  <string name="header_stats_watched">Ditonton</string>
   <string name="header_status">Status</string>
   <string name="header_stream_on">Streaming di</string>
   <string name="header_streaming">Ketersediaan</string>
@@ -723,6 +730,7 @@
   <string name="header_target">Target</string>
   <string name="header_total_runtime">Total Durasi</string>
   <string name="header_writer">Penulis</string>
+  <string name="heading_api_application_vip_only">Membuat aplikasi baru memerlukan Trakt VIP</string>
   <string name="heading_api_applications">Aplikasi API</string>
   <string name="heading_apps_settings">Aplikasi</string>
   <string name="heading_blocked_users">Pengguna yang Diblokir</string>
@@ -808,6 +816,7 @@
   <string name="input_placeholder_app_name">Aplikasi saya</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
+  <string name="input_placeholder_filter">Filter</string>
   <string name="input_placeholder_filter_services">Saring layanan streaming</string>
   <string name="input_placeholder_lists_description">Deskripsi (opsional)</string>
   <string name="input_placeholder_lists_name">Nama</string>
@@ -858,6 +867,7 @@
   <string name="label_plex_webhook_url">URL Webhook</string>
   <string name="label_queued_action">Disimpan secara offline, menunggu sinkronisasi</string>
   <string name="label_ratings_season_chart">Peringkat Musim Seiring Waktu</string>
+  <string name="label_registered_accounts">Akun terdaftar</string>
   <string name="label_report_reason_abusive">Kasar</string>
   <string name="label_report_reason_adult">Konten dewasa</string>
   <string name="label_report_reason_bigotry">Fanatisme</string>
@@ -887,6 +897,7 @@
   <string name="label_stats_days_active">Hari Aktif</string>
   <string name="label_stats_dropped_streaks">Streak yang Dibatalkan</string>
   <string name="label_stats_episodes">Episode</string>
+  <string name="label_stats_finished">Selesai</string>
   <string name="label_stats_hours">Jam</string>
   <string name="label_stats_movies">Film</string>
   <string name="label_stats_plays">Tontonan</string>
@@ -1053,6 +1064,10 @@
   <string name="match_pill_anchor">Cocok:</string>
   <string name="match_pill_aria_label">Kecocokan %1$d%, %2$s. Buka detail kecocokan.</string>
   <string name="match_pill_loading_aria_label">Menghitung skor kecocokan</string>
+  <string name="mir_banner_body">Rekap bulanan Anda sudah siap. Inilah yang Anda tonton di %s.</string>
+  <string name="mir_banner_body_short">Rekap %s Anda sudah siap.</string>
+  <string name="mir_banner_explore">Jelajahi</string>
+  <string name="mir_banner_in_review">Dalam Kilas Balik</string>
   <string name="mir_share_text">Lihat Kilas Balik Bulan %s saya di Trakt</string>
   <string name="mir_title_month_in_review">Kilas Balik Bulanan</string>
   <string name="notes_placeholder_text">Tinggalkan catatan saat berikutnya Anda memfavoritkan atau membatalkan judul.</string>
@@ -1151,17 +1166,14 @@
   <string name="preview_feature_description_parental_guide">Tampilkan tingkat risiko konten di laci detail untuk film, acara, dan episode.</string>
   <string name="preview_feature_description_rewatch">Mulai sesi menonton ulang untuk acara yang sudah Anda tonton, check-in atau tandai episode yang sudah ditonton langsung dari panel sesi.</string>
   <string name="preview_feature_description_scoped_favorites">Batas waktu daftar favorit dengan menampilkan favorit tahun berjalan di profil dan mengelompokkan daftar favorit lengkap berdasarkan tahun.</string>
-  <string name="preview_feature_description_smart_recommendations">Gunakan mesin generasi berikutnya kami untuk menampilkan film dan acara yang direkomendasikan melampaui yang biasa.</string>
-  <string name="preview_feature_description_smart_related">Gunakan mesin generasi berikutnya kami untuk menampilkan film dan acara terkait yang melampaui yang biasa.</string>
   <string name="preview_feature_description_up_next_smart_sort">Coba cara yang lebih cerdas untuk mengurutkan Lanjutkan Menonton Anda.</string>
   <string name="preview_feature_title_edit_mode">Mode Edit</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Tonton Ulang</string>
   <string name="preview_feature_title_scoped_favorites">Favorit Terbatas</string>
-  <string name="preview_feature_title_smart_recommendations">Rekomendasi Cerdas</string>
-  <string name="preview_feature_title_smart_related">Terkait Cerdas</string>
   <string name="preview_feature_title_up_next_smart_sort">Lanjutkan Menonton Urutan Cerdas</string>
   <string name="reset_status_cleared">Daftar tontonan dibersihkan.</string>
+  <string name="screen_account_settings_language_system_message_tvos">Trakt menggunakan pengaturan bahasa Apple TV Anda. Untuk memperbarui, buka:\n\nPengaturan Apple TV &gt; Umum &gt; Bahasa Apple TV</string>
   <string name="section_title_season_progress">Musim %d kemajuan</string>
   <string name="section_title_seasons_overview">Ikhtisar</string>
   <string name="section_title_specials_progress">Kemajuan Spesial</string>
@@ -1170,6 +1182,7 @@
   <string name="stat_text_favorited">Favorit</string>
   <string name="stat_text_lists">Daftar</string>
   <string name="stat_text_plays">Tontonan</string>
+  <string name="stat_text_time_watched">Ditonton</string>
   <string name="stat_text_watchers">Penonton</string>
   <string name="switch_label_mark_as_spoiler">Tandai sebagai spoiler</string>
   <string name="switch_label_multiple_watches">Aktifkan atau nonaktifkan beberapa kali tonton</string>
@@ -1204,6 +1217,7 @@
   <string name="tag_text_most_popular">Paling populer</string>
   <string name="tag_text_movies">Film</string>
   <string name="tag_text_new">Baru</string>
+  <string name="tag_text_new_preview_feature">Baru</string>
   <string name="tag_text_number_of_episodes">%d episode.</string>
   <string name="tag_text_plays">%d putar</string>
   <string name="tag_text_premiere">Premiere</string>
@@ -1223,6 +1237,7 @@
   <string name="tag_text_started">Dimulai</string>
   <string name="tag_text_tba">TBA</string>
   <string name="tag_text_vip">VIP</string>
+  <string name="tag_text_vip_preview">Pratinjau VIP</string>
   <string name="tag_text_watch_count">Jumlah tontonan</string>
   <string name="tag_text_watched">Ditonton</string>
   <string name="tag_text_watchlisted">Di Daftar Tontonan</string>
@@ -1234,6 +1249,7 @@
   <string name="text_all_settings">Semua Pengaturan</string>
   <string name="text_all_time">Sepanjang waktu</string>
   <string name="text_analytics">Analitik</string>
+  <string name="text_api_application_vip_only">Anggota VIP dapat mendaftarkan aplikasi OAuth tanpa batas</string>
   <string name="text_app_connected_on">Terhubung %s</string>
   <string name="text_app_created_on">Dibuat %s</string>
   <string name="text_app_last_used">Terakhir digunakan %s</string>
@@ -1280,7 +1296,6 @@
   <string name="text_connection_status_connected_title">Terhubung ke %s</string>
   <string name="text_connection_status_error_message">Terjadi kesalahan. Harap coba lagi.</string>
   <string name="text_connection_status_error_title">Tidak dapat menghubungkan %s</string>
-  <string name="text_cookie_notice">Trakt menggunakan K🍪🍪KI untuk meningkatkan pengalaman Anda secara keseluruhan. Anda dapat <a>membaca informasi lebih lanjut</a> di sini.</string>
   <string name="text_copyright_crafted_by">Dibuat dengan tangan di seluruh dunia.</string>
   <string name="text_copyright_notice">Semua hak dilindungi.</string>
   <string name="text_created_by">Dibuat oleh <a>%s</a></string>
@@ -1365,6 +1380,7 @@
   <string name="text_info_not_following">Anda tidak lagi mengikuti %s.</string>
   <string name="text_info_reply_added">Balasan telah ditambahkan.</string>
   <string name="text_info_reply_deleted">Balasan telah dihapus.</string>
+  <string name="text_info_report_sent">Laporan telah diajukan.</string>
   <string name="text_info_review_added">Ulasan telah ditambahkan.</string>
   <string name="text_info_review_deleted">Ulasan telah dihapus.</string>
   <string name="text_info_show_dropped">Acara telah dihentikan.</string>
@@ -1395,6 +1411,8 @@
   <string name="text_list_public">Publik</string>
   <string name="text_list_public_info">Daftar akan terlihat oleh semua pengguna.</string>
   <string name="text_location">Lokasi</string>
+  <string name="text_member_count_accessible">Lebih dari %s akun Trakt terdaftar</string>
+  <string name="text_member_count_tagline">Pengguna yang melacak tontonan mereka, dan terus bertambah</string>
   <string name="text_member_since">Sejak %s</string>
   <string name="text_movies_watched">%s film</string>
   <string name="text_next_day">%s mendatang</string>
@@ -1441,6 +1459,7 @@
   <string name="text_placeholder_generic">Tidak ada apa-apa di sini.</string>
   <string name="text_placeholder_preview_features">Saat ini tidak ada fitur pratinjau. Coba periksa lagi nanti.</string>
   <string name="text_play_count">%d putaran</string>
+  <string name="text_plays_watched">%s putaran</string>
   <string name="text_plex_auth_waiting">Halaman otorisasi Plex telah dibuka. Selesaikan proses masuk di sana, lalu klik tombol di bawah.</string>
   <string name="text_plex_synced_summary">Data telah disinkronkan %1$s kali. Sinkronisasi terakhir Anda adalah %2$s.</string>
   <string name="text_plex_tv_library_description">Aktifkan Trakt Plex Sync untuk mengakses pustaka media server Plex Anda.</string>
@@ -1620,6 +1639,7 @@
   <string name="text_vip_upsell_default_description_2">Tinjauan Tahun &amp; lainnya.</string>
   <string name="text_vip_upsell_dive_deeper">Selami lebih dalam.</string>
   <string name="text_vip_upsell_more_lists">Buat lebih banyak daftar.</string>
+  <string name="text_vip_upsell_more_stats">Buka lebih banyak statistik dengan VIP</string>
   <string name="text_vip_upsell_preview_features">Tingkatkan ke VIP untuk membuka fitur pratinjau.</string>
   <string name="text_vip_upsell_sentiment">Tingkatkan ke VIP untuk membuka lebih banyak wawasan.</string>
   <string name="text_vip_upsell_smart_lists">Tingkatkan ke VIP untuk membuka batas yang lebih tinggi.</string>

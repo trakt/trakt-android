@@ -12,9 +12,14 @@
   <string name="about_feature_title_discover">Fedezd fel, mit nézz</string>
   <string name="about_feature_title_rate_review">Értékeld és véleményezd</string>
   <string name="about_feature_title_scrobble">Sorozatok és filmek nyomon követése</string>
+  <string name="action_open_system_settings_tvos">Beállítások megnyitása</string>
   <string name="advanced_filter_label_ratings">Értékelés: %1$s és %2$s között</string>
   <string name="advanced_filter_label_release_year">Megjelent %1$d és %2$d között</string>
   <string name="advanced_filter_label_runtime">Játékidő: %1$d és %2$d perc között.</string>
+  <string name="auto_tracking_card_action">Szolgáltatások összekapcsolása</string>
+  <string name="auto_tracking_card_detail_scrobble">Automatikus scrobbling, amikor új dolgokat néz és értékel.</string>
+  <string name="auto_tracking_card_detail_sync">Szinkronizálja meglévő megtekintett előzményeit és értékeléseit.</string>
+  <string name="auto_tracking_card_heading">Automatikus követés streaming szolgáltatásai között</string>
   <string name="badge_text_beta">Béta</string>
   <string name="badge_text_get_vip">Legyél VIP</string>
   <string name="badge_text_more">és %d további</string>
@@ -28,6 +33,7 @@
   <string name="button_label_add_to_favorites">\"%s\" hozzáadása a kedvencekhez</string>
   <string name="button_label_add_to_personal_list">\"%1$s\" hozzáadása ehhez: %2$s</string>
   <string name="button_label_add_to_watchlist">\"%s\" hozzáadása a Megnézendőkhöz</string>
+  <string name="button_label_all_time_stats">Összesített statisztikák megtekintése</string>
   <string name="button_label_apply">Változások alkalmazása</string>
   <string name="button_label_approve_follow_request">Követési kérelem jóváhagyása %s felhasználótól</string>
   <string name="button_label_back">Vissza</string>
@@ -59,8 +65,6 @@
   <string name="button_label_comment_replies">Válaszok az értékelésre</string>
   <string name="button_label_comment_reply">Válasz %s felhasználónak</string>
   <string name="button_label_connect_streaming_service">Csatlakozás a(z) %s szolgáltatáshoz</string>
-  <string name="button_label_cookie_accept">Összes süti elfogadása</string>
-  <string name="button_label_cookie_accept_functional_only">Csak funkcionális sütik elfogadása</string>
   <string name="button_label_copied">Másolva</string>
   <string name="button_label_copy">Másolás</string>
   <string name="button_label_create_app">Alkalmazás létrehozása</string>
@@ -163,11 +167,7 @@
   <string name="button_label_react">Reagálás ezzel: %s</string>
   <string name="button_label_read_more">Bővebben</string>
   <string name="button_label_recent_comments">Legújabb értékelések</string>
-  <string name="button_label_recommendation_smart">Intelligens ajánlások</string>
-  <string name="button_label_recommendation_standard">Standard ajánlások</string>
   <string name="button_label_reject_follow_request">Követési kérelem elutasítása %s felhasználótól</string>
-  <string name="button_label_related_smart">Okos kapcsolódó</string>
-  <string name="button_label_related_standard">Standard kapcsolódó</string>
   <string name="button_label_remove_from_favorites">\"%s\" eltávolítása a kedvencek közül</string>
   <string name="button_label_remove_from_history">\"%s\" ezen lejátszásának eltávolítása az előzményekből</string>
   <string name="button_label_remove_from_list">\"%s\" eltávolítása a listáról</string>
@@ -236,6 +236,7 @@
   <string name="button_label_unfollow">%s követésének megszüntetése</string>
   <string name="button_label_unlike_list">%s kedvelésének megszüntetése</string>
   <string name="button_label_unlink_streaming_service">A(z) %s leválasztása</string>
+  <string name="button_label_unread_preview_features">Előnézeti funkciók (új funkciók érhetők el)</string>
   <string name="button_label_upload_photo">Új profilkép feltöltése</string>
   <string name="button_label_user_profile">Felhasználói profil</string>
   <string name="button_label_view_all_activity">Összes tevékenység megtekintése</string>
@@ -274,6 +275,8 @@
   <string name="button_label_watch_until_here_anchor_end">A kiválasztott dátum kezelése a sorozatnézés végeként</string>
   <string name="button_label_watch_until_here_anchor_start">A kiválasztott dátum kezelése a sorozatnézés kezdeteként</string>
   <string name="button_label_watched_until_here">\"%s megjelölése eddig látottként</string>
+  <string name="button_label_year_in_review">Tekintsd meg a(z) %s éves áttekintődet</string>
+  <string name="button_label_year_to_date">Tekintsd meg az éves összesítésedet</string>
   <string name="button_plex_authorized">Csatlakoztattam a Plexet</string>
   <string name="button_plex_sync_now">Szinkronizálás most</string>
   <string name="button_plex_toggle_scrobble">Scrobble</string>
@@ -286,6 +289,7 @@
   <string name="button_text_add_review">Értékelés hozzáadása</string>
   <string name="button_text_add_streaming_service">Streaming szolgáltatás hozzáadása</string>
   <string name="button_text_add_to_favorites">Hozzáadás a kedvencekhez</string>
+  <string name="button_text_all_time_stats">Összes statisztika megtekintése</string>
   <string name="button_text_apply">Alkalmaz</string>
   <string name="button_text_approve_follow_request">Kérelem jóváhagyása</string>
   <string name="button_text_block">Blokkolás</string>
@@ -305,8 +309,6 @@
   <string name="button_text_comment_replies">%d válasz</string>
   <string name="button_text_connect">Csatlakozás</string>
   <string name="button_text_continue">Folytatás</string>
-  <string name="button_text_cookie_accept">Összes elfogadása</string>
-  <string name="button_text_cookie_accept_functional_only">Csak funkcionális</string>
   <string name="button_text_create">Létrehozás</string>
   <string name="button_text_create_list">Lista</string>
   <string name="button_text_cta_create_list">Lista létrehozása</string>
@@ -337,6 +339,7 @@
   <string name="button_text_followers">Követők</string>
   <string name="button_text_following">Követettek</string>
   <string name="button_text_get_vip">Szerezd be</string>
+  <string name="button_text_hide">Elrejtés</string>
   <string name="button_text_hide_description">Leírás elrejtése</string>
   <string name="button_text_hide_details">Részletek elrejtése</string>
   <string name="button_text_hide_recommendation">Ajánlás elrejtése</string>
@@ -369,7 +372,7 @@
   <string name="button_text_media_share_type_image">Kép</string>
   <string name="button_text_media_share_type_link">Link</string>
   <string name="button_text_meet_team">Ismerd meg a csapatot</string>
-  <string name="button_text_month_in_review">%s összefoglaló</string>
+  <string name="button_text_month_in_review">%s összefoglalója</string>
   <string name="button_text_more">%d további</string>
   <string name="button_text_move_to_bottom">Mozgatás alulra</string>
   <string name="button_text_move_to_position">Mozgatás ide…</string>
@@ -388,12 +391,8 @@
   <string name="button_text_progress_in_progress">Folyamatban</string>
   <string name="button_text_raw_export">Exportálás most</string>
   <string name="button_text_recent_comments">Legújabb</string>
-  <string name="button_text_recommendation_smart">Okos</string>
-  <string name="button_text_recommendation_standard">Standard</string>
   <string name="button_text_reconnect">Újracsatlakozás</string>
   <string name="button_text_reject_follow_request">Kérelem elutasítása</string>
-  <string name="button_text_related_smart">Okos</string>
-  <string name="button_text_related_standard">Standard</string>
   <string name="button_text_remove_from_favorites">Eltávolítás a kedvencek közül</string>
   <string name="button_text_remove_from_history">Eltávolítás az előzményekből</string>
   <string name="button_text_remove_from_list">Eltávolítás a listáról</string>
@@ -476,6 +475,8 @@
   <string name="button_text_watched_until_here">Eddig láttam</string>
   <string name="button_text_watchlist">Megnézendők</string>
   <string name="button_text_where_to_watch">Hol nézhető</string>
+  <string name="button_text_year_in_review">%s év áttekintése</string>
+  <string name="button_text_year_to_date">Éves összesítés</string>
   <string name="button_text_yes">Igen</string>
   <string name="button_text_younify_fix">Javítás</string>
   <string name="button_text_younify_send_logs">Naplók küldése</string>
@@ -506,6 +507,7 @@
   <string name="confirmation_title_disconnect_plex">Leválasztja a Plexet?</string>
   <string name="confirmation_title_drop_movie">Film félbehagyása?</string>
   <string name="confirmation_title_drop_show">Sorozat félbehagyása?</string>
+  <string name="confirmation_title_hide">Elrejtés megerősítése</string>
   <string name="confirmation_title_hide_recommendation">Ajánlás elrejtése?</string>
   <string name="confirmation_title_log_out">Kijelentkezés?</string>
   <string name="confirmation_title_mark_as_watched">Jelölés megtekintettként?</string>
@@ -558,6 +560,7 @@
   <string name="description_streaming_sync">Automatikusan szinkronizálja megtekintett előzményeit és értékeléseit.</string>
   <string name="description_streaming_vip_services">Frissíts a csatlakozáshoz és a szinkronizáláshoz ezekkel a streaming szolgáltatásokkal.</string>
   <string name="description_sync_detail">Néhány részlet erről a szinkronizálásról.</string>
+  <string name="dialog_prompt_hide_auto_tracking">Az automatikus követést mindig elérheti a beállításokból.</string>
   <string name="dialog_prompt_media_share_image_format">Válasszon egy képformátumot a megosztáshoz.</string>
   <string name="dialog_prompt_move_to_position">Adjon meg egy új pozíciót a(z) \"%s\" számára.</string>
   <string name="dialog_prompt_younify_data_sync">Szeretnéd importálni a meglévő adataidat a Trakt-fiókodba, vagy mostantól csak az új adatokat szinkronizáljuk?</string>
@@ -586,6 +589,7 @@
   <string name="dropdown_label_person_position">Pozíció</string>
   <string name="episode_footer_season_episode">É%1$d • E%2$d</string>
   <string name="episode_footer_season_episode_range">É%1$d • E%2$d-%3$d</string>
+  <string name="error_search_partial_results">Néhány találat hiányozhat</string>
   <string name="error_text_404">(Ne aggódj, megesik! Még az Erő sincs mindig egyensúlyban.)</string>
   <string name="error_text_delete_account">Valami hiba történt a fiókod törlése során. Kérjük, próbáld újra.</string>
   <string name="error_text_email">E-mail frissítés sikertelen. Győződj meg róla, hogy érvényes címet adtál meg.</string>
@@ -708,10 +712,13 @@
   <string name="header_settings_tracking">Nyomon követés</string>
   <string name="header_settings_translations">Fordítások</string>
   <string name="header_skipped_items">%s kihagyott elem</string>
+  <string name="header_stats_contributions">Hozzájárulások</string>
   <string name="header_stats_graph_peak">Csúcsidő</string>
   <string name="header_stats_graph_screen_time_daily">Napi bontás</string>
   <string name="header_stats_graph_shows_movies">Sorozatok vs Filmek</string>
   <string name="header_stats_monthly">Havi statisztikák</string>
+  <string name="header_stats_progress">Folyamat</string>
+  <string name="header_stats_watched">Megnézve</string>
   <string name="header_status">Állapot</string>
   <string name="header_stream_on">Streameld itt:</string>
   <string name="header_streaming">Elérhetőség</string>
@@ -723,6 +730,7 @@
   <string name="header_target">Cél</string>
   <string name="header_total_runtime">Teljes játékidő</string>
   <string name="header_writer">Író</string>
+  <string name="heading_api_application_vip_only">Új alkalmazások létrehozásához Trakt VIP tagság szükséges</string>
   <string name="heading_api_applications">API-alkalmazások</string>
   <string name="heading_apps_settings">Alkalmazások</string>
   <string name="heading_blocked_users">Blokkolt felhasználók</string>
@@ -808,6 +816,7 @@
   <string name="input_placeholder_app_name">Az én alkalmazásom</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
+  <string name="input_placeholder_filter">Szűrő</string>
   <string name="input_placeholder_filter_services">Streaming szolgáltatások szűrése</string>
   <string name="input_placeholder_lists_description">Leírás (opcionális)</string>
   <string name="input_placeholder_lists_name">Név</string>
@@ -858,6 +867,7 @@
   <string name="label_plex_webhook_url">Webhook URL</string>
   <string name="label_queued_action">Offline mentve, szinkronizálásra vár</string>
   <string name="label_ratings_season_chart">Évadértékelések idővel</string>
+  <string name="label_registered_accounts">Regisztrált fiókok</string>
   <string name="label_report_reason_abusive">Bántalmazó</string>
   <string name="label_report_reason_adult">Felnőtt tartalom</string>
   <string name="label_report_reason_bigotry">Fanatizmus</string>
@@ -887,6 +897,7 @@
   <string name="label_stats_days_active">Aktív nap</string>
   <string name="label_stats_dropped_streaks">Elveszített sorozat</string>
   <string name="label_stats_episodes">Epizódok</string>
+  <string name="label_stats_finished">Befejezve</string>
   <string name="label_stats_hours">Órák</string>
   <string name="label_stats_movies">Filmek</string>
   <string name="label_stats_plays">Lejátszások</string>
@@ -1053,6 +1064,10 @@
   <string name="match_pill_anchor">Egyezés:</string>
   <string name="match_pill_aria_label">%1$d% egyezés, %2$s. Egyezési részletek megnyitása.</string>
   <string name="match_pill_loading_aria_label">Egyezési pontszám számítása</string>
+  <string name="mir_banner_body">Havi összefoglalód kész. Íme, amit %s hónapban néztél.</string>
+  <string name="mir_banner_body_short">%s havi összefoglalód kész.</string>
+  <string name="mir_banner_explore">Felfedezés</string>
+  <string name="mir_banner_in_review">Áttekintés</string>
   <string name="mir_share_text">Nézd meg az %s havi összefoglalómat a Trakt-on!</string>
   <string name="mir_title_month_in_review">Havi összefoglaló</string>
   <string name="notes_placeholder_text">Hagyj egy jegyzetet, amikor legközelebb kedvencnek jelölsz vagy eldobsz egy címet.</string>
@@ -1151,17 +1166,14 @@
   <string name="preview_feature_description_parental_guide">Tartalomkockázati szintek megjelenítése a részletek panelen filmek, műsorok és epizódok esetén.</string>
   <string name="preview_feature_description_rewatch">Indíts újra nézési munkameneteket olyan műsorokhoz, amiket már láttál, jelentkezz be, vagy jelölj meg nézett epizódokat közvetlenül a munkamenet fiókból.</string>
   <string name="preview_feature_description_scoped_favorites">Időkorlátozza a kedvenc listákat azáltal, hogy megjeleníti az aktuális év kedvenceit a profilokon, és csoportosítja a teljes kedvencek listáját év szerint.</string>
-  <string name="preview_feature_description_smart_recommendations">Használd következő generációs motorunkat, hogy a nyilvánvalón túlmutató ajánlott filmeket és sorozatokat fedezz fel.</string>
-  <string name="preview_feature_description_smart_related">Használd következő generációs motorunkat, hogy a nyilvánvalón túlmutató kapcsolódó filmeket és sorozatokat fedezz fel.</string>
   <string name="preview_feature_description_up_next_smart_sort">Próbálja ki a Megtekintés folytatása rendezésének egy okosabb módját.</string>
   <string name="preview_feature_title_edit_mode">Szerkesztési mód</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Újra nézés</string>
   <string name="preview_feature_title_scoped_favorites">Korlátozott Kedvencek</string>
-  <string name="preview_feature_title_smart_recommendations">Intelligens ajánlások</string>
-  <string name="preview_feature_title_smart_related">Okos Kapcsolódó</string>
   <string name="preview_feature_title_up_next_smart_sort">Megtekintés folytatása - Okos Rendezés</string>
   <string name="reset_status_cleared">Megnézendők listája kiürítve.</string>
+  <string name="screen_account_settings_language_system_message_tvos">A Trakt az Apple TV nyelvi beállításait használja. A frissítéshez lépjen ide:\n\nApple TV Beállítások &gt; Általános &gt; Apple TV Nyelvek</string>
   <string name="section_title_season_progress">%d. évad előrehaladása</string>
   <string name="section_title_seasons_overview">Áttekintés</string>
   <string name="section_title_specials_progress">Különkiadások előrehaladása</string>
@@ -1170,6 +1182,7 @@
   <string name="stat_text_favorited">Kedvencek</string>
   <string name="stat_text_lists">Listák</string>
   <string name="stat_text_plays">Lejátszások</string>
+  <string name="stat_text_time_watched">Megnézve</string>
   <string name="stat_text_watchers">Nézők</string>
   <string name="switch_label_mark_as_spoiler">Jelölés spoilerként</string>
   <string name="switch_label_multiple_watches">Újranézések engedélyezése vagy letiltása</string>
@@ -1204,6 +1217,7 @@
   <string name="tag_text_most_popular">Legnépszerűbb</string>
   <string name="tag_text_movies">Filmek</string>
   <string name="tag_text_new">Új</string>
+  <string name="tag_text_new_preview_feature">Új</string>
   <string name="tag_text_number_of_episodes">%d epizód</string>
   <string name="tag_text_plays">%d lejátszás</string>
   <string name="tag_text_premiere">Premier</string>
@@ -1223,6 +1237,7 @@
   <string name="tag_text_started">Elkezdve</string>
   <string name="tag_text_tba">TBA</string>
   <string name="tag_text_vip">VIP</string>
+  <string name="tag_text_vip_preview">VIP Előnézet</string>
   <string name="tag_text_watch_count">Megtekintések száma</string>
   <string name="tag_text_watched">Megnézve</string>
   <string name="tag_text_watchlisted">Megnézendők</string>
@@ -1234,6 +1249,7 @@
   <string name="text_all_settings">Összes beállítás</string>
   <string name="text_all_time">Minden idők</string>
   <string name="text_analytics">Analitika</string>
+  <string name="text_api_application_vip_only">A VIP tagok korlátlan számú OAuth alkalmazást regisztrálhatnak.</string>
   <string name="text_app_connected_on">Csatlakoztatva ekkor: %s</string>
   <string name="text_app_created_on">Létrehozva ekkor: %s</string>
   <string name="text_app_last_used">Utoljára használva ekkor: %s</string>
@@ -1280,7 +1296,6 @@
   <string name="text_connection_status_connected_title">Csatlakoztatva a(z) %s szolgáltatáshoz</string>
   <string name="text_connection_status_error_message">Valami hiba történt. Kérjük, próbálja újra.</string>
   <string name="text_connection_status_error_title">Nem sikerült csatlakozni a(z) %s szolgáltatáshoz</string>
-  <string name="text_cookie_notice">A Trakt sütiket (C🍪🍪KIE-k) használ az általános élmény javítása érdekében. <a href="#">Itt olvashatsz erről bővebben.</a></string>
   <string name="text_copyright_crafted_by">K\nTézzel k\nTész\nült vil\nTág szerte.</string>
   <string name="text_copyright_notice">Minden jog fenntartva.</string>
   <string name="text_created_by">Készítette: <a>%s</a></string>
@@ -1365,6 +1380,7 @@
   <string name="text_info_not_following">Már nem követed %s.</string>
   <string name="text_info_reply_added">Válasz hozzáadva.</string>
   <string name="text_info_reply_deleted">Válasz törölve.</string>
+  <string name="text_info_report_sent">Jelentés elküldve.</string>
   <string name="text_info_review_added">Értékelés hozzáadva.</string>
   <string name="text_info_review_deleted">Értékelés törölve.</string>
   <string name="text_info_show_dropped">A sorozat félbehagyva.</string>
@@ -1395,6 +1411,8 @@
   <string name="text_list_public">Nyilvános</string>
   <string name="text_list_public_info">A lista minden felhasználó számára látható lesz.</string>
   <string name="text_location">Hely</string>
+  <string name="text_member_count_accessible">Több mint %s regisztrált Trakt fiók</string>
+  <string name="text_member_count_tagline">emberek, akik követik, mit néznek, és a szám folyamatosan növekszik</string>
   <string name="text_member_since">Mióta: %s</string>
   <string name="text_movies_watched">%s film</string>
   <string name="text_next_day">jövő %s</string>
@@ -1441,6 +1459,7 @@
   <string name="text_placeholder_generic">Nincs itt semmi.</string>
   <string name="text_placeholder_preview_features">Jelenleg nincsenek előnézeti funkciók. Nézz vissza később.</string>
   <string name="text_play_count">%d lejátszás</string>
+  <string name="text_plays_watched">%s lejátszás</string>
   <string name="text_plex_auth_waiting">Megnyílt egy Plex engedélyezési oldal. Fejezd be a bejelentkezést ott, majd kattints az alábbi gombra.</string>
   <string name="text_plex_synced_summary">Az adatok %1$s alkalommal szinkronizálódtak. Az utolsó szinkronizálás: %2$s.</string>
   <string name="text_plex_tv_library_description">Engedélyezze a Trakt Plex szinkronizálást a Plex szerver média könyvtárához való hozzáféréshez.</string>
@@ -1620,6 +1639,7 @@
   <string name="text_vip_upsell_default_description_2">Éves áttekintés és még sok más.</string>
   <string name="text_vip_upsell_dive_deeper">Merülj el.</string>
   <string name="text_vip_upsell_more_lists">Több lista létrehozása.</string>
+  <string name="text_vip_upsell_more_stats">Oldj fel több statisztikát VIP-vel</string>
   <string name="text_vip_upsell_preview_features">Frissíts VIP-re, hogy feloldhasd az előnézeti funkciókat.</string>
   <string name="text_vip_upsell_sentiment">Válts VIP-re a részletesebb statisztikák feloldásához!</string>
   <string name="text_vip_upsell_smart_lists">Frissíts VIP-re, hogy feloldhasd a magasabb korlátokat.</string>

@@ -12,9 +12,14 @@
   <string name="about_feature_title_discover">Descoperă ce să vizionezi</string>
   <string name="about_feature_title_rate_review">Evaluează &amp; Recenzează</string>
   <string name="about_feature_title_scrobble">Urmărește Seriale &amp; Filme</string>
+  <string name="action_open_system_settings_tvos">Deschide Setări</string>
   <string name="advanced_filter_label_ratings">Evaluare de la %1$s la %2$s</string>
   <string name="advanced_filter_label_release_year">Lansat între %1$d și %2$d</string>
   <string name="advanced_filter_label_runtime">Durată de la %1$d la %2$d minute.</string>
+  <string name="auto_tracking_card_action">Conectează-ți serviciile</string>
+  <string name="auto_tracking_card_detail_scrobble">Scrobbling automat când vizionezi și evaluezi lucruri noi.</string>
+  <string name="auto_tracking_card_detail_sync">Sincronizează-ți istoricul de vizionare și evaluările existente.</string>
+  <string name="auto_tracking_card_heading">Urmăriți automat pe toate serviciile dvs. de streaming</string>
   <string name="badge_text_beta">Beta</string>
   <string name="badge_text_get_vip">Ia VIP</string>
   <string name="badge_text_more">și încă %d</string>
@@ -28,6 +33,7 @@
   <string name="button_label_add_to_favorites">Adaugă \"%s\" la Favoritele tale</string>
   <string name="button_label_add_to_personal_list">Adaugă \"%1$s\" la %2$s</string>
   <string name="button_label_add_to_watchlist">Adaugă \"%s\" la lista ta de vizionare</string>
+  <string name="button_label_all_time_stats">Vezi toate statisticile</string>
   <string name="button_label_apply">Aplică modificările</string>
   <string name="button_label_approve_follow_request">Aprobă cererea de urmărire de la %s</string>
   <string name="button_label_back">Înapoi</string>
@@ -59,8 +65,6 @@
   <string name="button_label_comment_replies">Răspunsuri la recenzie</string>
   <string name="button_label_comment_reply">Răspunde lui %s</string>
   <string name="button_label_connect_streaming_service">Conectează %s</string>
-  <string name="button_label_cookie_accept">Acceptă toate cookie-urile</string>
-  <string name="button_label_cookie_accept_functional_only">Acceptă doar cookie-urile funcționale</string>
   <string name="button_label_copied">Copiat</string>
   <string name="button_label_copy">Copiază</string>
   <string name="button_label_create_app">Creare aplicație</string>
@@ -163,11 +167,7 @@
   <string name="button_label_react">Reacționează cu %s</string>
   <string name="button_label_read_more">Citește mai mult</string>
   <string name="button_label_recent_comments">Recenzii recente</string>
-  <string name="button_label_recommendation_smart">Recomandări inteligente</string>
-  <string name="button_label_recommendation_standard">Recomandări standard</string>
   <string name="button_label_reject_follow_request">Refuză cererea de urmărire de la %s</string>
-  <string name="button_label_related_smart">Inteligent corelate</string>
-  <string name="button_label_related_standard">Corelate standard</string>
   <string name="button_label_remove_from_favorites">Elimină \"%s\" din Favoritele tale</string>
   <string name="button_label_remove_from_history">Elimină această vizionare a \"%s\" din istoricul tău de vizionate</string>
   <string name="button_label_remove_from_list">Elimină \"%s\" din listă</string>
@@ -236,6 +236,7 @@
   <string name="button_label_unfollow">Nu-l mai urmări pe %s</string>
   <string name="button_label_unlike_list">Anulează aprecierea %s</string>
   <string name="button_label_unlink_streaming_service">Deconectează %s</string>
+  <string name="button_label_unread_preview_features">Funcții de previzualizare (funcții noi disponibile)</string>
   <string name="button_label_upload_photo">Încarcă o nouă fotografie de profil</string>
   <string name="button_label_user_profile">Profil utilizator</string>
   <string name="button_label_view_all_activity">Vezi toată activitatea</string>
@@ -274,6 +275,8 @@
   <string name="button_label_watch_until_here_anchor_end">Tratați data selectată ca sfârșitul vizionării intense</string>
   <string name="button_label_watch_until_here_anchor_start">Tratați data selectată ca începutul vizionării intense</string>
   <string name="button_label_watched_until_here">Marchează \"%s\" ca vizionat până aici</string>
+  <string name="button_label_year_in_review">Vezi retrospectiva anului %s</string>
+  <string name="button_label_year_to_date">Vezi anul curent</string>
   <string name="button_plex_authorized">Am conectat Plex</string>
   <string name="button_plex_sync_now">Sincronizează acum</string>
   <string name="button_plex_toggle_scrobble">Scrobblează</string>
@@ -286,6 +289,7 @@
   <string name="button_text_add_review">Adaugă recenzie</string>
   <string name="button_text_add_streaming_service">Adaugă serviciu de streaming</string>
   <string name="button_text_add_to_favorites">Adaugă la Favorite</string>
+  <string name="button_text_all_time_stats">Vezi toate statisticile</string>
   <string name="button_text_apply">Aplică</string>
   <string name="button_text_approve_follow_request">Aprobă cererea</string>
   <string name="button_text_block">Blocare</string>
@@ -305,8 +309,6 @@
   <string name="button_text_comment_replies">%d răspunsuri</string>
   <string name="button_text_connect">Conectează</string>
   <string name="button_text_continue">Continuă</string>
-  <string name="button_text_cookie_accept">Acceptă tot</string>
-  <string name="button_text_cookie_accept_functional_only">Doar funcționale</string>
   <string name="button_text_create">Creează</string>
   <string name="button_text_create_list">Listă</string>
   <string name="button_text_cta_create_list">Creează listă</string>
@@ -337,6 +339,7 @@
   <string name="button_text_followers">Urmăritori</string>
   <string name="button_text_following">Urmărește</string>
   <string name="button_text_get_vip">Obține</string>
+  <string name="button_text_hide">Ascunde</string>
   <string name="button_text_hide_description">Ascunde descrierea</string>
   <string name="button_text_hide_details">Ascunde detalii</string>
   <string name="button_text_hide_recommendation">Ascunde recomandarea</string>
@@ -388,12 +391,8 @@
   <string name="button_text_progress_in_progress">În desfășurare</string>
   <string name="button_text_raw_export">Exportă acum</string>
   <string name="button_text_recent_comments">Recente</string>
-  <string name="button_text_recommendation_smart">Inteligent</string>
-  <string name="button_text_recommendation_standard">Standard</string>
   <string name="button_text_reconnect">Reconectează</string>
   <string name="button_text_reject_follow_request">Refuză cererea</string>
-  <string name="button_text_related_smart">Inteligent</string>
-  <string name="button_text_related_standard">Standard</string>
   <string name="button_text_remove_from_favorites">Elimină din Favorite</string>
   <string name="button_text_remove_from_history">Elimină din istoric</string>
   <string name="button_text_remove_from_list">Elimină din listă</string>
@@ -476,6 +475,8 @@
   <string name="button_text_watched_until_here">Vizionat până aici</string>
   <string name="button_text_watchlist">Listă de vizionare</string>
   <string name="button_text_where_to_watch">Unde să vizionezi</string>
+  <string name="button_text_year_in_review">Retrospectiva anului %s</string>
+  <string name="button_text_year_to_date">Anul curent</string>
   <string name="button_text_yes">Da</string>
   <string name="button_text_younify_fix">Repară</string>
   <string name="button_text_younify_send_logs">Trimite jurnale</string>
@@ -506,6 +507,7 @@
   <string name="confirmation_title_disconnect_plex">Deconectezi Plex?</string>
   <string name="confirmation_title_drop_movie">Renunță la film?</string>
   <string name="confirmation_title_drop_show">Renunță la serial?</string>
+  <string name="confirmation_title_hide">Confirmă ascunderea</string>
   <string name="confirmation_title_hide_recommendation">Ascunde recomandarea?</string>
   <string name="confirmation_title_log_out">Deconectare?</string>
   <string name="confirmation_title_mark_as_watched">Marchează ca vizionat?</string>
@@ -558,6 +560,7 @@
   <string name="description_streaming_sync">Sincronizează automat istoricul vizionărilor și evaluările tale.</string>
   <string name="description_streaming_vip_services">Faceți upgrade pentru a conecta și sincroniza aceste servicii de streaming.</string>
   <string name="description_sync_detail">Câteva detalii despre această sincronizare.</string>
+  <string name="dialog_prompt_hide_auto_tracking">Poți accesa oricând Urmărirea Automată din setări.</string>
   <string name="dialog_prompt_media_share_image_format">Alege un format de imagine pentru partajare.</string>
   <string name="dialog_prompt_move_to_position">Introduceți o nouă poziție pentru \"%s\".</string>
   <string name="dialog_prompt_younify_data_sync">Dorești să-ți importi datele existente în contul Trakt sau să sincronizezi doar date noi de acum încolo?</string>
@@ -586,6 +589,7 @@
   <string name="dropdown_label_person_position">Poziție</string>
   <string name="episode_footer_season_episode">S%1$d • E%2$d</string>
   <string name="episode_footer_season_episode_range">S%1$d • E%2$d-%3$d</string>
+  <string name="error_search_partial_results">Unele rezultate ar putea lipsi</string>
   <string name="error_text_404">(Nu-ți face griji, se întâmplă! Chiar și Forța este uneori dezaliniată.)</string>
   <string name="error_text_delete_account">Ceva nu a mers bine la ștergerea contului tău. Te rugăm să încerci din nou.</string>
   <string name="error_text_email">Actualizarea emailului a eșuat. Asigură-te că este o adresă validă.</string>
@@ -708,10 +712,13 @@
   <string name="header_settings_tracking">Urmărire</string>
   <string name="header_settings_translations">Traduceri</string>
   <string name="header_skipped_items">%s Elemente Omise</string>
+  <string name="header_stats_contributions">Contribuții</string>
   <string name="header_stats_graph_peak">Ore de vârf</string>
   <string name="header_stats_graph_screen_time_daily">Defalcare zilnică</string>
   <string name="header_stats_graph_shows_movies">Seriale vs Filme</string>
   <string name="header_stats_monthly">Statistici lunare</string>
+  <string name="header_stats_progress">Progres</string>
+  <string name="header_stats_watched">Vizionat</string>
   <string name="header_status">Stare</string>
   <string name="header_stream_on">Disponibil pe</string>
   <string name="header_streaming">Disponibilitate</string>
@@ -723,6 +730,7 @@
   <string name="header_target">Țintă</string>
   <string name="header_total_runtime">Durată totală</string>
   <string name="header_writer">Scenarist</string>
+  <string name="heading_api_application_vip_only">Crearea de aplicații noi necesită Trakt VIP</string>
   <string name="heading_api_applications">Aplicații API</string>
   <string name="heading_apps_settings">Aplicații</string>
   <string name="heading_blocked_users">Utilizatori blocați</string>
@@ -808,6 +816,7 @@
   <string name="input_placeholder_app_name">Aplicația mea</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
+  <string name="input_placeholder_filter">Filtru</string>
   <string name="input_placeholder_filter_services">Filtrează serviciile de streaming</string>
   <string name="input_placeholder_lists_description">Descriere (opțional)</string>
   <string name="input_placeholder_lists_name">Nume</string>
@@ -858,6 +867,7 @@
   <string name="label_plex_webhook_url">URL Webhook</string>
   <string name="label_queued_action">Salvat offline, în așteptarea sincronizării</string>
   <string name="label_ratings_season_chart">Evaluările sezoanelor în timp</string>
+  <string name="label_registered_accounts">Conturi înregistrate</string>
   <string name="label_report_reason_abusive">Abuziv</string>
   <string name="label_report_reason_adult">Conținut pentru adulți</string>
   <string name="label_report_reason_bigotry">Intoleranță</string>
@@ -887,6 +897,7 @@
   <string name="label_stats_days_active">Zile active</string>
   <string name="label_stats_dropped_streaks">Serii întrerupte</string>
   <string name="label_stats_episodes">Episoade</string>
+  <string name="label_stats_finished">Finalizate</string>
   <string name="label_stats_hours">Ore</string>
   <string name="label_stats_movies">Filme</string>
   <string name="label_stats_plays">Vizionări</string>
@@ -1053,6 +1064,10 @@
   <string name="match_pill_anchor">Potrivire:</string>
   <string name="match_pill_aria_label">%1$d% potrivire, %2$s. Deschide detaliile potrivirii.</string>
   <string name="match_pill_loading_aria_label">Se calculează scorul de potrivire</string>
+  <string name="mir_banner_body">Recapitularea ta lunară este gata. Iată ce ai vizionat în %s.</string>
+  <string name="mir_banner_body_short">Recapitularea ta din %s este gata.</string>
+  <string name="mir_banner_explore">Explorează</string>
+  <string name="mir_banner_in_review">În retrospectivă</string>
   <string name="mir_share_text">Vezi Luna mea în Revistă %s pe Trakt</string>
   <string name="mir_title_month_in_review">Retrospectiva Lunii</string>
   <string name="notes_placeholder_text">Lasă o notă data viitoare când adaugi la favorite sau renunți la un titlu.</string>
@@ -1151,17 +1166,14 @@
   <string name="preview_feature_description_parental_guide">Afișați nivelurile de risc ale conținutului în sertarul de detalii pentru filme, seriale și episoade.</string>
   <string name="preview_feature_description_rewatch">Începeți sesiuni de revizionare pentru emisiunile pe care le-ați văzut deja, înregistrați-vă sau marcați episoadele vizionate direct din panoul de sesiune.</string>
   <string name="preview_feature_description_scoped_favorites">Organizează listele de favorite pe perioade, afișând favoritele din anul curent pe profile și grupând lista completă de favorite pe ani.</string>
-  <string name="preview_feature_description_smart_recommendations">Utilizează motorul nostru de ultimă generație pentru a descoperi filme și seriale recomandate, dincolo de cele evidente.</string>
-  <string name="preview_feature_description_smart_related">Utilizează motorul nostru de ultimă generație pentru a descoperi filme și seriale corelate, dincolo de cele evidente.</string>
   <string name="preview_feature_description_up_next_smart_sort">Testează o modalitate mai inteligentă de a sorta elementele din Continuă vizionarea.</string>
   <string name="preview_feature_title_edit_mode">Mod editare</string>
   <string name="preview_feature_title_leaderboard">Panteon</string>
   <string name="preview_feature_title_rewatch">Revizionare</string>
   <string name="preview_feature_title_scoped_favorites">Favorite Contextuale</string>
-  <string name="preview_feature_title_smart_recommendations">Recomandări inteligente</string>
-  <string name="preview_feature_title_smart_related">Inteligent Corelate</string>
   <string name="preview_feature_title_up_next_smart_sort">Sortare inteligentă pentru Continuă vizionarea</string>
   <string name="reset_status_cleared">Lista de vizionare a fost ștearsă.</string>
+  <string name="screen_account_settings_language_system_message_tvos">Trakt folosește setările de limbă ale Apple TV-ului tău. Pentru a le actualiza, mergi la:\n\nSetări Apple TV &gt; General &gt; Limbi Apple TV</string>
   <string name="section_title_season_progress">Sezonul %d progres</string>
   <string name="section_title_seasons_overview">Prezentare generală</string>
   <string name="section_title_specials_progress">Progresul episoadelor speciale</string>
@@ -1170,6 +1182,7 @@
   <string name="stat_text_favorited">Favorite</string>
   <string name="stat_text_lists">Liste</string>
   <string name="stat_text_plays">Vizionări</string>
+  <string name="stat_text_time_watched">Vizionat</string>
   <string name="stat_text_watchers">Spectatori</string>
   <string name="switch_label_mark_as_spoiler">Marchează ca spoiler</string>
   <string name="switch_label_multiple_watches">Activează sau dezactivează vizionările multiple</string>
@@ -1204,6 +1217,7 @@
   <string name="tag_text_most_popular">Cel mai popular</string>
   <string name="tag_text_movies">Filme</string>
   <string name="tag_text_new">Nou</string>
+  <string name="tag_text_new_preview_feature">Nou</string>
   <string name="tag_text_number_of_episodes">%d ep.</string>
   <string name="tag_text_plays">%d vizionări</string>
   <string name="tag_text_premiere">Premiera</string>
@@ -1223,6 +1237,7 @@
   <string name="tag_text_started">Început</string>
   <string name="tag_text_tba">TBA</string>
   <string name="tag_text_vip">VIP</string>
+  <string name="tag_text_vip_preview">Previzualizare VIP</string>
   <string name="tag_text_watch_count">Număr vizionări</string>
   <string name="tag_text_watched">Vizionat</string>
   <string name="tag_text_watchlisted">Pe lista de vizionare</string>
@@ -1234,6 +1249,7 @@
   <string name="text_all_settings">Toate Setările</string>
   <string name="text_all_time">Dintotdeauna</string>
   <string name="text_analytics">Analiză</string>
+  <string name="text_api_application_vip_only">Membrii VIP pot înregistra aplicații OAuth nelimitate.</string>
   <string name="text_app_connected_on">Conectat la %s</string>
   <string name="text_app_created_on">Creat la %s</string>
   <string name="text_app_last_used">Ultima utilizare %s</string>
@@ -1280,7 +1296,6 @@
   <string name="text_connection_status_connected_title">Conectat la %s</string>
   <string name="text_connection_status_error_message">Ceva nu a mers bine. Te rugăm să încerci din nou.</string>
   <string name="text_connection_status_error_title">Nu s-a putut conecta %s</string>
-  <string name="text_cookie_notice">Trakt utilizează C🍪🍪KIE-uri pentru a-ți îmbunătăți experiența generală. Poți <a>citi mai multe informații</a> aici.</string>
   <string name="text_copyright_crafted_by">Creat cu pasiune în jurul lumii.</string>
   <string name="text_copyright_notice">Toate drepturile rezervate.</string>
   <string name="text_created_by">Creat de <a>%s</a></string>
@@ -1365,6 +1380,7 @@
   <string name="text_info_not_following">Nu mai urmărești pe %s.</string>
   <string name="text_info_reply_added">Răspunsul a fost adăugat.</string>
   <string name="text_info_reply_deleted">Răspunsul a fost șters.</string>
+  <string name="text_info_report_sent">Raportul a fost trimis.</string>
   <string name="text_info_review_added">Recenzia a fost adăugată.</string>
   <string name="text_info_review_deleted">Recenzia a fost ștearsă.</string>
   <string name="text_info_show_dropped">Serialul a fost abandonat.</string>
@@ -1395,6 +1411,8 @@
   <string name="text_list_public">Publică</string>
   <string name="text_list_public_info">Lista va fi vizibilă pentru toți utilizatorii.</string>
   <string name="text_location">Locație</string>
+  <string name="text_member_count_accessible">Peste %s conturi Trakt înregistrate</string>
+  <string name="text_member_count_tagline">persoane care își monitorizează vizionările, iar numărul este în creștere</string>
   <string name="text_member_since">Din %s</string>
   <string name="text_movies_watched">%s filme</string>
   <string name="text_next_day">%s viitoare</string>
@@ -1441,6 +1459,7 @@
   <string name="text_placeholder_generic">Nimic de văzut aici.</string>
   <string name="text_placeholder_preview_features">În prezent nu există funcții de previzualizare. Revino mai târziu.</string>
   <string name="text_play_count">%d vizionări</string>
+  <string name="text_plays_watched">%s vizionări</string>
   <string name="text_plex_auth_waiting">O pagină de autorizare Plex a fost deschisă. Finalizează autentificarea acolo, apoi apasă pe butonul de mai jos.</string>
   <string name="text_plex_synced_summary">Datele au fost sincronizate de %1$s ori. Ultima ta sincronizare a fost %2$s.</string>
   <string name="text_plex_tv_library_description">Activează Trakt Plex Sync pentru a accesa biblioteca media a serverului tău Plex.</string>
@@ -1620,6 +1639,7 @@
   <string name="text_vip_upsell_default_description_2">Retrospectiva Anului &amp; mai mult.</string>
   <string name="text_vip_upsell_dive_deeper">Aprofundează.</string>
   <string name="text_vip_upsell_more_lists">Creează mai multe liste.</string>
+  <string name="text_vip_upsell_more_stats">Deblochează mai multe statistici cu VIP</string>
   <string name="text_vip_upsell_preview_features">Treci la VIP pentru a debloca funcțiile de previzualizare.</string>
   <string name="text_vip_upsell_sentiment">Treci la VIP pentru a debloca mai multe informații.</string>
   <string name="text_vip_upsell_smart_lists">Treci la VIP pentru a debloca limite mai mari.</string>
