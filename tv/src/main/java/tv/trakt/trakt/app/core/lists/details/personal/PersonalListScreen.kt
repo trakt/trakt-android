@@ -40,14 +40,19 @@ import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.mediacards.VerticalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_NEXT_PAGE_OFFSET
-import tv.trakt.trakt.app.core.lists.details.personal.PersonalListConfig.PERSONAL_LIST_PAGE_LIMIT
 import tv.trakt.trakt.app.core.lists.details.personal.model.PersonalListItem
+import tv.trakt.trakt.app.core.lists.filters.TvListControlsState
+import tv.trakt.trakt.app.core.lists.filters.TvListEmptyState
+import tv.trakt.trakt.app.core.lists.filters.TvListFilterConfiguration
+import tv.trakt.trakt.app.core.lists.filters.TvListHeader
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 import kotlin.time.Duration.Companion.milliseconds
@@ -66,6 +71,8 @@ internal fun PersonalListScreen(
         onShowClick = onNavigateToShow,
         onMovieClick = onNavigateToMovie,
         onLoadNextPage = { viewModel.loadNextDataPage() },
+        onFilterApplied = viewModel::applyFilter,
+        onSortingApplied = viewModel::applySorting,
     )
 }
 
@@ -77,6 +84,8 @@ private fun PersonalListContent(
     onShowClick: (TraktId) -> Unit,
     onMovieClick: (TraktId) -> Unit,
     onLoadNextPage: () -> Unit,
+    onFilterApplied: (GlobalFilter) -> Unit,
+    onSortingApplied: (Sorting) -> Unit,
 ) {
     var focusedItem by remember { mutableStateOf<PersonalListItem?>(null) }
     var focusedItemId by rememberSaveable { mutableStateOf<String?>(null) }
@@ -117,16 +126,17 @@ private fun PersonalListContent(
             ),
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
-                Text(
-                    text = listName,
-                    color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.heading4,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .focusProperties {
-                            down = focusRequesters.values.firstOrNull() ?: FocusRequester.Default
-                        }
-                        .focusable(),
+                TvListHeader(
+                    title = listName,
+                    controlsState = TvListControlsState(
+                        filter = state.filter,
+                        sorting = state.sorting,
+                        configuration = TvListFilterConfiguration.MixedList,
+                    ),
+                    downFocusRequester = focusRequesters.values.firstOrNull()
+                        ?: FocusRequester.Default,
+                    onFilterApplied = onFilterApplied,
+                    onSortingApplied = onSortingApplied,
                 )
             }
 
@@ -273,6 +283,14 @@ private fun PersonalListContent(
                         )
                     }
                 }
+            } else if (!state.isLoading) {
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    TvListEmptyState(
+                        filter = state.filter,
+                        defaultMessageRes = R.string.list_placeholder_personal_list_empty,
+                        modifier = Modifier.focusable(),
+                    )
+                }
             }
 
             if (state.isLoadingPage) {
@@ -303,7 +321,7 @@ private fun loadNextPageIfNeeded(
     index: Int,
     onLoadNextPage: () -> Unit,
 ) {
-    if (size >= PERSONAL_LIST_PAGE_LIMIT && index >= size - PERSONAL_LIST_NEXT_PAGE_OFFSET) {
+    if (index >= (size - PERSONAL_LIST_NEXT_PAGE_OFFSET).coerceAtLeast(0)) {
         onLoadNextPage()
     }
 }
@@ -327,6 +345,8 @@ private fun Preview() {
             onShowClick = {},
             onMovieClick = {},
             onLoadNextPage = {},
+            onFilterApplied = {},
+            onSortingApplied = {},
         )
     }
 }

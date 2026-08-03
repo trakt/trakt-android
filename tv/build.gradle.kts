@@ -94,6 +94,8 @@ dependencies {
     implementation(libs.flagkit)
     implementation(libs.timber)
 
+    testImplementation(libs.junit)
+
     debugImplementation(libs.androidx.compose.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }

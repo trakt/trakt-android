@@ -19,6 +19,8 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.app.Config.REFRESH_DATA_THRESHOLD_MINUTES
 import tv.trakt.trakt.app.core.lists.ListsConfig.LISTS_SECTION_LIMIT
+import tv.trakt.trakt.app.core.lists.filters.TvListFilterConfiguration
+import tv.trakt.trakt.app.core.lists.filters.TvListRequest
 import tv.trakt.trakt.app.core.lists.usecases.GetListsLikedUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsMoviesWatchlistUseCase
 import tv.trakt.trakt.app.core.lists.usecases.GetListsPersonalUseCase
@@ -32,6 +34,7 @@ import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider.State.FOREGR
 import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 import java.time.ZonedDateTime
 
@@ -94,13 +97,23 @@ internal class ListsViewModel(
                 coroutineScope {
                     val showsAsync = async {
                         getShowsWatchlistUseCase.getShows(
-                            limit = LISTS_SECTION_LIMIT,
-                        )
+                            request = TvListRequest(
+                                page = 1,
+                                limit = LISTS_SECTION_LIMIT,
+                                filter = TvListFilterConfiguration.ShowsWatchlist.defaultFilter,
+                                sorting = Sorting.RecentlyAdded,
+                            ),
+                        ).items
                     }
                     val moviesAsync = async {
                         getMoviesWatchlistUseCase.getMovies(
-                            limit = LISTS_SECTION_LIMIT,
-                        )
+                            request = TvListRequest(
+                                page = 1,
+                                limit = LISTS_SECTION_LIMIT,
+                                filter = TvListFilterConfiguration.MoviesWatchlist.defaultFilter,
+                                sorting = Sorting.RecentlyAdded,
+                            ),
+                        ).items
                     }
 
                     showsState.update { showsAsync.await() }
@@ -112,7 +125,7 @@ internal class ListsViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
-                    Timber.e(error, "Error loading: ${error.message}")
+                    Timber.e(error, "Error loading lists")
                 }
             } finally {
                 loadingState.update {
