@@ -1166,7 +1166,7 @@
   <string name="page_title_welcome">Bem-vindo</string>
   <string name="page_title_where_to_watch">Onde ver</string>
   <string name="page_title_year_in_review">Resumo de %s</string>
-  <string name="page_title_year_to_date">Ano até ao momento</string>
+  <string name="page_title_year_to_date">Até agora</string>
   <string name="preview_feature_description_edit_mode">Ativa controlos para mostrar ou ocultar secções configuráveis em toda a app.</string>
   <string name="preview_feature_description_leaderboard">Ordena as pessoas que segues pelo tempo de visualização e vê em que posição ficas entre elas.</string>
   <string name="preview_feature_description_parental_guide">Mostra os níveis de risco do conteúdo no painel de detalhes de filmes, séries e episódios.</string>
@@ -1461,7 +1461,7 @@
   <string name="text_onboarding_4_description_1">Ainda só viste a ponta do icebergue.</string>
   <string name="text_onboarding_4_description_2">Junta-te ao Trakt gratuitamente e descobre ainda mais funcionalidades à tua espera.</string>
   <string name="text_onboarding_4_title">Há muito mais para descobrir.</string>
-  <string name="text_overview_placeholder">Não há sinopse disponível.</string>
+  <string name="text_overview_placeholder">Descrição não disponível.</string>
   <string name="text_personal_note">Nota pessoal</string>
   <string name="text_pick_history_slot">Escolhe onde \"%s\" se insere no teu histórico de visualizações.</string>
   <string name="text_placeholder_generic">Nada para ver aqui.</string>
@@ -1566,7 +1566,7 @@
   <string name="text_stats_this_week">Esta semana</string>
   <string name="text_stats_time_afternoon">Tarde</string>
   <string name="text_stats_time_evening">Noite</string>
-  <string name="text_stats_time_late_night">Noite</string>
+  <string name="text_stats_time_late_night">Madrugada</string>
   <string name="text_stats_time_morning">Manhã</string>
   <string name="text_stats_today">Hoje</string>
   <string name="text_stats_was_last_week">foi %s na semana passada</string>
@@ -1821,7 +1821,7 @@
   <string name="translated_value_reaction_love">Adoro</string>
   <string name="translated_value_reaction_shocked">Chocado</string>
   <string name="translated_value_reaction_spoiler">Spoiler</string>
-  <string name="translated_value_status_canceled">Cancelado</string>
+  <string name="translated_value_status_canceled">Cancelada</string>
   <string name="translated_value_status_continuing">Em continuação</string>
   <string name="translated_value_status_ended">Terminada</string>
   <string name="translated_value_status_in_production">Em produção</string>
@@ -2099,7 +2099,7 @@
   <string name="yir_subtitle_all_time">Estatísticas</string>
   <string name="yir_subtitle_all_time_range">Estatísticas de %1$d → %2$d</string>
   <string name="yir_title_year_in_review">Resumo do ano</string>
-  <string name="yir_title_year_to_date">Ano até ao momento</string>
+  <string name="yir_title_year_to_date">Até agora</string>
   <string name="yir_top_card_description">Os títulos de %s mais vistos de sempre pela <b>comunidade do Trakt</b>. Os que já viste estão em destaque.</string>
   <string name="yir_top_card_description_movies">Os filmes mais vistos de sempre pela <b>comunidade do Trakt</b>. Os filmes que viste entre <b>%1$d → %2$d</b> estão em destaque.</string>
   <string name="yir_top_card_description_shows">As séries mais vistas de sempre pela <b>comunidade do Trakt</b>. As séries que viste entre <b>%1$d → %2$d</b> estão em destaque.</string>
