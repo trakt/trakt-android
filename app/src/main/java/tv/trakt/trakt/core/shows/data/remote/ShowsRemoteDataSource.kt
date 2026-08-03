@@ -6,7 +6,7 @@ import tv.trakt.trakt.common.networking.CalendarMediaDto
 import tv.trakt.trakt.common.networking.CalendarShowDto
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
-import tv.trakt.trakt.common.networking.ExternalRatingsDto
+import tv.trakt.trakt.common.networking.ExternalShowRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.RecommendedShowDto
@@ -64,7 +64,7 @@ internal interface ShowsRemoteDataSource {
 
     suspend fun getShowDetails(showId: TraktId): ShowCalendarsDto
 
-    suspend fun getExternalRatings(showId: TraktId): ExternalRatingsDto
+    suspend fun getExternalRatings(showId: TraktId): ExternalShowRatingsDto
 
     suspend fun getStudios(showId: TraktId): List<String>
 

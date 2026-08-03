@@ -5,7 +5,7 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.CalendarMediaDto
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
-import tv.trakt.trakt.common.networking.ExternalRatingsDto
+import tv.trakt.trakt.common.networking.ExternalMovieRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.MovieCalendarDto
@@ -51,7 +51,7 @@ internal interface MoviesRemoteDataSource {
 
     suspend fun getDetails(movieId: TraktId): MovieCalendarDto
 
-    suspend fun getExternalRatings(movieId: TraktId): ExternalRatingsDto
+    suspend fun getExternalRatings(movieId: TraktId): ExternalMovieRatingsDto
 
     suspend fun getStudios(movieId: TraktId): List<String>
 

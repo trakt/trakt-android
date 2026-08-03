@@ -5,7 +5,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
-import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.core.lists.features.all.AllListsScreen
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 
@@ -17,6 +18,7 @@ internal data class AllListsDestination(
 internal fun NavGraphBuilder.allListsScreen(
     onNavigateToList: (CustomList) -> Unit,
     onNavigateToPersonalList: (CustomList) -> Unit,
+    onNavigateToSmartList: (SmartList) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     composable<AllListsDestination> {
@@ -24,6 +26,7 @@ internal fun NavGraphBuilder.allListsScreen(
             viewModel = koinViewModel(),
             onNavigateList = onNavigateToList,
             onNavigatePersonalList = onNavigateToPersonalList,
+            onNavigateSmartList = onNavigateToSmartList,
             onNavigateBack = onNavigateBack,
         )
     }

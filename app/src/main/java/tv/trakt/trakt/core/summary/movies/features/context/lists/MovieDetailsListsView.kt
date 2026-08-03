@@ -38,9 +38,9 @@ import kotlinx.collections.immutable.toImmutableSet
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
-import tv.trakt.trakt.common.model.CustomListMinimal
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomListMinimal
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.lists.ListButton
 import tv.trakt.trakt.ui.components.buttons.lists.WatchlistButton

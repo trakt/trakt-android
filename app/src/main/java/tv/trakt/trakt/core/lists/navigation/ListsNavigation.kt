@@ -6,8 +6,9 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.extensions.popUpToTop
-import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.core.lists.ListsScreen
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 
@@ -23,6 +24,7 @@ internal fun NavGraphBuilder.listsScreen(
     onNavigateToWatchlist: () -> Unit,
     onNavigateToPersonalList: (CustomList) -> Unit,
     onNavigateToCustomList: (CustomList) -> Unit,
+    onNavigateToSmartList: (SmartList) -> Unit,
     onNavigateToAllLists: (PersonalListType) -> Unit,
     onNavigateToVip: () -> Unit,
 ) {
@@ -37,6 +39,7 @@ internal fun NavGraphBuilder.listsScreen(
             onNavigateToWatchlist = onNavigateToWatchlist,
             onNavigateToPersonalList = onNavigateToPersonalList,
             onNavigateToCustomList = onNavigateToCustomList,
+            onNavigateToSmartList = onNavigateToSmartList,
             onNavigateToAllLists = onNavigateToAllLists,
             onNavigateToVip = onNavigateToVip,
         )

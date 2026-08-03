@@ -2,8 +2,8 @@ package tv.trakt.trakt.common.core.user.data.local
 
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import tv.trakt.trakt.common.model.CustomListMinimal
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomListMinimal
 
 class UserListsStorage : UserListsLocalDataSource {
     private val mutex = Mutex()

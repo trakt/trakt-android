@@ -32,7 +32,7 @@ import tv.trakt.trakt.app.common.ui.mediacards.CustomListSkeletonCard
 import tv.trakt.trakt.app.core.details.lists.CustomListCard
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.resources.R
 
 @Composable

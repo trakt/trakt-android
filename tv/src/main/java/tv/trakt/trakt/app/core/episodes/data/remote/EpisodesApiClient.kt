@@ -6,7 +6,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.EpisodeCalendarsDto
-import tv.trakt.trakt.common.networking.ExternalRatingsDto
+import tv.trakt.trakt.common.networking.ExternalSeasonRatingsDto
 import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 
@@ -32,7 +32,7 @@ internal class EpisodesApiClient(
         showId: TraktId,
         season: Int,
         episode: Int,
-    ): ExternalRatingsDto {
+    ): ExternalSeasonRatingsDto {
         val response = showsApi.getShowsEpisodeRatings(
             id = showId.value.toString(),
             season = season,

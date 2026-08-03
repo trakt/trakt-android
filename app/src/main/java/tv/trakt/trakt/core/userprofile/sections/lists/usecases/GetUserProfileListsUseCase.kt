@@ -4,8 +4,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.user.data.remote.otherlists.UserOtherListsRemoteDataSource
 import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalListsRemoteDataSource
-import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.pagination.Pagination
 
 internal class GetUserProfileListsUseCase(

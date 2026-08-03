@@ -1,8 +1,8 @@
 package tv.trakt.trakt.core.lists.sections.liked.data.local.lists
 
 import kotlinx.coroutines.flow.Flow
-import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 import java.time.Instant
 
 internal interface ListsLikedLocalDataSource {

@@ -55,14 +55,6 @@ Upload version to PlayStore Closed Beta Track
 
 Promote PlayStore Internal Track to Closed Beta Track
 
-### android playstore_promote_trakt_beta_to_production
-
-```sh
-[bundle exec] fastlane android playstore_promote_trakt_beta_to_production
-```
-
-Promote PlayStore Closed Beta Track to Production
-
 ### android playstore_promote_internal_to_production
 
 ```sh
@@ -70,6 +62,22 @@ Promote PlayStore Closed Beta Track to Production
 ```
 
 Promote PlayStore Internal Track to Production
+
+### android playstore_promote_internal_to_trakt_beta_and_production
+
+```sh
+[bundle exec] fastlane android playstore_promote_internal_to_trakt_beta_and_production
+```
+
+Promote PlayStore Internal Track to Closed Beta & Production
+
+### android playstore_promote_trakt_beta_to_production
+
+```sh
+[bundle exec] fastlane android playstore_promote_trakt_beta_to_production
+```
+
+Promote PlayStore Closed Beta Track to Production
 
 ### android playstore_release_all
 

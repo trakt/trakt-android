@@ -16,8 +16,8 @@ internal class GetMovieRatingsUseCase(
                 link = ratings.imdb?.link,
             ),
             meta = ExternalRating.MetaRating(
-                rating = ratings.metascore.rating ?: 0,
-                link = ratings.metascore.link,
+                rating = ratings.metascore?.rating ?: 0,
+                link = ratings.metascore?.link,
             ),
             rotten = ExternalRating.RottenRating(
                 rating = ratings.rottenTomatoes?.rating ?: 0F,

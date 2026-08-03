@@ -16,9 +16,9 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.model.CustomList
-import tv.trakt.trakt.common.model.CustomList.Privacy.Private
-import tv.trakt.trakt.common.model.CustomList.Privacy.Public
+import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.lists.CustomList.Privacy.Private
+import tv.trakt.trakt.common.model.lists.CustomList.Privacy.Public
 import tv.trakt.trakt.core.lists.sheets.create.usecases.CreateListUseCase
 
 internal class CreateListViewModel(

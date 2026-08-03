@@ -17,13 +17,14 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collaborations
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Personal
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Smart
 import tv.trakt.trakt.core.userprofile.UserProfileConfig.LISTS_SECTION_LIMIT
 import tv.trakt.trakt.core.userprofile.sections.lists.usecases.GetUserProfileListsUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
@@ -65,7 +66,7 @@ internal class UserProfileListsViewModel(
                             userId,
                             pagination = pagination,
                         )
-                        Liked -> EmptyImmutableList
+                        Liked, Smart -> EmptyImmutableList
                     }
                 }
             } catch (error: Exception) {

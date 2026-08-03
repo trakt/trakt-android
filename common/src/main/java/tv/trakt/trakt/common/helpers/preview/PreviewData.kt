@@ -4,9 +4,6 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Comment
-import tv.trakt.trakt.common.model.CustomList
-import tv.trakt.trakt.common.model.CustomList.Type
-import tv.trakt.trakt.common.model.CustomListMinimal
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Images
@@ -22,6 +19,9 @@ import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TmdbId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.lists.CustomList.Type
+import tv.trakt.trakt.common.model.lists.CustomListMinimal
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit.DAYS
 import kotlin.time.Duration.Companion.minutes

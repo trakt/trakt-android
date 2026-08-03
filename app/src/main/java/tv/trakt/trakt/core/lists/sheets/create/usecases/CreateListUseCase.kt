@@ -1,7 +1,7 @@
 package tv.trakt.trakt.core.lists.sheets.create.usecases
 
 import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteDataSource
-import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.lists.CustomList
 
 internal class CreateListUseCase(
     private val remoteSource: ListsRemoteDataSource,

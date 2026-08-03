@@ -8,8 +8,8 @@ import kotlinx.coroutines.coroutineScope
 import tv.trakt.trakt.common.core.user.data.local.UserListsLocalDataSource
 import tv.trakt.trakt.common.core.user.data.remote.personallists.UserPersonalListsRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
-import tv.trakt.trakt.common.model.CustomListMinimal
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomListMinimal
 import tv.trakt.trakt.common.model.toTraktId
 
 /**

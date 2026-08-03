@@ -32,11 +32,13 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -46,21 +48,27 @@ import androidx.compose.ui.util.fastRoundToInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
+import kotlinx.coroutines.launch
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.LocalStartAuthorization
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_1
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_2
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_3
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_EMPTY_IMAGE_4
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.lists.ListsItem
+import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collaborations
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Personal
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Smart
 import tv.trakt.trakt.core.lists.sections.personal.ui.ListsFilters
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistView
 import tv.trakt.trakt.core.lists.sheets.CreateListSheet
@@ -70,8 +78,10 @@ import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktSectionHeader
+import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
-import tv.trakt.trakt.ui.components.mediacards.CustomListCard
+import tv.trakt.trakt.ui.components.mediacards.list.CustomListCard
+import tv.trakt.trakt.ui.components.mediacards.list.SmartListCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.CustomListSkeletonCard
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -88,15 +98,30 @@ internal fun ListsScreen(
     onNavigateToWatchlist: () -> Unit,
     onNavigateToPersonalList: (CustomList) -> Unit,
     onNavigateToCustomList: (CustomList) -> Unit,
+    onNavigateToSmartList: (SmartList) -> Unit,
     onNavigateToAllLists: (PersonalListType) -> Unit,
     onNavigateToVip: () -> Unit,
 ) {
-    val startAuthorization = LocalStartAuthorization.current
+    val scope = rememberCoroutineScope()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var createListSheet by remember { mutableStateOf(false) }
     var editListSheet by remember { mutableStateOf<CustomList?>(null) }
     var filtersSheet by remember { mutableStateOf(false) }
+    var smartListToDelete by remember { mutableStateOf<SmartList?>(null) }
+
+    val context = LocalContext.current
+    val snackbar = LocalSnackbarState.current
+    val startAuthorization = LocalStartAuthorization.current
+
+    LaunchedEffect(state.info) {
+        state.info?.let { info ->
+            scope.launch {
+                snackbar.showSnackbar(message = info.get(context))
+            }
+            viewModel.clearInfo()
+        }
+    }
 
     ListsScreenContent(
         state = state,
@@ -124,6 +149,8 @@ internal fun ListsScreen(
         onEditListClick = { editListSheet = it },
         onPersonalListClick = onNavigateToPersonalList,
         onCustomListClick = onNavigateToCustomList,
+        onSmartListClick = onNavigateToSmartList,
+        onSmartListDeleteClick = { smartListToDelete = it },
         onAllListsClick = { onNavigateToAllLists(state.filter) },
         onVipClick = onNavigateToVip,
         onFiltersClick = {
@@ -149,6 +176,20 @@ internal fun ListsScreen(
             filtersSheet = false
         },
     )
+
+    RemoveConfirmationSheet(
+        active = smartListToDelete != null,
+        title = stringResource(R.string.confirmation_title_delete_list),
+        message = stringResource(
+            R.string.warning_prompt_delete_list,
+            smartListToDelete?.name.orEmpty(),
+        ),
+        onYes = {
+            smartListToDelete?.let { viewModel.deleteSmartList(it.ids.trakt) }
+            smartListToDelete = null
+        },
+        onNo = { smartListToDelete = null },
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -168,6 +209,8 @@ private fun ListsScreenContent(
     onWatchlistClick: () -> Unit = {},
     onPersonalListClick: (CustomList) -> Unit = { _ -> },
     onCustomListClick: (CustomList) -> Unit = { _ -> },
+    onSmartListClick: (SmartList) -> Unit = { _ -> },
+    onSmartListDeleteClick: (SmartList) -> Unit = { _ -> },
     onAllListsClick: () -> Unit = { },
     onVipClick: () -> Unit = {},
     onFiltersClick: () -> Unit = {},
@@ -260,69 +303,77 @@ private fun ListsScreenContent(
             val topVerticalPadding = 18.dp
             itemsIndexed(
                 items = state.lists ?: emptyList(),
-                key = { _, list -> list.ids.trakt.value },
-            ) { index, list ->
+                key = { _, item -> item.id.value },
+            ) { index, item ->
                 val verticalPadding = when (index) {
                     0 -> topVerticalPadding
                     else -> 16.dp
                 }
-                when (state.filter) {
-                    Personal if listVisible -> {
-                        CustomListCard(
-                            list = list,
-                            descriptionVisible = true,
-                            moreVisible = true,
-                            onClick = { onPersonalListClick(list) },
-                            onMoreClick = { onEditListClick(list) },
-                            modifier = Modifier
-                                .padding(
-                                    top = verticalPadding,
-                                    start = TraktTheme.spacing.mainPageHorizontalSpace,
-                                    end = TraktTheme.spacing.mainPageHorizontalSpace,
-                                )
-                                .aspectRatio(HorizontalImageAspectRatio),
-                        )
+                val cardModifier = Modifier
+                    .padding(
+                        top = verticalPadding,
+                        start = TraktTheme.spacing.mainPageHorizontalSpace,
+                        end = TraktTheme.spacing.mainPageHorizontalSpace,
+                    )
+                    .aspectRatio(HorizontalImageAspectRatio)
+
+                when (item) {
+                    is ListsItem.Smart -> {
+                        if (listVisible) {
+                            SmartListCard(
+                                smartList = item.list,
+                                onClick = { onSmartListClick(item.list) },
+                                onDeleteClick = { onSmartListDeleteClick(item.list) },
+                                modifier = cardModifier,
+                            )
+                        }
                     }
-                    Liked if listVisible -> {
-                        CustomListCard(
-                            list = list,
-                            liked = true,
-                            likesVisible = true,
-                            onClick = { onCustomListClick(list) },
-                            modifier = Modifier
-                                .padding(
-                                    top = verticalPadding,
-                                    start = TraktTheme.spacing.mainPageHorizontalSpace,
-                                    end = TraktTheme.spacing.mainPageHorizontalSpace,
+                    is ListsItem.Custom -> {
+                        val list = item.list
+                        when (state.filter) {
+                            Personal if listVisible -> {
+                                CustomListCard(
+                                    list = list,
+                                    descriptionVisible = true,
+                                    moreVisible = true,
+                                    onClick = { onPersonalListClick(list) },
+                                    onMoreClick = { onEditListClick(list) },
+                                    modifier = cardModifier,
                                 )
-                                .aspectRatio(HorizontalImageAspectRatio),
-                        )
-                    }
-                    Collaborations if listVisible -> {
-                        CustomListCard(
-                            list = list,
-                            onClick = { onCustomListClick(list) },
-                            modifier = Modifier
-                                .padding(
-                                    top = verticalPadding,
-                                    start = TraktTheme.spacing.mainPageHorizontalSpace,
-                                    end = TraktTheme.spacing.mainPageHorizontalSpace,
+                            }
+                            Liked if listVisible -> {
+                                CustomListCard(
+                                    list = list,
+                                    liked = true,
+                                    likesVisible = true,
+                                    onClick = { onCustomListClick(list) },
+                                    modifier = cardModifier,
                                 )
-                                .aspectRatio(HorizontalImageAspectRatio),
-                        )
+                            }
+                            Collaborations if listVisible -> {
+                                CustomListCard(
+                                    list = list,
+                                    onClick = { onCustomListClick(list) },
+                                    modifier = cardModifier,
+                                )
+                            }
+                            else -> {}
+                        }
                     }
-                    else -> {}
                 }
             }
 
             if (state.lists.isNullOrEmpty() && state.listsLoading == Done) {
                 item(key = "empty") {
+                    // Smart lists have no empty-state action yet
+                    val noAction: () -> Unit = {}
                     ContentEmptyView(
                         authenticated = state.user.user != null,
                         filter = state.filter,
                         onActionClick = when (state.user.user) {
                             null -> onProfileClick
                             else -> when (state.filter) {
+                                Smart -> noAction
                                 Personal -> onCreateListClick
                                 Liked, Collaborations -> onSearchListClick
                             }
@@ -463,6 +514,7 @@ private fun ContentEmptyView(
     val imageUrl = remember(inspection, filter) {
         when {
             inspection -> null
+            filter == Smart -> Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_1).ifBlank { null }
             filter == Personal -> Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_3).ifBlank { null }
             filter == Liked -> Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_4).ifBlank { null }
             filter == Collaborations -> Firebase.remoteConfig.getString(MOBILE_EMPTY_IMAGE_2).ifBlank { null }
@@ -470,20 +522,21 @@ private fun ContentEmptyView(
         }
     }
 
-    val buttonText = remember(authenticated, filter) {
+    val buttonTextRes = remember(authenticated, filter) {
         when {
-            !authenticated -> return@remember R.string.button_text_join_trakt
-            filter == Personal -> return@remember R.string.button_text_create_list
-            filter == Liked -> return@remember R.string.button_text_toggle_search_lists
-            filter == Collaborations -> return@remember R.string.button_text_toggle_search_lists
-            else -> R.drawable.ic_trakt_icon
+            !authenticated -> R.string.button_text_join_trakt
+            filter == Smart -> R.string.button_text_create_list
+            filter == Personal -> R.string.button_text_create_list
+            filter == Liked -> R.string.button_text_toggle_search_lists
+            filter == Collaborations -> R.string.button_text_toggle_search_lists
+            else -> null
         }
     }
 
     val buttonIcon = remember(authenticated, filter) {
         when {
             !authenticated -> R.drawable.ic_trakt_icon
-            filter == Personal -> R.drawable.ic_plus
+            filter in arrayOf(Personal, Smart) -> R.drawable.ic_plus
             filter == Liked -> R.drawable.ic_search_off
             filter == Collaborations -> R.drawable.ic_search_off
             else -> R.drawable.ic_trakt_icon
@@ -494,6 +547,7 @@ private fun ContentEmptyView(
         aspect = HorizontalImageAspectRatio,
         text = stringResource(
             when (filter) {
+                Smart -> R.string.text_cta_smart_lists
                 Personal -> R.string.text_cta_personal_lists
                 Liked -> R.string.text_cta_liked_lists
                 Collaborations -> R.string.text_cta_collab_lists
@@ -501,7 +555,7 @@ private fun ContentEmptyView(
             },
         ),
         icon = R.drawable.ic_empty_watchlist,
-        buttonText = stringResource(buttonText),
+        buttonText = buttonTextRes?.let { stringResource(it) } ?: "",
         buttonIcon = buttonIcon,
         backgroundImageUrl = imageUrl,
         backgroundImage = if (imageUrl == null) R.drawable.ic_splash_background_2 else null,

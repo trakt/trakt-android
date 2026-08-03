@@ -26,7 +26,6 @@ class SearchApiClient(
             page = 1,
             limit = limit,
             extended = extended,
-            engine = "typesense",
         )
 
         return response.body()
@@ -46,7 +45,6 @@ class SearchApiClient(
             page = 1,
             limit = limit,
             extended = extended,
-            engine = "typesense",
         )
 
         return response.body()
@@ -68,7 +66,6 @@ class SearchApiClient(
                 page = 1,
                 limit = limit,
                 extended = extended,
-                engine = "typesense",
             )
             else -> api.getSearchQuery(
                 type = "show",
@@ -76,7 +73,6 @@ class SearchApiClient(
                 page = 1,
                 limit = limit,
                 extended = extended,
-                engine = "typesense",
             )
         }
         return response.body()
@@ -99,7 +95,6 @@ class SearchApiClient(
                 page = 1,
                 limit = limit,
                 extended = extended,
-                engine = "typesense",
             )
             else -> api.getSearchQuery(
                 type = "movie",
@@ -107,7 +102,6 @@ class SearchApiClient(
                 page = 1,
                 limit = limit,
                 extended = extended,
-                engine = "typesense",
             )
         }
         return response.body()
@@ -130,7 +124,6 @@ class SearchApiClient(
                 page = 1,
                 limit = limit,
                 extended = extended,
-                engine = "typesense",
             )
             else -> api.getSearchQuery(
                 type = "show,movie",
@@ -138,7 +131,6 @@ class SearchApiClient(
                 page = 1,
                 limit = limit,
                 extended = extended,
-                engine = "typesense",
             )
         }
 
@@ -176,7 +168,6 @@ class SearchApiClient(
             page = 1,
             limit = limit,
             extended = "full,cloud9,colors",
-            engine = "typesense",
         ).response.body()
     }
 

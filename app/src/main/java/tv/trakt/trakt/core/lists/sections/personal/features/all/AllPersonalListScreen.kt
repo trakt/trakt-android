@@ -60,12 +60,12 @@ import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
-import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.sorting.SortType.Added
 import tv.trakt.trakt.common.model.sorting.SortType.Released
 import tv.trakt.trakt.common.model.sorting.SortType.Title
@@ -644,7 +644,8 @@ private fun ContentList(
             ) { item ->
                 when (item) {
                     is ShowItem -> ListDetailsShowView(
-                        item = item,
+                        show = item.show,
+                        showUserRating = item.userRating,
                         sorting = listSorting,
                         enabled = !loading,
                         showIcon = true,
@@ -662,7 +663,8 @@ private fun ContentList(
                     )
 
                     is MovieItem -> ListDetailsMovieView(
-                        item = item,
+                        movie = item.movie,
+                        movieUserRating = item.userRating,
                         sorting = listSorting,
                         enabled = !loading,
                         showIcon = true,

@@ -39,6 +39,8 @@ import tv.trakt.trakt.core.lists.features.reorder.navigation.navigateToListReord
 import tv.trakt.trakt.core.lists.navigation.listsScreen
 import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.allPersonalListScreen
 import tv.trakt.trakt.core.lists.sections.personal.features.all.navigation.navigateToPersonalList
+import tv.trakt.trakt.core.lists.sections.smart.details.navigation.navigateToSmartListDetails
+import tv.trakt.trakt.core.lists.sections.smart.details.navigation.smartListDetailsScreen
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.allWatchlistScreen
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.navigateToWatchlist
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
@@ -447,6 +449,7 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
                     mediaImage = null,
                 )
             },
+            onNavigateToSmartList = { navigateToSmartListDetails(it) },
             onNavigateToAllLists = { navigateToAllLists(it) },
             onNavigateToVip = { navigateToBilling() },
         )
@@ -467,6 +470,7 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
                     listPrivacy = it.privacy,
                 )
             },
+            onNavigateToSmartList = { navigateToSmartListDetails(it) },
             onNavigateBack = { popBackStack() },
         )
         allWatchlistScreen(
@@ -494,6 +498,11 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
             onNavigateToEpisode = { showId, episode ->
                 navigateToEpisode(showId, episode)
             },
+        )
+        smartListDetailsScreen(
+            onNavigateBack = { popBackStack() },
+            onNavigateToShow = { navigateToShow(it) },
+            onNavigateToMovie = { navigateToMovie(it) },
         )
         listReorderScreen(
             onNavigateBack = { popBackStack() },
