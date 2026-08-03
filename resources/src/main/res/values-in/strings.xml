@@ -126,7 +126,9 @@
   <string name="button_label_next_calendar_period">Periode berikutnya</string>
   <string name="button_label_next_episode">Episode berikutnya</string>
   <string name="button_label_open_leaderboard">Buka papan peringkat ikutan</string>
+  <string name="button_label_pause_track">Jeda %s</string>
   <string name="button_label_pick_match">Impor %s.</string>
+  <string name="button_label_play_track">Putar %s</string>
   <string name="button_label_plex_connect">Hubungkan akun Plex Anda</string>
   <string name="button_label_plex_disconnect">Putuskan sambungan akun Plex Anda</string>
   <string name="button_label_plex_scrobble_episode_library">Alihkan scrobbling perpustakaan untuk episode</string>
@@ -269,6 +271,7 @@
   <string name="button_label_view_ratings_breakdown">Lihat rincian peringkat</string>
   <string name="button_label_view_releases">Lihat rilis</string>
   <string name="button_label_view_sentiment_analysis">Lihat analisis sentimen</string>
+  <string name="button_label_view_soundtrack">Lihat soundtrack</string>
   <string name="button_label_view_trivia">Lihat trivia</string>
   <string name="button_label_vip_upgrade">Tingkatkan ke VIP</string>
   <string name="button_label_watch_on_service">Tonton di %s</string>
@@ -416,6 +419,7 @@
   <string name="button_text_share">Bagikan</string>
   <string name="button_text_share_auth_logs">Bagikan Log Autentikasi</string>
   <string name="button_text_shows">Acara</string>
+  <string name="button_text_smart_lists">Cerdas</string>
   <string name="button_text_social">Sosial</string>
   <string name="button_text_sort_added_date">Tanggal Ditambahkan</string>
   <string name="button_text_sort_asc">Naik</string>
@@ -748,6 +752,7 @@
   <string name="hint_app_description">Ini akan muncul di bagian Aplikasi Terhubung saat pengguna memberikan akses ke aplikasi Anda.</string>
   <string name="hint_app_origins">Satu asal per baris. Tanpa wildcard atau jalur.</string>
   <string name="hint_app_redirect_uris">Satu URI per baris. Tanpa string kueri, hanya jalur URI lengkap. Gunakan urn:ietf:wg:oauth:2.0:oob untuk autentikasi perangkat.</string>
+  <string name="iframe_title_spotify_player">Pemutar Spotify untuk %s</string>
   <string name="image_alt_list_preview_poster">Poster untuk entri di %s</string>
   <string name="image_alt_media_poster">Poster \"%s\"</string>
   <string name="image_alt_person_headshot">Foto kepala %s</string>
@@ -1030,6 +1035,7 @@
   <string name="list_title_smart_lists">Daftar Cerdas</string>
   <string name="list_title_social">Sosial</string>
   <string name="list_title_social_activity">Aktivitas Sosial</string>
+  <string name="list_title_soundtrack">Soundtrack</string>
   <string name="list_title_start_watching">Mulai Menonton</string>
   <string name="list_title_streaming_favorite">Favorit</string>
   <string name="list_title_streaming_free">Gratis</string>
@@ -1166,11 +1172,13 @@
   <string name="preview_feature_description_parental_guide">Tampilkan tingkat risiko konten di laci detail untuk film, acara, dan episode.</string>
   <string name="preview_feature_description_rewatch">Mulai sesi menonton ulang untuk acara yang sudah Anda tonton, check-in atau tandai episode yang sudah ditonton langsung dari panel sesi.</string>
   <string name="preview_feature_description_scoped_favorites">Batas waktu daftar favorit dengan menampilkan favorit tahun berjalan di profil dan mengelompokkan daftar favorit lengkap berdasarkan tahun.</string>
+  <string name="preview_feature_description_soundtrack">Menambahkan bagian soundtrack ke halaman film dan acara, dengan pemutaran di mana lagu dapat dicocokkan.</string>
   <string name="preview_feature_description_up_next_smart_sort">Coba cara yang lebih cerdas untuk mengurutkan Lanjutkan Menonton Anda.</string>
   <string name="preview_feature_title_edit_mode">Mode Edit</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Tonton Ulang</string>
   <string name="preview_feature_title_scoped_favorites">Favorit Terbatas</string>
+  <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_up_next_smart_sort">Lanjutkan Menonton Urutan Cerdas</string>
   <string name="reset_status_cleared">Daftar tontonan dibersihkan.</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt menggunakan pengaturan bahasa Apple TV Anda. Untuk memperbarui, buka:\n\nPengaturan Apple TV &gt; Umum &gt; Bahasa Apple TV</string>
@@ -1538,6 +1546,11 @@
   <string name="text_sort_comments_popular">Populer</string>
   <string name="text_sort_comments_recent">Terbaru</string>
   <string name="text_sort_recently_added">Baru ditambahkan</string>
+  <string name="text_soundtrack_music_by">Musik oleh</string>
+  <string name="text_soundtrack_pick_a_track">Pilih lagu untuk memutarnya di sini.</string>
+  <string name="text_soundtrack_playable_ratio">%1$d dari %2$d dapat diputar</string>
+  <string name="text_soundtrack_unmatched">Tidak tersedia untuk diputar</string>
+  <string name="text_soundtrack_upsell">Dengarkan musiknya.</string>
   <string name="text_source">Sumber</string>
   <string name="text_spoiler">Spoiler</string>
   <string name="text_spoiler_alert">Peringatan Spoiler</string>
@@ -1879,6 +1892,7 @@
   <string name="vip_feature_description_recaps">Dapatkan wawasan lebih dalam dengan ringkasan bulan dan tahun yang komprehensif yang menampilkan semua yang Anda tonton, nilai, dan temukan.</string>
   <string name="vip_feature_description_sentiment">Buka analisis sentimen yang lebih detail untuk acara dan film.</string>
   <string name="vip_feature_description_sentiment_trivia">Buka analisis sentimen terperinci dan trivia menarik tentang film dan acara yang Anda tonton.</string>
+  <string name="vip_feature_description_soundtrack">Lihat setiap lagu yang dikreditkan dalam film atau acara, dan putar yang dapat kami cocokkan.</string>
   <string name="vip_feature_description_streaming_services">Hubungkan dan sinkronkan dengan platform streaming tambahan untuk melacak tontonan Anda di semua layanan.</string>
   <string name="vip_feature_description_streaming_sync">Sinkronkan riwayat tontonan dan penilaian Anda secara otomatis dari semua layanan streaming favorit Anda.</string>
   <string name="vip_feature_description_support">Dapatkan akses prioritas ke forum dukungan kami dan sampaikan masukan Anda langsung kepada tim.</string>
@@ -1897,6 +1911,7 @@
   <string name="vip_feature_title_recaps">Lebih Banyak Statistik: Ringkasan Bulanan &amp; Tahunan</string>
   <string name="vip_feature_title_sentiment">Sentimen</string>
   <string name="vip_feature_title_sentiment_trivia">Info Lebih Lanjut: Sentimen &amp; Trivia</string>
+  <string name="vip_feature_title_soundtrack">Soundtrack</string>
   <string name="vip_feature_title_streaming_services">Sinkronkan Lebih Banyak Layanan Streaming</string>
   <string name="vip_feature_title_streaming_sync">Sinkronisasi Streaming</string>
   <string name="vip_feature_title_support">Dukungan Lebih Baik: Forum &amp; Masukan</string>

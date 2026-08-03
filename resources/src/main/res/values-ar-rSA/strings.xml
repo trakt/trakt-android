@@ -126,7 +126,9 @@
   <string name="button_label_next_calendar_period">الفترة القادمة</string>
   <string name="button_label_next_episode">الحلقة القادمة</string>
   <string name="button_label_open_leaderboard">فتح لوحة صدارة المتابَعين</string>
+  <string name="button_label_pause_track">إيقاف %s مؤقتًا</string>
   <string name="button_label_pick_match">استيراد %s.</string>
+  <string name="button_label_play_track">تشغيل %s</string>
   <string name="button_label_plex_connect">قم بتوصيل حساب Plex الخاص بك</string>
   <string name="button_label_plex_disconnect">افصل حساب Plex الخاص بك</string>
   <string name="button_label_plex_scrobble_episode_library">تبديل مكتبة التمرير للحلقات</string>
@@ -269,6 +271,7 @@
   <string name="button_label_view_ratings_breakdown">عرض تقسيم التقييمات</string>
   <string name="button_label_view_releases">عرض الإصدارات</string>
   <string name="button_label_view_sentiment_analysis">عرض تحليل المشاعر</string>
+  <string name="button_label_view_soundtrack">عرض الموسيقى التصويرية</string>
   <string name="button_label_view_trivia">عرض المعلومات</string>
   <string name="button_label_vip_upgrade">الترقية إلى VIP</string>
   <string name="button_label_watch_on_service">شاهد على %s</string>
@@ -416,6 +419,7 @@
   <string name="button_text_share">شارك</string>
   <string name="button_text_share_auth_logs">مشاركة سجلات المصادقة</string>
   <string name="button_text_shows">مسلسلات</string>
+  <string name="button_text_smart_lists">ذكي</string>
   <string name="button_text_social">اجتماعي</string>
   <string name="button_text_sort_added_date">تاريخ الإضافة</string>
   <string name="button_text_sort_asc">تصاعدي</string>
@@ -748,6 +752,7 @@
   <string name="hint_app_description">يظهر هذا في قسم التطبيقات المتصلة عندما يمنح المستخدم حق الوصول إلى تطبيقك.</string>
   <string name="hint_app_origins">أصل واحد لكل سطر. لا توجد أحرف البدل أو المسارات.</string>
   <string name="hint_app_redirect_uris">عنوان URI واحد لكل سطر. لا توجد سلاسل استعلام، فقط مسار URI الكامل. استخدم urn:ietf:wg:oauth:2.0:oob لمصادقة الجهاز.</string>
+  <string name="iframe_title_spotify_player">مشغل سبوتيفاي لـ %s</string>
   <string name="image_alt_list_preview_poster">ملصق لإدخال في %s</string>
   <string name="image_alt_media_poster">\"%s\" ملصق</string>
   <string name="image_alt_person_headshot">صورة %s</string>
@@ -1030,6 +1035,7 @@
   <string name="list_title_smart_lists">القوائم الذكية</string>
   <string name="list_title_social">اجتماعي</string>
   <string name="list_title_social_activity">الأنشطة الاجتماعية</string>
+  <string name="list_title_soundtrack">الموسيقى التصويرية</string>
   <string name="list_title_start_watching">ابدأ المشاهدة</string>
   <string name="list_title_streaming_favorite">المفضلة</string>
   <string name="list_title_streaming_free">مجاني</string>
@@ -1166,11 +1172,13 @@
   <string name="preview_feature_description_parental_guide">اعرض مستويات خطورة المحتوى في درج التفاصيل للأفلام والعروض والحلقات.</string>
   <string name="preview_feature_description_rewatch">ابدأ في إعادة مشاهدة الجلسات للعروض التي شاهدتها بالفعل، أو قم بتسجيل الدخول أو وضع علامة على الحلقات التي تمت مشاهدتها مباشرة من درج الجلسة.</string>
   <string name="preview_feature_description_scoped_favorites">قوائم المفضلة في المربع الزمني من خلال إظهار مفضلات العام الحالي في الملفات الشخصية وتجميع قائمة المفضلة الكاملة حسب السنة.</string>
+  <string name="preview_feature_description_soundtrack">يضيف قسم الموسيقى التصويرية إلى صفحات الأفلام والعروض، مع إمكانية التشغيل حيث يمكن مطابقة المقطع.</string>
   <string name="preview_feature_description_up_next_smart_sort">اختبر طريقة أكثر ذكاءً لفرز متابعة المشاهدة.</string>
   <string name="preview_feature_title_edit_mode">تعديل الوضع</string>
   <string name="preview_feature_title_leaderboard">البانثيون</string>
   <string name="preview_feature_title_rewatch">إعادة المشاهدة</string>
   <string name="preview_feature_title_scoped_favorites">نطاق المفضلة</string>
+  <string name="preview_feature_title_soundtrack">الموسيقى التصويرية</string>
   <string name="preview_feature_title_up_next_smart_sort">متابعة مشاهدة الفرز الذكي</string>
   <string name="reset_status_cleared">تم مسح قائمة المشاهدة.</string>
   <string name="screen_account_settings_language_system_message_tvos">يستخدم Trakt إعدادات لغة Apple TV الخاصة بك. لتحديثها، انتقل إلى:\n\nإعدادات Apple TV &gt; عام &gt; لغات Apple TV</string>
@@ -1538,6 +1546,11 @@
   <string name="text_sort_comments_popular">شائعة</string>
   <string name="text_sort_comments_recent">الأحدث</string>
   <string name="text_sort_recently_added">تمت إضافتها مؤخرًا</string>
+  <string name="text_soundtrack_music_by">موسيقى من تأليف</string>
+  <string name="text_soundtrack_pick_a_track">اختر مقطعًا لتشغيله هنا.</string>
+  <string name="text_soundtrack_playable_ratio">%1$d من %2$d قابلة للتشغيل</string>
+  <string name="text_soundtrack_unmatched">غير متاح للتشغيل</string>
+  <string name="text_soundtrack_upsell">استمع إلى الموسيقى.</string>
   <string name="text_source">المصدر</string>
   <string name="text_spoiler">حرق الأحداث</string>
   <string name="text_spoiler_alert">تنبيه بالحرق</string>
@@ -1879,6 +1892,7 @@
   <string name="vip_feature_description_recaps">احصل على رؤى أعمق من خلال ملخصات شاملة للشهر والسنة تعرض كل ما شاهدته وقيمته واكتشفته.</string>
   <string name="vip_feature_description_sentiment">افتح تحليل المشاعر الأكثر تفصيلاً للعروض والأفلام.</string>
   <string name="vip_feature_description_sentiment_trivia">أطلق العنان لتحليل المشاعر المفصل والتوافه الرائعة حول الأفلام والعروض التي تشاهدها.</string>
+  <string name="vip_feature_description_soundtrack">شاهد كل مقطع موسيقي معتمد في فيلم أو عرض، وقم بتشغيل تلك التي يمكننا مطابقتها.</string>
   <string name="vip_feature_description_streaming_services">قم بالاتصال والمزامنة مع منصات البث الإضافية لتتبع مشاهدتك عبر جميع الخدمات.</string>
   <string name="vip_feature_description_streaming_sync">قم بمزامنة سجل المشاهدة والتقييمات تلقائيًا من جميع خدمات البث المفضلة لديك.</string>
   <string name="vip_feature_description_support">احصل على أولوية الوصول إلى منتديات الدعم الخاصة بنا واستمع إلى تعليقاتك مباشرة من قبل الفريق.</string>
@@ -1897,6 +1911,7 @@
   <string name="vip_feature_title_recaps">المزيد من الإحصائيات: خلاصة شهرية وسنوية</string>
   <string name="vip_feature_title_sentiment">المشاعر</string>
   <string name="vip_feature_title_sentiment_trivia">مزيد من المعلومات: المشاعر والتوافه</string>
+  <string name="vip_feature_title_soundtrack">الموسيقى التصويرية</string>
   <string name="vip_feature_title_streaming_services">مزامنة المزيد من خدمات البث</string>
   <string name="vip_feature_title_streaming_sync">مزامنة البث</string>
   <string name="vip_feature_title_support">دعم أفضل: المنتدى والتعليقات</string>

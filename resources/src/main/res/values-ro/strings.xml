@@ -126,7 +126,9 @@
   <string name="button_label_next_calendar_period">Perioada următoare</string>
   <string name="button_label_next_episode">Următorul episod</string>
   <string name="button_label_open_leaderboard">Deschide clasamentul de urmăritori</string>
+  <string name="button_label_pause_track">Pauză %s</string>
   <string name="button_label_pick_match">Importă %s.</string>
+  <string name="button_label_play_track">Redă %s</string>
   <string name="button_label_plex_connect">Conectează-ți contul Plex</string>
   <string name="button_label_plex_disconnect">Deconectează-ți contul Plex</string>
   <string name="button_label_plex_scrobble_episode_library">Activează/dezactivează scrobbling-ul bibliotecii pentru episoade</string>
@@ -269,6 +271,7 @@
   <string name="button_label_view_ratings_breakdown">Vizualizați defalcarea evaluărilor</string>
   <string name="button_label_view_releases">Vezi lansările</string>
   <string name="button_label_view_sentiment_analysis">Vezi analiza sentimentului</string>
+  <string name="button_label_view_soundtrack">Vezi coloana sonoră</string>
   <string name="button_label_view_trivia">Vezi curiozități</string>
   <string name="button_label_vip_upgrade">Upgrade la VIP</string>
   <string name="button_label_watch_on_service">Vizionează pe %s</string>
@@ -416,6 +419,7 @@
   <string name="button_text_share">Partajează</string>
   <string name="button_text_share_auth_logs">Partajează Jurnalele de Autentificare</string>
   <string name="button_text_shows">Seriale</string>
+  <string name="button_text_smart_lists">Inteligent</string>
   <string name="button_text_social">Social</string>
   <string name="button_text_sort_added_date">Data adăugării</string>
   <string name="button_text_sort_asc">Cresc.</string>
@@ -748,6 +752,7 @@
   <string name="hint_app_description">Acest lucru apare în secțiunea Aplicații conectate atunci când un utilizator acordă acces aplicației tale.</string>
   <string name="hint_app_origins">O origine pe linie. Fără wildcard-uri sau căi.</string>
   <string name="hint_app_redirect_uris">Un URI pe linie. Fără șiruri de interogare, doar calea URI completă. Folosește urn:ietf:wg:oauth:2.0:oob pentru autentificarea dispozitivului.</string>
+  <string name="iframe_title_spotify_player">Player Spotify pentru %s</string>
   <string name="image_alt_list_preview_poster">Afiș pentru o intrare în %s</string>
   <string name="image_alt_media_poster">Afișul \"%s\"</string>
   <string name="image_alt_person_headshot">Fotografie tip portret cu %s</string>
@@ -1030,6 +1035,7 @@
   <string name="list_title_smart_lists">Liste inteligente</string>
   <string name="list_title_social">Social</string>
   <string name="list_title_social_activity">Activitate socială</string>
+  <string name="list_title_soundtrack">Coloană sonoră</string>
   <string name="list_title_start_watching">Începe vizionarea</string>
   <string name="list_title_streaming_favorite">Favorit</string>
   <string name="list_title_streaming_free">Gratuit</string>
@@ -1166,11 +1172,13 @@
   <string name="preview_feature_description_parental_guide">Afișați nivelurile de risc ale conținutului în sertarul de detalii pentru filme, seriale și episoade.</string>
   <string name="preview_feature_description_rewatch">Începeți sesiuni de revizionare pentru emisiunile pe care le-ați văzut deja, înregistrați-vă sau marcați episoadele vizionate direct din panoul de sesiune.</string>
   <string name="preview_feature_description_scoped_favorites">Organizează listele de favorite pe perioade, afișând favoritele din anul curent pe profile și grupând lista completă de favorite pe ani.</string>
+  <string name="preview_feature_description_soundtrack">Adaugă o secțiune de coloană sonoră la paginile de filme și seriale, cu redare acolo unde o melodie poate fi potrivită.</string>
   <string name="preview_feature_description_up_next_smart_sort">Testează o modalitate mai inteligentă de a sorta elementele din Continuă vizionarea.</string>
   <string name="preview_feature_title_edit_mode">Mod editare</string>
   <string name="preview_feature_title_leaderboard">Panteon</string>
   <string name="preview_feature_title_rewatch">Revizionare</string>
   <string name="preview_feature_title_scoped_favorites">Favorite Contextuale</string>
+  <string name="preview_feature_title_soundtrack">Coloană sonoră</string>
   <string name="preview_feature_title_up_next_smart_sort">Sortare inteligentă pentru Continuă vizionarea</string>
   <string name="reset_status_cleared">Lista de vizionare a fost ștearsă.</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt folosește setările de limbă ale Apple TV-ului tău. Pentru a le actualiza, mergi la:\n\nSetări Apple TV &gt; General &gt; Limbi Apple TV</string>
@@ -1538,6 +1546,11 @@
   <string name="text_sort_comments_popular">Populare</string>
   <string name="text_sort_comments_recent">Recente</string>
   <string name="text_sort_recently_added">Adăugat recent</string>
+  <string name="text_soundtrack_music_by">Muzică de</string>
+  <string name="text_soundtrack_pick_a_track">Alege o melodie pentru a o reda aici.</string>
+  <string name="text_soundtrack_playable_ratio">%1$d din %2$d redabile</string>
+  <string name="text_soundtrack_unmatched">Indisponibil pentru redare</string>
+  <string name="text_soundtrack_upsell">Ascultă coloana sonoră.</string>
   <string name="text_source">Sursă</string>
   <string name="text_spoiler">Spoiler</string>
   <string name="text_spoiler_alert">Atenție Spoiler</string>
@@ -1879,6 +1892,7 @@
   <string name="vip_feature_description_recaps">Obține informații mai detaliate cu recapitulări lunare și anuale complete, arătând tot ce ai vizionat, evaluat și descoperit.</string>
   <string name="vip_feature_description_sentiment">Deblochează o analiză mai detaliată a sentimentului pentru seriale și filme.</string>
   <string name="vip_feature_description_sentiment_trivia">Deblochează analiza detaliată a sentimentului și curiozități fascinante despre filmele și serialele pe care le vizionezi.</string>
+  <string name="vip_feature_description_soundtrack">Vezi fiecare melodie creditată într-un film sau serial și redă-le pe cele pe care le putem potrivi.</string>
   <string name="vip_feature_description_streaming_services">Conectează-te și sincronizează-te cu platforme de streaming suplimentare pentru a-ți urmări vizionările pe toate serviciile.</string>
   <string name="vip_feature_description_streaming_sync">Sincronizează automat istoricul vizionat și evaluările de pe toate serviciile tale de streaming preferate.</string>
   <string name="vip_feature_description_support">Obține acces prioritar la forumurile noastre de suport și asigură-te că feedback-ul tău este auzit direct de echipă.</string>
@@ -1897,6 +1911,7 @@
   <string name="vip_feature_title_recaps">Mai multe Statistici: Recapitulări Lunare și Anuale</string>
   <string name="vip_feature_title_sentiment">Sentiment</string>
   <string name="vip_feature_title_sentiment_trivia">Mai multe informații: Sentiment și Curiozități</string>
+  <string name="vip_feature_title_soundtrack">Coloană sonoră</string>
   <string name="vip_feature_title_streaming_services">Sincronizează mai multe Servicii de Streaming</string>
   <string name="vip_feature_title_streaming_sync">Sincronizare streaming</string>
   <string name="vip_feature_title_support">Suport îmbunătățit: Forum &amp; Feedback</string>

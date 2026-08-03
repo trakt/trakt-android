@@ -126,7 +126,9 @@
   <string name="button_label_next_calendar_period">Következő időszak</string>
   <string name="button_label_next_episode">Következő epizód</string>
   <string name="button_label_open_leaderboard">Követések ranglistájának megnyitása</string>
+  <string name="button_label_pause_track">%s szüneteltetése</string>
   <string name="button_label_pick_match">Importálja a(z) %s elemet.</string>
+  <string name="button_label_play_track">%s lejátszása</string>
   <string name="button_label_plex_connect">Plex fiók csatlakoztatása</string>
   <string name="button_label_plex_disconnect">Plex fiók leválasztása</string>
   <string name="button_label_plex_scrobble_episode_library">Epizódok könyvtár szinkronizálásának váltása</string>
@@ -269,6 +271,7 @@
   <string name="button_label_view_ratings_breakdown">Értékelési bontás megtekintése</string>
   <string name="button_label_view_releases">Megjelenések megtekintése</string>
   <string name="button_label_view_sentiment_analysis">Hangulatelemzés megtekintése</string>
+  <string name="button_label_view_soundtrack">Filmzene megtekintése</string>
   <string name="button_label_view_trivia">Érdekességek megtekintése</string>
   <string name="button_label_vip_upgrade">Válts VIP-re</string>
   <string name="button_label_watch_on_service">Megtekintés a(z) %s szolgáltatáson</string>
@@ -416,6 +419,7 @@
   <string name="button_text_share">Megosztás</string>
   <string name="button_text_share_auth_logs">Hitelesítési naplók megosztása</string>
   <string name="button_text_shows">Sorozatok</string>
+  <string name="button_text_smart_lists">Okos</string>
   <string name="button_text_social">Közösségi</string>
   <string name="button_text_sort_added_date">Hozzáadás dátuma</string>
   <string name="button_text_sort_asc">Növekvő</string>
@@ -748,6 +752,7 @@
   <string name="hint_app_description">Ez megjelenik a Csatlakoztatott alkalmazások szakaszban, amikor egy felhasználó hozzáférést ad az alkalmazásodnak.</string>
   <string name="hint_app_origins">Egy eredet soronként. Nincsenek helyettesítő karakterek vagy útvonalak.</string>
   <string name="hint_app_redirect_uris">Egy URI soronként. Nincs lekérdezési karakterlánc, csak a teljes URI elérési út. Eszközazonosításhoz használd az urn:ietf:wg:oauth:2.0:oob értéket.</string>
+  <string name="iframe_title_spotify_player">Spotify lejátszó a(z) %s című számhoz</string>
   <string name="image_alt_list_preview_poster">Poszter egy bejegyzéshez: „%s”</string>
   <string name="image_alt_media_poster">„%s” posztere</string>
   <string name="image_alt_person_headshot">%s portréja</string>
@@ -1030,6 +1035,7 @@
   <string name="list_title_smart_lists">Okos listák</string>
   <string name="list_title_social">Közösségi</string>
   <string name="list_title_social_activity">Közösségi tevékenység</string>
+  <string name="list_title_soundtrack">Filmzene</string>
   <string name="list_title_start_watching">Kezdd el nézni!</string>
   <string name="list_title_streaming_favorite">Kedvenc</string>
   <string name="list_title_streaming_free">Ingyenes</string>
@@ -1166,11 +1172,13 @@
   <string name="preview_feature_description_parental_guide">Tartalomkockázati szintek megjelenítése a részletek panelen filmek, műsorok és epizódok esetén.</string>
   <string name="preview_feature_description_rewatch">Indíts újra nézési munkameneteket olyan műsorokhoz, amiket már láttál, jelentkezz be, vagy jelölj meg nézett epizódokat közvetlenül a munkamenet fiókból.</string>
   <string name="preview_feature_description_scoped_favorites">Időkorlátozza a kedvenc listákat azáltal, hogy megjeleníti az aktuális év kedvenceit a profilokon, és csoportosítja a teljes kedvencek listáját év szerint.</string>
+  <string name="preview_feature_description_soundtrack">Film- és műsoroldalakhoz ad hozzá filmzene szekciót, lejátszással ott, ahol egy szám párosítható.</string>
   <string name="preview_feature_description_up_next_smart_sort">Próbálja ki a Megtekintés folytatása rendezésének egy okosabb módját.</string>
   <string name="preview_feature_title_edit_mode">Szerkesztési mód</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Újra nézés</string>
   <string name="preview_feature_title_scoped_favorites">Korlátozott Kedvencek</string>
+  <string name="preview_feature_title_soundtrack">Filmzene</string>
   <string name="preview_feature_title_up_next_smart_sort">Megtekintés folytatása - Okos Rendezés</string>
   <string name="reset_status_cleared">Megnézendők listája kiürítve.</string>
   <string name="screen_account_settings_language_system_message_tvos">A Trakt az Apple TV nyelvi beállításait használja. A frissítéshez lépjen ide:\n\nApple TV Beállítások &gt; Általános &gt; Apple TV Nyelvek</string>
@@ -1538,6 +1546,11 @@
   <string name="text_sort_comments_popular">Népszerű</string>
   <string name="text_sort_comments_recent">Legújabb</string>
   <string name="text_sort_recently_added">Legutóbb hozzáadott</string>
+  <string name="text_soundtrack_music_by">Zene:</string>
+  <string name="text_soundtrack_pick_a_track">Válassz egy számot a lejátszáshoz.</string>
+  <string name="text_soundtrack_playable_ratio">%1$d a %2$d lejátszható közül</string>
+  <string name="text_soundtrack_unmatched">Nem lejátszható</string>
+  <string name="text_soundtrack_upsell">Hallgasd meg a zenét.</string>
   <string name="text_source">Forrás</string>
   <string name="text_spoiler">Spoiler</string>
   <string name="text_spoiler_alert">Spoiler figyelmeztetés</string>
@@ -1879,6 +1892,7 @@
   <string name="vip_feature_description_recaps">Mélyebb betekintést nyerhetsz átfogó havi és éves összefoglalókkal, amelyek megmutatják mindazt, amit megnéztél, értékeltél és felfedeztél.</string>
   <string name="vip_feature_description_sentiment">Feloldhatod a filmek és sorozatok részletesebb hangulatelemzését.</string>
   <string name="vip_feature_description_sentiment_trivia">Oldd fel a részletes hangulatelemzést és a lenyűgöző érdekességeket a nézett filmekről és sorozatokról.</string>
+  <string name="vip_feature_description_soundtrack">Tekintse meg az összes, egy filmben vagy műsorban feltüntetett számot, és játssza le azokat, amelyeket párosítani tudunk.</string>
   <string name="vip_feature_description_streaming_services">Kapcsolódj és szinkronizálj további streaming platformokkal, hogy nyomon követhesd a nézési szokásaidat az összes szolgáltatásban.</string>
   <string name="vip_feature_description_streaming_sync">Automatikusan szinkronizáld a nézett előzményeidet és értékeléseidet az összes kedvenc streaming szolgáltatásodból.</string>
   <string name="vip_feature_description_support">Prioritásos hozzáférést kapsz támogatási fórumainkhoz, és visszajelzéseidet közvetlenül a csapat hallja meg.</string>
@@ -1897,6 +1911,7 @@
   <string name="vip_feature_title_recaps">Több statisztika: Havi és Éves Összefoglaló</string>
   <string name="vip_feature_title_sentiment">Hangulat</string>
   <string name="vip_feature_title_sentiment_trivia">Több infó: Hangulat és Trivia</string>
+  <string name="vip_feature_title_soundtrack">Filmzene</string>
   <string name="vip_feature_title_streaming_services">Több streaming szolgáltatás szinkronizálása</string>
   <string name="vip_feature_title_streaming_sync">Streaming szinkronizálás</string>
   <string name="vip_feature_title_support">Jobb támogatás: Fórum és visszajelzés</string>

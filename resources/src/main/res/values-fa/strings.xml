@@ -126,7 +126,9 @@
   <string name="button_label_next_calendar_period">دوره بعدی</string>
   <string name="button_label_next_episode">قسمت بعدی</string>
   <string name="button_label_open_leaderboard">جدول رده‌بندی دنبال‌کنندگان را باز کنید</string>
+  <string name="button_label_pause_track">مکث %s</string>
   <string name="button_label_pick_match">وارد کردن %s.</string>
+  <string name="button_label_play_track">پخش %s</string>
   <string name="button_label_plex_connect">حساب Plex خود را متصل کنید</string>
   <string name="button_label_plex_disconnect">حساب Plex خود را قطع کنید</string>
   <string name="button_label_plex_scrobble_episode_library">فعال/غیرفعال کردن ثبت کتابخانه برای قسمت‌ها</string>
@@ -269,6 +271,7 @@
   <string name="button_label_view_ratings_breakdown">مشاهده تفکیک امتیازات</string>
   <string name="button_label_view_releases">مشاهده انتشارها</string>
   <string name="button_label_view_sentiment_analysis">مشاهده تحلیل احساسات</string>
+  <string name="button_label_view_soundtrack">مشاهده موسیقی متن</string>
   <string name="button_label_view_trivia">مشاهده جزئیات جالب</string>
   <string name="button_label_vip_upgrade">ارتقاء به VIP</string>
   <string name="button_label_watch_on_service">تماشا در %s</string>
@@ -416,6 +419,7 @@
   <string name="button_text_share">به اشتراک بگذارید</string>
   <string name="button_text_share_auth_logs">اشتراک‌گذاری گزارش‌های احراز هویت</string>
   <string name="button_text_shows">برنامه‌ها</string>
+  <string name="button_text_smart_lists">هوشمند</string>
   <string name="button_text_social">اجتماعی</string>
   <string name="button_text_sort_added_date">تاریخ اضافه شدن</string>
   <string name="button_text_sort_asc">صعودی</string>
@@ -748,6 +752,7 @@
   <string name="hint_app_description">این در بخش برنامه‌های متصل نمایش داده می‌شود زمانی که کاربر به برنامه شما دسترسی می‌دهد.</string>
   <string name="hint_app_origins">هر مبدا در یک خط. بدون کاراکترهای وایلدکارد یا مسیرها.</string>
   <string name="hint_app_redirect_uris">هر URI در یک خط. بدون رشته‌های جستجو، فقط مسیر کامل URI. برای احراز هویت دستگاه از urn:ietf:wg:oauth:2.0:oob استفاده کنید.</string>
+  <string name="iframe_title_spotify_player">پخش‌کننده اسپاتیفای برای %s</string>
   <string name="image_alt_list_preview_poster">پوستر برای یک ورودی در %s</string>
   <string name="image_alt_media_poster">پوستر \"%s\"</string>
   <string name="image_alt_person_headshot">عکس سر %s</string>
@@ -1030,6 +1035,7 @@
   <string name="list_title_smart_lists">لیست‌های هوشمند</string>
   <string name="list_title_social">اجتماعی</string>
   <string name="list_title_social_activity">فعالیت اجتماعی</string>
+  <string name="list_title_soundtrack">موسیقی متن</string>
   <string name="list_title_start_watching">شروع به تماشا</string>
   <string name="list_title_streaming_favorite">مورد علاقه</string>
   <string name="list_title_streaming_free">رایگان</string>
@@ -1166,11 +1172,13 @@
   <string name="preview_feature_description_parental_guide">نمایش سطوح خطر محتوا در کشوی جزئیات برای فیلم‌ها، نمایش‌ها و اپیزودها.</string>
   <string name="preview_feature_description_rewatch">جلسات بازتماشا را برای سریال‌هایی که قبلاً دیده‌اید شروع کنید، قسمت‌های تماشا شده را مستقیماً از کشوی جلسه ثبت کنید یا علامت بزنید.</string>
   <string name="preview_feature_description_scoped_favorites">لیست‌های علاقه‌مندی را با نمایش علاقه‌مندی‌های سال جاری در پروفایل‌ها و گروه‌بندی لیست کامل علاقه‌مندی‌ها بر اساس سال، محدود کنید.</string>
+  <string name="preview_feature_description_soundtrack">بخش موسیقی متن را به صفحات فیلم و نمایش اضافه می‌کند، با قابلیت پخش در جایی که یک قطعه می‌تواند مطابقت داده شود.</string>
   <string name="preview_feature_description_up_next_smart_sort">راهی هوشمندانه‌تر برای مرتب\n\n\n\n‌سازی موارد در حال تماشای خود را آزمایش کنید.</string>
   <string name="preview_feature_title_edit_mode">حالت ویرایش</string>
   <string name="preview_feature_title_leaderboard">پانتئون</string>
   <string name="preview_feature_title_rewatch">بازتماشا</string>
   <string name="preview_feature_title_scoped_favorites">علاقه‌مندی‌های محدود</string>
+  <string name="preview_feature_title_soundtrack">موسیقی متن</string>
   <string name="preview_feature_title_up_next_smart_sort">مرتب\n\n\n\n‌سازی هوشمند ادامه تماشا</string>
   <string name="reset_status_cleared">لیست تماشا پاک شد.</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt از تنظیمات زبان Apple TV شما استفاده می‌کند. برای به‌روزرسانی آن، به مسیر زیر بروید:\n\nتنظیمات Apple TV &gt; عمومی &gt; زبان‌های Apple TV</string>
@@ -1538,6 +1546,11 @@
   <string name="text_sort_comments_popular">محبوب</string>
   <string name="text_sort_comments_recent">اخیر</string>
   <string name="text_sort_recently_added">اخیراً اضافه شده</string>
+  <string name="text_soundtrack_music_by">موسیقی اثر</string>
+  <string name="text_soundtrack_pick_a_track">یک قطعه را برای پخش در اینجا انتخاب کنید.</string>
+  <string name="text_soundtrack_playable_ratio">%1$d از %2$d قابل پخش</string>
+  <string name="text_soundtrack_unmatched">برای پخش موجود نیست</string>
+  <string name="text_soundtrack_upsell">موسیقی را بشنوید.</string>
   <string name="text_source">منبع</string>
   <string name="text_spoiler">اسپویلر</string>
   <string name="text_spoiler_alert">هشدار اسپویلر</string>
@@ -1879,6 +1892,7 @@
   <string name="vip_feature_description_recaps">با خلاصه‌های جامع ماهانه و سالانه که هر آنچه تماشا کرده‌اید، امتیاز داده‌اید و کشف کرده‌اید را نشان می‌دهد، بینش‌های عمیق‌تری کسب کنید.</string>
   <string name="vip_feature_description_sentiment">تحلیل احساسات دقیق‌تر را برای نمایش‌ها و فیلم‌ها باز کنید.</string>
   <string name="vip_feature_description_sentiment_trivia">تحلیل احساسات دقیق و جزئیات جالب و جذاب درباره فیلم‌ها و نمایش‌هایی که تماشا می‌کنید را باز کنید.</string>
+  <string name="vip_feature_description_soundtrack">هر قطعه اعتبار داده شده در یک فیلم یا نمایش را مشاهده کنید و آنهایی را که می‌توانیم مطابقت دهیم، پخش کنید.</string>
   <string name="vip_feature_description_streaming_services">با پلتفرم‌های پخش آنلاین اضافی متصل شوید و همگام‌سازی کنید تا تماشای خود را در همه سرویس‌ها ردیابی کنید.</string>
   <string name="vip_feature_description_streaming_sync">تاریخچه تماشا و امتیازات خود را به طور خودکار از تمام سرویس‌های پخش آنلاین مورد علاقه خود همگام‌سازی کنید.</string>
   <string name="vip_feature_description_support">دسترسی اولویت‌دار به انجمن‌های پشتیبانی ما را دریافت کنید و بازخورد خود را مستقیماً توسط تیم شنیده کنید.</string>
@@ -1897,6 +1911,7 @@
   <string name="vip_feature_title_recaps">آمار بیشتر: خلاصه ماهانه و سالانه</string>
   <string name="vip_feature_title_sentiment">نظر عمومی</string>
   <string name="vip_feature_title_sentiment_trivia">اطلاعات بیشتر: احساسات و جزئیات جالب</string>
+  <string name="vip_feature_title_soundtrack">موسیقی متن</string>
   <string name="vip_feature_title_streaming_services">همگام‌سازی سرویس‌های پخش آنلاین بیشتر</string>
   <string name="vip_feature_title_streaming_sync">همگام‌سازی پخش</string>
   <string name="vip_feature_title_support">پشتیبانی بهتر: انجمن و بازخورد</string>
