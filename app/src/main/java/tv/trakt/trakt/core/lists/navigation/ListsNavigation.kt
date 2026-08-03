@@ -25,6 +25,7 @@ internal fun NavGraphBuilder.listsScreen(
     onNavigateToPersonalList: (CustomList) -> Unit,
     onNavigateToCustomList: (CustomList) -> Unit,
     onNavigateToSmartList: (SmartList) -> Unit,
+    onNavigateToCreateSmartList: () -> Unit,
     onNavigateToAllLists: (PersonalListType) -> Unit,
     onNavigateToVip: () -> Unit,
 ) {
@@ -40,6 +41,7 @@ internal fun NavGraphBuilder.listsScreen(
             onNavigateToPersonalList = onNavigateToPersonalList,
             onNavigateToCustomList = onNavigateToCustomList,
             onNavigateToSmartList = onNavigateToSmartList,
+            onNavigateToCreateSmartList = onNavigateToCreateSmartList,
             onNavigateToAllLists = onNavigateToAllLists,
             onNavigateToVip = onNavigateToVip,
         )

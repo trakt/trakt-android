@@ -87,7 +87,7 @@ internal class SmartListDetailsViewModel(
 
                 val items = getSmartListItemsUseCase.getItems(
                     listId = destinationList.ids.trakt,
-                    type = when (destinationList.mediaType) {
+                    type = when (destinationList.filters.media) {
                         MediaMode.Media -> "all"
                         MediaMode.Shows -> "shows"
                         MediaMode.Movies -> "movies"
@@ -126,7 +126,7 @@ internal class SmartListDetailsViewModel(
                 val nextPage = page + 1
                 val nextItems = getSmartListItemsUseCase.getItems(
                     listId = destinationList.ids.trakt,
-                    type = when (destinationList.mediaType) {
+                    type = when (destinationList.filters.media) {
                         MediaMode.Media -> "all"
                         MediaMode.Shows -> "shows"
                         MediaMode.Movies -> "movies"

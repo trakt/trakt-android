@@ -23,6 +23,7 @@ import tv.trakt.trakt.core.filters.views.GlobalFiltersSimpleView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
+import kotlin.time.Duration.Companion.milliseconds
 
 internal val RowsSpacing = 14.dp
 internal val ColumnsSpacing = 16.dp
@@ -45,7 +46,7 @@ internal fun GlobalFiltersView(
                     onToggleMode = viewModel::applyMode,
                     onUpdateFilter = { filter, delay ->
                         scope.launch {
-                            delay(if (delay) 100 else 0)
+                            delay(if (delay) 100.milliseconds else 0.milliseconds)
                             viewModel.applyFilter(filter)
                             onUpdate(filter)
                         }
@@ -74,7 +75,7 @@ internal fun GlobalFiltersView(
                     },
                     onUpdateFilter = { filter, delay ->
                         scope.launch {
-                            delay(if (delay) 100 else 0)
+                            delay(if (delay) 100.milliseconds else 0.milliseconds)
                             viewModel.applyFilter(filter)
                             onUpdate(filter)
                         }

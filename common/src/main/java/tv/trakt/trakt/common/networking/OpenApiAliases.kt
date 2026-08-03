@@ -69,6 +69,7 @@ import org.openapitools.client.models.GetUsersWatchlistMovies200ResponseInner
 import org.openapitools.client.models.GetUsersWatchlistShows200ResponseInner
 import org.openapitools.client.models.GetWatchnowSourcesAll200ResponseInnerValueInner
 import org.openapitools.client.models.PostSyncHistoryAdd200Response
+import org.openapitools.client.models.PostUsersSmartListsCreateRequest
 
 /**
  * Type aliases for OpenAPI models used in the app.
@@ -76,6 +77,7 @@ import org.openapitools.client.models.PostSyncHistoryAdd200Response
 typealias CalendarMediaDto = GetCalendarsMedia200ResponseInner
 typealias CalendarMovieDto = GetCalendarsMovies200ResponseInner
 typealias CalendarShowDto = GetCalendarsShows200ResponseInner
+typealias CreateSmartListRequestDto = PostUsersSmartListsCreateRequest
 typealias CastCrewDto = GetMoviesPeople200Response
 typealias CommentAllDto = GetUsersComments200ResponseInner
 typealias CommentDto = GetUsersComments200ResponseInnerComment

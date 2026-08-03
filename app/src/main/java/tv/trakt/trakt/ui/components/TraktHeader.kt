@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -27,6 +28,7 @@ internal fun TraktHeader(
     subtitle: String? = null,
     subtitleColor: Color = TraktTheme.colors.textSecondary,
     maxSubtitleLength: Int = Int.MAX_VALUE,
+    maxSubtitleLines: Int = 1,
     icon: Painter? = null,
     titleStyle: TextStyle = TraktTheme.typography.heading5,
     titleColor: Color = TraktTheme.colors.textPrimary,
@@ -67,8 +69,11 @@ internal fun TraktHeader(
                         else -> subtitle
                     },
                     color = subtitleColor,
-                    style = TraktTheme.typography.meta.copy(fontWeight = W400),
-                    maxLines = 1,
+                    style = TraktTheme.typography.meta.copy(
+                        fontWeight = W400,
+                        lineHeight = 1.2.em,
+                    ),
+                    maxLines = maxSubtitleLines,
                     overflow = Ellipsis,
                 )
             }

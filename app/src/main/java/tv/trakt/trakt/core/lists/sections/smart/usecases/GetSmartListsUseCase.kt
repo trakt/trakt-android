@@ -6,8 +6,14 @@ import tv.trakt.trakt.common.core.user.data.remote.smartlists.UserSmartListsRemo
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.lists.SmartList
+import tv.trakt.trakt.common.model.lists.SmartListSource
+import tv.trakt.trakt.common.model.lists.SmartListSource.Unknown
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.lists.sections.smart.data.local.ListsSmartLocalDataSource
+
+private val supportedSources = SmartListSource.entries
+    .filter { it != Unknown }
+    .map { it.value }
 
 internal class GetSmartListsUseCase(
     private val remoteSource: UserSmartListsRemoteDataSource,
@@ -21,6 +27,7 @@ internal class GetSmartListsUseCase(
 
     suspend fun getSmartLists(pagination: Pagination? = null): ImmutableList<SmartList> {
         return remoteSource.getSmartLists()
+            .filter { it.source in supportedSources }
             .take(pagination?.limit ?: Int.MAX_VALUE)
             .asyncMap {
                 SmartList.fromDto(it)

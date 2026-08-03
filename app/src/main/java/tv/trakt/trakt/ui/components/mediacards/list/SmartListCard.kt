@@ -40,11 +40,14 @@ import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.lists.SmartListFilters
+import tv.trakt.trakt.common.model.lists.SmartListSource
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.DefaultCardShape
@@ -190,7 +193,7 @@ private fun SmartListHeader(
                 ),
         ) {
             Icon(
-                painter = painterResource(list.mediaType.offIcon),
+                painter = painterResource(list.filters.media.offIcon),
                 contentDescription = null,
                 tint = TraktTheme.colors.textSecondary,
                 modifier = Modifier.size(18.dp),
@@ -249,17 +252,17 @@ private fun Preview() {
                             "https://trakt.tv/images/posters/000/000/001/thumb/1.jpg",
                         ),
                     ),
-                    source = "popular",
-                    mediaType = MediaMode.Movies,
                     filters = SmartListFilters(
-                        genres = persistentListOf("science-fiction"),
+                        source = SmartListSource.Popular,
+                        media = MediaMode.Movies,
+                        genres = persistentListOf(MediaGenre.ScienceFiction),
                         subgenres = EmptyImmutableList,
                         certifications = EmptyImmutableList,
                         languages = EmptyImmutableList,
                         countries = persistentListOf("gb", "fr", "de", "it"),
                         statuses = EmptyImmutableList,
                         networks = EmptyImmutableList,
-                        watchNow = persistentListOf("netflix"),
+                        availability = persistentListOf(GlobalFilter.Availability.AllDigitalReleases),
                         years = persistentListOf(2010, 2019),
                         ratings = persistentListOf(70, 100),
                         runtimes = EmptyImmutableList,

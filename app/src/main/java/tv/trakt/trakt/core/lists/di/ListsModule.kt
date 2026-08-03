@@ -33,6 +33,9 @@ import tv.trakt.trakt.core.lists.features.reorder.ListReorderViewModel
 import tv.trakt.trakt.core.lists.features.reorder.data.ReorderUpdates
 import tv.trakt.trakt.core.lists.features.reorder.data.ReorderUpdatesStorage
 import tv.trakt.trakt.core.lists.features.reorder.usecase.ReorderListUseCase
+import tv.trakt.trakt.core.lists.features.smart.CreateSmartListViewModel
+import tv.trakt.trakt.core.lists.features.smart.usecase.CreateSmartListUseCase
+import tv.trakt.trakt.core.lists.features.smart.usecase.GetSmartListPreviewUseCase
 import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsLocalDataSource
 import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsStorage
 import tv.trakt.trakt.core.lists.sections.collaborations.usecases.GetCollaborationsListsUseCase
@@ -96,6 +99,8 @@ internal val listsModule = module {
     factoryOf(::GetCollaborationsListsUseCase)
     factoryOf(::GetSmartListsUseCase)
     factoryOf(::GetSmartListItemsUseCase)
+    factoryOf(::GetSmartListPreviewUseCase)
+    factoryOf(::CreateSmartListUseCase)
     factoryOf(::DeleteSmartListUseCase)
     factoryOf(::GetPersonalListItemsUseCase)
     factoryOf(::GetListItemsUseCase)
@@ -123,6 +128,7 @@ internal val listsModule = module {
     viewModelOf(::AllWatchlistViewModel)
     viewModelOf(::AllPersonalListViewModel)
     viewModelOf(::AllListsViewModel)
+    viewModelOf(::CreateSmartListViewModel)
     viewModelOf(::WatchlistShowContextViewModel)
     viewModelOf(::ListShowContextViewModel)
 
