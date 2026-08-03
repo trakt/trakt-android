@@ -6,9 +6,9 @@ import kotlinx.collections.immutable.ImmutableSet
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableSet
-import tv.trakt.trakt.common.model.CustomListMinimal
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.lists.CustomListMinimal
 
 @Immutable
 internal data class MovieDetailsListsState(

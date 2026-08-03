@@ -4,9 +4,9 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
-import tv.trakt.trakt.common.model.CustomList
-import tv.trakt.trakt.common.model.CustomList.Type
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.lists.CustomList.Type
 
 internal class GetCustomListsUseCase(
     private val remoteSource: ShowsRemoteDataSource,

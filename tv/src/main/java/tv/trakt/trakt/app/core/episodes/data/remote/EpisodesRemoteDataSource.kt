@@ -5,7 +5,8 @@ import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.EpisodeCalendarsDto
 import tv.trakt.trakt.common.networking.EpisodeDto
-import tv.trakt.trakt.common.networking.ExternalRatingsDto
+import tv.trakt.trakt.common.networking.ExternalSeasonRatingsDto
+import tv.trakt.trakt.common.networking.ExternalShowRatingsDto
 import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 
@@ -30,13 +31,13 @@ internal interface EpisodesRemoteDataSource {
      * @param showId The Trakt ID of the show.
      * @param season The season number.
      * @param episode The episode number.
-     * @return An [ExternalRatingsDto] object containing the external ratings for the episode.
+     * @return An [ExternalShowRatingsDto] object containing the external ratings for the episode.
      */
     suspend fun getEpisodeExternalRatings(
         showId: TraktId,
         season: Int,
         episode: Int,
-    ): ExternalRatingsDto
+    ): ExternalSeasonRatingsDto
 
     /**
      * Retrieves the streaming services available for a specific episode of a show in a given country.

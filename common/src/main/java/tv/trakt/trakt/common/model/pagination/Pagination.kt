@@ -8,4 +8,8 @@ data class Pagination(
         require(page > 0) { "Page number must be greater than 0." }
         require(limit > 0) { "Limit must be greater than 0." }
     }
+
+    companion object {
+        val Default = Pagination()
+    }
 }

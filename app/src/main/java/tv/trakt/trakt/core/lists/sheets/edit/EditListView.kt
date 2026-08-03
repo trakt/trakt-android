@@ -39,9 +39,9 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
-import tv.trakt.trakt.common.model.CustomList
-import tv.trakt.trakt.common.model.CustomList.Privacy.Private
-import tv.trakt.trakt.common.model.CustomList.Privacy.Public
+import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.lists.CustomList.Privacy.Private
+import tv.trakt.trakt.common.model.lists.CustomList.Privacy.Public
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InputField

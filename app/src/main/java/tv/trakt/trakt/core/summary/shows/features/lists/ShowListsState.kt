@@ -4,8 +4,8 @@ import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 
 @Immutable
 internal data class ShowListsState(

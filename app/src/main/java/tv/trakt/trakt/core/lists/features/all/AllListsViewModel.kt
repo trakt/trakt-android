@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.firebase.analytics.Analytics
+import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
@@ -31,9 +32,9 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.lists.ListsItem
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.core.lists.ListsConfig
 import tv.trakt.trakt.core.lists.features.all.navigation.AllListsDestination
@@ -47,7 +48,12 @@ import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collaborations
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Personal
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Smart
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
+import tv.trakt.trakt.core.lists.sections.smart.data.local.ListsSmartLocalDataSource
+import tv.trakt.trakt.core.lists.sections.smart.usecases.DeleteSmartListUseCase
+import tv.trakt.trakt.core.lists.sections.smart.usecases.GetSmartListsUseCase
+import tv.trakt.trakt.resources.R
 import kotlin.time.Duration.Companion.milliseconds
 
 internal class AllListsViewModel(
@@ -56,9 +62,12 @@ internal class AllListsViewModel(
     private val getPersonalListsUseCase: GetPersonalListsUseCase,
     private val getLikedListsUseCase: GetLikedListsUseCase,
     private val getCollaborationsListsUseCase: GetCollaborationsListsUseCase,
+    private val getSmartListsUseCase: GetSmartListsUseCase,
+    private val deleteSmartListUseCase: DeleteSmartListUseCase,
     private val localPersonalListsSource: ListsPersonalLocalDataSource,
     private val localLikedListsSource: ListsLikedLocalDataSource,
     private val localCollaborationsListsSource: ListsCollaborationsLocalDataSource,
+    private val localSmartListsSource: ListsSmartLocalDataSource,
     private val reorderUpdates: ReorderUpdates,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
@@ -71,6 +80,7 @@ internal class AllListsViewModel(
     private val filterState = MutableStateFlow(destination.initialFilter)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingMoreState = MutableStateFlow(initialState.loadingMore)
+    private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var page = 1
@@ -95,6 +105,7 @@ internal class AllListsViewModel(
             localPersonalListsSource.observeUpdates(),
             localLikedListsSource.observeUpdates(),
             localCollaborationsListsSource.observeUpdates(),
+            localSmartListsSource.observeUpdates(),
         )
             .distinctUntilChanged()
             .debounce(200.milliseconds)
@@ -145,11 +156,17 @@ internal class AllListsViewModel(
                 if (!reload) {
                     val pagination = Pagination(page, ListsConfig.LISTS_ALL_PAGE_LIMIT)
                     val localLists = when (filterState.value) {
+                        Smart -> getSmartListsUseCase.getLocalSmartLists()
+                            .sortedByDescending { it.updatedAt }
+                            .map(ListsItem::Smart)
                         Personal -> getPersonalListsUseCase.getLocalLists(pagination)
                             .sortedByDescending { it.updatedAt }
+                            .map(ListsItem::Custom)
                         Collaborations -> getCollaborationsListsUseCase.getLocalLists()
                             .sortedByDescending { it.updatedAt }
+                            .map(ListsItem::Custom)
                         Liked -> getLikedListsUseCase.getLocalLists(pagination)
+                            .map(ListsItem::Custom)
                         else -> EmptyImmutableList
                     }.also { items ->
                         itemsState.update {
@@ -160,6 +177,7 @@ internal class AllListsViewModel(
                     if (localLists.isNotEmpty() && (localLists.size < ListsConfig.LISTS_PAGE_LIMIT)) {
                         loadingState.update { Done }
                         hasMorePages = filterState.value != Collaborations &&
+                            filterState.value != Smart &&
                             localLists.size >= ListsConfig.LISTS_ALL_PAGE_LIMIT
                         return@launch
                     } else {
@@ -179,19 +197,26 @@ internal class AllListsViewModel(
                 itemsState.update {
                     val pagination = Pagination(page, ListsConfig.LISTS_ALL_PAGE_LIMIT)
                     when (filterState.value) {
+                        Smart -> getSmartListsUseCase.getSmartLists()
+                            .sortedByDescending { it.updatedAt }
+                            .map(ListsItem::Smart)
                         Personal -> getPersonalListsUseCase.getLists(pagination, notify = reload)
                             .sortedByDescending { it.updatedAt }
+                            .map(ListsItem::Custom)
                         Collaborations -> getCollaborationsListsUseCase.getLists()
                             .sortedByDescending { it.updatedAt }
+                            .map(ListsItem::Custom)
                         Liked -> getLikedListsUseCase.getLists(pagination)
+                            .map(ListsItem::Custom)
                         else -> EmptyImmutableList
                     }.toImmutableList()
                 }
 
                 hasMorePages = filterState.value != Collaborations &&
+                    filterState.value != Smart &&
                     (itemsState.value?.size ?: 0) >= ListsConfig.LISTS_ALL_PAGE_LIMIT
 
-                itemsState.value?.map { it.ids.trakt }?.let {
+                itemsState.value?.map { it.id }?.let {
                     observeReorder(it)
                 }
             } catch (error: Exception) {
@@ -221,8 +246,10 @@ internal class AllListsViewModel(
 
                 val newItems = when (filterState.value) {
                     Personal -> getPersonalListsUseCase.getLists(pagination)
+                        .map(ListsItem::Custom)
                     Liked -> getLikedListsUseCase.getLists(pagination)
-                    Collaborations, null -> EmptyImmutableList
+                        .map(ListsItem::Custom)
+                    Collaborations, Smart, null -> EmptyImmutableList
                 }
 
                 if (newItems.isNotEmpty()) {
@@ -247,6 +274,26 @@ internal class AllListsViewModel(
                 loadingMoreState.update { Done }
             }
         }
+    }
+
+    fun deleteSmartList(listId: TraktId) {
+        viewModelScope.launch {
+            try {
+                deleteSmartListUseCase.deleteList(listId)
+                infoState.update {
+                    DynamicStringResource(R.string.text_info_list_deleted)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    errorState.update { error }
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    fun clearInfo() {
+        infoState.update { null }
     }
 
     private suspend fun loadEmptyIfNeeded(): Boolean {
@@ -291,14 +338,16 @@ internal class AllListsViewModel(
         loadingMoreState,
         userState,
         errorState,
+        infoState,
     ) { state ->
         AllListsState(
-            items = state[0] as ImmutableList<CustomList>?,
+            items = state[0] as ImmutableList<ListsItem>?,
             filter = state[1] as PersonalListType?,
             loading = state[2] as LoadingState,
             loadingMore = state[3] as LoadingState,
             user = state[4] as User?,
             error = state[5] as Exception?,
+            info = state[6] as DynamicStringResource?,
         )
     }.stateIn(
         scope = viewModelScope,

@@ -34,6 +34,7 @@ internal fun ListDetailsEpisodeView(
         containerImageUrl = item.episode.images?.getScreenshotUrl(THUMB)
             ?: item.show.images?.getFanartUrl(THUMB),
         onClick = { onClick(item) },
+        onImageClick = { onClick(item) },
         onLongClick = null,
         footerContent = {
             EpisodeMetaFooter(

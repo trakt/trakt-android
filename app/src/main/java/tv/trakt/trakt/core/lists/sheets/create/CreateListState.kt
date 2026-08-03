@@ -3,8 +3,8 @@ package tv.trakt.trakt.core.lists.sheets.create
 import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
-import tv.trakt.trakt.common.model.CustomList
-import tv.trakt.trakt.common.model.CustomList.Privacy.Public
+import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.lists.CustomList.Privacy.Public
 
 @Immutable
 internal data class CreateListState(

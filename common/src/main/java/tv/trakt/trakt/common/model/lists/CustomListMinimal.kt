@@ -1,6 +1,7 @@
-package tv.trakt.trakt.common.model
+package tv.trakt.trakt.common.model.lists
 
 import androidx.compose.runtime.Immutable
+import tv.trakt.trakt.common.model.TraktId
 
 @Immutable
 data class CustomListMinimal(

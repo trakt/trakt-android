@@ -4,8 +4,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
-import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 
 @Serializable

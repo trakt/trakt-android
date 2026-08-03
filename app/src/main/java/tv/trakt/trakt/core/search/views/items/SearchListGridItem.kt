@@ -5,9 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.preview.PreviewData
-import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.search.model.SearchItem
-import tv.trakt.trakt.ui.components.mediacards.CustomListCard
+import tv.trakt.trakt.ui.components.mediacards.list.CustomListCard
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 

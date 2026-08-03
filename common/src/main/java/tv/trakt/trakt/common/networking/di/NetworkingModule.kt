@@ -24,6 +24,7 @@ import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.ScrobbleApi
 import org.openapitools.client.apis.SearchApi
 import org.openapitools.client.apis.ShowsApi
+import org.openapitools.client.apis.SmartListsApi
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.apis.WatchedApi
@@ -258,6 +259,14 @@ val networkingApiModule = module {
 
     single<UsersApi> {
         UsersApi(
+            baseUrl = API_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
+        )
+    }
+
+    single<SmartListsApi> {
+        SmartListsApi(
             baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),

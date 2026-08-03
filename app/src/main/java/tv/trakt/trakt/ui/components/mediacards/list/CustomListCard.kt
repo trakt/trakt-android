@@ -1,4 +1,4 @@
-package tv.trakt.trakt.ui.components.mediacards
+package tv.trakt.trakt.ui.components.mediacards.list
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,7 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -42,6 +41,7 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
@@ -52,11 +52,12 @@ import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
-import tv.trakt.trakt.common.model.CustomList
-import tv.trakt.trakt.common.model.CustomList.Type
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.lists.CustomList.Type
 import tv.trakt.trakt.common.ui.theme.colors.Purple900
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -183,6 +184,7 @@ private fun CustomListContent(
                         enabled = false,
                         more = false,
                         modifier = Modifier
+                            .zIndex((imageCount - index).toFloat())
                             .padding(start = offset * index),
                     )
                 }
@@ -196,13 +198,12 @@ private fun CustomListContent(
                         start = 16.dp,
                         end = 16.dp,
                     )
-                    .shadow(2.dp, RoundedCornerShape(16.dp))
                     .background(
                         color = when {
                             list.type == Type.Official -> Purple900
-                            else -> TraktTheme.colors.skeletonShimmer
+                            else -> TraktTheme.colors.dialogOnContainer
                         },
-                        shape = RoundedCornerShape(16.dp),
+                        shape = RoundedCornerShape(17.dp),
                     )
                     .fillMaxSize(),
             ) {

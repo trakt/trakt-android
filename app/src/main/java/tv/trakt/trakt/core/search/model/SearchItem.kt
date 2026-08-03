@@ -1,10 +1,10 @@
 package tv.trakt.trakt.core.search.model
 
 import androidx.compose.runtime.Immutable
-import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.Movie as MovieModel
 import tv.trakt.trakt.common.model.Person as PersonModel
 import tv.trakt.trakt.common.model.Show as ShowModel

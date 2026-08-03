@@ -36,21 +36,27 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.launch
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.model.CustomList
+import tv.trakt.trakt.common.model.lists.CustomList
+import tv.trakt.trakt.common.model.lists.ListsItem
+import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collaborations
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
@@ -62,7 +68,9 @@ import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.mediacards.CustomListCard
+import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
+import tv.trakt.trakt.ui.components.mediacards.list.CustomListCard
+import tv.trakt.trakt.ui.components.mediacards.list.SmartListCard
 import tv.trakt.trakt.ui.components.mediacards.skeletons.CustomListSkeletonCard
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -73,20 +81,37 @@ internal fun AllListsScreen(
     modifier: Modifier = Modifier,
     onNavigateList: (CustomList) -> Unit,
     onNavigatePersonalList: (CustomList) -> Unit,
+    onNavigateSmartList: (SmartList) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var createListSheet by remember { mutableStateOf(false) }
     var editListSheet by remember { mutableStateOf<CustomList?>(null) }
+    var smartListToDelete by remember { mutableStateOf<SmartList?>(null) }
+
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+    val snackbar = LocalSnackbarState.current
+
+    LaunchedEffect(state.info) {
+        state.info?.let { info ->
+            scope.launch {
+                snackbar.showSnackbar(message = info.get(context))
+            }
+            viewModel.clearInfo()
+        }
+    }
 
     AllListsScreen(
         state = state,
         modifier = modifier,
         onListClick = onNavigateList,
         onListPersonalClick = onNavigatePersonalList,
+        onSmartListClick = onNavigateSmartList,
         onListCreateClick = { createListSheet = true },
         onListEditClick = { editListSheet = it },
+        onSmartListDeleteClick = { smartListToDelete = it },
         onFilterClick = viewModel::setFilter,
         onEndOfList = viewModel::loadMoreData,
         onBackClick = onNavigateBack,
@@ -105,6 +130,20 @@ internal fun AllListsScreen(
         list = editListSheet,
         onDismiss = { editListSheet = null },
     )
+
+    RemoveConfirmationSheet(
+        active = smartListToDelete != null,
+        title = stringResource(R.string.confirmation_title_delete_list),
+        message = stringResource(
+            R.string.warning_prompt_delete_list,
+            smartListToDelete?.name.orEmpty(),
+        ),
+        onYes = {
+            smartListToDelete?.let { viewModel.deleteSmartList(it.ids.trakt) }
+            smartListToDelete = null
+        },
+        onNo = { smartListToDelete = null },
+    )
 }
 
 @Composable
@@ -113,8 +152,10 @@ private fun AllListsScreen(
     modifier: Modifier = Modifier,
     onListClick: (CustomList) -> Unit = {},
     onListPersonalClick: (CustomList) -> Unit = {},
+    onSmartListClick: (SmartList) -> Unit = {},
     onListCreateClick: () -> Unit = {},
     onListEditClick: (CustomList) -> Unit = {},
+    onSmartListDeleteClick: (SmartList) -> Unit = {},
     onFilterClick: (PersonalListType) -> Unit = {},
     onEndOfList: () -> Unit = {},
     onBackClick: () -> Unit = {},
@@ -207,62 +248,65 @@ private fun AllListsScreen(
 
             itemsIndexed(
                 items = state.items ?: EmptyImmutableList,
-                key = { _, list -> list.ids.trakt.value },
-            ) { index, list ->
+                key = { _, item -> item.id.value },
+            ) { index, item ->
                 val verticalPadding = when (index) {
                     0 -> 0.dp
                     else -> 18.dp
                 }
-                when (state.filter) {
-                    Personal if listVisible -> {
-                        CustomListCard(
-                            list = list,
-                            descriptionVisible = true,
-                            moreVisible = true,
-                            onClick = { onListPersonalClick(list) },
-                            onMoreClick = { onListEditClick(list) },
-                            modifier = Modifier
-                                .padding(contentHorizontalPadding)
-                                .padding(top = verticalPadding)
-                                .aspectRatio(HorizontalImageAspectRatio)
-                                .animateItem(
-                                    fadeInSpec = null,
-                                    fadeOutSpec = null,
-                                ),
-                        )
+                val cardModifier = Modifier
+                    .padding(contentHorizontalPadding)
+                    .padding(top = verticalPadding)
+                    .aspectRatio(HorizontalImageAspectRatio)
+                    .animateItem(
+                        fadeInSpec = null,
+                        fadeOutSpec = null,
+                    )
+
+                when (item) {
+                    is ListsItem.Smart -> {
+                        if (listVisible) {
+                            SmartListCard(
+                                smartList = item.list,
+                                onClick = { onSmartListClick(item.list) },
+                                onDeleteClick = { onSmartListDeleteClick(item.list) },
+                                modifier = cardModifier,
+                            )
+                        }
                     }
-                    Liked if listVisible -> {
-                        CustomListCard(
-                            list = list,
-                            liked = true,
-                            likesVisible = true,
-                            onClick = { onListClick(list) },
-                            modifier = Modifier
-                                .padding(contentHorizontalPadding)
-                                .padding(top = verticalPadding)
-                                .aspectRatio(HorizontalImageAspectRatio)
-                                .animateItem(
-                                    fadeInSpec = null,
-                                    fadeOutSpec = null,
-                                ),
-                        )
-                    }
-                    Collaborations if listVisible -> {
-                        CustomListCard(
-                            list = list,
-                            onClick = { onListClick(list) },
-                            modifier = Modifier
-                                .padding(contentHorizontalPadding)
-                                .padding(top = verticalPadding)
-                                .aspectRatio(HorizontalImageAspectRatio)
-                                .animateItem(
-                                    fadeInSpec = null,
-                                    fadeOutSpec = null,
-                                ),
-                        )
-                    }
-                    else -> {
-                        // Noop
+                    is ListsItem.Custom -> {
+                        val list = item.list
+                        when (state.filter) {
+                            Personal if listVisible -> {
+                                CustomListCard(
+                                    list = list,
+                                    descriptionVisible = true,
+                                    moreVisible = true,
+                                    onClick = { onListPersonalClick(list) },
+                                    onMoreClick = { onListEditClick(list) },
+                                    modifier = cardModifier,
+                                )
+                            }
+                            Liked if listVisible -> {
+                                CustomListCard(
+                                    list = list,
+                                    liked = true,
+                                    likesVisible = true,
+                                    onClick = { onListClick(list) },
+                                    modifier = cardModifier,
+                                )
+                            }
+                            Collaborations if listVisible -> {
+                                CustomListCard(
+                                    list = list,
+                                    onClick = { onListClick(list) },
+                                    modifier = cardModifier,
+                                )
+                            }
+                            else -> {
+                                // Noop
+                            }
+                        }
                     }
                 }
             }

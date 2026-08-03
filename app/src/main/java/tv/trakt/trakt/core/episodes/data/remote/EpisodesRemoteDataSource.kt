@@ -6,7 +6,8 @@ import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.EpisodeCalendarsDto
 import tv.trakt.trakt.common.networking.EpisodeDto
 import tv.trakt.trakt.common.networking.EpisodeStatsDto
-import tv.trakt.trakt.common.networking.ExternalRatingsDto
+import tv.trakt.trakt.common.networking.ExternalSeasonRatingsDto
+import tv.trakt.trakt.common.networking.ExternalShowRatingsDto
 import tv.trakt.trakt.common.networking.StreamingDto
 
 internal interface EpisodesRemoteDataSource {
@@ -34,13 +35,13 @@ internal interface EpisodesRemoteDataSource {
     /**
      * Retrieves the external ratings for a specific episode of a show.
      *
-     * @return An [ExternalRatingsDto] object containing the external ratings for the episode.
+     * @return An [ExternalShowRatingsDto] object containing the external ratings for the episode.
      */
     suspend fun getExternalRatings(
         showId: TraktId,
         season: Int,
         episode: Int,
-    ): ExternalRatingsDto
+    ): ExternalSeasonRatingsDto
 
     /**
      * Retrieves the streaming services available for a specific episode of a show in a given country.

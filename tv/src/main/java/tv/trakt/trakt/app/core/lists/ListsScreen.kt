@@ -35,9 +35,9 @@ import tv.trakt.trakt.app.core.lists.views.ListsPersonalView
 import tv.trakt.trakt.app.core.lists.views.ListsShowsWatchlistView
 import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
-import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 import kotlin.time.Duration.Companion.milliseconds
 
 private val sections = listOf(

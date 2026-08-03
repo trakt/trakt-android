@@ -36,6 +36,7 @@ internal fun ListDetailsSeasonView(
         contentImageUrl = item.images?.getPosterUrl(),
         containerImageUrl = item.show.images?.getFanartUrl(THUMB),
         onClick = { onClick(item.show.ids.trakt) },
+        onImageClick = { onClick(item.show.ids.trakt) },
         onLongClick = null,
         footerContent = {
             SeasonMetaFooter(

@@ -18,6 +18,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collaborations
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Smart
 import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.components.chips.FilterChipGroup
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -59,7 +61,13 @@ internal fun ListsFilters(
                         painter = painterResource(filter.displayIcon),
                         contentDescription = null,
                         tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier.size(16.dp),
+                        modifier = Modifier.size(
+                            when (filter) {
+                                Smart -> 18.dp
+                                Collaborations -> 15.dp
+                                else -> 16.dp
+                            },
+                        ),
                     )
                 },
                 onClick = {

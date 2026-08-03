@@ -6,12 +6,12 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.koin.androidx.compose.koinViewModel
-import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.lists.features.details.ListDetailsScreen
 
 @Serializable

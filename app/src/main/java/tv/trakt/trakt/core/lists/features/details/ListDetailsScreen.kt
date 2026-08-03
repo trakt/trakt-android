@@ -617,7 +617,8 @@ private fun ContentList(
                     val shadow = groupIndex == 0 && itemIndex == 0
                     when (item) {
                         is ShowItem -> ListDetailsShowView(
-                            item = item,
+                            show = item.show,
+                            showUserRating = item.userRating,
                             sorting = listSorting,
                             shadow = shadow,
                             enabled = !loading,
@@ -636,7 +637,8 @@ private fun ContentList(
                         )
 
                         is MovieItem -> ListDetailsMovieView(
-                            item = item,
+                            movie = item.movie,
+                            movieUserRating = item.userRating,
                             sorting = listSorting,
                             shadow = shadow,
                             enabled = !loading,

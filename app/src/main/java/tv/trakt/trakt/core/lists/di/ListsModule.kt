@@ -23,8 +23,8 @@ import tv.trakt.trakt.common.core.lists.data.remote.ListsApiClient
 import tv.trakt.trakt.common.core.lists.data.remote.ListsRemoteDataSource
 import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates
 import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdatesStorage
-import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.lists.ListsViewModel
 import tv.trakt.trakt.core.lists.features.all.AllListsViewModel
 import tv.trakt.trakt.core.lists.features.details.ListDetailsViewModel
@@ -50,6 +50,12 @@ import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListItems
 import tv.trakt.trakt.core.lists.sections.personal.usecases.GetPersonalListsUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
+import tv.trakt.trakt.core.lists.sections.smart.data.local.ListsSmartLocalDataSource
+import tv.trakt.trakt.core.lists.sections.smart.data.local.ListsSmartStorage
+import tv.trakt.trakt.core.lists.sections.smart.details.SmartListDetailsViewModel
+import tv.trakt.trakt.core.lists.sections.smart.usecases.DeleteSmartListUseCase
+import tv.trakt.trakt.core.lists.sections.smart.usecases.GetSmartListItemsUseCase
+import tv.trakt.trakt.core.lists.sections.smart.usecases.GetSmartListsUseCase
 import tv.trakt.trakt.core.lists.sections.watchlist.ListsWatchlistViewModel
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.AllWatchlistViewModel
 import tv.trakt.trakt.core.lists.sections.watchlist.features.context.movies.WatchlistMovieContextViewModel
@@ -70,6 +76,7 @@ internal val listsDataModule = module {
     singleOf(::ListsPersonalStorage) { bind<ListsPersonalLocalDataSource>() }
     singleOf(::ListsLikedStorage) { bind<ListsLikedLocalDataSource>() }
     singleOf(::ListsCollaborationsStorage) { bind<ListsCollaborationsLocalDataSource>() }
+    singleOf(::ListsSmartStorage) { bind<ListsSmartLocalDataSource>() }
     singleOf(::WatchlistUpdatesStorage) { bind<WatchlistUpdates>() }
     singleOf(::ReorderUpdatesStorage) { bind<ReorderUpdates>() }
 
@@ -87,6 +94,9 @@ internal val listsModule = module {
     factoryOf(::GetPersonalListsUseCase)
     factoryOf(::GetLikedListsUseCase)
     factoryOf(::GetCollaborationsListsUseCase)
+    factoryOf(::GetSmartListsUseCase)
+    factoryOf(::GetSmartListItemsUseCase)
+    factoryOf(::DeleteSmartListUseCase)
     factoryOf(::GetPersonalListItemsUseCase)
     factoryOf(::GetListItemsUseCase)
     factoryOf(::CreateListUseCase)
@@ -106,6 +116,7 @@ internal val listsModule = module {
     viewModelOf(::ListsViewModel)
     viewModelOf(::ListsWatchlistViewModel)
     viewModelOf(::ListDetailsViewModel)
+    viewModelOf(::SmartListDetailsViewModel)
     viewModelOf(::ListReorderViewModel)
     viewModelOf(::CreateListViewModel)
     viewModelOf(::EditListViewModel)

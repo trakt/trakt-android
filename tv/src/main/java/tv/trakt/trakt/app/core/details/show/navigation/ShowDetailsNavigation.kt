@@ -7,9 +7,9 @@ import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.app.core.details.show.ShowDetailsScreen
 import tv.trakt.trakt.app.core.people.navigation.PersonDestination
-import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 
 @Serializable
 internal data class ShowDestination(

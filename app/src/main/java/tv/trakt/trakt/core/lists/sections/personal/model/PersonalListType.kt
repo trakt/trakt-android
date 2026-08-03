@@ -14,6 +14,10 @@ internal enum class PersonalListType(
     @param:StringRes val displayRes: Int,
     @param:DrawableRes val displayIcon: Int,
 ) {
+    Smart(
+        R.string.button_text_smart_lists,
+        R.drawable.ic_bolt,
+    ),
     Personal(
         R.string.button_text_personal,
         R.drawable.ic_person_trakt,

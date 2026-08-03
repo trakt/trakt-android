@@ -4,10 +4,10 @@ import tv.trakt.trakt.common.core.search.data.remote.SearchRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.toInstant
-import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
+import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.search.data.local.model.PopularListEntity
 import tv.trakt.trakt.core.search.data.local.model.PopularMovieEntity
 import tv.trakt.trakt.core.search.data.local.model.PopularShowEntity

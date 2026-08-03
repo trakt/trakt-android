@@ -9,7 +9,7 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.CalendarMediaDto
 import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
-import tv.trakt.trakt.common.networking.ExternalRatingsDto
+import tv.trakt.trakt.common.networking.ExternalMovieRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.MovieCalendarDto
@@ -185,7 +185,7 @@ internal class MoviesApiClient(
         return response.body()
     }
 
-    override suspend fun getExternalRatings(movieId: TraktId): ExternalRatingsDto {
+    override suspend fun getExternalRatings(movieId: TraktId): ExternalMovieRatingsDto {
         val response = moviesApi.getMoviesRatings(
             id = movieId.value.toString(),
             extended = "all",

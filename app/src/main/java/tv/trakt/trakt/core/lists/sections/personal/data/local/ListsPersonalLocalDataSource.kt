@@ -1,8 +1,8 @@
 package tv.trakt.trakt.core.lists.sections.personal.data.local
 
 import kotlinx.coroutines.flow.Flow
-import tv.trakt.trakt.common.model.CustomList
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.lists.CustomList
 import java.time.Instant
 import java.time.ZonedDateTime
 
