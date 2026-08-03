@@ -126,7 +126,9 @@
   <string name="button_label_next_calendar_period">Volgende periode</string>
   <string name="button_label_next_episode">Volgende aflevering</string>
   <string name="button_label_open_leaderboard">Open volgersklassement</string>
+  <string name="button_label_pause_track">Pauzeer %s</string>
   <string name="button_label_pick_match">Importeer %s.</string>
+  <string name="button_label_play_track">Speel %s af</string>
   <string name="button_label_plex_connect">Verbind je Plex-account</string>
   <string name="button_label_plex_disconnect">Koppel je Plex-account los</string>
   <string name="button_label_plex_scrobble_episode_library">Schakel scrobbelen van bibliotheek voor afleveringen in/uit</string>
@@ -269,6 +271,7 @@
   <string name="button_label_view_ratings_breakdown">Bekijk beoordelingsoverzicht</string>
   <string name="button_label_view_releases">Bekijk uitgaven</string>
   <string name="button_label_view_sentiment_analysis">Bekijk sentimentanalyse</string>
+  <string name="button_label_view_soundtrack">Bekijk soundtrack</string>
   <string name="button_label_view_trivia">Bekijk trivia</string>
   <string name="button_label_vip_upgrade">Upgrade naar VIP</string>
   <string name="button_label_watch_on_service">Bekijk op %s</string>
@@ -416,6 +419,7 @@
   <string name="button_text_share">Delen</string>
   <string name="button_text_share_auth_logs">Authenticatielogs delen</string>
   <string name="button_text_shows">Series</string>
+  <string name="button_text_smart_lists">Slim</string>
   <string name="button_text_social">Sociaal</string>
   <string name="button_text_sort_added_date">Datum toegevoegd</string>
   <string name="button_text_sort_asc">Opl.</string>
@@ -748,6 +752,7 @@
   <string name="hint_app_description">Dit verschijnt in de sectie \'Verbonden apps\' wanneer een gebruiker toegang verleent aan jouw app.</string>
   <string name="hint_app_origins">Eén oorsprong per regel. Geen wildcards of paden.</string>
   <string name="hint_app_redirect_uris">Eén URI per regel. Geen queryreeksen, alleen het volledige URI-pad. Gebruik urn:ietf:wg:oauth:2.0:oob voor apparaatverificatie.</string>
+  <string name="iframe_title_spotify_player">Spotify-speler voor %s</string>
   <string name="image_alt_list_preview_poster">Poster voor een item in %s</string>
   <string name="image_alt_media_poster">Poster van \"%s\"</string>
   <string name="image_alt_person_headshot">Portret van %s</string>
@@ -1030,6 +1035,7 @@
   <string name="list_title_smart_lists">Slimme lijsten</string>
   <string name="list_title_social">Sociaal</string>
   <string name="list_title_social_activity">Sociale activiteit</string>
+  <string name="list_title_soundtrack">Soundtrack</string>
   <string name="list_title_start_watching">Beginnen met kijken</string>
   <string name="list_title_streaming_favorite">Favoriet</string>
   <string name="list_title_streaming_free">Gratis</string>
@@ -1166,11 +1172,13 @@
   <string name="preview_feature_description_parental_guide">Toon risiconiveaus van de inhoud in het detailscherm voor films, series en afleveringen.</string>
   <string name="preview_feature_description_rewatch">Start nieuwe kijkbeurten voor series die je al hebt gezien, check in of markeer afleveringen als bekeken, direct vanuit het sessiepaneel.</string>
   <string name="preview_feature_description_scoped_favorites">Beperk favorietenlijsten door favorieten van het huidige jaar op profielen weer te geven en de volledige favorietenlijst per jaar te groeperen.</string>
+  <string name="preview_feature_description_soundtrack">Voegt een soundtracksectie toe aan film- en seriepagina\'s, met afspeelmogelijkheden wanneer een nummer kan worden gematcht.</string>
   <string name="preview_feature_description_up_next_smart_sort">Probeer een slimmere manier om je \'Verder kijken\' te sorteren.</string>
   <string name="preview_feature_title_edit_mode">Bewerkmodus</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Opnieuw bekijken</string>
   <string name="preview_feature_title_scoped_favorites">Gerichte favorieten</string>
+  <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_up_next_smart_sort">Verder kijken slim sorteren</string>
   <string name="reset_status_cleared">Kijklijst gewist.</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt gebruikt de taalinstellingen van uw Apple TV. Om deze bij te werken, gaat u naar:\n\nApple TV Instellingen &gt; Algemeen &gt; Apple TV Talen</string>
@@ -1538,6 +1546,11 @@
   <string name="text_sort_comments_popular">Populair</string>
   <string name="text_sort_comments_recent">Recent</string>
   <string name="text_sort_recently_added">Recent toegevoegd</string>
+  <string name="text_soundtrack_music_by">Muziek door</string>
+  <string name="text_soundtrack_pick_a_track">Kies een nummer om het hier af te spelen.</string>
+  <string name="text_soundtrack_playable_ratio">%1$d van %2$d afspeelbaar</string>
+  <string name="text_soundtrack_unmatched">Niet beschikbaar om af te spelen</string>
+  <string name="text_soundtrack_upsell">Luister naar de score.</string>
   <string name="text_source">Bron</string>
   <string name="text_spoiler">Spoiler</string>
   <string name="text_spoiler_alert">Spoilerwaarschuwing</string>
@@ -1879,6 +1892,7 @@
   <string name="vip_feature_description_recaps">Krijg diepere inzichten met uitgebreide maand- en jaaroverzichten die alles tonen wat u heeft bekeken, beoordeeld en ontdekt.</string>
   <string name="vip_feature_description_sentiment">Ontgrendel meer gedetailleerde sentimentanalyse voor series en films.</string>
   <string name="vip_feature_description_sentiment_trivia">Ontgrendel gedetailleerde sentimentanalyse en fascinerende weetjes over de films en series die u kijkt.</string>
+  <string name="vip_feature_description_soundtrack">Bekijk elk nummer dat in een film of serie wordt genoemd en speel de nummers af die we kunnen matchen.</string>
   <string name="vip_feature_description_streaming_services">Verbind en synchroniseer met extra streamingplatforms om uw kijkgedrag overal bij te houden.</string>
   <string name="vip_feature_description_streaming_sync">Synchroniseer automatisch uw kijkgeschiedenis en beoordelingen van al uw favoriete streamingdiensten.</string>
   <string name="vip_feature_description_support">Krijg prioriteitstoegang tot onze ondersteuningsforums en laat uw feedback direct horen aan het team.</string>
@@ -1897,6 +1911,7 @@
   <string name="vip_feature_title_recaps">Meer Statistieken: Maandelijks &amp; Jaarlijks Overzicht</string>
   <string name="vip_feature_title_sentiment">Sentiment</string>
   <string name="vip_feature_title_sentiment_trivia">Meer info: Sentiment &amp; Trivia</string>
+  <string name="vip_feature_title_soundtrack">Soundtrack</string>
   <string name="vip_feature_title_streaming_services">Meer streamingdiensten synchroniseren</string>
   <string name="vip_feature_title_streaming_sync">Streamingsynchronisatie</string>
   <string name="vip_feature_title_support">Betere ondersteuning: Forum &amp; Feedback</string>

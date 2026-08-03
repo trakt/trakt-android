@@ -126,7 +126,9 @@
   <string name="button_label_next_calendar_period">Sonraki dönem</string>
   <string name="button_label_next_episode">Sonraki bölüm</string>
   <string name="button_label_open_leaderboard">Takip edilenler liderlik tablosunu aç</string>
+  <string name="button_label_pause_track">%s duraklat</string>
   <string name="button_label_pick_match">%s İçe Aktar.</string>
+  <string name="button_label_play_track">%s oynat</string>
   <string name="button_label_plex_connect">Plex hesabınızı bağlayın</string>
   <string name="button_label_plex_disconnect">Plex hesabınızın bağlantısını kes</string>
   <string name="button_label_plex_scrobble_episode_library">Bölümler için kütüphane scrobble\'lamayı aç/kapat</string>
@@ -269,6 +271,7 @@
   <string name="button_label_view_ratings_breakdown">Derecelendirme dökümünü görüntüle</string>
   <string name="button_label_view_releases">Yayınları görüntüle</string>
   <string name="button_label_view_sentiment_analysis">Duygu analizini görüntüle</string>
+  <string name="button_label_view_soundtrack">Film müziğini görüntüle</string>
   <string name="button_label_view_trivia">Trivia\'yı görüntüle</string>
   <string name="button_label_vip_upgrade">VIP\'ye yükselt</string>
   <string name="button_label_watch_on_service">%s üzerinde izle</string>
@@ -416,6 +419,7 @@
   <string name="button_text_share">Paylaş</string>
   <string name="button_text_share_auth_logs">Kimlik Doğrulama Günlüklerini Paylaş</string>
   <string name="button_text_shows">Diziler</string>
+  <string name="button_text_smart_lists">Akıllı</string>
   <string name="button_text_social">Sosyal</string>
   <string name="button_text_sort_added_date">Eklenme Tarihi</string>
   <string name="button_text_sort_asc">Artan</string>
@@ -748,6 +752,7 @@
   <string name="hint_app_description">Bir kullanıcı uygulamanıza erişim verdiğinde bu açıklama Bağlı Uygulamalar bölümünde görünür.</string>
   <string name="hint_app_origins">Her satırda bir kaynak. Joker karakter veya yol yok.</string>
   <string name="hint_app_redirect_uris">Her satırda bir URI. Sorgu dizeleri olmadan, sadece tam URI yolu. Cihaz kimlik doğrulaması için urn:ietf:wg:oauth:2.0:oob kullanın.</string>
+  <string name="iframe_title_spotify_player">%s için Spotify oynatıcı</string>
   <string name="image_alt_list_preview_poster">%s listesindeki bir öğenin afişi</string>
   <string name="image_alt_media_poster">\"%s\" afişi</string>
   <string name="image_alt_person_headshot">%s baş fotoğrafı</string>
@@ -1030,6 +1035,7 @@
   <string name="list_title_smart_lists">Akıllı Listeler</string>
   <string name="list_title_social">Sosyal</string>
   <string name="list_title_social_activity">Sosyal Etkinlik</string>
+  <string name="list_title_soundtrack">Film Müziği</string>
   <string name="list_title_start_watching">İzlemeye Başla</string>
   <string name="list_title_streaming_favorite">Favori</string>
   <string name="list_title_streaming_free">Ücretsiz</string>
@@ -1166,11 +1172,13 @@
   <string name="preview_feature_description_parental_guide">Filmler, diziler ve bölümler için detay çekmecesinde içerik risk seviyelerini göster.</string>
   <string name="preview_feature_description_rewatch">Halihazırda izlediğiniz diziler için yeniden izleme oturumları başlatın, izlenen bölümleri doğrudan oturum çekmecesinden kaydedin veya izlendi olarak işaretleyin.</string>
   <string name="preview_feature_description_scoped_favorites">Favori listelerini, profillerde güncel yılın favorilerini göstererek ve tüm favori listesini yıla göre gruplandırarak zaman kutucuklarına ayırın.</string>
+  <string name="preview_feature_description_soundtrack">Film ve dizi sayfalarına, eşleşen parçaların çalınabildiği bir film müziği bölümü ekler.</string>
   <string name="preview_feature_description_up_next_smart_sort">İzlemeye Devam Edin listenizi sıralamak için daha akıllı bir yolu test edin.</string>
   <string name="preview_feature_title_edit_mode">Düzenleme Modu</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Yeniden İzleme</string>
   <string name="preview_feature_title_scoped_favorites">Kapsamlı Favoriler</string>
+  <string name="preview_feature_title_soundtrack">Film Müziği</string>
   <string name="preview_feature_title_up_next_smart_sort">İzlemeye Devam Et Akıllı Sıralama</string>
   <string name="reset_status_cleared">İzleme listesi temizlendi.</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt, Apple TV dil ayarlarınızı kullanır. Güncellemek için şu adrese gidin:\n\nApple TV Ayarları &gt; Genel &gt; Apple TV Dilleri</string>
@@ -1538,6 +1546,11 @@
   <string name="text_sort_comments_popular">Popüler</string>
   <string name="text_sort_comments_recent">En Yeni</string>
   <string name="text_sort_recently_added">Son eklenenler</string>
+  <string name="text_soundtrack_music_by">Müzik:</string>
+  <string name="text_soundtrack_pick_a_track">Oynatmak için bir parça seçin.</string>
+  <string name="text_soundtrack_playable_ratio">%1$d parçadan %2$d tanesi oynatılabilir</string>
+  <string name="text_soundtrack_unmatched">Oynatılamıyor</string>
+  <string name="text_soundtrack_upsell">Film müziğini dinleyin.</string>
   <string name="text_source">Kaynak</string>
   <string name="text_spoiler">Spoiler</string>
   <string name="text_spoiler_alert">Spoiler Uyarısı</string>
@@ -1879,6 +1892,7 @@
   <string name="vip_feature_description_recaps">İzlediğiniz, derecelendirdiğiniz ve keşfettiğiniz her şeyi gösteren kapsamlı aylık ve yıllık özetlerle daha derin içgörüler edinin.</string>
   <string name="vip_feature_description_sentiment">Diziler ve filmler için daha ayrıntılı duygu analizini açın.</string>
   <string name="vip_feature_description_sentiment_trivia">İzlediğiniz filmler ve diziler hakkında ayrıntılı duygu analizini ve büyüleyici bilgileri açın.</string>
+  <string name="vip_feature_description_soundtrack">Bir film veya dizide geçen tüm parçaları görün ve eşleşenleri oynatın.</string>
   <string name="vip_feature_description_streaming_services">Tüm hizmetlerde izlemenizi takip etmek için ek yayın platformlarıyla bağlantı kurun ve senkronize edin.</string>
   <string name="vip_feature_description_streaming_sync">İzleme geçmişinizi ve derecelendirmelerinizi tüm favori yayın hizmetlerinizden otomatik olarak senkronize edin.</string>
   <string name="vip_feature_description_support">Destek forumlarımıza öncelikli erişim sağlayın ve geri bildirimlerinizin doğrudan ekip tarafından duyulmasını sağlayın.</string>
@@ -1897,6 +1911,7 @@
   <string name="vip_feature_title_recaps">Daha Fazla İstatistik: Aylık &amp; Yıllık Özet</string>
   <string name="vip_feature_title_sentiment">Duygu</string>
   <string name="vip_feature_title_sentiment_trivia">Daha Fazla Bilgi: Duygu &amp; Trivia</string>
+  <string name="vip_feature_title_soundtrack">Film Müziği</string>
   <string name="vip_feature_title_streaming_services">Daha Fazla Yayın Hizmeti Senkronize Et</string>
   <string name="vip_feature_title_streaming_sync">Yayın Akışı Senkronizasyonu</string>
   <string name="vip_feature_title_support">Daha İyi Destek: Forum &amp; Geri Bildirim</string>

@@ -126,7 +126,9 @@
   <string name="button_label_next_calendar_period">Next period</string>
   <string name="button_label_next_episode">Next episode</string>
   <string name="button_label_open_leaderboard">Open follows leaderboard</string>
+  <string name="button_label_pause_track">Pause %s</string>
   <string name="button_label_pick_match">Import %s.</string>
+  <string name="button_label_play_track">Play %s</string>
   <string name="button_label_plex_connect">Connect your Plex account</string>
   <string name="button_label_plex_disconnect">Disconnect your Plex account</string>
   <string name="button_label_plex_scrobble_episode_library">Toggle library scrobbling for episodes</string>
@@ -269,6 +271,7 @@
   <string name="button_label_view_ratings_breakdown">View ratings breakdown</string>
   <string name="button_label_view_releases">View releases</string>
   <string name="button_label_view_sentiment_analysis">View sentiment analysis</string>
+  <string name="button_label_view_soundtrack">View soundtrack</string>
   <string name="button_label_view_trivia">View trivia</string>
   <string name="button_label_vip_upgrade">Upgrade to VIP</string>
   <string name="button_label_watch_on_service">Watch on %s</string>
@@ -416,6 +419,7 @@
   <string name="button_text_share">Share</string>
   <string name="button_text_share_auth_logs">Share Authentication Logs</string>
   <string name="button_text_shows">Shows</string>
+  <string name="button_text_smart_lists">Smart</string>
   <string name="button_text_social">Social</string>
   <string name="button_text_sort_added_date">Date Added</string>
   <string name="button_text_sort_asc">Asc</string>
@@ -748,6 +752,7 @@
   <string name="hint_app_description">This shows up in the Connected Apps section when a user grants access to your app.</string>
   <string name="hint_app_origins">One origin per line. No wildcards or paths.</string>
   <string name="hint_app_redirect_uris">One URI per line. No query strings, just the full URI path. Use urn:ietf:wg:oauth:2.0:oob for device authentication.</string>
+  <string name="iframe_title_spotify_player">Spotify player for %s</string>
   <string name="image_alt_list_preview_poster">Poster for an entry in %s</string>
   <string name="image_alt_media_poster">\"%s\" poster</string>
   <string name="image_alt_person_headshot">Headshot of %s</string>
@@ -1030,6 +1035,7 @@
   <string name="list_title_smart_lists">Smart Lists</string>
   <string name="list_title_social">Social</string>
   <string name="list_title_social_activity">Social Activity</string>
+  <string name="list_title_soundtrack">Soundtrack</string>
   <string name="list_title_start_watching">Start Watching</string>
   <string name="list_title_streaming_favorite">Favourite</string>
   <string name="list_title_streaming_free">Free</string>
@@ -1166,11 +1172,13 @@
   <string name="preview_feature_description_parental_guide">Show content risk levels in the details drawer for movies, shows, and episodes.</string>
   <string name="preview_feature_description_rewatch">Start rewatching sessions for shows you\'ve already seen, check in or mark watched episodes directly from the session drawer.</string>
   <string name="preview_feature_description_scoped_favorites">Time-box favourite lists by showing current-year favourites on profiles and grouping the full favourites list by year.</string>
+  <string name="preview_feature_description_soundtrack">Adds a soundtrack section to movie and show pages, with playback where a track can be matched.</string>
   <string name="preview_feature_description_up_next_smart_sort">Test a smarter way to sort your Continue Watching.</string>
   <string name="preview_feature_title_edit_mode">Edit Mode</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Rewatch</string>
   <string name="preview_feature_title_scoped_favorites">Scoped Favourites</string>
+  <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_up_next_smart_sort">Continue Watching Smart Sort</string>
   <string name="reset_status_cleared">Watchlist cleared.</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt uses your Apple TV language settings. To update it, go to:\n\nApple TV Settings &gt; General &gt; Apple TV Languages</string>
@@ -1538,6 +1546,11 @@
   <string name="text_sort_comments_popular">Popular</string>
   <string name="text_sort_comments_recent">Recent</string>
   <string name="text_sort_recently_added">Recently added</string>
+  <string name="text_soundtrack_music_by">Music by</string>
+  <string name="text_soundtrack_pick_a_track">Pick a track to play it here.</string>
+  <string name="text_soundtrack_playable_ratio">%1$d of %2$d playable</string>
+  <string name="text_soundtrack_unmatched">Not available to play</string>
+  <string name="text_soundtrack_upsell">Hear the score.</string>
   <string name="text_source">Source</string>
   <string name="text_spoiler">Spoiler</string>
   <string name="text_spoiler_alert">Spoiler Alert</string>
@@ -1879,6 +1892,7 @@
   <string name="vip_feature_description_recaps">Get deeper insights with comprehensive month and year recaps showing everything you watched, rated, and discovered.</string>
   <string name="vip_feature_description_sentiment">Unlock more detailed sentiment analysis for shows and movies.</string>
   <string name="vip_feature_description_sentiment_trivia">Unlock detailed sentiment analysis and fascinating trivia about the movies and shows you watch.</string>
+  <string name="vip_feature_description_soundtrack">See every track credited in a movie or show, and play the ones we can match.</string>
   <string name="vip_feature_description_streaming_services">Connect and sync with additional streaming platforms to track your viewing across all services.</string>
   <string name="vip_feature_description_streaming_sync">Automatically sync your watched history and ratings from all your favourite streaming services.</string>
   <string name="vip_feature_description_support">Get priority access to our support forums and have your feedback heard directly by the team.</string>
@@ -1897,6 +1911,7 @@
   <string name="vip_feature_title_recaps">More Stats: Monthly &amp; Yearly Recap</string>
   <string name="vip_feature_title_sentiment">Sentiment</string>
   <string name="vip_feature_title_sentiment_trivia">More Info: Sentiment &amp; Trivia</string>
+  <string name="vip_feature_title_soundtrack">Soundtrack</string>
   <string name="vip_feature_title_streaming_services">Sync more Streaming Services</string>
   <string name="vip_feature_title_streaming_sync">Streaming Sync</string>
   <string name="vip_feature_title_support">Better Support: Forum &amp; Feedback</string>

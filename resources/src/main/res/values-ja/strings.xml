@@ -126,7 +126,9 @@
   <string name="button_label_next_calendar_period">次の期間</string>
   <string name="button_label_next_episode">次のエピソード</string>
   <string name="button_label_open_leaderboard">フォロー中のランキングを開く</string>
+  <string name="button_label_pause_track">%sを一時停止</string>
   <string name="button_label_pick_match">%sをインポートする。</string>
+  <string name="button_label_play_track">%sを再生</string>
   <string name="button_label_plex_connect">Plexアカウントを接続</string>
   <string name="button_label_plex_disconnect">Plexアカウントを切断</string>
   <string name="button_label_plex_scrobble_episode_library">エピソードのライブラリスクロブルを切り替える</string>
@@ -269,6 +271,7 @@
   <string name="button_label_view_ratings_breakdown">評価の内訳を表示</string>
   <string name="button_label_view_releases">リリースを見る</string>
   <string name="button_label_view_sentiment_analysis">感情分析を表示</string>
+  <string name="button_label_view_soundtrack">サウンドトラックを表示</string>
   <string name="button_label_view_trivia">トリビアを表示</string>
   <string name="button_label_vip_upgrade">VIPにアップグレード</string>
   <string name="button_label_watch_on_service">%sで視聴</string>
@@ -416,6 +419,7 @@
   <string name="button_text_share">共有</string>
   <string name="button_text_share_auth_logs">認証ログを共有</string>
   <string name="button_text_shows">番組</string>
+  <string name="button_text_smart_lists">スマート</string>
   <string name="button_text_social">ソーシャル</string>
   <string name="button_text_sort_added_date">追加日</string>
   <string name="button_text_sort_asc">昇順</string>
@@ -748,6 +752,7 @@
   <string name="hint_app_description">ユーザーがアプリへのアクセスを許可すると、接続済みアプリセクションに表示されます。</string>
   <string name="hint_app_origins">1行に1つのオリジン。ワイルドカードやパスは使用できません。</string>
   <string name="hint_app_redirect_uris">1行に1つのURI。クエリ文字列は含まず、完全なURIパスのみ。デバイス認証にはurn:ietf:wg:oauth:2.0:oobを使用します。</string>
+  <string name="iframe_title_spotify_player">%s用Spotifyプレイヤー</string>
   <string name="image_alt_list_preview_poster">%sのリスト内のエントリのポスター</string>
   <string name="image_alt_media_poster">「%s」のポスター</string>
   <string name="image_alt_person_headshot">%sの顔写真</string>
@@ -1030,6 +1035,7 @@
   <string name="list_title_smart_lists">スマートリスト</string>
   <string name="list_title_social">ソーシャル</string>
   <string name="list_title_social_activity">ソーシャルアクティビティ</string>
+  <string name="list_title_soundtrack">サウンドトラック</string>
   <string name="list_title_start_watching">視聴開始</string>
   <string name="list_title_streaming_favorite">お気に入り</string>
   <string name="list_title_streaming_free">無料</string>
@@ -1166,11 +1172,13 @@
   <string name="preview_feature_description_parental_guide">映画、番組、エピソードの詳細ドロワーにコンテンツのリスクレベルを表示します。</string>
   <string name="preview_feature_description_rewatch">既に視聴済みの番組の再視聴セッションを開始し、セッションドロワーから直接エピソードをチェックインまたは視聴済みとしてマークできます。</string>
   <string name="preview_feature_description_scoped_favorites">プロフィールに今年の「お気に入り」を表示し、お気に入りリスト全体を年別にグループ化することで、お気に入りリストを期間で区切ります。</string>
+  <string name="preview_feature_description_soundtrack">映画や番組のページにサウンドトラックセクションを追加し、一致するトラックがあれば再生できます。</string>
   <string name="preview_feature_description_up_next_smart_sort">続きを視聴のよりスマートな並べ替えをお試しください。</string>
   <string name="preview_feature_title_edit_mode">編集モード</string>
   <string name="preview_feature_title_leaderboard">パンテオン</string>
   <string name="preview_feature_title_rewatch">再視聴</string>
   <string name="preview_feature_title_scoped_favorites">範囲指定されたお気に入り</string>
+  <string name="preview_feature_title_soundtrack">サウンドトラック</string>
   <string name="preview_feature_title_up_next_smart_sort">続きを視聴 スマートソート</string>
   <string name="reset_status_cleared">ウォッチリストをクリアしました。</string>
   <string name="screen_account_settings_language_system_message_tvos">TraktはApple TVの言語設定を使用します。更新するには、以下に移動してください:\n\nApple TV 設定 &gt; 一般 &gt; Apple TVの言語</string>
@@ -1538,6 +1546,11 @@
   <string name="text_sort_comments_popular">人気</string>
   <string name="text_sort_comments_recent">最新</string>
   <string name="text_sort_recently_added">最近追加</string>
+  <string name="text_soundtrack_music_by">音楽：</string>
+  <string name="text_soundtrack_pick_a_track">再生するトラックを選択してください。</string>
+  <string name="text_soundtrack_playable_ratio">再生可能数：%1$d / %2$d</string>
+  <string name="text_soundtrack_unmatched">再生できません</string>
+  <string name="text_soundtrack_upsell">スコアを聴く。</string>
   <string name="text_source">ソース</string>
   <string name="text_spoiler">ネタバレ</string>
   <string name="text_spoiler_alert">ネタバレ注意</string>
@@ -1879,6 +1892,7 @@
   <string name="vip_feature_description_recaps">視聴、評価、発見したすべてのコンテンツを示す、包括的な月間および年間のまとめでより深い洞察を得られます。</string>
   <string name="vip_feature_description_sentiment">番組や映画のより詳細な感情分析をアンロックします。</string>
   <string name="vip_feature_description_sentiment_trivia">視聴する映画や番組に関する詳細な感情分析と魅力的なトリビアをアンロックします。</string>
+  <string name="vip_feature_description_soundtrack">映画や番組にクレジットされているすべてのトラックを表示し、マッチするものを再生できます。</string>
   <string name="vip_feature_description_streaming_services">追加のストリーミングプラットフォームと接続・同期して、すべてのサービスでの視聴を追跡できます。</string>
   <string name="vip_feature_description_streaming_sync">お気に入りのすべてのストリーミングサービスから、視聴履歴と評価を自動的に同期します。</string>
   <string name="vip_feature_description_support">サポートフォーラムへの優先アクセス権を取得し、あなたのフィードバックをチームに直接届けましょう。</string>
@@ -1897,6 +1911,7 @@
   <string name="vip_feature_title_recaps">詳細な統計: 月間＆年間まとめ</string>
   <string name="vip_feature_title_sentiment">コミュニティの評価</string>
   <string name="vip_feature_title_sentiment_trivia">詳細情報: 感情 &amp; トリビア</string>
+  <string name="vip_feature_title_soundtrack">サウンドトラック</string>
   <string name="vip_feature_title_streaming_services">より多くのストリーミングサービスと同期</string>
   <string name="vip_feature_title_streaming_sync">ストリーミング同期</string>
   <string name="vip_feature_title_support">より良いサポート: フォーラム＆フィードバック</string>

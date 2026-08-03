@@ -126,7 +126,9 @@
   <string name="button_label_next_calendar_period">下一周期</string>
   <string name="button_label_next_episode">下一集</string>
   <string name="button_label_open_leaderboard">打开关注排行榜</string>
+  <string name="button_label_pause_track">暂停 %s</string>
   <string name="button_label_pick_match">导入 %s。</string>
+  <string name="button_label_play_track">播放 %s</string>
   <string name="button_label_plex_connect">连接您的Plex帐户</string>
   <string name="button_label_plex_disconnect">断开您的Plex帐户</string>
   <string name="button_label_plex_scrobble_episode_library">切换剧集媒体库同步</string>
@@ -269,6 +271,7 @@
   <string name="button_label_view_ratings_breakdown">查看评分详情</string>
   <string name="button_label_view_releases">查看发布</string>
   <string name="button_label_view_sentiment_analysis">查看情感分析</string>
+  <string name="button_label_view_soundtrack">查看原声带</string>
   <string name="button_label_view_trivia">查看趣闻</string>
   <string name="button_label_vip_upgrade">升级到VIP</string>
   <string name="button_label_watch_on_service">在 %s 上观看</string>
@@ -416,6 +419,7 @@
   <string name="button_text_share">分享</string>
   <string name="button_text_share_auth_logs">分享认证日志</string>
   <string name="button_text_shows">剧集</string>
+  <string name="button_text_smart_lists">智能</string>
   <string name="button_text_social">社交</string>
   <string name="button_text_sort_added_date">添加日期</string>
   <string name="button_text_sort_asc">升序</string>
@@ -748,6 +752,7 @@
   <string name="hint_app_description">当用户授予您的应用访问权限时，此内容会显示在“已连接应用”部分。</string>
   <string name="hint_app_origins">每行一个源。不带通配符或路径。</string>
   <string name="hint_app_redirect_uris">每行一个 URI。不带查询字符串，仅限完整的 URI 路径。设备身份验证请使用 urn:ietf:wg:oauth:2.0:oob。</string>
+  <string name="iframe_title_spotify_player">%s 的 Spotify 播放器</string>
   <string name="image_alt_list_preview_poster">%s 中的条目海报</string>
   <string name="image_alt_media_poster">“%s”海报</string>
   <string name="image_alt_person_headshot">%s 的大头照</string>
@@ -1030,6 +1035,7 @@
   <string name="list_title_smart_lists">智能列表</string>
   <string name="list_title_social">社交</string>
   <string name="list_title_social_activity">社交动态</string>
+  <string name="list_title_soundtrack">原声带</string>
   <string name="list_title_start_watching">开始观看</string>
   <string name="list_title_streaming_favorite">我的最爱</string>
   <string name="list_title_streaming_free">免费</string>
@@ -1166,11 +1172,13 @@
   <string name="preview_feature_description_parental_guide">在电影、节目和剧集的详情抽屉中显示内容风险等级。</string>
   <string name="preview_feature_description_rewatch">开始重温您已看过的节目，直接从会话抽屉中签到或标记已观看剧集。</string>
   <string name="preview_feature_description_scoped_favorites">通过在个人资料上显示当年的收藏以及按年份分组完整的收藏列表来限制收藏列表的时间范围。</string>
+  <string name="preview_feature_description_soundtrack">为电影和节目页面添加原声带部分，并可在匹配到曲目时进行播放。</string>
   <string name="preview_feature_description_up_next_smart_sort">试用一种更智能的方式来对您的“继续观看”进行排序。</string>
   <string name="preview_feature_title_edit_mode">编辑模式</string>
   <string name="preview_feature_title_leaderboard">万神殿</string>
   <string name="preview_feature_title_rewatch">重温</string>
   <string name="preview_feature_title_scoped_favorites">限定范围的收藏</string>
+  <string name="preview_feature_title_soundtrack">原声带</string>
   <string name="preview_feature_title_up_next_smart_sort">继续观看智能排序</string>
   <string name="reset_status_cleared">待看列表已清除。</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt 使用您的 Apple TV 语言设置。要更新，请前往：\n\nApple TV 设置 &gt; 通用 &gt; Apple TV 语言</string>
@@ -1538,6 +1546,11 @@
   <string name="text_sort_comments_popular">流行</string>
   <string name="text_sort_comments_recent">最新</string>
   <string name="text_sort_recently_added">最近添加</string>
+  <string name="text_soundtrack_music_by">音乐</string>
+  <string name="text_soundtrack_pick_a_track">在此选择一首曲目进行播放。</string>
+  <string name="text_soundtrack_playable_ratio">%1$d 首中 %2$d 首可播放</string>
+  <string name="text_soundtrack_unmatched">无法播放</string>
+  <string name="text_soundtrack_upsell">聆听配乐。</string>
   <string name="text_source">来源</string>
   <string name="text_spoiler">剧透</string>
   <string name="text_spoiler_alert">剧透警告</string>
@@ -1879,6 +1892,7 @@
   <string name="vip_feature_description_recaps">通过全面的月度与年度回顾，深入了解您观看、评分和发现的所有内容。</string>
   <string name="vip_feature_description_sentiment">解锁电影和节目更详细的情感分析。</string>
   <string name="vip_feature_description_sentiment_trivia">解锁关于您观看的电影和节目的详细情感分析和精彩趣闻。</string>
+  <string name="vip_feature_description_soundtrack">查看电影或节目中列出的所有曲目，并播放我们能匹配到的。</string>
   <string name="vip_feature_description_streaming_services">连接并同步更多流媒体平台，以追踪您在所有服务上的观看情况。</string>
   <string name="vip_feature_description_streaming_sync">自动同步您所有喜爱的流媒体服务中的观看历史和评分。</string>
   <string name="vip_feature_description_support">优先访问我们的支持论坛，并让团队直接听取您的反馈。</string>
@@ -1897,6 +1911,7 @@
   <string name="vip_feature_title_recaps">更多统计：月度与年度回顾</string>
   <string name="vip_feature_title_sentiment">社区情绪</string>
   <string name="vip_feature_title_sentiment_trivia">更多信息：情感 + 趣闻</string>
+  <string name="vip_feature_title_soundtrack">原声带</string>
   <string name="vip_feature_title_streaming_services">同步更多流媒体服务</string>
   <string name="vip_feature_title_streaming_sync">流媒体同步</string>
   <string name="vip_feature_title_support">更好支持：论坛与反馈</string>

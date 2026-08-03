@@ -126,7 +126,9 @@
   <string name="button_label_next_calendar_period">Periodo successivo</string>
   <string name="button_label_next_episode">Episodio successivo</string>
   <string name="button_label_open_leaderboard">Apri la classifica dei seguiti</string>
+  <string name="button_label_pause_track">Metti in pausa %s</string>
   <string name="button_label_pick_match">Importa %s.</string>
+  <string name="button_label_play_track">Riproduci %s</string>
   <string name="button_label_plex_connect">Collega il tuo account Plex</string>
   <string name="button_label_plex_disconnect">Scollega il tuo account Plex</string>
   <string name="button_label_plex_scrobble_episode_library">Attiva/disattiva scrobbling libreria per gli episodi</string>
@@ -269,6 +271,7 @@
   <string name="button_label_view_ratings_breakdown">Visualizza il dettaglio delle valutazioni</string>
   <string name="button_label_view_releases">Visualizza uscite</string>
   <string name="button_label_view_sentiment_analysis">Visualizza analisi del sentiment</string>
+  <string name="button_label_view_soundtrack">Visualizza colonna sonora</string>
   <string name="button_label_view_trivia">Visualizza curiosità</string>
   <string name="button_label_vip_upgrade">Passa a VIP</string>
   <string name="button_label_watch_on_service">Guarda su %s</string>
@@ -416,6 +419,7 @@
   <string name="button_text_share">Condividi</string>
   <string name="button_text_share_auth_logs">Condividi Log di Autenticazione</string>
   <string name="button_text_shows">Serie TV</string>
+  <string name="button_text_smart_lists">Intelligente</string>
   <string name="button_text_social">Social</string>
   <string name="button_text_sort_added_date">Data di Aggiunta</string>
   <string name="button_text_sort_asc">Cresc.</string>
@@ -748,6 +752,7 @@
   <string name="hint_app_description">Questo compare nella sezione App Connesse quando un utente concede l\'accesso alla tua app.</string>
   <string name="hint_app_origins">Un\'origine per riga. Nessun carattere jolly o percorso.</string>
   <string name="hint_app_redirect_uris">Un URI per riga. Nessuna stringa di query, solo il percorso URI completo. Usa urn:ietf:wg:oauth:2.0:oob per l\'autenticazione del dispositivo.</string>
+  <string name="iframe_title_spotify_player">Lettore Spotify per %s</string>
   <string name="image_alt_list_preview_poster">Locandina per una voce in %s</string>
   <string name="image_alt_media_poster">Locandina di \"%s\"</string>
   <string name="image_alt_person_headshot">Primo piano di %s</string>
@@ -1030,6 +1035,7 @@
   <string name="list_title_smart_lists">Liste intelligenti</string>
   <string name="list_title_social">Social</string>
   <string name="list_title_social_activity">Attività Sociale</string>
+  <string name="list_title_soundtrack">Colonna sonora</string>
   <string name="list_title_start_watching">Inizia a Guardare</string>
   <string name="list_title_streaming_favorite">Preferiti</string>
   <string name="list_title_streaming_free">Gratis</string>
@@ -1166,11 +1172,13 @@
   <string name="preview_feature_description_parental_guide">Mostra i livelli di rischio dei contenuti nel cassetto dei dettagli per film, serie TV ed episodi.</string>
   <string name="preview_feature_description_rewatch">Avvia sessioni di riguardato per le serie TV che hai già visto, registrando la visione o contrassegnando gli episodi come guardati direttamente dal pannello della sessione.</string>
   <string name="preview_feature_description_scoped_favorites">Limita le liste dei preferiti per anno, mostrando i preferiti dell\'anno corrente sui profili e raggruppando l\'intera lista dei preferiti per anno.</string>
+  <string name="preview_feature_description_soundtrack">Aggiunge una sezione colonna sonora alle pagine di film e serie TV, con riproduzione dove un brano può essere trovato.</string>
   <string name="preview_feature_description_up_next_smart_sort">Prova un modo più intelligente per ordinare i tuoi \"Continua a Guardare\".</string>
   <string name="preview_feature_title_edit_mode">Modalità di modifica</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Riguarda</string>
   <string name="preview_feature_title_scoped_favorites">Preferiti con Ambito</string>
+  <string name="preview_feature_title_soundtrack">Colonna sonora</string>
   <string name="preview_feature_title_up_next_smart_sort">Continua a Guardare Ordinamento Intelligente</string>
   <string name="reset_status_cleared">Watchlist svuotata.</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt utilizza le impostazioni della lingua della tua Apple TV. Per aggiornarle, vai su:\n\nImpostazioni Apple TV &gt; Generali &gt; Lingue Apple TV</string>
@@ -1538,6 +1546,11 @@
   <string name="text_sort_comments_popular">Popolari</string>
   <string name="text_sort_comments_recent">Recenti</string>
   <string name="text_sort_recently_added">Aggiunti di recente</string>
+  <string name="text_soundtrack_music_by">Musica di</string>
+  <string name="text_soundtrack_pick_a_track">Scegli un brano per riprodurlo qui.</string>
+  <string name="text_soundtrack_playable_ratio">%1$d di %2$d riproducibili</string>
+  <string name="text_soundtrack_unmatched">Non disponibile per la riproduzione</string>
+  <string name="text_soundtrack_upsell">Ascolta la colonna sonora.</string>
   <string name="text_source">Origine</string>
   <string name="text_spoiler">Spoiler</string>
   <string name="text_spoiler_alert">Attenzione Spoiler</string>
@@ -1879,6 +1892,7 @@
   <string name="vip_feature_description_recaps">Ottieni approfondimenti più dettagliati con riepiloghi mensili e annuali completi che mostrano tutto ciò che hai guardato, valutato e scoperto.</string>
   <string name="vip_feature_description_sentiment">Sblocca un\'analisi del sentiment più dettagliata per serie e film.</string>
   <string name="vip_feature_description_sentiment_trivia">Sblocca analisi del sentiment dettagliate e affascinanti curiosità sui film e le serie che guardi.</string>
+  <string name="vip_feature_description_soundtrack">Vedi ogni brano accreditato in un film o una serie TV e riproduci quelli che riusciamo a trovare.</string>
   <string name="vip_feature_description_streaming_services">Connettiti e sincronizza con piattaforme di streaming aggiuntive per tracciare la tua visione su tutti i servizi.</string>
   <string name="vip_feature_description_streaming_sync">Sincronizza automaticamente la cronologia di visione e le valutazioni da tutti i tuoi servizi di streaming preferiti.</string>
   <string name="vip_feature_description_support">Ottieni accesso prioritario ai nostri forum di supporto e fai sentire il tuo feedback direttamente al team.</string>
@@ -1897,6 +1911,7 @@
   <string name="vip_feature_title_recaps">Più statistiche: Riepiloghi mensili e annuali</string>
   <string name="vip_feature_title_sentiment">Sentimento della community</string>
   <string name="vip_feature_title_sentiment_trivia">Più informazioni: Sentiment e Curiosità</string>
+  <string name="vip_feature_title_soundtrack">Colonna sonora</string>
   <string name="vip_feature_title_streaming_services">Sincronizza più servizi di streaming</string>
   <string name="vip_feature_title_streaming_sync">Sincronizzazione Streaming</string>
   <string name="vip_feature_title_support">Supporto migliore: Forum e Feedback</string>

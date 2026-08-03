@@ -126,7 +126,9 @@
   <string name="button_label_next_calendar_period">Pròxim període</string>
   <string name="button_label_next_episode">Següent episodi</string>
   <string name="button_label_open_leaderboard">Obrir la classificació de seguidors</string>
+  <string name="button_label_pause_track">Pausa %s</string>
   <string name="button_label_pick_match">Importar %s.</string>
+  <string name="button_label_play_track">Reprodueix %s</string>
   <string name="button_label_plex_connect">Connecta el teu compte de Plex</string>
   <string name="button_label_plex_disconnect">Desconnecta el teu compte de Plex</string>
   <string name="button_label_plex_scrobble_episode_library">Alterna l\'enregistrament de la biblioteca per a episodis</string>
@@ -269,6 +271,7 @@
   <string name="button_label_view_ratings_breakdown">Veure desglossament de les valoracions</string>
   <string name="button_label_view_releases">Veure estrenes</string>
   <string name="button_label_view_sentiment_analysis">Veure anàlisi de sentiments</string>
+  <string name="button_label_view_soundtrack">Mostra la banda sonora</string>
   <string name="button_label_view_trivia">Veure curiositats</string>
   <string name="button_label_vip_upgrade">Actualitza a VIP</string>
   <string name="button_label_watch_on_service">Mira a %s</string>
@@ -416,6 +419,7 @@
   <string name="button_text_share">Comparteix</string>
   <string name="button_text_share_auth_logs">Comparteix els registres d\'autenticació</string>
   <string name="button_text_shows">Sèries</string>
+  <string name="button_text_smart_lists">Intel·ligent</string>
   <string name="button_text_social">Social</string>
   <string name="button_text_sort_added_date">Data d\'incorporació</string>
   <string name="button_text_sort_asc">Asc</string>
@@ -748,6 +752,7 @@
   <string name="hint_app_description">Això apareix a la secció d\'Aplicacions connectades quan un usuari concedeix accés a la teva aplicació.</string>
   <string name="hint_app_origins">Un origen per línia. Sense comodins ni rutes.</string>
   <string name="hint_app_redirect_uris">Una URI per línia. Sense cadenes de consulta, només la ruta URI completa. Utilitza urn:ietf:wg:oauth:2.0:oob per a l\'autenticació de dispositius.</string>
+  <string name="iframe_title_spotify_player">Reproductor de Spotify per a %s</string>
   <string name="image_alt_list_preview_poster">Pòster d\'una entrada a %s</string>
   <string name="image_alt_media_poster">Pòster de \"%s\"</string>
   <string name="image_alt_person_headshot">Retrat de %s</string>
@@ -1030,6 +1035,7 @@
   <string name="list_title_smart_lists">Llistes intel·ligents</string>
   <string name="list_title_social">Social</string>
   <string name="list_title_social_activity">Activitat social</string>
+  <string name="list_title_soundtrack">Banda sonora</string>
   <string name="list_title_start_watching">Comença a veure</string>
   <string name="list_title_streaming_favorite">Preferit</string>
   <string name="list_title_streaming_free">Gratis</string>
@@ -1166,11 +1172,13 @@
   <string name="preview_feature_description_parental_guide">Mostrar els nivells de risc de contingut al calaix de detalls per a pel·lícules, sèries i episodis.</string>
   <string name="preview_feature_description_rewatch">Inicia sessions de revisió per a programes que ja has vist, fes un seguiment o marca els episodis com a vistos directament des del calaix de la sessió.</string>
   <string name="preview_feature_description_scoped_favorites">Delimita les llistes de preferits mostrant els preferits de l\'any actual als perfils i agrupant la llista completa de preferits per any.</string>
+  <string name="preview_feature_description_soundtrack">Afegeix una secció de banda sonora a les pàgines de pel·lícules i sèries, amb reproducció on es pugui trobar una pista.</string>
   <string name="preview_feature_description_up_next_smart_sort">Prova una manera més intel·ligent d\'ordenar el teu \'Continua veient\'.</string>
   <string name="preview_feature_title_edit_mode">Mode d\'edició</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Revisió</string>
   <string name="preview_feature_title_scoped_favorites">Preferits per àmbit</string>
+  <string name="preview_feature_title_soundtrack">Banda sonora</string>
   <string name="preview_feature_title_up_next_smart_sort">Continua veient: Ordre intel·ligent</string>
   <string name="reset_status_cleared">Llista de seguiment esborrada.</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt utilitza la configuració d\'idioma de l\'Apple TV. Per actualitzar-la, ves a:\nAjustos de l\'Apple TV &gt; General &gt; Idiomes de l\'Apple TV</string>
@@ -1538,6 +1546,11 @@
   <string name="text_sort_comments_popular">Popular</string>
   <string name="text_sort_comments_recent">Recents</string>
   <string name="text_sort_recently_added">Afegits recentment</string>
+  <string name="text_soundtrack_music_by">Música de</string>
+  <string name="text_soundtrack_pick_a_track">Tria una pista per reproduir-la aquí.</string>
+  <string name="text_soundtrack_playable_ratio">%1$d de %2$d reproduïbles</string>
+  <string name="text_soundtrack_unmatched">No disponible per reproduir</string>
+  <string name="text_soundtrack_upsell">Escolta la banda sonora.</string>
   <string name="text_source">Font</string>
   <string name="text_spoiler">Spoiler</string>
   <string name="text_spoiler_alert">Alerta de spoiler</string>
@@ -1879,6 +1892,7 @@
   <string name="vip_feature_description_recaps">Obtén informació més detallada amb resums mensuals i anuals complets que mostren tot el que has vist, valorat i descobert.</string>
   <string name="vip_feature_description_sentiment">Desbloqueja una anàlisi de sentiments més detallada per a sèries i pel·lícules.</string>
   <string name="vip_feature_description_sentiment_trivia">Desbloqueja una anàlisi de sentiments detallada i curiositats fascinants sobre les pel·lícules i sèries que veus.</string>
+  <string name="vip_feature_description_soundtrack">Consulta totes les pistes acreditades en una pel·lícula o sèrie, i reprodueix les que puguem trobar.</string>
   <string name="vip_feature_description_streaming_services">Connecta i sincronitza amb plataformes de streaming addicionals per fer un seguiment de les teves visualitzacions a tots els serveis.</string>
   <string name="vip_feature_description_streaming_sync">Sincronitza automàticament el teu historial de visualitzacions i valoracions de tots els teus serveis de streaming preferits.</string>
   <string name="vip_feature_description_support">Obtén accés prioritari als nostres fòrums de suport i fes que el teu feedback sigui escoltat directament per l\'equip.</string>
@@ -1897,6 +1911,7 @@
   <string name="vip_feature_title_recaps">Més estadístiques: resums mensuals i anuals</string>
   <string name="vip_feature_title_sentiment">Sentiment</string>
   <string name="vip_feature_title_sentiment_trivia">Més informació: sentiments i curiositats</string>
+  <string name="vip_feature_title_soundtrack">Banda sonora</string>
   <string name="vip_feature_title_streaming_services">Sincronitza més serveis de streaming</string>
   <string name="vip_feature_title_streaming_sync">Sincronització de streaming</string>
   <string name="vip_feature_title_support">Millor suport: Fòrum i suggeriments</string>

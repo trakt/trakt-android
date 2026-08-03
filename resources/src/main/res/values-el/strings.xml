@@ -126,7 +126,9 @@
   <string name="button_label_next_calendar_period">Επόμενη περίοδος</string>
   <string name="button_label_next_episode">Επόμενο επεισόδιο</string>
   <string name="button_label_open_leaderboard">Άνοιγμα πίνακα κατάταξης ακολούθων</string>
+  <string name="button_label_pause_track">Παύση %s</string>
   <string name="button_label_pick_match">Εισαγωγή %s.</string>
+  <string name="button_label_play_track">Αναπαραγωγή %s</string>
   <string name="button_label_plex_connect">Συνδέστε τον λογαριασμό σας Plex</string>
   <string name="button_label_plex_disconnect">Αποσυνδέστε τον λογαριασμό σας Plex</string>
   <string name="button_label_plex_scrobble_episode_library">Εναλλαγή scrobbling βιβλιοθήκης για επεισόδια</string>
@@ -269,6 +271,7 @@
   <string name="button_label_view_ratings_breakdown">Προβολή ανάλυσης αξιολογήσεων</string>
   <string name="button_label_view_releases">Προβολή κυκλοφοριών</string>
   <string name="button_label_view_sentiment_analysis">Προβολή ανάλυσης συναισθήματος</string>
+  <string name="button_label_view_soundtrack">Προβολή σάουντρακ</string>
   <string name="button_label_view_trivia">Προβολή trivia</string>
   <string name="button_label_vip_upgrade">Αναβαθμίστε σε VIP</string>
   <string name="button_label_watch_on_service">Παρακολούθηση στην %s</string>
@@ -416,6 +419,7 @@
   <string name="button_text_share">Μοιραστείτε</string>
   <string name="button_text_share_auth_logs">Κοινή χρήση αρχείων καταγραφής ελέγχου ταυτότητας</string>
   <string name="button_text_shows">Σειρές</string>
+  <string name="button_text_smart_lists">Έξυπνα</string>
   <string name="button_text_social">Κοινωνικά</string>
   <string name="button_text_sort_added_date">Ημερομηνία Προσθήκης</string>
   <string name="button_text_sort_asc">Αύξουσα</string>
@@ -748,6 +752,7 @@
   <string name="hint_app_description">Αυτό εμφανίζεται στην ενότητα Συνδεδεμένες Εφαρμογές όταν ένας χρήστης χορηγεί πρόσβαση στην εφαρμογή σας.</string>
   <string name="hint_app_origins">Μία προέλευση ανά γραμμή. Χωρίς μπαλαντέρ ή διαδρομές.</string>
   <string name="hint_app_redirect_uris">Ένα URI ανά γραμμή. Χωρίς συμβολοσειρές ερωτήματος, μόνο η πλήρης διαδρομή URI. Χρησιμοποιήστε urn:ietf:wg:oauth:2.0:oob για έλεγχο ταυτότητας συσκευής.</string>
+  <string name="iframe_title_spotify_player">Πρόγραμμα αναπαραγωγής Spotify για %s</string>
   <string name="image_alt_list_preview_poster">Αφίσα για μια καταχώριση στο %s</string>
   <string name="image_alt_media_poster">Αφίσα του \"%s\"</string>
   <string name="image_alt_person_headshot">Φωτογραφία προσώπου του %s</string>
@@ -1030,6 +1035,7 @@
   <string name="list_title_smart_lists">Έξυπνες Λίστες</string>
   <string name="list_title_social">Κοινωνικά</string>
   <string name="list_title_social_activity">Κοινωνική Δραστηριότητα</string>
+  <string name="list_title_soundtrack">Σάουντρακ</string>
   <string name="list_title_start_watching">Έναρξη Παρακολούθησης</string>
   <string name="list_title_streaming_favorite">Αγαπημένα</string>
   <string name="list_title_streaming_free">Δωρεάν</string>
@@ -1166,11 +1172,13 @@
   <string name="preview_feature_description_parental_guide">Εμφάνιση επιπέδων κινδύνου περιεχομένου στο πλαίσιο λεπτομερειών για ταινίες, σειρές και επεισόδια.</string>
   <string name="preview_feature_description_rewatch">Ξεκινήστε συνεδρίες επανάληψης παρακολούθησης για εκπομπές που έχετε ήδη δει, κάντε check-in ή επισημάνετε επεισόδια ως παρακολουθημένα απευθείας από το συρτάρι συνεδριών.</string>
   <string name="preview_feature_description_scoped_favorites">Οριοθετήστε τις λίστες αγαπημένων εμφανίζοντας τα αγαπημένα του τρέχοντος έτους στα προφίλ και ομαδοποιώντας την πλήρη λίστα αγαπημένων ανά έτος.</string>
+  <string name="preview_feature_description_soundtrack">Προσθέτει μια ενότητα σάουντρακ στις σελίδες ταινιών και εκπομπών, με αναπαραγωγή όπου ένα κομμάτι μπορεί να αντιστοιχιστεί.</string>
   <string name="preview_feature_description_up_next_smart_sort">Δοκιμάστε έναν πιο έξυπνο τρόπο να ταξινομήσετε τη Συνέχιση Παρακολούθησης.</string>
   <string name="preview_feature_title_edit_mode">Λειτουργία επεξεργασίας</string>
   <string name="preview_feature_title_leaderboard">Πάνθεον</string>
   <string name="preview_feature_title_rewatch">Επανάληψη</string>
   <string name="preview_feature_title_scoped_favorites">Αγαπημένα με χρονικό πλαίσιο</string>
+  <string name="preview_feature_title_soundtrack">Σάουντρακ</string>
   <string name="preview_feature_title_up_next_smart_sort">Συνέχιση Παρακολούθησης Έξυπνη Ταξινόμηση</string>
   <string name="reset_status_cleared">Η λίστα παρακολούθησης εκκαθαρίστηκε.</string>
   <string name="screen_account_settings_language_system_message_tvos">Το Trakt χρησιμοποιεί τις ρυθμίσεις γλώσσας του Apple TV σας. Για να την ενημερώσετε, μεταβείτε σε:\n\nΡυθμίσεις Apple TV &gt; Γενικά &gt; Γλώσσες Apple TV</string>
@@ -1538,6 +1546,11 @@
   <string name="text_sort_comments_popular">Δημοφιλή</string>
   <string name="text_sort_comments_recent">Πρόσφατα</string>
   <string name="text_sort_recently_added">Πρόσφατα προστέθηκαν</string>
+  <string name="text_soundtrack_music_by">Μουσική από</string>
+  <string name="text_soundtrack_pick_a_track">Επιλέξτε ένα κομμάτι για αναπαραγωγή εδώ.</string>
+  <string name="text_soundtrack_playable_ratio">%1$d από %2$d διαθέσιμα για αναπαραγωγή</string>
+  <string name="text_soundtrack_unmatched">Μη διαθέσιμο για αναπαραγωγή</string>
+  <string name="text_soundtrack_upsell">Ακούστε τη μουσική επένδυση.</string>
   <string name="text_source">Πηγή</string>
   <string name="text_spoiler">Spoiler</string>
   <string name="text_spoiler_alert">Προειδοποίηση Spoiler</string>
@@ -1879,6 +1892,7 @@
   <string name="vip_feature_description_recaps">Αποκτήστε βαθύτερες πληροφορίες με αναλυτικές μηνιαίες και ετήσιες ανακεφαλαιώσεις που δείχνουν όλα όσα παρακολουθήσατε, αξιολογήσατε και ανακαλύψατε.</string>
   <string name="vip_feature_description_sentiment">Ξεκλειδώστε πιο λεπτομερή ανάλυση συναισθήματος για σειρές και ταινίες.</string>
   <string name="vip_feature_description_sentiment_trivia">Ξεκλειδώστε λεπτομερή ανάλυση συναισθήματος και συναρπαστικά trivia για τις ταινίες και τις σειρές που παρακολουθείτε.</string>
+  <string name="vip_feature_description_soundtrack">Δείτε κάθε κομμάτι που αναφέρεται σε μια ταινία ή εκπομπή και παίξτε αυτά που μπορούμε να αντιστοιχίσουμε.</string>
   <string name="vip_feature_description_streaming_services">Συνδέστε και συγχρονίστε με επιπλέον πλατφόρμες streaming για να παρακολουθείτε τις προβολές σας σε όλες τις υπηρεσίες.</string>
   <string name="vip_feature_description_streaming_sync">Συγχρονίστε αυτόματα το ιστορικό παρακολούθησης και τις αξιολογήσεις σας από όλες τις αγαπημένες σας υπηρεσίες streaming.</string>
   <string name="vip_feature_description_support">Αποκτήστε προτεραιότητα πρόσβασης στα φόρουμ υποστήριξής μας και ακούστε τα σχόλιά σας απευθείας από την ομάδα.</string>
@@ -1897,6 +1911,7 @@
   <string name="vip_feature_title_recaps">Περισσότερα Στατιστικά: Μηνιαία &amp; Ετήσια Ανακεφαλαίωση</string>
   <string name="vip_feature_title_sentiment">Συναίσθημα</string>
   <string name="vip_feature_title_sentiment_trivia">Περισσότερες πληροφορίες: Συναισθηματική ανάλυση &amp; Trivia</string>
+  <string name="vip_feature_title_soundtrack">Σάουντρακ</string>
   <string name="vip_feature_title_streaming_services">Συγχρονισμός περισσότερων υπηρεσιών streaming</string>
   <string name="vip_feature_title_streaming_sync">Συγχρονισμός Ροής</string>
   <string name="vip_feature_title_support">Καλύτερη υποστήριξη: Φόρουμ &amp; Σχόλια</string>

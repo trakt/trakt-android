@@ -126,7 +126,9 @@
   <string name="button_label_next_calendar_period">Nästa period</string>
   <string name="button_label_next_episode">Nästa avsnitt</string>
   <string name="button_label_open_leaderboard">Öppna följarlistan</string>
+  <string name="button_label_pause_track">Pausa %s</string>
   <string name="button_label_pick_match">Importera %s.</string>
+  <string name="button_label_play_track">Spela %s</string>
   <string name="button_label_plex_connect">Anslut ditt Plex-konto</string>
   <string name="button_label_plex_disconnect">Koppla bort ditt Plex-konto</string>
   <string name="button_label_plex_scrobble_episode_library">Växla skrobbling av bibliotek för avsnitt</string>
@@ -269,6 +271,7 @@
   <string name="button_label_view_ratings_breakdown">Visa betygsfördelning</string>
   <string name="button_label_view_releases">Visa utgivningar</string>
   <string name="button_label_view_sentiment_analysis">Visa sentimentanalys</string>
+  <string name="button_label_view_soundtrack">Visa soundtrack</string>
   <string name="button_label_view_trivia">Visa trivia</string>
   <string name="button_label_vip_upgrade">Uppgradera till VIP</string>
   <string name="button_label_watch_on_service">Titta på %s</string>
@@ -416,6 +419,7 @@
   <string name="button_text_share">Dela</string>
   <string name="button_text_share_auth_logs">Dela autentiseringsloggar</string>
   <string name="button_text_shows">Serier</string>
+  <string name="button_text_smart_lists">Smart</string>
   <string name="button_text_social">Socialt</string>
   <string name="button_text_sort_added_date">Datum tillagt</string>
   <string name="button_text_sort_asc">Stigande</string>
@@ -748,6 +752,7 @@
   <string name="hint_app_description">Detta visas i avsnittet Anslutna appar när en användare ger åtkomst till din app.</string>
   <string name="hint_app_origins">Ett ursprung per rad. Inga jokertecken eller sökvägar.</string>
   <string name="hint_app_redirect_uris">En URI per rad. Inga frågesträngar, bara den fullständiga URI-sökvägen. Använd urn:ietf:wg:oauth:2.0:oob för enhetsautentisering.</string>
+  <string name="iframe_title_spotify_player">Spotify-spelare för %s</string>
   <string name="image_alt_list_preview_poster">Affisch för ett objekt i %s</string>
   <string name="image_alt_media_poster">\"%s\" affisch</string>
   <string name="image_alt_person_headshot">Porträtt av %s</string>
@@ -1030,6 +1035,7 @@
   <string name="list_title_smart_lists">Smarta listor</string>
   <string name="list_title_social">Socialt</string>
   <string name="list_title_social_activity">Social aktivitet</string>
+  <string name="list_title_soundtrack">Soundtrack</string>
   <string name="list_title_start_watching">Börja titta</string>
   <string name="list_title_streaming_favorite">Favorit</string>
   <string name="list_title_streaming_free">Gratis</string>
@@ -1166,11 +1172,13 @@
   <string name="preview_feature_description_parental_guide">Visa risknivåer för innehåll i detaljlådan för filmer, serier och avsnitt.</string>
   <string name="preview_feature_description_rewatch">Starta omtittningssessioner för serier du redan har sett, checka in eller markera avsnitt som sedda direkt från sessionslådan.</string>
   <string name="preview_feature_description_scoped_favorites">Tidsavgränsa favoritlistor genom att visa favoriter från innevarande år på profiler och gruppera hela favoritlistan per år.</string>
+  <string name="preview_feature_description_soundtrack">Lägger till en soundtrack-sektion på film- och seriesidor, med uppspelning där ett spår kan matchas.</string>
   <string name="preview_feature_description_up_next_smart_sort">Testa ett smartare sätt att sortera det du tittar på.</string>
   <string name="preview_feature_title_edit_mode">Redigeringsläge</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_rewatch">Omtittning</string>
   <string name="preview_feature_title_scoped_favorites">Avgränsade favoriter</string>
+  <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_up_next_smart_sort">Smart sortering för Fortsätt titta</string>
   <string name="reset_status_cleared">Bevakningslistan rensad.</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt använder dina Apple TV-språkinställningar. För att uppdatera dem, gå till:\n\nApple TV Inställningar &gt; Allmänt &gt; Apple TV-språk</string>
@@ -1538,6 +1546,11 @@
   <string name="text_sort_comments_popular">Populärt</string>
   <string name="text_sort_comments_recent">Senaste</string>
   <string name="text_sort_recently_added">Nyligen tillagda</string>
+  <string name="text_soundtrack_music_by">Musik av</string>
+  <string name="text_soundtrack_pick_a_track">Välj ett spår att spela här.</string>
+  <string name="text_soundtrack_playable_ratio">%1$d av %2$d spelbara</string>
+  <string name="text_soundtrack_unmatched">Inte tillgänglig att spela</string>
+  <string name="text_soundtrack_upsell">Hör musiken.</string>
   <string name="text_source">Källa</string>
   <string name="text_spoiler">Spoiler</string>
   <string name="text_spoiler_alert">Spoiler varning</string>
@@ -1879,6 +1892,7 @@
   <string name="vip_feature_description_recaps">Få djupare insikter med omfattande månads- och årssammanfattningar som visar allt du tittade på, betygsatte och upptäckte.</string>
   <string name="vip_feature_description_sentiment">Lås upp mer detaljerad sentimentanalys för serier och filmer.</string>
   <string name="vip_feature_description_sentiment_trivia">Lås upp detaljerad sentimentanalys och fascinerande trivia om filmerna och serierna du tittar på.</string>
+  <string name="vip_feature_description_soundtrack">Se alla spår som krediterats i en film eller serie, och spela de vi kan matcha.</string>
   <string name="vip_feature_description_streaming_services">Anslut och synka med ytterligare streamingplattformar för att spåra ditt tittande över alla tjänster.</string>
   <string name="vip_feature_description_streaming_sync">Synkronisera automatiskt din tittarhistorik och dina betyg från alla dina favorittjänster för streaming.</string>
   <string name="vip_feature_description_support">Få prioriterad tillgång till våra supportforum och få din feedback hörd direkt av teamet.</string>
@@ -1897,6 +1911,7 @@
   <string name="vip_feature_title_recaps">Mer statistik: Månatlig &amp; Årlig sammanfattning</string>
   <string name="vip_feature_title_sentiment">Känslor</string>
   <string name="vip_feature_title_sentiment_trivia">Mer info: Sentiment &amp; Trivia</string>
+  <string name="vip_feature_title_soundtrack">Soundtrack</string>
   <string name="vip_feature_title_streaming_services">Synka fler streamingtjänster</string>
   <string name="vip_feature_title_streaming_sync">Streamingsynkronisering</string>
   <string name="vip_feature_title_support">Bättre support: Forum &amp; Feedback</string>

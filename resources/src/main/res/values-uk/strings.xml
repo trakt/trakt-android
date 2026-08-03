@@ -126,7 +126,9 @@
   <string name="button_label_next_calendar_period">Наступний період</string>
   <string name="button_label_next_episode">Наступний епізод</string>
   <string name="button_label_open_leaderboard">Відкрити таблицю лідерів підписок</string>
+  <string name="button_label_pause_track">Призупинити %s</string>
   <string name="button_label_pick_match">Імпортувати %s.</string>
+  <string name="button_label_play_track">Відтворити %s</string>
   <string name="button_label_plex_connect">Підключити обліковий запис Plex</string>
   <string name="button_label_plex_disconnect">Відключити обліковий запис Plex</string>
   <string name="button_label_plex_scrobble_episode_library">Перемкнути скробблінг бібліотеки для епізодів</string>
@@ -269,6 +271,7 @@
   <string name="button_label_view_ratings_breakdown">Переглянути розбивку рейтингу</string>
   <string name="button_label_view_releases">Переглянути релізи</string>
   <string name="button_label_view_sentiment_analysis">Переглянути аналіз настроїв</string>
+  <string name="button_label_view_soundtrack">Переглянути саундтрек</string>
   <string name="button_label_view_trivia">Переглянути цікаві факти</string>
   <string name="button_label_vip_upgrade">Оновити до VIP</string>
   <string name="button_label_watch_on_service">Дивитись на %s</string>
@@ -416,6 +419,7 @@
   <string name="button_text_share">Діліться</string>
   <string name="button_text_share_auth_logs">Поділитися журналами автентифікації</string>
   <string name="button_text_shows">Серіали</string>
+  <string name="button_text_smart_lists">Розумний</string>
   <string name="button_text_social">Соціальне</string>
   <string name="button_text_sort_added_date">Дата додавання</string>
   <string name="button_text_sort_asc">Зрост.</string>
@@ -748,6 +752,7 @@
   <string name="hint_app_description">Це відображається в розділі \"Підключені застосунки\", коли користувач надає доступ до вашої програми.</string>
   <string name="hint_app_origins">Одне джерело на рядок. Без підстановчих знаків або шляхів.</string>
   <string name="hint_app_redirect_uris">Один URI на рядок. Без рядків запиту, лише повний шлях URI. Використовуйте urn:ietf:wg:oauth:2.0:oob для автентифікації пристрою.</string>
+  <string name="iframe_title_spotify_player">Spotify плеєр для %s</string>
   <string name="image_alt_list_preview_poster">Постер до елемента в %s</string>
   <string name="image_alt_media_poster">Постер \"%s\"</string>
   <string name="image_alt_person_headshot">Портрет %s</string>
@@ -1030,6 +1035,7 @@
   <string name="list_title_smart_lists">Розумні списки</string>
   <string name="list_title_social">Соціальне</string>
   <string name="list_title_social_activity">Соціальна активність</string>
+  <string name="list_title_soundtrack">Саундтрек</string>
   <string name="list_title_start_watching">Почати дивитися</string>
   <string name="list_title_streaming_favorite">Улюблене</string>
   <string name="list_title_streaming_free">Безкоштовно</string>
@@ -1166,11 +1172,13 @@
   <string name="preview_feature_description_parental_guide">Показувати рівні ризику вмісту у висувній панелі деталей для фільмів, серіалів та епізодів.</string>
   <string name="preview_feature_description_rewatch">Почніть сеанси повторного перегляду для шоу, які ви вже бачили, реєструйте або відмічайте переглянуті серії безпосередньо з вікна сеансу.</string>
   <string name="preview_feature_description_scoped_favorites">Обмежте списки улюблених за часом, відображаючи улюблене поточного року в профілях та групуючи повний список улюблених за роками.</string>
+  <string name="preview_feature_description_soundtrack">Додає розділ саундтреків до сторінок фільмів та серіалів, з відтворенням там, де трек може бути зіставлений.</string>
   <string name="preview_feature_description_up_next_smart_sort">Спробуйте розумніший спосіб сортування вашого розділу «Продовжити перегляд».</string>
   <string name="preview_feature_title_edit_mode">Режим редагування</string>
   <string name="preview_feature_title_leaderboard">Пантеон</string>
   <string name="preview_feature_title_rewatch">Повторний перегляд</string>
   <string name="preview_feature_title_scoped_favorites">Вибране за періодом</string>
+  <string name="preview_feature_title_soundtrack">Саундтрек</string>
   <string name="preview_feature_title_up_next_smart_sort">Розумне сортування «Продовжити перегляд»</string>
   <string name="reset_status_cleared">Список перегляду очищено.</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt використовує мовні налаштування вашого Apple TV. Щоб оновити їх, перейдіть до:\n\nНалаштування Apple TV &gt; Загальні &gt; Мови Apple TV</string>
@@ -1538,6 +1546,11 @@
   <string name="text_sort_comments_popular">Популярні</string>
   <string name="text_sort_comments_recent">Останні</string>
   <string name="text_sort_recently_added">Нещодавно додані</string>
+  <string name="text_soundtrack_music_by">Музика</string>
+  <string name="text_soundtrack_pick_a_track">Оберіть трек, щоб відтворити його тут.</string>
+  <string name="text_soundtrack_playable_ratio">%1$d з %2$d доступно для відтворення</string>
+  <string name="text_soundtrack_unmatched">Недоступно для відтворення</string>
+  <string name="text_soundtrack_upsell">Послухайте саундтрек.</string>
   <string name="text_source">Джерело</string>
   <string name="text_spoiler">Спойлер</string>
   <string name="text_spoiler_alert">Увага: Спойлер</string>
@@ -1879,6 +1892,7 @@
   <string name="vip_feature_description_recaps">Отримайте глибші відомості з вичерпними місячними та річними підсумками, що показують усе, що ви переглянули, оцінили та відкрили.</string>
   <string name="vip_feature_description_sentiment">Розблокуйте більш детальний аналіз настроїв для серіалів та фільмів.</string>
   <string name="vip_feature_description_sentiment_trivia">Розблокуйте детальний аналіз настроїв та захопливі цікаві факти про фільми та серіали, які ви дивитесь.</string>
+  <string name="vip_feature_description_soundtrack">Переглядайте кожен трек, зазначений у фільмі чи серіалі, та відтворюйте ті, що ми можемо зіставити.</string>
   <string name="vip_feature_description_streaming_services">Підключайте та синхронізуйте з додатковими стримінговими платформами, щоб відстежувати свої перегляди на всіх сервісах.</string>
   <string name="vip_feature_description_streaming_sync">Автоматично синхронізуйте історію переглядів та оцінки з усіх ваших улюблених стримінгових сервісів.</string>
   <string name="vip_feature_description_support">Отримайте пріоритетний доступ до наших форумів підтримки, а ваші відгуки будуть почуті безпосередньо командою.</string>
@@ -1897,6 +1911,7 @@
   <string name="vip_feature_title_recaps">Більше статистики: щомісячні та щорічні підсумки</string>
   <string name="vip_feature_title_sentiment">Настрій</string>
   <string name="vip_feature_title_sentiment_trivia">Більше інформації: Аналіз настроїв + Цікаві факти</string>
+  <string name="vip_feature_title_soundtrack">Саундтрек</string>
   <string name="vip_feature_title_streaming_services">Синхронізувати більше стримінгових сервісів</string>
   <string name="vip_feature_title_streaming_sync">Синхронізація потокового відтворення</string>
   <string name="vip_feature_title_support">Краща підтримка: Форум та Відгуки</string>
