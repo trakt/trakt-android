@@ -21,7 +21,7 @@ import tv.trakt.trakt.common.core.home.model.UpNextShow
 import tv.trakt.trakt.core.home.sections.upnext.features.context.UpNextItemContextView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
-import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
+import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import kotlin.random.Random.Default.nextInt
 
 @Composable
@@ -80,7 +80,7 @@ internal fun UpNextItemContextSheet(
                                     ),
                                 )
                             }
-                            delay(SNACK_DURATION_SHORT)
+                            delay(ShortSnackDuration)
                             job.cancel()
                         }
                     }
@@ -99,7 +99,7 @@ internal fun UpNextItemContextSheet(
                                     localRes.getString(R.string.error_text_unexpected_error_short),
                                 )
                             }
-                            delay(SNACK_DURATION_SHORT)
+                            delay(ShortSnackDuration)
                             job.cancel()
                         }
                     }

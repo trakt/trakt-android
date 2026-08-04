@@ -19,7 +19,7 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.views.context.ActivityItemContextView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
-import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
+import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import kotlin.random.Random.Default.nextInt
 
 @Composable
@@ -59,7 +59,7 @@ internal fun HomeActivityItemSheet(
                             val job = sheetScope.launch {
                                 localSnack.showSnackbar(localRes.getString(R.string.text_info_history_removed))
                             }
-                            delay(SNACK_DURATION_SHORT)
+                            delay(ShortSnackDuration)
                             job.cancel()
                         }
                     }
@@ -76,7 +76,7 @@ internal fun HomeActivityItemSheet(
                             val job = sheetScope.launch {
                                 localSnack.showSnackbar(localRes.getString(R.string.text_info_watchlist_added))
                             }
-                            delay(SNACK_DURATION_SHORT)
+                            delay(ShortSnackDuration)
                             job.cancel()
                         }
                     }
@@ -95,7 +95,7 @@ internal fun HomeActivityItemSheet(
                                     localRes.getString(R.string.error_text_unexpected_error_short),
                                 )
                             }
-                            delay(SNACK_DURATION_SHORT)
+                            delay(ShortSnackDuration)
                             job.cancel()
                         }
                     }

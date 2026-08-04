@@ -38,10 +38,10 @@ import tv.trakt.trakt.LocalCheckInVisibility
 import tv.trakt.trakt.LocalRatePromptVisibility
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.ui.theme.TraktTheme
-import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 
-internal const val SNACK_DURATION_SHORT = 2500L
-internal const val SNACK_DURATION_LONG = 4500L
+internal val ShortSnackDuration = 2.5.seconds
+internal val LongSnackDuration = 4.5.seconds
 
 @Composable
 internal fun MainSnackbarHost(
@@ -89,9 +89,9 @@ internal fun MainSnackbarHost(
                 else -> {
                     delay(
                         when (duration) {
-                            SnackbarDuration.Long -> SNACK_DURATION_LONG
-                            else -> SNACK_DURATION_SHORT
-                        }.milliseconds,
+                            SnackbarDuration.Long -> LongSnackDuration
+                            else -> ShortSnackDuration
+                        },
                     )
                     currentSnackbarData.dismiss()
                 }

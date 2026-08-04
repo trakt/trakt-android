@@ -21,7 +21,7 @@ import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
-import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
+import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import kotlin.random.Random
 
 @Composable
@@ -64,7 +64,7 @@ internal fun PostReplySheet(
                                         localRes.getString(R.string.text_info_reply_added)
                                     localSnack.showSnackbar(message)
                                 }
-                                delay(SNACK_DURATION_SHORT)
+                                delay(ShortSnackDuration)
                                 job.cancel()
                             }
                         },

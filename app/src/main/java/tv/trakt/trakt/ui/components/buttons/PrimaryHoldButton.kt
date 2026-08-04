@@ -45,8 +45,9 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.ui.theme.TraktTheme
+import kotlin.time.Duration.Companion.milliseconds
 
-private const val HOLD_DURATION_MS = 1650
+private val HoldDuration = 1650.milliseconds
 
 @Composable
 internal fun PrimaryHoldButton(
@@ -81,7 +82,7 @@ internal fun PrimaryHoldButton(
                     progress.animateTo(
                         targetValue = 1f,
                         animationSpec = tween(
-                            durationMillis = HOLD_DURATION_MS,
+                            durationMillis = HoldDuration.inWholeMilliseconds.toInt(),
                             easing = LinearEasing,
                         ),
                     )

@@ -20,9 +20,8 @@ import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
-import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
+import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import kotlin.random.Random
-import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 internal fun ReportCommentSheet(
@@ -62,7 +61,7 @@ internal fun ReportCommentSheet(
                                     val message = localRes.getString(R.string.text_info_report_sent)
                                     localSnack.showSnackbar(message)
                                 }
-                                delay(SNACK_DURATION_SHORT.milliseconds)
+                                delay(ShortSnackDuration)
                                 job.cancel()
                             }
                         },

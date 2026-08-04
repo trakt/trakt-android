@@ -22,7 +22,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
-import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
+import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,7 +65,7 @@ internal fun PostCommentSheet(
                                     val message = localRes.getString(R.string.text_info_review_added)
                                     localSnack.showSnackbar(message)
                                 }
-                                delay(SNACK_DURATION_SHORT)
+                                delay(ShortSnackDuration)
                                 job.cancel()
                             }
                         },

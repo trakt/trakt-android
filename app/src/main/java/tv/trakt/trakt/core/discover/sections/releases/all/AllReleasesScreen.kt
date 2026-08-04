@@ -109,7 +109,7 @@ import tv.trakt.trakt.ui.components.chips.FilterChipGroup
 import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
-import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
+import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.DayOfWeek.MONDAY
 import java.time.LocalDate
@@ -171,7 +171,7 @@ internal fun AllReleasesScreen(
                     snackbar.showSnackbar(it)
                 }
             }
-            delay(SNACK_DURATION_SHORT.milliseconds)
+            delay(ShortSnackDuration)
             job.cancel()
         }
         viewModel.clearInfo()

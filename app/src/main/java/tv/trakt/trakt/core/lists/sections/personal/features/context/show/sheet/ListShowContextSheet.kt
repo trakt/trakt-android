@@ -23,7 +23,7 @@ import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.lists.sections.personal.features.context.show.ListShowContextView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
-import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
+import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import kotlin.random.Random.Default.nextInt
 
 @Composable
@@ -126,7 +126,7 @@ private fun CoroutineScope.dismissWithMessage(
         val job = this@dismissWithMessage.launch {
             snackHost.showSnackbar(message)
         }
-        delay(SNACK_DURATION_SHORT)
+        delay(ShortSnackDuration)
         job.cancel()
     }
 }

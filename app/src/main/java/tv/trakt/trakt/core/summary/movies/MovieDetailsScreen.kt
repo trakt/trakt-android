@@ -101,7 +101,7 @@ import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.dateselection.DateSelectionSheet
 import tv.trakt.trakt.ui.components.vip.VipBanner
 import tv.trakt.trakt.ui.extensions.isAtLeastMedium
-import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
+import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -381,7 +381,7 @@ internal fun MovieDetailsScreen(
                     snack.showSnackbar(it)
                 }
             }
-            delay(SNACK_DURATION_SHORT)
+            delay(ShortSnackDuration)
             job.cancel()
         }
         viewModel.clearInfo()

@@ -14,7 +14,7 @@ import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.lists.sheets.edit.EditListView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
-import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
+import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import kotlin.random.Random.Default.nextInt
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,7 +58,7 @@ internal fun EditListSheet(
                         val job = sheetScope.launch {
                             localSnack.showSnackbar(localRes.getString(R.string.text_info_list_updated))
                         }
-                        delay(SNACK_DURATION_SHORT)
+                        delay(ShortSnackDuration)
                         job.cancel()
                     }
                 },
@@ -76,7 +76,7 @@ internal fun EditListSheet(
                         val job = sheetScope.launch {
                             localSnack.showSnackbar(localRes.getString(R.string.text_info_list_deleted))
                         }
-                        delay(SNACK_DURATION_SHORT)
+                        delay(ShortSnackDuration)
                         job.cancel()
                     }
                 },
@@ -93,7 +93,7 @@ internal fun EditListSheet(
                         val job = sheetScope.launch {
                             localSnack.showSnackbar(localRes.getString(R.string.error_text_unexpected_error_short))
                         }
-                        delay(SNACK_DURATION_SHORT)
+                        delay(ShortSnackDuration)
                         job.cancel()
                     }
                 },

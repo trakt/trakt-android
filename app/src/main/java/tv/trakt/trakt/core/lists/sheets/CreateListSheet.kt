@@ -13,9 +13,8 @@ import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.core.lists.sheets.create.CreateListView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
-import tv.trakt.trakt.ui.snackbar.SNACK_DURATION_SHORT
+import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
 import kotlin.random.Random
-import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,7 +54,7 @@ internal fun CreateListSheet(
                         val job = sheetScope.launch {
                             localSnack.showSnackbar(localRes.getString(R.string.text_info_list_created))
                         }
-                        delay(SNACK_DURATION_SHORT.milliseconds)
+                        delay(ShortSnackDuration)
                         job.cancel()
                     }
                 },
@@ -72,7 +71,7 @@ internal fun CreateListSheet(
                         val job = sheetScope.launch {
                             localSnack.showSnackbar(localRes.getString(R.string.error_text_unexpected_error_short))
                         }
-                        delay(SNACK_DURATION_SHORT.milliseconds)
+                        delay(ShortSnackDuration)
                         job.cancel()
                     }
                 },
@@ -89,7 +88,7 @@ internal fun CreateListSheet(
                         val job = sheetScope.launch {
                             localSnack.showSnackbar(localRes.getString(R.string.error_text_lists_limit))
                         }
-                        delay(SNACK_DURATION_SHORT.milliseconds)
+                        delay(ShortSnackDuration)
                         job.cancel()
                     }
                 },
