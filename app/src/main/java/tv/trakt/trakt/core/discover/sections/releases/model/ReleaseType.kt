@@ -18,12 +18,12 @@ internal enum class ReleaseType(
     ),
     Premiere(
         textRes = R.string.tag_text_premiere,
-        iconRes = R.drawable.ic_discover_off,
-        iconSize = 18.dp,
+        iconRes = R.drawable.ic_clapper,
+        iconSize = 15.dp,
     ),
     Finale(
         textRes = R.string.tag_text_finale,
-        iconRes = R.drawable.ic_flag,
+        iconRes = R.drawable.ic_flag_checker,
         iconSize = 19.dp,
     ),
 }
