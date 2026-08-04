@@ -41,6 +41,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
+import tv.trakt.trakt.common.helpers.resolveSelectedCreditsFilter
 import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
@@ -87,10 +88,9 @@ internal fun ShowsCreditsList(
         ) {
             TraktHeader(
                 title = stringResource(R.string.page_title_shows),
-                subtitle = when (listItems.keys.size) {
-                    1 -> stringResource(R.string.translated_value_position_acting)
-                    else -> null
-                },
+                subtitle = listItems.keys.singleOrNull()
+                    ?.takeIf { it.equals("acting", ignoreCase = true) }
+                    ?.let { stringResource(R.string.translated_value_position_acting) },
             )
         }
 
@@ -114,7 +114,10 @@ internal fun ShowsCreditsList(
                     } else {
                         Column {
                             var selectedFilter by remember {
-                                mutableStateOf(person.knownForDepartment ?: listItems.keys.first())
+                                mutableStateOf(
+                                    resolveSelectedCreditsFilter(listItems, person.knownForDepartment)
+                                        ?: listItems.keys.first(),
+                                )
                             }
 
                             if (listItems.keys.size > 1) {

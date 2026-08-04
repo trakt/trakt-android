@@ -43,6 +43,7 @@ import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
+import tv.trakt.trakt.common.helpers.resolveSelectedCreditsFilter
 import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
@@ -89,10 +90,9 @@ internal fun MoviesCreditsList(
         ) {
             TraktHeader(
                 title = stringResource(R.string.page_title_movies),
-                subtitle = when (listItems.keys.size) {
-                    1 -> stringResource(R.string.translated_value_position_acting)
-                    else -> null
-                },
+                subtitle = listItems.keys.singleOrNull()
+                    ?.takeIf { it.equals("acting", ignoreCase = true) }
+                    ?.let { stringResource(R.string.translated_value_position_acting) },
             )
         }
 
@@ -115,7 +115,10 @@ internal fun MoviesCreditsList(
                         )
                     } else {
                         var selectedFilter by rememberSaveable {
-                            mutableStateOf(person.knownForDepartment ?: listItems.keys.first())
+                            mutableStateOf(
+                                resolveSelectedCreditsFilter(listItems, person.knownForDepartment)
+                                    ?: listItems.keys.first(),
+                            )
                         }
 
                         Column {
