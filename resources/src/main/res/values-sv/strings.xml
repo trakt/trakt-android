@@ -178,6 +178,7 @@
   <string name="button_label_remove_from_watchlist">Ta bort \"%s\" från din bevakningslista</string>
   <string name="button_label_remove_photo">Ta bort din profilbild</string>
   <string name="button_label_renew_vip">Förnya prenumeration</string>
+  <string name="button_label_reorder_item">Omordna %s</string>
   <string name="button_label_reorder_list">Omordna %s</string>
   <string name="button_label_report_comment">Rapportera recension</string>
   <string name="button_label_report_list">Rapportera %s</string>
