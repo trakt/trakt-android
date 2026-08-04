@@ -104,9 +104,7 @@ private fun StreaksViewContent(
             StreakStatCard(
                 value = data.previousStreakTotal.toString(),
                 label = stringResource(R.string.label_stats_previous_streak),
-                subtitle = stringResource(R.string.label_stats_days_active)
-                    .lowercase()
-                    .capitalize(),
+                subtitle = stringResource(R.string.text_stats_ended),
                 modifier = Modifier.weight(1f),
             )
         }
