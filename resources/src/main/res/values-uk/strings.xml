@@ -178,6 +178,7 @@
   <string name="button_label_remove_from_watchlist">Видалити \"%s\" зі Списку перегляду</string>
   <string name="button_label_remove_photo">Видалити фото профілю</string>
   <string name="button_label_renew_vip">Поновити підписку</string>
+  <string name="button_label_reorder_item">Перевпорядкувати %s</string>
   <string name="button_label_reorder_list">Перевпорядкувати %s</string>
   <string name="button_label_report_comment">Повідомити про відгук</string>
   <string name="button_label_report_list">Повідомити про %s</string>
