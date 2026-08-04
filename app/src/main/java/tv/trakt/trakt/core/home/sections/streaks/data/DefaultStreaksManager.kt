@@ -129,10 +129,14 @@ internal class DefaultStreaksManager(
         today: LocalDate,
         currentStreak: Int,
     ): Int {
+        // Bound the backward search by the earliest real activity instead of a fixed
+        // lookback window, so a previous streak from over a year ago still counts.
+        val earliestActiveDay = activitySet.minOrNull() ?: return 0
+
         // When today is inactive the current streak anchors to yesterday, so shift by 1 extra
         val offset = if (today in activitySet) currentStreak else currentStreak + 1
         var day = today.minusDays(offset.toLong())
-        while (day !in activitySet && day.isAfter(today.minusYears(1))) {
+        while (day !in activitySet && day.isAfter(earliestActiveDay)) {
             day = day.minusDays(1)
         }
         var streak = 0
