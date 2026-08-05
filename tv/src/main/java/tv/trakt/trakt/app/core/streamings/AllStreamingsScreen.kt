@@ -42,8 +42,8 @@ import tv.trakt.trakt.common.core.streamings.model.StreamingServiceRow
 import tv.trakt.trakt.common.helpers.extensions.openWatchNowLink
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingType
-import tv.trakt.trakt.common.model.streamings.StreamingType.PURCHASE
-import tv.trakt.trakt.common.model.streamings.StreamingType.RENT
+import tv.trakt.trakt.common.model.streamings.StreamingType.Purchase
+import tv.trakt.trakt.common.model.streamings.StreamingType.Rent
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 
@@ -232,11 +232,11 @@ private fun StreamingsListSection(
                     logo = item.logo,
                     channel = item.channel,
                     price = when (type) {
-                        PURCHASE -> remember(item.purchasePrice) {
+                        Purchase -> remember(item.purchasePrice) {
                             "$currencySymbol$currencySpace${item.purchasePrice}".trim()
                         }
 
-                        RENT -> remember(item.rentPrice) {
+                        Rent -> remember(item.rentPrice) {
                             "$currencySymbol$currencySpace${item.rentPrice}".trim()
                         }
 

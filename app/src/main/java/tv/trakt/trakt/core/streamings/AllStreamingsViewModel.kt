@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -40,22 +39,6 @@ internal class AllStreamingsViewModel(
     private val sectionsState = MutableStateFlow(initialState.sections)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
-
-    val state: StateFlow<AllStreamingsState> = combine(
-        sectionsState,
-        loadingState,
-        errorState,
-    ) { sections, loading, error ->
-        initialState.copy(
-            sections = sections,
-            loading = loading,
-            error = error,
-        )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = initialState,
-    )
 
     init {
         loadData()
@@ -96,4 +79,20 @@ internal class AllStreamingsViewModel(
             }
         }
     }
+
+    val state = combine(
+        sectionsState,
+        loadingState,
+        errorState,
+    ) { sections, loading, error ->
+        initialState.copy(
+            sections = sections,
+            loading = loading,
+            error = error,
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = initialState,
+    )
 }

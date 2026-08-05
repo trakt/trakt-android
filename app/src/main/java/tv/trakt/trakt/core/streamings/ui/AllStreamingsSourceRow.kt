@@ -58,9 +58,11 @@ import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingType
-import tv.trakt.trakt.common.model.streamings.StreamingType.FREE
-import tv.trakt.trakt.common.model.streamings.StreamingType.PURCHASE
-import tv.trakt.trakt.common.model.streamings.StreamingType.RENT
+import tv.trakt.trakt.common.model.streamings.StreamingType.Favorite
+import tv.trakt.trakt.common.model.streamings.StreamingType.Free
+import tv.trakt.trakt.common.model.streamings.StreamingType.Purchase
+import tv.trakt.trakt.common.model.streamings.StreamingType.Rent
+import tv.trakt.trakt.common.model.streamings.StreamingType.Subscription
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.util.Locale
 
@@ -148,7 +150,7 @@ private fun SourceLogoTile(
         }
 
         val withChannel = remember(service, type) {
-            !service.channel.isNullOrBlank() && type != FREE
+            !service.channel.isNullOrBlank() && type != Free
         }
 
         Column(
@@ -248,9 +250,9 @@ private fun Context.logoRequest(path: String?): ImageRequest {
 
 private fun StreamingService.priceLabel(type: StreamingType): String? {
     val amount = when (type) {
-        PURCHASE -> purchasePrice
-        RENT -> rentPrice
-        else -> null
+        Purchase -> purchasePrice
+        Rent -> rentPrice
+        Subscription, Free, Favorite -> null
     }
 
     if (amount.isNullOrBlank()) {
@@ -343,7 +345,7 @@ private fun Preview() {
                         .map { previewService(country = it) }
                         .toImmutableList(),
                 ),
-                type = StreamingType.SUBSCRIPTION,
+                type = Subscription,
                 startPadding = 16.dp,
                 endPadding = 16.dp,
             )
@@ -362,7 +364,7 @@ private fun Preview2() {
                     .map { previewService(country = it, logo = null) }
                     .toImmutableList(),
             ),
-            type = PURCHASE,
+            type = Purchase,
             startPadding = 16.dp,
             endPadding = 16.dp,
         )

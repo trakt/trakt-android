@@ -46,8 +46,8 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceApp
 import tv.trakt.trakt.common.model.streamings.StreamingService
-import tv.trakt.trakt.common.model.streamings.StreamingType.FAVORITE
-import tv.trakt.trakt.common.model.streamings.StreamingType.SUBSCRIPTION
+import tv.trakt.trakt.common.model.streamings.StreamingType.Favorite
+import tv.trakt.trakt.common.model.streamings.StreamingType.Subscription
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.streamings.ui.AllStreamingsSkeletonRow
 import tv.trakt.trakt.core.streamings.ui.AllStreamingsSourceRow
@@ -200,9 +200,21 @@ private fun ContentList(
             }
         }
 
-        if (state.loading == Done && state.sections.isEmpty()) {
+        if (state.loading == Done && state.error != null) {
+            item(key = "error") {
+                Text(
+                    text = state.error.message ?: stringResource(R.string.page_title_unexpected_error),
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.heading6,
+                    modifier = Modifier.padding(horizontal = horizontalPadding),
+                )
+            }
+        } else if (state.loading == Done && state.sections.isEmpty()) {
             item(key = "empty") {
-                ContentEmptyView(
+                Text(
+                    text = stringResource(R.string.button_text_no_services),
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.heading6,
                     modifier = Modifier.padding(horizontal = horizontalPadding),
                 )
             }
@@ -244,16 +256,6 @@ private fun TitleBar(
     }
 }
 
-@Composable
-private fun ContentEmptyView(modifier: Modifier = Modifier) {
-    Text(
-        text = stringResource(R.string.button_text_no_services),
-        color = TraktTheme.colors.textSecondary,
-        style = TraktTheme.typography.heading6,
-        modifier = modifier,
-    )
-}
-
 // -- Previews --
 
 @DevicePreview
@@ -279,7 +281,7 @@ private fun Preview2() {
                 media = AllStreamingsState.Media(title = "Severance"),
                 sections = listOf(
                     AllStreamingsSection(
-                        type = FAVORITE,
+                        type = Favorite,
                         rows = listOf(
                             StreamingServiceRow(
                                 source = "apple_tv_plus",
@@ -290,7 +292,7 @@ private fun Preview2() {
                         ).toImmutableList(),
                     ),
                     AllStreamingsSection(
-                        type = SUBSCRIPTION,
+                        type = Subscription,
                         rows = listOf(
                             StreamingServiceRow(
                                 source = "apple_tv_plus",

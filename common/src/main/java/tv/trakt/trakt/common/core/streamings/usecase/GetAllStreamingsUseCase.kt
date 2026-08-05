@@ -16,11 +16,11 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingSource
 import tv.trakt.trakt.common.model.streamings.StreamingType
-import tv.trakt.trakt.common.model.streamings.StreamingType.FAVORITE
-import tv.trakt.trakt.common.model.streamings.StreamingType.FREE
-import tv.trakt.trakt.common.model.streamings.StreamingType.PURCHASE
-import tv.trakt.trakt.common.model.streamings.StreamingType.RENT
-import tv.trakt.trakt.common.model.streamings.StreamingType.SUBSCRIPTION
+import tv.trakt.trakt.common.model.streamings.StreamingType.Favorite
+import tv.trakt.trakt.common.model.streamings.StreamingType.Free
+import tv.trakt.trakt.common.model.streamings.StreamingType.Purchase
+import tv.trakt.trakt.common.model.streamings.StreamingType.Rent
+import tv.trakt.trakt.common.model.streamings.StreamingType.Subscription
 import tv.trakt.trakt.common.networking.StreamingDto
 
 /**
@@ -65,18 +65,18 @@ class GetAllStreamingsUseCase(
         userCountry: String,
     ): ImmutableList<AllStreamingsSection> {
         val resultMap = mapOf(
-            FAVORITE to mutableListOf<StreamingService>(),
-            SUBSCRIPTION to mutableListOf(),
-            PURCHASE to mutableListOf(),
-            RENT to mutableListOf(),
-            FREE to mutableListOf(),
+            Favorite to mutableListOf<StreamingService>(),
+            Subscription to mutableListOf(),
+            Purchase to mutableListOf(),
+            Rent to mutableListOf(),
+            Free to mutableListOf(),
         )
 
-        val favorite = resultMap.getValue(FAVORITE)
-        val subscriptions = resultMap.getValue(SUBSCRIPTION)
-        val free = resultMap.getValue(FREE)
-        val purchase = resultMap.getValue(PURCHASE)
-        val rent = resultMap.getValue(RENT)
+        val favorite = resultMap.getValue(Favorite)
+        val subscriptions = resultMap.getValue(Subscription)
+        val free = resultMap.getValue(Free)
+        val purchase = resultMap.getValue(Purchase)
+        val rent = resultMap.getValue(Rent)
 
         streamings.forEach { (country, streaming) ->
             subscriptions.addAll(
