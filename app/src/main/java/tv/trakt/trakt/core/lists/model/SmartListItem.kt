@@ -9,17 +9,13 @@ import tv.trakt.trakt.common.model.TraktId
 
 @Immutable
 internal sealed interface SmartListItem {
-    val rank: Int
-
     @Immutable
     data class MovieItem(
-        override val rank: Int,
         val movie: Movie,
     ) : SmartListItem
 
     @Immutable
     data class ShowItem(
-        override val rank: Int,
         val show: Show,
     ) : SmartListItem
 

@@ -99,6 +99,7 @@ internal fun ListsScreen(
     onNavigateToPersonalList: (CustomList) -> Unit,
     onNavigateToCustomList: (CustomList) -> Unit,
     onNavigateToSmartList: (SmartList) -> Unit,
+    onNavigateToCreateSmartList: () -> Unit,
     onNavigateToAllLists: (PersonalListType) -> Unit,
     onNavigateToVip: () -> Unit,
 ) {
@@ -146,6 +147,7 @@ internal fun ListsScreen(
         onMovieClick = onNavigateToMovie,
         onSearchListClick = onNavigateToSearch,
         onCreateListClick = { createListSheet = true },
+        onCreateSmartListClick = onNavigateToCreateSmartList,
         onEditListClick = { editListSheet = it },
         onPersonalListClick = onNavigateToPersonalList,
         onCustomListClick = onNavigateToCustomList,
@@ -204,6 +206,7 @@ private fun ListsScreenContent(
     onMoviesClick: () -> Unit = {},
     onMovieClick: (TraktId) -> Unit = {},
     onCreateListClick: () -> Unit = {},
+    onCreateSmartListClick: () -> Unit = {},
     onSearchListClick: () -> Unit = {},
     onEditListClick: (CustomList) -> Unit = {},
     onWatchlistClick: () -> Unit = {},
@@ -294,6 +297,7 @@ private fun ListsScreenContent(
                     onHeaderClick = onAllListsClick,
                     onFilterClick = onFilterClick,
                     onCreateListClick = onCreateListClick,
+                    onCreateSmartListClick = onCreateSmartListClick,
                     modifier = Modifier.padding(
                         top = TraktTheme.spacing.mainSectionVerticalSpace,
                     ),
@@ -365,15 +369,13 @@ private fun ListsScreenContent(
 
             if (state.lists.isNullOrEmpty() && state.listsLoading == Done) {
                 item(key = "empty") {
-                    // Smart lists have no empty-state action yet
-                    val noAction: () -> Unit = {}
                     ContentEmptyView(
                         authenticated = state.user.user != null,
                         filter = state.filter,
                         onActionClick = when (state.user.user) {
                             null -> onProfileClick
                             else -> when (state.filter) {
-                                Smart -> noAction
+                                Smart -> onCreateSmartListClick
                                 Personal -> onCreateListClick
                                 Liked, Collaborations -> onSearchListClick
                             }
@@ -447,8 +449,10 @@ private fun MyListsHeader(
     onFilterClick: (PersonalListType) -> Unit,
     onHeaderClick: () -> Unit,
     onCreateListClick: () -> Unit,
+    onCreateSmartListClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val noopClick = remember { {} }
     Column(
         modifier = modifier
             .fillMaxWidth(),
@@ -470,7 +474,7 @@ private fun MyListsHeader(
             )
 
             this@Column.AnimatedVisibility(
-                visible = state.filter == Personal,
+                visible = state.filter == Personal || state.filter == Smart,
                 enter = fadeIn(tween(150)),
                 exit = fadeOut(tween(150)),
                 modifier = Modifier
@@ -481,7 +485,11 @@ private fun MyListsHeader(
                     .size(19.dp)
                     .onClick(
                         enabled = state.user.isAuthenticated && !state.listsLoading.isLoading,
-                        onClick = onCreateListClick,
+                        onClick = when (state.filter) {
+                            Personal -> onCreateListClick
+                            Smart -> onCreateSmartListClick
+                            else -> noopClick
+                        },
                     ),
             ) {
                 Icon(

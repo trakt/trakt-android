@@ -19,6 +19,7 @@ internal fun NavGraphBuilder.allListsScreen(
     onNavigateToList: (CustomList) -> Unit,
     onNavigateToPersonalList: (CustomList) -> Unit,
     onNavigateToSmartList: (SmartList) -> Unit,
+    onNavigateToCreateSmartList: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     composable<AllListsDestination> {
@@ -27,6 +28,7 @@ internal fun NavGraphBuilder.allListsScreen(
             onNavigateList = onNavigateToList,
             onNavigatePersonalList = onNavigateToPersonalList,
             onNavigateSmartList = onNavigateToSmartList,
+            onNavigateCreateSmartList = onNavigateToCreateSmartList,
             onNavigateBack = onNavigateBack,
         )
     }

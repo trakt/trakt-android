@@ -43,6 +43,7 @@ internal fun <T> DropdownView(
     options: ImmutableList<DropdownOption<T>>,
     onOptionSelected: (DropdownOption<T>) -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
@@ -74,7 +75,7 @@ internal fun <T> DropdownView(
                         horizontal = 14.dp,
                         vertical = 14.dp,
                     )
-                    .onClick {
+                    .onClick(enabled = enabled) {
                         showMenu = true
                     },
             ) {

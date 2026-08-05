@@ -61,6 +61,7 @@ import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Collaborations
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Liked
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Personal
+import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType.Smart
 import tv.trakt.trakt.core.lists.sections.personal.ui.ListsFilters
 import tv.trakt.trakt.core.lists.sheets.CreateListSheet
 import tv.trakt.trakt.core.lists.sheets.EditListSheet
@@ -82,6 +83,7 @@ internal fun AllListsScreen(
     onNavigateList: (CustomList) -> Unit,
     onNavigatePersonalList: (CustomList) -> Unit,
     onNavigateSmartList: (SmartList) -> Unit,
+    onNavigateCreateSmartList: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -109,6 +111,7 @@ internal fun AllListsScreen(
         onListClick = onNavigateList,
         onListPersonalClick = onNavigatePersonalList,
         onSmartListClick = onNavigateSmartList,
+        onSmartListCreateClick = onNavigateCreateSmartList,
         onListCreateClick = { createListSheet = true },
         onListEditClick = { editListSheet = it },
         onSmartListDeleteClick = { smartListToDelete = it },
@@ -154,6 +157,7 @@ private fun AllListsScreen(
     onListPersonalClick: (CustomList) -> Unit = {},
     onSmartListClick: (SmartList) -> Unit = {},
     onListCreateClick: () -> Unit = {},
+    onSmartListCreateClick: () -> Unit = {},
     onListEditClick: (CustomList) -> Unit = {},
     onSmartListDeleteClick: (SmartList) -> Unit = {},
     onFilterClick: (PersonalListType) -> Unit = {},
@@ -220,8 +224,18 @@ private fun AllListsScreen(
         ) {
             item {
                 TitleBar(
-                    createListVisible = state.filter == Personal,
-                    onCreateListClick = onListCreateClick,
+                    createListVisible = state.filter == Personal || state.filter == Smart,
+                    onCreateListClick = when (state.filter) {
+                        Personal -> {
+                            onListCreateClick
+                        }
+                        Smart -> {
+                            onSmartListCreateClick
+                        }
+                        else -> {
+                            {}
+                        }
+                    },
                     modifier = Modifier
                         .padding(contentHorizontalPadding)
                         .onClick(onClick = onBackClick)

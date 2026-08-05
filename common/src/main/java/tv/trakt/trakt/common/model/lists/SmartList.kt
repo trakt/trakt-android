@@ -22,8 +22,8 @@ import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.SmartListDto
-import tv.trakt.trakt.common.networking.SmartListFiltersDto
 import tv.trakt.trakt.resources.R
 import java.time.ZonedDateTime
 import java.util.Locale
@@ -39,8 +39,6 @@ data class SmartList(
     @Serializable(ZonedDateTimeSerializer::class)
     val updatedAt: ZonedDateTime,
     val images: Images?,
-    val source: String,
-    val mediaType: MediaMode,
     val filters: SmartListFilters,
 ) {
     @Composable
@@ -51,21 +49,10 @@ data class SmartList(
         return remember(this, configuration) {
             val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
 
-            val sourcePart = sourceLabel(resources)
+            val sourcePart = resources.getString(filters.source.displayRes)
             val filtersPart = filters.toSummaryParts(resources, locale)
 
-            (listOf(sourcePart) + filtersPart).joinToString(", ")
-        }
-    }
-
-    private fun sourceLabel(resources: Resources): String {
-        return when (source) {
-            "trending" -> resources.getString(R.string.list_title_trending)
-            "popular" -> resources.getString(R.string.list_title_most_popular)
-            "anticipated" -> resources.getString(R.string.list_title_most_anticipated)
-            "recommendations" -> resources.getString(R.string.list_title_recommended)
-            "discover" -> resources.getString(R.string.page_title_discover)
-            else -> source.toSummaryTitleCase()
+            (listOfNotNull(sourcePart) + filtersPart).joinToString(", ")
         }
     }
 
@@ -85,14 +72,29 @@ data class SmartList(
                         .distinct()
                         .toImmutableList(),
                 ),
-                source = dto.source,
-                mediaType = when (dto.mediaType) {
-                    "shows" -> MediaMode.Shows
-                    "movies" -> MediaMode.Movies
-                    else -> MediaMode.Media
-                },
-                filters = SmartListFilters.fromDto(dto.filters),
+                filters = SmartListFilters.fromDto(dto),
             )
+        }
+    }
+}
+
+enum class SmartListSource(
+    val value: String,
+    @StringRes val displayRes: Int,
+) {
+    Trending("trending", R.string.list_title_trending),
+    Popular("popular", R.string.list_title_most_popular),
+    Anticipated("anticipated", R.string.list_title_most_anticipated),
+    Recommendations("recommendations", R.string.list_title_recommended),
+    Discover("discover", R.string.page_title_discover),
+    Unknown("", R.string.text_unknown),
+    ;
+
+    companion object {
+        fun fromApiValue(value: String): SmartListSource {
+            return entries
+                .firstOrNull { it.value == value }
+                ?: Unknown
         }
     }
 }
@@ -100,57 +102,65 @@ data class SmartList(
 @Immutable
 @Serializable
 data class SmartListFilters(
+    val media: MediaMode,
+    val source: SmartListSource,
     @Serializable(with = ImmutableListSerializer::class)
-    val genres: ImmutableList<String>,
+    val genres: ImmutableList<MediaGenre>? = null,
     @Serializable(with = ImmutableListSerializer::class)
-    val subgenres: ImmutableList<String>,
+    val subgenres: ImmutableList<String>? = null,
     @Serializable(with = ImmutableListSerializer::class)
-    val certifications: ImmutableList<String>,
+    val certifications: ImmutableList<String>? = null,
     @Serializable(with = ImmutableListSerializer::class)
-    val languages: ImmutableList<String>,
+    val languages: ImmutableList<String>? = null,
     @Serializable(with = ImmutableListSerializer::class)
-    val countries: ImmutableList<String>,
+    val countries: ImmutableList<String>? = null,
     @Serializable(with = ImmutableListSerializer::class)
-    val statuses: ImmutableList<String>,
+    val statuses: ImmutableList<String>? = null,
     @Serializable(with = ImmutableListSerializer::class)
-    val networks: ImmutableList<String>,
+    val networks: ImmutableList<String>? = null,
     @Serializable(with = ImmutableListSerializer::class)
-    val watchNow: ImmutableList<String>,
+    val availability: ImmutableList<GlobalFilter.Availability>? = null,
     @Serializable(with = ImmutableListSerializer::class)
-    val years: ImmutableList<Int>,
+    val years: ImmutableList<Int>? = null,
     @Serializable(with = ImmutableListSerializer::class)
-    val ratings: ImmutableList<Int>,
+    val ratings: ImmutableList<Int>? = null,
     @Serializable(with = ImmutableListSerializer::class)
-    val runtimes: ImmutableList<Int>,
+    val runtimes: ImmutableList<Int>? = null,
     @Serializable(with = ImmutableListSerializer::class)
-    val imdbRatings: ImmutableList<Int>,
+    val imdbRatings: ImmutableList<Int>? = null,
     @Serializable(with = ImmutableListSerializer::class)
-    val rtMeters: ImmutableList<Int>,
+    val rtMeters: ImmutableList<Int>? = null,
     @Serializable(with = ImmutableListSerializer::class)
-    val rtUserMeters: ImmutableList<Int>,
-    val ignoreWatched: Boolean,
-    val ignoreWatchlisted: Boolean,
+    val rtUserMeters: ImmutableList<Int>? = null,
+    val ignoreWatched: Boolean = false,
+    val ignoreWatchlisted: Boolean = false,
 ) {
+    init {
+        require(media == MediaMode.Shows || media == MediaMode.Movies) {
+            "Media must be either Shows or Movies"
+        }
+    }
+
     fun toSummaryParts(
         resources: Resources,
         locale: Locale,
     ): List<String> {
-        val values = genres.map { it.toGenreLabel(resources) } +
-            subgenres.map { it.toGenreLabel(resources) } +
-            certifications.map { it.uppercase(locale) } +
-            languages.map { it.toSummaryTitleCase() } +
-            countries.map { it.uppercase(locale) } +
-            statuses.map { it.toSummaryTitleCase() } +
-            networks.map { it.toSummaryTitleCase() } +
-            watchNow.map { it.toSummaryTitleCase() }
+        val values = genres.orEmpty().map { resources.getString(it.displayStringRes) } +
+            subgenres.orEmpty().map { it.toGenreLabel(resources) } +
+            certifications.orEmpty().map { it.uppercase(locale) } +
+            languages.orEmpty().map { it.toSummaryTitleCase() } +
+            countries.orEmpty().map { it.uppercase(locale) } +
+            statuses.orEmpty().map { it.toSummaryTitleCase() } +
+            networks.orEmpty().map { it.toSummaryTitleCase() } +
+            availability.orEmpty().map { resources.getString(it.displayStringRes) }
 
         val ranges = listOfNotNull(
-            formatNumberRange(years, R.string.advanced_filter_label_release_year, resources),
-            formatPercentRange(ratings, "Trakt", resources, locale),
-            formatNumberRange(runtimes, R.string.advanced_filter_label_runtime, resources),
-            formatPlainRange(imdbRatings, resources)?.let { "IMDb $it" },
-            formatPercentRange(rtMeters, "RT", resources, locale),
-            formatPercentRange(rtUserMeters, "RT Audience", resources, locale),
+            formatNumberRange(years.orEmpty(), R.string.advanced_filter_label_release_year, resources),
+            formatPercentRange(ratings.orEmpty(), "Trakt", resources, locale),
+            formatNumberRange(runtimes.orEmpty(), R.string.advanced_filter_label_runtime, resources),
+            formatPlainRange(imdbRatings.orEmpty(), resources)?.let { "IMDb $it" },
+            formatPercentRange(rtMeters.orEmpty(), "RT", resources, locale),
+            formatPercentRange(rtUserMeters.orEmpty(), "RT Audience", resources, locale),
         )
 
         val flags = listOfNotNull(
@@ -161,25 +171,50 @@ data class SmartListFilters(
         return values + ranges + flags
     }
 
+    /**
+     * Clears every filter field back to its default, keeping only [media] and [source].
+     * Used when switching between simple and advanced filter modes.
+     */
+    fun cleared(): SmartListFilters = SmartListFilters(
+        media = media,
+        source = source,
+    )
+
     companion object {
-        fun fromDto(dto: SmartListFiltersDto): SmartListFilters {
+        val Default = SmartListFilters(
+            media = MediaMode.Shows,
+            source = SmartListSource.Trending,
+        )
+
+        fun fromDto(dto: SmartListDto): SmartListFilters {
+            val filters = dto.filters
             return SmartListFilters(
-                genres = dto.genres.orEmpty().toImmutableList(),
-                subgenres = dto.subgenres.orEmpty().toImmutableList(),
-                certifications = dto.certifications.orEmpty().toImmutableList(),
-                languages = dto.languages.orEmpty().toImmutableList(),
-                countries = dto.countries.orEmpty().toImmutableList(),
-                statuses = dto.statuses.orEmpty().toImmutableList(),
-                networks = dto.networks.orEmpty().toImmutableList(),
-                watchNow = dto.watchnow.orEmpty().toImmutableList(),
-                years = dto.years.orEmpty().toImmutableList(),
-                ratings = dto.ratings.orEmpty().toImmutableList(),
-                runtimes = dto.runtimes.orEmpty().toImmutableList(),
-                imdbRatings = dto.imdbRatings.orEmpty().toImmutableList(),
-                rtMeters = dto.rtMeters.orEmpty().toImmutableList(),
-                rtUserMeters = dto.rtUserMeters.orEmpty().toImmutableList(),
-                ignoreWatched = dto.ignoreWatched ?: false,
-                ignoreWatchlisted = dto.ignoreWatchlisted ?: false,
+                source = SmartListSource.fromApiValue(dto.source),
+                media = when (dto.mediaType) {
+                    "shows" -> MediaMode.Shows
+                    "movies" -> MediaMode.Movies
+                    else -> MediaMode.Media
+                },
+                genres = filters.genres.orEmpty()
+                    .mapNotNull { MediaGenre.fromSlug(it) }
+                    .toImmutableList(),
+                subgenres = filters.subgenres.orEmpty().toImmutableList(),
+                certifications = filters.certifications.orEmpty().toImmutableList(),
+                languages = filters.languages.orEmpty().toImmutableList(),
+                countries = filters.countries.orEmpty().toImmutableList(),
+                statuses = filters.statuses.orEmpty().toImmutableList(),
+                networks = filters.networks.orEmpty().toImmutableList(),
+                availability = filters.watchnow.orEmpty()
+                    .mapNotNull { GlobalFilter.Availability.fromSlug(it) }
+                    .toImmutableList(),
+                years = filters.years.orEmpty().toImmutableList(),
+                ratings = filters.ratings.orEmpty().toImmutableList(),
+                runtimes = filters.runtimes.orEmpty().toImmutableList(),
+                imdbRatings = filters.imdbRatings.orEmpty().toImmutableList(),
+                rtMeters = filters.rtMeters.orEmpty().toImmutableList(),
+                rtUserMeters = filters.rtUserMeters.orEmpty().toImmutableList(),
+                ignoreWatched = filters.ignoreWatched ?: false,
+                ignoreWatchlisted = filters.ignoreWatchlisted ?: false,
             )
         }
     }

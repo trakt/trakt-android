@@ -33,13 +33,11 @@ internal class GetSmartListItemsUseCase(
             when {
                 show != null -> {
                     SmartListItem.ShowItem(
-                        rank = dto.rank,
                         show = Show.fromDto(show),
                     )
                 }
                 movie != null -> {
                     SmartListItem.MovieItem(
-                        rank = dto.rank,
                         movie = Movie.fromDto(movie),
                     )
                 }

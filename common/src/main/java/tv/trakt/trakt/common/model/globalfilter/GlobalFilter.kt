@@ -57,6 +57,13 @@ data class GlobalFilter(
         MyFavorites("favorites", R.string.option_text_my_favorites),
         StreamingNow("subscriptions", R.string.option_text_streaming_now),
         AllDigitalReleases("any", R.string.option_text_all_digital_releases),
+        ;
+
+        companion object {
+            fun fromSlug(slug: String): Availability? {
+                return entries.firstOrNull { it.slug == slug }
+            }
+        }
     }
 
     enum class Certification(

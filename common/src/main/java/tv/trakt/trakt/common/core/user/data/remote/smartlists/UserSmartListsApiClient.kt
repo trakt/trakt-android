@@ -4,6 +4,7 @@ import org.openapitools.client.apis.SmartListsApi
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.sorting.Sorting
+import tv.trakt.trakt.common.networking.CreateSmartListRequestDto
 import tv.trakt.trakt.common.networking.SmartListDto
 import tv.trakt.trakt.common.networking.SmartListItemDto
 
@@ -12,6 +13,16 @@ class UserSmartListsApiClient(
 ) : UserSmartListsRemoteDataSource {
     override suspend fun getSmartLists(userId: String): List<SmartListDto> {
         return smartListsApi.getUsersSmartListsPersonal(id = userId).body()
+    }
+
+    override suspend fun createSmartList(
+        request: CreateSmartListRequestDto,
+        userId: String,
+    ) {
+        smartListsApi.postUsersSmartListsCreate(
+            id = userId,
+            postUsersSmartListsCreateRequest = request,
+        )
     }
 
     override suspend fun getSmartListDetails(

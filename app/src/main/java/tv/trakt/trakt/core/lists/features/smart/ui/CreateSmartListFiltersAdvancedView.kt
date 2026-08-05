@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.filters.views
+package tv.trakt.trakt.core.lists.features.smart.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -9,10 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
 import androidx.compose.material3.RangeSlider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
@@ -23,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
@@ -31,96 +26,41 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.MediaGenre
-import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Availability
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Certification
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter.Region
-import tv.trakt.trakt.common.model.globalfilter.GlobalFilterDecade.CurrentYear
-import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode
-import tv.trakt.trakt.common.ui.theme.colors.Red400
+import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.core.filters.ColumnsSpacing
-import tv.trakt.trakt.core.filters.GlobalFiltersState
 import tv.trakt.trakt.core.filters.RowsSpacing
 import tv.trakt.trakt.core.filters.views.dropdowns.DropdownMultiView
 import tv.trakt.trakt.core.filters.views.dropdowns.DropdownOption
+import tv.trakt.trakt.core.lists.features.smart.CreateSmartListState
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.MediaModeFilters
-import tv.trakt.trakt.ui.components.TraktHeader
-import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.components.switch.TraktSwitch
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.util.Locale
 
+private val YearsMin = 1930
+private val YearsMax = 2040
+private val RuntimeMin = 0
+private val RuntimeMax = 500
+private val RatingMin = 0
+private val RatingMax = 100
+
 @Composable
-internal fun GlobalFiltersAdvancedView(
-    state: GlobalFiltersState,
-    onUpdateFilter: (GlobalFilter, Boolean) -> Unit = { _, _ -> },
-    onResetFilter: () -> Unit = { },
-    onToggleMode: (GlobalFilterMode) -> Unit = { },
+internal fun CreateSmartListFiltersAdvancedView(
+    state: CreateSmartListState,
+    onFiltersChange: (SmartListFilters, Boolean) -> Unit = { _, _ -> },
 ) {
+    val enabled = !state.creating.isLoading
+
     Column(
         verticalArrangement = spacedBy(16.dp),
         modifier = Modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 24.dp)
-            .padding(bottom = 24.dp),
+            .fillMaxWidth(),
     ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = CenterVertically,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            TraktHeader(
-                title = stringResource(R.string.header_filters),
-            )
-
-            Row(
-                horizontalArrangement = spacedBy(16.dp),
-                verticalAlignment = CenterVertically,
-            ) {
-                if (state.filter.isActive) {
-                    Text(
-                        text = stringResource(R.string.button_text_reset_all_filters),
-                        color = Red400,
-                        style = TraktTheme.typography.buttonTertiary,
-                        modifier = Modifier.clickable(onClick = onResetFilter),
-                    )
-                }
-
-                FilterChip(
-                    selected = false,
-                    text = stringResource(GlobalFilterMode.Advanced.displayStringRes),
-                    height = 32.dp,
-                    leadingAlwaysVisible = true,
-                    leadingContent = {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_filters_advanced),
-                            contentDescription = null,
-                            tint = TraktTheme.colors.textPrimary,
-                            modifier = Modifier.size(16.dp),
-                        )
-                    },
-                    onClick = {
-                        onToggleMode(GlobalFilterMode.Simple)
-                    },
-                )
-            }
-        }
-
-        MediaModeFilters(
-            selected = state.filter.mode,
-            onClick = {
-                onUpdateFilter(state.filter.copy(mode = it), false)
-            },
-            height = 32.dp,
-            modifier = Modifier.padding(
-                top = 4.dp,
-                bottom = 5.dp,
-            ),
-        )
-
         Column(
             verticalArrangement = spacedBy(ColumnsSpacing),
             modifier = Modifier.fillMaxWidth(),
@@ -131,13 +71,15 @@ internal fun GlobalFiltersAdvancedView(
             ) {
                 GenreFilter(
                     state = state,
-                    onUpdateFilter = onUpdateFilter,
+                    onUpdateFilter = onFiltersChange,
+                    enabled = enabled,
                     modifier = Modifier.weight(1f),
                 )
 
                 AvailabilityFilter(
                     state = state,
-                    onUpdateFilter = onUpdateFilter,
+                    onUpdateFilter = onFiltersChange,
+                    enabled = enabled,
                     modifier = Modifier.weight(1f),
                 )
             }
@@ -148,35 +90,41 @@ internal fun GlobalFiltersAdvancedView(
             ) {
                 CertificationFilter(
                     state = state,
-                    onUpdateFilter = onUpdateFilter,
+                    onUpdateFilter = onFiltersChange,
+                    enabled = enabled,
                     modifier = Modifier.weight(1f),
                 )
 
                 RegionFilter(
                     state = state,
-                    onUpdateFilter = onUpdateFilter,
+                    onUpdateFilter = onFiltersChange,
+                    enabled = enabled,
                     modifier = Modifier.weight(1f),
                 )
             }
 
             YearsFilter(
                 state = state,
-                onUpdateFilter = onUpdateFilter,
+                onUpdateFilter = onFiltersChange,
+                enabled = enabled,
             )
 
             RuntimeFilter(
                 state = state,
-                onUpdateFilter = onUpdateFilter,
+                onUpdateFilter = onFiltersChange,
+                enabled = enabled,
             )
 
             RatingFilter(
                 state = state,
-                onUpdateFilter = onUpdateFilter,
+                onUpdateFilter = onFiltersChange,
+                enabled = enabled,
             )
 
             SwitchesFilter(
                 state = state,
-                onUpdateFilter = onUpdateFilter,
+                onUpdateFilter = onFiltersChange,
+                enabled = enabled,
             )
         }
     }
@@ -184,12 +132,13 @@ internal fun GlobalFiltersAdvancedView(
 
 @Composable
 private fun GenreFilter(
-    state: GlobalFiltersState,
-    onUpdateFilter: (GlobalFilter, Boolean) -> Unit,
+    state: CreateSmartListState,
+    onUpdateFilter: (SmartListFilters, Boolean) -> Unit,
+    enabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val genresValues: List<DropdownOption<MediaGenre?>> =
-        when (val genres = state.filter.genre) {
+        when (val genres = state.filters.genres) {
             null -> listOf(
                 DropdownOption(
                     raw = null,
@@ -219,15 +168,15 @@ private fun GenreFilter(
 
     DropdownMultiView(
         header = stringResource(R.string.header_genre),
-        active = !state.filter.genre.isNullOrEmpty(),
-        values = remember(state.filter.genre) {
+        active = !state.filters.genres.isNullOrEmpty(),
+        values = remember(state.filters.genres) {
             genresValues.toImmutableList()
         },
         options = genresOptions,
         onOptionsSelected = { options ->
             onUpdateFilter(
-                state.filter.copy(
-                    genre = options
+                state.filters.copy(
+                    genres = options
                         .mapNotNull { it.raw }
                         .takeIf { it.isNotEmpty() }
                         ?.toImmutableList(),
@@ -235,18 +184,20 @@ private fun GenreFilter(
                 true,
             )
         },
+        enabled = enabled,
         modifier = modifier,
     )
 }
 
 @Composable
 private fun AvailabilityFilter(
-    state: GlobalFiltersState,
-    onUpdateFilter: (GlobalFilter, Boolean) -> Unit,
+    state: CreateSmartListState,
+    onUpdateFilter: (SmartListFilters, Boolean) -> Unit,
+    enabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val availabilityValues: List<DropdownOption<Availability?>> =
-        when (val availability = state.filter.availability) {
+        when (val availability = state.filters.availability) {
             null -> listOf(
                 DropdownOption(
                     raw = null,
@@ -276,14 +227,14 @@ private fun AvailabilityFilter(
 
     DropdownMultiView(
         header = stringResource(R.string.header_streaming),
-        active = !state.filter.availability.isNullOrEmpty(),
-        values = remember(state.filter.availability) {
+        active = !state.filters.availability.isNullOrEmpty(),
+        values = remember(state.filters.availability) {
             availabilityValues.toImmutableList()
         },
         options = availabilityOptions,
         onOptionsSelected = { options ->
             onUpdateFilter(
-                state.filter.copy(
+                state.filters.copy(
                     availability = options
                         .mapNotNull { it.raw }
                         .takeIf { it.isNotEmpty() }
@@ -292,29 +243,33 @@ private fun AvailabilityFilter(
                 true,
             )
         },
+        enabled = enabled,
         modifier = modifier,
     )
 }
 
 @Composable
 private fun CertificationFilter(
-    state: GlobalFiltersState,
-    onUpdateFilter: (GlobalFilter, Boolean) -> Unit,
+    state: CreateSmartListState,
+    onUpdateFilter: (SmartListFilters, Boolean) -> Unit,
+    enabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val certificationValues: List<DropdownOption<Certification?>> =
-        when (val certification = state.filter.certification) {
+        when (val certifications = state.filters.certifications) {
             null -> listOf(
                 DropdownOption(
                     raw = null,
                     displayString = stringResource(R.string.option_text_all),
                 ),
             )
-            else -> certification.map {
-                DropdownOption(
-                    raw = it,
-                    displayString = stringResource(it.displayStringRes),
-                )
+            else -> certifications.mapNotNull { slug ->
+                Certification.entries.find { it.slug == slug }?.let {
+                    DropdownOption(
+                        raw = it,
+                        displayString = stringResource(it.displayStringRes),
+                    )
+                }
             }
         }
 
@@ -333,34 +288,36 @@ private fun CertificationFilter(
 
     DropdownMultiView(
         header = stringResource(R.string.header_certification),
-        active = !state.filter.certification.isNullOrEmpty(),
-        values = remember(state.filter.certification) {
+        active = !state.filters.certifications.isNullOrEmpty(),
+        values = remember(state.filters.certifications) {
             certificationValues.toImmutableList()
         },
         options = certificationOptions,
         onOptionsSelected = { options ->
             onUpdateFilter(
-                state.filter.copy(
-                    certification = options
-                        .mapNotNull { it.raw }
+                state.filters.copy(
+                    certifications = options
+                        .mapNotNull { it.raw?.slug }
                         .takeIf { it.isNotEmpty() }
                         ?.toImmutableList(),
                 ),
                 true,
             )
         },
+        enabled = enabled,
         modifier = modifier,
     )
 }
 
 @Composable
 private fun RegionFilter(
-    state: GlobalFiltersState,
-    onUpdateFilter: (GlobalFilter, Boolean) -> Unit,
+    state: CreateSmartListState,
+    onUpdateFilter: (SmartListFilters, Boolean) -> Unit,
+    enabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val regionValues: List<DropdownOption<String?>> =
-        when (val countries = state.filter.countries) {
+        when (val countries = state.filters.countries) {
             null -> listOf(
                 DropdownOption(
                     raw = null,
@@ -389,14 +346,14 @@ private fun RegionFilter(
 
     DropdownMultiView(
         header = stringResource(R.string.header_country),
-        active = !state.filter.countries.isNullOrEmpty(),
-        values = remember(state.filter.countries) {
+        active = !state.filters.countries.isNullOrEmpty(),
+        values = remember(state.filters.countries) {
             regionValues.toImmutableList()
         },
         options = regionOptions,
         onOptionsSelected = { options ->
             onUpdateFilter(
-                state.filter.copy(
+                state.filters.copy(
                     countries = options
                         .mapNotNull { it.raw }
                         .takeIf { it.isNotEmpty() }
@@ -405,14 +362,16 @@ private fun RegionFilter(
                 true,
             )
         },
+        enabled = enabled,
         modifier = modifier,
     )
 }
 
 @Composable
 private fun YearsFilter(
-    state: GlobalFiltersState,
-    onUpdateFilter: (GlobalFilter, Boolean) -> Unit,
+    state: CreateSmartListState,
+    onUpdateFilter: (SmartListFilters, Boolean) -> Unit,
+    enabled: Boolean,
 ) {
     Column(
         verticalArrangement = spacedBy(8.dp),
@@ -420,11 +379,11 @@ private fun YearsFilter(
             .fillMaxWidth()
             .padding(top = 10.dp),
     ) {
-        val rangeYearsValue = remember(state.filter.years) {
+        val rangeYearsValue = remember(state.filters.years) {
             mutableStateOf(
-                state.filter.years?.let {
-                    it.first.toFloat()..it.second.toFloat()
-                } ?: (1930f..2040f),
+                state.filters.years?.let {
+                    (it.getOrNull(0) ?: YearsMin).toFloat()..(it.getOrNull(1) ?: YearsMax).toFloat()
+                } ?: (YearsMin.toFloat()..YearsMax.toFloat()),
             )
         }
 
@@ -442,7 +401,8 @@ private fun YearsFilter(
 
         RangeSlider(
             value = rangeYearsValue.value,
-            valueRange = 1930f..2040f,
+            enabled = enabled,
+            valueRange = YearsMin.toFloat()..YearsMax.toFloat(),
             steps = 109, // Step every 1 year
             onValueChange = { range ->
                 rangeYearsValue.value = range
@@ -452,8 +412,12 @@ private fun YearsFilter(
                 val start = value.start.toInt()
                 val end = value.endInclusive.toInt()
                 onUpdateFilter(
-                    state.filter.copy(
-                        years = if (start == 1930 && end == 2040) null else start to end,
+                    state.filters.copy(
+                        years = if (start == YearsMin && end == YearsMax) {
+                            null
+                        } else {
+                            persistentListOf(start, end)
+                        },
                     ),
                     true,
                 )
@@ -464,6 +428,11 @@ private fun YearsFilter(
                 thumbColor = TraktTheme.colors.accent,
                 activeTickColor = Color.Transparent,
                 inactiveTickColor = Color.Transparent,
+                disabledActiveTrackColor = TraktTheme.colors.dialogOnContainer,
+                disabledActiveTickColor = TraktTheme.colors.dialogOnContainer,
+                disabledThumbColor = TraktTheme.colors.dialogOnContainer,
+                disabledInactiveTrackColor = TraktTheme.colors.dialogOnContainer,
+                disabledInactiveTickColor = TraktTheme.colors.dialogOnContainer,
             ),
             modifier = Modifier
                 .fillMaxWidth()
@@ -477,7 +446,7 @@ private fun YearsFilter(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                for (i in 1930..2040 step 110) {
+                for (i in YearsMin..YearsMax step 110) {
                     Text(
                         text = "$i",
                         color = TraktTheme.colors.textSecondary,
@@ -507,8 +476,9 @@ private fun YearsFilter(
 
 @Composable
 private fun RuntimeFilter(
-    state: GlobalFiltersState,
-    onUpdateFilter: (GlobalFilter, Boolean) -> Unit,
+    state: CreateSmartListState,
+    onUpdateFilter: (SmartListFilters, Boolean) -> Unit,
+    enabled: Boolean,
 ) {
     Column(
         verticalArrangement = spacedBy(8.dp),
@@ -516,11 +486,11 @@ private fun RuntimeFilter(
             .fillMaxWidth()
             .padding(top = 10.dp),
     ) {
-        val rangeRuntimeValue = remember(state.filter.runtime) {
+        val rangeRuntimeValue = remember(state.filters.runtimes) {
             mutableStateOf(
-                state.filter.runtime?.let {
-                    it.first.toFloat()..it.second.toFloat()
-                } ?: (0f..500f),
+                state.filters.runtimes?.let {
+                    (it.getOrNull(0) ?: RuntimeMin).toFloat()..(it.getOrNull(1) ?: RuntimeMax).toFloat()
+                } ?: (RuntimeMin.toFloat()..RuntimeMax.toFloat()),
             )
         }
 
@@ -538,7 +508,8 @@ private fun RuntimeFilter(
 
         RangeSlider(
             value = rangeRuntimeValue.value,
-            valueRange = 0f..500f,
+            enabled = enabled,
+            valueRange = RuntimeMin.toFloat()..RuntimeMax.toFloat(),
             steps = 499, // Step every 1 min
             onValueChange = { range ->
                 rangeRuntimeValue.value = range
@@ -548,8 +519,12 @@ private fun RuntimeFilter(
                 val start = value.start.toInt()
                 val end = value.endInclusive.toInt()
                 onUpdateFilter(
-                    state.filter.copy(
-                        runtime = if (start == 0 && end == 500) null else start to end,
+                    state.filters.copy(
+                        runtimes = if (start == RuntimeMin && end == RuntimeMax) {
+                            null
+                        } else {
+                            persistentListOf(start, end)
+                        },
                     ),
                     true,
                 )
@@ -560,6 +535,11 @@ private fun RuntimeFilter(
                 thumbColor = TraktTheme.colors.accent,
                 activeTickColor = Color.Transparent,
                 inactiveTickColor = Color.Transparent,
+                disabledActiveTrackColor = TraktTheme.colors.dialogOnContainer,
+                disabledActiveTickColor = TraktTheme.colors.dialogOnContainer,
+                disabledThumbColor = TraktTheme.colors.dialogOnContainer,
+                disabledInactiveTrackColor = TraktTheme.colors.dialogOnContainer,
+                disabledInactiveTickColor = TraktTheme.colors.dialogOnContainer,
             ),
             modifier = Modifier
                 .fillMaxWidth()
@@ -573,7 +553,7 @@ private fun RuntimeFilter(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                for (i in 0..500 step 500) {
+                for (i in RuntimeMin..RuntimeMax step 500) {
                     Text(
                         text = "${i}m",
                         color = TraktTheme.colors.textSecondary,
@@ -603,8 +583,9 @@ private fun RuntimeFilter(
 
 @Composable
 private fun RatingFilter(
-    state: GlobalFiltersState,
-    onUpdateFilter: (GlobalFilter, Boolean) -> Unit,
+    state: CreateSmartListState,
+    onUpdateFilter: (SmartListFilters, Boolean) -> Unit,
+    enabled: Boolean,
 ) {
     Column(
         verticalArrangement = spacedBy(8.dp),
@@ -612,11 +593,11 @@ private fun RatingFilter(
             .fillMaxWidth()
             .padding(top = 10.dp),
     ) {
-        val rangeRatingValue = remember(state.filter.rating) {
+        val rangeRatingValue = remember(state.filters.ratings) {
             mutableStateOf(
-                state.filter.rating?.let {
-                    it.first.toFloat()..it.second.toFloat()
-                } ?: (0f..100f),
+                state.filters.ratings?.let {
+                    (it.getOrNull(0) ?: RatingMin).toFloat()..(it.getOrNull(1) ?: RatingMax).toFloat()
+                } ?: (RatingMin.toFloat()..RatingMax.toFloat()),
             )
         }
 
@@ -634,16 +615,23 @@ private fun RatingFilter(
 
         RangeSlider(
             value = rangeRatingValue.value,
-            valueRange = 0f..100f,
+            enabled = enabled,
+            valueRange = RatingMin.toFloat()..RatingMax.toFloat(),
             steps = 99, // Step every 1%
             onValueChange = { range ->
                 rangeRatingValue.value = range
             },
             onValueChangeFinished = {
                 val value = rangeRatingValue.value
+                val start = value.start.toInt()
+                val end = value.endInclusive.toInt()
                 onUpdateFilter(
-                    state.filter.copy(
-                        rating = value.start.toInt() to value.endInclusive.toInt(),
+                    state.filters.copy(
+                        ratings = if (start == RatingMin && end == RatingMax) {
+                            null
+                        } else {
+                            persistentListOf(start, end)
+                        },
                     ),
                     true,
                 )
@@ -654,6 +642,11 @@ private fun RatingFilter(
                 thumbColor = TraktTheme.colors.accent,
                 activeTickColor = Color.Transparent,
                 inactiveTickColor = Color.Transparent,
+                disabledActiveTrackColor = TraktTheme.colors.dialogOnContainer,
+                disabledActiveTickColor = TraktTheme.colors.dialogOnContainer,
+                disabledThumbColor = TraktTheme.colors.dialogOnContainer,
+                disabledInactiveTrackColor = TraktTheme.colors.dialogOnContainer,
+                disabledInactiveTickColor = TraktTheme.colors.dialogOnContainer,
             ),
             modifier = Modifier
                 .fillMaxWidth()
@@ -667,7 +660,7 @@ private fun RatingFilter(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                for (i in 0..100 step 100) {
+                for (i in RatingMin..RatingMax step 100) {
                     Text(
                         text = "$i%",
                         color = TraktTheme.colors.textSecondary,
@@ -697,8 +690,9 @@ private fun RatingFilter(
 
 @Composable
 private fun SwitchesFilter(
-    state: GlobalFiltersState,
-    onUpdateFilter: (GlobalFilter, Boolean) -> Unit,
+    state: CreateSmartListState,
+    onUpdateFilter: (SmartListFilters, Boolean) -> Unit,
+    enabled: Boolean,
 ) {
     Row(
         horizontalArrangement = spacedBy(RowsSpacing),
@@ -709,11 +703,11 @@ private fun SwitchesFilter(
             verticalAlignment = CenterVertically,
             modifier = Modifier.weight(1f),
         ) {
-            val onCheckedChange: (Boolean) -> Unit = remember(state.filter) {
+            val onCheckedChange: (Boolean) -> Unit = remember(state.filters) {
                 {
                     onUpdateFilter(
-                        state.filter.copy(
-                            hideWatched = it,
+                        state.filters.copy(
+                            ignoreWatched = it,
                         ),
                         false,
                     )
@@ -721,8 +715,9 @@ private fun SwitchesFilter(
             }
 
             TraktSwitch(
-                checked = state.filter.hideWatched,
+                checked = state.filters.ignoreWatched,
                 onCheckedChange = onCheckedChange,
+                enabled = enabled,
             )
             Text(
                 text = stringResource(R.string.header_hide_watched),
@@ -730,8 +725,8 @@ private fun SwitchesFilter(
                 style = TraktTheme.typography.buttonTertiary,
                 maxLines = 2,
                 overflow = Ellipsis,
-                modifier = Modifier.clickable {
-                    onCheckedChange(!state.filter.hideWatched)
+                modifier = Modifier.clickable(enabled = enabled) {
+                    onCheckedChange(!state.filters.ignoreWatched)
                 },
             )
         }
@@ -741,11 +736,11 @@ private fun SwitchesFilter(
             verticalAlignment = CenterVertically,
             modifier = Modifier.weight(1f),
         ) {
-            val onCheckedChange: (Boolean) -> Unit = remember(state.filter) {
+            val onCheckedChange: (Boolean) -> Unit = remember(state.filters) {
                 {
                     onUpdateFilter(
-                        state.filter.copy(
-                            hideWatchlist = it,
+                        state.filters.copy(
+                            ignoreWatchlisted = it,
                         ),
                         false,
                     )
@@ -753,8 +748,9 @@ private fun SwitchesFilter(
             }
 
             TraktSwitch(
-                checked = state.filter.hideWatchlist,
+                checked = state.filters.ignoreWatchlisted,
                 onCheckedChange = onCheckedChange,
+                enabled = enabled,
             )
             Text(
                 text = stringResource(R.string.header_hide_watchlisted),
@@ -762,8 +758,8 @@ private fun SwitchesFilter(
                 style = TraktTheme.typography.buttonTertiary,
                 maxLines = 2,
                 overflow = Ellipsis,
-                modifier = Modifier.clickable {
-                    onCheckedChange(!state.filter.hideWatchlist)
+                modifier = Modifier.clickable(enabled = enabled) {
+                    onCheckedChange(!state.filters.ignoreWatchlisted)
                 },
             )
         }
@@ -778,7 +774,7 @@ private fun SwitchesFilter(
 @Composable
 private fun Preview() {
     TraktTheme {
-        GlobalFiltersAdvancedView(state = GlobalFiltersState())
+        CreateSmartListFiltersAdvancedView(state = CreateSmartListState())
     }
 }
 
@@ -790,17 +786,47 @@ private fun Preview() {
 @Composable
 private fun Preview2() {
     TraktTheme {
-        GlobalFiltersAdvancedView(
-            state = GlobalFiltersState(
-                filter = GlobalFilter.Default.copy(
-                    genre = persistentListOf(
+        CreateSmartListFiltersAdvancedView(
+            state = CreateSmartListState(
+                filters = SmartListFilters.Default.copy(
+                    genres = persistentListOf(
                         MediaGenre.Action,
                         MediaGenre.Comedy,
                     ),
                     availability = persistentListOf(
                         Availability.AllDigitalReleases,
                     ),
-                    years = CurrentYear.years,
+                    years = persistentListOf(2000, 2020),
+                    ratings = persistentListOf(60, 100),
+                    ignoreWatched = true,
+                ),
+            ),
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF212427,
+)
+@Composable
+private fun PreviewDisabled() {
+    TraktTheme {
+        CreateSmartListFiltersAdvancedView(
+            state = CreateSmartListState(
+                creating = LoadingState.Loading,
+                filters = SmartListFilters.Default.copy(
+                    genres = persistentListOf(
+                        MediaGenre.Action,
+                        MediaGenre.Comedy,
+                    ),
+                    availability = persistentListOf(
+                        Availability.AllDigitalReleases,
+                    ),
+                    years = persistentListOf(2000, 2020),
+                    ratings = persistentListOf(60, 100),
+                    ignoreWatched = true,
                 ),
             ),
         )
