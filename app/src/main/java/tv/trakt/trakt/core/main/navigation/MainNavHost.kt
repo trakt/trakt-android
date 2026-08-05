@@ -54,6 +54,7 @@ internal fun MainNavHost(
             onSearchLoading = onSearchLoading,
         )
         settingsScreens(navController)
+        streamingsScreens(navController)
         billingScreens(navController)
         userProfileScreens(navController, userId)
         youTubePlayerScreens(navController)
