@@ -107,6 +107,8 @@
   <string name="button_label_import_selected">Yukarıda seçtiğiniz film eşleşmelerini içe aktarın.</string>
   <string name="button_label_include_option">%s Dahil Et</string>
   <string name="button_label_join_trakt">İzlediklerinizi takip etmek için trakt.tv\'ye katılın</string>
+  <string name="button_label_keep_newest_play">Her bir öğenin en yeni oynatmasını tut</string>
+  <string name="button_label_keep_oldest_play">Her bir öğenin en eski oynatmasını tut</string>
   <string name="button_label_library">Kütüphane</string>
   <string name="button_label_like_list">%s listesini beğen</string>
   <string name="button_label_login">Giriş Yap</string>
@@ -354,6 +356,8 @@
   <string name="button_text_install">Yükle</string>
   <string name="button_text_join_trakt">Trakt\'a Katıl</string>
   <string name="button_text_join_trakt_for_free">Trakt\'a Ücretsiz Katıl</string>
+  <string name="button_text_keep_newest_play">En Yeni</string>
+  <string name="button_text_keep_oldest_play">En Eski</string>
   <string name="button_text_keep_vip_prompt">Premium Ayrıcalıklarımı Tut</string>
   <string name="button_text_keyboard_done">Bitti</string>
   <string name="button_text_load_more">Daha Fazla Yükle</string>
@@ -547,7 +551,7 @@
   <string name="description_edit_api_application">OAuth uygulamanızın ayrıntılarını, yönlendirme URI\'lerini ve izinlerini güncelleyin.</string>
   <string name="description_export">Kullanıcı verilerinizin tek bir ZIP dosyasında dışa aktarımını alın. Bu işlem biraz zaman alabilir.</string>
   <string name="description_genres">%d favori türünüzü ekleyin veya kaldırın.</string>
-  <string name="description_history_analysis">İzleme geçmişinizdeki yinelenen oynatmaları bulun ve her bir öğenin yalnızca en son izlemesini tutun.</string>
+  <string name="description_history_analysis">İzleme geçmişinizdeki yinelenen oynatmaları bulun ve her bir öğenin yalnızca bir izlemesini tutun.</string>
   <string name="description_import">Verilerinizi diğer hizmetlerden doğrudan tarayıcınızda içe aktarın.</string>
   <string name="description_paused_items">Bu öğelerin en az %80\'i izlenmedi.</string>
   <string name="description_plex_home_users">Kendi oynatmalarınız her zaman senkronize edilir. Diğer Plex Aile kullanıcı adlarını da senkronize etmek için ekleyin.</string>
@@ -583,6 +587,7 @@
   <string name="drawer_title_people">Kişiler</string>
   <string name="drawer_title_recommendation_sources">Bu neden tavsiye edildi?</string>
   <string name="drawer_title_reorder_list">Sürükleyerek yeniden sırala</string>
+  <string name="drawer_title_reorder_list_more">Yeniden sıralamak için sürükleyin, daha fazla seçenek için dokunun</string>
   <string name="drawer_title_rewatching">Yeniden İzleme</string>
   <string name="drawer_title_sort">Şuna Göre Sırala</string>
   <string name="drawer_title_streak_activity">Günlük Seri Etkinliği</string>
@@ -679,6 +684,7 @@
   <string name="header_official_links">Resmi Bağlantılar</string>
   <string name="header_original_title">Orijinal Başlık</string>
   <string name="header_other_links">Diğer Bağlantılar</string>
+  <string name="header_paid_until">Kadar Ödendi</string>
   <string name="header_paused_items">%s Duraklatılan Öğe</string>
   <string name="header_payment_method">Ödeme</string>
   <string name="header_player_audio">Ses</string>
@@ -858,6 +864,7 @@
   <string name="label_app_redirect_uris">Yönlendirme URI\'leri</string>
   <string name="label_drag_image_to_adjust">Görseli ayarlamak için sürükleyin</string>
   <string name="label_favorites">Favoriler</string>
+  <string name="label_keep_play">Tut</string>
   <string name="label_plex_connected">Plex\'e bağlı</string>
   <string name="label_plex_connection">Bağlantı</string>
   <string name="label_plex_history_date">Tarih</string>
@@ -1513,6 +1520,7 @@
   <string name="text_season_episode_number">Sezon %1$d • Bölüm %2$d</string>
   <string name="text_season_not_started">Başlamadı</string>
   <string name="text_season_number">Sezon %d</string>
+  <string name="text_season_number_with_title">%1$d: %2$s</string>
   <string name="text_season_specials">Özel Bölümler</string>
   <string name="text_sentiment_example">\"%s\" örneği</string>
   <string name="text_services_selected">%1$s / %2$s seçili · %3$s</string>
@@ -1928,7 +1936,8 @@
   <string name="warning_prompt_cancel_clear">Uzaklaşmak verilerinizin temizlenmesini durduracaktır. Emin misiniz?</string>
   <string name="warning_prompt_cancel_import">İçe aktarma işleminiz devam ediyor. Uzaklaşmak işlemi durduracaktır. Emin misiniz?</string>
   <string name="warning_prompt_cancel_vip">VIP aboneliğinizi iptal etmek istediğinizden emin misiniz? VIP avantajlarınızı %s tarihine kadar koruyacaksınız, bu tarihten sonra VIP özelliklerine erişiminizi kaybedeceksiniz. Trakt, iptal edilen abonelikler için geri ödeme yapmamaktadır.</string>
-  <string name="warning_prompt_clean_up_history">Bu işlem, her bir öğenin yalnızca en son izlemesini tutarak %d yinelenen oynatmayı kalıcı olarak kaldıracaktır. Bu işlem geri alınamaz.</string>
+  <string name="warning_prompt_clean_up_history">Bu işlem, her bir öğenin yalnızca en eski izlemesini tutarak %d yinelenen oynatmayı kalıcı olarak kaldıracaktır. Bu işlem geri alınamaz.</string>
+  <string name="warning_prompt_clean_up_history_newest">Bu işlem, her bir öğenin yalnızca en yeni izlemesini tutarak %d yinelenen oynatmayı kalıcı olarak kaldıracaktır. Bu işlem geri alınamaz.</string>
   <string name="warning_prompt_clear_data">%s öğelerinizi temizlemek istediğinizden emin misiniz? Bu işlem geri alınamaz.</string>
   <string name="warning_prompt_clear_watchlist">Tüm izleme listenizi temizlemek istediğinizden emin misiniz? Bu işlem geri alınamaz.</string>
   <string name="warning_prompt_delete_account">Hesabınızı kalıcı olarak silmek istediğinizden emin misiniz? Bu işlem tüm verilerinizi kaldıracak ve geri alınamayacaktır.</string>

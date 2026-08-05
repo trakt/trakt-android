@@ -107,6 +107,8 @@
   <string name="button_label_import_selected">Importă filmele selectate mai sus.</string>
   <string name="button_label_include_option">Include %s</string>
   <string name="button_label_join_trakt">Alătură-te trakt.tv pentru a ține evidența a ceea ce urmărești</string>
+  <string name="button_label_keep_newest_play">Păstrează cea mai nouă vizionare a fiecărui element</string>
+  <string name="button_label_keep_oldest_play">Păstrează cea mai veche vizionare a fiecărui element</string>
   <string name="button_label_library">Bibliotecă</string>
   <string name="button_label_like_list">Apreciază %s</string>
   <string name="button_label_login">Autentificare</string>
@@ -354,6 +356,8 @@
   <string name="button_text_install">Instalează</string>
   <string name="button_text_join_trakt">Alătură-te Trakt</string>
   <string name="button_text_join_trakt_for_free">Alătură-te Trakt gratuit</string>
+  <string name="button_text_keep_newest_play">Cel mai nou</string>
+  <string name="button_text_keep_oldest_play">Cel mai vechi</string>
   <string name="button_text_keep_vip_prompt">Păstrează avantajele premium</string>
   <string name="button_text_keyboard_done">Gata</string>
   <string name="button_text_load_more">Încarcă mai mult</string>
@@ -547,7 +551,7 @@
   <string name="description_edit_api_application">Actualizează detaliile, URI-urile de redirecționare și permisiunile aplicației tale OAuth.</string>
   <string name="description_export">Obține un export al datelor tale de utilizator într-un singur fișier ZIP. Acest proces poate dura.</string>
   <string name="description_genres">Adaugă sau elimină cele %d genuri favorite.</string>
-  <string name="description_history_analysis">Găsește vizionări duplicate în istoricul tău și păstrează doar cea mai recentă vizionare a fiecărui element.</string>
+  <string name="description_history_analysis">Găsește vizionări duplicate în istoricul tău și păstrează doar o singură vizionare pentru fiecare element.</string>
   <string name="description_import">Importă-ți datele de la alte servicii direct în browserul tău.</string>
   <string name="description_paused_items">Aceste elemente nu au fost vizionate cel puțin 80%.</string>
   <string name="description_plex_home_users">Vizionările tale se sincronizează întotdeauna. Adaugă alte nume de utilizator Plex Home pentru a le sincroniza și pe ale lor.</string>
@@ -583,6 +587,7 @@
   <string name="drawer_title_people">Persoane</string>
   <string name="drawer_title_recommendation_sources">De ce mi-a fost recomandat?</string>
   <string name="drawer_title_reorder_list">Trageți pentru a reordona</string>
+  <string name="drawer_title_reorder_list_more">Trageți pentru a reordona, atingeți pentru mai multe opțiuni</string>
   <string name="drawer_title_rewatching">Revizionare</string>
   <string name="drawer_title_sort">Sortează după</string>
   <string name="drawer_title_streak_activity">Activitate serie zilnică</string>
@@ -679,6 +684,7 @@
   <string name="header_official_links">Linkuri Oficiale</string>
   <string name="header_original_title">Titlu original</string>
   <string name="header_other_links">Alte Linkuri</string>
+  <string name="header_paid_until">Plătit până la</string>
   <string name="header_paused_items">%s Elemente Pauzate</string>
   <string name="header_payment_method">Plată</string>
   <string name="header_player_audio">Audio</string>
@@ -858,6 +864,7 @@
   <string name="label_app_redirect_uris">URI-uri de redirecționare</string>
   <string name="label_drag_image_to_adjust">Trage imaginea pentru a ajusta</string>
   <string name="label_favorites">Favorite</string>
+  <string name="label_keep_play">Păstrează</string>
   <string name="label_plex_connected">Conectat la Plex</string>
   <string name="label_plex_connection">Conexiune</string>
   <string name="label_plex_history_date">Dată</string>
@@ -1513,6 +1520,7 @@
   <string name="text_season_episode_number">Sezonul %1$d • Episodul %2$d</string>
   <string name="text_season_not_started">Nînceput</string>
   <string name="text_season_number">Sezonul %d</string>
+  <string name="text_season_number_with_title">%1$d - %2$s</string>
   <string name="text_season_specials">Speciale</string>
   <string name="text_sentiment_example">Exemplu din „%s”</string>
   <string name="text_services_selected">%1$s / %2$s selectate · %3$s</string>
@@ -1928,7 +1936,8 @@
   <string name="warning_prompt_cancel_clear">Navigarea în altă parte va opri ștergerea datelor tale. Ești sigur?</string>
   <string name="warning_prompt_cancel_import">Importul dumneavoastră este în curs. Navigarea în altă parte îl va opri. Sunteți sigur?</string>
   <string name="warning_prompt_cancel_vip">Ești sigur că vrei să anulezi abonamentul VIP? Vei păstra beneficiile VIP până la %s, după care vei pierde accesul la funcțiile VIP. Trakt nu oferă rambursări pentru abonamentele anulate.</string>
-  <string name="warning_prompt_clean_up_history">Aceasta va elimina permanent %d vizionări duplicate, păstrând doar cea mai recentă vizionare a fiecărui element. Această acțiune nu poate fi anulată.</string>
+  <string name="warning_prompt_clean_up_history">Aceasta va elimina permanent %d vizionări duplicate, păstrând doar cea mai veche vizionare a fiecărui element. Această acțiune nu poate fi anulată.</string>
+  <string name="warning_prompt_clean_up_history_newest">Aceasta va elimina permanent %d vizionări duplicate, păstrând doar cea mai nouă vizionare a fiecărui element. Această acțiune nu poate fi anulată.</string>
   <string name="warning_prompt_clear_data">Ești sigur că vrei să ștergi %s? Această acțiune nu poate fi anulată.</string>
   <string name="warning_prompt_clear_watchlist">Ești sigur că vrei să ștergi întreaga ta listă de vizionare? Această acțiune nu poate fi anulată.</string>
   <string name="warning_prompt_delete_account">Ești sigur că vrei să-ți ștergi permanent contul? Aceasta va elimina toate datele tale și nu poate fi anulată.</string>

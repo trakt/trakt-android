@@ -107,6 +107,8 @@
   <string name="button_label_import_selected">Importálja a fent kiválasztott filmtalálatokat.</string>
   <string name="button_label_include_option">%s belefoglalása</string>
   <string name="button_label_join_trakt">Csatlakozz a trakt.tv-hez, hogy nyomon követhesd, mit nézel</string>
+  <string name="button_label_keep_newest_play">Tartsa meg az egyes elemek legújabb lejátszását</string>
+  <string name="button_label_keep_oldest_play">Tartsa meg az egyes elemek legrégebbi lejátszását</string>
   <string name="button_label_library">Könyvtár</string>
   <string name="button_label_like_list">%s kedvelése</string>
   <string name="button_label_login">Bejelentkezés</string>
@@ -354,6 +356,8 @@
   <string name="button_text_install">Telepítés</string>
   <string name="button_text_join_trakt">Csatlakozz a Trakt-hoz</string>
   <string name="button_text_join_trakt_for_free">Csatlakozz a Trakt-hoz ingyen</string>
+  <string name="button_text_keep_newest_play">Legújabb</string>
+  <string name="button_text_keep_oldest_play">Legrégebbi</string>
   <string name="button_text_keep_vip_prompt">Prémium előnyök megtartása</string>
   <string name="button_text_keyboard_done">Kész</string>
   <string name="button_text_load_more">Továbbiak betöltése</string>
@@ -547,7 +551,7 @@
   <string name="description_edit_api_application">Frissítsd OAuth alkalmazásod adatait, átirányítási URI-jait és engedélyeit.</string>
   <string name="description_export">Töltsd le a felhasználói adataidat egyetlen ZIP-fájlban. Ez a folyamat eltarthat egy ideig.</string>
   <string name="description_genres">Adj hozzá vagy távolíts el a kedvenc műfajaid közül legfeljebb %d darabot!</string>
-  <string name="description_history_analysis">Keresse meg a duplikált lejátszásokat a megtekintési előzményeiben, és tartsa meg csak az egyes elemek legutóbbi megtekintését.</string>
+  <string name="description_history_analysis">Keresse meg a duplikált lejátszásokat a megtekintési előzményeiben, és tartson meg csak egy megtekintést minden elemből.</string>
   <string name="description_import">Importáld az adataidat más szolgáltatásokból közvetlenül a böngésződben.</string>
   <string name="description_paused_items">Ezeket az elemeket nem nézték meg legalább 80%-ban.</string>
   <string name="description_plex_home_users">Saját lejátszásai mindig szinkronizálódnak. Adjon hozzá más Plex Otthoni felhasználóneveket is a szinkronizáláshoz.</string>
@@ -583,6 +587,7 @@
   <string name="drawer_title_people">Személyek</string>
   <string name="drawer_title_recommendation_sources">Miért ezt ajánlották?</string>
   <string name="drawer_title_reorder_list">Húzd az átrendezéshez</string>
+  <string name="drawer_title_reorder_list_more">Húzással átrendezheted, koppints a további lehetőségekért</string>
   <string name="drawer_title_rewatching">Újra nézés</string>
   <string name="drawer_title_sort">Rendezés</string>
   <string name="drawer_title_streak_activity">Napi sorozat tevékenység</string>
@@ -679,6 +684,7 @@
   <string name="header_official_links">Hivatalos linkek</string>
   <string name="header_original_title">Eredeti cím</string>
   <string name="header_other_links">Egyéb linkek</string>
+  <string name="header_paid_until">Fizetve eddig</string>
   <string name="header_paused_items">%s szüneteltetett elem</string>
   <string name="header_payment_method">Fizetés</string>
   <string name="header_player_audio">Hang</string>
@@ -858,6 +864,7 @@
   <string name="label_app_redirect_uris">Átirányítási URI-k</string>
   <string name="label_drag_image_to_adjust">Húzd a képet az igazításhot</string>
   <string name="label_favorites">Kedvencek</string>
+  <string name="label_keep_play">Megtartás</string>
   <string name="label_plex_connected">Csatlakoztatva a Plexhez</string>
   <string name="label_plex_connection">Csatlakozás</string>
   <string name="label_plex_history_date">Dátum</string>
@@ -1513,6 +1520,7 @@
   <string name="text_season_episode_number">%1$d évad • %2$d epizód</string>
   <string name="text_season_not_started">Nem kezdődött el</string>
   <string name="text_season_number">%d. évad</string>
+  <string name="text_season_number_with_title">%1$d - %2$s</string>
   <string name="text_season_specials">Különkiadások</string>
   <string name="text_sentiment_example">Példa: „%s”</string>
   <string name="text_services_selected">%1$s / %2$s kiválasztva · %3$s</string>
@@ -1928,7 +1936,8 @@
   <string name="warning_prompt_cancel_clear">Ha elnavigálsz az oldalról, az adatok törlése megszakad. Biztosan kilépsz?</string>
   <string name="warning_prompt_cancel_import">Az importálás folyamatban van. Elnavigálás leállítja. Biztos vagy benne?</string>
   <string name="warning_prompt_cancel_vip">Biztosan le szeretnéd mondani VIP előfizetésedet? Megtartod VIP előnyeidet %s dátumig, ezt követően elveszíted a hozzáférést a VIP funkciókhoz. A Trakt nem téríti vissza a lemondott előfizetéseket.</string>
-  <string name="warning_prompt_clean_up_history">Ez véglegesen eltávolítja a(z) %d duplikált lejátszást, megtartva csak az egyes elemek legutóbbi megtekintését. Ezt nem lehet visszavonni.</string>
+  <string name="warning_prompt_clean_up_history">Ez véglegesen eltávolítja a(z) %d duplikált lejátszást, megtartva csak az egyes elemek legrégebbi megtekintését. Ezt nem lehet visszavonni.</string>
+  <string name="warning_prompt_clean_up_history_newest">Ez véglegesen eltávolítja a(z) %d duplikált lejátszást, megtartva csak az egyes elemek legújabb megtekintését. Ezt nem lehet visszavonni.</string>
   <string name="warning_prompt_clear_data">Biztosan törölni szeretnéd a(z) %s elemeit? Ez nem vonható vissza.</string>
   <string name="warning_prompt_clear_watchlist">Biztosan kiüríted a teljes lejátszási listádat? Ez a művelet nem vonható vissza.</string>
   <string name="warning_prompt_delete_account">Biztosan véglegesen törölni szeretnéd fiókodat? Ez minden adatodat eltávolítja, és nem vonható vissza.</string>

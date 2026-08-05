@@ -107,6 +107,8 @@
   <string name="button_label_import_selected">Importa les coincidències de pel·lícules que has triat anteriorment.</string>
   <string name="button_label_include_option">Inclou %s</string>
   <string name="button_label_join_trakt">Uneix-te a trakt.tv per fer un seguiment del que estàs veient</string>
+  <string name="button_label_keep_newest_play">Conservar la reproducció més recent de cada element</string>
+  <string name="button_label_keep_oldest_play">Conservar la reproducció més antiga de cada element</string>
   <string name="button_label_library">Biblioteca</string>
   <string name="button_label_like_list">M\'agrada %s</string>
   <string name="button_label_login">Inicia sessió</string>
@@ -354,6 +356,8 @@
   <string name="button_text_install">Instal·la</string>
   <string name="button_text_join_trakt">Uneix-te a Trakt</string>
   <string name="button_text_join_trakt_for_free">Uneix-te a Trakt Gratis</string>
+  <string name="button_text_keep_newest_play">Més recent</string>
+  <string name="button_text_keep_oldest_play">Més antiga</string>
   <string name="button_text_keep_vip_prompt">Conservar els avantatges premium</string>
   <string name="button_text_keyboard_done">Fet</string>
   <string name="button_text_load_more">Carrega\'n més</string>
@@ -547,7 +551,7 @@
   <string name="description_edit_api_application">Actualitza els detalls, les URIs de redirecció i els permisos de la teva aplicació OAuth.</string>
   <string name="description_export">Obtén una exportació de les teves dades d\'usuari en un sol fitxer ZIP. Aquest procés pot trigar una mica.</string>
   <string name="description_genres">Afegeix o elimina els teus %d gèneres preferits.</string>
-  <string name="description_history_analysis">Troba reproduccions duplicades al teu historial de reproduccions i conserva només la reproducció més recent de cada element.</string>
+  <string name="description_history_analysis">Troba reproduccions duplicades al teu historial de reproduccions i conserva només una reproducció de cada element.</string>
   <string name="description_import">Importa les teves dades d\'altres serveis directament al teu navegador.</string>
   <string name="description_paused_items">Aquests elements no es van veure almenys un 80%.</string>
   <string name="description_plex_home_users">Les teves reproduccions sempre se sincronitzen. Afegeix altres noms d\'usuari de Plex Home per sincronitzar també les seves.</string>
@@ -583,6 +587,7 @@
   <string name="drawer_title_people">Persones</string>
   <string name="drawer_title_recommendation_sources">Per què es va recomanar això?</string>
   <string name="drawer_title_reorder_list">Arrossega per reordenar</string>
+  <string name="drawer_title_reorder_list_more">Arrossegueu per reordenar, toqueu per a més opcions</string>
   <string name="drawer_title_rewatching">Revisió</string>
   <string name="drawer_title_sort">Ordenar per</string>
   <string name="drawer_title_streak_activity">Activitat de la ratxa diària</string>
@@ -679,6 +684,7 @@
   <string name="header_official_links">Enllaços oficials</string>
   <string name="header_original_title">Títol original</string>
   <string name="header_other_links">Altres enllaços</string>
+  <string name="header_paid_until">Pagat fins a</string>
   <string name="header_paused_items">%s elements en pausa</string>
   <string name="header_payment_method">Pagament</string>
   <string name="header_player_audio">Àudio</string>
@@ -858,6 +864,7 @@
   <string name="label_app_redirect_uris">URIs de redirecció</string>
   <string name="label_drag_image_to_adjust">Arrossega la imatge per ajustar</string>
   <string name="label_favorites">Preferits</string>
+  <string name="label_keep_play">Conservar</string>
   <string name="label_plex_connected">Connectat a Plex</string>
   <string name="label_plex_connection">Connexió</string>
   <string name="label_plex_history_date">Data</string>
@@ -1513,6 +1520,7 @@
   <string name="text_season_episode_number">Temp. %1$d • Ep. %2$d</string>
   <string name="text_season_not_started">No iniciat</string>
   <string name="text_season_number">Temporada %d</string>
+  <string name="text_season_number_with_title">%1$d: %2$s</string>
   <string name="text_season_specials">Especials</string>
   <string name="text_sentiment_example">Exemple de \"%s\"</string>
   <string name="text_services_selected">%1$s / %2$s seleccionats · %3$s</string>
@@ -1928,7 +1936,8 @@
   <string name="warning_prompt_cancel_clear">Si te\'n vas, s\'aturarà l\'eliminació de les teves dades. Estàs segur?</string>
   <string name="warning_prompt_cancel_import">La teva importació està en curs. Si te\'n vas, s\'aturarà. Estàs segur?</string>
   <string name="warning_prompt_cancel_vip">Esteu segur/a que voleu cancel·lar la vostra subscripció VIP? Mantindreu els vostres avantatges VIP fins al %s, després dels quals perdreu l\'accés a les funcions VIP. Trakt no ofereix reemborsaments per subscripcions cancel·lades.</string>
-  <string name="warning_prompt_clean_up_history">Això eliminarà permanentment %d reproduccions duplicades, conservant només la reproducció més recent de cada element. Aquesta acció no es pot desfer.</string>
+  <string name="warning_prompt_clean_up_history">Això eliminarà permanentment %d reproduccions duplicades, conservant només la reproducció més antiga de cada element. Aquesta acció no es pot desfer.</string>
+  <string name="warning_prompt_clean_up_history_newest">Això eliminarà permanentment %d reproduccions duplicades, conservant només la reproducció més recent de cada element. Aquesta acció no es pot desfer.</string>
   <string name="warning_prompt_clear_data">Estàs segur que vols esborrar el teu %s? Aquesta acció no es pot desfer.</string>
   <string name="warning_prompt_clear_watchlist">Estàs segur que vols esborrar tota la teva llista de seguiment? Aquesta acció no es pot desfer.</string>
   <string name="warning_prompt_delete_account">Estàs segur que vols suprimir permanentment el teu compte? Això eliminarà totes les teves dades i no es podrà desfer.</string>

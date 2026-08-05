@@ -107,6 +107,8 @@
   <string name="button_label_import_selected">上で選択した映画の一致項目をインポートします。</string>
   <string name="button_label_include_option">%sを含める</string>
   <string name="button_label_join_trakt">視聴しているものを記録するためにtrakt.tvに参加</string>
+  <string name="button_label_keep_newest_play">各アイテムの最も新しい再生を保持する</string>
+  <string name="button_label_keep_oldest_play">各アイテムの最も古い再生を保持する</string>
   <string name="button_label_library">ライブラリ</string>
   <string name="button_label_like_list">%sを「いいね」する</string>
   <string name="button_label_login">ログイン</string>
@@ -354,6 +356,8 @@
   <string name="button_text_install">インストール</string>
   <string name="button_text_join_trakt">Traktに参加</string>
   <string name="button_text_join_trakt_for_free">無料でTraktに参加</string>
+  <string name="button_text_keep_newest_play">最も新しい</string>
+  <string name="button_text_keep_oldest_play">最も古い</string>
   <string name="button_text_keep_vip_prompt">プレミアム特典を維持</string>
   <string name="button_text_keyboard_done">完了</string>
   <string name="button_text_load_more">さらに読み込む</string>
@@ -547,7 +551,7 @@
   <string name="description_edit_api_application">OAuthアプリケーションの詳細、リダイレクトURI、権限を更新します。</string>
   <string name="description_export">ユーザーデータを1つのZIPファイルとしてエクスポートします。この処理には時間がかかる場合があります。</string>
   <string name="description_genres">お気に入りのジャンルを%d件追加または削除します。</string>
-  <string name="description_history_analysis">視聴履歴から重複する再生を見つけ、各アイテムの最新の視聴のみを保持します。</string>
+  <string name="description_history_analysis">視聴履歴から重複する再生を見つけて、各アイテムにつき1回の視聴のみを保持します。</string>
   <string name="description_import">他のサービスからデータをブラウザに直接インポートできます。</string>
   <string name="description_paused_items">これらのアイテムは80%以上視聴されていません。</string>
   <string name="description_plex_home_users">あなたの視聴履歴は常に同期されます。他のPlex Homeユーザー名を追加すると、そのユーザーの履歴も同期されます。</string>
@@ -583,6 +587,7 @@
   <string name="drawer_title_people">人物</string>
   <string name="drawer_title_recommendation_sources">これがお勧めされた理由</string>
   <string name="drawer_title_reorder_list">ドラッグして並べ替え</string>
+  <string name="drawer_title_reorder_list_more">ドラッグして並べ替え、タップするとその他のオプションが表示されます</string>
   <string name="drawer_title_rewatching">再視聴</string>
   <string name="drawer_title_sort">並べ替え</string>
   <string name="drawer_title_streak_activity">連続記録アクティビティ</string>
@@ -679,6 +684,7 @@
   <string name="header_official_links">公式リンク</string>
   <string name="header_original_title">原題</string>
   <string name="header_other_links">その他のリンク</string>
+  <string name="header_paid_until">有効期限</string>
   <string name="header_paused_items">%s個の一時停止アイテム</string>
   <string name="header_payment_method">支払い</string>
   <string name="header_player_audio">音声</string>
@@ -858,6 +864,7 @@
   <string name="label_app_redirect_uris">リダイレクトURI</string>
   <string name="label_drag_image_to_adjust">画像をドラッグして調整</string>
   <string name="label_favorites">お気に入り</string>
+  <string name="label_keep_play">保持</string>
   <string name="label_plex_connected">Plexに接続済み</string>
   <string name="label_plex_connection">接続</string>
   <string name="label_plex_history_date">日付</string>
@@ -1513,6 +1520,7 @@
   <string name="text_season_episode_number">シーズン%1$d • エピソード%2$d</string>
   <string name="text_season_not_started">未開始</string>
   <string name="text_season_number">シーズン%d</string>
+  <string name="text_season_number_with_title">%1$d：%2$s</string>
   <string name="text_season_specials">スペシャル</string>
   <string name="text_sentiment_example">「%s」からの例</string>
   <string name="text_services_selected">%1$s / %2$s 選択済み · %3$s</string>
@@ -1928,7 +1936,8 @@
   <string name="warning_prompt_cancel_clear">別の画面に移動すると、データのクリアが停止されます。よろしいですか？</string>
   <string name="warning_prompt_cancel_import">インポートが進行中です。移動すると停止します。よろしいですか？</string>
   <string name="warning_prompt_cancel_vip">VIPサブスクリプションをキャンセルしてもよろしいですか？<b>%s</b>までVIP特典をご利用いただけますが、それ以降はVIP機能にアクセスできなくなります。Traktでは、キャンセルされたサブスクリプションの返金は行っておりません。</string>
-  <string name="warning_prompt_clean_up_history">これにより、%d件の重複する再生が完全に削除され、各アイテムの最新の視聴のみが保持されます。この操作は元に戻せません。</string>
+  <string name="warning_prompt_clean_up_history">これにより、%d件の重複する再生が完全に削除され、各アイテムの最も古い視聴のみが保持されます。この操作は元に戻せません。</string>
+  <string name="warning_prompt_clean_up_history_newest">これにより、%d件の重複する再生が完全に削除され、各アイテムの最新の視聴のみが保持されます。この操作は元に戻せません。</string>
   <string name="warning_prompt_clear_data">%sをクリアしてもよろしいですか？この操作は元に戻せません。</string>
   <string name="warning_prompt_clear_watchlist">ウォッチリストの全項目をクリアしてもよろしいですか？この操作は元に戻せません。</string>
   <string name="warning_prompt_delete_account">アカウントを完全に削除してもよろしいですか？これにより、すべてのデータが削除され、元に戻すことはできません。</string>

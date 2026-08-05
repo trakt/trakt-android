@@ -107,6 +107,8 @@
   <string name="button_label_import_selected">Εισαγάγετε τις αντιστοιχίσεις ταινιών που επιλέξατε παραπάνω.</string>
   <string name="button_label_include_option">Συμπερίληψη %s</string>
   <string name="button_label_join_trakt">Εγγραφείτε στο trakt.tv για να παρακολουθείτε τι βλέπετε</string>
+  <string name="button_label_keep_newest_play">Διατήρηση της νεότερης προβολής κάθε στοιχείου</string>
+  <string name="button_label_keep_oldest_play">Διατήρηση της παλαιότερης προβολής κάθε στοιχείου</string>
   <string name="button_label_library">Βιβλιοθήκη</string>
   <string name="button_label_like_list">Μου αρέσει %s</string>
   <string name="button_label_login">Σύνδεση</string>
@@ -354,6 +356,8 @@
   <string name="button_text_install">Εγκατάσταση</string>
   <string name="button_text_join_trakt">Εγγραφή στο Trakt</string>
   <string name="button_text_join_trakt_for_free">Εγγραφή στο Trakt δωρεάν</string>
+  <string name="button_text_keep_newest_play">Νεότερο</string>
+  <string name="button_text_keep_oldest_play">Παλαιότερο</string>
   <string name="button_text_keep_vip_prompt">Διατήρηση των premium προνομίων μου</string>
   <string name="button_text_keyboard_done">Ολοκληρώθηκε</string>
   <string name="button_text_load_more">Φόρτωση περισσότερων</string>
@@ -547,7 +551,7 @@
   <string name="description_edit_api_application">Ενημερώστε τις λεπτομέρειες, τα URIs ανακατεύθυνσης και τα δικαιώματα της εφαρμογής OAuth.</string>
   <string name="description_export">Λάβετε εξαγωγή των δεδομένων χρήστη σας σε ένα μόνο αρχείο ZIP. Αυτή η διαδικασία μπορεί να διαρκέσει λίγο.</string>
   <string name="description_genres">Προσθέστε ή αφαιρέστε τα %d αγαπημένα σας είδη.</string>
-  <string name="description_history_analysis">Βρείτε διπλότυπες προβολές στο ιστορικό παρακολούθησής σας και κρατήστε μόνο την πιο πρόσφατη προβολή κάθε στοιχείου.</string>
+  <string name="description_history_analysis">Βρείτε διπλότυπες προβολές στο ιστορικό παρακολούθησής σας και κρατήστε μόνο μία παρακολούθηση κάθε στοιχείου.</string>
   <string name="description_import">Εισαγάγετε τα δεδομένα σας από άλλες υπηρεσίες απευθείας στον περιηγητή σας.</string>
   <string name="description_paused_items">Αυτά τα στοιχεία δεν παρακολουθήθηκαν τουλάχιστον κατά 80%.</string>
   <string name="description_plex_home_users">Οι δικές σας προβολές συγχρονίζονται πάντα. Προσθέστε άλλα ονόματα χρηστών Plex Home για να συγχρονίσετε και τα δικά τους.</string>
@@ -583,6 +587,7 @@
   <string name="drawer_title_people">Άτομα</string>
   <string name="drawer_title_recommendation_sources">Γιατί προτάθηκε αυτό;</string>
   <string name="drawer_title_reorder_list">Σύρετε για αναδιάταξη</string>
+  <string name="drawer_title_reorder_list_more">Σύρετε για αναδιάταξη, πατήστε για περισσότερες επιλογές</string>
   <string name="drawer_title_rewatching">Επανάληψη</string>
   <string name="drawer_title_sort">Ταξινόμηση κατά</string>
   <string name="drawer_title_streak_activity">Καθημερινή Δραστηριότητα Σερί</string>
@@ -679,6 +684,7 @@
   <string name="header_official_links">Επίσημοι Σύνδεσμοι</string>
   <string name="header_original_title">Πρωτότυπος Τίτλος</string>
   <string name="header_other_links">Άλλοι Σύνδεσμοι</string>
+  <string name="header_paid_until">Πληρωμένο Έως</string>
   <string name="header_paused_items">%s Στοιχεία σε παύση</string>
   <string name="header_payment_method">Πληρωμή</string>
   <string name="header_player_audio">Ήχος</string>
@@ -858,6 +864,7 @@
   <string name="label_app_redirect_uris">URIs ανακατεύθυνσης</string>
   <string name="label_drag_image_to_adjust">Σύρετε την εικόνα για προσαρμογή</string>
   <string name="label_favorites">Αγαπημένα</string>
+  <string name="label_keep_play">Διατήρηση</string>
   <string name="label_plex_connected">Συνδεδεμένο με το Plex</string>
   <string name="label_plex_connection">Σύνδεση</string>
   <string name="label_plex_history_date">Ημερομηνία</string>
@@ -1513,6 +1520,7 @@
   <string name="text_season_episode_number">Σεζόν %1$d • Επεισόδιο %2$d</string>
   <string name="text_season_not_started">Δεν έχει ξεκινήσει</string>
   <string name="text_season_number">Σεζόν %d</string>
+  <string name="text_season_number_with_title">%1$d: %2$s</string>
   <string name="text_season_specials">Ειδικά</string>
   <string name="text_sentiment_example">Παράδειγμα από το \"%s\"</string>
   <string name="text_services_selected">%1$s / %2$s επιλεγμένα · %3$s</string>
@@ -1928,7 +1936,8 @@
   <string name="warning_prompt_cancel_clear">Η απομάκρυνση θα σταματήσει την εκκαθάριση των δεδομένων σας. Είστε σίγουροι;</string>
   <string name="warning_prompt_cancel_import">Η εισαγωγή σας είναι σε εξέλιξη. Η απομάκρυνση θα τη σταματήσει. Είστε σίγουροι;</string>
   <string name="warning_prompt_cancel_vip">Είστε βέβαιοι ότι θέλετε να ακυρώσετε τη συνδρομή σας VIP; Θα διατηρήσετε τα προνόμια VIP μέχρι %s, μετά την οποία θα χάσετε την πρόσβαση στις λειτουργίες VIP. Το Trakt δεν προσφέρει επιστροφές χρημάτων για ακυρωμένες συνδρομές.</string>
-  <string name="warning_prompt_clean_up_history">Αυτό θα αφαιρέσει οριστικά %d διπλότυπες προβολές, διατηρώντας μόνο την πιο πρόσφατη παρακολούθηση κάθε στοιχείου. Αυτό δεν μπορεί να αναιρεθεί.</string>
+  <string name="warning_prompt_clean_up_history">Αυτό θα αφαιρέσει οριστικά %d διπλότυπες προβολές, διατηρώντας μόνο την παλαιότερη παρακολούθηση κάθε στοιχείου. Αυτό δεν μπορεί να αναιρεθεί.</string>
+  <string name="warning_prompt_clean_up_history_newest">Αυτό θα αφαιρέσει οριστικά %d διπλότυπες προβολές, διατηρώντας μόνο την νεότερη παρακολούθηση κάθε στοιχείου. Αυτό δεν μπορεί να αναιρεθεί.</string>
   <string name="warning_prompt_clear_data">Είστε σίγουροι ότι θέλετε να εκκαθαρίσετε το %s σας; Αυτό δεν μπορεί να αναιρεθεί.</string>
   <string name="warning_prompt_clear_watchlist">Είστε σίγουροι ότι θέλετε να εκκαθαρίσετε ολόκληρη τη λίστα παρακολούθησής σας; Αυτό δεν μπορεί να αναιρεθεί.</string>
   <string name="warning_prompt_delete_account">Είστε σίγουροι ότι θέλετε να διαγράψετε οριστικά τον λογαριασμό σας; Αυτό θα αφαιρέσει όλα τα δεδομένα σας και δεν μπορεί να αναιρεθεί.</string>
