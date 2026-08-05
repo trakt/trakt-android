@@ -2,10 +2,10 @@ package tv.trakt.trakt.core.streamings
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
+import tv.trakt.trakt.common.core.streamings.model.AllStreamingsSection
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
-import tv.trakt.trakt.core.streamings.model.AllStreamingsSection
 
 @Immutable
 internal data class AllStreamingsState(

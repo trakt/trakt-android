@@ -15,7 +15,6 @@ import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.MovieCalendarDto
 import tv.trakt.trakt.common.networking.MovieStatsDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
-import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
 import tv.trakt.trakt.core.movies.data.remote.model.AnticipatedMovieDto
@@ -208,32 +207,6 @@ internal class MoviesApiClient(
         )
 
         return response.body()
-    }
-
-    override suspend fun getStreamings(
-        movieId: TraktId,
-        countryCode: String?,
-    ): Map<String, StreamingDto> {
-        val response = moviesApi.getMoviesWatchnow(
-            country = countryCode ?: "",
-            id = movieId.value.toString(),
-            links = "direct",
-            extended = "streaming_ranks",
-        )
-
-        return response.body()
-    }
-
-    override suspend fun getJustWatchLink(
-        movieId: TraktId,
-        countryCode: String?,
-    ): String? {
-        val response = moviesApi.getMoviesJustwatchLink(
-            country = countryCode ?: "",
-            id = movieId.value.toString(),
-        )
-        val body = response.body()
-        return body[countryCode]
     }
 
     override suspend fun getExtras(movieId: TraktId): List<ExtraVideoDto> {

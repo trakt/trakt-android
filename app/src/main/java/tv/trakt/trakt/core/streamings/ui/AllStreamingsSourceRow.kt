@@ -40,6 +40,7 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.streamings.model.StreamingServiceRow
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.streamings.StreamingService
@@ -47,7 +48,6 @@ import tv.trakt.trakt.common.model.streamings.StreamingType
 import tv.trakt.trakt.common.model.streamings.StreamingType.FREE
 import tv.trakt.trakt.common.model.streamings.StreamingType.PURCHASE
 import tv.trakt.trakt.common.model.streamings.StreamingType.RENT
-import tv.trakt.trakt.core.streamings.model.StreamingServiceRow
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.util.Locale
 

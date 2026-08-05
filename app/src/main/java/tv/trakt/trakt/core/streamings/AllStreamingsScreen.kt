@@ -36,6 +36,8 @@ import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.common.core.streamings.model.AllStreamingsSection
+import tv.trakt.trakt.common.core.streamings.model.StreamingServiceRow
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
@@ -46,8 +48,6 @@ import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingType.FAVORITE
 import tv.trakt.trakt.common.model.streamings.StreamingType.SUBSCRIPTION
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.core.streamings.model.AllStreamingsSection
-import tv.trakt.trakt.core.streamings.model.StreamingServiceRow
 import tv.trakt.trakt.core.streamings.ui.AllStreamingsSkeletonRow
 import tv.trakt.trakt.core.streamings.ui.AllStreamingsSourceRow
 import tv.trakt.trakt.helpers.SimpleScrollConnection

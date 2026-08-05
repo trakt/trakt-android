@@ -6,18 +6,19 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
 import tv.trakt.trakt.app.core.streamings.AllStreamingsScreen
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 
 @Serializable
 internal data class AllStreamingsDestination(
     val mediaId: Int,
-    val mediaType: String,
+    val mediaType: MediaType,
     val season: Int? = null,
     val episode: Int? = null,
 ) {
     init {
-        require(mediaType in arrayOf("show", "movie", "episode")) {
+        require(mediaType != MediaType.Season) {
             "Unsupported media type: $mediaType"
         }
     }
@@ -35,7 +36,7 @@ internal fun NavController.navigateToShowStreamings(mediaId: TraktId) {
     navigate(
         route = AllStreamingsDestination(
             mediaId = mediaId.value,
-            mediaType = "show",
+            mediaType = MediaType.Show,
         ),
     )
 }
@@ -44,7 +45,7 @@ internal fun NavController.navigateToMovieStreamings(mediaId: TraktId) {
     navigate(
         route = AllStreamingsDestination(
             mediaId = mediaId.value,
-            mediaType = "movie",
+            mediaType = MediaType.Movie,
         ),
     )
 }
@@ -56,7 +57,7 @@ internal fun NavController.navigateToEpisodeStreamings(
     navigate(
         route = AllStreamingsDestination(
             mediaId = mediaId.value,
-            mediaType = "episode",
+            mediaType = MediaType.Episode,
             season = seasonEpisode.season,
             episode = seasonEpisode.episode,
         ),

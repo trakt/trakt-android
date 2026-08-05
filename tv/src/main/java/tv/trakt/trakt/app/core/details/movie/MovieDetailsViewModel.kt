@@ -38,11 +38,12 @@ import tv.trakt.trakt.app.core.details.movie.usecases.collection.ChangeHistoryUs
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.ChangeWatchlistUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.collection.GetCollectionUseCase
 import tv.trakt.trakt.app.core.details.movie.usecases.streamings.GetPlexUseCase
-import tv.trakt.trakt.app.core.details.movie.usecases.streamings.GetStreamingsUseCase
 import tv.trakt.trakt.app.core.plex.usecase.DropPlaybackUseCase
 import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates
 import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates.Source.SCROBBLE_STOP_WORKER
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
+import tv.trakt.trakt.common.core.streamings.usecase.GetPriorityStreamingUseCase
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.core.translations.usecase.GetMovieTranslationsUseCase
 import tv.trakt.trakt.common.core.tutorials.TutorialsManager
@@ -63,6 +64,7 @@ import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Ids
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -81,7 +83,7 @@ internal class MovieDetailsViewModel(
     private val getRelatedMoviesUseCase: GetRelatedMoviesUseCase,
     private val getCommentsUseCase: GetCommentsUseCase,
     private val getListsUseCase: GetCustomListsUseCase,
-    private val getStreamingsUseCase: GetStreamingsUseCase,
+    private val getStreamingsUseCase: GetPriorityStreamingUseCase,
     private val getPlexUseCase: GetPlexUseCase,
     private val dropPlaybackUseCase: DropPlaybackUseCase,
     private val getCollectionUseCase: GetCollectionUseCase,
@@ -300,7 +302,10 @@ internal class MovieDetailsViewModel(
 
             val streamingService = getStreamingsUseCase.getStreamingService(
                 user = user,
-                movieId = movieIds.trakt,
+                request = StreamingsRequest(
+                    mediaType = MediaType.Movie,
+                    mediaId = movieIds.trakt,
+                ),
             )
 
             movieStreamingsState.update {

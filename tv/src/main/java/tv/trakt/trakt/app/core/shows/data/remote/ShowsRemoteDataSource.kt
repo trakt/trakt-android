@@ -12,7 +12,6 @@ import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.SeasonDto
 import tv.trakt.trakt.common.networking.ShowCalendarsDto
-import tv.trakt.trakt.common.networking.StreamingDto
 import java.time.Instant
 
 internal interface ShowsRemoteDataSource {
@@ -60,11 +59,6 @@ internal interface ShowsRemoteDataSource {
         type: String,
         limit: Int,
     ): List<ListDto>
-
-    suspend fun getShowStreamings(
-        showId: TraktId,
-        countryCode: String?,
-    ): Map<String, StreamingDto>
 
     suspend fun getShowSeasons(showId: TraktId): List<SeasonDto>
 }

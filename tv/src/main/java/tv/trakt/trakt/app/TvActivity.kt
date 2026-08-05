@@ -41,11 +41,13 @@ import tv.trakt.trakt.app.core.search.di.searchDataModule
 import tv.trakt.trakt.app.core.search.di.searchModule
 import tv.trakt.trakt.app.core.shows.di.showsDataModule
 import tv.trakt.trakt.app.core.shows.di.showsModule
-import tv.trakt.trakt.app.core.streamings.di.streamingsDataModule
-import tv.trakt.trakt.app.core.streamings.di.streamingsModule
+import tv.trakt.trakt.app.core.streamings.di.allStreamingsModule
+import tv.trakt.trakt.app.core.streamings.di.plexDataModule
 import tv.trakt.trakt.app.core.sync.di.syncModule
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.auth.di.commonAuthModule
+import tv.trakt.trakt.common.core.streamings.di.streamingsDataModule
+import tv.trakt.trakt.common.core.streamings.di.streamingsModule
 import tv.trakt.trakt.common.core.translations.di.translationsDataModule
 import tv.trakt.trakt.common.core.translations.di.translationsModule
 import tv.trakt.trakt.common.core.tutorials.di.tutorialsModule
@@ -139,6 +141,8 @@ class TvActivity : ComponentActivity() {
                     searchDataModule,
                     streamingsModule,
                     streamingsDataModule,
+                    allStreamingsModule,
+                    plexDataModule,
                     syncModule,
                     inAppReviewModule,
                     analyticsModule,

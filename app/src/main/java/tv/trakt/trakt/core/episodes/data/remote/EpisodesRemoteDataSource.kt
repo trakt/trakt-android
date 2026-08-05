@@ -8,7 +8,6 @@ import tv.trakt.trakt.common.networking.EpisodeDto
 import tv.trakt.trakt.common.networking.EpisodeStatsDto
 import tv.trakt.trakt.common.networking.ExternalSeasonRatingsDto
 import tv.trakt.trakt.common.networking.ExternalShowRatingsDto
-import tv.trakt.trakt.common.networking.StreamingDto
 
 internal interface EpisodesRemoteDataSource {
     /**
@@ -42,29 +41,6 @@ internal interface EpisodesRemoteDataSource {
         season: Int,
         episode: Int,
     ): ExternalSeasonRatingsDto
-
-    /**
-     * Retrieves the streaming services available for a specific episode of a show in a given country.
-     *
-     * @return A map where the key is the streaming service provider and the value is a [StreamingDto] object containing details about the streaming offer.
-     */
-    suspend fun getStreamings(
-        showId: TraktId,
-        season: Int,
-        episode: Int,
-        countryCode: String?,
-    ): Map<String, StreamingDto>
-
-    /**
-     * Retrieves the JustWatch link for a specific season of a show in a given country.
-     *
-     * @return A [String] representing the JustWatch link, or null if not available.
-     */
-    suspend fun getJustWatchLink(
-        showId: TraktId,
-        season: Int,
-        countryCode: String,
-    ): String?
 
     /**
      * Retrieves the comments for a specific episode of a show.

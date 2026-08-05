@@ -16,7 +16,6 @@ import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.SeasonDto
 import tv.trakt.trakt.common.networking.ShowCalendarsDto
 import tv.trakt.trakt.common.networking.ShowStatsDto
-import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
 import tv.trakt.trakt.core.shows.data.remote.model.AnticipatedShowDto
@@ -252,32 +251,6 @@ internal class ShowsApiClient(
         )
 
         return response.body()
-    }
-
-    override suspend fun getStreamings(
-        showId: TraktId,
-        countryCode: String?,
-    ): Map<String, StreamingDto> {
-        val response = showsApi.getShowsWatchnow(
-            country = countryCode ?: "",
-            id = showId.value.toString(),
-            links = "direct",
-            extended = "streaming_ranks",
-        )
-
-        return response.body()
-    }
-
-    override suspend fun getJustWatchLink(
-        showId: TraktId,
-        countryCode: String?,
-    ): String? {
-        val response = showsApi.getShowsJustwatchLink(
-            country = countryCode ?: "",
-            id = showId.value.toString(),
-        )
-        val body = response.body()
-        return body[countryCode]
     }
 
     override suspend fun getCastCrew(showId: TraktId): CastCrewDto {

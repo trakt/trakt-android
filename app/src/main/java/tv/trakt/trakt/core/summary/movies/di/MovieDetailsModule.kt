@@ -36,12 +36,10 @@ import tv.trakt.trakt.core.summary.movies.features.sentiment.MovieSentimentViewM
 import tv.trakt.trakt.core.summary.movies.features.sentiment.usecases.GetMovieSentimentUseCase
 import tv.trakt.trakt.core.summary.movies.features.socials.GetMovieSocialsUseCase
 import tv.trakt.trakt.core.summary.movies.features.streaming.MovieStreamingsViewModel
-import tv.trakt.trakt.core.summary.movies.features.streaming.usecases.GetMovieStreamingsUseCase
 import tv.trakt.trakt.core.summary.movies.features.trivia.MovieTriviaViewModel
 import tv.trakt.trakt.core.summary.movies.features.trivia.usecases.GetMovieTriviaUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieRatingsUseCase
-import tv.trakt.trakt.core.summary.movies.usecases.GetMovieStreamingUseCase
 
 internal val movieDetailsDataModule = module {
     singleOf(::MovieStorage) { bind<MovieLocalDataSource>() }
@@ -59,8 +57,6 @@ internal val movieDetailsModule = module {
     factoryOf(::GetMovieDirectorUseCase)
     factoryOf(::GetMovieCrewUseCase)
     factoryOf(::GetMovieRelatedUseCase)
-    factoryOf(::GetMovieStreamingsUseCase)
-    factoryOf(::GetMovieStreamingUseCase)
     factoryOf(::GetMovieSentimentUseCase)
     factoryOf(::GetMovieHistoryUseCase)
     factoryOf(::GetMovieCommentsUseCase)

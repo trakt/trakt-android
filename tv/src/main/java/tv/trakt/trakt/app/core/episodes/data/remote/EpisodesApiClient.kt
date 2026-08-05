@@ -7,7 +7,6 @@ import tv.trakt.trakt.common.networking.CastCrewDto
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.EpisodeCalendarsDto
 import tv.trakt.trakt.common.networking.ExternalSeasonRatingsDto
-import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 
 internal class EpisodesApiClient(
@@ -38,23 +37,6 @@ internal class EpisodesApiClient(
             season = season,
             episode = episode,
             extended = "all",
-        )
-        return response.body()
-    }
-
-    override suspend fun getEpisodeStreamings(
-        showId: TraktId,
-        season: Int,
-        episode: Int,
-        countryCode: String?,
-    ): Map<String, StreamingDto> {
-        val response = showsApi.getShowsEpisodeWatchnow(
-            country = countryCode ?: "",
-            id = showId.value.toString(),
-            season = season,
-            episode = episode,
-            links = "direct",
-            extended = "streaming_ranks",
         )
         return response.body()
     }

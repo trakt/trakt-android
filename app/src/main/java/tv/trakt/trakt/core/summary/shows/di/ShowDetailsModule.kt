@@ -43,12 +43,10 @@ import tv.trakt.trakt.core.summary.shows.features.sentiment.ShowSentimentViewMod
 import tv.trakt.trakt.core.summary.shows.features.sentiment.usecases.GetShowSentimentUseCase
 import tv.trakt.trakt.core.summary.shows.features.socials.GetShowSocialsUseCase
 import tv.trakt.trakt.core.summary.shows.features.streaming.ShowStreamingsViewModel
-import tv.trakt.trakt.core.summary.shows.features.streaming.usecases.GetShowStreamingsUseCase
 import tv.trakt.trakt.core.summary.shows.features.trivia.ShowTriviaViewModel
 import tv.trakt.trakt.core.summary.shows.features.trivia.usecases.GetShowTriviaUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowRatingsUseCase
-import tv.trakt.trakt.core.summary.shows.usecases.GetShowStreamingUseCase
 
 internal val showDetailsDataModule = module {
     singleOf(::ShowStorage) { bind<ShowLocalDataSource>() }
@@ -69,8 +67,6 @@ internal val showDetailsModule = module {
     factoryOf(::GetSeasonPeopleUseCase)
     factoryOf(::GetSeasonCommentsUseCase)
     factoryOf(::GetShowRelatedUseCase)
-    factoryOf(::GetShowStreamingsUseCase)
-    factoryOf(::GetShowStreamingUseCase)
     factoryOf(::GetShowSentimentUseCase)
     factoryOf(::GetShowCommentsUseCase)
     factoryOf(::GetShowListsUseCase)

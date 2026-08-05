@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
+import tv.trakt.trakt.common.core.streamings.usecase.GetAllStreamingsUseCase
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
@@ -20,7 +22,6 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.streamings.navigation.AllStreamingsDestination
-import tv.trakt.trakt.core.streamings.usecase.GetAllStreamingsUseCase
 
 internal class AllStreamingsViewModel(
     savedStateHandle: SavedStateHandle,
@@ -72,14 +73,16 @@ internal class AllStreamingsViewModel(
 
                 val sections = getAllStreamingsUseCase.getStreamings(
                     user = user,
-                    mediaId = route.mediaId.toTraktId(),
-                    mediaType = route.mediaType,
-                    seasonEpisode = route.season?.let { season ->
-                        SeasonEpisode(
-                            season = season,
-                            episode = route.episode ?: 1,
-                        )
-                    },
+                    request = StreamingsRequest(
+                        mediaType = route.mediaType,
+                        mediaId = route.mediaId.toTraktId(),
+                        seasonEpisode = route.season?.let { season ->
+                            SeasonEpisode(
+                                season = season,
+                                episode = route.episode ?: 1,
+                            )
+                        },
+                    ),
                 )
 
                 sectionsState.update { sections }

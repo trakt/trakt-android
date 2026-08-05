@@ -16,7 +16,6 @@ import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.SeasonDto
 import tv.trakt.trakt.common.networking.ShowCalendarsDto
-import tv.trakt.trakt.common.networking.StreamingDto
 import java.time.Instant
 import java.time.temporal.ChronoUnit.DAYS
 
@@ -245,20 +244,6 @@ internal class ShowsApiClient(
         val response = api.getShowsSummary(
             id = showId.value.toString(),
             extended = "full,streaming_ids,cloud9,colors",
-        )
-
-        return response.body()
-    }
-
-    override suspend fun getShowStreamings(
-        showId: TraktId,
-        countryCode: String?,
-    ): Map<String, StreamingDto> {
-        val response = api.getShowsWatchnow(
-            country = countryCode ?: "",
-            id = showId.value.toString(),
-            links = "direct",
-            extended = null,
         )
 
         return response.body()

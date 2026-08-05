@@ -1,16 +1,17 @@
-package tv.trakt.trakt.core.streamings.usecase
+package tv.trakt.trakt.common.core.streamings.usecase
 
-import android.icu.util.Currency
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.Config.DEFAULT_COUNTRY_CODE
 import tv.trakt.trakt.common.core.streamings.data.local.StreamingLocalDataSource
+import tv.trakt.trakt.common.core.streamings.data.local.cacheSourcesIfNeeded
 import tv.trakt.trakt.common.core.streamings.data.remote.StreamingRemoteDataSource
-import tv.trakt.trakt.common.core.streamings.helpers.PopularStreamingServices
-import tv.trakt.trakt.common.helpers.extensions.asyncMap
-import tv.trakt.trakt.common.model.MediaType
-import tv.trakt.trakt.common.model.SeasonEpisode
-import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.core.streamings.helpers.popularCountriesComparator
+import tv.trakt.trakt.common.core.streamings.helpers.popularServicesComparator
+import tv.trakt.trakt.common.core.streamings.helpers.toStreamingService
+import tv.trakt.trakt.common.core.streamings.model.AllStreamingsSection
+import tv.trakt.trakt.common.core.streamings.model.StreamingServiceRow
+import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingSource
@@ -20,51 +21,21 @@ import tv.trakt.trakt.common.model.streamings.StreamingType.FREE
 import tv.trakt.trakt.common.model.streamings.StreamingType.PURCHASE
 import tv.trakt.trakt.common.model.streamings.StreamingType.RENT
 import tv.trakt.trakt.common.model.streamings.StreamingType.SUBSCRIPTION
-import tv.trakt.trakt.common.model.streamings.fromDto
 import tv.trakt.trakt.common.networking.StreamingDto
-import tv.trakt.trakt.common.networking.StreamingServiceDto
-import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
-import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
-import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
-import tv.trakt.trakt.core.streamings.model.AllStreamingsSection
-import tv.trakt.trakt.core.streamings.model.StreamingServiceRow
 
 /**
- * Countries surfaced first within a source row, after the user's own streaming country.
+ * Every way to watch a media in every country it streams in, grouped by streaming type and
+ * then by source. Sections arrive ordered by [StreamingType.order] with empty ones dropped.
  */
-private val PopularCountries = listOf(
-    "us",
-    "gb",
-    "ca",
-    "de",
-    "fr",
-    "jp",
-    "au",
-    "nl",
-    "mx",
-    "sg",
-)
-
-internal class GetAllStreamingsUseCase(
-    private val remoteShowSource: ShowsRemoteDataSource,
-    private val remoteMovieSource: MoviesRemoteDataSource,
-    private val remoteEpisodeSource: EpisodesRemoteDataSource,
+class GetAllStreamingsUseCase(
     private val remoteStreamingSource: StreamingRemoteDataSource,
     private val localStreamingSource: StreamingLocalDataSource,
 ) {
     suspend fun getStreamings(
         user: User,
-        mediaId: TraktId,
-        mediaType: MediaType,
-        seasonEpisode: SeasonEpisode?,
+        request: StreamingsRequest,
     ): ImmutableList<AllStreamingsSection> {
-        if (!localStreamingSource.isValid()) {
-            val sources = remoteStreamingSource
-                .getStreamingSources()
-                .asyncMap { StreamingSource.fromDto(it) }
-
-            localStreamingSource.upsertStreamingSources(sources)
-        }
+        localStreamingSource.cacheSourcesIfNeeded(remoteStreamingSource)
 
         val userCountry = user.streamings?.country ?: DEFAULT_COUNTRY_CODE
 
@@ -75,27 +46,9 @@ internal class GetAllStreamingsUseCase(
             .orEmpty()
 
         val sources = localStreamingSource.getAllStreamingSources()
-
-        val streamings = when (mediaType) {
-            MediaType.Show -> remoteShowSource.getStreamings(
-                showId = mediaId,
-                countryCode = null,
-            )
-
-            MediaType.Movie -> remoteMovieSource.getStreamings(
-                movieId = mediaId,
-                countryCode = null,
-            )
-
-            MediaType.Episode -> remoteEpisodeSource.getStreamings(
-                showId = mediaId,
-                season = seasonEpisode?.season ?: 0,
-                episode = seasonEpisode?.episode ?: 0,
-                countryCode = null,
-            )
-
-            MediaType.Season -> error("Unsupported media type: $mediaType")
-        }
+        val streamings = remoteStreamingSource.getStreamings(
+            request.copy(countryCode = null),
+        )
 
         return groupStreamings(
             streamings = streamings,
@@ -133,10 +86,9 @@ internal class GetAllStreamingsUseCase(
                         return@mapNotNull null
                     }
 
-                    createService(
+                    subscription.toStreamingService(
                         country = country,
                         source = source,
-                        service = subscription,
                     ).also {
                         if (source.source in favoriteSources) {
                             favorite.add(it)
@@ -157,10 +109,9 @@ internal class GetAllStreamingsUseCase(
                         return@mapNotNull null
                     }
 
-                    createService(
+                    freeService.toStreamingService(
                         country = country,
                         source = source,
-                        service = freeService,
                     ).also {
                         if (source.source in favoriteSources) {
                             favorite.add(it)
@@ -175,10 +126,9 @@ internal class GetAllStreamingsUseCase(
                     return@forEach
                 }
 
-                val service = createService(
+                val service = it.toStreamingService(
                     country = country,
                     source = source,
-                    service = it,
                 )
 
                 if (!it.prices.purchase.isNullOrBlank()) {
@@ -193,20 +143,8 @@ internal class GetAllStreamingsUseCase(
             }
         }
 
-        val priorityCountries = (listOf(userCountry) + PopularCountries).reversed()
-        val priorityServices = PopularStreamingServices.reversed()
-
-        val servicesComparator = compareByDescending<StreamingService> {
-            priorityServices.indexOf(it.source)
-        }.thenBy {
-            it.source
-        }
-
-        val countriesComparator = compareByDescending<StreamingService> {
-            priorityCountries.indexOf(it.country.lowercase())
-        }.thenBy {
-            it.country
-        }
+        val servicesComparator = popularServicesComparator()
+        val countriesComparator = popularCountriesComparator(userCountry)
 
         return StreamingType.entries
             .sortedBy { it.order }
@@ -234,25 +172,5 @@ internal class GetAllStreamingsUseCase(
                 }
             }
             .toImmutableList()
-    }
-
-    private fun createService(
-        country: String,
-        source: StreamingSource,
-        service: StreamingServiceDto,
-    ): StreamingService {
-        return StreamingService(
-            name = source.name,
-            linkDirect = service.linkDirect,
-            source = service.source,
-            color = source.color,
-            logo = source.images.logo,
-            channel = source.images.channel,
-            uhd = service.uhd,
-            country = country,
-            purchasePrice = service.prices.purchase,
-            rentPrice = service.prices.rent,
-            currency = service.currency?.let { Currency.getInstance(it) },
-        )
     }
 }

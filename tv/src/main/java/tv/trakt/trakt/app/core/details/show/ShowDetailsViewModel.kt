@@ -43,8 +43,9 @@ import tv.trakt.trakt.app.core.details.show.usecases.collection.ChangeHistoryUse
 import tv.trakt.trakt.app.core.details.show.usecases.collection.ChangeWatchlistUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.collection.GetCollectionUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.streamings.GetPlexUseCase
-import tv.trakt.trakt.app.core.details.show.usecases.streamings.GetStreamingsUseCase
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
+import tv.trakt.trakt.common.core.streamings.usecase.GetPriorityStreamingUseCase
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.core.translations.usecase.GetShowTranslationsUseCase
 import tv.trakt.trakt.common.core.tutorials.TutorialsManager
@@ -64,6 +65,7 @@ import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.Ids
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -82,7 +84,7 @@ internal class ShowDetailsViewModel(
     private val getCastCrewUseCase: GetCastCrewUseCase,
     private val getRelatedShowsUseCase: GetRelatedShowsUseCase,
     private val getCommentsUseCase: GetCommentsUseCase,
-    private val getStreamingsUseCase: GetStreamingsUseCase,
+    private val getStreamingsUseCase: GetPriorityStreamingUseCase,
     private val getPlexUseCase: GetPlexUseCase,
     private val getListsUseCase: GetCustomListsUseCase,
     private val getSeasonsUseCase: GetShowSeasonsUseCase,
@@ -365,7 +367,10 @@ internal class ShowDetailsViewModel(
 
                 val streamingService = getStreamingsUseCase.getStreamingService(
                     user = user,
-                    showId = showIds.trakt,
+                    request = StreamingsRequest(
+                        mediaType = MediaType.Show,
+                        mediaId = showIds.trakt,
+                    ),
                 )
 
                 showStreamingsState.update {

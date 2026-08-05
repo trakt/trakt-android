@@ -31,14 +31,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
-import kotlinx.collections.immutable.ImmutableMap
-import kotlinx.collections.immutable.toImmutableMap
+import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
-import tv.trakt.trakt.app.core.streamings.model.StreamingServiceRow
 import tv.trakt.trakt.app.core.streamings.views.AllStreamingItemView
 import tv.trakt.trakt.app.ui.theme.TraktTheme
+import tv.trakt.trakt.common.core.streamings.model.AllStreamingsSection
+import tv.trakt.trakt.common.core.streamings.model.StreamingServiceRow
 import tv.trakt.trakt.common.helpers.extensions.openWatchNowLink
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingType
@@ -126,7 +126,7 @@ internal fun AllStreamingsContent(
                     )
                 }
 
-                state.error == null && state.services?.values?.all { it.isEmpty() } == true -> {
+                state.error == null && state.sections.isEmpty() -> {
                     Text(
                         text = stringResource(R.string.button_text_no_services),
                         color = TraktTheme.colors.textSecondary,
@@ -141,7 +141,7 @@ internal fun AllStreamingsContent(
 
                 else -> {
                     AllStreamingsContentGrid(
-                        items = (state.services ?: emptyMap()).toImmutableMap(),
+                        sections = state.sections,
                         focusRequesters = focusRequesters,
                         onItemClick = {
                             openWatchNowLink(
@@ -170,15 +170,13 @@ internal fun AllStreamingsContent(
 
 @Composable
 private fun AllStreamingsContentGrid(
-    items: ImmutableMap<StreamingType, List<StreamingServiceRow>>,
+    sections: ImmutableList<AllStreamingsSection>,
     modifier: Modifier = Modifier,
     focusRequesters: Map<String, FocusRequester>,
     onItemClick: (StreamingService) -> Unit,
 ) {
     val scrollState = rememberScrollState()
-    val sections = remember {
-        StreamingType.entries.sortedBy { it.order }
-    }
+
     Column(
         verticalArrangement = spacedBy(12.dp),
         modifier = modifier
@@ -188,10 +186,10 @@ private fun AllStreamingsContentGrid(
                 focusRequesters.getValue("content"),
             ),
     ) {
-        sections.forEach {
+        sections.forEach { section ->
             StreamingsListSection(
-                type = it,
-                services = items[it],
+                type = section.type,
+                rows = section.rows,
                 onItemClick = onItemClick,
             )
         }
@@ -201,13 +199,9 @@ private fun AllStreamingsContentGrid(
 @Composable
 private fun StreamingsListSection(
     type: StreamingType,
-    services: List<StreamingServiceRow>?,
+    rows: ImmutableList<StreamingServiceRow>,
     onItemClick: (StreamingService) -> Unit,
 ) {
-    if (services.isNullOrEmpty()) {
-        return
-    }
-
     Text(
         text = stringResource(type.labelRes).uppercase(),
         color = TraktTheme.colors.textSecondary,
@@ -216,7 +210,7 @@ private fun StreamingsListSection(
         modifier = Modifier.padding(top = 12.dp, start = 32.dp),
     )
 
-    services.forEach { (source, items) ->
+    rows.forEach { (source, items) ->
         PositionFocusLazyRow(
             mainContentStart = 32.dp,
             contentPadding = PaddingValues(horizontal = 32.dp),
