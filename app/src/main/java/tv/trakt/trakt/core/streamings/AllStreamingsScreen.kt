@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -114,7 +115,7 @@ private fun AllStreamingsContent(
                     .calculateTopPadding(),
                 bottom = WindowInsets.navigationBars.asPaddingValues()
                     .calculateBottomPadding()
-                    .plus(TraktTheme.size.navigationBarHeight),
+                    .plus(TraktTheme.spacing.mainPageBottomSpace),
             ),
             onBackClick = onBackClick,
             onServiceClick = onServiceClick,
@@ -147,12 +148,15 @@ private fun ContentList(
             )
         }
 
-        state.sections.forEach { section ->
+        state.sections.forEachIndexed { index, section ->
             item(key = "header-${section.type.type}") {
                 TraktHeader(
                     title = stringResource(section.type.labelRes),
                     modifier = Modifier.padding(
-                        top = TraktTheme.spacing.mainRowHeaderSpace,
+                        top = when (index) {
+                            0 -> 0.dp
+                            else -> TraktTheme.spacing.mainRowHeaderSpace
+                        },
                         start = horizontalPadding,
                         end = horizontalPadding,
                     ),
@@ -174,7 +178,22 @@ private fun ContentList(
         }
 
         if (state.loading != Done && state.sections.isEmpty()) {
-            items(count = 3, key = { "skeleton-$it" }) {
+            item(key = "skeleton-header") {
+                TraktHeader(
+                    title = "",
+                    modifier = Modifier
+                        .padding(
+                            start = horizontalPadding,
+                            end = horizontalPadding,
+                        )
+                        .fillMaxWidth(0.4F)
+                        .background(
+                            color = TraktTheme.colors.skeletonShimmer,
+                            shape = RoundedCornerShape(100),
+                        ),
+                )
+            }
+            items(count = 1, key = { "skeleton-$it" }) {
                 AllStreamingsSkeletonRow(
                     modifier = Modifier.padding(start = horizontalPadding),
                 )

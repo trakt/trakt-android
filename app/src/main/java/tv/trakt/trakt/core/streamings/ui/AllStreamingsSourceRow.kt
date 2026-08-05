@@ -23,16 +23,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.RoundRect
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathOperation
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
@@ -51,16 +64,9 @@ import tv.trakt.trakt.common.model.streamings.StreamingType.RENT
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.util.Locale
 
-/**
- * Square tile shared by the source logo and by every country tile, so both columns line up.
- */
-internal val TileSize = 96.dp
+internal val TileSize = 92.dp
 internal val TileShape = RoundedCornerShape(16.dp)
 
-/**
- * A single streaming source: logo pinned on the left, every country it streams in scrolling
- * horizontally next to it.
- */
 @Composable
 internal fun AllStreamingsSourceRow(
     row: StreamingServiceRow,
@@ -72,20 +78,32 @@ internal fun AllStreamingsSourceRow(
 ) {
     val source = row.services.firstOrNull() ?: return
 
+    val mainRowSpace = TraktTheme.spacing.mainRowSpace
+    val clipShape = remember(mainRowSpace) { sourceCutoutShape(overlap = mainRowSpace) }
+
     Row(
-        horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
+        horizontalArrangement = spacedBy(-mainRowSpace),
         verticalAlignment = CenterVertically,
         modifier = modifier,
     ) {
         SourceLogoTile(
             service = source,
             type = type,
-            modifier = Modifier.padding(start = startPadding),
+            modifier = Modifier
+                .padding(start = startPadding)
+                .zIndex(100F),
         )
 
         LazyRow(
             horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
-            contentPadding = PaddingValues(end = endPadding),
+            contentPadding = PaddingValues(
+                start = TraktTheme.spacing.mainRowSpace * 2,
+                end = endPadding,
+            ),
+            modifier = Modifier
+                .height(TileSize)
+                .zIndex(99F)
+                .clip(clipShape),
         ) {
             items(
                 items = row.services,
@@ -140,7 +158,7 @@ private fun SourceLogoTile(
             AsyncImage(
                 model = remember(service.logo) { context.logoRequest(service.logo) },
                 contentDescription = service.name,
-                contentScale = ContentScale.FillHeight,
+                contentScale = ContentScale.Fit,
                 colorFilter = remember(contentColor) { ColorFilter.tint(contentColor) },
                 modifier = Modifier.height(
                     when {
@@ -154,7 +172,7 @@ private fun SourceLogoTile(
                 AsyncImage(
                     model = remember(service.channel) { context.logoRequest(service.channel) },
                     contentDescription = null,
-                    contentScale = ContentScale.FillHeight,
+                    contentScale = ContentScale.Fit,
                     colorFilter = remember(contentColor) { ColorFilter.tint(contentColor) },
                     modifier = Modifier
                         .height(18.dp)
@@ -180,7 +198,7 @@ private fun ServiceCountryTile(
 
     Column(
         horizontalAlignment = CenterHorizontally,
-        verticalArrangement = spacedBy(2.dp, CenterVertically),
+        verticalArrangement = spacedBy(3.dp, CenterVertically),
         modifier = modifier
             .size(TileSize)
             .background(TraktTheme.colors.commentContainer, TileShape)
@@ -197,8 +215,8 @@ private fun ServiceCountryTile(
 
         Text(
             text = name,
-            color = TraktTheme.colors.textSecondary,
-            style = TraktTheme.typography.buttonTertiary,
+            color = TraktTheme.colors.textPrimary,
+            style = TraktTheme.typography.cardTitle,
             maxLines = 2,
             textAlign = TextAlign.Center,
             overflow = TextOverflow.Ellipsis,
@@ -207,8 +225,10 @@ private fun ServiceCountryTile(
         if (!price.isNullOrBlank()) {
             Text(
                 text = price,
-                color = TraktTheme.colors.textPrimary,
-                style = TraktTheme.typography.meta,
+                color = TraktTheme.colors.textSecondary,
+                style = TraktTheme.typography.meta.copy(
+                    fontSize = 10.sp,
+                ),
                 maxLines = 1,
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Ellipsis,
@@ -243,9 +263,6 @@ private fun StreamingService.priceLabel(type: StreamingType): String? {
     return "$symbol$space$amount".trim()
 }
 
-/**
- * Regional indicator pair for an ISO 3166-1 alpha-2 code, ex. "pl" renders the Polish flag.
- */
 private fun countryFlag(country: String): String? {
     val code = country.trim().uppercase()
     if (code.length != 2 || code.any { it !in 'A'..'Z' }) {
@@ -265,6 +282,48 @@ private fun countryName(country: String): String {
         else -> name
     }
 }
+
+/**
+ * Clip for the scrolling [LazyRow] that sits behind the transparent source tile.
+ * Result = LazyRow bounds minus the source tile's rounded rectangle, so scrolled
+ * items are clipped along the source tile's right rounded corners (concave), never
+ * bleeding into its transparent interior.
+ *
+ * The source tile is square ([TileSize]) and overlaps the LazyRow by [overlap];
+ * in LazyRow-local coordinates its right edge sits at x = [overlap].
+ */
+private fun sourceCutoutShape(overlap: Dp): Shape =
+    object : Shape {
+        private val TileCornerRadius = 16.dp
+
+        override fun createOutline(
+            size: Size,
+            layoutDirection: LayoutDirection,
+            density: Density,
+        ): Outline {
+            val radiusPx = with(density) { TileCornerRadius.toPx() }
+            val overlapPx = with(density) { overlap.toPx() }
+
+            val content = Path().apply { addRect(Rect(0f, 0f, size.width, size.height)) }
+            val sourceTile = Path().apply {
+                addRoundRect(
+                    RoundRect(
+                        rect = Rect(
+                            left = overlapPx - size.height,
+                            top = 0f,
+                            right = overlapPx,
+                            bottom = size.height,
+                        ),
+                        cornerRadius = CornerRadius(radiusPx, radiusPx),
+                    ),
+                )
+            }
+
+            return Outline.Generic(
+                Path().apply { op(content, sourceTile, PathOperation.Difference) },
+            )
+        }
+    }
 
 // -- Previews --
 
