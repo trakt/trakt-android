@@ -428,7 +428,7 @@ private fun TitleBar(
 
             TraktHeader(
                 title = title,
-                subtitle = stringResource(R.string.drawer_title_reorder_list),
+                subtitle = stringResource(R.string.drawer_title_reorder_list_more),
                 modifier = Modifier.weight(1F, fill = false),
             )
         }
