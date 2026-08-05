@@ -126,7 +126,7 @@ private fun ViewContent(
             },
             lineLimits = TextFieldLineLimits.MultiLine(
                 minHeightInLines = 5,
-                maxHeightInLines = 20,
+                maxHeightInLines = 15,
             ),
             imeAction = ImeAction.Default,
             modifier = Modifier.fillMaxWidth(),
