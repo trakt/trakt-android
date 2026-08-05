@@ -65,6 +65,10 @@ import tv.trakt.trakt.core.settings.features.younify.navigation.younifyScreen
 import tv.trakt.trakt.core.settings.navigation.navigateToBlockedUsers
 import tv.trakt.trakt.core.settings.navigation.navigateToSettings
 import tv.trakt.trakt.core.settings.navigation.settingsScreen
+import tv.trakt.trakt.core.streamings.navigation.allStreamingsScreen
+import tv.trakt.trakt.core.streamings.navigation.navigateToEpisodeStreamings
+import tv.trakt.trakt.core.streamings.navigation.navigateToMovieStreamings
+import tv.trakt.trakt.core.streamings.navigation.navigateToShowStreamings
 import tv.trakt.trakt.core.summary.episodes.features.history.navigation.episodeHistoryScreen
 import tv.trakt.trakt.core.summary.episodes.features.history.navigation.navigateToEpisodeHistory
 import tv.trakt.trakt.core.summary.episodes.navigation.episodeDetailsScreen
@@ -275,6 +279,13 @@ internal fun NavGraphBuilder.showsScreens(
                     backgroundUrl = show.images?.getFanartUrl(),
                 )
             },
+            onNavigateToAllStreamings = { show ->
+                navigateToShowStreamings(
+                    showId = show.ids.trakt,
+                    showTitle = show.title,
+                    backgroundUrl = show.images?.getFanartUrl(),
+                )
+            },
             onNavigateToUser = {
                 navigateToUserProfile(
                     user = it,
@@ -334,6 +345,14 @@ internal fun NavGraphBuilder.episodesScreens(
                     episodeId = episode.ids.trakt,
                     episodeTitle = episode.title,
                     watched = watched,
+                    backgroundUrl = show.images?.getFanartUrl(),
+                )
+            },
+            onNavigateToAllStreamings = { show, episode ->
+                navigateToEpisodeStreamings(
+                    showId = show.ids.trakt,
+                    episodeTitle = episode.title,
+                    seasonEpisode = episode.seasonEpisode,
                     backgroundUrl = show.images?.getFanartUrl(),
                 )
             },
@@ -407,6 +426,13 @@ internal fun NavGraphBuilder.moviesScreens(
                     movieId = movie.ids.trakt,
                     movieTitle = movie.title,
                     watched = watched,
+                    backgroundUrl = movie.images?.getFanartUrl(),
+                )
+            },
+            onNavigateToAllStreamings = { movie ->
+                navigateToMovieStreamings(
+                    movieId = movie.ids.trakt,
+                    movieTitle = movie.title,
                     backgroundUrl = movie.images?.getFanartUrl(),
                 )
             },
@@ -760,6 +786,14 @@ internal fun NavGraphBuilder.userProfileScreens(
                     mediaImage = null,
                 )
             },
+            onNavigateBack = { popBackStack() },
+        )
+    }
+}
+
+internal fun NavGraphBuilder.streamingsScreens(controller: NavHostController) {
+    with(controller) {
+        allStreamingsScreen(
             onNavigateBack = { popBackStack() },
         )
     }

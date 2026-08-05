@@ -10,14 +10,16 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
+import tv.trakt.trakt.common.core.streamings.usecase.GetPriorityStreamingUseCase
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.core.summary.movies.usecases.GetMovieStreamingUseCase
 
 internal class MovieDetailsContextViewModel(
     private val movie: Movie,
     private val sessionManager: SessionManager,
-    private val getStreamingsUseCase: GetMovieStreamingUseCase,
+    private val getStreamingsUseCase: GetPriorityStreamingUseCase,
 ) : ViewModel() {
     private val initialState = MovieDetailsContextState()
 
@@ -51,7 +53,10 @@ internal class MovieDetailsContextViewModel(
 
                 val streamingService = getStreamingsUseCase.getStreamingService(
                     user = user,
-                    movieId = movie.ids.trakt,
+                    request = StreamingsRequest(
+                        mediaType = MediaType.Movie,
+                        mediaId = movie.ids.trakt,
+                    ),
                 )
 
                 streamingsState.update {

@@ -18,9 +18,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import tv.trakt.trakt.common.core.streamings.model.StreamingsResult
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
-import tv.trakt.trakt.core.streamings.model.StreamingsResult
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.math.absoluteValue
@@ -82,16 +82,17 @@ internal fun JustWatchRanksStrip(
                         horizontalArrangement = spacedBy(0.dp),
                         modifier = Modifier.padding(start = 8.dp),
                     ) {
+                        val delta = it.delta
                         val deltaText = when {
-                            it.delta == null || it.delta == 0 -> "0"
-                            it.delta > 0 -> "+${it.delta}"
-                            else -> "-${it.delta.absoluteValue}"
+                            delta == null || delta == 0 -> "0"
+                            delta > 0 -> "+$delta"
+                            else -> "-${delta.absoluteValue}"
                         }
                         Text(
                             text = "($deltaText)",
                             color = when {
-                                it.delta == null || it.delta == 0 -> TraktTheme.colors.textSecondary
-                                it.delta > 0 -> Color(0xff6ce2ad)
+                                delta == null || delta == 0 -> TraktTheme.colors.textSecondary
+                                delta > 0 -> Color(0xff6ce2ad)
                                 else -> Color(0xffff5454)
                             },
                             style = TraktTheme.typography.meta,

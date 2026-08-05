@@ -19,6 +19,8 @@ import org.koin.core.context.startKoin
 import timber.log.Timber
 import tv.trakt.trakt.app.TvActivity
 import tv.trakt.trakt.common.auth.di.commonAuthModule
+import tv.trakt.trakt.common.core.streamings.di.streamingsDataModule
+import tv.trakt.trakt.common.core.streamings.di.streamingsModule
 import tv.trakt.trakt.common.core.translations.di.translationsDataModule
 import tv.trakt.trakt.common.core.translations.di.translationsModule
 import tv.trakt.trakt.common.core.tutorials.di.tutorialsModule
@@ -69,7 +71,7 @@ import tv.trakt.trakt.core.settings.di.settingsModule
 import tv.trakt.trakt.core.share.di.shareModule
 import tv.trakt.trakt.core.shows.di.showsDataModule
 import tv.trakt.trakt.core.shows.di.showsModule
-import tv.trakt.trakt.core.streamings.di.streamingsDataModule
+import tv.trakt.trakt.core.streamings.di.allStreamingsModule
 import tv.trakt.trakt.core.summary.episodes.di.episodeDetailsDataModule
 import tv.trakt.trakt.core.summary.episodes.di.episodeDetailsModule
 import tv.trakt.trakt.core.summary.movies.di.movieDetailsDataModule
@@ -171,6 +173,8 @@ internal class TraktApplication : Application() {
                 searchModule,
                 searchDataModule,
                 streamingsDataModule,
+                streamingsModule,
+                allStreamingsModule,
                 commentsDataModule,
                 commentsModule,
                 triviaModule,

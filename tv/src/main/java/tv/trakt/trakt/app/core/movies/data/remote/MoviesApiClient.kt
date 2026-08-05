@@ -15,7 +15,6 @@ import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.MovieCalendarDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
-import tv.trakt.trakt.common.networking.StreamingDto
 import java.time.Instant
 import java.time.temporal.ChronoUnit.DAYS
 
@@ -242,20 +241,6 @@ internal class MoviesApiClient(
         val response = api.getMoviesSummary(
             id = movieId.value.toString(),
             extended = "full,streaming_ids,cloud9,colors",
-        )
-
-        return response.body()
-    }
-
-    override suspend fun getMovieStreamings(
-        movieId: TraktId,
-        countryCode: String?,
-    ): Map<String, StreamingDto> {
-        val response = api.getMoviesWatchnow(
-            country = countryCode ?: "",
-            id = movieId.value.toString(),
-            links = "direct",
-            extended = null,
         )
 
         return response.body()

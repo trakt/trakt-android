@@ -117,6 +117,7 @@ internal fun MovieDetailsScreen(
     onTrailerClick: (String) -> Unit,
     onExtraClick: (ExtraVideo) -> Unit,
     onNavigateToHistory: (Movie, watched: Int) -> Unit,
+    onNavigateToAllStreamings: (Movie) -> Unit,
     onNavigateToUser: ((User) -> Unit)? = null,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
@@ -234,6 +235,11 @@ internal fun MovieDetailsScreen(
         onSentimentClick = { sentiments ->
             state.movie?.let { movie ->
                 onSentimentClick?.invoke(movie, sentiments)
+            }
+        },
+        onAllStreamingsClick = {
+            state.movie?.let { movie ->
+                onNavigateToAllStreamings(movie)
             }
         },
         onBackClick = onNavigateBack,
@@ -414,6 +420,7 @@ internal fun MovieDetailsContent(
     onVipClick: (() -> Unit)? = null,
     onTriviaClick: (() -> Unit)? = null,
     onSentimentClick: ((Sentiments) -> Unit)? = null,
+    onAllStreamingsClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val previewMode = LocalInspectionMode.current
@@ -604,6 +611,7 @@ internal fun MovieDetailsContent(
                                 ),
                                 headerPadding = sectionPadding,
                                 contentPadding = sectionPadding,
+                                onAllStreamingsClick = { onAllStreamingsClick?.invoke() },
                                 modifier = Modifier
                                     .alpha(ratingAlphaMask)
                                     .padding(top = 24.dp),

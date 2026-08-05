@@ -11,7 +11,6 @@ import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.MovieCalendarDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
-import tv.trakt.trakt.common.networking.StreamingDto
 import java.time.Instant
 
 internal interface MoviesRemoteDataSource {
@@ -59,9 +58,4 @@ internal interface MoviesRemoteDataSource {
         type: String,
         limit: Int,
     ): List<ListDto>
-
-    suspend fun getMovieStreamings(
-        movieId: TraktId,
-        countryCode: String?,
-    ): Map<String, StreamingDto>
 }

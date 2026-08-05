@@ -7,7 +7,6 @@ import tv.trakt.trakt.common.networking.EpisodeCalendarsDto
 import tv.trakt.trakt.common.networking.EpisodeDto
 import tv.trakt.trakt.common.networking.ExternalSeasonRatingsDto
 import tv.trakt.trakt.common.networking.ExternalShowRatingsDto
-import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
 
 internal interface EpisodesRemoteDataSource {
@@ -38,22 +37,6 @@ internal interface EpisodesRemoteDataSource {
         season: Int,
         episode: Int,
     ): ExternalSeasonRatingsDto
-
-    /**
-     * Retrieves the streaming services available for a specific episode of a show in a given country.
-     *
-     * @param showId The Trakt ID of the show.
-     * @param season The season number.
-     * @param episode The episode number.
-     * @param countryCode The two-letter country code (ISO 3166-1 alpha-2) for which to retrieve streaming services.
-     * @return A map where the key is the streaming service provider and the value is a [StreamingDto] object containing details about the streaming offer.
-     */
-    suspend fun getEpisodeStreamings(
-        showId: TraktId,
-        season: Int,
-        episode: Int,
-        countryCode: String?,
-    ): Map<String, StreamingDto>
 
     /**
      * Retrieves the cast and crew for a specific episode of a show.

@@ -108,6 +108,7 @@ internal fun EpisodeDetailsScreen(
     onPersonClick: ((Show, Episode, Person) -> Unit),
     onAllSeasonsClick: (Show, Int?) -> Unit,
     onNavigateToHistory: (Show, Episode, Int) -> Unit,
+    onNavigateToAllStreamings: (Show, Episode) -> Unit,
     onNavigateToUser: (User) -> Unit,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
@@ -203,6 +204,13 @@ internal fun EpisodeDetailsScreen(
             haptic.performHapticFeedback(Confirm)
         },
         onAllSeasonsClick = onAllSeasonsClick,
+        onAllStreamingsClick = {
+            val show = state.show
+            val episode = state.episode
+            if (show != null && episode != null) {
+                onNavigateToAllStreamings(show, episode)
+            }
+        },
         onNavigateToUser = onNavigateToUser,
         onVipClick = onNavigateVip,
         onBackClick = onNavigateBack,
@@ -357,6 +365,7 @@ internal fun EpisodeDetailsContent(
     onRatingClick: ((Int) -> Unit)? = null,
     onRatingRemoveClick: (() -> Unit)? = null,
     onAllSeasonsClick: ((Show, Int?) -> Unit)? = null,
+    onAllStreamingsClick: (() -> Unit)? = null,
     onNavigateToUser: ((User) -> Unit)? = null,
     onVipClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
@@ -545,6 +554,7 @@ internal fun EpisodeDetailsContent(
                                 ),
                                 headerPadding = sectionPadding,
                                 contentPadding = sectionPadding,
+                                onAllStreamingsClick = { onAllStreamingsClick?.invoke() },
                                 modifier = Modifier
                                     .alpha(ratingAlphaMask)
                                     .padding(top = 24.dp),

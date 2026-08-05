@@ -46,15 +46,16 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.core.streamings.model.StreamingsResult
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceApp
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingType
-import tv.trakt.trakt.core.streamings.model.StreamingsResult
 import tv.trakt.trakt.core.streamings.ui.JustWatchRanksStrip
 import tv.trakt.trakt.core.summary.ui.views.DetailsStreamingItem
 import tv.trakt.trakt.core.summary.ui.views.DetailsStreamingSkeleton
@@ -69,6 +70,7 @@ internal fun ShowStreamingsView(
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
+    onAllStreamingsClick: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -79,6 +81,7 @@ internal fun ShowStreamingsView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onCollapse = viewModel::setCollapsed,
+        onAllStreamingsClick = onAllStreamingsClick,
         onClick = { service ->
             openExternalAppLink(
                 packageId = StreamingServiceApp.findFromSource(service.source)?.packageId,
@@ -97,6 +100,7 @@ private fun ShowStreamingsContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onCollapse: (collapsed: Boolean) -> Unit = {},
+    onAllStreamingsClick: () -> Unit = {},
     onClick: ((StreamingService) -> Unit)? = null,
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
@@ -116,12 +120,15 @@ private fun ShowStreamingsContent(
         ) {
             TraktSectionHeader(
                 title = stringResource(R.string.page_title_where_to_watch),
-                chevron = false,
+                chevron = state.loading == Done,
                 collapsed = state.collapsed ?: false,
                 onCollapseClick = {
                     animateCollapse = true
                     val current = (state.collapsed ?: false)
                     onCollapse(!current)
+                },
+                modifier = Modifier.onClick(enabled = state.loading == Done) {
+                    onAllStreamingsClick()
                 },
             )
 

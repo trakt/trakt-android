@@ -11,7 +11,6 @@ import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.MovieCalendarDto
 import tv.trakt.trakt.common.networking.MovieStatsDto
 import tv.trakt.trakt.common.networking.RecommendedMovieDto
-import tv.trakt.trakt.common.networking.StreamingDto
 import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
 import tv.trakt.trakt.core.movies.data.remote.model.AnticipatedMovieDto
 import tv.trakt.trakt.core.movies.data.remote.model.TrendingMovieDto
@@ -56,16 +55,6 @@ internal interface MoviesRemoteDataSource {
     suspend fun getStudios(movieId: TraktId): List<String>
 
     suspend fun getStats(movieId: TraktId): MovieStatsDto
-
-    suspend fun getStreamings(
-        movieId: TraktId,
-        countryCode: String?,
-    ): Map<String, StreamingDto>
-
-    suspend fun getJustWatchLink(
-        movieId: TraktId,
-        countryCode: String?,
-    ): String?
 
     suspend fun getExtras(movieId: TraktId): List<ExtraVideoDto>
 

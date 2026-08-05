@@ -1,13 +1,13 @@
 package tv.trakt.trakt.app.core.streamings
 
 import androidx.compose.runtime.Immutable
-import kotlinx.collections.immutable.ImmutableMap
-import tv.trakt.trakt.app.core.streamings.model.StreamingServiceRow
-import tv.trakt.trakt.common.model.streamings.StreamingType
+import kotlinx.collections.immutable.ImmutableList
+import tv.trakt.trakt.common.core.streamings.model.AllStreamingsSection
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 
 @Immutable
 internal data class AllStreamingsState(
-    val services: ImmutableMap<StreamingType, List<StreamingServiceRow>>? = null,
+    val sections: ImmutableList<AllStreamingsSection> = EmptyImmutableList,
     val loading: Boolean = true,
     val error: Exception? = null,
 )

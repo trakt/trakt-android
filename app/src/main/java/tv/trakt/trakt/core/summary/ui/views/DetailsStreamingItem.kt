@@ -36,8 +36,8 @@ import coil3.request.ImageRequest
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingType
-import tv.trakt.trakt.common.model.streamings.StreamingType.PURCHASE
-import tv.trakt.trakt.common.model.streamings.StreamingType.RENT
+import tv.trakt.trakt.common.model.streamings.StreamingType.Purchase
+import tv.trakt.trakt.common.model.streamings.StreamingType.Rent
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.math.pow
 
@@ -86,7 +86,7 @@ internal fun DetailsStreamingItem(
                     .height(contentHeight),
             ) {
                 val withChannel = remember(service, type) {
-                    !service.channel.isNullOrBlank() && type != StreamingType.FREE
+                    !service.channel.isNullOrBlank() && type != StreamingType.Free
                 }
 
                 val logoUrl = remember(service.logo) { "https://${service.logo}" }
@@ -166,8 +166,8 @@ internal fun DetailsStreamingItem(
                 val currencySpace = if (currencySymbol?.count() == 1) "" else " "
 
                 when (type) {
-                    PURCHASE -> "$currencySymbol$currencySpace${service.purchasePrice}".trim()
-                    RENT -> "$currencySymbol$currencySpace${service.rentPrice}".trim()
+                    Purchase -> "$currencySymbol$currencySpace${service.purchasePrice}".trim()
+                    Rent -> "$currencySymbol$currencySpace${service.rentPrice}".trim()
                     else -> null
                 }
             }
@@ -237,7 +237,7 @@ private fun Preview() {
                     purchasePrice = "19.99",
                     rentPrice = "19.99",
                 ),
-                type = StreamingType.PURCHASE,
+                type = StreamingType.Purchase,
                 onClick = {},
             )
         }

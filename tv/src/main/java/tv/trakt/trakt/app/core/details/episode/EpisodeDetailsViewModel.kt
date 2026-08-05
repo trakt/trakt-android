@@ -38,13 +38,14 @@ import tv.trakt.trakt.app.core.details.episode.usecases.GetEpisodeSeasonUseCase
 import tv.trakt.trakt.app.core.details.episode.usecases.GetExternalRatingsUseCase
 import tv.trakt.trakt.app.core.details.episode.usecases.collection.ChangeHistoryUseCase
 import tv.trakt.trakt.app.core.details.episode.usecases.streamings.GetPlexUseCase
-import tv.trakt.trakt.app.core.details.episode.usecases.streamings.GetStreamingsUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.GetRelatedShowsUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.GetShowDetailsUseCase
 import tv.trakt.trakt.app.core.plex.usecase.DropPlaybackUseCase
 import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates
 import tv.trakt.trakt.app.core.scrobble.data.local.ScrobbleUpdates.Source.SCROBBLE_STOP_WORKER
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
+import tv.trakt.trakt.common.core.streamings.usecase.GetPriorityStreamingUseCase
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.core.translations.usecase.GetEpisodeTranslationsUseCase
 import tv.trakt.trakt.common.core.tutorials.TutorialsManager
@@ -63,6 +64,7 @@ import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Ids
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -80,7 +82,7 @@ internal class EpisodeDetailsViewModel(
     private val getShowDetailsUseCase: GetShowDetailsUseCase,
     private val getEpisodeDetailsUseCase: GetEpisodeDetailsUseCase,
     private val getExternalRatingsUseCase: GetExternalRatingsUseCase,
-    private val getStreamingsUseCase: GetStreamingsUseCase,
+    private val getStreamingsUseCase: GetPriorityStreamingUseCase,
     private val getPlexUseCase: GetPlexUseCase,
     private val dropPlaybackUseCase: DropPlaybackUseCase,
     private val getCastCrewUseCase: GetCastCrewUseCase,
@@ -289,8 +291,11 @@ internal class EpisodeDetailsViewModel(
 
             val streamingService = getStreamingsUseCase.getStreamingService(
                 user = user,
-                showId = showIds.trakt,
-                episode = episode,
+                request = StreamingsRequest(
+                    mediaType = MediaType.Episode,
+                    mediaId = showIds.trakt,
+                    seasonEpisode = episode.seasonEpisode,
+                ),
             )
 
             episodeStreamingsState.update {

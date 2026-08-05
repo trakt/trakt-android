@@ -14,8 +14,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.app.core.streamings.navigation.AllStreamingsDestination
-import tv.trakt.trakt.app.core.streamings.usecase.GetAllStreamingsUseCase
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
+import tv.trakt.trakt.common.core.streamings.usecase.GetAllStreamingsUseCase
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.toTraktId
@@ -27,7 +28,7 @@ internal class AllStreamingsViewModel(
 ) : ViewModel() {
     private val initialState = AllStreamingsState()
 
-    private val streamingsState = MutableStateFlow(initialState.services)
+    private val sectionsState = MutableStateFlow(initialState.sections)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
 
@@ -48,18 +49,22 @@ internal class AllStreamingsViewModel(
                 loadingState.update { true }
 
                 delay(500)
-                val streamings = getAllStreamingsUseCase.getStreamings(
+                val sections = getAllStreamingsUseCase.getStreamings(
                     user = user,
-                    mediaId = route.mediaId.toTraktId(),
-                    mediaType = route.mediaType,
-                    seasonEpisode = SeasonEpisode(
-                        season = route.season ?: 0,
-                        episode = route.episode ?: 1,
+                    request = StreamingsRequest(
+                        mediaType = route.mediaType,
+                        mediaId = route.mediaId.toTraktId(),
+                        seasonEpisode = route.season?.let { season ->
+                            SeasonEpisode(
+                                season = season,
+                                episode = route.episode ?: 1,
+                            )
+                        },
                     ),
                 )
-                streamingsState.update { streamings }
+                sectionsState.update { sections }
 
-                Timber.d("Loaded streamings: ${streamings.size}")
+                Timber.d("Loaded streaming sections: %d", sections.size)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -71,16 +76,15 @@ internal class AllStreamingsViewModel(
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
     val state: StateFlow<AllStreamingsState> = combine(
         loadingState,
-        streamingsState,
+        sectionsState,
         errorState,
-    ) { s1, s2, s3 ->
+    ) { loading, sections, error ->
         AllStreamingsState(
-            loading = s1,
-            services = s2,
-            error = s3,
+            loading = loading,
+            sections = sections,
+            error = error,
         )
     }.stateIn(
         scope = viewModelScope,

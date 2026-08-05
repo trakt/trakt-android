@@ -31,10 +31,8 @@ import tv.trakt.trakt.core.summary.episodes.features.season.EpisodeSeasonViewMod
 import tv.trakt.trakt.core.summary.episodes.features.season.usecases.GetEpisodeSeasonUseCase
 import tv.trakt.trakt.core.summary.episodes.features.socials.GetEpisodeSocialsUseCase
 import tv.trakt.trakt.core.summary.episodes.features.streaming.EpisodeStreamingsViewModel
-import tv.trakt.trakt.core.summary.episodes.features.streaming.usecases.GetEpisodeStreamingsUseCase
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeDetailsUseCase
 import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeRatingsUseCase
-import tv.trakt.trakt.core.summary.episodes.usecases.GetEpisodeStreamingUseCase
 
 internal val episodeDetailsDataModule = module {
     singleOf(::EpisodeStorage) { bind<EpisodeLocalDataSource>() }
@@ -51,8 +49,6 @@ internal val episodeDetailsModule = module {
     factoryOf(::GetEpisodeHistoryUseCase)
     factoryOf(::GetEpisodeSeasonUseCase)
     factoryOf(::GetEpisodeRelatedUseCase)
-    factoryOf(::GetEpisodeStreamingsUseCase)
-    factoryOf(::GetEpisodeStreamingUseCase)
     factoryOf(::GetEpisodeStatsUseCase)
     factoryOf(::GetEpisodeCrewUseCase)
     factoryOf(::GetEpisodeSocialsUseCase)

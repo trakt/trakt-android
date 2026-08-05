@@ -126,6 +126,7 @@ internal fun ShowDetailsScreen(
     onExtraClick: (ExtraVideo) -> Unit,
     onAllSeasonsClick: (Show, Int?) -> Unit,
     onNavigateToHistory: (Show, watched: Int) -> Unit,
+    onNavigateToAllStreamings: (Show) -> Unit,
     onNavigateToUser: ((User) -> Unit)? = null,
     onNavigateVip: () -> Unit,
     onNavigateBack: () -> Unit,
@@ -252,6 +253,11 @@ internal fun ShowDetailsScreen(
             }
         },
         onAllSeasonsClick = onAllSeasonsClick,
+        onAllStreamingsClick = {
+            state.show?.let { show ->
+                onNavigateToAllStreamings(show)
+            }
+        },
         onNavigateToUser = onNavigateToUser,
         onVipClick = onNavigateVip,
         onBackClick = onNavigateBack,
@@ -459,6 +465,7 @@ internal fun ShowDetailsContent(
     onTriviaClick: (() -> Unit)? = null,
     onSentimentClick: ((Sentiments) -> Unit)? = null,
     onAllSeasonsClick: ((Show, Int?) -> Unit)? = null,
+    onAllStreamingsClick: (() -> Unit)? = null,
     onNavigateToUser: ((User) -> Unit)? = null,
     onVipClick: (() -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
@@ -652,6 +659,7 @@ internal fun ShowDetailsContent(
                                 ),
                                 headerPadding = sectionPadding,
                                 contentPadding = sectionPadding,
+                                onAllStreamingsClick = { onAllStreamingsClick?.invoke() },
                                 modifier = Modifier
                                     .alpha(ratingAlphaMask)
                                     .padding(top = 24.dp),

@@ -49,6 +49,7 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceApp
 import tv.trakt.trakt.common.model.streamings.StreamingService
@@ -67,6 +68,7 @@ internal fun EpisodeStreamingsView(
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
+    onAllStreamingsClick: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -77,6 +79,7 @@ internal fun EpisodeStreamingsView(
         headerPadding = headerPadding,
         contentPadding = contentPadding,
         onCollapse = viewModel::setCollapsed,
+        onAllStreamingsClick = onAllStreamingsClick,
         onClick = { service ->
             openExternalAppLink(
                 packageId = StreamingServiceApp.findFromSource(service.source)?.packageId,
@@ -95,6 +98,7 @@ private fun EpisodeStreamingsContent(
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onCollapse: ((Boolean) -> Unit)? = null,
+    onAllStreamingsClick: () -> Unit = {},
     onClick: ((StreamingService) -> Unit)? = null,
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
@@ -112,12 +116,15 @@ private fun EpisodeStreamingsContent(
         ) {
             TraktSectionHeader(
                 title = stringResource(R.string.page_title_where_to_watch),
-                chevron = false,
+                chevron = state.loading == Done,
                 collapsed = state.collapsed ?: false,
                 onCollapseClick = {
                     animateCollapse = true
                     val current = (state.collapsed ?: false)
                     onCollapse?.invoke(!current)
+                },
+                modifier = Modifier.onClick(enabled = state.loading == Done) {
+                    onAllStreamingsClick()
                 },
             )
 

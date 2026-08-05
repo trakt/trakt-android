@@ -15,7 +15,6 @@ import tv.trakt.trakt.app.core.details.show.usecases.collection.ChangeHistoryUse
 import tv.trakt.trakt.app.core.details.show.usecases.collection.ChangeWatchlistUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.collection.GetCollectionUseCase
 import tv.trakt.trakt.app.core.details.show.usecases.streamings.GetPlexUseCase
-import tv.trakt.trakt.app.core.details.show.usecases.streamings.GetStreamingsUseCase
 
 internal val showDetailsModule = module {
     factory {
@@ -59,15 +58,6 @@ internal val showDetailsModule = module {
     factory {
         GetCustomListsUseCase(
             remoteSource = get(),
-        )
-    }
-
-    factory {
-        GetStreamingsUseCase(
-            remoteShowSource = get(),
-            remoteStreamingSource = get(),
-            localStreamingSource = get(),
-            priorityStreamingProvider = get(),
         )
     }
 

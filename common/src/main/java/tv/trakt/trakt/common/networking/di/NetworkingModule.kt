@@ -28,6 +28,7 @@ import org.openapitools.client.apis.SmartListsApi
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.apis.WatchedApi
+import org.openapitools.client.apis.WatchnowApi
 import tv.trakt.trakt.common.Config.API_BASE_URL
 import tv.trakt.trakt.common.Config.API_V3_BASE_URL
 import tv.trakt.trakt.common.Config.WEB_AUTH_URL
@@ -174,6 +175,15 @@ val networkingApiModule = module {
             baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
+        )
+    }
+
+    // Watchnow sources are public data - no token needed.
+    single<WatchnowApi> {
+        WatchnowApi(
+            baseUrl = API_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
         )
     }
 

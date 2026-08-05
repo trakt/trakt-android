@@ -10,21 +10,23 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
+import tv.trakt.trakt.common.core.streamings.model.StreamingsRequest
+import tv.trakt.trakt.common.core.streamings.model.StreamingsResult
+import tv.trakt.trakt.common.core.streamings.usecase.GetStreamingsUseCase
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.core.streamings.model.StreamingsResult
-import tv.trakt.trakt.core.summary.movies.features.streaming.usecases.GetMovieStreamingsUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
 internal class MovieStreamingsViewModel(
     private val movie: Movie,
     private val sessionManager: SessionManager,
-    private val getStreamingsUseCase: GetMovieStreamingsUseCase,
+    private val getStreamingsUseCase: GetStreamingsUseCase,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = MovieStreamingsState()
@@ -54,7 +56,10 @@ internal class MovieStreamingsViewModel(
 
                 val items = getStreamingsUseCase.getStreamings(
                     user = user,
-                    movieId = movie.ids.trakt,
+                    request = StreamingsRequest(
+                        mediaType = MediaType.Movie,
+                        mediaId = movie.ids.trakt,
+                    ),
                 )
 
                 itemsState.update { items }
