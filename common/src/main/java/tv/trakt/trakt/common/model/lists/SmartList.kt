@@ -175,10 +175,11 @@ data class SmartListFilters(
      * Clears every filter field back to its default, keeping only [media] and [source].
      * Used when switching between simple and advanced filter modes.
      */
-    fun cleared(): SmartListFilters = SmartListFilters(
-        media = media,
-        source = source,
-    )
+    fun cleared(): SmartListFilters =
+        SmartListFilters(
+            media = media,
+            source = source,
+        )
 
     companion object {
         val Default = SmartListFilters(
@@ -191,9 +192,8 @@ data class SmartListFilters(
             return SmartListFilters(
                 source = SmartListSource.fromApiValue(dto.source),
                 media = when (dto.mediaType) {
-                    "shows" -> MediaMode.Shows
                     "movies" -> MediaMode.Movies
-                    else -> MediaMode.Media
+                    else -> MediaMode.Shows
                 },
                 genres = filters.genres.orEmpty()
                     .mapNotNull { MediaGenre.fromSlug(it) }
