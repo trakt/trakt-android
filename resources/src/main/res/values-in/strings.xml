@@ -107,6 +107,8 @@
   <string name="button_label_import_selected">Impor film yang cocok yang Anda pilih di atas.</string>
   <string name="button_label_include_option">Sertakan %s</string>
   <string name="button_label_join_trakt">Gabung trakt.tv untuk melacak apa yang Anda tonton</string>
+  <string name="button_label_keep_newest_play">Simpan pemutaran terbaru dari setiap item</string>
+  <string name="button_label_keep_oldest_play">Simpan pemutaran terlama dari setiap item</string>
   <string name="button_label_library">Pustaka</string>
   <string name="button_label_like_list">Sukai %s</string>
   <string name="button_label_login">Masuk</string>
@@ -354,6 +356,8 @@
   <string name="button_text_install">Pasang</string>
   <string name="button_text_join_trakt">Gabung Trakt</string>
   <string name="button_text_join_trakt_for_free">Gabung Trakt Gratis</string>
+  <string name="button_text_keep_newest_play">Terbaru</string>
+  <string name="button_text_keep_oldest_play">Terlama</string>
   <string name="button_text_keep_vip_prompt">Pertahankan keuntungan premium saya</string>
   <string name="button_text_keyboard_done">Selesai</string>
   <string name="button_text_load_more">Muat Lebih Banyak</string>
@@ -547,7 +551,7 @@
   <string name="description_edit_api_application">Perbarui detail aplikasi OAuth Anda, URI pengalihan, dan izin.</string>
   <string name="description_export">Dapatkan ekspor data pengguna Anda dalam satu file ZIP. Proses ini mungkin memakan waktu.</string>
   <string name="description_genres">Tambahkan atau hapus %d genre favorit Anda.</string>
-  <string name="description_history_analysis">Temukan pemutaran duplikat dalam riwayat tontonan Anda dan hanya simpan tontonan terbaru dari setiap item.</string>
+  <string name="description_history_analysis">Temukan pemutaran duplikat dalam riwayat tontonan Anda dan hanya simpan satu tontonan dari setiap item.</string>
   <string name="description_import">Impor data Anda dari layanan lain langsung di browser Anda.</string>
   <string name="description_paused_items">Item-item ini tidak ditonton setidaknya 80%.</string>
   <string name="description_plex_home_users">Tayangan Anda sendiri selalu sinkron. Tambahkan nama pengguna Plex Home lainnya untuk menyinkronkan milik mereka juga.</string>
@@ -583,6 +587,7 @@
   <string name="drawer_title_people">Orang</string>
   <string name="drawer_title_recommendation_sources">Mengapa ini direkomendasikan?</string>
   <string name="drawer_title_reorder_list">Seret untuk menyusun ulang</string>
+  <string name="drawer_title_reorder_list_more">Seret untuk menyusun ulang, ketuk untuk opsi lainnya</string>
   <string name="drawer_title_rewatching">Menonton ulang</string>
   <string name="drawer_title_sort">Urutkan Berdasarkan</string>
   <string name="drawer_title_streak_activity">Aktivitas Streak Harian</string>
@@ -679,6 +684,7 @@
   <string name="header_official_links">Tautan Resmi</string>
   <string name="header_original_title">Judul Asli</string>
   <string name="header_other_links">Tautan Lainnya</string>
+  <string name="header_paid_until">Berbayar Hingga</string>
   <string name="header_paused_items">%s Item Dijeda</string>
   <string name="header_payment_method">Pembayaran</string>
   <string name="header_player_audio">Audio</string>
@@ -858,6 +864,7 @@
   <string name="label_app_redirect_uris">URI Pengalihan</string>
   <string name="label_drag_image_to_adjust">Seret gambar untuk menyesuaikan</string>
   <string name="label_favorites">Favorit</string>
+  <string name="label_keep_play">Simpan</string>
   <string name="label_plex_connected">Terhubung ke Plex</string>
   <string name="label_plex_connection">Koneksi</string>
   <string name="label_plex_history_date">Tanggal</string>
@@ -1513,6 +1520,7 @@
   <string name="text_season_episode_number">Musim %1$d • Episode %2$d</string>
   <string name="text_season_not_started">Belum ditonton</string>
   <string name="text_season_number">Musim %d</string>
+  <string name="text_season_number_with_title">%1$d - %2$s</string>
   <string name="text_season_specials">Spesial</string>
   <string name="text_sentiment_example">Contoh dari \"%s\"</string>
   <string name="text_services_selected">%1$s / %2$s dipilih · %3$s</string>
@@ -1928,7 +1936,8 @@
   <string name="warning_prompt_cancel_clear">Meninggalkan halaman akan menghentikan penghapusan data Anda. Apakah Anda yakin?</string>
   <string name="warning_prompt_cancel_import">Impor Anda sedang berlangsung. Meninggalkan halaman akan menghentikannya. Apakah Anda yakin?</string>
   <string name="warning_prompt_cancel_vip">Apakah Anda yakin ingin membatalkan langganan VIP Anda? Anda akan tetap mendapatkan keuntungan VIP hingga %s, setelah itu Anda akan kehilangan akses ke fitur VIP. Trakt tidak menawarkan pengembalian dana untuk langganan yang dibatalkan.</string>
-  <string name="warning_prompt_clean_up_history">Ini akan secara permanen menghapus %d pemutaran duplikat, hanya menyimpan tontonan terbaru dari setiap item. Ini tidak dapat dibatalkan.</string>
+  <string name="warning_prompt_clean_up_history">Ini akan secara permanen menghapus %d pemutaran duplikat, hanya menyimpan tontonan terlama dari setiap item. Ini tidak dapat dibatalkan.</string>
+  <string name="warning_prompt_clean_up_history_newest">Ini akan secara permanen menghapus %d pemutaran duplikat, hanya menyimpan tontonan terbaru dari setiap item. Ini tidak dapat dibatalkan.</string>
   <string name="warning_prompt_clear_data">Apakah Anda yakin ingin menghapus %s Anda? Ini tidak dapat diurungkan.</string>
   <string name="warning_prompt_clear_watchlist">Apakah Anda yakin ingin menghapus seluruh daftar tontonan Anda? Ini tidak dapat diurungkan.</string>
   <string name="warning_prompt_delete_account">Apakah Anda yakin ingin menghapus akun Anda secara permanen? Ini akan menghapus semua data Anda dan tidak dapat dibatalkan.</string>

@@ -107,6 +107,8 @@
   <string name="button_label_import_selected">فیلم‌های مطابق انتخاب شده در بالا را وارد کنید.</string>
   <string name="button_label_include_option">شامل %s</string>
   <string name="button_label_join_trakt">به trakt.tv بپیوندید تا آنچه را تماشا می‌کنید پیگیری کنید</string>
+  <string name="button_label_keep_newest_play">جدیدترین تماشای هر مورد را نگه دارید.</string>
+  <string name="button_label_keep_oldest_play">قدیمی‌ترین تماشای هر مورد را نگه دارید.</string>
   <string name="button_label_library">کتابخانه</string>
   <string name="button_label_like_list">پسندیدن %s</string>
   <string name="button_label_login">ورود</string>
@@ -354,6 +356,8 @@
   <string name="button_text_install">نصب</string>
   <string name="button_text_join_trakt">به Trakt بپیوندید</string>
   <string name="button_text_join_trakt_for_free">رایگان به Trakt بپیوندید</string>
+  <string name="button_text_keep_newest_play">جدیدترین</string>
+  <string name="button_text_keep_oldest_play">قدیمی‌ترین</string>
   <string name="button_text_keep_vip_prompt">مزایای برتر من را حفظ کن</string>
   <string name="button_text_keyboard_done">انجام شد</string>
   <string name="button_text_load_more">بارگذاری بیشتر</string>
@@ -547,7 +551,7 @@
   <string name="description_edit_api_application">جزئیات، URIهای تغییر مسیر و مجوزهای برنامه OAuth خود را به‌روزرسانی کنید.</string>
   <string name="description_export">یک خروجی از داده‌های کاربر خود را در یک فایل ZIP دریافت کنید. این فرآیند ممکن است کمی طول بکشد.</string>
   <string name="description_genres">%d ژانر مورد علاقه خود را اضافه یا حذف کنید.</string>
-  <string name="description_history_analysis">نوازش‌های تکراری را در تاریخچه تماشای خود بیابید و فقط جدیدترین تماشای هر آیتم را نگه دارید.</string>
+  <string name="description_history_analysis">تماشاهای تکراری را در تاریخچه تماشای خود بیابید و فقط یک تماشای هر مورد را نگه دارید.</string>
   <string name="description_import">داده‌های خود را از سایر سرویس‌ها مستقیماً در مرورگر خود وارد کنید.</string>
   <string name="description_paused_items">این موارد حداقل ۸۰٪ تماشا نشده‌اند.</string>
   <string name="description_plex_home_users">پخش‌های خودتان همیشه همگام‌سازی می‌شوند. برای همگام‌سازی پخش دیگران، نام‌های کاربری Plex Home آنها را نیز اضافه کنید.</string>
@@ -583,6 +587,7 @@
   <string name="drawer_title_people">افراد</string>
   <string name="drawer_title_recommendation_sources">چرا این توصیه شد؟</string>
   <string name="drawer_title_reorder_list">برای مرتب سازی بکشید</string>
+  <string name="drawer_title_reorder_list_more">برای تغییر ترتیب بکشید، برای گزینه‌های بیشتر ضربه بزنید</string>
   <string name="drawer_title_rewatching">بازتماشا</string>
   <string name="drawer_title_sort">مرتب‌سازی بر اساس</string>
   <string name="drawer_title_streak_activity">فعالیت پیاپی روزانه</string>
@@ -679,6 +684,7 @@
   <string name="header_official_links">لینک‌های رسمی</string>
   <string name="header_original_title">عنوان اصلی</string>
   <string name="header_other_links">لینک‌های دیگر</string>
+  <string name="header_paid_until">پرداخت شده تا</string>
   <string name="header_paused_items">%s مورد متوقف شده</string>
   <string name="header_payment_method">پرداخت</string>
   <string name="header_player_audio">صوت</string>
@@ -858,6 +864,7 @@
   <string name="label_app_redirect_uris">URIهای تغییر مسیر</string>
   <string name="label_drag_image_to_adjust">برای تنظیم، تصویر را بکشید</string>
   <string name="label_favorites">علاقه‌مندی‌ها</string>
+  <string name="label_keep_play">نگه داشتن</string>
   <string name="label_plex_connected">متصل به Plex</string>
   <string name="label_plex_connection">اتصال</string>
   <string name="label_plex_history_date">تاریخ</string>
@@ -1513,6 +1520,7 @@
   <string name="text_season_episode_number">فصل %1$d • اپیزود %2$d</string>
   <string name="text_season_not_started">شروع نشده</string>
   <string name="text_season_number">فصل %d</string>
+  <string name="text_season_number_with_title">%1$d : %2$s</string>
   <string name="text_season_specials">ویژه‌ها</string>
   <string name="text_sentiment_example">مثالی از \"%s\"</string>
   <string name="text_services_selected">%1$s / %2$s انتخاب شده · %3$s</string>
@@ -1928,7 +1936,8 @@
   <string name="warning_prompt_cancel_clear">رفتن به صفحه دیگر، پاک کردن داده‌های شما را متوقف می‌کند. مطمئن هستید؟</string>
   <string name="warning_prompt_cancel_import">وارد کردن شما در حال انجام است. رفتن به صفحه دیگر آن را متوقف می‌کند. آیا مطمئن هستید؟</string>
   <string name="warning_prompt_cancel_vip">آیا مطمئن هستید که می‌خواهید اشتراک VIP خود را لغو کنید؟ مزایای VIP شما تا %s حفظ خواهد شد، پس از آن دسترسی به ویژگی‌های VIP را از دست خواهید داد. Trakt هیچ بازپرداختی برای اشتراک‌های لغو شده ارائه نمی‌دهد.</string>
-  <string name="warning_prompt_clean_up_history">این کار %d نوازش تکراری را به طور دائمی حذف می‌کند و فقط جدیدترین تماشای هر آیتم را نگه می‌دارد. این عمل قابل بازگشت نیست.</string>
+  <string name="warning_prompt_clean_up_history">این کار %d تماشای تکراری را به طور دائمی حذف می‌کند و فقط قدیمی‌ترین تماشای هر مورد را نگه می‌دارد. این عمل قابل بازگشت نیست.</string>
+  <string name="warning_prompt_clean_up_history_newest">این کار %d تماشای تکراری را به طور دائمی حذف می‌کند و فقط جدیدترین تماشای هر مورد را نگه می‌دارد. این عمل قابل بازگشت نیست.</string>
   <string name="warning_prompt_clear_data">آیا مطمئن هستید که می‌خواهید %s خود را پاک کنید؟ این عمل قابل بازگشت نیست.</string>
   <string name="warning_prompt_clear_watchlist">آیا مطمئن هستید که می‌خواهید کل لیست تماشای خود را پاک کنید؟ این عمل قابل بازگشت نیست.</string>
   <string name="warning_prompt_delete_account">آیا مطمئن هستید که می‌خواهید حساب کاربری خود را برای همیشه حذف کنید؟ این کار تمام داده‌های شما را حذف می‌کند و قابل بازگشت نیست.</string>

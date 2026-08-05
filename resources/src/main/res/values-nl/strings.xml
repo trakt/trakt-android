@@ -107,6 +107,8 @@
   <string name="button_label_import_selected">Importeer de filmmatches die je hierboven hebt gekozen.</string>
   <string name="button_label_include_option">%s opnemen</string>
   <string name="button_label_join_trakt">Lid worden van trakt.tv om bij te houden wat je kijkt</string>
+  <string name="button_label_keep_newest_play">Behoud de nieuwste weergave van elk item</string>
+  <string name="button_label_keep_oldest_play">Behoud de oudste weergave van elk item</string>
   <string name="button_label_library">Bibliotheek</string>
   <string name="button_label_like_list">Vind ik leuk: %s</string>
   <string name="button_label_login">Inloggen</string>
@@ -354,6 +356,8 @@
   <string name="button_text_install">Installeren</string>
   <string name="button_text_join_trakt">Lid worden van Trakt</string>
   <string name="button_text_join_trakt_for_free">Word gratis lid</string>
+  <string name="button_text_keep_newest_play">Nieuwste</string>
+  <string name="button_text_keep_oldest_play">Oudste</string>
   <string name="button_text_keep_vip_prompt">Mijn premiumvoordelen behouden</string>
   <string name="button_text_keyboard_done">Klaar</string>
   <string name="button_text_load_more">Meer laden</string>
@@ -547,7 +551,7 @@
   <string name="description_edit_api_application">Werk de details, omleidings-URI\'s en machtigingen van je OAuth-applicatie bij.</string>
   <string name="description_export">Exporteer uw gebruikersgegevens naar één ZIP-bestand. Dit proces kan even duren.</string>
   <string name="description_genres">Voeg je %d favoriete genres toe of verwijder ze.</string>
-  <string name="description_history_analysis">Vind dubbele weergaven in je kijkgeschiedenis en bewaar alleen de meest recente weergave van elk item.</string>
+  <string name="description_history_analysis">Vind dubbele weergaven in je kijkgeschiedenis en bewaar slechts één weergave van elk item.</string>
   <string name="description_import">Importeer uw gegevens van andere services direct in uw browser.</string>
   <string name="description_paused_items">Deze items zijn voor minder dan 80% bekeken.</string>
   <string name="description_plex_home_users">Je eigen afspeelsessies worden altijd gesynchroniseerd. Voeg andere Plex Home-gebruikersnamen toe om die van hen ook te synchroniseren.</string>
@@ -583,6 +587,7 @@
   <string name="drawer_title_people">Personen</string>
   <string name="drawer_title_recommendation_sources">Waarom werd dit aanbevolen?</string>
   <string name="drawer_title_reorder_list">Slepen om te herschikken</string>
+  <string name="drawer_title_reorder_list_more">Slepen om opnieuw te ordenen, tik voor meer opties</string>
   <string name="drawer_title_rewatching">Opnieuw kijken</string>
   <string name="drawer_title_sort">Sorteren op</string>
   <string name="drawer_title_streak_activity">Dagelijkse Reeks Activiteit</string>
@@ -679,6 +684,7 @@
   <string name="header_official_links">Officiële links</string>
   <string name="header_original_title">Originele titel</string>
   <string name="header_other_links">Overige links</string>
+  <string name="header_paid_until">Betaald tot</string>
   <string name="header_paused_items">%s gepauzeerde items</string>
   <string name="header_payment_method">Betaling</string>
   <string name="header_player_audio">Audio</string>
@@ -858,6 +864,7 @@
   <string name="label_app_redirect_uris">Omleidings-URI\'s</string>
   <string name="label_drag_image_to_adjust">Sleep de afbeelding om aan te passen</string>
   <string name="label_favorites">Favorieten</string>
+  <string name="label_keep_play">Behouden</string>
   <string name="label_plex_connected">Verbonden met Plex</string>
   <string name="label_plex_connection">Verbinding</string>
   <string name="label_plex_history_date">Datum</string>
@@ -1513,6 +1520,7 @@
   <string name="text_season_episode_number">S%1$d • Afl. %2$d</string>
   <string name="text_season_not_started">Niet gestart</string>
   <string name="text_season_number">Seizoen %d</string>
+  <string name="text_season_number_with_title">%1$d: %2$s</string>
   <string name="text_season_specials">Specials</string>
   <string name="text_sentiment_example">Voorbeeld van \"%s\"</string>
   <string name="text_services_selected">%1$s / %2$s geselecteerd · %3$s</string>
@@ -1928,7 +1936,8 @@
   <string name="warning_prompt_cancel_clear">Wegnavigeren stopt het wissen van je gegevens. Weet je het zeker?</string>
   <string name="warning_prompt_cancel_import">Je import is bezig. Als je weggaat, wordt deze gestopt. Weet je het zeker?</string>
   <string name="warning_prompt_cancel_vip">Weet u zeker dat u uw VIP-abonnement wilt annuleren? U behoudt uw VIP-voordelen tot %s, waarna u de toegang tot VIP-functies verliest. Trakt biedt geen restitutie voor geannuleerde abonnementen.</string>
-  <string name="warning_prompt_clean_up_history">Dit verwijdert permanent %d dubbele weergaven, waarbij alleen de meest recente weergave van elk item behouden blijft. Dit kan niet ongedaan gemaakt worden.</string>
+  <string name="warning_prompt_clean_up_history">Dit verwijdert permanent %d dubbele weergaven, waarbij alleen de oudste weergave van elk item behouden blijft. Dit kan niet ongedaan gemaakt worden.</string>
+  <string name="warning_prompt_clean_up_history_newest">Dit verwijdert permanent %d dubbele weergaven, waarbij alleen de nieuwste weergave van elk item behouden blijft. Dit kan niet ongedaan gemaakt worden.</string>
   <string name="warning_prompt_clear_data">Weet je zeker dat je je %s wilt wissen? Dit kan niet ongedaan gemaakt worden.</string>
   <string name="warning_prompt_clear_watchlist">Weet je zeker dat je je hele kijklijst wilt wissen? Dit kan niet ongedaan gemaakt worden.</string>
   <string name="warning_prompt_delete_account">Weet je zeker dat je je account permanent wilt verwijderen? Hiermee worden al je gegevens verwijderd en kan niet ongedaan worden gemaakt.</string>

@@ -107,6 +107,8 @@
   <string name="button_label_import_selected">Importera de filmmatchningar du valde ovan.</string>
   <string name="button_label_include_option">Inkludera %s</string>
   <string name="button_label_join_trakt">Gå med i trakt.tv för att hålla koll på vad du tittar på</string>
+  <string name="button_label_keep_newest_play">Behåll den nyaste visningen av varje objekt</string>
+  <string name="button_label_keep_oldest_play">Behåll den äldsta visningen av varje objekt</string>
   <string name="button_label_library">Bibliotek</string>
   <string name="button_label_like_list">Gilla %s</string>
   <string name="button_label_login">Logga in</string>
@@ -354,6 +356,8 @@
   <string name="button_text_install">Installera</string>
   <string name="button_text_join_trakt">Gå med i Trakt</string>
   <string name="button_text_join_trakt_for_free">Gå med i Trakt gratis</string>
+  <string name="button_text_keep_newest_play">Nyaste</string>
+  <string name="button_text_keep_oldest_play">Äldsta</string>
   <string name="button_text_keep_vip_prompt">Behåll mina premiumförmåner</string>
   <string name="button_text_keyboard_done">Klar</string>
   <string name="button_text_load_more">Ladda mer</string>
@@ -547,7 +551,7 @@
   <string name="description_edit_api_application">Uppdatera din OAuth-applikations detaljer, omdirigerings-URI:er och behörigheter.</string>
   <string name="description_export">Få en export av din användardata i en enda ZIP-fil. Denna process kan ta ett tag.</string>
   <string name="description_genres">Lägg till eller ta bort dina %d favoritgenrer.</string>
-  <string name="description_history_analysis">Hitta dubblettvisningar i din visningshistorik och behåll endast den senaste visningen av varje objekt.</string>
+  <string name="description_history_analysis">Hitta dubblettvisningar i din visningshistorik och behåll endast en visning av varje objekt.</string>
   <string name="description_import">Importera din data från andra tjänster direkt i din webbläsare.</string>
   <string name="description_paused_items">Dessa objekt tittades inte på minst 80%.</string>
   <string name="description_plex_home_users">Dina egna uppspelningar synkroniseras alltid. Lägg till andra Plex Home-användarnamn för att synkronisera deras också.</string>
@@ -583,6 +587,7 @@
   <string name="drawer_title_people">Personer</string>
   <string name="drawer_title_recommendation_sources">Varför rekommenderades detta?</string>
   <string name="drawer_title_reorder_list">Dra för att omordna</string>
+  <string name="drawer_title_reorder_list_more">Dra för att ändra ordning, tryck för fler alternativ</string>
   <string name="drawer_title_rewatching">Omtittning</string>
   <string name="drawer_title_sort">Sortera efter</string>
   <string name="drawer_title_streak_activity">Daglig svitaktivitet</string>
@@ -679,6 +684,7 @@
   <string name="header_official_links">Officiella länkar</string>
   <string name="header_original_title">Originaltitel</string>
   <string name="header_other_links">Andra länkar</string>
+  <string name="header_paid_until">Betald till</string>
   <string name="header_paused_items">%s pausade objekt</string>
   <string name="header_payment_method">Betalning</string>
   <string name="header_player_audio">Ljud</string>
@@ -858,6 +864,7 @@
   <string name="label_app_redirect_uris">Omdirigerings-URI:er</string>
   <string name="label_drag_image_to_adjust">Dra bilden för att justera</string>
   <string name="label_favorites">Favoriter</string>
+  <string name="label_keep_play">Behåll</string>
   <string name="label_plex_connected">Ansluten till Plex</string>
   <string name="label_plex_connection">Anslutning</string>
   <string name="label_plex_history_date">Datum</string>
@@ -1513,6 +1520,7 @@
   <string name="text_season_episode_number">Säsong %1$d • Avsnitt %2$d</string>
   <string name="text_season_not_started">Inte påbörjad</string>
   <string name="text_season_number">Säsong %d</string>
+  <string name="text_season_number_with_title">%1$d - %2$s</string>
   <string name="text_season_specials">Specialer</string>
   <string name="text_sentiment_example">Exempel från \"%s\"</string>
   <string name="text_services_selected">%1$s / %2$s valda · %3$s</string>
@@ -1928,7 +1936,8 @@
   <string name="warning_prompt_cancel_clear">Om du navigerar bort stoppas rensningen av dina data. Är du säker?</string>
   <string name="warning_prompt_cancel_import">Din import pågår. Om du navigerar bort kommer den att stoppas. Är du säker?</string>
   <string name="warning_prompt_cancel_vip">Är du säker på att du vill avbryta din VIP-prenumeration? Du behåller dina VIP-förmåner fram till %s, varefter du förlorar tillgången till VIP-funktioner. Trakt erbjuder inga återbetalningar för avbrutna prenumerationer.</string>
-  <string name="warning_prompt_clean_up_history">Detta kommer permanent att ta bort %d dubblettvisningar, och endast behålla den senaste visningen av varje objekt. Detta kan inte ångras.</string>
+  <string name="warning_prompt_clean_up_history">Detta kommer permanent att ta bort %d dubblettvisningar, och endast behålla den äldsta visningen av varje objekt. Detta kan inte ångras.</string>
+  <string name="warning_prompt_clean_up_history_newest">Detta kommer permanent att ta bort %d dubblettvisningar, och endast behålla den nyaste visningen av varje objekt. Detta kan inte ångras.</string>
   <string name="warning_prompt_clear_data">Är du säker på att du vill rensa din %s? Detta kan inte ångras.</string>
   <string name="warning_prompt_clear_watchlist">Är du säker på att du vill rensa hela din bevakningslista? Detta kan inte ångras.</string>
   <string name="warning_prompt_delete_account">Är du säker på att du vill ta bort ditt konto permanent? Detta kommer att ta bort all din data och kan inte ångras.</string>

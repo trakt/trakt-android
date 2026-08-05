@@ -107,6 +107,8 @@
   <string name="button_label_import_selected">Importer les films sélectionnés ci-dessus.</string>
   <string name="button_label_include_option">Inclure %s</string>
   <string name="button_label_join_trakt">Rejoignez trakt.tv pour suivre ce que vous regardez</string>
+  <string name="button_label_keep_newest_play">Conserver le visionnement le plus récent de chaque élément</string>
+  <string name="button_label_keep_oldest_play">Conserver le visionnement le plus ancien de chaque élément</string>
   <string name="button_label_library">Bibliothèque</string>
   <string name="button_label_like_list">Aimer %s</string>
   <string name="button_label_login">Connexion</string>
@@ -354,6 +356,8 @@
   <string name="button_text_install">Installer</string>
   <string name="button_text_join_trakt">Rejoindre Trakt</string>
   <string name="button_text_join_trakt_for_free">Adhérer gratuitement</string>
+  <string name="button_text_keep_newest_play">Le plus récent</string>
+  <string name="button_text_keep_oldest_play">Le plus ancien</string>
   <string name="button_text_keep_vip_prompt">Garder mes avantages Premium</string>
   <string name="button_text_keyboard_done">Terminé</string>
   <string name="button_text_load_more">Charger plus</string>
@@ -547,7 +551,7 @@
   <string name="description_edit_api_application">Mettez à jour les détails, les URI de redirection et les autorisations de votre application OAuth.</string>
   <string name="description_export">Obtenez une exportation de vos données utilisateur dans un seul fichier ZIP. Ce processus peut prendre un certain temps.</string>
   <string name="description_genres">Ajoutez ou retirez vos %d genres favoris.</string>
-  <string name="description_history_analysis">Trouvez les doublons dans votre historique de visionnement et ne conservez que le visionnement le plus récent de chaque élément.</string>
+  <string name="description_history_analysis">Trouvez les doublons dans votre historique de visionnement et ne conservez qu\'un seul visionnement de chaque élément.</string>
   <string name="description_import">Importez vos données d\'autres services directement dans votre navigateur.</string>
   <string name="description_paused_items">Ces éléments n\'ont pas été regardés à au moins 80 %.</string>
   <string name="description_plex_home_users">Vos propres visionnages sont toujours synchronisés. Ajoutez d\'autres noms d\'utilisateur Plex Home pour synchroniser les leurs également.</string>
@@ -583,6 +587,7 @@
   <string name="drawer_title_people">Personnes</string>
   <string name="drawer_title_recommendation_sources">Pourquoi cette recommandation?</string>
   <string name="drawer_title_reorder_list">Faire glisser pour réorganiser</string>
+  <string name="drawer_title_reorder_list_more">Faites glisser pour réorganiser, touchez pour plus d\'options</string>
   <string name="drawer_title_rewatching">Revisionnage</string>
   <string name="drawer_title_sort">Trier par</string>
   <string name="drawer_title_streak_activity">Activité des séquences quotidiennes</string>
@@ -679,6 +684,7 @@
   <string name="header_official_links">Liens officiels</string>
   <string name="header_original_title">Titre original</string>
   <string name="header_other_links">Autres liens</string>
+  <string name="header_paid_until">Payé jusqu\'au</string>
   <string name="header_paused_items">%s éléments en pause</string>
   <string name="header_payment_method">Paiement</string>
   <string name="header_player_audio">Audio</string>
@@ -858,6 +864,7 @@
   <string name="label_app_redirect_uris">URI de redirection</string>
   <string name="label_drag_image_to_adjust">Faites glisser l\'image pour l\'ajuster</string>
   <string name="label_favorites">Favoris</string>
+  <string name="label_keep_play">Conserver</string>
   <string name="label_plex_connected">Connecté à Plex</string>
   <string name="label_plex_connection">Connexion</string>
   <string name="label_plex_history_date">Date</string>
@@ -1513,6 +1520,7 @@
   <string name="text_season_episode_number">Saison %1$d • Épisode %2$d</string>
   <string name="text_season_not_started">Non commencé</string>
   <string name="text_season_number">Saison %d</string>
+  <string name="text_season_number_with_title">%1$d - %2$s</string>
   <string name="text_season_specials">Spéciaux</string>
   <string name="text_sentiment_example">Exemple tiré de « %s »</string>
   <string name="text_services_selected">%1$s / %2$s sélectionnés · %3$s</string>
@@ -1928,7 +1936,8 @@
   <string name="warning_prompt_cancel_clear">Si vous quittez cette page, le vidage de vos données sera arrêté. Êtes-vous sûr?</string>
   <string name="warning_prompt_cancel_import">Votre importation est en cours. Quitter cette page l\'arrêtera. Êtes-vous sûr?</string>
   <string name="warning_prompt_cancel_vip">Êtes-vous sûr de vouloir annuler votre abonnement VIP? Vous conserverez vos avantages VIP jusqu\'au %s, après quoi vous perdrez l\'accès aux fonctionnalités VIP. Trakt n\'offre pas de remboursement pour les abonnements annulés.</string>
-  <string name="warning_prompt_clean_up_history">Ceci supprimera définitivement %d doublons de visionnements, en ne conservant que le visionnement le plus récent de chaque élément. Cette action est irréversible.</string>
+  <string name="warning_prompt_clean_up_history">Ceci supprimera définitivement %d doublons de visionnements, en ne conservant que le visionnement le plus ancien de chaque élément. Cette action est irréversible.</string>
+  <string name="warning_prompt_clean_up_history_newest">Ceci supprimera définitivement %d doublons de visionnements, en ne conservant que le visionnement le plus récent de chaque élément. Cette action est irréversible.</string>
   <string name="warning_prompt_clear_data">Êtes-vous sûr de vouloir vider votre %s ? Cette action est irréversible.</string>
   <string name="warning_prompt_clear_watchlist">Êtes-vous sûr de vouloir vider toute votre liste de visionnement ? Cette action est irréversible.</string>
   <string name="warning_prompt_delete_account">Voulez-vous vraiment supprimer votre compte de façon permanente? Cela supprimera toutes vos données et ne peut pas être annulé.</string>

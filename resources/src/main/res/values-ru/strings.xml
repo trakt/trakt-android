@@ -107,6 +107,8 @@
   <string name="button_label_import_selected">Импортировать выбранные вами совпадения фильмов.</string>
   <string name="button_label_include_option">Включить %s</string>
   <string name="button_label_join_trakt">Присоединяйтесь к trakt.tv, чтобы отслеживать, что вы смотрите</string>
+  <string name="button_label_keep_newest_play">Сохранять самый новый просмотр каждого элемента</string>
+  <string name="button_label_keep_oldest_play">Сохранять самый старый просмотр каждого элемента</string>
   <string name="button_label_library">Библиотека</string>
   <string name="button_label_like_list">Нравится %s</string>
   <string name="button_label_login">Войти</string>
@@ -354,6 +356,8 @@
   <string name="button_text_install">Установить</string>
   <string name="button_text_join_trakt">Присоединиться к Trakt</string>
   <string name="button_text_join_trakt_for_free">Присоединиться к Trakt бесплатно</string>
+  <string name="button_text_keep_newest_play">Самый новый</string>
+  <string name="button_text_keep_oldest_play">Самый старый</string>
   <string name="button_text_keep_vip_prompt">Сохранить премиум-привилегии</string>
   <string name="button_text_keyboard_done">Готово</string>
   <string name="button_text_load_more">Загрузить больше</string>
@@ -547,7 +551,7 @@
   <string name="description_edit_api_application">Обновите данные вашего OAuth-приложения, URI перенаправления и разрешения.</string>
   <string name="description_export">Получите экспорт ваших пользовательских данных в одном ZIP-файле. Этот процесс может занять некоторое время.</string>
   <string name="description_genres">Добавьте или удалите %d любимых жанров.</string>
-  <string name="description_history_analysis">Находите дублирующиеся просмотры в истории просмотров и сохраняйте только самый недавний просмотр каждого элемента.</string>
+  <string name="description_history_analysis">Находите дублирующиеся просмотры в истории просмотров и сохраняйте только один просмотр каждого элемента.</string>
   <string name="description_import">Импортируйте свои данные из других сервисов прямо в вашем браузере.</string>
   <string name="description_paused_items">Эти элементы не были просмотрены как минимум на 80%.</string>
   <string name="description_plex_home_users">Ваши просмотры всегда синхронизируются. Добавьте другие имена пользователей Plex Home, чтобы синхронизировать и их.</string>
@@ -583,6 +587,7 @@
   <string name="drawer_title_people">Люди</string>
   <string name="drawer_title_recommendation_sources">Почему это было рекомендовано?</string>
   <string name="drawer_title_reorder_list">Перетащите для изменения порядка</string>
+  <string name="drawer_title_reorder_list_more">Перетащите, чтобы изменить порядок; нажмите для получения дополнительных параметров</string>
   <string name="drawer_title_rewatching">Пересмотр</string>
   <string name="drawer_title_sort">Сортировать по</string>
   <string name="drawer_title_streak_activity">Ежедневная активность серии</string>
@@ -679,6 +684,7 @@
   <string name="header_official_links">Официальные ссылки</string>
   <string name="header_original_title">Оригинальное название</string>
   <string name="header_other_links">Другие ссылки</string>
+  <string name="header_paid_until">Оплачено до</string>
   <string name="header_paused_items">%s приостановленных элементов</string>
   <string name="header_payment_method">Оплата</string>
   <string name="header_player_audio">Аудио</string>
@@ -858,6 +864,7 @@
   <string name="label_app_redirect_uris">URI перенаправления</string>
   <string name="label_drag_image_to_adjust">Перетащите изображение для настройки</string>
   <string name="label_favorites">Избранное</string>
+  <string name="label_keep_play">Оставить</string>
   <string name="label_plex_connected">Подключено к Plex</string>
   <string name="label_plex_connection">Подключение</string>
   <string name="label_plex_history_date">Дата</string>
@@ -1513,6 +1520,7 @@
   <string name="text_season_episode_number">Сезон %1$d • Эпизод %2$d</string>
   <string name="text_season_not_started">Не начато</string>
   <string name="text_season_number">Сезон %d</string>
+  <string name="text_season_number_with_title">%1$d из %2$s</string>
   <string name="text_season_specials">Спецвыпуски</string>
   <string name="text_sentiment_example">Пример из \"%s\"</string>
   <string name="text_services_selected">%1$s из %2$s выбрано · %3$s</string>
@@ -1928,7 +1936,8 @@
   <string name="warning_prompt_cancel_clear">Переход на другую страницу остановит очистку ваших данных. Вы уверены?</string>
   <string name="warning_prompt_cancel_import">Ваш импорт в процессе. Переход на другую страницу остановит его. Вы уверены?</string>
   <string name="warning_prompt_cancel_vip">Вы уверены, что хотите отменить VIP-подписку? Вы сохраните VIP-привилегии до %s, после чего потеряете доступ к VIP-функциям. Trakt не предлагает возмещение средств за отменённые подписки.</string>
-  <string name="warning_prompt_clean_up_history">Это навсегда удалит %d дублирующихся просмотров, сохраняя только самый недавний просмотр каждого элемента. Это действие невозможно отменить.</string>
+  <string name="warning_prompt_clean_up_history">Это навсегда удалит %d дублирующихся просмотров, сохраняя только самый старый просмотр каждого элемента. Это действие невозможно отменить.</string>
+  <string name="warning_prompt_clean_up_history_newest">Это навсегда удалит %d дублирующихся просмотров, сохраняя только самый новый просмотр каждого элемента. Это действие невозможно отменить.</string>
   <string name="warning_prompt_clear_data">Вы уверены, что хотите очистить ваш %s? Это действие нельзя отменить.</string>
   <string name="warning_prompt_clear_watchlist">Вы уверены, что хотите очистить весь список просмотра? Это действие нельзя отменить.</string>
   <string name="warning_prompt_delete_account">Вы уверены, что хотите безвозвратно удалить свой аккаунт? Это приведет к удалению всех ваших данных, и действие невозможно будет отменить.</string>

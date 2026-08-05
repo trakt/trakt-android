@@ -107,6 +107,8 @@
   <string name="button_label_import_selected">导入您在上方选择的电影匹配项。</string>
   <string name="button_label_include_option">包含 %s</string>
   <string name="button_label_join_trakt">加入trakt.tv以追踪你正在观看的内容</string>
+  <string name="button_label_keep_newest_play">保留每个项目最新的播放记录</string>
+  <string name="button_label_keep_oldest_play">保留每个项目最旧的播放记录</string>
   <string name="button_label_library">媒体库</string>
   <string name="button_label_like_list">赞 %s</string>
   <string name="button_label_login">登录</string>
@@ -354,6 +356,8 @@
   <string name="button_text_install">安装</string>
   <string name="button_text_join_trakt">加入Trakt</string>
   <string name="button_text_join_trakt_for_free">免费加入Trakt</string>
+  <string name="button_text_keep_newest_play">最新</string>
+  <string name="button_text_keep_oldest_play">最旧</string>
   <string name="button_text_keep_vip_prompt">保留我的高级特权</string>
   <string name="button_text_keyboard_done">完成</string>
   <string name="button_text_load_more">加载更多</string>
@@ -547,7 +551,7 @@
   <string name="description_edit_api_application">更新您的 OAuth 应用程序的详细信息、重定向 URI 和权限。</string>
   <string name="description_export">将你的用户数据导出为单个 ZIP 文件。此过程可能需要一些时间。</string>
   <string name="description_genres">添加或移除你的 %d 个最喜欢的类型。</string>
-  <string name="description_history_analysis">查找您的观看历史中的重复播放，并只保留每个项目的最新观看记录。</string>
+  <string name="description_history_analysis">在您的观看历史中查找重复播放，并只保留每个项目的一次观看记录。</string>
   <string name="description_import">直接在浏览器中从其他服务导入您的数据。</string>
   <string name="description_paused_items">这些项目未观看至少80%。</string>
   <string name="description_plex_home_users">您自己的播放记录始终会同步。添加其他 Plex 家庭用户名以同步他们的记录。</string>
@@ -583,6 +587,7 @@
   <string name="drawer_title_people">人物</string>
   <string name="drawer_title_recommendation_sources">为何推荐此内容？</string>
   <string name="drawer_title_reorder_list">拖动以重新排序</string>
+  <string name="drawer_title_reorder_list_more">拖动以重新排序，轻触以获取更多选项</string>
   <string name="drawer_title_rewatching">重温</string>
   <string name="drawer_title_sort">排序方式</string>
   <string name="drawer_title_streak_activity">日常连击活动</string>
@@ -679,6 +684,7 @@
   <string name="header_official_links">官方链接</string>
   <string name="header_original_title">原名</string>
   <string name="header_other_links">其他链接</string>
+  <string name="header_paid_until">付款至</string>
   <string name="header_paused_items">%s 个已暂停项目</string>
   <string name="header_payment_method">支付</string>
   <string name="header_player_audio">音频</string>
@@ -858,6 +864,7 @@
   <string name="label_app_redirect_uris">重定向 URI</string>
   <string name="label_drag_image_to_adjust">拖动图片调整</string>
   <string name="label_favorites">我的最爱</string>
+  <string name="label_keep_play">保留</string>
   <string name="label_plex_connected">已连接到Plex</string>
   <string name="label_plex_connection">连接</string>
   <string name="label_plex_history_date">日期</string>
@@ -1513,6 +1520,7 @@
   <string name="text_season_episode_number">第 %1$d 季 • 第 %2$d 集</string>
   <string name="text_season_not_started">未开始</string>
   <string name="text_season_number">第 %d 季</string>
+  <string name="text_season_number_with_title">%1$d：%2$s</string>
   <string name="text_season_specials">特别篇</string>
   <string name="text_sentiment_example">来自“%s”的示例</string>
   <string name="text_services_selected">已选择 %1$s / %2$s · %3$s</string>
@@ -1928,7 +1936,8 @@
   <string name="warning_prompt_cancel_clear">离开将停止清除您的数据。您确定吗？</string>
   <string name="warning_prompt_cancel_import">您的导入正在进行中。离开此页面将停止导入。您确定吗？</string>
   <string name="warning_prompt_cancel_vip">您确定要取消您的VIP订阅吗？您将保留VIP权益至%s，之后将无法访问VIP功能。Trakt不为已取消的订阅提供退款。</string>
-  <string name="warning_prompt_clean_up_history">这将永久移除 %d 个重复播放记录，只保留每个项目的最新观看记录。此操作无法撤销。</string>
+  <string name="warning_prompt_clean_up_history">这将永久移除 %d 个重复播放记录，只保留每个项目最旧的观看记录。此操作无法撤销。</string>
+  <string name="warning_prompt_clean_up_history_newest">这将永久移除 %d 个重复播放记录，只保留每个项目最新的观看记录。此操作无法撤销。</string>
   <string name="warning_prompt_clear_data">您确定要清除您的 %s 吗？此操作无法撤消。</string>
   <string name="warning_prompt_clear_watchlist">您确定要清除您的整个待看列表吗？此操作无法撤消。</string>
   <string name="warning_prompt_delete_account">您确定要永久删除您的帐户吗？这将删除您的所有数据且无法撤消。</string>

@@ -107,6 +107,8 @@
   <string name="button_label_import_selected">قم باستيراد تطابقات الفيلم التي اخترتها أعلاه.</string>
   <string name="button_label_include_option">تضمين %s</string>
   <string name="button_label_join_trakt">انضم إلى trakt.tv لتتبع ما تشاهده</string>
+  <string name="button_label_keep_newest_play">احتفظ بأحدث مشاهدة لكل عنصر</string>
+  <string name="button_label_keep_oldest_play">احتفظ بأقدم مشاهدة لكل عنصر</string>
   <string name="button_label_library">مكتبة</string>
   <string name="button_label_like_list">إعجاب بـ %s</string>
   <string name="button_label_login">تسجيل الدخول</string>
@@ -354,6 +356,8 @@
   <string name="button_text_install">تثبيت</string>
   <string name="button_text_join_trakt">انضم إلى Trakt</string>
   <string name="button_text_join_trakt_for_free">انضم إلى Trakt مجانًا</string>
+  <string name="button_text_keep_newest_play">الأحدث</string>
+  <string name="button_text_keep_oldest_play">الأقدم</string>
   <string name="button_text_keep_vip_prompt">احتفظ بامتيازاتي المميزة</string>
   <string name="button_text_keyboard_done">تم</string>
   <string name="button_text_load_more">تحميل المزيد</string>
@@ -547,7 +551,7 @@
   <string name="description_edit_api_application">قم بتحديث تفاصيل تطبيق OAuth الخاص بك، وأعد توجيه URIs والأذونات.</string>
   <string name="description_export">احصل على تصدير بيانات المستخدم الخاصة بك في ملف ZIP واحد. قد تستغرق هذه العملية بعض الوقت.</string>
   <string name="description_genres">إضافة أو إزالة %d من أنواعك المفضلة.</string>
-  <string name="description_history_analysis">ابحث عن عمليات التشغيل المكررة في سجل المشاهدة الخاص بك واحتفظ فقط بأحدث مشاهدة لكل عنصر.</string>
+  <string name="description_history_analysis">ابحث عن عمليات التشغيل المكررة في سجل المشاهدة الخاص بك واحتفظ بمشاهدة واحدة فقط لكل عنصر.</string>
   <string name="description_import">قم باستيراد بياناتك من الخدمات الأخرى مباشرة في متصفحك.</string>
   <string name="description_paused_items">لم تتم مشاهدة هذه العناصر بنسبة 80% على الأقل.</string>
   <string name="description_plex_home_users">تتم مزامنة مشاهداتك دائماً. أضف أسماء مستخدمي Plex Home أخرى لمزامنة مشاهداتهم أيضاً.</string>
@@ -583,6 +587,7 @@
   <string name="drawer_title_people">الأشخاص</string>
   <string name="drawer_title_recommendation_sources">لماذا تمت التوصية بهذا؟</string>
   <string name="drawer_title_reorder_list">اسحب لإعادة الترتيب</string>
+  <string name="drawer_title_reorder_list_more">اسحب لإعادة الترتيب، انقر للمزيد من الخيارات</string>
   <string name="drawer_title_rewatching">إعادة المشاهدة</string>
   <string name="drawer_title_sort">فرز حسب</string>
   <string name="drawer_title_streak_activity">نشاط الخط اليومي</string>
@@ -679,6 +684,7 @@
   <string name="header_official_links">الروابط الرسمية</string>
   <string name="header_original_title">العنوان الأصلي</string>
   <string name="header_other_links">روابط أخرى</string>
+  <string name="header_paid_until">مدفوع حتى</string>
   <string name="header_paused_items">العناصر المتوقفة مؤقتًا (%s)</string>
   <string name="header_payment_method">الدفع</string>
   <string name="header_player_audio">صوت</string>
@@ -858,6 +864,7 @@
   <string name="label_app_redirect_uris">إعادة توجيه عناوين URI</string>
   <string name="label_drag_image_to_adjust">اسحب الصورة للضبط</string>
   <string name="label_favorites">المفضلات</string>
+  <string name="label_keep_play">احتفظ</string>
   <string name="label_plex_connected">متصل بـ Plex</string>
   <string name="label_plex_connection">اتصال</string>
   <string name="label_plex_history_date">التاريخ</string>
@@ -1513,6 +1520,7 @@
   <string name="text_season_episode_number">الموسم %1$d • الحلقة %2$d</string>
   <string name="text_season_not_started">لم يبدأ</string>
   <string name="text_season_number">الموسم %d</string>
+  <string name="text_season_number_with_title">%1$d: %2$s</string>
   <string name="text_season_specials">عروض خاصة</string>
   <string name="text_sentiment_example">مثال من \"%s\"</string>
   <string name="text_services_selected">تم تحديد %1$s من أصل %2$s · %3$s</string>
@@ -1928,7 +1936,8 @@
   <string name="warning_prompt_cancel_clear">سيؤدي التنقل بعيدًا إلى إيقاف مسح بياناتك. هل أنت متأكد؟</string>
   <string name="warning_prompt_cancel_import">عملية الاستيراد قيد التقدم. سيؤدي التنقل بعيدًا إلى إيقافه. هل أنت متأكد؟</string>
   <string name="warning_prompt_cancel_vip">هل أنت متأكد أنك تريد إلغاء اشتراكك VIP؟ ستحتفظ بمزايا VIP الخاصة بك حتى %s، وبعد ذلك ستفقد إمكانية الوصول إلى ميزات VIP. لا تقدم Trakt المبالغ المستردة للاشتراكات الملغاة.</string>
-  <string name="warning_prompt_clean_up_history">سيؤدي هذا إلى إزالة %d مشاهدة مكررة بشكل دائم، مع الاحتفاظ بأحدث مشاهدة لكل عنصر فقط. لا يمكن التراجع عن هذا.</string>
+  <string name="warning_prompt_clean_up_history">سيؤدي هذا إلى إزالة %d مشاهدة مكررة بشكل دائم، مع الاحتفاظ بأقدم مشاهدة لكل عنصر فقط. لا يمكن التراجع عن هذا.</string>
+  <string name="warning_prompt_clean_up_history_newest">سيؤدي هذا إلى إزالة %d مشاهدة مكررة بشكل دائم، مع الاحتفاظ بأحدث مشاهدة لكل عنصر فقط. لا يمكن التراجع عن هذا.</string>
   <string name="warning_prompt_clear_data">هل أنت متأكد أنك تريد مسح %s الخاص بك؟ لا يمكن التراجع عن هذا.</string>
   <string name="warning_prompt_clear_watchlist">هل أنت متأكد أنك تريد مسح قائمة مراقبتك بالكامل؟ لا يمكن التراجع عن هذا.</string>
   <string name="warning_prompt_delete_account">هل أنت متأكد أنك تريد حذف حسابك نهائيًا؟ سيؤدي هذا إلى إزالة جميع بياناتك ولا يمكن التراجع عنه.</string>
