@@ -321,7 +321,10 @@ private fun CollectionChip(
         }
         Icon(
             painter = painterResource(iconRes),
-            tint = TraktTheme.colors.tagChipContent,
+            tint = when {
+                focused -> TraktTheme.colors.tagChipContentOnAccent
+                else -> TraktTheme.colors.tagChipContent
+            },
             contentDescription = null,
             modifier = Modifier.size(iconSize),
         )
