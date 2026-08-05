@@ -107,6 +107,8 @@
   <string name="button_label_import_selected">Import the movie matches you picked above.</string>
   <string name="button_label_include_option">Include %s</string>
   <string name="button_label_join_trakt">Join trakt.tv to keep track of what you\'re watching</string>
+  <string name="button_label_keep_newest_play">Keep the newest play of each item</string>
+  <string name="button_label_keep_oldest_play">Keep the oldest play of each item</string>
   <string name="button_label_library">Library</string>
   <string name="button_label_like_list">Like %s</string>
   <string name="button_label_login">Login</string>
@@ -354,6 +356,8 @@
   <string name="button_text_install">Install</string>
   <string name="button_text_join_trakt">Join Trakt</string>
   <string name="button_text_join_trakt_for_free">Join Trakt for Free</string>
+  <string name="button_text_keep_newest_play">Newest</string>
+  <string name="button_text_keep_oldest_play">Oldest</string>
   <string name="button_text_keep_vip_prompt">Keep my premium perks</string>
   <string name="button_text_keyboard_done">Done</string>
   <string name="button_text_load_more">Load More</string>
@@ -547,7 +551,7 @@
   <string name="description_edit_api_application">Update your OAuth application\'s details, redirect URIs and permissions.</string>
   <string name="description_export">Get an export of your user data in a single ZIP file. This process may take a while.</string>
   <string name="description_genres">Add or remove your %d favorite genres.</string>
-  <string name="description_history_analysis">Find duplicate plays in your watch history and keep only the most recent watch of each item.</string>
+  <string name="description_history_analysis">Find duplicate plays in your watch history and keep only one watch of each item.</string>
   <string name="description_import">Import your data from other services directly in your browser.</string>
   <string name="description_paused_items">These items were not watched at least 80%.</string>
   <string name="description_plex_home_users">Your own plays always sync. Add other Plex Home usernames to sync theirs too.</string>
@@ -583,6 +587,7 @@
   <string name="drawer_title_people">People</string>
   <string name="drawer_title_recommendation_sources">Why was this recommended?</string>
   <string name="drawer_title_reorder_list">Drag to reorder</string>
+  <string name="drawer_title_reorder_list_more">Drag to reorder, tap for more options</string>
   <string name="drawer_title_rewatching">Rewatching</string>
   <string name="drawer_title_sort">Sort By</string>
   <string name="drawer_title_streak_activity">Daily Streak Activity</string>
@@ -679,6 +684,7 @@
   <string name="header_official_links">Official Links</string>
   <string name="header_original_title">Original Title</string>
   <string name="header_other_links">Other Links</string>
+  <string name="header_paid_until">Paid Until</string>
   <string name="header_paused_items">%s Paused Items</string>
   <string name="header_payment_method">Payment</string>
   <string name="header_player_audio">Audio</string>
@@ -858,6 +864,7 @@
   <string name="label_app_redirect_uris">Redirect URIs</string>
   <string name="label_drag_image_to_adjust">Drag the image to adjust</string>
   <string name="label_favorites">Favorites</string>
+  <string name="label_keep_play">Keep</string>
   <string name="label_plex_connected">Connected to Plex</string>
   <string name="label_plex_connection">Connection</string>
   <string name="label_plex_history_date">Date</string>
@@ -1513,6 +1520,7 @@
   <string name="text_season_episode_number">Season %1$d • Episode %2$d</string>
   <string name="text_season_not_started">Not started</string>
   <string name="text_season_number">Season %d</string>
+  <string name="text_season_number_with_title">%1$d - %2$s</string>
   <string name="text_season_specials">Specials</string>
   <string name="text_sentiment_example">Example from \"%s\"</string>
   <string name="text_services_selected">%1$s / %2$s selected · %3$s</string>
@@ -1928,7 +1936,8 @@
   <string name="warning_prompt_cancel_clear">Navigating away will stop clearing your data. Are you sure?</string>
   <string name="warning_prompt_cancel_import">Your import is in progress. Navigating away will stop it. Are you sure?</string>
   <string name="warning_prompt_cancel_vip">Are you sure you want to cancel your VIP subscription? You\'ll keep your VIP benefits until %s, after which you\'ll lose access to VIP features. Trakt does not offer refunds for cancelled subscriptions.</string>
-  <string name="warning_prompt_clean_up_history">This will permanently remove %d duplicate plays, keeping only the most recent watch of each item. This cannot be undone.</string>
+  <string name="warning_prompt_clean_up_history">This will permanently remove %d duplicate plays, keeping only the oldest watch of each item. This cannot be undone.</string>
+  <string name="warning_prompt_clean_up_history_newest">This will permanently remove %d duplicate plays, keeping only the newest watch of each item. This cannot be undone.</string>
   <string name="warning_prompt_clear_data">Are you sure you want to clear your %s? This cannot be undone.</string>
   <string name="warning_prompt_clear_watchlist">Are you sure you want to clear your entire watchlist? This cannot be undone.</string>
   <string name="warning_prompt_delete_account">Are you sure you want to permanently delete your account? This will remove all of your data and cannot be undone.</string>
