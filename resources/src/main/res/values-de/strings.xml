@@ -67,6 +67,7 @@
   <string name="button_label_connect_streaming_service">Verbinde %s</string>
   <string name="button_label_copied">Kopiert</string>
   <string name="button_label_copy">Kopieren</string>
+  <string name="button_label_cover_image_selected">\"%s\" ist Ihr Coverbild.</string>
   <string name="button_label_create_app">Anwendung erstellen</string>
   <string name="button_label_create_list">Liste erstellen</string>
   <string name="button_label_delete_account">Ihr Trakt-Konto löschen</string>
@@ -85,6 +86,9 @@
   <string name="button_label_edit_list">Ihre Liste %s bearbeiten</string>
   <string name="button_label_edit_mode">Bearbeitungsmodus</string>
   <string name="button_label_edit_note">Notiz bearbeiten</string>
+  <string name="button_label_episode_type_all">Alle Veröffentlichungen anzeigen</string>
+  <string name="button_label_episode_type_finales">Nur Finales anzeigen</string>
+  <string name="button_label_episode_type_premieres">Nur Premieren anzeigen</string>
   <string name="button_label_exclude_option">%s ausschließen</string>
   <string name="button_label_exit_edit_mode">Bearbeitungsmodus verlassen</string>
   <string name="button_label_expand_category">%s erweitern</string>
@@ -288,6 +292,7 @@
   <string name="button_plex_toggle_scrobble">Scrobbeln</string>
   <string name="button_plex_toggle_watched">Gesehen</string>
   <string name="button_plex_undo_sync">Rückgängig machen</string>
+  <string name="button_subtitle_cover_image_selected">Aktuelles Cover</string>
   <string name="button_text_activity_ratings">Bewertungen</string>
   <string name="button_text_activity_reviews">Rezensionen</string>
   <string name="button_text_add_note">Notiz hinzufügen</string>
@@ -337,6 +342,9 @@
   <string name="button_text_edit_comment">Bearbeiten</string>
   <string name="button_text_edit_list">Bearbeiten</string>
   <string name="button_text_edit_note">Bearbeiten</string>
+  <string name="button_text_episode_type_all">Alle</string>
+  <string name="button_text_episode_type_finales">Finales</string>
+  <string name="button_text_episode_type_premieres">Premieren</string>
   <string name="button_text_exit_edit_mode">Bearbeitungsmodus verlassen</string>
   <string name="button_text_find_movies">Filme finden</string>
   <string name="button_text_find_shows">Serien finden</string>
@@ -1505,6 +1513,7 @@
   <string name="text_rating_prompt_8">Geben Sie eine Note.</string>
   <string name="text_ratings_no_data">Noch keine Bewertungen.</string>
   <string name="text_ratings_season_extremes">Hoch %1$s · %2$s% · Tief %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes_android">Hoch St.%1$s (%2$s)  •  Tief St.%3$s (%4$s)</string>
   <string name="text_ratings_season_point">%1$s · %2$s%</string>
   <string name="text_ratings_votes">%s Stimmen</string>
   <string name="text_raw_export">Rohdaten-Export</string>
@@ -1568,6 +1577,7 @@
   <string name="text_stats_delta_down">-%d</string>
   <string name="text_stats_delta_same">Keine Änderung</string>
   <string name="text_stats_delta_up">+%d</string>
+  <string name="text_stats_ended">Beendet</string>
   <string name="text_stats_episodes_count">%d Folgen</string>
   <string name="text_stats_keep_it_going">Machen Sie weiter!</string>
   <string name="text_stats_movies_count">%d Filme</string>
