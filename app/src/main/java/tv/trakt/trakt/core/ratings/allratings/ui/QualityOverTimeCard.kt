@@ -50,6 +50,7 @@ import tv.trakt.trakt.common.model.toSlugId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.theme.colors.Purple200
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
+import tv.trakt.trakt.common.ui.theme.colors.Shade700
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -150,10 +151,14 @@ internal fun QualityOverTimeCard(
 @Composable
 internal fun QualityOverTimeSkeletonCard(modifier: Modifier = Modifier) {
     val infiniteTransition = rememberInfiniteTransition(label = "infiniteTransition")
+
+    val initialColor = TraktTheme.colors.dialogOnContainer
+    val targetColor = Shade700
+
     val shimmerTransition by infiniteTransition
         .animateColor(
-            initialValue = TraktTheme.colors.dialogOnContainer,
-            targetValue = TraktTheme.colors.skeletonShimmer,
+            initialValue = initialColor,
+            targetValue = targetColor,
             animationSpec = infiniteRepeatable(
                 animation = tween(1000),
                 repeatMode = RepeatMode.Reverse,
@@ -168,7 +173,6 @@ internal fun QualityOverTimeSkeletonCard(modifier: Modifier = Modifier) {
                 color = shimmerTransition,
                 shape = RoundedCornerShape(16.dp),
             )
-            .padding(horizontal = 16.dp)
             .padding(top = 13.dp, bottom = 12.dp),
     ) {
         Text(
@@ -193,10 +197,11 @@ internal fun QualityOverTimeSkeletonCard(modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxWidth(),
         ) {
             repeat(5) {
-                Box(
-                    modifier = Modifier
-                        .width(18.dp)
-                        .height(13.dp),
+                Text(
+                    text = "",
+                    style = TraktTheme.typography.cardTitle.copy(fontSize = 10.sp),
+                    color = TraktTheme.colors.textPrimary,
+                    maxLines = 1,
                 )
             }
         }

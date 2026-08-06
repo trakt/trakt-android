@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.ratings.allratings
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -137,14 +138,19 @@ private fun AllRatingsContent(
                     color = TraktTheme.colors.textSecondary,
                 )
 
-                when {
-                    seasonRatings != null -> QualityOverTimeCard(
-                        seasons = seasonRatings,
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                    else -> QualityOverTimeSkeletonCard(
-                        modifier = Modifier.fillMaxWidth(),
-                    )
+                Crossfade(
+                    targetState = seasonRatings,
+                    label = "QualityOverTimeCard",
+                ) { seasonRatings ->
+                    when {
+                        seasonRatings != null -> QualityOverTimeCard(
+                            seasons = seasonRatings,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                        else -> QualityOverTimeSkeletonCard(
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    }
                 }
             }
         }
