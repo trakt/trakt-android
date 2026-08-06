@@ -67,6 +67,7 @@
   <string name="button_label_connect_streaming_service">Conectar %s</string>
   <string name="button_label_copied">Copiado</string>
   <string name="button_label_copy">Copiar</string>
+  <string name="button_label_cover_image_selected">\"%s\" es tu imagen de portada.</string>
   <string name="button_label_create_app">Crear aplicación</string>
   <string name="button_label_create_list">Crear lista</string>
   <string name="button_label_delete_account">Eliminar tu cuenta de Trakt</string>
@@ -85,6 +86,9 @@
   <string name="button_label_edit_list">Editar tu lista %s</string>
   <string name="button_label_edit_mode">Modo de edición</string>
   <string name="button_label_edit_note">Editar nota</string>
+  <string name="button_label_episode_type_all">Mostrar todos los lanzamientos</string>
+  <string name="button_label_episode_type_finales">Mostrar solo finales</string>
+  <string name="button_label_episode_type_premieres">Mostrar solo estrenos</string>
   <string name="button_label_exclude_option">Excluir %s</string>
   <string name="button_label_exit_edit_mode">Salir del modo de edición</string>
   <string name="button_label_expand_category">Expandir %s</string>
@@ -288,6 +292,7 @@
   <string name="button_plex_toggle_scrobble">Scrobble</string>
   <string name="button_plex_toggle_watched">Visto</string>
   <string name="button_plex_undo_sync">Deshacer</string>
+  <string name="button_subtitle_cover_image_selected">Portada actual</string>
   <string name="button_text_activity_ratings">Calificaciones</string>
   <string name="button_text_activity_reviews">Reseñas</string>
   <string name="button_text_add_note">Añadir nota</string>
@@ -337,6 +342,9 @@
   <string name="button_text_edit_comment">Editar</string>
   <string name="button_text_edit_list">Editar</string>
   <string name="button_text_edit_note">Editar</string>
+  <string name="button_text_episode_type_all">Todos</string>
+  <string name="button_text_episode_type_finales">Finales</string>
+  <string name="button_text_episode_type_premieres">Estrenos</string>
   <string name="button_text_exit_edit_mode">Salir del modo de edición</string>
   <string name="button_text_find_movies">Encontrar películas</string>
   <string name="button_text_find_shows">Encontrar series</string>
@@ -1568,6 +1576,7 @@
   <string name="text_stats_delta_down">-%d</string>
   <string name="text_stats_delta_same">Sin cambios</string>
   <string name="text_stats_delta_up">+%d</string>
+  <string name="text_stats_ended">Finalizado</string>
   <string name="text_stats_episodes_count">%d episodios</string>
   <string name="text_stats_keep_it_going">¡Sigue así!</string>
   <string name="text_stats_movies_count">%d películas</string>

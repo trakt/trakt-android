@@ -67,6 +67,7 @@
   <string name="button_label_connect_streaming_service">Csatlakozás a(z) %s szolgáltatáshoz</string>
   <string name="button_label_copied">Másolva</string>
   <string name="button_label_copy">Másolás</string>
+  <string name="button_label_cover_image_selected">A(z) \"%s\" a borítóképed.</string>
   <string name="button_label_create_app">Alkalmazás létrehozása</string>
   <string name="button_label_create_list">Lista létrehozása</string>
   <string name="button_label_delete_account">Trakt fiókod törlése</string>
@@ -85,6 +86,9 @@
   <string name="button_label_edit_list">Listád szerkesztése: %s</string>
   <string name="button_label_edit_mode">Szerkesztési mód</string>
   <string name="button_label_edit_note">Jegyzet szerkesztése</string>
+  <string name="button_label_episode_type_all">Összes megjelenés mutatása</string>
+  <string name="button_label_episode_type_finales">Csak a finálék mutatása</string>
+  <string name="button_label_episode_type_premieres">Csak a premierek mutatása</string>
   <string name="button_label_exclude_option">%s kizárása</string>
   <string name="button_label_exit_edit_mode">Szerkesztési módból kilépés</string>
   <string name="button_label_expand_category">%s kibontása</string>
@@ -288,6 +292,7 @@
   <string name="button_plex_toggle_scrobble">Scrobble</string>
   <string name="button_plex_toggle_watched">Megnézve</string>
   <string name="button_plex_undo_sync">Visszavonás</string>
+  <string name="button_subtitle_cover_image_selected">Jelenlegi borító</string>
   <string name="button_text_activity_ratings">Értékelések</string>
   <string name="button_text_activity_reviews">Értékelések</string>
   <string name="button_text_add_note">Jegyzet hozzáadása</string>
@@ -337,6 +342,9 @@
   <string name="button_text_edit_comment">Szerkesztés</string>
   <string name="button_text_edit_list">Szerkesztés</string>
   <string name="button_text_edit_note">Szerkesztés</string>
+  <string name="button_text_episode_type_all">Összes</string>
+  <string name="button_text_episode_type_finales">Finálék</string>
+  <string name="button_text_episode_type_premieres">Premierek</string>
   <string name="button_text_exit_edit_mode">Szerkesztési módból kilépés</string>
   <string name="button_text_find_movies">Filmek keresése</string>
   <string name="button_text_find_shows">Sorozatok keresése</string>
@@ -1568,6 +1576,7 @@
   <string name="text_stats_delta_down">-%d</string>
   <string name="text_stats_delta_same">Nincs változás</string>
   <string name="text_stats_delta_up">+%d</string>
+  <string name="text_stats_ended">Befejezett</string>
   <string name="text_stats_episodes_count">%d epizód</string>
   <string name="text_stats_keep_it_going">Csak így tovább!</string>
   <string name="text_stats_movies_count">%d film</string>

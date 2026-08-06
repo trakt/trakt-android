@@ -67,6 +67,7 @@
   <string name="button_label_connect_streaming_service">Connecta %s</string>
   <string name="button_label_copied">Copiat</string>
   <string name="button_label_copy">Copia</string>
+  <string name="button_label_cover_image_selected">\"%s\" és la teva imatge de portada.</string>
   <string name="button_label_create_app">Crea una aplicació</string>
   <string name="button_label_create_list">Crea llista</string>
   <string name="button_label_delete_account">Suprimeix el teu compte de Trakt</string>
@@ -85,6 +86,9 @@
   <string name="button_label_edit_list">Edita la teva llista %s</string>
   <string name="button_label_edit_mode">Mode d\'edició</string>
   <string name="button_label_edit_note">Edita la nota</string>
+  <string name="button_label_episode_type_all">Mostrar totes les estrenes</string>
+  <string name="button_label_episode_type_finales">Mostrar només els finals</string>
+  <string name="button_label_episode_type_premieres">Mostrar només les estrenes</string>
   <string name="button_label_exclude_option">Exclou %s</string>
   <string name="button_label_exit_edit_mode">Surt del mode d\'edició</string>
   <string name="button_label_expand_category">Expandeix %s</string>
@@ -288,6 +292,7 @@
   <string name="button_plex_toggle_scrobble">Scrobble</string>
   <string name="button_plex_toggle_watched">Vist</string>
   <string name="button_plex_undo_sync">Desfer</string>
+  <string name="button_subtitle_cover_image_selected">Portada actual</string>
   <string name="button_text_activity_ratings">Valoracions</string>
   <string name="button_text_activity_reviews">Ressenyes</string>
   <string name="button_text_add_note">Afegeix nota</string>
@@ -337,6 +342,9 @@
   <string name="button_text_edit_comment">Edita</string>
   <string name="button_text_edit_list">Edita</string>
   <string name="button_text_edit_note">Edita</string>
+  <string name="button_text_episode_type_all">Tots</string>
+  <string name="button_text_episode_type_finales">Finals</string>
+  <string name="button_text_episode_type_premieres">Estrenes</string>
   <string name="button_text_exit_edit_mode">Surt del mode d\'edició</string>
   <string name="button_text_find_movies">Troba pel·lícules</string>
   <string name="button_text_find_shows">Troba sèries</string>
@@ -1568,6 +1576,7 @@
   <string name="text_stats_delta_down">-%d</string>
   <string name="text_stats_delta_same">Sense canvis</string>
   <string name="text_stats_delta_up">+%d</string>
+  <string name="text_stats_ended">Finalitzat</string>
   <string name="text_stats_episodes_count">%d episodis</string>
   <string name="text_stats_keep_it_going">Que no pari!</string>
   <string name="text_stats_movies_count">%d pel·lícules</string>

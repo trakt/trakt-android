@@ -67,6 +67,7 @@
   <string name="button_label_connect_streaming_service">Connetti %s</string>
   <string name="button_label_copied">Copiato</string>
   <string name="button_label_copy">Copia</string>
+  <string name="button_label_cover_image_selected">\"%s\" è la tua immagine di copertina.</string>
   <string name="button_label_create_app">Crea applicazione</string>
   <string name="button_label_create_list">Crea lista</string>
   <string name="button_label_delete_account">Elimina il tuo account Trakt</string>
@@ -85,6 +86,9 @@
   <string name="button_label_edit_list">Modifica la tua lista %s</string>
   <string name="button_label_edit_mode">Modalità di modifica</string>
   <string name="button_label_edit_note">Modifica nota</string>
+  <string name="button_label_episode_type_all">Mostra tutte le uscite</string>
+  <string name="button_label_episode_type_finales">Mostra solo finali</string>
+  <string name="button_label_episode_type_premieres">Mostra solo anteprime</string>
   <string name="button_label_exclude_option">Escludi %s</string>
   <string name="button_label_exit_edit_mode">Esci dalla modalità di modifica</string>
   <string name="button_label_expand_category">Espandi %s</string>
@@ -288,6 +292,7 @@
   <string name="button_plex_toggle_scrobble">Scrobble</string>
   <string name="button_plex_toggle_watched">Visto</string>
   <string name="button_plex_undo_sync">Annulla</string>
+  <string name="button_subtitle_cover_image_selected">Copertina attuale</string>
   <string name="button_text_activity_ratings">Valutazioni</string>
   <string name="button_text_activity_reviews">Recensioni</string>
   <string name="button_text_add_note">Aggiungi nota</string>
@@ -337,6 +342,9 @@
   <string name="button_text_edit_comment">Modifica</string>
   <string name="button_text_edit_list">Modifica</string>
   <string name="button_text_edit_note">Modifica</string>
+  <string name="button_text_episode_type_all">Tutti</string>
+  <string name="button_text_episode_type_finales">Finali</string>
+  <string name="button_text_episode_type_premieres">Anteprime</string>
   <string name="button_text_exit_edit_mode">Esci dalla modalità di modifica</string>
   <string name="button_text_find_movies">Trova Film</string>
   <string name="button_text_find_shows">Trova Serie TV</string>
@@ -1568,6 +1576,7 @@
   <string name="text_stats_delta_down">-%d</string>
   <string name="text_stats_delta_same">Nessuna modifica</string>
   <string name="text_stats_delta_up">+%d</string>
+  <string name="text_stats_ended">Terminato</string>
   <string name="text_stats_episodes_count">%d episodi</string>
   <string name="text_stats_keep_it_going">Continua così!</string>
   <string name="text_stats_movies_count">%d film</string>
