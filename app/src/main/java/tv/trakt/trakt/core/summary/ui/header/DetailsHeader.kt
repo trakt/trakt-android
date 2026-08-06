@@ -288,7 +288,7 @@ internal fun DetailsHeader(
                     malEnabled = externalMalVisible,
                     modifier = Modifier
                         .padding(top = 16.dp)
-                        .onClick {
+                        .onClick(enabled = externalRatings != null) {
                             allRatingsVisible = true
                         },
                 )

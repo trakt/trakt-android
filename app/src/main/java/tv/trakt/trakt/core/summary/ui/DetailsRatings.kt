@@ -173,7 +173,6 @@ internal fun DetailsRatings(
                         grayFilter = grayFilter,
                         iconSpace = iconSpace,
                         imageModifier = Modifier.size(14.dp),
-//                    },
                     )
                 }
             }

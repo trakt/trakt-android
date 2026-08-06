@@ -26,6 +26,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -109,7 +110,6 @@ internal fun QualityOverTimeCard(
                         Modifier
                             .fillMaxWidth()
                             .horizontalScroll(rememberScrollState())
-                            .padding(horizontal = 3.dp)
                     }
                     else -> {
                         Modifier.fillMaxWidth()
@@ -119,7 +119,14 @@ internal fun QualityOverTimeCard(
                 QualityLineGraph(
                     seasons = seasons,
                     modifier = contentModifier
-                        .height(GraphHeight),
+                        .height(GraphHeight)
+                        .clip(
+                            RoundedCornerShape(
+                                bottomStart = 8.dp,
+                                bottomEnd = 8.dp,
+                            ),
+                        )
+                        .padding(horizontal = 3.dp),
                 )
 
                 Row(
@@ -205,92 +212,94 @@ private fun QualityLineGraph(
     val dotLabelStyle = TraktTheme.typography.cardTitle.copy(fontSize = 10.sp)
     val textMeasurer = rememberTextMeasurer()
 
-    Canvas(modifier = modifier) {
-        val ratings = seasons.map { it.rating.ratingPercent }
-        val minRating = ratings.min()
-        val maxRating = ratings.max()
-        val range = (maxRating - minRating).coerceAtLeast(1)
+    if (seasons.size >= 2) {
+        Canvas(modifier = modifier) {
+            val ratings = seasons.map { it.rating.ratingPercent }
+            val minRating = ratings.min()
+            val maxRating = ratings.max()
+            val range = (maxRating - minRating).coerceAtLeast(1)
 
-        val topPad = 20.dp.toPx()
-        val lineSpan = size.height * LINE_SPAN_FRACTION
+            val topPad = 20.dp.toPx()
+            val lineSpan = size.height * LINE_SPAN_FRACTION
 
-        fun yFor(rating: Int): Float {
-            val normalized = (rating - minRating).toFloat() / range
-            return topPad + (1F - normalized) * lineSpan
-        }
-
-        val stepX = size.width / (ratings.size - 1)
-        val points = ratings.mapIndexed { index, rating ->
-            Offset(stepX * index, yFor(rating))
-        }
-
-        val linePath = Path().apply {
-            moveTo(points.first().x, points.first().y)
-            for (index in 1 until points.size) {
-                val previous = points[index - 1]
-                val current = points[index]
-                val midX = (previous.x + current.x) / 2
-                cubicTo(midX, previous.y, midX, current.y, current.x, current.y)
+            fun yFor(rating: Int): Float {
+                val normalized = (rating - minRating).toFloat() / range
+                return topPad + (1F - normalized) * lineSpan
             }
-        }
 
-        val fillPath = Path().apply {
-            addPath(linePath)
-            lineTo(size.width, size.height)
-            lineTo(0F, size.height)
-            close()
-        }
+            val stepX = size.width / (ratings.size - 1)
+            val points = ratings.mapIndexed { index, rating ->
+                Offset(stepX * index, yFor(rating))
+            }
 
-        drawPath(
-            path = fillPath,
-            brush = Brush.verticalGradient(
-                colors = listOf(
-                    Purple200.copy(alpha = 0.95F),
-                    Color.Transparent,
-                ),
-            ),
-        )
+            val linePath = Path().apply {
+                moveTo(points.first().x, points.first().y)
+                for (index in 1 until points.size) {
+                    val previous = points[index - 1]
+                    val current = points[index]
+                    val midX = (previous.x + current.x) / 2
+                    cubicTo(midX, previous.y, midX, current.y, current.x, current.y)
+                }
+            }
 
-        drawPath(
-            path = linePath,
-            color = Purple500,
-            style = Stroke(
-                width = 2.dp.toPx(),
-                cap = StrokeCap.Round,
-            ),
-        )
+            val fillPath = Path().apply {
+                addPath(linePath)
+                lineTo(size.width, size.height)
+                lineTo(0F, size.height)
+                close()
+            }
 
-        points.forEach { point ->
-            drawCircle(
-                color = Color.White,
-                radius = 2.dp.toPx(),
-                center = point,
-            )
-            drawCircle(
-                color = Color.White,
-                radius = 2.dp.toPx(),
-                center = point,
-                style = Stroke(width = 1.5.dp.toPx()),
-            )
-        }
-
-        // Percent value above each dot.
-        points.forEachIndexed { index, point ->
-            val label = textMeasurer.measure(
-                text = AnnotatedString("${ratings[index]}%"),
-                style = dotLabelStyle,
-            )
-
-            drawText(
-                textLayoutResult = label,
-                color = dotLabelColor,
-                topLeft = Offset(
-                    x = (point.x - label.size.width / 2F)
-                        .coerceIn(0F, size.width - label.size.width),
-                    y = (point.y - 6.dp.toPx() - label.size.height)
-                        .coerceAtLeast(0F),
+            drawPath(
+                path = fillPath,
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        Purple200.copy(alpha = 0.95F),
+                        Color.Transparent,
+                    ),
                 ),
             )
+
+            drawPath(
+                path = linePath,
+                color = Purple500,
+                style = Stroke(
+                    width = 2.dp.toPx(),
+                    cap = StrokeCap.Round,
+                ),
+            )
+
+            points.forEach { point ->
+                drawCircle(
+                    color = Color.White,
+                    radius = 2.dp.toPx(),
+                    center = point,
+                )
+                drawCircle(
+                    color = Color.White,
+                    radius = 2.dp.toPx(),
+                    center = point,
+                    style = Stroke(width = 1.5.dp.toPx()),
+                )
+            }
+
+            // Percent value above each dot.
+            points.forEachIndexed { index, point ->
+                val label = textMeasurer.measure(
+                    text = AnnotatedString("${ratings[index]}%"),
+                    style = dotLabelStyle,
+                )
+
+                drawText(
+                    textLayoutResult = label,
+                    color = dotLabelColor,
+                    topLeft = Offset(
+                        x = (point.x - label.size.width / 2F)
+                            .coerceIn(0F, size.width - label.size.width),
+                        y = (point.y - 6.dp.toPx() - label.size.height)
+                            .coerceAtLeast(0F),
+                    ),
+                )
+            }
         }
     }
 }
