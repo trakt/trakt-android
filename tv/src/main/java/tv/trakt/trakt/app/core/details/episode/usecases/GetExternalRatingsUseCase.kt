@@ -19,6 +19,7 @@ internal class GetExternalRatingsUseCase(
         )
 
         return ExternalRating(
+            trakt = ratings.trakt?.let(ExternalRating.TraktRating::fromDto),
             imdb = ExternalRating.ImdbRating(
                 rating = ratings.imdb?.rating ?: 0F,
                 votes = ratings.imdb?.votes ?: 0,
@@ -35,6 +36,12 @@ internal class GetExternalRatingsUseCase(
                 userState = ratings.rottenTomatoes?.userState,
                 link = ratings.rottenTomatoes?.link,
             ),
+            tmdb = ExternalRating.TmdbRating(
+                rating = ratings.tmdb?.rating ?: 0F,
+                votes = ratings.tmdb?.votes ?: 0,
+                link = ratings.tmdb?.link,
+            ),
+            mal = null,
         )
     }
 }

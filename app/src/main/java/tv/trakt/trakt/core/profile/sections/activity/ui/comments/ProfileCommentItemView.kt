@@ -250,22 +250,6 @@ private fun CommentHeader(
                 overflow = TextOverflow.Ellipsis,
             )
         }
-
-//        Row(
-//            verticalAlignment = Alignment.CenterVertically,
-//            horizontalArrangement = spacedBy(12.dp),
-//        ) {
-//            Icon(
-//                painter = painterResource(R.drawable.ic_trash),
-//                contentDescription = null,
-//                tint = TraktTheme.colors.textPrimary,
-//                modifier = Modifier
-//                    .size(20.dp)
-//                    .onClick {
-//                        onDeleteClick?.invoke()
-//                    },
-//            )
-//        }
     }
 }
 

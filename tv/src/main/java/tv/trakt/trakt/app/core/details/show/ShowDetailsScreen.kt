@@ -602,6 +602,7 @@ private fun MainScreenPreview() {
             state = ShowDetailsState(
                 showDetails = PreviewData.show1,
                 showRatings = ExternalRating(
+                    trakt = null,
                     imdb = ExternalRating.ImdbRating(
                         rating = 7.9F,
                         votes = 1_267_356,
@@ -617,6 +618,16 @@ private fun MainScreenPreview() {
                         userRating = 80,
                         userState = "spilled",
                         link = "https://www.rottentomatoes.com/m/some_show",
+                    ),
+                    tmdb = ExternalRating.TmdbRating(
+                        rating = 7.5F,
+                        votes = 123_456,
+                        link = "https://www.themoviedb.org/movie/12345",
+                    ),
+                    mal = ExternalRating.MalRating(
+                        rating = 8.2F,
+                        votes = 45_678,
+                        link = "https://myanimelist.net/anime/12345",
                     ),
                 ),
                 showVideos = listOf(

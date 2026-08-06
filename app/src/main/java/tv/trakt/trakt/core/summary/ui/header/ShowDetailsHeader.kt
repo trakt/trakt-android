@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -25,6 +26,7 @@ import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Images.Size
+import tv.trakt.trakt.common.model.MediaGenre.Anime
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.resources.R
@@ -49,8 +51,10 @@ internal fun DetailsHeader(
 ) {
     val context = LocalContext.current
     val isReleased = show.rememberReleased()
+    val isAnime = remember { show.genres.contains(Anime) }
 
     DetailsHeader(
+        showId = show.ids.trakt,
         title = show.title,
         titleTranslation = showTranslation?.title,
         status = show.status,
@@ -124,6 +128,7 @@ internal fun DetailsHeader(
         },
         externalRatingsVisible = true,
         externalRottenVisible = true,
+        externalMalVisible = isAnime,
         externalRatings = ratings,
         playsCount = null,
         episodesCount = show.airedEpisodes,
@@ -142,6 +147,16 @@ internal fun DetailsHeader(
                     packageId = "com.imdb.mobile",
                     packageName = "imdb",
                     uri = webImdbMediaUrl(it.value).toUri(),
+                )
+            }
+        },
+        onMalClick = { link ->
+            if (link.isNotBlank()) {
+                openExternalAppLink(
+                    context = context,
+                    packageId = "net.myanimelist.app",
+                    packageName = "mal",
+                    uri = link.toUri(),
                 )
             }
         },

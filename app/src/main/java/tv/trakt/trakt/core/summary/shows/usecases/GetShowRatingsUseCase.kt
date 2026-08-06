@@ -26,6 +26,17 @@ internal class GetShowRatingsUseCase(
                 userState = ratings.rottenTomatoes?.userState,
                 link = ratings.rottenTomatoes?.link,
             ),
+            tmdb = ExternalRating.TmdbRating(
+                rating = ratings.tmdb?.rating ?: 0F,
+                votes = ratings.tmdb?.votes ?: 0,
+                link = ratings.tmdb?.link,
+            ),
+            mal = ExternalRating.MalRating(
+                rating = ratings.mal?.rating ?: 0F,
+                votes = ratings.mal?.votes ?: 0,
+                link = ratings.mal?.link,
+            ),
+            trakt = ratings.trakt?.let(ExternalRating.TraktRating::fromDto),
         )
     }
 }

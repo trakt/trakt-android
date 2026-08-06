@@ -1,6 +1,5 @@
 package tv.trakt.trakt.app.core.details.movie.views.header
 
-import ExternalRatingsStrip
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
@@ -48,6 +47,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.core.details.movie.MovieDetailsState.CollectionState
+import tv.trakt.trakt.app.core.details.ui.ExternalRatingsStrip
 import tv.trakt.trakt.app.core.details.ui.PosterImage
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation

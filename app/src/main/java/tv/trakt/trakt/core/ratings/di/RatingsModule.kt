@@ -19,8 +19,11 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.ratings.DeleteRatingUseCase
 import tv.trakt.trakt.core.ratings.PostRatingUseCase
+import tv.trakt.trakt.core.ratings.allratings.AllRatingsViewModel
+import tv.trakt.trakt.core.ratings.allratings.usecases.GetSeasonRatingsUseCase
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.RatingsUpdatesStorage
 import tv.trakt.trakt.core.ratings.data.remote.RatingsApiClient
@@ -71,6 +74,15 @@ internal val ratingsModule = module {
             analytics = get(),
         )
     }
+
+    viewModel { (showId: TraktId?) ->
+        AllRatingsViewModel(
+            showId = showId,
+            getSeasonRatingsUseCase = get(),
+        )
+    }
+
+    factoryOf(::GetSeasonRatingsUseCase)
 
     factoryOf(::PostRatingUseCase)
 

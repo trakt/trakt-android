@@ -183,6 +183,7 @@ internal fun DetailsHeader(
         externalRatings = ratings,
         externalRatingsVisible = true,
         externalRottenVisible = false,
+        externalMalVisible = false,
         episodesCount = null,
         creditsCount = 0,
         playsCount = playsCount,
@@ -207,6 +208,7 @@ internal fun DetailsHeader(
                 uri = uri.toUri(),
             )
         },
+        onMalClick = {},
         onRottenClick = {},
         modifier = modifier,
     )

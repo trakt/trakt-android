@@ -17,6 +17,7 @@ import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowImage
 import org.openapitools.client.models.GetMoviesPeople200Response
 import org.openapitools.client.models.GetMoviesPeople200ResponseCastInnerPerson
 import org.openapitools.client.models.GetMoviesRatings200Response
+import org.openapitools.client.models.GetMoviesRatings200ResponseTrakt
 import org.openapitools.client.models.GetMoviesStats200Response
 import org.openapitools.client.models.GetMoviesTranslations200ResponseInner
 import org.openapitools.client.models.GetMoviesVideos200ResponseInner
@@ -137,6 +138,7 @@ typealias SyncHistoryEpisodeItemDto = GetUsersHistoryShows200ResponseInner
 typealias SyncHistoryItemDto = GetUsersHistoryAll200ResponseInner
 typealias SyncHistoryMovieItemDto = GetUsersHistoryMovies200ResponseInner
 typealias SyncLibraryMediaDto = GetSyncCollectionAll200ResponseInner
+typealias TraktRatingsDto = GetMoviesRatings200ResponseTrakt
 typealias TranslationDto = GetMoviesTranslations200ResponseInner
 typealias TrendingSearchDto = GetSearchTrending200ResponseInner
 typealias UserBlockedDto = GetUsersReactionsComments200ResponseInnerCommentUser
