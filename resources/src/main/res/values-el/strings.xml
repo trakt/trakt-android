@@ -67,6 +67,7 @@
   <string name="button_label_connect_streaming_service">Σύνδεση %s</string>
   <string name="button_label_copied">Αντιγράφηκε</string>
   <string name="button_label_copy">Αντιγραφή</string>
+  <string name="button_label_cover_image_selected">Το \"%s\" είναι η εικόνα εξωφύλλου σας.</string>
   <string name="button_label_create_app">Δημιουργία εφαρμογής</string>
   <string name="button_label_create_list">Δημιουργία λίστας</string>
   <string name="button_label_delete_account">Διαγραφή του λογαριασμού σας Trakt</string>
@@ -85,6 +86,9 @@
   <string name="button_label_edit_list">Επεξεργασία της λίστας σας %s</string>
   <string name="button_label_edit_mode">Λειτουργία επεξεργασίας</string>
   <string name="button_label_edit_note">Επεξεργασία σημείωσης</string>
+  <string name="button_label_episode_type_all">Εμφάνιση όλων των κυκλοφοριών</string>
+  <string name="button_label_episode_type_finales">Εμφάνιση μόνο φινάλε</string>
+  <string name="button_label_episode_type_premieres">Εμφάνιση μόνο πρεμιέρων</string>
   <string name="button_label_exclude_option">Εξαίρεση %s</string>
   <string name="button_label_exit_edit_mode">Έξοδος από λειτουργία επεξεργασίας</string>
   <string name="button_label_expand_category">Ανάπτυξη %s</string>
@@ -288,6 +292,7 @@
   <string name="button_plex_toggle_scrobble">Scrobble</string>
   <string name="button_plex_toggle_watched">Παρακολουθήθηκε</string>
   <string name="button_plex_undo_sync">Αναίρεση</string>
+  <string name="button_subtitle_cover_image_selected">Τρέχον εξώφυλλο</string>
   <string name="button_text_activity_ratings">Αξιολογήσεις</string>
   <string name="button_text_activity_reviews">Κριτικές</string>
   <string name="button_text_add_note">Προσθήκη Σημείωσης</string>
@@ -337,6 +342,9 @@
   <string name="button_text_edit_comment">Επεξεργασία</string>
   <string name="button_text_edit_list">Επεξεργασία</string>
   <string name="button_text_edit_note">Επεξεργασία</string>
+  <string name="button_text_episode_type_all">Όλα</string>
+  <string name="button_text_episode_type_finales">Φινάλε</string>
+  <string name="button_text_episode_type_premieres">Πρεμιέρες</string>
   <string name="button_text_exit_edit_mode">Έξοδος από λειτουργία επεξεργασίας</string>
   <string name="button_text_find_movies">Βρείτε Ταινίες</string>
   <string name="button_text_find_shows">Βρείτε Σειρές</string>
@@ -1505,6 +1513,7 @@
   <string name="text_rating_prompt_8">Δώστε του μια βαθμολογία.</string>
   <string name="text_ratings_no_data">Δεν υπάρχουν ακόμη αξιολογήσεις.</string>
   <string name="text_ratings_season_extremes">Κορυφή %1$s · %2$s% · Χαμηλό %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes_android">Κορυφή Σ%1$s (%2$s) • Χαμηλό Σ%3$s (%4$s)</string>
   <string name="text_ratings_season_point">%1$s · %2$s%</string>
   <string name="text_ratings_votes">%s ψήφοι</string>
   <string name="text_raw_export">Ακατέργαστη εξαγωγή</string>
@@ -1568,6 +1577,7 @@
   <string name="text_stats_delta_down">-%d</string>
   <string name="text_stats_delta_same">Χωρίς αλλαγή</string>
   <string name="text_stats_delta_up">+%d</string>
+  <string name="text_stats_ended">Ολοκληρώθηκε</string>
   <string name="text_stats_episodes_count">%d επεισόδια</string>
   <string name="text_stats_keep_it_going">Συνεχίστε!</string>
   <string name="text_stats_movies_count">%d ταινίες</string>

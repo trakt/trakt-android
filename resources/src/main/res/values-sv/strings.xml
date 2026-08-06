@@ -67,6 +67,7 @@
   <string name="button_label_connect_streaming_service">Anslut %s</string>
   <string name="button_label_copied">Kopierat</string>
   <string name="button_label_copy">Kopiera</string>
+  <string name="button_label_cover_image_selected">\"%s\" är din omslagsbild.</string>
   <string name="button_label_create_app">Skapa applikation</string>
   <string name="button_label_create_list">Skapa lista</string>
   <string name="button_label_delete_account">Ta bort ditt Trakt-konto</string>
@@ -85,6 +86,9 @@
   <string name="button_label_edit_list">Redigera din lista %s</string>
   <string name="button_label_edit_mode">Redigeringsläge</string>
   <string name="button_label_edit_note">Redigera anteckning</string>
+  <string name="button_label_episode_type_all">Visa alla släpp</string>
+  <string name="button_label_episode_type_finales">Visa endast finaler</string>
+  <string name="button_label_episode_type_premieres">Visa endast premiärer</string>
   <string name="button_label_exclude_option">Exkludera %s</string>
   <string name="button_label_exit_edit_mode">Avsluta redigeringsläge</string>
   <string name="button_label_expand_category">Visa %s</string>
@@ -288,6 +292,7 @@
   <string name="button_plex_toggle_scrobble">Scrobble</string>
   <string name="button_plex_toggle_watched">Sedd</string>
   <string name="button_plex_undo_sync">Ångra</string>
+  <string name="button_subtitle_cover_image_selected">Nuvarande omslag</string>
   <string name="button_text_activity_ratings">Betyg</string>
   <string name="button_text_activity_reviews">Recensioner</string>
   <string name="button_text_add_note">Lägg till anteckning</string>
@@ -337,6 +342,9 @@
   <string name="button_text_edit_comment">Redigera</string>
   <string name="button_text_edit_list">Redigera</string>
   <string name="button_text_edit_note">Redigera</string>
+  <string name="button_text_episode_type_all">Alla</string>
+  <string name="button_text_episode_type_finales">Finaler</string>
+  <string name="button_text_episode_type_premieres">Premiärer</string>
   <string name="button_text_exit_edit_mode">Avsluta redigeringsläge</string>
   <string name="button_text_find_movies">Hitta filmer</string>
   <string name="button_text_find_shows">Hitta serier</string>
@@ -1505,6 +1513,7 @@
   <string name="text_rating_prompt_8">Ge den ett betyg.</string>
   <string name="text_ratings_no_data">Inga betyg ännu.</string>
   <string name="text_ratings_season_extremes">Högsta %1$s · %2$s% · Lägsta %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes_android">Högsta S%1$s (%2$s) · Lägsta S%3$s (%4$s)</string>
   <string name="text_ratings_season_point">%1$s · %2$s%</string>
   <string name="text_ratings_votes">%s röster</string>
   <string name="text_raw_export">Rå export</string>
@@ -1568,6 +1577,7 @@
   <string name="text_stats_delta_down">-%d</string>
   <string name="text_stats_delta_same">Ingen ändring</string>
   <string name="text_stats_delta_up">+%d</string>
+  <string name="text_stats_ended">Avslutad</string>
   <string name="text_stats_episodes_count">%d avsnitt</string>
   <string name="text_stats_keep_it_going">Fortsätt så!</string>
   <string name="text_stats_movies_count">%d filmer</string>

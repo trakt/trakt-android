@@ -67,6 +67,7 @@
   <string name="button_label_connect_streaming_service">连接 %s</string>
   <string name="button_label_copied">已复制</string>
   <string name="button_label_copy">复制</string>
+  <string name="button_label_cover_image_selected">“%s”是你的封面图片。</string>
   <string name="button_label_create_app">创建应用程序</string>
   <string name="button_label_create_list">创建列表</string>
   <string name="button_label_delete_account">删除您的Trakt帐户</string>
@@ -85,6 +86,9 @@
   <string name="button_label_edit_list">编辑你的列表 %s</string>
   <string name="button_label_edit_mode">编辑模式</string>
   <string name="button_label_edit_note">编辑笔记</string>
+  <string name="button_label_episode_type_all">显示所有剧集</string>
+  <string name="button_label_episode_type_finales">仅显示结局</string>
+  <string name="button_label_episode_type_premieres">仅显示首映</string>
   <string name="button_label_exclude_option">排除 %s</string>
   <string name="button_label_exit_edit_mode">退出编辑模式</string>
   <string name="button_label_expand_category">展开 %s</string>
@@ -288,6 +292,7 @@
   <string name="button_plex_toggle_scrobble">记录播放</string>
   <string name="button_plex_toggle_watched">已观看</string>
   <string name="button_plex_undo_sync">撤销</string>
+  <string name="button_subtitle_cover_image_selected">当前封面</string>
   <string name="button_text_activity_ratings">评分</string>
   <string name="button_text_activity_reviews">评论</string>
   <string name="button_text_add_note">添加笔记</string>
@@ -337,6 +342,9 @@
   <string name="button_text_edit_comment">编辑</string>
   <string name="button_text_edit_list">编辑</string>
   <string name="button_text_edit_note">编辑</string>
+  <string name="button_text_episode_type_all">全部</string>
+  <string name="button_text_episode_type_finales">结局</string>
+  <string name="button_text_episode_type_premieres">首映</string>
   <string name="button_text_exit_edit_mode">退出编辑模式</string>
   <string name="button_text_find_movies">查找电影</string>
   <string name="button_text_find_shows">查找剧集</string>
@@ -1505,6 +1513,7 @@
   <string name="text_rating_prompt_8">给它打个分。</string>
   <string name="text_ratings_no_data">暂无评分。</string>
   <string name="text_ratings_season_extremes">最高 %1$s · %2$s% · 最低 %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes_android">最高 S%1$s (%2$s)  •  最低 S%3$s (%4$s)</string>
   <string name="text_ratings_season_point">%1$s · %2$s%</string>
   <string name="text_ratings_votes">%s 票</string>
   <string name="text_raw_export">原始导出</string>
@@ -1568,6 +1577,7 @@
   <string name="text_stats_delta_down">-%d</string>
   <string name="text_stats_delta_same">无变化</string>
   <string name="text_stats_delta_up">+%d</string>
+  <string name="text_stats_ended">已完结</string>
   <string name="text_stats_episodes_count">%d 集</string>
   <string name="text_stats_keep_it_going">继续保持！</string>
   <string name="text_stats_movies_count">%d 部电影</string>

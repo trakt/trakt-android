@@ -67,6 +67,7 @@
   <string name="button_label_connect_streaming_service">اتصال %s</string>
   <string name="button_label_copied">کپی شد</string>
   <string name="button_label_copy">کپی</string>
+  <string name="button_label_cover_image_selected">\"%s\" تصویر کاور شما است.</string>
   <string name="button_label_create_app">ایجاد برنامه</string>
   <string name="button_label_create_list">ایجاد لیست</string>
   <string name="button_label_delete_account">حساب Trakt خود را حذف کنید</string>
@@ -85,6 +86,9 @@
   <string name="button_label_edit_list">ویرایش لیست شما %s</string>
   <string name="button_label_edit_mode">حالت ویرایش</string>
   <string name="button_label_edit_note">ویرایش یادداشت</string>
+  <string name="button_label_episode_type_all">نمایش همه انتشارها</string>
+  <string name="button_label_episode_type_finales">نمایش فقط قسمت‌های پایانی</string>
+  <string name="button_label_episode_type_premieres">نمایش فقط اولین نمایش‌ها</string>
   <string name="button_label_exclude_option">حذف %s</string>
   <string name="button_label_exit_edit_mode">خروج از حالت ویرایش</string>
   <string name="button_label_expand_category">گسترش %s</string>
@@ -288,6 +292,7 @@
   <string name="button_plex_toggle_scrobble">اسکرابل</string>
   <string name="button_plex_toggle_watched">تماشا شده</string>
   <string name="button_plex_undo_sync">لغو</string>
+  <string name="button_subtitle_cover_image_selected">کاور فعلی</string>
   <string name="button_text_activity_ratings">امتیازات</string>
   <string name="button_text_activity_reviews">بازخوردها</string>
   <string name="button_text_add_note">افزودن یادداشت</string>
@@ -337,6 +342,9 @@
   <string name="button_text_edit_comment">ویرایش</string>
   <string name="button_text_edit_list">ویرایش</string>
   <string name="button_text_edit_note">ویرایش</string>
+  <string name="button_text_episode_type_all">همه</string>
+  <string name="button_text_episode_type_finales">قسمت‌های پایانی</string>
+  <string name="button_text_episode_type_premieres">اولین نمایش‌ها</string>
   <string name="button_text_exit_edit_mode">خروج از حالت ویرایش</string>
   <string name="button_text_find_movies">یافتن فیلم‌ها</string>
   <string name="button_text_find_shows">یافتن برنامه‌ها</string>
@@ -1505,6 +1513,7 @@
   <string name="text_rating_prompt_8">به آن نمره دهید.</string>
   <string name="text_ratings_no_data">هنوز هیچ امتیازی وجود ندارد.</string>
   <string name="text_ratings_season_extremes">اوج %1$s · %2$s% · کمترین %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes_android">اوج S%1$s (%2$s) • کمترین S%3$s (%4$s)</string>
   <string name="text_ratings_season_point">%1$s · %2$s%</string>
   <string name="text_ratings_votes">%s رای</string>
   <string name="text_raw_export">خروجی خام</string>
@@ -1568,6 +1577,7 @@
   <string name="text_stats_delta_down">-%d</string>
   <string name="text_stats_delta_same">بدون تغییر</string>
   <string name="text_stats_delta_up">+%d</string>
+  <string name="text_stats_ended">پایان یافته</string>
   <string name="text_stats_episodes_count">%d اپیزود</string>
   <string name="text_stats_keep_it_going">ادامه دهید!</string>
   <string name="text_stats_movies_count">%d فیلم</string>

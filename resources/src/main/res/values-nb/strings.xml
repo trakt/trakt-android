@@ -67,6 +67,7 @@
   <string name="button_label_connect_streaming_service">Koble til %s</string>
   <string name="button_label_copied">Kopiert</string>
   <string name="button_label_copy">Kopier</string>
+  <string name="button_label_cover_image_selected">\"%s\" er ditt forsidebilde.</string>
   <string name="button_label_create_app">Opprett applikasjon</string>
   <string name="button_label_create_list">Opprett liste</string>
   <string name="button_label_delete_account">Slett Trakt-kontoen din</string>
@@ -85,6 +86,9 @@
   <string name="button_label_edit_list">Rediger listen din %s</string>
   <string name="button_label_edit_mode">Redigeringsmodus</string>
   <string name="button_label_edit_note">Rediger notat</string>
+  <string name="button_label_episode_type_all">Vis alle utgivelser</string>
+  <string name="button_label_episode_type_finales">Vis kun finaler</string>
+  <string name="button_label_episode_type_premieres">Vis kun premierer</string>
   <string name="button_label_exclude_option">Ekskluder %s</string>
   <string name="button_label_exit_edit_mode">Avslutt redigeringsmodus</string>
   <string name="button_label_expand_category">Utvid %s</string>
@@ -288,6 +292,7 @@
   <string name="button_plex_toggle_scrobble">Skrobble</string>
   <string name="button_plex_toggle_watched">Sett</string>
   <string name="button_plex_undo_sync">Angre</string>
+  <string name="button_subtitle_cover_image_selected">Nåværende omslag</string>
   <string name="button_text_activity_ratings">Vurderinger</string>
   <string name="button_text_activity_reviews">Anmeldelser</string>
   <string name="button_text_add_note">Legg til notat</string>
@@ -337,6 +342,9 @@
   <string name="button_text_edit_comment">Rediger</string>
   <string name="button_text_edit_list">Rediger</string>
   <string name="button_text_edit_note">Rediger</string>
+  <string name="button_text_episode_type_all">Alle</string>
+  <string name="button_text_episode_type_finales">Finaler</string>
+  <string name="button_text_episode_type_premieres">Premierer</string>
   <string name="button_text_exit_edit_mode">Avslutt redigeringsmodus</string>
   <string name="button_text_find_movies">Finn filmer</string>
   <string name="button_text_find_shows">Finn serier</string>
@@ -1505,6 +1513,7 @@
   <string name="text_rating_prompt_8">Gi den en karakter.</string>
   <string name="text_ratings_no_data">Ingen vurderinger ennå.</string>
   <string name="text_ratings_season_extremes">Høyest %1$s · %2$s% · Lavest %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes_android">Høyest S%1$s (%2$s) • Lavest S%3$s (%4$s)</string>
   <string name="text_ratings_season_point">%1$s · %2$s%</string>
   <string name="text_ratings_votes">%s stemmer</string>
   <string name="text_raw_export">Råeksport</string>
@@ -1568,6 +1577,7 @@
   <string name="text_stats_delta_down">-%d</string>
   <string name="text_stats_delta_same">Ingen endring</string>
   <string name="text_stats_delta_up">+%d</string>
+  <string name="text_stats_ended">Avsluttet</string>
   <string name="text_stats_episodes_count">%d episoder</string>
   <string name="text_stats_keep_it_going">Fortsett med det!</string>
   <string name="text_stats_movies_count">%d filmer</string>
