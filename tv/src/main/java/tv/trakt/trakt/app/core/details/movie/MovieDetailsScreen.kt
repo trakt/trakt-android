@@ -547,6 +547,7 @@ private fun Preview() {
             state = MovieDetailsState(
                 movieDetails = PreviewData.movie1,
                 movieRatings = ExternalRating(
+                    trakt = null,
                     imdb = ExternalRating.ImdbRating(
                         rating = 7.9F,
                         votes = 1_267_356,
@@ -562,6 +563,16 @@ private fun Preview() {
                         userRating = 80,
                         userState = "spilled",
                         link = "https://www.rottentomatoes.com/m/some_movie",
+                    ),
+                    tmdb = ExternalRating.TmdbRating(
+                        rating = 7.5F,
+                        votes = 123_456,
+                        link = "https://www.themoviedb.org/movie/12345",
+                    ),
+                    mal = ExternalRating.MalRating(
+                        rating = 8.2F,
+                        votes = 45_678,
+                        link = "https://myanimelist.net/anime/12345",
                     ),
                 ),
                 movieVideos = listOf(

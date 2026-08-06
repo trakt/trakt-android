@@ -1,3 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="text_ratings_season_extremes_android">Peak S%1$s (%2$s)  •  Low S%3$s (%4$s)</string>
 </resources>

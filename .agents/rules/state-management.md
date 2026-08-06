@@ -90,6 +90,45 @@ Qualifies: sheet visibility, scroll position, dropdown expanded state, text fiel
 
 Use `rememberSaveable` when state survives config change but not screen leaving back stack.
 
+## Bottom sheets
+
+Sheets wrap `TraktBottomSheet` (`app/.../ui/components/TraktBottomSheet.kt`) and follow the
+`StreaksSheet` / `AllRatingsSheet` pattern: caller owns a `visible` boolean
+(`remember { mutableStateOf(false) }`), sheet composable takes `visible` + `onDismiss` and renders
+only when visible.
+
+Sheet state comes from `rememberBottomSheetState` with explicit values:
+
+```kotlin
+@Composable
+internal fun FeatureSheet(
+    state: SheetState = rememberBottomSheetState(
+        initialValue = Hidden,
+        enabledValues = setOf(Hidden, Expanded),
+    ),
+    visible: Boolean,
+    onDismiss: () -> Unit,
+) {
+    if (visible) {
+        TraktBottomSheet(
+            sheetState = state,
+            onDismiss = onDismiss,
+        ) { /* content */ }
+    }
+}
+```
+
+Rules:
+
+- **`rememberBottomSheetState(initialValue = Hidden, enabledValues = setOf(Hidden, Expanded))`**
+  is the standard for new sheets. Do **not** use
+  `rememberModalBottomSheetState(skipPartiallyExpanded = true)` in new code — legacy call sites
+  migrate as they're touched.
+- Sheet content lives in a separate stateless `<Feature>View` composable (previewable); the sheet
+  file only hosts `TraktBottomSheet` wiring.
+- Sheet visibility is transient UI state — `remember { mutableStateOf(false) }` at the caller, not
+  in the ViewModel.
+
 ## CompositionLocal
 
 App-wide ambient UI state already wired:

@@ -181,6 +181,7 @@
     <package android:name="com.imdb.mobile" />
     <package android:name="com.justwatch.justwatch" />
     <package android:name="com.rottentomatoes.android" />
+    <package android:name="net.myanimelist.app" />
 
     <!-- Misc. -->
     <package android:name="com.google.android.apps.translate" />

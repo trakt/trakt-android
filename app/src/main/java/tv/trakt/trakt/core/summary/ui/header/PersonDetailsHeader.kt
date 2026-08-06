@@ -109,6 +109,7 @@ internal fun DetailsHeader(
         externalRatings = null,
         externalRatingsVisible = false,
         externalRottenVisible = false,
+        externalMalVisible = false,
         episodesCount = null,
         playsCount = null,
         certification = null,
@@ -120,6 +121,7 @@ internal fun DetailsHeader(
         personImdb = person.ids.imdb,
         onImdbClick = {},
         onRottenClick = {},
+        onMalClick = {},
         modifier = modifier,
     )
 }

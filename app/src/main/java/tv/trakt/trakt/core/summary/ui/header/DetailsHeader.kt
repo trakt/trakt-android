@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package tv.trakt.trakt.core.summary.ui.header
 
 import androidx.compose.animation.Crossfade
@@ -14,9 +16,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.TextAutoSize
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -33,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.Config.webImdbPersonUrl
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -44,7 +52,9 @@ import tv.trakt.trakt.common.model.MediaGenre
 import tv.trakt.trakt.common.model.MediaStatus
 import tv.trakt.trakt.common.model.MediaStatus.Canceled
 import tv.trakt.trakt.common.model.MediaStatus.Ended
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.core.ratings.allratings.AllRatingsSheet
 import tv.trakt.trakt.core.summary.ui.DetailsRatings
 import tv.trakt.trakt.core.summary.ui.header.poster.DetailsHeaderPoster
 import tv.trakt.trakt.core.summary.ui.header.poster.DetailsHeaderPosterHorizontal
@@ -71,8 +81,10 @@ internal fun DetailsHeader(
     accentColor: Color?,
     traktRatings: Int?,
     externalRatings: ExternalRating?,
+    showId: TraktId? = null,
     externalRatingsVisible: Boolean,
     externalRottenVisible: Boolean,
+    externalMalVisible: Boolean,
     episodesCount: Int?,
     creditsCount: Int?,
     playsCount: Int?,
@@ -82,6 +94,7 @@ internal fun DetailsHeader(
     loading: Boolean,
     extraRightColumn: @Composable (() -> Unit)? = null,
     onImdbClick: () -> Unit,
+    onMalClick: (link: String) -> Unit,
     onRottenClick: (link: String) -> Unit,
     onShareClick: () -> Unit,
     onShareImageClick: () -> Unit,
@@ -267,14 +280,30 @@ internal fun DetailsHeader(
             }
 
             if (externalRatingsVisible) {
+                var allRatingsVisible by remember { mutableStateOf(false) }
                 DetailsRatings(
                     traktRatings = traktRatings,
                     externalRatings = externalRatings,
                     rottenEnabled = externalRottenVisible,
+                    malEnabled = externalMalVisible,
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .onClick {
+                            allRatingsVisible = true
+                        },
+                )
+
+                AllRatingsSheet(
+                    visible = allRatingsVisible,
+                    ratings = externalRatings,
+                    showId = showId,
+                    malEnabled = externalMalVisible,
                     onImdbClick = onImdbClick,
                     onRottenClick = onRottenClick,
-                    modifier = Modifier
-                        .padding(top = 16.dp),
+                    onMalClick = onMalClick,
+                    onDismiss = {
+                        allRatingsVisible = false
+                    },
                 )
             } else {
                 Spacer(Modifier.padding(top = 4.dp))
@@ -457,7 +486,13 @@ private fun Preview() {
             watching = false,
             externalRatingsVisible = true,
             externalRottenVisible = true,
+            externalMalVisible = true,
             externalRatings = ExternalRating(
+                trakt = ExternalRating.TraktRating(
+                    rating = 7.2F,
+                    votes = 12345,
+                    distribution = persistentMapOf(),
+                ),
                 imdb = ExternalRating.ImdbRating(
                     rating = 7.5F,
                     votes = 12345,
@@ -474,11 +509,22 @@ private fun Preview() {
                     userState = "upright",
                     link = "https://www.rottentomatoes.com/m/sample_movie",
                 ),
+                tmdb = ExternalRating.TmdbRating(
+                    rating = 8.2F,
+                    votes = 45678,
+                    link = "https://www.themoviedb.org/movie/12345",
+                ),
+                mal = ExternalRating.MalRating(
+                    rating = 8.5F,
+                    votes = 7890,
+                    link = "https://myanimelist.net/anime/12345",
+                ),
             ),
             onShareClick = {},
             onShareImageClick = {},
             onBackClick = {},
             onImdbClick = {},
+            onMalClick = {},
             onRottenClick = {},
             onInfoClick = {},
         )
@@ -528,7 +574,13 @@ private fun Preview2() {
             watching = false,
             externalRatingsVisible = true,
             externalRottenVisible = true,
+            externalMalVisible = true,
             externalRatings = ExternalRating(
+                trakt = ExternalRating.TraktRating(
+                    rating = 7.2F,
+                    votes = 12345,
+                    distribution = persistentMapOf(),
+                ),
                 imdb = ExternalRating.ImdbRating(
                     rating = 7.5F,
                     votes = 12345,
@@ -545,11 +597,22 @@ private fun Preview2() {
                     userState = "upright",
                     link = "https://www.rottentomatoes.com/m/sample_movie",
                 ),
+                tmdb = ExternalRating.TmdbRating(
+                    rating = 8.2F,
+                    votes = 45678,
+                    link = "https://www.themoviedb.org/movie/12345",
+                ),
+                mal = ExternalRating.MalRating(
+                    rating = 8.5F,
+                    votes = 7890,
+                    link = "https://myanimelist.net/anime/12345",
+                ),
             ),
             onShareClick = {},
             onShareImageClick = {},
             onBackClick = {},
             onImdbClick = {},
+            onMalClick = {},
             onRottenClick = {},
             onInfoClick = {},
         )

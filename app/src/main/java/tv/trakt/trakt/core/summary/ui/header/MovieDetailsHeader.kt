@@ -25,6 +25,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaGenre.Anime
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.resources.R
@@ -49,6 +50,7 @@ internal fun DetailsHeader(
 ) {
     val context = LocalContext.current
     val isReleased = remember { movie.isReleased }
+    val isAnime = remember { movie.genres.contains(Anime) }
 
     DetailsHeader(
         title = movie.title,
@@ -123,6 +125,7 @@ internal fun DetailsHeader(
         },
         externalRatingsVisible = true,
         externalRottenVisible = true,
+        externalMalVisible = isAnime,
         externalRatings = ratings,
         creditsCount = creditsCount,
         playsCount = playsCount,
@@ -141,6 +144,16 @@ internal fun DetailsHeader(
                     packageId = "com.imdb.mobile",
                     packageName = "imdb",
                     uri = webImdbMediaUrl(it.value).toUri(),
+                )
+            }
+        },
+        onMalClick = { link ->
+            if (link.isNotBlank()) {
+                openExternalAppLink(
+                    context = context,
+                    packageId = "net.myanimelist.app",
+                    packageName = "mal",
+                    uri = link.toUri(),
                 )
             }
         },
