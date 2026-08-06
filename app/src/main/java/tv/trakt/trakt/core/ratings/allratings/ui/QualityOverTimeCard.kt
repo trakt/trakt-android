@@ -47,7 +47,7 @@ import tv.trakt.trakt.common.model.Rating
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.toSlugId
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.common.ui.theme.colors.Purple100
+import tv.trakt.trakt.common.ui.theme.colors.Purple200
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -245,8 +245,8 @@ private fun QualityLineGraph(
             path = fillPath,
             brush = Brush.verticalGradient(
                 colors = listOf(
-                    Purple100.copy(alpha = 0.8F),
-                    Purple500.copy(alpha = 0.15F),
+                    Purple200.copy(alpha = 0.95F),
+                    Color.Transparent,
                 ),
             ),
         )
