@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
+import java.text.NumberFormat
 import java.util.Locale
 import kotlin.math.abs
 
@@ -74,6 +75,19 @@ fun Long.durationFormat(
     val format = MeasureFormat.getInstance(locale, FormatWidth.NARROW)
     val formatted = format.formatMeasures(*measures.toTypedArray()).capitalize()
     return if (this < 0) "-$formatted" else formatted
+}
+
+/**
+ * Formats a whole-number percentage (e.g. 94) as a locale-aware percent
+ * string (e.g. "94%" in English, "94 %" in German), rather than
+ * concatenating a literal "%" that assumes English's no-space convention.
+ */
+@Composable
+fun Int.rememberPercentFormat(): String {
+    val appLocale = remember(LocalConfiguration.current) {
+        AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+    }
+    return NumberFormat.getPercentInstance(appLocale).format(this / 100.0)
 }
 
 /**

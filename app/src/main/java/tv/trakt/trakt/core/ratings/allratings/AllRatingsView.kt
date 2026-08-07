@@ -97,6 +97,7 @@ private fun AllRatingsContent(
         modifier = modifier
             .verticalScroll(
                 state = rememberScrollState(),
+                overscrollEffect = null,
             ),
     ) {
         TraktHeader(

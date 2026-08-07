@@ -1512,9 +1512,9 @@
   <string name="text_rating_prompt_7">Rate your experience.</string>
   <string name="text_rating_prompt_8">Give it a grade.</string>
   <string name="text_ratings_no_data">No ratings yet.</string>
-  <string name="text_ratings_season_extremes">Peak %1$s · %2$s% · Low %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes">Peak %1$s · %2$s · Low %3$s · %4$s</string>
   <string name="text_ratings_season_extremes_android">Peak S%1$s (%2$s)  •  Low S%3$s (%4$s)</string>
-  <string name="text_ratings_season_point">%1$s · %2$s%</string>
+  <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s votes</string>
   <string name="text_raw_export">Raw export</string>
   <string name="text_reconnect_streaming_warning">Please reconnect %s below.</string>

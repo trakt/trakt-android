@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.helpers.extensions.rememberPercentFormat
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Rating
 import tv.trakt.trakt.common.model.Season
@@ -84,9 +85,9 @@ internal fun QualityOverTimeCard(
             text = stringResource(
                 R.string.text_ratings_season_extremes_android,
                 peak.number,
-                "${peak.rating.ratingPercent}%",
+                peak.rating.ratingPercent.rememberPercentFormat(),
                 low.number,
-                "${low.rating.ratingPercent}%",
+                low.rating.ratingPercent.rememberPercentFormat(),
             ),
             style = TraktTheme.typography.cardTitle.copy(fontSize = 10.sp),
             color = TraktTheme.colors.textSecondary,
@@ -213,9 +214,10 @@ private fun QualityLineGraph(
     seasons: ImmutableList<Season>,
     modifier: Modifier = Modifier,
 ) {
+    val textMeasurer = rememberTextMeasurer()
     val dotLabelColor = TraktTheme.colors.textPrimary
     val dotLabelStyle = TraktTheme.typography.cardTitle.copy(fontSize = 10.sp)
-    val textMeasurer = rememberTextMeasurer()
+    val percentLabels = seasons.map { it.rating.ratingPercent.rememberPercentFormat() }
 
     if (seasons.size >= 2) {
         Canvas(modifier = modifier) {
@@ -290,7 +292,7 @@ private fun QualityLineGraph(
             // Percent value above each dot.
             points.forEachIndexed { index, point ->
                 val label = textMeasurer.measure(
-                    text = AnnotatedString("${ratings[index]}%"),
+                    text = AnnotatedString(percentLabels[index]),
                     style = dotLabelStyle,
                 )
 
