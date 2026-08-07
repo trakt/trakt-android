@@ -1,11 +1,11 @@
-package tv.trakt.trakt.common.helpers
+package tv.trakt.trakt.core.summary.people.helpers
 
 private val NON_PREFERRED_CREDITS_FILTERS = setOf("self", "narrator")
 
 /**
  * Picks the default department filter for a person's credits list. Honors
  * [knownForDepartment] when it actually matches one of [listItems]'s
- * departments. Otherwise ranks the remaining departments by credit count,
+ * departments. Otherwise, ranks the remaining departments by credit count,
  * preferring acting/crew departments over self/narrator - but falling back
  * to those when they're the only credits the person has, so a documentary
  * subject with only "self" appearances still gets a populated default
