@@ -11,8 +11,9 @@ import tv.trakt.trakt.common.model.discover.DiscoverSection
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.billing.navigation.billingScreen
 import tv.trakt.trakt.core.billing.navigation.navigateToBilling
+import tv.trakt.trakt.core.calendar.navigation.calendarMonthlyScreen
 import tv.trakt.trakt.core.calendar.navigation.calendarScreen
-import tv.trakt.trakt.core.calendar.navigation.navigateToCalendar
+import tv.trakt.trakt.core.calendar.navigation.switchCalendarView
 import tv.trakt.trakt.core.comments.navigation.commentsScreen
 import tv.trakt.trakt.core.comments.navigation.navigateToComments
 import tv.trakt.trakt.core.discover.navigation.discoverScreen
@@ -115,13 +116,14 @@ internal fun NavGraphBuilder.homeScreens(
     controller: NavHostController,
     userLoading: Boolean,
     userId: TraktId?,
+    onNavigateToCalendar: () -> Unit,
 ) {
     with(controller) {
         homeScreen(
             userLoading = userLoading,
             onNavigateToShow = ::navigateToShow,
             onNavigateToDiscover = ::navigateToDiscover,
-            onNavigateToCalendar = ::navigateToCalendar,
+            onNavigateToCalendar = onNavigateToCalendar,
             onNavigateToMovie = ::navigateToMovie,
             onNavigateToEpisode = ::navigateToEpisode,
             onNavigateToAllUpNext = ::navigateToAllUpNext,
@@ -874,6 +876,17 @@ internal fun NavGraphBuilder.calendarScreens(controller: NavHostController) {
             },
             onShowClick = { navigateToShow(it) },
             onMovieClick = { navigateToMovie(it) },
+            onViewClick = ::switchCalendarView,
+            onNavigateBack = { popBackStack() },
+        )
+
+        calendarMonthlyScreen(
+            onEpisodeClick = { showId, episode ->
+                navigateToEpisode(showId, episode)
+            },
+            onShowClick = { navigateToShow(it) },
+            onMovieClick = { navigateToMovie(it) },
+            onViewClick = ::switchCalendarView,
             onNavigateBack = { popBackStack() },
         )
     }

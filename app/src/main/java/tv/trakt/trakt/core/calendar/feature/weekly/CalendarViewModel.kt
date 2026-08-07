@@ -1,12 +1,12 @@
-package tv.trakt.trakt.core.calendar
+package tv.trakt.trakt.core.calendar.feature.weekly
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
@@ -25,10 +25,6 @@ import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.sync.changes.ChangeOrigin
 import tv.trakt.trakt.common.core.sync.changes.DataChange.Kind
 import tv.trakt.trakt.common.core.sync.changes.DataChanges
-import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
-import tv.trakt.trakt.common.data.local.EpisodeLocalSource
-import tv.trakt.trakt.common.data.local.MovieLocalSource
-import tv.trakt.trakt.common.data.local.ShowLocalSource
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
@@ -45,13 +41,16 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.calendar.CalendarItem
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import tv.trakt.trakt.core.calendar.usecases.GetCalendarItemsUseCase
+import tv.trakt.trakt.core.calendar.feature.weekly.usecases.GetCalendarItemsUseCase
+import tv.trakt.trakt.core.calendar.model.CalendarView
+import tv.trakt.trakt.core.calendar.model.withWatched
+import tv.trakt.trakt.core.calendar.model.withoutMovie
 import tv.trakt.trakt.core.calendar.usecases.GetCalendarTypeUseCase
+import tv.trakt.trakt.core.calendar.usecases.GetCalendarViewUseCase
+import tv.trakt.trakt.core.calendar.usecases.SaveCalendarMediaUseCase
+import tv.trakt.trakt.core.calendar.usecases.UpdateCalendarHistoryUseCase
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
-import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
-import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
-import tv.trakt.trakt.core.sync.usecases.UpdateMovieHistoryUseCase
 import tv.trakt.trakt.resources.R
 import java.time.DayOfWeek.MONDAY
 import java.time.LocalDate
@@ -61,16 +60,12 @@ import kotlin.time.Duration.Companion.milliseconds
 @Suppress("UNCHECKED_CAST")
 internal class CalendarViewModel(
     private val sessionManager: SessionManager,
-    private val ratePromptManager: RatePromptManager,
     private val filterManager: GlobalFilterManager,
+    private val getCalendarViewUseCase: GetCalendarViewUseCase,
     private val getCalendarItemsUseCase: GetCalendarItemsUseCase,
     private val getCalendarTypeUseCase: GetCalendarTypeUseCase,
-    private val updateEpisodeHistoryUseCase: UpdateEpisodeHistoryUseCase,
-    private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
-    private val loadUserProgressUseCase: LoadUserProgressUseCase,
-    private val showLocalSource: ShowLocalSource,
-    private val movieLocalSource: MovieLocalSource,
-    private val episodeLocalSource: EpisodeLocalSource,
+    private val saveCalendarMediaUseCase: SaveCalendarMediaUseCase,
+    private val updateCalendarHistoryUseCase: UpdateCalendarHistoryUseCase,
     private val dataChanges: DataChanges,
     private val analytics: Analytics,
 ) : ViewModel() {
@@ -102,6 +97,7 @@ internal class CalendarViewModel(
     private var typeSeeded = false
 
     init {
+        rememberView()
         loadUser()
         loadData()
 
@@ -110,13 +106,18 @@ internal class CalendarViewModel(
         observeData()
     }
 
+    // Persist the layout so the calendar reopens on the one last used.
+    private fun rememberView() {
+        viewModelScope.launch {
+            getCalendarViewUseCase.setView(CalendarView.Weekly)
+        }
+    }
+
     private fun observeUser() {
         sessionManager.observeProfile()
             .distinctUntilChanged()
-            .debounce(200)
-            .onEach { user ->
-                userState.update { user }
-            }
+            .debounce(200.milliseconds)
+            .onEach { user -> userState.update { user } }
             .launchIn(viewModelScope)
     }
 
@@ -132,9 +133,8 @@ internal class CalendarViewModel(
     private fun observeData() {
         dataChanges.observe(Kind.History, exclude = origin)
             .debounce(200.milliseconds)
-            .onEach {
-                loadData()
-            }.launchIn(viewModelScope)
+            .onEach { loadData() }
+            .launchIn(viewModelScope)
     }
 
     private fun loadUser() {
@@ -260,58 +260,16 @@ internal class CalendarViewModel(
         episode: Episode,
         customDate: DateSelectionResult? = null,
     ) {
-        if (processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            try {
-                val authenticated = sessionManager.isAuthenticated()
-                if (!authenticated) {
-                    return@launch
-                }
-
-                itemsLoadingState.update {
-                    persistentSetOf(episode.ids.trakt)
-                }
-
-                updateEpisodeHistoryUseCase.addToHistory(
-                    episodeId = episode.ids.trakt,
-                    customDate = customDate,
-                )
-                loadUserProgressUseCase.loadShowsProgress()
-                dataChanges.notify(Kind.History, origin = origin)
-
-                itemsState.update {
-                    val currentItems = it ?: return@update it
-                    currentItems.mapValues { entry ->
-                        entry.value.map { item ->
-                            if (item is CalendarItem.EpisodeItem && item.id == episode.ids.trakt) {
-                                item.copy(watched = true)
-                            } else {
-                                item
-                            }
-                        }.toImmutableList()
-                    }.toImmutableMap()
-                }
-
-                infoState.update {
-                    DynamicStringResource(R.string.text_info_history_added)
-                }
-
-                analytics.progress.logAddWatchedMedia(
-                    mediaType = "episode",
-                    source = "calendar",
-                    date = customDate?.analyticsStrings,
-                )
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.recordError(error)
-                }
-            } finally {
-                itemsLoadingState.update { EmptyImmutableSet }
-                processingJob = null
-            }
+        updateHistory(
+            id = episode.ids.trakt,
+            info = R.string.text_info_history_added,
+        ) {
+            updateCalendarHistoryUseCase.addToHistory(
+                episode = episode,
+                origin = origin,
+                customDate = customDate,
+            )
+            itemsState.update { it?.withWatched(id = episode.ids.trakt, watched = true) }
         }
     }
 
@@ -319,155 +277,56 @@ internal class CalendarViewModel(
         movie: Movie,
         customDate: DateSelectionResult? = null,
     ) {
-        if (processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            try {
-                val authenticated = sessionManager.isAuthenticated()
-                if (!authenticated) {
-                    return@launch
-                }
-
-                itemsLoadingState.update {
-                    persistentSetOf(movie.ids.trakt)
-                }
-
-                updateMovieHistoryUseCase.addToWatched(
-                    movieId = movie.ids.trakt,
-                    customDate = customDate,
-                )
-                loadUserProgressUseCase.loadMoviesProgress()
-                dataChanges.notify(Kind.History, origin = origin)
-
-                itemsState.update {
-                    val currentItems = it ?: return@update it
-                    currentItems.mapValues { entry ->
-                        entry.value.map { item ->
-                            if (item is CalendarItem.MovieItem && item.id == movie.ids.trakt) {
-                                item.copy(watched = true)
-                            } else {
-                                item
-                            }
-                        }.toImmutableList()
-                    }.toImmutableMap()
-                }
-
-                infoState.update {
-                    DynamicStringResource(R.string.text_info_history_added)
-                }
-
-                analytics.progress.logAddWatchedMedia(
-                    mediaType = "movie",
-                    source = "calendar",
-                    date = customDate?.analyticsStrings,
-                )
-
-                ratePromptManager.checkRecentlyWatched()
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.recordError(error)
-                }
-            } finally {
-                itemsLoadingState.update { EmptyImmutableSet }
-                processingJob = null
-            }
+        updateHistory(
+            id = movie.ids.trakt,
+            info = R.string.text_info_history_added,
+        ) {
+            updateCalendarHistoryUseCase.addToHistory(
+                movie = movie,
+                origin = origin,
+                customDate = customDate,
+            )
+            itemsState.update { it?.withWatched(id = movie.ids.trakt, watched = true) }
         }
     }
 
     fun removeFromWatched(episode: Episode) {
-        if (processingJob?.isActive == true) {
-            return
-        }
-        processingJob = viewModelScope.launch {
-            val authenticated = sessionManager.isAuthenticated()
-            if (!authenticated) {
-                return@launch
-            }
-
-            itemsLoadingState.update {
-                persistentSetOf(episode.ids.trakt)
-            }
-
-            try {
-                updateEpisodeHistoryUseCase.removeEpisodeFromHistory(episode.ids.trakt.value)
-                loadUserProgressUseCase.loadShowsProgress()
-                dataChanges.notify(Kind.History, origin = origin)
-
-                itemsState.update {
-                    val currentItems = it ?: return@update it
-                    currentItems.mapValues { entry ->
-                        entry.value.map { item ->
-                            if (item is CalendarItem.EpisodeItem && item.id == episode.ids.trakt) {
-                                item.copy(watched = false)
-                            } else {
-                                item
-                            }
-                        }.toImmutableList()
-                    }.toImmutableMap()
-                }
-
-                infoState.update {
-                    DynamicStringResource(R.string.text_info_history_removed)
-                }
-
-                analytics.progress.logRemoveWatchedMedia(
-                    mediaType = "episode",
-                    source = "calendar",
-                )
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.recordError(error)
-                }
-            } finally {
-                itemsLoadingState.update { EmptyImmutableSet }
-                processingJob = null
-            }
+        updateHistory(
+            id = episode.ids.trakt,
+            info = R.string.text_info_history_removed,
+        ) {
+            updateCalendarHistoryUseCase.removeFromWatched(episode = episode, origin = origin)
+            itemsState.update { it?.withWatched(id = episode.ids.trakt, watched = false) }
         }
     }
 
     fun removeFromWatched(movie: Movie) {
+        updateHistory(
+            id = movie.ids.trakt,
+            info = R.string.text_info_history_removed,
+        ) {
+            updateCalendarHistoryUseCase.removeFromWatched(movie = movie, origin = origin)
+            itemsState.update { it?.withoutMovie(movie.ids.trakt) }
+        }
+    }
+
+    private fun updateHistory(
+        id: TraktId,
+        @StringRes info: Int,
+        block: suspend () -> Unit,
+    ) {
         if (processingJob?.isActive == true) {
             return
         }
         processingJob = viewModelScope.launch {
-            val authenticated = sessionManager.isAuthenticated()
-            if (!authenticated) {
-                return@launch
-            }
-
-            itemsLoadingState.update {
-                persistentSetOf(movie.ids.trakt)
-            }
-
             try {
-                updateMovieHistoryUseCase.removeAllFromHistory(movie.ids.trakt)
-                loadUserProgressUseCase.loadMoviesProgress()
-                dataChanges.notify(Kind.History, origin = origin)
-
-                itemsState.update {
-                    val currentItems = it ?: return@update it
-                    currentItems.mapValues { entry ->
-                        entry.value.filter { item ->
-                            if (item is CalendarItem.MovieItem) {
-                                item.id != movie.ids.trakt
-                            } else {
-                                true
-                            }
-                        }.toImmutableList()
-                    }.toImmutableMap()
+                if (!sessionManager.isAuthenticated()) {
+                    return@launch
                 }
 
-                infoState.update {
-                    DynamicStringResource(R.string.text_info_history_removed)
-                }
-
-                analytics.progress.logRemoveWatchedMedia(
-                    mediaType = "movie",
-                    source = "calendar",
-                )
+                itemsLoadingState.update { persistentSetOf(id) }
+                block()
+                infoState.update { DynamicStringResource(info) }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -487,7 +346,7 @@ internal class CalendarViewModel(
             return
         }
         processingJob = viewModelScope.launch {
-            showLocalSource.upsertShows(listOf(show))
+            saveCalendarMediaUseCase.saveShow(show)
             navigateShow.update { show.ids.trakt }
         }
     }
@@ -497,7 +356,7 @@ internal class CalendarViewModel(
             return
         }
         processingJob = viewModelScope.launch {
-            movieLocalSource.upsertMovies(listOf(movie))
+            saveCalendarMediaUseCase.saveMovie(movie)
             navigateMovie.update { movie.ids.trakt }
         }
     }
@@ -510,8 +369,7 @@ internal class CalendarViewModel(
             return
         }
         processingJob = viewModelScope.launch {
-            showLocalSource.upsertShows(listOf(show))
-            episodeLocalSource.upsertEpisodes(listOf(episode))
+            saveCalendarMediaUseCase.saveEpisode(show = show, episode = episode)
 
             navigateEpisode.update {
                 Pair(show.ids.trakt, episode)
