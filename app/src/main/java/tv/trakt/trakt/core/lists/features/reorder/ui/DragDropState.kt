@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -26,6 +27,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 
+/**
+ * Pixels trimmed off the viewport edges when deciding where auto-scroll starts, so a screen can
+ * treat an overlay (the main menu bar) as the effective edge of the list rather than the screen.
+ */
+internal data class DragEdgeInsets(
+    val start: Float = 0f,
+    val end: Float = 0f,
+)
+
 internal class DragDropState(
     private val state: LazyListState,
     private val scope: CoroutineScope,
@@ -35,10 +45,23 @@ internal class DragDropState(
     var draggingItemIndex by mutableStateOf<Int?>(null)
         private set
 
+    /** Read from the pointer callback, not from composition, so a plain `var` is enough. */
+    internal var edgeInsets: DragEdgeInsets = DragEdgeInsets()
+
     internal val scrollChannel = Channel<Float>(capacity = Channel.CONFLATED)
 
     private var draggingItemDraggedDelta by mutableFloatStateOf(0f)
     private var draggingItemInitialOffset by mutableIntStateOf(0)
+
+    /**
+     * Cached so the gesture survives the dragged slot leaving [LazyListState.layoutInfo]. The
+     * visible window only extends by the content padding, which is much smaller at the top of
+     * this screen than at the bottom.
+     */
+    private var draggingItemSize by mutableIntStateOf(0)
+
+    /** Sign of the most recent drag event; the accumulated delta is not a direction. */
+    private var lastDragDirection = 0f
 
     internal val draggingItemOffset: Float
         get() = draggingItemLayoutInfo?.let { item ->
@@ -56,6 +79,7 @@ internal class DragDropState(
         val item = state.layoutInfo.visibleItemsInfo.firstOrNull { it.index == index } ?: return
         draggingItemIndex = index
         draggingItemInitialOffset = item.offset
+        draggingItemSize = item.size
     }
 
     internal fun onDragInterrupted() {
@@ -78,35 +102,54 @@ internal class DragDropState(
         draggingItemDraggedDelta = 0f
         draggingItemIndex = null
         draggingItemInitialOffset = 0
+        draggingItemSize = 0
+        lastDragDirection = 0f
     }
 
     internal fun onDrag(offsetY: Float) {
-        draggingItemDraggedDelta += offsetY
+        val draggingIndex = draggingItemIndex ?: return
 
-        val draggingItem = draggingItemLayoutInfo ?: return
-        val startOffset = draggingItem.offset + draggingItemOffset
-        val endOffset = startOffset + draggingItem.size
-        val middleOffset = startOffset + (endOffset - startOffset) / 2f
+        draggingItemDraggedDelta += offsetY
+        if (offsetY != 0f) lastDragDirection = offsetY
+
+        // Refresh the cached size while the slot is still composed.
+        draggingItemLayoutInfo?.let { draggingItemSize = it.size }
+
+        // Equivalent to `draggingItem.offset + draggingItemOffset`, without depending on the slot
+        // still being reported in visibleItemsInfo: the card sits where the finger left it.
+        val startOffset = draggingItemInitialOffset + draggingItemDraggedDelta
+        val endOffset = startOffset + draggingItemSize
+        val middleOffset = startOffset + draggingItemSize / 2f
 
         val targetItem = state.layoutInfo.visibleItemsInfo.firstOrNull { item ->
             middleOffset.toInt() in item.offset..(item.offset + item.size) &&
-                draggingItem.index != item.index &&
+                draggingIndex != item.index &&
                 draggable(item)
         }
 
         if (targetItem != null) {
-            onMove(draggingItem.index, targetItem.index)
+            // Pin the scroll position by index for the coming remeasure. Otherwise LazyList
+            // re-anchors on the first visible item's key, which shoves the dragged slot above the
+            // viewport as soon as an upward swap crosses that item.
+            state.requestScrollToItem(
+                index = state.firstVisibleItemIndex,
+                scrollOffset = state.firstVisibleItemScrollOffset,
+            )
+            onMove(draggingIndex, targetItem.index)
             draggingItemIndex = targetItem.index
             return
         }
 
+        val startEdge = state.layoutInfo.viewportStartOffset + edgeInsets.start
+        val endEdge = state.layoutInfo.viewportEndOffset - edgeInsets.end
+
         val overscroll = when {
-            draggingItemDraggedDelta > 0 -> {
-                (endOffset - state.layoutInfo.viewportEndOffset).coerceAtLeast(0f)
+            lastDragDirection > 0 -> {
+                (endOffset - endEdge).coerceAtLeast(0f)
             }
 
-            draggingItemDraggedDelta < 0 -> {
-                (startOffset - state.layoutInfo.viewportStartOffset).coerceAtMost(0f)
+            lastDragDirection < 0 -> {
+                (startOffset - startEdge).coerceAtMost(0f)
             }
 
             else -> {
@@ -121,10 +164,11 @@ internal class DragDropState(
 internal fun rememberDragDropState(
     lazyListState: LazyListState,
     scope: CoroutineScope,
+    edgeInsets: DragEdgeInsets = DragEdgeInsets(),
     draggable: (LazyListItemInfo) -> Boolean = { true },
     onMove: (from: Int, to: Int) -> Unit,
-): DragDropState =
-    remember(lazyListState) {
+): DragDropState {
+    val dragDropState = remember(lazyListState) {
         DragDropState(
             state = lazyListState,
             scope = scope,
@@ -132,6 +176,13 @@ internal fun rememberDragDropState(
             onMove = onMove,
         )
     }
+
+    SideEffect {
+        dragDropState.edgeInsets = edgeInsets
+    }
+
+    return dragDropState
+}
 
 @Composable
 internal fun LazyItemScope.DraggableItem(

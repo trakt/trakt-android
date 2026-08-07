@@ -47,6 +47,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -60,6 +61,7 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -67,6 +69,7 @@ import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.core.lists.features.reorder.ui.DragEdgeInsets
 import tv.trakt.trakt.core.lists.features.reorder.ui.DraggableItem
 import tv.trakt.trakt.core.lists.features.reorder.ui.ListReorderMediaCard
 import tv.trakt.trakt.core.lists.features.reorder.ui.ListReorderMediaSkeletonCard
@@ -201,10 +204,35 @@ internal fun ListReorderContent(
     val haptic = LocalHapticFeedback.current
     val scope = rememberCoroutineScope()
 
+    val statusBarHeight = WindowInsets.statusBars.asPaddingValues()
+        .calculateTopPadding()
+
+    // The status bar covers the top of the list and the main menu bar floats over the bottom, so
+    // auto-scroll has to start at their inner edges rather than at the edges of the screen.
+    val bottomBarVisible = LocalBottomBarVisibility.current.value
+    val menuHeight = WindowInsets.navigationBars.asPaddingValues()
+        .calculateBottomPadding()
+        .plus(
+            when {
+                bottomBarVisible -> TraktTheme.size.navigationBarHeight
+                else -> 0.dp
+            },
+        )
+    val density = LocalDensity.current
+    val edgeInsets = remember(statusBarHeight, menuHeight, density) {
+        with(density) {
+            DragEdgeInsets(
+                start = statusBarHeight.toPx(),
+                end = menuHeight.toPx(),
+            )
+        }
+    }
+
     val dragDropState = rememberDragDropState(
         lazyListState = listState,
         scope = scope,
-        // Exclude the header (Int key); only reorderable cards carry a String key.
+        edgeInsets = edgeInsets,
+        // Exclude the header; only reorderable cards carry an explicit String key.
         draggable = { it.key is String },
         onMove = { fromIndex, toIndex ->
             onMove(fromIndex - HEADER_COUNT, toIndex - HEADER_COUNT)
@@ -223,8 +251,7 @@ internal fun ListReorderContent(
     val contentPadding = PaddingValues(
         start = TraktTheme.spacing.mainPageHorizontalSpace,
         end = TraktTheme.spacing.mainPageHorizontalSpace,
-        top = WindowInsets.statusBars.asPaddingValues()
-            .calculateTopPadding(),
+        top = statusBarHeight,
         bottom = WindowInsets.navigationBars.asPaddingValues()
             .calculateBottomPadding()
             .plus(TraktTheme.size.navigationBarHeight * 2),
