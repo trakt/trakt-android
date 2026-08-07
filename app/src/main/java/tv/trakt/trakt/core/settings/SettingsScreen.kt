@@ -435,6 +435,16 @@ private fun SettingsAccount(
             },
         )
 
+        SettingsSwitchField(
+            text = stringResource(R.string.text_private_account),
+            checked = privateAccount,
+            enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
+            onClick = {
+                onEnablePrivateAccount(!privateAccount)
+            },
+            modifier = Modifier.padding(top = SECTION_SPACING_DP.dp / 1.5F),
+        )
+
         if (!state.user?.settings?.coverImage.isNullOrBlank()) {
             SettingsTextField(
                 text = stringResource(R.string.header_settings_clear_cover),
@@ -445,16 +455,6 @@ private fun SettingsAccount(
                 modifier = Modifier.padding(top = 8.dp),
             )
         }
-
-        SettingsSwitchField(
-            text = stringResource(R.string.text_private_account),
-            checked = privateAccount,
-            enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
-            onClick = {
-                onEnablePrivateAccount(!privateAccount)
-            },
-            modifier = Modifier.padding(top = SECTION_SPACING_DP.dp / 1.5F),
-        )
     }
 
     // Sheets
