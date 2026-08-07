@@ -1,6 +1,5 @@
 package tv.trakt.trakt.core.ratings.allratings.ui
 
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.infiniteRepeatable
@@ -25,7 +24,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,7 +33,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.drawText
@@ -46,7 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.helpers.extensions.toPercentString
+import tv.trakt.trakt.common.helpers.extensions.rememberPercentFormat
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Rating
 import tv.trakt.trakt.common.model.Season
@@ -57,7 +54,6 @@ import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Shade700
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
-import java.util.Locale
 
 private val GraphHeight = 120.dp
 private const val LINE_SPAN_FRACTION = 0.4F
@@ -85,18 +81,13 @@ internal fun QualityOverTimeCard(
         val peak = seasons.maxBy { it.rating.rating }
         val low = seasons.minBy { it.rating.rating }
 
-        val configuration = LocalConfiguration.current
-        val appLocale = remember(configuration) {
-            AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
-        }
-
         Text(
             text = stringResource(
                 R.string.text_ratings_season_extremes_android,
                 peak.number,
-                peak.rating.ratingPercent.toPercentString(appLocale),
+                peak.rating.ratingPercent.rememberPercentFormat(),
                 low.number,
-                low.rating.ratingPercent.toPercentString(appLocale),
+                low.rating.ratingPercent.rememberPercentFormat(),
             ),
             style = TraktTheme.typography.cardTitle.copy(fontSize = 10.sp),
             color = TraktTheme.colors.textSecondary,
@@ -223,14 +214,10 @@ private fun QualityLineGraph(
     seasons: ImmutableList<Season>,
     modifier: Modifier = Modifier,
 ) {
+    val textMeasurer = rememberTextMeasurer()
     val dotLabelColor = TraktTheme.colors.textPrimary
     val dotLabelStyle = TraktTheme.typography.cardTitle.copy(fontSize = 10.sp)
-    val textMeasurer = rememberTextMeasurer()
-
-    val configuration = LocalConfiguration.current
-    val appLocale = remember(configuration) {
-        AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
-    }
+    val percentLabels = seasons.map { it.rating.ratingPercent.rememberPercentFormat() }
 
     if (seasons.size >= 2) {
         Canvas(modifier = modifier) {
@@ -305,7 +292,7 @@ private fun QualityLineGraph(
             // Percent value above each dot.
             points.forEachIndexed { index, point ->
                 val label = textMeasurer.measure(
-                    text = AnnotatedString(ratings[index].toPercentString(appLocale)),
+                    text = AnnotatedString(percentLabels[index]),
                     style = dotLabelStyle,
                 )
 
