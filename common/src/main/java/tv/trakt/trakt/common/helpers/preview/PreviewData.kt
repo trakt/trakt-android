@@ -34,7 +34,7 @@ object PreviewData {
             tmdb = TmdbId(1),
             imdb = ImdbId("tt1234562"),
         ),
-        title = "Show Title",
+        title = "Lorem Ipsum Sabat Matter",
         titleOriginal = "Original Show Title",
         overview = "This is a sample movie overview that provides a brief description of the movie's plot " +
             "and main themes. It is intended to give viewers an idea of what to expect without revealing too much.",

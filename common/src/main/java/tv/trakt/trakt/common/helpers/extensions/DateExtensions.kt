@@ -22,6 +22,14 @@ import java.time.temporal.TemporalAdjusters
 import java.util.Locale
 
 @Composable
+fun rememberAppLocale(): Locale {
+    val configuration = LocalConfiguration.current
+    return remember(configuration) {
+        AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+    }
+}
+
+@Composable
 fun mediumDateFormat(): DateTimeFormatter {
     val configuration = LocalConfiguration.current
     val appLocale = remember(configuration) {

@@ -4,10 +4,15 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.calendar.navigation.navigateToCalendar
+import tv.trakt.trakt.core.calendar.usecases.GetCalendarViewUseCase
 import tv.trakt.trakt.core.home.navigation.HomeDestination
 import tv.trakt.trakt.core.search.model.SearchInput
 
@@ -21,6 +26,9 @@ internal fun MainNavHost(
     onSearchLoading: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val scope = rememberCoroutineScope()
+    val getCalendarViewUseCase = koinInject<GetCalendarViewUseCase>()
+
     NavHost(
         startDestination = HomeDestination,
         navController = navController,
@@ -32,6 +40,11 @@ internal fun MainNavHost(
             controller = navController,
             userId = userId,
             userLoading = userLoading,
+            onNavigateToCalendar = {
+                scope.launch {
+                    navController.navigateToCalendar(getCalendarViewUseCase.getView())
+                }
+            },
         )
         calendarScreens(navController)
         discoverScreens(

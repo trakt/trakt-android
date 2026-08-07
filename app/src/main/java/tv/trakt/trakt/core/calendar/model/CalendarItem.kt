@@ -37,6 +37,12 @@ internal sealed class CalendarItem {
             get() = episodes.first()
     }
 
+    val key: String
+        get() = when (this) {
+            is MovieItem -> "movie-${movie.ids.trakt}"
+            is EpisodeItem -> "episode-${show.ids.trakt}-${episode.ids.trakt}"
+        }
+
     val id: TraktId
         get() = when (this) {
             is MovieItem -> movie.ids.trakt
