@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.home.sections.streaks.all
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -39,24 +41,24 @@ internal fun StreaksView(
     modifier: Modifier = Modifier,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val (mode, data) = state
 
-    state.data?.let { data ->
-        state.mode?.let { mode ->
-            StreaksViewContent(
-                data = data,
-                mode = mode,
-                modifier = modifier,
-            )
+    if (data == null || mode == null) {
+        // Same modifier as the content so the sheet keeps one height across load states
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = modifier.fillMaxWidth(),
+        ) {
+            FilmProgressIndicator()
         }
+        return
     }
 
-    if (state.data == null) {
-        FilmProgressIndicator(
-            modifier = Modifier
-                .padding(vertical = 112.dp)
-                .fillMaxWidth(),
-        )
-    }
+    StreaksViewContent(
+        data = data,
+        mode = mode,
+        modifier = modifier,
+    )
 }
 
 @Composable
@@ -70,6 +72,7 @@ private fun StreaksViewContent(
         modifier = modifier
             .verticalScroll(
                 state = rememberScrollState(),
+                overscrollEffect = null,
             ),
     ) {
         TraktHeader(
