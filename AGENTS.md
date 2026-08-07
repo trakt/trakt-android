@@ -7,6 +7,8 @@ actively apply the corresponding rule file for that domain:
 
 - Compose screens, composables, theme (`app/`, `tv/`, `common/.../ui/`):
   apply architecture.md, state-management.md, theming.md
+- ViewModels and screen state types (`*ViewModel.kt`, `*State.kt`):
+  apply viewmodel.md
 - Networking, Ktor client, OpenAPI mappers (`common/.../networking/`,
   generated OpenAPI sources): apply networking.md
 - Persistence (DataStore, Room entities, file caches): apply persistence.md
@@ -28,6 +30,8 @@ All rule files are referenced below.
 @.agents/rules/architecture.md
 
 @.agents/rules/state-management.md
+
+@.agents/rules/viewmodel.md
 
 @.agents/rules/networking.md
 

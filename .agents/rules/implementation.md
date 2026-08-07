@@ -81,6 +81,8 @@ core/<feature>/
 - ViewModel owns state. Composables read via `collectAsStateWithLifecycle()`.
 - `remember { mutableStateOf(...) }` OK for **transient UI** not surviving ViewModel rebuild (sheet visibility, scroll positions, focus). Config-change survivors belong in ViewModel.
 - `rememberSaveable` for transient state surviving config change but not destruction (text field input, expanded card state).
+- ViewModel-side rules (single untyped `state` declared last, indexed-cast `combine` + `stateIn`, no
+  `mutableStateOf`, one-shot events): `viewmodel.md`.
 
 ## Navigation
 

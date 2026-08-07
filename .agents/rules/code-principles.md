@@ -65,7 +65,7 @@ Compose `when` handlers must be exhaustive — no `else ->` branches that swallo
 ## Code Smells to Avoid
 
 - **Nested conditionals** — refactor into guard clauses or separate functions.
-- **God ViewModels** — >~300 lines = smell; split by concern.
+- **God ViewModels** — >~300 lines = smell; split by concern. See `viewmodel.md`.
 - **Abstraction leaks** — callers shouldn't know how type is built.
 - **Singleton-style lookups inside types** — accept deps via Koin `module { … }` + constructor injection. No `KoinJavaComponent.getKoin().get<T>()` inside class body.
 - **`!!` non-null assertions** in production code. Use `requireNotNull` with message, `checkNotNull` for internal invariants, or `?:` fallback. `!!` OK in tests and previews.

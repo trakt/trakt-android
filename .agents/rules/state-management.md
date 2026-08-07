@@ -1,7 +1,7 @@
 ---
 trigger: glob
 globs: '{app,tv,common}/src/main/**/*.kt'
-description: 'StateFlow / @Observable usage, ViewModel patterns, remember / rememberSaveable, Compose stability, no-mutableStateOf-in-VM.'
+description: 'Composable-side state: remember / rememberSaveable, bottom sheets, composition locals, side effects, Compose stability. ViewModel state lives in viewmodel.md.'
 applyTo: '{app,tv,common}/src/main/**/*.kt'
 ---
 
@@ -18,65 +18,15 @@ applyTo: '{app,tv,common}/src/main/**/*.kt'
 | Derived value reactive to other state                | `val x by remember(...) { derivedStateOf { … } }`      |
 | Side effects keyed to recomposition                  | `LaunchedEffect(key)`, `DisposableEffect(key)`         |
 
-## ViewModel
+## ViewModel state and one-shot events
 
-One `state: StateFlow<UiState>` per ViewModel. Build from upstream Flows, expose via `stateIn(viewModelScope, WhileSubscribed(5_000), initial)`. Internal mutable signals private:
+**See `viewmodel.md`** — it is the canonical home for ViewModel state shape
+(single untyped `state` declared last, indexed-cast `combine` + `stateIn` with
+`WhileSubscribed(5_000)`), the no-`mutableStateOf-in-ViewModel` rule, one private
+`MutableStateFlow` per state field, and `SharedFlow(replay = 0)` one-shot events.
 
-```kotlin
-class CalendarViewModel(
-    private val repo: CalendarRepository,
-) : ViewModel() {
-
-    private val refreshTrigger = MutableSharedFlow<Unit>(replay = 1).apply { tryEmit(Unit) }
-
-    val state: StateFlow<CalendarUiState> =
-        refreshTrigger
-            .flatMapLatest { repo.upcoming() }
-            .map { CalendarUiState.Loaded(it) as CalendarUiState }
-            .catch { emit(CalendarUiState.Error(it)) }
-            .stateIn(
-                viewModelScope,
-                SharingStarted.WhileSubscribed(5_000),
-                CalendarUiState.Loading,
-            )
-
-    fun refresh() { refreshTrigger.tryEmit(Unit) }
-}
-```
-
-Rules:
-
-- **No `mutableStateOf` in ViewModel.** Use `StateFlow` / `MutableStateFlow`. `mutableStateOf` Compose-coupled, breaks unit-testing without Compose runtime.
-- **Don't combine three separate `StateFlow`s in composable.** Combine once in ViewModel, expose single state.
-- **Don't expose `MutableStateFlow` publicly.** Expose `StateFlow`; mutate inside ViewModel.
-- Use `update { … }` on `MutableStateFlow` for atomic updates, not `value = value.copy(…)`.
-
-## One-shot events
-
-For navigation effects, snackbars, toasts:
-
-```kotlin
-private val _events = MutableSharedFlow<MovieEvent>(replay = 0)
-val events: SharedFlow<MovieEvent> = _events.asSharedFlow()
-
-@Composable
-fun MovieSummaryScreen(viewModel: MovieSummaryViewModel = koinViewModel()) {
-    val snackbar = LocalSnackbarState.current
-    LaunchedEffect(Unit) {
-        viewModel.events.collect { event ->
-            when (event) {
-                is MovieEvent.WatchlistAdded -> snackbar.show(L10n.movieAddedToWatchlist)
-                is MovieEvent.Error          -> snackbar.show(event.message)
-            }
-        }
-    }
-    // …
-}
-```
-
-- Use `SharedFlow(replay = 0)` for one-shot events.
-- Collect events in `LaunchedEffect`.
-- Don't fire events from inside composition (`body { }` directly).
+This file covers everything on the composable side of the boundary: local
+state, sheets, composition locals, side effects, stability.
 
 ## Composable-local state
 

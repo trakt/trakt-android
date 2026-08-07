@@ -83,34 +83,12 @@ private fun MovieSummaryContent(
 
 ## ViewModels
 
-ViewModels expose single `state: StateFlow<UiState>` via `stateIn(viewModelScope, WhileSubscribed(5_000), Loading)`. Internal mutable flows feed public one.
+ViewModels expose a single `state` — declared last, untyped, built by the indexed-cast
+`combine(…)` + `stateIn(viewModelScope, WhileSubscribed(5_000), initialState)` pattern. One-shot
+events flow through `SharedFlow(replay = 0)`.
 
-```kotlin
-class MovieSummaryViewModel(
-    private val id: Long,
-    private val repository: MovieRepository,
-) : ViewModel() {
-
-    val state: StateFlow<MovieSummaryUiState> =
-        repository
-            .movie(id)
-            .map { MovieSummaryUiState.Loaded(it) as MovieSummaryUiState }
-            .catch { emit(MovieSummaryUiState.Error(it)) }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = MovieSummaryUiState.Loading,
-            )
-
-    fun reload() { /* mutate an internal flow that the upstream observes */ }
-}
-```
-
-Rules:
-
-- **One `StateFlow<UiState>` per ViewModel.** Not three separate `StateFlow`s combined inside view.
-- ViewModels don't call composables, don't hold Android `Context`, don't depend on `View`/`Composer` types.
-- One-shot events (snackbars, navigation effects) flow through `SharedFlow<UiEvent>` with `replay = 0`, collected from `LaunchedEffect`.
+**Full ViewModel rules live in `viewmodel.md`** — declaration shape, state ownership, boundaries,
+events, concurrency, DI, size limits, testing. Read it before writing or editing a ViewModel.
 
 ## Domain Layer (Optional)
 
