@@ -76,7 +76,6 @@ import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
-import java.time.LocalDate
 
 @Composable
 internal fun PersonDetailsScreen(
@@ -213,7 +212,7 @@ internal fun PersonDetailsContent(
 
                 item {
                     DetailsBirthday(
-                        birthday = person.birthday,
+                        person = person,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
@@ -317,30 +316,41 @@ internal fun PersonDetailsContent(
 @Composable
 private fun DetailsBirthday(
     modifier: Modifier = Modifier,
-    birthday: LocalDate? = null,
+    person: Person? = null,
 ) {
+    val dateFormat = longDateFormat()
+    val age = remember(person) { person?.ageInYears(nowLocalDay()) }
+
+    val trailingFact = when (val death = person?.death) {
+        null -> PersonFact(
+            label = stringResource(R.string.header_age),
+            value = age?.toString() ?: "-",
+        )
+
+        else -> PersonFact(
+            label = stringResource(R.string.header_date_of_death),
+            value = death.format(dateFormat).capitalize().let {
+                when (age) {
+                    null -> it
+                    else -> "$it ($age)"
+                }
+            },
+        )
+    }
+
     Row(
         modifier = modifier,
         horizontalArrangement = spacedBy(24.dp, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(4.dp),
+        PersonFactColumn(
+            fact = PersonFact(
+                label = stringResource(R.string.header_birthday),
+                value = person?.birthday?.format(dateFormat)?.capitalize() ?: "N/A",
+            ),
             horizontalAlignment = Alignment.End,
             modifier = Modifier.weight(1f),
-        ) {
-            Text(
-                text = stringResource(R.string.header_birthday).uppercase(),
-                style = TraktTheme.typography.meta,
-                color = TraktTheme.colors.textSecondary.copy(alpha = 0.7f),
-            )
-            Text(
-                text = birthday?.format(longDateFormat())?.capitalize() ?: "N/A",
-                style = TraktTheme.typography.paragraphSmall,
-                color = TraktTheme.colors.textPrimary,
-                textAlign = TextAlign.Start,
-            )
-        }
+        )
 
         Spacer(
             modifier = Modifier
@@ -349,36 +359,43 @@ private fun DetailsBirthday(
                 .background(Shade900),
         )
 
-        Column(
-            verticalArrangement = Arrangement.spacedBy(4.dp),
+        PersonFactColumn(
+            fact = trailingFact,
             horizontalAlignment = Alignment.Start,
             modifier = Modifier.weight(1f),
-        ) {
-            val ageText: String = remember(birthday) {
-                birthday?.let {
-                    val today = nowLocalDay()
-                    val age = (today.year - it.year) - when {
-                        it.dayOfYear <= today.dayOfYear -> 0
-                        else -> 1
-                    }
-                    age.toString()
-                } ?: "-"
-            }
-
-            Text(
-                text = stringResource(R.string.header_age).uppercase(),
-                style = TraktTheme.typography.meta,
-                color = TraktTheme.colors.textSecondary.copy(alpha = 0.7f),
-            )
-            Text(
-                text = ageText,
-                style = TraktTheme.typography.paragraphSmall,
-                color = TraktTheme.colors.textPrimary,
-                textAlign = TextAlign.Start,
-            )
-        }
+        )
     }
 }
+
+@Composable
+private fun PersonFactColumn(
+    fact: PersonFact,
+    horizontalAlignment: Alignment.Horizontal,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalAlignment = horizontalAlignment,
+        modifier = modifier,
+    ) {
+        Text(
+            text = fact.label.uppercase(),
+            style = TraktTheme.typography.meta,
+            color = TraktTheme.colors.textSecondary.copy(alpha = 0.7f),
+        )
+        Text(
+            text = fact.value,
+            style = TraktTheme.typography.paragraphSmall,
+            color = TraktTheme.colors.textPrimary,
+            textAlign = TextAlign.Start,
+        )
+    }
+}
+
+private data class PersonFact(
+    val label: String,
+    val value: String,
+)
 
 @Composable
 private fun DetailsOverview(
@@ -466,6 +483,23 @@ private fun Preview() {
         PersonDetailsContent(
             state = PersonDetailsState(
                 personDetails = PreviewData.person1,
+                loadingDetails = Done,
+            ),
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun DeceasedPreview() {
+    TraktTheme {
+        PersonDetailsContent(
+            state = PersonDetailsState(
+                personDetails = PreviewData.deceasedPerson,
                 loadingDetails = Done,
             ),
         )

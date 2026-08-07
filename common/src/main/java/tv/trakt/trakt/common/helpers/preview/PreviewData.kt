@@ -248,4 +248,11 @@ object PreviewData {
     val person2 = person1.copy(
         ids = person1.ids.copy(trakt = TraktId(2)),
     )
+
+    val deceasedPerson = person1.copy(
+        ids = person1.ids.copy(trakt = TraktId(3)),
+        name = "Jane Doe",
+        birthday = nowLocalDay().minusYears(80),
+        death = nowLocalDay().minusYears(5),
+    )
 }
