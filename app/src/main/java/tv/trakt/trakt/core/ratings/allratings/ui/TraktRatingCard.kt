@@ -139,14 +139,6 @@ internal fun TraktRatingCard(
                         horizontalArrangement = spacedBy(0.5.dp, Alignment.CenterHorizontally),
                         modifier = Modifier.weight(1F),
                     ) {
-                        Text(
-                            text = star.toString(),
-                            style = TraktTheme.typography.cardTitle.copy(fontSize = 10.sp),
-                            color = TraktTheme.colors.textPrimary,
-                            maxLines = 1,
-                            textAlign = TextAlign.Center,
-                            overflow = TextOverflow.Ellipsis,
-                        )
                         Icon(
                             painter = painterResource(R.drawable.ic_star),
                             contentDescription = null,
@@ -156,6 +148,14 @@ internal fun TraktRatingCard(
                                 .graphicsLayer {
                                     translationY = -0.5.dp.toPx()
                                 },
+                        )
+                        Text(
+                            text = star.toString(),
+                            style = TraktTheme.typography.cardTitle.copy(fontSize = 10.sp),
+                            color = TraktTheme.colors.textPrimary,
+                            maxLines = 1,
+                            textAlign = TextAlign.Center,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 }
