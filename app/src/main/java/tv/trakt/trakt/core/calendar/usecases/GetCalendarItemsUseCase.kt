@@ -24,9 +24,14 @@ import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import java.time.DayOfWeek.MONDAY
 import java.time.DayOfWeek.SUNDAY
 import java.time.LocalDate
+import java.time.ZoneOffset.UTC
 
 private const val DAYS_OFFSET = 1L
-private const val DAYS_RANGE = 8
+
+// One UTC day of padding on each side of the local window: a release on local Sunday
+// evening lands on UTC Monday in negative-offset zones, and on UTC Sunday for local Monday
+// mornings in positive-offset ones. The local-day filter below trims the excess.
+private const val DAYS_RANGE = 9
 
 internal class GetCalendarItemsUseCase(
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
@@ -37,6 +42,7 @@ internal class GetCalendarItemsUseCase(
         day: LocalDate,
         filters: GlobalFilter,
         type: ReleaseType,
+        skipProgress: Boolean = false,
     ): ImmutableMap<LocalDate, ImmutableList<CalendarItem>> {
         return coroutineScope {
             if (!sessionManager.isAuthenticated()) {
@@ -71,19 +77,27 @@ internal class GetCalendarItemsUseCase(
             }
 
             val showsProgressAsync = async {
-                with(loadUserProgressUseCase) {
-                    when {
-                        isShowsLoaded() -> loadLocalShows()
-                        else -> loadShowsProgress()
+                if (skipProgress) {
+                    emptyList()
+                } else {
+                    with(loadUserProgressUseCase) {
+                        when {
+                            isShowsLoaded() -> loadLocalShows()
+                            else -> loadShowsProgress()
+                        }
                     }
                 }
             }
 
             val moviesProgressAsync = async {
-                with(loadUserProgressUseCase) {
-                    when {
-                        isMoviesLoaded() -> loadLocalMovies()
-                        else -> loadMoviesProgress()
+                if (skipProgress) {
+                    emptyList()
+                } else {
+                    with(loadUserProgressUseCase) {
+                        when {
+                            isMoviesLoaded() -> loadLocalMovies()
+                            else -> loadMoviesProgress()
+                        }
                     }
                 }
             }
@@ -133,7 +147,12 @@ internal class GetCalendarItemsUseCase(
             } else {
                 moviesData
                     .filter {
+                        // Same UTC-midnight-to-local conversion as CalendarItem.releasedAt, so
+                        // filtering and day placement agree on which local day a movie belongs to.
                         val localDate = LocalDate.parse(it.released)
+                            .atStartOfDay(UTC)
+                            .toInstant()
+                            .toLocalDay()
                         localDate in weekStart..weekEnd
                     }
                     .asyncMap {

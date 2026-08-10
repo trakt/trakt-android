@@ -10,6 +10,14 @@ const val HTTP_ERROR_TRAKT_VIP_LIMIT = 420
 const val HTTP_ERROR_CONFLICT = 409
 const val HTTP_ERROR_RATE_LIMITED = 429
 
+fun Throwable.rethrowCancellation(action: () -> Unit = {}) {
+    if (this is CancellationException) {
+        throw this
+    } else {
+        action()
+    }
+}
+
 fun Exception.rethrowCancellation(action: () -> Unit = {}) {
     if (this is CancellationException) {
         throw this

@@ -28,8 +28,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -73,17 +71,9 @@ internal fun HomeUpNextView(
     onMoreClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val haptic = LocalHapticFeedback.current
 
     var contextSheet by remember { mutableStateOf<UpNextItem?>(null) }
     var dateSheet by remember { mutableStateOf<UpNextShow?>(null) }
-
-    LaunchedEffect(state.info) {
-        if (state.info != null) {
-            haptic.performHapticFeedback(Confirm)
-            viewModel.clearInfo()
-        }
-    }
 
     HomeUpNextContent(
         state = state,

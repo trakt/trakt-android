@@ -111,6 +111,67 @@
       android:theme="@style/Theme.TraktTv"
       />
 
+    <activity
+      android:name=".widgets.configuration.WidgetConfigurationActivity"
+      android:enabled="@bool/widgets_enabled"
+      android:excludeFromRecents="true"
+      android:exported="true"
+      android:label="@string/page_title_widget_background"
+      android:theme="@style/Theme.Trakt.Widget"
+      >
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+      </intent-filter>
+    </activity>
+
+    <receiver
+      android:name=".widgets.continuewatching.ContinueWatchingWidgetReceiver"
+      android:enabled="@bool/widgets_enabled"
+      android:exported="false"
+      android:label="@string/page_title_up_next"
+      >
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+
+      <meta-data
+        android:name="android.appwidget.provider"
+        android:resource="@xml/widget_continue_watching"
+        />
+    </receiver>
+
+    <receiver
+      android:name=".widgets.calendar.CalendarWidgetReceiver"
+      android:enabled="@bool/widgets_enabled"
+      android:exported="false"
+      android:label="@string/page_title_calendar"
+      >
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+
+      <meta-data
+        android:name="android.appwidget.provider"
+        android:resource="@xml/widget_calendar"
+        />
+    </receiver>
+
+    <receiver
+      android:name=".widgets.streaks.StreaksWidgetReceiver"
+      android:enabled="@bool/widgets_enabled"
+      android:exported="false"
+      android:label="@string/drawer_title_streak_activity"
+      >
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+
+      <meta-data
+        android:name="android.appwidget.provider"
+        android:resource="@xml/widget_streaks"
+        />
+    </receiver>
+
     <provider
       android:name="androidx.startup.InitializationProvider"
       android:authorities="${applicationId}.androidx-startup"

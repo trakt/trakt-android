@@ -31,12 +31,10 @@ import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Sou
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.firebase.analytics.Analytics
 import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
-import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
-import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.DateSelectionResult
@@ -55,8 +53,8 @@ import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
-import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
+import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates.Source.Widget
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Calendar
@@ -69,7 +67,7 @@ import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.sync.usecases.UpdateEpisodeHistoryUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
-import tv.trakt.trakt.resources.R
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 internal class HomeUpNextViewModel(
@@ -78,7 +76,6 @@ internal class HomeUpNextViewModel(
     private val updateHistoryUseCase: UpdateEpisodeHistoryUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
     private val appReviewUseCase: RequestAppReviewUseCase,
-    private val homeUpNextSource: HomeUpNextLocalDataSource,
     private val homePersonalActivitySource: HomePersonalLocalDataSource,
     private val watchlistUpdates: WatchlistUpdates,
     private val upNextUpdates: UpNextUpdates,
@@ -97,7 +94,6 @@ internal class HomeUpNextViewModel(
     private val collapseState = MutableStateFlow(isCollapsed())
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
-    private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var user: User? = null
@@ -131,7 +127,7 @@ internal class HomeUpNextViewModel(
             sessionManager.observeProfile()
                 .drop(1)
                 .distinctUntilChanged()
-                .debounce(200)
+                .debounce(200.milliseconds)
                 .collect {
                     user = it
                     loadData()
@@ -156,15 +152,18 @@ internal class HomeUpNextViewModel(
             checkInUpdates.observeUpdates().filterNot { it.first == HomeUpNext },
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
             }
             .launchIn(viewModelScope)
 
-        upNextUpdates.observeUpdates()
+        upNextUpdates.observeUpdates(
+            UpNextUpdates.Source.Default,
+            Widget,
+        )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
             }.launchIn(viewModelScope)
@@ -311,14 +310,11 @@ internal class HomeUpNextViewModel(
                     )
                 }
 
-                homeUpNextSource.notifyUpdate()
+                upNextUpdates.notifyUpdate(UpNextUpdates.Source.Home)
                 loadUserProgress()
 
-                infoState.update {
-                    DynamicStringResource(R.string.text_info_history_added)
-                }
-
                 itemsOrder = itemsState.value.items?.map { "${it.mediaId}-${it.type}" }
+
                 appReviewUseCase.incrementCount()
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -440,15 +436,10 @@ internal class HomeUpNextViewModel(
         )
     }
 
-    fun clearInfo() {
-        infoState.update { null }
-    }
-
     val state = combine(
         loadingState,
         collapseState,
         itemsState,
-        infoState,
         errorState,
         filterState,
     ) { state ->
@@ -456,9 +447,8 @@ internal class HomeUpNextViewModel(
             loading = state[0] as LoadingState,
             collapsed = state[1] as Boolean,
             items = state[2] as ItemsState,
-            info = state[3] as StringResource?,
-            error = state[4] as Exception?,
-            filter = state[5] as GlobalFilter,
+            error = state[3] as Exception?,
+            filter = state[4] as GlobalFilter,
         )
     }.stateIn(
         scope = viewModelScope,

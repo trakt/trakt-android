@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:configure="tv.trakt.trakt.widgets.configuration.WidgetConfigurationActivity"
+  android:description="@string/about_feature_description_calendar"
+  android:initialLayout="@layout/glance_default_loading_layout"
+  android:minWidth="250dp"
+  android:minHeight="132dp"
+  android:minResizeHeight="64dp"
+  android:previewImage="@drawable/widget_preview_calendar"
+  android:resizeMode="vertical|horizontal"
+  android:targetCellWidth="5"
+  android:targetCellHeight="4"
+  android:updatePeriodMillis="1800000"
+  android:widgetCategory="home_screen"
+  android:widgetFeatures="reconfigurable|configuration_optional"
+  tools:targetApi="31"
+  />

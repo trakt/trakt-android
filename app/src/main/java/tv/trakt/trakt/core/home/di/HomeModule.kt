@@ -107,7 +107,6 @@ internal val homeModule = module {
             updateHistoryUseCase = get(),
             loadUserProgressUseCase = get(),
             appReviewUseCase = get(),
-            homeUpNextSource = get(),
             homePersonalActivitySource = get(),
             upNextUpdates = get(),
             showUpdates = get(),
@@ -188,7 +187,6 @@ internal val homeModule = module {
             appContext = androidApplication(),
             getUpcomingUseCase = get(),
             getCalendarTypeUseCase = get(),
-            homeUpNextSource = get(),
             showLocalDataSource = get(),
             episodeLocalDataSource = get(),
             movieLocalDataSource = get(),
@@ -197,6 +195,7 @@ internal val homeModule = module {
             filterManager = get(),
             collapsingManager = get(),
             watchlistUpdates = get(),
+            upNextUpdates = get(),
         )
     }
 

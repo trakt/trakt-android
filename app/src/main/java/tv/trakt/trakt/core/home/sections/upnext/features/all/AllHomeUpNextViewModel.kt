@@ -46,6 +46,7 @@ import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source.AllHomeUpN
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeConfig.HOME_ALL_LIMIT
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
+import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates.Source.Default
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
@@ -350,7 +351,7 @@ internal class AllHomeUpNextViewModel(
                     } ?: items
                 }
 
-                upNextUpdates.notifyUpdate()
+                upNextUpdates.notifyUpdate(Default)
                 loadUserProgress()
 
                 infoState.update { DynamicStringResource(R.string.text_info_history_added) }

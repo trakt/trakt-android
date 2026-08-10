@@ -47,7 +47,7 @@ import tv.trakt.trakt.core.calendar.usecases.GetCalendarTypeUseCase
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.sections.upcoming.usecases.GetUpcomingUseCase
-import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
+import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Calendar
@@ -62,12 +62,12 @@ internal class HomeUpcomingViewModel(
     private val filterManager: GlobalFilterManager,
     private val getUpcomingUseCase: GetUpcomingUseCase,
     private val getCalendarTypeUseCase: GetCalendarTypeUseCase,
-    private val homeUpNextSource: HomeUpNextLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
     private val episodeLocalDataSource: EpisodeLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val watchlistUpdates: WatchlistUpdates,
     private val episodeUpdates: EpisodeDetailsUpdates,
+    private val upNextUpdates: UpNextUpdates,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
@@ -125,7 +125,11 @@ internal class HomeUpcomingViewModel(
     @OptIn(FlowPreview::class)
     private fun observeUpdates() {
         merge(
-            homeUpNextSource.observeUpdates(),
+            upNextUpdates.observeUpdates(
+                UpNextUpdates.Source.Default,
+                UpNextUpdates.Source.Home,
+                UpNextUpdates.Source.Widget,
+            ),
             watchlistUpdates.observeUpdates(Default),
             watchlistUpdates.observeUpdates(AllWatchlist),
             episodeUpdates.observeUpdates(Calendar),
