@@ -103,7 +103,7 @@ private const val MAX_VISIBLE_LABELS = 4
 private const val POSTERS_PER_ROW = 2
 private const val POSTER_ROWS = 2
 private const val POSTER_PLACEHOLDER_RATIO = 0.6F
-private const val OUT_OF_MONTH_ALPHA = 0.5F
+private const val OUT_OF_MONTH_ALPHA = 0.45F
 
 private val FirstDayOfWeek = MONDAY
 
