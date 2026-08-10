@@ -634,6 +634,9 @@
   <string name="filter_label_ratings">Rating Trakt %1$s hingga %2$s</string>
   <string name="filter_label_runtime">%s menit</string>
   <string name="filter_label_this_year">Tahun ini</string>
+  <string name="filter_toggle_state_default">Default</string>
+  <string name="filter_toggle_state_off">Mati</string>
+  <string name="filter_toggle_state_on">Aktif</string>
   <string name="header_account_details">Detail Akun</string>
   <string name="header_age">Usia</string>
   <string name="header_aired">Telah Tayang</string>
@@ -727,7 +730,6 @@
   <string name="header_sentiment_positive">Positif</string>
   <string name="header_settings_clear_cover">Hapus Gambar Sampul</string>
   <string name="header_settings_notifications">Notifikasi</string>
-  <string name="header_settings_privacy">Privasi &amp; Langganan</string>
   <string name="header_settings_tracking">Pelacakan</string>
   <string name="header_settings_translations">Terjemahan</string>
   <string name="header_skipped_items">%s Item Dilewati</string>
@@ -953,6 +955,7 @@
   <string name="link_label_status">Status Trakt</string>
   <string name="link_label_view_social_activities">Lihat aktivitas sosial untuk %s</string>
   <string name="link_text_about">Tentang</string>
+  <string name="link_text_account_settings">Akun</string>
   <string name="link_text_advanced_settings">Lanjutan</string>
   <string name="link_text_api">API</string>
   <string name="link_text_apps_settings">Aplikasi</string>
@@ -1512,9 +1515,9 @@
   <string name="text_rating_prompt_7">Nilai pengalaman Anda.</string>
   <string name="text_rating_prompt_8">Beri nilai.</string>
   <string name="text_ratings_no_data">Belum ada peringkat.</string>
-  <string name="text_ratings_season_extremes">Puncak %1$s · %2$s% · Terendah %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes">Puncak %1$s · %2$s · Terendah %3$s · %4$s</string>
   <string name="text_ratings_season_extremes_android">Puncak S%1$s (%2$s) • Terendah S%3$s (%4$s)</string>
-  <string name="text_ratings_season_point">%1$s · %2$s%</string>
+  <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s suara</string>
   <string name="text_raw_export">Ekspor mentah</string>
   <string name="text_reconnect_streaming_warning">Harap hubungkan kembali %s di bawah.</string>

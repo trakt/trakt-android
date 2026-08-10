@@ -634,6 +634,9 @@
   <string name="filter_label_ratings">Βαθμολογία Trakt από %1$s έως %2$s</string>
   <string name="filter_label_runtime">%s λεπτά</string>
   <string name="filter_label_this_year">Φέτος</string>
+  <string name="filter_toggle_state_default">Προεπιλογή</string>
+  <string name="filter_toggle_state_off">Απενεργοποίηση</string>
+  <string name="filter_toggle_state_on">Ενεργό</string>
   <string name="header_account_details">Στοιχεία λογαριασμού</string>
   <string name="header_age">Ηλικία</string>
   <string name="header_aired">Προβλήθηκε</string>
@@ -727,7 +730,6 @@
   <string name="header_sentiment_positive">Θετικό</string>
   <string name="header_settings_clear_cover">Εκκαθάριση εικόνας εξωφύλλου</string>
   <string name="header_settings_notifications">Ειδοποιήσεις</string>
-  <string name="header_settings_privacy">Απόρρητο &amp; Συνδρομή</string>
   <string name="header_settings_tracking">Παρακολούθηση</string>
   <string name="header_settings_translations">Μεταφράσεις</string>
   <string name="header_skipped_items">%s Παραλειφθέντα στοιχεία</string>
@@ -953,6 +955,7 @@
   <string name="link_label_status">Κατάσταση Trakt</string>
   <string name="link_label_view_social_activities">Προβολή κοινωνικών δραστηριοτήτων για το/την %s</string>
   <string name="link_text_about">Σχετικά</string>
+  <string name="link_text_account_settings">Λογαριασμός</string>
   <string name="link_text_advanced_settings">Για προχωρημένους</string>
   <string name="link_text_api">API</string>
   <string name="link_text_apps_settings">Εφαρμογές</string>
@@ -1512,9 +1515,9 @@
   <string name="text_rating_prompt_7">Βαθμολογήστε την εμπειρία σας.</string>
   <string name="text_rating_prompt_8">Δώστε του μια βαθμολογία.</string>
   <string name="text_ratings_no_data">Δεν υπάρχουν ακόμη αξιολογήσεις.</string>
-  <string name="text_ratings_season_extremes">Κορυφή %1$s · %2$s% · Χαμηλό %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes">Κορυφή %1$s · %2$s · Χαμηλό %3$s · %4$s</string>
   <string name="text_ratings_season_extremes_android">Κορυφή Σ%1$s (%2$s) • Χαμηλό Σ%3$s (%4$s)</string>
-  <string name="text_ratings_season_point">%1$s · %2$s%</string>
+  <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s ψήφοι</string>
   <string name="text_raw_export">Ακατέργαστη εξαγωγή</string>
   <string name="text_reconnect_streaming_warning">Παρακαλούμε επανασυνδέστε τις %s παρακάτω.</string>

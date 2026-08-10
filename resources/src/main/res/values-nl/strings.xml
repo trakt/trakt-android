@@ -634,6 +634,9 @@
   <string name="filter_label_ratings">Trakt beoordeling van %1$s tot %2$s</string>
   <string name="filter_label_runtime">%s minuten</string>
   <string name="filter_label_this_year">Dit jaar</string>
+  <string name="filter_toggle_state_default">Standaard</string>
+  <string name="filter_toggle_state_off">Uit</string>
+  <string name="filter_toggle_state_on">Aan</string>
   <string name="header_account_details">Accountgegevens</string>
   <string name="header_age">Leeftijd</string>
   <string name="header_aired">Uitgezonden</string>
@@ -727,7 +730,6 @@
   <string name="header_sentiment_positive">Positief</string>
   <string name="header_settings_clear_cover">Omslagafbeelding wissen</string>
   <string name="header_settings_notifications">Meldingen</string>
-  <string name="header_settings_privacy">Privacy &amp; Abonnement</string>
   <string name="header_settings_tracking">Bijhouden</string>
   <string name="header_settings_translations">Vertalingen</string>
   <string name="header_skipped_items">%s overgeslagen items</string>
@@ -953,6 +955,7 @@
   <string name="link_label_status">Trakt Status</string>
   <string name="link_label_view_social_activities">Sociale activiteiten bekijken voor %s</string>
   <string name="link_text_about">Over ons</string>
+  <string name="link_text_account_settings">Account</string>
   <string name="link_text_advanced_settings">Geavanceerd</string>
   <string name="link_text_api">API</string>
   <string name="link_text_apps_settings">Apps</string>
@@ -1512,9 +1515,9 @@
   <string name="text_rating_prompt_7">Beoordeel je ervaring.</string>
   <string name="text_rating_prompt_8">Geef het een cijfer.</string>
   <string name="text_ratings_no_data">Nog geen beoordelingen.</string>
-  <string name="text_ratings_season_extremes">Hoogtepunt %1$s · %2$s% · Dieptepunt %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes">Hoogtepunt %1$s · %2$s · Dieptepunt %3$s · %4$s</string>
   <string name="text_ratings_season_extremes_android">Hoogtepunt S%1$s (%2$s)  •  Dieptepunt S%3$s (%4$s)</string>
-  <string name="text_ratings_season_point">%1$s · %2$s%</string>
+  <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s stemmen</string>
   <string name="text_raw_export">Ruwe export</string>
   <string name="text_reconnect_streaming_warning">Verbind %s hieronder opnieuw.</string>

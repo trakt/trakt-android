@@ -634,6 +634,9 @@
   <string name="filter_label_ratings">Trakt értékelés: %1$s és %2$s között</string>
   <string name="filter_label_runtime">%s perc</string>
   <string name="filter_label_this_year">Idén</string>
+  <string name="filter_toggle_state_default">Alapértelmezett</string>
+  <string name="filter_toggle_state_off">Ki</string>
+  <string name="filter_toggle_state_on">Be</string>
   <string name="header_account_details">Fiókadatok</string>
   <string name="header_age">Életkor</string>
   <string name="header_aired">Adásban volt</string>
@@ -727,7 +730,6 @@
   <string name="header_sentiment_positive">Pozitív</string>
   <string name="header_settings_clear_cover">Borítókép törlése</string>
   <string name="header_settings_notifications">Értesítések</string>
-  <string name="header_settings_privacy">Adatvédelem és Előfizetés</string>
   <string name="header_settings_tracking">Nyomon követés</string>
   <string name="header_settings_translations">Fordítások</string>
   <string name="header_skipped_items">%s kihagyott elem</string>
@@ -953,6 +955,7 @@
   <string name="link_label_status">Trakt Állapot</string>
   <string name="link_label_view_social_activities">%s közösségi tevékenységeinek megtekintése</string>
   <string name="link_text_about">Névjegy</string>
+  <string name="link_text_account_settings">Fiók</string>
   <string name="link_text_advanced_settings">Haladó</string>
   <string name="link_text_api">API</string>
   <string name="link_text_apps_settings">Alkalmazások</string>
@@ -1512,9 +1515,9 @@
   <string name="text_rating_prompt_7">Értékeld az élményedet.</string>
   <string name="text_rating_prompt_8">Adj neki osztályzatot.</string>
   <string name="text_ratings_no_data">Még nincsenek értékelések.</string>
-  <string name="text_ratings_season_extremes">Csúcs %1$s · %2$s% · Mélypont %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes">Csúcs %1$s · %2$s · Mélypont %3$s · %4$s</string>
   <string name="text_ratings_season_extremes_android">Csúcs S%1$s (%2$s) • Mélypont S%3$s (%4$s)</string>
-  <string name="text_ratings_season_point">%1$s · %2$s%</string>
+  <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s szavazat</string>
   <string name="text_raw_export">Nyers exportálás</string>
   <string name="text_reconnect_streaming_warning">Kérjük, csatlakoztassa újra az alábbi %s szolgáltatásokat.</string>

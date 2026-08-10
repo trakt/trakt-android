@@ -634,6 +634,9 @@
   <string name="filter_label_ratings">Trakt-bedømmelse fra %1$s til %2$s</string>
   <string name="filter_label_runtime">%s minutter</string>
   <string name="filter_label_this_year">Dette år</string>
+  <string name="filter_toggle_state_default">Standard</string>
+  <string name="filter_toggle_state_off">Fra</string>
+  <string name="filter_toggle_state_on">Til</string>
   <string name="header_account_details">Kontooplysninger</string>
   <string name="header_age">Alder</string>
   <string name="header_aired">Sendt</string>
@@ -727,7 +730,6 @@
   <string name="header_sentiment_positive">Positiv</string>
   <string name="header_settings_clear_cover">Ryd Coverbillede</string>
   <string name="header_settings_notifications">Notifikationer</string>
-  <string name="header_settings_privacy">Privatliv &amp; Abonnement</string>
   <string name="header_settings_tracking">Sporing</string>
   <string name="header_settings_translations">Oversættelser</string>
   <string name="header_skipped_items">%s Oversprungne Elementer</string>
@@ -953,6 +955,7 @@
   <string name="link_label_status">Trakt Status</string>
   <string name="link_label_view_social_activities">Se sociale aktiviteter for %s</string>
   <string name="link_text_about">Om</string>
+  <string name="link_text_account_settings">Konto</string>
   <string name="link_text_advanced_settings">Avanceret</string>
   <string name="link_text_api">API</string>
   <string name="link_text_apps_settings">Apps</string>
@@ -1512,9 +1515,9 @@
   <string name="text_rating_prompt_7">Bedøm din oplevelse.</string>
   <string name="text_rating_prompt_8">Giv den en karakter.</string>
   <string name="text_ratings_no_data">Ingen vurderinger endnu.</string>
-  <string name="text_ratings_season_extremes">Højest %1$s · %2$s% · Lavest %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes">Højest %1$s · %2$s · Lavest %3$s · %4$s</string>
   <string name="text_ratings_season_extremes_android">Højeste S%1$s (%2$s) • Laveste S%3$s (%4$s)</string>
-  <string name="text_ratings_season_point">%1$s · %2$s%</string>
+  <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s stemmer</string>
   <string name="text_raw_export">Rå eksport</string>
   <string name="text_reconnect_streaming_warning">Gendan forbindelse til %s nedenfor.</string>

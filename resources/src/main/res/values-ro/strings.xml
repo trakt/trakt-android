@@ -634,6 +634,9 @@
   <string name="filter_label_ratings">Evaluare Trakt de la %1$s la %2$s</string>
   <string name="filter_label_runtime">%s minute</string>
   <string name="filter_label_this_year">Anul acesta</string>
+  <string name="filter_toggle_state_default">Implicit</string>
+  <string name="filter_toggle_state_off">Oprit</string>
+  <string name="filter_toggle_state_on">Activat</string>
   <string name="header_account_details">Detalii cont</string>
   <string name="header_age">Vârstă</string>
   <string name="header_aired">Difuzat</string>
@@ -727,7 +730,6 @@
   <string name="header_sentiment_positive">Pozitiv</string>
   <string name="header_settings_clear_cover">Șterge Imaginea de Copertă</string>
   <string name="header_settings_notifications">Notificări</string>
-  <string name="header_settings_privacy">Confidențialitate și Abonament</string>
   <string name="header_settings_tracking">Urmărire</string>
   <string name="header_settings_translations">Traduceri</string>
   <string name="header_skipped_items">%s Elemente Omise</string>
@@ -953,6 +955,7 @@
   <string name="link_label_status">Starea Trakt</string>
   <string name="link_label_view_social_activities">Vezi activitățile sociale pentru %s</string>
   <string name="link_text_about">Despre</string>
+  <string name="link_text_account_settings">Cont</string>
   <string name="link_text_advanced_settings">Avansate</string>
   <string name="link_text_api">API</string>
   <string name="link_text_apps_settings">Aplicații</string>
@@ -1512,9 +1515,9 @@
   <string name="text_rating_prompt_7">Evaluează-ți experiența.</string>
   <string name="text_rating_prompt_8">Dă-i o notă.</string>
   <string name="text_ratings_no_data">Încă nu sunt evaluări.</string>
-  <string name="text_ratings_season_extremes">Maxim %1$s · %2$s% · Minim %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes">Maxim %1$s · %2$s · Minim %3$s · %4$s</string>
   <string name="text_ratings_season_extremes_android">Maxim S%1$s (%2$s)  •  Minim S%3$s (%4$s)</string>
-  <string name="text_ratings_season_point">%1$s · %2$s%</string>
+  <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s voturi</string>
   <string name="text_raw_export">Export brut</string>
   <string name="text_reconnect_streaming_warning">Te rugăm să reconectezi %s de mai jos.</string>

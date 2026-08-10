@@ -634,6 +634,9 @@
   <string name="filter_label_ratings">Note Trakt de %1$s à %2$s</string>
   <string name="filter_label_runtime">%s minutes</string>
   <string name="filter_label_this_year">Cette année</string>
+  <string name="filter_toggle_state_default">Par défaut</string>
+  <string name="filter_toggle_state_off">Désactivé</string>
+  <string name="filter_toggle_state_on">Actif</string>
   <string name="header_account_details">Détails du compte</string>
   <string name="header_age">Âge</string>
   <string name="header_aired">Diffusé</string>
@@ -727,7 +730,6 @@
   <string name="header_sentiment_positive">Positif</string>
   <string name="header_settings_clear_cover">Effacer l\'image de couverture</string>
   <string name="header_settings_notifications">Notifications</string>
-  <string name="header_settings_privacy">Confidentialité et abonnement</string>
   <string name="header_settings_tracking">Suivi</string>
   <string name="header_settings_translations">Traductions</string>
   <string name="header_skipped_items">%s éléments ignorés</string>
@@ -953,6 +955,7 @@
   <string name="link_label_status">Statut Trakt</string>
   <string name="link_label_view_social_activities">Voir les activités sociales pour %s</string>
   <string name="link_text_about">À propos</string>
+  <string name="link_text_account_settings">Compte</string>
   <string name="link_text_advanced_settings">Avancé</string>
   <string name="link_text_api">API</string>
   <string name="link_text_apps_settings">Applications</string>
@@ -1512,9 +1515,9 @@
   <string name="text_rating_prompt_7">Notez votre expérience.</string>
   <string name="text_rating_prompt_8">Donnez-lui une note.</string>
   <string name="text_ratings_no_data">Pas encore de notes.</string>
-  <string name="text_ratings_season_extremes">Pic %1$s · %2$s% · Minimum %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes">Pic %1$s · %2$s · Minimum %3$s · %4$s</string>
   <string name="text_ratings_season_extremes_android">Pic S%1$s (%2$s) • Minimum S%3$s (%4$s)</string>
-  <string name="text_ratings_season_point">%1$s · %2$s%</string>
+  <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s votes</string>
   <string name="text_raw_export">Exportation brute</string>
   <string name="text_reconnect_streaming_warning">Veuillez reconnecter %s ci-dessous.</string>

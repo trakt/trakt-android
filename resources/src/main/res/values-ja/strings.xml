@@ -634,6 +634,9 @@
   <string name="filter_label_ratings">Trakt評価 %1$s～%2$s</string>
   <string name="filter_label_runtime">%s分</string>
   <string name="filter_label_this_year">今年</string>
+  <string name="filter_toggle_state_default">デフォルト</string>
+  <string name="filter_toggle_state_off">オフ</string>
+  <string name="filter_toggle_state_on">オン</string>
   <string name="header_account_details">アカウント詳細</string>
   <string name="header_age">年齢</string>
   <string name="header_aired">放送済み</string>
@@ -727,7 +730,6 @@
   <string name="header_sentiment_positive">ポジティブ</string>
   <string name="header_settings_clear_cover">カバー画像をクリア</string>
   <string name="header_settings_notifications">通知</string>
-  <string name="header_settings_privacy">プライバシーとサブスクリプション</string>
   <string name="header_settings_tracking">トラッキング</string>
   <string name="header_settings_translations">翻訳</string>
   <string name="header_skipped_items">%s個のスキップ済みアイテム</string>
@@ -953,6 +955,7 @@
   <string name="link_label_status">Trakt ステータス</string>
   <string name="link_label_view_social_activities">%sのソーシャルアクティビティを表示</string>
   <string name="link_text_about">Traktについて</string>
+  <string name="link_text_account_settings">アカウント</string>
   <string name="link_text_advanced_settings">高度な設定</string>
   <string name="link_text_api">API</string>
   <string name="link_text_apps_settings">アプリ</string>
@@ -1512,9 +1515,9 @@
   <string name="text_rating_prompt_7">体験を評価してください。</string>
   <string name="text_rating_prompt_8">採点してください。</string>
   <string name="text_ratings_no_data">まだ評価はありません。</string>
-  <string name="text_ratings_season_extremes">最高 %1$s · %2$s% · 最低 %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes">最高 %1$s · %2$s · 最低 %3$s · %4$s</string>
   <string name="text_ratings_season_extremes_android">最高 S%1$s (%2$s) • 最低 S%3$s (%4$s)</string>
-  <string name="text_ratings_season_point">%1$s · %2$s%</string>
+  <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s票</string>
   <string name="text_raw_export">生データのエクスポート</string>
   <string name="text_reconnect_streaming_warning">以下の%sを再接続してください。</string>
