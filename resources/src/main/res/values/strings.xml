@@ -634,6 +634,9 @@
   <string name="filter_label_ratings">Trakt Rating of %1$s to %2$s</string>
   <string name="filter_label_runtime">%s minutes</string>
   <string name="filter_label_this_year">This year</string>
+  <string name="filter_toggle_state_default">Default</string>
+  <string name="filter_toggle_state_off">Off</string>
+  <string name="filter_toggle_state_on">On</string>
   <string name="header_account_details">Account Details</string>
   <string name="header_age">Age</string>
   <string name="header_aired">Aired</string>
@@ -727,7 +730,6 @@
   <string name="header_sentiment_positive">Positive</string>
   <string name="header_settings_clear_cover">Clear Cover Image</string>
   <string name="header_settings_notifications">Notifications</string>
-  <string name="header_settings_privacy">Privacy &amp; Subscription</string>
   <string name="header_settings_tracking">Tracking</string>
   <string name="header_settings_translations">Translations</string>
   <string name="header_skipped_items">%s Skipped Items</string>
@@ -953,6 +955,7 @@
   <string name="link_label_status">Trakt Status</string>
   <string name="link_label_view_social_activities">View social activities for %s</string>
   <string name="link_text_about">About</string>
+  <string name="link_text_account_settings">Account</string>
   <string name="link_text_advanced_settings">Advanced</string>
   <string name="link_text_api">API</string>
   <string name="link_text_apps_settings">Apps</string>

@@ -634,6 +634,9 @@
   <string name="filter_label_ratings">%1$s ila %2$s arası Trakt Derecelendirmesi</string>
   <string name="filter_label_runtime">%s dakika</string>
   <string name="filter_label_this_year">Bu yıl</string>
+  <string name="filter_toggle_state_default">Varsayılan</string>
+  <string name="filter_toggle_state_off">Kapalı</string>
+  <string name="filter_toggle_state_on">Açık</string>
   <string name="header_account_details">Hesap detayları</string>
   <string name="header_age">Yaş</string>
   <string name="header_aired">Yayınlandı</string>
@@ -727,7 +730,6 @@
   <string name="header_sentiment_positive">Olumlu</string>
   <string name="header_settings_clear_cover">Kapak Resmini Temizle</string>
   <string name="header_settings_notifications">Bildirimler</string>
-  <string name="header_settings_privacy">Gizlilik ve Abonelik</string>
   <string name="header_settings_tracking">Takip</string>
   <string name="header_settings_translations">Çeviriler</string>
   <string name="header_skipped_items">%s Atlanan Öğe</string>
@@ -953,6 +955,7 @@
   <string name="link_label_status">Trakt Durumu</string>
   <string name="link_label_view_social_activities">%s için sosyal etkinlikleri görüntüle</string>
   <string name="link_text_about">Hakkında</string>
+  <string name="link_text_account_settings">Hesap</string>
   <string name="link_text_advanced_settings">Gelişmiş</string>
   <string name="link_text_api">API</string>
   <string name="link_text_apps_settings">Uygulamalar</string>
@@ -1512,9 +1515,9 @@
   <string name="text_rating_prompt_7">Deneyiminizi oylayın.</string>
   <string name="text_rating_prompt_8">Puan verin.</string>
   <string name="text_ratings_no_data">Henüz derecelendirme yok.</string>
-  <string name="text_ratings_season_extremes">En Yüksek %1$s · %2$s% · En Düşük %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes">En Yüksek %1$s · %2$s · En Düşük %3$s · %4$s</string>
   <string name="text_ratings_season_extremes_android">En Yüksek S%1$s (%2$s) • En Düşük S%3$s (%4$s)</string>
-  <string name="text_ratings_season_point">%1$s · %2$s%</string>
+  <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s oy</string>
   <string name="text_raw_export">Ham dışa aktarım</string>
   <string name="text_reconnect_streaming_warning">Lütfen aşağıdan %s yeniden bağlayın.</string>

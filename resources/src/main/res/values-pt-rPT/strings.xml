@@ -634,6 +634,9 @@
   <string name="filter_label_ratings">Classificação no Trakt entre %1$s e %2$s</string>
   <string name="filter_label_runtime">%s minutos</string>
   <string name="filter_label_this_year">Este ano</string>
+  <string name="filter_toggle_state_default">Predefinição</string>
+  <string name="filter_toggle_state_off">Desativado</string>
+  <string name="filter_toggle_state_on">Ativado</string>
   <string name="header_account_details">Detalhes da conta</string>
   <string name="header_age">Idade</string>
   <string name="header_aired">Transmitido</string>
@@ -727,7 +730,6 @@
   <string name="header_sentiment_positive">Positivo</string>
   <string name="header_settings_clear_cover">Remover imagem de capa</string>
   <string name="header_settings_notifications">Notificações</string>
-  <string name="header_settings_privacy">Privacidade e subscrição</string>
   <string name="header_settings_tracking">Registo</string>
   <string name="header_settings_translations">Traduções</string>
   <string name="header_skipped_items">%s itens ignorados</string>
@@ -953,6 +955,7 @@
   <string name="link_label_status">Estado do Trakt</string>
   <string name="link_label_view_social_activities">Ver atividades sociais de %s</string>
   <string name="link_text_about">Sobre</string>
+  <string name="link_text_account_settings">Conta</string>
   <string name="link_text_advanced_settings">Avançadas</string>
   <string name="link_text_api">API</string>
   <string name="link_text_apps_settings">Apps</string>
@@ -1342,9 +1345,9 @@
   <string name="text_cta_start_watching_media">A tua lista está à tua espera. Adiciona as séries e filmes que queres começar a ver. O que vem a seguir?</string>
   <string name="text_cta_start_watching_movies">A tua lista está à tua espera. Adiciona os filmes que queres começar a ver. O que vem a seguir?</string>
   <string name="text_cta_start_watching_shows">A tua lista está à tua espera. Adiciona as séries que queres começar a ver. O que vem a seguir?</string>
-  <string name="text_cta_up_next">As tuas séries. Ao teu ritmo. Retoma exatamente onde deixaste. O que estás a ver neste momento?</string>
-  <string name="text_cta_up_next_media">As tuas séries e filmes. Ao teu ritmo. Retoma exatamente onde deixaste. O que estás a ver neste momento?</string>
-  <string name="text_cta_up_next_movies">Os teus filmes. Ao teu ritmo. Retoma exatamente onde deixaste. O que estás a ver neste momento?</string>
+  <string name="text_cta_up_next">As tuas séries, ao teu ritmo. Retoma exatamente onde deixaste. O que estás a ver neste momento?</string>
+  <string name="text_cta_up_next_media">As tuas séries e filmes, ao teu ritmo. Retoma exatamente onde deixaste. O que estás a ver neste momento?</string>
+  <string name="text_cta_up_next_movies">Os teus filmes, ao teu ritmo. Retoma exatamente onde deixaste. O que estás a ver neste momento?</string>
   <string name="text_cta_upcoming">A tua cronologia. Descobre o que está prestes a estrear com uma lista completa dos próximos episódios que te interessam.</string>
   <string name="text_cta_upcoming_media">A tua cronologia. Descobre o que está prestes a estrear com uma lista completa dos próximos filmes e episódios que te interessam.</string>
   <string name="text_cta_upcoming_movies">A tua cronologia. Descobre o que está prestes a estrear com uma lista completa dos próximos filmes que te interessam.</string>
@@ -1512,9 +1515,9 @@
   <string name="text_rating_prompt_7">Classifica a tua experiência.</string>
   <string name="text_rating_prompt_8">Dá-lhe uma nota.</string>
   <string name="text_ratings_no_data">Ainda não existem classificações.</string>
-  <string name="text_ratings_season_extremes">Pico: %1$s · %2$s% · Mínimo: %3$s · %4$s%</string>
-  <string name="text_ratings_season_extremes_android">Pico S%1$s (%2$s) • Mínimo S%3$s (%4$s)</string>
-  <string name="text_ratings_season_point">%1$s · %2$s%</string>
+  <string name="text_ratings_season_extremes">Melhor: %1$s · %2$s · Pior: %3$s · %4$s</string>
+  <string name="text_ratings_season_extremes_android">Melhor: T%1$s (%2$s) • Pior: T%3$s (%4$s)</string>
+  <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s votos</string>
   <string name="text_raw_export">Exportação em bruto</string>
   <string name="text_reconnect_streaming_warning">Volta a associar %s abaixo.</string>
@@ -1935,7 +1938,7 @@
   <string name="vip_feature_title_streaming_sync">Sincronização de streaming</string>
   <string name="vip_feature_title_support">Melhor apoio: fórum e feedback</string>
   <string name="vip_feature_title_trivia">Curiosidades</string>
-  <string name="vip_feature_title_unlock">Desbloqueia todo o potencial com o</string>
+  <string name="vip_feature_title_unlock">Desbloqueia todo o potencial com</string>
   <string name="vip_feature_title_vip_status">Estatuto VIP</string>
   <string name="vip_feature_title_yir">Resumo do ano</string>
   <string name="vip_text_vip_go_beyond_limits">Vai além dos teus limites</string>
@@ -1956,8 +1959,8 @@
   <string name="warning_prompt_delete_note">Tens a certeza de que queres eliminar esta nota?</string>
   <string name="warning_prompt_delete_reply">Tens a certeza de que queres eliminar a tua resposta?</string>
   <string name="warning_prompt_discard_changes">Tens a certeza de que queres descartar estas alterações? Todas as alterações não guardadas serão perdidas.</string>
-  <string name="warning_prompt_drop_movie">Tens a certeza de que queres parar de ver \"%s\"? Esta ação removê-lo-á da tua lista \"Continuar a ver\".</string>
-  <string name="warning_prompt_drop_show">Tens a certeza de que queres deixar de ver \"%s\"? Esta ação removê-la-á da tua lista \"Continuar a ver\".</string>
+  <string name="warning_prompt_drop_movie">Tens a certeza de que queres parar de ver \"%s\"? Esta ação removê-lo-á da tua lista Continuar a ver.</string>
+  <string name="warning_prompt_drop_show">Tens a certeza de que queres deixar de ver \"%s\"? Esta ação removê-la-á da tua lista Continuar a ver.</string>
   <string name="warning_prompt_hide_recommendation">Tens a certeza de que queres ocultar \"%s\" das tuas recomendações?</string>
   <string name="warning_prompt_log_out">Tens a certeza de que queres terminar sessão?</string>
   <string name="warning_prompt_mark_as_watched_multiple_episodes">Tens a certeza de que queres marcar %d episódios como vistos?</string>

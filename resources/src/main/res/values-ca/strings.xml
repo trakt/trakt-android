@@ -634,6 +634,9 @@
   <string name="filter_label_ratings">Valoració de Trakt de %1$s a %2$s</string>
   <string name="filter_label_runtime">%s minuts</string>
   <string name="filter_label_this_year">Aquest any</string>
+  <string name="filter_toggle_state_default">Per defecte</string>
+  <string name="filter_toggle_state_off">Desactivat</string>
+  <string name="filter_toggle_state_on">Activat</string>
   <string name="header_account_details">Detalls del compte</string>
   <string name="header_age">Edat</string>
   <string name="header_aired">Emès</string>
@@ -727,7 +730,6 @@
   <string name="header_sentiment_positive">Positiu</string>
   <string name="header_settings_clear_cover">Esborra la imatge de portada</string>
   <string name="header_settings_notifications">Notificacions</string>
-  <string name="header_settings_privacy">Privadesa i subscripció</string>
   <string name="header_settings_tracking">Seguiment</string>
   <string name="header_settings_translations">Traduccions</string>
   <string name="header_skipped_items">%s elements omesos</string>
@@ -953,6 +955,7 @@
   <string name="link_label_status">Estat de Trakt</string>
   <string name="link_label_view_social_activities">Mostra les activitats socials de %s</string>
   <string name="link_text_about">Quant a</string>
+  <string name="link_text_account_settings">Compte</string>
   <string name="link_text_advanced_settings">Avançat</string>
   <string name="link_text_api">API</string>
   <string name="link_text_apps_settings">Aplicacions</string>
@@ -1512,9 +1515,9 @@
   <string name="text_rating_prompt_7">Valora la teva experiència.</string>
   <string name="text_rating_prompt_8">Posa-li una nota.</string>
   <string name="text_ratings_no_data">Encara no hi ha valoracions.</string>
-  <string name="text_ratings_season_extremes">Màxim %1$s · %2$s% · Mínim %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes">Màxim %1$s · %2$s · Mínim %3$s · %4$s</string>
   <string name="text_ratings_season_extremes_android">Màxim S%1$s (%2$s) • Mínim S%3$s (%4$s)</string>
-  <string name="text_ratings_season_point">%1$s · %2$s%</string>
+  <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s vots</string>
   <string name="text_raw_export">Exportació en brut</string>
   <string name="text_reconnect_streaming_warning">Torna a connectar %s a continuació.</string>

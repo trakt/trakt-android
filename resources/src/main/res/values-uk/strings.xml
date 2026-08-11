@@ -634,6 +634,9 @@
   <string name="filter_label_ratings">Рейтинг Trakt від %1$s до %2$s</string>
   <string name="filter_label_runtime">%s хвилин</string>
   <string name="filter_label_this_year">Цього року</string>
+  <string name="filter_toggle_state_default">Типово</string>
+  <string name="filter_toggle_state_off">Вимкнено</string>
+  <string name="filter_toggle_state_on">Увімкнено</string>
   <string name="header_account_details">Деталі облікового запису</string>
   <string name="header_age">Вік</string>
   <string name="header_aired">Вийшло</string>
@@ -727,7 +730,6 @@
   <string name="header_sentiment_positive">Позитивний</string>
   <string name="header_settings_clear_cover">Очистити обкладинку</string>
   <string name="header_settings_notifications">Сповіщення</string>
-  <string name="header_settings_privacy">Приватність і Підписка</string>
   <string name="header_settings_tracking">Відстеження</string>
   <string name="header_settings_translations">Переклади</string>
   <string name="header_skipped_items">%s пропущених елементів</string>
@@ -953,6 +955,7 @@
   <string name="link_label_status">Статус Trakt</string>
   <string name="link_label_view_social_activities">Переглянути соціальні активності для %s</string>
   <string name="link_text_about">Про нас</string>
+  <string name="link_text_account_settings">Обліковий запис</string>
   <string name="link_text_advanced_settings">Додатково</string>
   <string name="link_text_api">API</string>
   <string name="link_text_apps_settings">Застосунки</string>
@@ -1512,9 +1515,9 @@
   <string name="text_rating_prompt_7">Оцініть свій досвід.</string>
   <string name="text_rating_prompt_8">Поставте оцінку.</string>
   <string name="text_ratings_no_data">Рейтингів поки немає.</string>
-  <string name="text_ratings_season_extremes">Пік %1$s · %2$s% · Мінімум %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes">Пік %1$s · %2$s · Мінімум %3$s · %4$s</string>
   <string name="text_ratings_season_extremes_android">Пік S%1$s (%2$s) • Мінімум S%3$s (%4$s)</string>
-  <string name="text_ratings_season_point">%1$s · %2$s%</string>
+  <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s голосів</string>
   <string name="text_raw_export">Експорт вихідних даних</string>
   <string name="text_reconnect_streaming_warning">Будь ласка, перепідключіть %s нижче.</string>

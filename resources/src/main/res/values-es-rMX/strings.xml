@@ -634,6 +634,9 @@
   <string name="filter_label_ratings">Calificación de Trakt de %1$s a %2$s</string>
   <string name="filter_label_runtime">%s minutos</string>
   <string name="filter_label_this_year">Este año</string>
+  <string name="filter_toggle_state_default">Predeterminado</string>
+  <string name="filter_toggle_state_off">Apagados</string>
+  <string name="filter_toggle_state_on">Activado</string>
   <string name="header_account_details">Detalles de la cuenta</string>
   <string name="header_age">Edad</string>
   <string name="header_aired">Emitido</string>
@@ -727,7 +730,6 @@
   <string name="header_sentiment_positive">Positivo</string>
   <string name="header_settings_clear_cover">Borrar imagen de portada</string>
   <string name="header_settings_notifications">Notificaciones</string>
-  <string name="header_settings_privacy">Privacidad y Suscripción</string>
   <string name="header_settings_tracking">Seguimiento</string>
   <string name="header_settings_translations">Traducciones</string>
   <string name="header_skipped_items">%s elementos omitidos</string>
@@ -953,6 +955,7 @@
   <string name="link_label_status">Estado de Trakt</string>
   <string name="link_label_view_social_activities">Ver actividades sociales de %s</string>
   <string name="link_text_about">Acerca de</string>
+  <string name="link_text_account_settings">Cuenta</string>
   <string name="link_text_advanced_settings">Avanzado</string>
   <string name="link_text_api">API</string>
   <string name="link_text_apps_settings">Aplicaciones</string>
@@ -1512,9 +1515,9 @@
   <string name="text_rating_prompt_7">Califica tu experiencia.</string>
   <string name="text_rating_prompt_8">Asígnale una calificación.</string>
   <string name="text_ratings_no_data">No hay calificaciones aún.</string>
-  <string name="text_ratings_season_extremes">Máximo %1$s · %2$s% · Mínimo %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes">Máximo %1$s · %2$s · Mínimo %3$s · %4$s</string>
   <string name="text_ratings_season_extremes_android">Máximo S%1$s (%2$s) • Mínimo S%3$s (%4$s)</string>
-  <string name="text_ratings_season_point">%1$s · %2$s%</string>
+  <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s votos</string>
   <string name="text_raw_export">Exportación en bruto</string>
   <string name="text_reconnect_streaming_warning">Vuelve a conectar %s a continuación.</string>

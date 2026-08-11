@@ -634,6 +634,9 @@
   <string name="filter_label_ratings">امتیاز Trakt از %1$s تا %2$s</string>
   <string name="filter_label_runtime">%s دقیقه</string>
   <string name="filter_label_this_year">امسال</string>
+  <string name="filter_toggle_state_default">پیش‌فرض</string>
+  <string name="filter_toggle_state_off">خاموش</string>
+  <string name="filter_toggle_state_on">روشن</string>
   <string name="header_account_details">جزئیات حساب کاربری</string>
   <string name="header_age">سن</string>
   <string name="header_aired">پخش شد</string>
@@ -727,7 +730,6 @@
   <string name="header_sentiment_positive">مثبت</string>
   <string name="header_settings_clear_cover">پاک کردن تصویر جلد</string>
   <string name="header_settings_notifications">اعلان‌ها</string>
-  <string name="header_settings_privacy">حریم خصوصی و اشتراک</string>
   <string name="header_settings_tracking">ردیابی</string>
   <string name="header_settings_translations">ترجمه‌ها</string>
   <string name="header_skipped_items">%s مورد نادیده گرفته شده</string>
@@ -953,6 +955,7 @@
   <string name="link_label_status">وضعیت Trakt</string>
   <string name="link_label_view_social_activities">مشاهده فعالیت‌های اجتماعی برای %s</string>
   <string name="link_text_about">درباره ما</string>
+  <string name="link_text_account_settings">حساب کاربری</string>
   <string name="link_text_advanced_settings">پیشرفته</string>
   <string name="link_text_api">API</string>
   <string name="link_text_apps_settings">برنامه‌ها</string>
@@ -1512,9 +1515,9 @@
   <string name="text_rating_prompt_7">تجربه خود را امتیاز دهید.</string>
   <string name="text_rating_prompt_8">به آن نمره دهید.</string>
   <string name="text_ratings_no_data">هنوز هیچ امتیازی وجود ندارد.</string>
-  <string name="text_ratings_season_extremes">اوج %1$s · %2$s% · کمترین %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes">اوج %1$s · %2$s · کمترین %3$s · %4$s</string>
   <string name="text_ratings_season_extremes_android">اوج S%1$s (%2$s) • کمترین S%3$s (%4$s)</string>
-  <string name="text_ratings_season_point">%1$s · %2$s%</string>
+  <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s رای</string>
   <string name="text_raw_export">خروجی خام</string>
   <string name="text_reconnect_streaming_warning">لطفاً %s را در زیر مجدداً متصل کنید.</string>

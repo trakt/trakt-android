@@ -634,6 +634,9 @@
   <string name="filter_label_ratings">Trakt-betyg från %1$s till %2$s</string>
   <string name="filter_label_runtime">%s minuter</string>
   <string name="filter_label_this_year">I år</string>
+  <string name="filter_toggle_state_default">Standard</string>
+  <string name="filter_toggle_state_off">Av</string>
+  <string name="filter_toggle_state_on">På</string>
   <string name="header_account_details">Kontouppgifter</string>
   <string name="header_age">Ålder</string>
   <string name="header_aired">Sändes</string>
@@ -727,7 +730,6 @@
   <string name="header_sentiment_positive">Positiv</string>
   <string name="header_settings_clear_cover">Rensa omslagsbild</string>
   <string name="header_settings_notifications">Aviseringar</string>
-  <string name="header_settings_privacy">Integritet och prenumeration</string>
   <string name="header_settings_tracking">Spårning</string>
   <string name="header_settings_translations">Översättningar</string>
   <string name="header_skipped_items">%s överhoppade objekt</string>
@@ -953,6 +955,7 @@
   <string name="link_label_status">Trakt-status</string>
   <string name="link_label_view_social_activities">Visa sociala aktiviteter för %s</string>
   <string name="link_text_about">Om</string>
+  <string name="link_text_account_settings">Konto</string>
   <string name="link_text_advanced_settings">Avancerat</string>
   <string name="link_text_api">API</string>
   <string name="link_text_apps_settings">Appar</string>
@@ -1512,9 +1515,9 @@
   <string name="text_rating_prompt_7">Betygsätt din upplevelse.</string>
   <string name="text_rating_prompt_8">Ge den ett betyg.</string>
   <string name="text_ratings_no_data">Inga betyg ännu.</string>
-  <string name="text_ratings_season_extremes">Högsta %1$s · %2$s% · Lägsta %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes">Högsta %1$s · %2$s · Lägsta %3$s · %4$s</string>
   <string name="text_ratings_season_extremes_android">Högsta S%1$s (%2$s) · Lägsta S%3$s (%4$s)</string>
-  <string name="text_ratings_season_point">%1$s · %2$s%</string>
+  <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s röster</string>
   <string name="text_raw_export">Rå export</string>
   <string name="text_reconnect_streaming_warning">Vänligen återanslut %s nedan.</string>

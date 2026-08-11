@@ -634,6 +634,9 @@
   <string name="filter_label_ratings">Trakt-Bewertung von %1$s bis %2$s</string>
   <string name="filter_label_runtime">%s Minuten</string>
   <string name="filter_label_this_year">Dieses Jahr</string>
+  <string name="filter_toggle_state_default">Standard</string>
+  <string name="filter_toggle_state_off">Aus</string>
+  <string name="filter_toggle_state_on">An</string>
   <string name="header_account_details">Kontodetails</string>
   <string name="header_age">Alter</string>
   <string name="header_aired">Ausgestrahlt</string>
@@ -727,7 +730,6 @@
   <string name="header_sentiment_positive">Positiv</string>
   <string name="header_settings_clear_cover">Coverbild löschen</string>
   <string name="header_settings_notifications">Benachrichtigungen</string>
-  <string name="header_settings_privacy">Datenschutz &amp; Abonnement</string>
   <string name="header_settings_tracking">Tracking</string>
   <string name="header_settings_translations">Übersetzungen</string>
   <string name="header_skipped_items">%s übersprungene Elemente</string>
@@ -953,6 +955,7 @@
   <string name="link_label_status">Trakt-Status</string>
   <string name="link_label_view_social_activities">Soziale Aktivitäten für %s anzeigen</string>
   <string name="link_text_about">Über uns</string>
+  <string name="link_text_account_settings">Konto</string>
   <string name="link_text_advanced_settings">Erweitert</string>
   <string name="link_text_api">API</string>
   <string name="link_text_apps_settings">Apps</string>
@@ -1512,9 +1515,9 @@
   <string name="text_rating_prompt_7">Bewerten Sie Ihr Erlebnis.</string>
   <string name="text_rating_prompt_8">Geben Sie eine Note.</string>
   <string name="text_ratings_no_data">Noch keine Bewertungen.</string>
-  <string name="text_ratings_season_extremes">Hoch %1$s · %2$s% · Tief %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes">Hoch %1$s · %2$s · Tief %3$s · %4$s</string>
   <string name="text_ratings_season_extremes_android">Hoch St.%1$s (%2$s)  •  Tief St.%3$s (%4$s)</string>
-  <string name="text_ratings_season_point">%1$s · %2$s%</string>
+  <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s Stimmen</string>
   <string name="text_raw_export">Rohdaten-Export</string>
   <string name="text_reconnect_streaming_warning">Bitte verbinde %s unten neu.</string>

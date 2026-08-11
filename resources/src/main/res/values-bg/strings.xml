@@ -634,6 +634,9 @@
   <string name="filter_label_ratings">Оценка в Trakt от %1$s до %2$s</string>
   <string name="filter_label_runtime">%s минути</string>
   <string name="filter_label_this_year">Тази година</string>
+  <string name="filter_toggle_state_default">По подразбиране</string>
+  <string name="filter_toggle_state_off">Изкл.</string>
+  <string name="filter_toggle_state_on">Вкл.</string>
   <string name="header_account_details">Детайли на акаунта</string>
   <string name="header_age">Възраст</string>
   <string name="header_aired">Излъчен</string>
@@ -727,7 +730,6 @@
   <string name="header_sentiment_positive">Положително</string>
   <string name="header_settings_clear_cover">Изчисти корицата</string>
   <string name="header_settings_notifications">Известия</string>
-  <string name="header_settings_privacy">Поверителност &amp; Абонамент</string>
   <string name="header_settings_tracking">Проследяване</string>
   <string name="header_settings_translations">Преводи</string>
   <string name="header_skipped_items">%s пропуснати елемента</string>
@@ -953,6 +955,7 @@
   <string name="link_label_status">Trakt Статус</string>
   <string name="link_label_view_social_activities">Преглед на социалните дейности за %s</string>
   <string name="link_text_about">За нас</string>
+  <string name="link_text_account_settings">Профил</string>
   <string name="link_text_advanced_settings">Разширени</string>
   <string name="link_text_api">API</string>
   <string name="link_text_apps_settings">Приложения</string>
@@ -1512,9 +1515,9 @@
   <string name="text_rating_prompt_7">Оценете вашето изживяване.</string>
   <string name="text_rating_prompt_8">Дайте му оценка.</string>
   <string name="text_ratings_no_data">Все още няма рейтинги.</string>
-  <string name="text_ratings_season_extremes">Връх %1$s · %2$s% · Дъно %3$s · %4$s%</string>
+  <string name="text_ratings_season_extremes">Връх %1$s · %2$s · Дъно %3$s · %4$s</string>
   <string name="text_ratings_season_extremes_android">Връх S%1$s (%2$s) • Дъно S%3$s (%4$s)</string>
-  <string name="text_ratings_season_point">%1$s · %2$s%</string>
+  <string name="text_ratings_season_point">%1$s · %2$s</string>
   <string name="text_ratings_votes">%s гласа</string>
   <string name="text_raw_export">Необработен експорт</string>
   <string name="text_reconnect_streaming_warning">Моля, свържете отново %s по-долу.</string>
