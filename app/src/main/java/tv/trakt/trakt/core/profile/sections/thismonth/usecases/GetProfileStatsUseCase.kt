@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.profile.sections.thismonth.usecases
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import tv.trakt.trakt.common.core.sync.model.ProgressItem
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.toLocal
@@ -40,15 +41,15 @@ internal class GetProfileStatsUseCase(
             loadUserProgressUseCase.loadMoviesProgress()
         }
 
-        val moviePlays = moviesProgress
-            .asSequence()
-            .flatMap { it.plays }
+        val watchedMovies = moviesProgress
+            .filter { it.plays.isNotEmpty() }
+            .distinctBy { it.movie.ids.trakt }
 
         return MoviesCounts(
-            moviesThisMonth = moviePlays.count {
-                it.isInSameMonthAs(currentDate)
+            moviesThisMonth = watchedMovies.count { movie ->
+                movie.plays.any { it.isInSameMonthAs(currentDate) }
             },
-            allMovies = moviePlays.count(),
+            allMovies = watchedMovies.size,
         )
     }
 
@@ -59,25 +60,30 @@ internal class GetProfileStatsUseCase(
             loadUserProgressUseCase.loadShowsProgress()
         }
 
-        val showsThisMonth = progress.count {
-            it.lastWatchedAt.isInSameMonthAs(currentDate)
-        }
+        val watchedShows = progress
+            .distinctBy { it.showId }
+            .map { show ->
+                show.seasons
+                    .flatMap { it.episodes }
+                    .filter { it.plays.isNotEmpty() }
+                    .distinctBy { it.id }
+            }
+            .filter { it.isNotEmpty() }
 
-        val episodePlays = progress
-            .asSequence()
-            .flatMap { it.seasons }
-            .flatMap { it.episodes }
-            .flatMap { it.plays }
-
-        val allEpisodes = episodePlays.count()
-        val episodesThisMonth = episodePlays.count { it.isInSameMonthAs(currentDate) }
+        val watchedEpisodes = watchedShows.flatten()
 
         return ShowsCounts(
-            showsThisMonth = showsThisMonth,
-            episodesThisMonth = episodesThisMonth,
-            allShows = progress.size,
-            allEpisodes = allEpisodes,
+            showsThisMonth = watchedShows.count { episodes ->
+                episodes.any { it.wasWatchedIn(currentDate) }
+            },
+            episodesThisMonth = watchedEpisodes.count { it.wasWatchedIn(currentDate) },
+            allShows = watchedShows.size,
+            allEpisodes = watchedEpisodes.size,
         )
+    }
+
+    private fun ProgressItem.ShowItem.Episode.wasWatchedIn(reference: ZonedDateTime): Boolean {
+        return plays.any { it.isInSameMonthAs(reference) }
     }
 
     private fun Instant.isInSameMonthAs(reference: ZonedDateTime): Boolean {
