@@ -40,13 +40,15 @@ internal class GetProfileStatsUseCase(
             loadUserProgressUseCase.loadMoviesProgress()
         }
 
-        val moviesThisMonth = moviesProgress.count {
-            it.lastWatchedAt.isInSameMonthAs(currentDate)
-        }
+        val moviePlays = moviesProgress
+            .asSequence()
+            .flatMap { it.plays }
 
         return MoviesCounts(
-            moviesThisMonth = moviesThisMonth,
-            allMovies = moviesProgress.size,
+            moviesThisMonth = moviePlays.count {
+                it.isInSameMonthAs(currentDate)
+            },
+            allMovies = moviePlays.count(),
         )
     }
 
@@ -61,18 +63,14 @@ internal class GetProfileStatsUseCase(
             it.lastWatchedAt.isInSameMonthAs(currentDate)
         }
 
-        var allEpisodes = 0
-        var episodesThisMonth = 0
-        progress.forEach { show ->
-            show.seasons.forEach { season ->
-                season.episodes.forEach { episode ->
-                    allEpisodes++
-                    if (episode.lastWatchedAt.isInSameMonthAs(currentDate)) {
-                        episodesThisMonth++
-                    }
-                }
-            }
-        }
+        val episodePlays = progress
+            .asSequence()
+            .flatMap { it.seasons }
+            .flatMap { it.episodes }
+            .flatMap { it.plays }
+
+        val allEpisodes = episodePlays.count()
+        val episodesThisMonth = episodePlays.count { it.isInSameMonthAs(currentDate) }
 
         return ShowsCounts(
             showsThisMonth = showsThisMonth,
