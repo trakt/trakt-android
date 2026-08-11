@@ -144,7 +144,7 @@ private fun AllRatingsContent(
                     label = "QualityOverTimeCard",
                 ) { seasonRatings ->
                     when {
-                        seasonRatings != null -> QualityOverTimeCard(
+                        !seasonRatings.isNullOrEmpty() -> QualityOverTimeCard(
                             seasons = seasonRatings,
                             modifier = Modifier.fillMaxWidth(),
                         )

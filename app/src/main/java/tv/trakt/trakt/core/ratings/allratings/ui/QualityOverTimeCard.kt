@@ -55,12 +55,10 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade700
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-private val GraphHeight = 120.dp
 private const val LINE_SPAN_FRACTION = 0.4F
-
-// Beyond this many seasons the graph scrolls horizontally, keeping a minimum
-// spacing per data point instead of squeezing all points into the card width.
 private const val MAX_FIT_SEASONS = 8
+
+private val GraphHeight = 120.dp
 private val MinPointSpacing = 44.dp
 
 @Composable
