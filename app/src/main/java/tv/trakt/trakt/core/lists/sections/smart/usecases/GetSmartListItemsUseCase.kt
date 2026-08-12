@@ -10,7 +10,6 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.pagination.Pagination
-import tv.trakt.trakt.common.model.sorting.Sorting
 import tv.trakt.trakt.core.lists.model.SmartListItem
 
 internal class GetSmartListItemsUseCase(
@@ -18,14 +17,10 @@ internal class GetSmartListItemsUseCase(
 ) {
     suspend fun getItems(
         listId: TraktId,
-        type: String,
-        sorting: Sorting = Sorting.Default,
         pagination: Pagination = Pagination.Default,
     ): ImmutableList<SmartListItem> {
         return remoteSource.getSmartListItems(
             listId = listId,
-            type = type,
-            sorting = sorting,
             pagination = pagination,
         ).asyncMap { dto ->
             val movie = dto.movie

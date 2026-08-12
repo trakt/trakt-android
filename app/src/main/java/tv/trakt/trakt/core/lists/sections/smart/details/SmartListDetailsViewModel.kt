@@ -24,7 +24,6 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -87,11 +86,6 @@ internal class SmartListDetailsViewModel(
 
                 val items = getSmartListItemsUseCase.getItems(
                     listId = destinationList.ids.trakt,
-                    type = when (destinationList.filters.media) {
-                        MediaMode.Media -> "all"
-                        MediaMode.Shows -> "shows"
-                        MediaMode.Movies -> "movies"
-                    },
                     pagination = Pagination(1, PAGE_LIMIT),
                 )
                     .distinctBy { it.key }
@@ -126,11 +120,6 @@ internal class SmartListDetailsViewModel(
                 val nextPage = page + 1
                 val nextItems = getSmartListItemsUseCase.getItems(
                     listId = destinationList.ids.trakt,
-                    type = when (destinationList.filters.media) {
-                        MediaMode.Media -> "all"
-                        MediaMode.Shows -> "shows"
-                        MediaMode.Movies -> "movies"
-                    },
                     pagination = Pagination(nextPage, PAGE_LIMIT),
                 )
 

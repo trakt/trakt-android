@@ -38,7 +38,6 @@ internal class GetSmartListsUseCase(
                     images = Images(
                         posters = remoteSource.getSmartListItems(
                             listId = it.ids.trakt,
-                            type = "all",
                             pagination = Pagination(
                                 page = 1,
                                 limit = 8,
