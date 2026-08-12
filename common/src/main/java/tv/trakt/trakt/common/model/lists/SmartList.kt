@@ -127,7 +127,7 @@ data class SmartListFilters(
     @Serializable(with = ImmutableListSerializer::class)
     val runtimes: ImmutableList<Int>? = null,
     @Serializable(with = ImmutableListSerializer::class)
-    val imdbRatings: ImmutableList<Int>? = null,
+    val imdbRatings: ImmutableList<Float>? = null,
     @Serializable(with = ImmutableListSerializer::class)
     val rtMeters: ImmutableList<Int>? = null,
     @Serializable(with = ImmutableListSerializer::class)
@@ -158,7 +158,7 @@ data class SmartListFilters(
             formatNumberRange(years.orEmpty(), R.string.advanced_filter_label_release_year, resources),
             formatPercentRange(ratings.orEmpty(), "Trakt", resources, locale),
             formatNumberRange(runtimes.orEmpty(), R.string.advanced_filter_label_runtime, resources),
-            formatPlainRange(imdbRatings.orEmpty(), resources)?.let { "IMDb $it" },
+            formatFloatRange(imdbRatings.orEmpty(), resources)?.let { "IMDb $it" },
             formatPercentRange(rtMeters.orEmpty(), "RT", resources, locale),
             formatPercentRange(rtUserMeters.orEmpty(), "RT Audience", resources, locale),
         )
@@ -235,8 +235,8 @@ private fun formatNumberRange(
     }
 }
 
-private fun formatPlainRange(
-    range: List<Int>,
+private fun formatFloatRange(
+    range: List<Float>,
     resources: Resources,
 ): String? {
     val min = range.getOrNull(0)

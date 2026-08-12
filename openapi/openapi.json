@@ -14450,6 +14450,11 @@
                           "type": "boolean",
                           "description": "Whether a persisted Plex-sync error is currently active."
                         },
+                        "server_limit": {
+                          "type": "integer",
+                          "nullable": true,
+                          "description": "Max number of Plex servers this user may sync. null = unlimited (VIP), 1 = free."
+                        },
                         "selection": {
                           "type": "object",
                           "properties": {
@@ -14582,6 +14587,7 @@
                       "required": [
                         "configured",
                         "error",
+                        "server_limit",
                         "selection",
                         "toggles"
                       ]
@@ -54418,7 +54424,7 @@
     },
     "/users/{id}/smart-lists": {
       "get": {
-        "description": "#### 🔓 OAuth Optional\nReturns all smart list definitions for a user. Use the [**/users/:id/smart-lists/:list_id/items**](#reference/users) method to get the dynamic items a specific smart list resolves to.",
+        "description": "#### 🔓 OAuth Optional\nReturns all smart list definitions for a user. Use the [**/smart-lists/:list_id/items**](#reference/smart-lists) method to get the dynamic items a specific smart list resolves to.",
         "summary": "Get a user's smart lists",
         "tags": [
           "users",
@@ -54587,9 +54593,10 @@
                           "imdb_ratings": {
                             "type": "array",
                             "items": {
-                              "type": "integer"
+                              "type": "number",
+                              "format": "float"
                             },
-                            "maxItems": 2
+                            "minItems": 2
                           },
                           "rt_meters": {
                             "type": "array",
@@ -54608,16 +54615,18 @@
                           "letterboxd_ratings": {
                             "type": "array",
                             "items": {
-                              "type": "integer"
+                              "type": "number",
+                              "format": "float"
                             },
-                            "maxItems": 2
+                            "minItems": 2
                           },
                           "mal_ratings": {
                             "type": "array",
                             "items": {
-                              "type": "integer"
+                              "type": "number",
+                              "format": "float"
                             },
-                            "maxItems": 2
+                            "minItems": 2
                           },
                           "ignore_watched": {
                             "type": "boolean"
@@ -54817,9 +54826,10 @@
                       "imdb_ratings": {
                         "type": "array",
                         "items": {
-                          "type": "integer"
+                          "type": "number",
+                          "format": "float"
                         },
-                        "maxItems": 2
+                        "minItems": 2
                       },
                       "rt_meters": {
                         "type": "array",
@@ -54838,16 +54848,18 @@
                       "letterboxd_ratings": {
                         "type": "array",
                         "items": {
-                          "type": "integer"
+                          "type": "number",
+                          "format": "float"
                         },
-                        "maxItems": 2
+                        "minItems": 2
                       },
                       "mal_ratings": {
                         "type": "array",
                         "items": {
-                          "type": "integer"
+                          "type": "number",
+                          "format": "float"
                         },
-                        "maxItems": 2
+                        "minItems": 2
                       },
                       "ignore_watched": {
                         "type": "boolean"
@@ -54939,7 +54951,7 @@
     },
     "/users/{id}/smart-lists/{list_id}/": {
       "get": {
-        "description": "#### 🔓 OAuth Optional\nReturns a single smart list definition. Use the [**/users/:id/smart-lists/:list_id/items**](#reference/users) method to get the dynamic items this smart list resolves to.",
+        "description": "#### 🔓 OAuth Optional\nReturns a single smart list definition. Use the [**/smart-lists/:list_id/items**](#reference/smart-lists) method to get the dynamic items this smart list resolves to.",
         "summary": "Get smart list",
         "tags": [
           "users",
@@ -55115,9 +55127,10 @@
                         "imdb_ratings": {
                           "type": "array",
                           "items": {
-                            "type": "integer"
+                            "type": "number",
+                            "format": "float"
                           },
-                          "maxItems": 2
+                          "minItems": 2
                         },
                         "rt_meters": {
                           "type": "array",
@@ -55136,16 +55149,18 @@
                         "letterboxd_ratings": {
                           "type": "array",
                           "items": {
-                            "type": "integer"
+                            "type": "number",
+                            "format": "float"
                           },
-                          "maxItems": 2
+                          "minItems": 2
                         },
                         "mal_ratings": {
                           "type": "array",
                           "items": {
-                            "type": "integer"
+                            "type": "number",
+                            "format": "float"
                           },
-                          "maxItems": 2
+                          "minItems": 2
                         },
                         "ignore_watched": {
                           "type": "boolean"
@@ -55362,9 +55377,10 @@
                       "imdb_ratings": {
                         "type": "array",
                         "items": {
-                          "type": "integer"
+                          "type": "number",
+                          "format": "float"
                         },
-                        "maxItems": 2
+                        "minItems": 2
                       },
                       "rt_meters": {
                         "type": "array",
@@ -55383,16 +55399,18 @@
                       "letterboxd_ratings": {
                         "type": "array",
                         "items": {
-                          "type": "integer"
+                          "type": "number",
+                          "format": "float"
                         },
-                        "maxItems": 2
+                        "minItems": 2
                       },
                       "mal_ratings": {
                         "type": "array",
                         "items": {
-                          "type": "integer"
+                          "type": "number",
+                          "format": "float"
                         },
-                        "maxItems": 2
+                        "minItems": 2
                       },
                       "ignore_watched": {
                         "type": "boolean"
@@ -55583,9 +55601,10 @@
                         "imdb_ratings": {
                           "type": "array",
                           "items": {
-                            "type": "integer"
+                            "type": "number",
+                            "format": "float"
                           },
-                          "maxItems": 2
+                          "minItems": 2
                         },
                         "rt_meters": {
                           "type": "array",
@@ -55604,16 +55623,18 @@
                         "letterboxd_ratings": {
                           "type": "array",
                           "items": {
-                            "type": "integer"
+                            "type": "number",
+                            "format": "float"
                           },
-                          "maxItems": 2
+                          "minItems": 2
                         },
                         "mal_ratings": {
                           "type": "array",
                           "items": {
-                            "type": "integer"
+                            "type": "number",
+                            "format": "float"
                           },
-                          "maxItems": 2
+                          "minItems": 2
                         },
                         "ignore_watched": {
                           "type": "boolean"
@@ -93070,9 +93091,9 @@
         "operationId": "getMoviesReleases"
       }
     },
-    "/movies/{id}/translations/{language}": {
+    "/movies/{id}/translations": {
       "get": {
-        "description": "Returns all translations for a movie, including language, country, and translated values for title, tagline and overview. The `country` field can be used together with `language` to identify regional variants (for example `fr`/`fr` vs `fr`/`ca`).",
+        "description": "Returns all translations for a movie, including language, country, and translated values for title, tagline and overview. The `country` field can be used together with `language` to identify regional variants (for example `fr`/`fr` vs `fr`/`ca`). Use the optional `language` query param to filter to a single language.",
         "summary": "Get all movie translations",
         "tags": [
           "movies"
@@ -93089,12 +93110,12 @@
           },
           {
             "name": "language",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "description": "Filter translations to a 2 character language code",
             "schema": {
-              "type": "string"
-            },
-            "description": "2 character language code"
+              "type": "string",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -102151,9 +102172,9 @@
         "operationId": "deleteShowsProgressUndoReset"
       }
     },
-    "/shows/{id}/translations/{language}": {
+    "/shows/{id}/translations": {
       "get": {
-        "description": "Returns all translations for a show, including language, country, and translated values for title, tagline and overview. The `country` field can be used together with `language` to identify regional variants (for example `fr`/`fr` vs `fr`/`ca`).",
+        "description": "Returns all translations for a show, including language, country, and translated values for title, tagline and overview. The `country` field can be used together with `language` to identify regional variants (for example `fr`/`fr` vs `fr`/`ca`). Use the optional `language` query param to filter to a single language.",
         "summary": "Get all show translations",
         "tags": [
           "shows"
@@ -102170,12 +102191,12 @@
           },
           {
             "name": "language",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "description": "Filter translations to a 2 character language code",
             "schema": {
-              "type": "string"
-            },
-            "description": "2 character language code"
+              "type": "string",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -104639,9 +104660,9 @@
         "operationId": "getShowsSeasonEpisodes"
       }
     },
-    "/shows/{id}/seasons/{season}/translations/{language}": {
+    "/shows/{id}/seasons/{season}/translations": {
       "get": {
-        "description": "Returns all translations for a season, including language, country, and translated title and overview values.",
+        "description": "Returns all translations for a season, including language, country, and translated title and overview values. Use the optional `language` query param to filter to a single language.",
         "summary": "Get all season translations",
         "tags": [
           "shows",
@@ -104669,12 +104690,12 @@
           },
           {
             "name": "language",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "description": "Filter translations to a 2 character language code",
             "schema": {
-              "type": "string"
-            },
-            "description": "2 character language code"
+              "type": "string",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -107673,9 +107694,9 @@
         "operationId": "getShowsEpisodeSummary"
       }
     },
-    "/shows/{id}/seasons/{season}/episodes/{episode}/translations/{language}": {
+    "/shows/{id}/seasons/{season}/episodes/{episode}/translations": {
       "get": {
-        "description": "Returns all translations for an episode, including language, country, and translated values for title and overview. The `country` field can be used together with `language` to identify regional variants (for example `fr`/`fr` vs `fr`/`ca`).",
+        "description": "Returns all translations for an episode, including language, country, and translated values for title and overview. The `country` field can be used together with `language` to identify regional variants (for example `fr`/`fr` vs `fr`/`ca`). Use the optional `language` query param to filter to a single language.",
         "summary": "Get all episode translations",
         "tags": [
           "shows",
@@ -107713,12 +107734,12 @@
           },
           {
             "name": "language",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "description": "Filter translations to a 2 character language code",
             "schema": {
-              "type": "string"
-            },
-            "description": "2 character language code"
+              "type": "string",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -107743,12 +107764,12 @@
                         "type": "string"
                       },
                       "country": {
-                        "type": "string"
+                        "type": "string",
+                        "nullable": true
                       }
                     },
                     "required": [
-                      "language",
-                      "country"
+                      "language"
                     ]
                   }
                 }
@@ -129276,9 +129297,10 @@
                         "imdb_ratings": {
                           "type": "array",
                           "items": {
-                            "type": "integer"
+                            "type": "number",
+                            "format": "float"
                           },
-                          "maxItems": 2
+                          "minItems": 2
                         },
                         "rt_meters": {
                           "type": "array",
@@ -129297,16 +129319,18 @@
                         "letterboxd_ratings": {
                           "type": "array",
                           "items": {
-                            "type": "integer"
+                            "type": "number",
+                            "format": "float"
                           },
-                          "maxItems": 2
+                          "minItems": 2
                         },
                         "mal_ratings": {
                           "type": "array",
                           "items": {
-                            "type": "integer"
+                            "type": "number",
+                            "format": "float"
                           },
-                          "maxItems": 2
+                          "minItems": 2
                         },
                         "ignore_watched": {
                           "type": "boolean"
@@ -129371,9 +129395,9 @@
         "operationId": "getSmart_listsSummary"
       }
     },
-    "/smart-lists/{list_id}/items/{type}/{sort_by}/{sort_how}": {
+    "/smart-lists/{list_id}/items": {
       "get": {
-        "description": "#### 🔓 OAuth Optional 📄 Pagination ✨ Extended Info 🎚 Filters 😁 Emojis\nReturns the dynamic items a smart list resolves to. Use `type`, `sort_by`, and `sort_how` to control the returned item set and order, plus query filters and pagination to refine the result set.",
+        "description": "#### 🔓 OAuth Optional 📄 Pagination ✨ Extended Info 🎚 Filters 😁 Emojis\nReturns the dynamic items a smart list resolves to. Items always match the list's `media_type`, so a movie list only ever resolves to movies and a show list to shows. Use query filters and pagination to refine the result set.",
         "summary": "Get smart list items",
         "tags": [
           "smart_lists"
@@ -129386,33 +129410,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "type",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "Smart list item type filter."
-          },
-          {
-            "name": "sort_by",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "Sort by a specific property."
-          },
-          {
-            "name": "sort_how",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "Sort direction."
           },
           {
             "name": "extended",
@@ -129473,22 +129470,6 @@
             }
           },
           {
-            "name": "start_date",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "end_date",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
             "name": "runtimes",
             "in": "query",
             "schema": {
@@ -129516,15 +129497,6 @@
             "name": "ignore_watched",
             "in": "query",
             "description": "Ignore watched items.",
-            "schema": {
-              "type": "boolean",
-              "nullable": true
-            }
-          },
-          {
-            "name": "ignore_collected",
-            "in": "query",
-            "description": "Ignore collected items.",
             "schema": {
               "type": "boolean",
               "nullable": true
@@ -137577,6 +137549,9 @@
     }
   },
   "x-readme": {
+    "oauth-options": {
+      "usePkce": true
+    },
     "headers": [
       {
         "key": "User-Agent",
