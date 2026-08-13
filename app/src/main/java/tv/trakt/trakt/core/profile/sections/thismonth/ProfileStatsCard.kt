@@ -58,7 +58,7 @@ import tv.trakt.trakt.common.Config.webMonthReviewUrl
 import tv.trakt.trakt.common.Config.webYearReviewUrl
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
+import tv.trakt.trakt.common.helpers.extensions.rememberNumberFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.theme.colors.Purple700
@@ -316,9 +316,6 @@ private fun StatsChipsRow(
     movies: Int,
     loading: Boolean,
 ) {
-    val episodesText = rememberThousandsFormat(episodes)
-    val showsText = rememberThousandsFormat(shows)
-    val moviesText = rememberThousandsFormat(movies)
     Row(
         horizontalArrangement = spacedBy(6.dp),
         modifier = Modifier
@@ -331,17 +328,26 @@ private fun StatsChipsRow(
             .padding(bottom = 2.dp),
     ) {
         StatsChip(
-            text = stringResource(R.string.text_episodes_watched, episodesText),
+            text = stringResource(
+                R.string.text_episodes_watched,
+                rememberNumberFormat(episodes),
+            ),
             icon = painterResource(R.drawable.ic_shows_off),
             loading = loading,
         )
         StatsChip(
-            text = stringResource(R.string.text_shows_watched, showsText),
+            text = stringResource(
+                R.string.text_shows_watched,
+                rememberNumberFormat(shows),
+            ),
             icon = painterResource(R.drawable.ic_shows_off),
             loading = loading,
         )
         StatsChip(
-            text = stringResource(R.string.text_movies_watched, moviesText),
+            text = stringResource(
+                R.string.text_movies_watched,
+                rememberNumberFormat(movies),
+            ),
             icon = painterResource(R.drawable.ic_movies_off),
             loading = loading,
         )
@@ -445,7 +451,7 @@ private fun Preview() {
             stats = ProfileStats(
                 showsCount = 12,
                 moviesCount = 0,
-                episodesCount = 34,
+                episodesCount = 22324,
                 allShowsCount = 87,
                 allMoviesCount = 145,
                 allEpisodesCount = 2310,

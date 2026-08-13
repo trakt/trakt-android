@@ -51,6 +51,18 @@ fun rememberThousandsFormat(count: Int): String {
 }
 
 /**
+ * Composable function that formats an integer into a locale-aware string representation and remembers the result.
+ */
+@Composable
+fun rememberNumberFormat(number: Int): String {
+    val configuration = LocalConfiguration.current
+    return remember(number, configuration) {
+        val configurationLocale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+        NumberFormat.getNumberInstance(configurationLocale).format(number)
+    }
+}
+
+/**
  * Formats a duration in minutes into a human-readable string.
  */
 fun Long.durationFormat(
