@@ -28,8 +28,7 @@ import kotlinx.collections.immutable.toImmutableMap
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
-import tv.trakt.trakt.common.ui.theme.colors.Shade700
-import tv.trakt.trakt.common.ui.theme.colors.Shade800
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -57,7 +56,7 @@ fun ReactionsSummaryGrid(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                Shade700,
+                TraktTheme.colors.reactionsSummaryContainer,
                 RoundedCornerShape(
                     topStart = 16.dp,
                     topEnd = 16.dp,
@@ -131,7 +130,7 @@ fun ReactionItem(
         verticalAlignment = CenterVertically,
         modifier = modifier
             .background(
-                if (highlight) Shade800 else Color.Transparent,
+                if (highlight) TraktTheme.colors.reactionsSummaryHighlight else Color.Transparent,
                 RoundedCornerShape(12.dp),
             )
             .padding(
@@ -160,7 +159,7 @@ fun ReactionItem(
 @Preview(widthDp = 300)
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         ReactionsSummaryGrid(
             userReaction = null,
             reactions = ReactionsSummary(
@@ -177,7 +176,7 @@ private fun Preview() {
 @Preview(widthDp = 300)
 @Composable
 private fun Preview2() {
-    TraktTheme {
+    TraktThemeLightDark {
         ReactionsSummaryGrid(
             userReaction = Reaction.LOVE,
             reactions = ReactionsSummary(

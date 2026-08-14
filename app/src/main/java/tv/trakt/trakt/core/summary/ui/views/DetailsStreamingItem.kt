@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
@@ -49,6 +50,7 @@ internal fun DetailsStreamingItem(
 ) {
     val context = LocalContext.current
 
+    val itemShape = RoundedCornerShape(16.dp)
     val itemHeight = 86.dp
     val contentHeight = 52.dp
 
@@ -60,7 +62,12 @@ internal fun DetailsStreamingItem(
         verticalArrangement = spacedBy(4.dp, CenterVertically),
         modifier = Modifier
             .height(itemHeight)
-            .background(containerColor, RoundedCornerShape(16.dp))
+            .shadow(
+                elevation = TraktTheme.colors.shadowDynamicDefault,
+                shape = itemShape,
+                clip = false,
+            )
+            .background(containerColor, itemShape)
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .onClick(
                 onClick = { onClick?.invoke(service) },

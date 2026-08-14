@@ -510,7 +510,7 @@ private fun AllReleasesScreen(
                                 Icon(
                                     painter = painterResource(type.iconRes),
                                     contentDescription = null,
-                                    tint = TraktTheme.colors.textPrimary,
+                                    tint = TraktTheme.colors.textPrimaryOnAccent,
                                     modifier = Modifier.size(type.iconSize),
                                 )
                             },

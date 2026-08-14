@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.shadow.Shadow
@@ -36,7 +37,7 @@ import kotlinx.collections.immutable.toImmutableMap
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
-import tv.trakt.trakt.common.ui.theme.colors.Shade800
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -113,7 +114,7 @@ private fun ReactionsToolTipContent(
                 ),
             )
             .background(
-                color = Shade800.copy(alpha = animatedAlpha),
+                color = TraktTheme.colors.reactionsContainer.copy(alpha = animatedAlpha),
                 shape = RoundedCornerShape(20.dp),
             ),
     ) {
@@ -128,6 +129,15 @@ private fun ReactionsToolTipContent(
                     bottom = 4.dp,
                     start = 6.dp,
                     end = 6.dp,
+                )
+                .shadow(
+                    elevation = TraktTheme.colors.shadowDynamicDefault,
+                    shape = RoundedCornerShape(
+                        topStart = 16.dp,
+                        topEnd = 16.dp,
+                        bottomStart = 20.dp,
+                        bottomEnd = 20.dp,
+                    ),
                 )
                 .graphicsLayer {
                     if (summaryVisible) {
@@ -153,7 +163,7 @@ private fun ReactionsToolTipContent(
                             alpha = 0.1f,
                         ),
                     )
-                    .background(Shade800, RoundedCornerShape(20.dp))
+                    .background(TraktTheme.colors.reactionsContainer, RoundedCornerShape(20.dp))
                     .padding(
                         start = 8.dp,
                         end = 8.dp,
@@ -170,7 +180,7 @@ private fun ReactionsToolTipContent(
 @Preview()
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         ReactionsToolTipContent(
             userReaction = null,
             userEnabled = true,
@@ -188,7 +198,7 @@ private fun Preview() {
 @Preview()
 @Composable
 private fun Preview2() {
-    TraktTheme {
+    TraktThemeLightDark {
         ReactionsToolTipContent(
             userReaction = Reaction.SPOILER,
             userEnabled = false,

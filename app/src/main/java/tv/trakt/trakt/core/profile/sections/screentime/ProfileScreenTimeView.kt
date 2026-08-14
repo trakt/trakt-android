@@ -164,7 +164,7 @@ private fun ContentRow(
         contentPadding = contentPadding,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 16.dp),
+            .padding(top = 16.dp, bottom = TraktTheme.spacing.shadowClipSpace),
     ) {
         item(
             key = "daily",
@@ -247,7 +247,7 @@ private fun ContentLoading(contentPadding: PaddingValues) {
         userScrollEnabled = false,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 16.dp),
+            .padding(top = 16.dp, bottom = TraktTheme.spacing.shadowClipSpace),
     ) {
         repeat(3) {
             item(

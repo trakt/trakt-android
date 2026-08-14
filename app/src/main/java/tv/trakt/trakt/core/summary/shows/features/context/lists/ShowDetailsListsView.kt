@@ -42,6 +42,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.lists.CustomListMinimal
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.lists.ListButton
 import tv.trakt.trakt.ui.components.buttons.lists.WatchlistButton
@@ -256,7 +257,7 @@ private fun ActionButtons(
 @DevicePreview
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         ShowDetailsListsContent(
             show = PreviewData.show1,
             loading = LoadingState.Done,
@@ -271,7 +272,7 @@ private fun Preview() {
 @DevicePreview
 @Composable
 private fun Preview2() {
-    TraktTheme {
+    TraktThemeLightDark {
         ShowDetailsListsContent(
             show = PreviewData.show1,
             loading = LoadingState.Done,

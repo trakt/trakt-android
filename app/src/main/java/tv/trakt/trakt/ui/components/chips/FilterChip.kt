@@ -109,7 +109,10 @@ internal fun FilterChip(
                 Text(
                     text = text,
                     style = TraktTheme.typography.buttonTertiary,
-                    color = TraktTheme.colors.textPrimary,
+                    color = when {
+                        selected -> TraktTheme.colors.textPrimaryOnAccent
+                        else -> TraktTheme.colors.textPrimary
+                    },
                     maxLines = 1,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(start = 4.dp),
@@ -119,7 +122,10 @@ internal fun FilterChip(
             Text(
                 text = text,
                 style = TraktTheme.typography.buttonTertiary,
-                color = TraktTheme.colors.textPrimary,
+                color = when {
+                    selected -> TraktTheme.colors.textPrimaryOnAccent
+                    else -> TraktTheme.colors.textPrimary
+                },
                 maxLines = 1,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(start = 4.dp),
@@ -199,7 +205,7 @@ private fun Preview2() {
                 Icon(
                     painter = painterResource(R.drawable.ic_check_2),
                     contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
+                    tint = TraktTheme.colors.textPrimaryOnAccent,
                     modifier = Modifier.size(FilterChipDefaults.IconSize),
                 )
             },

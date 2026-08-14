@@ -25,6 +25,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.timeFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.OtherDateBound
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
@@ -84,6 +85,11 @@ private fun BoundSegment(
         else -> TraktTheme.colors.primaryButtonContainerDisabled
     }
 
+    val textColor = when {
+        selected -> TraktTheme.colors.textPrimaryOnAccent
+        else -> TraktTheme.colors.textPrimary
+    }
+
     Column(
         verticalArrangement = spacedBy(2.dp, CenterVertically),
         modifier = modifier
@@ -96,7 +102,7 @@ private fun BoundSegment(
         Text(
             text = text,
             style = TraktTheme.typography.buttonPrimary,
-            color = TraktTheme.colors.textPrimary,
+            color = textColor,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth(),
         )
@@ -108,7 +114,7 @@ private fun BoundSegment(
                     fontSize = 10.sp,
                     fontWeight = W500,
                 ),
-                color = TraktTheme.colors.textPrimary,
+                color = textColor,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -123,7 +129,7 @@ private fun BoundSegment(
 )
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         OtherDateBoundButtons(
             selected = OtherDateBound.Start,
             anchor = nowUtcInstant(),

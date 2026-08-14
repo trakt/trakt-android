@@ -10,9 +10,12 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -21,6 +24,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.remoteConfig
 import com.jakewharton.processphoenix.ProcessPhoenix
@@ -34,6 +38,7 @@ import tv.trakt.trakt.app.TvSplashActivity
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_CUSTOM_THEME_ENABLED
 import tv.trakt.trakt.common.helpers.extensions.isTelevision
 import tv.trakt.trakt.common.ui.theme.colors.DarkColors
+import tv.trakt.trakt.common.ui.theme.colors.LightColors
 import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.auth.ConfigAuth.OAUTH_REDIRECT_URI
 import tv.trakt.trakt.core.auth.Pkce
@@ -43,7 +48,9 @@ import tv.trakt.trakt.core.auth.usecase.codeVerifierKey
 import tv.trakt.trakt.core.main.MainScreen
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase.CustomThemeConfig
+import tv.trakt.trakt.core.settings.usecases.ThemeModeUseCase
 import tv.trakt.trakt.ui.theme.TraktTheme
+import tv.trakt.trakt.ui.theme.model.ThemeMode
 import tv.trakt.trakt.ui.theme.model.toTraktDarkColors
 
 internal val LocalBottomBarVisibility = compositionLocalOf { mutableStateOf(true) }
@@ -56,6 +63,11 @@ internal class MainActivity : AppCompatActivity() {
     private val authPreferences: DataStore<Preferences> by lazy {
         inject<DataStore<Preferences>>(named(AUTH_PREFERENCES)).value
     }
+
+    private val themeModeUseCase: ThemeModeUseCase by lazy {
+        inject<ThemeModeUseCase>().value
+    }
+
     private val newIntent = mutableStateOf<Intent?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,8 +92,41 @@ internal class MainActivity : AppCompatActivity() {
             ),
         )
 
+        val initialThemeMode = runBlocking {
+            themeModeUseCase.getThemeMode()
+        }
+
         setContent {
             val scope = rememberCoroutineScope()
+
+            val themeMode by themeModeUseCase.observeThemeMode()
+                .collectAsStateWithLifecycle(initialValue = initialThemeMode)
+
+            val darkTheme = when (themeMode) {
+                ThemeMode.System -> isSystemInDarkTheme()
+                ThemeMode.Light -> false
+                ThemeMode.Dark -> true
+            }
+
+            LaunchedEffect(darkTheme) {
+                enableEdgeToEdge(
+                    navigationBarStyle = when {
+                        darkTheme -> SystemBarStyle.dark(scrim = Color.TRANSPARENT)
+                        else -> SystemBarStyle.light(
+                            scrim = Color.TRANSPARENT,
+                            darkScrim = Color.TRANSPARENT,
+                        )
+                    },
+                    statusBarStyle = when {
+                        darkTheme -> SystemBarStyle.dark(scrim = Color.TRANSPARENT)
+                        else -> SystemBarStyle.light(
+                            scrim = Color.TRANSPARENT,
+                            darkScrim = Color.TRANSPARENT,
+                        )
+                    },
+                )
+            }
+
             val bottomBarVisibility = remember { mutableStateOf(true) }
             val checkInVisibility = remember { mutableStateOf(true) }
             val ratePromptVisibility = remember { mutableStateOf(true) }
@@ -106,13 +151,15 @@ internal class MainActivity : AppCompatActivity() {
 
             TraktTheme(
                 colors = when {
-                    customThemeState.enabled -> {
+                    darkTheme && customThemeState.enabled -> {
                         val customColors = customThemeConfig?.theme?.colors?.toTraktDarkColors()
                         customColors ?: DarkColors
                     }
-
-                    else -> {
+                    darkTheme -> {
                         DarkColors
+                    }
+                    else -> {
+                        LightColors
                     }
                 },
             ) {

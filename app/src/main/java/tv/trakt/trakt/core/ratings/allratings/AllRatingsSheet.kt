@@ -54,7 +54,7 @@ internal fun AllRatingsSheet(
                 onMalClick = onMalClick,
                 modifier = Modifier
                     .padding(horizontal = 24.dp)
-                    .padding(top = 8.dp, bottom = 16.dp),
+                    .padding(top = 8.dp, bottom = 12.dp),
             )
         }
     }

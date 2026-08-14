@@ -81,7 +81,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.common.ui.theme.colors.Red500
-import tv.trakt.trakt.common.ui.theme.colors.Red60
+import tv.trakt.trakt.common.ui.theme.colors.Red80
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 import tv.trakt.trakt.core.profile.sections.thismonth.ProfileStatsCard
 import tv.trakt.trakt.core.user.model.UserFollowRequest
@@ -90,6 +90,7 @@ import tv.trakt.trakt.core.userprofile.sections.history.UserProfileHistoryView
 import tv.trakt.trakt.core.userprofile.sections.lists.UserProfileListsView
 import tv.trakt.trakt.core.userprofile.sections.social.UserProfileSocialView
 import tv.trakt.trakt.helpers.SimpleScrollConnection
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -338,7 +339,12 @@ private fun LazyListScope.userProfilePublicContent(
             onDenyClick = { onToggleFollowRequest(false) },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
+                .padding(
+                    horizontal = when (TraktTheme.colors.isLight) {
+                        true -> TraktTheme.spacing.mainPageHorizontalSpace - TraktTheme.spacing.shadowClipSpace
+                        false -> TraktTheme.spacing.mainPageHorizontalSpace
+                    },
+                ),
         )
     }
 
@@ -615,8 +621,12 @@ private fun TitleBar(
                                 .graphicsLayer {
                                     translationY = 8.dp.toPx()
                                 }
+                                .shadow(
+                                    elevation = TraktTheme.colors.shadowDynamicSmall,
+                                    shape = RoundedCornerShape(100),
+                                )
                                 .background(
-                                    Red60,
+                                    Red80,
                                     RoundedCornerShape(100),
                                 )
                                 .padding(horizontal = 6.dp, vertical = 2.dp),
@@ -740,10 +750,22 @@ private fun FollowRequestView(
         ),
     ) {
         if (visible && request != null) {
+            val shadowSpace = when {
+                TraktTheme.colors.isLight -> TraktTheme.spacing.shadowClipSpace
+                else -> 0.dp
+            }
             Column(
                 modifier = Modifier
                     .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace / 1.5F)
-                    .shadow(4.dp, DefaultCardShape)
+                    .padding(
+                        top = shadowSpace,
+                        start = shadowSpace,
+                        end = shadowSpace,
+                    )
+                    .shadow(
+                        elevation = TraktTheme.colors.shadowDynamicDefault,
+                        shape = DefaultCardShape,
+                    )
                     .background(TraktTheme.colors.dialogContainer, DefaultCardShape)
                     .padding(16.dp)
                     .animateContentSize(),
@@ -780,6 +802,7 @@ private fun FollowRequestView(
                         enabled = !loading,
                         text = stringResource(R.string.button_text_reject_follow_request),
                         onClick = onDenyClick,
+                        contentColor = TraktTheme.colors.textPrimary,
                         containerColor = TraktTheme.colors.primaryButtonContainerDisabled,
                         modifier = Modifier.weight(1F),
                     )
@@ -804,7 +827,7 @@ private fun FollowRequestView(
 )
 @Composable
 private fun Preview1() {
-    TraktTheme {
+    TraktThemeLightDark {
         TitleBar(
             user = PreviewData.user1.copy(
                 location = "Some Location",
@@ -817,6 +840,25 @@ private fun Preview1() {
                 following = true,
                 loading = false,
             ),
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun Preview3() {
+    TraktThemeLightDark {
+        FollowRequestView(
+            request = UserFollowRequest(
+                id = 1,
+                requestedAt = nowUtcInstant(),
+                user = PreviewData.user1,
+            ),
+            loading = false,
+            visible = true,
         )
     }
 }

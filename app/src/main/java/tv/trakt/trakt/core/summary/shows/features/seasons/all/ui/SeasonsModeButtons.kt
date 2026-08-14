@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonsMode
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -59,8 +60,8 @@ internal fun SeasonsModeButtons(
                     containerColor = Color.Transparent,
                     contentColor = TraktTheme.colors.textPrimary,
                     checkedContainerColor = TraktTheme.colors.accent,
-                    checkedContentColor = TraktTheme.colors.textPrimary,
-                    disabledContentColor = TraktTheme.colors.textSecondary,
+                    checkedContentColor = TraktTheme.colors.textPrimaryOnAccent,
+                    disabledContentColor = TraktTheme.colors.chipContainer,
                     disabledContainerColor = Color.Transparent,
                 ),
                 border = when {
@@ -93,20 +94,12 @@ internal fun SeasonsModeButtons(
                             false -> option.offIcon
                         },
                     ),
-                    tint = when {
-                        enabled -> TraktTheme.colors.textPrimary
-                        else -> TraktTheme.colors.chipContainer
-                    },
                     contentDescription = null,
                     modifier = Modifier.size(16.dp),
                 )
 
                 Text(
                     text = stringResource(option.displayRes),
-                    color = when {
-                        enabled -> TraktTheme.colors.textPrimary
-                        else -> TraktTheme.colors.chipContainer
-                    },
                     style = TraktTheme.typography.buttonTertiary,
                     modifier = Modifier.padding(start = 5.dp),
                 )
@@ -118,7 +111,7 @@ internal fun SeasonsModeButtons(
 @Preview(widthDp = 350)
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         Column(
             verticalArrangement = Arrangement.spacedBy(24.dp),
         ) {

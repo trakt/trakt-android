@@ -244,12 +244,16 @@ private fun EpisodeCommentsContent(
                         ContentLoading(
                             visible = loading.isLoading,
                             contentPadding = contentPadding,
+                            modifier = Modifier
+                                .padding(bottom = TraktTheme.spacing.shadowClipSpace),
                         )
                     }
 
                     Done -> {
                         Column(
                             verticalArrangement = spacedBy(0.dp),
+                            modifier = Modifier
+                                .padding(bottom = TraktTheme.spacing.shadowClipSpace),
                         ) {
                             if (state.items?.isEmpty() == true) {
                                 EmptyListCard(
@@ -359,7 +363,7 @@ private fun ContentFilters(
                     Icon(
                         painter = painterResource(filter.iconRes),
                         contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
+                        tint = TraktTheme.colors.textPrimaryOnAccent,
                         modifier = Modifier
                             .size(FilterChipDefaults.IconSize)
                             .graphicsLayer {
@@ -375,6 +379,7 @@ private fun ContentFilters(
 
 @Composable
 private fun ContentLoading(
+    modifier: Modifier = Modifier,
     visible: Boolean = true,
     contentPadding: PaddingValues,
 ) {
@@ -382,7 +387,7 @@ private fun ContentLoading(
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
         contentPadding = contentPadding,
         userScrollEnabled = false,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .alpha(if (visible) 1F else 0F),
     ) {

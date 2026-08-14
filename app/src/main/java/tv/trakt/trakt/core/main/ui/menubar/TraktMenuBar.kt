@@ -60,6 +60,7 @@ import tv.trakt.trakt.core.profile.navigation.ProfileDestination
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.SearchDestination
 import tv.trakt.trakt.core.search.views.SearchFiltersList
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InputField
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -362,7 +363,7 @@ private fun SearchContent(
 @DevicePreview
 @Composable
 private fun Preview1() {
-    TraktTheme {
+    TraktThemeLightDark {
         TraktMenuBarContent(
             destination = null,
             user = PreviewData.user1,
@@ -376,7 +377,7 @@ private fun Preview1() {
 @DevicePreview
 @Composable
 private fun Preview2() {
-    TraktTheme {
+    TraktThemeLightDark {
         TraktMenuBarContent(
             destination = null,
             stateHolder = MainSearchStateHolder(

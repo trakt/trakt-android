@@ -268,7 +268,7 @@ private fun ShareButtons(
             ) {
                 Text(
                     text = stringResource(variant.displayRes),
-                    color = TraktTheme.colors.textPrimary,
+                    color = TraktTheme.colors.textPrimaryOnAccent,
                     style = TraktTheme.typography.buttonTertiary,
                     maxLines = 1,
                     overflow = Ellipsis,

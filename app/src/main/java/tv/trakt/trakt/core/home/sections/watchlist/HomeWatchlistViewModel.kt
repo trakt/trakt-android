@@ -69,6 +69,7 @@ import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 import tv.trakt.trakt.resources.R
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 internal class HomeWatchlistViewModel(
@@ -120,7 +121,7 @@ internal class HomeWatchlistViewModel(
             sessionManager.observeProfile()
                 .drop(1)
                 .distinctUntilChanged()
-                .debounce(200)
+                .debounce(200.milliseconds)
                 .collect {
                     user = it
                     loadData()
@@ -148,7 +149,7 @@ internal class HomeWatchlistViewModel(
                 .takeWhile { dataJob == null },
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 loadData(
                     localOnly = false,

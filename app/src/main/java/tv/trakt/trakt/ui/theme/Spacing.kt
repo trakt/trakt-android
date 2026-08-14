@@ -19,6 +19,7 @@ internal val Spacing: TraktSpacing = TraktSpacing(
     contextItemsSpace = 12.dp,
     detailsHeaderHorizontalSpace = 64.dp,
     detailsActionsHorizontalSpace = 42.dp,
+    shadowClipSpace = 4.dp,
 )
 
 internal val MediumSpacing: TraktSpacing = Spacing.copy(
@@ -47,4 +48,5 @@ internal data class TraktSpacing(
     val contextItemsSpace: Dp = Dp.Unspecified,
     val detailsHeaderHorizontalSpace: Dp = Dp.Unspecified,
     val detailsActionsHorizontalSpace: Dp = Dp.Unspecified,
+    val shadowClipSpace: Dp = Dp.Unspecified,
 )

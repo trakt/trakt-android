@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode.Advanced
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilterMode.Simple
+import tv.trakt.trakt.common.ui.theme.colors.LightColors
 import tv.trakt.trakt.core.filters.views.GlobalFiltersAdvancedView
 import tv.trakt.trakt.core.filters.views.GlobalFiltersSimpleView
 import tv.trakt.trakt.resources.R
@@ -107,11 +108,7 @@ internal fun GlobalFiltersView(
     )
 }
 
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF212427,
-)
+@Preview
 @Composable
 private fun PreviewSimple() {
     TraktTheme {
@@ -120,13 +117,32 @@ private fun PreviewSimple() {
 }
 
 @Preview(
-    device = "id:pixel_5",
+    backgroundColor = 0xFFF1EFF4,
     showBackground = true,
-    backgroundColor = 0xFF212427,
 )
+@Composable
+private fun PreviewSimpleLight() {
+    TraktTheme(
+        colors = LightColors,
+    ) {
+        GlobalFiltersSimpleView(state = GlobalFiltersState())
+    }
+}
+
+@Preview
 @Composable
 private fun PreviewAdvanced() {
     TraktTheme {
+        GlobalFiltersAdvancedView(state = GlobalFiltersState())
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewAdvancedLight() {
+    TraktTheme(
+        colors = LightColors,
+    ) {
         GlobalFiltersAdvancedView(state = GlobalFiltersState())
     }
 }

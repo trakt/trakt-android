@@ -38,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
@@ -314,11 +315,16 @@ private fun YounifyServiceView(
     onUnlinkClick: () -> Unit = { },
 ) {
     val context = LocalContext.current
+    val shape = RoundedCornerShape(16.dp)
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
+            .shadow(
+                elevation = TraktTheme.colors.shadowDynamicDefault,
+                shape = shape,
+            )
             .background(
                 color = TraktTheme.colors.panelCardContainer,
                 shape = RoundedCornerShape(16.dp),

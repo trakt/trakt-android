@@ -24,6 +24,7 @@ import kotlinx.collections.immutable.toImmutableMap
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -103,7 +104,7 @@ fun ReactionsSummaryChip(
 @Preview(widthDp = 300)
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         ReactionsSummaryChip(
             userReaction = Reaction.SPOILER,
             reactions = ReactionsSummary(

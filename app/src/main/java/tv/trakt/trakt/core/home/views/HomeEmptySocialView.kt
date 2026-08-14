@@ -104,7 +104,7 @@ internal fun HomeEmptySocialView(modifier: Modifier = Modifier) {
                 Text(
                     text = stringResource(R.string.text_cta_activity_list),
                     style = TraktTheme.typography.paragraphSmall,
-                    color = TraktTheme.colors.textPrimary,
+                    color = TraktTheme.colors.textPrimaryOnAccent,
                 )
             }
 

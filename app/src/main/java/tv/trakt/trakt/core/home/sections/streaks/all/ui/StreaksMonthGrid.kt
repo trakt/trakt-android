@@ -32,15 +32,12 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.helpers.extensions.DeviceSheetPreview
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.fullDayFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.yearMonthFormat
-import tv.trakt.trakt.common.ui.theme.colors.Purple300
-import tv.trakt.trakt.common.ui.theme.colors.Purple500
-import tv.trakt.trakt.common.ui.theme.colors.Purple700
-import tv.trakt.trakt.common.ui.theme.colors.Purple920
-import tv.trakt.trakt.common.ui.theme.colors.Shade800
+import tv.trakt.trakt.common.ui.theme.colors.LightColors
 import tv.trakt.trakt.core.home.sections.streaks.model.MonthlyStreakData.StreakDataPoint
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -56,6 +53,8 @@ private val TileGap = 6.dp
 
 private val LegendSwatchShape = RoundedCornerShape(4.dp)
 private val LegendSwatchSize = 14.dp
+
+private val TooltipShape = RoundedCornerShape(8.dp)
 
 @Composable
 internal fun StreaksMonthGrid(
@@ -73,8 +72,8 @@ internal fun StreaksMonthGrid(
     val rowCount = (firstDayOffset + daysInMonth + 6) / 7
     val today = LocalDate.now()
     val maxCount = data.values.maxOfOrNull { it.total } ?: 0
-    val borderColor = Shade800
-    val todayColor = Color.White
+    val borderColor = TraktTheme.colors.streakTileEmpty
+    val todayColor = TraktTheme.colors.streakTileToday
 
     Column(
         verticalArrangement = Arrangement.spacedBy(TileGap),
@@ -158,7 +157,7 @@ internal fun StreaksMonthGrid(
                                     tooltip = {
                                         Box(
                                             modifier = Modifier
-                                                .background(Shade800, RoundedCornerShape(8.dp))
+                                                .background(TraktTheme.colors.tooltipContainer, TooltipShape)
                                                 .padding(horizontal = 10.dp, vertical = 6.dp),
                                         ) {
                                             val episodes = data[date]?.episodes ?: 0
@@ -186,7 +185,7 @@ internal fun StreaksMonthGrid(
                                             Text(
                                                 text = tooltipText,
                                                 style = TraktTheme.typography.meta,
-                                                color = Color.White,
+                                                color = TraktTheme.colors.tooltipContent,
                                             )
                                         }
                                     },
@@ -241,10 +240,10 @@ internal fun StreaksMonthGrid(
                 )
 
                 LegendSwatch(color = borderColor)
-                LegendSwatch(color = Purple920)
-                LegendSwatch(color = Purple700)
-                LegendSwatch(color = Purple500)
-                LegendSwatch(color = Purple300)
+                LegendSwatch(color = TraktTheme.colors.streakLevel1)
+                LegendSwatch(color = TraktTheme.colors.streakLevel2)
+                LegendSwatch(color = TraktTheme.colors.streakLevel3)
+                LegendSwatch(color = TraktTheme.colors.streakLevel4)
 
                 Text(
                     text = maxCount.toString(),
@@ -273,31 +272,30 @@ private fun activityFillColor(
 ): Color {
     if (count <= 0 || maxCount <= 0) return Color.Transparent
     return when {
-        count <= maxCount / 4 -> Purple920
-        count <= maxCount / 2 -> Purple700
-        count <= maxCount * 3 / 4 -> Purple500
-        else -> Purple300
+        count <= maxCount / 4 -> TraktTheme.colors.streakLevel1
+        count <= maxCount / 2 -> TraktTheme.colors.streakLevel2
+        count <= maxCount * 3 / 4 -> TraktTheme.colors.streakLevel3
+        else -> TraktTheme.colors.streakLevel4
     }
 }
 
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF212427,
-)
+@DeviceSheetPreview
 @Composable
-private fun Preview() {
+private fun PreviewDark() {
     TraktTheme {
         StreaksMonthGrid(
-            yearMonth = YearMonth.of(2026, Month.JUNE),
+            yearMonth = YearMonth.of(2026, Month.FEBRUARY),
             data = persistentMapOf(
-                LocalDate.of(2026, Month.JUNE, 1) to StreakDataPoint(episodes = 1, movies = 0),
-                LocalDate.of(2026, Month.JUNE, 2) to StreakDataPoint(episodes = 2, movies = 1),
-                LocalDate.of(2026, Month.JUNE, 3) to StreakDataPoint(episodes = 5, movies = 2),
-                LocalDate.of(2026, Month.JUNE, 4) to StreakDataPoint(episodes = 10, movies = 2),
-                LocalDate.of(2026, Month.JUNE, 5) to StreakDataPoint(episodes = 2, movies = 0),
-                LocalDate.of(2026, Month.JUNE, 6) to StreakDataPoint(episodes = 4, movies = 1),
-                LocalDate.of(2026, Month.JUNE, 8) to StreakDataPoint(episodes = 0, movies = 0),
+                LocalDate.of(2026, Month.FEBRUARY, 2) to StreakDataPoint(episodes = 1, movies = 0),
+                LocalDate.of(2026, Month.FEBRUARY, 3) to StreakDataPoint(episodes = 3, movies = 1),
+                LocalDate.of(2026, Month.FEBRUARY, 4) to StreakDataPoint(episodes = 8, movies = 1),
+                LocalDate.of(2026, Month.FEBRUARY, 5) to StreakDataPoint(episodes = 16, movies = 2),
+                LocalDate.of(2026, Month.FEBRUARY, 9) to StreakDataPoint(episodes = 2, movies = 0),
+                LocalDate.of(2026, Month.FEBRUARY, 10) to StreakDataPoint(episodes = 5, movies = 1),
+                LocalDate.of(2026, Month.FEBRUARY, 11) to StreakDataPoint(episodes = 12, movies = 2),
+                LocalDate.of(2026, Month.FEBRUARY, 16) to StreakDataPoint(episodes = 2, movies = 1),
+                LocalDate.of(2026, Month.FEBRUARY, 17) to StreakDataPoint(episodes = 10, movies = 1),
+                LocalDate.of(2026, Month.FEBRUARY, 25) to StreakDataPoint(episodes = 7, movies = 1),
             ),
             modifier = Modifier.fillMaxWidth(),
         )
@@ -307,11 +305,13 @@ private fun Preview() {
 @Preview(
     device = "id:pixel_5",
     showBackground = true,
-    backgroundColor = 0xFF212427,
+    backgroundColor = 0xFFFFFF,
 )
 @Composable
-private fun PreviewFebruary() {
-    TraktTheme {
+private fun PreviewLight() {
+    TraktTheme(
+        colors = LightColors,
+    ) {
         StreaksMonthGrid(
             yearMonth = YearMonth.of(2026, Month.FEBRUARY),
             data = persistentMapOf(

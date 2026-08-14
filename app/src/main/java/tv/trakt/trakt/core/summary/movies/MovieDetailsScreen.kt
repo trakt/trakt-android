@@ -636,7 +636,7 @@ internal fun MovieDetailsContent(
                                         top = when {
                                             showStreamings -> 32.dp
                                             else -> 24.dp
-                                        },
+                                        } - TraktTheme.spacing.shadowClipSpace,
                                     ),
                             )
                         }
@@ -652,7 +652,7 @@ internal fun MovieDetailsContent(
                             onPersonClick = onPersonClick ?: {},
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
+                                .padding(top = 32.dp - TraktTheme.spacing.shadowClipSpace),
                         )
                     }
 
@@ -681,7 +681,7 @@ internal fun MovieDetailsContent(
                             onVideoClick = onExtraClick ?: {},
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
+                                .padding(top = 32.dp - TraktTheme.spacing.shadowClipSpace),
                         )
                     }
 
@@ -724,7 +724,7 @@ internal fun MovieDetailsContent(
                             onTriviaClick = onTriviaClick ?: {},
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
+                                .padding(top = 32.dp - TraktTheme.spacing.shadowClipSpace),
                         )
                     }
                 }

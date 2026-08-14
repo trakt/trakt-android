@@ -44,9 +44,9 @@ internal fun GhostButton(
     corner: Dp = 8.dp,
     fillWidth: Boolean = true,
     containerColor: Color = Color.Transparent,
-    contentColor: Color = TraktTheme.colors.primaryButtonContent,
+    contentColor: Color = TraktTheme.colors.ghostButtonContent,
     disabledContainerColor: Color = Color.Transparent,
-    disabledContentColor: Color = TraktTheme.colors.primaryButtonContent.copy(alpha = 0.25F),
+    disabledContentColor: Color = TraktTheme.colors.ghostButtonContent.copy(alpha = 0.25F),
 ) {
     Button(
         modifier = modifier
@@ -110,7 +110,7 @@ internal fun GhostButton(
     }
 }
 
-@Preview()
+@Preview
 @Composable
 private fun Preview1() {
     TraktTheme {
@@ -131,7 +131,7 @@ private fun Preview2() {
     }
 }
 
-@Preview()
+@Preview
 @Composable
 private fun PreviewIcon() {
     TraktTheme {

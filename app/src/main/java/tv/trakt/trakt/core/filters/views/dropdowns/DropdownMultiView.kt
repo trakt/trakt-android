@@ -20,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
@@ -65,8 +64,8 @@ internal fun <T> DropdownMultiView(
                     .fillMaxWidth()
                     .background(
                         color = when (active) {
-                            true -> Color.White
-                            false -> TraktTheme.colors.dialogOnContainer
+                            true -> TraktTheme.colors.dropdownContainerActive
+                            false -> TraktTheme.colors.dropdownContainer
                         },
                         shape = RoundedCornerShape(16.dp),
                     )
@@ -85,8 +84,8 @@ internal fun <T> DropdownMultiView(
                         letterSpacing = 0.02.em,
                     ),
                     color = when (active) {
-                        true -> TraktTheme.colors.accent
-                        false -> TraktTheme.colors.textSecondary
+                        true -> TraktTheme.colors.dropdownContentActive
+                        false -> TraktTheme.colors.dropdownContent
                     },
                     maxLines = 1,
                     overflow = Ellipsis,
@@ -95,7 +94,7 @@ internal fun <T> DropdownMultiView(
 
             DropdownMenu(
                 expanded = showMenu,
-                containerColor = TraktTheme.colors.dialogContainer,
+                containerColor = TraktTheme.colors.dropdownMenuContainer,
                 shape = RoundedCornerShape(16.dp),
                 onDismissRequest = {
                     showMenu = false

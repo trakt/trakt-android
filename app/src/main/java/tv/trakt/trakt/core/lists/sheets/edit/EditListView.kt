@@ -43,6 +43,7 @@ import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.CustomList.Privacy.Private
 import tv.trakt.trakt.common.model.lists.CustomList.Privacy.Public
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InputField
 import tv.trakt.trakt.ui.components.TraktHeader
@@ -254,8 +255,10 @@ private fun PrivacyButtons(
                     containerColor = Color.Transparent,
                     contentColor = TraktTheme.colors.textPrimary,
                     checkedContainerColor = TraktTheme.colors.accent,
-                    checkedContentColor = TraktTheme.colors.textPrimary,
-                    disabledContentColor = TraktTheme.colors.textPrimary,
+                    checkedContentColor = TraktTheme.colors.textPrimaryOnAccent,
+                    disabledContentColor = TraktTheme.colors.textPrimary.copy(
+                        alpha = 0.33F,
+                    ),
                     disabledContainerColor = when {
                         selected == variant -> TraktTheme.colors.primaryButtonContainerDisabled
                         else -> Color.Transparent
@@ -267,7 +270,7 @@ private fun PrivacyButtons(
                         color = Color.Transparent,
                     )
                     else -> BorderStroke(
-                        width = 2.dp,
+                        width = 1.5.dp,
                         color = TraktTheme.colors.chipContainer,
                     )
                 },
@@ -284,7 +287,6 @@ private fun PrivacyButtons(
             ) {
                 Text(
                     text = stringResource(variant.displayRes),
-                    color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.buttonPrimary,
                     maxLines = 1,
                     overflow = Ellipsis,
@@ -301,7 +303,7 @@ private fun PrivacyButtons(
 )
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         EditListContent(
             state = EditListState(),
             initialList = PreviewData.customList1,
@@ -316,7 +318,7 @@ private fun Preview() {
 )
 @Composable
 private fun Preview2() {
-    TraktTheme {
+    TraktThemeLightDark {
         EditListContent(
             initialList = PreviewData.customList1,
             state = EditListState(

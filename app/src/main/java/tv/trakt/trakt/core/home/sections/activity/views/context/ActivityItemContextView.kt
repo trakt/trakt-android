@@ -116,42 +116,6 @@ private fun ActivityItemContextViewContent(
         verticalArrangement = spacedBy(0.dp),
         modifier = modifier,
     ) {
-//        PanelMediaCard(
-//            title = item.title,
-//            titleOriginal = item.titleOriginal,
-//            subtitle = when (item) {
-//                is EpisodeItem -> item.episode.seasonEpisodeString()
-//                is MovieItem -> stringResource(R.string.translated_value_type_movie)
-//            },
-//            shadow = 4.dp,
-//            more = false,
-//            containerColor = Shade910,
-//            contentImageUrl = item.images?.getPosterUrl(),
-//            containerImageUrl = when (item) {
-//                is EpisodeItem -> item.episode.images?.getScreenshotUrl(THUMB)
-//                    ?: item.episode.images?.getFanartUrl(THUMB)
-//                is MovieItem -> item.movie.images?.getFanartUrl(THUMB)
-//            },
-//            footerContent = {
-//                Row(
-//                    horizontalArrangement = spacedBy(3.dp),
-//                    verticalAlignment = Alignment.CenterVertically,
-//                ) {
-//                    Icon(
-//                        painter = painterResource(R.drawable.ic_calendar_check),
-//                        contentDescription = null,
-//                        tint = TraktTheme.colors.textSecondary,
-//                        modifier = Modifier.size(14.dp),
-//                    )
-//                    Text(
-//                        text = item.activityAt.toLocal().relativePastDateString(),
-//                        color = TraktTheme.colors.textSecondary,
-//                        style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
-//                    )
-//                }
-//            },
-//        )
-
         Column(
             verticalArrangement = spacedBy(2.dp),
         ) {

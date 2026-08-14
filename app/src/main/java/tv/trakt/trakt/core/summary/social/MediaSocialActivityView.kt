@@ -141,7 +141,6 @@ private fun MediaSocialActivityContent(
             MediaSocialItemCard(
                 item = item,
                 containerColor = TraktTheme.colors.dialogOnContainer,
-                shadow = 1.dp,
                 onClick = { onUserClick(item.user) },
                 modifier = Modifier.fillMaxWidth(),
             )

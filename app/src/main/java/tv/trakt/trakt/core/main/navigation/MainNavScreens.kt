@@ -595,7 +595,6 @@ internal fun NavGraphBuilder.profileScreens(
                 )
             },
             onNavigateToSocial = { navigateToProfileSocial() },
-            onNavigateToVip = { navigateToBilling() },
         )
 
         allFavoritesScreen(

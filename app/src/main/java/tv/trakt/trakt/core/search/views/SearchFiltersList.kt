@@ -40,7 +40,10 @@ internal fun SearchFiltersList(
                     Icon(
                         painter = painterResource(filter.iconRes),
                         contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
+                        tint = when {
+                            isSelected -> TraktTheme.colors.textPrimaryOnAccent
+                            else -> TraktTheme.colors.textPrimary
+                        },
                         modifier = Modifier
                             .padding(
                                 horizontal = if (isSelected) 0.dp else 4.dp,

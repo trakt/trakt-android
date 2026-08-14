@@ -2,66 +2,17 @@ package tv.trakt.trakt.common.ui.theme.colors
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
-
-val DarkColors: TraktColors = TraktColors(
-    accent = Purple500,
-    backgroundPrimary = Shade920,
-    textPrimary = White,
-    textSecondary = Shade300,
-    skeletonContainer = Shade910,
-    skeletonShimmer = Shade900,
-    placeholderContainer = Shade800,
-    placeholderContent = Shade600,
-    tagChipContent = Black,
-    tagChipContentOnAccent = White,
-    tagChipContainer = White,
-    tagChipContainerLight = Shade250,
-    chipContainer = Shade700,
-    chipContainerOnContent = Shade700.copy(alpha = 0.64F),
-    chipContent = White,
-    navigationHeaderContainer = Shade900.copy(alpha = 0.98F),
-    navigationContainer = Shade900.copy(alpha = 0.98F),
-    navigationContent = White,
-    navigationContentOn = Purple400,
-    navigationContentOff = Shade300,
-    inputContainer = Shade920,
-    dialogContainer = Shade900,
-    dialogOnContainer = Shade800,
-    dialogContent = Shade800,
-    panelCardContainer = Shade900,
-    commentContainer = Shade900,
-    commentReplyContainer = Shade800,
-    customListContainer = Shade900,
-    sentimentsContainer = Purple940,
-    sentimentsAccent = White,
-    sentimentsGoodAccent = Purple100,
-    sentimentsBadAccent = Red80,
-    triviaContainer = Purple940,
-    triviaAccent = Purple40,
-    detailsStatus1 = Purple300,
-    detailsStatus2 = Purple100,
-    vipAccent = Purple500,
-    separator = Shade800,
-    // Buttons
-    primaryButtonContainer = Purple500,
-    primaryButtonContainerDisabled = Shade700,
-    primaryButtonContent = White,
-    primaryButtonContentDisabled = White,
-    // Snackbar
-    snackbarContainer = White,
-    snackbarContent = Shade940,
-    // Switches
-    switchContainerChecked = Purple800,
-    switchContainerUnchecked = White,
-    switchThumbChecked = Purple500,
-    switchThumbUnchecked = Purple500,
-)
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 
 @Immutable
 data class TraktColors(
+    val isLight: Boolean = false,
     val accent: Color = Color.Unspecified,
     val backgroundPrimary: Color = Color.Unspecified,
+    val backgroundImageAlpha: Float = Float.NaN,
     val textPrimary: Color = Color.Unspecified,
+    val textPrimaryOnAccent: Color = Color.Unspecified,
     val textSecondary: Color = Color.Unspecified,
     val skeletonContainer: Color = Color.Unspecified,
     val skeletonShimmer: Color = Color.Unspecified,
@@ -78,10 +29,17 @@ data class TraktColors(
     val dialogContainer: Color = Color.Unspecified,
     val dialogOnContainer: Color = Color.Unspecified,
     val dialogContent: Color = Color.Unspecified,
+    // Dropdowns
+    val dropdownContainer: Color = Color.Unspecified,
+    val dropdownContainerActive: Color = Color.Unspecified,
+    val dropdownMenuContainer: Color = Color.Unspecified,
+    val dropdownContent: Color = Color.Unspecified,
+    val dropdownContentActive: Color = Color.Unspecified,
     val panelCardContainer: Color = Color.Unspecified,
     val commentContainer: Color = Color.Unspecified,
     val commentReplyContainer: Color = Color.Unspecified,
     val customListContainer: Color = Color.Unspecified,
+    val customListGradient: Color = Color.Unspecified,
     val sentimentsContainer: Color = Color.Unspecified,
     val sentimentsAccent: Color = Color.Unspecified,
     val sentimentsGoodAccent: Color = Color.Unspecified,
@@ -92,6 +50,13 @@ data class TraktColors(
     val detailsStatus2: Color = Color.Unspecified,
     val vipAccent: Color = Color.Unspecified,
     val separator: Color = Color.Unspecified,
+    // Streaks
+    val streakTileEmpty: Color = Color.Unspecified,
+    val streakTileToday: Color = Color.Unspecified,
+    val streakLevel1: Color = Color.Unspecified,
+    val streakLevel2: Color = Color.Unspecified,
+    val streakLevel3: Color = Color.Unspecified,
+    val streakLevel4: Color = Color.Unspecified,
     // Nav
     val navigationHeaderContainer: Color = Color.Unspecified,
     val navigationContainer: Color = Color.Unspecified,
@@ -103,12 +68,30 @@ data class TraktColors(
     val primaryButtonContainerDisabled: Color = Color.Unspecified,
     val primaryButtonContent: Color = Color.Unspecified,
     val primaryButtonContentDisabled: Color = Color.Unspecified,
+    val ghostButtonContent: Color = Color.Unspecified,
     // Snackbar
     val snackbarContainer: Color = Color.Unspecified,
     val snackbarContent: Color = Color.Unspecified,
+    // Tooltip
+    val tooltipContainer: Color = Color.Unspecified,
+    val tooltipContent: Color = Color.Unspecified,
     // Switches
     val switchContainerChecked: Color = Color.Unspecified,
     val switchContainerUnchecked: Color = Color.Unspecified,
     val switchThumbChecked: Color = Color.Unspecified,
     val switchThumbUnchecked: Color = Color.Unspecified,
+    // Reactions
+    val reactionsContainer: Color = Color.Unspecified,
+    val reactionsSummaryContainer: Color = Color.Unspecified,
+    val reactionsSummaryHighlight: Color = Color.Unspecified,
+    // Shadows
+    val shadowDefault: Dp = 0.dp,
+    val shadowSmall: Dp = 0.dp,
+    val shadowLarge: Dp = 0.dp,
+    val shadowDynamicDefault: Dp = 0.dp,
+    val shadowDynamicSmall: Dp = 0.dp,
+    val shadowDynamicLarge: Dp = 0.dp,
+    // Misc
+    val profileStatsContainer: Color = Color.Unspecified,
+    val profileStatsChip: Color = Color.Unspecified,
 )

@@ -578,7 +578,7 @@ internal fun EpisodeDetailsContent(
                                     top = when {
                                         streamingsVisible -> 32.dp
                                         else -> 24.dp
-                                    },
+                                    } - TraktTheme.spacing.shadowClipSpace,
                                 ),
                         )
                     }
@@ -615,7 +615,7 @@ internal fun EpisodeDetailsContent(
                             },
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
+                                .padding(top = 32.dp - TraktTheme.spacing.shadowClipSpace),
                         )
                     }
 

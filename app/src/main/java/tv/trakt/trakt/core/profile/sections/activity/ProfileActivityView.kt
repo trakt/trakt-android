@@ -271,7 +271,7 @@ private fun ContentFilters(
                     Icon(
                         painter = painterResource(filter.iconRes),
                         contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
+                        tint = TraktTheme.colors.textPrimaryOnAccent,
                         modifier = Modifier
                             .size(19.dp),
                     )
@@ -416,9 +416,11 @@ private fun CommentsContentList(
 
     LazyRow(
         state = listState,
-        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
         contentPadding = contentPadding,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = TraktTheme.spacing.shadowClipSpace),
     ) {
         items(
             items = listItems,

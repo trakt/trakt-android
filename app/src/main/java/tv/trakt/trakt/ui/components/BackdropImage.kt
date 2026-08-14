@@ -60,7 +60,7 @@ internal const val PARALLAX_RATIO = 0.75F
 internal fun ScrollableBackdropImage(
     modifier: Modifier = Modifier,
     imageUrl: String? = null,
-    imageAlpha: Float = 0.4F,
+    imageAlpha: Float = TraktTheme.colors.backgroundImageAlpha,
     translation: Float,
 ) {
     val localPreview = LocalInspectionMode.current
@@ -80,6 +80,7 @@ internal fun ScrollableBackdropImage(
     scrollState: LazyListState,
     modifier: Modifier = Modifier,
     imageUrl: String? = null,
+    imageAlpha: Float = TraktTheme.colors.backgroundImageAlpha,
 ) {
     val localPreview = LocalInspectionMode.current
 
@@ -90,7 +91,7 @@ internal fun ScrollableBackdropImage(
     if (!localPreview) {
         BackdropImage(
             imageUrl = imageUrl,
-            imageAlpha = 0.4F,
+            imageAlpha = imageAlpha,
             modifier = modifier.graphicsLayer {
                 if (firstItemVisible) {
                     translationY = (-PARALLAX_RATIO * scrollState.firstVisibleItemScrollOffset)
@@ -107,6 +108,7 @@ internal fun ScrollableBackdropImage(
     scrollState: LazyGridState,
     modifier: Modifier = Modifier,
     imageUrl: String? = null,
+    imageAlpha: Float = TraktTheme.colors.backgroundImageAlpha,
 ) {
     val firstItemVisible by remember {
         derivedStateOf { scrollState.firstVisibleItemIndex == 0 }
@@ -114,7 +116,7 @@ internal fun ScrollableBackdropImage(
 
     BackdropImage(
         imageUrl = imageUrl,
-        imageAlpha = 0.4F,
+        imageAlpha = imageAlpha,
         modifier = modifier.graphicsLayer {
             if (firstItemVisible) {
                 translationY = (-PARALLAX_RATIO * scrollState.firstVisibleItemScrollOffset)
@@ -162,7 +164,8 @@ private fun BackdropImage(
         }
     }
 
-    val grayscaleColorFilter = remember {
+    val isLight = TraktTheme.colors.isLight
+    val grayscaleColorFilter = remember(isLight) {
         ColorFilter.colorMatrix(
             ColorMatrix().apply {
                 setToSaturation(0F)
@@ -171,7 +174,7 @@ private fun BackdropImage(
     }
 
     val background = TraktTheme.colors.backgroundPrimary
-    val linearGradient = remember {
+    val linearGradient = remember(isLight) {
         Brush.verticalGradient(
             colors = listOf(
                 background.copy(alpha = 0.5F),

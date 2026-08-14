@@ -461,7 +461,10 @@ private fun ContentFilters(
                     Icon(
                         painter = painterResource(filter.offIcon),
                         contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
+                        tint = when {
+                            itemsFilter.mode == filter -> TraktTheme.colors.textPrimaryOnAccent
+                            else -> TraktTheme.colors.textPrimary
+                        },
                         modifier = Modifier
                             .size(16.dp),
                     )

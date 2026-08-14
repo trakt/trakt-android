@@ -14,33 +14,33 @@
   ~ limitations under the License.
   -->
 <vector xmlns:aapt="http://schemas.android.com/aapt" xmlns:android="http://schemas.android.com/apk/res/android" android:height="24dp" android:viewportHeight="48" android:viewportWidth="48" android:width="24dp">
-      
+
     <path android:pathData="M17,29C18.326,29 19.598,28.473 20.535,27.535C21.473,26.598 22,25.326 22,24C22,21.24 21,20 20,18C17.856,13.714 19.552,9.892 24,6C25,11 28,15.8 32,19C36,22.2 38,26 38,30C38,31.838 37.638,33.659 36.934,35.358C36.231,37.056 35.2,38.599 33.9,39.9C32.599,41.2 31.056,42.231 29.358,42.934C27.659,43.638 25.838,44 24,44C22.162,44 20.341,43.638 18.642,42.934C16.944,42.231 15.401,41.2 14.101,39.9C12.8,38.599 11.769,37.056 11.066,35.358C10.362,33.659 10,31.838 10,30C10,27.694 10.866,25.412 12,24C12,25.326 12.527,26.598 13.465,27.535C14.402,28.473 15.674,29 17,29Z" android:strokeLineCap="round" android:strokeLineJoin="round" android:strokeWidth="2">
-            
+
         <aapt:attr name="android:fillColor">
-                  
+
             <gradient android:centerX="38" android:centerY="-48" android:gradientRadius="95.5" android:type="radial">
-                        
+
                 <item android:color="#FF3D4348" android:offset="0.702"/>
-                        
+
                 <item android:color="#FF605365" android:offset="1"/>
-                      
+
             </gradient>
-                
+
         </aapt:attr>
-            
+
         <aapt:attr name="android:strokeColor">
-                  
+
             <gradient android:centerX="24" android:centerY="-5" android:gradientRadius="28.5" android:type="radial">
-                        
+
                 <item android:color="#FF2E3337" android:offset="0"/>
-                        
+
                 <item android:color="#FFFEFEFE" android:offset="1"/>
-                      
+
             </gradient>
-                
+
         </aapt:attr>
-          
+
     </path>
-    
+
 </vector>

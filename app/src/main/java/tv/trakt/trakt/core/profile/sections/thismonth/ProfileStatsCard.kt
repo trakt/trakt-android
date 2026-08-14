@@ -62,8 +62,8 @@ import tv.trakt.trakt.common.helpers.extensions.rememberNumberFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.theme.colors.Purple700
-import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.core.profile.sections.thismonth.model.ProfileStats
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -75,7 +75,7 @@ import java.util.Locale
 internal fun ProfileStatsCard(
     user: User,
     modifier: Modifier = Modifier,
-    containerColor: Color = Shade920,
+    containerColor: Color = TraktTheme.colors.profileStatsContainer,
     containerImage: String? = null,
     loading: Boolean = false,
     showAllStats: Boolean = true,
@@ -103,7 +103,7 @@ internal fun ProfileStatsCard(
 
     Box(
         modifier = modifier
-            .shadow(4.dp, DefaultCardShape)
+            .shadow(TraktTheme.colors.shadowLarge, DefaultCardShape)
             .clip(DefaultCardShape)
             .background(containerColor),
     ) {
@@ -115,7 +115,12 @@ internal fun ProfileStatsCard(
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .alpha(0.1F)
+                    .alpha(
+                        when {
+                            TraktTheme.colors.isLight -> 0.15F
+                            else -> 0.1F
+                        },
+                    )
                     .matchParentSize(),
             )
 
@@ -228,14 +233,14 @@ private fun HeaderRow(
                         if (showAll) R.drawable.ic_history else R.drawable.ic_calendar,
                     ),
                     contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
+                    tint = TraktTheme.colors.textPrimaryOnAccent,
                     modifier = Modifier.size(20.dp),
                 )
                 Text(
                     text = stringResource(
                         if (showAll) R.string.text_all_time else R.string.text_this_month,
                     ).uppercase(),
-                    color = TraktTheme.colors.textPrimary,
+                    color = TraktTheme.colors.textPrimaryOnAccent,
                     style = TraktTheme.typography.heading6,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.graphicsLayer {
@@ -252,14 +257,14 @@ private fun HeaderRow(
         ) {
             Text(
                 text = currentYear.toString(),
-                color = TraktTheme.colors.textPrimary,
+                color = TraktTheme.colors.textPrimaryOnAccent,
                 style = TraktTheme.typography.heading6,
                 textAlign = TextAlign.Center,
             )
             Icon(
                 painter = painterResource(R.drawable.ic_external),
                 contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
+                tint = TraktTheme.colors.textPrimaryOnAccent,
                 modifier = Modifier.size(16.dp),
             )
         }
@@ -295,7 +300,7 @@ private fun PreviousMonthRow(
         Icon(
             painter = painterResource(R.drawable.ic_history),
             contentDescription = null,
-            tint = TraktTheme.colors.textPrimary,
+            tint = TraktTheme.colors.textPrimaryOnAccent,
             modifier = Modifier.size(20.dp),
         )
         Text(
@@ -303,7 +308,7 @@ private fun PreviousMonthRow(
                 TextStyle.FULL_STANDALONE,
                 appLocale,
             ).uppercase(),
-            color = TraktTheme.colors.textPrimary,
+            color = TraktTheme.colors.textPrimaryOnAccent,
             style = TraktTheme.typography.heading6,
         )
     }
@@ -371,7 +376,7 @@ private fun PagerIndicator(
                     .size(6.dp)
                     .clip(CircleShape)
                     .background(
-                        TraktTheme.colors.textPrimary.copy(
+                        TraktTheme.colors.textPrimaryOnAccent.copy(
                             alpha = if (selected) 1F else 0.35F,
                         ),
                     ),
@@ -393,9 +398,9 @@ private fun StatsChip(
         horizontalArrangement = spacedBy(6.dp),
         modifier = modifier
             .animateContentSize()
-            .shadow(1.dp, shape)
+            .shadow(TraktTheme.colors.shadowSmall, shape)
             .background(
-                color = Shade920,
+                color = TraktTheme.colors.profileStatsChip,
                 shape = shape,
             )
             .padding(
@@ -406,7 +411,7 @@ private fun StatsChip(
         Icon(
             painter = icon,
             contentDescription = null,
-            tint = TraktTheme.colors.textPrimary,
+            tint = TraktTheme.colors.textPrimaryOnAccent,
             modifier = Modifier
                 .size(16.dp),
         )
@@ -420,7 +425,7 @@ private fun StatsChip(
         } else {
             Text(
                 text = text.uppercase(),
-                color = TraktTheme.colors.textPrimary,
+                color = TraktTheme.colors.textPrimaryOnAccent,
                 style = TraktTheme.typography.buttonTertiary,
             )
         }
@@ -444,7 +449,7 @@ private fun togglePage(
 @Preview(widthDp = 350)
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         ProfileStatsCard(
             user = PreviewData.user1,
             modifier = Modifier.padding(16.dp),
@@ -455,23 +460,6 @@ private fun Preview() {
                 allShowsCount = 87,
                 allMoviesCount = 145,
                 allEpisodesCount = 2310,
-            ),
-        )
-    }
-}
-
-@Preview(widthDp = 350)
-@Composable
-private fun Preview2() {
-    TraktTheme {
-        ProfileStatsCard(
-            user = PreviewData.user1,
-            modifier = Modifier.padding(16.dp),
-            loading = true,
-            stats = ProfileStats(
-                showsCount = 12,
-                moviesCount = 0,
-                episodesCount = 34,
             ),
         )
     }

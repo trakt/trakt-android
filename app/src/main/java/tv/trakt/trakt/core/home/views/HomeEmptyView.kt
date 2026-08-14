@@ -124,14 +124,14 @@ internal fun HomeEmptyView(
                 Text(
                     text = text,
                     style = TraktTheme.typography.paragraphSmall,
-                    color = TraktTheme.colors.textPrimary,
+                    color = TraktTheme.colors.textPrimaryOnAccent,
                     modifier = Modifier.weight(1f),
                 )
 
                 Icon(
                     painter = painterResource(id = icon),
                     contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
+                    tint = TraktTheme.colors.textPrimaryOnAccent,
                     modifier = Modifier
                         .size(72.dp),
                 )

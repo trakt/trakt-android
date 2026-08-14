@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -91,6 +92,11 @@ internal fun HorizontalMediaCard(
                     .width(width)
                     .aspectRatio(HorizontalImageAspectRatio),
                 shape = RoundedCornerShape(corner),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = TraktTheme.colors.shadowDynamicSmall,
+                    pressedElevation = TraktTheme.colors.shadowDynamicSmall,
+                    disabledElevation = TraktTheme.colors.shadowDynamicSmall,
+                ),
                 colors = cardColors(
                     containerColor = TraktTheme.colors.placeholderContainer,
                 ),

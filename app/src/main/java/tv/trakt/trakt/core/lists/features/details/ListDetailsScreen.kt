@@ -24,7 +24,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -610,17 +610,15 @@ private fun ContentList(
                     }
                 }
 
-                itemsIndexed(
+                items(
                     items = itemsGroup[key] ?: EmptyImmutableList,
-                    key = { _, item -> item.key },
-                ) { itemIndex, item ->
-                    val shadow = groupIndex == 0 && itemIndex == 0
+                    key = { item -> item.key },
+                ) { item ->
                     when (item) {
                         is ShowItem -> ListDetailsShowView(
                             show = item.show,
                             showUserRating = item.userRating,
                             sorting = listSorting,
-                            shadow = shadow,
                             enabled = !loading,
                             watched = collectionState.isWatched(item.id, item.type, item.show.airedEpisodes),
                             watching = collectionState.isWatching(item.id, item.type, item.show.airedEpisodes),
@@ -640,7 +638,6 @@ private fun ContentList(
                             movie = item.movie,
                             movieUserRating = item.userRating,
                             sorting = listSorting,
-                            shadow = shadow,
                             enabled = !loading,
                             watched = collectionState.isWatched(item.id, item.type, null),
                             watchlist = collectionState.isWatchlist(item.id, item.type),
@@ -658,7 +655,6 @@ private fun ContentList(
                         is SeasonItem -> ListDetailsSeasonView(
                             item = item,
                             sorting = listSorting,
-                            shadow = shadow,
                             enabled = !loading,
                             onClick = { onClick(item) },
                             modifier = Modifier
@@ -672,7 +668,6 @@ private fun ContentList(
                         is EpisodeItem -> ListDetailsEpisodeView(
                             item = item,
                             sorting = listSorting,
-                            shadow = shadow,
                             enabled = !loading,
                             onClick = { onClick(item) },
                             modifier = Modifier

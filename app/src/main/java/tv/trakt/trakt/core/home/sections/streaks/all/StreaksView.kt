@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -157,12 +158,17 @@ private fun StreakStatCard(
     subtitle: String,
     modifier: Modifier = Modifier,
 ) {
+    val shape = RoundedCornerShape(16.dp)
     Column(
         verticalArrangement = Arrangement.spacedBy(2.dp),
         modifier = modifier
+            .shadow(
+                elevation = TraktTheme.colors.shadowDynamicDefault,
+                shape = shape,
+            )
             .background(
                 color = TraktTheme.colors.dialogOnContainer,
-                shape = RoundedCornerShape(16.dp),
+                shape = shape,
             )
             .padding(horizontal = 14.dp, vertical = 12.dp),
     ) {

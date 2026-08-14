@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Bottom
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
@@ -44,13 +45,18 @@ internal fun TraktRatingCard(
     rating: ExternalRating.TraktRating,
     modifier: Modifier = Modifier,
 ) {
+    val cardShape = RoundedCornerShape(16.dp)
     Row(
         horizontalArrangement = spacedBy(20.dp),
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
+            .shadow(
+                elevation = TraktTheme.colors.shadowDynamicDefault,
+                shape = cardShape,
+            )
             .background(
                 color = TraktTheme.colors.dialogOnContainer,
-                shape = RoundedCornerShape(16.dp),
+                shape = cardShape,
             )
             .padding(horizontal = 16.dp, vertical = 13.dp),
     ) {

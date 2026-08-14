@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.Bottom
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
@@ -49,6 +50,8 @@ private const val MIN_BAR_FRACTION = 0.06F
 // Days shown when there is no data, so the graph still renders with zeroed bars.
 private const val FALLBACK_DAYS = 7
 
+private val cardShape = RoundedCornerShape(16.dp)
+
 @Composable
 internal fun ScreenTimeDailyBreakdownCard(
     modifier: Modifier = Modifier,
@@ -70,9 +73,13 @@ internal fun ScreenTimeDailyBreakdownCard(
     Column(
         verticalArrangement = spacedBy(12.dp),
         modifier = modifier
+            .shadow(
+                elevation = TraktTheme.colors.shadowDynamicDefault,
+                shape = cardShape,
+            )
             .background(
                 color = containerColor,
-                shape = RoundedCornerShape(16.dp),
+                shape = cardShape,
             )
             .padding(horizontal = 14.dp, vertical = 12.dp),
     ) {

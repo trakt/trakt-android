@@ -30,6 +30,7 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.OtherDate
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilAction
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilAction.Now
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.helpers.computeWatchedTimestamps
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
@@ -121,7 +122,7 @@ private fun EpisodeRow(
 )
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         WatchedTimestampsList(
             episodes = persistentListOf(
                 PreviewData.episode1,

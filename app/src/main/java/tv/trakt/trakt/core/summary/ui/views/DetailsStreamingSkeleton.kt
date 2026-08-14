@@ -15,6 +15,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,6 +24,7 @@ import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -43,6 +45,11 @@ internal fun DetailsStreamingSkeleton() {
         modifier = Modifier
             .height(86.dp)
             .width(110.dp)
+            .shadow(
+                elevation = TraktTheme.colors.shadowDynamicDefault,
+                shape = RoundedCornerShape(16.dp),
+                clip = false,
+            )
             .clip(RoundedCornerShape(16.dp))
             .background(shimmerTransition),
     )
@@ -56,7 +63,7 @@ internal fun DetailsStreamingSkeleton() {
 )
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         val previewHandler = AsyncImagePreviewHandler {
             ColorImage(Color.Blue.toArgb())
         }

@@ -14,10 +14,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -38,10 +37,10 @@ import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.MediaType.Show
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.common.ui.theme.colors.Shade940
 import tv.trakt.trakt.core.profile.sections.social.ui.SocialUserView
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity.Watched.Rated
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -54,7 +53,6 @@ internal fun MediaSocialItemCard(
     item: MediaSocialActivity,
     modifier: Modifier = Modifier,
     corner: Dp = 24.dp,
-    shadow: Dp = 0.dp,
     containerColor: Color = TraktTheme.colors.panelCardContainer,
     onClick: () -> Unit = {},
 ) {
@@ -62,14 +60,9 @@ internal fun MediaSocialItemCard(
         horizontalArrangement = spacedBy(0.dp),
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .dropShadow(
+            .shadow(
+                elevation = TraktTheme.colors.shadowDefault,
                 shape = RoundedCornerShape(corner),
-                shadow = Shadow(
-                    radius = shadow,
-                    color = Shade940,
-                    spread = 2.dp,
-                    alpha = if (shadow > 0.dp) 0.1F else 0F,
-                ),
             )
             .graphicsLayer {
                 clip = false
@@ -128,6 +121,11 @@ internal fun MediaSocialItemCard(
                     .fillMaxWidth()
                     .padding(top = 8.dp),
             ) {
+                val chipContainer = when {
+                    TraktTheme.colors.isLight -> TraktTheme.colors.chipContainerOnContent
+                    else -> TraktTheme.colors.chipContainer
+                }
+
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -155,6 +153,7 @@ internal fun MediaSocialItemCard(
                         InfoChip(
                             iconPainter = painterResource(R.drawable.ic_check_double),
                             iconPadding = 1.dp,
+                            containerColor = chipContainer,
                             text = when {
                                 item.type == Show -> showText
                                 else -> movieText
@@ -165,6 +164,7 @@ internal fun MediaSocialItemCard(
                     item.watchlist?.let {
                         InfoChip(
                             iconPainter = painterResource(R.drawable.ic_bookmark_on),
+                            containerColor = chipContainer,
                             text = stringResource(R.string.list_title_watchlist),
                         )
                     }
@@ -177,6 +177,7 @@ internal fun MediaSocialItemCard(
                     item.watched?.commented?.let {
                         InfoChip(
                             iconPainter = painterResource(R.drawable.ic_comment),
+                            containerColor = chipContainer,
                             text = stringResource(R.string.dialog_title_comment),
                         )
                     }
@@ -190,6 +191,7 @@ internal fun MediaSocialItemCard(
                         }
                         InfoChip(
                             iconPainter = painterResource(R.drawable.ic_star),
+                            containerColor = chipContainer,
                             text = ratingText,
                         )
                     }
@@ -203,7 +205,7 @@ internal fun MediaSocialItemCard(
 @DevicePreview
 @Composable
 private fun PosterPreview() {
-    TraktTheme {
+    TraktThemeLightDark {
         val previewHandler = AsyncImagePreviewHandler {
             ColorImage(Color.Blue.toArgb())
         }

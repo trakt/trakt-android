@@ -17,13 +17,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.common.helpers.extensions.DeviceSheetPreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.sorting.SortOrder
 import tv.trakt.trakt.common.model.sorting.SortType
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -72,8 +73,8 @@ private fun ActionButtons(
                 GhostButton(
                     text = stringResource(sort.displayStringRes),
                     contentColor = when {
-                        sort == selectedType -> TraktTheme.colors.primaryButtonContent
-                        else -> TraktTheme.colors.textSecondary.copy(alpha = 0.75F)
+                        sort == selectedType -> TraktTheme.colors.textPrimary
+                        else -> TraktTheme.colors.textSecondary.copy(alpha = 0.7F)
                     },
                     icon = when {
                         sort == selectedType -> painterResource(R.drawable.ic_check_google)
@@ -113,14 +114,14 @@ private fun ActionButtons(
                             Icon(
                                 painter = painterResource(it.displayIconRes),
                                 contentDescription = null,
-                                tint = TraktTheme.colors.primaryButtonContent,
+                                tint = TraktTheme.colors.textPrimary,
                                 modifier = Modifier
                                     .size(12.dp),
                             )
 
                             Text(
                                 text = stringResource(it.displayStringRes).uppercase(),
-                                color = TraktTheme.colors.primaryButtonContent,
+                                color = TraktTheme.colors.textPrimary,
                                 style = TraktTheme.typography.buttonTertiary,
                             )
                         }
@@ -131,14 +132,10 @@ private fun ActionButtons(
     }
 }
 
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
+@DeviceSheetPreview
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         SortSelectionView(
             selectedType = SortType.Runtime,
             selectedOrder = SortOrder.Desc,

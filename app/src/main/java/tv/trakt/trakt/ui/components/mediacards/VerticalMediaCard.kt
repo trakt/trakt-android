@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -31,9 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
@@ -57,8 +56,8 @@ import coil3.request.crossfade
 import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.VerticalImageAspectRatio
 
@@ -122,6 +121,11 @@ internal fun VerticalMediaCard(
                     .fillMaxWidth()
                     .aspectRatio(VerticalImageAspectRatio),
                 shape = RoundedCornerShape(corner),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = TraktTheme.colors.shadowDynamicSmall,
+                    pressedElevation = TraktTheme.colors.shadowDynamicSmall,
+                    disabledElevation = TraktTheme.colors.shadowDynamicSmall,
+                ),
                 colors = cardColors(
                     containerColor = TraktTheme.colors.placeholderContainer,
                 ),
@@ -186,25 +190,6 @@ internal fun VerticalMediaCard(
                                     },
                             )
 
-                            if ((imageUrl == null || isError) && title.isNotBlank()) {
-                                Box(
-                                    modifier = Modifier
-                                        .align(Alignment.BottomCenter)
-                                        .fillMaxWidth()
-                                        .fillMaxHeight(0.33f)
-                                        .drawWithCache {
-                                            onDrawBehind {
-                                                drawRect(
-                                                    brush = Brush.verticalGradient(
-                                                        0f to Color.Transparent,
-                                                        1f to Color(0xFA212427),
-                                                    ),
-                                                )
-                                            }
-                                        },
-                                )
-                            }
-
                             Text(
                                 text = title.uppercase(),
                                 style = TraktTheme.typography.buttonTertiary,
@@ -222,7 +207,10 @@ internal fun VerticalMediaCard(
                             Icon(
                                 painter = painterResource(R.drawable.ic_more_vertical),
                                 contentDescription = null,
-                                tint = Color.White,
+                                tint = when {
+                                    imageUrl == null || isError -> TraktTheme.colors.textPrimary
+                                    else -> TraktTheme.colors.textPrimaryOnAccent
+                                },
                                 modifier = Modifier
                                     .padding(
                                         horizontal = 5.dp,
@@ -339,33 +327,12 @@ private fun PosterPreview() {
 @Preview
 @Composable
 private fun PosterPreviewPlaceholder() {
-    TraktTheme {
+    TraktThemeLightDark {
         VerticalMediaCard(
             title = "Lorem",
             imageUrl = null,
             modifier = Modifier
                 .padding(16.dp),
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun PosterPreviewChipPlaceholder() {
-    TraktTheme {
-        VerticalMediaCard(
-            title = "Placeholder",
-            imageUrl = null,
-            watchlist = true,
-            watching = true,
-            modifier = Modifier
-                .padding(16.dp),
-            chipContent = {
-                InfoChip(
-                    text = "Test",
-                    iconPainter = painterResource(R.drawable.ic_clock),
-                )
-            },
         )
     }
 }

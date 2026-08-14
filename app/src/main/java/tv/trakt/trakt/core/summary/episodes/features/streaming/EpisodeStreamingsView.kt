@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
@@ -144,6 +145,8 @@ private fun EpisodeStreamingsContent(
                         ContentLoading(
                             visible = loading.isLoading,
                             contentPadding = contentPadding,
+                            modifier = Modifier
+                                .padding(bottom = TraktTheme.spacing.shadowClipSpace),
                         )
                     }
 
@@ -151,12 +154,16 @@ private fun EpisodeStreamingsContent(
                         if (state.items?.streamings?.isEmpty() == true) {
                             ContentEmpty(
                                 contentPadding = headerPadding,
+                                modifier = Modifier
+                                    .padding(bottom = TraktTheme.spacing.shadowClipSpace),
                             )
                         } else {
                             ContentList(
                                 listItems = (state.items?.streamings ?: emptyList()).toImmutableList(),
                                 contentPadding = contentPadding,
                                 onClick = onClick,
+                                modifier = Modifier
+                                    .padding(bottom = TraktTheme.spacing.shadowClipSpace),
                             )
                         }
                     }
@@ -168,6 +175,7 @@ private fun EpisodeStreamingsContent(
 
 @Composable
 private fun ContentList(
+    modifier: Modifier = Modifier,
     listItems: ImmutableList<Pair<StreamingService, StreamingType>>,
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
@@ -175,10 +183,10 @@ private fun ContentList(
 ) {
     LazyRow(
         state = listState,
-        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
         verticalAlignment = CenterVertically,
         contentPadding = contentPadding,
+        modifier = modifier.fillMaxWidth(),
     ) {
         items(
             items = listItems,
@@ -195,6 +203,7 @@ private fun ContentList(
 
 @Composable
 private fun ContentLoading(
+    modifier: Modifier = Modifier,
     visible: Boolean = true,
     contentPadding: PaddingValues,
 ) {
@@ -202,7 +211,7 @@ private fun ContentLoading(
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
         contentPadding = contentPadding,
         userScrollEnabled = false,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .alpha(if (visible) 1F else 0F),
     ) {
@@ -213,12 +222,19 @@ private fun ContentLoading(
 }
 
 @Composable
-private fun ContentEmpty(contentPadding: PaddingValues) {
+private fun ContentEmpty(
+    contentPadding: PaddingValues,
+    modifier: Modifier = Modifier,
+) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(86.dp)
             .padding(contentPadding)
+            .shadow(
+                elevation = TraktTheme.colors.shadowDynamicDefault,
+                shape = DefaultCardShape,
+            )
             .background(TraktTheme.colors.commentContainer, DefaultCardShape)
             .padding(18.dp),
         contentAlignment = Alignment.Center,

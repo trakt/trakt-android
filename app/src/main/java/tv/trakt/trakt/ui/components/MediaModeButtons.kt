@@ -69,11 +69,11 @@ internal fun MediaModeButtons(
                         containerColor = Color.Transparent,
                         contentColor = TraktTheme.colors.textPrimary,
                         checkedContainerColor = TraktTheme.colors.accent,
-                        checkedContentColor = TraktTheme.colors.textPrimary,
+                        checkedContentColor = TraktTheme.colors.textPrimaryOnAccent,
                     ),
                     border = when {
                         selectedMode == option -> BorderStroke(
-                            width = 0.dp,
+                            width = 1.dp,
                             color = Color.Transparent,
                         )
                         else -> BorderStroke(
@@ -107,7 +107,7 @@ internal fun MediaModeButtons(
                     ) {
                         Text(
                             text = stringResource(option.displayRes),
-                            color = TraktTheme.colors.textPrimary,
+                            color = TraktTheme.colors.textPrimaryOnAccent,
                             style = TraktTheme.typography.buttonTertiary,
                             modifier = Modifier.padding(start = 5.dp),
                         )
