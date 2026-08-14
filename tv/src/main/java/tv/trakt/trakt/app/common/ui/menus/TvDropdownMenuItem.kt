@@ -79,9 +79,7 @@ internal fun TvDropdownMenuItem(
                 )
             }
         },
-        colors = MenuDefaults.selectableItemColors(
-            containerColor = Color.Transparent,
-        ),
+        colors = MenuDefaults.itemColors(),
         contentPadding = PaddingValues.Zero,
         onClick = onClick,
         enabled = enabled,
