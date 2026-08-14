@@ -32,6 +32,7 @@ internal class StreaksWidgetUpdater(
 
     fun refreshInBackground() {
         scope.launch {
+            // Give a moment to register a just-posted event before the streak is recomputed.
             delay(3.seconds)
             refresh()
         }

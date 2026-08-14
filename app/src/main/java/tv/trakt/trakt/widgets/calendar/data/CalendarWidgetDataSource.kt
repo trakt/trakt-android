@@ -78,6 +78,7 @@ internal class CalendarWidgetDataSource(
                     day = LocalDate.now(),
                     filters = GlobalFilter.Default,
                     type = ReleaseType.All,
+                    skipProgress = true,
                 )
             }.getOrElse { error ->
                 Timber.w(error, "Failed to load Calendar widget items")

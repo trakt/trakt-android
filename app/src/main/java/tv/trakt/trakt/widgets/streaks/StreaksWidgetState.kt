@@ -1,8 +1,10 @@
 package tv.trakt.trakt.widgets.streaks
 
+import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
+@Immutable
 internal data class StreaksWidgetState(
     val streakDays: Int = 0,
     val week: ImmutableList<StreaksWidgetDay> = persistentListOf(),
@@ -10,6 +12,7 @@ internal data class StreaksWidgetState(
     val error: Boolean = false,
 )
 
+@Immutable
 internal data class StreaksWidgetDay(
     val active: Boolean,
     val today: Boolean,

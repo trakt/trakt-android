@@ -85,6 +85,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.model.MediaType.Episode
 import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.WhatsNew
@@ -698,7 +699,14 @@ private fun handleWidgetIntent(
 
     intent.removeExtra(INTENT_WIDGET_TARGET_EXTRA)
 
-    when (val target = Json.decodeFromString<WidgetIntentTarget>(targetJson)) {
+    val target = runCatching {
+        Json.decodeFromString<WidgetIntentTarget>(targetJson)
+    }.getOrElse { error ->
+        Timber.recordError(error)
+        return
+    }
+
+    when (target) {
         is WidgetIntentTarget.Show -> navController.navigateToShow(
             showId = target.showId.toTraktId(),
         )

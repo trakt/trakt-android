@@ -124,7 +124,7 @@ internal class ContinueWatchingWidgetDataSource(
                 runtimeText = movie.runtime?.inWholeMinutes.durationText(),
                 remainingTimeText = context.getString(
                     R.string.tag_text_remaining_duration,
-                    remainingMinutes()?.durationText() ?: UNKNOWN_TEXT,
+                    remainingMinutes()?.durationText() ?: "N/A",
                 ),
             )
         }
@@ -151,7 +151,6 @@ internal class ContinueWatchingWidgetDataSource(
     }
 
     private companion object {
-        const val UNKNOWN_TEXT = "N/A"
         const val MAX_MOVIE_PROGRESS = 0.99F
 
         // Downscaled deliberately: every bitmap rides along in the RemoteViews parcel.

@@ -14,7 +14,6 @@ import timber.log.Timber
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.widgets.continuewatching.ContinueWatchingWidget
-import tv.trakt.trakt.widgets.continuewatching.MAX_ITEM_COUNT
 import tv.trakt.trakt.widgets.continuewatching.data.ContinueWatchingWidgetDataSource
 import tv.trakt.trakt.widgets.continuewatching.usecases.WidgetAddToHistoryUseCase
 
@@ -44,7 +43,6 @@ internal class MarkWatchedAction :
 
         try {
             addToHistoryUseCase.addToHistory(episodeId = episodeId.toTraktId())
-            dataSource.refresh(context = context, limit = MAX_ITEM_COUNT)
         } catch (error: CancellationException) {
             throw error
         } catch (error: Exception) {
