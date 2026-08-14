@@ -93,6 +93,7 @@ internal val mainModule = module {
             inAppReviewUseCase = get(),
             inAppUpdateManager = get(),
             errorsManager = get(),
+            widgetsUpdates = get(),
             analytics = get(),
         )
     }

@@ -59,6 +59,7 @@ import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState
 import tv.trakt.trakt.core.user.usecases.LoadUserProfileUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
+import tv.trakt.trakt.widgets.data.WidgetsUpdater
 import java.time.Instant
 import java.time.temporal.ChronoUnit.MINUTES
 import kotlin.time.Duration.Companion.milliseconds
@@ -82,6 +83,7 @@ internal class MainViewModel(
     private val inAppReviewUseCase: RequestAppReviewUseCase,
     private val inAppUpdateManager: AppUpdateManager,
     private val errorsManager: GlobalErrorsManager,
+    private val widgetsUpdates: WidgetsUpdater,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = MainState()
@@ -104,8 +106,8 @@ internal class MainViewModel(
         loadWelcome()
         loadWhatsNew()
         loadUser()
-        observeInAppUpdate()
 
+        observeInAppUpdate()
         observeUser()
         observeAuthCode()
         observeCheckIn()
@@ -249,6 +251,10 @@ internal class MainViewModel(
         }
     }
 
+    private fun loadWidgets() {
+        widgetsUpdates.refreshInBackground()
+    }
+
     fun loadData() {
         if (lastLoadTime != null && nowUtcInstant().minus(1, MINUTES) < lastLoadTime) {
             Timber.d("loadData(): skipping...")
@@ -277,6 +283,7 @@ internal class MainViewModel(
                 }
 
                 loadRatePrompt()
+                loadWidgets()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)

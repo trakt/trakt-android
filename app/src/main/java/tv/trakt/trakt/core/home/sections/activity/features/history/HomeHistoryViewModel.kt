@@ -50,7 +50,7 @@ import tv.trakt.trakt.core.home.HomeConfig.HOME_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.activity.features.all.data.local.AllActivityLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.usecases.GetPersonalActivityUseCase
-import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
+import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates.Source.POST_RATING
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
@@ -64,11 +64,11 @@ import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 import tv.trakt.trakt.core.user.usecases.ratings.LoadUserRatingsUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class HomeHistoryViewModel(
     private val getPersonalActivityUseCase: GetPersonalActivityUseCase,
     private val userRatingsUseCase: LoadUserRatingsUseCase,
-    private val homeUpNextSource: HomeUpNextLocalDataSource,
     private val allActivitySource: AllActivityLocalDataSource,
     private val showLocalDataSource: ShowLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
@@ -79,6 +79,7 @@ internal class HomeHistoryViewModel(
     private val episodeUpdates: EpisodeDetailsUpdates,
     private val ratingsUpdates: RatingsUpdates,
     private val checkInUpdates: CheckInUpdates,
+    private val upNextUpdates: UpNextUpdates,
     private val sessionManager: SessionManager,
     private val filterManager: GlobalFilterManager,
     private val collapsingManager: CollapsingManager,
@@ -127,7 +128,7 @@ internal class HomeHistoryViewModel(
             sessionManager.observeProfile()
                 .drop(1)
                 .distinctUntilChanged()
-                .debounce(200)
+                .debounce(200.milliseconds)
                 .collect { user ->
                     userState.update { user }
                     loadData()
@@ -137,7 +138,11 @@ internal class HomeHistoryViewModel(
 
     private fun observeUpdates() {
         merge(
-            homeUpNextSource.observeUpdates(),
+            upNextUpdates.observeUpdates(
+                UpNextUpdates.Source.Default,
+                UpNextUpdates.Source.Home,
+                UpNextUpdates.Source.Widget,
+            ),
             watchlistUpdates.observeUpdates(Default),
             watchlistUpdates.observeUpdates(AllWatchlist),
             allActivitySource.observeUpdates(),
@@ -153,7 +158,7 @@ internal class HomeHistoryViewModel(
             checkInUpdates.observeUpdates(),
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach { loadData(ignoreErrors = true) }
             .launchIn(viewModelScope)
     }
@@ -163,7 +168,7 @@ internal class HomeHistoryViewModel(
             ratingsUpdates.observeUpdates(POST_RATING),
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 loadUserRatingData(ignoreErrors = true)
             }.launchIn(viewModelScope)

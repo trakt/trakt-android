@@ -20,6 +20,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
+import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates.Source.Default
 import tv.trakt.trakt.core.home.sections.upnext.usecases.DropPlaybackUseCase
 import tv.trakt.trakt.core.sync.usecases.UpdateShowHistoryUseCase
 
@@ -54,8 +55,7 @@ internal class UpNextItemContextViewModel(
                     notify = true,
                 )
 
-                upNextLocalDataSource.notifyUpdate()
-                upNextUpdates.notifyUpdate()
+                upNextUpdates.notifyUpdate(Default)
 
                 loadUserShowsProgress()
             } catch (error: Exception) {
@@ -81,8 +81,7 @@ internal class UpNextItemContextViewModel(
                     ids = listOf(movieId),
                 )
 
-                upNextLocalDataSource.notifyUpdate()
-                upNextUpdates.notifyUpdate()
+                upNextUpdates.notifyUpdate(Default)
 
                 loadUserMoviesProgress()
             } catch (error: Exception) {

@@ -1,3 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="page_title_widget_background">Background</string>
+  <string name="text_info_widget_background">Set background transparency level.</string>
+  <string name="text_settings_background_none">None</string>
+  <string name="text_settings_background_translucent">Translucent</string>
+  <string name="text_settings_background_solid">Solid</string>
+  <string name="text_settings_widget_show_title">Header</string>
+  <string name="text_settings_widget_show_title_description">Enable/disable header bar visible at the top.</string>
 </resources>

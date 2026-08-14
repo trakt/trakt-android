@@ -4,7 +4,6 @@ import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.core.home.model.UpNextItem
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 
 @Immutable
@@ -13,7 +12,6 @@ internal data class HomeUpNextState(
     val loading: LoadingState = LoadingState.Idle,
     val collapsed: Boolean? = null,
     val filter: GlobalFilter? = null,
-    val info: StringResource? = null,
     val error: Exception? = null,
 ) {
     @Immutable

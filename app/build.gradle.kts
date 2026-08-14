@@ -123,6 +123,10 @@ dependencies {
     implementation(libs.androidx.lifecycle.process)
     implementation(libs.androidx.app.review)
     implementation(libs.androidx.app.update)
+    implementation(libs.androidx.glance.appwidget)
+    implementation(libs.androidx.glance.appwidget.preview)
+    implementation(libs.androidx.glance.material3)
+    implementation(libs.androidx.glance.preview)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)

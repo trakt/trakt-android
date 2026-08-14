@@ -4,7 +4,13 @@ import kotlinx.coroutines.flow.Flow
 import java.time.Instant
 
 internal interface UpNextUpdates {
-    fun notifyUpdate()
+    fun notifyUpdate(source: Source)
 
-    fun observeUpdates(): Flow<Instant?>
+    fun observeUpdates(vararg sources: Source): Flow<Instant?>
+
+    enum class Source {
+        Default,
+        Home,
+        Widget,
+    }
 }

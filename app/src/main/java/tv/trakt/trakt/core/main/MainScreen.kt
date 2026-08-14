@@ -85,15 +85,18 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.model.MediaType.Episode
 import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.WhatsNew
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.billing.navigation.navigateToBilling
+import tv.trakt.trakt.core.calendar.navigation.navigateToCalendar
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveEpisode
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveMovie
 import tv.trakt.trakt.core.discover.navigation.navigateToDiscover
 import tv.trakt.trakt.core.home.navigation.HomeDestination
+import tv.trakt.trakt.core.home.sections.upnext.features.all.navigation.navigateToAllUpNext
 import tv.trakt.trakt.core.lists.navigation.ListsDestination
 import tv.trakt.trakt.core.lists.navigation.navigateToLists
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.navigateToWatchlist
@@ -115,6 +118,7 @@ import tv.trakt.trakt.core.search.navigation.SearchDestination
 import tv.trakt.trakt.core.search.navigation.navigateToSearch
 import tv.trakt.trakt.core.summary.episodes.navigation.navigateToEpisode
 import tv.trakt.trakt.core.summary.movies.navigation.navigateToMovie
+import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
 import tv.trakt.trakt.core.trivia.navigation.navigateToTrivia
 import tv.trakt.trakt.core.welcome.WelcomeScreen
 import tv.trakt.trakt.core.welcome.onboarding.OnboardingScreen
@@ -123,6 +127,8 @@ import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.whatsnew.WhatsNewSheet
 import tv.trakt.trakt.ui.snackbar.MainSnackbarHost
 import tv.trakt.trakt.ui.theme.TraktTheme
+import tv.trakt.trakt.widgets.INTENT_WIDGET_TARGET_EXTRA
+import tv.trakt.trakt.widgets.WidgetIntentTarget
 
 private const val IN_APP_UPDATE_REQUEST_CODE = 4001
 private const val IN_APP_UPDATE_STALENESS_DAYS = 7
@@ -219,6 +225,11 @@ internal fun MainScreen(
         )
 
         handleNotificationIntent(
+            intent = newIntent?.value ?: intent,
+            navController = navController,
+        )
+
+        handleWidgetIntent(
             intent = newIntent?.value ?: intent,
             navController = navController,
         )
@@ -670,6 +681,50 @@ private fun handleShortcutIntent(
                 navController.navigateToProfile()
             }
         }
+    }
+}
+
+private fun handleWidgetIntent(
+    intent: Intent?,
+    navController: NavController,
+) {
+    if (intent == null) {
+        return
+    }
+
+    val targetJson = intent.getStringExtra(INTENT_WIDGET_TARGET_EXTRA)
+    if (targetJson.isNullOrBlank()) {
+        return
+    }
+
+    intent.removeExtra(INTENT_WIDGET_TARGET_EXTRA)
+
+    val target = runCatching {
+        Json.decodeFromString<WidgetIntentTarget>(targetJson)
+    }.getOrElse { error ->
+        Timber.recordError(error)
+        return
+    }
+
+    when (target) {
+        is WidgetIntentTarget.Show -> navController.navigateToShow(
+            showId = target.showId.toTraktId(),
+        )
+
+        is WidgetIntentTarget.Episode -> navController.navigateToEpisode(
+            showId = target.showId.toTraktId(),
+            episodeId = target.episodeId.toTraktId(),
+            episodeSeason = target.season,
+            episodeNumber = target.number,
+        )
+
+        is WidgetIntentTarget.Movie -> navController.navigateToMovie(
+            movieId = target.movieId.toTraktId(),
+        )
+
+        is WidgetIntentTarget.Calendar -> navController.navigateToCalendar()
+
+        is WidgetIntentTarget.UpNext -> navController.navigateToAllUpNext()
     }
 }
 

@@ -62,3 +62,16 @@ fun Timber.Forest.recordError(
 
     Timber.d("Recorded error to Crashlytics: $error")
 }
+
+/**
+ * Overloaded function to record a Throwable error to Firebase Crashlytics.
+ * Only records if the Throwable is an Exception.
+ */
+fun Timber.Forest.recordError(
+    error: Throwable,
+    keysValues: CustomKeysAndValues? = null,
+) {
+    if (error is Exception) {
+        recordError(error, keysValues)
+    }
+}

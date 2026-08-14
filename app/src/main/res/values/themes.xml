@@ -1,6 +1,25 @@
 <resources>
-    <!-- Base application theme. -->
-    <style name="Theme.Trakt" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:windowBackground">@color/background</item>
-    </style>
+  <!-- Base application theme. -->
+  <style name="Theme.Trakt" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <item name="android:windowBackground">@color/background</item>
+  </style>
+
+  <!--
+    Overrides the empty placeholder style Glance puts on every LazyColumn's ListView
+    (glance_list.xml in glance-appwidget), hiding the scrollbar and the overscroll glow on the
+    scrollable widgets. Re-check the style name on Glance upgrades.
+  -->
+  <style name="Glance.AppWidget.List" parent="">
+    <item name="android:scrollbars">none</item>
+    <item name="android:overScrollMode">never</item>
+  </style>
+
+  <!-- Widget configuration: the launcher stays visible so edits preview on the real widget. -->
+  <style name="Theme.Trakt.Widget" parent="Theme.MaterialComponents.NoActionBar">
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:windowIsTranslucent">true</item>
+    <item name="android:windowContentOverlay">@null</item>
+    <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+    <item name="android:backgroundDimEnabled">false</item>
+  </style>
 </resources>
