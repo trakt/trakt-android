@@ -252,6 +252,7 @@ private fun PillView(
     isShort: Boolean,
 ) {
     val fill = when {
+        day.today && !day.active -> backgroundPrimary
         day.future -> backgroundPrimary
         day.active -> WidgetColors.streakPillActive
         else -> WidgetColors.streakPillMissed
@@ -264,7 +265,7 @@ private fun PillView(
     Box(
         contentAlignment = Alignment.Center,
         modifier = GlanceModifier
-            .width(PILL_WIDTH * 1.4F),
+            .width(PILL_WIDTH * 1.45F),
     ) {
         if (day.today || day.future) {
             val stroke = when {
@@ -314,7 +315,7 @@ private val previewState = StreaksWidgetState(
         StreaksWidgetDay(active = true, today = false, future = false),
         StreaksWidgetDay(active = true, today = false, future = false),
         StreaksWidgetDay(active = false, today = false, future = false),
-        StreaksWidgetDay(active = true, today = true, future = false),
+        StreaksWidgetDay(active = false, today = true, future = false),
         StreaksWidgetDay(active = false, today = false, future = true),
         StreaksWidgetDay(active = false, today = false, future = true),
         StreaksWidgetDay(active = false, today = false, future = true),
