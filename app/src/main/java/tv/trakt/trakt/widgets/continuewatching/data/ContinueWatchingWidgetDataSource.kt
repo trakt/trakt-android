@@ -102,7 +102,7 @@ internal class ContinueWatchingWidgetDataSource(
                 imageTarget = progress.nextEpisode.episodeTarget(showId = show.ids.trakt),
                 titleTarget = WidgetIntentTarget.Show(showId = show.ids.trakt.value),
                 episodeId = progress.nextEpisode?.ids?.trakt?.value,
-                episodeText = progress.nextEpisode?.seasonEpisodeText(context) ?: UNKNOWN_TEXT,
+                episodeText = progress.nextEpisode?.seasonEpisodeText(context) ?: "N/A",
                 runtimeText = (
                     progress.nextEpisode?.runtime?.inWholeMinutes
                         ?: show.runtime?.inWholeMinutes
