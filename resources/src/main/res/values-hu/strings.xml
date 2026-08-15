@@ -1201,6 +1201,7 @@
   <string name="page_title_watchlist">Megnézendők</string>
   <string name="page_title_welcome">Üdvözöljük</string>
   <string name="page_title_where_to_watch">Hol nézhető</string>
+  <string name="page_title_widget_background">Háttér</string>
   <string name="page_title_year_in_review">%s év áttekintése</string>
   <string name="page_title_year_to_date">Éves összesítés</string>
   <string name="preview_feature_description_edit_mode">Engedélyezze a vezérlőket a konfigurálható szakaszok elrejtéséhez vagy megjelenítéséhez az alkalmazásban.</string>
@@ -1390,6 +1391,8 @@
   <string name="text_export_status_complete">Exportálás befejeződött.</string>
   <string name="text_export_status_fail">Az exportálás sikertelen. További részletekért ellenőrizd a böngésződ konzolját.</string>
   <string name="text_export_status_fetching"> %s lekérése…</string>
+  <string name="text_export_status_partial_one">Az exportálás befejeződött, de 1 a %d szakaszból sikertelen volt. Lásd az _errors.json fájlt a zipben.</string>
+  <string name="text_export_status_partial_other">Az exportálás befejeződött, de %1$d a %2$d szakaszból sikertelen volt. Lásd az _errors.json fájlt a zipben.</string>
   <string name="text_export_status_zipping">Fájlok tömörítése…</string>
   <string name="text_exporting">Exportálás… %s</string>
   <string name="text_favorites_limit_reached">Legfeljebb %s szolgáltatást választhat ki</string>
@@ -1434,6 +1437,7 @@
   <string name="text_info_update_downloaded">A frissítés telepítésre kész.</string>
   <string name="text_info_watchlist_added">Hozzáadva a megnézendőkhöz.</string>
   <string name="text_info_watchlist_removed">Eltávolítva a megnézendőkből.</string>
+  <string name="text_info_widget_background">Állítsa be a háttér átlátszósági szintjét.</string>
   <string name="text_info_younify_service_linked">A streaming szolgáltatás összekapcsolva.</string>
   <string name="text_info_younify_service_unlinked">A streaming szolgáltatás leválasztva.</string>
   <string name="text_landing_discover">filmeket és sorozatokat, amiket imádni fogsz, és tudd meg, hogy hol streamelhetők most.</string>
@@ -1555,6 +1559,9 @@
   <string name="text_services_selected">%1$s / %2$s kiválasztva · %3$s</string>
   <string name="text_settings_adjust_delivery">Értesítési idő</string>
   <string name="text_settings_adjust_delivery_description">Válaszd ki, mikor szeretnél értesítést kapni.</string>
+  <string name="text_settings_background_none">Nincs</string>
+  <string name="text_settings_background_solid">Egyszínű</string>
+  <string name="text_settings_background_translucent">Áttetsző</string>
   <string name="text_settings_clear_cover">Törölje az aktuális borítóképet, és térjen vissza az alapértelmezettre.</string>
   <string name="text_settings_enable_multiple_plays">Többszörös lejátszás</string>
   <string name="text_settings_enable_multiple_plays_description">Engedélyezz több mint 1 lejátszást filmekhez és epizódokhoz.</string>
@@ -1567,6 +1574,8 @@
   <string name="text_settings_show_rating_prompt">Értékelési felszólítások</string>
   <string name="text_settings_show_rating_prompt_description">Kérjen fel az értékelésre filmek és epizódok megnézése után.</string>
   <string name="text_settings_translations">Segíts lefordítani az alkalmazást, és javítsd ki a hibákat a nyelveden.</string>
+  <string name="text_settings_widget_show_title">Fejléc</string>
+  <string name="text_settings_widget_show_title_description">Fejléc engedélyezése/letiltása, amely felül látható.</string>
   <string name="text_share_episode">Most néztem meg: %1$s S%2$dE%3$d - %4$s! 🔥</string>
   <string name="text_share_list">Nézd meg ezt a(z) \"%s\" listát a Trakt-on! 📋</string>
   <string name="text_share_movie">Most fedeztem fel: \"%s\" - ezt látnod kell! 🎬</string>

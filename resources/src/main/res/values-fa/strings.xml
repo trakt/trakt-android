@@ -1201,6 +1201,7 @@
   <string name="page_title_watchlist">لیست تماشا</string>
   <string name="page_title_welcome">خوش آمدید</string>
   <string name="page_title_where_to_watch">کجا تماشا کنیم</string>
+  <string name="page_title_widget_background">پس‌زمینه</string>
   <string name="page_title_year_in_review">مرور سال %s</string>
   <string name="page_title_year_to_date">سال تا به امروز</string>
   <string name="preview_feature_description_edit_mode">کنترل‌هایی را برای پنهان کردن یا نمایش بخش‌های قابل تنظیم در سراسر برنامه فعال کنید.</string>
@@ -1390,6 +1391,8 @@
   <string name="text_export_status_complete">خروجی کامل شد.</string>
   <string name="text_export_status_fail">خروجی ناموفق بود. برای جزئیات بیشتر کنسول مرورگر خود را بررسی کنید.</string>
   <string name="text_export_status_fetching">در حال دریافت %s…</string>
+  <string name="text_export_status_partial_one">خروجی کامل شد، اما ۱ از %d بخش با خطا مواجه شد. _errors.json را در فایل فشرده (zip) ببینید.</string>
+  <string name="text_export_status_partial_other">خروجی کامل شد، اما %1$d از %2$d بخش با خطا مواجه شد. _errors.json را در فایل فشرده (zip) ببینید.</string>
   <string name="text_export_status_zipping">در حال فشرده‌سازی فایل‌ها…</string>
   <string name="text_exporting">در حال خروجی گرفتن… %s</string>
   <string name="text_favorites_limit_reached">شما می‌توانید تا %s سرویس را انتخاب کنید</string>
@@ -1434,6 +1437,7 @@
   <string name="text_info_update_downloaded">به‌روزرسانی آماده نصب است.</string>
   <string name="text_info_watchlist_added">به لیست تماشا اضافه شد.</string>
   <string name="text_info_watchlist_removed">از لیست تماشا حذف شد.</string>
+  <string name="text_info_widget_background">سطح شفافیت پس‌زمینه را تنظیم کنید.</string>
   <string name="text_info_younify_service_linked">سرویس پخش پیوند داده شد.</string>
   <string name="text_info_younify_service_unlinked">سرویس پخش قطع پیوند شد.</string>
   <string name="text_landing_discover">فیلم‌ها و برنامه‌هایی که دوست خواهید داشت و همین حالا در کجا پخش می‌شوند.</string>
@@ -1555,6 +1559,9 @@
   <string name="text_services_selected">%1$s / %2$s انتخاب شده · %3$s</string>
   <string name="text_settings_adjust_delivery">زمان اعلان</string>
   <string name="text_settings_adjust_delivery_description">انتخاب کنید چه زمانی مطلع شوید.</string>
+  <string name="text_settings_background_none">هیچ‌کدام</string>
+  <string name="text_settings_background_solid">مات</string>
+  <string name="text_settings_background_translucent">شفاف</string>
   <string name="text_settings_clear_cover">پاک کردن تصویر جلد فعلی و بازگشت به حالت پیش‌فرض.</string>
   <string name="text_settings_enable_multiple_plays">پخش‌های متعدد</string>
   <string name="text_settings_enable_multiple_plays_description">اجازه دهید فیلم‌ها و قسمت‌ها بیش از ۱ بار پخش شوند.</string>
@@ -1567,6 +1574,8 @@
   <string name="text_settings_show_rating_prompt">درخواست‌های امتیاز</string>
   <string name="text_settings_show_rating_prompt_description">از شما خواسته شود تا پس از تماشا به فیلم‌ها و قسمت‌ها امتیاز دهید.</string>
   <string name="text_settings_translations">به ترجمه برنامه و رفع اشتباهات برای زبان خود کمک کنید.</string>
+  <string name="text_settings_widget_show_title">عنوان</string>
+  <string name="text_settings_widget_show_title_description">نوار عنوان قابل مشاهده در بالا را فعال/غیرفعال کنید.</string>
   <string name="text_share_episode">تازه %1$s فصل %2$d اپیزود %3$d - %4$s را تماشا کردم! 🔥</string>
   <string name="text_share_list">این لیست \"%s\" را در Trakt ببینید! 📋</string>
   <string name="text_share_movie">تازگی \"%s\" را کشف کردم - باید این را ببینید! 🎬</string>

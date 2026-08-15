@@ -1201,6 +1201,7 @@
   <string name="page_title_watchlist">İzleme Listesi</string>
   <string name="page_title_welcome">Hoş Geldiniz</string>
   <string name="page_title_where_to_watch">Nereden İzlenir</string>
+  <string name="page_title_widget_background">Arka Plan</string>
   <string name="page_title_year_in_review">%s Yılına Genel Bakış</string>
   <string name="page_title_year_to_date">Yıl Başından Bugüne</string>
   <string name="preview_feature_description_edit_mode">Uygulama genelinde yapılandırılabilir bölümleri gizleme veya gösterme kontrollerini etkinleştirin.</string>
@@ -1390,6 +1391,8 @@
   <string name="text_export_status_complete">Dışa aktarma tamamlandı.</string>
   <string name="text_export_status_fail">Dışa aktarma başarısız oldu. Daha fazla ayrıntı için tarayıcı konsolunuzu kontrol edin.</string>
   <string name="text_export_status_fetching">%s getiriliyor…</string>
+  <string name="text_export_status_partial_one">Dışa aktarma tamamlandı, ancak %d bölümden 1\'i başarısız oldu. Zip dosyasındaki _errors.json dosyasına bakın.</string>
+  <string name="text_export_status_partial_other">Dışa aktarma tamamlandı, ancak %1$d bölümden %2$d\'i başarısız oldu. Zip dosyasındaki _errors.json dosyasına bakın.</string>
   <string name="text_export_status_zipping">Dosyalar sıkıştırılıyor…</string>
   <string name="text_exporting">Dışa aktarılıyor… %s</string>
   <string name="text_favorites_limit_reached">En fazla %s platform seçebilirsiniz</string>
@@ -1434,6 +1437,7 @@
   <string name="text_info_update_downloaded">Güncelleme yüklenmeye hazır.</string>
   <string name="text_info_watchlist_added">İzleme listesine eklendi.</string>
   <string name="text_info_watchlist_removed">İzleme listesinden kaldırıldı.</string>
+  <string name="text_info_widget_background">Arka plan şeffaflık seviyesini ayarlayın.</string>
   <string name="text_info_younify_service_linked">Yayın hizmeti bağlandı.</string>
   <string name="text_info_younify_service_unlinked">Yayın hizmeti bağlantısı kesildi.</string>
   <string name="text_landing_discover">Seveceğiniz filmleri ve dizileri, şu anda nerede yayınlandıklarını keşfedin.</string>
@@ -1555,6 +1559,9 @@
   <string name="text_services_selected">%1$s / %2$s seçili · %3$s</string>
   <string name="text_settings_adjust_delivery">Bildirim Zamanı</string>
   <string name="text_settings_adjust_delivery_description">Ne zaman bildirim almak istediğinizi seçin.</string>
+  <string name="text_settings_background_none">Yok</string>
+  <string name="text_settings_background_solid">Dolu</string>
+  <string name="text_settings_background_translucent">Yarı Saydam</string>
   <string name="text_settings_clear_cover">Mevcut kapak resmini temizle ve varsayılana dön.</string>
   <string name="text_settings_enable_multiple_plays">Birden Fazla Oynatma</string>
   <string name="text_settings_enable_multiple_plays_description">Filmler ve bölümler için 1\'den fazla oynatmaya izin ver.</string>
@@ -1567,6 +1574,8 @@
   <string name="text_settings_show_rating_prompt">Derecelendirme İstemleri</string>
   <string name="text_settings_show_rating_prompt_description">İzledikten sonra filmleri ve bölümleri derecelendirmeniz istenir.</string>
   <string name="text_settings_translations">Uygulamayı çevirmeye ve dilinizdeki hataları düzeltmeye yardımcı olun.</string>
+  <string name="text_settings_widget_show_title">Başlık</string>
+  <string name="text_settings_widget_show_title_description">Üstteki başlık çubuğunu etkinleştirin/devre dışı bırakın.</string>
   <string name="text_share_episode">%1$s S%2$dE%3$d - %4$s az önce izledim! 🔥</string>
   <string name="text_share_list">Trakt\'taki bu \"%s\" listesine göz atın! 📋</string>
   <string name="text_share_movie">Yeni keşfettim: \"%s\" - bunu görmelisin! 🎬</string>

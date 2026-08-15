@@ -1201,6 +1201,7 @@
   <string name="page_title_watchlist">Daftar Tontonan</string>
   <string name="page_title_welcome">Selamat Datang</string>
   <string name="page_title_where_to_watch">Tempat Menonton</string>
+  <string name="page_title_widget_background">Latar Belakang</string>
   <string name="page_title_year_in_review">%s dalam tinjauan</string>
   <string name="page_title_year_to_date">Tahun Berjalan</string>
   <string name="preview_feature_description_edit_mode">Aktifkan kontrol untuk menyembunyikan atau menampilkan bagian yang dapat dikonfigurasi di seluruh aplikasi.</string>
@@ -1390,6 +1391,8 @@
   <string name="text_export_status_complete">Ekspor selesai.</string>
   <string name="text_export_status_fail">Ekspor gagal. Periksa konsol browser Anda untuk detail lebih lanjut.</string>
   <string name="text_export_status_fetching">Mengambil %s…</string>
+  <string name="text_export_status_partial_one">Ekspor selesai, tetapi 1 dari %d bagian gagal. Lihat _errors.json di dalam zip.</string>
+  <string name="text_export_status_partial_other">Ekspor selesai, tetapi %1$d dari %2$d bagian gagal. Lihat _errors.json di dalam zip.</string>
   <string name="text_export_status_zipping">Mengompres file…</string>
   <string name="text_exporting">Mengekspor… %s</string>
   <string name="text_favorites_limit_reached">Anda dapat memilih hingga %s layanan</string>
@@ -1434,6 +1437,7 @@
   <string name="text_info_update_downloaded">Pembaruan siap dipasang.</string>
   <string name="text_info_watchlist_added">Ditambahkan ke daftar tontonan.</string>
   <string name="text_info_watchlist_removed">Dihapus dari daftar tontonan.</string>
+  <string name="text_info_widget_background">Atur tingkat transparansi latar belakang.</string>
   <string name="text_info_younify_service_linked">Layanan streaming telah ditautkan.</string>
   <string name="text_info_younify_service_unlinked">Layanan streaming telah dilepas tautan.</string>
   <string name="text_landing_discover">film dan acara yang akan Anda sukai dan di mana mereka sedang streaming saat ini.</string>
@@ -1555,6 +1559,9 @@
   <string name="text_services_selected">%1$s / %2$s dipilih · %3$s</string>
   <string name="text_settings_adjust_delivery">Waktu Notifikasi</string>
   <string name="text_settings_adjust_delivery_description">Pilih kapan akan diberitahu.</string>
+  <string name="text_settings_background_none">Tidak Ada</string>
+  <string name="text_settings_background_solid">Padat</string>
+  <string name="text_settings_background_translucent">Transparan</string>
   <string name="text_settings_clear_cover">Hapus gambar sampul saat ini dan kembali ke default.</string>
   <string name="text_settings_enable_multiple_plays">Beberapa Kali Tonton</string>
   <string name="text_settings_enable_multiple_plays_description">Izinkan lebih dari 1 kali tonton untuk film dan episode.</string>
@@ -1567,6 +1574,8 @@
   <string name="text_settings_show_rating_prompt">Prompt Peringkat</string>
   <string name="text_settings_show_rating_prompt_description">Diminta untuk menilai film dan episode setelah menonton.</string>
   <string name="text_settings_translations">Bantu terjemahkan aplikasi dan perbaiki kesalahan untuk bahasa Anda.</string>
+  <string name="text_settings_widget_show_title">Header</string>
+  <string name="text_settings_widget_show_title_description">Mengaktifkan/menonaktifkan bilah header yang terlihat di bagian atas.</string>
   <string name="text_share_episode">Baru saja menonton %1$s M%2$dE%3$d - %4$s! 🔥</string>
   <string name="text_share_list">Lihat daftar \"%s\" ini di Trakt! 📋</string>
   <string name="text_share_movie">Baru saja menemukan \"%s\" - Anda harus melihat ini! 🎬</string>

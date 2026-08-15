@@ -1201,6 +1201,7 @@
   <string name="page_title_watchlist">Λίστα παρακολούθησης</string>
   <string name="page_title_welcome">Καλώς ορίσατε</string>
   <string name="page_title_where_to_watch">Πού να παρακολουθήσετε</string>
+  <string name="page_title_widget_background">Φόντο</string>
   <string name="page_title_year_in_review">Ανασκόπηση του %s</string>
   <string name="page_title_year_to_date">Έτος μέχρι σήμερα</string>
   <string name="preview_feature_description_edit_mode">Ενεργοποιήστε τα χειριστήρια για απόκρυψη ή εμφάνιση διαμορφώσιμων ενοτήτων σε όλη την εφαρμογή.</string>
@@ -1390,6 +1391,8 @@
   <string name="text_export_status_complete">Η εξαγωγή ολοκληρώθηκε.</string>
   <string name="text_export_status_fail">Η εξαγωγή απέτυχε. Ελέγξτε την κονσόλα του προγράμματος περιήγησης για περισσότερες λεπτομέρειες.</string>
   <string name="text_export_status_fetching">Λήψη %s…</string>
+  <string name="text_export_status_partial_one">Η εξαγωγή ολοκληρώθηκε, αλλά 1 από %d ενότητες απέτυχαν. Δείτε το _errors.json στο zip.</string>
+  <string name="text_export_status_partial_other">Η εξαγωγή ολοκληρώθηκε, αλλά %1$d από %2$d ενότητες απέτυχαν. Δείτε το _errors.json στο zip.</string>
   <string name="text_export_status_zipping">Συμπίεση αρχείων…</string>
   <string name="text_exporting">Εξαγωγή… %s</string>
   <string name="text_favorites_limit_reached">Μπορείτε να επιλέξετε έως και %s υπηρεσίες</string>
@@ -1434,6 +1437,7 @@
   <string name="text_info_update_downloaded">Η ενημέρωση είναι έτοιμη για εγκατάσταση.</string>
   <string name="text_info_watchlist_added">Προστέθηκε στη λίστα παρακολούθησης.</string>
   <string name="text_info_watchlist_removed">Αφαιρέθηκε από τη λίστα παρακολούθησης.</string>
+  <string name="text_info_widget_background">Ορίστε το επίπεδο διαφάνειας του φόντου.</string>
   <string name="text_info_younify_service_linked">Η υπηρεσία ροής έχει συνδεθεί.</string>
   <string name="text_info_younify_service_unlinked">Η υπηρεσία ροής έχει αποσυνδεθεί.</string>
   <string name="text_landing_discover">ταινίες και σειρές που θα λατρέψετε και πού προβάλλονται αυτή τη στιγμή.</string>
@@ -1555,6 +1559,9 @@
   <string name="text_services_selected">%1$s / %2$s επιλεγμένα · %3$s</string>
   <string name="text_settings_adjust_delivery">Ώρα ειδοποίησης</string>
   <string name="text_settings_adjust_delivery_description">Επιλέξτε πότε θα ειδοποιηθείτε.</string>
+  <string name="text_settings_background_none">Κανένα</string>
+  <string name="text_settings_background_solid">Αδιαφανές</string>
+  <string name="text_settings_background_translucent">Ημιδιαφανές</string>
   <string name="text_settings_clear_cover">Εκκαθάριση της τρέχουσας εικόνας εξωφύλλου και επιστροφή στην προεπιλογή.</string>
   <string name="text_settings_enable_multiple_plays">Πολλαπλές προβολές</string>
   <string name="text_settings_enable_multiple_plays_description">Να επιτρέπεται περισσότερες από 1 προβολή για ταινίες και επεισόδια.</string>
@@ -1567,6 +1574,8 @@
   <string name="text_settings_show_rating_prompt">Προτροπές Αξιολόγησης</string>
   <string name="text_settings_show_rating_prompt_description">Να σας ζητείται να αξιολογείτε ταινίες και επεισόδια μετά την παρακολούθηση.</string>
   <string name="text_settings_translations">Βοηθήστε στη μετάφραση της εφαρμογής και διορθώστε λάθη για τη γλώσσα σας.</string>
+  <string name="text_settings_widget_show_title">Κεφαλίδα</string>
+  <string name="text_settings_widget_show_title_description">Ενεργοποίηση/απενεργοποίηση της κεφαλίδας που είναι ορατή στην κορυφή.</string>
   <string name="text_share_episode">Μόλις παρακολούθησα %1$s S%2$dE%3$d - %4$s! 🔥</string>
   <string name="text_share_list">Δείτε αυτή τη λίστα \"%s\" στο Trakt! 📋</string>
   <string name="text_share_movie">Μόλις ανακάλυψα το \"%s\" - πρέπει να το δείτε! 🎬</string>

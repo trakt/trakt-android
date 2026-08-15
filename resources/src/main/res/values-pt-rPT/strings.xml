@@ -1201,6 +1201,7 @@
   <string name="page_title_watchlist">Lista para ver</string>
   <string name="page_title_welcome">Bem-vindo</string>
   <string name="page_title_where_to_watch">Onde ver</string>
+  <string name="page_title_widget_background">Fundo</string>
   <string name="page_title_year_in_review">Resumo de %s</string>
   <string name="page_title_year_to_date">Até agora</string>
   <string name="preview_feature_description_edit_mode">Ativa controlos para mostrar ou ocultar secções configuráveis em toda a app.</string>
@@ -1390,6 +1391,8 @@
   <string name="text_export_status_complete">Exportação concluída.</string>
   <string name="text_export_status_fail">A exportação falhou. Consulta a consola do teu navegador para mais detalhes.</string>
   <string name="text_export_status_fetching">A obter %s…</string>
+  <string name="text_export_status_partial_one">A exportação foi concluída, mas 1 de %d secções falhou. Consulta o ficheiro errors.json no ZIP.</string>
+  <string name="text_export_status_partial_other">A exportação foi concluída, mas %1$d de %2$d secções falharam. Consulta o ficheiro errors.json no ZIP.</string>
   <string name="text_export_status_zipping">A compactar ficheiros…</string>
   <string name="text_exporting">A exportar… %s</string>
   <string name="text_favorites_limit_reached">Podes selecionar até %s serviços</string>
@@ -1434,6 +1437,7 @@
   <string name="text_info_update_downloaded">A atualização está pronta para instalar.</string>
   <string name="text_info_watchlist_added">Adicionado à lista para ver.</string>
   <string name="text_info_watchlist_removed">Removido da lista para ver.</string>
+  <string name="text_info_widget_background">Define o nível de transparência do fundo.</string>
   <string name="text_info_younify_service_linked">O serviço de streaming foi associado.</string>
   <string name="text_info_younify_service_unlinked">O serviço de streaming foi desassociado.</string>
   <string name="text_landing_discover">filmes e séries de que vais gostar e onde os podes ver em streaming neste momento.</string>
@@ -1555,6 +1559,9 @@
   <string name="text_services_selected">%1$s / %2$s selecionados · %3$s</string>
   <string name="text_settings_adjust_delivery">Hora das notificações</string>
   <string name="text_settings_adjust_delivery_description">Escolhe quando queres receber notificações.</string>
+  <string name="text_settings_background_none">Nenhum</string>
+  <string name="text_settings_background_solid">Opaco</string>
+  <string name="text_settings_background_translucent">Translúcido</string>
   <string name="text_settings_clear_cover">Remove a imagem de capa atual e volta à predefinida.</string>
   <string name="text_settings_enable_multiple_plays">Várias visualizações</string>
   <string name="text_settings_enable_multiple_plays_description">Permite registar mais do que uma visualização de filmes e episódios.</string>
@@ -1567,6 +1574,8 @@
   <string name="text_settings_show_rating_prompt">Pedidos de classificação</string>
   <string name="text_settings_show_rating_prompt_description">Recebe pedidos para classificares filmes e episódios depois de os veres.</string>
   <string name="text_settings_translations">Ajuda a traduzir a app e a corrigir erros no teu idioma.</string>
+  <string name="text_settings_widget_show_title">Cabeçalho</string>
+  <string name="text_settings_widget_show_title_description">Ativa/desativa a barra de cabeçalho no topo.</string>
   <string name="text_share_episode">Acabei de ver %1$s T%2$dE%3$d — %4$s! 🔥</string>
   <string name="text_share_list">Vê a lista \"%s\" no Trakt! 📋</string>
   <string name="text_share_movie">Acabei de descobrir \"%s\" — tens de ver isto! 🎬</string>

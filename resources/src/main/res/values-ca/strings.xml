@@ -1201,6 +1201,7 @@
   <string name="page_title_watchlist">Llista de seguiment</string>
   <string name="page_title_welcome">Benvingut</string>
   <string name="page_title_where_to_watch">On veure</string>
+  <string name="page_title_widget_background">Fons</string>
   <string name="page_title_year_in_review">%s en resum</string>
   <string name="page_title_year_to_date">Acumulat de l\'any</string>
   <string name="preview_feature_description_edit_mode">Habilita els controls per amagar o mostrar seccions configurables a tota l\'aplicació.</string>
@@ -1390,6 +1391,8 @@
   <string name="text_export_status_complete">Exportació completada.</string>
   <string name="text_export_status_fail">L\'exportació ha fallat. Revisa la consola del teu navegador per a més detalls.</string>
   <string name="text_export_status_fetching">Cercant %s…</string>
+  <string name="text_export_status_partial_one">Exportació completada, però 1 de %d seccions ha fallat. Consulta _errors.json al fitxer zip.</string>
+  <string name="text_export_status_partial_other">Exportació completada, però %1$d de %2$d seccions han fallat. Consulta _errors.json al fitxer zip.</string>
   <string name="text_export_status_zipping">Comprimint fitxers…</string>
   <string name="text_exporting">Exportant… %s</string>
   <string name="text_favorites_limit_reached">Pots seleccionar fins a %s serveis</string>
@@ -1434,6 +1437,7 @@
   <string name="text_info_update_downloaded">L\'actualització està llesta per instal·lar.</string>
   <string name="text_info_watchlist_added">Afegit a la llista de seguiment.</string>
   <string name="text_info_watchlist_removed">Eliminat de la llista de seguiment.</string>
+  <string name="text_info_widget_background">Estableix el nivell de transparència del fons.</string>
   <string name="text_info_younify_service_linked">El servei de streaming s\'ha vinculat.</string>
   <string name="text_info_younify_service_unlinked">El servei de streaming s\'ha desvinculat.</string>
   <string name="text_landing_discover">pel·lícules i sèries que t\'encantaran i on les pots veure ara mateix.</string>
@@ -1555,6 +1559,9 @@
   <string name="text_services_selected">%1$s / %2$s seleccionats · %3$s</string>
   <string name="text_settings_adjust_delivery">Hora de la notificació</string>
   <string name="text_settings_adjust_delivery_description">Tria quan vols ser notificat.</string>
+  <string name="text_settings_background_none">Cap</string>
+  <string name="text_settings_background_solid">Sòlid</string>
+  <string name="text_settings_background_translucent">Translúcid</string>
   <string name="text_settings_clear_cover">Esborra la imatge de portada actual i torna a la predeterminada.</string>
   <string name="text_settings_enable_multiple_plays">Reproduccions Múltiples</string>
   <string name="text_settings_enable_multiple_plays_description">Permet més d\'1 reproducció per a pel·lícules i episodis.</string>
@@ -1567,6 +1574,8 @@
   <string name="text_settings_show_rating_prompt">Sol·licituds de valoració</string>
   <string name="text_settings_show_rating_prompt_description">Se\'ls sol·licita que valorin pel·lícules i episodis després de veure-les.</string>
   <string name="text_settings_translations">Ajuda a traduir l\'aplicació i a corregir errors per al teu idioma.</string>
+  <string name="text_settings_widget_show_title">Capçalera</string>
+  <string name="text_settings_widget_show_title_description">Activa/desactiva la barra de capçalera visible a la part superior.</string>
   <string name="text_share_episode">Acabo de veure %1$s T%2$dE%3$d - %4$s! 🔥</string>
   <string name="text_share_list">Fes un cop d\'ull a aquesta llista \"%s\" a Trakt! 📋</string>
   <string name="text_share_movie">Acabo de descobrir \"%s\" - ho has de veure! 🎬</string>

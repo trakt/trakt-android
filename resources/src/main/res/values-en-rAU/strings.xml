@@ -1201,6 +1201,7 @@
   <string name="page_title_watchlist">Watchlist</string>
   <string name="page_title_welcome">Welcome</string>
   <string name="page_title_where_to_watch">Where to Watch</string>
+  <string name="page_title_widget_background">Background</string>
   <string name="page_title_year_in_review">%s in review</string>
   <string name="page_title_year_to_date">Year to date</string>
   <string name="preview_feature_description_edit_mode">Enable controls for hiding or showing configurable sections across the app.</string>
@@ -1390,6 +1391,8 @@
   <string name="text_export_status_complete">Export complete.</string>
   <string name="text_export_status_fail">Export failed. Check your browser console for more details.</string>
   <string name="text_export_status_fetching">Fetching %s…</string>
+  <string name="text_export_status_partial_one">Export complete, but 1 of %d sections failed. See _errors.json in the zip.</string>
+  <string name="text_export_status_partial_other">Export complete, but %1$d of %2$d sections failed. See _errors.json in the zip.</string>
   <string name="text_export_status_zipping">Zipping files…</string>
   <string name="text_exporting">Exporting… %s</string>
   <string name="text_favorites_limit_reached">You can select up to %s services</string>
@@ -1434,6 +1437,7 @@
   <string name="text_info_update_downloaded">Update is ready to install.</string>
   <string name="text_info_watchlist_added">Added to Watchlist.</string>
   <string name="text_info_watchlist_removed">Removed from Watchlist.</string>
+  <string name="text_info_widget_background">Set background transparency level.</string>
   <string name="text_info_younify_service_linked">Streaming service has been linked.</string>
   <string name="text_info_younify_service_unlinked">Streaming service has been unlinked.</string>
   <string name="text_landing_discover">movies and shows you\'ll love, and where they\'re streaming right now.</string>
@@ -1555,6 +1559,9 @@
   <string name="text_services_selected">%1$s / %2$s selected \" %3$s</string>
   <string name="text_settings_adjust_delivery">Notification Time</string>
   <string name="text_settings_adjust_delivery_description">Choose when to be notified.</string>
+  <string name="text_settings_background_none">None</string>
+  <string name="text_settings_background_solid">Solid</string>
+  <string name="text_settings_background_translucent">Translucent</string>
   <string name="text_settings_clear_cover">Clear current cover image and return to the default.</string>
   <string name="text_settings_enable_multiple_plays">Multiple Plays</string>
   <string name="text_settings_enable_multiple_plays_description">Allow more than 1 play for movies and episodes.</string>
@@ -1567,6 +1574,8 @@
   <string name="text_settings_show_rating_prompt">Rating Prompts</string>
   <string name="text_settings_show_rating_prompt_description">Get asked to rate movies and episodes after watching.</string>
   <string name="text_settings_translations">Help translate the app and fix mistakes for your language.</string>
+  <string name="text_settings_widget_show_title">Header</string>
+  <string name="text_settings_widget_show_title_description">Enable/disable header bar visible at the top.</string>
   <string name="text_share_episode">Just watched %1$s S%2$dE%3$d - %4$s! 🔥</string>
   <string name="text_share_list">Check out this \"%s\" list on Trakt! 📋</string>
   <string name="text_share_movie">Just discovered \"%s\" - you need to see this! 🎬</string>
