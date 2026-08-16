@@ -26,8 +26,8 @@ import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.EpisodeType
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.core.calendar.feature.weekly.usecases.GetCalendarItemsUseCase
 import tv.trakt.trakt.core.calendar.model.CalendarItem
-import tv.trakt.trakt.core.calendar.usecases.GetCalendarItemsUseCase
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.widgets.WidgetIntentTarget

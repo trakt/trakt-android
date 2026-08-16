@@ -20,6 +20,7 @@ internal class GetCalendarItemsUseCase(
         day: LocalDate,
         filters: GlobalFilter,
         type: ReleaseType,
+        skipProgress: Boolean = false,
     ): ImmutableMap<LocalDate, ImmutableList<CalendarItem>> {
         if (!sessionManager.isAuthenticated()) {
             return persistentMapOf()
@@ -33,6 +34,7 @@ internal class GetCalendarItemsUseCase(
             range = weekStart..weekEnd,
             filters = filters,
             type = type,
+            skipProgress = skipProgress,
         )
     }
 }

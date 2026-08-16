@@ -20,17 +20,12 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import java.time.LocalDate
-import java.time.temporal.ChronoUnit
 import java.time.ZoneOffset.UTC
+import java.time.temporal.ChronoUnit
 
 // The calendar endpoints key off release dates in UTC, so the window starts a day
 // early and the results are trimmed back to the requested range locally.
 private const val DAYS_OFFSET = 1L
-
-// One UTC day of padding on each side of the local window: a release on local Sunday
-// evening lands on UTC Monday in negative-offset zones, and on UTC Sunday for local Monday
-// mornings in positive-offset ones. The local-day filter below trims the excess.
-private const val DAYS_RANGE = 9
 
 // Trakt caps a single calendar call at 33 days; longer ranges are split into
 // consecutive windows and fetched in parallel.
@@ -158,13 +153,13 @@ internal class CalendarItemsLoader(
             val movies = if (type != ReleaseType.All) {
                 emptyList()
             } else {
-                moviesData
+                val asyncMap = moviesData
                     .filter {
                         val localDate = LocalDate.parse(it.released)
                             .atStartOfDay(UTC)
                             .toInstant()
                             .toLocalDay()
-                        localDate in weekStart..weekEnd
+                        localDate in startDate..endDate
                     }
                     .asyncMap {
                         val id = it.movie.ids.trakt.toTraktId()
@@ -173,6 +168,7 @@ internal class CalendarItemsLoader(
                             movie = Movie.fromDto(it.movie),
                         )
                     }
+                asyncMap
             }
 
             // Group by day
