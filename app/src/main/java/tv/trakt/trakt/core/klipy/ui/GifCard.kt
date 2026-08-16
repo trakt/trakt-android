@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.klipy.components
+package tv.trakt.trakt.core.klipy.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -40,7 +40,7 @@ internal fun GifCard(
             .fillMaxWidth()
             .aspectRatio(aspectRatio)
             .clip(GifCardShape)
-            .background(TraktTheme.colors.skeletonContainer)
+            .background(TraktTheme.colors.skeletonShimmer)
             .onClick(onClick = onClick),
     ) {
         AsyncImage(

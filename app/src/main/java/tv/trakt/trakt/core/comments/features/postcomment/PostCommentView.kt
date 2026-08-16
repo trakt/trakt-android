@@ -2,6 +2,7 @@
 
 package tv.trakt.trakt.core.comments.features.postcomment
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,10 +10,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.input.TextFieldLineLimits
-import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.placeCursorAtEnd
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -26,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.BottomEnd
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -41,12 +43,14 @@ import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import tv.trakt.trakt.common.core.klipy.model.Gif
 import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.klipy.GifPickerSheet
+import tv.trakt.trakt.core.klipy.ui.GifCard
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InputField
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
@@ -109,6 +113,7 @@ private fun ViewContent(
 
     var isSpoiler by remember { mutableStateOf(false) }
     var isGifPickerVisible by remember { mutableStateOf(false) }
+    var selectedGif by remember { mutableStateOf<Gif?>(null) }
 
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -152,9 +157,7 @@ private fun ViewContent(
 
         GifPickerSheet(
             visible = isGifPickerVisible,
-            onGifSelected = { gif ->
-                gif.shareUrl?.let(inputState::appendGifUrl)
-            },
+            onGifSelected = { gif -> selectedGif = gif },
             onDismiss = { isGifPickerVisible = false },
         )
 
@@ -171,6 +174,17 @@ private fun ViewContent(
                 .align(Alignment.End)
                 .padding(top = 4.dp, end = 10.dp),
         )
+
+        selectedGif?.let { gif ->
+            SelectedGifPreview(
+                gif = gif,
+                enabled = !isLoading,
+                onRemoveClick = { selectedGif = null },
+                modifier = Modifier
+                    .align(CenterHorizontally)
+                    .padding(vertical = 16.dp),
+            )
+        }
 
         if (state.error != null) {
             Text(
@@ -219,7 +233,7 @@ private fun ViewContent(
                     .trim()
 
                 onSubmitClick(
-                    input,
+                    input.withGifUrl(selectedGif?.shareUrl),
                     isSpoiler,
                 )
             },
@@ -228,16 +242,44 @@ private fun ViewContent(
     }
 }
 
-/** Drops the picked GIF on its own line so it survives whatever the user typed before it. */
-private fun TextFieldState.appendGifUrl(url: String) {
-    edit {
-        if (length > 0 && charAt(length - 1) != '\n') {
-            append("\n")
-        }
+/**
+ * The picked GIF never shows up in the input field, so it rides along on its own line in the
+ * posted body - that URL is the only way the GIF reaches other clients.
+ */
+private fun String.withGifUrl(url: String?): String {
+    if (url.isNullOrBlank()) return this
 
-        append(url)
-        append("\n")
-        placeCursorAtEnd()
+    return when {
+        isBlank() -> url
+        else -> "$this\n$url"
+    }
+}
+
+@Composable
+private fun SelectedGifPreview(
+    gif: Gif,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    onRemoveClick: () -> Unit = {},
+) {
+    Box(modifier = modifier.width(TraktTheme.size.horizontalMediaCardSize)) {
+        GifCard(gif = gif)
+
+        Icon(
+            painter = painterResource(R.drawable.ic_close),
+            contentDescription = stringResource(R.string.button_text_remove_gif),
+            tint = TraktTheme.colors.textPrimary,
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(6.dp)
+                .background(
+                    color = TraktTheme.colors.dialogContainer.copy(alpha = 0.8F),
+                    shape = CircleShape,
+                )
+                .size(24.dp)
+                .padding(5.dp)
+                .onClick(enabled = enabled, onClick = onRemoveClick),
+        )
     }
 }
 

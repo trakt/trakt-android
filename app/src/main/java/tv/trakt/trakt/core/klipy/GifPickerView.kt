@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -19,8 +20,11 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
@@ -41,7 +45,7 @@ import tv.trakt.trakt.common.core.klipy.model.GifMedia
 import tv.trakt.trakt.common.core.klipy.model.GifRenditions
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
-import tv.trakt.trakt.core.klipy.components.GifCard
+import tv.trakt.trakt.core.klipy.ui.GifCard
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EmptyListCard
 import tv.trakt.trakt.ui.components.InputField
@@ -76,6 +80,13 @@ private fun GifPickerContent(
 ) {
     val inputState = rememberTextFieldState()
     val gridState = rememberLazyStaggeredGridState()
+    val focusRequester = remember { FocusRequester() }
+
+    // Open with the keyboard up: the sheet window needs a frame to attach before it can take focus.
+    LaunchedEffect(Unit) {
+        withFrameNanos { }
+        runCatching { focusRequester.requestFocus() }
+    }
 
     LaunchedEffect(Unit) {
         snapshotFlow { inputState.text.toString() }
@@ -104,6 +115,7 @@ private fun GifPickerContent(
     Column(
         modifier = modifier
             .fillMaxHeight()
+            .imePadding()
             .padding(horizontal = 24.dp),
     ) {
         InputField(
@@ -112,8 +124,10 @@ private fun GifPickerContent(
             placeholder = stringResource(R.string.input_placeholder_search_gifs),
             loading = state.loading.isLoading,
             containerColor = Color.Transparent,
-            imeAction = ImeAction.Search,
-            modifier = Modifier.fillMaxWidth(),
+            imeAction = ImeAction.Done,
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusRequester(focusRequester),
         )
 
         Box(
