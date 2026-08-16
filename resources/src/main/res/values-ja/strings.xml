@@ -1201,6 +1201,7 @@
   <string name="page_title_watchlist">ウォッチリスト</string>
   <string name="page_title_welcome">ようこそ</string>
   <string name="page_title_where_to_watch">どこで視聴するか</string>
+  <string name="page_title_widget_background">背景</string>
   <string name="page_title_year_in_review">%s年のレビュー</string>
   <string name="page_title_year_to_date">今年これまでの統計</string>
   <string name="preview_feature_description_edit_mode">アプリ全体で設定可能なセクションの表示/非表示を制御する機能を有効にします。</string>
@@ -1390,6 +1391,8 @@
   <string name="text_export_status_complete">エクスポートが完了しました。</string>
   <string name="text_export_status_fail">エクスポートに失敗しました。詳細はブラウザのコンソールをご確認ください。</string>
   <string name="text_export_status_fetching">%sを取得中…</string>
+  <string name="text_export_status_partial_one">エクスポートは完了しましたが、%dセクションのうち1つが失敗しました。zipファイル内の_errors.jsonを参照してください。</string>
+  <string name="text_export_status_partial_other">エクスポートは完了しましたが、%1$dセクションのうち%2$d個が失敗しました。zipファイル内の_errors.jsonを参照してください。</string>
   <string name="text_export_status_zipping">ファイルを圧縮中…</string>
   <string name="text_exporting">エクスポート中… %s</string>
   <string name="text_favorites_limit_reached">最大%s個のサービスを選択できます</string>
@@ -1434,6 +1437,7 @@
   <string name="text_info_update_downloaded">アップデートの準備ができました。</string>
   <string name="text_info_watchlist_added">ウォッチリストに追加されました。</string>
   <string name="text_info_watchlist_removed">ウォッチリストから削除されました。</string>
+  <string name="text_info_widget_background">背景の透明度を設定します。</string>
   <string name="text_info_younify_service_linked">ストリーミングサービスがリンクされました。</string>
   <string name="text_info_younify_service_unlinked">ストリーミングサービスのリンクが解除されました。</string>
   <string name="text_landing_discover">気に入った映画や番組、そして今すぐどこでストリーミングされているかを発見できます。</string>
@@ -1555,6 +1559,9 @@
   <string name="text_services_selected">%1$s / %2$s 選択済み · %3$s</string>
   <string name="text_settings_adjust_delivery">通知時間</string>
   <string name="text_settings_adjust_delivery_description">通知を受け取るタイミングを選択します。</string>
+  <string name="text_settings_background_none">なし</string>
+  <string name="text_settings_background_solid">不透明</string>
+  <string name="text_settings_background_translucent">半透明</string>
   <string name="text_settings_clear_cover">現在のカバー画像をクリアして、デフォルトに戻します。</string>
   <string name="text_settings_enable_multiple_plays">複数回再生</string>
   <string name="text_settings_enable_multiple_plays_description">映画やエピソードを複数回再生としてマークすることを許可します。</string>
@@ -1567,6 +1574,8 @@
   <string name="text_settings_show_rating_prompt">評価プロンプト</string>
   <string name="text_settings_show_rating_prompt_description">視聴後に映画やエピソードの評価を求められます。</string>
   <string name="text_settings_translations">アプリの翻訳や、お使いの言語の間違いの修正にご協力ください。</string>
+  <string name="text_settings_widget_show_title">ヘッダー</string>
+  <string name="text_settings_widget_show_title_description">上部に表示されるヘッダーバーを有効/無効にします。</string>
   <string name="text_share_episode">%1$s シーズン%2$dエピソード%3$d - 「%4$s」を視聴しました！🔥</string>
   <string name="text_share_list">Traktでこの「%s」リストをチェック！📋</string>
   <string name="text_share_movie">「%s」を発見しました - これは必見です！🎬</string>

@@ -1201,6 +1201,7 @@
   <string name="page_title_watchlist">Списък за гледане</string>
   <string name="page_title_welcome">Добре дошли</string>
   <string name="page_title_where_to_watch">Къде да гледате</string>
+  <string name="page_title_widget_background">Фон</string>
   <string name="page_title_year_in_review">%s в преглед</string>
   <string name="page_title_year_to_date">От началото на годината</string>
   <string name="preview_feature_description_edit_mode">Активирайте контроли за скриване или показване на конфигурируеми секции в цялото приложение.</string>
@@ -1390,6 +1391,8 @@
   <string name="text_export_status_complete">Експортирането е завършено.</string>
   <string name="text_export_status_fail">Експортирането не успя. Проверете конзолата на браузъра си за повече подробности.</string>
   <string name="text_export_status_fetching">Извличане на %s…</string>
+  <string name="text_export_status_partial_one">Експортът завърши, но 1 от %d секции не успя. Вижте _errors.json в архива.</string>
+  <string name="text_export_status_partial_other">Експортът завърши, но %1$d от %2$d секции не успяха. Вижте _errors.json в архива.</string>
   <string name="text_export_status_zipping">Компресиране на файлове…</string>
   <string name="text_exporting">Експортиране… %s</string>
   <string name="text_favorites_limit_reached">Можете да изберете до %s услуги</string>
@@ -1434,6 +1437,7 @@
   <string name="text_info_update_downloaded">Актуализацията е готова за инсталиране.</string>
   <string name="text_info_watchlist_added">Добавено към списъка за гледане.</string>
   <string name="text_info_watchlist_removed">Премахнато от списъка за гледане.</string>
+  <string name="text_info_widget_background">Задайте ниво на прозрачност на фона.</string>
   <string name="text_info_younify_service_linked">Стрийминг услугата е свързана.</string>
   <string name="text_info_younify_service_unlinked">Стрийминг услугата е откачена.</string>
   <string name="text_landing_discover">филми и сериали, които ще харесаш, и къде се стриймват в момента.</string>
@@ -1555,6 +1559,9 @@
   <string name="text_services_selected">%1$s / %2$s избрани · %3$s</string>
   <string name="text_settings_adjust_delivery">Време на известие</string>
   <string name="text_settings_adjust_delivery_description">Изберете кога да получавате известия.</string>
+  <string name="text_settings_background_none">Няма</string>
+  <string name="text_settings_background_solid">Плътен</string>
+  <string name="text_settings_background_translucent">Полупрозрачен</string>
   <string name="text_settings_clear_cover">Изчисти текущата корица и се върни към подразбиращата се.</string>
   <string name="text_settings_enable_multiple_plays">Многократни гледания</string>
   <string name="text_settings_enable_multiple_plays_description">Разрешете повече от 1 гледане за филми и епизоди.</string>
@@ -1567,6 +1574,8 @@
   <string name="text_settings_show_rating_prompt">Подкани за оценка</string>
   <string name="text_settings_show_rating_prompt_description">Получаване на подкана за оценка на филми и епизоди след гледане.</string>
   <string name="text_settings_translations">Помогнете да преведете приложението и да коригирате грешки за вашия език.</string>
+  <string name="text_settings_widget_show_title">Заглавка</string>
+  <string name="text_settings_widget_show_title_description">Активиране/деактивиране на заглавната лента, видима в горната част.</string>
   <string name="text_share_episode">Току-що гледах %1$s S%2$dE%3$d - %4$s! 🔥</string>
   <string name="text_share_list">Виж този списък \"%s\" в Trakt! 📋</string>
   <string name="text_share_movie">Току-що открих \"%s\" – трябва да го видиш! 🎬</string>

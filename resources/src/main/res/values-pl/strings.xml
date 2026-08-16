@@ -1201,6 +1201,7 @@
   <string name="page_title_watchlist">Obserwowane</string>
   <string name="page_title_welcome">Witaj</string>
   <string name="page_title_where_to_watch">Gdzie oglądać</string>
+  <string name="page_title_widget_background">Tło</string>
   <string name="page_title_year_in_review">Podsumowanie roku %s</string>
   <string name="page_title_year_to_date">Od początku roku</string>
   <string name="preview_feature_description_edit_mode">Włącz sterowanie ukrywaniem lub pokazywaniem konfigurowalnych sekcji w całej aplikacji.</string>
@@ -1390,6 +1391,8 @@
   <string name="text_export_status_complete">Eksport zakończony.</string>
   <string name="text_export_status_fail">Eksport nie powiódł się. Sprawdź konsolę przeglądarki, aby uzyskać więcej szczegółów.</string>
   <string name="text_export_status_fetching">Pobieranie %s…</string>
+  <string name="text_export_status_partial_one">Eksport zakończony, ale 1 z %d sekcji nie powiodła się. Zobacz _errors.json w archiwum zip.</string>
+  <string name="text_export_status_partial_other">Eksport zakończony, ale %1$d z %2$d sekcji nie powiodło się. Zobacz _errors.json w archiwum zip.</string>
   <string name="text_export_status_zipping">Kompresowanie plików…</string>
   <string name="text_exporting">Eksportowanie… %s</string>
   <string name="text_favorites_limit_reached">Możesz wybrać maksymalnie %s usług</string>
@@ -1434,6 +1437,7 @@
   <string name="text_info_update_downloaded">Aktualizacja jest gotowa do instalacji.</string>
   <string name="text_info_watchlist_added">Dodano do obserwowanych.</string>
   <string name="text_info_watchlist_removed">Usunięto z obserwowanych.</string>
+  <string name="text_info_widget_background">Ustaw poziom przezroczystości tła.</string>
   <string name="text_info_younify_service_linked">Serwis streamingowy został połączony.</string>
   <string name="text_info_younify_service_unlinked">Serwis streamingowy został odłączony.</string>
   <string name="text_landing_discover">filmy i seriale, które pokochasz oraz gdzie są w tej chwili transmitowane.</string>
@@ -1555,6 +1559,9 @@
   <string name="text_services_selected">%1$s / %2$s wybrane \n· %3$s</string>
   <string name="text_settings_adjust_delivery">Czas powiadomień</string>
   <string name="text_settings_adjust_delivery_description">Kiedy chcesz otrzymywać powiadomienia?</string>
+  <string name="text_settings_background_none">Brak</string>
+  <string name="text_settings_background_solid">Jednolite</string>
+  <string name="text_settings_background_translucent">Półprzezroczyste</string>
   <string name="text_settings_clear_cover">Wyczyść bieżący obraz tła i przywróć domyślny.</string>
   <string name="text_settings_enable_multiple_plays">Wielokrotne oglądanie</string>
   <string name="text_settings_enable_multiple_plays_description">Zezwól na dodawanie więcej niż 1 odtworzenia filmów i odcinków.</string>
@@ -1567,6 +1574,8 @@
   <string name="text_settings_show_rating_prompt">Zapytania o ocenę</string>
   <string name="text_settings_show_rating_prompt_description">Otrzymuj prośby o ocenę filmów i odcinków po obejrzeniu.</string>
   <string name="text_settings_translations">Pomóż w tłumaczeniu aplikacji i poprawkach błędów w języku polskim.</string>
+  <string name="text_settings_widget_show_title">Nagłówek</string>
+  <string name="text_settings_widget_show_title_description">Włącz/wyłącz pasek nagłówka widoczny u góry.</string>
   <string name="text_share_episode">Właśnie obejrzałem %1$s S%2$dE%3$d - %4$s! 🔥</string>
   <string name="text_share_list">Sprawdź listę \"%s\" na Trakt! :schowek:</string>
   <string name="text_share_movie">Właśnie odkryłem \"%s\" - musisz to zobaczyć! 🎬</string>

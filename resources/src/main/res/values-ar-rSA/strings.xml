@@ -1201,6 +1201,7 @@
   <string name="page_title_watchlist">قائمة المشاهدة</string>
   <string name="page_title_welcome">مرحبا</string>
   <string name="page_title_where_to_watch">أين تشاهد</string>
+  <string name="page_title_widget_background">خلفية</string>
   <string name="page_title_year_in_review">ملخص %s</string>
   <string name="page_title_year_to_date">منذ بداية العام</string>
   <string name="preview_feature_description_edit_mode">تمكين عناصر التحكم لإخفاء الأقسام القابلة للتكوين أو إظهارها عبر التطبيق.</string>
@@ -1390,6 +1391,8 @@
   <string name="text_export_status_complete">اكتمل التصدير.</string>
   <string name="text_export_status_fail">فشل التصدير. تحقق من وحدة تحكم المتصفح الخاص بك لمزيد من التفاصيل.</string>
   <string name="text_export_status_fetching">جلب %s…</string>
+  <string name="text_export_status_partial_one">اكتمل التصدير، لكن قسمًا واحدًا من %d قسمًا فشل. راجع _errors.json في الملف المضغوط.</string>
+  <string name="text_export_status_partial_other">اكتمل التصدير، لكن %1$d من أصل %2$d قسمًا فشلت. راجع _errors.json في الملف المضغوط.</string>
   <string name="text_export_status_zipping">ضغط الملفات…</string>
   <string name="text_exporting">تصدير… %s</string>
   <string name="text_favorites_limit_reached">يمكنك اختيار ما يصل إلى %s من الخدمات</string>
@@ -1434,6 +1437,7 @@
   <string name="text_info_update_downloaded">التحديث جاهز للتثبيت.</string>
   <string name="text_info_watchlist_added">تمت إضافته إلى قائمة المشاهدة.</string>
   <string name="text_info_watchlist_removed">تمت إزالته من قائمة المشاهدة.</string>
+  <string name="text_info_widget_background">تعيين مستوى شفافية الخلفية.</string>
   <string name="text_info_younify_service_linked">تم ربط خدمة البث.</string>
   <string name="text_info_younify_service_unlinked">تم إلغاء ربط خدمة البث.</string>
   <string name="text_landing_discover">أفلام ومسلسلات ستحبها ومعرفة أين تُعرض الآن.</string>
@@ -1555,6 +1559,9 @@
   <string name="text_services_selected">تم تحديد %1$s من أصل %2$s · %3$s</string>
   <string name="text_settings_adjust_delivery">وقت الإخطار</string>
   <string name="text_settings_adjust_delivery_description">اختر متى يتم إعلامك.</string>
+  <string name="text_settings_background_none">لا شيء</string>
+  <string name="text_settings_background_solid">مصمت</string>
+  <string name="text_settings_background_translucent">شبه شفاف</string>
   <string name="text_settings_clear_cover">مسح صورة الغلاف الحالية والعودة إلى الصورة الافتراضية.</string>
   <string name="text_settings_enable_multiple_plays">مشاهدات متعددة</string>
   <string name="text_settings_enable_multiple_plays_description">السماح بأكثر من تشغيل واحد للأفلام والحلقات.</string>
@@ -1567,6 +1574,8 @@
   <string name="text_settings_show_rating_prompt">مطالبات التقييم</string>
   <string name="text_settings_show_rating_prompt_description">يُطلب منك تقييم الأفلام والحلقات بعد المشاهدة.</string>
   <string name="text_settings_translations">ساعد في ترجمة التطبيق وتصحيح الأخطاء للغتك.</string>
+  <string name="text_settings_widget_show_title">الترويسة</string>
+  <string name="text_settings_widget_show_title_description">تمكين/تعطيل شريط الترويسة المرئي في الأعلى.</string>
   <string name="text_share_episode">شاهدت للتو %1$s S%2$dE%3$d - %4$s! 🔥</string>
   <string name="text_share_list">تحقق من قائمة \"%s\" هذه على Trakt! 📋</string>
   <string name="text_share_movie">اكتشفت للتو \"%s\" - أنت بحاجة إلى رؤية هذا! 🎬</string>
