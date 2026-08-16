@@ -2,6 +2,7 @@
 
 package tv.trakt.trakt.core.klipy
 
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
@@ -53,7 +54,9 @@ internal fun GifPickerSheet(
                         onDismiss = onDismiss,
                     )
                 },
-                modifier = Modifier.padding(top = 8.dp),
+                modifier = Modifier
+                    .fillMaxHeight(0.8F)
+                    .padding(top = 8.dp),
             )
         }
     }

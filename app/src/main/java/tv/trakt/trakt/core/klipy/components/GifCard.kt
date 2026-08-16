@@ -20,7 +20,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 // Smaller than DefaultCardShape - GIF thumbnails sit at roughly a third of the screen width.
-private val GifCardShape = RoundedCornerShape(12.dp)
+private val GifCardShape = RoundedCornerShape(8.dp)
 private const val FALLBACK_ASPECT_RATIO = 1F
 
 @Composable

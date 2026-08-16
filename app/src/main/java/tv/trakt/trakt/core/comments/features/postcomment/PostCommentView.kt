@@ -3,13 +3,19 @@
 package tv.trakt.trakt.core.comments.features.postcomment
 
 import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.placeCursorAtEnd
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -19,9 +25,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.BottomEnd
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.text.input.ImeAction
@@ -38,6 +46,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.core.klipy.GifPickerSheet
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InputField
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
@@ -99,26 +108,54 @@ private fun ViewContent(
     }
 
     var isSpoiler by remember { mutableStateOf(false) }
+    var isGifPickerVisible by remember { mutableStateOf(false) }
 
     Column(
         verticalArrangement = spacedBy(0.dp),
         modifier = modifier,
     ) {
-        InputField(
-            state = inputState,
-            enabled = !isLoading,
-            placeholder = stringResource(R.string.textarea_placeholder_comment),
-            containerColor = Color.Transparent,
-            borderColor = when {
-                isNotEmpty.value && !isValid.value -> Red400
-                else -> TraktTheme.colors.accent
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+        ) {
+            InputField(
+                state = inputState,
+                enabled = !isLoading,
+                placeholder = stringResource(R.string.textarea_placeholder_comment),
+                containerColor = Color.Transparent,
+                borderColor = when {
+                    isNotEmpty.value && !isValid.value -> Red400
+                    else -> TraktTheme.colors.accent
+                },
+                lineLimits = TextFieldLineLimits.MultiLine(
+                    minHeightInLines = 5,
+                    maxHeightInLines = 15,
+                ),
+                imeAction = ImeAction.Default,
+                modifier = Modifier.fillMaxWidth(),
+            )
+
+            Icon(
+                painter = painterResource(R.drawable.ic_gif),
+                contentDescription = stringResource(R.string.input_placeholder_search_gifs),
+                tint = TraktTheme.colors.textSecondary,
+                modifier = Modifier
+                    .align(BottomEnd)
+                    .size(42.dp)
+                    .padding(10.dp)
+                    .onClick(enabled = !isLoading) {
+                        isGifPickerVisible = true
+                    },
+            )
+        }
+
+        GifPickerSheet(
+            visible = isGifPickerVisible,
+            onGifSelected = { gif ->
+                gif.shareUrl?.let(inputState::appendGifUrl)
             },
-            lineLimits = TextFieldLineLimits.MultiLine(
-                minHeightInLines = 5,
-                maxHeightInLines = 15,
-            ),
-            imeAction = ImeAction.Default,
-            modifier = Modifier.fillMaxWidth(),
+            onDismiss = { isGifPickerVisible = false },
         )
 
         Text(
@@ -188,6 +225,19 @@ private fun ViewContent(
             },
             modifier = Modifier.fillMaxWidth(),
         )
+    }
+}
+
+/** Drops the picked GIF on its own line so it survives whatever the user typed before it. */
+private fun TextFieldState.appendGifUrl(url: String) {
+    edit {
+        if (length > 0 && charAt(length - 1) != '\n') {
+            append("\n")
+        }
+
+        append(url)
+        append("\n")
+        placeCursorAtEnd()
     }
 }
 

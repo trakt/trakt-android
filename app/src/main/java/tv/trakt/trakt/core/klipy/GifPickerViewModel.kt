@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.klipy.data.remote.GifsRemoteDataSource
 import tv.trakt.trakt.common.core.klipy.model.GIFS_DEFAULT_PER_PAGE
 import tv.trakt.trakt.common.core.klipy.model.Gif
@@ -23,6 +24,7 @@ import tv.trakt.trakt.common.core.klipy.model.GifsQuery
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -32,6 +34,7 @@ private val SEARCH_DEBOUNCE = 350.milliseconds
 @Suppress("UNCHECKED_CAST")
 internal class GifPickerViewModel(
     private val remoteSource: GifsRemoteDataSource,
+    private val sessionManager: SessionManager,
 ) : ViewModel() {
     private val initialState = GifPickerState()
 
@@ -46,20 +49,22 @@ internal class GifPickerViewModel(
     private var trending: TrendingGifs? = null
     private var loadJob: Job? = null
     private var loadMoreJob: Job? = null
+    private var userId: TraktId? = null
 
     init {
-        loadGifs()
+        viewModelScope.launch {
+            userId = sessionManager.getProfile()?.ids?.trakt
+            loadGifs(debounce = Duration.ZERO)
+        }
     }
 
     fun updateQuery(query: String) {
-        if (queryState.value == query) return
+        if (queryState.value == query) {
+            return
+        }
 
         queryState.update { query }
         loadGifs(debounce = SEARCH_DEBOUNCE)
-    }
-
-    fun retry() {
-        loadGifs()
     }
 
     fun loadMore() {
@@ -92,7 +97,7 @@ internal class GifPickerViewModel(
      * Loads the first page for the current query. An empty query means trending, which is kept
      * in memory so clearing the input restores it without another round trip.
      */
-    private fun loadGifs(debounce: Duration = Duration.ZERO) {
+    private fun loadGifs(debounce: Duration) {
         loadJob?.cancel()
         loadMoreJob?.cancel()
 
@@ -116,9 +121,11 @@ internal class GifPickerViewModel(
                 delay(debounce) // Debounce user input.
 
                 val result = loadPage(page = 1)
+
                 page = result.page
                 hasNextPage = result.hasNext
                 gifsState.update { result.items }
+
                 cacheTrending()
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -138,6 +145,7 @@ internal class GifPickerViewModel(
         val query = GifsQuery(
             term = term.ifEmpty { null },
             pagination = Pagination(page = page, limit = GIFS_DEFAULT_PER_PAGE),
+            customerId = userId.toString(),
         )
 
         return when {

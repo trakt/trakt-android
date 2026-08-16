@@ -18,13 +18,14 @@ data class Gif(
     /** Base64 data URI KLIPY ships for a blurred placeholder while the rendition loads. */
     val blurPreview: String?,
 ) {
-    /** Grid-sized rendition: animated, smallest that still looks sharp on a phone. */
     val preview: GifMedia?
         get() = renditions.sm?.animated ?: renditions.xs?.animated ?: renditions.md?.animated
 
-    /** Full-sized rendition used once a GIF is opened or shared. */
     val full: GifMedia?
         get() = renditions.md?.animated ?: renditions.hd?.animated ?: preview
+
+    val shareUrl: String?
+        get() = (renditions.md?.gif ?: renditions.hd?.gif ?: renditions.sm?.gif ?: full)?.url
 }
 
 @Immutable

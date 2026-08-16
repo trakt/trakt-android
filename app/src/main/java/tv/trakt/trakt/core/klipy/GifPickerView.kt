@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -42,7 +41,6 @@ import tv.trakt.trakt.common.core.klipy.model.GifMedia
 import tv.trakt.trakt.common.core.klipy.model.GifRenditions
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
-import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.klipy.components.GifCard
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EmptyListCard
@@ -104,15 +102,13 @@ private fun GifPickerContent(
     }
 
     Column(
-        verticalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
         modifier = modifier
             .fillMaxHeight()
-            .padding(horizontal = 24.dp)
-            .padding(bottom = 16.dp),
+            .padding(horizontal = 24.dp),
     ) {
         InputField(
             state = inputState,
-            icon = painterResource(R.drawable.ic_search_on),
+            icon = painterResource(R.drawable.ic_search_off),
             placeholder = stringResource(R.string.input_placeholder_search_gifs),
             loading = state.loading.isLoading,
             containerColor = Color.Transparent,
@@ -128,9 +124,9 @@ private fun GifPickerContent(
         ) {
             when {
                 state.loading.isLoading && state.gifs.isEmpty() -> {
-                    FilmProgressIndicator(
-                        modifier = Modifier.size(32.dp),
-                    )
+//                    FilmProgressIndicator(
+//                        modifier = Modifier.size(32.dp),
+//                    )
                 }
 
                 state.error != null -> {
@@ -142,12 +138,15 @@ private fun GifPickerContent(
                 }
 
                 else -> {
+                    val spacing = 8.dp
                     LazyVerticalStaggeredGrid(
                         state = gridState,
-                        columns = StaggeredGridCells.Fixed(TraktTheme.size.mainGridColumns),
-                        horizontalArrangement = spacedBy(TraktTheme.spacing.mainGridHorizontalSpace),
-                        verticalItemSpacing = TraktTheme.spacing.mainGridVerticalSpace,
-                        contentPadding = PaddingValues(bottom = 12.dp),
+                        columns = StaggeredGridCells.Fixed(2),
+                        horizontalArrangement = spacedBy(spacing),
+                        verticalItemSpacing = spacing,
+                        contentPadding = PaddingValues(
+                            top = 16.dp,
+                        ),
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         items(
