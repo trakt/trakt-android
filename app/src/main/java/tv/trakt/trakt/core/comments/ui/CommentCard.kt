@@ -56,6 +56,8 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
@@ -93,6 +95,7 @@ internal fun CommentCard(
     replies: ImmutableList<Comment> = EmptyImmutableList,
     reactions: ImmutableMap<Int, ReactionsSummary> = EmptyReactionsSummary,
     userReactions: ImmutableMap<Int, Reaction?> = EmptyReactions,
+    gifsEnabled: Boolean = false,
     deleteEnabled: Boolean = true,
     replyEnabled: Boolean = false,
     repliesButtonEnabled: Boolean = false,
@@ -123,6 +126,7 @@ internal fun CommentCard(
             replies = replies,
             reactions = reactions,
             userReactions = userReactions,
+            gifsEnabled = gifsEnabled,
             deleteEnabled = deleteEnabled,
             replyEnabled = replyEnabled,
             repliesButtonEnabled = repliesButtonEnabled,
@@ -146,7 +150,7 @@ internal fun CommentCard(
 
     val colors = cardColors(containerColor = TraktTheme.colors.commentContainer)
     val border = when {
-        isUserComment -> BorderStroke(2.dp, TraktTheme.colors.accent)
+        isUserComment -> BorderStroke(1.5.dp, TraktTheme.colors.accent)
         else -> null
     }
 
@@ -183,6 +187,7 @@ private fun CommentCardContent(
     replies: ImmutableList<Comment>,
     reactions: ImmutableMap<Int, ReactionsSummary>,
     userReactions: ImmutableMap<Int, Reaction?>,
+    gifsEnabled: Boolean,
     deleteEnabled: Boolean,
     replyEnabled: Boolean,
     repliesButtonEnabled: Boolean,
@@ -226,6 +231,21 @@ private fun CommentCardContent(
             blurred = comment.hasSpoilers && !isUserComment && !isSpoilerRevealed,
             onRevealSpoiler = { isSpoilerRevealed = true },
         )
+
+        if (gifsEnabled && !comment.gif.isNullOrBlank()) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(comment.gif)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .clip(DefaultCardShape),
+            )
+        }
 
         Spacer(modifier = Modifier.weight(1f))
 

@@ -216,6 +216,7 @@ object PreviewData {
         updatedAt = ZonedDateTime.now(),
         comment = "This is a sample comment that provides feedback or discussion about a movie, show, or episode. " +
             "It is intended to give viewers an idea of what others think without revealing too much.",
+        gif = null,
         isSpoiler = false,
         isReview = false,
         replies = 23,

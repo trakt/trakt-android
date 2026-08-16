@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-import tv.trakt.trakt.common.core.klipy.model.Gif
+import tv.trakt.trakt.common.core.klipy.model.KlipyGif
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import kotlin.random.Random.Default.nextInt
 
@@ -32,7 +32,7 @@ internal fun GifPickerSheet(
         initialValue = Hidden,
         enabledValues = setOf(Hidden, Expanded),
     ),
-    onGifSelected: (Gif) -> Unit,
+    onGifSelected: (KlipyGif) -> Unit,
     onDismiss: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()

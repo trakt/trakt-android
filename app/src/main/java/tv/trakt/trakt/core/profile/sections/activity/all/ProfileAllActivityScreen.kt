@@ -357,6 +357,7 @@ private fun ContentList(
                     ProfileCommentItemView(
                         item = item,
                         reactions = reactions,
+                        gifsEnabled = true,
                         onClick = { onCommentClick(item) },
                         onRepliesClick = { onCommentClick(item) },
                         onShowClick = onCommentShowClick,
@@ -369,6 +370,7 @@ private fun ContentList(
                             .animateItem(
                                 fadeInSpec = null,
                                 fadeOutSpec = null,
+                                placementSpec = null,
                             ),
                     )
                 }

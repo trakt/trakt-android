@@ -24,9 +24,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.W700
@@ -37,8 +40,11 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
+import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.launch
@@ -67,12 +73,12 @@ import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val EmptyReactionsSummary = emptyMap<Int, ReactionsSummary>().toImmutableMap()
-private val EmptyReactions = emptyMap<Int, Reaction?>().toImmutableMap()
 
 @Composable
 internal fun ProfileCommentItemView(
     item: ProfileCommentItem,
     modifier: Modifier = Modifier,
+    gifsEnabled: Boolean = false,
     reactions: ImmutableMap<Int, ReactionsSummary> = EmptyReactionsSummary,
     onClick: () -> Unit = {},
     onShowClick: ((Show) -> Unit)? = null,
@@ -80,7 +86,6 @@ internal fun ProfileCommentItemView(
     onEpisodeClick: ((Show, Episode) -> Unit)? = null,
     onRequestReactions: ((Comment) -> Unit)? = null,
     onRepliesClick: (() -> Unit)? = null,
-    onDeleteClick: (() -> Unit)? = null,
 ) {
     LaunchedEffect(item.comment.id) {
         if (reactions[item.comment.id] == null) {
@@ -98,12 +103,12 @@ internal fun ProfileCommentItemView(
         content = {
             CommentCardContent(
                 item = item,
+                gifsEnabled = gifsEnabled,
                 reactions = reactions,
                 onShowClick = onShowClick,
                 onMovieClick = onMovieClick,
                 onEpisodeClick = onEpisodeClick,
                 onRepliesClick = onRepliesClick,
-                onDeleteClick = onDeleteClick,
             )
         },
     )
@@ -113,12 +118,12 @@ internal fun ProfileCommentItemView(
 private fun CommentCardContent(
     item: ProfileCommentItem,
     reactions: ImmutableMap<Int, ReactionsSummary>,
+    gifsEnabled: Boolean,
     modifier: Modifier = Modifier,
     onShowClick: ((Show) -> Unit)? = null,
     onMovieClick: ((Movie) -> Unit)? = null,
     onEpisodeClick: ((Show, Episode) -> Unit)? = null,
     onRepliesClick: (() -> Unit)? = null,
-    onDeleteClick: (() -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -131,7 +136,6 @@ private fun CommentCardContent(
             onShowClick = onShowClick,
             onMovieClick = onMovieClick,
             onEpisodeClick = onEpisodeClick,
-            onDeleteClick = onDeleteClick,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
@@ -147,6 +151,21 @@ private fun CommentCardContent(
                 .padding(horizontal = 16.dp)
                 .padding(top = 11.dp, bottom = 20.dp),
         )
+
+        if (gifsEnabled && !item.comment.gif.isNullOrBlank()) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(item.comment.gif)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .clip(RoundedCornerShape(19.dp)),
+            )
+        }
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -170,7 +189,6 @@ private fun CommentHeader(
     onShowClick: ((Show) -> Unit)? = null,
     onMovieClick: ((Movie) -> Unit)? = null,
     onEpisodeClick: ((Show, Episode) -> Unit)? = null,
-    onDeleteClick: (() -> Unit)? = null,
 ) {
     Row(
         verticalAlignment = Alignment.Top,
@@ -354,7 +372,7 @@ fun CommentPreview() {
                 )
 
                 ProfileCommentItemView(
-                    item = ProfileCommentItem.EpisodeItem(
+                    item = EpisodeItem(
                         show = PreviewData.show1,
                         episode = PreviewData.episode1,
                         comment = PreviewData.comment1.copy(userRating = 1, comment = "Lorem Ipsum"),

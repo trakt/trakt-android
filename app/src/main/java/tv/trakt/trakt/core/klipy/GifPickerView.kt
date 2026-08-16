@@ -38,11 +38,10 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.klipy.model.Gif
-import tv.trakt.trakt.common.core.klipy.model.GifFormats
-import tv.trakt.trakt.common.core.klipy.model.GifId
-import tv.trakt.trakt.common.core.klipy.model.GifMedia
-import tv.trakt.trakt.common.core.klipy.model.GifRenditions
+import tv.trakt.trakt.common.core.klipy.model.KlipyGif
+import tv.trakt.trakt.common.core.klipy.model.KlipyGifFormats
+import tv.trakt.trakt.common.core.klipy.model.KlipyGifMedia
+import tv.trakt.trakt.common.core.klipy.model.KlipyGifRenditions
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.core.klipy.ui.GifCard
@@ -57,7 +56,7 @@ private const val LOAD_MORE_THRESHOLD = 6
 internal fun GifPickerView(
     viewModel: GifPickerViewModel,
     modifier: Modifier = Modifier,
-    onGifClick: (Gif) -> Unit = {},
+    onGifClick: (KlipyGif) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -76,7 +75,7 @@ private fun GifPickerContent(
     modifier: Modifier = Modifier,
     onQueryChange: (String) -> Unit = {},
     onLoadMore: () -> Unit = {},
-    onGifClick: (Gif) -> Unit = {},
+    onGifClick: (KlipyGif) -> Unit = {},
 ) {
     val inputState = rememberTextFieldState()
     val gridState = rememberLazyStaggeredGridState()
@@ -165,10 +164,11 @@ private fun GifPickerContent(
                     ) {
                         items(
                             items = state.gifs,
-                            key = { it.id.value },
+                            key = { it.id },
                         ) { gif ->
                             GifCard(
                                 gif = gif,
+                                preview = true,
                                 onClick = { onGifClick(gif) },
                             )
                         }
@@ -227,22 +227,22 @@ private fun PreviewEmpty() {
 
 private fun previewGifs() =
     List(9) { index ->
-        val media = GifMedia(
+        val media = KlipyGifMedia(
             url = "",
             width = 220,
             height = 140 + index * 20,
             sizeBytes = 0,
         )
 
-        Gif(
-            id = GifId(index.toLong()),
+        KlipyGif(
+            id = index.toLong(),
             slug = "preview-$index",
             title = "Preview GIF $index",
             tags = persistentListOf(),
-            renditions = GifRenditions(
+            renditions = KlipyGifRenditions(
                 hd = null,
                 md = null,
-                sm = GifFormats(gif = null, webp = media, jpg = null, mp4 = null, webm = null),
+                sm = KlipyGifFormats(gif = null, webp = media, jpg = null, mp4 = null, webm = null),
                 xs = null,
             ),
             blurPreview = null,

@@ -10,9 +10,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,7 +43,7 @@ import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
-import tv.trakt.trakt.common.core.klipy.model.Gif
+import tv.trakt.trakt.common.core.klipy.model.KlipyGif
 import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Comment
@@ -113,7 +113,7 @@ private fun ViewContent(
 
     var isSpoiler by remember { mutableStateOf(false) }
     var isGifPickerVisible by remember { mutableStateOf(false) }
-    var selectedGif by remember { mutableStateOf<Gif?>(null) }
+    var selectedGif by remember { mutableStateOf<KlipyGif?>(null) }
 
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -182,7 +182,11 @@ private fun ViewContent(
                 onRemoveClick = { selectedGif = null },
                 modifier = Modifier
                     .align(CenterHorizontally)
-                    .padding(vertical = 16.dp),
+                    .fillMaxWidth()
+                    .padding(
+                        top = 18.dp,
+                        bottom = 16.dp,
+                    ),
             )
         }
 
@@ -233,7 +237,7 @@ private fun ViewContent(
                     .trim()
 
                 onSubmitClick(
-                    input.withGifUrl(selectedGif?.shareUrl),
+                    input.withGifUrl(selectedGif?.fullMedia?.url),
                     isSpoiler,
                 )
             },
@@ -251,23 +255,27 @@ private fun String.withGifUrl(url: String?): String {
 
     return when {
         isBlank() -> url
-        else -> "$this\n$url"
+        else -> "$this\n\n$url"
     }
 }
 
 @Composable
 private fun SelectedGifPreview(
-    gif: Gif,
+    gif: KlipyGif,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     onRemoveClick: () -> Unit = {},
 ) {
-    Box(modifier = modifier.width(TraktTheme.size.horizontalMediaCardSize)) {
-        GifCard(gif = gif)
+    Box(modifier = modifier) {
+        GifCard(
+            gif = gif,
+            preview = false,
+            shape = RoundedCornerShape(16.dp),
+        )
 
         Icon(
             painter = painterResource(R.drawable.ic_close),
-            contentDescription = stringResource(R.string.button_text_remove_gif),
+            contentDescription = null,
             tint = TraktTheme.colors.textPrimary,
             modifier = Modifier
                 .align(Alignment.TopEnd)

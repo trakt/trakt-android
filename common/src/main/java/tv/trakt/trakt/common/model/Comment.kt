@@ -12,11 +12,20 @@ import tv.trakt.trakt.common.networking.CommentDto
 import java.time.ZonedDateTime
 import java.util.Locale
 
+/**
+ * KLIPY delivers media from `static.klipy.com` and its numbered siblings
+ * (see https://docs.klipy.com - network requirements). A comment carries the GIF as a bare URL in
+ * its body; we lift it out so the view can render the GIF instead of printing the link.
+ */
+private val KLIPY_MEDIA_URL_REGEX = """https?://static\d*\.klipy\.com/\S+"""
+    .toRegex(RegexOption.IGNORE_CASE)
+
 @Immutable
 data class Comment(
     val id: Int,
     val parentId: Int,
     val comment: String,
+    val gif: String?,
     val isSpoiler: Boolean,
     val isReview: Boolean,
     val replies: Int,
@@ -34,9 +43,6 @@ data class Comment(
         get() = comment.replace("[spoiler]", "", ignoreCase = true)
             .replace("[/spoiler]", "", ignoreCase = true)
             .trim()
-
-    val userLiteRating: LiteRating?
-        get() = userRating?.let { LiteRating.fromValue(it) }
 
     val user5Rating: String?
         get() = when {
@@ -65,10 +71,16 @@ data class Comment(
 
     companion object {
         fun fromDto(dto: CommentDto): Comment {
+            val gif = KLIPY_MEDIA_URL_REGEX.find(dto.comment)?.value
+
             return Comment(
                 id = dto.id,
                 parentId = dto.parentId,
-                comment = dto.comment,
+                comment = when (gif) {
+                    null -> dto.comment
+                    else -> KLIPY_MEDIA_URL_REGEX.replace(dto.comment, "").trim()
+                },
+                gif = gif,
                 isSpoiler = dto.spoiler,
                 isReview = dto.review,
                 replies = dto.replies,

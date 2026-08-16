@@ -6,7 +6,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Immutable
 data class GifPage(
-    val items: ImmutableList<Gif> = persistentListOf(),
+    val items: ImmutableList<KlipyGif> = persistentListOf(),
     val page: Int = 1,
     val perPage: Int = 0,
     val hasNext: Boolean = false,

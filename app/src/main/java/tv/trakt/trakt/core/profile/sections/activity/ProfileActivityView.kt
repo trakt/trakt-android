@@ -432,7 +432,6 @@ private fun CommentsContentList(
                 onMovieClick = { onMovieClick(it) },
                 onEpisodeClick = { show, episode -> onEpisodeClick(show, episode) },
                 onRepliesClick = { onCommentClick(item.comment) },
-                onDeleteClick = { },
                 onRequestReactions = onRequestReactions,
                 modifier = Modifier
                     .height(TraktTheme.size.commentCardSize)

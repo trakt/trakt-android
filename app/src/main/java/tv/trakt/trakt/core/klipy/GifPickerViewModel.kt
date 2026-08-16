@@ -18,9 +18,9 @@ import timber.log.Timber
 import tv.trakt.trakt.common.auth.session.SessionManager
 import tv.trakt.trakt.common.core.klipy.data.remote.GifsRemoteDataSource
 import tv.trakt.trakt.common.core.klipy.model.GIFS_DEFAULT_PER_PAGE
-import tv.trakt.trakt.common.core.klipy.model.Gif
 import tv.trakt.trakt.common.core.klipy.model.GifPage
 import tv.trakt.trakt.common.core.klipy.model.GifsQuery
+import tv.trakt.trakt.common.core.klipy.model.KlipyGif
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
@@ -165,7 +165,7 @@ internal class GifPickerViewModel(
     }
 
     private data class TrendingGifs(
-        val gifs: ImmutableList<Gif>,
+        val gifs: ImmutableList<KlipyGif>,
         val page: Int,
         val hasNext: Boolean,
     )
@@ -179,7 +179,7 @@ internal class GifPickerViewModel(
     ) { state ->
         GifPickerState(
             query = state[0] as String,
-            gifs = state[1] as ImmutableList<Gif>,
+            gifs = state[1] as ImmutableList<KlipyGif>,
             loading = state[2] as LoadingState,
             loadingMore = state[3] as LoadingState,
             error = state[4] as Exception?,

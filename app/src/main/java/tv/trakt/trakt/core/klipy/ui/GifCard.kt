@@ -15,21 +15,26 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import tv.trakt.trakt.common.core.klipy.model.Gif
+import tv.trakt.trakt.common.core.klipy.model.KlipyGif
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 // Smaller than DefaultCardShape - GIF thumbnails sit at roughly a third of the screen width.
-private val GifCardShape = RoundedCornerShape(8.dp)
 private const val FALLBACK_ASPECT_RATIO = 1F
 
 @Composable
 internal fun GifCard(
-    gif: Gif,
+    gif: KlipyGif,
+    preview: Boolean,
     modifier: Modifier = Modifier,
+    shape: RoundedCornerShape = RoundedCornerShape(8.dp),
     onClick: () -> Unit = {},
 ) {
-    val preview = gif.preview ?: return
+    val preview = when (preview) {
+        true -> gif.previewMedia ?: return
+        false -> gif.fullMedia ?: return
+    }
+
     val aspectRatio = when {
         preview.width > 0 && preview.height > 0 -> preview.width.toFloat() / preview.height
         else -> FALLBACK_ASPECT_RATIO
@@ -39,7 +44,7 @@ internal fun GifCard(
         modifier = modifier
             .fillMaxWidth()
             .aspectRatio(aspectRatio)
-            .clip(GifCardShape)
+            .clip(shape)
             .background(TraktTheme.colors.skeletonShimmer)
             .onClick(onClick = onClick),
     ) {

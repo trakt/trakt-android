@@ -1,13 +1,12 @@
 package tv.trakt.trakt.common.core.klipy.data.remote
 
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.core.klipy.model.Gif
-import tv.trakt.trakt.common.core.klipy.model.GifFormats
-import tv.trakt.trakt.common.core.klipy.model.GifId
-import tv.trakt.trakt.common.core.klipy.model.GifMedia
 import tv.trakt.trakt.common.core.klipy.model.GifPage
-import tv.trakt.trakt.common.core.klipy.model.GifRenditions
 import tv.trakt.trakt.common.core.klipy.model.GifsQuery
+import tv.trakt.trakt.common.core.klipy.model.KlipyGif
+import tv.trakt.trakt.common.core.klipy.model.KlipyGifFormats
+import tv.trakt.trakt.common.core.klipy.model.KlipyGifMedia
+import tv.trakt.trakt.common.core.klipy.model.KlipyGifRenditions
 import tv.trakt.trakt.common.networking.api.klipy.model.KlipyGifDto
 import tv.trakt.trakt.common.networking.api.klipy.model.KlipyGifFormatsDto
 import tv.trakt.trakt.common.networking.api.klipy.model.KlipyGifsRequest
@@ -38,19 +37,19 @@ internal fun KlipyPageDto<KlipyGifDto>.toDomain(): GifPage {
     )
 }
 
-internal fun KlipyGifDto.toDomain(): Gif? {
+internal fun KlipyGifDto.toDomain(): KlipyGif? {
     if (id == null || slug.isNullOrBlank()) return null
     if (type != null && type != KLIPY_TYPE_GIF) return null
 
-    val renditions = GifRenditions(
+    val renditions = KlipyGifRenditions(
         hd = file?.hd.toDomain(),
         md = file?.md.toDomain(),
         sm = file?.sm.toDomain(),
         xs = file?.xs.toDomain(),
     )
 
-    val gif = Gif(
-        id = GifId(id),
+    val gif = KlipyGif(
+        id = id,
         slug = slug,
         title = title.orEmpty(),
         tags = tags.orEmpty().toImmutableList(),
@@ -59,13 +58,13 @@ internal fun KlipyGifDto.toDomain(): Gif? {
     )
 
     // Without a playable rendition there is nothing to show.
-    return gif.takeIf { it.preview != null }
+    return gif.takeIf { it.previewMedia != null }
 }
 
-private fun KlipyGifFormatsDto?.toDomain(): GifFormats? {
+private fun KlipyGifFormatsDto?.toDomain(): KlipyGifFormats? {
     if (this == null) return null
 
-    return GifFormats(
+    return KlipyGifFormats(
         gif = gif.toDomain(),
         webp = webp.toDomain(),
         jpg = jpg.toDomain(),
@@ -74,10 +73,10 @@ private fun KlipyGifFormatsDto?.toDomain(): GifFormats? {
     )
 }
 
-private fun KlipyMediaDto?.toDomain(): GifMedia? {
+private fun KlipyMediaDto?.toDomain(): KlipyGifMedia? {
     if (this == null || url.isNullOrBlank()) return null
 
-    return GifMedia(
+    return KlipyGifMedia(
         url = url,
         width = width ?: 0,
         height = height ?: 0,

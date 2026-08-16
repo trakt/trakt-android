@@ -354,6 +354,7 @@ private fun ContentList(
                     repliesLoading = listRepliesLoading.contains(comment.id),
                     userReactions = userReactions,
                     onRequestReactions = onRequestReactions,
+                    gifsEnabled = true,
                     replyEnabled = user != null && !isUserComment,
                     repliesCountEnabled = false,
                     repliesButtonEnabled = true,
