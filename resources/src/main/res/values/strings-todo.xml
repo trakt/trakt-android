@@ -1,2 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+  <string name="input_placeholder_search_gifs">Search KLIPY</string>
+  <string name="list_placeholder_gifs">No GIFs found.</string>
+</resources>

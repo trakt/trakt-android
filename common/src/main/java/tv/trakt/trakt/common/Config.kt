@@ -6,6 +6,7 @@ object Config {
     const val API_BASE_URL: String = "https://apiz.trakt.tv/"
     const val API_V3_BASE_URL: String = "https://apiz.trakt.tv/v3/"
     const val PLEX_BASE_URL: String = "https://watch.plex.tv/"
+    const val KLIPY_BASE_URL: String = "https://api.klipy.com/api/v1/"
 
     const val WEB_V3_BASE_URL: String = "https://app.trakt.tv/"
     const val WEB_AUTH_URL: String = "https://auth.trakt.tv/"

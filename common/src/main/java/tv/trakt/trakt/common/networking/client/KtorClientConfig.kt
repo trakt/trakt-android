@@ -117,6 +117,53 @@ internal fun HttpClientConfig<*>.applyConfig(
     }
 }
 
+internal fun HttpClientConfig<*>.applyKlipyConfig(fileStorage: CacheStorage) {
+    expectSuccess = true
+
+    install(UserAgent) {
+        agent = Config.apiUserAgent()
+    }
+
+    install(HttpCache) {
+        publicStorage(fileStorage)
+    }
+
+    install(HttpTimeout) {
+        val timeoutMillis = TIMEOUT_DURATION.inWholeMilliseconds
+        requestTimeoutMillis = timeoutMillis
+        socketTimeoutMillis = timeoutMillis
+        connectTimeoutMillis = timeoutMillis
+    }
+
+    install(HttpRequestRetry) {
+        retryOnServerErrors(3)
+        retryOnExceptionIf(3) { _, cause ->
+            cause !is CancellationException
+        }
+        exponentialDelay()
+    }
+
+    install(ContentNegotiation) {
+        json(jsonNegotiation)
+    }
+
+    install(Logging) {
+        logger = object : Logger {
+            override fun log(message: String) {
+                Timber.i(message)
+            }
+        }
+        level = when {
+            BuildConfig.DEBUG -> LogLevel.HEADERS
+            else -> LogLevel.NONE
+        }
+    }
+
+    defaultRequest {
+        header(HttpHeaders.ContentType, Application.Json)
+    }
+}
+
 internal fun HttpClientConfig<*>.applyAuthorizationConfig(
     tokenProvider: TokenProvider,
     sessionManager: SessionManager,

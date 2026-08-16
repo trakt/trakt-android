@@ -19,6 +19,7 @@ import org.koin.core.context.startKoin
 import timber.log.Timber
 import tv.trakt.trakt.app.TvActivity
 import tv.trakt.trakt.common.auth.di.commonAuthModule
+import tv.trakt.trakt.common.core.klipy.di.gifsDataModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsDataModule
 import tv.trakt.trakt.common.core.streamings.di.streamingsModule
 import tv.trakt.trakt.common.core.translations.di.translationsDataModule
@@ -46,6 +47,7 @@ import tv.trakt.trakt.core.favorites.di.favoritesDataModule
 import tv.trakt.trakt.core.filters.di.filtersModule
 import tv.trakt.trakt.core.home.di.homeDataModule
 import tv.trakt.trakt.core.home.di.homeModule
+import tv.trakt.trakt.core.klipy.di.gifPickerModule
 import tv.trakt.trakt.core.lists.di.listsDataModule
 import tv.trakt.trakt.core.lists.di.listsModule
 import tv.trakt.trakt.core.main.di.mainModule
@@ -198,6 +200,8 @@ internal class TraktApplication : Application() {
                 analyticsModule,
                 translationsDataModule,
                 translationsModule,
+                gifsDataModule,
+                gifPickerModule,
                 userProfileModule,
                 youTubePlayerModule,
                 shareModule,

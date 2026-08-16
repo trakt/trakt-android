@@ -22,6 +22,7 @@ android {
         buildConfigField("String", "VERSION_NAME", "\"${versionName}\"")
         buildConfigField("String", "TRAKT_API_KEY", localProperties.getProperty("TRAKT_API_KEY"))
         buildConfigField("String", "TRAKT_API_SECRET", localProperties.getProperty("TRAKT_API_SECRET"))
+        buildConfigField("String", "KLIPY_API_KEY", localProperties.getProperty("KLIPY_API_KEY", "\"\""))
         buildConfigField(
             "Boolean",
             "DEBUG_DELAY_ENABLED",
@@ -102,6 +103,7 @@ dependencies {
     api(libs.coil.compose)
     api(libs.coil.network)
     api(libs.coil.svg)
+    api(libs.coil.gif)
 
     api(libs.youtube.player)
     api(libs.youtube.player.ui)

@@ -29,9 +29,12 @@ import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.apis.WatchedApi
 import org.openapitools.client.apis.WatchnowApi
+import tv.trakt.trakt.common.BuildConfig
 import tv.trakt.trakt.common.Config.API_BASE_URL
 import tv.trakt.trakt.common.Config.API_V3_BASE_URL
+import tv.trakt.trakt.common.Config.KLIPY_BASE_URL
 import tv.trakt.trakt.common.Config.WEB_AUTH_URL
+import tv.trakt.trakt.common.networking.api.klipy.KlipyApi
 import tv.trakt.trakt.common.networking.api.scrobble.ScrobbleExtrasApi
 import tv.trakt.trakt.common.networking.api.v3.V3Api
 import tv.trakt.trakt.common.networking.client.KtorClientFactory
@@ -68,6 +71,11 @@ val networkingModule = module {
     single<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")) {
         val factory = get<KtorClientFactory>()
         factory.createAuthorizedClientConfig()
+    }
+
+    single<(HttpClientConfig<*>) -> Unit>(named("klipyClientConfig")) {
+        val factory = get<KtorClientFactory>()
+        factory.createKlipyClientConfig()
     }
 
     single<CacheMarkerProvider> {
@@ -111,6 +119,15 @@ val networkingApiModule = module {
             baseV3Url = API_V3_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
+        )
+    }
+
+    single<KlipyApi> {
+        KlipyApi(
+            baseUrl = KLIPY_BASE_URL,
+            appKey = BuildConfig.KLIPY_API_KEY,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("klipyClientConfig")),
         )
     }
 
