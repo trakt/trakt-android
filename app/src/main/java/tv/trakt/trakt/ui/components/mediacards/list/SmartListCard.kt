@@ -29,7 +29,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
@@ -136,7 +135,6 @@ private fun SmartListContent(
                         enabled = false,
                         more = false,
                         modifier = Modifier
-                            .zIndex((imageCount - index).toFloat())
                             .padding(start = offset * index),
                     )
                 }
