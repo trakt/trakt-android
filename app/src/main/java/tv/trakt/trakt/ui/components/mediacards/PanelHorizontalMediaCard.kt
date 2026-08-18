@@ -94,7 +94,7 @@ internal fun PanelHorizontalMediaCard(
                 clip = false
             }
             .shadow(
-                elevation = TraktTheme.colors.shadowDynamicLarge,
+                elevation = TraktTheme.colors.shadowDynamicDefault,
                 shape = RoundedCornerShape(16.dp),
                 clip = false,
             )

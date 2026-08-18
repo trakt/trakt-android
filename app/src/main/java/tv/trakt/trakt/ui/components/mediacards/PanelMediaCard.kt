@@ -78,12 +78,13 @@ internal fun PanelMediaCard(
     watching: Boolean = false,
     watchlist: Boolean = false,
     enabled: Boolean = true,
-    containerColor: Color = TraktTheme.colors.panelCardContainer,
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
     onImageClick: (() -> Unit)? = null,
     footerContent: @Composable (() -> Unit)? = null,
 ) {
+    val containerColor = TraktTheme.colors.panelCardContainer
+
     var isPosterError by remember { mutableStateOf(false) }
     var isContainerError by remember { mutableStateOf(false) }
 
@@ -95,7 +96,7 @@ internal fun PanelMediaCard(
                 clip = false
             }
             .shadow(
-                elevation = TraktTheme.colors.shadowDynamicLarge,
+                elevation = TraktTheme.colors.shadowDynamicDefault,
                 shape = RoundedCornerShape(16.dp),
                 clip = false,
             )
@@ -269,7 +270,8 @@ internal fun PanelMediaCard(
         ) {
             if (!containerImageUrl.isNullOrBlank() && !isContainerError) {
                 val inspection = LocalInspectionMode.current
-                val gradientColor2 = when {
+
+                val imageGradientColor = when {
                     inspection -> TraktTheme.colors.accent
                     else -> containerColor.copy(alpha = 0F)
                 }
@@ -292,7 +294,7 @@ internal fun PanelMediaCard(
                                 brush = linearGradient(
                                     colors = listOf(
                                         containerColor,
-                                        gradientColor2,
+                                        imageGradientColor,
                                     ),
                                     start = Offset(size.width / 1.75F, size.height),
                                     end = Offset(size.width * 1.655F, -size.height),
