@@ -17,6 +17,7 @@ import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.theme.TraktTheme
+import tv.trakt.trakt.ui.theme.model.ThemeMode
 import tv.trakt.trakt.widgets.model.WidgetBackground
 
 @Composable
@@ -24,6 +25,7 @@ internal fun WidgetConfigurationView(
     state: WidgetConfigurationState,
     modifier: Modifier = Modifier,
     onBackgroundClick: (WidgetBackground) -> Unit = { },
+    onThemeClick: (ThemeMode) -> Unit = { },
     onTitleVisibleClick: (Boolean) -> Unit = { },
     onDoneClick: () -> Unit = { },
 ) {
@@ -36,9 +38,8 @@ internal fun WidgetConfigurationView(
             subtitle = stringResource(R.string.text_info_widget_background),
             maxSubtitleLines = 2,
         )
-
         Column(
-            verticalArrangement = spacedBy(TraktTheme.spacing.chipsSpace),
+
             modifier = Modifier
                 .graphicsLayer {
                     translationX = -8.dp.toPx()
@@ -61,6 +62,36 @@ internal fun WidgetConfigurationView(
             }
         }
 
+        TraktHeader(
+            title = stringResource(R.string.header_appearance),
+            subtitle = stringResource(R.string.text_theme),
+            maxSubtitleLines = 2,
+            modifier = Modifier.padding(top = TraktTheme.spacing.mainRowSpace),
+        )
+
+        Column(
+            modifier = Modifier
+                .graphicsLayer {
+                    translationX = -8.dp.toPx()
+                },
+        ) {
+            for (theme in ThemeMode.entries) {
+                GhostButton(
+                    text = stringResource(theme.displayName()),
+                    contentColor = when (theme) {
+                        state.theme -> TraktTheme.colors.primaryButtonContent
+                        else -> TraktTheme.colors.textSecondary
+                    },
+                    icon = when (theme) {
+                        state.theme -> painterResource(R.drawable.ic_check_google)
+                        else -> null
+                    },
+                    iconSpace = 8.dp,
+                    onClick = { onThemeClick(theme) },
+                )
+            }
+        }
+
         SettingsSwitchField(
             text = stringResource(R.string.text_settings_widget_show_title),
             description = stringResource(R.string.text_settings_widget_show_title_description),
@@ -68,7 +99,8 @@ internal fun WidgetConfigurationView(
             onClick = { onTitleVisibleClick(!state.titleVisible) },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 6.dp, bottom = 12.dp),
+                .padding(top = 6.dp, bottom = 12.dp)
+                .padding(top = TraktTheme.spacing.mainRowSpace),
         )
 
         PrimaryButton(

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.widgets.continuewatching.actions
+package tv.trakt.trakt.widgets.widget.continuewatching.actions
 
 import android.content.Context
 import android.widget.Toast
@@ -13,9 +13,9 @@ import org.koin.core.component.inject
 import timber.log.Timber
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.widgets.continuewatching.ContinueWatchingWidget
-import tv.trakt.trakt.widgets.continuewatching.data.ContinueWatchingWidgetDataSource
-import tv.trakt.trakt.widgets.continuewatching.usecases.WidgetAddToHistoryUseCase
+import tv.trakt.trakt.widgets.widget.continuewatching.ContinueWatchingWidget
+import tv.trakt.trakt.widgets.widget.continuewatching.data.ContinueWatchingWidgetDataSource
+import tv.trakt.trakt.widgets.widget.continuewatching.usecases.WidgetAddToHistoryUseCase
 
 internal val ITEM_KEY_PARAM = ActionParameters.Key<String>("itemKey")
 internal val EPISODE_ID_PARAM = ActionParameters.Key<Int>("episodeId")

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.widgets.continuewatching
+package tv.trakt.trakt.widgets.widget.continuewatching
 
 import android.graphics.Bitmap
 import androidx.compose.runtime.Immutable
@@ -6,8 +6,6 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.widgets.WidgetIntentTarget
-import tv.trakt.trakt.widgets.continuewatching.ContinueWatchingWidgetItem.Movie
-import tv.trakt.trakt.widgets.continuewatching.ContinueWatchingWidgetItem.Show
 
 @Immutable
 internal data class ContinueWatchingWidgetState(
@@ -61,8 +59,8 @@ internal fun ContinueWatchingWidgetState.withPendingItem(key: String?): Continue
         items = items
             .map { item ->
                 when (item) {
-                    is Show -> item.copy(loading = item.key == key)
-                    is Movie -> item
+                    is ContinueWatchingWidgetItem.Show -> item.copy(loading = item.key == key)
+                    is ContinueWatchingWidgetItem.Movie -> item
                 }
             }
             .toImmutableList(),

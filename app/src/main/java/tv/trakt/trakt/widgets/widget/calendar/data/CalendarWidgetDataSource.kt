@@ -1,4 +1,4 @@
-package tv.trakt.trakt.widgets.calendar.data
+package tv.trakt.trakt.widgets.widget.calendar.data
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -31,10 +31,10 @@ import tv.trakt.trakt.core.calendar.usecases.GetCalendarItemsUseCase
 import tv.trakt.trakt.core.discover.sections.releases.model.ReleaseType
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.widgets.WidgetIntentTarget
-import tv.trakt.trakt.widgets.calendar.CalendarWidgetDay
-import tv.trakt.trakt.widgets.calendar.CalendarWidgetItem
-import tv.trakt.trakt.widgets.calendar.CalendarWidgetState
-import tv.trakt.trakt.widgets.calendar.CalendarWidgetTag
+import tv.trakt.trakt.widgets.widget.calendar.CalendarWidgetDay
+import tv.trakt.trakt.widgets.widget.calendar.CalendarWidgetItem
+import tv.trakt.trakt.widgets.widget.calendar.CalendarWidgetState
+import tv.trakt.trakt.widgets.widget.calendar.CalendarWidgetTag
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle

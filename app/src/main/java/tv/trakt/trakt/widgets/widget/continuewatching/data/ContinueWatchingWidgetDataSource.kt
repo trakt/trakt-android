@@ -1,4 +1,4 @@
-package tv.trakt.trakt.widgets.continuewatching.data
+package tv.trakt.trakt.widgets.widget.continuewatching.data
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -25,9 +25,9 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.widgets.WidgetIntentTarget
-import tv.trakt.trakt.widgets.continuewatching.ContinueWatchingWidgetItem
-import tv.trakt.trakt.widgets.continuewatching.ContinueWatchingWidgetState
-import tv.trakt.trakt.widgets.continuewatching.withPendingItem
+import tv.trakt.trakt.widgets.widget.continuewatching.ContinueWatchingWidgetItem
+import tv.trakt.trakt.widgets.widget.continuewatching.ContinueWatchingWidgetState
+import tv.trakt.trakt.widgets.widget.continuewatching.withPendingItem
 import kotlin.math.ceil
 
 /** Bitmaps and strings are prepared here: a Glance tree can neither suspend nor read resources. */

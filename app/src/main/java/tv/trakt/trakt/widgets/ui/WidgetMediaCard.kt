@@ -33,9 +33,7 @@ import androidx.glance.unit.ColorProvider
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 
-/** Below this the fill reads as a stray nub rather than progress. Matches `EpisodeProgressBar`. */
 private const val MIN_VISIBLE_PROGRESS = 0.1F
-
 private val TITLE_ICON_SIZE = 11.5.dp
 
 @Composable
@@ -57,7 +55,7 @@ internal fun WidgetMediaCard(
             modifier = GlanceModifier
                 .width(width)
                 .height(width / HorizontalImageAspectRatio)
-                .background(WidgetColors.placeholderContainer)
+                .background(WidgetTheme.colors.placeholderContainer)
                 .cornerRadius(WidgetDimensions.cardCornerRadius)
                 .clickable(onImageClick),
         ) {
@@ -91,7 +89,7 @@ internal fun WidgetMediaCard(
                         Image(
                             provider = ImageProvider(titleIconRes),
                             contentDescription = null,
-                            colorFilter = ColorFilter.tint(WidgetColors.chipContent),
+                            colorFilter = ColorFilter.tint(WidgetTheme.colors.chipContent),
                             modifier = GlanceModifier.size(TITLE_ICON_SIZE),
                         )
 
@@ -100,14 +98,14 @@ internal fun WidgetMediaCard(
 
                     Text(
                         text = title,
-                        style = WidgetTextStyles.cardTitle,
+                        style = WidgetTheme.textStyles.cardTitle,
                         maxLines = 1,
                     )
                 }
 
                 Text(
                     text = subtitle,
-                    style = WidgetTextStyles.cardSubtitle,
+                    style = WidgetTheme.textStyles.cardSubtitle,
                     maxLines = 1,
                 )
             }
@@ -140,7 +138,7 @@ internal fun WidgetProgressChip(
         modifier = modifier
             .width(width)
             .height(height)
-            .background(WidgetColors.chipContainer)
+            .background(WidgetTheme.colors.chipContainer)
             .cornerRadius(WidgetDimensions.chipCornerRadius)
             .padding(horizontal = 3.dp),
     ) {
@@ -150,7 +148,7 @@ internal fun WidgetProgressChip(
                 modifier = GlanceModifier
                     .width((width * progress.coerceAtMost(1F)))
                     .height(WidgetDimensions.chipHeight - 5.dp)
-                    .background(WidgetColors.chipProgressTrack)
+                    .background(WidgetTheme.colors.chipProgressTrack)
                     .cornerRadius(WidgetDimensions.chipCornerRadius),
             ) {}
         }
@@ -163,7 +161,7 @@ internal fun WidgetProgressChip(
         ) {
             Text(
                 text = startText,
-                style = WidgetTextStyles.meta,
+                style = WidgetTheme.textStyles.meta,
                 maxLines = 1,
             )
 
@@ -172,7 +170,7 @@ internal fun WidgetProgressChip(
 
                 Text(
                     text = endText,
-                    style = WidgetTextStyles.meta,
+                    style = WidgetTheme.textStyles.meta,
                     maxLines = 1,
                 )
             }
@@ -180,7 +178,6 @@ internal fun WidgetProgressChip(
     }
 }
 
-/** Wrap-content pill for short static labels (release time, tags). */
 @Composable
 internal fun WidgetInfoChip(
     text: String,
@@ -190,13 +187,13 @@ internal fun WidgetInfoChip(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .height(WidgetDimensions.chipHeight)
-            .background(WidgetColors.chipContainer)
+            .background(WidgetTheme.colors.chipContainer)
             .cornerRadius(WidgetDimensions.chipCornerRadius)
             .padding(horizontal = 8.dp),
     ) {
         Text(
             text = text,
-            style = WidgetTextStyles.meta,
+            style = WidgetTheme.textStyles.meta,
             maxLines = 1,
         )
     }
@@ -204,7 +201,6 @@ internal fun WidgetInfoChip(
 
 private val STATUS_DOT_SIZE = 7.5.dp
 
-/** Wrap-content pill with a coloured status dot; mirrors the app's `StatusChip`. */
 @Composable
 internal fun WidgetStatusChip(
     text: String,
@@ -215,7 +211,7 @@ internal fun WidgetStatusChip(
         verticalAlignment = Alignment.Vertical.CenterVertically,
         modifier = modifier
             .height(WidgetDimensions.chipHeight)
-            .background(WidgetColors.chipContainer)
+            .background(WidgetTheme.colors.chipContainer)
             .cornerRadius(WidgetDimensions.chipCornerRadius)
             .padding(horizontal = 6.dp),
     ) {
@@ -230,7 +226,7 @@ internal fun WidgetStatusChip(
 
         Text(
             text = text,
-            style = WidgetTextStyles.meta,
+            style = WidgetTheme.textStyles.meta,
             maxLines = 1,
         )
     }
@@ -254,7 +250,7 @@ private fun InfoChipCardPreview() {
             Image(
                 provider = ImageProvider(R.drawable.ic_check_double),
                 contentDescription = null,
-                colorFilter = ColorFilter.tint(WidgetColors.textPrimary),
+                colorFilter = ColorFilter.tint(WidgetTheme.colors.textPrimary),
                 modifier = GlanceModifier.size(WidgetDimensions.checkIconSize),
             )
         },

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.widgets.calendar
+package tv.trakt.trakt.widgets.widget.calendar
 
 import android.content.Context
 import android.os.Build
@@ -39,17 +39,12 @@ import kotlinx.coroutines.withContext
 import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.widgets.WidgetIntentTarget
-import tv.trakt.trakt.widgets.calendar.data.CalendarWidgetDataSource
-import tv.trakt.trakt.widgets.calendar.ui.CalendarItemView
 import tv.trakt.trakt.widgets.data.widgetAppearance
 import tv.trakt.trakt.widgets.model.WidgetAppearance
 import tv.trakt.trakt.widgets.model.WidgetBackground
-import tv.trakt.trakt.widgets.ui.WidgetColors
-import tv.trakt.trakt.widgets.ui.WidgetColors.backgroundNone
-import tv.trakt.trakt.widgets.ui.WidgetColors.backgroundPrimary
-import tv.trakt.trakt.widgets.ui.WidgetColors.backgroundTranslucent
 import tv.trakt.trakt.widgets.ui.WidgetDimensions
-import tv.trakt.trakt.widgets.ui.WidgetTextStyles
+import tv.trakt.trakt.widgets.ui.WidgetTheme
+import tv.trakt.trakt.widgets.widget.calendar.ui.CalendarItemView
 import tv.trakt.trakt.widgets.widgetTargetIntent
 import androidx.glance.appwidget.action.actionStartActivity as actionStartActivityIntent
 
@@ -63,7 +58,7 @@ private val TODAY_PILL_HEIGHT = 16.dp
 private val TODAY_PILL_SPACE = 6.dp
 
 internal class CalendarWidget(
-    private val dataSource: CalendarWidgetDataSource,
+    private val dataSource: tv.trakt.trakt.widgets.widget.calendar.data.CalendarWidgetDataSource,
 ) : GlanceAppWidget() {
     override val sizeMode: SizeMode = SizeMode.Exact
 
@@ -92,8 +87,22 @@ private fun WidgetContent(
     state: CalendarWidgetState,
     appearance: WidgetAppearance,
 ) {
+    WidgetTheme(theme = appearance.theme) {
+        WidgetBody(
+            state = state,
+            appearance = appearance,
+        )
+    }
+}
+
+@Composable
+private fun WidgetBody(
+    state: CalendarWidgetState,
+    appearance: WidgetAppearance,
+) {
     val context = LocalContext.current
-    val cardWidth = getCardWidth(widgetWidth = LocalSize.current.width)
+    val cardWidth =
+        getCardWidth(widgetWidth = LocalSize.current.width)
 
     Column(
         modifier = GlanceModifier
@@ -104,9 +113,9 @@ private fun WidgetContent(
                 .fillMaxSize()
                 .background(
                     when (appearance.background) {
-                        WidgetBackground.Solid -> backgroundPrimary
-                        WidgetBackground.SemiTransparent -> backgroundTranslucent
-                        WidgetBackground.None -> backgroundNone
+                        WidgetBackground.Solid -> WidgetTheme.colors.backgroundPrimary
+                        WidgetBackground.SemiTransparent -> WidgetTheme.colors.backgroundTranslucent
+                        WidgetBackground.None -> WidgetTheme.colors.backgroundNone
                     },
                 )
                 .cornerRadius(
@@ -139,13 +148,13 @@ private fun WidgetContent(
             when {
                 state.error -> Text(
                     text = context.getString(R.string.error_text_unexpected_error_short),
-                    style = WidgetTextStyles.message,
+                    style = WidgetTheme.textStyles.message,
                     maxLines = 3,
                 )
 
                 state.days.isEmpty() -> Text(
                     text = context.getString(R.string.about_feature_description_calendar),
-                    style = WidgetTextStyles.message,
+                    style = WidgetTheme.textStyles.message,
                     maxLines = 3,
                 )
 
@@ -177,12 +186,12 @@ private fun HeaderView(modifier: GlanceModifier = GlanceModifier) {
         ) {
             Text(
                 text = context.getString(R.string.page_title_calendar),
-                style = WidgetTextStyles.heading,
+                style = WidgetTheme.textStyles.heading,
                 maxLines = 1,
             )
             Text(
                 text = context.getString(R.string.text_stats_this_week),
-                style = WidgetTextStyles.cardSubtitle,
+                style = WidgetTheme.textStyles.cardSubtitle,
                 maxLines = 1,
             )
         }
@@ -190,7 +199,7 @@ private fun HeaderView(modifier: GlanceModifier = GlanceModifier) {
         Image(
             provider = ImageProvider(R.drawable.ic_trakt_icon),
             contentDescription = null,
-            colorFilter = ColorFilter.tint(WidgetColors.textPrimary),
+            colorFilter = ColorFilter.tint(WidgetTheme.colors.textPrimary),
             modifier = GlanceModifier
                 .size(WidgetDimensions.headerIconSize)
                 .clickable(actionStartActivity(MainActivity::class.java)),
@@ -223,7 +232,7 @@ private fun DaysListView(
                 item {
                     Text(
                         text = context.getString(R.string.text_calendar_placeholder_2),
-                        style = WidgetTextStyles.message,
+                        style = WidgetTheme.textStyles.message,
                         maxLines = 2,
                         modifier = GlanceModifier
                             .padding(bottom = WidgetDimensions.spacingRegular),
@@ -268,7 +277,7 @@ private fun DayHeaderView(
             Box(
                 modifier = GlanceModifier
                     .size(width = TODAY_PILL_WIDTH, height = TODAY_PILL_HEIGHT)
-                    .background(WidgetColors.todayMarker)
+                    .background(WidgetTheme.colors.todayMarker)
                     .cornerRadius(WidgetDimensions.chipCornerRadius),
             ) {}
 
@@ -277,7 +286,7 @@ private fun DayHeaderView(
 
         Text(
             text = day.label,
-            style = WidgetTextStyles.dayHeading,
+            style = WidgetTheme.textStyles.dayHeading,
             maxLines = 1,
             modifier = GlanceModifier.padding(bottom = 2.dp),
         )

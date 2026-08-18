@@ -1,4 +1,4 @@
-package tv.trakt.trakt.widgets.calendar
+package tv.trakt.trakt.widgets.widget.continuewatching
 
 import android.content.Context
 import androidx.glance.appwidget.GlanceAppWidgetManager
@@ -7,15 +7,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.widgets.calendar.data.CalendarWidgetDataSource
+import tv.trakt.trakt.widgets.widget.continuewatching.data.ContinueWatchingWidgetDataSource
 
 /**
  * Pushes app-side changes into the home-screen widget. Callers own the "did anything change"
- * question: every refresh costs requests plus a bitmap decode per card.
+ * question: every refresh costs a request plus a bitmap decode per card.
  */
-internal class CalendarWidgetUpdater(
+internal class ContinueWatchingWidgetUpdater(
     private val context: Context,
-    private val dataSource: CalendarWidgetDataSource,
+    private val dataSource: ContinueWatchingWidgetDataSource,
     private val scope: CoroutineScope,
 ) {
     /** No-ops for ids owned by other widgets, so config can render every updater blindly. */
@@ -23,12 +23,12 @@ internal class CalendarWidgetUpdater(
         try {
             val manager = GlanceAppWidgetManager(context)
             val glanceId = manager.getGlanceIdBy(appWidgetId)
-            if (glanceId !in manager.getGlanceIds(CalendarWidget::class.java)) return
+            if (glanceId !in manager.getGlanceIds(ContinueWatchingWidget::class.java)) return
 
-            CalendarWidget(dataSource).update(context, glanceId)
+            ContinueWatchingWidget(dataSource).update(context, glanceId)
         } catch (error: Exception) {
             error.rethrowCancellation {
-                Timber.w(error, "Failed to render the Calendar widget %d", appWidgetId)
+                Timber.w(error, "Failed to render the Continue Watching widget %d", appWidgetId)
             }
         }
     }
@@ -40,14 +40,14 @@ internal class CalendarWidgetUpdater(
     suspend fun refresh() {
         try {
             GlanceAppWidgetManager(context)
-                .getGlanceIds(CalendarWidget::class.java)
+                .getGlanceIds(ContinueWatchingWidget::class.java)
                 .also { if (it.isEmpty()) return }
 
             dataSource.refresh(context = context, limit = MAX_ITEM_COUNT)
-            CalendarWidget(dataSource).updateAll(context)
+            ContinueWatchingWidget(dataSource).updateAll(context)
         } catch (error: Exception) {
             error.rethrowCancellation {
-                Timber.w(error, "Failed to refresh the Calendar widget")
+                Timber.w(error, "Failed to refresh the Continue Watching widget")
             }
         }
     }

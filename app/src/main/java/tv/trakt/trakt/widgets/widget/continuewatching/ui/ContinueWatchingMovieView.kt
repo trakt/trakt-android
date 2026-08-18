@@ -1,14 +1,14 @@
-package tv.trakt.trakt.widgets.continuewatching.ui
+package tv.trakt.trakt.widgets.widget.continuewatching.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.Dp
 import androidx.glance.GlanceModifier
 import androidx.glance.LocalContext
 import androidx.glance.appwidget.action.actionStartActivity
-import tv.trakt.trakt.widgets.continuewatching.ContinueWatchingWidgetItem
 import tv.trakt.trakt.widgets.ui.WidgetDimensions
 import tv.trakt.trakt.widgets.ui.WidgetMediaCard
 import tv.trakt.trakt.widgets.ui.WidgetProgressChip
+import tv.trakt.trakt.widgets.widget.continuewatching.ContinueWatchingWidgetItem
 import tv.trakt.trakt.widgets.widgetTargetIntent
 
 @Composable

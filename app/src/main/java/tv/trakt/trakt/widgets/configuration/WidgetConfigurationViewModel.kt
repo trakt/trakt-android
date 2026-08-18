@@ -12,23 +12,22 @@ import timber.log.Timber
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.widgets.calendar.CalendarWidgetUpdater
-import tv.trakt.trakt.widgets.continuewatching.ContinueWatchingWidgetUpdater
+import tv.trakt.trakt.ui.theme.model.ThemeMode
 import tv.trakt.trakt.widgets.data.WidgetAppearanceStore
 import tv.trakt.trakt.widgets.model.WidgetBackground
-import tv.trakt.trakt.widgets.streaks.StreaksWidgetUpdater
 
 @Suppress("UNCHECKED_CAST")
 internal class WidgetConfigurationViewModel(
     private val appWidgetId: Int,
     private val appearanceStore: WidgetAppearanceStore,
-    private val continueWatchingUpdater: ContinueWatchingWidgetUpdater,
-    private val calendarUpdater: CalendarWidgetUpdater,
-    private val streaksUpdater: StreaksWidgetUpdater,
+    private val continueWatchingUpdater: tv.trakt.trakt.widgets.widget.continuewatching.ContinueWatchingWidgetUpdater,
+    private val calendarUpdater: tv.trakt.trakt.widgets.widget.calendar.CalendarWidgetUpdater,
+    private val streaksUpdater: tv.trakt.trakt.widgets.widget.streaks.StreaksWidgetUpdater,
 ) : ViewModel() {
     private val initialState = WidgetConfigurationState()
 
     private val backgroundState = MutableStateFlow(initialState.background)
+    private val themeState = MutableStateFlow(initialState.theme)
     private val titleVisibleState = MutableStateFlow(initialState.titleVisible)
     private val loadingState = MutableStateFlow(initialState.loading)
 
@@ -41,6 +40,7 @@ internal class WidgetConfigurationViewModel(
             try {
                 val appearance = appearanceStore.get(appWidgetId)
                 backgroundState.update { appearance.background }
+                themeState.update { appearance.theme }
                 titleVisibleState.update { appearance.titleVisible }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -57,6 +57,12 @@ internal class WidgetConfigurationViewModel(
         backgroundState.update { background }
 
         persist { appearanceStore.setBackground(appWidgetId = appWidgetId, background = background) }
+    }
+
+    fun setTheme(theme: ThemeMode) {
+        themeState.update { theme }
+
+        persist { appearanceStore.setTheme(appWidgetId = appWidgetId, theme = theme) }
     }
 
     fun setTitleVisible(visible: Boolean) {
@@ -81,16 +87,17 @@ internal class WidgetConfigurationViewModel(
         }
     }
 
-    // Explicit element type: the three sources share no useful supertype to infer.
     val state = combine<Any, WidgetConfigurationState>(
         backgroundState,
+        themeState,
         titleVisibleState,
         loadingState,
     ) { state ->
         WidgetConfigurationState(
             background = state[0] as WidgetBackground,
-            titleVisible = state[1] as Boolean,
-            loading = state[2] as LoadingState,
+            theme = state[1] as ThemeMode,
+            titleVisible = state[2] as Boolean,
+            loading = state[3] as LoadingState,
         )
     }.stateIn(
         scope = viewModelScope,

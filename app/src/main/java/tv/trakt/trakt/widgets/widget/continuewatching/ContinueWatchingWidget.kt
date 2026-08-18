@@ -1,4 +1,4 @@
-package tv.trakt.trakt.widgets.continuewatching
+package tv.trakt.trakt.widgets.widget.continuewatching
 
 import android.content.Context
 import android.os.Build
@@ -38,20 +38,14 @@ import tv.trakt.trakt.MainActivity
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.widgets.WidgetIntentTarget
-import tv.trakt.trakt.widgets.continuewatching.ContinueWatchingWidgetItem.Movie
-import tv.trakt.trakt.widgets.continuewatching.ContinueWatchingWidgetItem.Show
-import tv.trakt.trakt.widgets.continuewatching.data.ContinueWatchingWidgetDataSource
-import tv.trakt.trakt.widgets.continuewatching.ui.ContinueWatchingMovieView
-import tv.trakt.trakt.widgets.continuewatching.ui.ContinueWatchingShowView
 import tv.trakt.trakt.widgets.data.widgetAppearance
 import tv.trakt.trakt.widgets.model.WidgetAppearance
 import tv.trakt.trakt.widgets.model.WidgetBackground
-import tv.trakt.trakt.widgets.ui.WidgetColors
-import tv.trakt.trakt.widgets.ui.WidgetColors.backgroundNone
-import tv.trakt.trakt.widgets.ui.WidgetColors.backgroundPrimary
-import tv.trakt.trakt.widgets.ui.WidgetColors.backgroundTranslucent
 import tv.trakt.trakt.widgets.ui.WidgetDimensions
-import tv.trakt.trakt.widgets.ui.WidgetTextStyles
+import tv.trakt.trakt.widgets.ui.WidgetTheme
+import tv.trakt.trakt.widgets.widget.continuewatching.data.ContinueWatchingWidgetDataSource
+import tv.trakt.trakt.widgets.widget.continuewatching.ui.ContinueWatchingMovieView
+import tv.trakt.trakt.widgets.widget.continuewatching.ui.ContinueWatchingShowView
 import tv.trakt.trakt.widgets.widgetTargetIntent
 import androidx.glance.appwidget.action.actionStartActivity as actionStartActivityIntent
 
@@ -98,6 +92,19 @@ private fun WidgetContent(
     state: ContinueWatchingWidgetState,
     appearance: WidgetAppearance,
 ) {
+    WidgetTheme(theme = appearance.theme) {
+        WidgetBody(
+            state = state,
+            appearance = appearance,
+        )
+    }
+}
+
+@Composable
+private fun WidgetBody(
+    state: ContinueWatchingWidgetState,
+    appearance: WidgetAppearance,
+) {
     val context = LocalContext.current
 
     val size = LocalSize.current
@@ -116,9 +123,9 @@ private fun WidgetContent(
             modifier = GlanceModifier
                 .background(
                     when (appearance.background) {
-                        WidgetBackground.Solid -> backgroundPrimary
-                        WidgetBackground.SemiTransparent -> backgroundTranslucent
-                        WidgetBackground.None -> backgroundNone
+                        WidgetBackground.Solid -> WidgetTheme.colors.backgroundPrimary
+                        WidgetBackground.SemiTransparent -> WidgetTheme.colors.backgroundTranslucent
+                        WidgetBackground.None -> WidgetTheme.colors.backgroundNone
                     },
                 )
                 .cornerRadius(
@@ -152,13 +159,13 @@ private fun WidgetContent(
             when {
                 state.error -> Text(
                     text = context.getString(R.string.error_text_unexpected_error_short),
-                    style = WidgetTextStyles.message,
+                    style = WidgetTheme.textStyles.message,
                     maxLines = 3,
                 )
 
                 state.items.isEmpty() -> Text(
                     text = context.getString(R.string.text_cta_up_next),
-                    style = WidgetTextStyles.message,
+                    style = WidgetTheme.textStyles.message,
                     maxLines = 3,
                 )
 
@@ -181,7 +188,7 @@ private fun HeaderView(modifier: GlanceModifier = GlanceModifier) {
     ) {
         Text(
             text = context.getString(R.string.list_title_up_next),
-            style = WidgetTextStyles.heading,
+            style = WidgetTheme.textStyles.heading,
             maxLines = 1,
             modifier = GlanceModifier
                 .defaultWeight()
@@ -195,7 +202,7 @@ private fun HeaderView(modifier: GlanceModifier = GlanceModifier) {
         Image(
             provider = ImageProvider(R.drawable.ic_trakt_icon),
             contentDescription = null,
-            colorFilter = ColorFilter.tint(WidgetColors.textPrimary),
+            colorFilter = ColorFilter.tint(WidgetTheme.colors.textPrimary),
             modifier = GlanceModifier
                 .size(WidgetDimensions.headerIconSize)
                 .clickable(actionStartActivity(MainActivity::class.java)),
@@ -235,11 +242,11 @@ private fun ItemsRowView(
             }
 
             when (item) {
-                is Show -> ContinueWatchingShowView(
+                is ContinueWatchingWidgetItem.Show -> ContinueWatchingShowView(
                     item = item,
                     width = cardWidth,
                 )
-                is Movie -> ContinueWatchingMovieView(
+                is ContinueWatchingWidgetItem.Movie -> ContinueWatchingMovieView(
                     item = item,
                     width = cardWidth,
                 )

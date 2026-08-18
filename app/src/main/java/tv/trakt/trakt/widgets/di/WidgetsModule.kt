@@ -8,16 +8,16 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
-import tv.trakt.trakt.widgets.calendar.CalendarWidgetUpdater
-import tv.trakt.trakt.widgets.calendar.data.CalendarWidgetDataSource
 import tv.trakt.trakt.widgets.configuration.WidgetConfigurationViewModel
-import tv.trakt.trakt.widgets.continuewatching.ContinueWatchingWidgetUpdater
-import tv.trakt.trakt.widgets.continuewatching.data.ContinueWatchingWidgetDataSource
-import tv.trakt.trakt.widgets.continuewatching.usecases.WidgetAddToHistoryUseCase
 import tv.trakt.trakt.widgets.data.WidgetAppearanceStore
 import tv.trakt.trakt.widgets.data.WidgetsUpdater
-import tv.trakt.trakt.widgets.streaks.StreaksWidgetUpdater
-import tv.trakt.trakt.widgets.streaks.data.StreaksWidgetDataSource
+import tv.trakt.trakt.widgets.widget.calendar.CalendarWidgetUpdater
+import tv.trakt.trakt.widgets.widget.calendar.data.CalendarWidgetDataSource
+import tv.trakt.trakt.widgets.widget.continuewatching.ContinueWatchingWidgetUpdater
+import tv.trakt.trakt.widgets.widget.continuewatching.data.ContinueWatchingWidgetDataSource
+import tv.trakt.trakt.widgets.widget.continuewatching.usecases.WidgetAddToHistoryUseCase
+import tv.trakt.trakt.widgets.widget.streaks.StreaksWidgetUpdater
+import tv.trakt.trakt.widgets.widget.streaks.data.StreaksWidgetDataSource
 
 internal val widgetsModule = module {
     singleOf(::ContinueWatchingWidgetDataSource)

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.widgets.calendar.ui
+package tv.trakt.trakt.widgets.widget.calendar.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.Dp
@@ -11,12 +11,12 @@ import androidx.glance.layout.Row
 import androidx.glance.layout.Spacer
 import androidx.glance.layout.width
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.widgets.calendar.CalendarWidgetItem
-import tv.trakt.trakt.widgets.calendar.CalendarWidgetTag
-import tv.trakt.trakt.widgets.ui.WidgetColors
 import tv.trakt.trakt.widgets.ui.WidgetInfoChip
 import tv.trakt.trakt.widgets.ui.WidgetMediaCard
 import tv.trakt.trakt.widgets.ui.WidgetStatusChip
+import tv.trakt.trakt.widgets.ui.WidgetTheme
+import tv.trakt.trakt.widgets.widget.calendar.CalendarWidgetItem
+import tv.trakt.trakt.widgets.widget.calendar.CalendarWidgetTag
 import tv.trakt.trakt.widgets.widgetTargetIntent
 
 // Matches the 3dp gap between the status and time chips on the app's calendar cards.
@@ -48,7 +48,7 @@ internal fun CalendarItemView(
                     CalendarWidgetTag.Premiere -> {
                         WidgetStatusChip(
                             text = context.getString(R.string.tag_text_premiere),
-                            dotColor = WidgetColors.premiereDot,
+                            dotColor = WidgetTheme.colors.premiereDot,
                         )
 
                         Spacer(modifier = GlanceModifier.width(CHIP_SPACE))
@@ -57,7 +57,7 @@ internal fun CalendarItemView(
                     CalendarWidgetTag.Finale -> {
                         WidgetStatusChip(
                             text = context.getString(R.string.tag_text_finale),
-                            dotColor = WidgetColors.finaleDot,
+                            dotColor = WidgetTheme.colors.finaleDot,
                         )
 
                         Spacer(modifier = GlanceModifier.width(CHIP_SPACE))

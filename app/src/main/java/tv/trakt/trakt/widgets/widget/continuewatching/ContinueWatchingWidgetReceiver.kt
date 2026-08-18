@@ -1,10 +1,10 @@
-package tv.trakt.trakt.widgets.continuewatching
+package tv.trakt.trakt.widgets.widget.continuewatching
 
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import tv.trakt.trakt.widgets.continuewatching.data.ContinueWatchingWidgetDataSource
+import tv.trakt.trakt.widgets.widget.continuewatching.data.ContinueWatchingWidgetDataSource
 
 internal class ContinueWatchingWidgetReceiver :
     GlanceAppWidgetReceiver(),

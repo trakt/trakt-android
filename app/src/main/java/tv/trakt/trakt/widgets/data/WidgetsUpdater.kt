@@ -1,13 +1,10 @@
 package tv.trakt.trakt.widgets.data
 
-import tv.trakt.trakt.widgets.calendar.CalendarWidgetUpdater
-import tv.trakt.trakt.widgets.continuewatching.ContinueWatchingWidgetUpdater
-import tv.trakt.trakt.widgets.streaks.StreaksWidgetUpdater
-
 internal class WidgetsUpdater(
-    private val continueWatchingWidgetUpdater: ContinueWatchingWidgetUpdater,
-    private val calendarWidgetUpdater: CalendarWidgetUpdater,
-    private val streaksWidgetUpdater: StreaksWidgetUpdater,
+    private val continueWatchingWidgetUpdater:
+        tv.trakt.trakt.widgets.widget.continuewatching.ContinueWatchingWidgetUpdater,
+    private val calendarWidgetUpdater: tv.trakt.trakt.widgets.widget.calendar.CalendarWidgetUpdater,
+    private val streaksWidgetUpdater: tv.trakt.trakt.widgets.widget.streaks.StreaksWidgetUpdater,
 ) {
     fun refreshInBackground() {
         continueWatchingWidgetUpdater.refreshInBackground()

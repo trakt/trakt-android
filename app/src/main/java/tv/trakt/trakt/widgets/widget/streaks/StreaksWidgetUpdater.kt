@@ -1,4 +1,4 @@
-package tv.trakt.trakt.widgets.streaks
+package tv.trakt.trakt.widgets.widget.streaks
 
 import android.content.Context
 import androidx.glance.appwidget.GlanceAppWidgetManager
@@ -8,7 +8,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.widgets.streaks.data.StreaksWidgetDataSource
+import tv.trakt.trakt.widgets.widget.streaks.data.StreaksWidgetDataSource
 import kotlin.time.Duration.Companion.seconds
 
 internal class StreaksWidgetUpdater(

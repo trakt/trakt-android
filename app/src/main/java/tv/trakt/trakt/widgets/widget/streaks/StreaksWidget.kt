@@ -1,4 +1,4 @@
-package tv.trakt.trakt.widgets.streaks
+package tv.trakt.trakt.widgets.widget.streaks
 
 import android.content.Context
 import android.os.Build
@@ -44,13 +44,9 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.widgets.data.widgetAppearance
 import tv.trakt.trakt.widgets.model.WidgetAppearance
 import tv.trakt.trakt.widgets.model.WidgetBackground
-import tv.trakt.trakt.widgets.streaks.data.StreaksWidgetDataSource
-import tv.trakt.trakt.widgets.ui.WidgetColors
-import tv.trakt.trakt.widgets.ui.WidgetColors.backgroundNone
-import tv.trakt.trakt.widgets.ui.WidgetColors.backgroundPrimary
-import tv.trakt.trakt.widgets.ui.WidgetColors.backgroundTranslucent
 import tv.trakt.trakt.widgets.ui.WidgetDimensions
-import tv.trakt.trakt.widgets.ui.WidgetTextStyles
+import tv.trakt.trakt.widgets.ui.WidgetTheme
+import tv.trakt.trakt.widgets.widget.streaks.data.StreaksWidgetDataSource
 
 private val FULL_MIN_WIDTH = 260.dp
 private val SHORT_MAX_HEIGHT = 56.dp
@@ -90,6 +86,19 @@ private fun WidgetContent(
     state: StreaksWidgetState,
     appearance: WidgetAppearance,
 ) {
+    WidgetTheme(theme = appearance.theme) {
+        WidgetBody(
+            state = state,
+            appearance = appearance,
+        )
+    }
+}
+
+@Composable
+private fun WidgetBody(
+    state: StreaksWidgetState,
+    appearance: WidgetAppearance,
+) {
     val context = LocalContext.current
     val isFull = LocalSize.current.width >= FULL_MIN_WIDTH
     val isShort = LocalSize.current.height < SHORT_MAX_HEIGHT
@@ -112,9 +121,9 @@ private fun WidgetContent(
             )
             .background(
                 when (appearance.background) {
-                    WidgetBackground.Solid -> backgroundPrimary
-                    WidgetBackground.SemiTransparent -> backgroundTranslucent
-                    WidgetBackground.None -> backgroundNone
+                    WidgetBackground.Solid -> WidgetTheme.colors.backgroundPrimary
+                    WidgetBackground.SemiTransparent -> WidgetTheme.colors.backgroundTranslucent
+                    WidgetBackground.None -> WidgetTheme.colors.backgroundNone
                 },
             )
             .cornerRadius(
@@ -130,7 +139,7 @@ private fun WidgetContent(
             state.error && !state.loaded -> {
                 Text(
                     text = context.getString(R.string.error_text_unexpected_error_short),
-                    style = WidgetTextStyles.message,
+                    style = WidgetTheme.textStyles.message,
                     maxLines = 2,
                 )
             }
@@ -219,8 +228,8 @@ private fun StreakLabelView(
             else -> minText
         },
         style = when {
-            isShort -> WidgetTextStyles.headingCompact
-            else -> WidgetTextStyles.heading
+            isShort -> WidgetTheme.textStyles.headingCompact
+            else -> WidgetTheme.textStyles.heading
         },
         maxLines = 2,
     )
@@ -252,10 +261,10 @@ private fun PillView(
     isShort: Boolean,
 ) {
     val fill = when {
-        day.today && !day.active -> backgroundPrimary
-        day.future -> backgroundPrimary
-        day.active -> WidgetColors.streakPillActive
-        else -> WidgetColors.streakPillMissed
+        day.today && !day.active -> WidgetTheme.colors.backgroundPrimary
+        day.future -> WidgetTheme.colors.backgroundPrimary
+        day.active -> WidgetTheme.colors.streakPillActive
+        else -> WidgetTheme.colors.streakPillMissed
     }
     val pillHeight = when {
         isShort -> PILL_HEIGHT_SHORT
@@ -281,8 +290,8 @@ private fun PillView(
                     )
                     .background(
                         when {
-                            day.today -> WidgetColors.streakTodayRing
-                            else -> WidgetColors.streakPillMissed
+                            day.today -> WidgetTheme.colors.streakTodayRing
+                            else -> WidgetTheme.colors.streakPillMissed
                         },
                     )
                     .cornerRadius(WidgetDimensions.chipCornerRadius)

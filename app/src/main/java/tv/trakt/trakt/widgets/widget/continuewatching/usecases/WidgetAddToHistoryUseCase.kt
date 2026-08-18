@@ -1,4 +1,4 @@
-package tv.trakt.trakt.widgets.continuewatching.usecases
+package tv.trakt.trakt.widgets.widget.continuewatching.usecases
 
 import timber.log.Timber
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase

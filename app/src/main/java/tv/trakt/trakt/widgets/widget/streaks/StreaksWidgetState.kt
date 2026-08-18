@@ -1,4 +1,4 @@
-package tv.trakt.trakt.widgets.streaks
+package tv.trakt.trakt.widgets.widget.streaks
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList

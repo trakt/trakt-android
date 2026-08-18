@@ -1,16 +1,16 @@
-package tv.trakt.trakt.widgets.streaks
+package tv.trakt.trakt.widgets.widget.calendar
 
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import tv.trakt.trakt.widgets.streaks.data.StreaksWidgetDataSource
+import tv.trakt.trakt.widgets.widget.calendar.data.CalendarWidgetDataSource
 
-internal class StreaksWidgetReceiver :
+internal class CalendarWidgetReceiver :
     GlanceAppWidgetReceiver(),
     KoinComponent {
-    private val dataSource: StreaksWidgetDataSource by inject()
+    private val dataSource: CalendarWidgetDataSource by inject()
 
     override val glanceAppWidget: GlanceAppWidget
-        get() = StreaksWidget(dataSource)
+        get() = CalendarWidget(dataSource)
 }

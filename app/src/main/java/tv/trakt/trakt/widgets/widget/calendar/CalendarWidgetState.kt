@@ -1,4 +1,4 @@
-package tv.trakt.trakt.widgets.calendar
+package tv.trakt.trakt.widgets.widget.calendar
 
 import android.graphics.Bitmap
 import androidx.compose.runtime.Immutable

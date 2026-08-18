@@ -1,4 +1,4 @@
-package tv.trakt.trakt.widgets.continuewatching.ui
+package tv.trakt.trakt.widgets.widget.continuewatching.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.Dp
@@ -14,14 +14,14 @@ import androidx.glance.appwidget.action.actionRunCallback
 import androidx.glance.appwidget.action.actionStartActivity
 import androidx.glance.layout.size
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.widgets.continuewatching.ContinueWatchingWidgetItem
-import tv.trakt.trakt.widgets.continuewatching.actions.EPISODE_ID_PARAM
-import tv.trakt.trakt.widgets.continuewatching.actions.ITEM_KEY_PARAM
-import tv.trakt.trakt.widgets.continuewatching.actions.MarkWatchedAction
-import tv.trakt.trakt.widgets.ui.WidgetColors
 import tv.trakt.trakt.widgets.ui.WidgetDimensions
 import tv.trakt.trakt.widgets.ui.WidgetMediaCard
 import tv.trakt.trakt.widgets.ui.WidgetProgressChip
+import tv.trakt.trakt.widgets.ui.WidgetTheme
+import tv.trakt.trakt.widgets.widget.continuewatching.ContinueWatchingWidgetItem
+import tv.trakt.trakt.widgets.widget.continuewatching.actions.EPISODE_ID_PARAM
+import tv.trakt.trakt.widgets.widget.continuewatching.actions.ITEM_KEY_PARAM
+import tv.trakt.trakt.widgets.widget.continuewatching.actions.MarkWatchedAction
 import tv.trakt.trakt.widgets.widgetTargetIntent
 
 @Composable
@@ -43,14 +43,14 @@ internal fun ContinueWatchingShowView(
         footerAction = {
             when {
                 item.loading -> CircularProgressIndicator(
-                    color = WidgetColors.textSecondary,
+                    color = WidgetTheme.colors.textSecondary,
                     modifier = GlanceModifier.size(WidgetDimensions.checkIconSize),
                 )
 
                 item.episodeId != null -> Image(
                     provider = ImageProvider(R.drawable.ic_check_2),
                     contentDescription = context.getString(R.string.button_text_mark_as_watched),
-                    colorFilter = ColorFilter.tint(WidgetColors.accent),
+                    colorFilter = ColorFilter.tint(WidgetTheme.colors.accent),
                     modifier = GlanceModifier
                         .size(WidgetDimensions.checkIconSize)
                         .clickable(

@@ -1,4 +1,4 @@
-package tv.trakt.trakt.widgets.streaks.data
+package tv.trakt.trakt.widgets.widget.streaks.data
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -8,8 +8,8 @@ import timber.log.Timber
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.core.home.sections.streaks.data.StreaksManager
-import tv.trakt.trakt.widgets.streaks.StreaksWidgetDay
-import tv.trakt.trakt.widgets.streaks.StreaksWidgetState
+import tv.trakt.trakt.widgets.widget.streaks.StreaksWidgetDay
+import tv.trakt.trakt.widgets.widget.streaks.StreaksWidgetState
 import java.time.DayOfWeek
 
 internal class StreaksWidgetDataSource(
