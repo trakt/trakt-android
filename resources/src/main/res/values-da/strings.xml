@@ -135,8 +135,11 @@
   <string name="button_label_pause_track">Pause %s</string>
   <string name="button_label_pick_match">Importer %s.</string>
   <string name="button_label_play_track">Afspil %s</string>
+  <string name="button_label_plex_add_server">Tilføj en Plex-server</string>
   <string name="button_label_plex_connect">Forbind din Plex-konto</string>
   <string name="button_label_plex_disconnect">Frakobl din Plex-konto</string>
+  <string name="button_label_plex_manage_server">Administrer serverbiblioteker</string>
+  <string name="button_label_plex_remove_server">Fjern %s</string>
   <string name="button_label_plex_scrobble_episode_library">Slå scrobbling af episodebibliotek til/fra</string>
   <string name="button_label_plex_scrobble_episode_rated">Slå scrobbling af episodebedømmelser til/fra</string>
   <string name="button_label_plex_scrobble_episode_watched">Slå scrobbling af sete episoder til/fra</string>
@@ -193,6 +196,7 @@
   <string name="button_label_report_user">Rapportér %s</string>
   <string name="button_label_reset_all_filters">Nulstil alle filtre</string>
   <string name="button_label_reset_calendar_period">I dag</string>
+  <string name="button_label_reset_cover_image">Nulstil dit coverbillede til standardbilledet.</string>
   <string name="button_label_reset_filter">Nulstil</string>
   <string name="button_label_restore_show">Gendan serie \"%s\"</string>
   <string name="button_label_retry">Prøv igen</string>
@@ -237,6 +241,7 @@
   <string name="button_label_toggle_search_lists">Søg efter lister</string>
   <string name="button_label_toggle_search_media">Søg efter medier</string>
   <string name="button_label_toggle_search_people">Søg efter personer</string>
+  <string name="button_label_toggle_streaming_countries">Skift lande for %s</string>
   <string name="button_label_trivia_category_filter">Filtrer trivia efter kategori</string>
   <string name="button_label_trivia_no_spoilers">Ingen spoilere</string>
   <string name="button_label_trivia_spoilers">Spoilere</string>
@@ -287,7 +292,9 @@
   <string name="button_label_watched_until_here">Markér \"%s\" som set hertil</string>
   <string name="button_label_year_in_review">Se dit %s i overblik</string>
   <string name="button_label_year_to_date">Se dit år til dato</string>
+  <string name="button_plex_add_server">Tilføj server</string>
   <string name="button_plex_authorized">Jeg har forbundet Plex</string>
+  <string name="button_plex_manage_server">Administrer</string>
   <string name="button_plex_sync_now">Synkroniser nu</string>
   <string name="button_plex_toggle_scrobble">Scrobble</string>
   <string name="button_plex_toggle_watched">Set</string>
@@ -401,6 +408,7 @@
   <string name="button_text_player_play_now">Afspil nu</string>
   <string name="button_text_player_resume">Genoptag</string>
   <string name="button_text_player_subtitles_off">Fra</string>
+  <string name="button_text_plex_remove_server">Fjern</string>
   <string name="button_text_popular_comments">Populære</string>
   <string name="button_text_progress_completed">Fuldført</string>
   <string name="button_text_progress_dropped">Droppet</string>
@@ -421,6 +429,7 @@
   <string name="button_text_report_comment">Rapportér</string>
   <string name="button_text_reset_all_filters">Nulstil alle</string>
   <string name="button_text_reset_calendar_period">I dag</string>
+  <string name="button_text_reset_cover_image">Nulstil</string>
   <string name="button_text_restore_rating_prompts">Gendan bedømmelsesprompter</string>
   <string name="button_text_restore_show">Gendan serie</string>
   <string name="button_text_retry">Prøv igen</string>
@@ -507,6 +516,8 @@
   <string name="confirmation_challenge_delete_account">For at bekræfte, skriv dit brugernavn %s herunder.</string>
   <string name="confirmation_message_delete_api_app">Dette sletter permanent %s og tilbagekalder alle tokens udstedt for den. Dette kan ikke fortrydes.</string>
   <string name="confirmation_message_disconnect_plex">Dette vil stoppe synkroniseringen af dit Plex-bibliotek. Du kan genoprette forbindelse når som helst.</string>
+  <string name="confirmation_message_plex_remove_server">Dette vil stoppe synkroniseringen af denne servers biblioteker. Du kan tilføje den igen når som helst.</string>
+  <string name="confirmation_message_reset_cover_image">Dette vil fjerne dit brugerdefinerede coverbillede og gendanne standardbilledet. Du kan indstille et nyt når som helst.</string>
   <string name="confirmation_message_revoke_app">Dette vil tilbagekalde %s\'s adgang til din Trakt-konto. Du kan genoprette forbindelsen når som helst.</string>
   <string name="confirmation_message_rewatching_prompt">At starte en gensynssession vil opdatere din Fortsæt med at se.</string>
   <string name="confirmation_message_undo_sync">Dette vil fortryde alle elementer, som denne synkronisering importerede til din historie, vurderinger, huskeliste og bibliotek.</string>
@@ -528,11 +539,13 @@
   <string name="confirmation_title_hide_recommendation">Skjul anbefaling?</string>
   <string name="confirmation_title_log_out">Log ud?</string>
   <string name="confirmation_title_mark_as_watched">Markér som set?</string>
+  <string name="confirmation_title_plex_remove_server">Fjern %s?</string>
   <string name="confirmation_title_remove_favorite">Fjern fra favoritter?</string>
   <string name="confirmation_title_remove_from_list">Fjern fra liste?</string>
   <string name="confirmation_title_remove_from_watched">Fjern fra historik?</string>
   <string name="confirmation_title_remove_from_watchlist">Fjern fra huskeliste?</string>
   <string name="confirmation_title_remove_play">Fjern afspilning?</string>
+  <string name="confirmation_title_reset_cover_image">Nulstil coverbillede?</string>
   <string name="confirmation_title_reset_filters">Nulstil filtre?</string>
   <string name="confirmation_title_restore_show">Gendan serie?</string>
   <string name="confirmation_title_revoke_app">Tilbagekald adgang?</string>
@@ -564,11 +577,15 @@
   <string name="description_paused_items">Disse elementer blev ikke set mindst 80%.</string>
   <string name="description_plex_home_users">Dine egne afspilninger synkroniseres altid. Tilføj andre Plex Home-brugernavne for også at synkronisere deres.</string>
   <string name="description_plex_manual_sync">Start en øjeblikkelig synkronisering af din Plex-sethistorik til Trakt.</string>
+  <string name="description_plex_no_synced_servers">Tilføj din Plex-server for at begynde at synkronisere dine biblioteker med Trakt.</string>
   <string name="description_plex_scrobbler_settings">Disse indstillinger styrer, hvad der scrobbles til Trakt i realtid.</string>
   <string name="description_plex_servers">Vælg den Plex-server, der skal synkroniseres med Trakt.</string>
   <string name="description_plex_sync">Forbind din Plex-konto for at synkronisere set historik, bedømmelser og samlinger med Trakt.</string>
-  <string name="description_plex_sync_settings">Disse indstillinger styrer, hvilke datatyper der synkroniseres med Trakt.</string>
-  <string name="description_plex_vip_upsell_sync">Opgrader til VIP for at holde din Plex-sehistorik, bedømmelser og samlinger synkroniseret med Trakt.</string>
+  <string name="description_plex_sync_free_limits">Gratis konti synkroniserer 1 Plex-server én gang om dagen. Opgrader til VIP for at synkronisere ubegrænset antal servere, opdateret hver time.</string>
+  <string name="description_plex_sync_history">Seneste datasynkroniseringer fra dine Plex Media Servers.</string>
+  <string name="description_plex_sync_settings">Vælg, hvad hver medietype synkroniserer til din Trakt-konto.</string>
+  <string name="description_plex_synced_servers">Synkroniser automatisk din set-historik, bibliotek, vurderinger og overvågningsliste.</string>
+  <string name="description_plex_vip_upsell_add_server">Gratis konti synkroniserer 1 Plex-server én gang om dagen. Opgrader til VIP for at synkronisere ubegrænset antal servere, opdateret hver time.</string>
   <string name="description_plex_vip_upsell_webhook">Opgrader til VIP for automatisk at scrobble det, du ser, i realtid med Plex webhooks.</string>
   <string name="description_plex_webhook">Scrobble automatisk, hvad du ser, bedømmer og tilføjer til dit bibliotek i realtid.</string>
   <string name="description_preview_features">Prøv kommende funktioner, før de er bredt tilgængelige. Forhåndsviste funktioner kan ændre sig, når vi forfiner dem.</string>
@@ -721,11 +738,13 @@
   <string name="header_player_subtitle_size">Størrelse</string>
   <string name="header_plex_home_users">Plex Home-brugere</string>
   <string name="header_plex_manual_sync">Manuel synkronisering</string>
+  <string name="header_plex_no_synced_servers">Ingen synkroniserede servere endnu</string>
   <string name="header_plex_scrobbler_settings">Scrobbler-indstillinger</string>
   <string name="header_plex_servers">Vælg server</string>
-  <string name="header_plex_sync_history">Synkroniseringshistorik</string>
+  <string name="header_plex_sync_free_limits">Plex-synkronisering på den gratis plan</string>
   <string name="header_plex_sync_settings">Plex Synkroniseringsindstillinger</string>
-  <string name="header_plex_vip_upsell_sync">Plex-synkronisering er en VIP-funktion</string>
+  <string name="header_plex_synced_servers">Synkroniserede servere</string>
+  <string name="header_plex_vip_upsell_add_server">Flere servere er en VIP-funktion</string>
   <string name="header_plex_vip_upsell_webhook">Plex scrobbling er en VIP-funktion</string>
   <string name="header_post_credits">Eftertekster</string>
   <string name="header_premiered">Premiere</string>
@@ -852,6 +871,7 @@
   <string name="import_tab_unresolved">Oversprunget</string>
   <string name="import_vip_limit_exceeded">Din import overskrider grænsen for gratis niveau. Opgrader til VIP for at importere alle %d elementer.</string>
   <string name="input_label_search_credit_members">Søg personer</string>
+  <string name="input_label_search_streaming_services">Søg streamingtjenester</string>
   <string name="input_placeholder_app_name">Min applikation</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
@@ -870,6 +890,7 @@
   <string name="input_placeholder_search_movies">Søg film…</string>
   <string name="input_placeholder_search_people">Søg personer…</string>
   <string name="input_placeholder_search_shows">Søg serier…</string>
+  <string name="input_placeholder_search_streaming_services">Søg streamingtjeneste eller land…</string>
   <string name="input_prompt_about">Fortæl os lidt om dig selv.</string>
   <string name="input_prompt_birthday">Hvornår har du fødselsdag?</string>
   <string name="input_prompt_display_name">Hvad skal dit visningsnavn være?</string>
@@ -1248,6 +1269,7 @@
   <string name="tab_text_seasons_reviews">Anmeldelser</string>
   <string name="tab_text_simple_filters">Simple</string>
   <string name="tag_label_progress">Status</string>
+  <string name="tag_plex_syncing">Synkroniserer</string>
   <string name="tag_text_blocked_user">Blokeret</string>
   <string name="tag_text_discount_biyearly">Rabatsats første 2 år</string>
   <string name="tag_text_discount_monthly">Rabatsats første måned</string>
@@ -1509,6 +1531,7 @@
   <string name="text_play_count">%d visninger</string>
   <string name="text_plays_watched">%s visninger</string>
   <string name="text_plex_auth_waiting">En Plex-godkendelsesside er blevet åbnet. Fuldfør login der, og klik derefter på knappen nedenfor.</string>
+  <string name="text_plex_library_required">Vælg mindst ét bibliotek til synkronisering, eller fjern denne server.</string>
   <string name="text_plex_synced_summary">Data er synkroniseret %1$s gange. Din seneste synkronisering var %2$s.</string>
   <string name="text_plex_tv_library_description">Aktiver Trakt Plex Synkronisering for at få adgang til dit Plex server mediebibliotek.</string>
   <string name="text_private">Privat</string>
@@ -1563,9 +1586,12 @@
   <string name="text_settings_background_solid">Ensfarvet</string>
   <string name="text_settings_background_translucent">Halvgennemsigtig</string>
   <string name="text_settings_clear_cover">Ryd det aktuelle coverbillede og vend tilbage til standardindstillingen.</string>
+  <string name="text_settings_cover_image">Coverbillede</string>
+  <string name="text_settings_cover_image_description">Nulstilling gendanner standardbilledet.</string>
   <string name="text_settings_enable_multiple_plays">Flere afspilninger</string>
   <string name="text_settings_enable_multiple_plays_description">Tillad mere end 1 afspilning for film og afsnit.</string>
   <string name="text_settings_enable_notifications">Aktiver notifikationer</string>
+  <string name="text_settings_no_cover_image_description">Du har intet coverbillede indstillet.</string>
   <string name="text_settings_notification_time_180_min">3 timer før</string>
   <string name="text_settings_notification_time_30_min">30 minutter før</string>
   <string name="text_settings_notification_time_60_min">1 time før</string>

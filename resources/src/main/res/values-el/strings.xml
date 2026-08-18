@@ -135,8 +135,11 @@
   <string name="button_label_pause_track">Παύση %s</string>
   <string name="button_label_pick_match">Εισαγωγή %s.</string>
   <string name="button_label_play_track">Αναπαραγωγή %s</string>
+  <string name="button_label_plex_add_server">Προσθήκη διακομιστή Plex</string>
   <string name="button_label_plex_connect">Συνδέστε τον λογαριασμό σας Plex</string>
   <string name="button_label_plex_disconnect">Αποσυνδέστε τον λογαριασμό σας Plex</string>
+  <string name="button_label_plex_manage_server">Διαχείριση βιβλιοθηκών διακομιστή</string>
+  <string name="button_label_plex_remove_server">Κατάργηση %s</string>
   <string name="button_label_plex_scrobble_episode_library">Εναλλαγή scrobbling βιβλιοθήκης για επεισόδια</string>
   <string name="button_label_plex_scrobble_episode_rated">Εναλλαγή scrobbling αξιολογήσεων για επεισόδια</string>
   <string name="button_label_plex_scrobble_episode_watched">Εναλλαγή scrobbling παρακολουθημένων για επεισόδια</string>
@@ -193,6 +196,7 @@
   <string name="button_label_report_user">Αναφορά %s</string>
   <string name="button_label_reset_all_filters">Επαναφορά όλων των φίλτρων</string>
   <string name="button_label_reset_calendar_period">Σήμερα</string>
+  <string name="button_label_reset_cover_image">Επαναφορά της εικόνας εξωφύλλου σας στο προεπιλεγμένο γραφικό.</string>
   <string name="button_label_reset_filter">Επαναφορά</string>
   <string name="button_label_restore_show">Επαναφορά σειράς \"%s\"</string>
   <string name="button_label_retry">Επανάληψη</string>
@@ -237,6 +241,7 @@
   <string name="button_label_toggle_search_lists">Αναζήτηση λιστών</string>
   <string name="button_label_toggle_search_media">Αναζήτηση μέσων</string>
   <string name="button_label_toggle_search_people">Αναζήτηση ανθρώπων</string>
+  <string name="button_label_toggle_streaming_countries">Εναλλαγή χωρών για %s</string>
   <string name="button_label_trivia_category_filter">Φιλτράρισμα trivia ανά κατηγορία</string>
   <string name="button_label_trivia_no_spoilers">Χωρίς spoilers</string>
   <string name="button_label_trivia_spoilers">Spoilers</string>
@@ -287,7 +292,9 @@
   <string name="button_label_watched_until_here">Σήμανση του \"%s\" ως παρακολουθήθηκε μέχρι εδώ</string>
   <string name="button_label_year_in_review">Προβολή της ανασκόπησης %s</string>
   <string name="button_label_year_to_date">Προβολή του έτους μέχρι σήμερα</string>
+  <string name="button_plex_add_server">Προσθήκη Διακομιστή</string>
   <string name="button_plex_authorized">Έχω συνδέσει το Plex</string>
+  <string name="button_plex_manage_server">Διαχείριση</string>
   <string name="button_plex_sync_now">Συγχρονισμός τώρα</string>
   <string name="button_plex_toggle_scrobble">Scrobble</string>
   <string name="button_plex_toggle_watched">Παρακολουθήθηκε</string>
@@ -401,6 +408,7 @@
   <string name="button_text_player_play_now">Αναπαραγωγή Τώρα</string>
   <string name="button_text_player_resume">Συνέχιση</string>
   <string name="button_text_player_subtitles_off">Απενεργοποίηση</string>
+  <string name="button_text_plex_remove_server">Αφαίρεση</string>
   <string name="button_text_popular_comments">Δημοφιλή</string>
   <string name="button_text_progress_completed">Ενημερωμένο</string>
   <string name="button_text_progress_dropped">Εγκαταλείφθηκε</string>
@@ -421,6 +429,7 @@
   <string name="button_text_report_comment">Αναφορά</string>
   <string name="button_text_reset_all_filters">Επαναφορά όλων</string>
   <string name="button_text_reset_calendar_period">Σήμερα</string>
+  <string name="button_text_reset_cover_image">Επαναφορά</string>
   <string name="button_text_restore_rating_prompts">Επαναφορά Προτροπών Αξιολόγησης</string>
   <string name="button_text_restore_show">Επαναφορά σειράς</string>
   <string name="button_text_retry">Επανάληψη</string>
@@ -507,6 +516,8 @@
   <string name="confirmation_challenge_delete_account">Για επιβεβαίωση, πληκτρολογήστε το όνομα χρήστη σας %s παρακάτω.</string>
   <string name="confirmation_message_delete_api_app">Αυτό διαγράφει οριστικά το/την %s και ανακαλεί κάθε διακριτικό που εκδόθηκε για αυτό/αυτή. Αυτό δεν μπορεί να αναιρεθεί.</string>
   <string name="confirmation_message_disconnect_plex">Αυτό θα σταματήσει τον συγχρονισμό της βιβλιοθήκης σας Plex. Μπορείτε να επανασυνδεθείτε ανά πάσα στιγμή.</string>
+  <string name="confirmation_message_plex_remove_server">Αυτό θα σταματήσει τον συγχρονισμό των βιβλιοθηκών αυτού του διακομιστή. Μπορείτε να τον προσθέσετε ξανά ανά πάσα στιγμή.</string>
+  <string name="confirmation_message_reset_cover_image">Αυτό θα αφαιρέσει την προσαρμοσμένη εικόνα εξωφύλλου σας και θα επαναφέρει το προεπιλεγμένο γραφικό. Μπορείτε να ορίσετε μια νέα ανά πάσα στιγμή.</string>
   <string name="confirmation_message_revoke_app">Αυτό θα ανακαλέσει την πρόσβαση του/της %s στον λογαριασμό σας Trakt. Μπορείτε να το/την επανασυνδέσετε ανά πάσα στιγμή.</string>
   <string name="confirmation_message_rewatching_prompt">Η έναρξη μιας συνεδρίας επανάληψης παρακολούθησης θα ενημερώσει την ενότητα \'Συνέχεια Παρακολούθησης\'.</string>
   <string name="confirmation_message_undo_sync">Αυτό θα αναιρέσει κάθε στοιχείο που εισήγαγε αυτός ο συγχρονισμός στο ιστορικό σας, τις αξιολογήσεις, τη λίστα παρακολούθησης και τη βιβλιοθήκη σας.</string>
@@ -528,11 +539,13 @@
   <string name="confirmation_title_hide_recommendation">Απόκρυψη πρότασης;</string>
   <string name="confirmation_title_log_out">Αποσύνδεση?</string>
   <string name="confirmation_title_mark_as_watched">Σήμανση ως παρακολουθήθηκε;</string>
+  <string name="confirmation_title_plex_remove_server">Κατάργηση %s;</string>
   <string name="confirmation_title_remove_favorite">Αφαίρεση από τα αγαπημένα;</string>
   <string name="confirmation_title_remove_from_list">Αφαίρεση από λίστα;</string>
   <string name="confirmation_title_remove_from_watched">Αφαίρεση από το ιστορικό;</string>
   <string name="confirmation_title_remove_from_watchlist">Αφαίρεση από λίστα παρακολούθησης;</string>
   <string name="confirmation_title_remove_play">Αφαίρεση προβολής;</string>
+  <string name="confirmation_title_reset_cover_image">Επαναφορά εικόνας εξωφύλλου;</string>
   <string name="confirmation_title_reset_filters">Επαναφορά φίλτρων;</string>
   <string name="confirmation_title_restore_show">Επαναφορά σειράς;</string>
   <string name="confirmation_title_revoke_app">Ανάκληση πρόσβασης;</string>
@@ -564,11 +577,15 @@
   <string name="description_paused_items">Αυτά τα στοιχεία δεν παρακολουθήθηκαν τουλάχιστον κατά 80%.</string>
   <string name="description_plex_home_users">Οι δικές σας προβολές συγχρονίζονται πάντα. Προσθέστε άλλα ονόματα χρηστών Plex Home για να συγχρονίσετε και τα δικά τους.</string>
   <string name="description_plex_manual_sync">Ενεργοποιήστε έναν άμεσο συγχρονισμό του ιστορικού παρακολούθησης Plex με το Trakt.</string>
+  <string name="description_plex_no_synced_servers">Προσθέστε τον διακομιστή σας Plex για να ξεκινήσετε τον συγχρονισμό των βιβλιοθηκών σας με το Trakt.</string>
   <string name="description_plex_scrobbler_settings">Αυτές οι ρυθμίσεις ελέγχουν τι συγχρονίζεται (scrobbled) στο Trakt σε πραγματικό χρόνο.</string>
   <string name="description_plex_servers">Επιλέξτε τον διακομιστή Plex για συγχρονισμό με το Trakt.</string>
   <string name="description_plex_sync">Συνδέστε τον λογαριασμό σας Plex για συγχρονισμό ιστορικού παρακολούθησης, αξιολογήσεων και συλλογών με το Trakt.</string>
-  <string name="description_plex_sync_settings">Αυτές οι ρυθμίσεις ελέγχουν ποιους τύπους δεδομένων θα συγχρονίζονται στο Trakt.</string>
-  <string name="description_plex_vip_upsell_sync">Αναβαθμίστε σε VIP για να διατηρείτε το ιστορικό παρακολούθησης, τις αξιολογήσεις και τις συλλογές σας Plex συγχρονισμένα με το Trakt.</string>
+  <string name="description_plex_sync_free_limits">Οι δωρεάν λογαριασμοί συγχρονίζουν 1 διακομιστή Plex μία φορά την ημέρα. Αναβαθμίστε σε VIP για να συγχρονίσετε απεριόριστους διακομιστές, με ανανέωση κάθε ώρα.</string>
+  <string name="description_plex_sync_history">Πρόσφατοι συγχρονισμοί δεδομένων από τους διακομιστές πολυμέσων Plex σας.</string>
+  <string name="description_plex_sync_settings">Επιλέξτε τι συγχρονίζει ο κάθε τύπος πολυμέσων στον λογαριασμό σας Trakt.</string>
+  <string name="description_plex_synced_servers">Αυτόματος συγχρονισμός του ιστορικού παρακολούθησης, της βιβλιοθήκης, των αξιολογήσεων και της λίστας παρακολούθησής σας.</string>
+  <string name="description_plex_vip_upsell_add_server">Οι δωρεάν λογαριασμοί συγχρονίζουν 1 διακομιστή Plex μία φορά την ημέρα. Αναβαθμίστε σε VIP για να συγχρονίσετε απεριόριστους διακομιστές, με ανανέωση κάθε ώρα.</string>
   <string name="description_plex_vip_upsell_webhook">Αναβαθμίστε σε VIP για να κάνετε αυτόματη καταγραφή (scrobble) του τι παρακολουθείτε σε πραγματικό χρόνο με τα webhooks του Plex.</string>
   <string name="description_plex_webhook">Αυτόματος συγχρονισμός όσων παρακολουθείτε, βαθμολογείτε και προσθέτετε στη βιβλιοθήκη σας σε πραγματικό χρόνο.</string>
   <string name="description_preview_features">Δοκιμάστε επερχόμενες λειτουργίες πριν γίνουν ευρέως διαθέσιμες. Οι λειτουργίες προεπισκόπησης ενδέχεται να αλλάξουν καθώς τις βελτιώνουμε.</string>
@@ -721,11 +738,13 @@
   <string name="header_player_subtitle_size">Μέγεθος</string>
   <string name="header_plex_home_users">Χρήστες Plex Home</string>
   <string name="header_plex_manual_sync">Μη αυτόματος συγχρονισμός</string>
+  <string name="header_plex_no_synced_servers">Δεν έχουν συγχρονιστεί διακομιστές ακόμη</string>
   <string name="header_plex_scrobbler_settings">Ρυθμίσεις Scrobbler</string>
   <string name="header_plex_servers">Επιλογή διακομιστή</string>
-  <string name="header_plex_sync_history">Ιστορικό συγχρονισμού</string>
+  <string name="header_plex_sync_free_limits">Συγχρονισμός Plex στο δωρεάν πρόγραμμα</string>
   <string name="header_plex_sync_settings">Ρυθμίσεις συγχρονισμού Plex</string>
-  <string name="header_plex_vip_upsell_sync">Ο συγχρονισμός Plex είναι μια λειτουργία VIP</string>
+  <string name="header_plex_synced_servers">Συγχρονισμένοι Διακομιστές</string>
+  <string name="header_plex_vip_upsell_add_server">Οι πολλαπλοί διακομιστές είναι λειτουργία VIP</string>
   <string name="header_plex_vip_upsell_webhook">Το scrobbling του Plex είναι μια λειτουργία VIP</string>
   <string name="header_post_credits">Μετά τους τίτλους</string>
   <string name="header_premiered">Πρεμιέρα</string>
@@ -852,6 +871,7 @@
   <string name="import_tab_unresolved">Παραλείφθηκαν</string>
   <string name="import_vip_limit_exceeded">Η εισαγωγή σας υπερβαίνει το όριο της δωρεάν βαθμίδας. Αναβαθμίστε σε VIP για να εισαγάγετε όλα τα %d στοιχεία.</string>
   <string name="input_label_search_credit_members">Αναζήτηση ανθρώπων</string>
+  <string name="input_label_search_streaming_services">Αναζήτηση υπηρεσιών streaming</string>
   <string name="input_placeholder_app_name">Η εφαρμογή μου</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
@@ -870,6 +890,7 @@
   <string name="input_placeholder_search_movies">Αναζήτηση ταινιών…</string>
   <string name="input_placeholder_search_people">Αναζήτηση ανθρώπων…</string>
   <string name="input_placeholder_search_shows">Αναζήτηση σειρών…</string>
+  <string name="input_placeholder_search_streaming_services">Αναζήτηση υπηρεσίας streaming ή χώρας…</string>
   <string name="input_prompt_about">Πείτε μας λίγα λόγια για εσάς.</string>
   <string name="input_prompt_birthday">Πότε είναι τα γενέθλιά σας;</string>
   <string name="input_prompt_display_name">Ποιο θα πρέπει να είναι το όνομα εμφάνισής σας;</string>
@@ -1248,6 +1269,7 @@
   <string name="tab_text_seasons_reviews">Κριτικές</string>
   <string name="tab_text_simple_filters">Απλό</string>
   <string name="tag_label_progress">Πρόοδος</string>
+  <string name="tag_plex_syncing">Συγχρονίζεται</string>
   <string name="tag_text_blocked_user">Αποκλεισμένοι</string>
   <string name="tag_text_discount_biyearly">Έκπτωση πρώτων 2 ετών</string>
   <string name="tag_text_discount_monthly">Έκπτωση πρώτου μήνα</string>
@@ -1509,6 +1531,7 @@
   <string name="text_play_count">%d προβολές</string>
   <string name="text_plays_watched">%s προβολές</string>
   <string name="text_plex_auth_waiting">Έχει ανοίξει μια σελίδα εξουσιοδότησης Plex. Ολοκληρώστε τη σύνδεση εκεί, και μετά κάντε κλικ στο παρακάτω κουμπί.</string>
+  <string name="text_plex_library_required">Επιλέξτε τουλάχιστον μία βιβλιοθήκη για συγχρονισμό, ή καταργήστε αυτόν τον διακομιστή.</string>
   <string name="text_plex_synced_summary">Τα δεδομένα έχουν συγχρονιστεί %1$s φορές. Ο πιο πρόσφατος συγχρονισμός σας ήταν %2$s.</string>
   <string name="text_plex_tv_library_description">Ενεργοποιήστε τον Συγχρονισμό Trakt Plex για να αποκτήσετε πρόσβαση στη βιβλιοθήκη μέσων του διακομιστή Plex σας.</string>
   <string name="text_private">Ιδιωτικό</string>
@@ -1563,9 +1586,12 @@
   <string name="text_settings_background_solid">Αδιαφανές</string>
   <string name="text_settings_background_translucent">Ημιδιαφανές</string>
   <string name="text_settings_clear_cover">Εκκαθάριση της τρέχουσας εικόνας εξωφύλλου και επιστροφή στην προεπιλογή.</string>
+  <string name="text_settings_cover_image">Εικόνα εξωφύλλου</string>
+  <string name="text_settings_cover_image_description">Η επαναφορά επαναφέρει το προεπιλεγμένο γραφικό.</string>
   <string name="text_settings_enable_multiple_plays">Πολλαπλές προβολές</string>
   <string name="text_settings_enable_multiple_plays_description">Να επιτρέπεται περισσότερες από 1 προβολή για ταινίες και επεισόδια.</string>
   <string name="text_settings_enable_notifications">Ενεργοποίηση ειδοποιήσεων</string>
+  <string name="text_settings_no_cover_image_description">Δεν έχετε ορίσει εικόνα εξωφύλλου.</string>
   <string name="text_settings_notification_time_180_min">3 ώρες πριν</string>
   <string name="text_settings_notification_time_30_min">30 λεπτά πριν</string>
   <string name="text_settings_notification_time_60_min">1 ώρα πριν</string>

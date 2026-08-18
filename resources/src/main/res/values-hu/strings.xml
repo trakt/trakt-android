@@ -135,8 +135,11 @@
   <string name="button_label_pause_track">%s szüneteltetése</string>
   <string name="button_label_pick_match">Importálja a(z) %s elemet.</string>
   <string name="button_label_play_track">%s lejátszása</string>
+  <string name="button_label_plex_add_server">Plex szerver hozzáadása</string>
   <string name="button_label_plex_connect">Plex fiók csatlakoztatása</string>
   <string name="button_label_plex_disconnect">Plex fiók leválasztása</string>
+  <string name="button_label_plex_manage_server">Szerver könyvtárak kezelése</string>
+  <string name="button_label_plex_remove_server">%s eltávolítása</string>
   <string name="button_label_plex_scrobble_episode_library">Epizódok könyvtár szinkronizálásának váltása</string>
   <string name="button_label_plex_scrobble_episode_rated">Epizódok értékelési szinkronizálásának váltása</string>
   <string name="button_label_plex_scrobble_episode_watched">Epizódok megtekintési szinkronizálásának váltása</string>
@@ -193,6 +196,7 @@
   <string name="button_label_report_user">%s jelentése</string>
   <string name="button_label_reset_all_filters">Összes szűrő visszaállítása</string>
   <string name="button_label_reset_calendar_period">Ma</string>
+  <string name="button_label_reset_cover_image">Állítsa vissza borítóképét az alapértelmezettre.</string>
   <string name="button_label_reset_filter">Visszaállítás</string>
   <string name="button_label_restore_show">Sorozat visszaállítása: „%s”</string>
   <string name="button_label_retry">Újra</string>
@@ -237,6 +241,7 @@
   <string name="button_label_toggle_search_lists">Listák keresése</string>
   <string name="button_label_toggle_search_media">Média keresése</string>
   <string name="button_label_toggle_search_people">Személyek keresése</string>
+  <string name="button_label_toggle_streaming_countries">Országok ki/be kapcsolása ehhez: %s</string>
   <string name="button_label_trivia_category_filter">Szűrje az érdekességeket kategória szerint</string>
   <string name="button_label_trivia_no_spoilers">Spoiler nélkül</string>
   <string name="button_label_trivia_spoilers">Spoilerekkel</string>
@@ -287,7 +292,9 @@
   <string name="button_label_watched_until_here">\"%s megjelölése eddig látottként</string>
   <string name="button_label_year_in_review">Tekintsd meg a(z) %s éves áttekintődet</string>
   <string name="button_label_year_to_date">Tekintsd meg az éves összesítésedet</string>
+  <string name="button_plex_add_server">Szerver hozzáadása</string>
   <string name="button_plex_authorized">Csatlakoztattam a Plexet</string>
+  <string name="button_plex_manage_server">Kezelés</string>
   <string name="button_plex_sync_now">Szinkronizálás most</string>
   <string name="button_plex_toggle_scrobble">Scrobble</string>
   <string name="button_plex_toggle_watched">Megnézve</string>
@@ -401,6 +408,7 @@
   <string name="button_text_player_play_now">Lejátszás most</string>
   <string name="button_text_player_resume">Folytatás</string>
   <string name="button_text_player_subtitles_off">Ki</string>
+  <string name="button_text_plex_remove_server">Eltávolítás</string>
   <string name="button_text_popular_comments">Népszerű</string>
   <string name="button_text_progress_completed">Naprakész</string>
   <string name="button_text_progress_dropped">Félbehagyva</string>
@@ -421,6 +429,7 @@
   <string name="button_text_report_comment">Jelentés</string>
   <string name="button_text_reset_all_filters">Összes visszaállítása</string>
   <string name="button_text_reset_calendar_period">Ma</string>
+  <string name="button_text_reset_cover_image">Visszaállítás</string>
   <string name="button_text_restore_rating_prompts">Értékelési felszólítások visszaállítása</string>
   <string name="button_text_restore_show">Sorozat visszaállítása</string>
   <string name="button_text_retry">Újra</string>
@@ -507,6 +516,8 @@
   <string name="confirmation_challenge_delete_account">Megerősítéshez írd be alább a felhasználónevedet: %s.</string>
   <string name="confirmation_message_delete_api_app">Ez véglegesen törli a(z) %s alkalmazást, és visszavon minden hozzá kiadott tokent. Ez a művelet nem visszavonható.</string>
   <string name="confirmation_message_disconnect_plex">Ez leállítja a Plex könyvtár szinkronizálását. Bármikor újra csatlakoztathatja.</string>
+  <string name="confirmation_message_plex_remove_server">Ez leállítja a szerver könyvtárainak szinkronizálását. Bármikor hozzáadhatja újra.</string>
+  <string name="confirmation_message_reset_cover_image">Ezzel eltávolítja az egyéni borítóképet, és visszaállítja az alapértelmezettet. Bármikor beállíthat újat.</string>
   <string name="confirmation_message_revoke_app">Ezzel visszavonod a(z) %s hozzáférését a Trakt fiókodhoz. Bármikor újra csatlakoztathatod.</string>
   <string name="confirmation_message_rewatching_prompt">Újra nézési munkamenet indításával frissül a Folytasd a nézést lista.</string>
   <string name="confirmation_message_undo_sync">Ez visszaállítja az összes elemet, amelyet ez a szinkronizálás importált az előzményekbe, értékelésekbe, figyelőlistára és könyvtárba.</string>
@@ -528,11 +539,13 @@
   <string name="confirmation_title_hide_recommendation">Ajánlás elrejtése?</string>
   <string name="confirmation_title_log_out">Kijelentkezés?</string>
   <string name="confirmation_title_mark_as_watched">Jelölés megtekintettként?</string>
+  <string name="confirmation_title_plex_remove_server">%s eltávolítása?</string>
   <string name="confirmation_title_remove_favorite">Eltávolítás a kedvencek közül?</string>
   <string name="confirmation_title_remove_from_list">Eltávolítás a listáról?</string>
   <string name="confirmation_title_remove_from_watched">Eltávolítás az előzményekből?</string>
   <string name="confirmation_title_remove_from_watchlist">Eltávolítás a megnézendőkből?</string>
   <string name="confirmation_title_remove_play">Megtekintés eltávolítása?</string>
+  <string name="confirmation_title_reset_cover_image">Borítókép visszaállítása?</string>
   <string name="confirmation_title_reset_filters">Szűrők visszaállítása?</string>
   <string name="confirmation_title_restore_show">Sorozat visszaállítása?</string>
   <string name="confirmation_title_revoke_app">Visszavonod a hozzáférést?</string>
@@ -564,11 +577,15 @@
   <string name="description_paused_items">Ezeket az elemeket nem nézték meg legalább 80%-ban.</string>
   <string name="description_plex_home_users">Saját lejátszásai mindig szinkronizálódnak. Adjon hozzá más Plex Otthoni felhasználóneveket is a szinkronizáláshoz.</string>
   <string name="description_plex_manual_sync">Azonnali szinkronizálás indítása a Plex megtekintési előzményeiből a Traktba.</string>
+  <string name="description_plex_no_synced_servers">Adja hozzá Plex szerverét, hogy megkezdhesse könyvtárainak szinkronizálását a Trakt-tal.</string>
   <string name="description_plex_scrobbler_settings">Ezek a beállítások szabályozzák, hogy mi kerüljön valós időben szinkronizálásra a Traktbe.</string>
   <string name="description_plex_servers">Válaszd ki a Plex szervert, amellyel szinkronizálni szeretnéd a Traktot.</string>
   <string name="description_plex_sync">Csatlakoztasd Plex fiókodat a megtekintési előzmények, értékelések és gyűjtemények szinkronizálásához a Trakttal.</string>
-  <string name="description_plex_sync_settings">Ezek a beállítások szabályozzák, hogy mely adattípusok szinkronizálódnak a Traktba.</string>
-  <string name="description_plex_vip_upsell_sync">Frissíts VIP-re, hogy Plex megtekintési előzményeid, értékeléseid és gyűjteményeid szinkronban maradjanak a Trakttal.</string>
+  <string name="description_plex_sync_free_limits">Az ingyenes fiókok napi egyszer szinkronizálnak 1 Plex szervert. Frissítsen VIP-re korlátlan számú szerver szinkronizálásához, óránként frissítve.</string>
+  <string name="description_plex_sync_history">Legutóbbi adatszinkronizálások a Plex médiaszervereiről.</string>
+  <string name="description_plex_sync_settings">Válassza ki, hogy milyen médiatípusok szinkronizálódjanak a Trakt fiókjába.</string>
+  <string name="description_plex_synced_servers">Automatikusan szinkronizálja megtekintett előzményeit, könyvtárát, értékeléseit és figyelőlistáját.</string>
+  <string name="description_plex_vip_upsell_add_server">Az ingyenes fiókok napi egyszer szinkronizálnak 1 Plex szervert. Frissítsen VIP-re korlátlan számú szerver szinkronizálásához, óránként frissítve.</string>
   <string name="description_plex_vip_upsell_webhook">Frissíts VIP-re, hogy automatikusan scrobblingeld, amit valós időben nézel a Plex webhookok segítségével.</string>
   <string name="description_plex_webhook">Automatikusan szinkronizálja, amit néz, értékel, és hozzáad a könyvtárához valós időben.</string>
   <string name="description_preview_features">Próbáld ki a közelgő funkciókat, mielőtt széles körben elérhetővé válnak. Az előzetes funkciók változhatnak, ahogy finomítjuk őket.</string>
@@ -721,11 +738,13 @@
   <string name="header_player_subtitle_size">Méret</string>
   <string name="header_plex_home_users">Plex Otthoni felhasználók</string>
   <string name="header_plex_manual_sync">Manuális szinkronizálás</string>
+  <string name="header_plex_no_synced_servers">Még nincsenek szinkronizált szerverek</string>
   <string name="header_plex_scrobbler_settings">Scrobbler beállítások</string>
   <string name="header_plex_servers">Szerver kiválasztása</string>
-  <string name="header_plex_sync_history">Szinkronizálási előzmények</string>
+  <string name="header_plex_sync_free_limits">Plex szinkronizálás az ingyenes csomagon</string>
   <string name="header_plex_sync_settings">Plex szinkronizálási beállítások</string>
-  <string name="header_plex_vip_upsell_sync">A Plex szinkronizálás VIP funkció.</string>
+  <string name="header_plex_synced_servers">Szinkronizált szerverek</string>
+  <string name="header_plex_vip_upsell_add_server">Több szerver VIP funkció</string>
   <string name="header_plex_vip_upsell_webhook">A Plex scrobbling VIP funkció.</string>
   <string name="header_post_credits">Stáblista utáni jelenetek</string>
   <string name="header_premiered">Premier</string>
@@ -852,6 +871,7 @@
   <string name="import_tab_unresolved">Kihagyott</string>
   <string name="import_vip_limit_exceeded">Az importálásod túllépi az ingyenes szint korlátját. Frissíts VIP-re mind a(z) %d elem importálásához.</string>
   <string name="input_label_search_credit_members">Személyek keresése</string>
+  <string name="input_label_search_streaming_services">Streaming szolgáltatások keresése</string>
   <string name="input_placeholder_app_name">Az én alkalmazásom</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
@@ -870,6 +890,7 @@
   <string name="input_placeholder_search_movies">Filmek keresése…</string>
   <string name="input_placeholder_search_people">Személyek keresése…</string>
   <string name="input_placeholder_search_shows">Sorozatok keresése…</string>
+  <string name="input_placeholder_search_streaming_services">Streaming szolgáltatás vagy ország keresése…</string>
   <string name="input_prompt_about">Mesélj magadról egy kicsit.</string>
   <string name="input_prompt_birthday">Mikor van a születésnapod?</string>
   <string name="input_prompt_display_name">Mi legyen a megjelenített neved?</string>
@@ -1248,6 +1269,7 @@
   <string name="tab_text_seasons_reviews">Értékelések</string>
   <string name="tab_text_simple_filters">Egyszerű</string>
   <string name="tag_label_progress">Folyamat</string>
+  <string name="tag_plex_syncing">Szinkronizálás</string>
   <string name="tag_text_blocked_user">Blokkolva</string>
   <string name="tag_text_discount_biyearly">Első 2 év kedvezmény</string>
   <string name="tag_text_discount_monthly">Első hónap kedvezmény</string>
@@ -1509,6 +1531,7 @@
   <string name="text_play_count">%d lejátszás</string>
   <string name="text_plays_watched">%s lejátszás</string>
   <string name="text_plex_auth_waiting">Megnyílt egy Plex engedélyezési oldal. Fejezd be a bejelentkezést ott, majd kattints az alábbi gombra.</string>
+  <string name="text_plex_library_required">Válasszon ki legalább egy könyvtárat a szinkronizáláshoz, vagy távolítsa el ezt a szervert.</string>
   <string name="text_plex_synced_summary">Az adatok %1$s alkalommal szinkronizálódtak. Az utolsó szinkronizálás: %2$s.</string>
   <string name="text_plex_tv_library_description">Engedélyezze a Trakt Plex szinkronizálást a Plex szerver média könyvtárához való hozzáféréshez.</string>
   <string name="text_private">Privát</string>
@@ -1563,9 +1586,12 @@
   <string name="text_settings_background_solid">Egyszínű</string>
   <string name="text_settings_background_translucent">Áttetsző</string>
   <string name="text_settings_clear_cover">Törölje az aktuális borítóképet, és térjen vissza az alapértelmezettre.</string>
+  <string name="text_settings_cover_image">Borítókép</string>
+  <string name="text_settings_cover_image_description">A visszaállítás visszaállítja az alapértelmezett borítóképet.</string>
   <string name="text_settings_enable_multiple_plays">Többszörös lejátszás</string>
   <string name="text_settings_enable_multiple_plays_description">Engedélyezz több mint 1 lejátszást filmekhez és epizódokhoz.</string>
   <string name="text_settings_enable_notifications">Értesítések engedélyezése</string>
+  <string name="text_settings_no_cover_image_description">Nincs beállított borítóképe.</string>
   <string name="text_settings_notification_time_180_min">3 órával előtte</string>
   <string name="text_settings_notification_time_30_min">30 perccel előtte</string>
   <string name="text_settings_notification_time_60_min">1 órával előtte</string>

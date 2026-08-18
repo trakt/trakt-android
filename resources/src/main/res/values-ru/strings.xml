@@ -135,8 +135,11 @@
   <string name="button_label_pause_track">Приостановить %s</string>
   <string name="button_label_pick_match">Импортировать %s.</string>
   <string name="button_label_play_track">Воспроизвести %s</string>
+  <string name="button_label_plex_add_server">Добавить сервер Plex</string>
   <string name="button_label_plex_connect">Подключить аккаунт Plex</string>
   <string name="button_label_plex_disconnect">Отключить аккаунт Plex</string>
+  <string name="button_label_plex_manage_server">Управление библиотеками сервера</string>
+  <string name="button_label_plex_remove_server">Удалить %s</string>
   <string name="button_label_plex_scrobble_episode_library">Переключить скробблинг библиотеки для эпизодов</string>
   <string name="button_label_plex_scrobble_episode_rated">Переключить скробблинг оценок для эпизодов</string>
   <string name="button_label_plex_scrobble_episode_watched">Переключить скробблинг просмотренного для эпизодов</string>
@@ -193,6 +196,7 @@
   <string name="button_label_report_user">Пожаловаться на %s</string>
   <string name="button_label_reset_all_filters">Сбросить все фильтры</string>
   <string name="button_label_reset_calendar_period">Сегодня</string>
+  <string name="button_label_reset_cover_image">Сбросить обложку до стандартного изображения.</string>
   <string name="button_label_reset_filter">Сброс</string>
   <string name="button_label_restore_show">Восстановить сериал \"%s\"</string>
   <string name="button_label_retry">Повторить</string>
@@ -237,6 +241,7 @@
   <string name="button_label_toggle_search_lists">Поиск списков</string>
   <string name="button_label_toggle_search_media">Поиск медиа</string>
   <string name="button_label_toggle_search_people">Поиск людей</string>
+  <string name="button_label_toggle_streaming_countries">Переключить страны для %s</string>
   <string name="button_label_trivia_category_filter">Фильтровать мелочи по категории</string>
   <string name="button_label_trivia_no_spoilers">Без спойлеров</string>
   <string name="button_label_trivia_spoilers">Спойлеры</string>
@@ -287,7 +292,9 @@
   <string name="button_label_watched_until_here">Отметить \"%s\" как просмотренное досюда</string>
   <string name="button_label_year_in_review">Просмотреть ваш обзор за %s</string>
   <string name="button_label_year_to_date">Посмотреть с начала года</string>
+  <string name="button_plex_add_server">Добавить сервер</string>
   <string name="button_plex_authorized">Я подключил Plex</string>
+  <string name="button_plex_manage_server">Управление</string>
   <string name="button_plex_sync_now">Синхронизировать сейчас</string>
   <string name="button_plex_toggle_scrobble">Скробблинг</string>
   <string name="button_plex_toggle_watched">Просмотрено</string>
@@ -401,6 +408,7 @@
   <string name="button_text_player_play_now">Смотреть сейчас</string>
   <string name="button_text_player_resume">Продолжить</string>
   <string name="button_text_player_subtitles_off">Выкл.</string>
+  <string name="button_text_plex_remove_server">Удалить</string>
   <string name="button_text_popular_comments">Популярное</string>
   <string name="button_text_progress_completed">Актуально</string>
   <string name="button_text_progress_dropped">Заброшено</string>
@@ -421,6 +429,7 @@
   <string name="button_text_report_comment">Пожаловаться</string>
   <string name="button_text_reset_all_filters">Сбросить все</string>
   <string name="button_text_reset_calendar_period">Сегодня</string>
+  <string name="button_text_reset_cover_image">Сброс</string>
   <string name="button_text_restore_rating_prompts">Восстановить запросы на оценку</string>
   <string name="button_text_restore_show">Восстановить сериал</string>
   <string name="button_text_retry">Повторить</string>
@@ -507,6 +516,8 @@
   <string name="confirmation_challenge_delete_account">Для подтверждения введите свое имя пользователя %s ниже.</string>
   <string name="confirmation_message_delete_api_app">Это навсегда удалит %s и отзовет каждый выданный для него токен. Это действие невозможно отменить.</string>
   <string name="confirmation_message_disconnect_plex">Это остановит синхронизацию вашей библиотеки Plex. Вы можете переподключиться в любое время.</string>
+  <string name="confirmation_message_plex_remove_server">Это остановит синхронизацию библиотек этого сервера. Вы можете добавить его обратно в любое время.</string>
+  <string name="confirmation_message_reset_cover_image">Это удалит вашу пользовательскую обложку и восстановит стандартное изображение. Вы можете установить новую в любое время.</string>
   <string name="confirmation_message_revoke_app">Это отзовет доступ %s к вашей учетной записи Trakt. Вы можете переподключить его в любое время.</string>
   <string name="confirmation_message_rewatching_prompt">Начало сеанса пересмотра обновит ваш раздел \"Продолжить просмотр\".</string>
   <string name="confirmation_message_undo_sync">Это отменит каждый элемент, импортированный этой синхронизацией в вашу историю, оценки, список просмотра и библиотеку.</string>
@@ -528,11 +539,13 @@
   <string name="confirmation_title_hide_recommendation">Скрыть рекомендацию?</string>
   <string name="confirmation_title_log_out">Выйти из аккаунта?</string>
   <string name="confirmation_title_mark_as_watched">Отметить как просмотренное?</string>
+  <string name="confirmation_title_plex_remove_server">Удалить %s?</string>
   <string name="confirmation_title_remove_favorite">Удалить из избранного?</string>
   <string name="confirmation_title_remove_from_list">Удалить из списка?</string>
   <string name="confirmation_title_remove_from_watched">Удалить из истории?</string>
   <string name="confirmation_title_remove_from_watchlist">Удалить из списка просмотра?</string>
   <string name="confirmation_title_remove_play">Удалить просмотр?</string>
+  <string name="confirmation_title_reset_cover_image">Сбросить обложку?</string>
   <string name="confirmation_title_reset_filters">Сбросить фильтры?</string>
   <string name="confirmation_title_restore_show">Восстановить сериал?</string>
   <string name="confirmation_title_revoke_app">Отозвать доступ?</string>
@@ -564,11 +577,15 @@
   <string name="description_paused_items">Эти элементы не были просмотрены как минимум на 80%.</string>
   <string name="description_plex_home_users">Ваши просмотры всегда синхронизируются. Добавьте другие имена пользователей Plex Home, чтобы синхронизировать и их.</string>
   <string name="description_plex_manual_sync">Запустите немедленную синхронизацию истории просмотров Plex с Trakt.</string>
+  <string name="description_plex_no_synced_servers">Добавьте свой сервер Plex, чтобы начать синхронизацию библиотек с Trakt.</string>
   <string name="description_plex_scrobbler_settings">Эти настройки контролируют, что скробблится в Trakt в реальном времени.</string>
   <string name="description_plex_servers">Выберите сервер Plex для синхронизации с Trakt.</string>
   <string name="description_plex_sync">Подключите свой аккаунт Plex, чтобы синхронизировать историю просмотров, оценки и коллекции с Trakt.</string>
-  <string name="description_plex_sync_settings">Эти настройки определяют, какие типы данных синхронизируются с Trakt.</string>
-  <string name="description_plex_vip_upsell_sync">Перейдите на VIP, чтобы история просмотров, оценки и коллекции Plex оставались синхронизированными с Trakt.</string>
+  <string name="description_plex_sync_free_limits">Бесплатные аккаунты синхронизируют 1 сервер Plex один раз в день. Обновитесь до VIP, чтобы синхронизировать неограниченное количество серверов с обновлением каждый час.</string>
+  <string name="description_plex_sync_history">Недавние синхронизации данных с ваших медиасерверов Plex.</string>
+  <string name="description_plex_sync_settings">Выберите, что каждый тип медиа синхронизирует с вашим аккаунтом Trakt.</string>
+  <string name="description_plex_synced_servers">Автоматически синхронизируйте историю просмотров, библиотеку, оценки и список просмотра.</string>
+  <string name="description_plex_vip_upsell_add_server">Бесплатные аккаунты синхронизируют 1 сервер Plex один раз в день. Обновитесь до VIP, чтобы синхронизировать неограниченное количество серверов с обновлением каждый час.</string>
   <string name="description_plex_vip_upsell_webhook">Перейдите на VIP, чтобы автоматически скробблить то, что вы смотрите, в реальном времени с помощью веб-хуков Plex.</string>
   <string name="description_plex_webhook">Автоматически скробблить то, что вы смотрите, оцениваете и добавляете в свою библиотеку в реальном времени.</string>
   <string name="description_preview_features">Попробуйте предстоящие функции до того, как они станут общедоступными. Предварительные функции могут меняться по мере их доработки.</string>
@@ -721,11 +738,13 @@
   <string name="header_player_subtitle_size">Размер</string>
   <string name="header_plex_home_users">Пользователи Plex Home</string>
   <string name="header_plex_manual_sync">Ручная синхронизация</string>
+  <string name="header_plex_no_synced_servers">Пока нет синхронизированных серверов</string>
   <string name="header_plex_scrobbler_settings">Настройки скробблера</string>
   <string name="header_plex_servers">Выберите сервер</string>
-  <string name="header_plex_sync_history">История синхронизации</string>
+  <string name="header_plex_sync_free_limits">Синхронизация Plex на бесплатном тарифе</string>
   <string name="header_plex_sync_settings">Настройки синхронизации Plex</string>
-  <string name="header_plex_vip_upsell_sync">Синхронизация Plex — функция VIP</string>
+  <string name="header_plex_synced_servers">Синхронизированные серверы</string>
+  <string name="header_plex_vip_upsell_add_server">Несколько серверов — это VIP-функция</string>
   <string name="header_plex_vip_upsell_webhook">Скробблинг Plex — функция VIP</string>
   <string name="header_post_credits">Послетитры</string>
   <string name="header_premiered">Премьера</string>
@@ -852,6 +871,7 @@
   <string name="import_tab_unresolved">Пропущено</string>
   <string name="import_vip_limit_exceeded">Ваш импорт превышает лимит бесплатного уровня. Обновите до VIP, чтобы импортировать все %d элементов.</string>
   <string name="input_label_search_credit_members">Искать людей</string>
+  <string name="input_label_search_streaming_services">Поиск стриминговых сервисов</string>
   <string name="input_placeholder_app_name">Мое приложение</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
@@ -870,6 +890,7 @@
   <string name="input_placeholder_search_movies">Искать фильмы…</string>
   <string name="input_placeholder_search_people">Искать людей…</string>
   <string name="input_placeholder_search_shows">Искать сериалы…</string>
+  <string name="input_placeholder_search_streaming_services">Поиск стримингового сервиса или страны…</string>
   <string name="input_prompt_about">Расскажите немного о себе.</string>
   <string name="input_prompt_birthday">Когда ваш день рождения?</string>
   <string name="input_prompt_display_name">Какое имя вы хотите отображать?</string>
@@ -1248,6 +1269,7 @@
   <string name="tab_text_seasons_reviews">Отзывы</string>
   <string name="tab_text_simple_filters">Простые</string>
   <string name="tag_label_progress">Прогресс</string>
+  <string name="tag_plex_syncing">Синхронизируется</string>
   <string name="tag_text_blocked_user">Заблокировано</string>
   <string name="tag_text_discount_biyearly">Скидка на первые 2 года</string>
   <string name="tag_text_discount_monthly">Скидка на первый месяц</string>
@@ -1509,6 +1531,7 @@
   <string name="text_play_count">%d просмотров</string>
   <string name="text_plays_watched">%s просмотров</string>
   <string name="text_plex_auth_waiting">Открыта страница авторизации Plex. Завершите вход там, затем нажмите кнопку ниже.</string>
+  <string name="text_plex_library_required">Выберите хотя бы одну библиотеку для синхронизации или удалите этот сервер.</string>
   <string name="text_plex_synced_summary">Данные синхронизировались %1$s раз. Ваша последняя синхронизация была %2$s.</string>
   <string name="text_plex_tv_library_description">Включите синхронизацию Trakt Plex, чтобы получить доступ к медиатеке вашего сервера Plex.</string>
   <string name="text_private">Приватный</string>
@@ -1563,9 +1586,12 @@
   <string name="text_settings_background_solid">Сплошной</string>
   <string name="text_settings_background_translucent">Полупрозрачный</string>
   <string name="text_settings_clear_cover">Очистить текущую обложку и вернуться к стандартной.</string>
+  <string name="text_settings_cover_image">Обложка</string>
+  <string name="text_settings_cover_image_description">При сбросе будет восстановлено изображение по умолчанию.</string>
   <string name="text_settings_enable_multiple_plays">Несколько воспроизведений</string>
   <string name="text_settings_enable_multiple_plays_description">Разрешить более 1 воспроизведения для фильмов и эпизодов.</string>
   <string name="text_settings_enable_notifications">Включить уведомления</string>
+  <string name="text_settings_no_cover_image_description">Обложка не установлена.</string>
   <string name="text_settings_notification_time_180_min">За 3 часа до</string>
   <string name="text_settings_notification_time_30_min">За 30 минут до</string>
   <string name="text_settings_notification_time_60_min">За 1 час до</string>

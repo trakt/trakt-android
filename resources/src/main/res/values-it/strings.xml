@@ -135,8 +135,11 @@
   <string name="button_label_pause_track">Metti in pausa %s</string>
   <string name="button_label_pick_match">Importa %s.</string>
   <string name="button_label_play_track">Riproduci %s</string>
+  <string name="button_label_plex_add_server">Aggiungi un server Plex</string>
   <string name="button_label_plex_connect">Collega il tuo account Plex</string>
   <string name="button_label_plex_disconnect">Scollega il tuo account Plex</string>
+  <string name="button_label_plex_manage_server">Gestisci librerie del server</string>
+  <string name="button_label_plex_remove_server">Rimuovi %s</string>
   <string name="button_label_plex_scrobble_episode_library">Attiva/disattiva scrobbling libreria per gli episodi</string>
   <string name="button_label_plex_scrobble_episode_rated">Attiva/disattiva scrobbling valutazioni per gli episodi</string>
   <string name="button_label_plex_scrobble_episode_watched">Attiva/disattiva scrobbling visti per gli episodi</string>
@@ -193,6 +196,7 @@
   <string name="button_label_report_user">Segnala %s</string>
   <string name="button_label_reset_all_filters">Reimposta tutti i filtri</string>
   <string name="button_label_reset_calendar_period">Oggi</string>
+  <string name="button_label_reset_cover_image">Ripristina la tua immagine di copertina all\'immagine predefinita.</string>
   <string name="button_label_reset_filter">Reimposta</string>
   <string name="button_label_restore_show">Ripristina la serie \"%s\"</string>
   <string name="button_label_retry">Riprova</string>
@@ -237,6 +241,7 @@
   <string name="button_label_toggle_search_lists">Cerca liste</string>
   <string name="button_label_toggle_search_media">Cerca media</string>
   <string name="button_label_toggle_search_people">Cerca persone</string>
+  <string name="button_label_toggle_streaming_countries">Attiva/disattiva i paesi per %s</string>
   <string name="button_label_trivia_category_filter">Filtra curiosità per categoria</string>
   <string name="button_label_trivia_no_spoilers">Senza spoiler</string>
   <string name="button_label_trivia_spoilers">Spoiler</string>
@@ -287,7 +292,9 @@
   <string name="button_label_watched_until_here">Segna \"%s\" come visto fino a qui</string>
   <string name="button_label_year_in_review">Visualizza il tuo riepilogo di %s</string>
   <string name="button_label_year_to_date">Visualizza il tuo anno fino ad oggi</string>
+  <string name="button_plex_add_server">Aggiungi server</string>
   <string name="button_plex_authorized">Ho collegato Plex</string>
+  <string name="button_plex_manage_server">Gestisci</string>
   <string name="button_plex_sync_now">Sincronizza Ora</string>
   <string name="button_plex_toggle_scrobble">Scrobble</string>
   <string name="button_plex_toggle_watched">Visto</string>
@@ -401,6 +408,7 @@
   <string name="button_text_player_play_now">Riproduci ora</string>
   <string name="button_text_player_resume">Riprendi</string>
   <string name="button_text_player_subtitles_off">Disattivati</string>
+  <string name="button_text_plex_remove_server">Rimuovi</string>
   <string name="button_text_popular_comments">Popolari</string>
   <string name="button_text_progress_completed">Aggiornato</string>
   <string name="button_text_progress_dropped">Abbandonato</string>
@@ -421,6 +429,7 @@
   <string name="button_text_report_comment">Segnala</string>
   <string name="button_text_reset_all_filters">Reimposta tutto</string>
   <string name="button_text_reset_calendar_period">Oggi</string>
+  <string name="button_text_reset_cover_image">Reimposta</string>
   <string name="button_text_restore_rating_prompts">Ripristina richieste di valutazione</string>
   <string name="button_text_restore_show">Ripristina serie</string>
   <string name="button_text_retry">Riprova</string>
@@ -507,6 +516,8 @@
   <string name="confirmation_challenge_delete_account">Per confermare, digita il tuo nome utente %s qui sotto.</string>
   <string name="confirmation_message_delete_api_app">Questo eliminerà definitivamente %s e revocherà ogni token emesso per essa. Questa operazione non può essere annullata.</string>
   <string name="confirmation_message_disconnect_plex">Questo interromperà la sincronizzazione della tua libreria Plex. Puoi riconnetterti in qualsiasi momento.</string>
+  <string name="confirmation_message_plex_remove_server">Questo interromperà la sincronizzazione delle librerie di questo server. Puoi aggiungerlo di nuovo in qualsiasi momento.</string>
+  <string name="confirmation_message_reset_cover_image">Verrà rimossa la tua immagine di copertina personalizzata e ripristinata l\'immagine predefinita. Puoi impostarne una nuova in qualsiasi momento.</string>
   <string name="confirmation_message_revoke_app">Questo revocherà l\'accesso di %s al tuo account Trakt. Puoi riconnetterlo in qualsiasi momento.</string>
   <string name="confirmation_message_rewatching_prompt">L\'avvio di una sessione di riguardato aggiornerà la tua lista \'Continua a guardare\'.</string>
   <string name="confirmation_message_undo_sync">Questo annullerà ogni elemento che questa sincronizzazione ha importato nella tua cronologia, valutazioni, watchlist e libreria.</string>
@@ -528,11 +539,13 @@
   <string name="confirmation_title_hide_recommendation">Nascondi raccomandazione?</string>
   <string name="confirmation_title_log_out">Esci?</string>
   <string name="confirmation_title_mark_as_watched">Segna come visto?</string>
+  <string name="confirmation_title_plex_remove_server">Rimuovere %s?</string>
   <string name="confirmation_title_remove_favorite">Rimuovi dai preferiti?</string>
   <string name="confirmation_title_remove_from_list">Rimuovi dalla lista?</string>
   <string name="confirmation_title_remove_from_watched">Rimuovi dalla cronologia?</string>
   <string name="confirmation_title_remove_from_watchlist">Rimuovi dalla watchlist?</string>
   <string name="confirmation_title_remove_play">Rimuovi riproduzione?</string>
+  <string name="confirmation_title_reset_cover_image">Ripristinare l\'immagine di copertina?</string>
   <string name="confirmation_title_reset_filters">Reimposta filtri?</string>
   <string name="confirmation_title_restore_show">Ripristina serie?</string>
   <string name="confirmation_title_revoke_app">Revocare l\'accesso?</string>
@@ -564,11 +577,15 @@
   <string name="description_paused_items">Questi elementi non sono stati guardati almeno all\'80%.</string>
   <string name="description_plex_home_users">Le tue riproduzioni si sincronizzano sempre. Aggiungi altri nomi utente Plex Home per sincronizzare anche le loro.</string>
   <string name="description_plex_manual_sync">Attiva una sincronizzazione immediata della cronologia di visione di Plex con Trakt.</string>
+  <string name="description_plex_no_synced_servers">Aggiungi il tuo server Plex per iniziare a sincronizzare le tue librerie con Trakt.</string>
   <string name="description_plex_scrobbler_settings">Queste impostazioni controllano cosa viene scrobblato su Trakt in tempo reale.</string>
   <string name="description_plex_servers">Scegli il server Plex da sincronizzare con Trakt.</string>
   <string name="description_plex_sync">Collega il tuo account Plex per sincronizzare la cronologia di visione, le valutazioni e le collezioni con Trakt.</string>
-  <string name="description_plex_sync_settings">Queste impostazioni controllano quali tipi di dati vengono sincronizzati con Trakt.</string>
-  <string name="description_plex_vip_upsell_sync">Aggiorna a VIP per mantenere la tua cronologia di visione, le valutazioni e le collezioni di Plex sincronizzate con Trakt.</string>
+  <string name="description_plex_sync_free_limits">Gli account gratuiti sincronizzano 1 server Plex una volta al giorno. Esegui l\'upgrade a VIP per sincronizzare server illimitati, aggiornati ogni ora.</string>
+  <string name="description_plex_sync_history">Sincronizzazioni dati recenti dai tuoi Plex Media Server.</string>
+  <string name="description_plex_sync_settings">Scegli cosa ogni tipo di media sincronizza con il tuo account Trakt.</string>
+  <string name="description_plex_synced_servers">Sincronizza automaticamente la tua cronologia visualizzazioni, libreria, valutazioni e watchlist.</string>
+  <string name="description_plex_vip_upsell_add_server">Gli account gratuiti sincronizzano 1 server Plex una volta al giorno. Esegui l\'upgrade a VIP per sincronizzare server illimitati, aggiornati ogni ora.</string>
   <string name="description_plex_vip_upsell_webhook">Aggiorna a VIP per scrobblare automaticamente ciò che stai guardando in tempo reale con i webhook di Plex.</string>
   <string name="description_plex_webhook">Scrobbla automaticamente ciò che stai guardando, valutando e aggiungendo alla tua libreria in tempo reale.</string>
   <string name="description_preview_features">Prova le funzionalità imminenti prima che siano ampiamente disponibili. Le funzionalità di anteprima potrebbero cambiare man mano che le perfezioniamo.</string>
@@ -721,11 +738,13 @@
   <string name="header_player_subtitle_size">Dimensione</string>
   <string name="header_plex_home_users">Utenti Plex Home</string>
   <string name="header_plex_manual_sync">Sincronizzazione Manuale</string>
+  <string name="header_plex_no_synced_servers">Nessun server sincronizzato ancora</string>
   <string name="header_plex_scrobbler_settings">Impostazioni Scrobbler</string>
   <string name="header_plex_servers">Seleziona Server</string>
-  <string name="header_plex_sync_history">Cronologia Sincronizzazioni</string>
+  <string name="header_plex_sync_free_limits">Sincronizzazione Plex sul piano gratuito</string>
   <string name="header_plex_sync_settings">Impostazioni di Sincronizzazione Plex</string>
-  <string name="header_plex_vip_upsell_sync">Plex Sync è una funzionalità VIP</string>
+  <string name="header_plex_synced_servers">Server sincronizzati</string>
+  <string name="header_plex_vip_upsell_add_server">Server multipli è una funzionalità VIP</string>
   <string name="header_plex_vip_upsell_webhook">Lo scrobbling di Plex è una funzionalità VIP</string>
   <string name="header_post_credits">Scene post-credits</string>
   <string name="header_premiered">In anteprima</string>
@@ -852,6 +871,7 @@
   <string name="import_tab_unresolved">Saltati</string>
   <string name="import_vip_limit_exceeded">La tua importazione supera il limite del piano gratuito. Esegui l\'upgrade a VIP per importare tutti i %d elementi.</string>
   <string name="input_label_search_credit_members">Cerca persone</string>
+  <string name="input_label_search_streaming_services">Cerca servizi di streaming</string>
   <string name="input_placeholder_app_name">La mia applicazione</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
@@ -870,6 +890,7 @@
   <string name="input_placeholder_search_movies">Cerca film…</string>
   <string name="input_placeholder_search_people">Cerca persone…</string>
   <string name="input_placeholder_search_shows">Cerca serie TV…</string>
+  <string name="input_placeholder_search_streaming_services">Cerca servizio di streaming o paese…</string>
   <string name="input_prompt_about">Parlaci un po\' di te.</string>
   <string name="input_prompt_birthday">Quando è il tuo compleanno?</string>
   <string name="input_prompt_display_name">Quale dovrebbe essere il tuo nome visualizzato?</string>
@@ -1248,6 +1269,7 @@
   <string name="tab_text_seasons_reviews">Recensioni</string>
   <string name="tab_text_simple_filters">Semplice</string>
   <string name="tag_label_progress">Progresso</string>
+  <string name="tag_plex_syncing">Sincronizzazione</string>
   <string name="tag_text_blocked_user">Bloccato</string>
   <string name="tag_text_discount_biyearly">Sconto primi 2 anni</string>
   <string name="tag_text_discount_monthly">Sconto primo mese</string>
@@ -1509,6 +1531,7 @@
   <string name="text_play_count">%d riproduzioni</string>
   <string name="text_plays_watched">%s riproduzioni</string>
   <string name="text_plex_auth_waiting">È stata aperta una pagina di autorizzazione Plex. Completa l\'accesso lì, quindi clicca sul pulsante qui sotto.</string>
+  <string name="text_plex_library_required">Seleziona almeno una libreria da sincronizzare, oppure rimuovi questo server.</string>
   <string name="text_plex_synced_summary">I dati sono stati sincronizzati %1$s volte. La tua sincronizzazione più recente è stata %2$s.</string>
   <string name="text_plex_tv_library_description">Abilita Trakt Plex Sync per accedere alla tua libreria multimediale del server Plex.</string>
   <string name="text_private">Privato</string>
@@ -1563,9 +1586,12 @@
   <string name="text_settings_background_solid">Solido</string>
   <string name="text_settings_background_translucent">Traslucido</string>
   <string name="text_settings_clear_cover">Cancella l\'immagine di copertina attuale e ripristina quella predefinita.</string>
+  <string name="text_settings_cover_image">Immagine di copertina</string>
+  <string name="text_settings_cover_image_description">Il ripristino ripristina l\'immagine predefinita.</string>
   <string name="text_settings_enable_multiple_plays">Visualizzazioni multiple</string>
   <string name="text_settings_enable_multiple_plays_description">Consenti più di 1 visualizzazione per film ed episodi.</string>
   <string name="text_settings_enable_notifications">Abilita Notifiche</string>
+  <string name="text_settings_no_cover_image_description">Nessuna immagine di copertina impostata.</string>
   <string name="text_settings_notification_time_180_min">3 ore prima</string>
   <string name="text_settings_notification_time_30_min">30 minuti prima</string>
   <string name="text_settings_notification_time_60_min">1 ora prima</string>

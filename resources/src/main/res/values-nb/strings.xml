@@ -135,8 +135,11 @@
   <string name="button_label_pause_track">Sett %s på pause</string>
   <string name="button_label_pick_match">Importer %s.</string>
   <string name="button_label_play_track">Spill av %s</string>
+  <string name="button_label_plex_add_server">Legg til en Plex-server</string>
   <string name="button_label_plex_connect">Koble til Plex-kontoen din</string>
   <string name="button_label_plex_disconnect">Koble fra Plex-kontoen din</string>
+  <string name="button_label_plex_manage_server">Administrer serverbiblioteker</string>
+  <string name="button_label_plex_remove_server">Fjern %s</string>
   <string name="button_label_plex_scrobble_episode_library">Veksle skrobbling av bibliotek for episoder</string>
   <string name="button_label_plex_scrobble_episode_rated">Veksle skrobbling av rangeringer for episoder</string>
   <string name="button_label_plex_scrobble_episode_watched">Veksle skrobbling av sett for episoder</string>
@@ -193,6 +196,7 @@
   <string name="button_label_report_user">Rapporter %s</string>
   <string name="button_label_reset_all_filters">Tilbakestill alle filtre</string>
   <string name="button_label_reset_calendar_period">I dag</string>
+  <string name="button_label_reset_cover_image">Tilbakestill forsidebildet ditt til standardillustrasjonen.</string>
   <string name="button_label_reset_filter">Tilbakestill</string>
   <string name="button_label_restore_show">Gjenopprett serien \"%s\"</string>
   <string name="button_label_retry">Prøv igjen</string>
@@ -237,6 +241,7 @@
   <string name="button_label_toggle_search_lists">Søk etter lister</string>
   <string name="button_label_toggle_search_media">Søk etter medieinnhold</string>
   <string name="button_label_toggle_search_people">Søk etter personer</string>
+  <string name="button_label_toggle_streaming_countries">Veksle land for %s</string>
   <string name="button_label_trivia_category_filter">Filtrer trivia etter kategori</string>
   <string name="button_label_trivia_no_spoilers">Ingen spoilere</string>
   <string name="button_label_trivia_spoilers">Spoilere</string>
@@ -287,7 +292,9 @@
   <string name="button_label_watched_until_here">Merk \"%s\" som sett til hit</string>
   <string name="button_label_year_in_review">Se din %s i retrospekt</string>
   <string name="button_label_year_to_date">Vis ditt år til dato</string>
+  <string name="button_plex_add_server">Legg til server</string>
   <string name="button_plex_authorized">Jeg har koblet til Plex</string>
+  <string name="button_plex_manage_server">Administrer</string>
   <string name="button_plex_sync_now">Synkroniser nå</string>
   <string name="button_plex_toggle_scrobble">Skrobble</string>
   <string name="button_plex_toggle_watched">Sett</string>
@@ -401,6 +408,7 @@
   <string name="button_text_player_play_now">Spill nå</string>
   <string name="button_text_player_resume">Gjenoppta</string>
   <string name="button_text_player_subtitles_off">Av</string>
+  <string name="button_text_plex_remove_server">Fjern</string>
   <string name="button_text_popular_comments">Populært</string>
   <string name="button_text_progress_completed">Oppdatert</string>
   <string name="button_text_progress_dropped">Droppet</string>
@@ -421,6 +429,7 @@
   <string name="button_text_report_comment">Rapporter</string>
   <string name="button_text_reset_all_filters">Tilbakestill alle</string>
   <string name="button_text_reset_calendar_period">I dag</string>
+  <string name="button_text_reset_cover_image">Tilbakestill</string>
   <string name="button_text_restore_rating_prompts">Gjenopprett vurderingsmeldinger</string>
   <string name="button_text_restore_show">Gjenopprett serie</string>
   <string name="button_text_retry">Prøv igjen</string>
@@ -507,6 +516,8 @@
   <string name="confirmation_challenge_delete_account">For å bekrefte, skriv inn brukernavnet ditt %s nedenfor.</string>
   <string name="confirmation_message_delete_api_app">Dette sletter %s permanent og trekker tilbake alle utstedte tokens for den. Dette kan ikke angres.</string>
   <string name="confirmation_message_disconnect_plex">Dette vil stoppe synkroniseringen av Plex-biblioteket ditt. Du kan koble til igjen når som helst.</string>
+  <string name="confirmation_message_plex_remove_server">Dette vil stoppe synkroniseringen av denne serverens biblioteker. Du kan legge den til igjen når som helst.</string>
+  <string name="confirmation_message_reset_cover_image">Dette vil fjerne ditt egendefinerte forsidebilde og gjenopprette standardillustrasjonen. Du kan angi et nytt når som helst.</string>
   <string name="confirmation_message_revoke_app">Dette vil trekke tilbake %s sin tilgang til Trakt-kontoen din. Du kan koble den til igjen når som helst.</string>
   <string name="confirmation_message_rewatching_prompt">Å starte et gjensyn vil oppdatere din «Fortsett å se»-liste.</string>
   <string name="confirmation_message_undo_sync">Dette vil reversere hvert element denne synkroniseringen importerte til din historie, rangeringer, overvåkningsliste og bibliotek.</string>
@@ -528,11 +539,13 @@
   <string name="confirmation_title_hide_recommendation">Skjul anbefaling?</string>
   <string name="confirmation_title_log_out">Logg ut?</string>
   <string name="confirmation_title_mark_as_watched">Merk som sett?</string>
+  <string name="confirmation_title_plex_remove_server">Fjern %s?</string>
   <string name="confirmation_title_remove_favorite">Fjern favoritt?</string>
   <string name="confirmation_title_remove_from_list">Fjern fra liste?</string>
   <string name="confirmation_title_remove_from_watched">Fjern fra historikk?</string>
   <string name="confirmation_title_remove_from_watchlist">Fjern fra ønskeliste?</string>
   <string name="confirmation_title_remove_play">Fjern avspilling?</string>
+  <string name="confirmation_title_reset_cover_image">Tilbakestille forsidebilde?</string>
   <string name="confirmation_title_reset_filters">Tilbakestill filtre?</string>
   <string name="confirmation_title_restore_show">Gjenopprett serie?</string>
   <string name="confirmation_title_revoke_app">Trekk tilbake tilgang?</string>
@@ -564,11 +577,15 @@
   <string name="description_paused_items">Disse elementene ble ikke sett minst 80%.</string>
   <string name="description_plex_home_users">Dine egne avspillinger synkroniseres alltid. Legg til andre Plex Hjemme-brukernavn for å synkronisere deres også.</string>
   <string name="description_plex_manual_sync">Utløs en umiddelbar synkronisering av din Plex-visningshistorikk til Trakt.</string>
+  <string name="description_plex_no_synced_servers">Legg til Plex-serveren din for å begynne å synkronisere bibliotekene dine med Trakt.</string>
   <string name="description_plex_scrobbler_settings">Disse innstillingene kontrollerer hva som skrobbles til Trakt i sanntid.</string>
   <string name="description_plex_servers">Velg Plex-serveren du vil synkronisere med Trakt.</string>
   <string name="description_plex_sync">Koble til Plex-kontoen din for å synkronisere visningshistorikk, rangeringer og samlinger med Trakt.</string>
-  <string name="description_plex_sync_settings">Disse innstillingene kontrollerer hvilke datatyper som synkroniseres til Trakt.</string>
-  <string name="description_plex_vip_upsell_sync">Oppgrader til VIP for å holde Plex-visningshistorikken, rangeringene og samlingene dine synkronisert med Trakt.</string>
+  <string name="description_plex_sync_free_limits">Gratiskontoer synkroniserer 1 Plex-server én gang om dagen. Oppgrader til VIP for å synkronisere ubegrensede servere, oppdatert hver time.</string>
+  <string name="description_plex_sync_history">Nylige datasynkroniseringer fra dine Plex Media Servers.</string>
+  <string name="description_plex_sync_settings">Velg hva hver medietype synkroniserer til din Trakt-konto.</string>
+  <string name="description_plex_synced_servers">Synkroniser automatisk din sett-historie, bibliotek, rangeringer og overvåkningsliste.</string>
+  <string name="description_plex_vip_upsell_add_server">Gratiskontoer synkroniserer 1 Plex-server én gang om dagen. Oppgrader til VIP for å synkronisere ubegrensede servere, oppdatert hver time.</string>
   <string name="description_plex_vip_upsell_webhook">Oppgrader til VIP for å automatisk scrobble det du ser på i sanntid med Plex-webhooks.</string>
   <string name="description_plex_webhook">Skrobble automatisk det du ser, vurderer og legger til i biblioteket ditt i sanntid.</string>
   <string name="description_preview_features">Prøv kommende funksjoner før de er allment tilgjengelige. Forhåndsvisningsfunksjoner kan endres etter hvert som vi forbedrer dem.</string>
@@ -721,11 +738,13 @@
   <string name="header_player_subtitle_size">Størrelse</string>
   <string name="header_plex_home_users">Plex Hjemmebrukere</string>
   <string name="header_plex_manual_sync">Manuell synkronisering</string>
+  <string name="header_plex_no_synced_servers">Ingen synkroniserte servere ennå</string>
   <string name="header_plex_scrobbler_settings">Skrobblerinnstillinger</string>
   <string name="header_plex_servers">Velg server</string>
-  <string name="header_plex_sync_history">Synkroniseringshistorikk</string>
+  <string name="header_plex_sync_free_limits">Plex-synkronisering på gratisplanen</string>
   <string name="header_plex_sync_settings">Plex-synkroniseringsinnstillinger</string>
-  <string name="header_plex_vip_upsell_sync">Plex-synkronisering er en VIP-funksjon</string>
+  <string name="header_plex_synced_servers">Synkroniserte servere</string>
+  <string name="header_plex_vip_upsell_add_server">Flere servere er en VIP-funksjon</string>
   <string name="header_plex_vip_upsell_webhook">Plex-scrobbling er en VIP-funksjon</string>
   <string name="header_post_credits">Ettertekster</string>
   <string name="header_premiered">Premiere</string>
@@ -852,6 +871,7 @@
   <string name="import_tab_unresolved">Hoppet over</string>
   <string name="import_vip_limit_exceeded">Importen din overskrider grensen for gratisnivået. Oppgrader til VIP for å importere alle %d elementer.</string>
   <string name="input_label_search_credit_members">Søk personer</string>
+  <string name="input_label_search_streaming_services">Søk strømmetjenester</string>
   <string name="input_placeholder_app_name">Min applikasjon</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
@@ -870,6 +890,7 @@
   <string name="input_placeholder_search_movies">Søk filmer…</string>
   <string name="input_placeholder_search_people">Søk personer…</string>
   <string name="input_placeholder_search_shows">Søk serier…</string>
+  <string name="input_placeholder_search_streaming_services">Søk strømmetjeneste eller land…</string>
   <string name="input_prompt_about">Fortell oss litt om deg selv.</string>
   <string name="input_prompt_birthday">Når er bursdagen din?</string>
   <string name="input_prompt_display_name">Hva skal visningsnavnet ditt være?</string>
@@ -1248,6 +1269,7 @@
   <string name="tab_text_seasons_reviews">Anmeldelser</string>
   <string name="tab_text_simple_filters">Enkel</string>
   <string name="tag_label_progress">Fremdrift</string>
+  <string name="tag_plex_syncing">Synkroniserer</string>
   <string name="tag_text_blocked_user">Blokkert</string>
   <string name="tag_text_discount_biyearly">Første 2 år rabatt</string>
   <string name="tag_text_discount_monthly">Første måned rabatt</string>
@@ -1509,6 +1531,7 @@
   <string name="text_play_count">%d avspillinger</string>
   <string name="text_plays_watched">%s avspillinger</string>
   <string name="text_plex_auth_waiting">En Plex-autoriseringsside har blitt åpnet. Fullfør innloggingen der, og klikk deretter på knappen nedenfor.</string>
+  <string name="text_plex_library_required">Velg minst ett bibliotek å synkronisere, eller fjern denne serveren.</string>
   <string name="text_plex_synced_summary">Data har synkronisert %1$s ganger. Din siste synkronisering var %2$s.</string>
   <string name="text_plex_tv_library_description">Aktiver Trakt Plex-synkronisering for å få tilgang til mediesamlingen din på Plex-serveren.</string>
   <string name="text_private">Privat</string>
@@ -1563,9 +1586,12 @@
   <string name="text_settings_background_solid">Solid</string>
   <string name="text_settings_background_translucent">Gjennomsiktig</string>
   <string name="text_settings_clear_cover">Fjern gjeldende forsidebilde og gå tilbake til standard.</string>
+  <string name="text_settings_cover_image">Forsidebilde</string>
+  <string name="text_settings_cover_image_description">Tilbakestilling gjenoppretter standardillustrasjonen.</string>
   <string name="text_settings_enable_multiple_plays">Flere avspillinger</string>
   <string name="text_settings_enable_multiple_plays_description">Tillat mer enn 1 avspilling for filmer og episoder.</string>
   <string name="text_settings_enable_notifications">Aktiver varsler</string>
+  <string name="text_settings_no_cover_image_description">Du har ikke angitt et forsidebilde.</string>
   <string name="text_settings_notification_time_180_min">3 timer før</string>
   <string name="text_settings_notification_time_30_min">30 minutter før</string>
   <string name="text_settings_notification_time_60_min">1 time før</string>

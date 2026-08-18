@@ -135,8 +135,11 @@
   <string name="button_label_pause_track">Pauzeer %s</string>
   <string name="button_label_pick_match">Importeer %s.</string>
   <string name="button_label_play_track">Speel %s af</string>
+  <string name="button_label_plex_add_server">Een Plex-server toevoegen</string>
   <string name="button_label_plex_connect">Verbind je Plex-account</string>
   <string name="button_label_plex_disconnect">Koppel je Plex-account los</string>
+  <string name="button_label_plex_manage_server">Serverbibliotheken beheren</string>
+  <string name="button_label_plex_remove_server">Verwijder %s</string>
   <string name="button_label_plex_scrobble_episode_library">Schakel scrobbelen van bibliotheek voor afleveringen in/uit</string>
   <string name="button_label_plex_scrobble_episode_rated">Schakel scrobbelen van beoordelingen voor afleveringen in/uit</string>
   <string name="button_label_plex_scrobble_episode_watched">Schakel scrobbelen van bekeken afleveringen in/uit</string>
@@ -193,6 +196,7 @@
   <string name="button_label_report_user">Meld %s</string>
   <string name="button_label_reset_all_filters">Alle filters resetten</string>
   <string name="button_label_reset_calendar_period">Vandaag</string>
+  <string name="button_label_reset_cover_image">Reset je omslagafbeelding naar de standaardafbeelding.</string>
   <string name="button_label_reset_filter">Resetten</string>
   <string name="button_label_restore_show">Herstel serie \"%s\"</string>
   <string name="button_label_retry">Opnieuw proberen</string>
@@ -237,6 +241,7 @@
   <string name="button_label_toggle_search_lists">Zoek naar lijsten</string>
   <string name="button_label_toggle_search_media">Zoek naar media</string>
   <string name="button_label_toggle_search_people">Zoek naar personen</string>
+  <string name="button_label_toggle_streaming_countries">Landen voor %s in-/uitschakelen</string>
   <string name="button_label_trivia_category_filter">Filter trivia op categorie</string>
   <string name="button_label_trivia_no_spoilers">Geen spoilers</string>
   <string name="button_label_trivia_spoilers">Spoilers</string>
@@ -287,7 +292,9 @@
   <string name="button_label_watched_until_here">\"%s\" als tot hier bekeken markeren</string>
   <string name="button_label_year_in_review">Bekijk uw %s overzicht</string>
   <string name="button_label_year_to_date">Bekijk uw jaar tot nu toe</string>
+  <string name="button_plex_add_server">Server toevoegen</string>
   <string name="button_plex_authorized">Ik heb Plex verbonden</string>
+  <string name="button_plex_manage_server">Beheren</string>
   <string name="button_plex_sync_now">Nu synchroniseren</string>
   <string name="button_plex_toggle_scrobble">Scrobbelen</string>
   <string name="button_plex_toggle_watched">Bekeken</string>
@@ -401,6 +408,7 @@
   <string name="button_text_player_play_now">Nu afspelen</string>
   <string name="button_text_player_resume">Hervatten</string>
   <string name="button_text_player_subtitles_off">Uit</string>
+  <string name="button_text_plex_remove_server">Verwijderen</string>
   <string name="button_text_popular_comments">Populair</string>
   <string name="button_text_progress_completed">Bijgewerkt</string>
   <string name="button_text_progress_dropped">Gestopt</string>
@@ -421,6 +429,7 @@
   <string name="button_text_report_comment">Melden</string>
   <string name="button_text_reset_all_filters">Alles resetten</string>
   <string name="button_text_reset_calendar_period">Vandaag</string>
+  <string name="button_text_reset_cover_image">Resetten</string>
   <string name="button_text_restore_rating_prompts">Beoordelingsprompts herstellen</string>
   <string name="button_text_restore_show">Herstel serie</string>
   <string name="button_text_retry">Opnieuw proberen</string>
@@ -507,6 +516,8 @@
   <string name="confirmation_challenge_delete_account">Om te bevestigen, typ je hieronder je gebruikersnaam %s.</string>
   <string name="confirmation_message_delete_api_app">Dit verwijdert %s permanent en trekt elke uitgegeven token in. Dit kan niet ongedaan worden gemaakt.</string>
   <string name="confirmation_message_disconnect_plex">Dit stopt het synchroniseren van je Plex-bibliotheek. Je kunt op elk moment opnieuw verbinding maken.</string>
+  <string name="confirmation_message_plex_remove_server">Dit stopt het synchroniseren van de bibliotheken van deze server. Je kunt deze op elk moment opnieuw toevoegen.</string>
+  <string name="confirmation_message_reset_cover_image">Hiermee wordt je aangepaste omslagafbeelding verwijderd en de standaardafbeelding hersteld. Je kunt op elk moment een nieuwe instellen.</string>
   <string name="confirmation_message_revoke_app">Dit trekt de toegang van %s tot je Trakt-account in. Je kunt de app op elk moment opnieuw verbinden.</string>
   <string name="confirmation_message_rewatching_prompt">Het starten van een nieuwe kijkbeurt zal je \'Verder kijken\' bijwerken.</string>
   <string name="confirmation_message_undo_sync">Dit zal elk item terugdraaien dat deze synchronisatie heeft geïmporteerd in je geschiedenis, beoordelingen, volglijst en bibliotheek.</string>
@@ -528,11 +539,13 @@
   <string name="confirmation_title_hide_recommendation">Aanbeveling verbergen?</string>
   <string name="confirmation_title_log_out">Afmelden?</string>
   <string name="confirmation_title_mark_as_watched">Markeren als bekeken?</string>
+  <string name="confirmation_title_plex_remove_server">Verwijder %s?</string>
   <string name="confirmation_title_remove_favorite">Uit favorieten verwijderen?</string>
   <string name="confirmation_title_remove_from_list">Verwijderen uit lijst?</string>
   <string name="confirmation_title_remove_from_watched">Verwijderen uit geschiedenis?</string>
   <string name="confirmation_title_remove_from_watchlist">Verwijderen van kijklijst?</string>
   <string name="confirmation_title_remove_play">Afspelen verwijderen?</string>
+  <string name="confirmation_title_reset_cover_image">Omslagafbeelding resetten?</string>
   <string name="confirmation_title_reset_filters">Filters resetten?</string>
   <string name="confirmation_title_restore_show">Serie herstellen?</string>
   <string name="confirmation_title_revoke_app">Toegang intrekken?</string>
@@ -564,11 +577,15 @@
   <string name="description_paused_items">Deze items zijn voor minder dan 80% bekeken.</string>
   <string name="description_plex_home_users">Je eigen afspeelsessies worden altijd gesynchroniseerd. Voeg andere Plex Home-gebruikersnamen toe om die van hen ook te synchroniseren.</string>
   <string name="description_plex_manual_sync">Activeer een onmiddellijke synchronisatie van je Plex-kijkgeschiedenis naar Trakt.</string>
+  <string name="description_plex_no_synced_servers">Voeg je Plex-server toe om je bibliotheken met Trakt te synchroniseren.</string>
   <string name="description_plex_scrobbler_settings">Deze instellingen bepalen wat in realtime naar Trakt wordt gesynchroniseerd.</string>
   <string name="description_plex_servers">Kies de Plex-server om te synchroniseren met Trakt.</string>
   <string name="description_plex_sync">Verbind je Plex-account om kijkgeschiedenis, beoordelingen en collecties te synchroniseren met Trakt.</string>
-  <string name="description_plex_sync_settings">Deze instellingen bepalen welke gegevenstypen naar Trakt worden gesynchroniseerd.</string>
-  <string name="description_plex_vip_upsell_sync">Upgrade naar VIP om je Plex kijkgeschiedenis, beoordelingen en collecties gesynchroniseerd te houden met Trakt.</string>
+  <string name="description_plex_sync_free_limits">Gratis accounts synchroniseren 1 Plex-server eenmaal per dag. Upgrade naar VIP om onbeperkt servers te synchroniseren, elk uur vernieuwd.</string>
+  <string name="description_plex_sync_history">Recente gegevenssynchronisaties van je Plex Media Servers.</string>
+  <string name="description_plex_sync_settings">Kies welke mediatypen naar je Trakt-account worden gesynchroniseerd.</string>
+  <string name="description_plex_synced_servers">Synchroniseer automatisch je kijkgeschiedenis, bibliotheek, beoordelingen en volglijst.</string>
+  <string name="description_plex_vip_upsell_add_server">Gratis accounts synchroniseren 1 Plex-server eenmaal per dag. Upgrade naar VIP om onbeperkt servers te synchroniseren, elk uur vernieuwd.</string>
   <string name="description_plex_vip_upsell_webhook">Upgrade naar VIP om automatisch te scrobblen wat je kijkt in realtime met Plex webhooks.</string>
   <string name="description_plex_webhook">Synchroniseer automatisch wat je bekijkt, beoordeelt en toevoegt aan je bibliotheek in realtime.</string>
   <string name="description_preview_features">Probeer aankomende functies voordat ze breed beschikbaar zijn. Voorbeeldfuncties kunnen veranderen naarmate we ze verfijnen.</string>
@@ -721,11 +738,13 @@
   <string name="header_player_subtitle_size">Grootte</string>
   <string name="header_plex_home_users">Plex Home-gebruikers</string>
   <string name="header_plex_manual_sync">Handmatige synchronisatie</string>
+  <string name="header_plex_no_synced_servers">Nog geen gesynchroniseerde servers</string>
   <string name="header_plex_scrobbler_settings">Scrobbler-instellingen</string>
   <string name="header_plex_servers">Selecteer server</string>
-  <string name="header_plex_sync_history">Synchronisatiegeschiedenis</string>
+  <string name="header_plex_sync_free_limits">Plex Sync op het gratis abonnement</string>
   <string name="header_plex_sync_settings">Plex synchronisatie-instellingen</string>
-  <string name="header_plex_vip_upsell_sync">Plex Sync is een VIP-functie</string>
+  <string name="header_plex_synced_servers">Gesynchroniseerde servers</string>
+  <string name="header_plex_vip_upsell_add_server">Meerdere servers is een VIP-functie</string>
   <string name="header_plex_vip_upsell_webhook">Plex scrobbling is een VIP-functie</string>
   <string name="header_post_credits">Na de aftiteling</string>
   <string name="header_premiered">In première</string>
@@ -852,6 +871,7 @@
   <string name="import_tab_unresolved">Overgeslagen</string>
   <string name="import_vip_limit_exceeded">Uw import overschrijdt de limiet van de gratis versie. Upgrade naar VIP om alle %d items te importeren.</string>
   <string name="input_label_search_credit_members">Zoek personen</string>
+  <string name="input_label_search_streaming_services">Zoek streamingdiensten</string>
   <string name="input_placeholder_app_name">Mijn applicatie</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
@@ -870,6 +890,7 @@
   <string name="input_placeholder_search_movies">Films zoeken…</string>
   <string name="input_placeholder_search_people">Zoek personen…</string>
   <string name="input_placeholder_search_shows">Series zoeken…</string>
+  <string name="input_placeholder_search_streaming_services">Zoek streamingdienst of land…</string>
   <string name="input_prompt_about">Vertel ons iets over jezelf.</string>
   <string name="input_prompt_birthday">Wanneer is je verjaardag?</string>
   <string name="input_prompt_display_name">Wat moet je weergavenaam zijn?</string>
@@ -1248,6 +1269,7 @@
   <string name="tab_text_seasons_reviews">Recensies</string>
   <string name="tab_text_simple_filters">Eenvoudig</string>
   <string name="tag_label_progress">Voortgang</string>
+  <string name="tag_plex_syncing">Synchroniseert</string>
   <string name="tag_text_blocked_user">Geblokkeerd</string>
   <string name="tag_text_discount_biyearly">Korting eerste 2 jaar</string>
   <string name="tag_text_discount_monthly">Korting eerste maand</string>
@@ -1509,6 +1531,7 @@
   <string name="text_play_count">%d weergaven</string>
   <string name="text_plays_watched">%s weergaven</string>
   <string name="text_plex_auth_waiting">Er is een Plex-autorisatiepagina geopend. Voltooi de aanmelding daar en klik vervolgens op de onderstaande knop.</string>
+  <string name="text_plex_library_required">Selecteer ten minste één bibliotheek om te synchroniseren, of verwijder deze server.</string>
   <string name="text_plex_synced_summary">Gegevens zijn %1$s keer gesynchroniseerd. Je meest recente synchronisatie was %2$s.</string>
   <string name="text_plex_tv_library_description">Schakel Trakt Plex Sync in om toegang te krijgen tot de mediabibliotheek van je Plex-server.</string>
   <string name="text_private">Privé</string>
@@ -1563,9 +1586,12 @@
   <string name="text_settings_background_solid">Dekkend</string>
   <string name="text_settings_background_translucent">Doorschijnend</string>
   <string name="text_settings_clear_cover">Wis de huidige omslagafbeelding en keer terug naar de standaardinstelling.</string>
+  <string name="text_settings_cover_image">Omslagafbeelding</string>
+  <string name="text_settings_cover_image_description">Door te resetten wordt de standaardafbeelding hersteld.</string>
   <string name="text_settings_enable_multiple_plays">Meerdere kijkbeurten</string>
   <string name="text_settings_enable_multiple_plays_description">Sta meer dan 1 kijkbeurt toe voor films en afleveringen.</string>
   <string name="text_settings_enable_notifications">Meldingen inschakelen</string>
+  <string name="text_settings_no_cover_image_description">Je hebt geen omslagafbeelding ingesteld.</string>
   <string name="text_settings_notification_time_180_min">3 uur eerder</string>
   <string name="text_settings_notification_time_30_min">30 minuten eerder</string>
   <string name="text_settings_notification_time_60_min">1 uur eerder</string>
