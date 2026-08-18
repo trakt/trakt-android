@@ -163,7 +163,7 @@ private fun StreakStatCard(
         verticalArrangement = Arrangement.spacedBy(2.dp),
         modifier = modifier
             .shadow(
-                elevation = TraktTheme.colors.shadowDynamicDefault,
+                elevation = TraktTheme.colors.shadowDynamicSmall,
                 shape = shape,
             )
             .background(

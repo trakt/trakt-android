@@ -1,7 +1,7 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <!-- Base application theme. -->
   <style name="Theme.Trakt" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-    <item name="android:windowBackground">@color/background</item>
+    <item name="android:windowBackground">@color/window_background</item>
   </style>
 
   <!--
@@ -9,7 +9,7 @@
     (glance_list.xml in glance-appwidget), hiding the scrollbar and the overscroll glow on the
     scrollable widgets. Re-check the style name on Glance upgrades.
   -->
-  <style name="Glance.AppWidget.List" parent="">
+  <style name="Glance.AppWidget.List" parent="" tools:ignore="PrivateResource">
     <item name="android:scrollbars">none</item>
     <item name="android:overScrollMode">never</item>
   </style>

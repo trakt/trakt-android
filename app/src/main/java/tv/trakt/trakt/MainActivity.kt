@@ -20,7 +20,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.core.graphics.drawable.toDrawable
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -96,7 +98,7 @@ internal class MainActivity : AppCompatActivity() {
             val scope = rememberCoroutineScope()
 
             val themeMode by themeModeUseCase.observeThemeMode()
-                .collectAsStateWithLifecycle(initialValue = ThemeMode.Default)
+                .collectAsStateWithLifecycle(initialValue = ThemeMode.current())
 
             val darkTheme = when (themeMode) {
                 ThemeMode.System -> isSystemInDarkTheme()
@@ -105,6 +107,13 @@ internal class MainActivity : AppCompatActivity() {
             }
 
             LaunchedEffect(darkTheme) {
+                window.setBackgroundDrawable(
+                    when {
+                        darkTheme -> DarkColors.backgroundPrimary
+                        else -> LightColors.backgroundPrimary
+                    }.toArgb().toDrawable(),
+                )
+
                 enableEdgeToEdge(
                     navigationBarStyle = when {
                         darkTheme -> SystemBarStyle.dark(scrim = Color.TRANSPARENT)

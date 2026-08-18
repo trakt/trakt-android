@@ -2,6 +2,7 @@ package tv.trakt.trakt
 
 import android.app.Application
 import android.app.NotificationManager
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
@@ -11,6 +12,7 @@ import com.google.firebase.crashlytics.crashlytics
 import com.google.firebase.remoteconfig.remoteConfig
 import com.google.firebase.remoteconfig.remoteConfigSettings
 import com.jakewharton.processphoenix.ProcessPhoenix
+import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -68,6 +70,7 @@ import tv.trakt.trakt.core.search.di.searchDataModule
 import tv.trakt.trakt.core.search.di.searchModule
 import tv.trakt.trakt.core.settings.di.settingsDataModule
 import tv.trakt.trakt.core.settings.di.settingsModule
+import tv.trakt.trakt.core.settings.usecases.ThemeModeUseCase
 import tv.trakt.trakt.core.share.di.shareModule
 import tv.trakt.trakt.core.shows.di.showsDataModule
 import tv.trakt.trakt.core.shows.di.showsModule
@@ -102,6 +105,7 @@ internal class TraktApplication : Application() {
         super.onCreate()
         setupKoin()
         setupTimber()
+        setupTheme()
         setupNotificationChannels()
         setupProcessLifecycle()
 
@@ -236,6 +240,13 @@ internal class TraktApplication : Application() {
                     },
                 )
         }
+    }
+
+    private fun setupTheme() {
+        val themeModeUseCase = inject<ThemeModeUseCase>().value
+        val themeMode = runBlocking { themeModeUseCase.getThemeMode() }
+
+        AppCompatDelegate.setDefaultNightMode(themeMode.toNightMode())
     }
 }
 
