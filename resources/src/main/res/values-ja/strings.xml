@@ -135,8 +135,11 @@
   <string name="button_label_pause_track">%sを一時停止</string>
   <string name="button_label_pick_match">%sをインポートする。</string>
   <string name="button_label_play_track">%sを再生</string>
+  <string name="button_label_plex_add_server">Plexサーバーを追加</string>
   <string name="button_label_plex_connect">Plexアカウントを接続</string>
   <string name="button_label_plex_disconnect">Plexアカウントを切断</string>
+  <string name="button_label_plex_manage_server">サーバーライブラリを管理</string>
+  <string name="button_label_plex_remove_server">%sを削除</string>
   <string name="button_label_plex_scrobble_episode_library">エピソードのライブラリスクロブルを切り替える</string>
   <string name="button_label_plex_scrobble_episode_rated">エピソードの評価スクロブルを切り替える</string>
   <string name="button_label_plex_scrobble_episode_watched">エピソードの視聴済みスクロブルを切り替える</string>
@@ -193,6 +196,7 @@
   <string name="button_label_report_user">%sを報告</string>
   <string name="button_label_reset_all_filters">全てのフィルターをリセット</string>
   <string name="button_label_reset_calendar_period">今日</string>
+  <string name="button_label_reset_cover_image">カバー画像をデフォルトのアートワークにリセットします。</string>
   <string name="button_label_reset_filter">リセット</string>
   <string name="button_label_restore_show">番組「%s」を復元</string>
   <string name="button_label_retry">再試行</string>
@@ -237,6 +241,7 @@
   <string name="button_label_toggle_search_lists">リストを検索</string>
   <string name="button_label_toggle_search_media">メディアを検索</string>
   <string name="button_label_toggle_search_people">人物を検索</string>
+  <string name="button_label_toggle_streaming_countries">%s の国を切り替える</string>
   <string name="button_label_trivia_category_filter">カテゴリーでトリビアをフィルタリング</string>
   <string name="button_label_trivia_no_spoilers">ネタバレなし</string>
   <string name="button_label_trivia_spoilers">ネタバレあり</string>
@@ -287,7 +292,9 @@
   <string name="button_label_watched_until_here">「%s」をここまで視聴済みにする</string>
   <string name="button_label_year_in_review">%sのレビューを表示</string>
   <string name="button_label_year_to_date">今年これまでの統計を表示</string>
+  <string name="button_plex_add_server">サーバーを追加</string>
   <string name="button_plex_authorized">Plexに接続しました</string>
+  <string name="button_plex_manage_server">管理</string>
   <string name="button_plex_sync_now">今すぐ同期</string>
   <string name="button_plex_toggle_scrobble">スクロブル</string>
   <string name="button_plex_toggle_watched">視聴済み</string>
@@ -401,6 +408,7 @@
   <string name="button_text_player_play_now">今すぐ再生</string>
   <string name="button_text_player_resume">再開</string>
   <string name="button_text_player_subtitles_off">オフ</string>
+  <string name="button_text_plex_remove_server">削除</string>
   <string name="button_text_popular_comments">人気</string>
   <string name="button_text_progress_completed">完了済み</string>
   <string name="button_text_progress_dropped">視聴中止</string>
@@ -421,6 +429,7 @@
   <string name="button_text_report_comment">報告</string>
   <string name="button_text_reset_all_filters">全てリセット</string>
   <string name="button_text_reset_calendar_period">今日</string>
+  <string name="button_text_reset_cover_image">リセット</string>
   <string name="button_text_restore_rating_prompts">評価プロンプトを復元</string>
   <string name="button_text_restore_show">番組を復元</string>
   <string name="button_text_retry">再試行</string>
@@ -507,6 +516,8 @@
   <string name="confirmation_challenge_delete_account">確認するには、以下にユーザー名 %s を入力してください。</string>
   <string name="confirmation_message_delete_api_app">これにより、%sは完全に削除され、発行されたすべてのトークンが取り消されます。この操作は元に戻せません。</string>
   <string name="confirmation_message_disconnect_plex">これにより、Plexライブラリの同期が停止されます。いつでも再接続できます。</string>
+  <string name="confirmation_message_plex_remove_server">これにより、このサーバーのライブラリの同期が停止されます。いつでも追加し直すことができます。</string>
+  <string name="confirmation_message_reset_cover_image">これにより、カスタムカバー画像が削除され、デフォルトのアートワークが復元されます。新しいカバー画像はいつでも設定できます。</string>
   <string name="confirmation_message_revoke_app">これにより、%sのTraktアカウントへのアクセスが取り消されます。いつでも再接続できます。</string>
   <string name="confirmation_message_rewatching_prompt">再視聴セッションを開始すると、続きを観るリストが更新されます。</string>
   <string name="confirmation_message_undo_sync">これにより、この同期が履歴、評価、ウォッチリスト、ライブラリにインポートしたすべてのアイテムが元に戻されます。</string>
@@ -528,11 +539,13 @@
   <string name="confirmation_title_hide_recommendation">おすすめを非表示?</string>
   <string name="confirmation_title_log_out">ログアウト?</string>
   <string name="confirmation_title_mark_as_watched">視聴済みにする?</string>
+  <string name="confirmation_title_plex_remove_server">%sを削除しますか？</string>
   <string name="confirmation_title_remove_favorite">お気に入りから削除?</string>
   <string name="confirmation_title_remove_from_list">リストから削除?</string>
   <string name="confirmation_title_remove_from_watched">履歴から削除?</string>
   <string name="confirmation_title_remove_from_watchlist">ウォッチリストから削除?</string>
   <string name="confirmation_title_remove_play">再生履歴から削除?</string>
+  <string name="confirmation_title_reset_cover_image">カバー画像をリセットしますか？</string>
   <string name="confirmation_title_reset_filters">フィルターをリセット?</string>
   <string name="confirmation_title_restore_show">番組を復元?</string>
   <string name="confirmation_title_revoke_app">アクセスを取り消しますか？</string>
@@ -564,11 +577,15 @@
   <string name="description_paused_items">これらのアイテムは80%以上視聴されていません。</string>
   <string name="description_plex_home_users">あなたの視聴履歴は常に同期されます。他のPlex Homeユーザー名を追加すると、そのユーザーの履歴も同期されます。</string>
   <string name="description_plex_manual_sync">Plexの視聴履歴をTraktに今すぐ同期します。</string>
+  <string name="description_plex_no_synced_servers">Plexサーバーを追加して、ライブラリをTraktと同期し始めましょう。</string>
   <string name="description_plex_scrobbler_settings">これらの設定は、リアルタイムでTraktにスクロブルされる内容を制御します。</string>
   <string name="description_plex_servers">Traktと同期するPlexサーバーを選択してください。</string>
   <string name="description_plex_sync">Plexアカウントを接続して、視聴履歴、評価、コレクションをTraktと同期します。</string>
-  <string name="description_plex_sync_settings">これらの設定は、Traktに同期するデータタイプを制御します。</string>
-  <string name="description_plex_vip_upsell_sync">Plexの視聴履歴、評価、コレクションをTraktと同期した状態に保つには、VIPにアップグレードしてください。</string>
+  <string name="description_plex_sync_free_limits">無料アカウントでは1日1回、1台のPlexサーバーを同期できます。VIPにアップグレードすると、無制限のサーバーを1時間ごとに更新して同期できます。</string>
+  <string name="description_plex_sync_history">Plexメディアサーバーからの最近のデータ同期。</string>
+  <string name="description_plex_sync_settings">各メディアタイプがTraktアカウントに同期する内容を選択してください。</string>
+  <string name="description_plex_synced_servers">視聴履歴、ライブラリ、評価、ウォッチリストを自動的に同期します。</string>
+  <string name="description_plex_vip_upsell_add_server">無料アカウントでは1日1回、1台のPlexサーバーを同期できます。VIPにアップグレードすると、無制限のサーバーを1時間ごとに更新して同期できます。</string>
   <string name="description_plex_vip_upsell_webhook">Plexウェブフックを使用して、視聴中のコンテンツをリアルタイムで自動的にスクロブルするには、VIPにアップグレードしてください。</string>
   <string name="description_plex_webhook">視聴中、評価中、ライブラリに追加中のコンテンツをリアルタイムで自動的にスクロブルします。</string>
   <string name="description_preview_features">広く利用可能になる前に、今後の機能を試してください。プレビュー機能は、改善するにつれて変更される場合があります。</string>
@@ -721,11 +738,13 @@
   <string name="header_player_subtitle_size">サイズ</string>
   <string name="header_plex_home_users">Plex Homeユーザー</string>
   <string name="header_plex_manual_sync">手動同期</string>
+  <string name="header_plex_no_synced_servers">まだ同期済みサーバーはありません</string>
   <string name="header_plex_scrobbler_settings">スクロブラー設定</string>
   <string name="header_plex_servers">サーバーを選択</string>
-  <string name="header_plex_sync_history">同期履歴</string>
+  <string name="header_plex_sync_free_limits">無料プランでのPlex同期</string>
   <string name="header_plex_sync_settings">Plex同期設定</string>
-  <string name="header_plex_vip_upsell_sync">Plex同期はVIP機能です</string>
+  <string name="header_plex_synced_servers">同期済みサーバー</string>
+  <string name="header_plex_vip_upsell_add_server">複数のサーバーはVIP機能です</string>
   <string name="header_plex_vip_upsell_webhook">PlexスクロブリングはVIP機能です</string>
   <string name="header_post_credits">ポストクレジット</string>
   <string name="header_premiered">初公開</string>
@@ -852,6 +871,7 @@
   <string name="import_tab_unresolved">スキップ済み</string>
   <string name="import_vip_limit_exceeded">インポートが無料ティアの制限を超過しています。VIPにアップグレードすると、すべての%d項目をインポートできます。</string>
   <string name="input_label_search_credit_members">人物を検索</string>
+  <string name="input_label_search_streaming_services">ストリーミングサービスを検索</string>
   <string name="input_placeholder_app_name">マイアプリケーション</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
@@ -870,6 +890,7 @@
   <string name="input_placeholder_search_movies">映画を検索…</string>
   <string name="input_placeholder_search_people">人物を検索…</string>
   <string name="input_placeholder_search_shows">番組を検索…</string>
+  <string name="input_placeholder_search_streaming_services">ストリーミングサービスまたは国を検索…</string>
   <string name="input_prompt_about">自己紹介を少し教えてください。</string>
   <string name="input_prompt_birthday">お誕生日はいつですか？</string>
   <string name="input_prompt_display_name">表示名は何にしますか？</string>
@@ -1248,6 +1269,7 @@
   <string name="tab_text_seasons_reviews">レビュー</string>
   <string name="tab_text_simple_filters">シンプル</string>
   <string name="tag_label_progress">進捗</string>
+  <string name="tag_plex_syncing">同期中</string>
   <string name="tag_text_blocked_user">ブロック済み</string>
   <string name="tag_text_discount_biyearly">最初の2年間割引</string>
   <string name="tag_text_discount_monthly">最初の1ヶ月割引</string>
@@ -1509,6 +1531,7 @@
   <string name="text_play_count">%d回再生</string>
   <string name="text_plays_watched">%s回再生</string>
   <string name="text_plex_auth_waiting">Plexの認証ページが開かれました。そちらでサインインを完了し、以下のボタンをクリックしてください。</string>
+  <string name="text_plex_library_required">同期するライブラリを少なくとも1つ選択するか、このサーバーを削除してください。</string>
   <string name="text_plex_synced_summary">データは%1$s回同期されました。最新の同期は%2$sでした。</string>
   <string name="text_plex_tv_library_description">Trakt Plex同期を有効にして、Plexサーバーのメディアライブラリにアクセスします。</string>
   <string name="text_private">プライベート</string>
@@ -1563,9 +1586,12 @@
   <string name="text_settings_background_solid">不透明</string>
   <string name="text_settings_background_translucent">半透明</string>
   <string name="text_settings_clear_cover">現在のカバー画像をクリアして、デフォルトに戻します。</string>
+  <string name="text_settings_cover_image">カバー画像</string>
+  <string name="text_settings_cover_image_description">リセットするとデフォルトのアートワークが復元されます。</string>
   <string name="text_settings_enable_multiple_plays">複数回再生</string>
   <string name="text_settings_enable_multiple_plays_description">映画やエピソードを複数回再生としてマークすることを許可します。</string>
   <string name="text_settings_enable_notifications">通知を有効にする</string>
+  <string name="text_settings_no_cover_image_description">カバー画像が設定されていません。</string>
   <string name="text_settings_notification_time_180_min">3時間前</string>
   <string name="text_settings_notification_time_30_min">30分前</string>
   <string name="text_settings_notification_time_60_min">1時間前</string>

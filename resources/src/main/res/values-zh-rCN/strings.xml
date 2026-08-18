@@ -135,8 +135,11 @@
   <string name="button_label_pause_track">暂停 %s</string>
   <string name="button_label_pick_match">导入 %s。</string>
   <string name="button_label_play_track">播放 %s</string>
+  <string name="button_label_plex_add_server">添加Plex服务器</string>
   <string name="button_label_plex_connect">连接您的Plex帐户</string>
   <string name="button_label_plex_disconnect">断开您的Plex帐户</string>
+  <string name="button_label_plex_manage_server">管理服务器媒体库</string>
+  <string name="button_label_plex_remove_server">移除%s</string>
   <string name="button_label_plex_scrobble_episode_library">切换剧集媒体库同步</string>
   <string name="button_label_plex_scrobble_episode_rated">切换剧集评分同步</string>
   <string name="button_label_plex_scrobble_episode_watched">切换剧集观看记录同步</string>
@@ -193,6 +196,7 @@
   <string name="button_label_report_user">举报 %s</string>
   <string name="button_label_reset_all_filters">重置所有筛选器</string>
   <string name="button_label_reset_calendar_period">今天</string>
+  <string name="button_label_reset_cover_image">将封面图片重置为默认图片。</string>
   <string name="button_label_reset_filter">重置</string>
   <string name="button_label_restore_show">恢复剧集“%s”</string>
   <string name="button_label_retry">重试</string>
@@ -237,6 +241,7 @@
   <string name="button_label_toggle_search_lists">搜索列表</string>
   <string name="button_label_toggle_search_media">搜索媒体</string>
   <string name="button_label_toggle_search_people">搜索人物</string>
+  <string name="button_label_toggle_streaming_countries">切换%s的国家/地区</string>
   <string name="button_label_trivia_category_filter">按类别筛选花絮</string>
   <string name="button_label_trivia_no_spoilers">无剧透</string>
   <string name="button_label_trivia_spoilers">剧透</string>
@@ -287,7 +292,9 @@
   <string name="button_label_watched_until_here">标记“%s”为已看到这里</string>
   <string name="button_label_year_in_review">查看您的 %s 年回顾</string>
   <string name="button_label_year_to_date">查看您的年至今统计</string>
+  <string name="button_plex_add_server">添加服务器</string>
   <string name="button_plex_authorized">我已连接Plex</string>
+  <string name="button_plex_manage_server">管理</string>
   <string name="button_plex_sync_now">立即同步</string>
   <string name="button_plex_toggle_scrobble">记录播放</string>
   <string name="button_plex_toggle_watched">已观看</string>
@@ -401,6 +408,7 @@
   <string name="button_text_player_play_now">立即播放</string>
   <string name="button_text_player_resume">继续</string>
   <string name="button_text_player_subtitles_off">关闭</string>
+  <string name="button_text_plex_remove_server">移除</string>
   <string name="button_text_popular_comments">流行</string>
   <string name="button_text_progress_completed">已完成</string>
   <string name="button_text_progress_dropped">已弃看</string>
@@ -421,6 +429,7 @@
   <string name="button_text_report_comment">举报</string>
   <string name="button_text_reset_all_filters">全部重置</string>
   <string name="button_text_reset_calendar_period">今天</string>
+  <string name="button_text_reset_cover_image">重置</string>
   <string name="button_text_restore_rating_prompts">恢复评分提示</string>
   <string name="button_text_restore_show">恢复剧集</string>
   <string name="button_text_retry">重试</string>
@@ -507,6 +516,8 @@
   <string name="confirmation_challenge_delete_account">若要确认，请在下方输入您的用户名 %s。</string>
   <string name="confirmation_message_delete_api_app">这将永久删除 %s 并撤销为其颁发的所有令牌。此操作无法撤销。</string>
   <string name="confirmation_message_disconnect_plex">这将停止同步您的Plex媒体库。您可以随时重新连接。</string>
+  <string name="confirmation_message_plex_remove_server">这将停止同步此服务器的媒体库。您可以随时添加回来。</string>
+  <string name="confirmation_message_reset_cover_image">这将移除您的自定义封面图片并恢复默认图片。您可以随时设置新的封面图片。</string>
   <string name="confirmation_message_revoke_app">这将撤销 %s 对您 Trakt 账户的访问权限。您可以随时重新连接。</string>
   <string name="confirmation_message_rewatching_prompt">开始重温将更新您的“继续观看”。</string>
   <string name="confirmation_message_undo_sync">这将撤销此同步导入到您的历史记录、评分、 watchlist 和媒体库中的所有项目。</string>
@@ -528,11 +539,13 @@
   <string name="confirmation_title_hide_recommendation">隐藏推荐?</string>
   <string name="confirmation_title_log_out">退出?</string>
   <string name="confirmation_title_mark_as_watched">标记为已观看?</string>
+  <string name="confirmation_title_plex_remove_server">移除%s？</string>
   <string name="confirmation_title_remove_favorite">从我的最爱中移除?</string>
   <string name="confirmation_title_remove_from_list">从列表中移除?</string>
   <string name="confirmation_title_remove_from_watched">从观看历史中移除?</string>
   <string name="confirmation_title_remove_from_watchlist">从待看列表中移除?</string>
   <string name="confirmation_title_remove_play">移除观看记录?</string>
+  <string name="confirmation_title_reset_cover_image">重置封面图片？</string>
   <string name="confirmation_title_reset_filters">重置筛选器?</string>
   <string name="confirmation_title_restore_show">恢复剧集?</string>
   <string name="confirmation_title_revoke_app">撤销访问权限？</string>
@@ -564,11 +577,15 @@
   <string name="description_paused_items">这些项目未观看至少80%。</string>
   <string name="description_plex_home_users">您自己的播放记录始终会同步。添加其他 Plex 家庭用户名以同步他们的记录。</string>
   <string name="description_plex_manual_sync">立即将您的Plex观看历史同步到Trakt。</string>
+  <string name="description_plex_no_synced_servers">添加您的Plex服务器，开始将媒体库与Trakt同步。</string>
   <string name="description_plex_scrobbler_settings">这些设置控制实时同步到 Trakt 的内容。</string>
   <string name="description_plex_servers">选择要与Trakt同步的Plex服务器。</string>
   <string name="description_plex_sync">连接您的Plex帐户，将观看历史、评分和收藏与Trakt同步。</string>
-  <string name="description_plex_sync_settings">这些设置控制哪些数据类型同步到Trakt。</string>
-  <string name="description_plex_vip_upsell_sync">升级到 VIP 以将您的 Plex 观看历史、评分和收藏与 Trakt 同步。</string>
+  <string name="description_plex_sync_free_limits">免费账户每天同步1个Plex服务器。升级到VIP即可同步无限服务器，每小时刷新一次。</string>
+  <string name="description_plex_sync_history">来自您的Plex媒体服务器的最新数据同步。</string>
+  <string name="description_plex_sync_settings">选择每种媒体类型同步到您的Trakt账户的内容。</string>
+  <string name="description_plex_synced_servers">自动同步您的观看历史、媒体库、评分和关注列表。</string>
+  <string name="description_plex_vip_upsell_add_server">免费账户每天同步1个Plex服务器。升级到VIP即可同步无限服务器，每小时刷新一次。</string>
   <string name="description_plex_vip_upsell_webhook">升级到 VIP，使用 Plex Webhook 实时自动记录您正在观看的内容。</string>
   <string name="description_plex_webhook">自动实时同步您正在观看、评分和添加到媒体库的内容。</string>
   <string name="description_preview_features">在正式推出前试用即将发布的功能。预览功能可能会在我们改进时发生变化。</string>
@@ -721,11 +738,13 @@
   <string name="header_player_subtitle_size">大小</string>
   <string name="header_plex_home_users">Plex 家庭用户</string>
   <string name="header_plex_manual_sync">手动同步</string>
+  <string name="header_plex_no_synced_servers">暂无已同步的服务器</string>
   <string name="header_plex_scrobbler_settings">Scrobbler 设置</string>
   <string name="header_plex_servers">选择服务器</string>
-  <string name="header_plex_sync_history">同步历史</string>
+  <string name="header_plex_sync_free_limits">免费套餐上的Plex同步</string>
   <string name="header_plex_sync_settings">Plex同步设置</string>
-  <string name="header_plex_vip_upsell_sync">Plex 同步是一项 VIP 功能</string>
+  <string name="header_plex_synced_servers">已同步的服务器</string>
+  <string name="header_plex_vip_upsell_add_server">多服务器是VIP功能</string>
   <string name="header_plex_vip_upsell_webhook">Plex 记录是一项 VIP 功能</string>
   <string name="header_post_credits">片尾彩蛋</string>
   <string name="header_premiered">首播</string>
@@ -852,6 +871,7 @@
   <string name="import_tab_unresolved">已跳过</string>
   <string name="import_vip_limit_exceeded">您的导入超出了免费层级限制。升级到 VIP 以导入所有 %d 个项目。</string>
   <string name="input_label_search_credit_members">搜索人物</string>
+  <string name="input_label_search_streaming_services">筛选流媒体服务</string>
   <string name="input_placeholder_app_name">我的应用程序</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
@@ -870,6 +890,7 @@
   <string name="input_placeholder_search_movies">搜索电影…</string>
   <string name="input_placeholder_search_people">搜索人物…</string>
   <string name="input_placeholder_search_shows">搜索剧集…</string>
+  <string name="input_placeholder_search_streaming_services">搜索流媒体服务或国家/地区…</string>
   <string name="input_prompt_about">告诉我们一些关于你自己的信息。</string>
   <string name="input_prompt_birthday">您的生日是哪天？</string>
   <string name="input_prompt_display_name">你的显示名称应该是什么？</string>
@@ -1248,6 +1269,7 @@
   <string name="tab_text_seasons_reviews">评论</string>
   <string name="tab_text_simple_filters">简单</string>
   <string name="tag_label_progress">进度</string>
+  <string name="tag_plex_syncing">正在同步</string>
   <string name="tag_text_blocked_user">已屏蔽</string>
   <string name="tag_text_discount_biyearly">前 2 年折扣</string>
   <string name="tag_text_discount_monthly">首月折扣</string>
@@ -1509,6 +1531,7 @@
   <string name="text_play_count">%d 次播放</string>
   <string name="text_plays_watched">%s 次播放</string>
   <string name="text_plex_auth_waiting">Plex授权页面已打开。请在那里完成登录，然后点击下方按钮。</string>
+  <string name="text_plex_library_required">选择至少一个媒体库进行同步，或移除此服务器。</string>
   <string name="text_plex_synced_summary">数据已同步%1$s次。您最近一次同步时间是%2$s。</string>
   <string name="text_plex_tv_library_description">启用 Trakt Plex 同步以访问你的 Plex 服务器媒体库。</string>
   <string name="text_private">私人</string>
@@ -1563,9 +1586,12 @@
   <string name="text_settings_background_solid">纯色</string>
   <string name="text_settings_background_translucent">半透明</string>
   <string name="text_settings_clear_cover">清除当前封面图片并恢复为默认。</string>
+  <string name="text_settings_cover_image">封面图片</string>
+  <string name="text_settings_cover_image_description">重置将恢复默认图片。</string>
   <string name="text_settings_enable_multiple_plays">多次播放</string>
   <string name="text_settings_enable_multiple_plays_description">允许电影和剧集播放超过 1 次。</string>
   <string name="text_settings_enable_notifications">启用通知</string>
+  <string name="text_settings_no_cover_image_description">您未设置封面图片。</string>
   <string name="text_settings_notification_time_180_min">提前 3 小时</string>
   <string name="text_settings_notification_time_30_min">提前 30 分钟</string>
   <string name="text_settings_notification_time_60_min">提前 1 小时</string>

@@ -135,8 +135,11 @@
   <string name="button_label_pause_track">مکث %s</string>
   <string name="button_label_pick_match">وارد کردن %s.</string>
   <string name="button_label_play_track">پخش %s</string>
+  <string name="button_label_plex_add_server">افزودن یک سرور پلکس</string>
   <string name="button_label_plex_connect">حساب Plex خود را متصل کنید</string>
   <string name="button_label_plex_disconnect">حساب Plex خود را قطع کنید</string>
+  <string name="button_label_plex_manage_server">مدیریت کتابخانه‌های سرور</string>
+  <string name="button_label_plex_remove_server">حذف %s</string>
   <string name="button_label_plex_scrobble_episode_library">فعال/غیرفعال کردن ثبت کتابخانه برای قسمت‌ها</string>
   <string name="button_label_plex_scrobble_episode_rated">فعال/غیرفعال کردن ثبت امتیازات برای قسمت‌ها</string>
   <string name="button_label_plex_scrobble_episode_watched">فعال/غیرفعال کردن ثبت تماشا شده برای قسمت‌ها</string>
@@ -193,6 +196,7 @@
   <string name="button_label_report_user">گزارش %s</string>
   <string name="button_label_reset_all_filters">بازنشانی همه فیلترها</string>
   <string name="button_label_reset_calendar_period">امروز</string>
+  <string name="button_label_reset_cover_image">تصویر جلد خود را به تصویر پیش\nفرض بازنشانی کنید.</string>
   <string name="button_label_reset_filter">بازنشانی</string>
   <string name="button_label_restore_show">بازگرداندن برنامه \"%s\"</string>
   <string name="button_label_retry">تلاش مجدد</string>
@@ -237,6 +241,7 @@
   <string name="button_label_toggle_search_lists">جستجو برای لیست‌ها</string>
   <string name="button_label_toggle_search_media">جستجو برای رسانه</string>
   <string name="button_label_toggle_search_people">جستجو برای افراد</string>
+  <string name="button_label_toggle_streaming_countries">تغییر وضعیت کشورها برای %s</string>
   <string name="button_label_trivia_category_filter">فیلتر کردن دانستنی‌ها بر اساس دسته‌بندی</string>
   <string name="button_label_trivia_no_spoilers">بدون اسپویلر</string>
   <string name="button_label_trivia_spoilers">اسپویلرها</string>
@@ -287,7 +292,9 @@
   <string name="button_label_watched_until_here">\" %s \" را تا اینجا به عنوان تماشا شده علامت‌گذاری کنید</string>
   <string name="button_label_year_in_review">مرور %s خود را مشاهده کنید</string>
   <string name="button_label_year_to_date">مشاهده آمار سال تا به امروز شما</string>
+  <string name="button_plex_add_server">افزودن سرور</string>
   <string name="button_plex_authorized">Plex را متصل کرده‌ام</string>
+  <string name="button_plex_manage_server">مدیریت</string>
   <string name="button_plex_sync_now">همگام‌سازی اکنون</string>
   <string name="button_plex_toggle_scrobble">اسکرابل</string>
   <string name="button_plex_toggle_watched">تماشا شده</string>
@@ -401,6 +408,7 @@
   <string name="button_text_player_play_now">اکنون پخش کن</string>
   <string name="button_text_player_resume">ادامه</string>
   <string name="button_text_player_subtitles_off">خاموش</string>
+  <string name="button_text_plex_remove_server">حذف</string>
   <string name="button_text_popular_comments">محبوب</string>
   <string name="button_text_progress_completed">به روز</string>
   <string name="button_text_progress_dropped">رها شده</string>
@@ -421,6 +429,7 @@
   <string name="button_text_report_comment">گزارش</string>
   <string name="button_text_reset_all_filters">بازنشانی همه</string>
   <string name="button_text_reset_calendar_period">امروز</string>
+  <string name="button_text_reset_cover_image">بازنشانی</string>
   <string name="button_text_restore_rating_prompts">بازگرداندن درخواست‌های امتیاز</string>
   <string name="button_text_restore_show">بازگرداندن برنامه</string>
   <string name="button_text_retry">تلاش مجدد</string>
@@ -507,6 +516,8 @@
   <string name="confirmation_challenge_delete_account">برای تأیید، نام کاربری خود را %s در زیر وارد کنید.</string>
   <string name="confirmation_message_delete_api_app">این کار %s را برای همیشه حذف می‌کند و تمام توکن‌های صادر شده برای آن را لغو می‌کند. این عمل قابل بازگشت نیست.</string>
   <string name="confirmation_message_disconnect_plex">این کار همگام‌سازی کتابخانه Plex شما را متوقف می‌کند. هر زمان که خواستید می‌توانید دوباره متصل شوید.</string>
+  <string name="confirmation_message_plex_remove_server">این کار همگام‌سازی کتابخانه‌های این سرور را متوقف می‌کند. هر زمان که خواستید می‌توانید آن را دوباره اضافه کنید.</string>
+  <string name="confirmation_message_reset_cover_image">این کار تصویر جلد سفارشی شما را حذف کرده و تصویر پیش\nفرض را بازمی\nگرداند. می\nتوانید هر زمان که خواستید تصویر جدیدی تنظیم کنید.</string>
   <string name="confirmation_message_revoke_app">این کار دسترسی %s به حساب Trakt شما را لغو می‌کند. می‌توانید هر زمان دوباره آن را متصل کنید.</string>
   <string name="confirmation_message_rewatching_prompt">شروع یک جلسه بازتماشا، ادامه تماشای شما را به‌روزرسانی خواهد کرد.</string>
   <string name="confirmation_message_undo_sync">این کار هر موردی را که این همگام‌سازی به سابقه، امتیازات، لیست تماشا و کتابخانه شما وارد کرده است، برمی‌گرداند.</string>
@@ -528,11 +539,13 @@
   <string name="confirmation_title_hide_recommendation">پیشنهاد پنهان شود؟</string>
   <string name="confirmation_title_log_out">خروج?</string>
   <string name="confirmation_title_mark_as_watched">به عنوان تماشا شده علامت‌گذاری شود؟</string>
+  <string name="confirmation_title_plex_remove_server">%s حذف شود؟</string>
   <string name="confirmation_title_remove_favorite">از علاقه‌مندی‌ها حذف شود؟</string>
   <string name="confirmation_title_remove_from_list">از لیست حذف شود؟</string>
   <string name="confirmation_title_remove_from_watched">از تاریخچه حذف شود؟</string>
   <string name="confirmation_title_remove_from_watchlist">از لیست تماشا حذف شود؟</string>
   <string name="confirmation_title_remove_play">پخش حذف شود؟</string>
+  <string name="confirmation_title_reset_cover_image">تصویر جلد بازنشانی شود؟</string>
   <string name="confirmation_title_reset_filters">فیلترها بازنشانی شوند؟</string>
   <string name="confirmation_title_restore_show">سریال بازیابی شود؟</string>
   <string name="confirmation_title_revoke_app">لغو دسترسی؟</string>
@@ -564,11 +577,15 @@
   <string name="description_paused_items">این موارد حداقل ۸۰٪ تماشا نشده‌اند.</string>
   <string name="description_plex_home_users">پخش‌های خودتان همیشه همگام‌سازی می‌شوند. برای همگام‌سازی پخش دیگران، نام‌های کاربری Plex Home آنها را نیز اضافه کنید.</string>
   <string name="description_plex_manual_sync">همگام‌سازی فوری سابقه تماشای Plex خود را با Trakt آغاز کنید.</string>
+  <string name="description_plex_no_synced_servers">سرور Plex خود را اضافه کنید تا همگام‌سازی کتابخانه‌های خود را با Trakt آغاز کنید.</string>
   <string name="description_plex_scrobbler_settings">این تنظیمات کنترل می‌کنند که چه محتوایی به‌صورت لحظه‌ای در Trakt ثبت شود.</string>
   <string name="description_plex_servers">سرور Plex را برای همگام‌سازی با Trakt انتخاب کنید.</string>
   <string name="description_plex_sync">حساب Plex خود را متصل کنید تا سابقه تماشا، امتیازات و مجموعه‌ها را با Trakt همگام‌سازی کنید.</string>
-  <string name="description_plex_sync_settings">این تنظیمات کنترل می‌کنند که کدام انواع داده با Trakt همگام‌سازی شوند.</string>
-  <string name="description_plex_vip_upsell_sync">برای ارتقاء به VIP، تاریخچه تماشا، امتیازات و مجموعه‌های Plex خود را با Trakt همگام نگه دارید.</string>
+  <string name="description_plex_sync_free_limits">حساب‌های رایگان یک سرور Plex را روزی یک بار همگام‌سازی می‌کنند. برای همگام‌سازی سرورهای نامحدود که هر ساعت به‌روز می‌شوند، به VIP ارتقا دهید.</string>
+  <string name="description_plex_sync_history">همگام‌سازی‌های اخیر داده‌ها از Plex Media Serverهای شما.</string>
+  <string name="description_plex_sync_settings">انتخاب کنید که هر نوع رسانه با حساب Trakt شما چه چیزی را همگام‌سازی کند.</string>
+  <string name="description_plex_synced_servers">سابقه تماشا، کتابخانه، امتیازات و فهرست تماشای خود را به‌طور خودکار همگام‌سازی کنید.</string>
+  <string name="description_plex_vip_upsell_add_server">حساب‌های رایگان یک سرور Plex را روزی یک بار همگام‌سازی می‌کنند. برای همگام‌سازی سرورهای نامحدود که هر ساعت به‌روز می‌شوند، به VIP ارتقا دهید.</string>
   <string name="description_plex_vip_upsell_webhook">برای ارتقاء به VIP، آنچه را که با وب‌هوک‌های Plex تماشا می‌کنید، به‌صورت خودکار و بلادرنگ اسکروبل کنید.</string>
   <string name="description_plex_webhook">آنچه را که تماشا می‌کنید، امتیاز می‌دهید و به کتابخانه خود اضافه می‌کنید، به‌طور خودکار و در زمان واقعی ثبت کنید.</string>
   <string name="description_preview_features">ویژگی‌های آتی را قبل از در دسترس قرار گرفتن عمومی امتحان کنید. ویژگی‌های پیش‌نمایش ممکن است با بهبود آنها تغییر کنند.</string>
@@ -721,11 +738,13 @@
   <string name="header_player_subtitle_size">اندازه</string>
   <string name="header_plex_home_users">کاربران Plex Home</string>
   <string name="header_plex_manual_sync">همگام‌سازی دستی</string>
+  <string name="header_plex_no_synced_servers">هنوز سرور همگام‌شده‌ای وجود ندارد</string>
   <string name="header_plex_scrobbler_settings">تنظیمات اسکروبلر</string>
   <string name="header_plex_servers">انتخاب سرور</string>
-  <string name="header_plex_sync_history">تاریخچه همگام‌سازی</string>
+  <string name="header_plex_sync_free_limits">همگام‌سازی Plex در طرح رایگان</string>
   <string name="header_plex_sync_settings">تنظیمات همگام‌سازی Plex</string>
-  <string name="header_plex_vip_upsell_sync">همگام‌سازی Plex یک ویژگی VIP است</string>
+  <string name="header_plex_synced_servers">سرورهای همگام‌شده</string>
+  <string name="header_plex_vip_upsell_add_server">چندین سرور یک ویژگی VIP است</string>
   <string name="header_plex_vip_upsell_webhook">اسکروبلینگ Plex یک ویژگی VIP است</string>
   <string name="header_post_credits">پس از تیتراژ</string>
   <string name="header_premiered">اولین نمایش</string>
@@ -852,6 +871,7 @@
   <string name="import_tab_unresolved">نادیده گرفته شده</string>
   <string name="import_vip_limit_exceeded">وارد کردن شما از حد مجاز طرح رایگان بیشتر است. برای وارد کردن تمام %d آیتم به VIP ارتقا دهید.</string>
   <string name="input_label_search_credit_members">جستجوی افراد</string>
+  <string name="input_label_search_streaming_services">جستجوی سرویس‌های پخش</string>
   <string name="input_placeholder_app_name">برنامه من</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
@@ -870,6 +890,7 @@
   <string name="input_placeholder_search_movies">جستجوی فیلم‌ها…</string>
   <string name="input_placeholder_search_people">جستجوی افراد…</string>
   <string name="input_placeholder_search_shows">جستجوی برنامه‌ها…</string>
+  <string name="input_placeholder_search_streaming_services">سرویس پخش یا کشور را جستجو کنید…</string>
   <string name="input_prompt_about">کمی درباره خودتان بگویید.</string>
   <string name="input_prompt_birthday">تاریخ تولد شما چه زمانی است؟</string>
   <string name="input_prompt_display_name">نام نمایشی شما چه باید باشد؟</string>
@@ -1248,6 +1269,7 @@
   <string name="tab_text_seasons_reviews">بازخوردها</string>
   <string name="tab_text_simple_filters">ساده</string>
   <string name="tag_label_progress">پیشرفت</string>
+  <string name="tag_plex_syncing">در حال همگام‌سازی</string>
   <string name="tag_text_blocked_user">مسدود شده</string>
   <string name="tag_text_discount_biyearly">تخفیف ۲ سال اول</string>
   <string name="tag_text_discount_monthly">تخفیف ماه اول</string>
@@ -1509,6 +1531,7 @@
   <string name="text_play_count">%d پخش</string>
   <string name="text_plays_watched">%s پخش</string>
   <string name="text_plex_auth_waiting">صفحه مجوزدهی Plex باز شده است. ورود به سیستم را در آنجا تکمیل کنید، سپس روی دکمه زیر کلیک کنید.</string>
+  <string name="text_plex_library_required">حداقل یک کتابخانه را برای همگام‌سازی انتخاب کنید یا این سرور را حذف کنید.</string>
   <string name="text_plex_synced_summary">داده‌ها %1$s بار همگام‌سازی شده‌اند. آخرین همگام‌سازی شما %2$s بود.</string>
   <string name="text_plex_tv_library_description">همگام‌سازی Trakt Plex را فعال کنید تا به کتابخانه رسانه سرور Plex خود دسترسی پیدا کنید.</string>
   <string name="text_private">خصوصی</string>
@@ -1563,9 +1586,12 @@
   <string name="text_settings_background_solid">مات</string>
   <string name="text_settings_background_translucent">شفاف</string>
   <string name="text_settings_clear_cover">پاک کردن تصویر جلد فعلی و بازگشت به حالت پیش‌فرض.</string>
+  <string name="text_settings_cover_image">تصویر جلد</string>
+  <string name="text_settings_cover_image_description">بازنشانی، تصویر پیش\nفرض را بازمی\nگرداند.</string>
   <string name="text_settings_enable_multiple_plays">پخش‌های متعدد</string>
   <string name="text_settings_enable_multiple_plays_description">اجازه دهید فیلم‌ها و قسمت‌ها بیش از ۱ بار پخش شوند.</string>
   <string name="text_settings_enable_notifications">فعال کردن اعلان‌ها</string>
+  <string name="text_settings_no_cover_image_description">شما هیچ تصویر جلدی تنظیم نکرده\nاید.</string>
   <string name="text_settings_notification_time_180_min">۳ ساعت قبل</string>
   <string name="text_settings_notification_time_30_min">۳۰ دقیقه قبل</string>
   <string name="text_settings_notification_time_60_min">۱ ساعت قبل</string>

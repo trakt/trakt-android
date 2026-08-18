@@ -135,8 +135,11 @@
   <string name="button_label_pause_track">إيقاف %s مؤقتًا</string>
   <string name="button_label_pick_match">استيراد %s.</string>
   <string name="button_label_play_track">تشغيل %s</string>
+  <string name="button_label_plex_add_server">إضافة خادم Plex</string>
   <string name="button_label_plex_connect">قم بتوصيل حساب Plex الخاص بك</string>
   <string name="button_label_plex_disconnect">افصل حساب Plex الخاص بك</string>
+  <string name="button_label_plex_manage_server">إدارة مكتبات الخادم</string>
+  <string name="button_label_plex_remove_server">إزالة %s</string>
   <string name="button_label_plex_scrobble_episode_library">تبديل مكتبة التمرير للحلقات</string>
   <string name="button_label_plex_scrobble_episode_rated">تبديل تصنيفات التمرير للحلقات</string>
   <string name="button_label_plex_scrobble_episode_watched">تبديل التمرير المشاهد للحلقات</string>
@@ -193,6 +196,7 @@
   <string name="button_label_report_user">أبلغ عن %s</string>
   <string name="button_label_reset_all_filters">إعادة تعيين كافة عوامل التصفية</string>
   <string name="button_label_reset_calendar_period">اليوم</string>
+  <string name="button_label_reset_cover_image">إعادة تعيين صورة الغلاف الخاصة بك إلى الصورة الفنية الافتراضية.</string>
   <string name="button_label_reset_filter">إعادة تعيين</string>
   <string name="button_label_restore_show">استعادة المسلسل \"%s\"</string>
   <string name="button_label_retry">أعد المحاولة</string>
@@ -237,6 +241,7 @@
   <string name="button_label_toggle_search_lists">البحث عن القوائم</string>
   <string name="button_label_toggle_search_media">البحث عن الوسائط</string>
   <string name="button_label_toggle_search_people">البحث عن أشخاص</string>
+  <string name="button_label_toggle_streaming_countries">تبديل البلدان لـ %s</string>
   <string name="button_label_trivia_category_filter">تصفية المعلومات حسب الفئة</string>
   <string name="button_label_trivia_no_spoilers">لا يوجد حرق</string>
   <string name="button_label_trivia_spoilers">المفسدين</string>
@@ -287,7 +292,9 @@
   <string name="button_label_watched_until_here">حدِّد \"%s\" كمُشاهَد حتى هنا</string>
   <string name="button_label_year_in_review">عرض ملخص %s الخاص بك</string>
   <string name="button_label_year_to_date">عرض إحصائياتك منذ بداية العام</string>
+  <string name="button_plex_add_server">إضافة خادم</string>
   <string name="button_plex_authorized">لقد قمت بتوصيل Plex</string>
+  <string name="button_plex_manage_server">إدارة</string>
   <string name="button_plex_sync_now">المزامنة الآن</string>
   <string name="button_plex_toggle_scrobble">التمرير</string>
   <string name="button_plex_toggle_watched">شاهدت</string>
@@ -401,6 +408,7 @@
   <string name="button_text_player_play_now">تشغيل الآن</string>
   <string name="button_text_player_resume">استئناف</string>
   <string name="button_text_player_subtitles_off">إيقاف</string>
+  <string name="button_text_plex_remove_server">إزالة</string>
   <string name="button_text_popular_comments">شائعة</string>
   <string name="button_text_progress_completed">محدث</string>
   <string name="button_text_progress_dropped">سقط</string>
@@ -421,6 +429,7 @@
   <string name="button_text_report_comment">تقرير</string>
   <string name="button_text_reset_all_filters">إعادة تعيين الكل</string>
   <string name="button_text_reset_calendar_period">اليوم</string>
+  <string name="button_text_reset_cover_image">إعادة تعيين</string>
   <string name="button_text_restore_rating_prompts">استعادة مطالبات التقييم</string>
   <string name="button_text_restore_show">استعادة المسلسل</string>
   <string name="button_text_retry">أعد المحاولة</string>
@@ -507,6 +516,8 @@
   <string name="confirmation_challenge_delete_account">للتأكيد، اكتب اسم المستخدم الخاص بك %s أدناه.</string>
   <string name="confirmation_message_delete_api_app">يؤدي هذا إلى حذف %s نهائيًا ويلغي كل رمز مميز تم إصداره له. لا يمكن التراجع عن هذا.</string>
   <string name="confirmation_message_disconnect_plex">سيؤدي هذا إلى إيقاف مزامنة مكتبة Plex الخاصة بك. يمكنك إعادة الاتصال في أي وقت.</string>
+  <string name="confirmation_message_plex_remove_server">سيؤدي هذا إلى إيقاف مزامنة مكتبات هذا الخادم. يمكنك إعادته في أي وقت.</string>
+  <string name="confirmation_message_reset_cover_image">سيؤدي هذا إلى إزالة صورة الغلاف المخصصة الخاصة بك واستعادة الصورة الفنية الافتراضية. يمكنك تعيين واحدة جديدة في أي وقت.</string>
   <string name="confirmation_message_revoke_app">سيؤدي هذا إلى إلغاء وصول %s إلى حساب Trakt الخاص بك. ويمكنك إعادة توصيله في أي وقت.</string>
   <string name="confirmation_message_rewatching_prompt">سيؤدي بدء جلسة إعادة المشاهدة إلى تحديث متابعة المشاهدة لديك.</string>
   <string name="confirmation_message_undo_sync">سيؤدي هذا إلى عكس كل عنصر تم استيراده بواسطة هذه المزامنة إلى السجل والتقييمات وقائمة المشاهدة والمكتبة.</string>
@@ -528,11 +539,13 @@
   <string name="confirmation_title_hide_recommendation">هل تريد إخفاء التوصية؟</string>
   <string name="confirmation_title_log_out">تسجيل الخروج؟</string>
   <string name="confirmation_title_mark_as_watched">وضع علامة كمشاهدة؟</string>
+  <string name="confirmation_title_plex_remove_server">إزالة %s؟</string>
   <string name="confirmation_title_remove_favorite">هل تريد إزالة المفضلة؟</string>
   <string name="confirmation_title_remove_from_list">هل تريد الإزالة من القائمة؟</string>
   <string name="confirmation_title_remove_from_watched">هل تريد الإزالة من التاريخ؟</string>
   <string name="confirmation_title_remove_from_watchlist">هل تريد الإزالة من قائمة المشاهدة؟</string>
   <string name="confirmation_title_remove_play">هل تريد إزالة التشغيل؟</string>
+  <string name="confirmation_title_reset_cover_image">إعادة تعيين صورة الغلاف؟</string>
   <string name="confirmation_title_reset_filters">هل تريد إعادة ضبط المرشحات؟</string>
   <string name="confirmation_title_restore_show">استعادة مسلسل؟</string>
   <string name="confirmation_title_revoke_app">هل ترغب في إلغاء الوصول؟</string>
@@ -564,11 +577,15 @@
   <string name="description_paused_items">لم تتم مشاهدة هذه العناصر بنسبة 80% على الأقل.</string>
   <string name="description_plex_home_users">تتم مزامنة مشاهداتك دائماً. أضف أسماء مستخدمي Plex Home أخرى لمزامنة مشاهداتهم أيضاً.</string>
   <string name="description_plex_manual_sync">قم بتشغيل مزامنة فورية لسجل مشاهدة Plex الخاص بك إلى Trakt.</string>
+  <string name="description_plex_no_synced_servers">أضف خادم Plex الخاص بك لبدء مزامنة مكتباتك مع Trakt.</string>
   <string name="description_plex_scrobbler_settings">تتحكم هذه الإعدادات في ما يتم تمريره إلى Trakt في الوقت الفعلي.</string>
   <string name="description_plex_servers">اختر خادم Plex للمزامنة مع Trakt.</string>
   <string name="description_plex_sync">قم بتوصيل حساب Plex الخاص بك لمزامنة سجل المشاهدة والتقييمات والمجموعات مع Trakt.</string>
-  <string name="description_plex_sync_settings">تتحكم هذه الإعدادات في أنواع البيانات التي تتم مزامنتها مع Trakt.</string>
-  <string name="description_plex_vip_upsell_sync">قم بالترقية إلى VIP للحفاظ على مزامنة سجل المشاهدة والتقييمات والمجموعات الخاصة بـ Plex مع Trakt.</string>
+  <string name="description_plex_sync_free_limits">تقوم الحسابات المجانية بمزامنة خادم Plex واحد مرة واحدة يوميًا. قم بالترقية إلى VIP لمزامنة خوادم غير محدودة، تُحدّث كل ساعة.</string>
+  <string name="description_plex_sync_history">أحدث مزامنات البيانات من خوادم Plex Media الخاصة بك.</string>
+  <string name="description_plex_sync_settings">اختر ما يزامنه كل نوع وسائط مع حسابك في Trakt.</string>
+  <string name="description_plex_synced_servers">مزامنة سجل مشاهداتك ومكتبتك وتقييماتك وقائمة مشاهداتك تلقائيًا.</string>
+  <string name="description_plex_vip_upsell_add_server">تقوم الحسابات المجانية بمزامنة خادم Plex واحد مرة واحدة يوميًا. قم بالترقية إلى VIP لمزامنة خوادم غير محدودة، تُحدّث كل ساعة.</string>
   <string name="description_plex_vip_upsell_webhook">قم بالترقية إلى VIP لتصفح ما تشاهده تلقائيًا في الوقت الفعلي باستخدام خطافات الويب Plex.</string>
   <string name="description_plex_webhook">قم تلقائيًا بتمرير ما تشاهده وتقييمه وإضافته إلى مكتبتك في الوقت الفعلي.</string>
   <string name="description_preview_features">جرّب الميزات القادمة قبل أن تصبح متاحة على نطاق واسع. قد تتغير ميزات المعاينة أثناء قيامنا بتحسينها.</string>
@@ -721,11 +738,13 @@
   <string name="header_player_subtitle_size">الحجم</string>
   <string name="header_plex_home_users">مستخدمو Plex المنزلي</string>
   <string name="header_plex_manual_sync">مزامنة يدوية</string>
+  <string name="header_plex_no_synced_servers">لا توجد خوادم متزامنة بعد</string>
   <string name="header_plex_scrobbler_settings">إعدادات سكروبلر</string>
   <string name="header_plex_servers">حدد الخادم</string>
-  <string name="header_plex_sync_history">سجل المزامنة</string>
+  <string name="header_plex_sync_free_limits">مزامنة Plex على الخطة المجانية</string>
   <string name="header_plex_sync_settings">إعدادات مزامنة Plex</string>
-  <string name="header_plex_vip_upsell_sync">Plex Sync هي ميزة VIP</string>
+  <string name="header_plex_synced_servers">الخوادم المتزامنة</string>
+  <string name="header_plex_vip_upsell_add_server">الخوادم المتعددة هي ميزة VIP</string>
   <string name="header_plex_vip_upsell_webhook">تعد ميزة Plex scrobbling إحدى ميزات VIP</string>
   <string name="header_post_credits">إضافة الاعتمادات</string>
   <string name="header_premiered">العرض الأوّل</string>
@@ -852,6 +871,7 @@
   <string name="import_tab_unresolved">تخطي</string>
   <string name="import_vip_limit_exceeded">استيرادك يتجاوز الحد المسموح به في المستوى المجاني. قم بالترقية إلى VIP لاستيراد جميع العناصر %d.</string>
   <string name="input_label_search_credit_members">البحث عن أشخاص</string>
+  <string name="input_label_search_streaming_services">البحث عن خدمات البث</string>
   <string name="input_placeholder_app_name">طلبي</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
@@ -870,6 +890,7 @@
   <string name="input_placeholder_search_movies">البحث عن الأفلام…</string>
   <string name="input_placeholder_search_people">بحث عن الناس…</string>
   <string name="input_placeholder_search_shows">البحث عن مسلسلات…</string>
+  <string name="input_placeholder_search_streaming_services">ابحث عن خدمة البث أو البلد…</string>
   <string name="input_prompt_about">أخبرنا قليلا عن نفسك.</string>
   <string name="input_prompt_birthday">متى يحين عيد ميلادك؟</string>
   <string name="input_prompt_display_name">ماذا ينبغي أن يكون اسم العرض الخاص بك؟</string>
@@ -1248,6 +1269,7 @@
   <string name="tab_text_seasons_reviews">التعليقات</string>
   <string name="tab_text_simple_filters">بسيط</string>
   <string name="tag_label_progress">التقدم</string>
+  <string name="tag_plex_syncing">تتم المزامنة</string>
   <string name="tag_text_blocked_user">محظور</string>
   <string name="tag_text_discount_biyearly">خصم أول سنتين</string>
   <string name="tag_text_discount_monthly">خصم الشهر الأول</string>
@@ -1509,6 +1531,7 @@
   <string name="text_play_count">%d مشاهدة</string>
   <string name="text_plays_watched">%s يلعب</string>
   <string name="text_plex_auth_waiting">تم فتح صفحة ترخيص Plex. أكمل تسجيل الدخول هناك، ثم انقر فوق الزر أدناه.</string>
+  <string name="text_plex_library_required">اختر مكتبة واحدة على الأقل للمزامنة، أو أزل هذا الخادم.</string>
   <string name="text_plex_synced_summary">تمت مزامنة البيانات %1$s مرات. آخر مزامنة أجريتها كانت في %2$s.</string>
   <string name="text_plex_tv_library_description">قم بتمكين Trakt Plex Sync للوصول إلى مكتبة وسائط خادم Plex الخاصة بك.</string>
   <string name="text_private">خاص</string>
@@ -1563,9 +1586,12 @@
   <string name="text_settings_background_solid">مصمت</string>
   <string name="text_settings_background_translucent">شبه شفاف</string>
   <string name="text_settings_clear_cover">مسح صورة الغلاف الحالية والعودة إلى الصورة الافتراضية.</string>
+  <string name="text_settings_cover_image">صورة الغلاف</string>
+  <string name="text_settings_cover_image_description">إعادة الضبط تعيد الصورة الفنية الافتراضية.</string>
   <string name="text_settings_enable_multiple_plays">مشاهدات متعددة</string>
   <string name="text_settings_enable_multiple_plays_description">السماح بأكثر من تشغيل واحد للأفلام والحلقات.</string>
   <string name="text_settings_enable_notifications">تمكين الإخطارات</string>
+  <string name="text_settings_no_cover_image_description">لم تقم بتعيين صورة غلاف.</string>
   <string name="text_settings_notification_time_180_min">قبل 3 ساعات</string>
   <string name="text_settings_notification_time_30_min">قبل 30 دقيقة</string>
   <string name="text_settings_notification_time_60_min">قبل ساعة واحدة</string>

@@ -135,8 +135,11 @@
   <string name="button_label_pause_track">%s duraklat</string>
   <string name="button_label_pick_match">%s İçe Aktar.</string>
   <string name="button_label_play_track">%s oynat</string>
+  <string name="button_label_plex_add_server">Bir Plex sunucusu ekle</string>
   <string name="button_label_plex_connect">Plex hesabınızı bağlayın</string>
   <string name="button_label_plex_disconnect">Plex hesabınızın bağlantısını kes</string>
+  <string name="button_label_plex_manage_server">Sunucu kütüphanelerini yönet</string>
+  <string name="button_label_plex_remove_server">%s kaldır</string>
   <string name="button_label_plex_scrobble_episode_library">Bölümler için kütüphane scrobble\'lamayı aç/kapat</string>
   <string name="button_label_plex_scrobble_episode_rated">Bölümler için derecelendirmeleri scrobble\'lamayı aç/kapat</string>
   <string name="button_label_plex_scrobble_episode_watched">Bölümler için izlenenleri scrobble\'lamayı aç/kapat</string>
@@ -193,6 +196,7 @@
   <string name="button_label_report_user">%s Bildir</string>
   <string name="button_label_reset_all_filters">Tüm filtreleri sıfırla</string>
   <string name="button_label_reset_calendar_period">Bugün</string>
+  <string name="button_label_reset_cover_image">Kapak görselinizi varsayılan görsele sıfırlayın.</string>
   <string name="button_label_reset_filter">Sıfırla</string>
   <string name="button_label_restore_show">\"%s\" dizisini geri yükle</string>
   <string name="button_label_retry">Tekrar Dene</string>
@@ -237,6 +241,7 @@
   <string name="button_label_toggle_search_lists">Listelerde ara</string>
   <string name="button_label_toggle_search_media">Medya ara</string>
   <string name="button_label_toggle_search_people">Kişi ara</string>
+  <string name="button_label_toggle_streaming_countries">%s için ülkeleri aç/kapat</string>
   <string name="button_label_trivia_category_filter">Kategoriye göre trivia filtrele</string>
   <string name="button_label_trivia_no_spoilers">Spoiler yok</string>
   <string name="button_label_trivia_spoilers">Spoilerlar</string>
@@ -287,7 +292,9 @@
   <string name="button_label_watched_until_here">\"%s\" buraya kadar izlendi olarak işaretle</string>
   <string name="button_label_year_in_review">%s incelemenizi görüntüle</string>
   <string name="button_label_year_to_date">Yıl başından bugüne olanı görüntüle</string>
+  <string name="button_plex_add_server">Sunucu Ekle</string>
   <string name="button_plex_authorized">Plex\'i bağladım</string>
+  <string name="button_plex_manage_server">Yönet</string>
   <string name="button_plex_sync_now">Şimdi Senkronize Et</string>
   <string name="button_plex_toggle_scrobble">Scrobble</string>
   <string name="button_plex_toggle_watched">İzlendi</string>
@@ -401,6 +408,7 @@
   <string name="button_text_player_play_now">Şimdi Oynat</string>
   <string name="button_text_player_resume">Devam Et</string>
   <string name="button_text_player_subtitles_off">Kapalı</string>
+  <string name="button_text_plex_remove_server">Kaldır</string>
   <string name="button_text_popular_comments">Popüler</string>
   <string name="button_text_progress_completed">Güncel</string>
   <string name="button_text_progress_dropped">Bırakıldı</string>
@@ -421,6 +429,7 @@
   <string name="button_text_report_comment">Bildir</string>
   <string name="button_text_reset_all_filters">Tümünü sıfırla</string>
   <string name="button_text_reset_calendar_period">Bugün</string>
+  <string name="button_text_reset_cover_image">Sıfırla</string>
   <string name="button_text_restore_rating_prompts">Derecelendirme İstemlerini Geri Yükle</string>
   <string name="button_text_restore_show">Diziyi geri yükle</string>
   <string name="button_text_retry">Tekrar Dene</string>
@@ -507,6 +516,8 @@
   <string name="confirmation_challenge_delete_account">Onaylamak için kullanıcı adınızı %s aşağıya yazın.</string>
   <string name="confirmation_message_delete_api_app">Bu işlem %s uygulamasını kalıcı olarak siler ve onun için verilmiş tüm jetonları iptal eder. Bu işlem geri alınamaz.</string>
   <string name="confirmation_message_disconnect_plex">Bu işlem, Plex kütüphanenizin senkronizasyonunu durduracaktır. İstediğiniz zaman yeniden bağlanabilirsiniz.</string>
+  <string name="confirmation_message_plex_remove_server">Bu işlem, bu sunucunun kütüphanelerinin senkronizasyonunu durduracaktır. İstediğiniz zaman geri ekleyebilirsiniz.</string>
+  <string name="confirmation_message_reset_cover_image">Bu, özel kapak görselinizi kaldıracak ve varsayılan görseli geri yükleyecektir. İstediğiniz zaman yeni bir tane ayarlayabilirsiniz.</string>
   <string name="confirmation_message_revoke_app">Bu işlem, %s uygulamasının Trakt hesabınıza erişimini iptal edecektir. Dilediğiniz zaman yeniden bağlayabilirsiniz.</string>
   <string name="confirmation_message_rewatching_prompt">Yeniden izleme oturumu başlatmak, İzlemeye Devam Et listenizi güncelleyecektir.</string>
   <string name="confirmation_message_undo_sync">Bu işlem, bu senkronizasyonun geçmişinize, puanlarınıza, izleme listenize ve arşivinize aktardığı her öğeyi geri alacaktır.</string>
@@ -528,11 +539,13 @@
   <string name="confirmation_title_hide_recommendation">Öneriyi gizle?</string>
   <string name="confirmation_title_log_out">Çıkış Yap?</string>
   <string name="confirmation_title_mark_as_watched">İzlendi olarak işaretle?</string>
+  <string name="confirmation_title_plex_remove_server">%s kaldırılsın mı?</string>
   <string name="confirmation_title_remove_favorite">Favorilerden kaldır?</string>
   <string name="confirmation_title_remove_from_list">Listeden kaldır?</string>
   <string name="confirmation_title_remove_from_watched">Geçmişten kaldır?</string>
   <string name="confirmation_title_remove_from_watchlist">İzleme listesinden kaldır?</string>
   <string name="confirmation_title_remove_play">Oynatmayı kaldır?</string>
+  <string name="confirmation_title_reset_cover_image">Kapak görselini sıfırla?</string>
   <string name="confirmation_title_reset_filters">Filtreleri sıfırla?</string>
   <string name="confirmation_title_restore_show">Diziyi geri yükle?</string>
   <string name="confirmation_title_revoke_app">Erişim iptal edilsin mi?</string>
@@ -564,11 +577,15 @@
   <string name="description_paused_items">Bu öğelerin en az %80\'i izlenmedi.</string>
   <string name="description_plex_home_users">Kendi oynatmalarınız her zaman senkronize edilir. Diğer Plex Aile kullanıcı adlarını da senkronize etmek için ekleyin.</string>
   <string name="description_plex_manual_sync">Plex izleme geçmişinizin Trakt ile hemen senkronizasyonunu tetikleyin.</string>
+  <string name="description_plex_no_synced_servers">Kütüphanelerinizi Trakt ile senkronize etmeye başlamak için Plex sunucunuzu ekleyin.</string>
   <string name="description_plex_scrobbler_settings">Bu ayarlar, Trakt\'a gerçek zamanlı olarak nelerin scrobble edileceğini kontrol eder.</string>
   <string name="description_plex_servers">Trakt ile senkronize edilecek Plex sunucusunu seçin.</string>
   <string name="description_plex_sync">İzleme geçmişinizi, derecelendirmelerinizi ve koleksiyonlarınızı Trakt ile senkronize etmek için Plex hesabınızı bağlayın.</string>
-  <string name="description_plex_sync_settings">Bu ayarlar, hangi veri türlerinin Trakt ile senkronize edileceğini kontrol eder.</string>
-  <string name="description_plex_vip_upsell_sync">Plex izleme geçmişinizi, derecelendirmelerinizi ve koleksiyonlarınızı Trakt ile senkronize tutmak için VIP\'ye yükseltin.</string>
+  <string name="description_plex_sync_free_limits">Ücretsiz hesaplar günde bir kez 1 Plex sunucusunu senkronize eder. Sınırsız sunucuyu senkronize etmek ve her saat yenilemek için VIP\'e yükseltin.</string>
+  <string name="description_plex_sync_history">Plex Medya Sunucularınızdan en son veri senkronizasyonları.</string>
+  <string name="description_plex_sync_settings">Her medya türünün Trakt hesabınızla neyi senkronize edeceğini seçin.</string>
+  <string name="description_plex_synced_servers">İzleme geçmişinizi, kütüphanenizi, puanlarınızı ve izleme listenizi otomatik olarak senkronize edin.</string>
+  <string name="description_plex_vip_upsell_add_server">Ücretsiz hesaplar günde bir kez 1 Plex sunucusunu senkronize eder. Sınırsız sunucuyu senkronize etmek ve her saat yenilemek için VIP\'e yükseltin.</string>
   <string name="description_plex_vip_upsell_webhook">Plex web kancalarıyla izlediklerinizi gerçek zamanlı olarak otomatik scrobble etmek için VIP\'ye yükseltin.</string>
   <string name="description_plex_webhook">İzlediğiniz, derecelendirdiğiniz ve kütüphanenize eklediğiniz her şeyi gerçek zamanlı olarak otomatik olarak scrobble edin.</string>
   <string name="description_preview_features">Genel kullanıma sunulmadan önce gelecek özellikleri deneyin. Önizleme Özellikleri, onları geliştirdikçe değişebilir.</string>
@@ -721,11 +738,13 @@
   <string name="header_player_subtitle_size">Boyut</string>
   <string name="header_plex_home_users">Plex Aile Kullanıcıları</string>
   <string name="header_plex_manual_sync">Manuel Senkronizasyon</string>
+  <string name="header_plex_no_synced_servers">Henüz senkronize sunucu yok</string>
   <string name="header_plex_scrobbler_settings">Scrobbler Ayarları</string>
   <string name="header_plex_servers">Sunucu Seç</string>
-  <string name="header_plex_sync_history">Senkronizasyon Geçmişi</string>
+  <string name="header_plex_sync_free_limits">Ücretsiz planda Plex Senkronizasyonu</string>
   <string name="header_plex_sync_settings">Plex Senkronizasyon Ayarları</string>
-  <string name="header_plex_vip_upsell_sync">Plex Senkronizasyonu bir VIP özelliğidir</string>
+  <string name="header_plex_synced_servers">Senkronize Edilen Sunucular</string>
+  <string name="header_plex_vip_upsell_add_server">Birden fazla sunucu VIP özelliğidir</string>
   <string name="header_plex_vip_upsell_webhook">Plex scrobbling bir VIP özelliğidir</string>
   <string name="header_post_credits">Jenerik Sonrası</string>
   <string name="header_premiered">İlk Gösterim</string>
@@ -852,6 +871,7 @@
   <string name="import_tab_unresolved">Atlandı</string>
   <string name="import_vip_limit_exceeded">İçe aktarmanız ücretsiz katman limitini aşıyor. Tüm %d öğeyi içe aktarmak için VIP\'e yükseltin.</string>
   <string name="input_label_search_credit_members">Kişi ara</string>
+  <string name="input_label_search_streaming_services">Yayın hizmetlerini ara</string>
   <string name="input_placeholder_app_name">Uygulamam</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
@@ -870,6 +890,7 @@
   <string name="input_placeholder_search_movies">Film ara…</string>
   <string name="input_placeholder_search_people">Kişi ara…</string>
   <string name="input_placeholder_search_shows">Dizi ara…</string>
+  <string name="input_placeholder_search_streaming_services">Yayın hizmeti veya ülke ara…</string>
   <string name="input_prompt_about">Bize kendinizden biraz bahsedin.</string>
   <string name="input_prompt_birthday">Doğum gününüz ne zaman?</string>
   <string name="input_prompt_display_name">Görünen adınız ne olmalı?</string>
@@ -1248,6 +1269,7 @@
   <string name="tab_text_seasons_reviews">Yorumlar</string>
   <string name="tab_text_simple_filters">Basit</string>
   <string name="tag_label_progress">İlerleme</string>
+  <string name="tag_plex_syncing">Senkronize Ediliyor</string>
   <string name="tag_text_blocked_user">Engellendi</string>
   <string name="tag_text_discount_biyearly">İlk 2 yıl indirimi</string>
   <string name="tag_text_discount_monthly">İlk ay indirimi</string>
@@ -1509,6 +1531,7 @@
   <string name="text_play_count">%d oynatma</string>
   <string name="text_plays_watched">%s oynatma</string>
   <string name="text_plex_auth_waiting">Bir Plex yetkilendirme sayfası açıldı. Oturum açma işlemini orada tamamlayın, ardından aşağıdaki düğmeye tıklayın.</string>
+  <string name="text_plex_library_required">Senkronize etmek için en az bir kütüphane seçin veya bu sunucuyu kaldırın.</string>
   <string name="text_plex_synced_summary">Veriler %1$s kez senkronize edildi. En son senkronizasyonunuz %2$s tarihinde gerçekleşti.</string>
   <string name="text_plex_tv_library_description">Plex sunucusu medya kitaplığınıza erişmek için Trakt Plex Senkronizasyonunu etkinleştirin.</string>
   <string name="text_private">Özel</string>
@@ -1563,9 +1586,12 @@
   <string name="text_settings_background_solid">Dolu</string>
   <string name="text_settings_background_translucent">Yarı Saydam</string>
   <string name="text_settings_clear_cover">Mevcut kapak resmini temizle ve varsayılana dön.</string>
+  <string name="text_settings_cover_image">Kapak Resmi</string>
+  <string name="text_settings_cover_image_description">Sıfırlamak varsayılan görseli geri yükler.</string>
   <string name="text_settings_enable_multiple_plays">Birden Fazla Oynatma</string>
   <string name="text_settings_enable_multiple_plays_description">Filmler ve bölümler için 1\'den fazla oynatmaya izin ver.</string>
   <string name="text_settings_enable_notifications">Bildirimleri Etkinleştir</string>
+  <string name="text_settings_no_cover_image_description">Ayarlanmış bir kapak görseliniz yok.</string>
   <string name="text_settings_notification_time_180_min">3 saat önce</string>
   <string name="text_settings_notification_time_30_min">30 dakika önce</string>
   <string name="text_settings_notification_time_60_min">1 saat önce</string>

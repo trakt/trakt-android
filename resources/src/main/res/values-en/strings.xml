@@ -135,8 +135,11 @@
   <string name="button_label_pause_track">Pause %s</string>
   <string name="button_label_pick_match">Import %s.</string>
   <string name="button_label_play_track">Play %s</string>
+  <string name="button_label_plex_add_server">Add a Plex server</string>
   <string name="button_label_plex_connect">Connect your Plex account</string>
   <string name="button_label_plex_disconnect">Disconnect your Plex account</string>
+  <string name="button_label_plex_manage_server">Manage server libraries</string>
+  <string name="button_label_plex_remove_server">Remove %s</string>
   <string name="button_label_plex_scrobble_episode_library">Toggle library scrobbling for episodes</string>
   <string name="button_label_plex_scrobble_episode_rated">Toggle ratings scrobbling for episodes</string>
   <string name="button_label_plex_scrobble_episode_watched">Toggle watched scrobbling for episodes</string>
@@ -193,6 +196,7 @@
   <string name="button_label_report_user">Report %s</string>
   <string name="button_label_reset_all_filters">Reset all filters</string>
   <string name="button_label_reset_calendar_period">Today</string>
+  <string name="button_label_reset_cover_image">Reset your cover image to the default artwork.</string>
   <string name="button_label_reset_filter">Reset</string>
   <string name="button_label_restore_show">Restore show \"%s\"</string>
   <string name="button_label_retry">Retry</string>
@@ -237,6 +241,7 @@
   <string name="button_label_toggle_search_lists">Search for lists</string>
   <string name="button_label_toggle_search_media">Search for media</string>
   <string name="button_label_toggle_search_people">Search for people</string>
+  <string name="button_label_toggle_streaming_countries">Toggle countries for %s</string>
   <string name="button_label_trivia_category_filter">Filter trivia by category</string>
   <string name="button_label_trivia_no_spoilers">No spoilers</string>
   <string name="button_label_trivia_spoilers">Spoilers</string>
@@ -287,7 +292,9 @@
   <string name="button_label_watched_until_here">Mark \"%s\" as watched until here</string>
   <string name="button_label_year_in_review">View your %s in review</string>
   <string name="button_label_year_to_date">View your year to date</string>
+  <string name="button_plex_add_server">Add Server</string>
   <string name="button_plex_authorized">I\'ve connected Plex</string>
+  <string name="button_plex_manage_server">Manage</string>
   <string name="button_plex_sync_now">Sync Now</string>
   <string name="button_plex_toggle_scrobble">Scrobble</string>
   <string name="button_plex_toggle_watched">Watched</string>
@@ -401,6 +408,7 @@
   <string name="button_text_player_play_now">Play Now</string>
   <string name="button_text_player_resume">Resume</string>
   <string name="button_text_player_subtitles_off">Off</string>
+  <string name="button_text_plex_remove_server">Remove</string>
   <string name="button_text_popular_comments">Popular</string>
   <string name="button_text_progress_completed">Up to date</string>
   <string name="button_text_progress_dropped">Dropped</string>
@@ -421,6 +429,7 @@
   <string name="button_text_report_comment">Report</string>
   <string name="button_text_reset_all_filters">Reset all</string>
   <string name="button_text_reset_calendar_period">Today</string>
+  <string name="button_text_reset_cover_image">Reset</string>
   <string name="button_text_restore_rating_prompts">Restore Rating Prompts</string>
   <string name="button_text_restore_show">Restore show</string>
   <string name="button_text_retry">Retry</string>
@@ -507,6 +516,8 @@
   <string name="confirmation_challenge_delete_account">To confirm, type your username %s below.</string>
   <string name="confirmation_message_delete_api_app">This permanently deletes %s and revokes every token issued for it. This cannot be undone.</string>
   <string name="confirmation_message_disconnect_plex">This will stop syncing your Plex library. You can reconnect at any time.</string>
+  <string name="confirmation_message_plex_remove_server">This will stop syncing this server\'s libraries. You can add it back at any time.</string>
+  <string name="confirmation_message_reset_cover_image">This will remove your custom cover image and restore the default artwork. You can set a new one at any time.</string>
   <string name="confirmation_message_revoke_app">This will revoke %s\'s access to your Trakt account. You can reconnect it at any time.</string>
   <string name="confirmation_message_rewatching_prompt">Starting a rewatching session will update your Continue Watching.</string>
   <string name="confirmation_message_undo_sync">This will reverse every item this sync imported into your history, ratings, watchlist, and library.</string>
@@ -528,11 +539,13 @@
   <string name="confirmation_title_hide_recommendation">Hide recommendation?</string>
   <string name="confirmation_title_log_out">Logout?</string>
   <string name="confirmation_title_mark_as_watched">Mark as watched?</string>
+  <string name="confirmation_title_plex_remove_server">Remove %s?</string>
   <string name="confirmation_title_remove_favorite">Remove favorite?</string>
   <string name="confirmation_title_remove_from_list">Remove from list?</string>
   <string name="confirmation_title_remove_from_watched">Remove from history?</string>
   <string name="confirmation_title_remove_from_watchlist">Remove from watchlist?</string>
   <string name="confirmation_title_remove_play">Remove play?</string>
+  <string name="confirmation_title_reset_cover_image">Reset cover image?</string>
   <string name="confirmation_title_reset_filters">Reset filters?</string>
   <string name="confirmation_title_restore_show">Restore show?</string>
   <string name="confirmation_title_revoke_app">Revoke access?</string>
@@ -564,11 +577,15 @@
   <string name="description_paused_items">These items were not watched at least 80%.</string>
   <string name="description_plex_home_users">Your own plays always sync. Add other Plex Home usernames to sync theirs too.</string>
   <string name="description_plex_manual_sync">Trigger an immediate sync of your Plex watch history to Trakt.</string>
+  <string name="description_plex_no_synced_servers">Add your Plex server to start syncing your libraries with Trakt.</string>
   <string name="description_plex_scrobbler_settings">These settings control what gets scrobbled to Trakt in real time.</string>
   <string name="description_plex_servers">Choose the Plex server to sync with Trakt.</string>
   <string name="description_plex_sync">Connect your Plex account to sync watch history, ratings, and collections with Trakt.</string>
-  <string name="description_plex_sync_settings">These settings control which data types sync to Trakt.</string>
-  <string name="description_plex_vip_upsell_sync">Upgrade to VIP to keep your Plex watch history, ratings, and collections synced with Trakt.</string>
+  <string name="description_plex_sync_free_limits">Free accounts sync 1 Plex server once a day. Upgrade to VIP to sync unlimited servers, refreshed every hour.</string>
+  <string name="description_plex_sync_history">Recent data syncs from your Plex Media Servers.</string>
+  <string name="description_plex_sync_settings">Choose what each media type syncs to your Trakt account.</string>
+  <string name="description_plex_synced_servers">Automatically sync your watched history, library, ratings and watchlist.</string>
+  <string name="description_plex_vip_upsell_add_server">Free accounts sync 1 Plex server once a day. Upgrade to VIP to sync unlimited servers, refreshed every hour.</string>
   <string name="description_plex_vip_upsell_webhook">Upgrade to VIP to automatically scrobble what you\'re watching in real time with Plex webhooks.</string>
   <string name="description_plex_webhook">Automatically scrobble what you\'re watching, rating, and adding to your library in real time.</string>
   <string name="description_preview_features">Try upcoming features before they’re broadly available. Preview Features may change as we refine them.</string>
@@ -721,11 +738,13 @@
   <string name="header_player_subtitle_size">Size</string>
   <string name="header_plex_home_users">Plex Home Users</string>
   <string name="header_plex_manual_sync">Manual Sync</string>
+  <string name="header_plex_no_synced_servers">No synced servers yet</string>
   <string name="header_plex_scrobbler_settings">Scrobbler Settings</string>
   <string name="header_plex_servers">Select Server</string>
-  <string name="header_plex_sync_history">Sync History</string>
+  <string name="header_plex_sync_free_limits">Plex Sync on the free plan</string>
   <string name="header_plex_sync_settings">Plex Sync Settings</string>
-  <string name="header_plex_vip_upsell_sync">Plex Sync is a VIP feature</string>
+  <string name="header_plex_synced_servers">Synced Servers</string>
+  <string name="header_plex_vip_upsell_add_server">Multiple servers is a VIP feature</string>
   <string name="header_plex_vip_upsell_webhook">Plex scrobbling is a VIP feature</string>
   <string name="header_post_credits">Post Credits</string>
   <string name="header_premiered">Premiered</string>
@@ -852,6 +871,7 @@
   <string name="import_tab_unresolved">Skipped</string>
   <string name="import_vip_limit_exceeded">Your import exceeds the free tier limit. Upgrade to VIP to import all %d items.</string>
   <string name="input_label_search_credit_members">Search people</string>
+  <string name="input_label_search_streaming_services">Search streaming services</string>
   <string name="input_placeholder_app_name">My application</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
   <string name="input_placeholder_app_redirect_uris">https://example.com/callback</string>
@@ -870,6 +890,7 @@
   <string name="input_placeholder_search_movies">Search movies…</string>
   <string name="input_placeholder_search_people">Search people…</string>
   <string name="input_placeholder_search_shows">Search shows…</string>
+  <string name="input_placeholder_search_streaming_services">Search streaming service or country…</string>
   <string name="input_prompt_about">Tell us a bit about yourself.</string>
   <string name="input_prompt_birthday">When is your birthday?</string>
   <string name="input_prompt_display_name">What should your display name be?</string>
@@ -1248,6 +1269,7 @@
   <string name="tab_text_seasons_reviews">Reviews</string>
   <string name="tab_text_simple_filters">Simple</string>
   <string name="tag_label_progress">Progress</string>
+  <string name="tag_plex_syncing">Syncing</string>
   <string name="tag_text_blocked_user">Blocked</string>
   <string name="tag_text_discount_biyearly">First 2 years discount</string>
   <string name="tag_text_discount_monthly">First month discount</string>
@@ -1509,6 +1531,7 @@
   <string name="text_play_count">%d plays</string>
   <string name="text_plays_watched">%s plays</string>
   <string name="text_plex_auth_waiting">A Plex authorization page has been opened. Complete the sign-in there, then click the button below.</string>
+  <string name="text_plex_library_required">Select at least one library to sync, or remove this server.</string>
   <string name="text_plex_synced_summary">Data has synced %1$s times. Your most recent sync was %2$s.</string>
   <string name="text_plex_tv_library_description">Enable Trakt Plex Sync to access your Plex server media library.</string>
   <string name="text_private">Private</string>
@@ -1563,9 +1586,12 @@
   <string name="text_settings_background_solid">Solid</string>
   <string name="text_settings_background_translucent">Translucent</string>
   <string name="text_settings_clear_cover">Clear current cover image and return to the default.</string>
+  <string name="text_settings_cover_image">Cover Image</string>
+  <string name="text_settings_cover_image_description">Resetting restores the default artwork.</string>
   <string name="text_settings_enable_multiple_plays">Multiple Plays</string>
   <string name="text_settings_enable_multiple_plays_description">Allow more than 1 play for movies and episodes.</string>
   <string name="text_settings_enable_notifications">Enable Notifications</string>
+  <string name="text_settings_no_cover_image_description">You have no cover image set.</string>
   <string name="text_settings_notification_time_180_min">3 hours before</string>
   <string name="text_settings_notification_time_30_min">30 minutes before</string>
   <string name="text_settings_notification_time_60_min">1 hour before</string>
