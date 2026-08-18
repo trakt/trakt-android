@@ -94,4 +94,5 @@ data class TraktColors(
     // Misc
     val profileStatsContainer: Color = Color.Unspecified,
     val profileStatsChip: Color = Color.Unspecified,
+    val justWatchAccent: Color = Color.Unspecified,
 )

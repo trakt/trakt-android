@@ -50,20 +50,16 @@ internal fun JustWatchRanksStrip(
             )
         },
     ) {
-        val jwColor = when (TraktTheme.colors.isLight) {
-            true -> 0xFFEEB705
-            false -> 0xFFfcc405
-        }
         Icon(
             painter = painterResource(R.drawable.ic_justwatch),
             contentDescription = null,
-            tint = Color(jwColor),
+            tint = TraktTheme.colors.justWatchAccent,
             modifier = Modifier
                 .size(14.dp),
         )
         Text(
             text = "JustWatch",
-            color = Color(jwColor),
+            color = TraktTheme.colors.justWatchAccent,
             style = TraktTheme.typography.meta,
             modifier = Modifier.padding(start = 2.dp),
         )
@@ -80,7 +76,7 @@ internal fun JustWatchRanksStrip(
                 ) {
                     Text(
                         text = "${it.rank?.toString() ?: "-"}.",
-                        color = Color(jwColor),
+                        color = TraktTheme.colors.justWatchAccent,
                         style = TraktTheme.typography.meta,
                     )
 

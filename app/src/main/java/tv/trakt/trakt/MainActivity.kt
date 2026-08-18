@@ -92,15 +92,11 @@ internal class MainActivity : AppCompatActivity() {
             ),
         )
 
-        val initialThemeMode = runBlocking {
-            themeModeUseCase.getThemeMode()
-        }
-
         setContent {
             val scope = rememberCoroutineScope()
 
             val themeMode by themeModeUseCase.observeThemeMode()
-                .collectAsStateWithLifecycle(initialValue = initialThemeMode)
+                .collectAsStateWithLifecycle(initialValue = ThemeMode.Default)
 
             val darkTheme = when (themeMode) {
                 ThemeMode.System -> isSystemInDarkTheme()

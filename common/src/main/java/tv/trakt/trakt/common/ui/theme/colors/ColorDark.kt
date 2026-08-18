@@ -1,5 +1,6 @@
 package tv.trakt.trakt.common.ui.theme.colors
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 val DarkColors: TraktColors = TraktColors(
@@ -89,4 +90,5 @@ val DarkColors: TraktColors = TraktColors(
     // Misc
     profileStatsContainer = Shade920,
     profileStatsChip = Shade920,
+    justWatchAccent = Color(0xFFfcc405),
 )
