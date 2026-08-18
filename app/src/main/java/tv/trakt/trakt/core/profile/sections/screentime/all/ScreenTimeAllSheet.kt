@@ -36,7 +36,7 @@ internal fun ScreenTimeAllSheet(
                 viewModel = koinViewModel(key = viewModelKey) { parametersOf(data) },
                 modifier = Modifier
                     .padding(horizontal = 24.dp)
-                    .padding(top = 8.dp, bottom = 24.dp),
+                    .padding(top = 8.dp, bottom = 20.dp),
             )
         }
     }

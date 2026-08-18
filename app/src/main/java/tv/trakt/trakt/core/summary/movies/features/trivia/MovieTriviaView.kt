@@ -115,7 +115,9 @@ private fun MovieTriviaContent(
                 when (loading) {
                     Idle, Loading -> {
                         DetailsTriviaSkeleton(
-                            modifier = Modifier.padding(contentPadding),
+                            modifier = Modifier
+                                .padding(contentPadding)
+                                .padding(bottom = TraktTheme.spacing.shadowClipSpace),
                         )
                     }
                     Done -> {
@@ -128,6 +130,7 @@ private fun MovieTriviaContent(
                                 onVipClick = onVipClick,
                                 modifier = Modifier
                                     .padding(contentPadding)
+                                    .padding(bottom = TraktTheme.spacing.shadowClipSpace)
                                     .onClick {
                                         if (state.user?.isAnyVip == true) {
                                             onTriviaClick()

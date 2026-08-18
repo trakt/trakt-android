@@ -280,7 +280,7 @@ internal fun CommentsContent(
                 Icon(
                     painter = painterResource(R.drawable.ic_comment_plus),
                     contentDescription = stringResource(R.string.dialog_title_comment),
-                    tint = TraktTheme.colors.textPrimary,
+                    tint = TraktTheme.colors.textPrimaryOnAccent,
                     modifier = Modifier.size(24.dp),
                 )
             }
@@ -412,7 +412,7 @@ private fun ContentFilters(
                     Icon(
                         painter = painterResource(filter.iconRes),
                         contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
+                        tint = TraktTheme.colors.textPrimaryOnAccent,
                         modifier = Modifier.size(FilterChipDefaults.IconSize),
                     )
                 },

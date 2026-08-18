@@ -31,6 +31,7 @@ import tv.trakt.trakt.core.settings.features.younify.usecases.GetYounifyDetailsU
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyDataUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.RefreshYounifyTokensUseCase
 import tv.trakt.trakt.core.settings.features.younify.usecases.UnlinkYounifyServiceUseCase
+import tv.trakt.trakt.core.settings.usecases.ThemeModeUseCase
 import tv.trakt.trakt.core.settings.usecases.UpdateUserSettingsUseCase
 import tv.younify.sdk.connect.Connect
 
@@ -63,6 +64,12 @@ internal val settingsModule = module {
 
     factory {
         EnableNotificationsUseCase(
+            dataStore = get(named(SETTINGS_PREFERENCES)),
+        )
+    }
+
+    factory {
+        ThemeModeUseCase(
             dataStore = get(named(SETTINGS_PREFERENCES)),
         )
     }
@@ -112,6 +119,7 @@ internal val settingsModule = module {
             updateSettingsUseCase = get(),
             enableNotificationsUseCase = get(),
             updateNotificationsDeliveryUseCase = get(),
+            themeModeUseCase = get(),
             logoutUseCase = get(),
         )
     }

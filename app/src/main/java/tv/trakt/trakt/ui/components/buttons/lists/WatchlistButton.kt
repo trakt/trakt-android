@@ -34,14 +34,14 @@ internal fun WatchlistButton(
                 else -> painterResource(R.drawable.ic_bookmark_off)
             },
             contentDescription = null,
-            tint = TraktTheme.colors.primaryButtonContent,
+            tint = TraktTheme.colors.textPrimary,
             modifier = Modifier
                 .size(28.dp),
         )
 
         Text(
             text = stringResource(R.string.button_text_watchlist).uppercase(),
-            color = TraktTheme.colors.primaryButtonContent,
+            color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.buttonSecondary,
             maxLines = 1,
             overflow = Ellipsis,

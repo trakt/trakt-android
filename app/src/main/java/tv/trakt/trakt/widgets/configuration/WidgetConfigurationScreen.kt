@@ -42,6 +42,7 @@ internal fun WidgetConfigurationScreen(
         WidgetConfigurationView(
             state = state,
             onBackgroundClick = viewModel::setBackground,
+            onThemeClick = viewModel::setTheme,
             onTitleVisibleClick = viewModel::setTitleVisible,
             onDoneClick = onDone,
             modifier = Modifier

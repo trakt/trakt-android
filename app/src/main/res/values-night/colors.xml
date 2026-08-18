@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Launch window background in dark mode. Mirrors DarkColors.backgroundPrimary. -->
+  <color name="window_background">#131517</color>
+</resources>

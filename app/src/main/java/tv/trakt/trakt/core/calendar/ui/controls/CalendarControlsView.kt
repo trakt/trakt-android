@@ -45,6 +45,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.core.calendar.model.CalendarItem
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.theme.DefaultCardShape
@@ -70,7 +71,10 @@ internal fun CalendarControlsView(
 ) {
     Column(
         modifier = modifier
-            .shadow(6.dp, shape = DefaultCardShape)
+            .shadow(
+                elevation = 4.dp,
+                shape = DefaultCardShape,
+            )
             .background(
                 color = TraktTheme.colors.dialogContainer,
                 shape = DefaultCardShape,
@@ -191,7 +195,12 @@ private fun DayRowItem(
 
     val animatedColor by animateColorAsState(
         targetValue = when {
-            dayFocused && dayAvailable -> TraktTheme.colors.dialogContent
+            dayFocused && dayAvailable -> when {
+                TraktTheme.colors.isLight -> TraktTheme.colors.dialogContent.copy(
+                    alpha = 0.35F,
+                )
+                else -> TraktTheme.colors.dialogContent
+            }
             else -> TraktTheme.colors.dialogContainer
         },
         animationSpec = tween(200),
@@ -312,7 +321,7 @@ private fun DayRowItem(
                     .padding(horizontal = 8.dp)
                     .fillMaxWidth()
                     .background(
-                        color = TraktTheme.colors.textSecondary.copy(alpha = 0.25F),
+                        color = Color.Transparent,
                         shape = RoundedCornerShape(100),
                     ),
             )
@@ -324,7 +333,7 @@ private fun DayRowItem(
 @Composable
 private fun Preview() {
     val now = LocalDate.now()
-    TraktTheme {
+    TraktThemeLightDark {
         CalendarControlsView(
             startDate = now.minusDays(3L),
             focusedDate = now,
@@ -336,7 +345,7 @@ private fun Preview() {
 @Composable
 private fun Preview2() {
     val today = LocalDate.now()
-    TraktTheme {
+    TraktThemeLightDark {
         CalendarControlsView(
             startDate = today.minusDays(3L),
             focusedDate = today,
@@ -349,7 +358,7 @@ private fun Preview2() {
 @Preview
 @Composable
 private fun Preview3() {
-    TraktTheme {
+    TraktThemeLightDark {
         val now = nowLocalDay()
         CalendarControlsView(
             startDate = now.minusDays(3L),

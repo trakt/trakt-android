@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoilApi::class)
+
 package tv.trakt.trakt.ui.components.mediacards.list
 
 import androidx.compose.foundation.Image
@@ -17,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -26,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -54,7 +58,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.CustomList.Type
-import tv.trakt.trakt.common.ui.theme.colors.Purple900
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.DefaultCardShape
@@ -78,6 +82,11 @@ internal fun CustomListCard(
         onClick = onClick,
         modifier = modifier,
         shape = DefaultCardShape,
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = TraktTheme.colors.shadowDynamicDefault,
+            pressedElevation = TraktTheme.colors.shadowDynamicDefault,
+            disabledElevation = TraktTheme.colors.shadowDynamicDefault,
+        ),
         colors = cardColors(
             containerColor = TraktTheme.colors.customListContainer,
         ),
@@ -108,12 +117,14 @@ private fun CustomListContent(
     onMoreClick: () -> Unit,
 ) {
     val containerColor = TraktTheme.colors.customListContainer
+    val gradientColor = TraktTheme.colors.customListGradient
+
     val radialGradient = remember {
         object : ShaderBrush() {
             override fun createShader(size: Size): Shader {
                 return RadialGradientShader(
                     colors = listOf(
-                        Purple900,
+                        gradientColor,
                         containerColor,
                     ),
                     center = Offset(size.width / 4, size.height * 1.5F),
@@ -196,9 +207,13 @@ private fun CustomListContent(
                         start = 16.dp,
                         end = 16.dp,
                     )
+                    .shadow(
+                        elevation = TraktTheme.colors.shadowDynamicDefault,
+                        shape = RoundedCornerShape(17.dp),
+                    )
                     .background(
                         color = when {
-                            list.type == Type.Official -> Purple900
+                            list.type == Type.Official -> TraktTheme.colors.customListGradient
                             else -> TraktTheme.colors.dialogOnContainer
                         },
                         shape = RoundedCornerShape(17.dp),
@@ -361,15 +376,11 @@ private fun CustomListHeader(
     }
 }
 
-@OptIn(ExperimentalCoilApi::class)
 @DevicePreview
 @Composable
 private fun Preview() {
-    TraktTheme {
-        val previewHandler =
-            AsyncImagePreviewHandler {
-                ColorImage(Color.LightGray.toArgb())
-            }
+    val previewHandler = AsyncImagePreviewHandler { ColorImage(Color.LightGray.toArgb()) }
+    TraktThemeLightDark {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             Column(
                 verticalArrangement = spacedBy(16.dp),
@@ -387,7 +398,20 @@ private fun Preview() {
                         .aspectRatio(HorizontalImageAspectRatio),
                     onClick = {},
                 )
+            }
+        }
+    }
+}
 
+@DevicePreview
+@Composable
+private fun Preview2() {
+    val previewHandler = AsyncImagePreviewHandler { ColorImage(Color.LightGray.toArgb()) }
+    TraktThemeLightDark {
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            Column(
+                verticalArrangement = spacedBy(16.dp),
+            ) {
                 CustomListCard(
                     list = PreviewData.customList1.copy(
                         name = "A very long list name that should be truncated",
@@ -401,7 +425,20 @@ private fun Preview() {
                         .aspectRatio(HorizontalImageAspectRatio),
                     onClick = {},
                 )
+            }
+        }
+    }
+}
 
+@DevicePreview
+@Composable
+private fun Preview3() {
+    val previewHandler = AsyncImagePreviewHandler { ColorImage(Color.LightGray.toArgb()) }
+    TraktThemeLightDark {
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            Column(
+                verticalArrangement = spacedBy(16.dp),
+            ) {
                 CustomListCard(
                     list = PreviewData.customList1.copy(
                         type = Type.All,

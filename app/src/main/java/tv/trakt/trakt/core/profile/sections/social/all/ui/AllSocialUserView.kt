@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -47,6 +48,10 @@ internal fun AllSocialUserView(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = spacedBy(10.dp),
         modifier = modifier
+            .shadow(
+                elevation = TraktTheme.colors.shadowDynamicDefault,
+                shape = RoundedCornerShape(corner),
+            )
             .background(containerColor, RoundedCornerShape(corner))
             .padding(horizontal = 12.dp)
             .padding(top = 12.dp, bottom = 10.dp)

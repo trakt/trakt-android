@@ -120,12 +120,16 @@ private fun MovieListsContent(
                         ContentLoading(
                             visible = loading.isLoading,
                             contentPadding = contentPadding,
+                            modifier = Modifier
+                                .padding(bottom = TraktTheme.spacing.shadowClipSpace),
                         )
                     }
 
                     Done -> {
                         Column(
                             verticalArrangement = spacedBy(0.dp),
+                            modifier = Modifier
+                                .padding(bottom = TraktTheme.spacing.shadowClipSpace),
                         ) {
                             if (state.items?.isEmpty() == true) {
                                 ContentEmpty(
@@ -192,6 +196,7 @@ private fun ContentList(
 
 @Composable
 private fun ContentLoading(
+    modifier: Modifier = Modifier,
     visible: Boolean = true,
     contentPadding: PaddingValues,
 ) {
@@ -199,7 +204,7 @@ private fun ContentLoading(
         horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
         contentPadding = contentPadding,
         userScrollEnabled = false,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .alpha(if (visible) 1F else 0F),
     ) {

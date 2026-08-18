@@ -36,20 +36,20 @@ internal fun ListButton(
             enabled = false,
             colors = CheckboxDefaults.colors().copy(
                 uncheckedBoxColor = Color.Transparent,
-                uncheckedBorderColor = TraktTheme.colors.primaryButtonContent,
-                checkedBoxColor = TraktTheme.colors.primaryButtonContent,
-                checkedBorderColor = TraktTheme.colors.primaryButtonContent,
+                uncheckedBorderColor = TraktTheme.colors.textPrimary,
+                checkedBoxColor = TraktTheme.colors.textPrimary,
+                checkedBorderColor = TraktTheme.colors.textPrimary,
                 checkedCheckmarkColor = TraktTheme.colors.dialogContainer,
                 disabledUncheckedBoxColor = Color.Transparent,
-                disabledUncheckedBorderColor = TraktTheme.colors.primaryButtonContent,
-                disabledCheckedBoxColor = TraktTheme.colors.primaryButtonContent,
-                disabledBorderColor = TraktTheme.colors.primaryButtonContent,
+                disabledUncheckedBorderColor = TraktTheme.colors.textPrimary,
+                disabledCheckedBoxColor = TraktTheme.colors.textPrimary,
+                disabledBorderColor = TraktTheme.colors.textPrimary,
             ),
         )
 
         Text(
             text = text.uppercase(),
-            color = TraktTheme.colors.primaryButtonContent,
+            color = TraktTheme.colors.textPrimary,
             style = TraktTheme.typography.buttonSecondary,
             maxLines = 1,
             overflow = Ellipsis,

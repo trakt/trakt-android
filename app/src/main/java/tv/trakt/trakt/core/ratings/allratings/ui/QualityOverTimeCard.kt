@@ -27,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -52,6 +53,7 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.theme.colors.Purple200
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Shade700
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -60,6 +62,7 @@ private const val MAX_FIT_SEASONS = 8
 
 private val GraphHeight = 120.dp
 private val MinPointSpacing = 44.dp
+private val cardShape = RoundedCornerShape(16.dp)
 
 @Composable
 internal fun QualityOverTimeCard(
@@ -69,9 +72,13 @@ internal fun QualityOverTimeCard(
     Column(
         verticalArrangement = spacedBy(8.dp),
         modifier = modifier
+            .shadow(
+                elevation = TraktTheme.colors.shadowDynamicDefault,
+                shape = cardShape,
+            )
             .background(
                 color = TraktTheme.colors.dialogOnContainer,
-                shape = RoundedCornerShape(16.dp),
+                shape = cardShape,
             )
             .padding(horizontal = 16.dp)
             .padding(top = 13.dp, bottom = 12.dp),
@@ -168,9 +175,13 @@ internal fun QualityOverTimeSkeletonCard(modifier: Modifier = Modifier) {
     Column(
         verticalArrangement = spacedBy(8.dp),
         modifier = modifier
+            .shadow(
+                elevation = TraktTheme.colors.shadowDynamicDefault,
+                shape = cardShape,
+            )
             .background(
                 color = shimmerTransition,
-                shape = RoundedCornerShape(16.dp),
+                shape = cardShape,
             )
             .padding(top = 13.dp, bottom = 12.dp),
     ) {
@@ -275,12 +286,12 @@ private fun QualityLineGraph(
 
             points.forEach { point ->
                 drawCircle(
-                    color = Color.White,
+                    color = dotLabelColor,
                     radius = 2.dp.toPx(),
                     center = point,
                 )
                 drawCircle(
-                    color = Color.White,
+                    color = dotLabelColor,
                     radius = 2.dp.toPx(),
                     center = point,
                     style = Stroke(width = 1.5.dp.toPx()),
@@ -344,7 +355,7 @@ private fun Preview() {
 @Preview(widthDp = 360)
 @Composable
 private fun PreviewManySeasons() {
-    TraktTheme {
+    TraktThemeLightDark {
         QualityOverTimeCard(
             seasons = (1..24)
                 .map { number ->
@@ -376,7 +387,7 @@ private fun PreviewManySeasons() {
 @Preview(widthDp = 360)
 @Composable
 private fun PreviewSkeleton() {
-    TraktTheme {
+    TraktThemeLightDark {
         QualityOverTimeSkeletonCard(
             modifier = Modifier
                 .fillMaxWidth()

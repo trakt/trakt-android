@@ -386,8 +386,9 @@ private fun MainScreenContent(
                         exit = fadeOut(tween(200)) + slideOutVertically(targetOffsetY = { it / 2 }),
                         modifier = Modifier.align(BottomCenter),
                     ) {
+                        val lightColors = TraktTheme.colors.isLight
                         val bottomColor = TraktTheme.colors.backgroundPrimary
-                        val bottomGradient = remember(localCheckInVisibility.value) {
+                        val bottomGradient = remember(localCheckInVisibility.value, lightColors) {
                             when {
                                 localCheckInVisibility.value -> verticalGradient(
                                     colors = listOf(

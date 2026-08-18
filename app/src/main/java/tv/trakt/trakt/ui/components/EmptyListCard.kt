@@ -9,13 +9,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -35,6 +34,10 @@ internal fun EmptyListCard(
         modifier = modifier
             .fillMaxWidth()
             .height(height)
+            .shadow(
+                elevation = TraktTheme.colors.shadowDynamicDefault,
+                shape = DefaultCardShape,
+            )
             .background(
                 TraktTheme.colors.dialogContainer,
                 DefaultCardShape,
@@ -71,25 +74,5 @@ private fun Preview2() {
             modifier = Modifier.padding(16.dp),
             height = EmptyVerticalDoubleHeight,
         )
-    }
-}
-
-@DevicePreview
-@Composable
-private fun Preview3() {
-    TraktTheme {
-        Box {
-            EmptyListCard(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .alpha(0.5F),
-                height = EmptyHorizontalDoubleHeight,
-            )
-
-            EpisodeSkeletonCard(
-                modifier = Modifier
-                    .padding(16.dp),
-            )
-        }
     }
 }

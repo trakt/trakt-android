@@ -2,7 +2,6 @@ package tv.trakt.trakt.core.lists.features.details.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.model.sorting.SortType.Runtime
 import tv.trakt.trakt.common.model.sorting.SortType.UserRating
@@ -16,7 +15,6 @@ internal fun ListDetailsEpisodeView(
     item: CustomListItem.EpisodeItem,
     sorting: Sorting,
     modifier: Modifier = Modifier,
-    shadow: Boolean = false,
     enabled: Boolean = true,
     onClick: (CustomListItem.EpisodeItem) -> Unit = { },
 ) {
@@ -25,7 +23,6 @@ internal fun ListDetailsEpisodeView(
         title = item.show.title,
         titleOriginal = null,
         subtitle = item.episode.seasonEpisodeString(),
-        shadow = if (shadow) 4.dp else 0.dp,
         enabled = enabled,
         watched = false,
         watchlist = false,

@@ -48,7 +48,7 @@ internal fun VipChip(
             Icon(
                 painter = it,
                 contentDescription = null,
-                tint = TraktTheme.colors.chipContent,
+                tint = TraktTheme.colors.textPrimaryOnAccent,
                 modifier = Modifier
                     .size(18.dp)
                     .align(Alignment.CenterVertically),
@@ -57,7 +57,7 @@ internal fun VipChip(
         Text(
             text = text.uppercase(),
             style = TraktTheme.typography.buttonPrimary,
-            color = TraktTheme.colors.chipContent,
+            color = TraktTheme.colors.textPrimaryOnAccent,
             maxLines = 1,
             modifier = Modifier
                 .align(Alignment.CenterVertically)

@@ -5,6 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -16,11 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import tv.trakt.trakt.common.core.streamings.model.StreamingsResult
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.math.absoluteValue
@@ -50,13 +53,13 @@ internal fun JustWatchRanksStrip(
         Icon(
             painter = painterResource(R.drawable.ic_justwatch),
             contentDescription = null,
-            tint = Color(0xFFfcc405),
+            tint = TraktTheme.colors.justWatchAccent,
             modifier = Modifier
                 .size(14.dp),
         )
         Text(
             text = "JustWatch",
-            color = Color(0xFFfcc405),
+            color = TraktTheme.colors.justWatchAccent,
             style = TraktTheme.typography.meta,
             modifier = Modifier.padding(start = 2.dp),
         )
@@ -73,7 +76,7 @@ internal fun JustWatchRanksStrip(
                 ) {
                     Text(
                         text = "${it.rank?.toString() ?: "-"}.",
-                        color = Color(0xFFfcc405),
+                        color = TraktTheme.colors.justWatchAccent,
                         style = TraktTheme.typography.meta,
                     )
 
@@ -100,6 +103,49 @@ internal fun JustWatchRanksStrip(
                     }
                 }
             }
+        }
+    }
+}
+
+@Preview(widthDp = 360)
+@Composable
+private fun Preview() {
+    TraktThemeLightDark {
+        Column(
+            verticalArrangement = spacedBy(12.dp),
+            modifier = Modifier.padding(16.dp),
+        ) {
+            JustWatchRanksStrip(
+                ranks = StreamingsResult.Ranks(
+                    rank = 12,
+                    delta = 5,
+                    link = null,
+                ),
+                justWatchLink = "justwatch.com/us/movie/dune",
+            )
+
+            JustWatchRanksStrip(
+                ranks = StreamingsResult.Ranks(
+                    rank = 34,
+                    delta = -7,
+                    link = null,
+                ),
+                justWatchLink = "justwatch.com/us/movie/dune",
+            )
+
+            JustWatchRanksStrip(
+                ranks = StreamingsResult.Ranks(
+                    rank = 8,
+                    delta = 0,
+                    link = null,
+                ),
+                justWatchLink = "justwatch.com/us/movie/dune",
+            )
+
+            JustWatchRanksStrip(
+                ranks = null,
+                justWatchLink = null,
+            )
         }
     }
 }

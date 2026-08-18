@@ -143,7 +143,9 @@ private fun ScreenTimeAllContent(
 
         Row(
             horizontalArrangement = spacedBy(12.dp),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = TraktTheme.spacing.shadowClipSpace),
         ) {
             WakingHoursStatCard(
                 percent = data.stats.wakingHoursPercent,

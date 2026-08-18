@@ -376,7 +376,10 @@ private fun PosterChip(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = spacedBy(6.dp),
         modifier = modifier
-            .background(Color.White, RoundedCornerShape(100))
+            .background(
+                TraktTheme.colors.tagChipContainer,
+                RoundedCornerShape(100),
+            )
             .padding(
                 horizontal = 8.dp,
                 vertical = 4.dp,
@@ -385,7 +388,7 @@ private fun PosterChip(
         icon?.let {
             Icon(
                 painter = it,
-                tint = Color.Black,
+                tint = TraktTheme.colors.tagChipContent,
                 contentDescription = null,
                 modifier = Modifier.size(13.dp),
             )
@@ -393,7 +396,7 @@ private fun PosterChip(
         if (text.isNotBlank()) {
             Text(
                 text = text.uppercase(),
-                color = Color.Black,
+                color = TraktTheme.colors.tagChipContent,
                 style = TraktTheme.typography.meta,
             )
         }

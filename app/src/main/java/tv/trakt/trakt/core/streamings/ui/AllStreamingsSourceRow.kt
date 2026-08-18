@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.RoundRect
@@ -134,7 +135,8 @@ private fun SourceLogoTile(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .size(TileSize)
-            .border(1.dp, TraktTheme.colors.separator, TileShape)
+            .padding(bottom = TraktTheme.spacing.shadowClipSpace)
+            .border(1.dp, TraktTheme.colors.chipContainer, TileShape)
             .padding(horizontal = 12.dp),
     ) {
         if (service.logo.isNullOrBlank()) {
@@ -203,9 +205,14 @@ private fun ServiceCountryTile(
         verticalArrangement = spacedBy(3.dp, CenterVertically),
         modifier = modifier
             .size(TileSize)
+            .padding(bottom = TraktTheme.spacing.shadowClipSpace)
+            .shadow(
+                elevation = TraktTheme.colors.shadowDynamicDefault,
+                shape = TileShape,
+            )
             .background(TraktTheme.colors.commentContainer, TileShape)
             .onClick(onClick = onClick)
-            .padding(horizontal = 8.dp),
+            .padding(horizontal = 8.dp)
     ) {
         if (flag != null) {
             Text(

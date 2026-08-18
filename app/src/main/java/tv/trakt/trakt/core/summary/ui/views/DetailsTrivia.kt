@@ -49,6 +49,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toAnnotatedString
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.vip.VipChip
 import tv.trakt.trakt.ui.theme.DefaultCardShape
@@ -83,7 +84,7 @@ internal fun DetailsTrivia(
         modifier = modifier
             .fillMaxWidth()
             .shadow(
-                elevation = 4.dp,
+                elevation = TraktTheme.colors.shadowDefault,
                 shape = DefaultCardShape,
                 ambientColor = DefaultShadowColor.copy(alpha = 0.66F),
                 spotColor = DefaultShadowColor.copy(alpha = 0.66F),
@@ -159,14 +160,14 @@ private fun GetVipView(onVipClick: () -> Unit) {
         ) {
             Text(
                 text = stringResource(R.string.text_vip_upsell_dive_deeper),
-                color = TraktTheme.colors.textPrimary,
+                color = TraktTheme.colors.triviaAccent,
                 style = TraktTheme.typography.paragraphSmall.copy(
                     fontWeight = W600,
                 ),
             )
             Text(
                 text = stringResource(R.string.vip_feature_description_trivia),
-                color = TraktTheme.colors.textPrimary,
+                color = TraktTheme.colors.triviaAccent,
                 style = TraktTheme.typography.paragraphSmaller.copy(
                     fontSize = 12.sp,
                 ),
@@ -216,7 +217,7 @@ internal fun DetailsTriviaSkeleton(modifier: Modifier = Modifier) {
 )
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         val previewHandler = AsyncImagePreviewHandler {
             ColorImage(Color.Blue.toArgb())
         }
@@ -242,7 +243,7 @@ private fun Preview() {
 )
 @Composable
 private fun PreviewSkeleton() {
-    TraktTheme {
+    TraktThemeLightDark {
         DetailsTriviaSkeleton(
             modifier = Modifier.padding(16.dp),
         )

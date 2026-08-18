@@ -32,7 +32,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -40,7 +39,6 @@ import androidx.compose.ui.graphics.Brush.Companion.linearGradient
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -61,7 +59,6 @@ import coil3.request.crossfade
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
-import tv.trakt.trakt.common.ui.theme.colors.Shade940
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.theme.HorizontalEpisodeImageAspectRatio
@@ -76,7 +73,6 @@ internal fun PanelHorizontalMediaCard(
     containerImageUrl: String?,
     modifier: Modifier = Modifier,
     corner: Dp = 16.dp,
-    shadow: Dp = 0.dp,
     more: Boolean = true,
     watched: Boolean = false,
     watchlist: Boolean = false,
@@ -94,20 +90,16 @@ internal fun PanelHorizontalMediaCard(
         horizontalArrangement = spacedBy(0.dp),
         verticalAlignment = Alignment.Top,
         modifier = modifier
-            .dropShadow(
-                shape = RoundedCornerShape(corner),
-                shadow = Shadow(
-                    radius = shadow,
-                    color = Shade940,
-                    spread = 2.dp,
-                    alpha = if (shadow > 0.dp) 0.33F else 0F,
-                ),
-            )
             .graphicsLayer {
                 clip = false
             }
-            .alpha(if (enabled) 1F else 0.33F)
+            .shadow(
+                elevation = TraktTheme.colors.shadowDynamicDefault,
+                shape = RoundedCornerShape(16.dp),
+                clip = false,
+            )
             .background(containerColor, RoundedCornerShape(corner))
+            .alpha(if (enabled) 1F else 0.33F)
             .height(TraktTheme.size.horizontalMediumMediaCardSize / HorizontalEpisodeImageAspectRatio)
             .onClickCombined(
                 enabled = enabled,

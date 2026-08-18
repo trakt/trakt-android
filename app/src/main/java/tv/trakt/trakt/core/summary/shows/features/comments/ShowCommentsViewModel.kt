@@ -51,6 +51,7 @@ import tv.trakt.trakt.core.summary.shows.features.comments.usecases.GetShowComme
 import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(FlowPreview::class)
@@ -92,7 +93,7 @@ internal class ShowCommentsViewModel(
             reactionsUpdates.observeUpdates(Source.ALL_COMMENTS),
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 updateReactions(it.first)
             }
@@ -103,7 +104,7 @@ internal class ShowCommentsViewModel(
             commentsUpdates.observeUpdates(COMMENT_DETAILS),
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 loadData()
             }

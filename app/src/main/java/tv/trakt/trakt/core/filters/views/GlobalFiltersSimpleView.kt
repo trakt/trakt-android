@@ -548,9 +548,9 @@ private fun RatingFilter(
                 )
             },
             colors = SliderDefaults.colors(
-                activeTrackColor = TraktTheme.colors.accent,
-                inactiveTrackColor = Color.White,
-                thumbColor = TraktTheme.colors.accent,
+                activeTrackColor = TraktTheme.colors.switchThumbChecked,
+                inactiveTrackColor = TraktTheme.colors.switchContainerUnchecked,
+                thumbColor = TraktTheme.colors.switchThumbChecked,
                 activeTickColor = Color.Transparent,
                 inactiveTickColor = Color.Transparent,
             ),

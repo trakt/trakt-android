@@ -25,6 +25,7 @@ import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUn
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilAction.Now
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilAction.OtherDate
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilAction.ReleaseDate
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -83,6 +84,11 @@ private fun ActionSegment(
         else -> TraktTheme.colors.primaryButtonContainerDisabled
     }
 
+    val textColor = when {
+        selected -> TraktTheme.colors.textPrimaryOnAccent
+        else -> TraktTheme.colors.textPrimary
+    }
+
     Row(
         horizontalArrangement = spacedBy(12.dp),
         verticalAlignment = CenterVertically,
@@ -100,13 +106,13 @@ private fun ActionSegment(
         Icon(
             painter = icon,
             contentDescription = null,
-            tint = TraktTheme.colors.textPrimary,
+            tint = textColor,
             modifier = Modifier.size(21.dp),
         )
         Text(
             text = text,
             style = TraktTheme.typography.buttonPrimary,
-            color = TraktTheme.colors.textPrimary,
+            color = textColor,
         )
     }
 }
@@ -118,7 +124,7 @@ private fun ActionSegment(
 )
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         ActionButtons(
             selected = OtherDate,
             enabled = true,

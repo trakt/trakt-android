@@ -11,11 +11,13 @@ import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.state.PreferencesGlanceStateDefinition
 import timber.log.Timber
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.ui.theme.model.ThemeMode
 import tv.trakt.trakt.widgets.model.WidgetAppearance
 import tv.trakt.trakt.widgets.model.WidgetBackground
 
 private val BACKGROUND_KEY = stringPreferencesKey("widgetBackground")
 private val TITLE_VISIBLE_KEY = booleanPreferencesKey("widgetTitleVisible")
+private val THEME_KEY = stringPreferencesKey("widgetTheme")
 
 /**
  * Glance state rather than a DataStore of our own: it is scoped to a single widget and a write
@@ -42,6 +44,17 @@ internal class WidgetAppearanceStore(
 
         updateAppWidgetState(context = context, glanceId = glanceId) { preferences ->
             preferences[BACKGROUND_KEY] = background.name
+        }
+    }
+
+    suspend fun setTheme(
+        appWidgetId: Int,
+        theme: ThemeMode,
+    ) {
+        val glanceId = glanceId(appWidgetId) ?: return
+
+        updateAppWidgetState(context = context, glanceId = glanceId) { preferences ->
+            preferences[THEME_KEY] = theme.name
         }
     }
 
@@ -76,6 +89,9 @@ internal fun Preferences.widgetAppearance(): WidgetAppearance {
         background = this[BACKGROUND_KEY]
             ?.let { name -> WidgetBackground.entries.firstOrNull { it.name == name } }
             ?: default.background,
+        theme = this[THEME_KEY]
+            ?.let { name -> ThemeMode.entries.firstOrNull { it.name == name } }
+            ?: default.theme,
         titleVisible = this[TITLE_VISIBLE_KEY] ?: default.titleVisible,
     )
 }

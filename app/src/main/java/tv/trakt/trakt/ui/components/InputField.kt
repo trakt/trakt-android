@@ -54,7 +54,7 @@ internal fun InputField(
     loading: Boolean = false,
     enabled: Boolean = true,
     height: Dp = 48.dp,
-    border: Dp = 2.dp,
+    border: Dp = 1.5.dp,
     containerColor: Color = TraktTheme.colors.inputContainer.copy(alpha = 0.8F),
     borderColor: Color = TraktTheme.colors.accent,
     lineLimits: TextFieldLineLimits = SingleLine,
@@ -118,7 +118,7 @@ internal fun InputField(
                     Icon(
                         painter = icon,
                         contentDescription = "Icon",
-                        tint = Color.White,
+                        tint = TraktTheme.colors.textPrimary,
                         modifier = Modifier.size(20.dp),
                     )
                     Spacer(Modifier.width(8.dp))

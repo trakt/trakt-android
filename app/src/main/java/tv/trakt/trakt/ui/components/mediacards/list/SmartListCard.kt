@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -47,6 +48,7 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.common.model.lists.SmartListFilters
 import tv.trakt.trakt.common.model.lists.SmartListSource
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.DefaultCardShape
@@ -66,6 +68,11 @@ internal fun SmartListCard(
         onClick = onClick,
         modifier = modifier,
         shape = DefaultCardShape,
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = TraktTheme.colors.shadowDynamicDefault,
+            pressedElevation = TraktTheme.colors.shadowDynamicDefault,
+            disabledElevation = TraktTheme.colors.shadowDynamicDefault,
+        ),
         colors = cardColors(
             containerColor = TraktTheme.colors.customListContainer,
         ),
@@ -186,7 +193,10 @@ private fun SmartListHeader(
             modifier = Modifier
                 .size(36.dp)
                 .background(
-                    color = TraktTheme.colors.chipContainer,
+                    color = when (TraktTheme.colors.isLight) {
+                        true -> TraktTheme.colors.placeholderContainer
+                        false -> TraktTheme.colors.chipContainer
+                    },
                     shape = CircleShape,
                 ),
         ) {
@@ -231,7 +241,7 @@ private fun SmartListHeader(
 @DevicePreview
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         val previewHandler = AsyncImagePreviewHandler {
             ColorImage(Color.LightGray.toArgb())
         }

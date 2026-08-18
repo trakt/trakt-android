@@ -27,8 +27,10 @@ import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.ui.theme.colors.Shade10
 import tv.trakt.trakt.common.ui.theme.colors.Shade400
 import tv.trakt.trakt.common.ui.theme.colors.Shade900
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -49,17 +51,24 @@ internal fun DetailsActions(
     onTrailerClick: (() -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
 ) {
+    val isLight = TraktTheme.colors.isLight
     val shape = RoundedCornerShape(18.dp)
+
+    val shadowColor = when (isLight) {
+        true -> DefaultShadowColor.copy(alpha = 0.5F)
+        false -> DefaultShadowColor.copy(alpha = 0.33F)
+    }
+
     Box(
         modifier = modifier
             .shadow(
-                elevation = 2.dp,
+                elevation = TraktTheme.colors.shadowLarge,
                 shape = shape,
-                ambientColor = DefaultShadowColor.copy(alpha = 0.33F),
-                spotColor = DefaultShadowColor.copy(alpha = 0.33F),
+                ambientColor = shadowColor,
+                spotColor = shadowColor,
             )
             .background(
-                color = Shade900,
+                color = if (isLight) Shade10 else Shade900,
                 shape = shape,
             )
             .padding(
@@ -114,7 +123,10 @@ internal fun DetailsActions(
                     Icon(
                         painter = painterResource(primaryIcon),
                         tint = when {
-                            enabled && primaryEnabled -> TraktTheme.colors.primaryButtonContent
+                            enabled && primaryEnabled -> when (watched) {
+                                true -> TraktTheme.colors.textPrimaryOnAccent
+                                false -> TraktTheme.colors.textPrimary
+                            }
                             else -> Shade400
                         },
                         contentDescription = null,
@@ -135,7 +147,7 @@ internal fun DetailsActions(
                         else -> painterResource(R.drawable.ic_bookmark_off)
                     },
                     tint = when {
-                        enabled -> TraktTheme.colors.primaryButtonContent
+                        enabled -> TraktTheme.colors.textPrimary
                         else -> TraktTheme.colors.primaryButtonContainerDisabled
                     },
                     contentDescription = null,
@@ -150,7 +162,7 @@ internal fun DetailsActions(
                 Icon(
                     painter = painterResource(R.drawable.ic_trailer),
                     tint = when {
-                        enabled && trailer -> TraktTheme.colors.primaryButtonContent
+                        enabled && trailer -> TraktTheme.colors.textPrimary
                         else -> TraktTheme.colors.primaryButtonContainerDisabled
                     },
                     contentDescription = null,
@@ -166,7 +178,7 @@ internal fun DetailsActions(
             Icon(
                 painter = painterResource(R.drawable.ic_more_vertical),
                 tint = when {
-                    enabled -> TraktTheme.colors.primaryButtonContent
+                    enabled -> TraktTheme.colors.textPrimary
                     else -> TraktTheme.colors.primaryButtonContainerDisabled
                 },
                 contentDescription = null,
@@ -183,14 +195,12 @@ internal fun DetailsActions(
 }
 
 @Preview(
-    device = "id:pixel_5",
     showBackground = true,
-    backgroundColor = 0xFFFFFFFF,
     widthDp = 400,
 )
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         Column(
             verticalArrangement = spacedBy(16.dp),
             modifier = Modifier.padding(16.dp),

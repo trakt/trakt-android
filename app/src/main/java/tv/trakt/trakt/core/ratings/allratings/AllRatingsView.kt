@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -161,7 +162,8 @@ private fun AllRatingsContent(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 24.dp),
+                    .padding(top = 24.dp)
+                    .padding(bottom = TraktTheme.spacing.shadowClipSpace),
             ) {
                 Text(
                     text = stringResource(R.string.header_ratings_official),
@@ -266,13 +268,18 @@ private fun RatingTile(
     tile: RatingTileData,
     modifier: Modifier = Modifier,
 ) {
+    val tileShape = RoundedCornerShape(16.dp)
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(7.dp),
         modifier = modifier
+            .shadow(
+                elevation = TraktTheme.colors.shadowDynamicDefault,
+                shape = tileShape,
+            )
             .background(
                 color = TraktTheme.colors.dialogOnContainer,
-                shape = RoundedCornerShape(16.dp),
+                shape = tileShape,
             )
             .onClick(enabled = tile.onClick != null) {
                 tile.onClick?.invoke()

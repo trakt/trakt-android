@@ -38,6 +38,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.core.summary.ui.views.DetailsTrivia
 import tv.trakt.trakt.core.summary.ui.views.DetailsTriviaSkeleton
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -115,7 +116,9 @@ private fun ShowTriviaContent(
                 when (loading) {
                     Idle, Loading -> {
                         DetailsTriviaSkeleton(
-                            modifier = Modifier.padding(contentPadding),
+                            modifier = Modifier
+                                .padding(contentPadding)
+                                .padding(bottom = TraktTheme.spacing.shadowClipSpace),
                         )
                     }
                     Done -> {
@@ -128,6 +131,7 @@ private fun ShowTriviaContent(
                                 onVipClick = onVipClick,
                                 modifier = Modifier
                                     .padding(contentPadding)
+                                    .padding(bottom = TraktTheme.spacing.shadowClipSpace)
                                     .onClick {
                                         if (state.user?.isAnyVip == true) {
                                             onTriviaClick()
@@ -152,7 +156,7 @@ private fun ShowTriviaContent(
 )
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         val previewHandler = AsyncImagePreviewHandler {
             ColorImage(Color.Blue.toArgb())
         }

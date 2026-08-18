@@ -28,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
@@ -51,6 +50,7 @@ import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.math.abs
@@ -332,7 +332,7 @@ internal fun UserRatingBar(
                                 },
                             ),
                             contentDescription = null,
-                            tint = Color.White,
+                            tint = TraktTheme.colors.textPrimary,
                             modifier = Modifier
                                 .size(size)
                                 .graphicsLayer {
@@ -373,7 +373,7 @@ internal fun UserRatingBar(
                         },
                     ),
                     contentDescription = null,
-                    tint = Color.White,
+                    tint = TraktTheme.colors.textPrimary,
                     modifier = Modifier
                         .size(size)
                         .alpha(if (ratingAlphaMaskActive) ratingAlphaMask else animatedAlpha)
@@ -420,7 +420,7 @@ private fun runScaleAnimation(
 @DevicePreview
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         UserRatingBar()
     }
 }
@@ -428,7 +428,7 @@ private fun Preview() {
 @DevicePreview
 @Composable
 private fun Preview2() {
-    TraktTheme {
+    TraktThemeLightDark {
         UserRatingBar(
             rating = 7,
         )
@@ -438,7 +438,7 @@ private fun Preview2() {
 @DevicePreview
 @Composable
 private fun Preview3() {
-    TraktTheme {
+    TraktThemeLightDark {
         UserRatingBar(
             favoriteVisible = true,
             favoriteLoading = true,

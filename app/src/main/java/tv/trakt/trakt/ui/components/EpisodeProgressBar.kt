@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.ui.theme.colors.Shade930
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -29,7 +30,7 @@ internal fun EpisodeProgressBar(
     modifier: Modifier = Modifier,
     startText: String? = null,
     endText: String? = null,
-    textColor: Color = TraktTheme.colors.textPrimary,
+    textColor: Color = TraktTheme.colors.textPrimaryOnAccent,
     textStyle: TextStyle = TraktTheme.typography.meta,
     containerColor: Color = TraktTheme.colors.chipContainerOnContent,
     progress: Float = 0f,
@@ -99,7 +100,7 @@ internal fun EpisodeProgressBar(
 @Preview(widthDp = 200)
 @Composable
 private fun Preview1() {
-    TraktTheme {
+    TraktThemeLightDark {
         EpisodeProgressBar(
             startText = "12 remaining",
             endText = "1h 23m",
@@ -110,7 +111,7 @@ private fun Preview1() {
 @Preview(widthDp = 200)
 @Composable
 private fun Preview2() {
-    TraktTheme {
+    TraktThemeLightDark {
         EpisodeProgressBar(
             startText = "44m",
             endText = "12 remaining • 4h 34min",

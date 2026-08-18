@@ -29,9 +29,11 @@ import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.notifications.model.DeliveryAdjustment
 import tv.trakt.trakt.core.notifications.usecases.EnableNotificationsUseCase
 import tv.trakt.trakt.core.notifications.usecases.UpdateNotificationsDeliveryUseCase
+import tv.trakt.trakt.core.settings.usecases.ThemeModeUseCase
 import tv.trakt.trakt.core.settings.usecases.UpdateUserSettingsUseCase
 import tv.trakt.trakt.core.user.usecases.LogoutUserUseCase
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.theme.model.ThemeMode
 import kotlin.time.Duration.Companion.milliseconds
 
 internal class SettingsViewModel(
@@ -41,6 +43,7 @@ internal class SettingsViewModel(
     private val updateSettingsUseCase: UpdateUserSettingsUseCase,
     private val enableNotificationsUseCase: EnableNotificationsUseCase,
     private val updateNotificationsDeliveryUseCase: UpdateNotificationsDeliveryUseCase,
+    private val themeModeUseCase: ThemeModeUseCase,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = SettingsState()
@@ -48,6 +51,7 @@ internal class SettingsViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val notificationsState = MutableStateFlow(initialState.notifications)
     private val notificationsDeliveryState = MutableStateFlow(initialState.notificationsDelivery)
+    private val themeModeState = MutableStateFlow(initialState.themeMode)
     private val accountLoadingState = MutableStateFlow(initialState.accountLoading)
     private val logoutLoadingState = MutableStateFlow(initialState.logoutLoading)
     private val infoState = MutableStateFlow(initialState.info)
@@ -86,6 +90,18 @@ internal class SettingsViewModel(
             notificationsDeliveryState.update {
                 updateNotificationsDeliveryUseCase.getDeliveryTime()
             }
+        }
+
+        themeModeUseCase.observeThemeMode()
+            .onEach { mode ->
+                themeModeState.update { mode }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    fun setThemeMode(mode: ThemeMode) {
+        viewModelScope.launch {
+            themeModeUseCase.setThemeMode(mode)
         }
     }
 
@@ -264,6 +280,7 @@ internal class SettingsViewModel(
         userState,
         notificationsState,
         notificationsDeliveryState,
+        themeModeState,
         accountLoadingState,
         logoutLoadingState,
         infoState,
@@ -272,9 +289,10 @@ internal class SettingsViewModel(
             user = state[0] as User?,
             notifications = state[1] as Boolean,
             notificationsDelivery = state[2] as DeliveryAdjustment?,
-            accountLoading = state[3] as LoadingState,
-            logoutLoading = state[4] as LoadingState,
-            info = state[5] as StringResource?,
+            themeMode = state[3] as ThemeMode,
+            accountLoading = state[4] as LoadingState,
+            logoutLoading = state[5] as LoadingState,
+            info = state[6] as StringResource?,
         )
     }.stateIn(
         scope = viewModelScope,

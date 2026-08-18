@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -94,6 +95,11 @@ internal fun ProfileCommentItemView(
         shape = DefaultCardShape,
         colors = cardColors(
             containerColor = TraktTheme.colors.commentContainer,
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = TraktTheme.colors.shadowDynamicDefault,
+            pressedElevation = TraktTheme.colors.shadowDynamicDefault,
+            disabledElevation = TraktTheme.colors.shadowDynamicDefault,
         ),
         content = {
             CommentCardContent(

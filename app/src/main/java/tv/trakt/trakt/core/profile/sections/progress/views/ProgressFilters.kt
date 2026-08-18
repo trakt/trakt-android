@@ -56,7 +56,10 @@ internal fun ProgressFilters(
                     Icon(
                         painter = painterResource(filter.iconRes),
                         contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
+                        tint = when {
+                            selected == filter -> TraktTheme.colors.textPrimaryOnAccent
+                            else -> TraktTheme.colors.textPrimary
+                        },
                         modifier = Modifier
                             .size(FilterChipDefaults.IconSize)
                             .graphicsLayer {

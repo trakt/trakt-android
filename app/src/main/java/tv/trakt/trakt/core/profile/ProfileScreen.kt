@@ -100,7 +100,6 @@ internal fun ProfileScreen(
     onNavigateToHome: () -> Unit,
     onNavigateToUser: (User) -> Unit,
     onNavigateToSocial: () -> Unit,
-    onNavigateToVip: () -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -128,7 +127,6 @@ internal fun ProfileScreen(
         onSettingsClick = onNavigateToSettings,
         onNavigateToUser = onNavigateToUser,
         onNavigateToSocial = onNavigateToSocial,
-        onVipClick = onNavigateToVip,
         onShareClick = {
             shareProfile(
                 user = state.user,
@@ -170,7 +168,6 @@ private fun ProfileScreen(
     onNavigateToShows: () -> Unit = {},
     onNavigateToUser: (User) -> Unit = {},
     onNavigateToSocial: () -> Unit = {},
-    onVipClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {},
@@ -304,7 +301,10 @@ private fun ProfileScreen(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             modifier = Modifier
-                                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+                                .padding(
+                                    bottom = TraktTheme.spacing.mainSectionVerticalSpace -
+                                        TraktTheme.spacing.shadowClipSpace,
+                                ),
                         )
                     }
 
@@ -330,7 +330,10 @@ private fun ProfileScreen(
                             onEpisodeClick = onNavigateToEpisode,
                             onMoreClick = onNavigateToActivity,
                             modifier = Modifier
-                                .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),
+                                .padding(
+                                    bottom =
+                                        TraktTheme.spacing.mainSectionVerticalSpace - TraktTheme.spacing.shadowClipSpace,
+                                ),
                         )
                     }
 

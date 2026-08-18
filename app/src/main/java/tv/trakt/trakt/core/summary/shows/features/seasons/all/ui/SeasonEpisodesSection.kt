@@ -64,14 +64,17 @@ internal fun LazyListScope.SeasonEpisodesSection(
                 val watchedEpisodes = remember(state.items.selectedSeasonEpisodes) {
                     state.items.selectedSeasonEpisodes.count { it.isWatched }
                 }
+
                 val leftEpisodes = remember(state.items.selectedSeasonEpisodes) {
                     state.items.selectedSeasonEpisodes.count { !it.isWatched }
                 }
+
                 val leftRuntime = remember(state.items.selectedSeasonEpisodes) {
                     state.items.selectedSeasonEpisodes
                         .filter { !it.isWatched }
                         .sumOf { it.episode.runtime?.inWholeMinutes ?: 0 }
                 }
+
                 val progressPercent = remember(state.items.selectedSeasonEpisodes) {
                     if (state.items.selectedSeasonEpisodes.isEmpty()) {
                         0F
@@ -79,6 +82,7 @@ internal fun LazyListScope.SeasonEpisodesSection(
                         watchedEpisodes.toFloat() / state.items.selectedSeasonEpisodes.size.toFloat()
                     }
                 }
+
                 SeasonProgressSummary(
                     season = state.items.selectedSeason?.number ?: 0,
                     startText = stringResource(R.string.text_stats_episodes_count, watchedEpisodes),

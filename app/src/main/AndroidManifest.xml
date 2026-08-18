@@ -125,7 +125,7 @@
     </activity>
 
     <receiver
-      android:name=".widgets.continuewatching.ContinueWatchingWidgetReceiver"
+      android:name=".widgets.widget.continuewatching.ContinueWatchingWidgetReceiver"
       android:enabled="@bool/widgets_enabled"
       android:exported="false"
       android:label="@string/page_title_up_next"
@@ -141,7 +141,7 @@
     </receiver>
 
     <receiver
-      android:name=".widgets.calendar.CalendarWidgetReceiver"
+      android:name=".widgets.widget.calendar.CalendarWidgetReceiver"
       android:enabled="@bool/widgets_enabled"
       android:exported="false"
       android:label="@string/page_title_calendar"
@@ -157,7 +157,7 @@
     </receiver>
 
     <receiver
-      android:name=".widgets.streaks.StreaksWidgetReceiver"
+      android:name=".widgets.widget.streaks.StreaksWidgetReceiver"
       android:enabled="@bool/widgets_enabled"
       android:exported="false"
       android:label="@string/drawer_title_streak_activity"

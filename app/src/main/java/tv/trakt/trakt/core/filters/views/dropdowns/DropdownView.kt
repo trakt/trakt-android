@@ -21,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,7 +30,9 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import tv.trakt.trakt.common.helpers.extensions.DeviceSheetPreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -66,8 +67,8 @@ internal fun <T> DropdownView(
                     .fillMaxWidth()
                     .background(
                         color = when (active) {
-                            true -> Color.White
-                            false -> TraktTheme.colors.dialogOnContainer
+                            true -> TraktTheme.colors.dropdownContainerActive
+                            false -> TraktTheme.colors.dropdownContainer
                         },
                         shape = RoundedCornerShape(16.dp),
                     )
@@ -86,8 +87,8 @@ internal fun <T> DropdownView(
                         letterSpacing = 0.02.em,
                     ),
                     color = when (active) {
-                        true -> TraktTheme.colors.accent
-                        false -> TraktTheme.colors.textSecondary
+                        true -> TraktTheme.colors.dropdownContentActive
+                        false -> TraktTheme.colors.dropdownContent
                     },
                     maxLines = 1,
                     overflow = Ellipsis,
@@ -96,7 +97,7 @@ internal fun <T> DropdownView(
 
             DropdownMenu(
                 expanded = showMenu,
-                containerColor = TraktTheme.colors.dialogContainer,
+                containerColor = TraktTheme.colors.dropdownMenuContainer,
                 shape = RoundedCornerShape(16.dp),
                 onDismissRequest = {
                     showMenu = false
@@ -149,14 +150,10 @@ internal data class DropdownOption<T>(
     val displayString: String,
 )
 
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF212427,
-)
+@DeviceSheetPreview
 @Composable
 private fun PreviewDropdownView() {
-    TraktTheme {
+    TraktThemeLightDark {
         DropdownView(
             header = "Genre",
             active = true,
@@ -178,7 +175,7 @@ private fun PreviewDropdownView() {
 )
 @Composable
 private fun PreviewDropdownViewInactive() {
-    TraktTheme {
+    TraktThemeLightDark {
         DropdownView(
             header = "Genre",
             active = false,

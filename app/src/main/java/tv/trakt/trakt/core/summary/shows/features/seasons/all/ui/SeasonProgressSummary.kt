@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EpisodeProgressBar
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -70,7 +71,10 @@ internal fun SeasonProgressSummary(
             startText = startText,
             endText = endText,
             progress = progressPercent,
-            containerColor = TraktTheme.colors.panelCardContainer,
+            containerColor = when (TraktTheme.colors.isLight) {
+                true -> TraktTheme.colors.chipContainer
+                false -> TraktTheme.colors.panelCardContainer
+            },
         )
     }
 }
@@ -126,7 +130,7 @@ private fun SkeletonBox(
 @DevicePreview
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         SeasonProgressSummary(
             season = 1,
             startText = "Runtime",
@@ -140,7 +144,7 @@ private fun Preview() {
 @DevicePreview
 @Composable
 private fun SkeletonPreview() {
-    TraktTheme {
+    TraktThemeLightDark {
         SeasonProgressSummarySkeleton(
             modifier = Modifier.padding(16.dp),
         )

@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -61,7 +62,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.Sentiments.Overall.Positive
-import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
@@ -242,6 +243,11 @@ internal fun HighlightsCard(
     Card(
         modifier = modifier,
         shape = DefaultCardShape,
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = TraktTheme.colors.shadowDynamicDefault,
+            pressedElevation = TraktTheme.colors.shadowDynamicDefault,
+            disabledElevation = TraktTheme.colors.shadowDynamicDefault,
+        ),
         colors = cardColors(
             containerColor = TraktTheme.colors.commentContainer,
         ),
@@ -280,6 +286,11 @@ internal fun ProsConsCard(
     Card(
         modifier = modifier,
         shape = DefaultCardShape,
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = TraktTheme.colors.shadowDynamicDefault,
+            pressedElevation = TraktTheme.colors.shadowDynamicDefault,
+            disabledElevation = TraktTheme.colors.shadowDynamicDefault,
+        ),
         colors = cardColors(
             containerColor = TraktTheme.colors.commentContainer,
         ),
@@ -379,7 +390,7 @@ private fun GetVipView(modifier: Modifier = Modifier) {
             override fun createShader(size: Size): Shader {
                 return RadialGradientShader(
                     colors = listOf(
-                        Red500,
+                        Purple500,
                         Shade920,
                     ),
                     center = Offset(size.width * 1.5F, -size.height / 1.5F),

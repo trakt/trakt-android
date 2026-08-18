@@ -49,6 +49,7 @@ import tv.trakt.trakt.common.model.Sentiments
 import tv.trakt.trakt.common.model.Sentiments.Overall.Mixed
 import tv.trakt.trakt.common.model.Sentiments.Overall.Negative
 import tv.trakt.trakt.common.model.Sentiments.Overall.Positive
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -61,6 +62,7 @@ internal fun DetailsSentiment(
 ) {
     val containerColor = TraktTheme.colors.sentimentsContainer
     val containerColor2 = TraktTheme.colors.dialogContainer
+
     val radialGradient = remember {
         object : ShaderBrush() {
             override fun createShader(size: Size): Shader {
@@ -86,7 +88,7 @@ internal fun DetailsSentiment(
         verticalArrangement = spacedBy(0.dp, CenterVertically),
         modifier = modifier
             .shadow(
-                elevation = 4.dp,
+                elevation = TraktTheme.colors.shadowDefault,
                 shape = DefaultCardShape,
                 ambientColor = DefaultShadowColor.copy(alpha = 0.66F),
                 spotColor = DefaultShadowColor.copy(alpha = 0.66F),
@@ -243,7 +245,7 @@ private fun GetVipView() {
 )
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         val previewHandler = AsyncImagePreviewHandler {
             ColorImage(Color.Blue.toArgb())
         }
@@ -287,7 +289,7 @@ private fun Preview() {
 )
 @Composable
 private fun Preview2() {
-    TraktTheme {
+    TraktThemeLightDark {
         val previewHandler = AsyncImagePreviewHandler {
             ColorImage(Color.Blue.toArgb())
         }

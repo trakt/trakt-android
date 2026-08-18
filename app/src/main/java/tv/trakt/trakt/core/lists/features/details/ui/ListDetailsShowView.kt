@@ -3,7 +3,6 @@ package tv.trakt.trakt.core.lists.features.details.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
@@ -21,7 +20,6 @@ internal fun ListDetailsShowView(
     showUserRating: UserRating?,
     modifier: Modifier = Modifier,
     showIcon: Boolean = false,
-    shadow: Boolean = false,
     enabled: Boolean = true,
     more: Boolean = true,
     watched: Boolean = false,
@@ -39,7 +37,6 @@ internal fun ListDetailsShowView(
         title = show.title,
         titleOriginal = show.titleOriginal,
         subtitle = genresText,
-        shadow = if (shadow) 4.dp else 0.dp,
         more = more,
         enabled = enabled,
         watched = watched,

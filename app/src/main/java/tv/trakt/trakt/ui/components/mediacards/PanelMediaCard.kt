@@ -30,7 +30,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -38,7 +37,6 @@ import androidx.compose.ui.graphics.Brush.Companion.linearGradient
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -59,7 +57,6 @@ import coil3.request.crossfade
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
-import tv.trakt.trakt.common.ui.theme.colors.Shade940
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
@@ -76,18 +73,18 @@ internal fun PanelMediaCard(
     contentImageUrl: String?,
     containerImageUrl: String?,
     corner: Dp = 16.dp,
-    shadow: Dp = 0.dp,
     more: Boolean = true,
     watched: Boolean = false,
     watching: Boolean = false,
     watchlist: Boolean = false,
     enabled: Boolean = true,
-    containerColor: Color = TraktTheme.colors.panelCardContainer,
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
     onImageClick: (() -> Unit)? = null,
     footerContent: @Composable (() -> Unit)? = null,
 ) {
+    val containerColor = TraktTheme.colors.panelCardContainer
+
     var isPosterError by remember { mutableStateOf(false) }
     var isContainerError by remember { mutableStateOf(false) }
 
@@ -95,20 +92,16 @@ internal fun PanelMediaCard(
         horizontalArrangement = spacedBy(0.dp),
         verticalAlignment = Alignment.Top,
         modifier = modifier
-            .dropShadow(
-                shape = RoundedCornerShape(corner),
-                shadow = Shadow(
-                    radius = shadow,
-                    color = Shade940,
-                    spread = 2.dp,
-                    alpha = if (shadow > 0.dp) 0.33F else 0F,
-                ),
-            )
             .graphicsLayer {
                 clip = false
             }
-            .alpha(if (enabled) 1F else 0.33F)
+            .shadow(
+                elevation = TraktTheme.colors.shadowDynamicDefault,
+                shape = RoundedCornerShape(16.dp),
+                clip = false,
+            )
             .background(containerColor, RoundedCornerShape(corner))
+            .alpha(if (enabled) 1F else 0.33F)
             .height(TraktTheme.size.verticalMediumMediaCardSize / VerticalImageAspectRatio)
             .onClickCombined(
                 enabled = enabled,
@@ -277,7 +270,8 @@ internal fun PanelMediaCard(
         ) {
             if (!containerImageUrl.isNullOrBlank() && !isContainerError) {
                 val inspection = LocalInspectionMode.current
-                val gradientColor2 = when {
+
+                val imageGradientColor = when {
                     inspection -> TraktTheme.colors.accent
                     else -> containerColor.copy(alpha = 0F)
                 }
@@ -300,7 +294,7 @@ internal fun PanelMediaCard(
                                 brush = linearGradient(
                                     colors = listOf(
                                         containerColor,
-                                        gradientColor2,
+                                        imageGradientColor,
                                     ),
                                     start = Offset(size.width / 1.75F, size.height),
                                     end = Offset(size.width * 1.655F, -size.height),
@@ -359,7 +353,7 @@ internal fun PanelMediaCard(
                         Icon(
                             painter = painterResource(R.drawable.ic_more_vertical),
                             contentDescription = null,
-                            tint = Color.White,
+                            tint = TraktTheme.colors.textPrimary,
                             modifier = Modifier
                                 .padding(top = 2.dp)
                                 .graphicsLayer {

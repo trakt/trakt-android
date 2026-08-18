@@ -110,6 +110,7 @@ private fun MovieSentimentContent(
             Crossfade(
                 targetState = state.loading,
                 animationSpec = tween(200),
+                modifier = Modifier.padding(bottom = TraktTheme.spacing.shadowClipSpace),
             ) { loading ->
                 val maxWidth = if (windowClass.isAtLeastLarge()) 0.45f else 1f
                 when (loading) {

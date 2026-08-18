@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -23,12 +24,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
-import tv.trakt.trakt.common.ui.theme.colors.Shade700
 import tv.trakt.trakt.core.profile.sections.screentime.StatCardSize
 import tv.trakt.trakt.core.profile.sections.screentime.model.ScreenTimeData.PeakHour
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.random.Random
+
+private val cardShape = RoundedCornerShape(16.dp)
 
 @Composable
 internal fun ScreenTimePeakHoursCard(
@@ -39,9 +42,13 @@ internal fun ScreenTimePeakHoursCard(
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
+            .shadow(
+                elevation = TraktTheme.colors.shadowDynamicDefault,
+                shape = cardShape,
+            )
             .background(
                 color = containerColor,
-                shape = RoundedCornerShape(16.dp),
+                shape = cardShape,
             )
             .padding(horizontal = 14.dp, vertical = 12.dp),
     ) {
@@ -82,7 +89,7 @@ internal fun ScreenTimePeakHoursCard(
                     },
                     gapSize = 2.dp,
                     color = TraktTheme.colors.accent,
-                    trackColor = Shade700,
+                    trackColor = TraktTheme.colors.chipContainer,
                     drawStopIndicator = { },
                     modifier = Modifier.weight(5F),
                 )
@@ -108,7 +115,7 @@ internal fun ScreenTimePeakHoursCard(
 @Preview(widthDp = 300)
 @Composable
 private fun ScreenTimePeakHoursCardPreview() {
-    TraktTheme {
+    TraktThemeLightDark {
         ScreenTimePeakHoursCard(
             data = PeakHour.entries
                 .associateWith { Random.nextInt(20) }

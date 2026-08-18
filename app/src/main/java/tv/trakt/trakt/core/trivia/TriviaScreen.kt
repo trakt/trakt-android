@@ -171,7 +171,7 @@ private fun ContentFilters(
                     Icon(
                         painter = painterResource(filter.iconRes),
                         contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
+                        tint = TraktTheme.colors.textPrimaryOnAccent,
                         modifier = Modifier
                             .size(FilterChipDefaults.IconSize)
                             .rotate(180F),

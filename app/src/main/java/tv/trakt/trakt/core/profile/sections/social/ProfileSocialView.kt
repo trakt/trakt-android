@@ -190,7 +190,7 @@ private fun ContentFilters(
                     Icon(
                         painter = painterResource(filter.iconRes),
                         contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
+                        tint = TraktTheme.colors.textPrimaryOnAccent,
                         modifier = Modifier
                             .size(
                                 when (filter) {
@@ -206,7 +206,7 @@ private fun ContentFilters(
                         Text(
                             text = " • $usersCount",
                             style = TraktTheme.typography.buttonTertiary,
-                            color = TraktTheme.colors.textPrimary,
+                            color = TraktTheme.colors.textPrimaryOnAccent,
                             maxLines = 1,
                             textAlign = TextAlign.Center,
                         )

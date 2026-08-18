@@ -684,7 +684,7 @@ internal fun ShowDetailsContent(
                                         top = when {
                                             showStreamings -> 32.dp
                                             else -> 24.dp
-                                        },
+                                        } - TraktTheme.spacing.shadowClipSpace,
                                     ),
                             )
                         }
@@ -702,7 +702,7 @@ internal fun ShowDetailsContent(
                             onAllSeasonsClick = { onAllSeasonsClick?.invoke(show, it) },
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
+                                .padding(top = 32.dp - TraktTheme.spacing.shadowClipSpace),
                         )
                     }
 
@@ -745,7 +745,7 @@ internal fun ShowDetailsContent(
                             onVideoClick = onExtraClick ?: {},
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
+                                .padding(top = 32.dp - TraktTheme.spacing.shadowClipSpace),
                         )
                     }
 
@@ -788,7 +788,7 @@ internal fun ShowDetailsContent(
                             onTriviaClick = onTriviaClick ?: {},
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
-                                .padding(top = 32.dp),
+                                .padding(top = 32.dp - TraktTheme.spacing.shadowClipSpace),
                         )
                     }
                 }

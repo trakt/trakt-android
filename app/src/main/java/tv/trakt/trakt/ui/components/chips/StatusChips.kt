@@ -89,7 +89,7 @@ private fun StatusChip(
         Text(
             text = text,
             style = contentTextStyle,
-            color = TraktTheme.colors.chipContent,
+            color = TraktTheme.colors.textPrimaryOnAccent,
             textAlign = TextAlign.Center,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,

@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import tv.trakt.trakt.common.ui.theme.colors.LightColors
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -54,7 +55,7 @@ internal fun InfoChip(
             Icon(
                 imageVector = iconVector,
                 contentDescription = text,
-                tint = TraktTheme.colors.chipContent,
+                tint = TraktTheme.colors.textPrimaryOnAccent,
                 modifier = Modifier.size(12.dp),
             )
         }
@@ -62,14 +63,14 @@ internal fun InfoChip(
             Icon(
                 painter = iconPainter,
                 contentDescription = text,
-                tint = TraktTheme.colors.chipContent,
+                tint = TraktTheme.colors.textPrimaryOnAccent,
                 modifier = Modifier.size(12.dp),
             )
         }
         Text(
             text = text,
             style = contentTextStyle,
-            color = TraktTheme.colors.chipContent,
+            color = TraktTheme.colors.textPrimaryOnAccent,
             textAlign = TextAlign.Center,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -114,6 +115,70 @@ private fun ShowCardChipPainterNullPreview() {
 @Composable
 private fun ShowCardChipNullPreview() {
     TraktTheme {
+        InfoChip(
+            text = "12K",
+            iconVector = null,
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFFFFFF,
+)
+@Composable
+private fun PreviewLight() {
+    TraktTheme(
+        colors = LightColors,
+    ) {
+        InfoChip(
+            text = "12K",
+            iconPainter = painterResource(R.drawable.ic_person),
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFFFFFF,
+)
+@Composable
+private fun Preview2Light() {
+    TraktTheme(
+        colors = LightColors,
+    ) {
+        InfoChip(
+            text = "12K",
+            iconPainter = painterResource(R.drawable.ic_clock),
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFFFFFF,
+)
+@Composable
+private fun ShowCardChipPainterNullPreviewLight() {
+    TraktTheme(
+        colors = LightColors,
+    ) {
+        InfoChip(
+            text = "12K Carat Gold",
+            iconPainter = null,
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFFFFFF,
+)
+@Composable
+private fun ShowCardChipNullPreviewLight() {
+    TraktTheme(
+        colors = LightColors,
+    ) {
         InfoChip(
             text = "12K",
             iconVector = null,

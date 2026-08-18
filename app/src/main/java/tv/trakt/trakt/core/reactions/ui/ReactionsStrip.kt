@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.reactions.Reaction
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -99,7 +100,7 @@ fun ReactionsStrip(
 @Preview(widthDp = 300)
 @Composable
 private fun Preview2() {
-    TraktTheme {
+    TraktThemeLightDark {
         ReactionsStrip()
     }
 }
@@ -107,7 +108,7 @@ private fun Preview2() {
 @Preview(widthDp = 300)
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         ReactionsStrip(
             selectedReaction = Reaction.LOVE,
         )

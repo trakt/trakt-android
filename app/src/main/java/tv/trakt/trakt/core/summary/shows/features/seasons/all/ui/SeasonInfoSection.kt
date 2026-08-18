@@ -175,7 +175,7 @@ internal fun LazyListScope.SeasonInfoSection(
                             Icon(
                                 painter = painterResource(mode.iconRes),
                                 contentDescription = null,
-                                tint = TraktTheme.colors.textPrimary,
+                                tint = TraktTheme.colors.textPrimaryOnAccent,
                                 modifier = Modifier.size(19.dp),
                             )
                         },

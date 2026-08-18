@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +20,7 @@ import androidx.core.text.HtmlCompat.FROM_HTML_MODE_LEGACY
 import tv.trakt.trakt.common.helpers.extensions.toAnnotatedString
 import tv.trakt.trakt.common.model.trivia.TriviaFact
 import tv.trakt.trakt.common.ui.theme.colors.Red400
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -32,6 +34,11 @@ internal fun TriviaFactCard(
     Card(
         modifier = modifier,
         shape = DefaultCardShape,
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = TraktTheme.colors.shadowDynamicDefault,
+            pressedElevation = TraktTheme.colors.shadowDynamicDefault,
+            disabledElevation = TraktTheme.colors.shadowDynamicDefault,
+        ),
         colors = cardColors(
             containerColor = TraktTheme.colors.commentContainer,
         ),
@@ -72,7 +79,7 @@ internal fun TriviaFactCard(
 )
 @Composable
 private fun PreviewRegular() {
-    TraktTheme {
+    TraktThemeLightDark {
         TriviaFactCard(
             fact = TriviaFact(
                 id = "1",
@@ -93,7 +100,7 @@ private fun PreviewRegular() {
 )
 @Composable
 private fun PreviewSpoiler() {
-    TraktTheme {
+    TraktThemeLightDark {
         TriviaFactCard(
             fact = TriviaFact(
                 id = "2",

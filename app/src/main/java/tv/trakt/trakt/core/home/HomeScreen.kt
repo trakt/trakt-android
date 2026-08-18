@@ -270,8 +270,8 @@ private fun HomeScreenContent(
             if (state.user.user != null) {
                 item {
                     HomeStreaksView(
-                        modifier = Modifier.padding(sectionPadding),
                         onClick = onStreakClick,
+                        modifier = Modifier.padding(sectionPadding),
                     )
                 }
             }

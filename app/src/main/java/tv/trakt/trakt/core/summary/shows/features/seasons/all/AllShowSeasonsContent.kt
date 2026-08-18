@@ -38,6 +38,7 @@ import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.common.ui.theme.colors.LightColors
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.ui.SeasonEpisodesSection
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.ui.SeasonInfoSection
@@ -272,6 +273,53 @@ private fun SeasonsSkeleton(
 @Composable
 private fun PreviewLoaded() {
     TraktTheme {
+        val seasons = (1..5).map { n ->
+            SeasonItem(
+                season = PreviewData.season1.copy(
+                    ids = PreviewData.season1.ids.copy(trakt = n.toTraktId()),
+                    number = n,
+                ),
+                isWatched = n < 3,
+            )
+        }.toImmutableList()
+
+        val episodes = (1..6).map { n ->
+            EpisodeItem(
+                episode = PreviewData.episode1.copy(
+                    ids = PreviewData.episode1.ids.copy(trakt = n.toTraktId()),
+                    number = n,
+                    title = "Episode $n",
+                ),
+                isWatched = n < 4,
+                isCheckable = true,
+            )
+        }.toImmutableList()
+
+        AllShowSeasonsContent(
+            state = AllShowSeasonsState(
+                show = PreviewData.show1,
+                user = PreviewData.user1,
+                loading = Done,
+                items = ShowSeasons(
+                    seasons = seasons,
+                    selectedSeason = PreviewData.season1.copy(number = 1),
+                    selectedSeasonEpisodes = episodes,
+                ),
+            ),
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun PreviewLoadedLight() {
+    TraktTheme(
+        colors = LightColors,
+    ) {
         val seasons = (1..5).map { n ->
             SeasonItem(
                 season = PreviewData.season1.copy(

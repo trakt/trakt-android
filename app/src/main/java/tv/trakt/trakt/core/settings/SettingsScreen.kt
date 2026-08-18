@@ -51,6 +51,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -62,7 +63,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W600
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
@@ -77,11 +77,14 @@ import tv.trakt.trakt.BuildConfig
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config
 import tv.trakt.trakt.common.helpers.LoadingState.Done
+import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.ui.theme.colors.LightColors
 import tv.trakt.trakt.common.ui.theme.colors.Purple300
+import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Purple600
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.notifications.model.DeliveryAdjustment
@@ -98,6 +101,7 @@ import tv.trakt.trakt.ui.components.input.SingleInputSheet
 import tv.trakt.trakt.ui.components.whatsnew.openPlayStore
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
+import tv.trakt.trakt.ui.theme.model.ThemeMode
 import java.util.Locale
 
 private const val SECTION_SPACING_DP = 12
@@ -147,6 +151,7 @@ internal fun SettingsScreen(
         onEnablePrivateAccount = viewModel::enablePrivateAccount,
         onEnableNotifications = viewModel::enableNotifications,
         onSetDeliveryTime = viewModel::setNotificationDeliveryTime,
+        onSetThemeMode = viewModel::setThemeMode,
         onClearCoverImage = viewModel::clearCoverImage,
         onYounifyClick = onNavigateYounify,
         onBlockedUsersClick = onNavigateBlockedUsers,
@@ -199,6 +204,7 @@ private fun SettingsScreenContent(
     onEnablePrivateAccount: (Boolean) -> Unit = { },
     onEnableNotifications: (Boolean) -> Unit = { },
     onSetDeliveryTime: (DeliveryAdjustment) -> Unit = { },
+    onSetThemeMode: (ThemeMode) -> Unit = { },
     onLogoutClick: () -> Unit = { },
     onGithubClick: () -> Unit = { },
     onInstagramClick: () -> Unit = { },
@@ -286,6 +292,7 @@ private fun SettingsScreenContent(
 
                 SettingsAppearance(
                     state = state,
+                    onSetThemeMode = onSetThemeMode,
                 )
 
                 SettingsMisc(
@@ -395,7 +402,7 @@ private fun SettingsAccount(
             TraktHeader(
                 title = stringResource(R.string.header_account_details).uppercase(),
                 titleStyle = TraktTheme.typography.heading6,
-                titleColor = Purple300,
+                titleColor = getHeaderColor(),
                 subtitle = "@${state.user?.username}",
                 subtitleColor = TraktTheme.colors.textPrimary,
                 modifier = Modifier.padding(bottom = 4.dp),
@@ -531,7 +538,7 @@ private fun SettingsTracking(
     ) {
         TraktHeader(
             title = stringResource(R.string.header_behavior).uppercase(),
-            titleColor = Purple300,
+            titleColor = getHeaderColor(),
             titleStyle = TraktTheme.typography.heading6,
         )
 
@@ -578,7 +585,7 @@ private fun SettingsStreaming(
     ) {
         TraktHeader(
             title = stringResource(R.string.text_streaming_sync).uppercase(),
-            titleColor = Purple300,
+            titleColor = getHeaderColor(),
             titleStyle = TraktTheme.typography.heading6,
         )
 
@@ -595,6 +602,7 @@ private fun SettingsStreaming(
 private fun SettingsAppearance(
     state: SettingsState,
     modifier: Modifier = Modifier,
+    onSetThemeMode: (ThemeMode) -> Unit = { },
 ) {
     val context = LocalContext.current
     val config = LocalResources.current.configuration
@@ -632,9 +640,52 @@ private fun SettingsAppearance(
     ) {
         TraktHeader(
             title = stringResource(R.string.header_appearance).uppercase(),
-            titleColor = Purple300,
+            titleColor = getHeaderColor(),
             titleStyle = TraktTheme.typography.heading6,
         )
+
+        Box {
+            var themeMenuVisible by remember { mutableStateOf(false) }
+
+            SettingsValueField(
+                text = stringResource(R.string.text_theme),
+                value = stringResource(state.themeMode.displayName()),
+                enabled = !state.logoutLoading.isLoading,
+                onClick = {
+                    themeMenuVisible = true
+                },
+            )
+
+            Box(
+                modifier = Modifier.align(Alignment.BottomEnd),
+            ) {
+                DropdownMenu(
+                    expanded = themeMenuVisible,
+                    containerColor = TraktTheme.colors.dialogContainer,
+                    shape = RoundedCornerShape(16.dp),
+                    onDismissRequest = {
+                        themeMenuVisible = false
+                    },
+                ) {
+                    ThemeMode.entries.forEach { mode ->
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = stringResource(mode.displayName()),
+                                    style = TraktTheme.typography.buttonTertiary,
+                                    color = TraktTheme.colors.textPrimary,
+                                    modifier = Modifier.fillMaxWidth(),
+                                )
+                            },
+                            onClick = {
+                                themeMenuVisible = false
+                                onSetThemeMode(mode)
+                            },
+                        )
+                    }
+                }
+            }
+        }
 
         Box {
             val menuVisible = remember(config) { mutableStateOf(false) }
@@ -742,7 +793,7 @@ private fun SettingsNotifications(
         Column {
             TraktHeader(
                 title = stringResource(R.string.header_settings_notifications).uppercase(),
-                titleColor = Purple300,
+                titleColor = getHeaderColor(),
                 titleStyle = TraktTheme.typography.heading6,
             )
         }
@@ -802,7 +853,7 @@ private fun SettingsMisc(
     ) {
         TraktHeader(
             title = stringResource(R.string.link_text_general_settings).uppercase(),
-            titleColor = Purple300,
+            titleColor = getHeaderColor(),
             titleStyle = TraktTheme.typography.heading6,
         )
 
@@ -940,7 +991,7 @@ private fun RateTraktView(modifier: Modifier = Modifier) {
         Icon(
             painter = painterResource(R.drawable.ic_mood_face),
             contentDescription = null,
-            tint = TraktTheme.colors.textPrimary,
+            tint = TraktTheme.colors.textPrimaryOnAccent,
             modifier = Modifier.size(26.dp),
         )
 
@@ -953,30 +1004,54 @@ private fun RateTraktView(modifier: Modifier = Modifier) {
                 style = TraktTheme.typography.paragraphSmall.copy(
                     fontWeight = W600,
                 ),
-                color = TraktTheme.colors.textPrimary,
+                color = TraktTheme.colors.textPrimaryOnAccent,
                 textAlign = TextAlign.Start,
             )
 
             Text(
                 text = stringResource(R.string.header_rate_us_2),
                 style = TraktTheme.typography.paragraphSmaller,
-                color = TraktTheme.colors.textPrimary,
+                color = TraktTheme.colors.textPrimaryOnAccent,
                 textAlign = TextAlign.Start,
             )
         }
     }
 }
 
+@Composable
+private fun getHeaderColor(): Color {
+    return when {
+        TraktTheme.colors.isLight -> Purple500
+        else -> Purple300
+    }
+}
+
 // Previews
 
-@Preview(
-    device = "id:pixel_6",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
+@DevicePreview
 @Composable
 private fun Preview() {
     TraktTheme {
+        SettingsScreenContent(
+            state = SettingsState(
+                user = PreviewData.user1.copy(
+                    settings = User.Settings(
+                        watchOnlyOnce = true,
+                        ratingPrompts = false,
+                        coverImage = null,
+                    ),
+                ),
+            ),
+        )
+    }
+}
+
+@DevicePreview
+@Composable
+private fun PreviewLight() {
+    TraktTheme(
+        colors = LightColors,
+    ) {
         SettingsScreenContent(
             state = SettingsState(
                 user = PreviewData.user1.copy(
