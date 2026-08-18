@@ -212,7 +212,7 @@ private fun ServiceCountryTile(
             )
             .background(TraktTheme.colors.commentContainer, TileShape)
             .onClick(onClick = onClick)
-            .padding(horizontal = 8.dp)
+            .padding(horizontal = 8.dp),
     ) {
         if (flag != null) {
             Text(

@@ -39,7 +39,6 @@ internal fun WidgetConfigurationView(
             maxSubtitleLines = 2,
         )
         Column(
-
             modifier = Modifier
                 .graphicsLayer {
                     translationX = -8.dp.toPx()

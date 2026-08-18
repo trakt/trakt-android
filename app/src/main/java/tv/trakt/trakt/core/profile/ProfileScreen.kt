@@ -331,8 +331,8 @@ private fun ProfileScreen(
                             onMoreClick = onNavigateToActivity,
                             modifier = Modifier
                                 .padding(
-                                    bottom =
-                                        TraktTheme.spacing.mainSectionVerticalSpace - TraktTheme.spacing.shadowClipSpace,
+                                    bottom = TraktTheme.spacing.mainSectionVerticalSpace -
+                                        TraktTheme.spacing.shadowClipSpace,
                                 ),
                         )
                     }
