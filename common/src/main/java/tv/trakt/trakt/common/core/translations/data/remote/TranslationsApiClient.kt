@@ -18,7 +18,7 @@ class TranslationsApiClient(
     ): TranslationDto? {
         val result = showsApi.getShowsTranslations(
             id = showId.value.toString(),
-            language = locale.language,
+            language = locale.apiLanguage,
         ).body()
 
         return result
@@ -34,7 +34,7 @@ class TranslationsApiClient(
             id = showId.value.toString(),
             season = seasonEpisode.season,
             episode = seasonEpisode.episode,
-            language = locale.language,
+            language = locale.apiLanguage,
         ).body()
 
         return result
@@ -47,7 +47,7 @@ class TranslationsApiClient(
     ): TranslationDto? {
         val result = moviesApi.getMoviesTranslations(
             id = movieId.value.toString(),
-            language = locale.language,
+            language = locale.apiLanguage,
         ).body()
 
         return result
@@ -58,12 +58,30 @@ class TranslationsApiClient(
         locale: Locale,
         country: (T) -> String?,
     ): T? {
+        // Nothing to disambiguate on: take the region-agnostic entry, otherwise whatever Trakt
+        // ranked first, so languages without regional variants still get translated.
         if (locale.country.isBlank()) {
-            return firstOrNull()
+            return firstOrNull { country(it).isNullOrBlank() } ?: firstOrNull()
         }
 
         return firstOrNull {
             country(it).equals(locale.country, ignoreCase = true)
-        } ?: firstOrNull()
+        } ?: firstOrNull {
+            country(it).isNullOrBlank()
+        }
     }
 }
+
+/**
+ * Android's [Locale] reports the deprecated ISO 639 codes for a handful of languages (`id` is
+ * reported as `in`, `he` as `iw`, `yi` as `ji`), and Trakt files both Norwegian written standards
+ * under the `no` macrolanguage. Querying with the raw code returns an empty result for those.
+ */
+private val Locale.apiLanguage: String
+    get() = when (language) {
+        "in" -> "id"
+        "iw" -> "he"
+        "ji" -> "yi"
+        "nb", "nn" -> "no"
+        else -> language
+    }

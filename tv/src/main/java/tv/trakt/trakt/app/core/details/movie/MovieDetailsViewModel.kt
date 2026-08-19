@@ -177,8 +177,14 @@ internal class MovieDetailsViewModel(
 
     private fun loadTranslations(movieId: TraktId) {
         viewModelScope.launch {
-            val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
-            movieTranslationState.value = getTranslationsUseCase.getMovieTranslations(movieId, locale)
+            try {
+                val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+                movieTranslationState.value = getTranslationsUseCase.getMovieTranslations(movieId, locale)
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.e(error, "Error loading translations")
+                }
+            }
         }
     }
 

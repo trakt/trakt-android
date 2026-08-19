@@ -224,12 +224,18 @@ internal class EpisodeDetailsViewModel(
         seasonEpisode: SeasonEpisode,
     ) {
         viewModelScope.launch {
-            val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
-            episodeTranslationState.value = getTranslationsUseCase.getEpisodeTranslations(
-                showId = showId,
-                seasonEpisode = seasonEpisode,
-                locale = locale,
-            )
+            try {
+                val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+                episodeTranslationState.value = getTranslationsUseCase.getEpisodeTranslations(
+                    showId = showId,
+                    seasonEpisode = seasonEpisode,
+                    locale = locale,
+                )
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.e(error, "Error loading translations")
+                }
+            }
         }
     }
 
