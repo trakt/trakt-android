@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.core.comments.model.appCommentsLanguage
 import tv.trakt.trakt.core.comments.model.commentsLanguages
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -46,6 +47,7 @@ internal fun CommentsLanguageDropdown(
     onLanguageClick: ((String?) -> Unit)? = null,
 ) {
     val languages = remember { commentsLanguages() }
+    val appLanguage = remember { appCommentsLanguage() }
     var showMenu by remember { mutableStateOf(false) }
 
     Box(modifier = modifier) {
@@ -64,7 +66,7 @@ internal fun CommentsLanguageDropdown(
                 modifier = Modifier.size(iconSize),
             )
 
-            if (language != null) {
+            if (language != null && language != appLanguage) {
                 Box(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)

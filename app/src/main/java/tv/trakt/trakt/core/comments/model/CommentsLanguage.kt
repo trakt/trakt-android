@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.comments.model
 
 import android.icu.util.ULocale
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -33,8 +34,6 @@ internal fun commentsLanguages(): ImmutableList<CommentsLanguage> {
         .map { locale ->
             CommentsLanguage(
                 code = locale.apiLanguage,
-                // Display name comes from the app locale, not from the API code: `nb` maps to the
-                // `no` macrolanguage, which would otherwise read as the generic "norsk".
                 displayName = locale.getDisplayLanguage(locale)
                     .replaceFirstChar { char ->
                         if (char.isLowerCase()) char.titlecase(locale) else char.toString()
@@ -44,6 +43,18 @@ internal fun commentsLanguages(): ImmutableList<CommentsLanguage> {
         }
         .sortedBy { it.displayName }
         .toImmutableList()
+}
+
+/**
+ * The app's own language as a comments language code, or null when comments cannot be filtered by it
+ * - a system locale the app isn't localised into would otherwise filter every comment away.
+ */
+internal fun appCommentsLanguage(): String? {
+    val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+    val code = locale.apiLanguage
+    if (commentsLanguages().none { it.code == code }) return null
+
+    return code
 }
 
 /**
