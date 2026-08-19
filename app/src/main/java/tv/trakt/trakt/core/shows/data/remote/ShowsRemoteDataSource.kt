@@ -85,6 +85,7 @@ internal interface ShowsRemoteDataSource {
         showId: TraktId,
         limit: Int,
         sort: String,
+        language: String? = null,
     ): List<CommentDto>
 
     suspend fun getExtras(showId: TraktId): List<ExtraVideoDto>

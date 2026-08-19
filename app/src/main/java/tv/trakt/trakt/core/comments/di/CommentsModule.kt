@@ -36,6 +36,7 @@ import tv.trakt.trakt.core.comments.features.postreply.PostReplyViewModel
 import tv.trakt.trakt.core.comments.features.report.ReportCommentViewModel
 import tv.trakt.trakt.core.comments.usecases.DeleteCommentUseCase
 import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
+import tv.trakt.trakt.core.comments.usecases.GetCommentsLanguageUseCase
 import tv.trakt.trakt.core.comments.usecases.PostCommentUseCase
 import tv.trakt.trakt.core.comments.usecases.PostReplyUseCase
 import tv.trakt.trakt.core.comments.usecases.ReportCommentUseCase
@@ -70,6 +71,12 @@ internal val commentsModule = module {
 
     factory {
         GetCommentsFilterUseCase(
+            dataStore = get(named(COMMENTS_PREFERENCES)),
+        )
+    }
+
+    factory {
+        GetCommentsLanguageUseCase(
             dataStore = get(named(COMMENTS_PREFERENCES)),
         )
     }

@@ -16,6 +16,7 @@ internal data class ShowCommentsState(
     val show: Show? = null,
     val items: ImmutableList<Comment>? = null,
     val filter: CommentsFilter = CommentsFilter.Popular,
+    val language: String? = null,
     val reactions: ImmutableMap<Int, ReactionsSummary>? = null,
     val userReactions: ImmutableMap<Int, Reaction?>? = null,
     val loading: LoadingState = LoadingState.Idle,

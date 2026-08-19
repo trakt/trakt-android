@@ -20,6 +20,7 @@ internal class GetEpisodeCommentsUseCase(
         seasonEpisode: SeasonEpisode,
         user: User? = null,
         filter: CommentsFilter = Popular,
+        language: String? = null,
         limit: Int = 20,
     ): ImmutableList<Comment> {
         val remoteComments = remoteSource.getEpisodeComments(
@@ -31,6 +32,7 @@ internal class GetEpisodeCommentsUseCase(
                 Popular -> "likes"
                 Recent -> "newest"
             },
+            language = language,
         ).asyncMap {
             Comment.fromDto(it)
         }

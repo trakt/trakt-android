@@ -2,6 +2,7 @@ package tv.trakt.trakt.common.core.translations.data.remote
 
 import org.openapitools.client.apis.MoviesApi
 import org.openapitools.client.apis.ShowsApi
+import tv.trakt.trakt.common.helpers.extensions.apiLanguage
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.EpisodeTranslationDto
@@ -71,17 +72,3 @@ class TranslationsApiClient(
         }
     }
 }
-
-/**
- * Android's [Locale] reports the deprecated ISO 639 codes for a handful of languages (`id` is
- * reported as `in`, `he` as `iw`, `yi` as `ji`), and Trakt files both Norwegian written standards
- * under the `no` macrolanguage. Querying with the raw code returns an empty result for those.
- */
-private val Locale.apiLanguage: String
-    get() = when (language) {
-        "in" -> "id"
-        "iw" -> "he"
-        "ji" -> "yi"
-        "nb", "nn" -> "no"
-        else -> language
-    }

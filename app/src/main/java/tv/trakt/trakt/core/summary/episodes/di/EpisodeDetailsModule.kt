@@ -100,6 +100,7 @@ internal val episodeDetailsModule = module {
             show = show,
             episode = episode,
             getFilterUseCase = get(),
+            getLanguageUseCase = get(),
             getCommentsUseCase = get(),
             getCommentReactionsUseCase = get(),
             loadUserReactionsUseCase = get(),

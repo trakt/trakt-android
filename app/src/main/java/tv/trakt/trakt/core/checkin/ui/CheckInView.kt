@@ -69,6 +69,7 @@ import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.extensions.uppercaseWords
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.common.ui.theme.colors.Shade300
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.theme.HorizontalCheckInImageAspectRatio
@@ -369,7 +370,7 @@ private fun ExpandedView(
                                 else -> 0F
                             }.coerceAtLeast(0.01F)
                         },
-                        color = Color.White,
+                        color = TraktTheme.colors.textPrimary,
                         trackColor = progressTrackColor,
                         drawStopIndicator = { },
                         modifier = Modifier
@@ -488,7 +489,7 @@ private fun CollapsedView(
                             else -> 0F
                         }.coerceAtLeast(0.01F)
                     },
-                    color = Color.White,
+                    color = TraktTheme.colors.textPrimary,
                     trackColor = progressTrackColor,
                     gapSize = 2.dp,
                     drawStopIndicator = { },
@@ -604,7 +605,7 @@ private fun ImageViewPlaceholder(
 )
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         val previewHandler = AsyncImagePreviewHandler {
             ColorImage(Color.Blue.toArgb())
         }
@@ -647,7 +648,7 @@ private fun Preview() {
 )
 @Composable
 private fun Preview2() {
-    TraktTheme {
+    TraktThemeLightDark {
         val previewHandler = AsyncImagePreviewHandler {
             ColorImage(Color.Blue.toArgb())
         }

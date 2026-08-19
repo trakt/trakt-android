@@ -59,6 +59,7 @@ internal class EpisodesApiClient(
         episode: Int,
         limit: Int,
         sort: String,
+        language: String?,
     ): List<CommentDto> {
         val response = showsApi.getShowsEpisodeComments(
             id = showId.value.toString(),
@@ -68,7 +69,7 @@ internal class EpisodesApiClient(
             extended = "full,images,vip",
             page = null,
             limit = limit.toString(),
-            language = null,
+            language = language,
         )
         return response.body()
     }
