@@ -86,6 +86,7 @@ internal val commentsModule = module {
             appContext = androidApplication(),
             savedStateHandle = get(),
             getFilterUseCase = get(),
+            getLanguageUseCase = get(),
             getShowCommentsUseCase = get(),
             getMovieCommentsUseCase = get(),
             getEpisodeCommentsUseCase = get(),

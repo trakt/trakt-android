@@ -26,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.onClick
@@ -42,6 +43,7 @@ private val CheckSize = 14.dp
 internal fun CommentsLanguageDropdown(
     language: String?,
     modifier: Modifier = Modifier,
+    iconSize: Dp = 18.dp,
     enabled: Boolean = true,
     onLanguageClick: ((String?) -> Unit)? = null,
 ) {
@@ -52,19 +54,16 @@ internal fun CommentsLanguageDropdown(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .size(18.dp)
+                .size(iconSize)
                 .onClick(enabled = enabled) {
                     showMenu = true
-                }
-                .graphicsLayer {
-                    translationY = 0.75.dp.toPx()
                 },
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_world),
                 contentDescription = null,
                 tint = TraktTheme.colors.textPrimary,
-                modifier = Modifier.size(18.dp),
+                modifier = Modifier.size(iconSize),
             )
 
             if (language != null && language != DEFAULT_LANGUAGE) {
@@ -94,14 +93,6 @@ internal fun CommentsLanguageDropdown(
             LanguageItem(
                 text = stringResource(R.string.option_text_comment_language_all),
                 selected = language == null,
-                leadingContent = {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_world),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier.size(FlagSize),
-                    )
-                },
                 onClick = {
                     showMenu = false
                     onLanguageClick?.invoke(null)
@@ -159,11 +150,13 @@ private fun LanguageItem(
                     )
                 }
 
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.width(FlagSize),
-                ) {
-                    leadingContent?.invoke()
+                leadingContent?.let {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.width(FlagSize),
+                    ) {
+                        it.invoke()
+                    }
                 }
 
                 Text(

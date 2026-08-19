@@ -69,10 +69,13 @@ import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.features.postreply.PostReplySheet
 import tv.trakt.trakt.core.comments.model.CommentsFilter
+import tv.trakt.trakt.core.comments.model.commentsLanguageDisplayName
 import tv.trakt.trakt.core.comments.ui.CommentCard
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
+import tv.trakt.trakt.core.comments.ui.CommentsLanguageDropdown
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.EmptyListCard
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.chips.FilterChip
 import tv.trakt.trakt.ui.components.chips.FilterChipGroup
@@ -99,6 +102,7 @@ internal fun CommentsScreen(
             viewModel.loadReactions(it.id)
         },
         onFilterClick = viewModel::setFilter,
+        onLanguageClick = viewModel::setLanguage,
         onReactionClick = { reaction, comment ->
             viewModel.setReaction(reaction, comment.id)
         },
@@ -177,6 +181,7 @@ internal fun CommentsContent(
     modifier: Modifier = Modifier,
     onRequestReactions: ((Comment) -> Unit)? = null,
     onFilterClick: ((CommentsFilter) -> Unit)? = null,
+    onLanguageClick: ((String?) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onReplyClick: ((Comment) -> Unit)? = null,
     onReplyUserClick: ((Comment, User) -> Unit)? = null,
@@ -222,6 +227,7 @@ internal fun CommentsContent(
         ContentList(
             listState = listState,
             listFilter = state.filter,
+            listLanguage = state.language,
             listItems = state.comments ?: EmptyImmutableList,
             listReplies = (state.replies ?: emptyMap()).toImmutableMap(),
             listRepliesLoading = state.loadingReplies ?: EmptyImmutableSet,
@@ -232,6 +238,7 @@ internal fun CommentsContent(
             user = state.user,
             onRequestReactions = onRequestReactions,
             onFilterClick = onFilterClick,
+            onLanguageClick = onLanguageClick,
             onReactionClick = onReactionClick,
             onReplyClick = onReplyClick,
             onReplyUserClick = onReplyUserClick,
@@ -298,6 +305,7 @@ private fun ContentList(
     listRepliesLoading: ImmutableSet<Int>,
     listState: LazyListState,
     listFilter: CommentsFilter?,
+    listLanguage: String?,
     loading: Boolean,
     user: User?,
     userReactions: ImmutableMap<Int, Reaction?>,
@@ -305,6 +313,7 @@ private fun ContentList(
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
     onFilterClick: ((CommentsFilter) -> Unit)? = null,
+    onLanguageClick: ((String?) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onReplyClick: ((Comment) -> Unit)? = null,
     onReplyUserClick: ((Comment, User) -> Unit)? = null,
@@ -329,12 +338,28 @@ private fun ContentList(
         }
 
         item {
-            ContentFilters(
-                selectedFilter = listFilter,
-                onClick = onFilterClick ?: {},
+            Row(
+                verticalAlignment = CenterVertically,
                 modifier = Modifier
+                    .fillMaxWidth()
                     .padding(bottom = 20.dp),
-            )
+            ) {
+                ContentFilters(
+                    selectedFilter = listFilter,
+                    onClick = onFilterClick ?: {},
+                    modifier = Modifier.weight(1F),
+                )
+
+                CommentsLanguageDropdown(
+                    language = listLanguage,
+                    enabled = !loading,
+                    iconSize = 22.dp,
+                    onLanguageClick = onLanguageClick,
+                    modifier = Modifier
+                        .padding(start = 12.dp, end = 1.dp)
+                        .padding(bottom = 1.dp),
+                )
+            }
         }
 
         if (!loading && listItems.isNotEmpty()) {
@@ -370,6 +395,24 @@ private fun ContentList(
                             fadeInSpec = null,
                             fadeOutSpec = null,
                         ),
+                )
+            }
+        }
+
+        if (!loading && listItems.isEmpty()) {
+            item {
+                val languageName = remember(listLanguage) {
+                    commentsLanguageDisplayName(listLanguage)
+                }
+
+                EmptyListCard(
+                    text = when (languageName) {
+                        null -> stringResource(R.string.list_placeholder_comments)
+                        else -> stringResource(
+                            R.string.list_placeholder_comments_language,
+                            languageName,
+                        )
+                    },
                 )
             }
         }
