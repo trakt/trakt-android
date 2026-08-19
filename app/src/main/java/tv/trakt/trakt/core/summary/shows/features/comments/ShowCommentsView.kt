@@ -68,8 +68,10 @@ import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.features.details.CommentDetailsSheet
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.model.CommentsFilter
+import tv.trakt.trakt.core.comments.model.commentsLanguageDisplayName
 import tv.trakt.trakt.core.comments.ui.CommentCard
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
+import tv.trakt.trakt.core.comments.ui.CommentsLanguageDropdown
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EmptyListCard
 import tv.trakt.trakt.ui.components.TraktSectionHeader
@@ -118,6 +120,7 @@ internal fun ShowCommentsView(
         onFilterClick = {
             viewModel.setFilter(it)
         },
+        onLanguageClick = viewModel::setLanguage,
         onReactionClick = { reaction, comment ->
             viewModel.setReaction(reaction, comment.id)
         },
@@ -163,6 +166,7 @@ private fun ShowCommentsContent(
     onCommentClick: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onFilterClick: ((CommentsFilter) -> Unit)? = null,
+    onLanguageClick: ((String?) -> Unit)? = null,
     onAddCommentClick: (() -> Unit)? = null,
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
@@ -192,30 +196,35 @@ private fun ShowCommentsContent(
                     val current = (state.collapsed ?: false)
                     onCollapse?.invoke(!current)
                 },
-                extraIcon = when {
-                    state.user != null -> {
-                        {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_comment_plus),
-                                contentDescription = null,
-                                tint = TraktTheme.colors.textPrimary,
-                                modifier = Modifier
-                                    .padding(
-                                        start = 12.dp,
-                                        end = 6.dp,
-                                    )
-                                    .size(18.dp)
-                                    .onClick(enabled = state.loading == Done) {
-                                        onAddCommentClick?.invoke()
-                                    }
-                                    .graphicsLayer {
-                                        translationY = 0.75.dp.toPx()
-                                    },
-                            )
-                        }
-                    }
-                    else -> {
-                        null
+                extraIcon = {
+                    CommentsLanguageDropdown(
+                        language = state.language,
+                        enabled = state.loading == Done,
+                        onLanguageClick = onLanguageClick,
+                        modifier = Modifier.padding(
+                            start = 12.dp,
+                            end = if (state.user != null) 6.dp else 8.dp,
+                        ),
+                    )
+
+                    if (state.user != null) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_comment_plus),
+                            contentDescription = null,
+                            tint = TraktTheme.colors.textPrimary,
+                            modifier = Modifier
+                                .padding(
+                                    start = 4.dp,
+                                    end = 8.dp,
+                                )
+                                .size(18.dp)
+                                .onClick(enabled = state.loading == Done) {
+                                    onAddCommentClick?.invoke()
+                                }
+                                .graphicsLayer {
+                                    translationY = 0.75.dp.toPx()
+                                },
+                        )
                     }
                 },
                 modifier = Modifier
@@ -258,8 +267,18 @@ private fun ShowCommentsContent(
                                 .padding(bottom = TraktTheme.spacing.shadowClipSpace),
                         ) {
                             if (state.items?.isEmpty() == true) {
+                                val languageName = remember(state.language) {
+                                    commentsLanguageDisplayName(state.language)
+                                }
+
                                 EmptyListCard(
-                                    text = stringResource(R.string.list_placeholder_comments),
+                                    text = when (languageName) {
+                                        null -> stringResource(R.string.list_placeholder_comments)
+                                        else -> stringResource(
+                                            R.string.list_placeholder_comments_language,
+                                            languageName,
+                                        )
+                                    },
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .height(TraktTheme.size.commentCardSize)

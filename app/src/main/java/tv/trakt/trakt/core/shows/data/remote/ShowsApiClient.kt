@@ -310,6 +310,7 @@ internal class ShowsApiClient(
         showId: TraktId,
         limit: Int,
         sort: String,
+        language: String?,
     ): List<tv.trakt.trakt.common.networking.CommentDto> {
         val response = showsApi.getShowsComments(
             id = showId.value.toString(),
@@ -317,7 +318,7 @@ internal class ShowsApiClient(
             extended = "full,images,vip",
             page = null,
             limit = limit.toString(),
-            language = null,
+            language = language,
         )
 
         return response.body()

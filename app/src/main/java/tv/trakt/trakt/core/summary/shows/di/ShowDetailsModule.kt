@@ -151,6 +151,7 @@ internal val showDetailsModule = module {
             appContext = androidApplication(),
             show = show,
             getFilterUseCase = get(),
+            getLanguageUseCase = get(),
             getCommentsUseCase = get(),
             getCommentReactionsUseCase = get(),
             loadUserReactionsUseCase = get(),

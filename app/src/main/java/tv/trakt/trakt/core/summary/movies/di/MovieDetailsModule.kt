@@ -175,6 +175,7 @@ internal val movieDetailsModule = module {
             appContext = androidApplication(),
             movie = movie,
             getFilterUseCase = get(),
+            getLanguageUseCase = get(),
             getCommentsUseCase = get(),
             getCommentReactionsUseCase = get(),
             loadUserReactionsUseCase = get(),

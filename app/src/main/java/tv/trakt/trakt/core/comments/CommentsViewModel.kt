@@ -50,6 +50,7 @@ import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.ALL_COMMENTS
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.navigation.CommentsDestination
 import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
+import tv.trakt.trakt.core.comments.usecases.GetCommentsLanguageUseCase
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates.Source
 import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
@@ -58,6 +59,7 @@ import tv.trakt.trakt.core.summary.episodes.features.comments.usecases.GetEpisod
 import tv.trakt.trakt.core.summary.movies.features.comments.usecases.GetMovieCommentsUseCase
 import tv.trakt.trakt.core.summary.shows.features.comments.usecases.GetShowCommentsUseCase
 import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(FlowPreview::class)
@@ -66,6 +68,7 @@ internal class CommentsViewModel(
     private val appContext: Context,
     private val sessionManager: SessionManager,
     private val getFilterUseCase: GetCommentsFilterUseCase,
+    private val getLanguageUseCase: GetCommentsLanguageUseCase,
     private val getShowCommentsUseCase: GetShowCommentsUseCase,
     private val getMovieCommentsUseCase: GetMovieCommentsUseCase,
     private val getEpisodeCommentsUseCase: GetEpisodeCommentsUseCase,
@@ -90,6 +93,7 @@ internal class CommentsViewModel(
     private val repliesState = MutableStateFlow(initialState.replies)
     private val repliesLoadingState = MutableStateFlow(initialState.loadingReplies)
     private val filterState = MutableStateFlow(destination.initialFilter)
+    private val languageState = MutableStateFlow(initialState.language)
     private val reactionsState = MutableStateFlow(initialState.reactions)
     private val userReactionsState = MutableStateFlow(initialState.userReactions)
     private val userState = MutableStateFlow(initialState.user)
@@ -108,7 +112,7 @@ internal class CommentsViewModel(
     private fun observeData() {
         reactionsUpdates.observeUpdates(Source.COMMENT_DETAILS)
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 updateReactions(it.first)
             }
@@ -125,6 +129,12 @@ internal class CommentsViewModel(
         val filter = getFilterUseCase.getFilter()
         filterState.update { filter }
         return filter
+    }
+
+    private suspend fun loadLanguage(): String? {
+        val language = getLanguageUseCase.getLanguage()
+        languageState.update { language }
+        return language
     }
 
     private fun loadData() {
@@ -178,11 +188,13 @@ internal class CommentsViewModel(
 
     private suspend fun fetchComments(): ImmutableList<Comment> {
         val filter = loadFilter()
+        val language = loadLanguage()
         return when (destination.mediaType) {
             MediaType.Movie -> getMovieCommentsUseCase.getComments(
                 movieId = destination.mediaId.toTraktId(),
                 user = userState.value,
                 filter = filter,
+                language = language,
                 limit = 250,
             )
 
@@ -190,6 +202,7 @@ internal class CommentsViewModel(
                 showId = destination.mediaId.toTraktId(),
                 user = userState.value,
                 filter = filter,
+                language = language,
                 limit = 250,
             )
 
@@ -201,6 +214,7 @@ internal class CommentsViewModel(
                 ),
                 user = userState.value,
                 filter = filter,
+                language = language,
                 limit = 250,
             )
 
@@ -250,6 +264,17 @@ internal class CommentsViewModel(
                 }
                 repliesJob = null
             }
+        }
+    }
+
+    fun setLanguage(language: String?) {
+        if (loadingState.value != Done || language == languageState.value) {
+            return
+        }
+        viewModelScope.launch {
+            getLanguageUseCase.setLanguage(language)
+            loadLanguage()
+            loadData()
         }
     }
 
@@ -484,6 +509,7 @@ internal class CommentsViewModel(
         repliesState,
         repliesLoadingState,
         filterState,
+        languageState,
         reactionsState,
         userReactionsState,
         userState,
@@ -497,11 +523,12 @@ internal class CommentsViewModel(
             replies = state[3] as ImmutableMap<Int, ImmutableList<Comment>>?,
             loadingReplies = state[4] as ImmutableSet<Int>?,
             filter = state[5] as CommentsFilter,
-            reactions = state[6] as ImmutableMap<Int, ReactionsSummary>?,
-            userReactions = state[7] as ImmutableMap<Int, Reaction?>?,
-            user = state[8] as User?,
-            loading = state[9] as LoadingState,
-            error = state[10] as Exception?,
+            language = state[6] as String?,
+            reactions = state[7] as ImmutableMap<Int, ReactionsSummary>?,
+            userReactions = state[8] as ImmutableMap<Int, Reaction?>?,
+            user = state[9] as User?,
+            loading = state[10] as LoadingState,
+            error = state[11] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

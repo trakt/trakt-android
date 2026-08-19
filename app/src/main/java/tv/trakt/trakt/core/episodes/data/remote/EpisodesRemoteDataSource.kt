@@ -58,6 +58,7 @@ internal interface EpisodesRemoteDataSource {
         episode: Int,
         limit: Int = 20,
         sort: String = "likes",
+        language: String? = null,
     ): List<CommentDto>
 
     /**

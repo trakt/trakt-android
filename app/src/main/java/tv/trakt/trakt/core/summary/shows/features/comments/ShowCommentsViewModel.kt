@@ -43,6 +43,7 @@ import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.ALL_COMMENTS
 import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.COMMENT_DETAILS
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
+import tv.trakt.trakt.core.comments.usecases.GetCommentsLanguageUseCase
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates.Source
 import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
@@ -60,6 +61,7 @@ internal class ShowCommentsViewModel(
     private val show: Show,
     private val sessionManager: SessionManager,
     private val getFilterUseCase: GetCommentsFilterUseCase,
+    private val getLanguageUseCase: GetCommentsLanguageUseCase,
     private val getCommentsUseCase: GetShowCommentsUseCase,
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
@@ -72,6 +74,7 @@ internal class ShowCommentsViewModel(
     private val showState = MutableStateFlow<Show?>(show)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialState.filter)
+    private val languageState = MutableStateFlow(initialState.language)
     private val reactionsState = MutableStateFlow(initialState.reactions)
     private val userReactionsState = MutableStateFlow(initialState.userReactions)
     private val loadingState = MutableStateFlow(initialState.loading)
@@ -117,6 +120,12 @@ internal class ShowCommentsViewModel(
         return filter
     }
 
+    private suspend fun loadLanguage(): String? {
+        val language = getLanguageUseCase.getLanguage()
+        languageState.update { language }
+        return language
+    }
+
     private fun loadData() {
         viewModelScope.launch {
             try {
@@ -129,6 +138,7 @@ internal class ShowCommentsViewModel(
                             showId = show.ids.trakt,
                             user = userState.value,
                             filter = loadFilter(),
+                            language = loadLanguage(),
                         )
                     }
 
@@ -223,6 +233,18 @@ internal class ShowCommentsViewModel(
                     Timber.recordError(error)
                 }
             }
+        }
+    }
+
+    fun setLanguage(language: String?) {
+        if (loadingState.value != Done || language == languageState.value) {
+            return
+        }
+
+        viewModelScope.launch {
+            getLanguageUseCase.setLanguage(language)
+            loadLanguage()
+            loadData()
         }
     }
 
@@ -368,6 +390,7 @@ internal class ShowCommentsViewModel(
         showState,
         itemsState,
         filterState,
+        languageState,
         reactionsState,
         userReactionsState,
         loadingState,
@@ -379,12 +402,13 @@ internal class ShowCommentsViewModel(
             show = state[0] as Show?,
             items = state[1] as ImmutableList<Comment>?,
             filter = state[2] as CommentsFilter,
-            reactions = state[3] as ImmutableMap<Int, ReactionsSummary>?,
-            userReactions = state[4] as ImmutableMap<Int, Reaction?>?,
-            loading = state[5] as LoadingState,
-            user = state[6] as User?,
-            error = state[7] as Exception?,
-            collapsed = state[8] as Boolean,
+            language = state[3] as String?,
+            reactions = state[4] as ImmutableMap<Int, ReactionsSummary>?,
+            userReactions = state[5] as ImmutableMap<Int, Reaction?>?,
+            loading = state[6] as LoadingState,
+            user = state[7] as User?,
+            error = state[8] as Exception?,
+            collapsed = state[9] as Boolean,
         )
     }.stateIn(
         scope = viewModelScope,

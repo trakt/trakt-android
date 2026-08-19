@@ -68,6 +68,7 @@ internal interface MoviesRemoteDataSource {
         movieId: TraktId,
         limit: Int,
         sort: String,
+        language: String? = null,
     ): List<CommentDto>
 
     suspend fun getLists(

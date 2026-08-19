@@ -256,6 +256,7 @@ internal class MoviesApiClient(
         movieId: TraktId,
         limit: Int,
         sort: String,
+        language: String?,
     ): List<CommentDto> {
         val response = moviesApi.getMoviesComments(
             id = movieId.value.toString(),
@@ -263,7 +264,7 @@ internal class MoviesApiClient(
             extended = "full,images,vip",
             page = null,
             limit = limit.toString(),
-            language = null,
+            language = language,
         )
 
         return response.body()

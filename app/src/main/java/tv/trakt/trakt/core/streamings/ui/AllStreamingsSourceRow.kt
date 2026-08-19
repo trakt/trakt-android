@@ -56,6 +56,7 @@ import coil3.request.ImageRequest
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.core.streamings.model.StreamingServiceRow
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
+import tv.trakt.trakt.common.helpers.extensions.countryFlag
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingType
@@ -270,18 +271,6 @@ private fun StreamingService.priceLabel(type: StreamingType): String? {
     val space = if (symbol?.count() == 1) "" else " "
 
     return "$symbol$space$amount".trim()
-}
-
-private fun countryFlag(country: String): String? {
-    val code = country.trim().uppercase()
-    if (code.length != 2 || code.any { it !in 'A'..'Z' }) {
-        return null
-    }
-
-    val offset = 0x1F1E6 - 'A'.code
-    return code
-        .map { String(Character.toChars(offset + it.code)) }
-        .joinToString(separator = "")
 }
 
 private fun countryName(country: String): String {

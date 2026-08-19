@@ -18,6 +18,7 @@ internal class GetShowCommentsUseCase(
         showId: TraktId,
         user: User? = null,
         filter: CommentsFilter = Popular,
+        language: String? = null,
         limit: Int = 20,
     ): ImmutableList<Comment> {
         val remoteComments = remoteSource.getComments(
@@ -27,6 +28,7 @@ internal class GetShowCommentsUseCase(
                 Popular -> "likes"
                 Recent -> "newest"
             },
+            language = language,
         ).asyncMap {
             Comment.fromDto(it)
         }
