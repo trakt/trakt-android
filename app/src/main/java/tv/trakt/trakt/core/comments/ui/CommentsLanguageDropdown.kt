@@ -34,8 +34,6 @@ import tv.trakt.trakt.core.comments.model.commentsLanguages
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-private const val DEFAULT_LANGUAGE = "en"
-
 private val FlagSize = 16.dp
 private val CheckSize = 14.dp
 
@@ -66,7 +64,7 @@ internal fun CommentsLanguageDropdown(
                 modifier = Modifier.size(iconSize),
             )
 
-            if (language != null && language != DEFAULT_LANGUAGE) {
+            if (language != null) {
                 Box(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
