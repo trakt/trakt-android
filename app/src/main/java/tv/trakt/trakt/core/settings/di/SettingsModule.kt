@@ -22,6 +22,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.notifications.usecases.EnableNotificationsUseCase
 import tv.trakt.trakt.core.notifications.usecases.UpdateNotificationsDeliveryUseCase
 import tv.trakt.trakt.core.settings.SettingsViewModel
+import tv.trakt.trakt.core.settings.data.ThemeModeCache
 import tv.trakt.trakt.core.settings.features.blocked.BlockedUsersViewModel
 import tv.trakt.trakt.core.settings.features.cover.CoverImageViewModel
 import tv.trakt.trakt.core.settings.features.younify.YounifyViewModel
@@ -40,6 +41,12 @@ internal const val SETTINGS_PREFERENCES = "settings_preferences_mobile"
 internal val settingsDataModule = module {
     single<DataStore<Preferences>>(named(SETTINGS_PREFERENCES)) {
         createStore(
+            context = androidApplication(),
+        )
+    }
+
+    single {
+        ThemeModeCache(
             context = androidApplication(),
         )
     }
@@ -71,6 +78,7 @@ internal val settingsModule = module {
     factory {
         ThemeModeUseCase(
             dataStore = get(named(SETTINGS_PREFERENCES)),
+            cache = get(),
         )
     }
 

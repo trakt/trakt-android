@@ -12,7 +12,6 @@ import com.google.firebase.crashlytics.crashlytics
 import com.google.firebase.remoteconfig.remoteConfig
 import com.google.firebase.remoteconfig.remoteConfigSettings
 import com.jakewharton.processphoenix.ProcessPhoenix
-import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -68,9 +67,9 @@ import tv.trakt.trakt.core.reactions.di.reactionsDataModule
 import tv.trakt.trakt.core.reactions.di.reactionsModule
 import tv.trakt.trakt.core.search.di.searchDataModule
 import tv.trakt.trakt.core.search.di.searchModule
+import tv.trakt.trakt.core.settings.data.ThemeModeCache
 import tv.trakt.trakt.core.settings.di.settingsDataModule
 import tv.trakt.trakt.core.settings.di.settingsModule
-import tv.trakt.trakt.core.settings.usecases.ThemeModeUseCase
 import tv.trakt.trakt.core.share.di.shareModule
 import tv.trakt.trakt.core.shows.di.showsDataModule
 import tv.trakt.trakt.core.shows.di.showsModule
@@ -88,6 +87,7 @@ import tv.trakt.trakt.core.sync.di.syncModule
 import tv.trakt.trakt.core.trivia.di.triviaModule
 import tv.trakt.trakt.core.userprofile.di.userProfileModule
 import tv.trakt.trakt.helpers.player.di.youTubePlayerModule
+import tv.trakt.trakt.ui.theme.model.ThemeMode
 import tv.trakt.trakt.widgets.di.widgetsModule
 import java.util.concurrent.TimeUnit.MINUTES
 import tv.trakt.trakt.common.R as RCommon
@@ -247,8 +247,7 @@ internal class TraktApplication : Application() {
             return
         }
 
-        val themeModeUseCase = inject<ThemeModeUseCase>().value
-        val themeMode = runBlocking { themeModeUseCase.getThemeMode() }
+        val themeMode = inject<ThemeModeCache>().value.read() ?: ThemeMode.Default
 
         AppCompatDelegate.setDefaultNightMode(themeMode.toNightMode())
     }
