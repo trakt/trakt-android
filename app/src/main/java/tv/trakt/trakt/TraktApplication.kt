@@ -243,6 +243,10 @@ internal class TraktApplication : Application() {
     }
 
     private fun setupTheme() {
+        if (isTelevision()) {
+            return
+        }
+
         val themeModeUseCase = inject<ThemeModeUseCase>().value
         val themeMode = runBlocking { themeModeUseCase.getThemeMode() }
 
