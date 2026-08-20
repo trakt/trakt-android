@@ -2,7 +2,6 @@ package tv.trakt.trakt
 
 import android.app.Application
 import android.app.NotificationManager
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
@@ -67,7 +66,6 @@ import tv.trakt.trakt.core.reactions.di.reactionsDataModule
 import tv.trakt.trakt.core.reactions.di.reactionsModule
 import tv.trakt.trakt.core.search.di.searchDataModule
 import tv.trakt.trakt.core.search.di.searchModule
-import tv.trakt.trakt.core.settings.data.ThemeModeCache
 import tv.trakt.trakt.core.settings.di.settingsDataModule
 import tv.trakt.trakt.core.settings.di.settingsModule
 import tv.trakt.trakt.core.share.di.shareModule
@@ -87,7 +85,6 @@ import tv.trakt.trakt.core.sync.di.syncModule
 import tv.trakt.trakt.core.trivia.di.triviaModule
 import tv.trakt.trakt.core.userprofile.di.userProfileModule
 import tv.trakt.trakt.helpers.player.di.youTubePlayerModule
-import tv.trakt.trakt.ui.theme.model.ThemeMode
 import tv.trakt.trakt.widgets.di.widgetsModule
 import java.util.concurrent.TimeUnit.MINUTES
 import tv.trakt.trakt.common.R as RCommon
@@ -105,7 +102,6 @@ internal class TraktApplication : Application() {
         super.onCreate()
         setupKoin()
         setupTimber()
-        setupTheme()
         setupNotificationChannels()
         setupProcessLifecycle()
 
@@ -240,16 +236,6 @@ internal class TraktApplication : Application() {
                     },
                 )
         }
-    }
-
-    private fun setupTheme() {
-        if (isTelevision()) {
-            return
-        }
-
-        val themeMode = inject<ThemeModeCache>().value.read() ?: ThemeMode.Default
-
-        AppCompatDelegate.setDefaultNightMode(themeMode.toNightMode())
     }
 }
 

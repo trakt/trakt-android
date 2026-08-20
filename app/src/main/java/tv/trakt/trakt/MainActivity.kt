@@ -3,6 +3,8 @@ package tv.trakt.trakt
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.content.res.Configuration.UI_MODE_NIGHT_MASK
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -50,6 +52,7 @@ import tv.trakt.trakt.core.auth.usecase.codeVerifierKey
 import tv.trakt.trakt.core.main.MainScreen
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase.CustomThemeConfig
+import tv.trakt.trakt.core.settings.data.ThemeModeCache
 import tv.trakt.trakt.core.settings.usecases.ThemeModeUseCase
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.model.ThemeMode
@@ -70,6 +73,10 @@ internal class MainActivity : AppCompatActivity() {
         inject<ThemeModeUseCase>().value
     }
 
+    private val themeModeCache: ThemeModeCache by lazy {
+        inject<ThemeModeCache>().value
+    }
+
     private val newIntent = mutableStateOf<Intent?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,6 +92,8 @@ internal class MainActivity : AppCompatActivity() {
         }
 
         setupOrientation()
+        setupWindowBackground(mode = themeModeCache.read() ?: ThemeMode.Default)
+
         enableEdgeToEdge(
             navigationBarStyle = SystemBarStyle.dark(
                 scrim = Color.TRANSPARENT,
@@ -98,7 +107,9 @@ internal class MainActivity : AppCompatActivity() {
             val scope = rememberCoroutineScope()
 
             val themeMode by themeModeUseCase.observeThemeMode()
-                .collectAsStateWithLifecycle(initialValue = ThemeMode.current())
+                .collectAsStateWithLifecycle(
+                    initialValue = themeModeCache.read() ?: ThemeMode.Default,
+                )
 
             val darkTheme = when (themeMode) {
                 ThemeMode.System -> isSystemInDarkTheme()
@@ -199,6 +210,27 @@ internal class MainActivity : AppCompatActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
     private fun setupOrientation() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+    }
+
+    /**
+     * Paints the window before the first frame so the launch does not flash the wrong colour.
+     */
+    private fun setupWindowBackground(mode: ThemeMode) {
+        val uiMode = resources.configuration.uiMode
+        val isNightMode = (uiMode and UI_MODE_NIGHT_MASK) == UI_MODE_NIGHT_YES
+
+        val darkTheme = when (mode) {
+            ThemeMode.System -> isNightMode
+            ThemeMode.Light -> false
+            ThemeMode.Dark -> true
+        }
+
+        window.setBackgroundDrawable(
+            when {
+                darkTheme -> DarkColors.backgroundPrimary
+                else -> LightColors.backgroundPrimary
+            }.toArgb().toDrawable(),
+        )
     }
 
     private fun updateRemoteConfig() {
