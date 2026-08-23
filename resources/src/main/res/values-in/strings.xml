@@ -24,6 +24,12 @@
   <string name="badge_text_get_vip">Dapatkan VIP</string>
   <string name="badge_text_more">dan %d lainnya</string>
   <string name="button_connect_plex">Hubungkan Plex</string>
+  <string name="button_description_sort_default">Urutan asli</string>
+  <string name="button_description_sort_release_date_asc">Terlama dulu</string>
+  <string name="button_description_sort_release_date_desc">Terbaru dulu</string>
+  <string name="button_description_sort_remaining_asc">Episode tersisa tersedikit</string>
+  <string name="button_description_sort_remaining_desc">Episode tersisa terbanyak</string>
+  <string name="button_description_sort_smart">Rekomendasi untuk Anda</string>
   <string name="button_disconnect_plex">Putuskan Sambungan</string>
   <string name="button_label_activity_ratings">Lihat rating</string>
   <string name="button_label_activity_reviews">Lihat ulasan</string>
@@ -913,6 +919,7 @@
   <string name="label_drag_image_to_adjust">Seret gambar untuk menyesuaikan</string>
   <string name="label_favorites">Favorit</string>
   <string name="label_keep_play">Simpan</string>
+  <string name="label_list_item_count">%s item</string>
   <string name="label_plex_connected">Terhubung ke Plex</string>
   <string name="label_plex_connection">Koneksi</string>
   <string name="label_plex_history_date">Tanggal</string>
@@ -1227,6 +1234,7 @@
   <string name="page_title_year_to_date">Tahun Berjalan</string>
   <string name="preview_feature_description_edit_mode">Aktifkan kontrol untuk menyembunyikan atau menampilkan bagian yang dapat dikonfigurasi di seluruh aplikasi.</string>
   <string name="preview_feature_description_leaderboard">Peringkat orang yang Anda ikuti berdasarkan waktu tonton dan lihat posisi Anda di antara mereka.</string>
+  <string name="preview_feature_description_list_counts">Menampilkan berapa banyak item yang dimiliki sebuah daftar, dan berapa banyak daftar yang dimiliki sebuah bagian.</string>
   <string name="preview_feature_description_parental_guide">Tampilkan tingkat risiko konten di laci detail untuk film, acara, dan episode.</string>
   <string name="preview_feature_description_rewatch">Mulai sesi menonton ulang untuk acara yang sudah Anda tonton, check-in atau tandai episode yang sudah ditonton langsung dari panel sesi.</string>
   <string name="preview_feature_description_scoped_favorites">Batas waktu daftar favorit dengan menampilkan favorit tahun berjalan di profil dan mengelompokkan daftar favorit lengkap berdasarkan tahun.</string>
@@ -1234,6 +1242,7 @@
   <string name="preview_feature_description_up_next_smart_sort">Coba cara yang lebih cerdas untuk mengurutkan Lanjutkan Menonton Anda.</string>
   <string name="preview_feature_title_edit_mode">Mode Edit</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
+  <string name="preview_feature_title_list_counts">Hitungan Daftar</string>
   <string name="preview_feature_title_rewatch">Tonton Ulang</string>
   <string name="preview_feature_title_scoped_favorites">Favorit Terbatas</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>

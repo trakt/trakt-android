@@ -24,6 +24,12 @@
   <string name="badge_text_get_vip">Get VIP</string>
   <string name="badge_text_more">and %d more</string>
   <string name="button_connect_plex">Connect Plex</string>
+  <string name="button_description_sort_default">Original order</string>
+  <string name="button_description_sort_release_date_asc">Oldest first</string>
+  <string name="button_description_sort_release_date_desc">Newest first</string>
+  <string name="button_description_sort_remaining_asc">Fewest episodes left</string>
+  <string name="button_description_sort_remaining_desc">Most episodes left</string>
+  <string name="button_description_sort_smart">Recommended for you</string>
   <string name="button_disconnect_plex">Disconnect</string>
   <string name="button_label_activity_ratings">View ratings</string>
   <string name="button_label_activity_reviews">View reviews</string>
@@ -913,6 +919,7 @@
   <string name="label_drag_image_to_adjust">Drag the image to adjust</string>
   <string name="label_favorites">Favourites</string>
   <string name="label_keep_play">Keep</string>
+  <string name="label_list_item_count">%s items</string>
   <string name="label_plex_connected">Connected to Plex</string>
   <string name="label_plex_connection">Connection</string>
   <string name="label_plex_history_date">Date</string>
@@ -1227,6 +1234,7 @@
   <string name="page_title_year_to_date">Year to date</string>
   <string name="preview_feature_description_edit_mode">Enable controls for hiding or showing configurable sections across the app.</string>
   <string name="preview_feature_description_leaderboard">Rank the people you follow by watch time and see where you land among them.</string>
+  <string name="preview_feature_description_list_counts">Shows how many items a list holds, and how many lists a section has.</string>
   <string name="preview_feature_description_parental_guide">Show content risk levels in the details drawer for movies, shows, and episodes.</string>
   <string name="preview_feature_description_rewatch">Start rewatching sessions for shows you\'ve already seen, check in or mark watched episodes directly from the session drawer.</string>
   <string name="preview_feature_description_scoped_favorites">Time-box favourite lists by showing current-year favourites on profiles and grouping the full favourites list by year.</string>
@@ -1234,6 +1242,7 @@
   <string name="preview_feature_description_up_next_smart_sort">Test a smarter way to sort your Continue Watching.</string>
   <string name="preview_feature_title_edit_mode">Edit Mode</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
+  <string name="preview_feature_title_list_counts">List Counts</string>
   <string name="preview_feature_title_rewatch">Rewatch</string>
   <string name="preview_feature_title_scoped_favorites">Scoped Favourites</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>

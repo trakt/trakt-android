@@ -24,6 +24,12 @@
   <string name="badge_text_get_vip">Ottieni VIP</string>
   <string name="badge_text_more">e altri %d</string>
   <string name="button_connect_plex">Collega Plex</string>
+  <string name="button_description_sort_default">Ordine originale</string>
+  <string name="button_description_sort_release_date_asc">Meno recenti prima</string>
+  <string name="button_description_sort_release_date_desc">Più recenti prima</string>
+  <string name="button_description_sort_remaining_asc">Meno episodi rimanenti</string>
+  <string name="button_description_sort_remaining_desc">Più episodi rimanenti</string>
+  <string name="button_description_sort_smart">Consigliato per te</string>
   <string name="button_disconnect_plex">Scollega</string>
   <string name="button_label_activity_ratings">Visualizza valutazioni</string>
   <string name="button_label_activity_reviews">Visualizza recensioni</string>
@@ -54,7 +60,7 @@
   <string name="button_label_change_location">Cambia posizione</string>
   <string name="button_label_change_plex_home_users">Modifica utenti Plex Home</string>
   <string name="button_label_change_username">Cambia nome utente</string>
-  <string name="button_label_checkin">Ora sto guardando \"%s\"</string>
+  <string name="button_label_checkin">Guarda ora \"%s\"</string>
   <string name="button_label_clean_up_episodes">Rimuovi le riproduzioni duplicate di episodi dalla tua cronologia.</string>
   <string name="button_label_clean_up_movies">Rimuovi le riproduzioni duplicate di film dalla tua cronologia.</string>
   <string name="button_label_clear_now">Svuota tutti gli elementi dalla tua %s</string>
@@ -913,6 +919,7 @@
   <string name="label_drag_image_to_adjust">Trascina l\'immagine per regolare</string>
   <string name="label_favorites">Preferiti</string>
   <string name="label_keep_play">Mantieni</string>
+  <string name="label_list_item_count">%s elementi</string>
   <string name="label_plex_connected">Connesso a Plex</string>
   <string name="label_plex_connection">Connessione</string>
   <string name="label_plex_history_date">Data</string>
@@ -1227,6 +1234,7 @@
   <string name="page_title_year_to_date">Dall\'inizio dell\'anno</string>
   <string name="preview_feature_description_edit_mode">Abilita i controlli per nascondere o mostrare sezioni configurabili in tutta l\'app.</string>
   <string name="preview_feature_description_leaderboard">Classifica le persone che segui in base al tempo di visione e scopri dove ti posizioni tra loro.</string>
+  <string name="preview_feature_description_list_counts">Mostra quanti elementi contiene un elenco e quanti elenchi ha una sezione.</string>
   <string name="preview_feature_description_parental_guide">Mostra i livelli di rischio dei contenuti nel cassetto dei dettagli per film, serie TV ed episodi.</string>
   <string name="preview_feature_description_rewatch">Avvia sessioni di riguardato per le serie TV che hai già visto, registrando la visione o contrassegnando gli episodi come guardati direttamente dal pannello della sessione.</string>
   <string name="preview_feature_description_scoped_favorites">Limita le liste dei preferiti per anno, mostrando i preferiti dell\'anno corrente sui profili e raggruppando l\'intera lista dei preferiti per anno.</string>
@@ -1234,6 +1242,7 @@
   <string name="preview_feature_description_up_next_smart_sort">Prova un modo più intelligente per ordinare i tuoi \"Continua a Guardare\".</string>
   <string name="preview_feature_title_edit_mode">Modalità di modifica</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
+  <string name="preview_feature_title_list_counts">Conteggi Elenchi</string>
   <string name="preview_feature_title_rewatch">Riguarda</string>
   <string name="preview_feature_title_scoped_favorites">Preferiti con Ambito</string>
   <string name="preview_feature_title_soundtrack">Colonna sonora</string>

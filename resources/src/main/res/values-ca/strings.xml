@@ -24,6 +24,12 @@
   <string name="badge_text_get_vip">Obtén VIP</string>
   <string name="badge_text_more">i %d més</string>
   <string name="button_connect_plex">Connecta Plex</string>
+  <string name="button_description_sort_default">Ordre original</string>
+  <string name="button_description_sort_release_date_asc">Més antic primer</string>
+  <string name="button_description_sort_release_date_desc">Més recent primer</string>
+  <string name="button_description_sort_remaining_asc">Menys episodis restants</string>
+  <string name="button_description_sort_remaining_desc">Més episodis restants</string>
+  <string name="button_description_sort_smart">Recomanat per a tu</string>
   <string name="button_disconnect_plex">Desconnecta</string>
   <string name="button_label_activity_ratings">Veure valoracions</string>
   <string name="button_label_activity_reviews">Veure ressenyes</string>
@@ -913,6 +919,7 @@
   <string name="label_drag_image_to_adjust">Arrossega la imatge per ajustar</string>
   <string name="label_favorites">Preferits</string>
   <string name="label_keep_play">Conservar</string>
+  <string name="label_list_item_count">%s elements de la llista</string>
   <string name="label_plex_connected">Connectat a Plex</string>
   <string name="label_plex_connection">Connexió</string>
   <string name="label_plex_history_date">Data</string>
@@ -1227,6 +1234,7 @@
   <string name="page_title_year_to_date">Acumulat de l\'any</string>
   <string name="preview_feature_description_edit_mode">Habilita els controls per amagar o mostrar seccions configurables a tota l\'aplicació.</string>
   <string name="preview_feature_description_leaderboard">Classifica les persones que segueixes per temps de visionat i mira on quedes entre elles.</string>
+  <string name="preview_feature_description_list_counts">Mostra quants elements conté una llista i quantes llistes té una secció.</string>
   <string name="preview_feature_description_parental_guide">Mostrar els nivells de risc de contingut al calaix de detalls per a pel·lícules, sèries i episodis.</string>
   <string name="preview_feature_description_rewatch">Inicia sessions de revisió per a programes que ja has vist, fes un seguiment o marca els episodis com a vistos directament des del calaix de la sessió.</string>
   <string name="preview_feature_description_scoped_favorites">Delimita les llistes de preferits mostrant els preferits de l\'any actual als perfils i agrupant la llista completa de preferits per any.</string>
@@ -1234,6 +1242,7 @@
   <string name="preview_feature_description_up_next_smart_sort">Prova una manera més intel·ligent d\'ordenar el teu \'Continua veient\'.</string>
   <string name="preview_feature_title_edit_mode">Mode d\'edició</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
+  <string name="preview_feature_title_list_counts">Recomptes de llista</string>
   <string name="preview_feature_title_rewatch">Revisió</string>
   <string name="preview_feature_title_scoped_favorites">Preferits per àmbit</string>
   <string name="preview_feature_title_soundtrack">Banda sonora</string>

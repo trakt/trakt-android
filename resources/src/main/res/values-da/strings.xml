@@ -24,6 +24,12 @@
   <string name="badge_text_get_vip">Få VIP</string>
   <string name="badge_text_more">og %d mere</string>
   <string name="button_connect_plex">Forbind Plex</string>
+  <string name="button_description_sort_default">Original rækkefølge</string>
+  <string name="button_description_sort_release_date_asc">Ældste først</string>
+  <string name="button_description_sort_release_date_desc">Nyeste først</string>
+  <string name="button_description_sort_remaining_asc">Færrest episoder tilbage</string>
+  <string name="button_description_sort_remaining_desc">Flest episoder tilbage</string>
+  <string name="button_description_sort_smart">Anbefalet til dig</string>
   <string name="button_disconnect_plex">Frakobl</string>
   <string name="button_label_activity_ratings">Se bedømmelser</string>
   <string name="button_label_activity_reviews">Se anmeldelser</string>
@@ -913,6 +919,7 @@
   <string name="label_drag_image_to_adjust">Træk billedet for at justere</string>
   <string name="label_favorites">Favoritter</string>
   <string name="label_keep_play">Behold</string>
+  <string name="label_list_item_count">%s elementer</string>
   <string name="label_plex_connected">Forbundet til Plex</string>
   <string name="label_plex_connection">Forbindelse</string>
   <string name="label_plex_history_date">Dato</string>
@@ -1227,6 +1234,7 @@
   <string name="page_title_year_to_date">År til dato</string>
   <string name="preview_feature_description_edit_mode">Aktiver kontroller til at skjule eller vise konfigurerbare sektioner i hele appen.</string>
   <string name="preview_feature_description_leaderboard">Ranger de personer, du følger, efter set tid, og se hvor du lander blandt dem.</string>
+  <string name="preview_feature_description_list_counts">Viser hvor mange elementer en liste indeholder, og hvor mange lister en sektion har.</string>
   <string name="preview_feature_description_parental_guide">Vis risikoniveauer for indhold i detaljeskuffen for film, serier og episoder.</string>
   <string name="preview_feature_description_rewatch">Start gensynssessioner for serier, du allerede har set, tjek ind eller marker sete episoder direkte fra sessionsskuffen.</string>
   <string name="preview_feature_description_scoped_favorites">Tidsbegræns favoritlister ved at vise indeværende års favoritter på profiler og gruppere den fulde favoritliste efter år.</string>
@@ -1234,6 +1242,7 @@
   <string name="preview_feature_description_up_next_smart_sort">Test en smartere måde at sortere din \'Se videre\' på.</string>
   <string name="preview_feature_title_edit_mode">Redigeringstilstand</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
+  <string name="preview_feature_title_list_counts">Listeantal</string>
   <string name="preview_feature_title_rewatch">Gensyn</string>
   <string name="preview_feature_title_scoped_favorites">Afgrænsede favoritter</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>

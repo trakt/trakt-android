@@ -24,6 +24,12 @@
   <string name="badge_text_get_vip">Legyél VIP</string>
   <string name="badge_text_more">és %d további</string>
   <string name="button_connect_plex">Plex csatlakoztatása</string>
+  <string name="button_description_sort_default">Eredeti sorrend</string>
+  <string name="button_description_sort_release_date_asc">Legrégebbi elöl</string>
+  <string name="button_description_sort_release_date_desc">Legújabb elöl</string>
+  <string name="button_description_sort_remaining_asc">Legkevesebb hátralévő epizód</string>
+  <string name="button_description_sort_remaining_desc">Legtöbb hátralévő epizód</string>
+  <string name="button_description_sort_smart">Neked ajánlott</string>
   <string name="button_disconnect_plex">Leválasztás</string>
   <string name="button_label_activity_ratings">Értékelések megtekintése</string>
   <string name="button_label_activity_reviews">Értékelések megtekintése</string>
@@ -913,6 +919,7 @@
   <string name="label_drag_image_to_adjust">Húzd a képet az igazításhot</string>
   <string name="label_favorites">Kedvencek</string>
   <string name="label_keep_play">Megtartás</string>
+  <string name="label_list_item_count">%s lista elem</string>
   <string name="label_plex_connected">Csatlakoztatva a Plexhez</string>
   <string name="label_plex_connection">Csatlakozás</string>
   <string name="label_plex_history_date">Dátum</string>
@@ -1227,6 +1234,7 @@
   <string name="page_title_year_to_date">Éves összesítés</string>
   <string name="preview_feature_description_edit_mode">Engedélyezze a vezérlőket a konfigurálható szakaszok elrejtéséhez vagy megjelenítéséhez az alkalmazásban.</string>
   <string name="preview_feature_description_leaderboard">Rangsorold a követett embereket a nézési idő alapján, és nézd meg, hol helyezkedsz el közöttük.</string>
+  <string name="preview_feature_description_list_counts">Megmutatja, hány elemet tartalmaz egy lista, és hány lista van egy szekcióban.</string>
   <string name="preview_feature_description_parental_guide">Tartalomkockázati szintek megjelenítése a részletek panelen filmek, műsorok és epizódok esetén.</string>
   <string name="preview_feature_description_rewatch">Indíts újra nézési munkameneteket olyan műsorokhoz, amiket már láttál, jelentkezz be, vagy jelölj meg nézett epizódokat közvetlenül a munkamenet fiókból.</string>
   <string name="preview_feature_description_scoped_favorites">Időkorlátozza a kedvenc listákat azáltal, hogy megjeleníti az aktuális év kedvenceit a profilokon, és csoportosítja a teljes kedvencek listáját év szerint.</string>
@@ -1234,6 +1242,7 @@
   <string name="preview_feature_description_up_next_smart_sort">Próbálja ki a Megtekintés folytatása rendezésének egy okosabb módját.</string>
   <string name="preview_feature_title_edit_mode">Szerkesztési mód</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
+  <string name="preview_feature_title_list_counts">Listaszámok</string>
   <string name="preview_feature_title_rewatch">Újra nézés</string>
   <string name="preview_feature_title_scoped_favorites">Korlátozott Kedvencek</string>
   <string name="preview_feature_title_soundtrack">Filmzene</string>

@@ -24,6 +24,12 @@
   <string name="badge_text_get_vip">VIPをゲット</string>
   <string name="badge_text_more">他%d件</string>
   <string name="button_connect_plex">Plexを接続</string>
+  <string name="button_description_sort_default">元の順序</string>
+  <string name="button_description_sort_release_date_asc">古い順</string>
+  <string name="button_description_sort_release_date_desc">新しい順</string>
+  <string name="button_description_sort_remaining_asc">残りエピソード数が少ない順</string>
+  <string name="button_description_sort_remaining_desc">残りエピソード数が多い順</string>
+  <string name="button_description_sort_smart">おすすめ</string>
   <string name="button_disconnect_plex">切断</string>
   <string name="button_label_activity_ratings">評価を見る</string>
   <string name="button_label_activity_reviews">レビューを見る</string>
@@ -913,6 +919,7 @@
   <string name="label_drag_image_to_adjust">画像をドラッグして調整</string>
   <string name="label_favorites">お気に入り</string>
   <string name="label_keep_play">保持</string>
+  <string name="label_list_item_count">%sアイテム</string>
   <string name="label_plex_connected">Plexに接続済み</string>
   <string name="label_plex_connection">接続</string>
   <string name="label_plex_history_date">日付</string>
@@ -1227,6 +1234,7 @@
   <string name="page_title_year_to_date">今年これまでの統計</string>
   <string name="preview_feature_description_edit_mode">アプリ全体で設定可能なセクションの表示/非表示を制御する機能を有効にします。</string>
   <string name="preview_feature_description_leaderboard">フォローしている人の視聴時間でランキングを作成し、その中で自分がどこに位置するかを確認できます。</string>
+  <string name="preview_feature_description_list_counts">リストが保持するアイテム数と、セクションが持つリスト数を示します。</string>
   <string name="preview_feature_description_parental_guide">映画、番組、エピソードの詳細ドロワーにコンテンツのリスクレベルを表示します。</string>
   <string name="preview_feature_description_rewatch">既に視聴済みの番組の再視聴セッションを開始し、セッションドロワーから直接エピソードをチェックインまたは視聴済みとしてマークできます。</string>
   <string name="preview_feature_description_scoped_favorites">プロフィールに今年の「お気に入り」を表示し、お気に入りリスト全体を年別にグループ化することで、お気に入りリストを期間で区切ります。</string>
@@ -1234,6 +1242,7 @@
   <string name="preview_feature_description_up_next_smart_sort">続きを視聴のよりスマートな並べ替えをお試しください。</string>
   <string name="preview_feature_title_edit_mode">編集モード</string>
   <string name="preview_feature_title_leaderboard">パンテオン</string>
+  <string name="preview_feature_title_list_counts">リスト数</string>
   <string name="preview_feature_title_rewatch">再視聴</string>
   <string name="preview_feature_title_scoped_favorites">範囲指定されたお気に入り</string>
   <string name="preview_feature_title_soundtrack">サウンドトラック</string>

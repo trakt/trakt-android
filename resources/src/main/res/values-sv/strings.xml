@@ -24,6 +24,12 @@
   <string name="badge_text_get_vip">Skaffa VIP</string>
   <string name="badge_text_more">och %d till</string>
   <string name="button_connect_plex">Anslut Plex</string>
+  <string name="button_description_sort_default">Ursprunglig ordning</string>
+  <string name="button_description_sort_release_date_asc">Äldsta först</string>
+  <string name="button_description_sort_release_date_desc">Nyaste först</string>
+  <string name="button_description_sort_remaining_asc">Färst avsnitt kvar</string>
+  <string name="button_description_sort_remaining_desc">Flest avsnitt kvar</string>
+  <string name="button_description_sort_smart">Rekommenderas för dig</string>
   <string name="button_disconnect_plex">Koppla bort</string>
   <string name="button_label_activity_ratings">Visa betyg</string>
   <string name="button_label_activity_reviews">Visa recensioner</string>
@@ -913,6 +919,7 @@
   <string name="label_drag_image_to_adjust">Dra bilden för att justera</string>
   <string name="label_favorites">Favoriter</string>
   <string name="label_keep_play">Behåll</string>
+  <string name="label_list_item_count">%s poster</string>
   <string name="label_plex_connected">Ansluten till Plex</string>
   <string name="label_plex_connection">Anslutning</string>
   <string name="label_plex_history_date">Datum</string>
@@ -1227,6 +1234,7 @@
   <string name="page_title_year_to_date">År hittills</string>
   <string name="preview_feature_description_edit_mode">Aktivera kontroller för att dölja eller visa konfigurerbara sektioner i hela appen.</string>
   <string name="preview_feature_description_leaderboard">Rankar de personer du följer efter tittartid och se var du hamnar bland dem.</string>
+  <string name="preview_feature_description_list_counts">Visar hur många poster en lista innehåller, och hur många listor en sektion har.</string>
   <string name="preview_feature_description_parental_guide">Visa risknivåer för innehåll i detaljlådan för filmer, serier och avsnitt.</string>
   <string name="preview_feature_description_rewatch">Starta omtittningssessioner för serier du redan har sett, checka in eller markera avsnitt som sedda direkt från sessionslådan.</string>
   <string name="preview_feature_description_scoped_favorites">Tidsavgränsa favoritlistor genom att visa favoriter från innevarande år på profiler och gruppera hela favoritlistan per år.</string>
@@ -1234,6 +1242,7 @@
   <string name="preview_feature_description_up_next_smart_sort">Testa ett smartare sätt att sortera det du tittar på.</string>
   <string name="preview_feature_title_edit_mode">Redigeringsläge</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
+  <string name="preview_feature_title_list_counts">Listantal</string>
   <string name="preview_feature_title_rewatch">Omtittning</string>
   <string name="preview_feature_title_scoped_favorites">Avgränsade favoriter</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>

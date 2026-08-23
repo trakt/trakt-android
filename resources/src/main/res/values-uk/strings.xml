@@ -24,6 +24,12 @@
   <string name="badge_text_get_vip">Отримати VIP</string>
   <string name="badge_text_more">та ще %d</string>
   <string name="button_connect_plex">Підключити Plex</string>
+  <string name="button_description_sort_default">Початковий порядок</string>
+  <string name="button_description_sort_release_date_asc">Спочатку старіші</string>
+  <string name="button_description_sort_release_date_desc">Спочатку новіші</string>
+  <string name="button_description_sort_remaining_asc">Найменше епізодів залишилось</string>
+  <string name="button_description_sort_remaining_desc">Найбільше епізодів залишилось</string>
+  <string name="button_description_sort_smart">Рекомендовано для вас</string>
   <string name="button_disconnect_plex">Відключити</string>
   <string name="button_label_activity_ratings">Переглянути оцінки</string>
   <string name="button_label_activity_reviews">Переглянути відгуки</string>
@@ -913,6 +919,7 @@
   <string name="label_drag_image_to_adjust">Перетягніть зображення для налаштування</string>
   <string name="label_favorites">Улюблені</string>
   <string name="label_keep_play">Залишити</string>
+  <string name="label_list_item_count">%s елементів</string>
   <string name="label_plex_connected">Підключено до Plex</string>
   <string name="label_plex_connection">Підключення</string>
   <string name="label_plex_history_date">Дата</string>
@@ -1227,6 +1234,7 @@
   <string name="page_title_year_to_date">Рік до сьогодні</string>
   <string name="preview_feature_description_edit_mode">Увімкніть елементи керування для приховування або відображення настроюваних розділів у всьому застосунку.</string>
   <string name="preview_feature_description_leaderboard">Ранжуйте людей, за якими стежите, за часом перегляду та подивіться, яке місце ви посідаєте серед них.</string>
+  <string name="preview_feature_description_list_counts">Показує, скільки елементів містить список, і скільки списків є в розділі.</string>
   <string name="preview_feature_description_parental_guide">Показувати рівні ризику вмісту у висувній панелі деталей для фільмів, серіалів та епізодів.</string>
   <string name="preview_feature_description_rewatch">Почніть сеанси повторного перегляду для шоу, які ви вже бачили, реєструйте або відмічайте переглянуті серії безпосередньо з вікна сеансу.</string>
   <string name="preview_feature_description_scoped_favorites">Обмежте списки улюблених за часом, відображаючи улюблене поточного року в профілях та групуючи повний список улюблених за роками.</string>
@@ -1234,6 +1242,7 @@
   <string name="preview_feature_description_up_next_smart_sort">Спробуйте розумніший спосіб сортування вашого розділу «Продовжити перегляд».</string>
   <string name="preview_feature_title_edit_mode">Режим редагування</string>
   <string name="preview_feature_title_leaderboard">Пантеон</string>
+  <string name="preview_feature_title_list_counts">Кількість у списках</string>
   <string name="preview_feature_title_rewatch">Повторний перегляд</string>
   <string name="preview_feature_title_scoped_favorites">Вибране за періодом</string>
   <string name="preview_feature_title_soundtrack">Саундтрек</string>
