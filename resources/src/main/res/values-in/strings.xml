@@ -1236,6 +1236,7 @@
   <string name="preview_feature_description_leaderboard">Peringkat orang yang Anda ikuti berdasarkan waktu tonton dan lihat posisi Anda di antara mereka.</string>
   <string name="preview_feature_description_list_counts">Menampilkan berapa banyak item yang dimiliki sebuah daftar, dan berapa banyak daftar yang dimiliki sebuah bagian.</string>
   <string name="preview_feature_description_parental_guide">Tampilkan tingkat risiko konten di laci detail untuk film, acara, dan episode.</string>
+  <string name="preview_feature_description_reviewer_stats">Menampilkan berapa banyak dari sebuah judul yang ditonton pengulas di samping rating mereka.</string>
   <string name="preview_feature_description_rewatch">Mulai sesi menonton ulang untuk acara yang sudah Anda tonton, check-in atau tandai episode yang sudah ditonton langsung dari panel sesi.</string>
   <string name="preview_feature_description_scoped_favorites">Batas waktu daftar favorit dengan menampilkan favorit tahun berjalan di profil dan mengelompokkan daftar favorit lengkap berdasarkan tahun.</string>
   <string name="preview_feature_description_soundtrack">Menambahkan bagian soundtrack ke halaman film dan acara, dengan pemutaran di mana lagu dapat dicocokkan.</string>
@@ -1243,6 +1244,7 @@
   <string name="preview_feature_title_edit_mode">Mode Edit</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_list_counts">Hitungan Daftar</string>
+  <string name="preview_feature_title_reviewer_stats">Statistik Pengulas</string>
   <string name="preview_feature_title_rewatch">Tonton Ulang</string>
   <string name="preview_feature_title_scoped_favorites">Favorit Terbatas</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
@@ -1295,6 +1297,7 @@
   <string name="tag_text_new">Baru</string>
   <string name="tag_text_new_preview_feature">Baru</string>
   <string name="tag_text_number_of_episodes">%d episode.</string>
+  <string name="tag_text_play">%d putar</string>
   <string name="tag_text_plays">%d putar</string>
   <string name="tag_text_premiere">Premiere</string>
   <string name="tag_text_preview">Pratinjau</string>
@@ -1765,6 +1768,7 @@
   <string name="tooltip_stats_shows">Waktu yang dihabiskan menonton acara minggu ini</string>
   <string name="tooltip_text_future_activity">%s, masa depan belum tertulis</string>
   <string name="tooltip_text_preview_feature">Fitur ini masih dalam tahap penyempurnaan, warga. Kami sedang berupaya keras pada UX, membuatnya bersinar seperti paduan suara bidadari (atau setidaknya, berfungsi lancar tanpa menimbulkan kecemasan eksistensial).</string>
+  <string name="tooltip_text_watched_episodes">Menonton %1$d dari %2$d episode</string>
   <string name="translated_value_error_comment_invalid_content">Ulasan harus minimal 5 kata.</string>
   <string name="translated_value_error_comment_unknown">Terjadi kesalahan saat memposting ulasan Anda. Silakan coba lagi nanti.</string>
   <string name="translated_value_error_reply_invalid_content">Balasan harus minimal 5 kata.</string>

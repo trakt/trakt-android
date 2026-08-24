@@ -1236,6 +1236,7 @@
   <string name="preview_feature_description_leaderboard">フォローしている人の視聴時間でランキングを作成し、その中で自分がどこに位置するかを確認できます。</string>
   <string name="preview_feature_description_list_counts">リストが保持するアイテム数と、セクションが持つリスト数を示します。</string>
   <string name="preview_feature_description_parental_guide">映画、番組、エピソードの詳細ドロワーにコンテンツのリスクレベルを表示します。</string>
+  <string name="preview_feature_description_reviewer_stats">レビュアーがタイトルをどのくらい視聴したかを評価の横に表示します。</string>
   <string name="preview_feature_description_rewatch">既に視聴済みの番組の再視聴セッションを開始し、セッションドロワーから直接エピソードをチェックインまたは視聴済みとしてマークできます。</string>
   <string name="preview_feature_description_scoped_favorites">プロフィールに今年の「お気に入り」を表示し、お気に入りリスト全体を年別にグループ化することで、お気に入りリストを期間で区切ります。</string>
   <string name="preview_feature_description_soundtrack">映画や番組のページにサウンドトラックセクションを追加し、一致するトラックがあれば再生できます。</string>
@@ -1243,6 +1244,7 @@
   <string name="preview_feature_title_edit_mode">編集モード</string>
   <string name="preview_feature_title_leaderboard">パンテオン</string>
   <string name="preview_feature_title_list_counts">リスト数</string>
+  <string name="preview_feature_title_reviewer_stats">レビュアー統計</string>
   <string name="preview_feature_title_rewatch">再視聴</string>
   <string name="preview_feature_title_scoped_favorites">範囲指定されたお気に入り</string>
   <string name="preview_feature_title_soundtrack">サウンドトラック</string>
@@ -1295,6 +1297,7 @@
   <string name="tag_text_new">新着</string>
   <string name="tag_text_new_preview_feature">新着</string>
   <string name="tag_text_number_of_episodes">%d話</string>
+  <string name="tag_text_play">%d回視聴</string>
   <string name="tag_text_plays">%d回視聴</string>
   <string name="tag_text_premiere">プレミア</string>
   <string name="tag_text_preview">プレビュー</string>
@@ -1765,6 +1768,7 @@
   <string name="tooltip_stats_shows">今週番組を観た時間</string>
   <string name="tooltip_text_future_activity">%s、未来は未定です</string>
   <string name="tooltip_text_preview_feature">この機能はまだ開発中です。私たちはUXを改善し、天使の合唱のように機能するよう（少なくとも、実存的恐怖を感じさせずにスムーズに機能するよう）努力しています。</string>
+  <string name="tooltip_text_watched_episodes">%1$d話中%2$d話を視聴済み</string>
   <string name="translated_value_error_comment_invalid_content">レビューは5ワード以上である必要があります。</string>
   <string name="translated_value_error_comment_unknown">レビューの投稿中にエラーが発生しました。後でもう一度お試しください。</string>
   <string name="translated_value_error_reply_invalid_content">返信は5ワード以上である必要があります。</string>

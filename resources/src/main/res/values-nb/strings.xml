@@ -1236,6 +1236,7 @@
   <string name="preview_feature_description_leaderboard">Ranger personene du følger etter seertid og se hvor du lander blant dem.</string>
   <string name="preview_feature_description_list_counts">Viser hvor mange elementer en liste inneholder, og hvor mange lister en seksjon har.</string>
   <string name="preview_feature_description_parental_guide">Vis risikonivåer for innhold i detaljskuffen for filmer, serier og episoder.</string>
+  <string name="preview_feature_description_reviewer_stats">Viser hvor mye av en tittel en anmelder har sett ved siden av vurderingen sin</string>
   <string name="preview_feature_description_rewatch">Start gjensynsøkter for serier du allerede har sett, sjekk inn eller merk episoder som sett direkte fra gjensynsskuffen.</string>
   <string name="preview_feature_description_scoped_favorites">Tidsbegrens favorittlister ved å vise inneværende års favoritter på profiler og gruppere den komplette favorittlisten etter år.</string>
   <string name="preview_feature_description_soundtrack">Legger til en lydspor-seksjon på film- og seriesider, med avspilling der et spor kan matches.</string>
@@ -1243,6 +1244,7 @@
   <string name="preview_feature_title_edit_mode">Redigeringsmodus</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_list_counts">Listeantall</string>
+  <string name="preview_feature_title_reviewer_stats">Anmelderstatistikk</string>
   <string name="preview_feature_title_rewatch">Gjensyn</string>
   <string name="preview_feature_title_scoped_favorites">Avgrensede favoritter</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
@@ -1295,6 +1297,7 @@
   <string name="tag_text_new">Ny</string>
   <string name="tag_text_new_preview_feature">Ny</string>
   <string name="tag_text_number_of_episodes">%d ep.</string>
+  <string name="tag_text_play">%d avspilling</string>
   <string name="tag_text_plays">%d avspillinger</string>
   <string name="tag_text_premiere">Premiere</string>
   <string name="tag_text_preview">Forhåndsvisning</string>
@@ -1765,6 +1768,7 @@
   <string name="tooltip_stats_shows">Tid brukt på å se serier denne uken</string>
   <string name="tooltip_text_future_activity">%s, fremtiden er uskrevet</string>
   <string name="tooltip_text_preview_feature">Denne funksjonen får fortsatt et strøk maling, borger. Vi jobber hardt med brukeropplevelsen for å få den til å synge som et englekor (eller i det minste, fungere jevnt uten å skape eksistensiell angst).</string>
+  <string name="tooltip_text_watched_episodes">Sett %1$d av %2$d episoder</string>
   <string name="translated_value_error_comment_invalid_content">Anmeldelser må være minst 5 ord.</string>
   <string name="translated_value_error_comment_unknown">En feil oppstod under publisering av anmeldelsen din. Vennligst prøv igjen senere.</string>
   <string name="translated_value_error_reply_invalid_content">Svar må være minst 5 ord.</string>

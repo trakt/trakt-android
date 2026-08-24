@@ -1236,6 +1236,7 @@
   <string name="preview_feature_description_leaderboard">Classifica les persones que segueixes per temps de visionat i mira on quedes entre elles.</string>
   <string name="preview_feature_description_list_counts">Mostra quants elements conté una llista i quantes llistes té una secció.</string>
   <string name="preview_feature_description_parental_guide">Mostrar els nivells de risc de contingut al calaix de detalls per a pel·lícules, sèries i episodis.</string>
+  <string name="preview_feature_description_reviewer_stats">Mostra quant d\'un títol ha vist un revisor al costat de la seva valoració.</string>
   <string name="preview_feature_description_rewatch">Inicia sessions de revisió per a programes que ja has vist, fes un seguiment o marca els episodis com a vistos directament des del calaix de la sessió.</string>
   <string name="preview_feature_description_scoped_favorites">Delimita les llistes de preferits mostrant els preferits de l\'any actual als perfils i agrupant la llista completa de preferits per any.</string>
   <string name="preview_feature_description_soundtrack">Afegeix una secció de banda sonora a les pàgines de pel·lícules i sèries, amb reproducció on es pugui trobar una pista.</string>
@@ -1243,6 +1244,7 @@
   <string name="preview_feature_title_edit_mode">Mode d\'edició</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_list_counts">Recomptes de llista</string>
+  <string name="preview_feature_title_reviewer_stats">Estadístiques del Revisor</string>
   <string name="preview_feature_title_rewatch">Revisió</string>
   <string name="preview_feature_title_scoped_favorites">Preferits per àmbit</string>
   <string name="preview_feature_title_soundtrack">Banda sonora</string>
@@ -1295,6 +1297,7 @@
   <string name="tag_text_new">Nou</string>
   <string name="tag_text_new_preview_feature">Nou</string>
   <string name="tag_text_number_of_episodes">%d ep.</string>
+  <string name="tag_text_play">%d reproducció</string>
   <string name="tag_text_plays">%d reproduccions</string>
   <string name="tag_text_premiere">Estrena</string>
   <string name="tag_text_preview">Previsualització</string>
@@ -1765,6 +1768,7 @@
   <string name="tooltip_stats_shows">Temps dedicat a veure sèries aquesta setmana</string>
   <string name="tooltip_text_future_activity">%s, el futur està per escriure</string>
   <string name="tooltip_text_preview_feature">Aquesta funció encara està en procés de millora, ciutadà. Estem treballant intensament en l\'experiència d\'usuari, fent-la cantar com un cor d\'àngels (o al menys, funcionar sense problemes ni pors existencials).</string>
+  <string name="tooltip_text_watched_episodes">Vists %1$d de %2$d episodis</string>
   <string name="translated_value_error_comment_invalid_content">Les ressenyes han de tenir almenys 5 paraules.</string>
   <string name="translated_value_error_comment_unknown">S\'ha produït un error en publicar la teva ressenya. Si us plau, torna a intentar-ho més tard.</string>
   <string name="translated_value_error_reply_invalid_content">Les respostes han de tenir almenys 5 paraules.</string>

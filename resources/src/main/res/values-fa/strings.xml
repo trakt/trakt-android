@@ -1236,6 +1236,7 @@
   <string name="preview_feature_description_leaderboard">افرادی که دنبال می‌کنید را بر اساس زمان تماشا رتبه‌بندی کنید و ببینید در میان آن‌ها کجا قرار می‌گیرید.</string>
   <string name="preview_feature_description_list_counts">تعداد آیتم‌های موجود در هر لیست و تعداد لیست‌ها در هر بخش را نمایش می‌دهد</string>
   <string name="preview_feature_description_parental_guide">نمایش سطوح خطر محتوا در کشوی جزئیات برای فیلم‌ها، نمایش‌ها و اپیزودها.</string>
+  <string name="preview_feature_description_reviewer_stats">نشان می دهد که یک بازبین چه مقدار از یک عنوان را در کنار امتیاز خود تماشا کرده است.</string>
   <string name="preview_feature_description_rewatch">جلسات بازتماشا را برای سریال‌هایی که قبلاً دیده‌اید شروع کنید، قسمت‌های تماشا شده را مستقیماً از کشوی جلسه ثبت کنید یا علامت بزنید.</string>
   <string name="preview_feature_description_scoped_favorites">لیست‌های علاقه‌مندی را با نمایش علاقه‌مندی‌های سال جاری در پروفایل‌ها و گروه‌بندی لیست کامل علاقه‌مندی‌ها بر اساس سال، محدود کنید.</string>
   <string name="preview_feature_description_soundtrack">بخش موسیقی متن را به صفحات فیلم و نمایش اضافه می‌کند، با قابلیت پخش در جایی که یک قطعه می‌تواند مطابقت داده شود.</string>
@@ -1243,6 +1244,7 @@
   <string name="preview_feature_title_edit_mode">حالت ویرایش</string>
   <string name="preview_feature_title_leaderboard">پانتئون</string>
   <string name="preview_feature_title_list_counts">تعداد لیست‌ها</string>
+  <string name="preview_feature_title_reviewer_stats">آمار بازبین</string>
   <string name="preview_feature_title_rewatch">بازتماشا</string>
   <string name="preview_feature_title_scoped_favorites">علاقه‌مندی‌های محدود</string>
   <string name="preview_feature_title_soundtrack">موسیقی متن</string>
@@ -1295,6 +1297,7 @@
   <string name="tag_text_new">جدید</string>
   <string name="tag_text_new_preview_feature">جدید</string>
   <string name="tag_text_number_of_episodes">%d اپیزود</string>
+  <string name="tag_text_play">%d پخش</string>
   <string name="tag_text_plays">%d پخش</string>
   <string name="tag_text_premiere">اولین پخش</string>
   <string name="tag_text_preview">پیش‌نمایش</string>
@@ -1765,6 +1768,7 @@
   <string name="tooltip_stats_shows">زمان صرف شده برای تماشای برنامه‌ها این هفته</string>
   <string name="tooltip_text_future_activity">%s، آینده نانوشته است</string>
   <string name="tooltip_text_preview_feature">این قابلیت هنوز در حال رنگ‌آمیزی تازه است، شهروند. ما در حال کار سخت بر روی تجربه کاربری هستیم تا آن را مانند یک گروه کر فرشتگان (یا حداقل، بدون ایجاد اضطراب وجودی به راحتی) به کار بیاندازیم.</string>
+  <string name="tooltip_text_watched_episodes">%1$d از %2$d قسمت تماشا شده</string>
   <string name="translated_value_error_comment_invalid_content">بازخوردها باید حداقل ۵ کلمه باشند.</string>
   <string name="translated_value_error_comment_unknown">هنگام ارسال بازخورد شما خطایی رخ داد. لطفاً بعداً دوباره امتحان کنید.</string>
   <string name="translated_value_error_reply_invalid_content">پاسخ‌ها باید حداقل ۵ کلمه باشند.</string>
