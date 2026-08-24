@@ -24,6 +24,12 @@
   <string name="badge_text_get_vip">دریافت VIP</string>
   <string name="badge_text_more">و %d مورد دیگر</string>
   <string name="button_connect_plex">Plex را متصل کنید</string>
+  <string name="button_description_sort_default">ترتیب اصلی</string>
+  <string name="button_description_sort_release_date_asc">قدیمی‌ترین ابتدا</string>
+  <string name="button_description_sort_release_date_desc">جدیدترین ابتدا</string>
+  <string name="button_description_sort_remaining_asc">کمترین قسمت باقی‌مانده</string>
+  <string name="button_description_sort_remaining_desc">بیشترین قسمت باقی‌مانده</string>
+  <string name="button_description_sort_smart">پیشنهادی برای شما</string>
   <string name="button_disconnect_plex">قطع اتصال</string>
   <string name="button_label_activity_ratings">مشاهده امتیازات</string>
   <string name="button_label_activity_reviews">مشاهده نقدها</string>
@@ -913,6 +919,7 @@
   <string name="label_drag_image_to_adjust">برای تنظیم، تصویر را بکشید</string>
   <string name="label_favorites">علاقه‌مندی‌ها</string>
   <string name="label_keep_play">نگه داشتن</string>
+  <string name="label_list_item_count">%s مورد</string>
   <string name="label_plex_connected">متصل به Plex</string>
   <string name="label_plex_connection">اتصال</string>
   <string name="label_plex_history_date">تاریخ</string>
@@ -1227,6 +1234,7 @@
   <string name="page_title_year_to_date">سال تا به امروز</string>
   <string name="preview_feature_description_edit_mode">کنترل‌هایی را برای پنهان کردن یا نمایش بخش‌های قابل تنظیم در سراسر برنامه فعال کنید.</string>
   <string name="preview_feature_description_leaderboard">افرادی که دنبال می‌کنید را بر اساس زمان تماشا رتبه‌بندی کنید و ببینید در میان آن‌ها کجا قرار می‌گیرید.</string>
+  <string name="preview_feature_description_list_counts">تعداد آیتم‌های موجود در هر لیست و تعداد لیست‌ها در هر بخش را نمایش می‌دهد</string>
   <string name="preview_feature_description_parental_guide">نمایش سطوح خطر محتوا در کشوی جزئیات برای فیلم‌ها، نمایش‌ها و اپیزودها.</string>
   <string name="preview_feature_description_rewatch">جلسات بازتماشا را برای سریال‌هایی که قبلاً دیده‌اید شروع کنید، قسمت‌های تماشا شده را مستقیماً از کشوی جلسه ثبت کنید یا علامت بزنید.</string>
   <string name="preview_feature_description_scoped_favorites">لیست‌های علاقه‌مندی را با نمایش علاقه‌مندی‌های سال جاری در پروفایل‌ها و گروه‌بندی لیست کامل علاقه‌مندی‌ها بر اساس سال، محدود کنید.</string>
@@ -1234,6 +1242,7 @@
   <string name="preview_feature_description_up_next_smart_sort">راهی هوشمندانه‌تر برای مرتب\n\n\n\n‌سازی موارد در حال تماشای خود را آزمایش کنید.</string>
   <string name="preview_feature_title_edit_mode">حالت ویرایش</string>
   <string name="preview_feature_title_leaderboard">پانتئون</string>
+  <string name="preview_feature_title_list_counts">تعداد لیست‌ها</string>
   <string name="preview_feature_title_rewatch">بازتماشا</string>
   <string name="preview_feature_title_scoped_favorites">علاقه‌مندی‌های محدود</string>
   <string name="preview_feature_title_soundtrack">موسیقی متن</string>

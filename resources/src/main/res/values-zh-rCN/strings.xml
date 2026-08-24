@@ -24,6 +24,12 @@
   <string name="badge_text_get_vip">获取VIP</string>
   <string name="badge_text_more">还有 %d 个</string>
   <string name="button_connect_plex">连接Plex</string>
+  <string name="button_description_sort_default">原始顺序</string>
+  <string name="button_description_sort_release_date_asc">最旧优先</string>
+  <string name="button_description_sort_release_date_desc">最新优先</string>
+  <string name="button_description_sort_remaining_asc">剩余剧集最少</string>
+  <string name="button_description_sort_remaining_desc">剩余剧集最多</string>
+  <string name="button_description_sort_smart">为您推荐</string>
   <string name="button_disconnect_plex">断开连接</string>
   <string name="button_label_activity_ratings">查看评分</string>
   <string name="button_label_activity_reviews">查看评论</string>
@@ -913,6 +919,7 @@
   <string name="label_drag_image_to_adjust">拖动图片调整</string>
   <string name="label_favorites">我的最爱</string>
   <string name="label_keep_play">保留</string>
+  <string name="label_list_item_count">%s 个项目</string>
   <string name="label_plex_connected">已连接到Plex</string>
   <string name="label_plex_connection">连接</string>
   <string name="label_plex_history_date">日期</string>
@@ -1227,6 +1234,7 @@
   <string name="page_title_year_to_date">年至今</string>
   <string name="preview_feature_description_edit_mode">启用控件，用于隐藏或显示应用程序中可配置的部分。</string>
   <string name="preview_feature_description_leaderboard">根据观看时长对您关注的人进行排名，查看您在他们中的位置。</string>
+  <string name="preview_feature_description_list_counts">显示列表包含的项目数量，以及版块拥有的列表数量。</string>
   <string name="preview_feature_description_parental_guide">在电影、节目和剧集的详情抽屉中显示内容风险等级。</string>
   <string name="preview_feature_description_rewatch">开始重温您已看过的节目，直接从会话抽屉中签到或标记已观看剧集。</string>
   <string name="preview_feature_description_scoped_favorites">通过在个人资料上显示当年的收藏以及按年份分组完整的收藏列表来限制收藏列表的时间范围。</string>
@@ -1234,6 +1242,7 @@
   <string name="preview_feature_description_up_next_smart_sort">试用一种更智能的方式来对您的“继续观看”进行排序。</string>
   <string name="preview_feature_title_edit_mode">编辑模式</string>
   <string name="preview_feature_title_leaderboard">万神殿</string>
+  <string name="preview_feature_title_list_counts">列表计数</string>
   <string name="preview_feature_title_rewatch">重温</string>
   <string name="preview_feature_title_scoped_favorites">限定范围的收藏</string>
   <string name="preview_feature_title_soundtrack">原声带</string>

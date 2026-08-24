@@ -24,6 +24,12 @@
   <string name="badge_text_get_vip">Ia VIP</string>
   <string name="badge_text_more">și încă %d</string>
   <string name="button_connect_plex">Conectează Plex</string>
+  <string name="button_description_sort_default">Ordinea originală</string>
+  <string name="button_description_sort_release_date_asc">Cele mai vechi mai întâi</string>
+  <string name="button_description_sort_release_date_desc">Cele mai noi mai întâi</string>
+  <string name="button_description_sort_remaining_asc">Cele mai puține episoade rămase</string>
+  <string name="button_description_sort_remaining_desc">Cele mai multe episoade rămase</string>
+  <string name="button_description_sort_smart">Recomandate pentru tine</string>
   <string name="button_disconnect_plex">Deconectează</string>
   <string name="button_label_activity_ratings">Vezi evaluări</string>
   <string name="button_label_activity_reviews">Vezi recenzii</string>
@@ -913,6 +919,7 @@
   <string name="label_drag_image_to_adjust">Trage imaginea pentru a ajusta</string>
   <string name="label_favorites">Favorite</string>
   <string name="label_keep_play">Păstrează</string>
+  <string name="label_list_item_count">%s elemente</string>
   <string name="label_plex_connected">Conectat la Plex</string>
   <string name="label_plex_connection">Conexiune</string>
   <string name="label_plex_history_date">Dată</string>
@@ -1227,6 +1234,7 @@
   <string name="page_title_year_to_date">Anul curent</string>
   <string name="preview_feature_description_edit_mode">Activează controale pentru ascunderea sau afișarea secțiunilor configurabile în întreaga aplicație.</string>
   <string name="preview_feature_description_leaderboard">Clasați persoanele pe care le urmăriți după timpul de vizionare și vedeți unde vă situați printre ele.</string>
+  <string name="preview_feature_description_list_counts">Arată câte elemente conține o listă și câte liste are o secțiune.</string>
   <string name="preview_feature_description_parental_guide">Afișați nivelurile de risc ale conținutului în sertarul de detalii pentru filme, seriale și episoade.</string>
   <string name="preview_feature_description_rewatch">Începeți sesiuni de revizionare pentru emisiunile pe care le-ați văzut deja, înregistrați-vă sau marcați episoadele vizionate direct din panoul de sesiune.</string>
   <string name="preview_feature_description_scoped_favorites">Organizează listele de favorite pe perioade, afișând favoritele din anul curent pe profile și grupând lista completă de favorite pe ani.</string>
@@ -1234,6 +1242,7 @@
   <string name="preview_feature_description_up_next_smart_sort">Testează o modalitate mai inteligentă de a sorta elementele din Continuă vizionarea.</string>
   <string name="preview_feature_title_edit_mode">Mod editare</string>
   <string name="preview_feature_title_leaderboard">Panteon</string>
+  <string name="preview_feature_title_list_counts">Numărul listelor</string>
   <string name="preview_feature_title_rewatch">Revizionare</string>
   <string name="preview_feature_title_scoped_favorites">Favorite Contextuale</string>
   <string name="preview_feature_title_soundtrack">Coloană sonoră</string>

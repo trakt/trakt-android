@@ -24,6 +24,12 @@
   <string name="badge_text_get_vip">احصل على VIP</string>
   <string name="badge_text_more">و %d آخر</string>
   <string name="button_connect_plex">ربط بلكس</string>
+  <string name="button_description_sort_default">الترتيب الأصلي</string>
+  <string name="button_description_sort_release_date_asc">الأقدم أولاً</string>
+  <string name="button_description_sort_release_date_desc">الأحدث أولاً</string>
+  <string name="button_description_sort_remaining_asc">أقل الحلقات المتبقية</string>
+  <string name="button_description_sort_remaining_desc">أكثر الحلقات المتبقية</string>
+  <string name="button_description_sort_smart">موصى به لك</string>
   <string name="button_disconnect_plex">قطع الاتصال</string>
   <string name="button_label_activity_ratings">عرض التقييمات</string>
   <string name="button_label_activity_reviews">عرض التقييمات</string>
@@ -913,6 +919,7 @@
   <string name="label_drag_image_to_adjust">اسحب الصورة للضبط</string>
   <string name="label_favorites">المفضلات</string>
   <string name="label_keep_play">احتفظ</string>
+  <string name="label_list_item_count">القائمة: %s</string>
   <string name="label_plex_connected">متصل بـ Plex</string>
   <string name="label_plex_connection">اتصال</string>
   <string name="label_plex_history_date">التاريخ</string>
@@ -1227,6 +1234,7 @@
   <string name="page_title_year_to_date">منذ بداية العام</string>
   <string name="preview_feature_description_edit_mode">تمكين عناصر التحكم لإخفاء الأقسام القابلة للتكوين أو إظهارها عبر التطبيق.</string>
   <string name="preview_feature_description_leaderboard">قم بتصنيف الأشخاص الذين تتابعهم حسب وقت المشاهدة وانظر إلى أين ستصل بينهم.</string>
+  <string name="preview_feature_description_list_counts">يعرض عدد العناصر التي تحتويها القائمة، وعدد القوائم التي يملكها القسم.</string>
   <string name="preview_feature_description_parental_guide">اعرض مستويات خطورة المحتوى في درج التفاصيل للأفلام والعروض والحلقات.</string>
   <string name="preview_feature_description_rewatch">ابدأ في إعادة مشاهدة الجلسات للعروض التي شاهدتها بالفعل، أو قم بتسجيل الدخول أو وضع علامة على الحلقات التي تمت مشاهدتها مباشرة من درج الجلسة.</string>
   <string name="preview_feature_description_scoped_favorites">قوائم المفضلة في المربع الزمني من خلال إظهار مفضلات العام الحالي في الملفات الشخصية وتجميع قائمة المفضلة الكاملة حسب السنة.</string>
@@ -1234,6 +1242,7 @@
   <string name="preview_feature_description_up_next_smart_sort">اختبر طريقة أكثر ذكاءً لفرز متابعة المشاهدة.</string>
   <string name="preview_feature_title_edit_mode">تعديل الوضع</string>
   <string name="preview_feature_title_leaderboard">البانثيون</string>
+  <string name="preview_feature_title_list_counts">عدادات القوائم</string>
   <string name="preview_feature_title_rewatch">إعادة المشاهدة</string>
   <string name="preview_feature_title_scoped_favorites">نطاق المفضلة</string>
   <string name="preview_feature_title_soundtrack">الموسيقى التصويرية</string>

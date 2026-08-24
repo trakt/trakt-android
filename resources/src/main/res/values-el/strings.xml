@@ -24,6 +24,12 @@
   <string name="badge_text_get_vip">Αποκτήστε VIP</string>
   <string name="badge_text_more">και %d ακόμη</string>
   <string name="button_connect_plex">Σύνδεση Plex</string>
+  <string name="button_description_sort_default">Αρχική σειρά</string>
+  <string name="button_description_sort_release_date_asc">Παλαιότερα πρώτα</string>
+  <string name="button_description_sort_release_date_desc">Νεότερα πρώτα</string>
+  <string name="button_description_sort_remaining_asc">Λιγότερα επεισόδια που απομένουν</string>
+  <string name="button_description_sort_remaining_desc">Περισσότερα επεισόδια που απομένουν</string>
+  <string name="button_description_sort_smart">Προτεινόμενα για εσάς</string>
   <string name="button_disconnect_plex">Αποσύνδεση</string>
   <string name="button_label_activity_ratings">Προβολή βαθμολογιών</string>
   <string name="button_label_activity_reviews">Προβολή κριτικών</string>
@@ -913,6 +919,7 @@
   <string name="label_drag_image_to_adjust">Σύρετε την εικόνα για προσαρμογή</string>
   <string name="label_favorites">Αγαπημένα</string>
   <string name="label_keep_play">Διατήρηση</string>
+  <string name="label_list_item_count">%s στοιχεία</string>
   <string name="label_plex_connected">Συνδεδεμένο με το Plex</string>
   <string name="label_plex_connection">Σύνδεση</string>
   <string name="label_plex_history_date">Ημερομηνία</string>
@@ -1227,6 +1234,7 @@
   <string name="page_title_year_to_date">Έτος μέχρι σήμερα</string>
   <string name="preview_feature_description_edit_mode">Ενεργοποιήστε τα χειριστήρια για απόκρυψη ή εμφάνιση διαμορφώσιμων ενοτήτων σε όλη την εφαρμογή.</string>
   <string name="preview_feature_description_leaderboard">Κατατάξτε τους ανθρώπους που ακολουθείτε με βάση τον χρόνο παρακολούθησης και δείτε πού βρίσκεστε ανάμεσά τους.</string>
+  <string name="preview_feature_description_list_counts">Δείχνει πόσα στοιχεία περιέχει μια λίστα και πόσες λίστες έχει μια ενότητα.</string>
   <string name="preview_feature_description_parental_guide">Εμφάνιση επιπέδων κινδύνου περιεχομένου στο πλαίσιο λεπτομερειών για ταινίες, σειρές και επεισόδια.</string>
   <string name="preview_feature_description_rewatch">Ξεκινήστε συνεδρίες επανάληψης παρακολούθησης για εκπομπές που έχετε ήδη δει, κάντε check-in ή επισημάνετε επεισόδια ως παρακολουθημένα απευθείας από το συρτάρι συνεδριών.</string>
   <string name="preview_feature_description_scoped_favorites">Οριοθετήστε τις λίστες αγαπημένων εμφανίζοντας τα αγαπημένα του τρέχοντος έτους στα προφίλ και ομαδοποιώντας την πλήρη λίστα αγαπημένων ανά έτος.</string>
@@ -1234,6 +1242,7 @@
   <string name="preview_feature_description_up_next_smart_sort">Δοκιμάστε έναν πιο έξυπνο τρόπο να ταξινομήσετε τη Συνέχιση Παρακολούθησης.</string>
   <string name="preview_feature_title_edit_mode">Λειτουργία επεξεργασίας</string>
   <string name="preview_feature_title_leaderboard">Πάνθεον</string>
+  <string name="preview_feature_title_list_counts">Πλήθος Λιστών</string>
   <string name="preview_feature_title_rewatch">Επανάληψη</string>
   <string name="preview_feature_title_scoped_favorites">Αγαπημένα με χρονικό πλαίσιο</string>
   <string name="preview_feature_title_soundtrack">Σάουντρακ</string>

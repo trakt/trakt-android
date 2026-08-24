@@ -24,6 +24,12 @@
   <string name="badge_text_get_vip">Obtenir VIP</string>
   <string name="badge_text_more">et %d de plus</string>
   <string name="button_connect_plex">Connecter Plex</string>
+  <string name="button_description_sort_default">Ordre original</string>
+  <string name="button_description_sort_release_date_asc">Du plus ancien au plus récent</string>
+  <string name="button_description_sort_release_date_desc">Du plus récent au plus ancien</string>
+  <string name="button_description_sort_remaining_asc">Le moins d\'épisodes restants</string>
+  <string name="button_description_sort_remaining_desc">Le plus d\'épisodes restants</string>
+  <string name="button_description_sort_smart">Recommandé pour vous</string>
   <string name="button_disconnect_plex">Déconnecter</string>
   <string name="button_label_activity_ratings">Voir les évaluations</string>
   <string name="button_label_activity_reviews">Voir les critiques</string>
@@ -913,6 +919,7 @@
   <string name="label_drag_image_to_adjust">Faites glisser l\'image pour l\'ajuster</string>
   <string name="label_favorites">Favoris</string>
   <string name="label_keep_play">Conserver</string>
+  <string name="label_list_item_count">%s éléments</string>
   <string name="label_plex_connected">Connecté à Plex</string>
   <string name="label_plex_connection">Connexion</string>
   <string name="label_plex_history_date">Date</string>
@@ -1227,6 +1234,7 @@
   <string name="page_title_year_to_date">Année à ce jour</string>
   <string name="preview_feature_description_edit_mode">Activez les commandes pour masquer ou afficher les sections configurables dans toute l\'application.</string>
   <string name="preview_feature_description_leaderboard">Classez les personnes que vous suivez par temps de visionnement et voyez où vous vous situez parmi elles.</string>
+  <string name="preview_feature_description_list_counts">Indique le nombre d\'éléments que contient une liste et le nombre de listes qu\'une section possède.</string>
   <string name="preview_feature_description_parental_guide">Afficher les niveaux de risque de contenu dans le tiroir de détails pour les films, les émissions et les épisodes.</string>
   <string name="preview_feature_description_rewatch">Démarrez des sessions de revisionnage pour les émissions que vous avez déjà vues, enregistrez-vous ou marquez les épisodes comme vus directement depuis le panneau de session.</string>
   <string name="preview_feature_description_scoped_favorites">Délimitez les listes de favoris en affichant les favoris de l\'année en cours sur les profils et en regroupant la liste complète des favoris par année.</string>
@@ -1234,6 +1242,7 @@
   <string name="preview_feature_description_up_next_smart_sort">Découvrez une façon plus intelligente de trier vos titres « En cours ».</string>
   <string name="preview_feature_title_edit_mode">Mode édition</string>
   <string name="preview_feature_title_leaderboard">Panthéon</string>
+  <string name="preview_feature_title_list_counts">Compteurs de listes</string>
   <string name="preview_feature_title_rewatch">Revisionnage</string>
   <string name="preview_feature_title_scoped_favorites">Favoris ciblés</string>
   <string name="preview_feature_title_soundtrack">Bande originale</string>

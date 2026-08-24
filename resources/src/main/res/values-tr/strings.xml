@@ -24,6 +24,12 @@
   <string name="badge_text_get_vip">VIP Ol</string>
   <string name="badge_text_more">ve %d daha</string>
   <string name="button_connect_plex">Plex\'i Bağla</string>
+  <string name="button_description_sort_default">Orijinal sıralama</string>
+  <string name="button_description_sort_release_date_asc">Eskiden yeniye</string>
+  <string name="button_description_sort_release_date_desc">Yeniden eskiye</string>
+  <string name="button_description_sort_remaining_asc">En az bölüm kalan</string>
+  <string name="button_description_sort_remaining_desc">En çok bölüm kalan</string>
+  <string name="button_description_sort_smart">Size özel önerilenler</string>
   <string name="button_disconnect_plex">Bağlantıyı Kes</string>
   <string name="button_label_activity_ratings">Puanlamaları görüntüle</string>
   <string name="button_label_activity_reviews">Yorumları görüntüle</string>
@@ -913,6 +919,7 @@
   <string name="label_drag_image_to_adjust">Görseli ayarlamak için sürükleyin</string>
   <string name="label_favorites">Favoriler</string>
   <string name="label_keep_play">Tut</string>
+  <string name="label_list_item_count">%s öğe</string>
   <string name="label_plex_connected">Plex\'e bağlı</string>
   <string name="label_plex_connection">Bağlantı</string>
   <string name="label_plex_history_date">Tarih</string>
@@ -1227,6 +1234,7 @@
   <string name="page_title_year_to_date">Yıl Başından Bugüne</string>
   <string name="preview_feature_description_edit_mode">Uygulama genelinde yapılandırılabilir bölümleri gizleme veya gösterme kontrollerini etkinleştirin.</string>
   <string name="preview_feature_description_leaderboard">Takip ettiğin kişileri izleme süresine göre sırala ve aralarında nerede olduğunu gör.</string>
+  <string name="preview_feature_description_list_counts">Bir listenin kaç öğe içerdiğini ve bir bölümün kaç listesi olduğunu gösterir.</string>
   <string name="preview_feature_description_parental_guide">Filmler, diziler ve bölümler için detay çekmecesinde içerik risk seviyelerini göster.</string>
   <string name="preview_feature_description_rewatch">Halihazırda izlediğiniz diziler için yeniden izleme oturumları başlatın, izlenen bölümleri doğrudan oturum çekmecesinden kaydedin veya izlendi olarak işaretleyin.</string>
   <string name="preview_feature_description_scoped_favorites">Favori listelerini, profillerde güncel yılın favorilerini göstererek ve tüm favori listesini yıla göre gruplandırarak zaman kutucuklarına ayırın.</string>
@@ -1234,6 +1242,7 @@
   <string name="preview_feature_description_up_next_smart_sort">İzlemeye Devam Edin listenizi sıralamak için daha akıllı bir yolu test edin.</string>
   <string name="preview_feature_title_edit_mode">Düzenleme Modu</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
+  <string name="preview_feature_title_list_counts">Liste Sayıları</string>
   <string name="preview_feature_title_rewatch">Yeniden İzleme</string>
   <string name="preview_feature_title_scoped_favorites">Kapsamlı Favoriler</string>
   <string name="preview_feature_title_soundtrack">Film Müziği</string>

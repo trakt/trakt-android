@@ -24,6 +24,12 @@
   <string name="badge_text_get_vip">VIP</string>
   <string name="badge_text_more">и еще %d</string>
   <string name="button_connect_plex">Подключить Plex</string>
+  <string name="button_description_sort_default">Исходный порядок</string>
+  <string name="button_description_sort_release_date_asc">Сначала старые</string>
+  <string name="button_description_sort_release_date_desc">Сначала новые</string>
+  <string name="button_description_sort_remaining_asc">Меньше серий осталось</string>
+  <string name="button_description_sort_remaining_desc">Больше серий осталось</string>
+  <string name="button_description_sort_smart">Рекомендовано для вас</string>
   <string name="button_disconnect_plex">Отключить</string>
   <string name="button_label_activity_ratings">Посмотреть оценки</string>
   <string name="button_label_activity_reviews">Посмотреть отзывы</string>
@@ -913,6 +919,7 @@
   <string name="label_drag_image_to_adjust">Перетащите изображение для настройки</string>
   <string name="label_favorites">Избранное</string>
   <string name="label_keep_play">Оставить</string>
+  <string name="label_list_item_count">%s элементов</string>
   <string name="label_plex_connected">Подключено к Plex</string>
   <string name="label_plex_connection">Подключение</string>
   <string name="label_plex_history_date">Дата</string>
@@ -1227,6 +1234,7 @@
   <string name="page_title_year_to_date">С начала года</string>
   <string name="preview_feature_description_edit_mode">Включите элементы управления для скрытия или отображения настраиваемых разделов во всем приложении.</string>
   <string name="preview_feature_description_leaderboard">Оценивайте людей, на которых вы подписаны, по времени просмотра и смотрите, какое место вы занимаете среди них.</string>
+  <string name="preview_feature_description_list_counts">Показывает, сколько элементов содержит список и сколько списков в разделе.</string>
   <string name="preview_feature_description_parental_guide">Показывать уровни риска контента в выдвижной панели сведений для фильмов, сериалов и эпизодов.</string>
   <string name="preview_feature_description_rewatch">Начните сеансы пересмотра для шоу, которые вы уже видели, отмечайте просмотр или помечайте эпизоды как просмотренные прямо из панели сеанса.</string>
   <string name="preview_feature_description_scoped_favorites">Ограничивайте списки избранного по времени, показывая избранное текущего года в профилях и группируя полный список избранного по годам.</string>
@@ -1234,6 +1242,7 @@
   <string name="preview_feature_description_up_next_smart_sort">Попробуйте более умный способ сортировки раздела \"Смотреть дальше\".</string>
   <string name="preview_feature_title_edit_mode">Режим редактирования</string>
   <string name="preview_feature_title_leaderboard">Пантеон</string>
+  <string name="preview_feature_title_list_counts">Счетчики списков</string>
   <string name="preview_feature_title_rewatch">Пересмотр</string>
   <string name="preview_feature_title_scoped_favorites">Избранное по времени</string>
   <string name="preview_feature_title_soundtrack">Саундтрек</string>

@@ -24,6 +24,12 @@
   <string name="badge_text_get_vip">Word VIP</string>
   <string name="badge_text_more">en %d meer</string>
   <string name="button_connect_plex">Verbind Plex</string>
+  <string name="button_description_sort_default">Oorspronkelijke volgorde</string>
+  <string name="button_description_sort_release_date_asc">Oudste eerst</string>
+  <string name="button_description_sort_release_date_desc">Nieuwste eerst</string>
+  <string name="button_description_sort_remaining_asc">Minste afleveringen over</string>
+  <string name="button_description_sort_remaining_desc">Meeste afleveringen over</string>
+  <string name="button_description_sort_smart">Aanbevolen voor jou</string>
   <string name="button_disconnect_plex">Ontkoppelen</string>
   <string name="button_label_activity_ratings">Bekijk beoordelingen</string>
   <string name="button_label_activity_reviews">Bekijk recensies</string>
@@ -913,6 +919,7 @@
   <string name="label_drag_image_to_adjust">Sleep de afbeelding om aan te passen</string>
   <string name="label_favorites">Favorieten</string>
   <string name="label_keep_play">Behouden</string>
+  <string name="label_list_item_count">%s items</string>
   <string name="label_plex_connected">Verbonden met Plex</string>
   <string name="label_plex_connection">Verbinding</string>
   <string name="label_plex_history_date">Datum</string>
@@ -1227,6 +1234,7 @@
   <string name="page_title_year_to_date">Jaar tot nu toe</string>
   <string name="preview_feature_description_edit_mode">Schakel besturingselementen in voor het verbergen of weergeven van configureerbare secties in de app.</string>
   <string name="preview_feature_description_leaderboard">Rangschik de mensen die je volgt op kijktijd en zie waar jij eindigt.</string>
+  <string name="preview_feature_description_list_counts">Toont hoeveel items een lijst bevat en hoeveel lijsten een sectie heeft.</string>
   <string name="preview_feature_description_parental_guide">Toon risiconiveaus van de inhoud in het detailscherm voor films, series en afleveringen.</string>
   <string name="preview_feature_description_rewatch">Start nieuwe kijkbeurten voor series die je al hebt gezien, check in of markeer afleveringen als bekeken, direct vanuit het sessiepaneel.</string>
   <string name="preview_feature_description_scoped_favorites">Beperk favorietenlijsten door favorieten van het huidige jaar op profielen weer te geven en de volledige favorietenlijst per jaar te groeperen.</string>
@@ -1234,6 +1242,7 @@
   <string name="preview_feature_description_up_next_smart_sort">Probeer een slimmere manier om je \'Verder kijken\' te sorteren.</string>
   <string name="preview_feature_title_edit_mode">Bewerkmodus</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
+  <string name="preview_feature_title_list_counts">Lijstaantallen</string>
   <string name="preview_feature_title_rewatch">Opnieuw bekijken</string>
   <string name="preview_feature_title_scoped_favorites">Gerichte favorieten</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
