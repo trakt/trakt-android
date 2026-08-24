@@ -85,6 +85,7 @@ import tv.trakt.trakt.core.sync.di.syncModule
 import tv.trakt.trakt.core.trivia.di.triviaModule
 import tv.trakt.trakt.core.userprofile.di.userProfileModule
 import tv.trakt.trakt.helpers.player.di.youTubePlayerModule
+import tv.trakt.trakt.ui.components.dateselection.otherdatepicker.di.otherDatePickerModule
 import tv.trakt.trakt.widgets.di.widgetsModule
 import java.util.concurrent.TimeUnit.MINUTES
 import tv.trakt.trakt.common.R as RCommon
@@ -202,6 +203,7 @@ internal class TraktApplication : Application() {
                 youTubePlayerModule,
                 shareModule,
                 widgetsModule,
+                otherDatePickerModule,
             )
         }
     }

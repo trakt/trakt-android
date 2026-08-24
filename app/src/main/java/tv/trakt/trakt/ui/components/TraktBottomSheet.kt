@@ -5,9 +5,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
@@ -32,6 +34,7 @@ internal fun TraktBottomSheet(
     modifier: Modifier = Modifier,
     containerColor: Color = TraktTheme.colors.dialogContainer,
     contentColor: Color = TraktTheme.colors.dialogContent,
+    contentWindowInsets: @Composable () -> WindowInsets = { BottomSheetDefaults.modalWindowInsets },
     handle: Boolean = true,
     onDismiss: () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit,
@@ -41,6 +44,7 @@ internal fun TraktBottomSheet(
         sheetState = sheetState,
         containerColor = containerColor,
         contentColor = contentColor,
+        contentWindowInsets = contentWindowInsets,
         scrimColor = Color.Black.copy(alpha = 0.66F),
         onDismissRequest = onDismiss,
         dragHandle = if (handle) {
