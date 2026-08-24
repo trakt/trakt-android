@@ -14,7 +14,8 @@ internal class GetCommentsFilterUseCase(
     suspend fun getFilter(): CommentsFilter {
         val storedFilter = dataStore.data.first()[KEY_COMMENTS_FILTER]
         return storedFilter?.let {
-            CommentsFilter.valueOf(it)
+            runCatching { CommentsFilter.valueOf(it) }
+                .getOrDefault(CommentsFilter.Popular)
         } ?: CommentsFilter.Popular
     }
 
