@@ -59,6 +59,7 @@ import coil3.request.crossfade
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.theme.HorizontalEpisodeImageAspectRatio
@@ -332,7 +333,7 @@ internal fun PanelHorizontalMediaCard(
                         Icon(
                             painter = painterResource(R.drawable.ic_more_vertical),
                             contentDescription = null,
-                            tint = Color.White,
+                            tint = TraktTheme.colors.textPrimary,
                             modifier = Modifier
                                 .padding(top = 1.5.dp)
                                 .graphicsLayer {
@@ -359,7 +360,7 @@ internal fun PanelHorizontalMediaCard(
 )
 @Composable
 private fun PosterPreview() {
-    TraktTheme {
+    TraktThemeLightDark {
         val previewHandler = AsyncImagePreviewHandler {
             ColorImage(Color.Blue.toArgb())
         }
