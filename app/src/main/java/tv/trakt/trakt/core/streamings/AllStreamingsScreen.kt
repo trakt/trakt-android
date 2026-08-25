@@ -23,7 +23,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -49,8 +51,8 @@ import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingType.Favorite
 import tv.trakt.trakt.common.model.streamings.StreamingType.Subscription
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.core.streamings.ui.AllStreamingsServiceGroup
 import tv.trakt.trakt.core.streamings.ui.AllStreamingsSkeletonRow
-import tv.trakt.trakt.core.streamings.ui.AllStreamingsSourceRow
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
@@ -132,6 +134,8 @@ private fun ContentList(
     onBackClick: () -> Unit,
     onServiceClick: (StreamingService) -> Unit,
 ) {
+    var expandedGroups by rememberSaveable { mutableStateOf(setOf<String>()) }
+
     LazyColumn(
         state = listState,
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
@@ -167,12 +171,24 @@ private fun ContentList(
                 items = section.rows,
                 key = { "${section.type.type}-${it.source}" },
             ) { row ->
-                AllStreamingsSourceRow(
+                val groupKey = "${section.type.type}-${row.source}"
+                AllStreamingsServiceGroup(
                     row = row,
                     type = section.type,
-                    startPadding = horizontalPadding,
-                    endPadding = horizontalPadding,
+                    expanded = groupKey in expandedGroups,
+                    onToggleExpand = {
+                        expandedGroups = when (groupKey) {
+                            in expandedGroups -> expandedGroups - groupKey
+                            else -> expandedGroups + groupKey
+                        }
+                    },
                     onServiceClick = onServiceClick,
+                    modifier = Modifier
+                        .padding(horizontal = horizontalPadding)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
                 )
             }
         }
@@ -190,12 +206,21 @@ private fun ContentList(
                         .background(
                             color = TraktTheme.colors.skeletonShimmer,
                             shape = RoundedCornerShape(100),
+                        )
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
                         ),
                 )
             }
             items(count = 1, key = { "skeleton-$it" }) {
                 AllStreamingsSkeletonRow(
-                    modifier = Modifier.padding(start = horizontalPadding),
+                    modifier = Modifier
+                        .padding(horizontal = horizontalPadding)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
                 )
             }
         }
