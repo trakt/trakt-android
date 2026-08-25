@@ -52,6 +52,7 @@ internal fun DetailsHeader(
                     ?: "-",
                 color = TraktTheme.colors.textSecondary,
                 style = TraktTheme.typography.paragraphSmaller,
+                modifier = Modifier.padding(top = 1.dp),
             )
         },
         extraRightColumn = {

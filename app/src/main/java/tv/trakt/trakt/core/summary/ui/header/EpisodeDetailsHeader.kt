@@ -118,7 +118,8 @@ internal fun DetailsHeader(
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .alpha(animatedAlpha),
+                    .alpha(animatedAlpha)
+                    .padding(top = 1.dp),
             ) {
                 Text(
                     text = "${stringResource(R.string.text_directed_by_short)} ",

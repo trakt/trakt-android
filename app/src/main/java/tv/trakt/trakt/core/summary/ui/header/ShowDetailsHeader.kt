@@ -92,7 +92,8 @@ internal fun DetailsHeader(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = spacedBy(3.dp),
                 modifier = Modifier
-                    .alpha(animatedAlpha),
+                    .alpha(animatedAlpha)
+                    .padding(top = 1.dp),
             ) {
                 Text(
                     text = stringResource(R.string.text_created_by_short),

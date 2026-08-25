@@ -2,6 +2,8 @@
 
 package tv.trakt.trakt.core.summary.ui.header
 
+import android.content.ClipData
+import android.os.Build
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -18,11 +20,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -30,6 +34,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.ClipEntry
+import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -42,6 +48,8 @@ import androidx.core.net.toUri
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.launch
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.Config.webImdbPersonUrl
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openExternalAppLink
@@ -161,17 +169,23 @@ internal fun DetailsHeader(
                 titleHeader()
             }
 
+            val clipboard = LocalClipboard.current
+            val snackbar = LocalSnackbarState.current
+            val scope = rememberCoroutineScope()
+            val copiedLabel = stringResource(R.string.button_label_copied)
+
             Crossfade(
                 targetState = titleTranslation,
                 animationSpec = tween(250),
                 modifier = Modifier
                     .fillMaxWidth(),
             ) { translation ->
+                val displayedTitle = when {
+                    !translation.isNullOrBlank() -> translation
+                    else -> title
+                }
                 Text(
-                    text = when {
-                        !translation.isNullOrBlank() -> translation
-                        else -> title
-                    },
+                    text = displayedTitle,
                     textAlign = TextAlign.Center,
                     color = TraktTheme.colors.textPrimary,
                     style = TraktTheme.typography.heading3,
@@ -183,7 +197,21 @@ internal fun DetailsHeader(
                         stepSize = 2.sp,
                     ),
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .onClick {
+                            scope.launch {
+                                clipboard.setClipEntry(
+                                    ClipEntry(ClipData.newPlainText(displayedTitle, displayedTitle)),
+                                )
+                                // Android 13+ shows its own clipboard confirmation overlay.
+                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                                    snackbar.showSnackbar(
+                                        message = copiedLabel,
+                                        duration = SnackbarDuration.Short,
+                                    )
+                                }
+                            }
+                        },
                 )
             }
 
@@ -251,7 +279,7 @@ internal fun DetailsHeader(
                         contentDescription = null,
                         modifier = Modifier
                             .padding(start = 5.5.dp)
-                            .size(17.dp)
+                            .size(18.dp)
                             .graphicsLayer {
                                 translationY = 0.4.dp.toPx()
                             },
