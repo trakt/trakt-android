@@ -163,13 +163,13 @@ private fun GroupHeader(
                 service = source,
                 type = type,
                 modifier = Modifier
-                    .onClick(onClick = onCountryClick),
+                    .onClick(onClick = if (flagsOnly) onClick else onCountryClick),
             )
 
             Column(
                 verticalArrangement = spacedBy(4.dp),
                 modifier = Modifier
-                    .onClick(onClick = onCountryClick),
+                    .onClick(onClick = if (flagsOnly) onClick else onCountryClick),
             ) {
                 Text(
                     text = source.name,
