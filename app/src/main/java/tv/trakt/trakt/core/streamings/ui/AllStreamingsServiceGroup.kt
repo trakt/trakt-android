@@ -66,7 +66,7 @@ internal val GroupShape = RoundedCornerShape(16.dp)
 
 private val ChipShape = RoundedCornerShape(12.dp)
 private val LogoTileSize = 60.dp
-private val InnerSpace = 8.dp
+private val InnerSpace = 6.dp
 
 @Composable
 internal fun AllStreamingsServiceGroup(
