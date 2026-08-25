@@ -249,7 +249,7 @@ private fun ContentList(
                         .fillMaxWidth()
                         .height(48.dp)
                         .background(
-                            color = TraktTheme.colors.skeletonShimmer,
+                            color = TraktTheme.colors.skeletonContainer,
                             shape = RoundedCornerShape(16.dp),
                         )
                         .animateItem(
