@@ -222,9 +222,11 @@ private fun ContentList(
                     type = section.type,
                     expanded = query.isNotBlank() || groupKey in expandedGroups,
                     onToggleExpand = {
-                        expandedGroups = when (groupKey) {
-                            in expandedGroups -> expandedGroups - groupKey
-                            else -> expandedGroups + groupKey
+                        if (query.isBlank()) {
+                            expandedGroups = when (groupKey) {
+                                in expandedGroups -> expandedGroups - groupKey
+                                else -> expandedGroups + groupKey
+                            }
                         }
                     },
                     onServiceClick = onServiceClick,
