@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
@@ -58,6 +59,7 @@ import tv.trakt.trakt.common.model.streamings.StreamingType.Free
 import tv.trakt.trakt.common.model.streamings.StreamingType.Purchase
 import tv.trakt.trakt.common.model.streamings.StreamingType.Rent
 import tv.trakt.trakt.common.model.streamings.StreamingType.Subscription
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.util.Locale
@@ -92,8 +94,8 @@ internal fun AllStreamingsServiceGroup(
         verticalArrangement = spacedBy(InnerSpace),
         modifier = modifier
             .fillMaxWidth()
-            .clip(GroupShape)
-            .background(TraktTheme.colors.panelCardContainer),
+            .shadow(TraktTheme.colors.shadowDynamicSmall, GroupShape)
+            .background(TraktTheme.colors.panelCardContainer, GroupShape),
     ) {
         GroupHeader(
             services = row.services,
@@ -108,8 +110,8 @@ internal fun AllStreamingsServiceGroup(
         if (gridServices.isNotEmpty()) {
             AnimatedVisibility(
                 visible = expanded,
-                enter = expandVertically(animationSpec = tween(50), expandFrom = Alignment.Top),
-                exit = shrinkVertically(animationSpec = tween(100), shrinkTowards = Alignment.Top),
+                enter = expandVertically(animationSpec = tween(100)),
+                exit = shrinkVertically(animationSpec = tween(100)),
             ) {
                 CountryGrid(
                     services = gridServices,
@@ -455,7 +457,7 @@ internal fun countryName(country: String): String {
 @DevicePreview
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         val previewHandler = AsyncImagePreviewHandler {
             ColorImage(Color.White.toArgb())
         }
@@ -469,6 +471,7 @@ private fun Preview() {
                 ),
                 type = Subscription,
                 expanded = false,
+                modifier = Modifier.padding(16.dp),
             )
         }
     }
