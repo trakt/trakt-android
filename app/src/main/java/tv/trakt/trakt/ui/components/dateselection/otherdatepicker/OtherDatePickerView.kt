@@ -59,6 +59,7 @@ import tv.trakt.trakt.common.helpers.extensions.toLocalTime
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images.Size.THUMB
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.common.ui.theme.colors.Red600
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.EpisodeItem
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieItem
@@ -373,6 +374,18 @@ private fun HistoryList(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(top = 14.dp),
+        )
+        return
+    }
+
+    if (state.error != null) {
+        Text(
+            text = state.error.message ?: stringResource(R.string.error_text_unexpected_error_short),
+            color = Red600,
+            style = TraktTheme.typography.paragraphSmall,
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
         )
         return
     }
