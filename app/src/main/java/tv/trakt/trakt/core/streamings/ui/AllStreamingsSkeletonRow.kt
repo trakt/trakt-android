@@ -8,12 +8,14 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -34,15 +36,16 @@ internal fun AllStreamingsSkeletonRow(
             label = "shimmerTransition",
         )
 
-    Row(
-        horizontalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
+    Column(
+        verticalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
         modifier = modifier,
     ) {
         repeat(tiles) {
             Box(
                 modifier = Modifier
-                    .size(TileSize)
-                    .clip(TileShape)
+                    .fillMaxWidth()
+                    .height(76.dp)
+                    .clip(GroupShape)
                     .background(shimmerTransition),
             )
         }

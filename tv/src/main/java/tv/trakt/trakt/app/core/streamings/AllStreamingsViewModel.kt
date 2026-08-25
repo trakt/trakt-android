@@ -20,6 +20,7 @@ import tv.trakt.trakt.common.core.streamings.usecase.GetAllStreamingsUseCase
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.SeasonEpisode
 import tv.trakt.trakt.common.model.toTraktId
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class AllStreamingsViewModel(
     savedStateHandle: SavedStateHandle,
@@ -48,7 +49,7 @@ internal class AllStreamingsViewModel(
 
                 loadingState.update { true }
 
-                delay(500)
+                delay(500.milliseconds)
                 val sections = getAllStreamingsUseCase.getStreamings(
                     user = user,
                     request = StreamingsRequest(

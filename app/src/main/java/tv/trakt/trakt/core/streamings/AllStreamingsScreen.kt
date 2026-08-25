@@ -13,19 +13,27 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.clearText
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -35,6 +43,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.core.streamings.model.AllStreamingsSection
@@ -49,10 +58,12 @@ import tv.trakt.trakt.common.model.streamings.StreamingService
 import tv.trakt.trakt.common.model.streamings.StreamingType.Favorite
 import tv.trakt.trakt.common.model.streamings.StreamingType.Subscription
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.core.streamings.ui.AllStreamingsServiceGroup
 import tv.trakt.trakt.core.streamings.ui.AllStreamingsSkeletonRow
-import tv.trakt.trakt.core.streamings.ui.AllStreamingsSourceRow
+import tv.trakt.trakt.core.streamings.ui.countryName
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.InputField
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -89,6 +100,7 @@ private fun AllStreamingsContent(
     onServiceClick: (StreamingService) -> Unit = {},
 ) {
     val listState = rememberLazyListState()
+    val searchState = rememberTextFieldState()
     val listScrollConnection = rememberSaveable(saver = SimpleScrollConnection.Saver) {
         SimpleScrollConnection()
     }
@@ -109,6 +121,7 @@ private fun AllStreamingsContent(
         ContentList(
             state = state,
             listState = listState,
+            searchState = searchState,
             horizontalPadding = horizontalPadding,
             contentPadding = PaddingValues(
                 top = WindowInsets.statusBars.asPaddingValues()
@@ -127,11 +140,17 @@ private fun AllStreamingsContent(
 private fun ContentList(
     state: AllStreamingsState,
     listState: LazyListState,
+    searchState: TextFieldState,
     horizontalPadding: Dp,
     contentPadding: PaddingValues,
     onBackClick: () -> Unit,
     onServiceClick: (StreamingService) -> Unit,
 ) {
+    var expandedGroups by rememberSaveable { mutableStateOf(setOf<String>()) }
+
+    val query = searchState.text.toString().trim()
+    val sections = remember(state.sections, query) { state.sections.filterByQuery(query) }
+
     LazyColumn(
         state = listState,
         verticalArrangement = spacedBy(TraktTheme.spacing.mainRowSpace),
@@ -148,7 +167,37 @@ private fun ContentList(
             )
         }
 
-        state.sections.forEachIndexed { index, section ->
+        if (state.sections.isNotEmpty()) {
+            item(key = "search") {
+                InputField(
+                    state = searchState,
+                    border = 1.dp,
+                    icon = painterResource(R.drawable.ic_search_off),
+                    containerColor = Color.Transparent,
+                    placeholder = stringResource(R.string.input_placeholder_search_streaming_services),
+                    endSlot = {
+                        if (searchState.text.isNotBlank()) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_close),
+                                contentDescription = null,
+                                tint = TraktTheme.colors.textSecondary,
+                                modifier = Modifier
+                                    .size(18.dp)
+                                    .onClick {
+                                        searchState.clearText()
+                                    },
+                            )
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = horizontalPadding)
+                        .padding(bottom = 12.dp),
+                )
+            }
+        }
+
+        sections.forEachIndexed { index, section ->
             item(key = "header-${section.type.type}") {
                 TraktHeader(
                     title = stringResource(section.type.labelRes),
@@ -167,17 +216,49 @@ private fun ContentList(
                 items = section.rows,
                 key = { "${section.type.type}-${it.source}" },
             ) { row ->
-                AllStreamingsSourceRow(
+                val groupKey = "${section.type.type}-${row.source}"
+                AllStreamingsServiceGroup(
                     row = row,
                     type = section.type,
-                    startPadding = horizontalPadding,
-                    endPadding = horizontalPadding,
+                    expanded = query.isNotBlank() || groupKey in expandedGroups,
+                    onToggleExpand = {
+                        if (query.isBlank()) {
+                            expandedGroups = when (groupKey) {
+                                in expandedGroups -> expandedGroups - groupKey
+                                else -> expandedGroups + groupKey
+                            }
+                        }
+                    },
                     onServiceClick = onServiceClick,
+                    modifier = Modifier
+                        .padding(horizontal = horizontalPadding)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
                 )
             }
         }
 
         if (state.loading != Done && state.sections.isEmpty()) {
+            item(key = "skeleton-search") {
+                Box(
+                    modifier = Modifier
+                        .padding(horizontal = horizontalPadding)
+                        .padding(bottom = 12.dp)
+                        .fillMaxWidth()
+                        .height(48.dp)
+                        .background(
+                            color = TraktTheme.colors.skeletonShimmer,
+                            shape = RoundedCornerShape(16.dp),
+                        )
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
+                )
+            }
+
             item(key = "skeleton-header") {
                 TraktHeader(
                     title = "",
@@ -190,12 +271,21 @@ private fun ContentList(
                         .background(
                             color = TraktTheme.colors.skeletonShimmer,
                             shape = RoundedCornerShape(100),
+                        )
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
                         ),
                 )
             }
             items(count = 1, key = { "skeleton-$it" }) {
                 AllStreamingsSkeletonRow(
-                    modifier = Modifier.padding(start = horizontalPadding),
+                    modifier = Modifier
+                        .padding(horizontal = horizontalPadding)
+                        .animateItem(
+                            fadeInSpec = null,
+                            fadeOutSpec = null,
+                        ),
                 )
             }
         }
@@ -209,7 +299,7 @@ private fun ContentList(
                     modifier = Modifier.padding(horizontal = horizontalPadding),
                 )
             }
-        } else if (state.loading == Done && state.sections.isEmpty()) {
+        } else if (state.loading == Done && sections.isEmpty()) {
             item(key = "empty") {
                 Text(
                     text = stringResource(R.string.button_text_no_services),
@@ -256,7 +346,31 @@ private fun TitleBar(
     }
 }
 
-// -- Previews --
+private fun ImmutableList<AllStreamingsSection>.filterByQuery(query: String): ImmutableList<AllStreamingsSection> {
+    fun StreamingService.matchesCountry(query: String): Boolean {
+        return country.contains(query, ignoreCase = true) ||
+            countryName(country).contains(query, ignoreCase = true)
+    }
+
+    if (query.isBlank()) return this
+
+    return mapNotNull { section ->
+        val rows = section.rows.mapNotNull { row ->
+            val serviceMatch = row.services.any { it.name.contains(query, ignoreCase = true) }
+            if (serviceMatch) return@mapNotNull row
+
+            val services = row.services.filter { it.matchesCountry(query) }
+            when {
+                services.isEmpty() -> null
+                else -> row.copy(services = services.toImmutableList())
+            }
+        }
+        when {
+            rows.isEmpty() -> null
+            else -> section.copy(rows = rows.toImmutableList())
+        }
+    }.toImmutableList()
+}
 
 @DevicePreview
 @Composable
