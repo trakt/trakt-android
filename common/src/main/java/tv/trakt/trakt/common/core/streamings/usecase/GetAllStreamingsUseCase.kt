@@ -97,11 +97,6 @@ class GetAllStreamingsUseCase(
                 },
             )
 
-            // Free, purchase and rent are only offered for the user's own country.
-            if (country != userCountry) {
-                return@forEach
-            }
-
             free.addAll(
                 streaming.free.mapNotNull { freeService ->
                     val source = sources[freeService.source] ?: return@mapNotNull null

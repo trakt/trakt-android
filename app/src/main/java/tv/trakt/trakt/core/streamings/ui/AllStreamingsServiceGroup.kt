@@ -67,6 +67,7 @@ internal val GroupShape = RoundedCornerShape(16.dp)
 private val ChipShape = RoundedCornerShape(12.dp)
 private val LogoTileSize = 60.dp
 private val InnerSpace = 6.dp
+private const val MaxFlagsOnlyCount = 6
 
 @Composable
 internal fun AllStreamingsServiceGroup(
@@ -78,7 +79,13 @@ internal fun AllStreamingsServiceGroup(
     onServiceClick: (StreamingService) -> Unit = {},
 ) {
     val source = row.services.firstOrNull() ?: return
-    val others = remember(row.services) { row.services.drop(1) }
+    val gridServices = remember(row.services) {
+        when {
+            // Flags-only header has no tappable first country, so the grid lists all of them.
+            row.services.size in 2..MaxFlagsOnlyCount -> row.services
+            else -> row.services.drop(1)
+        }
+    }
 
     Column(
         verticalArrangement = spacedBy(InnerSpace),
@@ -88,9 +95,8 @@ internal fun AllStreamingsServiceGroup(
             .background(TraktTheme.colors.panelCardContainer),
     ) {
         GroupHeader(
-            source = source,
+            services = row.services,
             type = type,
-            othersCount = others.size,
             expanded = expanded,
             onClick = onToggleExpand,
             onCountryClick = { onServiceClick(source) },
@@ -98,14 +104,14 @@ internal fun AllStreamingsServiceGroup(
                 .padding(InnerSpace),
         )
 
-        if (others.isNotEmpty()) {
+        if (gridServices.isNotEmpty()) {
             AnimatedVisibility(
                 visible = expanded,
                 enter = expandVertically(animationSpec = tween(50), expandFrom = Alignment.Top),
                 exit = shrinkVertically(animationSpec = tween(100), shrinkTowards = Alignment.Top),
             ) {
                 CountryGrid(
-                    services = others,
+                    services = gridServices,
                     type = type,
                     onServiceClick = onServiceClick,
                     modifier = Modifier
@@ -119,14 +125,17 @@ internal fun AllStreamingsServiceGroup(
 
 @Composable
 private fun GroupHeader(
-    source: StreamingService,
+    services: List<StreamingService>,
     type: StreamingType,
-    othersCount: Int,
     expanded: Boolean,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     onCountryClick: () -> Unit = {},
 ) {
+    val source = services.first()
+    val othersCount = services.size - 1
+    val flagsOnly = services.size in 2..MaxFlagsOnlyCount
+
     val chevronRotation by animateFloatAsState(
         targetValue = if (expanded) 180F else 0F,
         label = "chevronRotation",
@@ -174,23 +183,38 @@ private fun GroupHeader(
                     verticalAlignment = CenterVertically,
                     horizontalArrangement = spacedBy(5.dp),
                 ) {
-                    if (flag != null) {
-                        Text(
-                            text = flag,
-                            style = TraktTheme.typography.cardSubtitle,
-                        )
-                    }
+                    when {
+                        flagsOnly -> {
+                            services.forEach { service ->
+                                Text(
+                                    text = remember(service.country) {
+                                        countryFlag(service.country) ?: service.country.uppercase()
+                                    },
+                                    style = TraktTheme.typography.cardSubtitle,
+                                    maxLines = 1,
+                                )
+                            }
+                        }
+                        else -> {
+                            if (flag != null) {
+                                Text(
+                                    text = flag,
+                                    style = TraktTheme.typography.cardSubtitle,
+                                )
+                            }
 
-                    Text(
-                        text = when {
-                            price.isNullOrBlank() -> name
-                            else -> "$name • $price"
-                        },
-                        color = TraktTheme.colors.textPrimary,
-                        style = TraktTheme.typography.cardSubtitle,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
+                            Text(
+                                text = when {
+                                    price.isNullOrBlank() -> name
+                                    else -> "$name • $price"
+                                },
+                                color = TraktTheme.colors.textPrimary,
+                                style = TraktTheme.typography.cardSubtitle,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -201,11 +225,13 @@ private fun GroupHeader(
                 horizontalArrangement = spacedBy(4.dp),
                 modifier = Modifier.padding(end = 2.dp),
             ) {
-                Text(
-                    text = "+$othersCount",
-                    color = TraktTheme.colors.textSecondary,
-                    style = TraktTheme.typography.meta,
-                )
+                if (!flagsOnly) {
+                    Text(
+                        text = "+$othersCount",
+                        color = TraktTheme.colors.textSecondary,
+                        style = TraktTheme.typography.meta,
+                    )
+                }
 
                 Icon(
                     painter = painterResource(R.drawable.ic_chevron_down_small),
