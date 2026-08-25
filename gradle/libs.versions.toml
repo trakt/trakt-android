@@ -1,6 +1,6 @@
 [versions]
-versionCode = "428"
-versionName = "3.18.1"
+versionCode = "430"
+versionName = "3.19.0"
 
 minSdk = "28"
 compileSdk = "37"
@@ -9,7 +9,7 @@ targetSdk = "37"
 # Libraries
 
 activityCompose = "1.13.0"
-agp = "9.3.1"
+agp = "9.3.2"
 androidxLifecycle = "2.11.0"
 androidxFoundation = "1.12.0"
 appcompat = "1.8.0"
