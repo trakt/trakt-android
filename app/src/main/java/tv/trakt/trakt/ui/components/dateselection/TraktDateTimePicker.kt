@@ -2,6 +2,7 @@
 
 package tv.trakt.trakt.ui.components.dateselection
 
+import android.os.Build
 import android.text.format.DateFormat
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Row
@@ -9,17 +10,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.TimePickerDialog
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
@@ -37,6 +41,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneOffset.UTC
+import java.util.Locale
 
 object PastSelectableDates : SelectableDates {
     private val nowUtc = nowUtc()
@@ -154,10 +159,14 @@ internal fun TraktDatePicker(
     initialDate: LocalDate = nowLocalDay(),
     selectableDates: SelectableDates = PastSelectableDates,
 ) {
-    val datePickerState = rememberDatePickerState(
-        initialSelectedDate = initialDate,
-        selectableDates = selectableDates,
-    )
+    val pickerLocale = pickerLocale()
+    val datePickerState = remember {
+        DatePickerState(
+            locale = pickerLocale,
+            initialSelectedDate = initialDate,
+            selectableDates = selectableDates,
+        )
+    }
 
     if (active) {
         DatePickerDialog(
@@ -228,6 +237,19 @@ internal fun TraktDatePicker(
             )
         }
     }
+}
+
+@Composable
+@ReadOnlyComposable
+private fun pickerLocale(): Locale {
+    val locale = LocalConfiguration.current.locales[0]
+    val builder = Locale.Builder().setLocale(locale)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        builder.setUnicodeLocaleKeyword("fw", "mon")
+    } else {
+        builder.setRegion("GB")
+    }
+    return builder.build()
 }
 
 @Preview(
