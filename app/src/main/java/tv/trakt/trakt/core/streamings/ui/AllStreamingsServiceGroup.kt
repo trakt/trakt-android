@@ -257,11 +257,12 @@ private fun SourceLogoTile(
     val context = LocalContext.current
     val contentColor = TraktTheme.colors.textPrimary
     val containerColor = TraktTheme.colors.placeholderContainer
+    val backgroundColor = TraktTheme.colors.panelCardContainer
 
     val logoFilter = remember(service.color, containerColor) {
         ColorFilter.tint(
             when {
-                service.color != null && getContrastRatio(service.color!!, containerColor) >= 3f -> {
+                service.color != null && getContrastRatio(service.color!!, backgroundColor) >= 3f -> {
                     service.color!!
                 }
                 else -> {
