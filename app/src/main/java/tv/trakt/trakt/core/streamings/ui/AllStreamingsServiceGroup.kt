@@ -439,7 +439,7 @@ private fun StreamingService.priceLabel(type: StreamingType): String? {
     return "$symbol$space$amount".trim()
 }
 
-private fun countryName(country: String): String {
+internal fun countryName(country: String): String {
     val name = Locale("", country).displayCountry
     return when {
         name.isBlank() -> country.uppercase()
