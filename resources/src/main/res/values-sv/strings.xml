@@ -1236,6 +1236,7 @@
   <string name="preview_feature_description_leaderboard">Rankar de personer du följer efter tittartid och se var du hamnar bland dem.</string>
   <string name="preview_feature_description_list_counts">Visar hur många poster en lista innehåller, och hur många listor en sektion har.</string>
   <string name="preview_feature_description_parental_guide">Visa risknivåer för innehåll i detaljlådan för filmer, serier och avsnitt.</string>
+  <string name="preview_feature_description_reviewer_stats">Visar hur mycket av en titel en recensent har sett bredvid sitt betyg.</string>
   <string name="preview_feature_description_rewatch">Starta omtittningssessioner för serier du redan har sett, checka in eller markera avsnitt som sedda direkt från sessionslådan.</string>
   <string name="preview_feature_description_scoped_favorites">Tidsavgränsa favoritlistor genom att visa favoriter från innevarande år på profiler och gruppera hela favoritlistan per år.</string>
   <string name="preview_feature_description_soundtrack">Lägger till en soundtrack-sektion på film- och seriesidor, med uppspelning där ett spår kan matchas.</string>
@@ -1243,6 +1244,7 @@
   <string name="preview_feature_title_edit_mode">Redigeringsläge</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_list_counts">Listantal</string>
+  <string name="preview_feature_title_reviewer_stats">Recensentstatistik</string>
   <string name="preview_feature_title_rewatch">Omtittning</string>
   <string name="preview_feature_title_scoped_favorites">Avgränsade favoriter</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
@@ -1295,6 +1297,7 @@
   <string name="tag_text_new">Ny</string>
   <string name="tag_text_new_preview_feature">Ny</string>
   <string name="tag_text_number_of_episodes">%d avsnitt</string>
+  <string name="tag_text_play">%d visningar</string>
   <string name="tag_text_plays">%d visningar</string>
   <string name="tag_text_premiere">Premiär</string>
   <string name="tag_text_preview">Förhandsvisning</string>
@@ -1765,6 +1768,7 @@
   <string name="tooltip_stats_shows">Tid spenderad på att titta på serier denna vecka</string>
   <string name="tooltip_text_future_activity">%s, framtiden är oskriven</string>
   <string name="tooltip_text_preview_feature">Den här funktionen får fortfarande en ny färg, medborgare. Vi jobbar hårt med användarupplevelsen för att få den att sjunga som en änglakör (eller åtminstone fungera smidigt utan att orsaka existentiell ångest).</string>
+  <string name="tooltip_text_watched_episodes">Sett %1$d av %2$d avsnitt</string>
   <string name="translated_value_error_comment_invalid_content">Recensioner måste vara minst 5 ord långa.</string>
   <string name="translated_value_error_comment_unknown">Ett fel uppstod när din recension postades. Försök igen senare.</string>
   <string name="translated_value_error_reply_invalid_content">Svar måste vara minst 5 ord långa.</string>

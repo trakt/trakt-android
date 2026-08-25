@@ -1236,6 +1236,7 @@
   <string name="preview_feature_description_leaderboard">Rangschik de mensen die je volgt op kijktijd en zie waar jij eindigt.</string>
   <string name="preview_feature_description_list_counts">Toont hoeveel items een lijst bevat en hoeveel lijsten een sectie heeft.</string>
   <string name="preview_feature_description_parental_guide">Toon risiconiveaus van de inhoud in het detailscherm voor films, series en afleveringen.</string>
+  <string name="preview_feature_description_reviewer_stats">Toont hoeveel van een titel een recensent heeft bekeken naast hun beoordeling.</string>
   <string name="preview_feature_description_rewatch">Start nieuwe kijkbeurten voor series die je al hebt gezien, check in of markeer afleveringen als bekeken, direct vanuit het sessiepaneel.</string>
   <string name="preview_feature_description_scoped_favorites">Beperk favorietenlijsten door favorieten van het huidige jaar op profielen weer te geven en de volledige favorietenlijst per jaar te groeperen.</string>
   <string name="preview_feature_description_soundtrack">Voegt een soundtracksectie toe aan film- en seriepagina\'s, met afspeelmogelijkheden wanneer een nummer kan worden gematcht.</string>
@@ -1243,6 +1244,7 @@
   <string name="preview_feature_title_edit_mode">Bewerkmodus</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_list_counts">Lijstaantallen</string>
+  <string name="preview_feature_title_reviewer_stats">Recensentstatistieken</string>
   <string name="preview_feature_title_rewatch">Opnieuw bekijken</string>
   <string name="preview_feature_title_scoped_favorites">Gerichte favorieten</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
@@ -1295,6 +1297,7 @@
   <string name="tag_text_new">Nieuw</string>
   <string name="tag_text_new_preview_feature">Nieuw</string>
   <string name="tag_text_number_of_episodes">%d afl.</string>
+  <string name="tag_text_play">%d weergave</string>
   <string name="tag_text_plays">%d weergaven</string>
   <string name="tag_text_premiere">Première</string>
   <string name="tag_text_preview">Voorbeeld</string>
@@ -1765,6 +1768,7 @@
   <string name="tooltip_stats_shows">Tijd besteed aan het kijken naar series deze week</string>
   <string name="tooltip_text_future_activity">%s, de toekomst is nog ongeschreven</string>
   <string name="tooltip_text_preview_feature">Deze functie krijgt nog een nieuwe lik verf, burger. We werken hard aan de UX om het te laten zingen als een engelenkoor (of in ieder geval soepel te laten werken zonder existentiële angst te veroorzaken).</string>
+  <string name="tooltip_text_watched_episodes">Bekeken %1$d van de %2$d afleveringen</string>
   <string name="translated_value_error_comment_invalid_content">Recensies moeten minimaal 5 woorden bevatten.</string>
   <string name="translated_value_error_comment_unknown">Er is een fout opgetreden bij het plaatsen van je recensie. Probeer het later opnieuw.</string>
   <string name="translated_value_error_reply_invalid_content">Reacties moeten minimaal 5 woorden bevatten.</string>

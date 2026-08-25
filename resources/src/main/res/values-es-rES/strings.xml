@@ -1236,6 +1236,7 @@
   <string name="preview_feature_description_leaderboard">Clasifica a las personas que sigues por tiempo de visualización y descubre tu posición entre ellas.</string>
   <string name="preview_feature_description_list_counts">Muestra cuántos elementos contiene una lista y cuántas listas tiene una sección.</string>
   <string name="preview_feature_description_parental_guide">Mostrar niveles de riesgo de contenido en el panel de detalles para películas, series y episodios.</string>
+  <string name="preview_feature_description_reviewer_stats">Muestra cuánto de un título vio un crítico junto a su calificación.</string>
   <string name="preview_feature_description_rewatch">Inicia sesiones de re-visualización para programas que ya has visto, registra o marca los episodios como vistos directamente desde el cajón de la sesión.</string>
   <string name="preview_feature_description_scoped_favorites">Limita las listas de favoritos por tiempo mostrando los favoritos del año actual en los perfiles y agrupando la lista completa de favoritos por año.</string>
   <string name="preview_feature_description_soundtrack">Añade una sección de banda sonora a las páginas de películas y series, con reproducción donde se pueda emparejar una pista.</string>
@@ -1243,6 +1244,7 @@
   <string name="preview_feature_title_edit_mode">Modo de edición</string>
   <string name="preview_feature_title_leaderboard">Panteón</string>
   <string name="preview_feature_title_list_counts">Conteo de listas</string>
+  <string name="preview_feature_title_reviewer_stats">Estadísticas del crítico</string>
   <string name="preview_feature_title_rewatch">Re-visualización</string>
   <string name="preview_feature_title_scoped_favorites">Favoritos delimitados</string>
   <string name="preview_feature_title_soundtrack">Banda sonora</string>
@@ -1295,6 +1297,7 @@
   <string name="tag_text_new">Nuevo</string>
   <string name="tag_text_new_preview_feature">Nuevo</string>
   <string name="tag_text_number_of_episodes">%d ep.</string>
+  <string name="tag_text_play">%d reproducción</string>
   <string name="tag_text_plays">%d reproducciones</string>
   <string name="tag_text_premiere">Estreno</string>
   <string name="tag_text_preview">Vista previa</string>
@@ -1765,6 +1768,7 @@
   <string name="tooltip_stats_shows">Tiempo dedicado a ver series esta semana</string>
   <string name="tooltip_text_future_activity">%s, el futuro está por escribir</string>
   <string name="tooltip_text_preview_feature">Esta función todavía está recibiendo una capa de pintura fresca, ciudadano. Estamos trabajando intensamente en la UX para que cante como un coro de ángeles (o al menos, funcione sin problemas y sin inducir un pavor existencial).</string>
+  <string name="tooltip_text_watched_episodes">Vistos %1$d de %2$d episodios</string>
   <string name="translated_value_error_comment_invalid_content">Las reseñas deben tener al menos 5 palabras.</string>
   <string name="translated_value_error_comment_unknown">Ocurrió un error al publicar tu reseña. Por favor, inténtalo de nuevo más tarde.</string>
   <string name="translated_value_error_reply_invalid_content">Las respuestas deben tener al menos 5 palabras.</string>

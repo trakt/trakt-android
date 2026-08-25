@@ -1236,6 +1236,7 @@
   <string name="preview_feature_description_leaderboard">Κατατάξτε τους ανθρώπους που ακολουθείτε με βάση τον χρόνο παρακολούθησης και δείτε πού βρίσκεστε ανάμεσά τους.</string>
   <string name="preview_feature_description_list_counts">Δείχνει πόσα στοιχεία περιέχει μια λίστα και πόσες λίστες έχει μια ενότητα.</string>
   <string name="preview_feature_description_parental_guide">Εμφάνιση επιπέδων κινδύνου περιεχομένου στο πλαίσιο λεπτομερειών για ταινίες, σειρές και επεισόδια.</string>
+  <string name="preview_feature_description_reviewer_stats">Εμφανίζει πόσο από έναν τίτλο παρακολούθησε ένας κριτικός δίπλα στην αξιολόγησή του.</string>
   <string name="preview_feature_description_rewatch">Ξεκινήστε συνεδρίες επανάληψης παρακολούθησης για εκπομπές που έχετε ήδη δει, κάντε check-in ή επισημάνετε επεισόδια ως παρακολουθημένα απευθείας από το συρτάρι συνεδριών.</string>
   <string name="preview_feature_description_scoped_favorites">Οριοθετήστε τις λίστες αγαπημένων εμφανίζοντας τα αγαπημένα του τρέχοντος έτους στα προφίλ και ομαδοποιώντας την πλήρη λίστα αγαπημένων ανά έτος.</string>
   <string name="preview_feature_description_soundtrack">Προσθέτει μια ενότητα σάουντρακ στις σελίδες ταινιών και εκπομπών, με αναπαραγωγή όπου ένα κομμάτι μπορεί να αντιστοιχιστεί.</string>
@@ -1243,6 +1244,7 @@
   <string name="preview_feature_title_edit_mode">Λειτουργία επεξεργασίας</string>
   <string name="preview_feature_title_leaderboard">Πάνθεον</string>
   <string name="preview_feature_title_list_counts">Πλήθος Λιστών</string>
+  <string name="preview_feature_title_reviewer_stats">Στατιστικά Κριτικού</string>
   <string name="preview_feature_title_rewatch">Επανάληψη</string>
   <string name="preview_feature_title_scoped_favorites">Αγαπημένα με χρονικό πλαίσιο</string>
   <string name="preview_feature_title_soundtrack">Σάουντρακ</string>
@@ -1295,6 +1297,7 @@
   <string name="tag_text_new">Νέο</string>
   <string name="tag_text_new_preview_feature">Νέο</string>
   <string name="tag_text_number_of_episodes">%d επ.</string>
+  <string name="tag_text_play">%d προβολή</string>
   <string name="tag_text_plays">%d προβολές</string>
   <string name="tag_text_premiere">Πρεμιέρα</string>
   <string name="tag_text_preview">Προεπισκόπηση</string>
@@ -1765,6 +1768,7 @@
   <string name="tooltip_stats_shows">Χρόνος που αφιερώθηκε σε σειρές αυτή την εβδομάδα</string>
   <string name="tooltip_text_future_activity">%s, το μέλλον είναι άγραφο</string>
   <string name="tooltip_text_preview_feature">Αυτή η λειτουργία παίρνει ακόμα ένα φρέσκο στρώμα μπογιάς, πολίτη. Εργαζόμαστε σκληρά στο UX, κάνοντάς το να τραγουδάει σαν χορωδία αγγέλων (ή τουλάχιστον, να λειτουργεί ομαλά χωρίς να προκαλεί υπαρξιακό φόβο).</string>
+  <string name="tooltip_text_watched_episodes">Παρακολουθήθηκαν %1$d από %2$d επεισόδια</string>
   <string name="translated_value_error_comment_invalid_content">Οι κριτικές πρέπει να είναι τουλάχιστον 5 λέξεις.</string>
   <string name="translated_value_error_comment_unknown">Παρουσιάστηκε σφάλμα κατά τη δημοσίευση της κριτικής σας. Παρακαλώ δοκιμάστε ξανά αργότερα.</string>
   <string name="translated_value_error_reply_invalid_content">Οι απαντήσεις πρέπει να είναι τουλάχιστον 5 λέξεις.</string>

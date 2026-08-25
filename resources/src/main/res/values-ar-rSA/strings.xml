@@ -1236,6 +1236,7 @@
   <string name="preview_feature_description_leaderboard">قم بتصنيف الأشخاص الذين تتابعهم حسب وقت المشاهدة وانظر إلى أين ستصل بينهم.</string>
   <string name="preview_feature_description_list_counts">يعرض عدد العناصر التي تحتويها القائمة، وعدد القوائم التي يملكها القسم.</string>
   <string name="preview_feature_description_parental_guide">اعرض مستويات خطورة المحتوى في درج التفاصيل للأفلام والعروض والحلقات.</string>
+  <string name="preview_feature_description_reviewer_stats">يعرض مقدار ما شاهده المراجع من عنوان بجوار تقييمه.</string>
   <string name="preview_feature_description_rewatch">ابدأ في إعادة مشاهدة الجلسات للعروض التي شاهدتها بالفعل، أو قم بتسجيل الدخول أو وضع علامة على الحلقات التي تمت مشاهدتها مباشرة من درج الجلسة.</string>
   <string name="preview_feature_description_scoped_favorites">قوائم المفضلة في المربع الزمني من خلال إظهار مفضلات العام الحالي في الملفات الشخصية وتجميع قائمة المفضلة الكاملة حسب السنة.</string>
   <string name="preview_feature_description_soundtrack">يضيف قسم الموسيقى التصويرية إلى صفحات الأفلام والعروض، مع إمكانية التشغيل حيث يمكن مطابقة المقطع.</string>
@@ -1243,6 +1244,7 @@
   <string name="preview_feature_title_edit_mode">تعديل الوضع</string>
   <string name="preview_feature_title_leaderboard">البانثيون</string>
   <string name="preview_feature_title_list_counts">عدادات القوائم</string>
+  <string name="preview_feature_title_reviewer_stats">إحصائيات المراجعين</string>
   <string name="preview_feature_title_rewatch">إعادة المشاهدة</string>
   <string name="preview_feature_title_scoped_favorites">نطاق المفضلة</string>
   <string name="preview_feature_title_soundtrack">الموسيقى التصويرية</string>
@@ -1295,6 +1297,7 @@
   <string name="tag_text_new">جديد</string>
   <string name="tag_text_new_preview_feature">جديد</string>
   <string name="tag_text_number_of_episodes">%d حلقة</string>
+  <string name="tag_text_play">%d مشاهدة</string>
   <string name="tag_text_plays">%d مشاهدة</string>
   <string name="tag_text_premiere">العرض الأول</string>
   <string name="tag_text_preview">معاينة</string>
@@ -1765,6 +1768,7 @@
   <string name="tooltip_stats_shows">الوقت المستغرق في مشاهدة العروض هذا الأسبوع</string>
   <string name="tooltip_text_future_activity">%s، المستقبل غير مكتوب</string>
   <string name="tooltip_text_preview_feature">هذه الميزة لا تزال قيد التجربة والتطوير. نحن نعمل على تحسينها لضمان تجربة سلسة وخالية من المشاكل (أو على الأقل، لا تدفعك للجنون!).</string>
+  <string name="tooltip_text_watched_episodes">تمت مشاهدة %1$d من %2$d حلقة</string>
   <string name="translated_value_error_comment_invalid_content">يجب أن تتكون المراجعات من 5 كلمات على الأقل.</string>
   <string name="translated_value_error_comment_unknown">حدث خطأ أثناء نشر مراجعتك. الرجاء المحاولة مرة أخرى لاحقًا.</string>
   <string name="translated_value_error_reply_invalid_content">يجب أن تتكون الردود من 5 كلمات على الأقل.</string>
