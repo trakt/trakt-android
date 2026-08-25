@@ -62,12 +62,13 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.util.Locale
 
+private const val MAX_FLAGS = 6
+
 internal val GroupShape = RoundedCornerShape(16.dp)
 
 private val ChipShape = RoundedCornerShape(12.dp)
 private val LogoTileSize = 60.dp
 private val InnerSpace = 6.dp
-private const val MaxFlagsOnlyCount = 6
 
 @Composable
 internal fun AllStreamingsServiceGroup(
@@ -82,7 +83,7 @@ internal fun AllStreamingsServiceGroup(
     val gridServices = remember(row.services) {
         when {
             // Flags-only header has no tappable first country, so the grid lists all of them.
-            row.services.size in 2..MaxFlagsOnlyCount -> row.services
+            row.services.size in 2..MAX_FLAGS -> row.services
             else -> row.services.drop(1)
         }
     }
@@ -134,7 +135,7 @@ private fun GroupHeader(
 ) {
     val source = services.first()
     val othersCount = services.size - 1
-    val flagsOnly = services.size in 2..MaxFlagsOnlyCount
+    val flagsOnly = services.size in 2..MAX_FLAGS
 
     val chevronRotation by animateFloatAsState(
         targetValue = if (expanded) 180F else 0F,
