@@ -390,7 +390,7 @@ private fun ContentList(
 
     val itemsGroup = remember(listItems) {
         when (listSorting.type) {
-            Title -> listItems.groupBy { it.title.firstOrNull()?.uppercaseChar()?.toString() ?: "#" }
+            Title -> listItems.groupBy { it.titleNormalized.firstOrNull()?.uppercaseChar()?.toString() ?: "#" }
             Added -> listItems.groupBy { it.listedAt.toLocalDay().year.toString() }
             Released -> listItems.groupBy { it.released?.toLocalDay()?.year?.toString() ?: "N/A" }
             else -> listItems.groupBy { null }

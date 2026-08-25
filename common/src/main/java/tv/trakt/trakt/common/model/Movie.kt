@@ -44,6 +44,13 @@ data class Movie(
 ) {
     companion object
 
+    val titleNormalized: String
+        get() = title.trim()
+            .lowercase()
+            .removePrefix("the ")
+            .removePrefix("a ")
+            .removePrefix("an ")
+
     // Considered released if status is "released" or released date is today or before
     val isReleased: Boolean
         get() {

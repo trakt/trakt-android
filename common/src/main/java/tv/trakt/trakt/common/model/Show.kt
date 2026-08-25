@@ -49,6 +49,12 @@ data class Show(
 ) {
     companion object
 
+    val titleNormalized: String
+        get() = title.trim().lowercase()
+            .removePrefix("the ")
+            .removePrefix("a ")
+            .removePrefix("an ")
+
     val isReleased: Boolean
         get() = status == Released ||
             releasedAt?.let { !it.isAfter(nowUtcInstant()) } ?: false

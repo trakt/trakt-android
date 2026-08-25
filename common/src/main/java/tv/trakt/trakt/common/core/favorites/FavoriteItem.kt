@@ -55,6 +55,12 @@ sealed class FavoriteItem(
             is MovieItem -> movie.title
         }
 
+    val titleNormalized: String
+        get() = when (this) {
+            is ShowItem -> show.titleNormalized
+            is MovieItem -> movie.titleNormalized
+        }
+
     val type: MediaType
         get() = when (this) {
             is ShowItem -> MediaType.Show

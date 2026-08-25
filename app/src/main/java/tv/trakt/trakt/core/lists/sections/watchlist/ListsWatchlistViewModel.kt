@@ -141,7 +141,7 @@ internal class ListsWatchlistViewModel(
                 val localItems = when (filterState.value.mode) {
                     Media -> getWatchlistUseCase.getLocalWatchlist(
                         limit = WATCHLIST_SECTION_LIMIT,
-                        sort = Sorting.RecentlyAdded,
+                        sorting = Sorting.RecentlyAdded,
                     )
                     Shows -> getShowsWatchlistUseCase.getLocalWatchlist(
                         limit = WATCHLIST_SECTION_LIMIT,

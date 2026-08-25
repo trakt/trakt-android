@@ -22,10 +22,10 @@ internal class GetWatchlistUseCase(
 ) {
     suspend fun getLocalWatchlist(
         limit: Int,
-        sort: Sorting,
+        sorting: Sorting,
     ): ImmutableList<WatchlistItem> {
         return userWatchlistLocalDataSource.getAll()
-            .sortedWith(getWatchlistSorting(sort))
+            .sortedWith(getWatchlistSorting(sorting))
             .take(limit)
             .toImmutableList()
     }

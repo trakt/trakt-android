@@ -49,8 +49,8 @@ internal fun getWatchlistSorting(sort: Sorting?): Comparator<WatchlistItem> {
         }
 
         Title -> when (sort.order) {
-            Asc -> compareBy { it.title }
-            Desc -> compareByDescending { it.title }
+            Asc -> compareBy { it.titleNormalized }
+            Desc -> compareByDescending { it.titleNormalized }
         }
     }
 }
