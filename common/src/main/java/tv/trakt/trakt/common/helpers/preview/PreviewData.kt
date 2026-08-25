@@ -121,6 +121,7 @@ object PreviewData {
         name = "John",
         username = "johndoe69",
         location = "New York, USA",
+        email = "mike@trakt",
         isVip = false,
         isVipEp = false,
         isVipOg = false,

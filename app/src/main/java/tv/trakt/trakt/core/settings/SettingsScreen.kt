@@ -425,6 +425,12 @@ private fun SettingsAccount(
         )
 
         SettingsValueField(
+            text = stringResource(R.string.text_display_email),
+            value = state.user?.email,
+            enabled = false,
+        )
+
+        SettingsValueField(
             text = stringResource(R.string.text_location),
             value = state.user?.location,
             enabled = !state.logoutLoading.isLoading && !state.accountLoading.isLoading,
