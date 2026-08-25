@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
@@ -33,6 +34,9 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade910
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.ZoneOffset.UTC
 
 object PastSelectableDates : SelectableDates {
     private val nowUtc = nowUtc()
@@ -47,20 +51,35 @@ object PastSelectableDates : SelectableDates {
     }
 }
 
+internal class RangeSelectableDates(
+    private val minDay: LocalDate,
+    private val maxDay: LocalDate,
+) : SelectableDates {
+    override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+        val day = Instant.ofEpochMilli(utcTimeMillis).atZone(UTC).toLocalDate()
+        return !day.isBefore(minDay) && !day.isAfter(maxDay)
+    }
+
+    override fun isSelectableYear(year: Int): Boolean {
+        return year in minDay.year..maxDay.year
+    }
+}
+
 @Composable
 internal fun TraktTimePicker(
     active: Boolean,
     selectedDate: Instant?,
     onDateTimeSelected: (dateTime: Instant) -> Unit,
     onDismiss: () -> Unit,
+    initialTime: LocalTime? = null,
 ) {
     val context = LocalContext.current
 
-    val nowLocal = nowLocal()
+    val initial = initialTime ?: nowLocal().toLocalTime()
     val timePickerState = rememberTimePickerState(
         is24Hour = DateFormat.is24HourFormat(context),
-        initialHour = nowLocal.hour,
-        initialMinute = nowLocal.minute,
+        initialHour = initial.hour,
+        initialMinute = initial.minute,
     )
 
     if (active) {
@@ -132,10 +151,12 @@ internal fun TraktDatePicker(
     active: Boolean,
     onDateSelected: (date: Instant) -> Unit,
     onDismiss: () -> Unit,
+    initialDate: LocalDate = nowLocalDay(),
+    selectableDates: SelectableDates = PastSelectableDates,
 ) {
     val datePickerState = rememberDatePickerState(
-        initialSelectedDate = nowLocalDay(),
-        selectableDates = PastSelectableDates,
+        initialSelectedDate = initialDate,
+        selectableDates = selectableDates,
     )
 
     if (active) {
@@ -206,5 +227,40 @@ internal fun TraktDatePicker(
                 ),
             )
         }
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+    locale = "us",
+)
+@Composable
+private fun DatePickerPreview() {
+    TraktTheme {
+        TraktDatePicker(
+            active = true,
+            onDateSelected = {},
+            onDismiss = {},
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+    locale = "us",
+)
+@Composable
+private fun TimePickerPreview() {
+    TraktTheme {
+        TraktTimePicker(
+            active = true,
+            selectedDate = Instant.EPOCH,
+            onDateTimeSelected = {},
+            onDismiss = {},
+        )
     }
 }

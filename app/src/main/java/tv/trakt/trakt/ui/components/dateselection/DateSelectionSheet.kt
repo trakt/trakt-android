@@ -20,7 +20,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import timber.log.Timber
-import tv.trakt.trakt.common.helpers.extensions.nowLocal
 import tv.trakt.trakt.common.model.CustomDate
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.Now
@@ -30,8 +29,8 @@ import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.notifications.usecases.EnableNotificationsUseCase
 import tv.trakt.trakt.ui.components.TraktBottomSheet
+import tv.trakt.trakt.ui.components.dateselection.otherdatepicker.OtherDatePickerSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
-import java.time.Instant
 
 @Composable
 internal fun DateSelectionSheet(
@@ -52,8 +51,7 @@ internal fun DateSelectionSheet(
     val checkInManager = koinInject<CheckInManager>()
     val notificationsUseCase = koinInject<EnableNotificationsUseCase>()
 
-    var datePicker by remember { mutableStateOf(false) }
-    var timePicker by remember { mutableStateOf<Instant?>(null) }
+    var otherDatePicker by remember { mutableStateOf(false) }
     val hasActiveCheckIn = remember(checkInManager.isActive()) {
         checkInManager.isActive()
     }
@@ -90,8 +88,7 @@ internal fun DateSelectionSheet(
                     )
                 },
                 onOtherClick = {
-                    datePicker = true
-                    timePicker = null
+                    otherDatePicker = true
                 },
                 onUnknownClick = {
                     scope.dismissWithAction(
@@ -118,36 +115,23 @@ internal fun DateSelectionSheet(
         }
     }
 
-    TraktDatePicker(
-        active = datePicker,
-        onDateSelected = {
-            timePicker = it
-        },
-        onDismiss = {
-            datePicker = false
-            timePicker = null
-        },
-    )
-
-    TraktTimePicker(
-        active = timePicker != null,
-        selectedDate = timePicker,
-        onDateTimeSelected = { dateTimeUtc ->
-            timePicker = null
-            datePicker = false
+    OtherDatePickerSheet(
+        visible = otherDatePicker,
+        title = title,
+        subtitle = subtitle,
+        onResult = { date ->
+            otherDatePicker = false
             scope.dismissWithAction(
                 sheet = state,
                 action = {
-                    val localOffset = nowLocal().offset.totalSeconds
-                    val localDateTime = dateTimeUtc.plusSeconds(-localOffset.toLong())
-                    onResult(CustomDate(localDateTime))
-                    Timber.d("Selected date time: UTC=$dateTimeUtc, Local=$localDateTime")
+                    onResult(CustomDate(date))
+                    Timber.d("Selected date time: UTC=%s", date)
                 },
                 onDismiss = onDismiss,
             )
         },
         onDismiss = {
-            timePicker = null
+            otherDatePicker = false
         },
     )
 }
