@@ -13,6 +13,18 @@
   <string name="about_feature_title_rate_review">Betygsätt &amp; Recensera</string>
   <string name="about_feature_title_scrobble">Spåra serier &amp; filmer</string>
   <string name="action_open_system_settings_tvos">Öppna inställningar</string>
+  <string name="action_toast_action_change_list">Ändra lista</string>
+  <string name="action_toast_action_failed">Det fungerade inte. Försök igen.</string>
+  <string name="action_toast_added_to_favorites"><b>%s</b> lades till i dina favoriter</string>
+  <string name="action_toast_added_to_watchlist"><b>%s</b> lades till i din bevakningslista</string>
+  <string name="action_toast_added_to_watchlist_generic">Lades till i din bevakningslista</string>
+  <string name="action_toast_label_change_list">Ändra listorna som %s tillhör</string>
+  <string name="action_toast_label_undo">Ångra den senaste ändringen</string>
+  <string name="action_toast_removed_from_favorites"><b>%s</b> togs bort från dina favoriter</string>
+  <string name="action_toast_removed_from_history"><b>%s</b> togs bort från din historik</string>
+  <string name="action_toast_removed_from_history_generic">Togs bort från din historik</string>
+  <string name="action_toast_removed_from_watchlist"><b>%s</b> togs bort från din bevakningslista</string>
+  <string name="action_toast_removed_from_watchlist_generic">Togs bort från din bevakningslista</string>
   <string name="advanced_filter_label_ratings">Betyg från %1$s till %2$s</string>
   <string name="advanced_filter_label_release_year">Släppt mellan %1$d och %2$d</string>
   <string name="advanced_filter_label_runtime">Speltid från %1$d till %2$d minuter.</string>
@@ -90,6 +102,7 @@
   <string name="button_label_edit_app">Redigera %s</string>
   <string name="button_label_edit_comment">Redigera recension</string>
   <string name="button_label_edit_list">Redigera din lista %s</string>
+  <string name="button_label_edit_loved_genres">Redigera genrer du gillar</string>
   <string name="button_label_edit_mode">Redigeringsläge</string>
   <string name="button_label_edit_note">Redigera anteckning</string>
   <string name="button_label_episode_type_all">Visa alla släpp</string>
@@ -469,6 +482,7 @@
   <string name="button_text_stop_asking">Sluta fråga</string>
   <string name="button_text_stop_check_in">Avbryt incheckning</string>
   <string name="button_text_stop_clear">Stoppa rensning</string>
+  <string name="button_text_stop_export">Stoppa export</string>
   <string name="button_text_stop_rewatching">Sluta titta om</string>
   <string name="button_text_stream">Streama</string>
   <string name="button_text_stream_on">Streama på</string>
@@ -546,6 +560,7 @@
   <string name="confirmation_title_log_out">Logga ut?</string>
   <string name="confirmation_title_mark_as_watched">Markera som sedd?</string>
   <string name="confirmation_title_plex_remove_server">Ta bort %s?</string>
+  <string name="confirmation_title_proceed_after_partial_export">Export ofullständig</string>
   <string name="confirmation_title_remove_favorite">Ta bort favorit?</string>
   <string name="confirmation_title_remove_from_list">Ta bort från lista?</string>
   <string name="confirmation_title_remove_from_watched">Ta bort från historik?</string>
@@ -558,6 +573,7 @@
   <string name="confirmation_title_rewatching_prompt">Tittar du om \"%s\"?</string>
   <string name="confirmation_title_stop_checkin">Avbryt incheckning?</string>
   <string name="confirmation_title_stop_clear">Stoppa rensning?</string>
+  <string name="confirmation_title_stop_export">Stoppa export?</string>
   <string name="confirmation_title_suppress_ratings_toast">Sluta fråga?</string>
   <string name="confirmation_title_undo_sync">Ångra denna synkronisering?</string>
   <string name="confirmation_title_unfollow_user">Sluta följa användare?</string>
@@ -577,6 +593,7 @@
   <string name="description_delete_account">Din personliga information kommer att tas bort och din statistiska data kommer att anonymiseras.</string>
   <string name="description_edit_api_application">Uppdatera din OAuth-applikations detaljer, omdirigerings-URI:er och behörigheter.</string>
   <string name="description_export">Få en export av din användardata i en enda ZIP-fil. Denna process kan ta ett tag.</string>
+  <string name="description_export_before_destructive">Laddar ner en ZIP-fil med dina data innan något tas bort.</string>
   <string name="description_genres">Lägg till eller ta bort dina %d favoritgenrer.</string>
   <string name="description_history_analysis">Hitta dubblettvisningar i din visningshistorik och behåll endast en visning av varje objekt.</string>
   <string name="description_import">Importera din data från andra tjänster direkt i din webbläsare.</string>
@@ -636,6 +653,7 @@
   <string name="error_text_delete_account">Något gick fel när kontot skulle tas bort. Vänligen försök igen.</string>
   <string name="error_text_email">E-postuppdateringen misslyckades. Se till att det är en giltig adress.</string>
   <string name="error_text_failed_update">Uppdatering misslyckades. Försök igen.</string>
+  <string name="error_text_genres_save_failed">Kunde inte spara. Försök igen.</string>
   <string name="error_text_image_preview_failed">Förhandsvisningen kunde inte laddas</string>
   <string name="error_text_lists_limit">Du har nått gränsen för dina personliga listor. Uppgradera till VIP för obegränsat antal listor!</string>
   <string name="error_text_locked_account_collection_limit">Detta användarkonto har låsts eftersom samlingen har överskridit gränsen. Vänligen <a>kontakta supporten</a> för att lösa detta problem.</string>
@@ -707,9 +725,11 @@
   <string name="header_expected_premiere">Förväntad premiär</string>
   <string name="header_expiration_date">Utgångsdatum</string>
   <string name="header_export">Exportera</string>
+  <string name="header_exporting_data">Exporterar dina data</string>
   <string name="header_favorite_genres">Favoritgenrer</string>
   <string name="header_filters">Filter</string>
   <string name="header_genre">Genre</string>
+  <string name="header_genres_loved">Genrer du gillar</string>
   <string name="header_get_notified">Bli aviserad!</string>
   <string name="header_get_trakt_app">Skaffa Trakt-appen</string>
   <string name="header_height">Längd</string>
@@ -918,6 +938,9 @@
   <string name="label_app_redirect_uris">Omdirigerings-URI:er</string>
   <string name="label_drag_image_to_adjust">Dra bilden för att justera</string>
   <string name="label_favorites">Favoriter</string>
+  <string name="label_genres_drawer_all">Alla genrer</string>
+  <string name="label_genres_drawer_selected">Valda</string>
+  <string name="label_genres_drawer_subtitle_loved">Välj upp till 5 genrer som du vill se mer av.</string>
   <string name="label_keep_play">Behåll</string>
   <string name="label_list_item_count">%s poster</string>
   <string name="label_plex_connected">Ansluten till Plex</string>
@@ -1232,7 +1255,9 @@
   <string name="page_title_widget_background">Bakgrund</string>
   <string name="page_title_year_in_review">Sammanfattning för %s</string>
   <string name="page_title_year_to_date">År hittills</string>
+  <string name="preview_feature_description_action_confirmations">Visa en bekräftelseruta med en snabb ångra-funktion när du lägger till, tar bort, betygsätter eller markerar något som sett.</string>
   <string name="preview_feature_description_edit_mode">Aktivera kontroller för att dölja eller visa konfigurerbara sektioner i hela appen.</string>
+  <string name="preview_feature_description_genre_picker">Välj dina favoritgenrer från ett visuellt rutnät istället för en lista med taggar.</string>
   <string name="preview_feature_description_leaderboard">Rankar de personer du följer efter tittartid och se var du hamnar bland dem.</string>
   <string name="preview_feature_description_list_counts">Visar hur många poster en lista innehåller, och hur många listor en sektion har.</string>
   <string name="preview_feature_description_parental_guide">Visa risknivåer för innehåll i detaljlådan för filmer, serier och avsnitt.</string>
@@ -1241,7 +1266,9 @@
   <string name="preview_feature_description_scoped_favorites">Tidsavgränsa favoritlistor genom att visa favoriter från innevarande år på profiler och gruppera hela favoritlistan per år.</string>
   <string name="preview_feature_description_soundtrack">Lägger till en soundtrack-sektion på film- och seriesidor, med uppspelning där ett spår kan matchas.</string>
   <string name="preview_feature_description_up_next_smart_sort">Testa ett smartare sätt att sortera det du tittar på.</string>
+  <string name="preview_feature_title_action_confirmations">Bekräftelser för åtgärder</string>
   <string name="preview_feature_title_edit_mode">Redigeringsläge</string>
+  <string name="preview_feature_title_genre_picker">Genreval</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_list_counts">Listantal</string>
   <string name="preview_feature_title_reviewer_stats">Recensentstatistik</string>
@@ -1261,6 +1288,7 @@
   <string name="stat_text_plays">Spelningar</string>
   <string name="stat_text_time_watched">Sedd</string>
   <string name="stat_text_watchers">Tittare</string>
+  <string name="switch_label_export_before_destructive">Exportera mina data först</string>
   <string name="switch_label_mark_as_spoiler">Markera som spoiler</string>
   <string name="switch_label_multiple_watches">Aktivera eller inaktivera flera visningar</string>
   <string name="switch_label_private">Är profilen privat</string>
@@ -1648,6 +1676,7 @@
   <string name="text_stats_episodes_count">%d avsnitt</string>
   <string name="text_stats_keep_it_going">Fortsätt så!</string>
   <string name="text_stats_movies_count">%d filmer</string>
+  <string name="text_stats_no_screen_time">Ingen visningstid denna vecka</string>
   <string name="text_stats_out_of">Av %s</string>
   <string name="text_stats_this_week">Denna vecka</string>
   <string name="text_stats_time_afternoon">Eftermiddag</string>
@@ -2022,6 +2051,7 @@
   <string name="warning_prompt_block_user">Blockera %s?</string>
   <string name="warning_prompt_block_user_detail">De kommer inte längre att kunna följa dig eller se din aktivitet.</string>
   <string name="warning_prompt_cancel_clear">Om du navigerar bort stoppas rensningen av dina data. Är du säker?</string>
+  <string name="warning_prompt_cancel_export">Om du navigerar bort stoppas exporten av dina data. Är du säker?</string>
   <string name="warning_prompt_cancel_import">Din import pågår. Om du navigerar bort kommer den att stoppas. Är du säker?</string>
   <string name="warning_prompt_cancel_vip">Är du säker på att du vill avbryta din VIP-prenumeration? Du behåller dina VIP-förmåner fram till %s, varefter du förlorar tillgången till VIP-funktioner. Trakt erbjuder inga återbetalningar för avbrutna prenumerationer.</string>
   <string name="warning_prompt_clean_up_history">Detta kommer permanent att ta bort %d dubblettvisningar, och endast behålla den äldsta visningen av varje objekt. Detta kan inte ångras.</string>
@@ -2042,6 +2072,8 @@
   <string name="warning_prompt_mark_as_watched_show">Är du säker på att du vill markera \"%s\" som sedd? Detta kommer att markera alla avsnitt som sedda.</string>
   <string name="warning_prompt_mark_as_watched_show_android">Är du säker på att du vill markera **alla %1$d avsnitt** av \"%2$s\" som sedda?</string>
   <string name="warning_prompt_mark_as_watched_show_until">Är du säker på att du vill markera alla osedda avsnitt av \"%1$s\" som sedda fram till avsnitt %2$s? Detta kommer att markera %3$d avsnitt som sedda.</string>
+  <string name="warning_prompt_partial_export_one">1 av %d sektioner misslyckades att exportera. Fortsätt ändå?</string>
+  <string name="warning_prompt_partial_export_other">%1$d av %2$d sektioner misslyckades att exportera. Fortsätt ändå?</string>
   <string name="warning_prompt_remove_from_favorites">Är du säker på att du vill ta bort \"%s\" från dina favoriter?</string>
   <string name="warning_prompt_remove_from_liked_lists">Är du säker på att du vill ta bort \"%s\" från dina gillade listor?</string>
   <string name="warning_prompt_remove_from_personal_list">Är du säker på att du vill ta bort \"%1$s\" från %2$s?</string>

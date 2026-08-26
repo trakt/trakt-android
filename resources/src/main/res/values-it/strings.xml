@@ -13,6 +13,18 @@
   <string name="about_feature_title_rate_review">Valuta e recensisci</string>
   <string name="about_feature_title_scrobble">Traccia serie e film</string>
   <string name="action_open_system_settings_tvos">Apri impostazioni</string>
+  <string name="action_toast_action_change_list">Cambia lista</string>
+  <string name="action_toast_action_failed">Non ha funzionato. Riprova.</string>
+  <string name="action_toast_added_to_favorites"><b>%s</b> è stato aggiunto ai tuoi preferiti</string>
+  <string name="action_toast_added_to_watchlist"><b>%s</b> è stato aggiunto alla tua watchlist</string>
+  <string name="action_toast_added_to_watchlist_generic">Aggiunto alla tua watchlist</string>
+  <string name="action_toast_label_change_list">Cambia le liste a cui appartiene %s</string>
+  <string name="action_toast_label_undo">Annulla l\'ultima modifica</string>
+  <string name="action_toast_removed_from_favorites"><b>%s</b> è stato rimosso dai tuoi preferiti</string>
+  <string name="action_toast_removed_from_history"><b>%s</b> è stato rimosso dalla tua cronologia</string>
+  <string name="action_toast_removed_from_history_generic">Rimosso dalla tua cronologia</string>
+  <string name="action_toast_removed_from_watchlist"><b>%s</b> è stato rimosso dalla tua watchlist</string>
+  <string name="action_toast_removed_from_watchlist_generic">Rimosso dalla tua watchlist</string>
   <string name="advanced_filter_label_ratings">Valutazione da %1$s a %2$s</string>
   <string name="advanced_filter_label_release_year">Rilasciato dal %1$d al %2$d</string>
   <string name="advanced_filter_label_runtime">Durata da %1$d a %2$d minuti.</string>
@@ -90,6 +102,7 @@
   <string name="button_label_edit_app">Modifica %s</string>
   <string name="button_label_edit_comment">Modifica recensione</string>
   <string name="button_label_edit_list">Modifica la tua lista %s</string>
+  <string name="button_label_edit_loved_genres">Modifica i generi che ti piacciono</string>
   <string name="button_label_edit_mode">Modalità di modifica</string>
   <string name="button_label_edit_note">Modifica nota</string>
   <string name="button_label_episode_type_all">Mostra tutte le uscite</string>
@@ -469,6 +482,7 @@
   <string name="button_text_stop_asking">Smetti di chiedere</string>
   <string name="button_text_stop_check_in">Interrompi check-in</string>
   <string name="button_text_stop_clear">Interrompi svuotamento</string>
+  <string name="button_text_stop_export">Interrompi esportazione</string>
   <string name="button_text_stop_rewatching">Smetti di riguardare</string>
   <string name="button_text_stream">Streaming</string>
   <string name="button_text_stream_on">Guarda su</string>
@@ -546,6 +560,7 @@
   <string name="confirmation_title_log_out">Esci?</string>
   <string name="confirmation_title_mark_as_watched">Segna come visto?</string>
   <string name="confirmation_title_plex_remove_server">Rimuovere %s?</string>
+  <string name="confirmation_title_proceed_after_partial_export">Esportazione incompleta</string>
   <string name="confirmation_title_remove_favorite">Rimuovi dai preferiti?</string>
   <string name="confirmation_title_remove_from_list">Rimuovi dalla lista?</string>
   <string name="confirmation_title_remove_from_watched">Rimuovi dalla cronologia?</string>
@@ -558,6 +573,7 @@
   <string name="confirmation_title_rewatching_prompt">Stai riguardando \"%s\"?</string>
   <string name="confirmation_title_stop_checkin">Interrompi check-in?</string>
   <string name="confirmation_title_stop_clear">Interrompi svuotamento?</string>
+  <string name="confirmation_title_stop_export">Interrompere l\'esportazione?</string>
   <string name="confirmation_title_suppress_ratings_toast">Smetti di chiedere?</string>
   <string name="confirmation_title_undo_sync">Annullare questa sincronizzazione?</string>
   <string name="confirmation_title_unfollow_user">Non seguire più l\'utente?</string>
@@ -577,6 +593,7 @@
   <string name="description_delete_account">Le tue informazioni personali verranno rimosse e i tuoi dati statistici saranno anonimizzati.</string>
   <string name="description_edit_api_application">Aggiorna i dettagli, gli URI di reindirizzamento e i permessi della tua applicazione OAuth.</string>
   <string name="description_export">Ottieni un\'esportazione dei tuoi dati utente in un singolo file ZIP. Questo processo potrebbe richiedere del tempo.</string>
+  <string name="description_export_before_destructive">Scarica un file ZIP dei tuoi dati prima che venga rimosso qualsiasi elemento.</string>
   <string name="description_genres">Aggiungi o rimuovi i tuoi %d generi preferiti.</string>
   <string name="description_history_analysis">Trova le riproduzioni duplicate nella tua cronologia di visione e mantieni solo una visione di ogni elemento.</string>
   <string name="description_import">Importa i tuoi dati da altri servizi direttamente nel tuo browser.</string>
@@ -636,6 +653,7 @@
   <string name="error_text_delete_account">Qualcosa è andato storto durante l\'eliminazione del tuo account. Riprova.</string>
   <string name="error_text_email">Aggiornamento email fallito. Assicurati che sia un indirizzo valido.</string>
   <string name="error_text_failed_update">Aggiornamento fallito. Riprova.</string>
+  <string name="error_text_genres_save_failed">Salvataggio fallito. Riprova.</string>
   <string name="error_text_image_preview_failed">Impossibile caricare l\'anteprima</string>
   <string name="error_text_lists_limit">Hai raggiunto il limite delle tue liste personali. Passa a VIP per un numero illimitato di liste!</string>
   <string name="error_text_locked_account_collection_limit">Questo account utente è stato bloccato perché la collezione ha superato il limite. Si prega di <a>contattare il supporto</a> per risolvere questo problema.</string>
@@ -707,9 +725,11 @@
   <string name="header_expected_premiere">Première prevista</string>
   <string name="header_expiration_date">Data di scadenza</string>
   <string name="header_export">Esporta</string>
+  <string name="header_exporting_data">Esportazione dei tuoi dati</string>
   <string name="header_favorite_genres">Generi preferiti</string>
   <string name="header_filters">Filtri</string>
   <string name="header_genre">Genere</string>
+  <string name="header_genres_loved">Generi che ti piacciono</string>
   <string name="header_get_notified">Ricevi notifiche!</string>
   <string name="header_get_trakt_app">Scarica l\'app Trakt</string>
   <string name="header_height">Altezza</string>
@@ -918,6 +938,9 @@
   <string name="label_app_redirect_uris">URI di reindirizzamento</string>
   <string name="label_drag_image_to_adjust">Trascina l\'immagine per regolare</string>
   <string name="label_favorites">Preferiti</string>
+  <string name="label_genres_drawer_all">Tutti i generi</string>
+  <string name="label_genres_drawer_selected">Selezionati</string>
+  <string name="label_genres_drawer_subtitle_loved">Seleziona fino a 5 generi che vorresti vedere più spesso.</string>
   <string name="label_keep_play">Mantieni</string>
   <string name="label_list_item_count">%s elementi</string>
   <string name="label_plex_connected">Connesso a Plex</string>
@@ -1232,7 +1255,9 @@
   <string name="page_title_widget_background">Sfondo</string>
   <string name="page_title_year_in_review">%s in rassegna</string>
   <string name="page_title_year_to_date">Dall\'inizio dell\'anno</string>
+  <string name="preview_feature_description_action_confirmations">Mostra un messaggio di conferma con un\'opzione di annullamento rapido quando aggiungi, rimuovi, valuti o contrassegni qualcosa come visto.</string>
   <string name="preview_feature_description_edit_mode">Abilita i controlli per nascondere o mostrare sezioni configurabili in tutta l\'app.</string>
+  <string name="preview_feature_description_genre_picker">Scegli i tuoi generi preferiti da una griglia visiva invece che da un elenco di tag.</string>
   <string name="preview_feature_description_leaderboard">Classifica le persone che segui in base al tempo di visione e scopri dove ti posizioni tra loro.</string>
   <string name="preview_feature_description_list_counts">Mostra quanti elementi contiene un elenco e quanti elenchi ha una sezione.</string>
   <string name="preview_feature_description_parental_guide">Mostra i livelli di rischio dei contenuti nel cassetto dei dettagli per film, serie TV ed episodi.</string>
@@ -1241,7 +1266,9 @@
   <string name="preview_feature_description_scoped_favorites">Limita le liste dei preferiti per anno, mostrando i preferiti dell\'anno corrente sui profili e raggruppando l\'intera lista dei preferiti per anno.</string>
   <string name="preview_feature_description_soundtrack">Aggiunge una sezione colonna sonora alle pagine di film e serie TV, con riproduzione dove un brano può essere trovato.</string>
   <string name="preview_feature_description_up_next_smart_sort">Prova un modo più intelligente per ordinare i tuoi \"Continua a Guardare\".</string>
+  <string name="preview_feature_title_action_confirmations">Conferme azioni</string>
   <string name="preview_feature_title_edit_mode">Modalità di modifica</string>
+  <string name="preview_feature_title_genre_picker">Selettore di generi</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_list_counts">Conteggi Elenchi</string>
   <string name="preview_feature_title_reviewer_stats">Statistiche recensore</string>
@@ -1261,6 +1288,7 @@
   <string name="stat_text_plays">Visioni</string>
   <string name="stat_text_time_watched">Visto</string>
   <string name="stat_text_watchers">Spettatori</string>
+  <string name="switch_label_export_before_destructive">Esporta prima i miei dati</string>
   <string name="switch_label_mark_as_spoiler">Segna come spoiler</string>
   <string name="switch_label_multiple_watches">Abilita o disabilita visualizzazioni multiple</string>
   <string name="switch_label_private">Il profilo è privato</string>
@@ -1648,6 +1676,7 @@
   <string name="text_stats_episodes_count">%d episodi</string>
   <string name="text_stats_keep_it_going">Continua così!</string>
   <string name="text_stats_movies_count">%d film</string>
+  <string name="text_stats_no_screen_time">Nessun tempo di visione questa settimana</string>
   <string name="text_stats_out_of">Su %s</string>
   <string name="text_stats_this_week">Questa settimana</string>
   <string name="text_stats_time_afternoon">Pomeriggio</string>
@@ -2022,6 +2051,7 @@
   <string name="warning_prompt_block_user">Bloccare %s?</string>
   <string name="warning_prompt_block_user_detail">Non potranno più seguirti o vedere la tua attività.</string>
   <string name="warning_prompt_cancel_clear">L\'allontanamento interromperà la cancellazione dei tuoi dati. Sei sicuro?</string>
+  <string name="warning_prompt_cancel_export">L\'allontanamento interromperà l\'esportazione dei tuoi dati. Sei sicuro?</string>
   <string name="warning_prompt_cancel_import">L\'importazione è in corso. Allontanarsi la interromperà. Sei sicuro?</string>
   <string name="warning_prompt_cancel_vip">Sei sicuro di voler annullare il tuo abbonamento VIP? Manterrai i tuoi vantaggi VIP fino a %s, dopodiché perderai l\'accesso alle funzionalità VIP. Trakt non offre rimborsi per gli abbonamenti annullati.</string>
   <string name="warning_prompt_clean_up_history">Questo rimuoverà permanentemente %d riproduzioni duplicate, mantenendo solo la visione meno recente di ogni elemento. Questa azione non può essere annullata.</string>
@@ -2042,6 +2072,8 @@
   <string name="warning_prompt_mark_as_watched_show">Sei sicuro di voler segnare \"%s\" come visto? Tutti gli episodi verranno segnati come visti.</string>
   <string name="warning_prompt_mark_as_watched_show_android">Sei sicuro di voler contrassegnare **tutti i %1$d episodi** di \"%2$s\" come guardati?</string>
   <string name="warning_prompt_mark_as_watched_show_until">Sei sicuro di voler segnare tutti gli episodi non visti di \"%1$s\" come visti fino all\'episodio %2$s? Questo segnerà %3$d episodi come visti.</string>
+  <string name="warning_prompt_partial_export_one">1 di %d sezioni non è riuscita a essere esportata. Continuare comunque?</string>
+  <string name="warning_prompt_partial_export_other">%1$d di %2$d sezioni non sono riuscite a essere esportate. Continuare comunque?</string>
   <string name="warning_prompt_remove_from_favorites">Sei sicuro di voler rimuovere \"%s\" dai tuoi Preferiti?</string>
   <string name="warning_prompt_remove_from_liked_lists">Sei sicuro di voler rimuovere \"%s\" dalle tue liste preferite?</string>
   <string name="warning_prompt_remove_from_personal_list">Sei sicuro di voler rimuovere \"%1$s\" da %2$s?</string>

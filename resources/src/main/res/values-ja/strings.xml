@@ -13,6 +13,18 @@
   <string name="about_feature_title_rate_review">評価とレビュー</string>
   <string name="about_feature_title_scrobble">番組＆映画を追跡</string>
   <string name="action_open_system_settings_tvos">設定を開く</string>
+  <string name="action_toast_action_change_list">リストを変更</string>
+  <string name="action_toast_action_failed">失敗しました。もう一度お試しください。</string>
+  <string name="action_toast_added_to_favorites"><b>%s</b> がお気に入りに追加されました</string>
+  <string name="action_toast_added_to_watchlist"><b>%s</b> がウォッチリストに追加されました</string>
+  <string name="action_toast_added_to_watchlist_generic">ウォッチリストに追加されました</string>
+  <string name="action_toast_label_change_list">%s が属するリストを変更</string>
+  <string name="action_toast_label_undo">最後の変更を元に戻す</string>
+  <string name="action_toast_removed_from_favorites"><b>%s</b> がお気に入りから削除されました</string>
+  <string name="action_toast_removed_from_history"><b>%s</b> が履歴から削除されました</string>
+  <string name="action_toast_removed_from_history_generic">履歴から削除されました</string>
+  <string name="action_toast_removed_from_watchlist"><b>%s</b> がウォッチリストから削除されました</string>
+  <string name="action_toast_removed_from_watchlist_generic">ウォッチリストから削除されました</string>
   <string name="advanced_filter_label_ratings">評価 %1$s～%2$s</string>
   <string name="advanced_filter_label_release_year">発売年 %1$d～%2$d</string>
   <string name="advanced_filter_label_runtime">再生時間 %1$d～%2$d分</string>
@@ -90,6 +102,7 @@
   <string name="button_label_edit_app">%sを編集</string>
   <string name="button_label_edit_comment">レビューを編集</string>
   <string name="button_label_edit_list">リスト「%s」を編集</string>
+  <string name="button_label_edit_loved_genres">お気に入りのジャンルを編集</string>
   <string name="button_label_edit_mode">編集モード</string>
   <string name="button_label_edit_note">メモを編集</string>
   <string name="button_label_episode_type_all">すべてのリリースを表示</string>
@@ -469,6 +482,7 @@
   <string name="button_text_stop_asking">質問を停止</string>
   <string name="button_text_stop_check_in">チェックインを停止</string>
   <string name="button_text_stop_clear">クリアを停止</string>
+  <string name="button_text_stop_export">エクスポートを停止</string>
   <string name="button_text_stop_rewatching">再視聴を停止</string>
   <string name="button_text_stream">ストリーム</string>
   <string name="button_text_stream_on">で視聴</string>
@@ -546,6 +560,7 @@
   <string name="confirmation_title_log_out">ログアウト?</string>
   <string name="confirmation_title_mark_as_watched">視聴済みにする?</string>
   <string name="confirmation_title_plex_remove_server">%sを削除しますか？</string>
+  <string name="confirmation_title_proceed_after_partial_export">エクスポートが一部不完全です</string>
   <string name="confirmation_title_remove_favorite">お気に入りから削除?</string>
   <string name="confirmation_title_remove_from_list">リストから削除?</string>
   <string name="confirmation_title_remove_from_watched">履歴から削除?</string>
@@ -558,6 +573,7 @@
   <string name="confirmation_title_rewatching_prompt">「%s」を再視聴中ですか？</string>
   <string name="confirmation_title_stop_checkin">チェックインを停止?</string>
   <string name="confirmation_title_stop_clear">クリアを停止?</string>
+  <string name="confirmation_title_stop_export">エクスポートを停止しますか？</string>
   <string name="confirmation_title_suppress_ratings_toast">確認を停止?</string>
   <string name="confirmation_title_undo_sync">この同期を元に戻しますか？</string>
   <string name="confirmation_title_unfollow_user">ユーザーのフォローを解除?</string>
@@ -577,6 +593,7 @@
   <string name="description_delete_account">個人情報は削除され、統計データは匿名化されます。</string>
   <string name="description_edit_api_application">OAuthアプリケーションの詳細、リダイレクトURI、権限を更新します。</string>
   <string name="description_export">ユーザーデータを1つのZIPファイルとしてエクスポートします。この処理には時間がかかる場合があります。</string>
+  <string name="description_export_before_destructive">データが削除される前に、お客様のデータのZIPファイルをダウンロードします。</string>
   <string name="description_genres">お気に入りのジャンルを%d件追加または削除します。</string>
   <string name="description_history_analysis">視聴履歴から重複する再生を見つけて、各アイテムにつき1回の視聴のみを保持します。</string>
   <string name="description_import">他のサービスからデータをブラウザに直接インポートできます。</string>
@@ -636,6 +653,7 @@
   <string name="error_text_delete_account">アカウントの削除中に問題が発生しました。もう一度お試しください。</string>
   <string name="error_text_email">メールアドレスの更新に失敗しました。有効なアドレスであることを確認してください。</string>
   <string name="error_text_failed_update">更新に失敗しました。もう一度お試しください。</string>
+  <string name="error_text_genres_save_failed">保存に失敗しました。もう一度お試しください。</string>
   <string name="error_text_image_preview_failed">プレビューの読み込みに失敗しました</string>
   <string name="error_text_lists_limit">個人のリストの制限に達しました。VIPにアップグレードして無制限のリストを入手しましょう！</string>
   <string name="error_text_locked_account_collection_limit">このユーザーアカウントは、コレクションが上限を超過したためロックされました。この問題を解決するには、<a>サポートに連絡してください</a>。</string>
@@ -707,9 +725,11 @@
   <string name="header_expected_premiere">予定されているプレミア</string>
   <string name="header_expiration_date">有効期限</string>
   <string name="header_export">エクスポート</string>
+  <string name="header_exporting_data">データのエクスポート中</string>
   <string name="header_favorite_genres">お気に入りのジャンル</string>
   <string name="header_filters">フィルター</string>
   <string name="header_genre">ジャンル</string>
+  <string name="header_genres_loved">お気に入りのジャンル</string>
   <string name="header_get_notified">通知を受け取る！</string>
   <string name="header_get_trakt_app">Traktアプリを入手</string>
   <string name="header_height">身長</string>
@@ -918,6 +938,9 @@
   <string name="label_app_redirect_uris">リダイレクトURI</string>
   <string name="label_drag_image_to_adjust">画像をドラッグして調整</string>
   <string name="label_favorites">お気に入り</string>
+  <string name="label_genres_drawer_all">すべてのジャンル</string>
+  <string name="label_genres_drawer_selected">選択済み</string>
+  <string name="label_genres_drawer_subtitle_loved">さらに表示したいジャンルを最大5つ選択してください。</string>
   <string name="label_keep_play">保持</string>
   <string name="label_list_item_count">%sアイテム</string>
   <string name="label_plex_connected">Plexに接続済み</string>
@@ -1232,7 +1255,9 @@
   <string name="page_title_widget_background">背景</string>
   <string name="page_title_year_in_review">%s年のレビュー</string>
   <string name="page_title_year_to_date">今年これまでの統計</string>
+  <string name="preview_feature_description_action_confirmations">追加、削除、評価、または視聴済みマークをしたときに、元に戻す機能付きの確認トーストを表示します。</string>
   <string name="preview_feature_description_edit_mode">アプリ全体で設定可能なセクションの表示/非表示を制御する機能を有効にします。</string>
+  <string name="preview_feature_description_genre_picker">タグのリストではなく、ビジュアルグリッドからお気に入りのジャンルを選びましょう。</string>
   <string name="preview_feature_description_leaderboard">フォローしている人の視聴時間でランキングを作成し、その中で自分がどこに位置するかを確認できます。</string>
   <string name="preview_feature_description_list_counts">リストが保持するアイテム数と、セクションが持つリスト数を示します。</string>
   <string name="preview_feature_description_parental_guide">映画、番組、エピソードの詳細ドロワーにコンテンツのリスクレベルを表示します。</string>
@@ -1241,7 +1266,9 @@
   <string name="preview_feature_description_scoped_favorites">プロフィールに今年の「お気に入り」を表示し、お気に入りリスト全体を年別にグループ化することで、お気に入りリストを期間で区切ります。</string>
   <string name="preview_feature_description_soundtrack">映画や番組のページにサウンドトラックセクションを追加し、一致するトラックがあれば再生できます。</string>
   <string name="preview_feature_description_up_next_smart_sort">続きを視聴のよりスマートな並べ替えをお試しください。</string>
+  <string name="preview_feature_title_action_confirmations">アクション確認</string>
   <string name="preview_feature_title_edit_mode">編集モード</string>
+  <string name="preview_feature_title_genre_picker">ジャンルピッカー</string>
   <string name="preview_feature_title_leaderboard">パンテオン</string>
   <string name="preview_feature_title_list_counts">リスト数</string>
   <string name="preview_feature_title_reviewer_stats">レビュアー統計</string>
@@ -1261,6 +1288,7 @@
   <string name="stat_text_plays">再生回数</string>
   <string name="stat_text_time_watched">視聴済み</string>
   <string name="stat_text_watchers">視聴者数</string>
+  <string name="switch_label_export_before_destructive">まずデータをエクスポート</string>
   <string name="switch_label_mark_as_spoiler">ネタバレとしてマーク</string>
   <string name="switch_label_multiple_watches">複数回視聴を有効または無効にする</string>
   <string name="switch_label_private">プロフィールを非公開にする</string>
@@ -1648,6 +1676,7 @@
   <string name="text_stats_episodes_count">%d話</string>
   <string name="text_stats_keep_it_going">続けていこう!</string>
   <string name="text_stats_movies_count">%d本</string>
+  <string name="text_stats_no_screen_time">今週は視聴時間なし</string>
   <string name="text_stats_out_of">%s日中</string>
   <string name="text_stats_this_week">今週</string>
   <string name="text_stats_time_afternoon">午後</string>
@@ -2022,6 +2051,7 @@
   <string name="warning_prompt_block_user">%sをブロックしますか？</string>
   <string name="warning_prompt_block_user_detail">そのユーザーはあなたをフォローしたり、あなたのアクティビティを閲覧したりできなくなります。</string>
   <string name="warning_prompt_cancel_clear">別の画面に移動すると、データのクリアが停止されます。よろしいですか？</string>
+  <string name="warning_prompt_cancel_export">別の画面に移動すると、データのエクスポートが停止されます。よろしいですか？</string>
   <string name="warning_prompt_cancel_import">インポートが進行中です。移動すると停止します。よろしいですか？</string>
   <string name="warning_prompt_cancel_vip">VIPサブスクリプションをキャンセルしてもよろしいですか？<b>%s</b>までVIP特典をご利用いただけますが、それ以降はVIP機能にアクセスできなくなります。Traktでは、キャンセルされたサブスクリプションの返金は行っておりません。</string>
   <string name="warning_prompt_clean_up_history">これにより、%d件の重複する再生が完全に削除され、各アイテムの最も古い視聴のみが保持されます。この操作は元に戻せません。</string>
@@ -2042,6 +2072,8 @@
   <string name="warning_prompt_mark_as_watched_show">「%s」を視聴済みにしますか？これにより、全エピソードが視聴済みになります。</string>
   <string name="warning_prompt_mark_as_watched_show_android">%1$dエピソードすべてを含む「%2$s」を視聴済みとしてマークしてもよろしいですか？</string>
   <string name="warning_prompt_mark_as_watched_show_until">「%1$s」の未視聴エピソードをエピソード%2$sまで全て視聴済みにしますか？これにより、%3$dエピソードが視聴済みになります。</string>
+  <string name="warning_prompt_partial_export_one">%dセクションのうち1つのエクスポートに失敗しました。それでも続行しますか？</string>
+  <string name="warning_prompt_partial_export_other">%1$dセクションのうち%2$dつのエクスポートに失敗しました。それでも続行しますか？</string>
   <string name="warning_prompt_remove_from_favorites">「%s」をお気に入りから削除してもよろしいですか？</string>
   <string name="warning_prompt_remove_from_liked_lists">「%s」をいいねしたリストから削除してもよろしいですか？</string>
   <string name="warning_prompt_remove_from_personal_list">「%1$s」を%2$sから削除してもよろしいですか？</string>

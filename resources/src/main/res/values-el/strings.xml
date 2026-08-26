@@ -13,6 +13,18 @@
   <string name="about_feature_title_rate_review">Βαθμολογήστε &amp; Κριτική</string>
   <string name="about_feature_title_scrobble">Παρακολουθήστε Σειρές &amp; Ταινίες</string>
   <string name="action_open_system_settings_tvos">Άνοιγμα Ρυθμίσεων</string>
+  <string name="action_toast_action_change_list">Αλλαγή λίστας</string>
+  <string name="action_toast_action_failed">Αυτό δεν λειτούργησε. Παρακαλώ δοκιμάστε ξανά.</string>
+  <string name="action_toast_added_to_favorites">Το <b>%s</b> προστέθηκε στα αγαπημένα σας</string>
+  <string name="action_toast_added_to_watchlist">Το <b>%s</b> προστέθηκε στη λίστα παρακολούθησής σας</string>
+  <string name="action_toast_added_to_watchlist_generic">Προστέθηκε στη λίστα παρακολούθησής σας</string>
+  <string name="action_toast_label_change_list">Αλλαγή των λιστών στις οποίες ανήκει το %s</string>
+  <string name="action_toast_label_undo">Αναίρεση της τελευταίας αλλαγής</string>
+  <string name="action_toast_removed_from_favorites">Το <b>%s</b> αφαιρέθηκε από τα αγαπημένα σας</string>
+  <string name="action_toast_removed_from_history">Το <b>%s</b> αφαιρέθηκε από το ιστορικό σας</string>
+  <string name="action_toast_removed_from_history_generic">Αφαιρέθηκε από το ιστορικό σας</string>
+  <string name="action_toast_removed_from_watchlist">Το <b>%s</b> αφαιρέθηκε από τη λίστα παρακολούθησής σας</string>
+  <string name="action_toast_removed_from_watchlist_generic">Αφαιρέθηκε από τη λίστα παρακολούθησής σας</string>
   <string name="advanced_filter_label_ratings">Βαθμολογία από %1$s έως %2$s</string>
   <string name="advanced_filter_label_release_year">Κυκλοφόρησε από %1$d έως %2$d</string>
   <string name="advanced_filter_label_runtime">Διάρκεια από %1$d έως %2$d λεπτά.</string>
@@ -90,6 +102,7 @@
   <string name="button_label_edit_app">Επεξεργασία %s</string>
   <string name="button_label_edit_comment">Επεξεργασία Κριτικής</string>
   <string name="button_label_edit_list">Επεξεργασία της λίστας σας %s</string>
+  <string name="button_label_edit_loved_genres">Επεξεργασία ειδών που σας αρέσουν</string>
   <string name="button_label_edit_mode">Λειτουργία επεξεργασίας</string>
   <string name="button_label_edit_note">Επεξεργασία σημείωσης</string>
   <string name="button_label_episode_type_all">Εμφάνιση όλων των κυκλοφοριών</string>
@@ -469,6 +482,7 @@
   <string name="button_text_stop_asking">Σταμάτα να ρωτάς</string>
   <string name="button_text_stop_check_in">Διακοπή καταχώρισης</string>
   <string name="button_text_stop_clear">Διακοπή Εκκαθάρισης</string>
+  <string name="button_text_stop_export">Διακοπή εξαγωγής</string>
   <string name="button_text_stop_rewatching">Διακοπή επανάληψης</string>
   <string name="button_text_stream">Ροή</string>
   <string name="button_text_stream_on">Μετάδοση</string>
@@ -546,6 +560,7 @@
   <string name="confirmation_title_log_out">Αποσύνδεση?</string>
   <string name="confirmation_title_mark_as_watched">Σήμανση ως παρακολουθήθηκε;</string>
   <string name="confirmation_title_plex_remove_server">Κατάργηση %s;</string>
+  <string name="confirmation_title_proceed_after_partial_export">Εξαγωγή μη ολοκληρωμένη</string>
   <string name="confirmation_title_remove_favorite">Αφαίρεση από τα αγαπημένα;</string>
   <string name="confirmation_title_remove_from_list">Αφαίρεση από λίστα;</string>
   <string name="confirmation_title_remove_from_watched">Αφαίρεση από το ιστορικό;</string>
@@ -558,6 +573,7 @@
   <string name="confirmation_title_rewatching_prompt">Κάνετε επανάληψη παρακολούθησης του \"%s\";</string>
   <string name="confirmation_title_stop_checkin">Διακοπή καταχώρισης;</string>
   <string name="confirmation_title_stop_clear">Διακοπή εκκαθάρισης;</string>
+  <string name="confirmation_title_stop_export">Διακοπή εξαγωγής;</string>
   <string name="confirmation_title_suppress_ratings_toast">Σταμάτα να ρωτάς;</string>
   <string name="confirmation_title_undo_sync">Αναίρεση αυτού του συγχρονισμού;</string>
   <string name="confirmation_title_unfollow_user">Κατάργηση παρακολούθησης χρήστη;</string>
@@ -577,6 +593,7 @@
   <string name="description_delete_account">Τα προσωπικά σας στοιχεία θα αφαιρεθούν και τα στατιστικά σας δεδομένα θα ανωνυμοποιηθούν.</string>
   <string name="description_edit_api_application">Ενημερώστε τις λεπτομέρειες, τα URIs ανακατεύθυνσης και τα δικαιώματα της εφαρμογής OAuth.</string>
   <string name="description_export">Λάβετε εξαγωγή των δεδομένων χρήστη σας σε ένα μόνο αρχείο ZIP. Αυτή η διαδικασία μπορεί να διαρκέσει λίγο.</string>
+  <string name="description_export_before_destructive">Κατεβάζει ένα αρχείο ZIP των δεδομένων σας πριν διαγραφεί οτιδήποτε.</string>
   <string name="description_genres">Προσθέστε ή αφαιρέστε τα %d αγαπημένα σας είδη.</string>
   <string name="description_history_analysis">Βρείτε διπλότυπες προβολές στο ιστορικό παρακολούθησής σας και κρατήστε μόνο μία παρακολούθηση κάθε στοιχείου.</string>
   <string name="description_import">Εισαγάγετε τα δεδομένα σας από άλλες υπηρεσίες απευθείας στον περιηγητή σας.</string>
@@ -636,6 +653,7 @@
   <string name="error_text_delete_account">Κάτι πήγε στραβά κατά τη διαγραφή του λογαριασμού σας. Παρακαλούμε δοκιμάστε ξανά.</string>
   <string name="error_text_email">Η ενημέρωση email απέτυχε. Βεβαιωθείτε ότι είναι μια έγκυρη διεύθυνση.</string>
   <string name="error_text_failed_update">Η ενημέρωση απέτυχε. Παρακαλώ δοκιμάστε ξανά.</string>
+  <string name="error_text_genres_save_failed">Αποτυχία αποθήκευσης. Παρακαλώ δοκιμάστε ξανά.</string>
   <string name="error_text_image_preview_failed">Η προεπισκόπηση απέτυχε να φορτώσει</string>
   <string name="error_text_lists_limit">Έχετε φτάσει το όριο των προσωπικών σας λιστών. Αναβαθμίστε σε VIP για απεριόριστο αριθμό λιστών!</string>
   <string name="error_text_locked_account_collection_limit">Αυτός ο λογαριασμός χρήστη έχει κλειδωθεί επειδή η συλλογή έχει υπερβεί το όριο. Παρακαλούμε <a>επικοινωνήστε με την υποστήριξη</a> για την επίλυση αυτού του ζητήματος.</string>
@@ -707,9 +725,11 @@
   <string name="header_expected_premiere">Αναμενόμενη Πρεμιέρα</string>
   <string name="header_expiration_date">Ημερομηνία Λήξης</string>
   <string name="header_export">Εξαγωγή</string>
+  <string name="header_exporting_data">Εξαγωγή των δεδομένων σας</string>
   <string name="header_favorite_genres">Αγαπημένα είδη</string>
   <string name="header_filters">Φίλτρα</string>
   <string name="header_genre">Είδος</string>
+  <string name="header_genres_loved">Είδη που σας Αρέσουν</string>
   <string name="header_get_notified">Ενημερωθείτε!</string>
   <string name="header_get_trakt_app">Αποκτήστε την εφαρμογή Trakt</string>
   <string name="header_height">Ύψος</string>
@@ -918,6 +938,9 @@
   <string name="label_app_redirect_uris">URIs ανακατεύθυνσης</string>
   <string name="label_drag_image_to_adjust">Σύρετε την εικόνα για προσαρμογή</string>
   <string name="label_favorites">Αγαπημένα</string>
+  <string name="label_genres_drawer_all">Όλα τα Είδη</string>
+  <string name="label_genres_drawer_selected">Επιλεγμένα</string>
+  <string name="label_genres_drawer_subtitle_loved">Επιλέξτε έως 5 είδη που θα θέλατε να βλέπετε περισσότερο.</string>
   <string name="label_keep_play">Διατήρηση</string>
   <string name="label_list_item_count">%s στοιχεία</string>
   <string name="label_plex_connected">Συνδεδεμένο με το Plex</string>
@@ -1232,7 +1255,9 @@
   <string name="page_title_widget_background">Φόντο</string>
   <string name="page_title_year_in_review">Ανασκόπηση του %s</string>
   <string name="page_title_year_to_date">Έτος μέχρι σήμερα</string>
+  <string name="preview_feature_description_action_confirmations">Εμφάνιση αναδυόμενης ειδοποίησης επιβεβαίωσης με γρήγορη αναίρεση όταν προσθέτετε, αφαιρείτε, βαθμολογείτε ή επισημαίνετε κάτι ως παρακολουθημένο.</string>
   <string name="preview_feature_description_edit_mode">Ενεργοποιήστε τα χειριστήρια για απόκρυψη ή εμφάνιση διαμορφώσιμων ενοτήτων σε όλη την εφαρμογή.</string>
+  <string name="preview_feature_description_genre_picker">Επιλέξτε τα αγαπημένα σας είδη από ένα οπτικό πλέγμα αντί για μια λίστα ετικετών.</string>
   <string name="preview_feature_description_leaderboard">Κατατάξτε τους ανθρώπους που ακολουθείτε με βάση τον χρόνο παρακολούθησης και δείτε πού βρίσκεστε ανάμεσά τους.</string>
   <string name="preview_feature_description_list_counts">Δείχνει πόσα στοιχεία περιέχει μια λίστα και πόσες λίστες έχει μια ενότητα.</string>
   <string name="preview_feature_description_parental_guide">Εμφάνιση επιπέδων κινδύνου περιεχομένου στο πλαίσιο λεπτομερειών για ταινίες, σειρές και επεισόδια.</string>
@@ -1241,7 +1266,9 @@
   <string name="preview_feature_description_scoped_favorites">Οριοθετήστε τις λίστες αγαπημένων εμφανίζοντας τα αγαπημένα του τρέχοντος έτους στα προφίλ και ομαδοποιώντας την πλήρη λίστα αγαπημένων ανά έτος.</string>
   <string name="preview_feature_description_soundtrack">Προσθέτει μια ενότητα σάουντρακ στις σελίδες ταινιών και εκπομπών, με αναπαραγωγή όπου ένα κομμάτι μπορεί να αντιστοιχιστεί.</string>
   <string name="preview_feature_description_up_next_smart_sort">Δοκιμάστε έναν πιο έξυπνο τρόπο να ταξινομήσετε τη Συνέχιση Παρακολούθησης.</string>
+  <string name="preview_feature_title_action_confirmations">Επιβεβαιώσεις ενέργειας</string>
   <string name="preview_feature_title_edit_mode">Λειτουργία επεξεργασίας</string>
+  <string name="preview_feature_title_genre_picker">Επιλογέας Είδους</string>
   <string name="preview_feature_title_leaderboard">Πάνθεον</string>
   <string name="preview_feature_title_list_counts">Πλήθος Λιστών</string>
   <string name="preview_feature_title_reviewer_stats">Στατιστικά Κριτικού</string>
@@ -1261,6 +1288,7 @@
   <string name="stat_text_plays">Προβολές</string>
   <string name="stat_text_time_watched">Παρακολουθήθηκε</string>
   <string name="stat_text_watchers">Παρατηρητές</string>
+  <string name="switch_label_export_before_destructive">Εξαγωγή των δεδομένων μου πρώτα</string>
   <string name="switch_label_mark_as_spoiler">Σήμανση ως spoiler</string>
   <string name="switch_label_multiple_watches">Ενεργοποίηση ή απενεργοποίηση πολλαπλών παρακολουθήσεων</string>
   <string name="switch_label_private">Είναι το προφίλ ιδιωτικό</string>
@@ -1648,6 +1676,7 @@
   <string name="text_stats_episodes_count">%d επεισόδια</string>
   <string name="text_stats_keep_it_going">Συνεχίστε!</string>
   <string name="text_stats_movies_count">%d ταινίες</string>
+  <string name="text_stats_no_screen_time">Καθόλου χρόνος θέασης αυτή την εβδομάδα</string>
   <string name="text_stats_out_of">Από %s</string>
   <string name="text_stats_this_week">Αυτή την εβδομάδα</string>
   <string name="text_stats_time_afternoon">Απόγευμα</string>
@@ -2022,6 +2051,7 @@
   <string name="warning_prompt_block_user">Αποκλεισμός %s;</string>
   <string name="warning_prompt_block_user_detail">Δεν θα μπορούν πλέον να σας ακολουθούν ή να βλέπουν τη δραστηριότητά σας.</string>
   <string name="warning_prompt_cancel_clear">Η απομάκρυνση θα σταματήσει την εκκαθάριση των δεδομένων σας. Είστε σίγουροι;</string>
+  <string name="warning_prompt_cancel_export">Η απομάκρυνση θα σταματήσει την εξαγωγή των δεδομένων σας. Είστε σίγουροι;</string>
   <string name="warning_prompt_cancel_import">Η εισαγωγή σας είναι σε εξέλιξη. Η απομάκρυνση θα τη σταματήσει. Είστε σίγουροι;</string>
   <string name="warning_prompt_cancel_vip">Είστε βέβαιοι ότι θέλετε να ακυρώσετε τη συνδρομή σας VIP; Θα διατηρήσετε τα προνόμια VIP μέχρι %s, μετά την οποία θα χάσετε την πρόσβαση στις λειτουργίες VIP. Το Trakt δεν προσφέρει επιστροφές χρημάτων για ακυρωμένες συνδρομές.</string>
   <string name="warning_prompt_clean_up_history">Αυτό θα αφαιρέσει οριστικά %d διπλότυπες προβολές, διατηρώντας μόνο την παλαιότερη παρακολούθηση κάθε στοιχείου. Αυτό δεν μπορεί να αναιρεθεί.</string>
@@ -2042,6 +2072,8 @@
   <string name="warning_prompt_mark_as_watched_show">Είστε σίγουροι ότι θέλετε να σημάνετε το \"%s\" ως παρακολουθήθηκε; Αυτό θα σημάνει όλα τα επεισόδια ως παρακολουθήθηκαν.</string>
   <string name="warning_prompt_mark_as_watched_show_android">Είστε σίγουροι ότι θέλετε να επισημάνετε **όλα τα %1$d επεισόδια** του \"%2$s\" ως παρακολουθημένα;</string>
   <string name="warning_prompt_mark_as_watched_show_until">Είστε σίγουροι ότι θέλετε να σημάνετε όλα τα αόρατα επεισόδια του \"%1$s\" ως παρακολουθήθηκαν μέχρι το επεισόδιο %2$s; Αυτό θα σημάνει %3$d επεισόδια ως παρακολουθήθηκαν.</string>
+  <string name="warning_prompt_partial_export_one">1 από %d ενότητες απέτυχε να εξαχθεί. Συνέχεια ούτως ή άλλως;</string>
+  <string name="warning_prompt_partial_export_other">%1$d από %2$d ενότητες απέτυχαν να εξαχθούν. Συνέχεια ούτως ή άλλως;</string>
   <string name="warning_prompt_remove_from_favorites">Είστε σίγουροι ότι θέλετε να αφαιρέσετε το \"%s\" από τα Αγαπημένα σας;</string>
   <string name="warning_prompt_remove_from_liked_lists">Είστε σίγουροι ότι θέλετε να αφαιρέσετε το \"%s\" από τις λίστες που σας άρεσαν;</string>
   <string name="warning_prompt_remove_from_personal_list">Είστε σίγουροι ότι θέλετε να αφαιρέσετε το \"%1$s\" από τη λίστα %2$s;</string>
