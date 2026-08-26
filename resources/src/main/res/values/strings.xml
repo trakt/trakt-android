@@ -13,6 +13,18 @@
   <string name="about_feature_title_rate_review">Rate &amp; Review</string>
   <string name="about_feature_title_scrobble">Track Shows &amp; Movies</string>
   <string name="action_open_system_settings_tvos">Open Settings</string>
+  <string name="action_toast_action_change_list">Change list</string>
+  <string name="action_toast_action_failed">That didn\'t work. Please try again.</string>
+  <string name="action_toast_added_to_favorites"><b>%s</b> was added to your favorites</string>
+  <string name="action_toast_added_to_watchlist"><b>%s</b> was added to your watchlist</string>
+  <string name="action_toast_added_to_watchlist_generic">Added to your watchlist</string>
+  <string name="action_toast_label_change_list">Change the lists %s belongs to</string>
+  <string name="action_toast_label_undo">Undo the last change</string>
+  <string name="action_toast_removed_from_favorites"><b>%s</b> was removed from your favorites</string>
+  <string name="action_toast_removed_from_history"><b>%s</b> was removed from your history</string>
+  <string name="action_toast_removed_from_history_generic">Removed from your history</string>
+  <string name="action_toast_removed_from_watchlist"><b>%s</b> was removed from your watchlist</string>
+  <string name="action_toast_removed_from_watchlist_generic">Removed from your watchlist</string>
   <string name="advanced_filter_label_ratings">Rating of %1$s to %2$s</string>
   <string name="advanced_filter_label_release_year">Released in %1$d to %2$d</string>
   <string name="advanced_filter_label_runtime">Runtime of %1$d to %2$d minutes.</string>
@@ -90,6 +102,7 @@
   <string name="button_label_edit_app">Edit %s</string>
   <string name="button_label_edit_comment">Edit Review</string>
   <string name="button_label_edit_list">Edit your list %s</string>
+  <string name="button_label_edit_loved_genres">Edit genres you like</string>
   <string name="button_label_edit_mode">Edit mode</string>
   <string name="button_label_edit_note">Edit note</string>
   <string name="button_label_episode_type_all">Show all releases</string>
@@ -469,6 +482,7 @@
   <string name="button_text_stop_asking">Stop asking</string>
   <string name="button_text_stop_check_in">Stop check in</string>
   <string name="button_text_stop_clear">Stop Clearing</string>
+  <string name="button_text_stop_export">Stop Exporting</string>
   <string name="button_text_stop_rewatching">Stop rewatching</string>
   <string name="button_text_stream">Stream</string>
   <string name="button_text_stream_on">Stream On</string>
@@ -546,6 +560,7 @@
   <string name="confirmation_title_log_out">Logout?</string>
   <string name="confirmation_title_mark_as_watched">Mark as watched?</string>
   <string name="confirmation_title_plex_remove_server">Remove %s?</string>
+  <string name="confirmation_title_proceed_after_partial_export">Export incomplete</string>
   <string name="confirmation_title_remove_favorite">Remove favorite?</string>
   <string name="confirmation_title_remove_from_list">Remove from list?</string>
   <string name="confirmation_title_remove_from_watched">Remove from history?</string>
@@ -558,6 +573,7 @@
   <string name="confirmation_title_rewatching_prompt">Are you rewatching \"%s\"?</string>
   <string name="confirmation_title_stop_checkin">Stop check-in?</string>
   <string name="confirmation_title_stop_clear">Stop clearing?</string>
+  <string name="confirmation_title_stop_export">Stop exporting?</string>
   <string name="confirmation_title_suppress_ratings_toast">Stop asking?</string>
   <string name="confirmation_title_undo_sync">Undo this sync?</string>
   <string name="confirmation_title_unfollow_user">Unfollow user?</string>
@@ -577,6 +593,7 @@
   <string name="description_delete_account">Your personal information will be removed and your statistical data will be anonymized.</string>
   <string name="description_edit_api_application">Update your OAuth application\'s details, redirect URIs and permissions.</string>
   <string name="description_export">Get an export of your user data in a single ZIP file. This process may take a while.</string>
+  <string name="description_export_before_destructive">Downloads a ZIP of your data before anything is removed.</string>
   <string name="description_genres">Add or remove your %d favorite genres.</string>
   <string name="description_history_analysis">Find duplicate plays in your watch history and keep only one watch of each item.</string>
   <string name="description_import">Import your data from other services directly in your browser.</string>
@@ -636,6 +653,7 @@
   <string name="error_text_delete_account">Something went wrong deleting your account. Please try again.</string>
   <string name="error_text_email">Email update failed. Make sure it\'s a valid address.</string>
   <string name="error_text_failed_update">Update failed. Please try again.</string>
+  <string name="error_text_genres_save_failed">Failed to save. Please try again.</string>
   <string name="error_text_image_preview_failed">Preview failed to load</string>
   <string name="error_text_lists_limit">You have reached the limit of your personal lists. Upgrade to VIP for unlimited amount of lists!</string>
   <string name="error_text_locked_account_collection_limit">This user account has been locked because the collection has exceeded the limit. Please <a>contact support</a> to resolve this issue.</string>
@@ -707,9 +725,11 @@
   <string name="header_expected_premiere">Expected Premiere</string>
   <string name="header_expiration_date">Expiration Date</string>
   <string name="header_export">Export</string>
+  <string name="header_exporting_data">Exporting your data</string>
   <string name="header_favorite_genres">Favorite Genres</string>
   <string name="header_filters">Filters</string>
   <string name="header_genre">Genre</string>
+  <string name="header_genres_loved">Genres you Like</string>
   <string name="header_get_notified">Get Notified!</string>
   <string name="header_get_trakt_app">Get the trakt app</string>
   <string name="header_height">Height</string>
@@ -918,6 +938,9 @@
   <string name="label_app_redirect_uris">Redirect URIs</string>
   <string name="label_drag_image_to_adjust">Drag the image to adjust</string>
   <string name="label_favorites">Favorites</string>
+  <string name="label_genres_drawer_all">All Genres</string>
+  <string name="label_genres_drawer_selected">Selected</string>
+  <string name="label_genres_drawer_subtitle_loved">Select up to 5 genres which you\'d like to see more of.</string>
   <string name="label_keep_play">Keep</string>
   <string name="label_list_item_count">%s items</string>
   <string name="label_plex_connected">Connected to Plex</string>
@@ -1232,7 +1255,9 @@
   <string name="page_title_widget_background">Background</string>
   <string name="page_title_year_in_review">%s in review</string>
   <string name="page_title_year_to_date">Year to date</string>
+  <string name="preview_feature_description_action_confirmations">Show a confirmation toast with a quick undo when you add, remove, rate, or mark something as watched.</string>
   <string name="preview_feature_description_edit_mode">Enable controls for hiding or showing configurable sections across the app.</string>
+  <string name="preview_feature_description_genre_picker">Pick your favorite genres from a visual grid instead of a list of tags.</string>
   <string name="preview_feature_description_leaderboard">Rank the people you follow by watch time and see where you land among them.</string>
   <string name="preview_feature_description_list_counts">Shows how many items a list holds, and how many lists a section has.</string>
   <string name="preview_feature_description_parental_guide">Show content risk levels in the details drawer for movies, shows, and episodes.</string>
@@ -1241,7 +1266,9 @@
   <string name="preview_feature_description_scoped_favorites">Time-box favorite lists by showing current-year favorites on profiles and grouping the full favorites list by year.</string>
   <string name="preview_feature_description_soundtrack">Adds a soundtrack section to movie and show pages, with playback where a track can be matched.</string>
   <string name="preview_feature_description_up_next_smart_sort">Test a smarter way to sort your Continue Watching.</string>
+  <string name="preview_feature_title_action_confirmations">Action confirmations</string>
   <string name="preview_feature_title_edit_mode">Edit Mode</string>
+  <string name="preview_feature_title_genre_picker">Genre Picker</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_list_counts">List Counts</string>
   <string name="preview_feature_title_reviewer_stats">Reviewer Stats</string>
@@ -1261,6 +1288,7 @@
   <string name="stat_text_plays">Plays</string>
   <string name="stat_text_time_watched">Watched</string>
   <string name="stat_text_watchers">Watchers</string>
+  <string name="switch_label_export_before_destructive">Export my data first</string>
   <string name="switch_label_mark_as_spoiler">Mark as spoiler</string>
   <string name="switch_label_multiple_watches">Enable or disable multiple watches</string>
   <string name="switch_label_private">Is profile private</string>
@@ -1648,6 +1676,7 @@
   <string name="text_stats_episodes_count">%d episodes</string>
   <string name="text_stats_keep_it_going">Keep it going!</string>
   <string name="text_stats_movies_count">%d movies</string>
+  <string name="text_stats_no_screen_time">No screen time this week</string>
   <string name="text_stats_out_of">Out of %s</string>
   <string name="text_stats_this_week">This week</string>
   <string name="text_stats_time_afternoon">Afternoon</string>
@@ -2022,6 +2051,7 @@
   <string name="warning_prompt_block_user">Block %s?</string>
   <string name="warning_prompt_block_user_detail">They will no longer be able to follow you or see your activity.</string>
   <string name="warning_prompt_cancel_clear">Navigating away will stop clearing your data. Are you sure?</string>
+  <string name="warning_prompt_cancel_export">Navigating away will stop exporting your data. Are you sure?</string>
   <string name="warning_prompt_cancel_import">Your import is in progress. Navigating away will stop it. Are you sure?</string>
   <string name="warning_prompt_cancel_vip">Are you sure you want to cancel your VIP subscription? You\'ll keep your VIP benefits until %s, after which you\'ll lose access to VIP features. Trakt does not offer refunds for cancelled subscriptions.</string>
   <string name="warning_prompt_clean_up_history">This will permanently remove %d duplicate plays, keeping only the oldest watch of each item. This cannot be undone.</string>
@@ -2042,6 +2072,8 @@
   <string name="warning_prompt_mark_as_watched_show">Are you sure you want to mark \"%s\" as watched? This will mark all episodes as watched.</string>
   <string name="warning_prompt_mark_as_watched_show_android">Are you sure you want to mark **all %1$d episodes** of \"%2$s\" as watched?</string>
   <string name="warning_prompt_mark_as_watched_show_until">Are you sure you want to mark all unseen episodes of \"%1$s\" as watched until episode %2$s? This will mark %3$d episodes as watched.</string>
+  <string name="warning_prompt_partial_export_one">1 of %d sections failed to export. Continue anyway?</string>
+  <string name="warning_prompt_partial_export_other">%1$d of %2$d sections failed to export. Continue anyway?</string>
   <string name="warning_prompt_remove_from_favorites">Are you sure you want to remove \"%s\" from your Favorites?</string>
   <string name="warning_prompt_remove_from_liked_lists">Are you sure you want to remove \"%s\" from your liked lists?</string>
   <string name="warning_prompt_remove_from_personal_list">Are you sure you want to remove \"%1$s\" from %2$s?</string>
