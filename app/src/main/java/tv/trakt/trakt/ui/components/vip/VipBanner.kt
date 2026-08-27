@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.em
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Purple600
 import tv.trakt.trakt.common.ui.theme.colors.Shade920
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -77,7 +78,7 @@ internal fun VipBanner(
             Text(
                 text = stringResource(R.string.text_vip_upsell_default_2).uppercase(),
                 style = TraktTheme.typography.heading5,
-                color = TraktTheme.colors.textPrimary,
+                color = TraktTheme.colors.textPrimaryOnAccent,
             )
 
             Text(
@@ -85,7 +86,7 @@ internal fun VipBanner(
                 style = TraktTheme.typography.paragraphSmaller.copy(
                     lineHeight = 1.4.em,
                 ),
-                color = TraktTheme.colors.textPrimary,
+                color = TraktTheme.colors.textPrimaryOnAccent,
             )
         }
 
@@ -103,7 +104,7 @@ internal fun VipBanner(
 @Preview(widthDp = 400)
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         VipBanner(
             modifier = Modifier.padding(16.dp),
         )
