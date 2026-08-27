@@ -104,17 +104,19 @@ class LoadUserProgressUseCase(
             .map { entry ->
                 val showId = entry.key.toInt().toTraktId()
                 val seasons = entry.value.map { seasonKey ->
+                    val (seasonId, seasonNumber) = seasonKey.key.split("|")
+
                     val episodes = seasonKey.value.map { episodeKey ->
                         val episodePlays = episodeKey.value
                         ProgressItem.ShowItem.Episode(
                             id = episodeKey.key.toInt().toTraktId(),
                             plays = episodeKey.value.map { it.toInstant() }.toImmutableList(),
-                            playsDistinctCount = if (episodePlays.isEmpty()) 0 else 1,
+                            playsDistinct = if (episodePlays.isEmpty()) 0 else 1,
+                            special = seasonNumber == "0",
                             lastWatchedAt = episodePlays.maxOf { it.toInstant() },
                         )
                     }
 
-                    val (seasonId, seasonNumber) = seasonKey.key.split("|")
                     ProgressItem.ShowItem.Season(
                         id = seasonId.toInt().toTraktId(),
                         number = seasonNumber.toInt(),

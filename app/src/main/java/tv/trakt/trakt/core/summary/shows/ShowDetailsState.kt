@@ -35,14 +35,15 @@ internal data class ShowDetailsState(
     data class ProgressState(
         val aired: Int,
         val plays: Int?,
+        val playsWithoutSpecials: Int?,
         val inWatchlist: Boolean,
         val inLists: Boolean,
     ) {
         val isWatched: Boolean
-            get() = plays != null && plays > 0
+            get() = playsWithoutSpecials != null && playsWithoutSpecials > 0
 
         val isWatching: Boolean
-            get() = plays != null && plays > 0 && plays < aired
+            get() = playsWithoutSpecials != null && playsWithoutSpecials > 0 && playsWithoutSpecials < aired
     }
 
     data class UserRatingsState(

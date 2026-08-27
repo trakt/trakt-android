@@ -30,27 +30,32 @@ sealed class ProgressItem(
                 .flatMap { it.episodes }
                 .sumOf { it.plays.size }
 
-        val playsDistinct: Int
+        val playsWithoutSpecials: Int
             get() = seasons
+                .filter { !it.isSpecial }
                 .flatMap { it.episodes }
-                .sumOf { it.playsDistinctCount }
+                .sumOf { it.plays.size }
 
-        val lastWatchedAt: Instant
+        val playsDistinctWithoutSpecials: Int
             get() = seasons
+                .filter { !it.isSpecial }
                 .flatMap { it.episodes }
-                .maxBy { it.lastWatchedAt }
-                .lastWatchedAt
+                .sumOf { it.playsDistinct }
 
         data class Season(
             val id: TraktId,
             val number: Int,
             val episodes: ImmutableList<Episode>,
-        )
+        ) {
+            val isSpecial: Boolean
+                get() = number == 0
+        }
 
         data class Episode(
             val id: TraktId,
+            val special: Boolean,
             val plays: ImmutableList<Instant>,
-            val playsDistinctCount: Int,
+            val playsDistinct: Int,
             val lastWatchedAt: Instant,
         )
 
@@ -68,13 +73,11 @@ sealed class ProgressItem(
         }
 
         fun isCompleted(show: ShowCommon): Boolean {
-            val airedEpisodes = show.airedEpisodes
-
             val watchedEpisodes = seasons
                 .flatMap { it.episodes }
-                .filter { it.plays.isNotEmpty() }
+                .filter { !it.special && it.plays.isNotEmpty() }
 
-            return watchedEpisodes.size >= airedEpisodes
+            return watchedEpisodes.size >= show.airedEpisodes
         }
     }
 

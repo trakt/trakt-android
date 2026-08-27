@@ -102,7 +102,7 @@ class CollectionStateProvider(
                         watchedShowsPlays = progressShows
                             .associateBy(
                                 keySelector = { it.showId },
-                                valueTransform = { it.playsDistinct },
+                                valueTransform = { it.playsDistinctWithoutSpecials },
                             ).toImmutableMap(),
                         watchedMovies = progressMovies
                             .asyncMap { it.mediaId }
