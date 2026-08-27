@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -52,6 +53,7 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
+import tv.trakt.trakt.common.helpers.extensions.DevicePreviewRtl
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -252,7 +254,6 @@ private fun CustomListHeader(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = spacedBy(8.dp),
             modifier = Modifier.weight(1F, false),
         ) {
             if (userVisible) {
@@ -283,6 +284,7 @@ private fun CustomListHeader(
                         )
                     }
                 }
+                Spacer(modifier = Modifier.size(8.dp))
             }
 
             Column(
@@ -331,6 +333,8 @@ private fun CustomListHeader(
         }
 
         if (likesVisible) {
+            Spacer(modifier = Modifier.size(8.dp))
+
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = spacedBy(4.dp),
@@ -363,6 +367,8 @@ private fun CustomListHeader(
         }
 
         if (moreVisible) {
+            Spacer(modifier = Modifier.size(8.dp))
+
             Icon(
                 painter = painterResource(R.drawable.ic_more_vertical),
                 contentDescription = null,
@@ -404,8 +410,9 @@ private fun Preview() {
 }
 
 @DevicePreview
+@DevicePreviewRtl
 @Composable
-private fun Preview2() {
+private fun PreviewRtl() {
     val previewHandler = AsyncImagePreviewHandler { ColorImage(Color.LightGray.toArgb()) }
     TraktThemeLightDark {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
@@ -432,7 +439,7 @@ private fun Preview2() {
 
 @DevicePreview
 @Composable
-private fun Preview3() {
+private fun Preview2() {
     val previewHandler = AsyncImagePreviewHandler { ColorImage(Color.LightGray.toArgb()) }
     TraktThemeLightDark {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {

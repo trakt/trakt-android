@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,6 +37,7 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
+import tv.trakt.trakt.common.helpers.extensions.DevicePreviewRtl
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Ids
@@ -185,7 +187,6 @@ private fun SmartListHeader(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(8.dp),
         modifier = modifier.fillMaxWidth(),
     ) {
         Box(
@@ -207,6 +208,8 @@ private fun SmartListHeader(
                 modifier = Modifier.size(18.dp),
             )
         }
+
+        Spacer(modifier = Modifier.size(8.dp))
 
         Column(
             verticalArrangement = spacedBy(1.dp),
@@ -231,6 +234,8 @@ private fun SmartListHeader(
             )
         }
 
+        Spacer(modifier = Modifier.size(8.dp))
+
         SmartListDropdown(
             onDeleteClick = onDeleteClick,
         )
@@ -239,6 +244,7 @@ private fun SmartListHeader(
 
 @OptIn(ExperimentalCoilApi::class)
 @DevicePreview
+@DevicePreviewRtl
 @Composable
 private fun Preview() {
     TraktThemeLightDark {
