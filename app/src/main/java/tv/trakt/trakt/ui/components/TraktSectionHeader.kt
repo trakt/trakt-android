@@ -147,3 +147,20 @@ private fun Preview3() {
         )
     }
 }
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+    locale = "ar",
+)
+@Composable
+private fun PreviewRtl() {
+    TraktTheme {
+        TraktSectionHeader(
+            title = "الأفلام الشائعة",
+            subtitle = "عنوان فرعي",
+            collapsed = false,
+        )
+    }
+}

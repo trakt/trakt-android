@@ -56,6 +56,7 @@ import tv.trakt.trakt.common.core.lists.model.WatchlistItem
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem.MovieItem
 import tv.trakt.trakt.common.core.lists.model.WatchlistItem.ShowItem
 import tv.trakt.trakt.common.core.user.UserCollectionState
+import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
@@ -594,6 +595,7 @@ private fun WatchlistDateSelectionSheet(
     device = "id:pixel_5",
     showBackground = true,
     backgroundColor = 0xFF131517,
+    locale = "ar",
 )
 @Composable
 private fun Preview() {
@@ -604,11 +606,7 @@ private fun Preview() {
     }
 }
 
-@Preview(
-    device = "id:pixel_5",
-    showBackground = true,
-    backgroundColor = 0xFF131517,
-)
+@DevicePreview
 @Composable
 private fun Preview2() {
     TraktTheme {
