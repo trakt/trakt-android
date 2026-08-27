@@ -13,6 +13,18 @@
   <string name="about_feature_title_rate_review">Vurder og anmeld</string>
   <string name="about_feature_title_scrobble">Spor serier og filmer</string>
   <string name="action_open_system_settings_tvos">Åpne innstillinger</string>
+  <string name="action_toast_action_change_list">Endre liste</string>
+  <string name="action_toast_action_failed">Det fungerte ikke. Vennligst prøv igjen.</string>
+  <string name="action_toast_added_to_favorites"><b>%s</b> ble lagt til i favorittene dine</string>
+  <string name="action_toast_added_to_watchlist"><b>%s</b> ble lagt til i ønskelisten din</string>
+  <string name="action_toast_added_to_watchlist_generic">Lagt til i ønskelisten din</string>
+  <string name="action_toast_label_change_list">Endre listene %s tilhører</string>
+  <string name="action_toast_label_undo">Angre siste endring</string>
+  <string name="action_toast_removed_from_favorites"><b>%s</b> ble fjernet fra favorittene dine</string>
+  <string name="action_toast_removed_from_history"><b>%s</b> ble fjernet fra historikken din</string>
+  <string name="action_toast_removed_from_history_generic">Fjernet fra historikken din</string>
+  <string name="action_toast_removed_from_watchlist"><b>%s</b> ble fjernet fra ønskelisten din</string>
+  <string name="action_toast_removed_from_watchlist_generic">Fjernet fra ønskelisten din</string>
   <string name="advanced_filter_label_ratings">Vurdering fra %1$s til %2$s</string>
   <string name="advanced_filter_label_release_year">Utgitt i %1$d til %2$d</string>
   <string name="advanced_filter_label_runtime">Spilletid fra %1$d til %2$d minutter.</string>
@@ -90,6 +102,7 @@
   <string name="button_label_edit_app">Rediger %s</string>
   <string name="button_label_edit_comment">Rediger anmeldelse</string>
   <string name="button_label_edit_list">Rediger listen din %s</string>
+  <string name="button_label_edit_loved_genres">Rediger sjangere du liker</string>
   <string name="button_label_edit_mode">Redigeringsmodus</string>
   <string name="button_label_edit_note">Rediger notat</string>
   <string name="button_label_episode_type_all">Vis alle utgivelser</string>
@@ -469,6 +482,7 @@
   <string name="button_text_stop_asking">Slutt å spørre</string>
   <string name="button_text_stop_check_in">Stopp innsjekking</string>
   <string name="button_text_stop_clear">Stopp tømming</string>
+  <string name="button_text_stop_export">Stopp eksport</string>
   <string name="button_text_stop_rewatching">Stopp gjensyn</string>
   <string name="button_text_stream">Strøm</string>
   <string name="button_text_stream_on">Strøm på</string>
@@ -546,6 +560,7 @@
   <string name="confirmation_title_log_out">Logg ut?</string>
   <string name="confirmation_title_mark_as_watched">Merk som sett?</string>
   <string name="confirmation_title_plex_remove_server">Fjern %s?</string>
+  <string name="confirmation_title_proceed_after_partial_export">Eksport ufullstendig</string>
   <string name="confirmation_title_remove_favorite">Fjern favoritt?</string>
   <string name="confirmation_title_remove_from_list">Fjern fra liste?</string>
   <string name="confirmation_title_remove_from_watched">Fjern fra historikk?</string>
@@ -558,6 +573,7 @@
   <string name="confirmation_title_rewatching_prompt">Ser du \"%s\" på nytt?</string>
   <string name="confirmation_title_stop_checkin">Stopp innsjekking?</string>
   <string name="confirmation_title_stop_clear">Stopp tømming?</string>
+  <string name="confirmation_title_stop_export">Stopp eksporten?</string>
   <string name="confirmation_title_suppress_ratings_toast">Slutt å spørre?</string>
   <string name="confirmation_title_undo_sync">Angre denne synkroniseringen?</string>
   <string name="confirmation_title_unfollow_user">Slutt å følge?</string>
@@ -577,6 +593,7 @@
   <string name="description_delete_account">Din personlige informasjon vil bli fjernet, og dine statistiske data vil bli anonymisert.</string>
   <string name="description_edit_api_application">Oppdater OAuth-applikasjonens detaljer, omdirigerings-URI-er og tillatelser.</string>
   <string name="description_export">Få en eksport av brukerdataene dine i én ZIP-fil. Denne prosessen kan ta litt tid.</string>
+  <string name="description_export_before_destructive">Laster ned en ZIP av dataene dine før noe fjernes.</string>
   <string name="description_genres">Legg til eller fjern dine %d favorittsjangere.</string>
   <string name="description_history_analysis">Finn duplikate avspillinger i visningshistorikken din og behold kun én avspilling av hvert element.</string>
   <string name="description_import">Importer dataen din fra andre tjenester direkte i nettleseren din.</string>
@@ -636,6 +653,7 @@
   <string name="error_text_delete_account">Noe gikk galt under slettingen av kontoen din. Vennligst prøv igjen.</string>
   <string name="error_text_email">E-postoppdatering mislyktes. Sørg for at det er en gyldig adresse.</string>
   <string name="error_text_failed_update">Oppdatering mislyktes. Vennligst prøv igjen.</string>
+  <string name="error_text_genres_save_failed">Lagring mislyktes. Vennligst prøv igjen.</string>
   <string name="error_text_image_preview_failed">Forhåndsvisning kunne ikke lastes inn</string>
   <string name="error_text_lists_limit">Du har nådd grensen for dine personlige lister. Oppgrader til VIP for ubegrenset antall lister!</string>
   <string name="error_text_locked_account_collection_limit">Denne brukerkontoen er blitt låst fordi samlingen har overskredet grensen. Vennligst <a>kontakt support</a> for å løse dette problemet.</string>
@@ -707,9 +725,11 @@
   <string name="header_expected_premiere">Forventet premiere</string>
   <string name="header_expiration_date">Utløpsdato</string>
   <string name="header_export">Eksporter</string>
+  <string name="header_exporting_data">Eksporterer dataene dine</string>
   <string name="header_favorite_genres">Favorittsjangere</string>
   <string name="header_filters">Filtre</string>
   <string name="header_genre">Sjanger</string>
+  <string name="header_genres_loved">Sjangere du liker</string>
   <string name="header_get_notified">Få varsler!</string>
   <string name="header_get_trakt_app">Få Trakt-appen</string>
   <string name="header_height">Høyde</string>
@@ -918,6 +938,9 @@
   <string name="label_app_redirect_uris">Omdirigerings-URI-er</string>
   <string name="label_drag_image_to_adjust">Dra bildet for å justere</string>
   <string name="label_favorites">Favoritter</string>
+  <string name="label_genres_drawer_all">Alle sjangere</string>
+  <string name="label_genres_drawer_selected">Valgt</string>
+  <string name="label_genres_drawer_subtitle_loved">Velg opptil 5 sjangere du vil se mer av.</string>
   <string name="label_keep_play">Behold</string>
   <string name="label_list_item_count">%s elementer</string>
   <string name="label_plex_connected">Koblet til Plex</string>
@@ -1232,7 +1255,9 @@
   <string name="page_title_widget_background">Bakgrunn</string>
   <string name="page_title_year_in_review">Året %s i tilbakeblikk</string>
   <string name="page_title_year_to_date">År til dato</string>
+  <string name="preview_feature_description_action_confirmations">Vis en bekreftelsesmelding med en rask angre-funksjon når du legger til, fjerner, vurderer eller markerer noe som sett.</string>
   <string name="preview_feature_description_edit_mode">Aktiver kontroller for å skjule eller vise konfigurerbare seksjoner i hele appen.</string>
+  <string name="preview_feature_description_genre_picker">Velg dine favorittsjangere fra et visuelt rutenett i stedet for en liste med tagger.</string>
   <string name="preview_feature_description_leaderboard">Ranger personene du følger etter seertid og se hvor du lander blant dem.</string>
   <string name="preview_feature_description_list_counts">Viser hvor mange elementer en liste inneholder, og hvor mange lister en seksjon har.</string>
   <string name="preview_feature_description_parental_guide">Vis risikonivåer for innhold i detaljskuffen for filmer, serier og episoder.</string>
@@ -1241,7 +1266,9 @@
   <string name="preview_feature_description_scoped_favorites">Tidsbegrens favorittlister ved å vise inneværende års favoritter på profiler og gruppere den komplette favorittlisten etter år.</string>
   <string name="preview_feature_description_soundtrack">Legger til en lydspor-seksjon på film- og seriesider, med avspilling der et spor kan matches.</string>
   <string name="preview_feature_description_up_next_smart_sort">Prøv en smartere måte å sortere din Fortsett å se.</string>
+  <string name="preview_feature_title_action_confirmations">Handlingsbekreftelser</string>
   <string name="preview_feature_title_edit_mode">Redigeringsmodus</string>
+  <string name="preview_feature_title_genre_picker">Sjangervelger</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_list_counts">Listeantall</string>
   <string name="preview_feature_title_reviewer_stats">Anmelderstatistikk</string>
@@ -1261,6 +1288,7 @@
   <string name="stat_text_plays">Avspillinger</string>
   <string name="stat_text_time_watched">Sett</string>
   <string name="stat_text_watchers">Seere</string>
+  <string name="switch_label_export_before_destructive">Eksporter dataene mine først</string>
   <string name="switch_label_mark_as_spoiler">Merk som spoiler</string>
   <string name="switch_label_multiple_watches">Aktiver eller deaktiver flere visninger</string>
   <string name="switch_label_private">Er profilen privat</string>
@@ -1648,6 +1676,7 @@
   <string name="text_stats_episodes_count">%d episoder</string>
   <string name="text_stats_keep_it_going">Fortsett med det!</string>
   <string name="text_stats_movies_count">%d filmer</string>
+  <string name="text_stats_no_screen_time">Ingen skjermtid denne uken</string>
   <string name="text_stats_out_of">Ut av %s</string>
   <string name="text_stats_this_week">Denne uken</string>
   <string name="text_stats_time_afternoon">Ettermiddag</string>
@@ -2022,6 +2051,7 @@
   <string name="warning_prompt_block_user">Blokker %s?</string>
   <string name="warning_prompt_block_user_detail">De vil ikke lenger kunne følge deg eller se aktiviteten din.</string>
   <string name="warning_prompt_cancel_clear">Navigering bort vil stoppe tømmingen av dataene dine. Er du sikker?</string>
+  <string name="warning_prompt_cancel_export">Navigering bort vil stoppe eksporten av dataene dine. Er du sikker?</string>
   <string name="warning_prompt_cancel_import">Importen din pågår. Hvis du navigerer bort, vil den stoppe. Er du sikker?</string>
   <string name="warning_prompt_cancel_vip">Er du sikker på at du vil avbryte VIP-abonnementet ditt? Du beholder VIP-fordelene dine frem til %s, deretter mister du tilgang til VIP-funksjoner. Trakt tilbyr ikke refusjon for avbrutte abonnementer.</string>
   <string name="warning_prompt_clean_up_history">Dette vil permanent fjerne %d duplikate avspillinger, og beholde kun den eldste avspillingen av hvert element. Dette kan ikke angres.</string>
@@ -2042,6 +2072,8 @@
   <string name="warning_prompt_mark_as_watched_show">Er du sikker på at du vil merke \"%s\" som sett? Dette vil merke alle episoder som sett.</string>
   <string name="warning_prompt_mark_as_watched_show_android">Er du sikker på at du vil markere **alle %1$d episoder** av \"%2$s\" som sett?</string>
   <string name="warning_prompt_mark_as_watched_show_until">Er du sikker på at du vil merke alle usette episoder av \"%1$s\" som sett frem til episode %2$s? Dette vil merke %3$d episoder som sett.</string>
+  <string name="warning_prompt_partial_export_one">1 av %d seksjoner mislyktes med eksport. Fortsette likevel?</string>
+  <string name="warning_prompt_partial_export_other">%1$d av %2$d seksjoner mislyktes med eksport. Fortsette likevel?</string>
   <string name="warning_prompt_remove_from_favorites">Er du sikker på at du vil fjerne \"%s\" fra favorittene dine?</string>
   <string name="warning_prompt_remove_from_liked_lists">Er du sikker på at du vil fjerne \"%s\" fra dine likte lister?</string>
   <string name="warning_prompt_remove_from_personal_list">Er du sikker på at du vil fjerne \"%1$s\" fra %2$s?</string>

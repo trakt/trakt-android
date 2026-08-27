@@ -13,6 +13,18 @@
   <string name="about_feature_title_rate_review">Оцініть та залиште відгук</string>
   <string name="about_feature_title_scrobble">Відстежуйте серіали та фільми</string>
   <string name="action_open_system_settings_tvos">Відкрити налаштування</string>
+  <string name="action_toast_action_change_list">Змінити список</string>
+  <string name="action_toast_action_failed">Не вдалося. Будь ласка, спробуйте ще раз.</string>
+  <string name="action_toast_added_to_favorites"><b>%s</b> додано до ваших улюблених</string>
+  <string name="action_toast_added_to_watchlist"><b>%s</b> додано до вашого Списку перегляду</string>
+  <string name="action_toast_added_to_watchlist_generic">Додано до вашого Списку перегляду</string>
+  <string name="action_toast_label_change_list">Змінити списки, до яких належить %s</string>
+  <string name="action_toast_label_undo">Скасувати останню зміну</string>
+  <string name="action_toast_removed_from_favorites"><b>%s</b> видалено з ваших улюблених</string>
+  <string name="action_toast_removed_from_history"><b>%s</b> видалено з вашої історії переглядів</string>
+  <string name="action_toast_removed_from_history_generic">Видалено з вашої історії переглядів</string>
+  <string name="action_toast_removed_from_watchlist"><b>%s</b> видалено з вашого Списку перегляду</string>
+  <string name="action_toast_removed_from_watchlist_generic">Видалено з вашого Списку перегляду</string>
   <string name="advanced_filter_label_ratings">Рейтинг від %1$s до %2$s</string>
   <string name="advanced_filter_label_release_year">Випущено з %1$d по %2$d</string>
   <string name="advanced_filter_label_runtime">Тривалість від %1$d до %2$d хвилин.</string>
@@ -90,6 +102,7 @@
   <string name="button_label_edit_app">Редагувати %s</string>
   <string name="button_label_edit_comment">Редагувати рецензію</string>
   <string name="button_label_edit_list">Редагувати ваш список %s</string>
+  <string name="button_label_edit_loved_genres">Редагувати жанри, які вам подобаються</string>
   <string name="button_label_edit_mode">Режим редагування</string>
   <string name="button_label_edit_note">Редагувати примітку</string>
   <string name="button_label_episode_type_all">Показати всі релізи</string>
@@ -469,6 +482,7 @@
   <string name="button_text_stop_asking">Припинити питати</string>
   <string name="button_text_stop_check_in">Зупинити відмітку перегляду</string>
   <string name="button_text_stop_clear">Зупинити очищення</string>
+  <string name="button_text_stop_export">Зупинити експорт</string>
   <string name="button_text_stop_rewatching">Зупинити повторний перегляд</string>
   <string name="button_text_stream">Потік</string>
   <string name="button_text_stream_on">Транслювати на</string>
@@ -546,6 +560,7 @@
   <string name="confirmation_title_log_out">Вийти?</string>
   <string name="confirmation_title_mark_as_watched">Позначити як переглянуте?</string>
   <string name="confirmation_title_plex_remove_server">Видалити %s?</string>
+  <string name="confirmation_title_proceed_after_partial_export">Неповний експорт</string>
   <string name="confirmation_title_remove_favorite">Видалити з улюблених?</string>
   <string name="confirmation_title_remove_from_list">Видалити зі списку?</string>
   <string name="confirmation_title_remove_from_watched">Видалити з історії?</string>
@@ -558,6 +573,7 @@
   <string name="confirmation_title_rewatching_prompt">Ви переглядаєте \"%s\" повторно?</string>
   <string name="confirmation_title_stop_checkin">Зупинити відмітку перегляду?</string>
   <string name="confirmation_title_stop_clear">Зупинити очищення?</string>
+  <string name="confirmation_title_stop_export">Зупинити експорт?</string>
   <string name="confirmation_title_suppress_ratings_toast">Припинити запитувати?</string>
   <string name="confirmation_title_undo_sync">Скасувати цю синхронізацію?</string>
   <string name="confirmation_title_unfollow_user">Відписатися від користувача?</string>
@@ -577,6 +593,7 @@
   <string name="description_delete_account">Вашу особисту інформацію буде видалено, а ваші статистичні дані буде анонімізовано.</string>
   <string name="description_edit_api_application">Оновіть дані, URI перенаправлення та дозволи вашої програми OAuth.</string>
   <string name="description_export">Отримайте експорт ваших даних користувача в одному ZIP-файлі. Цей процес може зайняти деякий час.</string>
+  <string name="description_export_before_destructive">Завантажує ZIP-архів ваших даних перед видаленням будь-чого.</string>
   <string name="description_genres">Додайте або видаліть ваші %d улюблених жанрів.</string>
   <string name="description_history_analysis">Знайдіть повторні перегляди у вашій історії переглядів і залиште лише один перегляд кожного елемента.</string>
   <string name="description_import">Імпортуйте свої дані з інших сервісів безпосередньо у своєму браузері.</string>
@@ -636,6 +653,7 @@
   <string name="error_text_delete_account">Сталася помилка під час видалення вашого облікового запису. Будь ласка, спробуйте ще раз.</string>
   <string name="error_text_email">Оновлення електронної пошти не вдалося. Переконайтеся, що адреса дійсна.</string>
   <string name="error_text_failed_update">Оновлення не вдалося. Будь ласка, спробуйте ще раз.</string>
+  <string name="error_text_genres_save_failed">Не вдалося зберегти. Будь ласка, спробуйте ще раз.</string>
   <string name="error_text_image_preview_failed">Не вдалося завантажити попередній перегляд</string>
   <string name="error_text_lists_limit">Ви досягли ліміту особистих списків. Оновіть до VIP для необмеженої кількості списків!</string>
   <string name="error_text_locked_account_collection_limit">Цей обліковий запис користувача заблоковано, оскільки колекція перевищила ліміт. Будь ласка, <a>зверніться до служби підтримки</a> для вирішення цієї проблеми.</string>
@@ -707,9 +725,11 @@
   <string name="header_expected_premiere">Очікувана прем\'єра</string>
   <string name="header_expiration_date">Термін дії</string>
   <string name="header_export">Експорт</string>
+  <string name="header_exporting_data">Експорт ваших даних</string>
   <string name="header_favorite_genres">Улюблені жанри</string>
   <string name="header_filters">Фільтри</string>
   <string name="header_genre">Жанр</string>
+  <string name="header_genres_loved">Жанри, які вам подобаються</string>
   <string name="header_get_notified">Отримуйте сповіщення!</string>
   <string name="header_get_trakt_app">Завантажте додаток Trakt</string>
   <string name="header_height">Зріст</string>
@@ -918,6 +938,9 @@
   <string name="label_app_redirect_uris">URI перенаправлення</string>
   <string name="label_drag_image_to_adjust">Перетягніть зображення для налаштування</string>
   <string name="label_favorites">Улюблені</string>
+  <string name="label_genres_drawer_all">Усі жанри</string>
+  <string name="label_genres_drawer_selected">Вибрані</string>
+  <string name="label_genres_drawer_subtitle_loved">Виберіть до 5 жанрів, які ви б хотіли бачити частіше.</string>
   <string name="label_keep_play">Залишити</string>
   <string name="label_list_item_count">%s елементів</string>
   <string name="label_plex_connected">Підключено до Plex</string>
@@ -1232,7 +1255,9 @@
   <string name="page_title_widget_background">Фон</string>
   <string name="page_title_year_in_review">%s в огляді</string>
   <string name="page_title_year_to_date">Рік до сьогодні</string>
+  <string name="preview_feature_description_action_confirmations">Показати спливаюче підтвердження з можливістю швидкого скасування, коли ви додаєте, видаляєте, оцінюєте або позначаєте щось як переглянуте.</string>
   <string name="preview_feature_description_edit_mode">Увімкніть елементи керування для приховування або відображення настроюваних розділів у всьому застосунку.</string>
+  <string name="preview_feature_description_genre_picker">Обирайте улюблені жанри з візуальної сітки замість списку тегів.</string>
   <string name="preview_feature_description_leaderboard">Ранжуйте людей, за якими стежите, за часом перегляду та подивіться, яке місце ви посідаєте серед них.</string>
   <string name="preview_feature_description_list_counts">Показує, скільки елементів містить список, і скільки списків є в розділі.</string>
   <string name="preview_feature_description_parental_guide">Показувати рівні ризику вмісту у висувній панелі деталей для фільмів, серіалів та епізодів.</string>
@@ -1241,7 +1266,9 @@
   <string name="preview_feature_description_scoped_favorites">Обмежте списки улюблених за часом, відображаючи улюблене поточного року в профілях та групуючи повний список улюблених за роками.</string>
   <string name="preview_feature_description_soundtrack">Додає розділ саундтреків до сторінок фільмів та серіалів, з відтворенням там, де трек може бути зіставлений.</string>
   <string name="preview_feature_description_up_next_smart_sort">Спробуйте розумніший спосіб сортування вашого розділу «Продовжити перегляд».</string>
+  <string name="preview_feature_title_action_confirmations">Підтвердження дій</string>
   <string name="preview_feature_title_edit_mode">Режим редагування</string>
+  <string name="preview_feature_title_genre_picker">Вибір жанрів</string>
   <string name="preview_feature_title_leaderboard">Пантеон</string>
   <string name="preview_feature_title_list_counts">Кількість у списках</string>
   <string name="preview_feature_title_reviewer_stats">Статистика рецензента</string>
@@ -1261,6 +1288,7 @@
   <string name="stat_text_plays">Перегляди</string>
   <string name="stat_text_time_watched">Переглянуто</string>
   <string name="stat_text_watchers">Глядачі</string>
+  <string name="switch_label_export_before_destructive">Експортувати мої дані спочатку</string>
   <string name="switch_label_mark_as_spoiler">Позначити як спойлер</string>
   <string name="switch_label_multiple_watches">Увімкнути або вимкнути кілька переглядів</string>
   <string name="switch_label_private">Профіль приватний</string>
@@ -1648,6 +1676,7 @@
   <string name="text_stats_episodes_count">%d епізодів</string>
   <string name="text_stats_keep_it_going">Продовжуйте!</string>
   <string name="text_stats_movies_count">%d фільмів</string>
+  <string name="text_stats_no_screen_time">Жодного часу перегляду цього тижня</string>
   <string name="text_stats_out_of">З %s</string>
   <string name="text_stats_this_week">Цього тижня</string>
   <string name="text_stats_time_afternoon">День</string>
@@ -2022,6 +2051,7 @@
   <string name="warning_prompt_block_user">Заблокувати %s?</string>
   <string name="warning_prompt_block_user_detail">Вони більше не зможуть стежити за вами або бачити вашу активність.</string>
   <string name="warning_prompt_cancel_clear">Відхід звідси зупинить очищення ваших даних. Ви впевнені?</string>
+  <string name="warning_prompt_cancel_export">Відхід звідси зупинить експорт ваших даних. Ви впевнені?</string>
   <string name="warning_prompt_cancel_import">Ваш імпорт триває. Відхід звідси зупинить його. Ви впевнені?</string>
   <string name="warning_prompt_cancel_vip">Ви впевнені, що хочете скасувати VIP-підписку? Ви збережете свої VIP-переваги до %s, після чого втратите доступ до VIP-функцій. Trakt не повертає кошти за скасовані підписки.</string>
   <string name="warning_prompt_clean_up_history">Це назавжди видалить %d повторних переглядів, залишивши лише найстаріший перегляд кожного елемента. Цю дію не можна скасувати.</string>
@@ -2042,6 +2072,8 @@
   <string name="warning_prompt_mark_as_watched_show">Ви впевнені, що хочете позначити \"%s\" як переглянуте? Це позначить усі епізоди як переглянуті.</string>
   <string name="warning_prompt_mark_as_watched_show_android">Ви впевнені, що хочете позначити **усі %1$d епізоди** \"%2$s\" як переглянуті?</string>
   <string name="warning_prompt_mark_as_watched_show_until">Ви впевнені, що хочете позначити всі непереглянуті епізоди \"%1$s\" як переглянуті до епізоду %2$s? Це позначить %3$d епізодів як переглянуті.</string>
+  <string name="warning_prompt_partial_export_one">Не вдалося експортувати 1 із %d розділів. Все одно продовжити?</string>
+  <string name="warning_prompt_partial_export_other">Не вдалося експортувати %1$d із %2$d розділів. Все одно продовжити?</string>
   <string name="warning_prompt_remove_from_favorites">Ви впевнені, що хочете видалити \"%s\" з ваших улюблених?</string>
   <string name="warning_prompt_remove_from_liked_lists">Ви впевнені, що хочете видалити \"%s\" зі своїх улюблених списків?</string>
   <string name="warning_prompt_remove_from_personal_list">Ви впевнені, що хочете видалити \"%1$s\" зі списку %2$s?</string>

@@ -13,6 +13,18 @@
   <string name="about_feature_title_rate_review">Evaluează &amp; Recenzează</string>
   <string name="about_feature_title_scrobble">Urmărește Seriale &amp; Filme</string>
   <string name="action_open_system_settings_tvos">Deschide Setări</string>
+  <string name="action_toast_action_change_list">Schimbă lista</string>
+  <string name="action_toast_action_failed">Nu a funcționat. Te rog să încerci din nou.</string>
+  <string name="action_toast_added_to_favorites"><b>%s</b> a fost adăugat(ă) la favoritele tale</string>
+  <string name="action_toast_added_to_watchlist"><b>%s</b> a fost adăugat(ă) la lista ta de vizionare</string>
+  <string name="action_toast_added_to_watchlist_generic">Adăugat(ă) la lista ta de vizionare</string>
+  <string name="action_toast_label_change_list">Schimbă listele din care face parte %s</string>
+  <string name="action_toast_label_undo">Anulează ultima modificare</string>
+  <string name="action_toast_removed_from_favorites"><b>%s</b> a fost eliminat(ă) din favoritele tale</string>
+  <string name="action_toast_removed_from_history"><b>%s</b> a fost eliminat(ă) din istoricul tău</string>
+  <string name="action_toast_removed_from_history_generic">Eliminat(ă) din istoricul tău</string>
+  <string name="action_toast_removed_from_watchlist"><b>%s</b> a fost eliminat(ă) din lista ta de vizionare</string>
+  <string name="action_toast_removed_from_watchlist_generic">Eliminat(ă) din lista ta de vizionare</string>
   <string name="advanced_filter_label_ratings">Evaluare de la %1$s la %2$s</string>
   <string name="advanced_filter_label_release_year">Lansat între %1$d și %2$d</string>
   <string name="advanced_filter_label_runtime">Durată de la %1$d la %2$d minute.</string>
@@ -90,6 +102,7 @@
   <string name="button_label_edit_app">Editează %s</string>
   <string name="button_label_edit_comment">Editează Recenzia</string>
   <string name="button_label_edit_list">Editează lista ta %s</string>
+  <string name="button_label_edit_loved_genres">Editează genurile care îți plac</string>
   <string name="button_label_edit_mode">Mod editare</string>
   <string name="button_label_edit_note">Editează notă</string>
   <string name="button_label_episode_type_all">Afișează toate lansările</string>
@@ -469,6 +482,7 @@
   <string name="button_text_stop_asking">Nu mai întreba</string>
   <string name="button_text_stop_check_in">Oprește check-in</string>
   <string name="button_text_stop_clear">Oprește ștergerea</string>
+  <string name="button_text_stop_export">Oprește exportul</string>
   <string name="button_text_stop_rewatching">Oprește revizionarea</string>
   <string name="button_text_stream">Stream</string>
   <string name="button_text_stream_on">Disponibil pe</string>
@@ -546,6 +560,7 @@
   <string name="confirmation_title_log_out">Deconectare?</string>
   <string name="confirmation_title_mark_as_watched">Marchează ca vizionat?</string>
   <string name="confirmation_title_plex_remove_server">Eliminați %s?</string>
+  <string name="confirmation_title_proceed_after_partial_export">Export incomplet</string>
   <string name="confirmation_title_remove_favorite">Elimină din favorite?</string>
   <string name="confirmation_title_remove_from_list">Elimină din listă?</string>
   <string name="confirmation_title_remove_from_watched">Elimină din istoric?</string>
@@ -558,6 +573,7 @@
   <string name="confirmation_title_rewatching_prompt">Revizionezi \"%s\"?</string>
   <string name="confirmation_title_stop_checkin">Oprește check-in-ul?</string>
   <string name="confirmation_title_stop_clear">Oprește ștergerea?</string>
+  <string name="confirmation_title_stop_export">Oprești exportul?</string>
   <string name="confirmation_title_suppress_ratings_toast">Nu mai întreba?</string>
   <string name="confirmation_title_undo_sync">Anulezi această sincronizare?</string>
   <string name="confirmation_title_unfollow_user">Nu mai urmări utilizatorul?</string>
@@ -577,6 +593,7 @@
   <string name="description_delete_account">Informațiile tale personale vor fi eliminate, iar datele tale statistice vor fi anonimizate.</string>
   <string name="description_edit_api_application">Actualizează detaliile, URI-urile de redirecționare și permisiunile aplicației tale OAuth.</string>
   <string name="description_export">Obține un export al datelor tale de utilizator într-un singur fișier ZIP. Acest proces poate dura.</string>
+  <string name="description_export_before_destructive">Descarcă un fișier ZIP cu datele tale înainte ca orice să fie eliminat.</string>
   <string name="description_genres">Adaugă sau elimină cele %d genuri favorite.</string>
   <string name="description_history_analysis">Găsește vizionări duplicate în istoricul tău și păstrează doar o singură vizionare pentru fiecare element.</string>
   <string name="description_import">Importă-ți datele de la alte servicii direct în browserul tău.</string>
@@ -636,6 +653,7 @@
   <string name="error_text_delete_account">Ceva nu a mers bine la ștergerea contului tău. Te rugăm să încerci din nou.</string>
   <string name="error_text_email">Actualizarea emailului a eșuat. Asigură-te că este o adresă validă.</string>
   <string name="error_text_failed_update">Actualizarea a eșuat. Te rog să încerci din nou.</string>
+  <string name="error_text_genres_save_failed">Salvarea a eșuat. Te rog să încerci din nou.</string>
   <string name="error_text_image_preview_failed">Previzualizarea nu a putut fi încărcată</string>
   <string name="error_text_lists_limit">Ai atins limita listelor personale. Fă upgrade la VIP pentru liste nelimitate!</string>
   <string name="error_text_locked_account_collection_limit">Acest cont de utilizator a fost blocat deoarece colecția a depășit limita. Vă rugăm să <a>contactați asistența</a> pentru a rezolva această problemă.</string>
@@ -707,9 +725,11 @@
   <string name="header_expected_premiere">Premiera așteptată</string>
   <string name="header_expiration_date">Data expirării</string>
   <string name="header_export">Exportă</string>
+  <string name="header_exporting_data">Exportarea datelor tale</string>
   <string name="header_favorite_genres">Genuri favorite</string>
   <string name="header_filters">Filtre</string>
   <string name="header_genre">Gen</string>
+  <string name="header_genres_loved">Genuri care îți plac</string>
   <string name="header_get_notified">Fii notificat!</string>
   <string name="header_get_trakt_app">Descarcă aplicația Trakt</string>
   <string name="header_height">Înălțime</string>
@@ -918,6 +938,9 @@
   <string name="label_app_redirect_uris">URI-uri de redirecționare</string>
   <string name="label_drag_image_to_adjust">Trage imaginea pentru a ajusta</string>
   <string name="label_favorites">Favorite</string>
+  <string name="label_genres_drawer_all">Toate genurile</string>
+  <string name="label_genres_drawer_selected">Selectate</string>
+  <string name="label_genres_drawer_subtitle_loved">Selectează până la 5 genuri pe care ai vrea să le vezi mai des.</string>
   <string name="label_keep_play">Păstrează</string>
   <string name="label_list_item_count">%s elemente</string>
   <string name="label_plex_connected">Conectat la Plex</string>
@@ -1232,7 +1255,9 @@
   <string name="page_title_widget_background">Fundal</string>
   <string name="page_title_year_in_review">Retrospectiva anului %s</string>
   <string name="page_title_year_to_date">Anul curent</string>
+  <string name="preview_feature_description_action_confirmations">Afișează o notificare de confirmare cu o opțiune rapidă de anulare când adaugi, elimini, evaluezi sau marchezi ceva ca vizionat.</string>
   <string name="preview_feature_description_edit_mode">Activează controale pentru ascunderea sau afișarea secțiunilor configurabile în întreaga aplicație.</string>
+  <string name="preview_feature_description_genre_picker">Alege genurile tale preferate dintr-o grilă vizuală în loc de o listă de etichete.</string>
   <string name="preview_feature_description_leaderboard">Clasați persoanele pe care le urmăriți după timpul de vizionare și vedeți unde vă situați printre ele.</string>
   <string name="preview_feature_description_list_counts">Arată câte elemente conține o listă și câte liste are o secțiune.</string>
   <string name="preview_feature_description_parental_guide">Afișați nivelurile de risc ale conținutului în sertarul de detalii pentru filme, seriale și episoade.</string>
@@ -1241,7 +1266,9 @@
   <string name="preview_feature_description_scoped_favorites">Organizează listele de favorite pe perioade, afișând favoritele din anul curent pe profile și grupând lista completă de favorite pe ani.</string>
   <string name="preview_feature_description_soundtrack">Adaugă o secțiune de coloană sonoră la paginile de filme și seriale, cu redare acolo unde o melodie poate fi potrivită.</string>
   <string name="preview_feature_description_up_next_smart_sort">Testează o modalitate mai inteligentă de a sorta elementele din Continuă vizionarea.</string>
+  <string name="preview_feature_title_action_confirmations">Confirmări de acțiune</string>
   <string name="preview_feature_title_edit_mode">Mod editare</string>
+  <string name="preview_feature_title_genre_picker">Selector de genuri</string>
   <string name="preview_feature_title_leaderboard">Panteon</string>
   <string name="preview_feature_title_list_counts">Numărul listelor</string>
   <string name="preview_feature_title_reviewer_stats">Statistici recenzor</string>
@@ -1261,6 +1288,7 @@
   <string name="stat_text_plays">Vizionări</string>
   <string name="stat_text_time_watched">Vizionat</string>
   <string name="stat_text_watchers">Spectatori</string>
+  <string name="switch_label_export_before_destructive">Exportă-mi datele mai întâi</string>
   <string name="switch_label_mark_as_spoiler">Marchează ca spoiler</string>
   <string name="switch_label_multiple_watches">Activează sau dezactivează vizionările multiple</string>
   <string name="switch_label_private">Profilul este privat</string>
@@ -1648,6 +1676,7 @@
   <string name="text_stats_episodes_count">%d episoade</string>
   <string name="text_stats_keep_it_going">Menține ritmul!</string>
   <string name="text_stats_movies_count">%d filme</string>
+  <string name="text_stats_no_screen_time">Fără timp de vizionare săptămâna aceasta</string>
   <string name="text_stats_out_of">Din %s</string>
   <string name="text_stats_this_week">Săptămâna aceasta</string>
   <string name="text_stats_time_afternoon">După-amiază</string>
@@ -2022,6 +2051,7 @@
   <string name="warning_prompt_block_user">Blochezi pe %s?</string>
   <string name="warning_prompt_block_user_detail">Nu te vor mai putea urmări sau vedea activitatea ta.</string>
   <string name="warning_prompt_cancel_clear">Navigarea în altă parte va opri ștergerea datelor tale. Ești sigur?</string>
+  <string name="warning_prompt_cancel_export">Navigarea în altă parte va opri exportarea datelor tale. Ești sigur?</string>
   <string name="warning_prompt_cancel_import">Importul dumneavoastră este în curs. Navigarea în altă parte îl va opri. Sunteți sigur?</string>
   <string name="warning_prompt_cancel_vip">Ești sigur că vrei să anulezi abonamentul VIP? Vei păstra beneficiile VIP până la %s, după care vei pierde accesul la funcțiile VIP. Trakt nu oferă rambursări pentru abonamentele anulate.</string>
   <string name="warning_prompt_clean_up_history">Aceasta va elimina permanent %d vizionări duplicate, păstrând doar cea mai veche vizionare a fiecărui element. Această acțiune nu poate fi anulată.</string>
@@ -2042,6 +2072,8 @@
   <string name="warning_prompt_mark_as_watched_show">Ești sigur că vrei să marchezi \"%s\" ca vizionat? Aceasta va marca toate episoadele ca vizionate.</string>
   <string name="warning_prompt_mark_as_watched_show_android">Ești sigur că vrei să marchezi **toate cele %1$d episoade** din „%2$s” ca vizionate?</string>
   <string name="warning_prompt_mark_as_watched_show_until">Ești sigur că vrei să marchezi toate episoadele nevăzute din \"%1$s\" ca vizionate până la episodul %2$s? Aceasta va marca %3$d episoade ca vizionate.</string>
+  <string name="warning_prompt_partial_export_one">1 din %d secțiuni nu a putut fi exportată. Continuați oricum?</string>
+  <string name="warning_prompt_partial_export_other">%1$d din %2$d secțiuni nu au putut fi exportate. Continuați oricum?</string>
   <string name="warning_prompt_remove_from_favorites">Ești sigur că vrei să elimini \"%s\" din Favoritele tale?</string>
   <string name="warning_prompt_remove_from_liked_lists">Ești sigur că vrei să elimini „%s” din listele tale apreciate?</string>
   <string name="warning_prompt_remove_from_personal_list">Ești sigur că vrei să elimini \"%1$s\" din %2$s?</string>

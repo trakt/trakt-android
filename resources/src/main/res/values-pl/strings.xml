@@ -13,6 +13,18 @@
   <string name="about_feature_title_rate_review">Oceniaj i recenzuj</string>
   <string name="about_feature_title_scrobble">Śledź Seriale i Filmy</string>
   <string name="action_open_system_settings_tvos">Otwórz ustawienia</string>
+  <string name="action_toast_action_change_list">Zmień listę</string>
+  <string name="action_toast_action_failed">Nie powiodło się. Spróbuj ponownie.</string>
+  <string name="action_toast_added_to_favorites"><b>%s</b> został(a) dodany(a) do ulubionych</string>
+  <string name="action_toast_added_to_watchlist"><b>%s</b> został(a) dodany(a) do obserwowanych</string>
+  <string name="action_toast_added_to_watchlist_generic">Dodano do obserwowanych</string>
+  <string name="action_toast_label_change_list">Zmień listy, do których należy %s</string>
+  <string name="action_toast_label_undo">Cofnij ostatnią zmianę</string>
+  <string name="action_toast_removed_from_favorites"><b>%s</b> został(a) usunięty(a) z ulubionych</string>
+  <string name="action_toast_removed_from_history"><b>%s</b> został(a) usunięty(a) z historii</string>
+  <string name="action_toast_removed_from_history_generic">Usunięto z historii</string>
+  <string name="action_toast_removed_from_watchlist"><b>%s</b> został(a) usunięty(a) z obserwowanych</string>
+  <string name="action_toast_removed_from_watchlist_generic">Usunięto z obserwowanych</string>
   <string name="advanced_filter_label_ratings">Ocena od %1$s do %2$s</string>
   <string name="advanced_filter_label_release_year">Wydany w latach %1$d–%2$d</string>
   <string name="advanced_filter_label_runtime">Czas trwania od %1$d do %2$d minut.</string>
@@ -90,6 +102,7 @@
   <string name="button_label_edit_app">Edytuj %s</string>
   <string name="button_label_edit_comment">Edytuj recenzję</string>
   <string name="button_label_edit_list">Edytuj listę %s</string>
+  <string name="button_label_edit_loved_genres">Edytuj gatunki, które lubisz</string>
   <string name="button_label_edit_mode">Tryb edycji</string>
   <string name="button_label_edit_note">Edytuj notatkę</string>
   <string name="button_label_episode_type_all">Pokaż wszystkie wydania</string>
@@ -469,6 +482,7 @@
   <string name="button_text_stop_asking">Nie pytaj więcej</string>
   <string name="button_text_stop_check_in">Zatrzymaj</string>
   <string name="button_text_stop_clear">Zatrzymaj</string>
+  <string name="button_text_stop_export">Zatrzymaj eksportowanie</string>
   <string name="button_text_stop_rewatching">Zakończ ponowne oglądanie</string>
   <string name="button_text_stream">Stream</string>
   <string name="button_text_stream_on">Stream</string>
@@ -546,6 +560,7 @@
   <string name="confirmation_title_log_out">Wyloguj?</string>
   <string name="confirmation_title_mark_as_watched">Oznaczyć jako obejrzane?</string>
   <string name="confirmation_title_plex_remove_server">Usunąć %s?</string>
+  <string name="confirmation_title_proceed_after_partial_export">Eksport niekompletny</string>
   <string name="confirmation_title_remove_favorite">Usunąć z ulubionych?</string>
   <string name="confirmation_title_remove_from_list">Usunąć z listy?</string>
   <string name="confirmation_title_remove_from_watched">Usunąć z historii?</string>
@@ -558,6 +573,7 @@
   <string name="confirmation_title_rewatching_prompt">Czy oglądasz ponownie \"%s\"?</string>
   <string name="confirmation_title_stop_checkin">Zatrzymać zameldowanie?</string>
   <string name="confirmation_title_stop_clear">Zatrzymać czyszczenie?</string>
+  <string name="confirmation_title_stop_export">Zatrzymać eksportowanie?</string>
   <string name="confirmation_title_suppress_ratings_toast">Nie pytać więcej?</string>
   <string name="confirmation_title_undo_sync">Cofnąć tę synchronizację?</string>
   <string name="confirmation_title_unfollow_user">Przestać obserwować użytkownika?</string>
@@ -577,6 +593,7 @@
   <string name="description_delete_account">Twoje dane osobowe zostaną usunięte, a dane statystyczne zostaną zanonimizowane.</string>
   <string name="description_edit_api_application">Zaktualizuj szczegóły, URI przekierowania i uprawnienia swojej aplikacji OAuth.</string>
   <string name="description_export">Pobierz swoje dane w jednym pliku ZIP. Ten proces może chwilę potrwać.</string>
+  <string name="description_export_before_destructive">Pobiera archiwum ZIP Twoich danych, zanim cokolwiek zostanie usunięte.</string>
   <string name="description_genres">Dodaj lub usuń swoje %d ulubione gatunki.</string>
   <string name="description_history_analysis">Znajdź zduplikowane obejrzenia w historii oglądania i zachowaj tylko jedno obejrzenie każdego elementu.</string>
   <string name="description_import">Importuj swoje dane z innych platform bezpośrednio w przeglądarce.</string>
@@ -636,6 +653,7 @@
   <string name="error_text_delete_account">Coś poszło nie tak podczas usuwania Twojego konta. Spróbuj ponownie.</string>
   <string name="error_text_email">Aktualizacja e-maila nie powiodła się. Upewnij się, że adres jest prawidłowy.</string>
   <string name="error_text_failed_update">Aktualizacja nie powiodła się. Spróbuj ponownie.</string>
+  <string name="error_text_genres_save_failed">Zapisywanie nie powiodło się. Spróbuj ponownie.</string>
   <string name="error_text_image_preview_failed">Nie udało się wczytać podglądu</string>
   <string name="error_text_lists_limit">Osiągnąłeś limit swoich list osobistych. Zostań VIP, aby odblokować większą liczbę list!</string>
   <string name="error_text_locked_account_collection_limit">Konto użytkownika zostało zablokowane, ponieważ kolekcja przekroczyła limit. Skontaktuj się z <a>pomocą techniczną</a>, aby rozwiązać ten problem.</string>
@@ -707,9 +725,11 @@
   <string name="header_expected_premiere">Oczekiwana premiera</string>
   <string name="header_expiration_date">Data wygaśnięcia</string>
   <string name="header_export">Eksportuj</string>
+  <string name="header_exporting_data">Eksportowanie Twoich danych</string>
   <string name="header_favorite_genres">Ulubione gatunki</string>
   <string name="header_filters">Filtry</string>
   <string name="header_genre">Gatunek</string>
+  <string name="header_genres_loved">Gatunki, które lubisz</string>
   <string name="header_get_notified">Bądź na bieżąco!</string>
   <string name="header_get_trakt_app">Pobierz aplikację</string>
   <string name="header_height">Wzrost</string>
@@ -918,6 +938,9 @@
   <string name="label_app_redirect_uris">URI przekierowania</string>
   <string name="label_drag_image_to_adjust">Przeciągnij obraz, aby dostosować</string>
   <string name="label_favorites">Ulubione</string>
+  <string name="label_genres_drawer_all">Wszystkie gatunki</string>
+  <string name="label_genres_drawer_selected">Wybrane</string>
+  <string name="label_genres_drawer_subtitle_loved">Wybierz do 5 gatunków, których chciałbyś widzieć więcej.</string>
   <string name="label_keep_play">Zachowaj</string>
   <string name="label_list_item_count">%s pozycje</string>
   <string name="label_plex_connected">Połączono z Plex</string>
@@ -1232,7 +1255,9 @@
   <string name="page_title_widget_background">Tło</string>
   <string name="page_title_year_in_review">Podsumowanie roku %s</string>
   <string name="page_title_year_to_date">Od początku roku</string>
+  <string name="preview_feature_description_action_confirmations">Pokaż wyskakujące powiadomienie z możliwością szybkiego cofnięcia, gdy dodasz, usuniesz, ocenisz lub oznaczysz coś jako obejrzane.</string>
   <string name="preview_feature_description_edit_mode">Włącz sterowanie ukrywaniem lub pokazywaniem konfigurowalnych sekcji w całej aplikacji.</string>
+  <string name="preview_feature_description_genre_picker">Wybieraj ulubione gatunki z siatki wizualnej zamiast z listy tagów.</string>
   <string name="preview_feature_description_leaderboard">Oceniaj osoby, które obserwujesz, według czasu oglądania i sprawdź, gdzie znajdziesz się wśród nich.</string>
   <string name="preview_feature_description_list_counts">Pokazuje, ile pozycji zawiera lista, oraz ile list zawiera sekcja.</string>
   <string name="preview_feature_description_parental_guide">Wyświetlaj poziomy ryzyka treści w panelu szczegółów dla filmów, seriali i odcinków.</string>
@@ -1241,7 +1266,9 @@
   <string name="preview_feature_description_scoped_favorites">Ograniczaj listy ulubionych czasowo, pokazując ulubione z bieżącego roku w profilach i grupując pełną listę ulubionych według roku.</string>
   <string name="preview_feature_description_soundtrack">Dodaje sekcję ścieżek dźwiękowych do stron filmów i seriali, z możliwością odtwarzania, gdy utwór może zostać dopasowany.</string>
   <string name="preview_feature_description_up_next_smart_sort">Wypróbuj inteligentniejszy sposób sortowania pozycji Oglądaj dalej.</string>
+  <string name="preview_feature_title_action_confirmations">Potwierdzenia akcji</string>
   <string name="preview_feature_title_edit_mode">Tryb edycji</string>
+  <string name="preview_feature_title_genre_picker">Wybór Gatunków</string>
   <string name="preview_feature_title_leaderboard">Panteon</string>
   <string name="preview_feature_title_list_counts">Liczby list</string>
   <string name="preview_feature_title_reviewer_stats">Statystyki recenzenta</string>
@@ -1261,6 +1288,7 @@
   <string name="stat_text_plays">Odtworzenia</string>
   <string name="stat_text_time_watched">Obejrzany</string>
   <string name="stat_text_watchers">Oglądający</string>
+  <string name="switch_label_export_before_destructive">Najpierw wyeksportuj moje dane</string>
   <string name="switch_label_mark_as_spoiler">Oznacz jako spoiler</string>
   <string name="switch_label_multiple_watches">Włącz lub wyłącz wielokrotne oglądanie</string>
   <string name="switch_label_private">Czy profil jest prywatny</string>
@@ -1648,6 +1676,7 @@
   <string name="text_stats_episodes_count">%d odcinków</string>
   <string name="text_stats_keep_it_going">Tak trzymaj!</string>
   <string name="text_stats_movies_count">%d filmów</string>
+  <string name="text_stats_no_screen_time">Brak czasu oglądania w tym tygodniu</string>
   <string name="text_stats_out_of">Z %s</string>
   <string name="text_stats_this_week">W tym tygodniu</string>
   <string name="text_stats_time_afternoon">Popołudnie</string>
@@ -2022,6 +2051,7 @@
   <string name="warning_prompt_block_user">Zablokować %s?</string>
   <string name="warning_prompt_block_user_detail">Nie będą już mogli obserwować ciebie ani twojej aktywności.</string>
   <string name="warning_prompt_cancel_clear">Opuszczenie strony spowoduje zatrzymanie usuwania danych. Czy chcesz kontynuować?</string>
+  <string name="warning_prompt_cancel_export">Opuszczenie strony spowoduje zatrzymanie eksportowania Twoich danych. Czy na pewno?</string>
   <string name="warning_prompt_cancel_import">Twój import jest w toku. Opuszczenie tej strony zatrzyma go. Czy na pewno chcesz kontynuować?</string>
   <string name="warning_prompt_cancel_vip">Czy na pewno chcesz anulować swoją subskrypcję VIP? Zachowasz swoje korzyści VIP do dnia %s, po czym utracisz dostęp do funkcji VIP. Trakt nie oferuje zwrotów za anulowane subskrypcje.</string>
   <string name="warning_prompt_clean_up_history">Spowoduje to trwałe usunięcie %d zduplikowanych obejrzeń, zachowując tylko najstarsze obejrzenie każdego elementu. Tej operacji nie można cofnąć.</string>
@@ -2042,6 +2072,8 @@
   <string name="warning_prompt_mark_as_watched_show">Czy na pewno chcesz dodać \"%s\" jako obejrzany? Spowoduje to dodanie wszystkich odcinków.</string>
   <string name="warning_prompt_mark_as_watched_show_android">Czy na pewno chcesz dodać **wszystkie %1$d odcinki** \"%2$s\" do swojej historii?</string>
   <string name="warning_prompt_mark_as_watched_show_until">Czy na pewno chcesz dodać wszystkie nieobejrzane odcinki \"%1$s\" jako obejrzane aż do %2$s? Spowoduje to dodanie %3$d odcinków.</string>
+  <string name="warning_prompt_partial_export_one">Nie udało się wyeksportować 1 z %d sekcji. Mimo to kontynuować?</string>
+  <string name="warning_prompt_partial_export_other">Nie udało się wyeksportować %1$d z %2$d sekcji. Mimo to kontynuować?</string>
   <string name="warning_prompt_remove_from_favorites">Czy na pewno chcesz usunąć \"%s\" z ulubionych?</string>
   <string name="warning_prompt_remove_from_liked_lists">Czy na pewno chcesz usunąć \"%s\" z polubionych list?</string>
   <string name="warning_prompt_remove_from_personal_list">Czy na pewno chcesz usunąć \"%1$s\" z %2$s?</string>

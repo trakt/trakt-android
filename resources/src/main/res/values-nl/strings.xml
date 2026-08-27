@@ -13,6 +13,18 @@
   <string name="about_feature_title_rate_review">Beoordeel &amp; recenseer</string>
   <string name="about_feature_title_scrobble">Volg series &amp; films</string>
   <string name="action_open_system_settings_tvos">Open instellingen</string>
+  <string name="action_toast_action_change_list">Lijst wijzigen</string>
+  <string name="action_toast_action_failed">Dat is mislukt. Probeer het opnieuw.</string>
+  <string name="action_toast_added_to_favorites"><b>%s</b> is toegevoegd aan je favorieten</string>
+  <string name="action_toast_added_to_watchlist"><b>%s</b> is toegevoegd aan je kijklijst</string>
+  <string name="action_toast_added_to_watchlist_generic">Toegevoegd aan je kijklijst</string>
+  <string name="action_toast_label_change_list">Wijzig de lijsten waartoe %s behoort</string>
+  <string name="action_toast_label_undo">Laatste wijziging ongedaan maken</string>
+  <string name="action_toast_removed_from_favorites"><b>%s</b> is verwijderd uit je favorieten</string>
+  <string name="action_toast_removed_from_history"><b>%s</b> is verwijderd uit je geschiedenis</string>
+  <string name="action_toast_removed_from_history_generic">Verwijderd uit je kijkgeschiedenis</string>
+  <string name="action_toast_removed_from_watchlist"><b>%s</b> is verwijderd van je kijklijst</string>
+  <string name="action_toast_removed_from_watchlist_generic">Verwijderd van je kijklijst</string>
   <string name="advanced_filter_label_ratings">Beoordeling van %1$s tot %2$s</string>
   <string name="advanced_filter_label_release_year">Uitgebracht in %1$d tot %2$d</string>
   <string name="advanced_filter_label_runtime">Speelduur van %1$d tot %2$d minuten.</string>
@@ -90,6 +102,7 @@
   <string name="button_label_edit_app">%s bewerken</string>
   <string name="button_label_edit_comment">Beoordeling bewerken</string>
   <string name="button_label_edit_list">Bewerk je lijst %s</string>
+  <string name="button_label_edit_loved_genres">Bewerk genres die je leuk vindt</string>
   <string name="button_label_edit_mode">Bewerkmodus</string>
   <string name="button_label_edit_note">Notitie bewerken</string>
   <string name="button_label_episode_type_all">Toon alle releases</string>
@@ -469,6 +482,7 @@
   <string name="button_text_stop_asking">Stop met vragen</string>
   <string name="button_text_stop_check_in">Stop check-in</string>
   <string name="button_text_stop_clear">Wissen stoppen</string>
+  <string name="button_text_stop_export">Exporteren stoppen</string>
   <string name="button_text_stop_rewatching">Stoppen met opnieuw kijken</string>
   <string name="button_text_stream">Streamen</string>
   <string name="button_text_stream_on">Streamen op</string>
@@ -546,6 +560,7 @@
   <string name="confirmation_title_log_out">Afmelden?</string>
   <string name="confirmation_title_mark_as_watched">Markeren als bekeken?</string>
   <string name="confirmation_title_plex_remove_server">Verwijder %s?</string>
+  <string name="confirmation_title_proceed_after_partial_export">Export onvoltooid</string>
   <string name="confirmation_title_remove_favorite">Uit favorieten verwijderen?</string>
   <string name="confirmation_title_remove_from_list">Verwijderen uit lijst?</string>
   <string name="confirmation_title_remove_from_watched">Verwijderen uit geschiedenis?</string>
@@ -558,6 +573,7 @@
   <string name="confirmation_title_rewatching_prompt">Ben je opnieuw \"%s\" aan het kijken?</string>
   <string name="confirmation_title_stop_checkin">Check-in stoppen?</string>
   <string name="confirmation_title_stop_clear">Wissen stoppen?</string>
+  <string name="confirmation_title_stop_export">Exporteren stoppen?</string>
   <string name="confirmation_title_suppress_ratings_toast">Stoppen met vragen?</string>
   <string name="confirmation_title_undo_sync">Deze synchronisatie ongedaan maken?</string>
   <string name="confirmation_title_unfollow_user">Gebruiker ontvolgen?</string>
@@ -577,6 +593,7 @@
   <string name="description_delete_account">Je persoonlijke informatie wordt verwijderd en je statistische gegevens worden geanonimiseerd.</string>
   <string name="description_edit_api_application">Werk de details, omleidings-URI\'s en machtigingen van je OAuth-applicatie bij.</string>
   <string name="description_export">Exporteer uw gebruikersgegevens naar één ZIP-bestand. Dit proces kan even duren.</string>
+  <string name="description_export_before_destructive">Downloadt een ZIP van je gegevens voordat er iets wordt verwijderd.</string>
   <string name="description_genres">Voeg je %d favoriete genres toe of verwijder ze.</string>
   <string name="description_history_analysis">Vind dubbele weergaven in je kijkgeschiedenis en bewaar slechts één weergave van elk item.</string>
   <string name="description_import">Importeer uw gegevens van andere services direct in uw browser.</string>
@@ -636,6 +653,7 @@
   <string name="error_text_delete_account">Er is iets misgegaan bij het verwijderen van je account. Probeer het opnieuw.</string>
   <string name="error_text_email">E-mailupdate mislukt. Zorg ervoor dat het een geldig adres is.</string>
   <string name="error_text_failed_update">Bijwerken mislukt. Probeer het opnieuw.</string>
+  <string name="error_text_genres_save_failed">Opslaan mislukt. Probeer het opnieuw.</string>
   <string name="error_text_image_preview_failed">Voorbeeld kon niet worden geladen</string>
   <string name="error_text_lists_limit">Je hebt de limiet voor persoonlijke lijsten bereikt. Upgrade naar VIP voor een onbeperkt aantal lijsten!</string>
   <string name="error_text_locked_account_collection_limit">Dit gebruikersaccount is vergrendeld omdat de collectie de limiet heeft overschreden. Neem alstublieft <a>contact op met de ondersteuning</a> om dit probleem op te lossen.</string>
@@ -707,9 +725,11 @@
   <string name="header_expected_premiere">Verwachte première</string>
   <string name="header_expiration_date">Vervaldatum</string>
   <string name="header_export">Exporteren</string>
+  <string name="header_exporting_data">Je gegevens exporteren</string>
   <string name="header_favorite_genres">Favoriete genres</string>
   <string name="header_filters">Filters</string>
   <string name="header_genre">Genre</string>
+  <string name="header_genres_loved">Genres die je leuk vindt</string>
   <string name="header_get_notified">Ontvang meldingen!</string>
   <string name="header_get_trakt_app">Download de Trakt app</string>
   <string name="header_height">Lengte</string>
@@ -918,6 +938,9 @@
   <string name="label_app_redirect_uris">Omleidings-URI\'s</string>
   <string name="label_drag_image_to_adjust">Sleep de afbeelding om aan te passen</string>
   <string name="label_favorites">Favorieten</string>
+  <string name="label_genres_drawer_all">Alle genres</string>
+  <string name="label_genres_drawer_selected">Geselecteerd</string>
+  <string name="label_genres_drawer_subtitle_loved">Selecteer maximaal 5 genres waarvan je meer wilt zien.</string>
   <string name="label_keep_play">Behouden</string>
   <string name="label_list_item_count">%s items</string>
   <string name="label_plex_connected">Verbonden met Plex</string>
@@ -1232,7 +1255,9 @@
   <string name="page_title_widget_background">Achtergrond</string>
   <string name="page_title_year_in_review">%s in overzicht</string>
   <string name="page_title_year_to_date">Jaar tot nu toe</string>
+  <string name="preview_feature_description_action_confirmations">Toon een bevestigingstoast met een snelle ongedaanmakingsoptie wanneer je iets toevoegt, verwijdert, beoordeelt of markeert als bekeken.</string>
   <string name="preview_feature_description_edit_mode">Schakel besturingselementen in voor het verbergen of weergeven van configureerbare secties in de app.</string>
+  <string name="preview_feature_description_genre_picker">Kies je favoriete genres uit een visueel raster in plaats van een lijst met tags.</string>
   <string name="preview_feature_description_leaderboard">Rangschik de mensen die je volgt op kijktijd en zie waar jij eindigt.</string>
   <string name="preview_feature_description_list_counts">Toont hoeveel items een lijst bevat en hoeveel lijsten een sectie heeft.</string>
   <string name="preview_feature_description_parental_guide">Toon risiconiveaus van de inhoud in het detailscherm voor films, series en afleveringen.</string>
@@ -1241,7 +1266,9 @@
   <string name="preview_feature_description_scoped_favorites">Beperk favorietenlijsten door favorieten van het huidige jaar op profielen weer te geven en de volledige favorietenlijst per jaar te groeperen.</string>
   <string name="preview_feature_description_soundtrack">Voegt een soundtracksectie toe aan film- en seriepagina\'s, met afspeelmogelijkheden wanneer een nummer kan worden gematcht.</string>
   <string name="preview_feature_description_up_next_smart_sort">Probeer een slimmere manier om je \'Verder kijken\' te sorteren.</string>
+  <string name="preview_feature_title_action_confirmations">Actiebevestigingen</string>
   <string name="preview_feature_title_edit_mode">Bewerkmodus</string>
+  <string name="preview_feature_title_genre_picker">Genrekiezer</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_list_counts">Lijstaantallen</string>
   <string name="preview_feature_title_reviewer_stats">Recensentstatistieken</string>
@@ -1261,6 +1288,7 @@
   <string name="stat_text_plays">Bekeken</string>
   <string name="stat_text_time_watched">Bekeken</string>
   <string name="stat_text_watchers">Kijkers</string>
+  <string name="switch_label_export_before_destructive">Exporteer eerst mijn gegevens</string>
   <string name="switch_label_mark_as_spoiler">Markeer als spoiler</string>
   <string name="switch_label_multiple_watches">Meerdere kijkbeurten in- of uitschakelen</string>
   <string name="switch_label_private">Is profiel privé</string>
@@ -1648,6 +1676,7 @@
   <string name="text_stats_episodes_count">%d afleveringen</string>
   <string name="text_stats_keep_it_going">Blijf doorgaan!</string>
   <string name="text_stats_movies_count">%d films</string>
+  <string name="text_stats_no_screen_time">Geen kijktijd deze week</string>
   <string name="text_stats_out_of">Van de %s</string>
   <string name="text_stats_this_week">Deze week</string>
   <string name="text_stats_time_afternoon">Middag</string>
@@ -2022,6 +2051,7 @@
   <string name="warning_prompt_block_user">Blokkeer %s?</string>
   <string name="warning_prompt_block_user_detail">Zij kunnen je niet langer volgen of je activiteit zien.</string>
   <string name="warning_prompt_cancel_clear">Wegnavigeren stopt het wissen van je gegevens. Weet je het zeker?</string>
+  <string name="warning_prompt_cancel_export">Wegnavigeren stopt het exporteren van je gegevens. Weet je het zeker?</string>
   <string name="warning_prompt_cancel_import">Je import is bezig. Als je weggaat, wordt deze gestopt. Weet je het zeker?</string>
   <string name="warning_prompt_cancel_vip">Weet u zeker dat u uw VIP-abonnement wilt annuleren? U behoudt uw VIP-voordelen tot %s, waarna u de toegang tot VIP-functies verliest. Trakt biedt geen restitutie voor geannuleerde abonnementen.</string>
   <string name="warning_prompt_clean_up_history">Dit verwijdert permanent %d dubbele weergaven, waarbij alleen de oudste weergave van elk item behouden blijft. Dit kan niet ongedaan gemaakt worden.</string>
@@ -2042,6 +2072,8 @@
   <string name="warning_prompt_mark_as_watched_show">Weet je zeker dat je \"%s\" als bekeken wilt markeren? Hiermee worden alle afleveringen als bekeken gemarkeerd.</string>
   <string name="warning_prompt_mark_as_watched_show_android">Weet u zeker dat u **alle %1$d afleveringen** van \"%2$s\" als bekeken wilt markeren?</string>
   <string name="warning_prompt_mark_as_watched_show_until">Weet je zeker dat je alle onbekeken afleveringen van \"%1$s\" wilt markeren als bekeken tot aflevering %2$s? Hiermee worden %3$d afleveringen als bekeken gemarkeerd.</string>
+  <string name="warning_prompt_partial_export_one">1 van de %d secties kon niet worden geëxporteerd. Toch doorgaan?</string>
+  <string name="warning_prompt_partial_export_other">%1$d van de %2$d secties konden niet worden geëxporteerd. Toch doorgaan?</string>
   <string name="warning_prompt_remove_from_favorites">Weet je zeker dat je \"%s\" uit je favorieten wilt verwijderen?</string>
   <string name="warning_prompt_remove_from_liked_lists">Weet u zeker dat u \"%s\" wilt verwijderen uit uw favoriete lijsten?</string>
   <string name="warning_prompt_remove_from_personal_list">Weet je zeker dat je \"%1$s\" uit %2$s wilt verwijderen?</string>

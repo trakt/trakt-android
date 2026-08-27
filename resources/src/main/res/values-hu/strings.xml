@@ -13,6 +13,18 @@
   <string name="about_feature_title_rate_review">Értékeld és véleményezd</string>
   <string name="about_feature_title_scrobble">Sorozatok és filmek nyomon követése</string>
   <string name="action_open_system_settings_tvos">Beállítások megnyitása</string>
+  <string name="action_toast_action_change_list">Lista módosítása</string>
+  <string name="action_toast_action_failed">Ez nem sikerült. Kérjük, próbálja újra.</string>
+  <string name="action_toast_added_to_favorites"><b>%s</b> hozzá lett adva a kedvencekhez</string>
+  <string name="action_toast_added_to_watchlist"><b>%s</b> hozzá lett adva a Megnézendőkhöz</string>
+  <string name="action_toast_added_to_watchlist_generic">Hozzáadva a Megnézendőkhöz</string>
+  <string name="action_toast_label_change_list">Módosítja a listákat, amelyekhez a(z) %s tartozik</string>
+  <string name="action_toast_label_undo">Utolsó módosítás visszavonása</string>
+  <string name="action_toast_removed_from_favorites"><b>%s</b> el lett távolítva a kedvencekből</string>
+  <string name="action_toast_removed_from_history"><b>%s</b> el lett távolítva az előzményekből</string>
+  <string name="action_toast_removed_from_history_generic">Eltávolítva az előzményekből</string>
+  <string name="action_toast_removed_from_watchlist"><b>%s</b> el lett távolítva a Megnézendőkből</string>
+  <string name="action_toast_removed_from_watchlist_generic">Eltávolítva a Megnézendőkből</string>
   <string name="advanced_filter_label_ratings">Értékelés: %1$s és %2$s között</string>
   <string name="advanced_filter_label_release_year">Megjelent %1$d és %2$d között</string>
   <string name="advanced_filter_label_runtime">Játékidő: %1$d és %2$d perc között.</string>
@@ -90,6 +102,7 @@
   <string name="button_label_edit_app">%s szerkesztése</string>
   <string name="button_label_edit_comment">Értékelés szerkesztése</string>
   <string name="button_label_edit_list">Listád szerkesztése: %s</string>
+  <string name="button_label_edit_loved_genres">Kedvelt műfajok szerkesztése</string>
   <string name="button_label_edit_mode">Szerkesztési mód</string>
   <string name="button_label_edit_note">Jegyzet szerkesztése</string>
   <string name="button_label_episode_type_all">Összes megjelenés mutatása</string>
@@ -469,6 +482,7 @@
   <string name="button_text_stop_asking">Ne kérdezze többet</string>
   <string name="button_text_stop_check_in">Megtekintés leállítása</string>
   <string name="button_text_stop_clear">Törlés leállítása</string>
+  <string name="button_text_stop_export">Exportálás leállítása</string>
   <string name="button_text_stop_rewatching">Újra nézés leállítása</string>
   <string name="button_text_stream">Streamelés</string>
   <string name="button_text_stream_on">Streamelés</string>
@@ -546,6 +560,7 @@
   <string name="confirmation_title_log_out">Kijelentkezés?</string>
   <string name="confirmation_title_mark_as_watched">Jelölés megtekintettként?</string>
   <string name="confirmation_title_plex_remove_server">%s eltávolítása?</string>
+  <string name="confirmation_title_proceed_after_partial_export">Exportálás befejezetlen</string>
   <string name="confirmation_title_remove_favorite">Eltávolítás a kedvencek közül?</string>
   <string name="confirmation_title_remove_from_list">Eltávolítás a listáról?</string>
   <string name="confirmation_title_remove_from_watched">Eltávolítás az előzményekből?</string>
@@ -558,6 +573,7 @@
   <string name="confirmation_title_rewatching_prompt">Újra nézed: \"%s\"?</string>
   <string name="confirmation_title_stop_checkin">Megtekintés leállítása?</string>
   <string name="confirmation_title_stop_clear">Törlés leállítása?</string>
+  <string name="confirmation_title_stop_export">Exportálás leállítása?</string>
   <string name="confirmation_title_suppress_ratings_toast">Ne kérdezze többet?</string>
   <string name="confirmation_title_undo_sync">Visszavonja ezt a szinkronizálást?</string>
   <string name="confirmation_title_unfollow_user">Követés megszüntetése?</string>
@@ -577,6 +593,7 @@
   <string name="description_delete_account">Személyes adataid törlésre kerülnek, és statisztikai adataid anonimizálásra kerülnek.</string>
   <string name="description_edit_api_application">Frissítsd OAuth alkalmazásod adatait, átirányítási URI-jait és engedélyeit.</string>
   <string name="description_export">Töltsd le a felhasználói adataidat egyetlen ZIP-fájlban. Ez a folyamat eltarthat egy ideig.</string>
+  <string name="description_export_before_destructive">Letölti az adataid ZIP-fájlját, mielőtt bármi eltávolításra kerülne.</string>
   <string name="description_genres">Adj hozzá vagy távolíts el a kedvenc műfajaid közül legfeljebb %d darabot!</string>
   <string name="description_history_analysis">Keresse meg a duplikált lejátszásokat a megtekintési előzményeiben, és tartson meg csak egy megtekintést minden elemből.</string>
   <string name="description_import">Importáld az adataidat más szolgáltatásokból közvetlenül a böngésződben.</string>
@@ -636,6 +653,7 @@
   <string name="error_text_delete_account">Valami hiba történt a fiókod törlése során. Kérjük, próbáld újra.</string>
   <string name="error_text_email">E-mail frissítés sikertelen. Győződj meg róla, hogy érvényes címet adtál meg.</string>
   <string name="error_text_failed_update">A frissítés sikertelen. Kérjük, próbálja újra.</string>
+  <string name="error_text_genres_save_failed">A mentés sikertelen. Kérjük, próbálja újra.</string>
   <string name="error_text_image_preview_failed">Az előnézet betöltése sikertelen</string>
   <string name="error_text_lists_limit">Elérted a személyes listáid számának a limitjét. Válts VIP tagságra korlátlan számú listákért!</string>
   <string name="error_text_locked_account_collection_limit">Ez a felhasználói fiók zárolásra került, mert a gyűjtemény túllépte a limitet. Kérjük, <a>keresse fel az ügyfélszolgálatot</a> a probléma megoldásához.</string>
@@ -707,9 +725,11 @@
   <string name="header_expected_premiere">Várható premier</string>
   <string name="header_expiration_date">Lejárat dátuma</string>
   <string name="header_export">Exportálás</string>
+  <string name="header_exporting_data">Adataid exportálása</string>
   <string name="header_favorite_genres">Kedvenc műfajok</string>
   <string name="header_filters">Szűrők</string>
   <string name="header_genre">Műfaj</string>
+  <string name="header_genres_loved">Kedvelt műfajok</string>
   <string name="header_get_notified">Értesítést kérek!</string>
   <string name="header_get_trakt_app">Szerezd be a Trakt alkalmazást</string>
   <string name="header_height">Magasság</string>
@@ -918,6 +938,9 @@
   <string name="label_app_redirect_uris">Átirányítási URI-k</string>
   <string name="label_drag_image_to_adjust">Húzd a képet az igazításhot</string>
   <string name="label_favorites">Kedvencek</string>
+  <string name="label_genres_drawer_all">Összes műfaj</string>
+  <string name="label_genres_drawer_selected">Kiválasztott</string>
+  <string name="label_genres_drawer_subtitle_loved">Válasszon ki legfeljebb 5 műfajt, amelyekből többet szeretne látni.</string>
   <string name="label_keep_play">Megtartás</string>
   <string name="label_list_item_count">%s lista elem</string>
   <string name="label_plex_connected">Csatlakoztatva a Plexhez</string>
@@ -1232,7 +1255,9 @@
   <string name="page_title_widget_background">Háttér</string>
   <string name="page_title_year_in_review">%s év áttekintése</string>
   <string name="page_title_year_to_date">Éves összesítés</string>
+  <string name="preview_feature_description_action_confirmations">Mutass megerősítő felugró üzenetet gyors visszavonási lehetőséggel, amikor hozzáadsz, eltávolítasz, értékelsz, vagy megjelölsz valamit megnézettként.</string>
   <string name="preview_feature_description_edit_mode">Engedélyezze a vezérlőket a konfigurálható szakaszok elrejtéséhez vagy megjelenítéséhez az alkalmazásban.</string>
+  <string name="preview_feature_description_genre_picker">Válassza ki kedvenc műfajait egy vizuális rácsból, címkék listája helyett.</string>
   <string name="preview_feature_description_leaderboard">Rangsorold a követett embereket a nézési idő alapján, és nézd meg, hol helyezkedsz el közöttük.</string>
   <string name="preview_feature_description_list_counts">Megmutatja, hány elemet tartalmaz egy lista, és hány lista van egy szekcióban.</string>
   <string name="preview_feature_description_parental_guide">Tartalomkockázati szintek megjelenítése a részletek panelen filmek, műsorok és epizódok esetén.</string>
@@ -1241,7 +1266,9 @@
   <string name="preview_feature_description_scoped_favorites">Időkorlátozza a kedvenc listákat azáltal, hogy megjeleníti az aktuális év kedvenceit a profilokon, és csoportosítja a teljes kedvencek listáját év szerint.</string>
   <string name="preview_feature_description_soundtrack">Film- és műsoroldalakhoz ad hozzá filmzene szekciót, lejátszással ott, ahol egy szám párosítható.</string>
   <string name="preview_feature_description_up_next_smart_sort">Próbálja ki a Megtekintés folytatása rendezésének egy okosabb módját.</string>
+  <string name="preview_feature_title_action_confirmations">Művelet-megerősítések</string>
   <string name="preview_feature_title_edit_mode">Szerkesztési mód</string>
+  <string name="preview_feature_title_genre_picker">Műfajválasztó</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_list_counts">Listaszámok</string>
   <string name="preview_feature_title_reviewer_stats">Értékelői statisztika</string>
@@ -1261,6 +1288,7 @@
   <string name="stat_text_plays">Lejátszások</string>
   <string name="stat_text_time_watched">Megnézve</string>
   <string name="stat_text_watchers">Nézők</string>
+  <string name="switch_label_export_before_destructive">Előbb exportáld az adataimat</string>
   <string name="switch_label_mark_as_spoiler">Jelölés spoilerként</string>
   <string name="switch_label_multiple_watches">Újranézések engedélyezése vagy letiltása</string>
   <string name="switch_label_private">Privát profil</string>
@@ -1648,6 +1676,7 @@
   <string name="text_stats_episodes_count">%d epizód</string>
   <string name="text_stats_keep_it_going">Csak így tovább!</string>
   <string name="text_stats_movies_count">%d film</string>
+  <string name="text_stats_no_screen_time">Nincs nézési idő ezen a héten</string>
   <string name="text_stats_out_of">%s közül</string>
   <string name="text_stats_this_week">Ezen a héten</string>
   <string name="text_stats_time_afternoon">Délután</string>
@@ -2022,6 +2051,7 @@
   <string name="warning_prompt_block_user">Blokkolod %s nevű felhasználót?</string>
   <string name="warning_prompt_block_user_detail">Nem tudnak többé követni, és nem láthatják a tevékenységedet.</string>
   <string name="warning_prompt_cancel_clear">Ha elnavigálsz az oldalról, az adatok törlése megszakad. Biztosan kilépsz?</string>
+  <string name="warning_prompt_cancel_export">Ha elnavigálsz az oldalról, az adatok exportálása megszakad. Biztosan kilépsz?</string>
   <string name="warning_prompt_cancel_import">Az importálás folyamatban van. Elnavigálás leállítja. Biztos vagy benne?</string>
   <string name="warning_prompt_cancel_vip">Biztosan le szeretnéd mondani VIP előfizetésedet? Megtartod VIP előnyeidet %s dátumig, ezt követően elveszíted a hozzáférést a VIP funkciókhoz. A Trakt nem téríti vissza a lemondott előfizetéseket.</string>
   <string name="warning_prompt_clean_up_history">Ez véglegesen eltávolítja a(z) %d duplikált lejátszást, megtartva csak az egyes elemek legrégebbi megtekintését. Ezt nem lehet visszavonni.</string>
@@ -2042,6 +2072,8 @@
   <string name="warning_prompt_mark_as_watched_show">Biztosan megjelöli a(z) „%s” sorozatot megnézettként? Ez az összes epizódot megnézettként jelöli meg.</string>
   <string name="warning_prompt_mark_as_watched_show_android">Biztosan megjelölöd **összesen %1$d epizódját** a(z) „%2$s” címűnek mint megnézettet?</string>
   <string name="warning_prompt_mark_as_watched_show_until">Biztosan megtekintettként jelölöd a(z) „%1$s” összes nem látott epizódját az %2$s epizódig? Ez %3$d epizódot fog megtekintettként jelölni.</string>
+  <string name="warning_prompt_partial_export_one">1 a(z) %d szekció közül nem sikerült exportálni. Folytatja mégis?</string>
+  <string name="warning_prompt_partial_export_other">%1$d a(z) %2$d szekció közül nem sikerült exportálni. Folytatja mégis?</string>
   <string name="warning_prompt_remove_from_favorites">Biztosan eltávolítod a(z) \"%s\" című tartalmat a Kedvenceid közül?</string>
   <string name="warning_prompt_remove_from_liked_lists">Biztosan eltávolítod a(z) „%s” nevű listát a kedvelt listáid közül?</string>
   <string name="warning_prompt_remove_from_personal_list">Biztosan eltávolítod a(z) \"%1$s\" címet innen: %2$s?</string>

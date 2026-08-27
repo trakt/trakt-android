@@ -13,6 +13,18 @@
   <string name="about_feature_title_rate_review">Valora i comenta</string>
   <string name="about_feature_title_scrobble">Fes un seguiment de sèries i pel·lícules</string>
   <string name="action_open_system_settings_tvos">Obre els ajustos</string>
+  <string name="action_toast_action_change_list">Canvia de llista</string>
+  <string name="action_toast_action_failed">No ha funcionat. Torna-ho a provar.</string>
+  <string name="action_toast_added_to_favorites"><b>%s</b> s\'ha afegit als teus favorits</string>
+  <string name="action_toast_added_to_watchlist"><b>%s</b> s\'ha afegit a la teva llista de seguiment</string>
+  <string name="action_toast_added_to_watchlist_generic">Afegit a la teva llista de seguiment</string>
+  <string name="action_toast_label_change_list">Canvia les llistes a què pertany <b>%s</b></string>
+  <string name="action_toast_label_undo">Desfés l\'últim canvi</string>
+  <string name="action_toast_removed_from_favorites"><b>%s</b> s\'ha eliminat dels teus favorits</string>
+  <string name="action_toast_removed_from_history"><b>%s</b> s\'ha eliminat del teu historial</string>
+  <string name="action_toast_removed_from_history_generic">Eliminat del teu historial</string>
+  <string name="action_toast_removed_from_watchlist"><b>%s</b> s\'ha eliminat de la teva llista de seguiment</string>
+  <string name="action_toast_removed_from_watchlist_generic">Eliminat de la teva llista de seguiment</string>
   <string name="advanced_filter_label_ratings">Valoració de %1$s a %2$s</string>
   <string name="advanced_filter_label_release_year">Estrenat entre %1$d i %2$d</string>
   <string name="advanced_filter_label_runtime">Durada de %1$d a %2$d minuts.</string>
@@ -90,6 +102,7 @@
   <string name="button_label_edit_app">Edita %s</string>
   <string name="button_label_edit_comment">Edita la ressenya</string>
   <string name="button_label_edit_list">Edita la teva llista %s</string>
+  <string name="button_label_edit_loved_genres">Edita els gèneres que t\'agraden</string>
   <string name="button_label_edit_mode">Mode d\'edició</string>
   <string name="button_label_edit_note">Edita la nota</string>
   <string name="button_label_episode_type_all">Mostrar totes les estrenes</string>
@@ -469,6 +482,7 @@
   <string name="button_text_stop_asking">Deixa de preguntar</string>
   <string name="button_text_stop_check_in">Atura el registre</string>
   <string name="button_text_stop_clear">Atura l\'eliminació</string>
+  <string name="button_text_stop_export">Atura l\'exportació</string>
   <string name="button_text_stop_rewatching">Deixa de revisionar</string>
   <string name="button_text_stream">Stream</string>
   <string name="button_text_stream_on">Reprodueix a</string>
@@ -546,6 +560,7 @@
   <string name="confirmation_title_log_out">Tanca la sessió?</string>
   <string name="confirmation_title_mark_as_watched">Marcar com a vist?</string>
   <string name="confirmation_title_plex_remove_server">Eliminar %s?</string>
+  <string name="confirmation_title_proceed_after_partial_export">Exportació incompleta</string>
   <string name="confirmation_title_remove_favorite">Eliminar de favorits?</string>
   <string name="confirmation_title_remove_from_list">Eliminar de la llista?</string>
   <string name="confirmation_title_remove_from_watched">Eliminar de l\'historial?</string>
@@ -558,6 +573,7 @@
   <string name="confirmation_title_rewatching_prompt">Estàs revisionant \"%s\"?</string>
   <string name="confirmation_title_stop_checkin">Aturar el registre d\'entrada?</string>
   <string name="confirmation_title_stop_clear">Aturar la neteja?</string>
+  <string name="confirmation_title_stop_export">Vols aturar l\'exportació?</string>
   <string name="confirmation_title_suppress_ratings_toast">Deixar de preguntar?</string>
   <string name="confirmation_title_undo_sync">Desfer aquesta sincronització?</string>
   <string name="confirmation_title_unfollow_user">Deixar de seguir l\'usuari?</string>
@@ -577,6 +593,7 @@
   <string name="description_delete_account">La teva informació personal s\'eliminarà i les teves dades estadístiques s\'anonimitzaran.</string>
   <string name="description_edit_api_application">Actualitza els detalls, les URIs de redirecció i els permisos de la teva aplicació OAuth.</string>
   <string name="description_export">Obtén una exportació de les teves dades d\'usuari en un sol fitxer ZIP. Aquest procés pot trigar una mica.</string>
+  <string name="description_export_before_destructive">Descarrega un ZIP de les teves dades abans que s\'elimini res.</string>
   <string name="description_genres">Afegeix o elimina els teus %d gèneres preferits.</string>
   <string name="description_history_analysis">Troba reproduccions duplicades al teu historial de reproduccions i conserva només una reproducció de cada element.</string>
   <string name="description_import">Importa les teves dades d\'altres serveis directament al teu navegador.</string>
@@ -636,6 +653,7 @@
   <string name="error_text_delete_account">Alguna cosa ha anat malament en suprimir el teu compte. Si us plau, torna a intentar-ho.</string>
   <string name="error_text_email">L\'actualització del correu electrònic ha fallat. Assegura\'t que sigui una adreça vàlida.</string>
   <string name="error_text_failed_update">L\'actualització ha fallat. Torna-ho a provar.</string>
+  <string name="error_text_genres_save_failed">No s\'ha pogut desar. Torna-ho a provar.</string>
   <string name="error_text_image_preview_failed">No s\'ha pogut carregar la previsualització</string>
   <string name="error_text_lists_limit">Has arribat al límit de les teves llistes personals. Actualitza a VIP per obtenir una quantitat il·limitada de llistes!</string>
   <string name="error_text_locked_account_collection_limit">Aquest compte d\'usuari s\'ha bloquejat perquè la col·lecció ha superat el límit. Si us plau, <a>contacta amb el suport</a> per resoldre aquest problema.</string>
@@ -707,9 +725,11 @@
   <string name="header_expected_premiere">Estrena esperada</string>
   <string name="header_expiration_date">Data de caducitat</string>
   <string name="header_export">Exporta</string>
+  <string name="header_exporting_data">Exportant les teves dades</string>
   <string name="header_favorite_genres">Gèneres preferits</string>
   <string name="header_filters">Filtres</string>
   <string name="header_genre">Gènere</string>
+  <string name="header_genres_loved">Gèneres que t\'agraden</string>
   <string name="header_get_notified">Rep notificacions!</string>
   <string name="header_get_trakt_app">Obtén l\'app de Trakt</string>
   <string name="header_height">Alçada</string>
@@ -918,6 +938,9 @@
   <string name="label_app_redirect_uris">URIs de redirecció</string>
   <string name="label_drag_image_to_adjust">Arrossega la imatge per ajustar</string>
   <string name="label_favorites">Preferits</string>
+  <string name="label_genres_drawer_all">Tots els gèneres</string>
+  <string name="label_genres_drawer_selected">Seleccionats</string>
+  <string name="label_genres_drawer_subtitle_loved">Selecciona fins a 5 gèneres dels quals t\'agradaria veure\'n més.</string>
   <string name="label_keep_play">Conservar</string>
   <string name="label_list_item_count">%s elements de la llista</string>
   <string name="label_plex_connected">Connectat a Plex</string>
@@ -1232,7 +1255,9 @@
   <string name="page_title_widget_background">Fons</string>
   <string name="page_title_year_in_review">%s en resum</string>
   <string name="page_title_year_to_date">Acumulat de l\'any</string>
+  <string name="preview_feature_description_action_confirmations">Mostra un missatge de confirmació amb una opció de desfer ràpida quan afegeixes, elimines, valores o marques alguna cosa com a vista.</string>
   <string name="preview_feature_description_edit_mode">Habilita els controls per amagar o mostrar seccions configurables a tota l\'aplicació.</string>
+  <string name="preview_feature_description_genre_picker">Tria els teus gèneres preferits d\'una graella visual en lloc d\'una llista d\'etiquetes.</string>
   <string name="preview_feature_description_leaderboard">Classifica les persones que segueixes per temps de visionat i mira on quedes entre elles.</string>
   <string name="preview_feature_description_list_counts">Mostra quants elements conté una llista i quantes llistes té una secció.</string>
   <string name="preview_feature_description_parental_guide">Mostrar els nivells de risc de contingut al calaix de detalls per a pel·lícules, sèries i episodis.</string>
@@ -1241,7 +1266,9 @@
   <string name="preview_feature_description_scoped_favorites">Delimita les llistes de preferits mostrant els preferits de l\'any actual als perfils i agrupant la llista completa de preferits per any.</string>
   <string name="preview_feature_description_soundtrack">Afegeix una secció de banda sonora a les pàgines de pel·lícules i sèries, amb reproducció on es pugui trobar una pista.</string>
   <string name="preview_feature_description_up_next_smart_sort">Prova una manera més intel·ligent d\'ordenar el teu \'Continua veient\'.</string>
+  <string name="preview_feature_title_action_confirmations">Confirmacions d\'acció</string>
   <string name="preview_feature_title_edit_mode">Mode d\'edició</string>
+  <string name="preview_feature_title_genre_picker">Selector de gènere</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_list_counts">Recomptes de llista</string>
   <string name="preview_feature_title_reviewer_stats">Estadístiques del Revisor</string>
@@ -1261,6 +1288,7 @@
   <string name="stat_text_plays">Reproduccions</string>
   <string name="stat_text_time_watched">Vist</string>
   <string name="stat_text_watchers">Espectadors</string>
+  <string name="switch_label_export_before_destructive">Exporta les meves dades primer</string>
   <string name="switch_label_mark_as_spoiler">Marca com a spoiler</string>
   <string name="switch_label_multiple_watches">Habilita o deshabilita múltiples visualitzacions</string>
   <string name="switch_label_private">El perfil és privat</string>
@@ -1648,6 +1676,7 @@
   <string name="text_stats_episodes_count">%d episodis</string>
   <string name="text_stats_keep_it_going">Que no pari!</string>
   <string name="text_stats_movies_count">%d pel·lícules</string>
+  <string name="text_stats_no_screen_time">Sense temps de pantalla aquesta setmana</string>
   <string name="text_stats_out_of">De %s</string>
   <string name="text_stats_this_week">Aquesta setmana</string>
   <string name="text_stats_time_afternoon">Tarda</string>
@@ -2022,6 +2051,7 @@
   <string name="warning_prompt_block_user">Bloquejar %s?</string>
   <string name="warning_prompt_block_user_detail">Ja no et podran seguir ni veure la teva activitat.</string>
   <string name="warning_prompt_cancel_clear">Si te\'n vas, s\'aturarà l\'eliminació de les teves dades. Estàs segur?</string>
+  <string name="warning_prompt_cancel_export">Si te\'n vas, s\'aturarà l\'exportació de les teves dades. Estàs segur?</string>
   <string name="warning_prompt_cancel_import">La teva importació està en curs. Si te\'n vas, s\'aturarà. Estàs segur?</string>
   <string name="warning_prompt_cancel_vip">Esteu segur/a que voleu cancel·lar la vostra subscripció VIP? Mantindreu els vostres avantatges VIP fins al %s, després dels quals perdreu l\'accés a les funcions VIP. Trakt no ofereix reemborsaments per subscripcions cancel·lades.</string>
   <string name="warning_prompt_clean_up_history">Això eliminarà permanentment %d reproduccions duplicades, conservant només la reproducció més antiga de cada element. Aquesta acció no es pot desfer.</string>
@@ -2042,6 +2072,8 @@
   <string name="warning_prompt_mark_as_watched_show">Estàs segur que vols marcar \"%s\" com a vist? Això marcarà tots els episodis com a vists.</string>
   <string name="warning_prompt_mark_as_watched_show_android">Estàs segur que vols marcar **tots els %1$d episodis** de \"%2$s\" com a vistos?</string>
   <string name="warning_prompt_mark_as_watched_show_until">Estàs segur que vols marcar tots els episodis no vists de \"%1$s\" com a vists fins a l\'episodi %2$s? Això marcarà %3$d episodis com a vists.</string>
+  <string name="warning_prompt_partial_export_one">Ha fallat l\'exportació d\'1 de %d seccions. Vols continuar igualment?</string>
+  <string name="warning_prompt_partial_export_other">Ha fallat l\'exportació de %1$d de %2$d seccions. Vols continuar igualment?</string>
   <string name="warning_prompt_remove_from_favorites">Estàs segur que vols eliminar \"%s\" dels teus Preferits?</string>
   <string name="warning_prompt_remove_from_liked_lists">Estàs segur que vols eliminar \"%s\" de les teves llistes preferides?</string>
   <string name="warning_prompt_remove_from_personal_list">Estàs segur que vols eliminar \"%1$s\" de %2$s?</string>

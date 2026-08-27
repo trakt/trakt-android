@@ -13,6 +13,18 @@
   <string name="about_feature_title_rate_review">Nilai &amp; Ulas</string>
   <string name="about_feature_title_scrobble">Lacak Acara &amp; Film</string>
   <string name="action_open_system_settings_tvos">Buka Pengaturan</string>
+  <string name="action_toast_action_change_list">Ubah daftar</string>
+  <string name="action_toast_action_failed">Itu tidak berhasil. Silakan coba lagi.</string>
+  <string name="action_toast_added_to_favorites"><b>%s</b> telah ditambahkan ke favorit Anda</string>
+  <string name="action_toast_added_to_watchlist"><b>%s</b> telah ditambahkan ke daftar tontonan Anda</string>
+  <string name="action_toast_added_to_watchlist_generic">Ditambahkan ke daftar tontonan Anda</string>
+  <string name="action_toast_label_change_list">Ubah daftar tempat %s berada</string>
+  <string name="action_toast_label_undo">Batalkan perubahan terakhir</string>
+  <string name="action_toast_removed_from_favorites"><b>%s</b> telah dihapus dari favorit Anda</string>
+  <string name="action_toast_removed_from_history"><b>%s</b> telah dihapus dari riwayat tontonan Anda</string>
+  <string name="action_toast_removed_from_history_generic">Dihapus dari riwayat tontonan Anda</string>
+  <string name="action_toast_removed_from_watchlist"><b>%s</b> telah dihapus dari daftar tontonan Anda</string>
+  <string name="action_toast_removed_from_watchlist_generic">Dihapus dari daftar tontonan Anda</string>
   <string name="advanced_filter_label_ratings">Rating %1$s hingga %2$s</string>
   <string name="advanced_filter_label_release_year">Dirilis pada tahun %1$d hingga %2$d</string>
   <string name="advanced_filter_label_runtime">Durasi %1$d hingga %2$d menit.</string>
@@ -90,6 +102,7 @@
   <string name="button_label_edit_app">Edit %s</string>
   <string name="button_label_edit_comment">Edit Ulasan</string>
   <string name="button_label_edit_list">Edit daftar Anda %s</string>
+  <string name="button_label_edit_loved_genres">Edit genre yang Anda suka</string>
   <string name="button_label_edit_mode">Mode edit</string>
   <string name="button_label_edit_note">Edit catatan</string>
   <string name="button_label_episode_type_all">Tampilkan semua rilis</string>
@@ -469,6 +482,7 @@
   <string name="button_text_stop_asking">Berhenti bertanya</string>
   <string name="button_text_stop_check_in">Hentikan *check-in*</string>
   <string name="button_text_stop_clear">Hentikan Penghapusan</string>
+  <string name="button_text_stop_export">Hentikan Ekspor</string>
   <string name="button_text_stop_rewatching">Berhenti menonton ulang</string>
   <string name="button_text_stream">Stream</string>
   <string name="button_text_stream_on">Streaming</string>
@@ -546,6 +560,7 @@
   <string name="confirmation_title_log_out">Keluar?</string>
   <string name="confirmation_title_mark_as_watched">Tandai sebagai sudah ditonton?</string>
   <string name="confirmation_title_plex_remove_server">Hapus %s?</string>
+  <string name="confirmation_title_proceed_after_partial_export">Ekspor tidak lengkap</string>
   <string name="confirmation_title_remove_favorite">Hapus dari favorit?</string>
   <string name="confirmation_title_remove_from_list">Hapus dari daftar?</string>
   <string name="confirmation_title_remove_from_watched">Hapus dari riwayat?</string>
@@ -558,6 +573,7 @@
   <string name="confirmation_title_rewatching_prompt">Apakah Anda sedang menonton ulang \"%s\"?</string>
   <string name="confirmation_title_stop_checkin">Hentikan check-in?</string>
   <string name="confirmation_title_stop_clear">Hentikan penghapusan?</string>
+  <string name="confirmation_title_stop_export">Hentikan ekspor?</string>
   <string name="confirmation_title_suppress_ratings_toast">Berhenti bertanya?</string>
   <string name="confirmation_title_undo_sync">Batalkan sinkronisasi ini?</string>
   <string name="confirmation_title_unfollow_user">Berhenti mengikuti pengguna?</string>
@@ -577,6 +593,7 @@
   <string name="description_delete_account">Informasi pribadi Anda akan dihapus dan data statistik Anda akan dianonimkan.</string>
   <string name="description_edit_api_application">Perbarui detail aplikasi OAuth Anda, URI pengalihan, dan izin.</string>
   <string name="description_export">Dapatkan ekspor data pengguna Anda dalam satu file ZIP. Proses ini mungkin memakan waktu.</string>
+  <string name="description_export_before_destructive">Mengunduh ZIP data Anda sebelum ada yang dihapus.</string>
   <string name="description_genres">Tambahkan atau hapus %d genre favorit Anda.</string>
   <string name="description_history_analysis">Temukan pemutaran duplikat dalam riwayat tontonan Anda dan hanya simpan satu tontonan dari setiap item.</string>
   <string name="description_import">Impor data Anda dari layanan lain langsung di browser Anda.</string>
@@ -636,6 +653,7 @@
   <string name="error_text_delete_account">Terjadi kesalahan saat menghapus akun Anda. Harap coba lagi.</string>
   <string name="error_text_email">Pembaruan email gagal. Pastikan alamatnya valid.</string>
   <string name="error_text_failed_update">Pembaruan gagal. Silakan coba lagi.</string>
+  <string name="error_text_genres_save_failed">Gagal menyimpan. Silakan coba lagi.</string>
   <string name="error_text_image_preview_failed">Pratinjau gagal dimuat</string>
   <string name="error_text_lists_limit">Anda telah mencapai batas daftar pribadi Anda. Tingkatkan ke VIP untuk daftar tanpa batas!</string>
   <string name="error_text_locked_account_collection_limit">Akun pengguna ini telah dikunci karena koleksi telah melampaui batas. Harap <a>hubungi dukungan</a> untuk menyelesaikan masalah ini.</string>
@@ -707,9 +725,11 @@
   <string name="header_expected_premiere">Premiere yang Diharapkan</string>
   <string name="header_expiration_date">Tanggal Kedaluwarsa</string>
   <string name="header_export">Ekspor</string>
+  <string name="header_exporting_data">Mengekspor data Anda</string>
   <string name="header_favorite_genres">Genre Favorit</string>
   <string name="header_filters">Filter</string>
   <string name="header_genre">Genre</string>
+  <string name="header_genres_loved">Genre yang Anda Suka</string>
   <string name="header_get_notified">Dapatkan Notifikasi!</string>
   <string name="header_get_trakt_app">Dapatkan aplikasi Trakt</string>
   <string name="header_height">Tinggi</string>
@@ -918,6 +938,9 @@
   <string name="label_app_redirect_uris">URI Pengalihan</string>
   <string name="label_drag_image_to_adjust">Seret gambar untuk menyesuaikan</string>
   <string name="label_favorites">Favorit</string>
+  <string name="label_genres_drawer_all">Semua Genre</string>
+  <string name="label_genres_drawer_selected">Terpilih</string>
+  <string name="label_genres_drawer_subtitle_loved">Pilih hingga 5 genre yang ingin Anda lihat lebih banyak.</string>
   <string name="label_keep_play">Simpan</string>
   <string name="label_list_item_count">%s item</string>
   <string name="label_plex_connected">Terhubung ke Plex</string>
@@ -1232,7 +1255,9 @@
   <string name="page_title_widget_background">Latar Belakang</string>
   <string name="page_title_year_in_review">%s dalam tinjauan</string>
   <string name="page_title_year_to_date">Tahun Berjalan</string>
+  <string name="preview_feature_description_action_confirmations">Tampilkan notifikasi konfirmasi dengan opsi batalkan cepat saat Anda menambahkan, menghapus, memberi peringkat, atau menandai sesuatu sebagai telah ditonton.</string>
   <string name="preview_feature_description_edit_mode">Aktifkan kontrol untuk menyembunyikan atau menampilkan bagian yang dapat dikonfigurasi di seluruh aplikasi.</string>
+  <string name="preview_feature_description_genre_picker">Pilih genre favorit Anda dari kisi visual, bukan daftar tag.</string>
   <string name="preview_feature_description_leaderboard">Peringkat orang yang Anda ikuti berdasarkan waktu tonton dan lihat posisi Anda di antara mereka.</string>
   <string name="preview_feature_description_list_counts">Menampilkan berapa banyak item yang dimiliki sebuah daftar, dan berapa banyak daftar yang dimiliki sebuah bagian.</string>
   <string name="preview_feature_description_parental_guide">Tampilkan tingkat risiko konten di laci detail untuk film, acara, dan episode.</string>
@@ -1241,7 +1266,9 @@
   <string name="preview_feature_description_scoped_favorites">Batas waktu daftar favorit dengan menampilkan favorit tahun berjalan di profil dan mengelompokkan daftar favorit lengkap berdasarkan tahun.</string>
   <string name="preview_feature_description_soundtrack">Menambahkan bagian soundtrack ke halaman film dan acara, dengan pemutaran di mana lagu dapat dicocokkan.</string>
   <string name="preview_feature_description_up_next_smart_sort">Coba cara yang lebih cerdas untuk mengurutkan Lanjutkan Menonton Anda.</string>
+  <string name="preview_feature_title_action_confirmations">Konfirmasi tindakan</string>
   <string name="preview_feature_title_edit_mode">Mode Edit</string>
+  <string name="preview_feature_title_genre_picker">Pemilih Genre</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_list_counts">Hitungan Daftar</string>
   <string name="preview_feature_title_reviewer_stats">Statistik Pengulas</string>
@@ -1261,6 +1288,7 @@
   <string name="stat_text_plays">Tontonan</string>
   <string name="stat_text_time_watched">Ditonton</string>
   <string name="stat_text_watchers">Penonton</string>
+  <string name="switch_label_export_before_destructive">Ekspor data saya terlebih dahulu</string>
   <string name="switch_label_mark_as_spoiler">Tandai sebagai spoiler</string>
   <string name="switch_label_multiple_watches">Aktifkan atau nonaktifkan beberapa kali tonton</string>
   <string name="switch_label_private">Apakah profil bersifat pribadi</string>
@@ -1648,6 +1676,7 @@
   <string name="text_stats_episodes_count">%d episode</string>
   <string name="text_stats_keep_it_going">Teruslah!</string>
   <string name="text_stats_movies_count">%d film</string>
+  <string name="text_stats_no_screen_time">Tidak ada waktu tonton minggu ini</string>
   <string name="text_stats_out_of">Dari %s</string>
   <string name="text_stats_this_week">Minggu ini</string>
   <string name="text_stats_time_afternoon">Siang</string>
@@ -2022,6 +2051,7 @@
   <string name="warning_prompt_block_user">Blokir %s?</string>
   <string name="warning_prompt_block_user_detail">Mereka tidak lagi dapat mengikuti Anda atau melihat aktivitas Anda.</string>
   <string name="warning_prompt_cancel_clear">Meninggalkan halaman akan menghentikan penghapusan data Anda. Apakah Anda yakin?</string>
+  <string name="warning_prompt_cancel_export">Meninggalkan halaman akan menghentikan ekspor data Anda. Apakah Anda yakin?</string>
   <string name="warning_prompt_cancel_import">Impor Anda sedang berlangsung. Meninggalkan halaman akan menghentikannya. Apakah Anda yakin?</string>
   <string name="warning_prompt_cancel_vip">Apakah Anda yakin ingin membatalkan langganan VIP Anda? Anda akan tetap mendapatkan keuntungan VIP hingga %s, setelah itu Anda akan kehilangan akses ke fitur VIP. Trakt tidak menawarkan pengembalian dana untuk langganan yang dibatalkan.</string>
   <string name="warning_prompt_clean_up_history">Ini akan secara permanen menghapus %d pemutaran duplikat, hanya menyimpan tontonan terlama dari setiap item. Ini tidak dapat dibatalkan.</string>
@@ -2042,6 +2072,8 @@
   <string name="warning_prompt_mark_as_watched_show">Anda yakin ingin menandai \"%s\" sudah ditonton? Ini akan menandai semua episode sebagai sudah ditonton.</string>
   <string name="warning_prompt_mark_as_watched_show_android">Apakah Anda yakin ingin menandai **semua %1$d episode** dari \"%2$s\" sebagai sudah ditonton?</string>
   <string name="warning_prompt_mark_as_watched_show_until">Anda yakin ingin menandai semua episode yang belum ditonton dari \"%1$s\" sebagai sudah ditonton hingga episode %2$s? Ini akan menandai %3$d episode sebagai sudah ditonton.</string>
+  <string name="warning_prompt_partial_export_one">1 dari %d bagian gagal diekspor. Lanjutkan saja?</string>
+  <string name="warning_prompt_partial_export_other">%1$d dari %2$d bagian gagal diekspor. Lanjutkan saja?</string>
   <string name="warning_prompt_remove_from_favorites">Anda yakin ingin menghapus \"%s\" dari Favorit Anda?</string>
   <string name="warning_prompt_remove_from_liked_lists">Apakah Anda yakin ingin menghapus \"%s\" dari daftar yang Anda sukai?</string>
   <string name="warning_prompt_remove_from_personal_list">Anda yakin ingin menghapus \"%1$s\" dari %2$s?</string>

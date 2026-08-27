@@ -13,6 +13,18 @@
   <string name="about_feature_title_rate_review">امتیاز دهید و نقد کنید</string>
   <string name="about_feature_title_scrobble">ردیابی نمایش‌ها و فیلم‌ها</string>
   <string name="action_open_system_settings_tvos">باز کردن تنظیمات</string>
+  <string name="action_toast_action_change_list">تغییر لیست</string>
+  <string name="action_toast_action_failed">این عمل انجام نشد. لطفاً دوباره تلاش کنید.</string>
+  <string name="action_toast_added_to_favorites"><b>%s</b> به موارد دلخواه شما اضافه شد</string>
+  <string name="action_toast_added_to_watchlist"><b>%s</b> به لیست تماشای شما اضافه شد</string>
+  <string name="action_toast_added_to_watchlist_generic">به لیست تماشای شما اضافه شد</string>
+  <string name="action_toast_label_change_list">لیست‌هایی که %s به آنها تعلق دارد را تغییر دهید</string>
+  <string name="action_toast_label_undo">لغو آخرین تغییر</string>
+  <string name="action_toast_removed_from_favorites"><b>%s</b> از موارد دلخواه شما حذف شد</string>
+  <string name="action_toast_removed_from_history"><b>%s</b> از تاریخچه شما حذف شد</string>
+  <string name="action_toast_removed_from_history_generic">از تاریخچه شما حذف شد</string>
+  <string name="action_toast_removed_from_watchlist"><b>%s</b> از لیست تماشای شما حذف شد</string>
+  <string name="action_toast_removed_from_watchlist_generic">از لیست تماشای شما حذف شد</string>
   <string name="advanced_filter_label_ratings">امتیاز از %1$s تا %2$s</string>
   <string name="advanced_filter_label_release_year">منتشر شده در %1$d تا %2$d</string>
   <string name="advanced_filter_label_runtime">مدت زمان پخش از %1$d تا %2$d دقیقه.</string>
@@ -90,6 +102,7 @@
   <string name="button_label_edit_app">ویرایش %s</string>
   <string name="button_label_edit_comment">ویرایش نقد</string>
   <string name="button_label_edit_list">ویرایش لیست شما %s</string>
+  <string name="button_label_edit_loved_genres">ویرایش ژانرهایی که دوست دارید</string>
   <string name="button_label_edit_mode">حالت ویرایش</string>
   <string name="button_label_edit_note">ویرایش یادداشت</string>
   <string name="button_label_episode_type_all">نمایش همه انتشارها</string>
@@ -469,6 +482,7 @@
   <string name="button_text_stop_asking">دیگر نپرس</string>
   <string name="button_text_stop_check_in">توقف ورود</string>
   <string name="button_text_stop_clear">توقف پاک کردن</string>
+  <string name="button_text_stop_export">توقف صدور</string>
   <string name="button_text_stop_rewatching">توقف بازتماشا</string>
   <string name="button_text_stream">استریم</string>
   <string name="button_text_stream_on">پخش در</string>
@@ -546,6 +560,7 @@
   <string name="confirmation_title_log_out">خروج?</string>
   <string name="confirmation_title_mark_as_watched">به عنوان تماشا شده علامت‌گذاری شود؟</string>
   <string name="confirmation_title_plex_remove_server">%s حذف شود؟</string>
+  <string name="confirmation_title_proceed_after_partial_export">خروجی ناقص</string>
   <string name="confirmation_title_remove_favorite">از علاقه‌مندی‌ها حذف شود؟</string>
   <string name="confirmation_title_remove_from_list">از لیست حذف شود؟</string>
   <string name="confirmation_title_remove_from_watched">از تاریخچه حذف شود؟</string>
@@ -558,6 +573,7 @@
   <string name="confirmation_title_rewatching_prompt">آیا در حال بازتماشای \"%s\" هستید؟</string>
   <string name="confirmation_title_stop_checkin">اعلام حضور متوقف شود؟</string>
   <string name="confirmation_title_stop_clear">توقف پاک کردن؟</string>
+  <string name="confirmation_title_stop_export">توقف خروجی گرفتن؟</string>
   <string name="confirmation_title_suppress_ratings_toast">پرسیدن متوقف شود؟</string>
   <string name="confirmation_title_undo_sync">لغو این همگام‌سازی؟</string>
   <string name="confirmation_title_unfollow_user">دنبال کردن کاربر لغو شود؟</string>
@@ -577,6 +593,7 @@
   <string name="description_delete_account">اطلاعات شخصی شما حذف خواهد شد و داده‌های آماری شما ناشناس می‌شوند.</string>
   <string name="description_edit_api_application">جزئیات، URIهای تغییر مسیر و مجوزهای برنامه OAuth خود را به‌روزرسانی کنید.</string>
   <string name="description_export">یک خروجی از داده‌های کاربر خود را در یک فایل ZIP دریافت کنید. این فرآیند ممکن است کمی طول بکشد.</string>
+  <string name="description_export_before_destructive">یک فایل ZIP از داده‌های شما را قبل از حذف هر چیزی دانلود می‌کند.</string>
   <string name="description_genres">%d ژانر مورد علاقه خود را اضافه یا حذف کنید.</string>
   <string name="description_history_analysis">تماشاهای تکراری را در تاریخچه تماشای خود بیابید و فقط یک تماشای هر مورد را نگه دارید.</string>
   <string name="description_import">داده‌های خود را از سایر سرویس‌ها مستقیماً در مرورگر خود وارد کنید.</string>
@@ -636,6 +653,7 @@
   <string name="error_text_delete_account">مشکلی در حذف حساب کاربری شما پیش آمد. لطفاً دوباره تلاش کنید.</string>
   <string name="error_text_email">به‌روزرسانی ایمیل ناموفق بود. مطمئن شوید که آدرس معتبر است.</string>
   <string name="error_text_failed_update">به‌روزرسانی ناموفق بود. لطفاً دوباره تلاش کنید.</string>
+  <string name="error_text_genres_save_failed">ذخیره ناموفق بود. لطفاً دوباره تلاش کنید.</string>
   <string name="error_text_image_preview_failed">پیش‌نمایش بارگیری نشد</string>
   <string name="error_text_lists_limit">شما به حد مجاز لیست‌های شخصی خود رسیده‌اید. برای لیست‌های نامحدود به VIP ارتقا دهید!</string>
   <string name="error_text_locked_account_collection_limit">این حساب کاربری قفل شده است زیرا مجموعه از حد مجاز فراتر رفته است. لطفاً برای حل این مشکل <a>با پشتیبانی تماس بگیرید</a>.</string>
@@ -707,9 +725,11 @@
   <string name="header_expected_premiere">اولین نمایش مورد انتظار</string>
   <string name="header_expiration_date">تاریخ انقضا</string>
   <string name="header_export">خروجی</string>
+  <string name="header_exporting_data">در حال صادر کردن داده‌های شما</string>
   <string name="header_favorite_genres">ژانرهای مورد علاقه</string>
   <string name="header_filters">فیلترها</string>
   <string name="header_genre">ژانر</string>
+  <string name="header_genres_loved">ژانرهایی که دوست دارید</string>
   <string name="header_get_notified">مطلع شوید!</string>
   <string name="header_get_trakt_app">برنامه Trakt را دریافت کنید</string>
   <string name="header_height">قد</string>
@@ -918,6 +938,9 @@
   <string name="label_app_redirect_uris">URIهای تغییر مسیر</string>
   <string name="label_drag_image_to_adjust">برای تنظیم، تصویر را بکشید</string>
   <string name="label_favorites">علاقه‌مندی‌ها</string>
+  <string name="label_genres_drawer_all">همه ژانرها</string>
+  <string name="label_genres_drawer_selected">انتخاب‌شده</string>
+  <string name="label_genres_drawer_subtitle_loved">حداکثر ۵ ژانر را انتخاب کنید که مایلید بیشتر از آن‌ها را ببینید.</string>
   <string name="label_keep_play">نگه داشتن</string>
   <string name="label_list_item_count">%s مورد</string>
   <string name="label_plex_connected">متصل به Plex</string>
@@ -1232,7 +1255,9 @@
   <string name="page_title_widget_background">پس‌زمینه</string>
   <string name="page_title_year_in_review">مرور سال %s</string>
   <string name="page_title_year_to_date">سال تا به امروز</string>
+  <string name="preview_feature_description_action_confirmations">هنگامی که چیزی را اضافه، حذف، رتبه‌بندی یا به عنوان تماشا شده علامت‌گذاری می‌کنید، یک پیام تأیید با قابلیت لغو سریع نمایش داده شود.</string>
   <string name="preview_feature_description_edit_mode">کنترل‌هایی را برای پنهان کردن یا نمایش بخش‌های قابل تنظیم در سراسر برنامه فعال کنید.</string>
+  <string name="preview_feature_description_genre_picker">ژانرهای مورد علاقه خود را از یک شبکه بصری انتخاب کنید، نه از یک لیست برچسب.</string>
   <string name="preview_feature_description_leaderboard">افرادی که دنبال می‌کنید را بر اساس زمان تماشا رتبه‌بندی کنید و ببینید در میان آن‌ها کجا قرار می‌گیرید.</string>
   <string name="preview_feature_description_list_counts">تعداد آیتم‌های موجود در هر لیست و تعداد لیست‌ها در هر بخش را نمایش می‌دهد</string>
   <string name="preview_feature_description_parental_guide">نمایش سطوح خطر محتوا در کشوی جزئیات برای فیلم‌ها، نمایش‌ها و اپیزودها.</string>
@@ -1241,7 +1266,9 @@
   <string name="preview_feature_description_scoped_favorites">لیست‌های علاقه‌مندی را با نمایش علاقه‌مندی‌های سال جاری در پروفایل‌ها و گروه‌بندی لیست کامل علاقه‌مندی‌ها بر اساس سال، محدود کنید.</string>
   <string name="preview_feature_description_soundtrack">بخش موسیقی متن را به صفحات فیلم و نمایش اضافه می‌کند، با قابلیت پخش در جایی که یک قطعه می‌تواند مطابقت داده شود.</string>
   <string name="preview_feature_description_up_next_smart_sort">راهی هوشمندانه‌تر برای مرتب\n\n\n\n‌سازی موارد در حال تماشای خود را آزمایش کنید.</string>
+  <string name="preview_feature_title_action_confirmations">تأیید اقدامات</string>
   <string name="preview_feature_title_edit_mode">حالت ویرایش</string>
+  <string name="preview_feature_title_genre_picker">انتخاب‌کننده ژانر</string>
   <string name="preview_feature_title_leaderboard">پانتئون</string>
   <string name="preview_feature_title_list_counts">تعداد لیست‌ها</string>
   <string name="preview_feature_title_reviewer_stats">آمار بازبین</string>
@@ -1261,6 +1288,7 @@
   <string name="stat_text_plays">بازدیدها</string>
   <string name="stat_text_time_watched">تماشا شده</string>
   <string name="stat_text_watchers">تماشاگران</string>
+  <string name="switch_label_export_before_destructive">ابتدا داده‌های من را صادر کنید</string>
   <string name="switch_label_mark_as_spoiler">علامت‌گذاری به عنوان اسپویلر</string>
   <string name="switch_label_multiple_watches">فعال یا غیرفعال کردن تماشای چندگانه</string>
   <string name="switch_label_private">پروفایل خصوصی است</string>
@@ -1648,6 +1676,7 @@
   <string name="text_stats_episodes_count">%d اپیزود</string>
   <string name="text_stats_keep_it_going">ادامه دهید!</string>
   <string name="text_stats_movies_count">%d فیلم</string>
+  <string name="text_stats_no_screen_time">این هفته زمان تماشا نداشتید</string>
   <string name="text_stats_out_of">از %s</string>
   <string name="text_stats_this_week">این هفته</string>
   <string name="text_stats_time_afternoon">بعد از ظهر</string>
@@ -2022,6 +2051,7 @@
   <string name="warning_prompt_block_user">آیا %s مسدود شود؟</string>
   <string name="warning_prompt_block_user_detail">آنها دیگر قادر نخواهند بود شما را دنبال کنند یا فعالیت شما را ببینند.</string>
   <string name="warning_prompt_cancel_clear">رفتن به صفحه دیگر، پاک کردن داده‌های شما را متوقف می‌کند. مطمئن هستید؟</string>
+  <string name="warning_prompt_cancel_export">رفتن به صفحه دیگر، خروجی گرفتن از داده‌های شما را متوقف می‌کند. مطمئن هستید؟</string>
   <string name="warning_prompt_cancel_import">وارد کردن شما در حال انجام است. رفتن به صفحه دیگر آن را متوقف می‌کند. آیا مطمئن هستید؟</string>
   <string name="warning_prompt_cancel_vip">آیا مطمئن هستید که می‌خواهید اشتراک VIP خود را لغو کنید؟ مزایای VIP شما تا %s حفظ خواهد شد، پس از آن دسترسی به ویژگی‌های VIP را از دست خواهید داد. Trakt هیچ بازپرداختی برای اشتراک‌های لغو شده ارائه نمی‌دهد.</string>
   <string name="warning_prompt_clean_up_history">این کار %d تماشای تکراری را به طور دائمی حذف می‌کند و فقط قدیمی‌ترین تماشای هر مورد را نگه می‌دارد. این عمل قابل بازگشت نیست.</string>
@@ -2042,6 +2072,8 @@
   <string name="warning_prompt_mark_as_watched_show">آیا مطمئن هستید که می‌خواهید \"%s\" را به عنوان تماشا شده علامت‌گذاری کنید؟ این کار همه اپیزودها را به عنوان تماشا شده علامت‌گذاری می‌کند.</string>
   <string name="warning_prompt_mark_as_watched_show_android">آیا مطمئن هستید که می‌خواهید **تمام %1$d قسمت** از \"%2$s\" را به عنوان تماشا شده علامت بزنید؟</string>
   <string name="warning_prompt_mark_as_watched_show_until">آیا مطمئن هستید که می‌خواهید تمام اپیزودهای تماشا نشده \"%1$s\" را تا اپیزود %2$s به عنوان تماشا شده علامت‌گذاری کنید؟ این کار %3$d اپیزود را به عنوان تماشا شده علامت‌گذاری می‌کند.</string>
+  <string name="warning_prompt_partial_export_one">1 بخش از %d بخش صادر نشد. با این حال ادامه می‌دهید؟</string>
+  <string name="warning_prompt_partial_export_other">%1$d بخش از %2$d بخش صادر نشد. با این حال ادامه می‌دهید؟</string>
   <string name="warning_prompt_remove_from_favorites">آیا مطمئن هستید که می‌خواهید \"%s\" را از علاقه‌مندی‌های خود حذف کنید؟</string>
   <string name="warning_prompt_remove_from_liked_lists">آیا مطمئن هستید که می‌خواهید \"%s\" را از لیست‌های مورد علاقه خود حذف کنید؟</string>
   <string name="warning_prompt_remove_from_personal_list">آیا مطمئن هستید که می‌خواهید \"%1$s\" را از %2$s حذف کنید؟</string>
