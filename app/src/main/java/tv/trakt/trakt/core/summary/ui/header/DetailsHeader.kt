@@ -31,6 +31,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
@@ -367,6 +371,7 @@ internal fun PosterChipsGroup(
                     else -> stringResource(R.string.tag_text_watched)
                 },
                 icon = painterResource(R.drawable.ic_check_double),
+                halved = watching,
                 modifier = Modifier.onClick(onClick = onWatchedChipClick),
             )
         }
@@ -399,14 +404,27 @@ private fun PosterChip(
     modifier: Modifier = Modifier,
     text: String,
     icon: Painter? = null,
+    halved: Boolean = false,
 ) {
+    val shape = RoundedCornerShape(100)
+    val halvedColor = TraktTheme.colors.tagChipContainerLight
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = spacedBy(6.dp),
         modifier = modifier
-            .background(
-                TraktTheme.colors.tagChipContainer,
-                RoundedCornerShape(100),
+            .clip(shape)
+            .background(TraktTheme.colors.tagChipContainer)
+            .then(
+                when (halved) {
+                    true -> Modifier.drawBehind {
+                        drawRect(
+                            color = halvedColor,
+                            topLeft = Offset(x = size.width / 2f, y = 0f),
+                            size = Size(width = size.width / 2f, height = size.height),
+                        )
+                    }
+                    else -> Modifier
+                },
             )
             .padding(
                 horizontal = 8.dp,
