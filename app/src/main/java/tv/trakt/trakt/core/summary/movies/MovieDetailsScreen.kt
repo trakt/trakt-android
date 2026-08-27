@@ -168,7 +168,8 @@ internal fun MovieDetailsScreen(
             }
         },
         onTrackClick = {
-            if ((state.movieProgress?.plays ?: 0) > 0) {
+            val watched = (state.movieProgress?.plays ?: 0) > 0
+            if (watched && state.user?.settings?.watchOnlyOnce == true) {
                 confirmRemoveWatchedSheet = true
             } else {
                 dateSheet = true

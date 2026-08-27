@@ -79,6 +79,7 @@ internal fun VerticalMediaCard(
     cardContent: @Composable (() -> Unit)? = null,
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
+    onCollectionChipClick: (() -> Unit)? = null,
 ) {
     val cardWidth = when {
         width != Dp.Unspecified -> width
@@ -236,13 +237,23 @@ internal fun VerticalMediaCard(
             }
 
             if (watchlist || watched || watching) {
+                // A clickable chip carries hit slop around it, so it has to be
+                // pushed further down to keep the pill itself in place.
+                val chipHitSlop = if (onCollectionChipClick != null) 8.dp else 0.dp
+
                 Row(
                     horizontalArrangement = spacedBy(4.dp),
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .graphicsLayer {
-                            translationY = 6.5.dp.toPx()
-                        },
+                            translationY = (6.5.dp + chipHitSlop).toPx()
+                        }
+                        .ifOrElse(
+                            condition = onCollectionChipClick != null,
+                            isTrue = Modifier
+                                .onClick { onCollectionChipClick?.invoke() }
+                                .padding(chipHitSlop),
+                        ),
                 ) {
                     if (watched || watching) {
                         CollectionChip(

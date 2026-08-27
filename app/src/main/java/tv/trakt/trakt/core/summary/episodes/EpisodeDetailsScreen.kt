@@ -149,7 +149,8 @@ internal fun EpisodeDetailsScreen(
         onShowClick = onShowClick,
         onEpisodeClick = viewModel::navigateToEpisode,
         onTrackClick = {
-            if (state.episodeProgress?.watched == true) {
+            val watched = state.episodeProgress?.watched == true
+            if (watched && state.user?.settings?.watchOnlyOnce == true) {
                 confirmRemoveWatchedSheet = true
             } else {
                 dateSheet = true

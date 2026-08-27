@@ -59,6 +59,7 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
+import tv.trakt.trakt.common.helpers.extensions.ifOrElse
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
@@ -84,6 +85,7 @@ internal fun PanelHorizontalMediaCard(
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
     onImageClick: (() -> Unit)? = null,
+    onCollectionChipClick: (() -> Unit)? = null,
     footerContent: @Composable (() -> Unit)? = null,
 ) {
     val mirrored = LocalLayoutDirection.current == LayoutDirection.Rtl
@@ -205,6 +207,11 @@ internal fun PanelHorizontalMediaCard(
 
             if (watchlist || watched) {
                 val shape = RoundedCornerShape(100)
+
+                // A clickable chip carries hit slop around it, so it has to be
+                // pushed further down to keep the pill itself in place.
+                val chipHitSlop = if (onCollectionChipClick != null) 8.dp else 0.dp
+
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(3.dp),
                     modifier = Modifier
@@ -212,8 +219,14 @@ internal fun PanelHorizontalMediaCard(
                         .graphicsLayer {
                             clip = false
                             translationX = -3.dp.toPx() * translationDirection
-                            translationY = 5.dp.toPx()
-                        },
+                            translationY = (5.dp + chipHitSlop).toPx()
+                        }
+                        .ifOrElse(
+                            condition = onCollectionChipClick != null,
+                            isTrue = Modifier
+                                .onClick { onCollectionChipClick?.invoke() }
+                                .padding(chipHitSlop),
+                        ),
                 ) {
                     if (watched) {
                         Box(

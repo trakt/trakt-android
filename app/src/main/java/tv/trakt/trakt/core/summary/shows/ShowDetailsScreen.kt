@@ -183,7 +183,8 @@ internal fun ShowDetailsScreen(
             }
         },
         onTrackClick = {
-            if (state.showProgress?.isWatched == true) {
+            val watched = state.showProgress?.isWatched == true
+            if (watched && state.user?.settings?.watchOnlyOnce == true) {
                 confirmRemoveWatchedSheet = true
             } else {
                 confirmAddWatchedSheet = true

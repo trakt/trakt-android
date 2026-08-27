@@ -580,8 +580,7 @@ internal class AllShowSeasonsViewModel(
             try {
                 loadingSeasonState.update { Loading }
 
-                val episodesToAdd = season.selectedSeasonEpisodes
-                    .filter { !it.isWatched && it.episode.isReleased }
+                val episodesToAdd = season.selectedSeasonEpisodesToTrack
                     .map { it.episode.ids.trakt }
 
                 updateEpisodeHistoryUseCase.addToHistory(
