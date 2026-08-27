@@ -17,7 +17,7 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
-import androidx.compose.material3.ToggleButtonDefaults.toggleButtonColors
+import androidx.compose.material3.ToggleButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -251,7 +251,7 @@ private fun PrivacyButtons(
                         onSelect(variant)
                     }
                 },
-                colors = toggleButtonColors(
+                colors = ToggleButtonDefaults.colors(
                     containerColor = Color.Transparent,
                     contentColor = TraktTheme.colors.textPrimary,
                     checkedContainerColor = TraktTheme.colors.accent,

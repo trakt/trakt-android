@@ -133,18 +133,21 @@ internal fun TraktTimePicker(
                 colors = TimePickerDefaults.colors(
                     containerColor = TraktTheme.colors.dialogContainer,
                     selectorColor = TraktTheme.colors.accent,
+                    // Time
+                    timeSelectorContainerColor = TraktTheme.colors.dialogContainer,
+                    timeSelectorContentColor = TraktTheme.colors.textPrimary,
                     timeSelectorSelectedContentColor = TraktTheme.colors.textPrimary,
-                    timeSelectorUnselectedContentColor = TraktTheme.colors.textPrimary,
                     timeSelectorSelectedContainerColor = TraktTheme.colors.accent,
-                    timeSelectorUnselectedContainerColor = TraktTheme.colors.dialogContent,
+                    // Period
+                    periodSelectorContainerColor = TraktTheme.colors.dialogContainer,
+                    periodSelectorContentColor = TraktTheme.colors.dialogContent,
                     periodSelectorBorderColor = TraktTheme.colors.dialogContent,
                     periodSelectorSelectedContainerColor = TraktTheme.colors.accent,
-                    periodSelectorUnselectedContainerColor = TraktTheme.colors.dialogContainer,
                     periodSelectorSelectedContentColor = TraktTheme.colors.textPrimary,
-                    periodSelectorUnselectedContentColor = TraktTheme.colors.textPrimary,
+                    // Clock
                     clockDialColor = TraktTheme.colors.dialogContent,
-                    clockDialUnselectedContentColor = TraktTheme.colors.textPrimary,
                     clockDialSelectedContentColor = TraktTheme.colors.textPrimary,
+                    clockDialContentColor = TraktTheme.colors.textSecondary,
                 ),
             )
         }
