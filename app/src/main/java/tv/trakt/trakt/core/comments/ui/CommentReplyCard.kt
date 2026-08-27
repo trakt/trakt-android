@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -43,7 +44,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import coil3.ColorImage
@@ -52,6 +52,8 @@ import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.helpers.extensions.DevicePreview
+import tv.trakt.trakt.common.helpers.extensions.DevicePreviewRtl
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.googleTranslateActivityInfo
 import tv.trakt.trakt.common.helpers.extensions.highlightMentions
@@ -267,7 +269,6 @@ private fun CommentHeader(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = spacedBy(10.dp),
             modifier = Modifier.weight(1f, fill = false),
         ) {
             Box(
@@ -303,6 +304,8 @@ private fun CommentHeader(
                 }
             }
 
+            Spacer(modifier = Modifier.size(10.dp))
+
             Column(verticalArrangement = spacedBy(2.dp)) {
                 Row(
                     horizontalArrangement = spacedBy(4.dp),
@@ -331,10 +334,11 @@ private fun CommentHeader(
         }
 
         Row(
-            horizontalArrangement = spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             if (isUserReply) {
+                Spacer(modifier = Modifier.size(16.dp))
+
                 Icon(
                     painter = painterResource(R.drawable.ic_trash),
                     contentDescription = null,
@@ -346,6 +350,8 @@ private fun CommentHeader(
                         },
                 )
             }
+
+            Spacer(modifier = Modifier.size(16.dp))
 
             CommentDropdown(
                 onReportClick = onReportClick,
@@ -445,7 +451,8 @@ private fun CommentFooter(
 }
 
 @OptIn(ExperimentalCoilApi::class)
-@Preview
+@DevicePreview
+@DevicePreviewRtl
 @Composable
 private fun Preview() {
     TraktTheme {

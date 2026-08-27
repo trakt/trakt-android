@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Card
@@ -48,7 +49,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -62,6 +62,8 @@ import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.launch
+import tv.trakt.trakt.common.helpers.extensions.DevicePreview
+import tv.trakt.trakt.common.helpers.extensions.DevicePreviewRtl
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.googleTranslateActivityInfo
@@ -360,7 +362,6 @@ private fun CommentHeader(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(10.dp),
         modifier = modifier,
     ) {
         Box(
@@ -395,6 +396,8 @@ private fun CommentHeader(
                 )
             }
         }
+
+        Spacer(modifier = Modifier.width(10.dp))
 
         Column(
             verticalArrangement = spacedBy(1.dp),
@@ -432,14 +435,16 @@ private fun CommentHeader(
             )
         }
 
+        Spacer(modifier = Modifier.width(10.dp))
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = spacedBy(12.dp),
         ) {
             comment.user5Rating?.let { rating ->
+                Spacer(modifier = Modifier.width(12.dp))
+
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(3.dp),
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_star_trakt_on),
@@ -448,6 +453,9 @@ private fun CommentHeader(
                         modifier = Modifier
                             .size(15.dp),
                     )
+
+                    Spacer(modifier = Modifier.width(3.dp))
+
                     Text(
                         text = rating,
                         style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
@@ -458,6 +466,8 @@ private fun CommentHeader(
             }
 
             if (userComment && deleteEnabled) {
+                Spacer(modifier = Modifier.width(12.dp))
+
                 Icon(
                     painter = painterResource(R.drawable.ic_trash),
                     contentDescription = null,
@@ -469,6 +479,8 @@ private fun CommentHeader(
                         },
                 )
             }
+
+            Spacer(modifier = Modifier.width(12.dp))
 
             CommentDropdown(
                 containerColor = TraktTheme.colors.dialogOnContainer,
@@ -643,7 +655,8 @@ private fun CommentFooter(
 }
 
 @OptIn(ExperimentalCoilApi::class)
-@Preview
+@DevicePreview
+@DevicePreviewRtl
 @Composable
 fun CommentPreview() {
     TraktTheme {
