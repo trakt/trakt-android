@@ -229,7 +229,7 @@ private fun GetVipView() {
         Icon(
             painter = painterResource(R.drawable.ic_back_arrow),
             contentDescription = null,
-            tint = TraktTheme.colors.triviaAccent,
+            tint = TraktTheme.colors.textPrimary,
             modifier = Modifier
                 .size(20.dp)
                 .rotate(180F),

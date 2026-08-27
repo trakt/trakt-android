@@ -45,7 +45,7 @@ data class TraktColors(
     val sentimentsGoodAccent: Color = Color.Unspecified,
     val sentimentsBadAccent: Color = Color.Unspecified,
     val triviaContainer: Color = Color.Unspecified,
-    val triviaAccent: Color = Color.Unspecified,
+    val triviaText: Color = Color.Unspecified,
     val detailsStatus1: Color = Color.Unspecified,
     val detailsStatus2: Color = Color.Unspecified,
     val vipAccent: Color = Color.Unspecified,

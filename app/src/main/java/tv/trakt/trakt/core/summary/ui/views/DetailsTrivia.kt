@@ -102,7 +102,7 @@ internal fun DetailsTrivia(
             ) {
                 Text(
                     text = "•",
-                    color = TraktTheme.colors.triviaAccent,
+                    color = TraktTheme.colors.triviaText,
                     style = TraktTheme.typography.paragraphSmall,
                 )
 
@@ -112,7 +112,7 @@ internal fun DetailsTrivia(
                             .fromHtml(item, FROM_HTML_MODE_LEGACY)
                             .toAnnotatedString()
                     },
-                    color = TraktTheme.colors.triviaAccent,
+                    color = TraktTheme.colors.triviaText,
                     style = TraktTheme.typography.paragraphSmall,
                 )
             }
@@ -128,7 +128,7 @@ internal fun DetailsTrivia(
             Icon(
                 painter = painterResource(R.drawable.ic_back_arrow),
                 contentDescription = null,
-                tint = TraktTheme.colors.triviaAccent,
+                tint = TraktTheme.colors.triviaText,
                 modifier = Modifier
                     .align(Alignment.End)
                     .size(20.dp)
@@ -147,7 +147,7 @@ private fun GetVipView(onVipClick: () -> Unit) {
             .fillMaxWidth()
             .padding(top = 6.dp)
             .background(
-                color = TraktTheme.colors.textPrimary.copy(alpha = 0.1F),
+                color = TraktTheme.colors.triviaText.copy(alpha = 0.1F),
                 shape = RoundedCornerShape(18.dp),
             )
             .onClick(onClick = onVipClick)
@@ -160,14 +160,14 @@ private fun GetVipView(onVipClick: () -> Unit) {
         ) {
             Text(
                 text = stringResource(R.string.text_vip_upsell_dive_deeper),
-                color = TraktTheme.colors.triviaAccent,
+                color = TraktTheme.colors.triviaText,
                 style = TraktTheme.typography.paragraphSmall.copy(
                     fontWeight = W600,
                 ),
             )
             Text(
                 text = stringResource(R.string.vip_feature_description_trivia),
-                color = TraktTheme.colors.triviaAccent,
+                color = TraktTheme.colors.triviaText,
                 style = TraktTheme.typography.paragraphSmaller.copy(
                     fontSize = 12.sp,
                 ),
