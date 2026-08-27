@@ -23,30 +23,21 @@ internal data class CommentsLanguage(
 )
 
 /**
- * Languages the app itself is localised into, grouped by API language code so regional variants
- * (`en-US` / `en-AU`, `pt-BR` / `pt-PT`) collapse into a single option.
- *
- * When multiple regional variants exist, the variant matching the active app locale is preferred
- * for the display name and representative flag. If no exact regional match exists, the first
- * supported variant is used.
+ * Languages the app itself is localised into, de-duplicated by API language code so regional
+ * variants (`en-US` / `en-AU`, `pt-BR` / `pt-PT`) collapse into a single option, sorted by display
+ * name.
  */
-internal fun commentsLanguages(
-    appLocale: Locale = activeAppLocale(),
-): ImmutableList<CommentsLanguage> {
+internal fun commentsLanguages(): ImmutableList<CommentsLanguage> {
+    val appLocale = activeAppLocale()
+
     return BuildConfig.SUPPORTED_LOCALES
         .map { Locale.forLanguageTag(it) }
-        .groupBy { it.apiLanguage }
-        .values
-        .map { variants ->
-            variants.firstOrNull { locale ->
-                locale.language == appLocale.language &&
-                    locale.country == appLocale.country
-            } ?: variants.first()
-        }
+        .distinctBy { it.apiLanguage }
         .map { locale ->
             CommentsLanguage(
                 code = locale.apiLanguage,
-                // Use the regional variant matching the active app locale whenever possible.
+                // Display name comes from the app locale, not from the API code: `nb` maps to the
+                // `no` macrolanguage, which would otherwise read as the generic "norsk".
                 displayName = locale.getDisplayLanguage(locale)
                     .replaceFirstChar { char ->
                         if (char.isLowerCase()) {
@@ -55,7 +46,7 @@ internal fun commentsLanguages(
                             char.toString()
                         }
                     },
-                flag = countryFlag(locale.flagCountry()),
+                flag = countryFlag(locale.flagCountry(appLocale)),
             )
         }
         .sortedBy { it.displayName }
@@ -70,7 +61,7 @@ internal fun appCommentsLanguage(): String? {
     val locale = activeAppLocale()
     val code = locale.apiLanguage
 
-    if (commentsLanguages(locale).none { it.code == code }) return null
+    if (commentsLanguages().none { it.code == code }) return null
 
     return code
 }
@@ -97,15 +88,22 @@ private fun activeAppLocale(): Locale {
 }
 
 /**
- * Country represented by a language's selected regional locale. The locale matching the active
- * app language is selected before this function is called. For bare language tags (`de`, `ja`),
- * ICU provides the most likely region.
+ * Returns the representative country for a language flag.
  *
- * A flag is only a visual representation of the language option; the API code remains
- * language-only, such as `pt`.
+ * When the language matches the active app language and the app locale includes
+ * a region, that region is used for the flag. Otherwise, the supported locale's
+ * region is preserved, falling back to ICU for locale tags without a country.
  */
-private fun Locale.flagCountry(): String {
-    return country.ifBlank {
-        ULocale.addLikelySubtags(ULocale.forLocale(this)).country
+private fun Locale.flagCountry(appLocale: Locale): String {
+    return when {
+        language == appLocale.language && appLocale.country.isNotBlank() -> {
+            appLocale.country
+        }
+
+        else -> {
+            country.ifBlank {
+                ULocale.addLikelySubtags(ULocale.forLocale(this)).country
+            }
+        }
     }
 }
