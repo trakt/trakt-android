@@ -80,7 +80,7 @@ private fun HomeStreaksContent(
             .shadow(
                 elevation = when {
                     data == null -> 0.dp
-                    else -> TraktTheme.colors.shadowDefault
+                    else -> TraktTheme.colors.shadowSmall
                 },
                 shape = viewShape,
                 clip = false,
