@@ -25,6 +25,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -37,8 +38,10 @@ import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -160,70 +163,72 @@ private fun TraktMenuBarContent(
             onSearchInput = onSearchInput,
         )
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .padding(horizontal = 12.dp),
-        ) {
-            items.forEachIndexed { _, item ->
-                val isSelected = destination
-                    ?.hierarchy
-                    ?.any { it.hasRoute(item.destination::class) } == true
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .padding(horizontal = 12.dp),
+            ) {
+                items.forEachIndexed { _, item ->
+                    val isSelected = destination
+                        ?.hierarchy
+                        ?.any { it.hasRoute(item.destination::class) } == true
 
-                NavigationBarItem(
-                    alwaysShowLabel = false,
-                    selected = isSelected,
-                    onClick = {
-                        if (!enabled) return@NavigationBarItem
+                    NavigationBarItem(
+                        alwaysShowLabel = false,
+                        selected = isSelected,
+                        onClick = {
+                            if (!enabled) return@NavigationBarItem
 
-                        if (destination?.hasRoute(item.destination::class) == true) {
-                            onReselected()
-                            if (stateHolder.searchVisible) {
-                                runCatching {
-                                    searchFocusRequester.requestFocus()
+                            if (destination?.hasRoute(item.destination::class) == true) {
+                                onReselected()
+                                if (stateHolder.searchVisible) {
+                                    runCatching {
+                                        searchFocusRequester.requestFocus()
+                                    }
                                 }
+                                return@NavigationBarItem
                             }
-                            return@NavigationBarItem
-                        }
 
-                        onSelected(item)
+                            onSelected(item)
+                        },
+                        icon = {
+                            Icon(
+                                painter = painterResource(
+                                    if (isSelected) item.iconOn else item.iconOff,
+                                ),
+                                contentDescription = stringResource(id = item.label),
+                            )
+                        },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = TraktTheme.colors.accent,
+                            unselectedIconColor = TraktTheme.colors.navigationContent,
+                            indicatorColor = Color.Transparent,
+                        ),
+                    )
+                }
+
+                val profileSelected = destination
+                    ?.hierarchy
+                    ?.any { it.hasRoute(ProfileDestination::class) } == true
+
+                ProfileItem(
+                    selected = profileSelected,
+                    vip = user?.isAnyVip == true,
+                    userAvatar = user?.images?.avatar?.full,
+                    onClick = {
+                        if (!enabled || profileSelected) {
+                            return@ProfileItem
+                        }
+                        onProfileClick()
                     },
-                    icon = {
-                        Icon(
-                            painter = painterResource(
-                                if (isSelected) item.iconOn else item.iconOff,
-                            ),
-                            contentDescription = stringResource(id = item.label),
-                        )
-                    },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = TraktTheme.colors.accent,
-                        unselectedIconColor = TraktTheme.colors.navigationContent,
-                        indicatorColor = Color.Transparent,
-                    ),
+                    modifier = Modifier
+                        .graphicsLayer {
+                            translationY = -1.dp.toPx()
+                        }
+                        .weight(1f),
                 )
             }
-
-            val profileSelected = destination
-                ?.hierarchy
-                ?.any { it.hasRoute(ProfileDestination::class) } == true
-
-            ProfileItem(
-                selected = profileSelected,
-                vip = user?.isAnyVip == true,
-                userAvatar = user?.images?.avatar?.full,
-                onClick = {
-                    if (!enabled || profileSelected) {
-                        return@ProfileItem
-                    }
-                    onProfileClick()
-                },
-                modifier = Modifier
-                    .graphicsLayer {
-                        translationY = -1.dp.toPx()
-                    }
-                    .weight(1f),
-            )
         }
     }
 }

@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
@@ -82,7 +84,6 @@ internal fun DetailsActions(
             ),
     ) {
         Row(
-            horizontalArrangement = spacedBy(32.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Button(
@@ -140,6 +141,8 @@ internal fun DetailsActions(
                 }
             }
 
+            Spacer(modifier = Modifier.width(32.dp))
+
             if (secondaryVisible) {
                 Icon(
                     painter = when {
@@ -159,6 +162,8 @@ internal fun DetailsActions(
                         .size(24.dp),
                 )
 
+                Spacer(modifier = Modifier.width(32.dp))
+
                 Icon(
                     painter = painterResource(R.drawable.ic_trailer),
                     tint = when {
@@ -173,6 +178,8 @@ internal fun DetailsActions(
                         )
                         .size(21.dp),
                 )
+
+                Spacer(modifier = Modifier.width(32.dp))
             }
 
             Icon(
@@ -201,6 +208,40 @@ internal fun DetailsActions(
 @Composable
 private fun Preview() {
     TraktThemeLightDark {
+        Column(
+            verticalArrangement = spacedBy(16.dp),
+            modifier = Modifier.padding(16.dp),
+        ) {
+            DetailsActions(
+                watched = true,
+            )
+
+            DetailsActions(
+                watched = false,
+                watchlist = true,
+            )
+
+            DetailsActions(
+                enabled = false,
+                secondaryVisible = false,
+            )
+
+            DetailsActions(
+                enabled = false,
+                loading = true,
+            )
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    widthDp = 400,
+    locale = "ar",
+)
+@Composable
+private fun PreviewRtl() {
+    TraktTheme {
         Column(
             verticalArrangement = spacedBy(16.dp),
             modifier = Modifier.padding(16.dp),

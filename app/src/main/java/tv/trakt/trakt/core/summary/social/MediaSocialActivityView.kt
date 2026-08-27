@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
@@ -105,8 +106,10 @@ private fun MediaSocialActivityContent(
                         )
                     }",
                     modifier = Modifier
-                        .padding(bottom = 4.dp, end = 16.dp)
-                        .weight(1F),
+                        .padding(
+                            bottom = 4.dp,
+                            end = 16.dp,
+                        ),
                 )
 
                 if (averageRating > 0) {
@@ -152,6 +155,65 @@ private fun MediaSocialActivityContent(
 @DevicePreview
 @Composable
 private fun Preview() {
+    TraktTheme {
+        val previewHandler = AsyncImagePreviewHandler {
+            ColorImage(Color.Blue.toArgb())
+        }
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            val item = MediaSocialActivity(
+                type = MediaType.Movie,
+                user = PreviewData.user1,
+                watched = MediaSocialActivity.Watched(
+                    lastWatchedAt = nowUtcInstant().minusSeconds(3.days.inWholeSeconds),
+                    lastUpdatedAt = nowUtcInstant().minusSeconds(3.days.inWholeSeconds),
+                    plays = 3,
+                    duration = 5.hours,
+                    rated = MediaSocialActivity.Watched.Rated(
+                        rating = 8,
+                        ratedAt = nowUtcInstant().minusSeconds(3.days.inWholeSeconds),
+                    ),
+                    commented = MediaSocialActivity.Watched.Commented(
+                        id = 1.toTraktId(),
+                        comment = "Sample comment by someone",
+                        spoiler = false,
+                        review = false,
+                        createdAt = nowUtcInstant(),
+                        updatedAt = nowUtcInstant(),
+                    ),
+                ),
+                watchlist = MediaSocialActivity.Watchlist(
+                    listedAt = nowUtcInstant().minusSeconds(3.days.inWholeSeconds),
+                ),
+            )
+
+            MediaSocialActivityContent(
+                state = MediaSocialActivityState(
+                    activity = persistentListOf(
+                        item,
+                        item.copy(
+                            user = PreviewData.user1.copy(
+                                ids = Ids(
+                                    trakt = TraktId(2),
+                                    slug = SlugId("john-doe"),
+                                    imdb = ImdbId("tt1234567"),
+                                    tmdb = TmdbId(67890),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                mediaTitle = "The Movie Title",
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalCoilApi::class)
+@Preview(
+    locale = "ar",
+)
+@Composable
+private fun PreviewRtl() {
     TraktTheme {
         val previewHandler = AsyncImagePreviewHandler {
             ColorImage(Color.Blue.toArgb())

@@ -2,7 +2,6 @@ package tv.trakt.trakt.core.summary.social.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,6 +28,7 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
+import tv.trakt.trakt.common.helpers.extensions.DevicePreviewRtl
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
@@ -57,7 +57,6 @@ internal fun MediaSocialItemCard(
     onClick: () -> Unit = {},
 ) {
     Row(
-        horizontalArrangement = spacedBy(0.dp),
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .shadow(
@@ -203,6 +202,7 @@ internal fun MediaSocialItemCard(
 
 @OptIn(ExperimentalCoilApi::class)
 @DevicePreview
+@DevicePreviewRtl
 @Composable
 private fun PosterPreview() {
     TraktThemeLightDark {

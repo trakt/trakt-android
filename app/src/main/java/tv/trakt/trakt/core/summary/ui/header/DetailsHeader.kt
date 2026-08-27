@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -222,7 +223,6 @@ internal fun DetailsHeader(
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = spacedBy(0.dp),
                 modifier = Modifier
                     .padding(top = 5.dp)
                     .onClick {
@@ -274,12 +274,12 @@ internal fun DetailsHeader(
                 )
 
                 if (onInfoClick != null) {
+                    Spacer(Modifier.width(5.5.dp))
                     Icon(
                         painter = painterResource(R.drawable.ic_info),
                         tint = TraktTheme.colors.textPrimary,
                         contentDescription = null,
                         modifier = Modifier
-                            .padding(start = 5.5.dp)
                             .size(18.dp)
                             .graphicsLayer {
                                 translationY = 0.4.dp.toPx()

@@ -16,6 +16,14 @@ annotation class DevicePreview
 
 @Preview(
     device = "id:pixel_7",
+    showBackground = true,
+    backgroundColor = 0xFF151418,
+    locale = "ar",
+)
+annotation class DevicePreviewRtl
+
+@Preview(
+    device = "id:pixel_7",
     showBackground = false,
     backgroundColor = 0xFF201E23,
     locale = "us",

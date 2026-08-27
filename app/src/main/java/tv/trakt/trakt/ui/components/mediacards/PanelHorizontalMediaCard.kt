@@ -5,7 +5,7 @@ package tv.trakt.trakt.ui.components.mediacards
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -43,10 +43,12 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.ColorImage
@@ -84,6 +86,11 @@ internal fun PanelHorizontalMediaCard(
     onImageClick: (() -> Unit)? = null,
     footerContent: @Composable (() -> Unit)? = null,
 ) {
+    val mirrored = LocalLayoutDirection.current == LayoutDirection.Rtl
+
+    // graphicsLayer translations are absolute, so they have to be flipped when the layout mirrors.
+    val translationDirection = if (mirrored) -1F else 1F
+
     var isPosterError by remember { mutableStateOf(false) }
     var isContainerError by remember { mutableStateOf(false) }
 
@@ -161,7 +168,7 @@ internal fun PanelHorizontalMediaCard(
                             .size(54.dp)
                             .align(Alignment.TopEnd)
                             .graphicsLayer {
-                                translationX = -24.dp.toPx()
+                                translationX = -24.dp.toPx() * translationDirection
                                 translationY = -12.dp.toPx()
                             },
                     )
@@ -204,7 +211,7 @@ internal fun PanelHorizontalMediaCard(
                         .align(Alignment.BottomCenter)
                         .graphicsLayer {
                             clip = false
-                            translationX = -3.dp.toPx()
+                            translationX = -3.dp.toPx() * translationDirection
                             translationY = 5.dp.toPx()
                         },
                 ) {
@@ -282,14 +289,19 @@ internal fun PanelHorizontalMediaCard(
                         .aspectRatio(HorizontalImageAspectRatio)
                         .drawWithContent {
                             drawContent()
+
+                            // Mirror the fade so it always runs towards the text side of the card.
+                            val originX = if (mirrored) size.width else 0F
+                            val directionX = if (mirrored) -1F else 1F
+
                             drawRect(
                                 brush = linearGradient(
                                     colors = listOf(
                                         containerColor,
                                         gradientColor2,
                                     ),
-                                    start = Offset(size.width / 1.75F, size.height),
-                                    end = Offset(size.width * 1.655F, -size.height),
+                                    start = Offset(originX + directionX * size.width / 1.75F, size.height),
+                                    end = Offset(originX + directionX * size.width * 1.655F, -size.height),
                                 ),
                                 size = size,
                             )
@@ -337,7 +349,7 @@ internal fun PanelHorizontalMediaCard(
                             modifier = Modifier
                                 .padding(top = 1.5.dp)
                                 .graphicsLayer {
-                                    translationX = 5.dp.toPx()
+                                    translationX = 5.dp.toPx() * translationDirection
                                 }
                                 .size(14.dp)
                                 .onClick(onClick = onLongClick ?: {}),
@@ -371,6 +383,32 @@ private fun PosterPreview() {
                 contentImageUrl = "https://example.com/poster.jpg",
                 containerImageUrl = "https://example.com/poster.jpg",
                 watched = true,
+            )
+        }
+    }
+}
+
+@Preview(
+    device = "id:pixel_7",
+    showBackground = false,
+    backgroundColor = 0xFFFFFF,
+    widthDp = 350,
+    locale = "ar",
+)
+@Composable
+private fun PosterPreviewRtl() {
+    TraktThemeLightDark {
+        val previewHandler = AsyncImagePreviewHandler {
+            ColorImage(Color.Blue.toArgb())
+        }
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            PanelHorizontalMediaCard(
+                title = "لوريم",
+                subtitle = "أكشن، مغامرة",
+                contentImageUrl = "https://example.com/poster.jpg",
+                containerImageUrl = "https://example.com/poster.jpg",
+                watched = true,
+                watchlist = true,
             )
         }
     }

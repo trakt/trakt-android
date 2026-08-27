@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -53,7 +55,6 @@ internal fun DetailsRatings(
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(4.dp),
         modifier = modifier,
     ) {
         Row(
@@ -209,6 +210,7 @@ internal fun DetailsRatings(
         }
 
         if (chevron) {
+            Spacer(modifier = Modifier.width(4.dp))
             Icon(
                 painter = painterResource(R.drawable.ic_chevron_right),
                 contentDescription = null,

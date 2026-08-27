@@ -1,8 +1,8 @@
 package tv.trakt.trakt.core.episodes.ui
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Arrangement.Absolute.SpaceBetween
-import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Arrangement.SpaceBetween
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -259,6 +259,19 @@ private fun Preview5() {
             loading = true,
             mediaIcon = true,
             secondary = true,
+        )
+    }
+}
+
+@Preview(widthDp = 300, locale = "ar")
+@Composable
+private fun PreviewRtl() {
+    TraktTheme {
+        SeasonMetaFooter(
+            season = PreviewData.season1,
+            rating = true,
+            check = true,
+            mediaIcon = true,
         )
     }
 }

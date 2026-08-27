@@ -3,7 +3,7 @@ package tv.trakt.trakt.ui.components.mediacards
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,10 +41,12 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.ColorImage
@@ -84,6 +86,11 @@ internal fun PanelMediaCard(
     footerContent: @Composable (() -> Unit)? = null,
 ) {
     val containerColor = TraktTheme.colors.panelCardContainer
+
+    val mirrored = LocalLayoutDirection.current == LayoutDirection.Rtl
+
+    // graphicsLayer translations are absolute, so they have to be flipped when the layout mirrors.
+    val translationDirection = if (mirrored) -1F else 1F
 
     var isPosterError by remember { mutableStateOf(false) }
     var isContainerError by remember { mutableStateOf(false) }
@@ -159,7 +166,7 @@ internal fun PanelMediaCard(
                             .size(54.dp)
                             .align(Alignment.TopEnd)
                             .graphicsLayer {
-                                translationX = 4.dp.toPx()
+                                translationX = 4.dp.toPx() * translationDirection
                                 translationY = -4.dp.toPx()
                             },
                     )
@@ -196,7 +203,7 @@ internal fun PanelMediaCard(
             if (watchlist || watched || watching) {
                 val shape = RoundedCornerShape(100)
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(3.dp),
+                    horizontalArrangement = spacedBy(3.dp),
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .padding(start = 4.dp)
@@ -290,14 +297,19 @@ internal fun PanelMediaCard(
                         .aspectRatio(HorizontalImageAspectRatio)
                         .drawWithContent {
                             drawContent()
+
+                            // Mirror the fade so it always runs towards the text side of the card.
+                            val originX = if (mirrored) size.width else 0F
+                            val directionX = if (mirrored) -1F else 1F
+
                             drawRect(
                                 brush = linearGradient(
                                     colors = listOf(
                                         containerColor,
                                         imageGradientColor,
                                     ),
-                                    start = Offset(size.width / 1.75F, size.height),
-                                    end = Offset(size.width * 1.655F, -size.height),
+                                    start = Offset(originX + directionX * size.width / 1.75F, size.height),
+                                    end = Offset(originX + directionX * size.width * 1.655F, -size.height),
                                 ),
                                 size = size,
                             )
@@ -318,7 +330,7 @@ internal fun PanelMediaCard(
                     verticalAlignment = Alignment.Top,
                 ) {
                     Column(
-                        verticalArrangement = Arrangement.spacedBy(3.dp),
+                        verticalArrangement = spacedBy(3.dp),
                         modifier = Modifier.weight(1F),
                     ) {
                         Text(
@@ -357,7 +369,7 @@ internal fun PanelMediaCard(
                             modifier = Modifier
                                 .padding(top = 2.dp)
                                 .graphicsLayer {
-                                    translationX = 5.dp.toPx()
+                                    translationX = 5.dp.toPx() * translationDirection
                                 }
                                 .size(14.dp)
                                 .onClick(enabled = enabled, onClick = onLongClick ?: {}),
@@ -411,6 +423,34 @@ private fun PosterPreviewPlaceholder() {
                 title = "Lorem",
                 titleOriginal = "Original Lorem",
                 subtitle = "Action, Adventure",
+                contentImageUrl = "https://example.com/poster.jpg",
+                containerImageUrl = "https://example.com/container.jpg",
+                watched = true,
+                watchlist = true,
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalCoilApi::class)
+@Preview(
+    device = "id:pixel_7",
+    showBackground = false,
+    backgroundColor = 0xFFFFFF,
+    widthDp = 350,
+    locale = "ar",
+)
+@Composable
+private fun PosterPreviewRtl() {
+    TraktTheme {
+        val previewHandler = AsyncImagePreviewHandler {
+            ColorImage(Color.Blue.toArgb())
+        }
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            PanelMediaCard(
+                title = "لوريم",
+                titleOriginal = null,
+                subtitle = "أكشن، مغامرة",
                 contentImageUrl = "https://example.com/poster.jpg",
                 containerImageUrl = "https://example.com/container.jpg",
                 watched = true,
