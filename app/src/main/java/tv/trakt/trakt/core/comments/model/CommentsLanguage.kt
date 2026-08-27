@@ -30,7 +30,7 @@ internal data class CommentsLanguage(
  * the display name and representative flag.
  */
 internal fun commentsLanguages(
-    appLocale: Locale,
+    appLocale: Locale = activeAppLocale(),
 ): ImmutableList<CommentsLanguage> {
     return BuildConfig.SUPPORTED_LOCALES
         .map { Locale.forLanguageTag(it) }
@@ -66,7 +66,7 @@ internal fun commentsLanguages(
  * - a system locale the app isn't localised into would otherwise filter every comment away.
  */
 internal fun appCommentsLanguage(): String? {
-    val locale = AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+    val locale = activeAppLocale()
     val code = locale.apiLanguage
 
     if (commentsLanguages(locale).none { it.code == code }) return null
@@ -78,15 +78,21 @@ internal fun appCommentsLanguage(): String? {
  * Display name for a stored language [code], or null when the code is unknown or absent
  * (absent means "all languages").
  */
-internal fun commentsLanguageDisplayName(
-    code: String?,
-    appLocale: Locale,
-): String? {
+internal fun commentsLanguageDisplayName(code: String?): String? {
     if (code == null) return null
 
-    return commentsLanguages(appLocale)
+    return commentsLanguages()
         .firstOrNull { it.code == code }
         ?.displayName
+}
+
+/**
+ * Returns the active locale selected for the application. When no per-app language has been
+ * selected, the application follows the system locale.
+ */
+private fun activeAppLocale(): Locale {
+    return AppCompatDelegate.getApplicationLocales().get(0)
+        ?: Locale.getDefault()
 }
 
 /**
