@@ -26,8 +26,9 @@ internal data class CommentsLanguage(
  * Languages the app itself is localised into, grouped by API language code so regional variants
  * (`en-US` / `en-AU`, `pt-BR` / `pt-PT`) collapse into a single option.
  *
- * When multiple regional variants exist, the variant matching the active app locale is used for
- * the display name and representative flag.
+ * When multiple regional variants exist, the variant matching the active app locale is preferred
+ * for the display name and representative flag. If no exact regional match exists, the first
+ * supported variant is used.
  */
 internal fun commentsLanguages(
     appLocale: Locale = activeAppLocale(),
