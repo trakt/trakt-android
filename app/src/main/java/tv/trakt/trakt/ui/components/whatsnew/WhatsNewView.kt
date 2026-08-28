@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
+import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.BuildConfig
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.WhatsNew
@@ -164,7 +165,7 @@ private fun Preview() {
                 id = 1,
                 versionName = "1.0.0",
                 versionCode = 1,
-                notes = listOf(
+                notes = persistentListOf(
                     WhatsNew.WhatsNewNote(
                         title = "New Feature",
                         text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
