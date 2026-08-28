@@ -1,8 +1,13 @@
-package tv.trakt.trakt.core.lists.features.reorder.ui
+package tv.trakt.trakt.ui.components.reorder
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.awaitHorizontalTouchSlopOrCancellation
+import androidx.compose.foundation.gestures.awaitLongPressOrCancellation
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.lazy.LazyItemScope
@@ -18,10 +23,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.GraphicsLayerScope
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.changedToUpIgnoreConsumed
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.zIndex
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
@@ -184,25 +193,33 @@ internal fun rememberDragDropState(
     return dragDropState
 }
 
+/**
+ * [reversed] flips the sign of the translation, so a horizontal list laid out right to left moves
+ * the slot the way the finger went rather than mirrored: [DragDropState] works in layout offsets,
+ * `translationX` in visual ones.
+ */
 @Composable
 internal fun LazyItemScope.DraggableItem(
     dragDropState: DragDropState,
     index: Int,
     modifier: Modifier = Modifier,
+    orientation: Orientation = Orientation.Vertical,
+    reversed: Boolean = false,
     content: @Composable (isDragging: Boolean) -> Unit,
 ) {
     val dragging = index == dragDropState.draggingItemIndex
+    val sign = if (reversed) -1f else 1f
     val draggingModifier = when {
         dragging -> {
             Modifier
                 .zIndex(1f)
-                .graphicsLayer { translationY = dragDropState.draggingItemOffset }
+                .graphicsLayer { translate(orientation, sign * dragDropState.draggingItemOffset) }
         }
 
         index == dragDropState.previousIndexOfDraggedItem -> {
             Modifier
                 .zIndex(1f)
-                .graphicsLayer { translationY = dragDropState.previousItemOffset.value }
+                .graphicsLayer { translate(orientation, sign * dragDropState.previousItemOffset.value) }
         }
 
         else -> {
@@ -215,6 +232,16 @@ internal fun LazyItemScope.DraggableItem(
 
     Box(modifier = modifier.then(draggingModifier)) {
         content(dragging)
+    }
+}
+
+private fun GraphicsLayerScope.translate(
+    orientation: Orientation,
+    offset: Float,
+) {
+    when (orientation) {
+        Orientation.Vertical -> translationY = offset
+        Orientation.Horizontal -> translationX = offset
     }
 }
 
@@ -236,4 +263,71 @@ internal fun Modifier.dragHandle(
             onDragEnd = { state.onDragInterrupted() },
             onDragCancel = { state.onDragInterrupted() },
         )
+    }
+
+/**
+ * The handle for a horizontal row that has no dedicated grip: a long press claims the chip and the
+ * same gesture goes straight into dragging it, and while [active] is on a plain horizontal swipe is
+ * enough. Everything else on the chip - a tap, a vertical scroll of whatever contains the row -
+ * stays with whoever owned it, because the gesture only takes over once one of those two things
+ * happened.
+ *
+ * [reversed] mirrors the delta for a right to left layout, and [onDragStopped] fires once the chip
+ * is dropped, which is where a caller commits the order.
+ */
+internal fun Modifier.horizontalDragHandle(
+    state: DragDropState,
+    index: State<Int>,
+    active: State<Boolean>,
+    haptic: HapticFeedback,
+    reversed: Boolean = false,
+    onActivate: () -> Unit = {},
+    onDragStopped: () -> Unit = {},
+): Modifier =
+    pointerInput(state, reversed) {
+        val sign = if (reversed) -1F else 1F
+
+        awaitEachGesture {
+            // The chip itself is clickable, and a clickable consumes the down event, so this has to
+            // read the gesture from the start rather than wait for an unconsumed one.
+            val down = awaitFirstDown(requireUnconsumed = false)
+
+            val claimed = when {
+                active.value -> {
+                    awaitHorizontalTouchSlopOrCancellation(down.id) { change, _ ->
+                        change.consume()
+                    } != null
+                }
+
+                else -> {
+                    val longPress = awaitLongPressOrCancellation(down.id) != null
+                    if (longPress) {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        onActivate()
+                    }
+                    longPress
+                }
+            }
+
+            if (!claimed) return@awaitEachGesture
+
+            state.onDragStart(index.value)
+
+            // Read on the initial pass and consume: the chip's own click sits closer to the layout
+            // node and would otherwise see the release first, so a press and hold that never moved
+            // would still select the filter on the way up.
+            while (true) {
+                val event = awaitPointerEvent(PointerEventPass.Initial)
+                val change = event.changes.firstOrNull { it.id == down.id } ?: break
+                val up = change.changedToUpIgnoreConsumed()
+                if (!up) {
+                    state.onDrag(sign * change.positionChange().x)
+                }
+                change.consume()
+                if (up) break
+            }
+
+            state.onDragInterrupted()
+            onDragStopped()
+        }
     }
