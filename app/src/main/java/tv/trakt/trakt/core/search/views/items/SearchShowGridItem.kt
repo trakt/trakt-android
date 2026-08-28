@@ -33,6 +33,7 @@ internal fun SearchShowGridItem(
     watched: Boolean,
     watching: Boolean,
     watchlist: Boolean,
+    plays: Int,
     onShowClick: (Show) -> Unit,
     onShowLongClick: (Show) -> Unit,
     modifier: Modifier,
@@ -51,6 +52,7 @@ internal fun SearchShowGridItem(
         watched = watched,
         watching = watching,
         watchlist = watchlist,
+        plays = plays,
         chipSpacing = 10.dp,
         chipContent = { modifier ->
             Row(

@@ -33,6 +33,7 @@ internal fun SearchMovieGridItem(
     watched: Boolean,
     watching: Boolean,
     watchlist: Boolean,
+    plays: Int,
     onMovieClick: (Movie) -> Unit,
     onMovieLongClick: (Movie) -> Unit = {},
     modifier: Modifier,
@@ -51,6 +52,7 @@ internal fun SearchMovieGridItem(
         watched = watched,
         watching = watching,
         watchlist = watchlist,
+        plays = plays,
         chipSpacing = 10.dp,
         chipContent = { modifier ->
             Row(

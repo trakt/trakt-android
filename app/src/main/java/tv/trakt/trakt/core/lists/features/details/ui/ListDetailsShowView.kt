@@ -25,6 +25,7 @@ internal fun ListDetailsShowView(
     watched: Boolean = false,
     watching: Boolean = false,
     watchlist: Boolean = false,
+    plays: Int = 0,
     onClick: (TraktId) -> Unit = { },
     onLongClick: () -> Unit,
 ) {
@@ -42,6 +43,7 @@ internal fun ListDetailsShowView(
         watched = watched,
         watching = watching,
         watchlist = watchlist,
+        plays = plays,
         contentImageUrl = show.images?.getPosterUrl(),
         containerImageUrl = show.images?.getFanartUrl(Images.Size.THUMB),
         onClick = { onClick(show.ids.trakt) },

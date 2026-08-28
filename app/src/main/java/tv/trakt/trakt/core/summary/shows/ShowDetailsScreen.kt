@@ -540,6 +540,7 @@ internal fun ShowDetailsContent(
                         creator = state.showCreator,
                         watched = state.showProgress?.isWatched == true,
                         watching = state.showProgress?.isWatching == true,
+                        playsCount = state.showProgress?.completedPlays,
                         loading = state.loading.isLoading ||
                             state.loadingProgress.isLoading,
                         onCreatorClick = onPersonClick ?: {},

@@ -297,6 +297,7 @@ private fun ContentList(
                 item = item,
                 mode = mode,
                 watched = collection.isWatched(item.id, item.type, item.airedEpisodes),
+                plays = collection.plays(item.id, item.type, item.airedEpisodes),
                 watching = collection.isWatching(item.id, item.type, item.airedEpisodes),
                 watchlist = collection.isWatchlist(item.id, item.type),
                 modifier = Modifier.animateItem(
@@ -317,6 +318,7 @@ private fun ContentListItem(
     watched: Boolean,
     watching: Boolean,
     watchlist: Boolean,
+    plays: Int,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
@@ -328,6 +330,7 @@ private fun ContentListItem(
         watched = watched,
         watching = watching,
         watchlist = watchlist,
+        plays = plays,
         onClick = onClick,
         onLongClick = onLongClick,
         chipSpacing = 10.dp,

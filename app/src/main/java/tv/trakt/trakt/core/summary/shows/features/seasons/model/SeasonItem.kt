@@ -10,4 +10,6 @@ internal data class SeasonItem(
     val isWatching: Boolean = false,
     val unwatchedEpisodes: Int = 0,
     val watchedEpisodes: Int = 0,
+    /** Complete watches of this season, zero unless every episode was watched. */
+    val plays: Int = 0,
 )

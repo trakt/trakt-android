@@ -3,13 +3,11 @@ package tv.trakt.trakt.ui.components.mediacards
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -31,8 +29,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
@@ -74,6 +70,7 @@ internal fun VerticalMediaCard(
     watched: Boolean = false,
     watching: Boolean = false,
     watchlist: Boolean = false,
+    plays: Int = 0,
     chipSpacing: Dp = 8.dp,
     chipContent: @Composable (Modifier) -> Unit = {},
     cardContent: @Composable (() -> Unit)? = null,
@@ -249,6 +246,7 @@ internal fun VerticalMediaCard(
                             iconRes = R.drawable.ic_check_double,
                             iconSize = 11.5.dp,
                             halved = watching,
+                            count = plays,
                         )
                     }
 
@@ -268,42 +266,6 @@ internal fun VerticalMediaCard(
     }
 }
 
-@Composable
-private fun CollectionChip(
-    iconRes: Int,
-    iconSize: Dp,
-    halved: Boolean = false,
-) {
-    val shape = RoundedCornerShape(100)
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .size(
-                width = 24.dp,
-                height = 16.dp,
-            )
-            .shadow(1.5.dp, shape)
-            .clip(shape)
-            .background(TraktTheme.colors.tagChipContainer),
-    ) {
-        if (halved) {
-            Box(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .fillMaxWidth(0.5f)
-                    .align(Alignment.CenterEnd)
-                    .background(TraktTheme.colors.tagChipContainerLight),
-            )
-        }
-        Icon(
-            painter = painterResource(iconRes),
-            tint = TraktTheme.colors.tagChipContent,
-            contentDescription = null,
-            modifier = Modifier.size(iconSize),
-        )
-    }
-}
-
 @OptIn(ExperimentalCoilApi::class)
 @Preview
 @Composable
@@ -317,6 +279,7 @@ private fun PosterPreview() {
                 title = "Placeholder",
                 watched = true,
                 watchlist = true,
+                plays = 3,
                 imageUrl = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/4iWjGghUj2uyHo2Hyw8NFBvsNGm.jpg",
                 modifier = Modifier.padding(16.dp),
             )

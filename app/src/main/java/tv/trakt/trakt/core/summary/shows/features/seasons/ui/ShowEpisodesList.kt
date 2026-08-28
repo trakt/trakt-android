@@ -105,6 +105,7 @@ internal fun ShowEpisodesList(
                         title = "",
                         more = item.isWatched || isReleased,
                         watched = item.isWatched,
+                        plays = item.plays,
                         containerImageUrl = when {
                             !isReleased -> show?.images?.getFanartUrl()
                             else -> item.episode.images?.getScreenshotUrl()
