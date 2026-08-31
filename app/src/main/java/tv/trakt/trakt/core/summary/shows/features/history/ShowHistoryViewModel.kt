@@ -247,7 +247,7 @@ internal class ShowHistoryViewModel(
             try {
                 loadingState.update { Loading }
 
-                updateHistoryUseCase.removeEpisodeFromHistory(item.episode.ids.trakt.value)
+                updateHistoryUseCase.removePlayFromHistory(item.id)
                 loadProgressUseCase.loadShowsProgress()
                 episodeDetailsUpdates.notifyUpdate(History)
 
@@ -255,7 +255,7 @@ internal class ShowHistoryViewModel(
                     (items ?: emptyMap())
                         .mapValues { entry ->
                             entry.value
-                                .filterNot { it.episode.ids.trakt == item.episode.ids.trakt }
+                                .filterNot { it.id == item.id }
                                 .toImmutableList()
                         }
                         .filterValues { it.isNotEmpty() }

@@ -67,7 +67,7 @@ internal fun PrimaryHoldButton(
     contentColor: Color = TraktTheme.colors.primaryButtonContent,
     disabledContainerColor: Color = TraktTheme.colors.primaryButtonContainerDisabled,
     disabledContentColor: Color = TraktTheme.colors.primaryButtonContentDisabled,
-    holdBorderColor: Color = TraktTheme.colors.primaryButtonContent,
+    holdBorderColor: Color = TraktTheme.colors.textPrimary,
     holdBorderWidth: Dp = 4.dp,
 ) {
     val progress = remember { Animatable(0F) }

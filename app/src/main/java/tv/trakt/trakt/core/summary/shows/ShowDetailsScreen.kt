@@ -143,9 +143,10 @@ internal fun ShowDetailsScreen(
     var contextSheet by remember { mutableStateOf<Show?>(null) }
     var listsSheet by remember { mutableStateOf<Show?>(null) }
     var confirmAddWatchedSheet by remember { mutableStateOf(false) }
+    var confirmWatchAgainSheet by remember { mutableStateOf(false) }
     var confirmRemoveWatchedSheet by remember { mutableStateOf(false) }
     var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
-    var dateSheet by remember { mutableStateOf(false) }
+    var dateSheet by remember { mutableStateOf(false to false) }
     var shareSheet by remember { mutableStateOf(false) }
     var coverImageSheet by remember { mutableStateOf<Show?>(null) }
     var socialActivitySheet by remember { mutableStateOf<ImmutableList<MediaSocialActivity>?>(null) }
@@ -302,7 +303,7 @@ internal fun ShowDetailsScreen(
             state.show?.let { onNavigateToHistory(it, state.showProgress?.plays ?: 0) }
         },
         onCheckClick = {
-            confirmAddWatchedSheet = true
+            confirmWatchAgainSheet = true
         },
         onRemoveClick = {
             confirmRemoveWatchedSheet = true
@@ -323,9 +324,33 @@ internal fun ShowDetailsScreen(
         holdToYes = true,
         onYes = {
             confirmAddWatchedSheet = false
-            dateSheet = true
+            dateSheet = true to false
         },
         onNo = { confirmAddWatchedSheet = false },
+        title = stringResource(R.string.button_text_mark_as_watched),
+        annotatedMessage = customAnnotatedString(
+            stringResource(
+                R.string.warning_prompt_mark_as_watched_show_android,
+                state.showProgress?.unwatchedCount ?: state.show?.airedEpisodes ?: 0,
+                state.show?.title ?: "",
+            ),
+            style = TraktTheme.typography.paragraph.toSpanStyle()
+                .copy(
+                    fontWeight = FontWeight.W600,
+                    textDecoration = TextDecoration.Underline,
+                ),
+        ),
+        yesText = stringResource(R.string.button_text_hold_to_confirm),
+    )
+
+    ConfirmationSheet(
+        active = confirmWatchAgainSheet,
+        holdToYes = true,
+        onYes = {
+            confirmWatchAgainSheet = false
+            dateSheet = true to true
+        },
+        onNo = { confirmWatchAgainSheet = false },
         title = stringResource(R.string.button_text_mark_as_watched),
         annotatedMessage = customAnnotatedString(
             stringResource(
@@ -371,11 +396,13 @@ internal fun ShowDetailsScreen(
     )
 
     DateSelectionSheet(
-        active = dateSheet,
+        active = dateSheet.first,
         title = state.show?.title ?: "",
-        onResult = viewModel::addToWatched,
+        onResult = {
+            viewModel.addToWatched(watchAgain = dateSheet.second)
+        },
         onDismiss = {
-            dateSheet = false
+            dateSheet = false to false
         },
     )
 

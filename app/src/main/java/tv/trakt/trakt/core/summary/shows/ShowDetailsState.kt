@@ -44,6 +44,12 @@ internal data class ShowDetailsState(
 
         val isWatching: Boolean
             get() = playsWithoutSpecials != null && playsWithoutSpecials > 0 && playsWithoutSpecials < aired
+
+        val unwatchedCount: Int
+            get() = when {
+                playsWithoutSpecials != null -> aired - playsWithoutSpecials
+                else -> aired
+            }
     }
 
     data class UserRatingsState(

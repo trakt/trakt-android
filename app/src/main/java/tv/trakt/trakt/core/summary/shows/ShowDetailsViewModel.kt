@@ -405,7 +405,10 @@ internal class ShowDetailsViewModel(
 
     // History
 
-    fun addToWatched(customDate: DateSelectionResult? = null) {
+    fun addToWatched(
+        watchAgain: Boolean,
+        customDate: DateSelectionResult? = null,
+    ) {
         if (showState.value == null ||
             loadingState.value.isLoading ||
             loadingProgress.value.isLoading ||
@@ -424,6 +427,7 @@ internal class ShowDetailsViewModel(
                 updateShowHistoryUseCase.addToWatched(
                     showId = showId,
                     customDate = customDate,
+                    watchAgain = watchAgain,
                 )
                 val progress = loadProgressUseCase.loadShowsProgress()
                     .firstOrNull {
