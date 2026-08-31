@@ -10106,6 +10106,10 @@
                           "type": "string",
                           "nullable": true
                         },
+                        "email": {
+                          "type": "string",
+                          "nullable": true
+                        },
                         "vip": {
                           "type": "boolean"
                         },
@@ -88274,16 +88278,9 @@
             "in": "path",
             "required": true,
             "schema": {
-              "oneOf": [
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "string"
-                }
-              ]
+              "type": "string"
             },
-            "description": "Trakt ID, Trakt slug, or IMDB ID Example: 922."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -88979,16 +88976,9 @@
             "in": "path",
             "required": true,
             "schema": {
-              "oneOf": [
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "string"
-                }
-              ]
+              "type": "string"
             },
-            "description": "Trakt ID, Trakt slug, or IMDB ID Example: 922."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -92223,7 +92213,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -92505,7 +92495,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -92893,7 +92883,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -92971,7 +92961,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -93028,7 +93018,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "country",
@@ -93106,7 +93096,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "language",
@@ -93184,7 +93174,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -93487,7 +93477,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -93640,7 +93630,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -93717,7 +93707,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "country",
@@ -94202,7 +94192,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -94248,7 +94238,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "requestBody": {
@@ -94296,7 +94286,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -94665,7 +94655,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -94750,7 +94740,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "sort",
@@ -95051,7 +95041,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "sort",
@@ -95321,7 +95311,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -95419,7 +95409,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "requestBody": {
@@ -95510,7 +95500,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "images",
@@ -99862,7 +99852,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -99933,7 +99923,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "requestBody": {
@@ -100035,7 +100025,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -100072,7 +100062,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -100117,7 +100107,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -100426,7 +100416,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -100790,7 +100780,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -100868,7 +100858,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -100925,7 +100915,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -100968,7 +100958,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -101534,7 +101524,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -102100,7 +102090,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "requestBody": {
@@ -102147,7 +102137,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -102187,7 +102177,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "language",
@@ -102265,7 +102255,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -102595,7 +102585,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -102748,7 +102738,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -102948,7 +102938,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -103148,7 +103138,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -103225,7 +103215,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "country",
@@ -103710,7 +103700,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -103756,7 +103746,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "requestBody": {
@@ -103804,7 +103794,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -104173,7 +104163,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -104318,7 +104308,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "season",
@@ -104470,7 +104460,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "season",
@@ -104676,7 +104666,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "season",
@@ -104765,7 +104755,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "season",
@@ -105046,7 +105036,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "season",
@@ -105358,7 +105348,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "season",
@@ -105738,7 +105728,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "season",
@@ -106089,7 +106079,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "season",
@@ -106170,7 +106160,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "season",
@@ -106334,7 +106324,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "season",
@@ -106447,7 +106437,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -106493,7 +106483,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "season",
@@ -106594,7 +106584,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -106679,7 +106669,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "sort",
@@ -106980,7 +106970,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "sort",
@@ -107250,7 +107240,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -107348,7 +107338,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "requestBody": {
@@ -107439,7 +107429,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "images",
@@ -107497,7 +107487,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "season",
@@ -107710,7 +107700,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "season",
@@ -107805,7 +107795,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "season",
@@ -107896,7 +107886,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "season",
@@ -108257,7 +108247,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "season",
@@ -108431,7 +108421,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "season",
@@ -108722,7 +108712,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "season",
@@ -109112,7 +109102,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "season",
@@ -109434,7 +109424,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "season",
@@ -109540,7 +109530,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "country",
@@ -110037,7 +110027,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "season",
@@ -119069,7 +119059,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -119231,7 +119221,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -119802,7 +119792,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -120439,7 +120429,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "sort",
@@ -120740,7 +120730,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "requestBody": {
@@ -120830,7 +120820,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "images",
@@ -121072,7 +121062,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "requestBody": {
@@ -121646,7 +121636,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "requestBody": {
@@ -123223,7 +123213,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -123590,7 +123580,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -124064,7 +124054,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -124565,7 +124555,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -125336,7 +125326,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -126934,7 +126924,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "type",
@@ -128536,7 +128526,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "sort",
@@ -128788,7 +128778,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -128971,7 +128961,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "requestBody": {
@@ -129017,7 +129007,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -129057,7 +129047,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "requestBody": {
@@ -130083,7 +130073,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -130297,7 +130287,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -131192,7 +131182,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "page",
@@ -131367,7 +131357,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "requestBody": {
@@ -131413,7 +131403,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {
@@ -131453,7 +131443,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "requestBody": {
@@ -131545,7 +131535,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           },
           {
             "name": "extended",
@@ -131786,7 +131776,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "requestBody": {
@@ -132022,7 +132012,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "requestBody": {
@@ -132256,7 +132246,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The slug of the resource."
+            "description": "The id/slug of the resource."
           }
         ],
         "responses": {

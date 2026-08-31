@@ -137,7 +137,7 @@ internal class MoviesSyncApiClient(
     }
 
     override suspend fun hideRecommendation(movieId: TraktId) {
-        recommendationsApi.deleteRecommendationsMoviesHide(id = movieId.value)
+        recommendationsApi.deleteRecommendationsMoviesHide(id = movieId.value.toString())
         cacheMarker.invalidate()
     }
 

@@ -172,7 +172,7 @@ internal class ShowsSyncApiClient(
     }
 
     override suspend fun hideRecommendation(showId: TraktId) {
-        recommendationsApi.deleteRecommendationsShowsHide(id = showId.value)
+        recommendationsApi.deleteRecommendationsShowsHide(id = showId.value.toString())
         cacheMarker.invalidate()
     }
 
