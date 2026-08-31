@@ -117,7 +117,7 @@ internal fun NavGraphBuilder.homeScreens(
             onNavigateToAllPersonal = { navigateToAllActivityPersonal(filtersEnabled = true) },
             onNavigateToAllSocial = ::navigateToAllActivitySocial,
             onNavigateToAllWatchlist = ::navigateToAllHomeWatchlist,
-            onNavigateToAllRecommended = { navigateToDiscoverAll(DiscoverSection.RECOMMENDED) },
+            onNavigateToAllRecommended = { navigateToDiscoverAll(DiscoverSection.Recommended) },
             onNavigateToVip = ::navigateToBilling,
             onNavigateToUser = { user ->
                 navigateToUserProfile(
@@ -180,13 +180,13 @@ internal fun NavGraphBuilder.discoverScreens(
                 navigateToEpisode(showId, episode)
             },
             onNavigateToAllTrending = {
-                navigateToDiscoverAll(DiscoverSection.TRENDING)
+                navigateToDiscoverAll(DiscoverSection.Trending)
             },
             onNavigateToAllPopular = {
-                navigateToDiscoverAll(DiscoverSection.POPULAR)
+                navigateToDiscoverAll(DiscoverSection.Popular)
             },
             onNavigateToAllAnticipated = {
-                navigateToDiscoverAll(DiscoverSection.ANTICIPATED)
+                navigateToDiscoverAll(DiscoverSection.Anticipated)
             },
             onNavigateToAllReleases = {
                 navigateToAllReleases()

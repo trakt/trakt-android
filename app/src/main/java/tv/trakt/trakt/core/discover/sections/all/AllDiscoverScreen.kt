@@ -44,6 +44,7 @@ import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.model.DiscoverItem.MovieItem
 import tv.trakt.trakt.core.discover.model.DiscoverItem.ShowItem
 import tv.trakt.trakt.core.discover.model.DiscoverSection
+import tv.trakt.trakt.core.discover.model.DiscoverSection.Recommended
 import tv.trakt.trakt.core.discover.ui.AllDiscoverListView
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
@@ -101,11 +102,15 @@ internal fun AllDiscoverScreen(
 
     ShowContextSheet(
         show = contextShowSheet,
+        showRecommended = state.type == Recommended,
+        onHideRecommendation = { viewModel.hideRecommendation(it) },
         onDismiss = { contextShowSheet = null },
     )
 
     MovieContextSheet(
         movie = contextMovieSheet,
+        showRecommended = state.type == Recommended,
+        onHideRecommendation = { viewModel.hideRecommendation(it) },
         onDismiss = { contextMovieSheet = null },
     )
 

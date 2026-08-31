@@ -5,10 +5,10 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_ALL_LIMIT
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.model.DiscoverSection
-import tv.trakt.trakt.core.discover.model.DiscoverSection.ANTICIPATED
-import tv.trakt.trakt.core.discover.model.DiscoverSection.POPULAR
-import tv.trakt.trakt.core.discover.model.DiscoverSection.RECOMMENDED
-import tv.trakt.trakt.core.discover.model.DiscoverSection.TRENDING
+import tv.trakt.trakt.core.discover.model.DiscoverSection.Anticipated
+import tv.trakt.trakt.core.discover.model.DiscoverSection.Popular
+import tv.trakt.trakt.core.discover.model.DiscoverSection.Recommended
+import tv.trakt.trakt.core.discover.model.DiscoverSection.Trending
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularMoviesUseCase
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingMoviesUseCase
@@ -27,28 +27,28 @@ internal class GetAllDiscoverMoviesUseCase(
         filters: GlobalFilter,
     ): ImmutableList<DiscoverItem> {
         return when (source) {
-            TRENDING -> getTrendingMoviesUseCase.getMovies(
+            Trending -> getTrendingMoviesUseCase.getMovies(
                 page = page,
                 limit = DEFAULT_ALL_LIMIT,
                 skipLocal = skipLocal,
                 filters = filters,
             )
 
-            ANTICIPATED -> getAnticipatedMoviesUseCase.getMovies(
+            Anticipated -> getAnticipatedMoviesUseCase.getMovies(
                 page = page,
                 limit = DEFAULT_ALL_LIMIT,
                 skipLocal = skipLocal,
                 filters = filters,
             )
 
-            POPULAR -> getPopularMoviesUseCase.getMovies(
+            Popular -> getPopularMoviesUseCase.getMovies(
                 page = page,
                 limit = DEFAULT_ALL_LIMIT,
                 skipLocal = skipLocal,
                 filters = filters,
             )
 
-            RECOMMENDED -> getRecommendedMoviesUseCase.getMovies(
+            Recommended -> getRecommendedMoviesUseCase.getMovies(
                 limit = DEFAULT_ALL_LIMIT,
                 skipLocal = skipLocal,
                 filters = filters,
@@ -58,10 +58,10 @@ internal class GetAllDiscoverMoviesUseCase(
 
     suspend fun getLocalMovies(source: DiscoverSection): ImmutableList<DiscoverItem> {
         return when (source) {
-            TRENDING -> getTrendingMoviesUseCase.getLocalMovies()
-            ANTICIPATED -> getAnticipatedMoviesUseCase.getLocalMovies()
-            POPULAR -> getPopularMoviesUseCase.getLocalMovies()
-            RECOMMENDED -> getRecommendedMoviesUseCase.getLocalMovies()
+            Trending -> getTrendingMoviesUseCase.getLocalMovies()
+            Anticipated -> getAnticipatedMoviesUseCase.getLocalMovies()
+            Popular -> getPopularMoviesUseCase.getLocalMovies()
+            Recommended -> getRecommendedMoviesUseCase.getLocalMovies()
         }
     }
 }

@@ -129,12 +129,12 @@ internal class HomeRecommendedViewModel(
     fun hideRecommendation(show: Show) {
         viewModelScope.launch {
             try {
-                hideRecommendedShowUseCase.hideShow(show.ids.trakt)
                 itemsState.update { items ->
                     items
                         ?.filterNot { it is ShowItem && it.id == show.ids.trakt }
                         ?.toImmutableList()
                 }
+                hideRecommendedShowUseCase.hideShow(show.ids.trakt)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
@@ -146,12 +146,12 @@ internal class HomeRecommendedViewModel(
     fun hideRecommendation(movie: Movie) {
         viewModelScope.launch {
             try {
-                hideRecommendedMovieUseCase.hideMovie(movie.ids.trakt)
                 itemsState.update { items ->
                     items
                         ?.filterNot { it is MovieItem && it.id == movie.ids.trakt }
                         ?.toImmutableList()
                 }
+                hideRecommendedMovieUseCase.hideMovie(movie.ids.trakt)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
