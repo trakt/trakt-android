@@ -320,6 +320,7 @@ internal fun ShowDetailsScreen(
 
     ConfirmationSheet(
         active = confirmAddWatchedSheet,
+        holdToYes = true,
         onYes = {
             confirmAddWatchedSheet = false
             dateSheet = true
@@ -338,7 +339,6 @@ internal fun ShowDetailsScreen(
                     textDecoration = TextDecoration.Underline,
                 ),
         ),
-        holdToYes = true,
         yesText = stringResource(R.string.button_text_hold_to_confirm),
     )
 
