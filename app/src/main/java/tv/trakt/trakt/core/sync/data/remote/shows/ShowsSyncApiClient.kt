@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.sync.data.remote.shows
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.SyncApi
 import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.models.PostCheckinStartRequestOneOfOneOfEpisodeIds
@@ -18,6 +19,7 @@ import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 internal class ShowsSyncApiClient(
     private val syncApi: SyncApi,
     private val usersApi: UsersApi,
+    private val recommendationsApi: RecommendationsApi,
     private val cacheMarker: CacheMarkerProvider,
 ) : ShowsSyncRemoteDataSource {
     override suspend fun getUpNext(
@@ -166,6 +168,11 @@ internal class ShowsSyncApiClient(
             calendarAsync.await()
         }
 
+        cacheMarker.invalidate()
+    }
+
+    override suspend fun hideRecommendation(showId: TraktId) {
+        recommendationsApi.deleteRecommendationsShowsHide(id = showId.value)
         cacheMarker.invalidate()
     }
 

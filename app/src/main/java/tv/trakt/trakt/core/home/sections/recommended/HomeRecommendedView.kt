@@ -121,11 +121,15 @@ internal fun HomeRecommendedView(
 
     ShowContextSheet(
         show = contextShowSheet,
+        showRecommended = true,
+        onHideRecommendation = { viewModel.hideRecommendation(it) },
         onDismiss = { contextShowSheet = null },
     )
 
     MovieContextSheet(
         movie = contextMovieSheet,
+        showRecommended = true,
+        onHideRecommendation = { viewModel.hideRecommendation(it) },
         onDismiss = { contextMovieSheet = null },
     )
 }

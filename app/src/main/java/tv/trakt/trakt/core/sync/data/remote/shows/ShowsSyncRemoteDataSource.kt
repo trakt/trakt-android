@@ -27,6 +27,8 @@ internal interface ShowsSyncRemoteDataSource {
 
     suspend fun dropShow(showId: TraktId)
 
+    suspend fun hideRecommendation(showId: TraktId)
+
     suspend fun addToFavorites(showId: TraktId)
 
     suspend fun removeFromFavorites(showId: TraktId)

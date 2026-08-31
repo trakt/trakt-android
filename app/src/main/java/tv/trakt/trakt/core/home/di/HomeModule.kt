@@ -211,6 +211,8 @@ internal val homeModule = module {
                 customTheme -> get(named("customRecommendedMoviesUseCase"))
                 else -> get(named("defaultRecommendedMoviesUseCase"))
             },
+            hideRecommendedShowUseCase = get(),
+            hideRecommendedMovieUseCase = get(),
         )
     }
 }

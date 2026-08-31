@@ -27,11 +27,17 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaMode.Media
 import tv.trakt.trakt.common.model.MediaMode.Movies
 import tv.trakt.trakt.common.model.MediaMode.Shows
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.model.DiscoverItem
+import tv.trakt.trakt.core.discover.model.DiscoverItem.MovieItem
+import tv.trakt.trakt.core.discover.model.DiscoverItem.ShowItem
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase
+import tv.trakt.trakt.core.home.sections.recommended.usecase.HideRecommendedMovieUseCase
+import tv.trakt.trakt.core.home.sections.recommended.usecase.HideRecommendedShowUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -39,6 +45,8 @@ internal class HomeRecommendedViewModel(
     private val filterManager: GlobalFilterManager,
     private val getRecommendedShowsUseCase: GetRecommendedShowsUseCase,
     private val getRecommendedMoviesUseCase: GetRecommendedMoviesUseCase,
+    private val hideRecommendedShowUseCase: HideRecommendedShowUseCase,
+    private val hideRecommendedMovieUseCase: HideRecommendedMovieUseCase,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = HomeRecommendedState()
@@ -114,6 +122,40 @@ internal class HomeRecommendedViewModel(
                 loadingState.update { Done }
             } else {
                 loadingState.update { Loading }
+            }
+        }
+    }
+
+    fun hideRecommendation(show: Show) {
+        viewModelScope.launch {
+            try {
+                hideRecommendedShowUseCase.hideShow(show.ids.trakt)
+                itemsState.update { items ->
+                    items
+                        ?.filterNot { it is ShowItem && it.id == show.ids.trakt }
+                        ?.toImmutableList()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    fun hideRecommendation(movie: Movie) {
+        viewModelScope.launch {
+            try {
+                hideRecommendedMovieUseCase.hideMovie(movie.ids.trakt)
+                itemsState.update { items ->
+                    items
+                        ?.filterNot { it is MovieItem && it.id == movie.ids.trakt }
+                        ?.toImmutableList()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
             }
         }
     }
