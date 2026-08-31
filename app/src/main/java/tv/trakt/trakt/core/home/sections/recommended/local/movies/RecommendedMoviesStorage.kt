@@ -49,6 +49,17 @@ internal class RecommendedMoviesStorage(
         }
     }
 
+    override suspend fun removeMovie(id: TraktId) {
+        ensureInitialized()
+        mutex.withLock {
+            if (moviesCache.remove(id) != null) {
+                dataStore.edit {
+                    it[KEY_RECOMMENDED_MOVIES] = ProtoBuf.encodeToByteArray(moviesCache)
+                }
+            }
+        }
+    }
+
     override suspend fun clear() {
         ensureInitialized()
         mutex.withLock {

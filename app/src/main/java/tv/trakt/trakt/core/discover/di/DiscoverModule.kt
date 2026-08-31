@@ -110,6 +110,8 @@ internal val discoverModule = module {
                 customTheme -> get(named("customAllDiscoverMoviesUseCase"))
                 else -> get(named("defaultAllDiscoverMoviesUseCase"))
             },
+            hideRecommendedShowUseCase = get(),
+            hideRecommendedMovieUseCase = get(),
             collectionStateProvider = get(),
         )
     }

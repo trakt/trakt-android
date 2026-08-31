@@ -17,8 +17,10 @@ import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarDuration.Long
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,11 +30,13 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.MediaMode
@@ -44,6 +48,8 @@ import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.model.DiscoverItem.MovieItem
 import tv.trakt.trakt.core.discover.model.DiscoverItem.ShowItem
 import tv.trakt.trakt.core.discover.model.DiscoverSection
+import tv.trakt.trakt.core.discover.model.DiscoverSection.Recommended
+import tv.trakt.trakt.core.discover.sections.all.AllDiscoverEvent.HideError
 import tv.trakt.trakt.core.discover.ui.AllDiscoverListView
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
@@ -65,10 +71,24 @@ internal fun AllDiscoverScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    val resources = LocalResources.current
+    val snackbar = LocalSnackbarState.current
+
     var contextShowSheet by remember { mutableStateOf<Show?>(null) }
     var contextMovieSheet by remember { mutableStateOf<Movie?>(null) }
 
     var filtersSheet by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { event ->
+            when (event) {
+                HideError -> snackbar.showSnackbar(
+                    message = resources.getString(R.string.error_text_unexpected_error_short),
+                    duration = Long,
+                )
+            }
+        }
+    }
 
     AllDiscoverScreenContent(
         state = state,
@@ -101,11 +121,15 @@ internal fun AllDiscoverScreen(
 
     ShowContextSheet(
         show = contextShowSheet,
+        showRecommended = state.type == Recommended,
+        onHideRecommendation = { viewModel.hideRecommendation(it) },
         onDismiss = { contextShowSheet = null },
     )
 
     MovieContextSheet(
         movie = contextMovieSheet,
+        showRecommended = state.type == Recommended,
+        onHideRecommendation = { viewModel.hideRecommendation(it) },
         onDismiss = { contextMovieSheet = null },
     )
 

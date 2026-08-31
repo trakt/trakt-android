@@ -49,6 +49,17 @@ internal class RecommendedShowsStorage(
         }
     }
 
+    override suspend fun removeShow(id: TraktId) {
+        ensureInitialized()
+        mutex.withLock {
+            if (showsCache.remove(id) != null) {
+                dataStore.edit {
+                    it[KEY_RECOMMENDED_SHOWS] = ProtoBuf.encodeToByteArray(showsCache)
+                }
+            }
+        }
+    }
+
     override suspend fun clear() {
         ensureInitialized()
         mutex.withLock {

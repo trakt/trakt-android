@@ -9,6 +9,8 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -27,11 +29,17 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.MediaMode.Media
 import tv.trakt.trakt.common.model.MediaMode.Movies
 import tv.trakt.trakt.common.model.MediaMode.Shows
+import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.model.DiscoverItem
+import tv.trakt.trakt.core.discover.model.DiscoverItem.MovieItem
+import tv.trakt.trakt.core.discover.model.DiscoverItem.ShowItem
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase
+import tv.trakt.trakt.core.home.sections.recommended.usecase.HideRecommendedMovieUseCase
+import tv.trakt.trakt.core.home.sections.recommended.usecase.HideRecommendedShowUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
@@ -39,6 +47,8 @@ internal class HomeRecommendedViewModel(
     private val filterManager: GlobalFilterManager,
     private val getRecommendedShowsUseCase: GetRecommendedShowsUseCase,
     private val getRecommendedMoviesUseCase: GetRecommendedMoviesUseCase,
+    private val hideRecommendedShowUseCase: HideRecommendedShowUseCase,
+    private val hideRecommendedMovieUseCase: HideRecommendedMovieUseCase,
     private val collapsingManager: CollapsingManager,
 ) : ViewModel() {
     private val initialState = HomeRecommendedState()
@@ -118,6 +128,44 @@ internal class HomeRecommendedViewModel(
         }
     }
 
+    fun hideRecommendation(show: Show) {
+        viewModelScope.launch {
+            try {
+                itemsState.update { items ->
+                    items
+                        ?.filterNot { it is ShowItem && it.id == show.ids.trakt }
+                        ?.toImmutableList()
+                }
+                hideRecommendedShowUseCase.hideShow(show.ids.trakt)
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+                events.emit(HomeRecommendedEvent.HideError)
+                loadData()
+            }
+        }
+    }
+
+    fun hideRecommendation(movie: Movie) {
+        viewModelScope.launch {
+            try {
+                itemsState.update { items ->
+                    items
+                        ?.filterNot { it is MovieItem && it.id == movie.ids.trakt }
+                        ?.toImmutableList()
+                }
+                hideRecommendedMovieUseCase.hideMovie(movie.ids.trakt)
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+                events.emit(HomeRecommendedEvent.HideError)
+                loadData()
+            }
+        }
+    }
+
     fun setCollapsed(collapsed: Boolean) {
         collapseState.update { collapsed }
 
@@ -164,4 +212,7 @@ internal class HomeRecommendedViewModel(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = initialState,
     )
+
+    val events: Flow<HomeRecommendedEvent>
+        field = MutableSharedFlow<HomeRecommendedEvent>(replay = 0)
 }

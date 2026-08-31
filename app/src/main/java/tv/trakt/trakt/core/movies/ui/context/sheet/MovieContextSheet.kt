@@ -32,6 +32,8 @@ internal fun MovieContextSheet(
     ),
     movie: Movie?,
     showWatched: Boolean = true,
+    showRecommended: Boolean = false,
+    onHideRecommendation: (Movie) -> Unit = {},
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
@@ -47,6 +49,7 @@ internal fun MovieContextSheet(
             MovieContextView(
                 movie = movie,
                 showWatched = showWatched,
+                showRecommended = showRecommended,
                 viewModel = koinViewModel(
                     key = nextInt().toString(),
                     parameters = { parametersOf(movie) },
@@ -83,6 +86,17 @@ internal fun MovieContextSheet(
                         message = localRes.getString(R.string.text_info_watchlist_removed),
                     )
                 },
+                onHideRecommendation = {
+                    sheetScope.dismissWithMessage(
+                        state = state,
+                        snackHost = localSnack,
+                        onDismiss = {
+                            onHideRecommendation(movie)
+                            onDismiss()
+                        },
+                        message = null,
+                    )
+                },
                 onCheckIn = {
                     sheetScope.launch { state.hide() }
                         .invokeOnCompletion {
@@ -111,7 +125,7 @@ private fun CoroutineScope.dismissWithMessage(
     state: SheetState,
     onDismiss: () -> Unit,
     snackHost: SnackbarHostState,
-    message: String,
+    message: String?,
 ) {
     launch { state.hide() }
         .invokeOnCompletion {
@@ -119,11 +133,14 @@ private fun CoroutineScope.dismissWithMessage(
                 onDismiss()
             }
         }
-    launch {
-        val job = this@dismissWithMessage.launch {
-            snackHost.showSnackbar(message)
+
+    message?.let {
+        launch {
+            val job = this@dismissWithMessage.launch {
+                snackHost.showSnackbar(message)
+            }
+            delay(ShortSnackDuration)
+            job.cancel()
         }
-        delay(ShortSnackDuration)
-        job.cancel()
     }
 }

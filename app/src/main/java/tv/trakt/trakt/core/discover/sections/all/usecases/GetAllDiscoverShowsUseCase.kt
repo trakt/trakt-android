@@ -5,10 +5,10 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_ALL_LIMIT
 import tv.trakt.trakt.core.discover.model.DiscoverItem
 import tv.trakt.trakt.core.discover.model.DiscoverSection
-import tv.trakt.trakt.core.discover.model.DiscoverSection.ANTICIPATED
-import tv.trakt.trakt.core.discover.model.DiscoverSection.POPULAR
-import tv.trakt.trakt.core.discover.model.DiscoverSection.RECOMMENDED
-import tv.trakt.trakt.core.discover.model.DiscoverSection.TRENDING
+import tv.trakt.trakt.core.discover.model.DiscoverSection.Anticipated
+import tv.trakt.trakt.core.discover.model.DiscoverSection.Popular
+import tv.trakt.trakt.core.discover.model.DiscoverSection.Recommended
+import tv.trakt.trakt.core.discover.model.DiscoverSection.Trending
 import tv.trakt.trakt.core.discover.sections.anticipated.usecases.GetAnticipatedShowsUseCase
 import tv.trakt.trakt.core.discover.sections.popular.usecases.GetPopularShowsUseCase
 import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingShowsUseCase
@@ -27,28 +27,28 @@ internal class GetAllDiscoverShowsUseCase(
         filters: GlobalFilter,
     ): ImmutableList<DiscoverItem> {
         return when (source) {
-            TRENDING -> getTrendingShowsUseCase.getShows(
+            Trending -> getTrendingShowsUseCase.getShows(
                 page = page,
                 limit = DEFAULT_ALL_LIMIT,
                 skipLocal = skipLocal,
                 filters = filters,
             )
 
-            ANTICIPATED -> getAnticipatedShowsUseCase.getShows(
+            Anticipated -> getAnticipatedShowsUseCase.getShows(
                 page = page,
                 limit = DEFAULT_ALL_LIMIT,
                 skipLocal = skipLocal,
                 filters = filters,
             )
 
-            POPULAR -> getPopularShowsUseCase.getShows(
+            Popular -> getPopularShowsUseCase.getShows(
                 page = page,
                 limit = DEFAULT_ALL_LIMIT,
                 skipLocal = skipLocal,
                 filters = filters,
             )
 
-            RECOMMENDED -> getRecommendedShowsUseCase.getShows(
+            Recommended -> getRecommendedShowsUseCase.getShows(
                 limit = DEFAULT_ALL_LIMIT,
                 skipLocal = skipLocal,
                 filters = filters,
@@ -58,10 +58,10 @@ internal class GetAllDiscoverShowsUseCase(
 
     suspend fun getLocalShows(source: DiscoverSection): ImmutableList<DiscoverItem> {
         return when (source) {
-            TRENDING -> getTrendingShowsUseCase.getLocalShows()
-            ANTICIPATED -> getAnticipatedShowsUseCase.getLocalShows()
-            POPULAR -> getPopularShowsUseCase.getLocalShows()
-            RECOMMENDED -> getRecommendedShowsUseCase.getLocalShows()
+            Trending -> getTrendingShowsUseCase.getLocalShows()
+            Anticipated -> getAnticipatedShowsUseCase.getLocalShows()
+            Popular -> getPopularShowsUseCase.getLocalShows()
+            Recommended -> getRecommendedShowsUseCase.getLocalShows()
         }
     }
 }

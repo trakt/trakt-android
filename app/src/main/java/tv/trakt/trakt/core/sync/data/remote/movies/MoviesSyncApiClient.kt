@@ -1,6 +1,8 @@
 package tv.trakt.trakt.core.sync.data.remote.movies
 
+import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.SyncApi
+import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.models.PostCheckinStartRequestOneOf1MovieIds
 import org.openapitools.client.models.PostSyncHistoryAdd200Response
 import org.openapitools.client.models.PostSyncHistoryRemoveRequest
@@ -15,6 +17,8 @@ import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
 internal class MoviesSyncApiClient(
     private val syncApi: SyncApi,
+    private val usersApi: UsersApi,
+    private val recommendationsApi: RecommendationsApi,
     private val cacheMarker: CacheMarkerProvider,
 ) : MoviesSyncRemoteDataSource {
     override suspend fun getPlaybackProgress(
@@ -129,6 +133,11 @@ internal class MoviesSyncApiClient(
             ),
         )
         syncApi.postSyncWatchlistRemove(request)
+        cacheMarker.invalidate()
+    }
+
+    override suspend fun hideRecommendation(movieId: TraktId) {
+        recommendationsApi.deleteRecommendationsMoviesHide(id = movieId.value.toString())
         cacheMarker.invalidate()
     }
 

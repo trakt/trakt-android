@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -39,6 +40,7 @@ import tv.trakt.trakt.core.discover.sections.trending.usecases.movies.DefaultGet
 import tv.trakt.trakt.core.home.sections.recommended.local.movies.RecommendedMoviesLocalDataSource
 import tv.trakt.trakt.core.home.sections.recommended.local.movies.RecommendedMoviesStorage
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedMoviesUseCase
+import tv.trakt.trakt.core.home.sections.recommended.usecase.HideRecommendedMovieUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.movies.CustomGetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.movies.DefaultGetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.movies.data.remote.MoviesApiClient
@@ -182,6 +184,8 @@ internal val moviesModule = module {
             customThemeUseCase = get(),
         )
     }
+
+    factoryOf(::HideRecommendedMovieUseCase)
 
     viewModel { (movie: Movie) ->
         MovieContextViewModel(

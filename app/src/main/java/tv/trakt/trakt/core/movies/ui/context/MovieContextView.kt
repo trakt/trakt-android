@@ -50,10 +50,12 @@ internal fun MovieContextView(
     viewModel: MovieContextViewModel,
     modifier: Modifier = Modifier,
     showWatched: Boolean = true,
+    showRecommended: Boolean = false,
     onAddWatched: (Movie) -> Unit,
     onAddWatchlist: (Movie) -> Unit,
     onRemoveWatched: (Movie) -> Unit,
     onRemoveWatchlist: (Movie) -> Unit,
+    onHideRecommendation: (Movie) -> Unit = {},
     onCheckIn: () -> Unit,
     onError: () -> Unit,
 ) {
@@ -61,6 +63,7 @@ internal fun MovieContextView(
 
     var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
     var confirmRemoveWatchedSheet by remember { mutableStateOf(false) }
+    var confirmHideRecommendationSheet by remember { mutableStateOf(false) }
     var dateSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(
@@ -99,6 +102,7 @@ internal fun MovieContextView(
         movie = movie,
         state = state,
         showWatched = showWatched,
+        showRecommended = showRecommended,
         modifier = modifier,
         onWatchedClick = {
             when {
@@ -111,6 +115,9 @@ internal fun MovieContextView(
                 state.isWatchlist -> confirmRemoveWatchlistSheet = true
                 else -> viewModel.addToWatchlist()
             }
+        },
+        onHideRecommendationClick = {
+            confirmHideRecommendationSheet = true
         },
     )
 
@@ -142,6 +149,20 @@ internal fun MovieContextView(
         ),
     )
 
+    RemoveConfirmationSheet(
+        active = confirmHideRecommendationSheet,
+        onYes = {
+            confirmHideRecommendationSheet = false
+            onHideRecommendation(movie)
+        },
+        onNo = { confirmHideRecommendationSheet = false },
+        title = stringResource(R.string.button_text_hide_recommendation),
+        message = stringResource(
+            R.string.warning_prompt_hide_recommendation,
+            movie.title,
+        ),
+    )
+
     DateSelectionSheet(
         active = dateSheet,
         title = movie.title,
@@ -159,9 +180,11 @@ private fun MovieContextViewContent(
     movie: Movie,
     state: MovieContextState,
     showWatched: Boolean,
+    showRecommended: Boolean = false,
     modifier: Modifier = Modifier,
     onWatchedClick: () -> Unit = {},
     onWatchlistClick: () -> Unit = {},
+    onHideRecommendationClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -203,8 +226,10 @@ private fun MovieContextViewContent(
                 movie = movie,
                 state = state,
                 showWatched = showWatched,
+                showRecommended = showRecommended,
                 onWatchedClick = onWatchedClick,
                 onWatchlistClick = onWatchlistClick,
+                onHideRecommendationClick = onHideRecommendationClick,
                 modifier = Modifier
                     .padding(top = 14.dp),
             )
@@ -218,8 +243,10 @@ private fun MovieActionButtons(
     movie: Movie,
     state: MovieContextState,
     showWatched: Boolean,
+    showRecommended: Boolean,
     onWatchedClick: () -> Unit,
     onWatchlistClick: () -> Unit,
+    onHideRecommendationClick: () -> Unit,
 ) {
     val isReleased = remember { movie.isReleased }
     val isLoadingOrDone =
@@ -274,19 +301,38 @@ private fun MovieActionButtons(
         GhostButton(
             enabled = !isLoadingOrDone,
             loading = state.loadingWatchlist.isLoading || state.loadingWatchlist.isDone,
-            text = stringResource(R.string.button_text_watchlist),
+            text = when {
+                state.isWatchlist -> stringResource(R.string.button_text_remove_from_watchlist)
+                else -> stringResource(R.string.button_text_watchlist)
+            },
             onClick = onWatchlistClick,
-            iconSize = 22.dp,
-            iconSpace = 17.dp,
+            iconSize = 25.dp,
+            iconSpace = 16.dp,
             icon = when {
-                state.isWatchlist -> painterResource(R.drawable.ic_minus)
-                else -> painterResource(R.drawable.ic_plus)
+                state.isWatchlist -> painterResource(R.drawable.ic_bookmark_on)
+                else -> painterResource(R.drawable.ic_bookmark_off)
             },
             modifier = Modifier
                 .graphicsLayer {
-                    translationX = -6.dp.toPx()
+                    translationX = -8.dp.toPx()
                 },
         )
+
+        if (showRecommended) {
+            GhostButton(
+                enabled = !isLoadingOrDone,
+                loading = state.loadingWatchlist.isLoading || state.loadingWatchlist.isDone,
+                text = stringResource(R.string.button_text_hide_recommendation),
+                onClick = onHideRecommendationClick,
+                iconSize = 22.dp,
+                iconSpace = 16.dp,
+                icon = painterResource(R.drawable.ic_eye_off),
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = -6.dp.toPx()
+                    },
+            )
+        }
     }
 }
 
@@ -309,6 +355,7 @@ private fun Preview() {
                 ),
                 movie = PreviewData.movie1,
                 showWatched = true,
+                showRecommended = true,
             )
         }
     }

@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -41,6 +42,7 @@ import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
 import tv.trakt.trakt.core.home.sections.recommended.local.shows.RecommendedShowsLocalDataSource
 import tv.trakt.trakt.core.home.sections.recommended.local.shows.RecommendedShowsStorage
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase
+import tv.trakt.trakt.core.home.sections.recommended.usecase.HideRecommendedShowUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.shows.CustomGetRecommendedShowsUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.shows.DefaultGetRecommendedShowsUseCase
 import tv.trakt.trakt.core.shows.data.remote.ShowsApiClient
@@ -192,6 +194,8 @@ internal val showsModule = module {
             customThemeUseCase = get(),
         )
     }
+
+    factoryOf(::HideRecommendedShowUseCase)
 
     viewModel { (show: Show) ->
         ShowContextViewModel(
