@@ -158,6 +158,11 @@ private fun ExternalRatingsStripPreview() {
                     votes = 45_678,
                     link = "https://myanimelist.net/anime/12345",
                 ),
+                letterboxd = ExternalRating.LetterboxdRating(
+                    rating = 4.0F,
+                    votes = 12_345,
+                    link = "https://letterboxd.com/film/some-movie/",
+                ),
             ),
         )
     }
@@ -196,6 +201,11 @@ private fun ExternalRatingsStripPreview2() {
                     rating = 8.2F,
                     votes = 45_678,
                     link = "https://myanimelist.net/anime/12345",
+                ),
+                letterboxd = ExternalRating.LetterboxdRating(
+                    rating = 4.0F,
+                    votes = 12_345,
+                    link = "https://letterboxd.com/film/some-movie/",
                 ),
             ),
         )

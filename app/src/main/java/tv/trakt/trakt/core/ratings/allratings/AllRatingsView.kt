@@ -45,6 +45,7 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.ratings.allratings.ui.QualityOverTimeCard
 import tv.trakt.trakt.core.ratings.allratings.ui.QualityOverTimeSkeletonCard
 import tv.trakt.trakt.core.ratings.allratings.ui.TraktRatingCard
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -60,6 +61,7 @@ internal fun AllRatingsView(
     onImdbClick: () -> Unit = {},
     onRottenClick: (link: String) -> Unit = {},
     onMalClick: (link: String) -> Unit = {},
+    onLetterboxdClick: (link: String) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -71,6 +73,7 @@ internal fun AllRatingsView(
         onImdbClick = onImdbClick,
         onRottenClick = onRottenClick,
         onMalClick = onMalClick,
+        onLetterboxdClick = onLetterboxdClick,
         modifier = modifier,
     )
 }
@@ -85,13 +88,18 @@ private fun AllRatingsContent(
     onImdbClick: () -> Unit = {},
     onRottenClick: (link: String) -> Unit = {},
     onMalClick: (link: String) -> Unit = {},
+    onLetterboxdClick: (link: String) -> Unit = {},
 ) {
+    val lightTheme = TraktTheme.colors.isLight
+
     val tiles = buildRatingTiles(
         ratings = ratings,
         malEnabled = malEnabled,
+        lightTheme = lightTheme,
         onImdbClick = onImdbClick,
         onRottenClick = onRottenClick,
         onMalClick = onMalClick,
+        onLetterboxdClick = onLetterboxdClick,
     )
 
     Column(
@@ -195,10 +203,12 @@ private fun AllRatingsContent(
 
 private fun buildRatingTiles(
     ratings: ExternalRating,
+    lightTheme: Boolean,
     malEnabled: Boolean,
     onImdbClick: () -> Unit,
     onRottenClick: (link: String) -> Unit,
     onMalClick: (link: String) -> Unit,
+    onLetterboxdClick: (String) -> Unit,
 ): ImmutableList<RatingTileData> =
     buildList {
         ratings.imdb?.takeIf { it.rating > 0 }?.let { imdb ->
@@ -258,6 +268,20 @@ private fun buildRatingTiles(
                     iconRes = R.drawable.ic_tmdb,
                     value = tmdb.ratingString,
                     votes = tmdb.votes,
+                ),
+            )
+        }
+
+        ratings.letterboxd?.takeIf { it.rating > 0 }?.let { letterboxd ->
+            add(
+                RatingTileData(
+                    iconRes = when (lightTheme) {
+                        true -> R.drawable.ic_letterboxd_light
+                        false -> R.drawable.ic_letterboxd_dark
+                    },
+                    value = letterboxd.ratingString,
+                    votes = letterboxd.votes,
+                    onClick = letterboxd.link?.let { link -> { onLetterboxdClick(link) } },
                 ),
             )
         }
@@ -355,7 +379,7 @@ private data class RatingTileData(
 @DeviceSheetPreview
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         AllRatingsContent(
             malEnabled = true,
             seasonsLoading = false,
@@ -405,6 +429,11 @@ private fun Preview() {
                     rating = 8.4F,
                     votes = 596800,
                     link = "https://myanimelist.net/anime/12345",
+                ),
+                letterboxd = ExternalRating.LetterboxdRating(
+                    rating = 4.5F,
+                    votes = 1200,
+                    link = "https://letterboxd.com/film/example",
                 ),
                 trakt = ExternalRating.TraktRating(
                     rating = 8.5F,

@@ -168,6 +168,16 @@ internal fun DetailsHeader(
                 )
             }
         },
+        onLetterboxdClick = { link ->
+            if (link.isNotBlank()) {
+                openExternalAppLink(
+                    context = context,
+                    packageId = "com.letterboxd.letterboxd",
+                    packageName = "letterboxd",
+                    uri = link.toUri(),
+                )
+            }
+        },
         modifier = modifier,
     )
 }

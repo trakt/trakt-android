@@ -123,6 +123,7 @@ internal fun DetailsHeader(
         onImdbClick = {},
         onRottenClick = {},
         onMalClick = {},
+        onLetterboxdClick = {},
         modifier = modifier,
     )
 }

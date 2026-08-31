@@ -105,6 +105,7 @@ internal fun DetailsHeader(
     extraRightColumn: @Composable (() -> Unit)? = null,
     onImdbClick: () -> Unit,
     onMalClick: (link: String) -> Unit,
+    onLetterboxdClick: (link: String) -> Unit,
     onRottenClick: (link: String) -> Unit,
     onShareClick: () -> Unit,
     onShareImageClick: () -> Unit,
@@ -330,6 +331,7 @@ internal fun DetailsHeader(
                     onImdbClick = onImdbClick,
                     onRottenClick = onRottenClick,
                     onMalClick = onMalClick,
+                    onLetterboxdClick = onLetterboxdClick,
                     onDismiss = {
                         allRatingsVisible = false
                     },
@@ -550,6 +552,11 @@ private fun Preview() {
                     votes = 7890,
                     link = "https://myanimelist.net/anime/12345",
                 ),
+                letterboxd = ExternalRating.LetterboxdRating(
+                    rating = 4.5F,
+                    votes = 1234,
+                    link = "https://letterboxd.com/film/example/",
+                ),
             ),
             onShareClick = {},
             onShareImageClick = {},
@@ -557,6 +564,7 @@ private fun Preview() {
             onImdbClick = {},
             onMalClick = {},
             onRottenClick = {},
+            onLetterboxdClick = {},
             onInfoClick = {},
         )
     }
@@ -638,12 +646,18 @@ private fun Preview2() {
                     votes = 7890,
                     link = "https://myanimelist.net/anime/12345",
                 ),
+                letterboxd = ExternalRating.LetterboxdRating(
+                    rating = 4.5F,
+                    votes = 1234,
+                    link = "https://letterboxd.com/film/example/",
+                ),
             ),
             onShareClick = {},
             onShareImageClick = {},
             onBackClick = {},
             onImdbClick = {},
             onMalClick = {},
+            onLetterboxdClick = {},
             onRottenClick = {},
             onInfoClick = {},
         )

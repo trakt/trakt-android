@@ -14,6 +14,7 @@ internal class GetEpisodeRatingsUseCase(
     ): ExternalRating {
         val ratings = remoteSource.getExternalRatings(showId, season, episode)
         return ExternalRating(
+            trakt = ratings.trakt?.let(ExternalRating.TraktRating::fromDto),
             imdb = ExternalRating.ImdbRating(
                 rating = ratings.imdb?.rating ?: 0F,
                 votes = ratings.imdb?.votes ?: 0,
@@ -36,7 +37,7 @@ internal class GetEpisodeRatingsUseCase(
                 link = ratings.tmdb?.link,
             ),
             mal = null,
-            trakt = ratings.trakt?.let(ExternalRating.TraktRating::fromDto),
+            letterboxd = null,
         )
     }
 }

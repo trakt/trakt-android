@@ -305,6 +305,11 @@ private fun Preview() {
                     votes = 7890,
                     link = "https://myanimelist.net/anime/12345",
                 ),
+                letterboxd = ExternalRating.LetterboxdRating(
+                    rating = 4.5F,
+                    votes = 1234,
+                    link = "https://letterboxd.com/film/example/",
+                ),
             )
 
             DetailsRatings(

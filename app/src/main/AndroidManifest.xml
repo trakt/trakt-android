@@ -243,6 +243,7 @@
     <package android:name="com.justwatch.justwatch" />
     <package android:name="com.rottentomatoes.android" />
     <package android:name="net.myanimelist.app" />
+    <package android:name="com.letterboxd.letterboxd" />
 
     <!-- Misc. -->
     <package android:name="com.google.android.apps.translate" />

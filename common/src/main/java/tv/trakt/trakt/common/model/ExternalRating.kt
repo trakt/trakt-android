@@ -16,6 +16,7 @@ data class ExternalRating(
     val meta: MetaRating?,
     val rotten: RottenRating?,
     val mal: MalRating?,
+    val letterboxd: LetterboxdRating?,
 ) {
     @Immutable
     data class TraktRating(
@@ -110,6 +111,15 @@ data class ExternalRating(
 
     @Immutable
     data class MalRating(
+        val rating: Float,
+        val votes: Int,
+        val link: String?,
+    ) {
+        val ratingString: String
+            get() = String.format(Locale.ROOT, "%.1f", rating)
+    }
+
+    data class LetterboxdRating(
         val rating: Float,
         val votes: Int,
         val link: String?,

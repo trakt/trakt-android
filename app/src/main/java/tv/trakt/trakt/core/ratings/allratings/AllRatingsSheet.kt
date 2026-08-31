@@ -32,6 +32,7 @@ internal fun AllRatingsSheet(
     onImdbClick: () -> Unit = {},
     onRottenClick: (link: String) -> Unit = {},
     onMalClick: (link: String) -> Unit = {},
+    onLetterboxdClick: (link: String) -> Unit = {},
     onDismiss: () -> Unit,
 ) {
     val viewModelKey = remember(visible) {
@@ -52,6 +53,7 @@ internal fun AllRatingsSheet(
                 onImdbClick = onImdbClick,
                 onRottenClick = onRottenClick,
                 onMalClick = onMalClick,
+                onLetterboxdClick = onLetterboxdClick,
                 modifier = Modifier
                     .padding(horizontal = 24.dp)
                     .padding(top = 8.dp, bottom = 12.dp),

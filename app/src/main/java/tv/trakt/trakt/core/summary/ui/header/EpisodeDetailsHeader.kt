@@ -211,6 +211,7 @@ internal fun DetailsHeader(
         },
         onMalClick = {},
         onRottenClick = {},
+        onLetterboxdClick = {},
         modifier = modifier,
     )
 }

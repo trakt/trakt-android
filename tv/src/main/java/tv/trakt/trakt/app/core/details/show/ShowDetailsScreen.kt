@@ -629,6 +629,11 @@ private fun MainScreenPreview() {
                         votes = 45_678,
                         link = "https://myanimelist.net/anime/12345",
                     ),
+                    letterboxd = ExternalRating.LetterboxdRating(
+                        rating = 3.5F,
+                        votes = 12_345,
+                        link = "https://letterboxd.com/film/some-film/",
+                    ),
                 ),
                 showVideos = listOf(
                     ExtraVideo(

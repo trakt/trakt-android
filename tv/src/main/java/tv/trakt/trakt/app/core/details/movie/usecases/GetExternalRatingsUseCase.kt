@@ -37,6 +37,11 @@ internal class GetExternalRatingsUseCase(
                 votes = ratings.mal?.votes ?: 0,
                 link = ratings.mal?.link,
             ),
+            letterboxd = ExternalRating.LetterboxdRating(
+                rating = ratings.letterboxd?.rating ?: 0F,
+                votes = ratings.letterboxd?.votes ?: 0,
+                link = ratings.letterboxd?.link,
+            ),
         )
     }
 }

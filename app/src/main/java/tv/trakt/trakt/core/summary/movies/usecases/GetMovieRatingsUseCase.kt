@@ -11,6 +11,7 @@ internal class GetMovieRatingsUseCase(
     suspend fun getExternalRatings(movieId: TraktId): ExternalRating {
         val ratings = remoteSource.getExternalRatings(movieId)
         return ExternalRating(
+            trakt = ratings.trakt?.let(TraktRating::fromDto),
             imdb = ExternalRating.ImdbRating(
                 rating = ratings.imdb?.rating ?: 0F,
                 votes = ratings.imdb?.votes ?: 0,
@@ -37,7 +38,11 @@ internal class GetMovieRatingsUseCase(
                 votes = ratings.mal?.votes ?: 0,
                 link = ratings.mal?.link,
             ),
-            trakt = ratings.trakt?.let(TraktRating::fromDto),
+            letterboxd = ExternalRating.LetterboxdRating(
+                rating = ratings.letterboxd?.rating ?: 0F,
+                votes = ratings.letterboxd?.votes ?: 0,
+                link = ratings.letterboxd?.link,
+            ),
         )
     }
 }

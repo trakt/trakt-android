@@ -42,6 +42,7 @@ internal class GetExternalRatingsUseCase(
                 link = ratings.tmdb?.link,
             ),
             mal = null,
+            letterboxd = null,
         )
     }
 }
