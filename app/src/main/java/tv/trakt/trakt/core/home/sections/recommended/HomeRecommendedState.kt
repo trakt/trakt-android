@@ -14,3 +14,7 @@ internal data class HomeRecommendedState(
     val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
 )
+
+internal sealed interface HomeRecommendedEvent {
+    data object HideError : HomeRecommendedEvent
+}

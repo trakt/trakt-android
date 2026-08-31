@@ -8,6 +8,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -287,6 +289,8 @@ internal class AllDiscoverViewModel(
                 error.rethrowCancellation {
                     Timber.recordError(error)
                 }
+                events.emit(AllDiscoverEvent.HideError)
+                loadData()
             }
         }
     }
@@ -304,6 +308,8 @@ internal class AllDiscoverViewModel(
                 error.rethrowCancellation {
                     Timber.recordError(error)
                 }
+                events.emit(AllDiscoverEvent.HideError)
+                loadData()
             }
         }
     }
@@ -338,4 +344,7 @@ internal class AllDiscoverViewModel(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = initialState,
     )
+
+    val events: Flow<AllDiscoverEvent>
+        field = MutableSharedFlow<AllDiscoverEvent>(replay = 0)
 }

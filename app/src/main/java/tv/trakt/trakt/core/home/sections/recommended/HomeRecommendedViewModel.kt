@@ -9,6 +9,8 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -139,6 +141,8 @@ internal class HomeRecommendedViewModel(
                 error.rethrowCancellation {
                     Timber.recordError(error)
                 }
+                events.emit(HomeRecommendedEvent.HideError)
+                loadData()
             }
         }
     }
@@ -156,6 +160,8 @@ internal class HomeRecommendedViewModel(
                 error.rethrowCancellation {
                     Timber.recordError(error)
                 }
+                events.emit(HomeRecommendedEvent.HideError)
+                loadData()
             }
         }
     }
@@ -206,4 +212,7 @@ internal class HomeRecommendedViewModel(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = initialState,
     )
+
+    val events: Flow<HomeRecommendedEvent>
+        field = MutableSharedFlow<HomeRecommendedEvent>(replay = 0)
 }

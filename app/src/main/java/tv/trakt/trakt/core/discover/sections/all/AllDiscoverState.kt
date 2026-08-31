@@ -20,3 +20,7 @@ internal data class AllDiscoverState(
     val loadingMore: LoadingState = LoadingState.Idle,
     val error: Exception? = null,
 )
+
+internal sealed interface AllDiscoverEvent {
+    data object HideError : AllDiscoverEvent
+}
