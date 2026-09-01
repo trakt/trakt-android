@@ -23,8 +23,8 @@ import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.data.local.social.HomeSocialLocalDataSource
-import tv.trakt.trakt.core.home.sections.recommended.local.movies.RecommendedMoviesLocalDataSource
-import tv.trakt.trakt.core.home.sections.recommended.local.shows.RecommendedShowsLocalDataSource
+import tv.trakt.trakt.core.home.sections.recommended.data.movies.RecommendedMoviesLocalDataSource
+import tv.trakt.trakt.core.home.sections.recommended.data.shows.RecommendedShowsLocalDataSource
 import tv.trakt.trakt.core.home.sections.upcoming.data.local.HomeUpcomingLocalDataSource
 import tv.trakt.trakt.core.home.sections.upnext.data.local.HomeUpNextLocalDataSource
 import tv.trakt.trakt.core.lists.sections.collaborations.data.local.lists.ListsCollaborationsLocalDataSource

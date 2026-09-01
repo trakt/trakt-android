@@ -60,13 +60,12 @@ import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaMode.Media
-import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.recommended.HomeRecommendedEvent.HideError
 import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
 import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem.MovieItem
 import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem.ShowItem
+import tv.trakt.trakt.core.home.sections.recommended.whythis.WhyThisSheet
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
@@ -93,8 +92,9 @@ internal fun HomeRecommendedView(
     val resources = LocalResources.current
     val snackbar = LocalSnackbarState.current
 
-    var contextShowSheet by remember { mutableStateOf<Show?>(null) }
-    var contextMovieSheet by remember { mutableStateOf<Movie?>(null) }
+    var contextShowSheet by remember { mutableStateOf<ShowItem?>(null) }
+    var contextMovieSheet by remember { mutableStateOf<MovieItem?>(null) }
+    var whyThisItem by remember { mutableStateOf<RecommendedItem?>(null) }
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
@@ -131,24 +131,37 @@ internal fun HomeRecommendedView(
                 return@HomeRecommendedContent
             }
             when (it) {
-                is ShowItem -> contextShowSheet = it.show
-                is MovieItem -> contextMovieSheet = it.movie
+                is ShowItem -> contextShowSheet = it
+                is MovieItem -> contextMovieSheet = it
             }
         },
     )
 
     ShowContextSheet(
-        show = contextShowSheet,
+        show = contextShowSheet?.show,
         showRecommended = true,
         onHideRecommendation = { viewModel.hideRecommendation(it) },
+        onWhyThis = {
+            whyThisItem = contextShowSheet
+                ?.takeIf { it.sources.isNotEmpty() }
+        },
         onDismiss = { contextShowSheet = null },
     )
 
     MovieContextSheet(
-        movie = contextMovieSheet,
+        movie = contextMovieSheet?.movie,
         showRecommended = true,
         onHideRecommendation = { viewModel.hideRecommendation(it) },
+        onWhyThis = {
+            whyThisItem = contextMovieSheet
+                ?.takeIf { it.sources.isNotEmpty() }
+        },
         onDismiss = { contextMovieSheet = null },
+    )
+
+    WhyThisSheet(
+        item = whyThisItem,
+        onDismiss = { whyThisItem = null },
     )
 }
 

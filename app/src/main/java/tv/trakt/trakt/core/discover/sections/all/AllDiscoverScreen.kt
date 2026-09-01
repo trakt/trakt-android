@@ -40,8 +40,6 @@ import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.MediaMode
-import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.model.DiscoverItem
@@ -53,6 +51,8 @@ import tv.trakt.trakt.core.discover.sections.all.AllDiscoverEvent.HideError
 import tv.trakt.trakt.core.discover.ui.AllDiscoverListView
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.filters.navigation.GlobalFiltersOptions
+import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
+import tv.trakt.trakt.core.home.sections.recommended.whythis.WhyThisSheet
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
 import tv.trakt.trakt.helpers.SimpleScrollConnection
@@ -74,8 +74,9 @@ internal fun AllDiscoverScreen(
     val resources = LocalResources.current
     val snackbar = LocalSnackbarState.current
 
-    var contextShowSheet by remember { mutableStateOf<Show?>(null) }
-    var contextMovieSheet by remember { mutableStateOf<Movie?>(null) }
+    var contextShowSheet by remember { mutableStateOf<ShowItem?>(null) }
+    var contextMovieSheet by remember { mutableStateOf<MovieItem?>(null) }
+    var whyThisItem by remember { mutableStateOf<RecommendedItem?>(null) }
 
     var filtersSheet by remember { mutableStateOf(false) }
 
@@ -104,8 +105,8 @@ internal fun AllDiscoverScreen(
                 return@AllDiscoverScreenContent
             }
             when (it) {
-                is ShowItem -> contextShowSheet = it.show
-                is MovieItem -> contextMovieSheet = it.movie
+                is ShowItem -> contextShowSheet = it
+                is MovieItem -> contextMovieSheet = it
             }
         },
         onModeClick = { mode ->
@@ -120,17 +121,32 @@ internal fun AllDiscoverScreen(
     )
 
     ShowContextSheet(
-        show = contextShowSheet,
+        show = contextShowSheet?.show,
         showRecommended = state.type == Recommended,
         onHideRecommendation = { viewModel.hideRecommendation(it) },
+        onWhyThis = {
+            whyThisItem = contextShowSheet
+                ?.takeIf { it.sources.isNotEmpty() }
+                ?.let { RecommendedItem.ShowItem(show = it.show, sources = it.sources) }
+        },
         onDismiss = { contextShowSheet = null },
     )
 
     MovieContextSheet(
-        movie = contextMovieSheet,
+        movie = contextMovieSheet?.movie,
         showRecommended = state.type == Recommended,
         onHideRecommendation = { viewModel.hideRecommendation(it) },
+        onWhyThis = {
+            whyThisItem = contextMovieSheet
+                ?.takeIf { it.sources.isNotEmpty() }
+                ?.let { RecommendedItem.MovieItem(movie = it.movie, sources = it.sources) }
+        },
         onDismiss = { contextMovieSheet = null },
+    )
+
+    WhyThisSheet(
+        item = whyThisItem,
+        onDismiss = { whyThisItem = null },
     )
 
     GlobalFiltersSheet(

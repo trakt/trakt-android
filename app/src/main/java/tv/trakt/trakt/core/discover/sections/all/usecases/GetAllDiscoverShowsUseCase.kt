@@ -69,4 +69,4 @@ internal class GetAllDiscoverShowsUseCase(
 }
 
 private fun List<RecommendedItem.ShowItem>.toDiscoverItems(): ImmutableList<DiscoverItem> =
-    map { DiscoverItem.ShowItem(show = it.show) }.toImmutableList()
+    map { DiscoverItem.ShowItem(show = it.show, sources = it.sources) }.toImmutableList()

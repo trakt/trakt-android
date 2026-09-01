@@ -60,6 +60,7 @@ internal fun ShowContextView(
     onRemoveWatched: (Show) -> Unit,
     onRemoveWatchlist: (Show) -> Unit,
     onHideRecommendation: (Show) -> Unit,
+    onWhyThis: () -> Unit,
     onError: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -110,6 +111,7 @@ internal fun ShowContextView(
         onHideRecommendationClick = {
             confirmHideRecommendationSheet = true
         },
+        onWhyThisClick = onWhyThis,
         modifier = modifier,
     )
 
@@ -199,6 +201,7 @@ private fun ShowContextViewContent(
     onWatchedClick: () -> Unit = {},
     onWatchlistClick: () -> Unit = {},
     onHideRecommendationClick: () -> Unit = {},
+    onWhyThisClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -244,6 +247,7 @@ private fun ShowContextViewContent(
                 onWatchedClick = onWatchedClick,
                 onWatchlistClick = onWatchlistClick,
                 onHideRecommendationClick = onHideRecommendationClick,
+                onWhyThisClick = onWhyThisClick,
                 modifier = Modifier
                     .padding(top = 14.dp),
             )
@@ -261,6 +265,7 @@ private fun ShowActionButtons(
     onWatchedClick: () -> Unit,
     onWatchlistClick: () -> Unit,
     onHideRecommendationClick: () -> Unit,
+    onWhyThisClick: () -> Unit,
 ) {
     val isReleased = show.rememberReleased()
 
@@ -274,6 +279,21 @@ private fun ShowActionButtons(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
         modifier = modifier,
     ) {
+        if (showRecommended) {
+            GhostButton(
+                enabled = !isLoadingOrDone,
+                text = stringResource(R.string.button_text_view_recommendation_sources),
+                onClick = onWhyThisClick,
+                iconSize = 22.dp,
+                iconSpace = 16.dp,
+                icon = painterResource(R.drawable.ic_discover_on),
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = -6.dp.toPx()
+                    },
+            )
+        }
+
         if (isReleased && showWatched) {
             if (state.isWatched) {
                 GhostButton(

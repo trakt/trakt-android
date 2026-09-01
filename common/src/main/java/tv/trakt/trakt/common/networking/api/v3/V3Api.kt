@@ -88,18 +88,14 @@ class V3Api(
 
     // Recommendations
 
-    suspend fun getMovieRecommendations(
-        request: V3RecommendationsRequest,
-    ): List<V3MovieRecommendationResponse> {
+    suspend fun getMovieRecommendations(request: V3RecommendationsRequest): List<V3MovieRecommendationResponse> {
         val response = client.get("${baseUrl}movies/recommendations") {
             applyRecommendationsRequest(request)
         }
         return response.body()
     }
 
-    suspend fun getShowRecommendations(
-        request: V3RecommendationsRequest,
-    ): List<V3ShowRecommendationResponse> {
+    suspend fun getShowRecommendations(request: V3RecommendationsRequest): List<V3ShowRecommendationResponse> {
         val response = client.get("${baseUrl}shows/recommendations") {
             applyRecommendationsRequest(request)
         }

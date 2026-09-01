@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalSerializationApi::class)
 
-package tv.trakt.trakt.core.home.sections.recommended.local.shows
+package tv.trakt.trakt.core.home.sections.recommended.data.shows
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

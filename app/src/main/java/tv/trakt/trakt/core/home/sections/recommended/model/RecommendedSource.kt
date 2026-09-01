@@ -47,6 +47,14 @@ internal data class RecommendedSource(
     )
 
     companion object {
+        /**
+         * Merges distinct subgenres across sources, keeping their order.
+         */
+        fun List<RecommendedSource>.mergedSubgenres(): ImmutableList<Subgenre> =
+            flatMap { it.subgenres }
+                .distinctBy { it.slug }
+                .toImmutableList()
+
         fun fromDto(dto: V3RecommendationSource): RecommendedSource =
             RecommendedSource(
                 type = Type.fromValue(dto.type),

@@ -55,7 +55,8 @@ internal fun MovieContextView(
     onAddWatchlist: (Movie) -> Unit,
     onRemoveWatched: (Movie) -> Unit,
     onRemoveWatchlist: (Movie) -> Unit,
-    onHideRecommendation: (Movie) -> Unit = {},
+    onHideRecommendation: (Movie) -> Unit,
+    onWhyThis: () -> Unit,
     onCheckIn: () -> Unit,
     onError: () -> Unit,
 ) {
@@ -119,6 +120,7 @@ internal fun MovieContextView(
         onHideRecommendationClick = {
             confirmHideRecommendationSheet = true
         },
+        onWhyThisClick = onWhyThis,
     )
 
     RemoveConfirmationSheet(
@@ -177,14 +179,15 @@ internal fun MovieContextView(
 
 @Composable
 private fun MovieContextViewContent(
+    modifier: Modifier = Modifier,
     movie: Movie,
     state: MovieContextState,
     showWatched: Boolean,
     showRecommended: Boolean = false,
-    modifier: Modifier = Modifier,
     onWatchedClick: () -> Unit = {},
     onWatchlistClick: () -> Unit = {},
     onHideRecommendationClick: () -> Unit = {},
+    onWhyThisClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -230,6 +233,7 @@ private fun MovieContextViewContent(
                 onWatchedClick = onWatchedClick,
                 onWatchlistClick = onWatchlistClick,
                 onHideRecommendationClick = onHideRecommendationClick,
+                onWhyThisClick = onWhyThisClick,
                 modifier = Modifier
                     .padding(top = 14.dp),
             )
@@ -247,6 +251,7 @@ private fun MovieActionButtons(
     onWatchedClick: () -> Unit,
     onWatchlistClick: () -> Unit,
     onHideRecommendationClick: () -> Unit,
+    onWhyThisClick: () -> Unit,
 ) {
     val isReleased = remember { movie.isReleased }
     val isLoadingOrDone =
@@ -261,6 +266,21 @@ private fun MovieActionButtons(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
         modifier = modifier,
     ) {
+        if (showRecommended) {
+            GhostButton(
+                enabled = !isLoadingOrDone,
+                text = stringResource(R.string.button_text_view_recommendation_sources),
+                onClick = onWhyThisClick,
+                iconSize = 22.dp,
+                iconSpace = 16.dp,
+                icon = painterResource(R.drawable.ic_discover_on),
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = -6.dp.toPx()
+                    },
+            )
+        }
+
         if (isReleased && showWatched) {
             if (state.isWatched) {
                 GhostButton(

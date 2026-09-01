@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.home.sections.recommended.local.shows
+package tv.trakt.trakt.core.home.sections.recommended.data.shows
 
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem

@@ -8,7 +8,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
-import tv.trakt.trakt.core.home.sections.recommended.local.shows.RecommendedShowsLocalDataSource
+import tv.trakt.trakt.core.home.sections.recommended.data.shows.RecommendedShowsLocalDataSource
 import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
 import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedSource
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase

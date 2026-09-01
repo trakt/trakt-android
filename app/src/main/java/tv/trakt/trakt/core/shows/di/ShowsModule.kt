@@ -39,8 +39,8 @@ import tv.trakt.trakt.core.discover.sections.trending.usecases.GetTrendingShowsU
 import tv.trakt.trakt.core.discover.sections.trending.usecases.shows.DefaultGetTrendingShowsUseCase
 import tv.trakt.trakt.core.episodes.data.remote.EpisodesApiClient
 import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
-import tv.trakt.trakt.core.home.sections.recommended.local.shows.RecommendedShowsLocalDataSource
-import tv.trakt.trakt.core.home.sections.recommended.local.shows.RecommendedShowsStorage
+import tv.trakt.trakt.core.home.sections.recommended.data.shows.RecommendedShowsLocalDataSource
+import tv.trakt.trakt.core.home.sections.recommended.data.shows.RecommendedShowsStorage
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.HideRecommendedShowUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.shows.CustomGetRecommendedShowsUseCase

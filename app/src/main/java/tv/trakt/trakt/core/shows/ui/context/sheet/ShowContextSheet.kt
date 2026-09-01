@@ -34,6 +34,7 @@ internal fun ShowContextSheet(
     showWatched: Boolean = true,
     showRecommended: Boolean = false,
     onHideRecommendation: (Show) -> Unit = {},
+    onWhyThis: () -> Unit = {},
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
@@ -97,6 +98,7 @@ internal fun ShowContextSheet(
                         message = null,
                     )
                 },
+                onWhyThis = { onWhyThis() },
                 onError = {
                     sheetScope.dismissWithMessage(
                         state = state,
