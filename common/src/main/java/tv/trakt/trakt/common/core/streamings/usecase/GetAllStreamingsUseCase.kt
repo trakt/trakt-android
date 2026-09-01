@@ -37,11 +37,9 @@ class GetAllStreamingsUseCase(
     ): ImmutableList<AllStreamingsSection> {
         localStreamingSource.cacheSourcesIfNeeded(remoteStreamingSource)
 
-        val userCountry = user.streamings?.country ?: DEFAULT_COUNTRY_CODE
-
         // Ex. input favorite source: "pl-hbo_max", "us-netflix"
         val favoriteSources = user.streamings?.favorites
-            ?.map { it.substringAfter("-") }
+            ?.map { it.substringBefore("-") to it.substringAfter("-") }
             ?.toSet()
             .orEmpty()
 
@@ -54,14 +52,14 @@ class GetAllStreamingsUseCase(
             streamings = streamings,
             sources = sources,
             favoriteSources = favoriteSources,
-            userCountry = userCountry,
+            userCountry = user.streamings?.country ?: DEFAULT_COUNTRY_CODE,
         )
     }
 
     private fun groupStreamings(
         streamings: Map<String, StreamingDto>,
         sources: Map<String, StreamingSource>,
-        favoriteSources: Set<String>,
+        favoriteSources: Set<Pair<String, String>>,
         userCountry: String,
     ): ImmutableList<AllStreamingsSection> {
         val resultMap = mapOf(
@@ -86,14 +84,17 @@ class GetAllStreamingsUseCase(
                         return@mapNotNull null
                     }
 
-                    subscription.toStreamingService(
-                        country = country,
-                        source = source,
-                    ).also {
-                        if (source.source in favoriteSources) {
-                            favorite.add(it)
+                    subscription
+                        .toStreamingService(
+                            country = country,
+                            source = source,
+                        ).also { service ->
+                            favoriteSources.firstOrNull {
+                                it.first == country && it.second == subscription.source
+                            }?.let {
+                                favorite.add(service)
+                            }
                         }
-                    }
                 },
             )
 
@@ -107,9 +108,11 @@ class GetAllStreamingsUseCase(
                     freeService.toStreamingService(
                         country = country,
                         source = source,
-                    ).also {
-                        if (source.source in favoriteSources) {
-                            favorite.add(it)
+                    ).also { service ->
+                        favoriteSources.firstOrNull {
+                            it.first == country && it.second == freeService.source
+                        }?.let {
+                            favorite.add(service)
                         }
                     }
                 },
@@ -129,10 +132,14 @@ class GetAllStreamingsUseCase(
                 if (!it.prices.purchase.isNullOrBlank()) {
                     purchase.add(service)
                 }
+
                 if (!it.prices.rent.isNullOrBlank()) {
                     rent.add(service)
                 }
-                if (it.source in favoriteSources) {
+
+                favoriteSources.firstOrNull { source ->
+                    source.first == country && source.second == service.source
+                }?.let {
                     favorite.add(service)
                 }
             }
