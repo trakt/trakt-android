@@ -278,7 +278,7 @@ private fun MovieActionButtons(
                 onClick = onWhyThisClick,
                 iconSize = 22.dp,
                 iconSpace = 16.dp,
-                icon = painterResource(R.drawable.ic_discover_on),
+                icon = painterResource(R.drawable.ic_discover_off),
                 modifier = Modifier
                     .graphicsLayer {
                         translationX = -6.dp.toPx()
