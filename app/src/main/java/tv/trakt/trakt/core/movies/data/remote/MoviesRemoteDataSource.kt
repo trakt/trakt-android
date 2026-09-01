@@ -10,7 +10,7 @@ import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.MovieCalendarDto
 import tv.trakt.trakt.common.networking.MovieStatsDto
-import tv.trakt.trakt.common.networking.RecommendedMovieDto
+import tv.trakt.trakt.common.networking.api.v3.model.V3MovieRecommendationResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
 import tv.trakt.trakt.core.movies.data.remote.model.AnticipatedMovieDto
 import tv.trakt.trakt.core.movies.data.remote.model.TrendingMovieDto
@@ -33,7 +33,7 @@ internal interface MoviesRemoteDataSource {
     suspend fun getRecommended(
         limit: Int,
         filters: GlobalFilter,
-    ): List<RecommendedMovieDto>
+    ): List<V3MovieRecommendationResponse>
 
     suspend fun getAnticipated(
         page: Int = 1,

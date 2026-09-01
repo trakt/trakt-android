@@ -1,7 +1,7 @@
 package tv.trakt.trakt.core.home.sections.recommended.usecase
 
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.home.sections.recommended.local.movies.RecommendedMoviesLocalDataSource
+import tv.trakt.trakt.core.home.sections.recommended.data.movies.RecommendedMoviesLocalDataSource
 import tv.trakt.trakt.core.sync.data.remote.movies.MoviesSyncRemoteDataSource
 
 internal class HideRecommendedMovieUseCase(

@@ -60,13 +60,12 @@ import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.MediaMode.Media
-import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.discover.model.DiscoverItem
-import tv.trakt.trakt.core.discover.model.DiscoverItem.MovieItem
-import tv.trakt.trakt.core.discover.model.DiscoverItem.ShowItem
 import tv.trakt.trakt.core.home.sections.recommended.HomeRecommendedEvent.HideError
+import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
+import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem.MovieItem
+import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem.ShowItem
+import tv.trakt.trakt.core.home.sections.recommended.whythis.WhyThisSheet
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
@@ -93,8 +92,9 @@ internal fun HomeRecommendedView(
     val resources = LocalResources.current
     val snackbar = LocalSnackbarState.current
 
-    var contextShowSheet by remember { mutableStateOf<Show?>(null) }
-    var contextMovieSheet by remember { mutableStateOf<Movie?>(null) }
+    var contextShowSheet by remember { mutableStateOf<ShowItem?>(null) }
+    var contextMovieSheet by remember { mutableStateOf<MovieItem?>(null) }
+    var whyThisItem by remember { mutableStateOf<RecommendedItem?>(null) }
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
@@ -131,24 +131,33 @@ internal fun HomeRecommendedView(
                 return@HomeRecommendedContent
             }
             when (it) {
-                is ShowItem -> contextShowSheet = it.show
-                is MovieItem -> contextMovieSheet = it.movie
+                is ShowItem -> contextShowSheet = it
+                is MovieItem -> contextMovieSheet = it
             }
         },
     )
 
     ShowContextSheet(
-        show = contextShowSheet,
+        show = contextShowSheet?.show,
         showRecommended = true,
+        showWhyThis = contextShowSheet?.sources?.isNotEmpty() == true,
         onHideRecommendation = { viewModel.hideRecommendation(it) },
+        onWhyThis = { whyThisItem = contextShowSheet },
         onDismiss = { contextShowSheet = null },
     )
 
     MovieContextSheet(
-        movie = contextMovieSheet,
+        movie = contextMovieSheet?.movie,
         showRecommended = true,
+        showWhyThis = contextMovieSheet?.sources?.isNotEmpty() == true,
         onHideRecommendation = { viewModel.hideRecommendation(it) },
+        onWhyThis = { whyThisItem = contextMovieSheet },
         onDismiss = { contextMovieSheet = null },
+    )
+
+    WhyThisSheet(
+        item = whyThisItem,
+        onDismiss = { whyThisItem = null },
     )
 }
 
@@ -159,8 +168,8 @@ internal fun HomeRecommendedContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onClick: (DiscoverItem) -> Unit = {},
-    onLongClick: (DiscoverItem) -> Unit = {},
+    onClick: (RecommendedItem) -> Unit = {},
+    onLongClick: (RecommendedItem) -> Unit = {},
     onMoreClick: () -> Unit = {},
     onEmptyClick: () -> Unit = {},
     onCollapse: (collapsed: Boolean) -> Unit = {},
@@ -290,10 +299,10 @@ private fun ContentList(
     mode: MediaMode?,
     collection: UserCollectionState,
     listState: LazyListState = rememberLazyListState(),
-    listItems: ImmutableList<DiscoverItem>,
+    listItems: ImmutableList<RecommendedItem>,
     contentPadding: PaddingValues,
-    onClick: (DiscoverItem) -> Unit,
-    onLongClick: (DiscoverItem) -> Unit,
+    onClick: (RecommendedItem) -> Unit,
+    onLongClick: (RecommendedItem) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -334,7 +343,7 @@ private fun ContentList(
 
 @Composable
 private fun ContentListItem(
-    item: DiscoverItem,
+    item: RecommendedItem,
     mode: MediaMode?,
     watched: Boolean,
     watching: Boolean,

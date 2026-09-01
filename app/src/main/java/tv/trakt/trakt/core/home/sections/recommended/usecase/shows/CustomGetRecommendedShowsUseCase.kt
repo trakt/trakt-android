@@ -8,8 +8,9 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
-import tv.trakt.trakt.core.discover.model.DiscoverItem
-import tv.trakt.trakt.core.home.sections.recommended.local.shows.RecommendedShowsLocalDataSource
+import tv.trakt.trakt.core.home.sections.recommended.data.shows.RecommendedShowsLocalDataSource
+import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
+import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedSource
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
@@ -20,7 +21,7 @@ internal class CustomGetRecommendedShowsUseCase(
     private val localShowSource: ShowLocalDataSource,
     private val customThemeUseCase: CustomThemeUseCase,
 ) : GetRecommendedShowsUseCase {
-    override suspend fun getLocalShows(): ImmutableList<DiscoverItem.ShowItem> {
+    override suspend fun getLocalShows(): ImmutableList<RecommendedItem.ShowItem> {
         return localRecommendedSource.getShows()
             .toImmutableList()
             .also { items ->
@@ -33,15 +34,15 @@ internal class CustomGetRecommendedShowsUseCase(
         limit: Int,
         skipLocal: Boolean,
         filters: GlobalFilter,
-    ): ImmutableList<DiscoverItem.ShowItem> {
+    ): ImmutableList<RecommendedItem.ShowItem> {
         return remoteSource.getRecommended(
             limit = limit,
             filters = filters,
         )
-            .asyncMap {
-                DiscoverItem.ShowItem(
-                    show = Show.fromDto(it),
-                    count = 0, // No ranking for recommended shows
+            .asyncMap { entry ->
+                RecommendedItem.ShowItem(
+                    show = Show.fromDto(entry.show),
+                    sources = entry.sources.orEmpty().map { RecommendedSource.fromDto(it) }.toImmutableList(),
                 )
             }
             .toImmutableList()

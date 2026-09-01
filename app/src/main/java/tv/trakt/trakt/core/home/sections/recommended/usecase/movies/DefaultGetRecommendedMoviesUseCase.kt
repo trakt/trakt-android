@@ -8,8 +8,9 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
-import tv.trakt.trakt.core.discover.model.DiscoverItem
-import tv.trakt.trakt.core.home.sections.recommended.local.movies.RecommendedMoviesLocalDataSource
+import tv.trakt.trakt.core.home.sections.recommended.data.movies.RecommendedMoviesLocalDataSource
+import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
+import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedSource
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
 
@@ -18,7 +19,7 @@ internal class DefaultGetRecommendedMoviesUseCase(
     private val localRecommendedSource: RecommendedMoviesLocalDataSource,
     private val localMovieSource: MovieLocalDataSource,
 ) : GetRecommendedMoviesUseCase {
-    override suspend fun getLocalMovies(): ImmutableList<DiscoverItem.MovieItem> {
+    override suspend fun getLocalMovies(): ImmutableList<RecommendedItem.MovieItem> {
         return localRecommendedSource.getMovies()
             .toImmutableList()
             .also {
@@ -32,12 +33,14 @@ internal class DefaultGetRecommendedMoviesUseCase(
         limit: Int,
         skipLocal: Boolean,
         filters: GlobalFilter,
-    ): ImmutableList<DiscoverItem.MovieItem> {
+    ): ImmutableList<RecommendedItem.MovieItem> {
         return remoteSource.getRecommended(limit = limit, filters = filters)
-            .asyncMap {
-                DiscoverItem.MovieItem(
-                    movie = Movie.fromDto(it),
-                    count = 0,
+            .asyncMap { entry ->
+                RecommendedItem.MovieItem(
+                    movie = Movie.fromDto(entry.movie),
+                    sources = entry.sources.orEmpty()
+                        .map { RecommendedSource.fromDto(it) }
+                        .toImmutableList(),
                 )
             }
             .toImmutableList()

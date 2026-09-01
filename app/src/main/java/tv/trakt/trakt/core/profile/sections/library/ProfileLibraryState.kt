@@ -5,7 +5,7 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.core.library.LibraryItem
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.library.model.LibraryFilter
+import tv.trakt.trakt.core.profile.sections.library.model.LibraryFilter
 
 @Immutable
 internal data class ProfileLibraryState(

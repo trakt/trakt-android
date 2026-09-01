@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardDefaults.cardColors
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -68,6 +69,11 @@ internal fun VerticalMediaCard(
     modifier: Modifier = Modifier,
     width: Dp = Dp.Unspecified,
     corner: Dp = 15.dp,
+    elevation: CardElevation = CardDefaults.cardElevation(
+        defaultElevation = TraktTheme.colors.shadowDynamicSmall,
+        pressedElevation = TraktTheme.colors.shadowDynamicSmall,
+        disabledElevation = TraktTheme.colors.shadowDynamicSmall,
+    ),
     enabled: Boolean = true,
     more: Boolean = true,
     blackWhite: Boolean = false,
@@ -121,11 +127,7 @@ internal fun VerticalMediaCard(
                     .fillMaxWidth()
                     .aspectRatio(VerticalImageAspectRatio),
                 shape = RoundedCornerShape(corner),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = TraktTheme.colors.shadowDynamicSmall,
-                    pressedElevation = TraktTheme.colors.shadowDynamicSmall,
-                    disabledElevation = TraktTheme.colors.shadowDynamicSmall,
-                ),
+                elevation = elevation,
                 colors = cardColors(
                     containerColor = TraktTheme.colors.placeholderContainer,
                 ),

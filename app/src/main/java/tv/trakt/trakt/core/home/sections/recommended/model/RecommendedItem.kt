@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.discover.model
+package tv.trakt.trakt.core.home.sections.recommended.model
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
@@ -10,32 +10,28 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedSource
 import tv.trakt.trakt.resources.R
 
 @Immutable
 @Serializable
-internal sealed class DiscoverItem {
-    abstract val count: Int
+internal sealed class RecommendedItem {
     abstract val sources: ImmutableList<RecommendedSource>
 
     @Immutable
     @Serializable
     internal data class MovieItem(
         val movie: Movie,
-        override val count: Int = 0,
         @Serializable(ImmutableListSerializer::class)
         override val sources: ImmutableList<RecommendedSource> = persistentListOf(),
-    ) : DiscoverItem()
+    ) : RecommendedItem()
 
     @Immutable
     @Serializable
     internal data class ShowItem(
         val show: Show,
-        override val count: Int = 0,
         @Serializable(ImmutableListSerializer::class)
         override val sources: ImmutableList<RecommendedSource> = persistentListOf(),
-    ) : DiscoverItem()
+    ) : RecommendedItem()
 
     val type: MediaType
         get() = when (this) {

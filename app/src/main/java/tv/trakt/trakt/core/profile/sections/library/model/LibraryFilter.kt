@@ -1,4 +1,4 @@
-package tv.trakt.trakt.core.library.model
+package tv.trakt.trakt.core.profile.sections.library.model
 
 import androidx.annotation.StringRes
 import tv.trakt.trakt.resources.R

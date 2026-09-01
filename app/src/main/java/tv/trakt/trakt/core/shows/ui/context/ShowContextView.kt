@@ -55,11 +55,13 @@ internal fun ShowContextView(
     modifier: Modifier = Modifier,
     showWatched: Boolean,
     showRecommended: Boolean,
+    showWhyThis: Boolean,
     onAddWatched: (Show) -> Unit,
     onAddWatchlist: (Show) -> Unit,
     onRemoveWatched: (Show) -> Unit,
     onRemoveWatchlist: (Show) -> Unit,
     onHideRecommendation: (Show) -> Unit,
+    onWhyThis: () -> Unit,
     onError: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -95,6 +97,7 @@ internal fun ShowContextView(
         state = state,
         showWatched = showWatched,
         showRecommended = showRecommended,
+                showWhyThis = showWhyThis,
         onWatchedClick = {
             when {
                 state.isWatched -> confirmRemoveWatchedSheet = true
@@ -110,6 +113,7 @@ internal fun ShowContextView(
         onHideRecommendationClick = {
             confirmHideRecommendationSheet = true
         },
+        onWhyThisClick = onWhyThis,
         modifier = modifier,
     )
 
@@ -195,10 +199,12 @@ private fun ShowContextViewContent(
     state: ShowContextState,
     showWatched: Boolean,
     showRecommended: Boolean,
+    showWhyThis: Boolean,
     modifier: Modifier = Modifier,
     onWatchedClick: () -> Unit = {},
     onWatchlistClick: () -> Unit = {},
     onHideRecommendationClick: () -> Unit = {},
+    onWhyThisClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp),
@@ -241,9 +247,11 @@ private fun ShowContextViewContent(
                 state = state,
                 showWatched = showWatched,
                 showRecommended = showRecommended,
+                showWhyThis = showWhyThis,
                 onWatchedClick = onWatchedClick,
                 onWatchlistClick = onWatchlistClick,
                 onHideRecommendationClick = onHideRecommendationClick,
+                onWhyThisClick = onWhyThisClick,
                 modifier = Modifier
                     .padding(top = 14.dp),
             )
@@ -258,9 +266,11 @@ private fun ShowActionButtons(
     state: ShowContextState,
     showWatched: Boolean,
     showRecommended: Boolean,
+    showWhyThis: Boolean,
     onWatchedClick: () -> Unit,
     onWatchlistClick: () -> Unit,
     onHideRecommendationClick: () -> Unit,
+    onWhyThisClick: () -> Unit,
 ) {
     val isReleased = show.rememberReleased()
 
@@ -274,6 +284,21 @@ private fun ShowActionButtons(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
         modifier = modifier,
     ) {
+        if (showRecommended && showWhyThis) {
+            GhostButton(
+                enabled = !isLoadingOrDone,
+                text = stringResource(R.string.button_text_view_recommendation_sources),
+                onClick = onWhyThisClick,
+                iconSize = 22.dp,
+                iconSpace = 16.dp,
+                icon = painterResource(R.drawable.ic_discover_on),
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = -6.dp.toPx()
+                    },
+            )
+        }
+
         if (isReleased && showWatched) {
             if (state.isWatched) {
                 GhostButton(
@@ -365,6 +390,7 @@ private fun Preview() {
                 show = PreviewData.show1,
                 showWatched = true,
                 showRecommended = true,
+                showWhyThis = true,
             )
         }
     }
