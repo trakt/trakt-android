@@ -105,7 +105,7 @@ internal fun MovieContextView(
         state = state,
         showWatched = showWatched,
         showRecommended = showRecommended,
-                showWhyThis = showWhyThis,
+        showWhyThis = showWhyThis,
         modifier = modifier,
         onWatchedClick = {
             when {

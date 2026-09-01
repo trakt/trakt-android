@@ -97,7 +97,7 @@ internal fun ShowContextView(
         state = state,
         showWatched = showWatched,
         showRecommended = showRecommended,
-                showWhyThis = showWhyThis,
+        showWhyThis = showWhyThis,
         onWatchedClick = {
             when {
                 state.isWatched -> confirmRemoveWatchedSheet = true
