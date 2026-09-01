@@ -140,22 +140,18 @@ internal fun HomeRecommendedView(
     ShowContextSheet(
         show = contextShowSheet?.show,
         showRecommended = true,
+        showWhyThis = contextShowSheet?.sources?.isNotEmpty() == true,
         onHideRecommendation = { viewModel.hideRecommendation(it) },
-        onWhyThis = {
-            whyThisItem = contextShowSheet
-                ?.takeIf { it.sources.isNotEmpty() }
-        },
+        onWhyThis = { whyThisItem = contextShowSheet },
         onDismiss = { contextShowSheet = null },
     )
 
     MovieContextSheet(
         movie = contextMovieSheet?.movie,
         showRecommended = true,
+        showWhyThis = contextMovieSheet?.sources?.isNotEmpty() == true,
         onHideRecommendation = { viewModel.hideRecommendation(it) },
-        onWhyThis = {
-            whyThisItem = contextMovieSheet
-                ?.takeIf { it.sources.isNotEmpty() }
-        },
+        onWhyThis = { whyThisItem = contextMovieSheet },
         onDismiss = { contextMovieSheet = null },
     )
 

@@ -55,6 +55,7 @@ internal fun ShowContextView(
     modifier: Modifier = Modifier,
     showWatched: Boolean,
     showRecommended: Boolean,
+    showWhyThis: Boolean,
     onAddWatched: (Show) -> Unit,
     onAddWatchlist: (Show) -> Unit,
     onRemoveWatched: (Show) -> Unit,
@@ -96,6 +97,7 @@ internal fun ShowContextView(
         state = state,
         showWatched = showWatched,
         showRecommended = showRecommended,
+                showWhyThis = showWhyThis,
         onWatchedClick = {
             when {
                 state.isWatched -> confirmRemoveWatchedSheet = true
@@ -197,6 +199,7 @@ private fun ShowContextViewContent(
     state: ShowContextState,
     showWatched: Boolean,
     showRecommended: Boolean,
+    showWhyThis: Boolean,
     modifier: Modifier = Modifier,
     onWatchedClick: () -> Unit = {},
     onWatchlistClick: () -> Unit = {},
@@ -244,6 +247,7 @@ private fun ShowContextViewContent(
                 state = state,
                 showWatched = showWatched,
                 showRecommended = showRecommended,
+                showWhyThis = showWhyThis,
                 onWatchedClick = onWatchedClick,
                 onWatchlistClick = onWatchlistClick,
                 onHideRecommendationClick = onHideRecommendationClick,
@@ -262,6 +266,7 @@ private fun ShowActionButtons(
     state: ShowContextState,
     showWatched: Boolean,
     showRecommended: Boolean,
+    showWhyThis: Boolean,
     onWatchedClick: () -> Unit,
     onWatchlistClick: () -> Unit,
     onHideRecommendationClick: () -> Unit,
@@ -279,7 +284,7 @@ private fun ShowActionButtons(
         verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
         modifier = modifier,
     ) {
-        if (showRecommended) {
+        if (showRecommended && showWhyThis) {
             GhostButton(
                 enabled = !isLoadingOrDone,
                 text = stringResource(R.string.button_text_view_recommendation_sources),
@@ -385,6 +390,7 @@ private fun Preview() {
                 show = PreviewData.show1,
                 showWatched = true,
                 showRecommended = true,
+                showWhyThis = true,
             )
         }
     }

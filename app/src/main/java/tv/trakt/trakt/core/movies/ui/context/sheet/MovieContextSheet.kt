@@ -33,6 +33,7 @@ internal fun MovieContextSheet(
     movie: Movie?,
     showWatched: Boolean = true,
     showRecommended: Boolean = false,
+    showWhyThis: Boolean = false,
     onHideRecommendation: (Movie) -> Unit = {},
     onWhyThis: () -> Unit = {},
     onDismiss: () -> Unit,
@@ -51,6 +52,7 @@ internal fun MovieContextSheet(
                 movie = movie,
                 showWatched = showWatched,
                 showRecommended = showRecommended,
+                showWhyThis = showWhyThis,
                 viewModel = koinViewModel(
                     key = nextInt().toString(),
                     parameters = { parametersOf(movie) },
