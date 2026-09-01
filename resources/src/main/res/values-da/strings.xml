@@ -259,7 +259,9 @@
   <string name="button_label_toggle_genre">Skift %s genre</string>
   <string name="button_label_toggle_search_lists">Søg efter lister</string>
   <string name="button_label_toggle_search_media">Søg efter medier</string>
+  <string name="button_label_toggle_search_movies">Søg efter film</string>
   <string name="button_label_toggle_search_people">Søg efter personer</string>
+  <string name="button_label_toggle_search_shows">Søg efter serier</string>
   <string name="button_label_toggle_streaming_countries">Skift lande for %s</string>
   <string name="button_label_trivia_category_filter">Filtrer trivia efter kategori</string>
   <string name="button_label_trivia_no_spoilers">Ingen spoilere</string>
@@ -1323,6 +1325,8 @@
   <string name="tag_text_most_popular">Mest populær</string>
   <string name="tag_text_movies">Film</string>
   <string name="tag_text_new">Ny</string>
+  <string name="tag_text_new_finale">Ny Finale</string>
+  <string name="tag_text_new_premiere">Ny Premiere</string>
   <string name="tag_text_new_preview_feature">Ny</string>
   <string name="tag_text_number_of_episodes">%d afsnit</string>
   <string name="tag_text_play">%d visning</string>
@@ -1403,6 +1407,8 @@
   <string name="text_connection_status_connected_title">Forbundet til %s</string>
   <string name="text_connection_status_error_message">Noget gik galt. Prøv venligst igen.</string>
   <string name="text_connection_status_error_title">Kunne ikke oprette forbindelse til %s</string>
+  <string name="text_connection_status_expired_message">Din session er udløbet. Prøv at oprette forbindelse til %s igen.</string>
+  <string name="text_connection_status_expired_title">Forbindelsen udløb</string>
   <string name="text_copyright_crafted_by">Håndlavet rundt om i verden.</string>
   <string name="text_copyright_notice">Alle rettigheder forbeholdes.</string>
   <string name="text_created_by">Skabt af <a>%s</a></string>

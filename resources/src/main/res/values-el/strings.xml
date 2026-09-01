@@ -259,7 +259,9 @@
   <string name="button_label_toggle_genre">Εναλλαγή του είδους %s</string>
   <string name="button_label_toggle_search_lists">Αναζήτηση λιστών</string>
   <string name="button_label_toggle_search_media">Αναζήτηση μέσων</string>
+  <string name="button_label_toggle_search_movies">Αναζήτηση ταινιών</string>
   <string name="button_label_toggle_search_people">Αναζήτηση ανθρώπων</string>
+  <string name="button_label_toggle_search_shows">Αναζήτηση σειρών</string>
   <string name="button_label_toggle_streaming_countries">Εναλλαγή χωρών για %s</string>
   <string name="button_label_trivia_category_filter">Φιλτράρισμα trivia ανά κατηγορία</string>
   <string name="button_label_trivia_no_spoilers">Χωρίς spoilers</string>
@@ -1323,6 +1325,8 @@
   <string name="tag_text_most_popular">Πιο δημοφιλές</string>
   <string name="tag_text_movies">Ταινίες</string>
   <string name="tag_text_new">Νέο</string>
+  <string name="tag_text_new_finale">Νέο Φινάλε</string>
+  <string name="tag_text_new_premiere">Νέα Πρεμιέρα</string>
   <string name="tag_text_new_preview_feature">Νέο</string>
   <string name="tag_text_number_of_episodes">%d επ.</string>
   <string name="tag_text_play">%d προβολή</string>
@@ -1403,6 +1407,8 @@
   <string name="text_connection_status_connected_title">Συνδεδεμένο με %s</string>
   <string name="text_connection_status_error_message">Κάτι πήγε στραβά. Παρακαλούμε δοκιμάστε ξανά.</string>
   <string name="text_connection_status_error_title">Δεν ήταν δυνατή η σύνδεση %s</string>
+  <string name="text_connection_status_expired_message">Η συνεδρία σας έληξε. Δοκιμάστε να συνδέσετε ξανά το %s.</string>
+  <string name="text_connection_status_expired_title">Η σύνδεση έληξε</string>
   <string name="text_copyright_crafted_by">Φτιαγμένο με μεράκι σε όλο τον κόσμο.</string>
   <string name="text_copyright_notice">Με την επιφύλαξη παντός δικαιώματος.</string>
   <string name="text_created_by">Δημιουργήθηκε από <a>%s</a></string>

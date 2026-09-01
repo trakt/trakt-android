@@ -259,7 +259,9 @@
   <string name="button_label_toggle_genre">切换 %s 类型</string>
   <string name="button_label_toggle_search_lists">搜索列表</string>
   <string name="button_label_toggle_search_media">搜索媒体</string>
+  <string name="button_label_toggle_search_movies">搜索电影</string>
   <string name="button_label_toggle_search_people">搜索人物</string>
+  <string name="button_label_toggle_search_shows">搜索节目</string>
   <string name="button_label_toggle_streaming_countries">切换%s的国家/地区</string>
   <string name="button_label_trivia_category_filter">按类别筛选花絮</string>
   <string name="button_label_trivia_no_spoilers">无剧透</string>
@@ -1323,6 +1325,8 @@
   <string name="tag_text_most_popular">最受欢迎</string>
   <string name="tag_text_movies">电影</string>
   <string name="tag_text_new">新</string>
+  <string name="tag_text_new_finale">新完结</string>
+  <string name="tag_text_new_premiere">新首播</string>
   <string name="tag_text_new_preview_feature">新</string>
   <string name="tag_text_number_of_episodes">%d 集</string>
   <string name="tag_text_play">%d 次播放</string>
@@ -1403,6 +1407,8 @@
   <string name="text_connection_status_connected_title">已连接到 %s</string>
   <string name="text_connection_status_error_message">发生了一些错误。请重试。</string>
   <string name="text_connection_status_error_title">无法连接 %s</string>
+  <string name="text_connection_status_expired_message">您的会话已过期。请尝试重新连接 %s。</string>
+  <string name="text_connection_status_expired_title">连接超时</string>
   <string name="text_copyright_crafted_by">全球匠心打造.</string>
   <string name="text_copyright_notice">版权所有。</string>
   <string name="text_created_by">创作者：<a>%s</a></string>

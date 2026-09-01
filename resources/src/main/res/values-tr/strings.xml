@@ -259,7 +259,9 @@
   <string name="button_label_toggle_genre">%s türünü aç/kapat</string>
   <string name="button_label_toggle_search_lists">Listelerde ara</string>
   <string name="button_label_toggle_search_media">Medya ara</string>
+  <string name="button_label_toggle_search_movies">Filmleri ara</string>
   <string name="button_label_toggle_search_people">Kişi ara</string>
+  <string name="button_label_toggle_search_shows">Dizileri ara</string>
   <string name="button_label_toggle_streaming_countries">%s için ülkeleri aç/kapat</string>
   <string name="button_label_trivia_category_filter">Kategoriye göre trivia filtrele</string>
   <string name="button_label_trivia_no_spoilers">Spoiler yok</string>
@@ -1323,6 +1325,8 @@
   <string name="tag_text_most_popular">En popüler</string>
   <string name="tag_text_movies">Filmler</string>
   <string name="tag_text_new">Yeni</string>
+  <string name="tag_text_new_finale">Yeni Final</string>
+  <string name="tag_text_new_premiere">Yeni Prömiyer</string>
   <string name="tag_text_new_preview_feature">Yeni</string>
   <string name="tag_text_number_of_episodes">%d böl.</string>
   <string name="tag_text_play">%d oynatma</string>
@@ -1403,6 +1407,8 @@
   <string name="text_connection_status_connected_title">%s ile bağlantı kuruldu</string>
   <string name="text_connection_status_error_message">Bir şeyler ters gitti. Lütfen tekrar deneyin.</string>
   <string name="text_connection_status_error_title">%s bağlanılamadı</string>
+  <string name="text_connection_status_expired_message">Oturumunuzun süresi doldu. %s bağlantısını tekrar deneyin.</string>
+  <string name="text_connection_status_expired_title">Bağlantı zaman aşımına uğradı</string>
   <string name="text_copyright_crafted_by">Dünyanın dört bir yanında özenle hazırlandı.</string>
   <string name="text_copyright_notice">Tüm hakları saklıdır.</string>
   <string name="text_created_by">Yaratan: <a>%s</a></string>

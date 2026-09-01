@@ -259,7 +259,9 @@
   <string name="button_label_toggle_genre">Attiva/disattiva il genere %s</string>
   <string name="button_label_toggle_search_lists">Cerca liste</string>
   <string name="button_label_toggle_search_media">Cerca media</string>
+  <string name="button_label_toggle_search_movies">Cerca film</string>
   <string name="button_label_toggle_search_people">Cerca persone</string>
+  <string name="button_label_toggle_search_shows">Cerca serie TV</string>
   <string name="button_label_toggle_streaming_countries">Attiva/disattiva i paesi per %s</string>
   <string name="button_label_trivia_category_filter">Filtra curiosità per categoria</string>
   <string name="button_label_trivia_no_spoilers">Senza spoiler</string>
@@ -1323,6 +1325,8 @@
   <string name="tag_text_most_popular">Più popolare</string>
   <string name="tag_text_movies">Film</string>
   <string name="tag_text_new">Nuovo</string>
+  <string name="tag_text_new_finale">Nuovo Finale</string>
+  <string name="tag_text_new_premiere">Nuova Première</string>
   <string name="tag_text_new_preview_feature">Nuovo</string>
   <string name="tag_text_number_of_episodes">%d ep.</string>
   <string name="tag_text_play">%d riproduzione</string>
@@ -1403,6 +1407,8 @@
   <string name="text_connection_status_connected_title">Connesso a %s</string>
   <string name="text_connection_status_error_message">Qualcosa è andato storto. Riprova.</string>
   <string name="text_connection_status_error_title">Impossibile connettere %s</string>
+  <string name="text_connection_status_expired_message">La tua sessione è scaduta. Prova a connettere %s di nuovo.</string>
+  <string name="text_connection_status_expired_title">Connessione scaduta</string>
   <string name="text_copyright_crafted_by">Realizzato con cura in tutto il mondo.</string>
   <string name="text_copyright_notice">Tutti i diritti riservati.</string>
   <string name="text_created_by">Creato da <a>%s</a></string>

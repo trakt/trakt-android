@@ -259,7 +259,9 @@
   <string name="button_label_toggle_genre">A(z) %s műfaj kapcsolása</string>
   <string name="button_label_toggle_search_lists">Listák keresése</string>
   <string name="button_label_toggle_search_media">Média keresése</string>
+  <string name="button_label_toggle_search_movies">Filmek keresése</string>
   <string name="button_label_toggle_search_people">Személyek keresése</string>
+  <string name="button_label_toggle_search_shows">Műsorok keresése</string>
   <string name="button_label_toggle_streaming_countries">Országok ki/be kapcsolása ehhez: %s</string>
   <string name="button_label_trivia_category_filter">Szűrje az érdekességeket kategória szerint</string>
   <string name="button_label_trivia_no_spoilers">Spoiler nélkül</string>
@@ -1323,6 +1325,8 @@
   <string name="tag_text_most_popular">Legnépszerűbb</string>
   <string name="tag_text_movies">Filmek</string>
   <string name="tag_text_new">Új</string>
+  <string name="tag_text_new_finale">Új finálé</string>
+  <string name="tag_text_new_premiere">Új premier</string>
   <string name="tag_text_new_preview_feature">Új</string>
   <string name="tag_text_number_of_episodes">%d epizód</string>
   <string name="tag_text_play">%d lejátszás</string>
@@ -1403,6 +1407,8 @@
   <string name="text_connection_status_connected_title">Csatlakoztatva a(z) %s szolgáltatáshoz</string>
   <string name="text_connection_status_error_message">Valami hiba történt. Kérjük, próbálja újra.</string>
   <string name="text_connection_status_error_title">Nem sikerült csatlakozni a(z) %s szolgáltatáshoz</string>
+  <string name="text_connection_status_expired_message">A munkamenet lejárt. Próbálja újra csatlakoztatni a %s szolgáltatást.</string>
+  <string name="text_connection_status_expired_title">Kapcsolat időtúllépés</string>
   <string name="text_copyright_crafted_by">K\nTézzel k\nTész\nült vil\nTág szerte.</string>
   <string name="text_copyright_notice">Minden jog fenntartva.</string>
   <string name="text_created_by">Készítette: <a>%s</a></string>

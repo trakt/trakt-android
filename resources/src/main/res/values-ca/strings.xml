@@ -259,7 +259,9 @@
   <string name="button_label_toggle_genre">Activa/desactiva el gènere %s</string>
   <string name="button_label_toggle_search_lists">Cerca llistes</string>
   <string name="button_label_toggle_search_media">Cerca contingut multimèdia</string>
+  <string name="button_label_toggle_search_movies">Cerca pel·lícules</string>
   <string name="button_label_toggle_search_people">Cerca persones</string>
+  <string name="button_label_toggle_search_shows">Cerca sèries</string>
   <string name="button_label_toggle_streaming_countries">Alternar països per a %s</string>
   <string name="button_label_trivia_category_filter">Filtrar curiositats per categoria</string>
   <string name="button_label_trivia_no_spoilers">Sense spoilers</string>
@@ -1323,6 +1325,8 @@
   <string name="tag_text_most_popular">Més popular</string>
   <string name="tag_text_movies">Pel·lícules</string>
   <string name="tag_text_new">Nou</string>
+  <string name="tag_text_new_finale">Nou Final</string>
+  <string name="tag_text_new_premiere">Nova Estrena</string>
   <string name="tag_text_new_preview_feature">Nou</string>
   <string name="tag_text_number_of_episodes">%d ep.</string>
   <string name="tag_text_play">%d reproducció</string>
@@ -1403,6 +1407,8 @@
   <string name="text_connection_status_connected_title">Connectat a %s</string>
   <string name="text_connection_status_error_message">Alguna cosa ha anat malament. Si us plau, torna a intentar-ho.</string>
   <string name="text_connection_status_error_title">No s\'ha pogut connectar %s</string>
+  <string name="text_connection_status_expired_message">La teva sessió ha caducat. Intenta connectar %s de nou.</string>
+  <string name="text_connection_status_expired_title">Connexió esgotada</string>
   <string name="text_copyright_crafted_by">Fet a mà arreu del món.</string>
   <string name="text_copyright_notice">Tots els drets reservats.</string>
   <string name="text_created_by">Creada per <a>%s</a></string>
