@@ -32,10 +32,10 @@ import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
-import tv.trakt.trakt.core.discover.model.DiscoverItem
-import tv.trakt.trakt.core.discover.model.DiscoverItem.MovieItem
-import tv.trakt.trakt.core.discover.model.DiscoverItem.ShowItem
 import tv.trakt.trakt.core.filters.data.GlobalFilterManager
+import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
+import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem.MovieItem
+import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem.ShowItem
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedMoviesUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.core.home.sections.recommended.usecase.HideRecommendedMovieUseCase
@@ -201,7 +201,7 @@ internal class HomeRecommendedViewModel(
         errorState,
     ) { state ->
         HomeRecommendedState(
-            items = state[0] as ImmutableList<DiscoverItem>?,
+            items = state[0] as ImmutableList<RecommendedItem>?,
             filter = state[1] as GlobalFilter?,
             collapsed = state[2] as Boolean,
             loading = state[3] as LoadingState,

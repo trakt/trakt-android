@@ -16,7 +16,7 @@ import kotlinx.serialization.encodeToByteArray
 import kotlinx.serialization.protobuf.ProtoBuf
 import timber.log.Timber
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.discover.model.DiscoverItem
+import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
 
 private val KEY_RECOMMENDED_SHOWS = byteArrayPreferencesKey("key_recommended_shows")
 
@@ -26,9 +26,9 @@ internal class RecommendedShowsStorage(
     private val mutex = Mutex()
     private var isInitialized = false
 
-    private val showsCache = mutableMapOf<TraktId, DiscoverItem.ShowItem>()
+    private val showsCache = mutableMapOf<TraktId, RecommendedItem.ShowItem>()
 
-    override suspend fun setShows(shows: List<DiscoverItem.ShowItem>) {
+    override suspend fun setShows(shows: List<RecommendedItem.ShowItem>) {
         ensureInitialized()
         mutex.withLock {
             with(showsCache) {
@@ -42,7 +42,7 @@ internal class RecommendedShowsStorage(
         }
     }
 
-    override suspend fun getShows(): List<DiscoverItem.ShowItem> {
+    override suspend fun getShows(): List<RecommendedItem.ShowItem> {
         ensureInitialized()
         return mutex.withLock {
             showsCache.values.toList()

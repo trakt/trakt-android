@@ -63,10 +63,10 @@ import tv.trakt.trakt.common.model.MediaMode.Media
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.discover.model.DiscoverItem
-import tv.trakt.trakt.core.discover.model.DiscoverItem.MovieItem
-import tv.trakt.trakt.core.discover.model.DiscoverItem.ShowItem
 import tv.trakt.trakt.core.home.sections.recommended.HomeRecommendedEvent.HideError
+import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
+import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem.MovieItem
+import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem.ShowItem
 import tv.trakt.trakt.core.home.views.HomeEmptyView
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.shows.ui.context.sheet.ShowContextSheet
@@ -159,8 +159,8 @@ internal fun HomeRecommendedContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
-    onClick: (DiscoverItem) -> Unit = {},
-    onLongClick: (DiscoverItem) -> Unit = {},
+    onClick: (RecommendedItem) -> Unit = {},
+    onLongClick: (RecommendedItem) -> Unit = {},
     onMoreClick: () -> Unit = {},
     onEmptyClick: () -> Unit = {},
     onCollapse: (collapsed: Boolean) -> Unit = {},
@@ -290,10 +290,10 @@ private fun ContentList(
     mode: MediaMode?,
     collection: UserCollectionState,
     listState: LazyListState = rememberLazyListState(),
-    listItems: ImmutableList<DiscoverItem>,
+    listItems: ImmutableList<RecommendedItem>,
     contentPadding: PaddingValues,
-    onClick: (DiscoverItem) -> Unit,
-    onLongClick: (DiscoverItem) -> Unit,
+    onClick: (RecommendedItem) -> Unit,
+    onLongClick: (RecommendedItem) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -334,7 +334,7 @@ private fun ContentList(
 
 @Composable
 private fun ContentListItem(
-    item: DiscoverItem,
+    item: RecommendedItem,
     mode: MediaMode?,
     watched: Boolean,
     watching: Boolean,
