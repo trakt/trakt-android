@@ -259,7 +259,9 @@
   <string name="button_label_toggle_genre">Alihkan genre %s</string>
   <string name="button_label_toggle_search_lists">Cari daftar</string>
   <string name="button_label_toggle_search_media">Cari media</string>
+  <string name="button_label_toggle_search_movies">Cari film</string>
   <string name="button_label_toggle_search_people">Cari orang</string>
+  <string name="button_label_toggle_search_shows">Cari acara TV</string>
   <string name="button_label_toggle_streaming_countries">Alihkan negara untuk %s</string>
   <string name="button_label_trivia_category_filter">Filter trivia berdasarkan kategori</string>
   <string name="button_label_trivia_no_spoilers">Tanpa spoiler</string>
@@ -1323,6 +1325,8 @@
   <string name="tag_text_most_popular">Paling populer</string>
   <string name="tag_text_movies">Film</string>
   <string name="tag_text_new">Baru</string>
+  <string name="tag_text_new_finale">Finale Baru</string>
+  <string name="tag_text_new_premiere">Premiere Baru</string>
   <string name="tag_text_new_preview_feature">Baru</string>
   <string name="tag_text_number_of_episodes">%d episode.</string>
   <string name="tag_text_play">%d putar</string>
@@ -1403,6 +1407,8 @@
   <string name="text_connection_status_connected_title">Terhubung ke %s</string>
   <string name="text_connection_status_error_message">Terjadi kesalahan. Harap coba lagi.</string>
   <string name="text_connection_status_error_title">Tidak dapat menghubungkan %s</string>
+  <string name="text_connection_status_expired_message">Sesi Anda telah berakhir. Coba sambungkan %s lagi.</string>
+  <string name="text_connection_status_expired_title">Waktu koneksi habis</string>
   <string name="text_copyright_crafted_by">Dibuat dengan tangan di seluruh dunia.</string>
   <string name="text_copyright_notice">Semua hak dilindungi.</string>
   <string name="text_created_by">Dibuat oleh <a>%s</a></string>

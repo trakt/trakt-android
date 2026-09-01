@@ -259,7 +259,9 @@
   <string name="button_label_toggle_genre">Переключить жанр %s</string>
   <string name="button_label_toggle_search_lists">Поиск списков</string>
   <string name="button_label_toggle_search_media">Поиск медиа</string>
+  <string name="button_label_toggle_search_movies">Поиск фильмов</string>
   <string name="button_label_toggle_search_people">Поиск людей</string>
+  <string name="button_label_toggle_search_shows">Поиск сериалов</string>
   <string name="button_label_toggle_streaming_countries">Переключить страны для %s</string>
   <string name="button_label_trivia_category_filter">Фильтровать мелочи по категории</string>
   <string name="button_label_trivia_no_spoilers">Без спойлеров</string>
@@ -1323,6 +1325,8 @@
   <string name="tag_text_most_popular">Самые популярные</string>
   <string name="tag_text_movies">Фильмы</string>
   <string name="tag_text_new">Новое</string>
+  <string name="tag_text_new_finale">Новый финал</string>
+  <string name="tag_text_new_premiere">Новая премьера</string>
   <string name="tag_text_new_preview_feature">Новое</string>
   <string name="tag_text_number_of_episodes">%d эп.</string>
   <string name="tag_text_play">%d просмотр</string>
@@ -1403,6 +1407,8 @@
   <string name="text_connection_status_connected_title">Подключено к %s</string>
   <string name="text_connection_status_error_message">Что-то пошло не так. Пожалуйста, попробуйте еще раз.</string>
   <string name="text_connection_status_error_title">Не удалось подключить %s</string>
+  <string name="text_connection_status_expired_message">Ваша сессия истекла. Попробуйте подключиться к %s снова.</string>
+  <string name="text_connection_status_expired_title">Время ожидания соединения истекло</string>
   <string name="text_copyright_crafted_by">Сделано вручную по всему миру.</string>
   <string name="text_copyright_notice">Все права защищены.</string>
   <string name="text_created_by">Создан <a>%s</a></string>

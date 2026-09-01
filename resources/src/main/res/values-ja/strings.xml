@@ -259,7 +259,9 @@
   <string name="button_label_toggle_genre">%sジャンルの表示/非表示を切り替える</string>
   <string name="button_label_toggle_search_lists">リストを検索</string>
   <string name="button_label_toggle_search_media">メディアを検索</string>
+  <string name="button_label_toggle_search_movies">映画を検索</string>
   <string name="button_label_toggle_search_people">人物を検索</string>
+  <string name="button_label_toggle_search_shows">番組を検索</string>
   <string name="button_label_toggle_streaming_countries">%s の国を切り替える</string>
   <string name="button_label_trivia_category_filter">カテゴリーでトリビアをフィルタリング</string>
   <string name="button_label_trivia_no_spoilers">ネタバレなし</string>
@@ -1323,6 +1325,8 @@
   <string name="tag_text_most_popular">最も人気</string>
   <string name="tag_text_movies">映画</string>
   <string name="tag_text_new">新着</string>
+  <string name="tag_text_new_finale">新最終回</string>
+  <string name="tag_text_new_premiere">新プレミア</string>
   <string name="tag_text_new_preview_feature">新着</string>
   <string name="tag_text_number_of_episodes">%d話</string>
   <string name="tag_text_play">%d回視聴</string>
@@ -1403,6 +1407,8 @@
   <string name="text_connection_status_connected_title">%sに接続されました</string>
   <string name="text_connection_status_error_message">何らかの問題が発生しました。もう一度お試しください。</string>
   <string name="text_connection_status_error_title">%sに接続できませんでした</string>
+  <string name="text_connection_status_expired_message">セッションの有効期限が切れました。%s にもう一度接続してみてください。</string>
+  <string name="text_connection_status_expired_title">接続がタイムアウトしました</string>
   <string name="text_copyright_crafted_by">世界中で丁寧に作られています.</string>
   <string name="text_copyright_notice">無断転載を禁じます。</string>
   <string name="text_created_by">作成者: <a>%s</a></string>

@@ -259,7 +259,9 @@
   <string name="button_label_toggle_genre">Alternar el género %s</string>
   <string name="button_label_toggle_search_lists">Buscar listas</string>
   <string name="button_label_toggle_search_media">Buscar contenido multimedia</string>
+  <string name="button_label_toggle_search_movies">Buscar películas</string>
   <string name="button_label_toggle_search_people">Buscar personas</string>
+  <string name="button_label_toggle_search_shows">Buscar series</string>
   <string name="button_label_toggle_streaming_countries">Alternar países para %s</string>
   <string name="button_label_trivia_category_filter">Filtrar trivia por categoría</string>
   <string name="button_label_trivia_no_spoilers">Sin spoilers</string>
@@ -1323,6 +1325,8 @@
   <string name="tag_text_most_popular">Más popular</string>
   <string name="tag_text_movies">Películas</string>
   <string name="tag_text_new">Nuevo</string>
+  <string name="tag_text_new_finale">Nuevo Final</string>
+  <string name="tag_text_new_premiere">Nuevo Estreno</string>
   <string name="tag_text_new_preview_feature">Nuevo</string>
   <string name="tag_text_number_of_episodes">%d ep.</string>
   <string name="tag_text_play">%d reproducción</string>
@@ -1403,6 +1407,8 @@
   <string name="text_connection_status_connected_title">Conectado a %s</string>
   <string name="text_connection_status_error_message">Algo salió mal. Por favor, inténtalo de nuevo.</string>
   <string name="text_connection_status_error_title">No se pudo conectar %s</string>
+  <string name="text_connection_status_expired_message">Su sesión ha caducado. Intente conectar %s de nuevo.</string>
+  <string name="text_connection_status_expired_title">Conexión caducada</string>
   <string name="text_copyright_crafted_by">Hecho a mano en todo el mundo.</string>
   <string name="text_copyright_notice">Todos los derechos reservados.</string>
   <string name="text_created_by">Creado por <a>%s</a></string>

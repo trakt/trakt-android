@@ -259,7 +259,9 @@
   <string name="button_label_toggle_genre">تبديل نوع %s</string>
   <string name="button_label_toggle_search_lists">البحث عن القوائم</string>
   <string name="button_label_toggle_search_media">البحث عن الوسائط</string>
+  <string name="button_label_toggle_search_movies">البحث عن الأفلام</string>
   <string name="button_label_toggle_search_people">البحث عن أشخاص</string>
+  <string name="button_label_toggle_search_shows">البحث عن المسلسلات</string>
   <string name="button_label_toggle_streaming_countries">تبديل البلدان لـ %s</string>
   <string name="button_label_trivia_category_filter">تصفية المعلومات حسب الفئة</string>
   <string name="button_label_trivia_no_spoilers">لا يوجد حرق</string>
@@ -1323,6 +1325,8 @@
   <string name="tag_text_most_popular">الأكثر شعبية</string>
   <string name="tag_text_movies">أفلام</string>
   <string name="tag_text_new">جديد</string>
+  <string name="tag_text_new_finale">نهاية جديدة</string>
+  <string name="tag_text_new_premiere">عرض أول جديد</string>
   <string name="tag_text_new_preview_feature">جديد</string>
   <string name="tag_text_number_of_episodes">%d حلقة</string>
   <string name="tag_text_play">%d مشاهدة</string>
@@ -1403,6 +1407,8 @@
   <string name="text_connection_status_connected_title">متصل بـ %s</string>
   <string name="text_connection_status_error_message">حدث خطأ ما. يرجى المحاولة مرة أخرى.</string>
   <string name="text_connection_status_error_title">تعذر توصيل %s</string>
+  <string name="text_connection_status_expired_message">انتهت صلاحية جلستك. حاول الاتصال بـ %s مرة أخرى.</string>
+  <string name="text_connection_status_expired_title">انتهت مهلة الاتصال</string>
   <string name="text_copyright_crafted_by">مصنوعة يدويًا في جميع أنحاء العالم.</string>
   <string name="text_copyright_notice">جميع الحقوق محفوظة.</string>
   <string name="text_created_by">إنشاء <a>%s</a></string>

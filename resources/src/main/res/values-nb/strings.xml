@@ -259,7 +259,9 @@
   <string name="button_label_toggle_genre">Veksle sjangeren %s</string>
   <string name="button_label_toggle_search_lists">Søk etter lister</string>
   <string name="button_label_toggle_search_media">Søk etter medieinnhold</string>
+  <string name="button_label_toggle_search_movies">Søk etter filmer</string>
   <string name="button_label_toggle_search_people">Søk etter personer</string>
+  <string name="button_label_toggle_search_shows">Søk etter serier</string>
   <string name="button_label_toggle_streaming_countries">Veksle land for %s</string>
   <string name="button_label_trivia_category_filter">Filtrer trivia etter kategori</string>
   <string name="button_label_trivia_no_spoilers">Ingen spoilere</string>
@@ -1323,6 +1325,8 @@
   <string name="tag_text_most_popular">Mest populær</string>
   <string name="tag_text_movies">Filmer</string>
   <string name="tag_text_new">Ny</string>
+  <string name="tag_text_new_finale">Ny finale</string>
+  <string name="tag_text_new_premiere">Ny premiere</string>
   <string name="tag_text_new_preview_feature">Ny</string>
   <string name="tag_text_number_of_episodes">%d ep.</string>
   <string name="tag_text_play">%d avspilling</string>
@@ -1403,6 +1407,8 @@
   <string name="text_connection_status_connected_title">Koblet til %s</string>
   <string name="text_connection_status_error_message">Noe gikk galt. Vennligst prøv igjen.</string>
   <string name="text_connection_status_error_title">Kunne ikke koble til %s</string>
+  <string name="text_connection_status_expired_message">Økten din utløp. Prøv å koble til %s igjen.</string>
+  <string name="text_connection_status_expired_title">Tilkoblingen utløp</string>
   <string name="text_copyright_crafted_by">Håndlaget rundt om i verden.</string>
   <string name="text_copyright_notice">Alle rettigheter forbeholdes.</string>
   <string name="text_created_by">Skapt av <a>%s</a></string>

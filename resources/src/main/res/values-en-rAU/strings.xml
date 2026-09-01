@@ -259,7 +259,9 @@
   <string name="button_label_toggle_genre">Toggle the %s genre</string>
   <string name="button_label_toggle_search_lists">Search for lists</string>
   <string name="button_label_toggle_search_media">Search for media</string>
+  <string name="button_label_toggle_search_movies">Search for movies</string>
   <string name="button_label_toggle_search_people">Search for people</string>
+  <string name="button_label_toggle_search_shows">Search for shows</string>
   <string name="button_label_toggle_streaming_countries">Toggle countries for %s</string>
   <string name="button_label_trivia_category_filter">Filter trivia by category</string>
   <string name="button_label_trivia_no_spoilers">No spoilers</string>
@@ -1323,6 +1325,8 @@
   <string name="tag_text_most_popular">Most popular</string>
   <string name="tag_text_movies">Movies</string>
   <string name="tag_text_new">New</string>
+  <string name="tag_text_new_finale">New Finale</string>
+  <string name="tag_text_new_premiere">New Premiere</string>
   <string name="tag_text_new_preview_feature">New</string>
   <string name="tag_text_number_of_episodes">%d eps.</string>
   <string name="tag_text_play">%d play</string>
@@ -1403,6 +1407,8 @@
   <string name="text_connection_status_connected_title">Connected to %s</string>
   <string name="text_connection_status_error_message">Something went wrong. Please try again.</string>
   <string name="text_connection_status_error_title">Couldn\'t connect %s</string>
+  <string name="text_connection_status_expired_message">Your session expired. Try connecting %s again.</string>
+  <string name="text_connection_status_expired_title">Connection timed out</string>
   <string name="text_copyright_crafted_by">Handcrafted around the world.</string>
   <string name="text_copyright_notice">All rights reserved.</string>
   <string name="text_created_by">Created by <a>%s</a></string>

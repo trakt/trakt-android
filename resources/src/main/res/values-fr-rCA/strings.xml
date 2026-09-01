@@ -259,7 +259,9 @@
   <string name="button_label_toggle_genre">Activer/Désactiver le genre %s</string>
   <string name="button_label_toggle_search_lists">Rechercher des listes</string>
   <string name="button_label_toggle_search_media">Rechercher des médias</string>
+  <string name="button_label_toggle_search_movies">Rechercher des films</string>
   <string name="button_label_toggle_search_people">Rechercher des personnes</string>
+  <string name="button_label_toggle_search_shows">Rechercher des séries</string>
   <string name="button_label_toggle_streaming_countries">Basculer les pays pour %s</string>
   <string name="button_label_trivia_category_filter">Filtrer les anecdotes par catégorie</string>
   <string name="button_label_trivia_no_spoilers">Sans spoilers</string>
@@ -1323,6 +1325,8 @@
   <string name="tag_text_most_popular">Le plus populaire</string>
   <string name="tag_text_movies">Films</string>
   <string name="tag_text_new">Nouveau</string>
+  <string name="tag_text_new_finale">Nouvelle finale</string>
+  <string name="tag_text_new_premiere">Nouvelle première</string>
   <string name="tag_text_new_preview_feature">Nouveau</string>
   <string name="tag_text_number_of_episodes">%d ép.</string>
   <string name="tag_text_play">%d lecture</string>
@@ -1403,6 +1407,8 @@
   <string name="text_connection_status_connected_title">Connecté à %s</string>
   <string name="text_connection_status_error_message">Un problème est survenu. Veuillez réessayer.</string>
   <string name="text_connection_status_error_title">Impossible de se connecter à %s</string>
+  <string name="text_connection_status_expired_message">Votre session a expiré. Essayez de vous connecter à %s de nouveau.</string>
+  <string name="text_connection_status_expired_title">La connexion a expiré</string>
   <string name="text_copyright_crafted_by">Conçu avec soin partout dans le monde.</string>
   <string name="text_copyright_notice">Tous droits réservés.</string>
   <string name="text_created_by">Créé par <a>%s</a></string>

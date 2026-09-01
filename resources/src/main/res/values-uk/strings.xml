@@ -259,7 +259,9 @@
   <string name="button_label_toggle_genre">Перемкнути жанр %s</string>
   <string name="button_label_toggle_search_lists">Шукати списки</string>
   <string name="button_label_toggle_search_media">Шукати медіа</string>
+  <string name="button_label_toggle_search_movies">Шукати фільми</string>
   <string name="button_label_toggle_search_people">Шукати людей</string>
+  <string name="button_label_toggle_search_shows">Шукати серіали</string>
   <string name="button_label_toggle_streaming_countries">Перемкнути країни для %s</string>
   <string name="button_label_trivia_category_filter">Фільтрувати цікавинки за категорією</string>
   <string name="button_label_trivia_no_spoilers">Без спойлерів</string>
@@ -1323,6 +1325,8 @@
   <string name="tag_text_most_popular">Найпопулярніший</string>
   <string name="tag_text_movies">Фільми</string>
   <string name="tag_text_new">Нове</string>
+  <string name="tag_text_new_finale">Новий фінал</string>
+  <string name="tag_text_new_premiere">Нова прем\'єра</string>
   <string name="tag_text_new_preview_feature">Нове</string>
   <string name="tag_text_number_of_episodes">%d еп.</string>
   <string name="tag_text_play">%d переглядів</string>
@@ -1403,6 +1407,8 @@
   <string name="text_connection_status_connected_title">Підключено до %s</string>
   <string name="text_connection_status_error_message">Щось пішло не так. Будь ласка, спробуйте ще раз.</string>
   <string name="text_connection_status_error_title">Не вдалося підключити %s</string>
+  <string name="text_connection_status_expired_message">Ваш сеанс вичерпано. Спробуйте підключити %s знову.</string>
+  <string name="text_connection_status_expired_title">Час з\'єднання вичерпано</string>
   <string name="text_copyright_crafted_by">Створено вручну по всьому світу.</string>
   <string name="text_copyright_notice">Всі права захищено.</string>
   <string name="text_created_by">Створено <a>%s</a></string>

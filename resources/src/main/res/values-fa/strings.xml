@@ -259,7 +259,9 @@
   <string name="button_label_toggle_genre">تغییر ژانر %s</string>
   <string name="button_label_toggle_search_lists">جستجو برای لیست‌ها</string>
   <string name="button_label_toggle_search_media">جستجو برای رسانه</string>
+  <string name="button_label_toggle_search_movies">جستجو برای فیلم‌ها</string>
   <string name="button_label_toggle_search_people">جستجو برای افراد</string>
+  <string name="button_label_toggle_search_shows">جستجو برای سریال‌ها</string>
   <string name="button_label_toggle_streaming_countries">تغییر وضعیت کشورها برای %s</string>
   <string name="button_label_trivia_category_filter">فیلتر کردن دانستنی‌ها بر اساس دسته‌بندی</string>
   <string name="button_label_trivia_no_spoilers">بدون اسپویلر</string>
@@ -1323,6 +1325,8 @@
   <string name="tag_text_most_popular">محبوب‌ترین</string>
   <string name="tag_text_movies">فیلم‌ها</string>
   <string name="tag_text_new">جدید</string>
+  <string name="tag_text_new_finale">قسمت پایانی جدید</string>
+  <string name="tag_text_new_premiere">اولین قسمت جدید</string>
   <string name="tag_text_new_preview_feature">جدید</string>
   <string name="tag_text_number_of_episodes">%d اپیزود</string>
   <string name="tag_text_play">%d پخش</string>
@@ -1403,6 +1407,8 @@
   <string name="text_connection_status_connected_title">متصل به %s</string>
   <string name="text_connection_status_error_message">مشکلی پیش آمد. لطفاً دوباره تلاش کنید.</string>
   <string name="text_connection_status_error_title">امکان اتصال به %s وجود نداشت</string>
+  <string name="text_connection_status_expired_message">جلسه شما منقضی شد. دوباره برای اتصال به %s تلاش کنید.</string>
+  <string name="text_connection_status_expired_title">زمان اتصال به پایان رسید</string>
   <string name="text_copyright_crafted_by">دست‌ساز در سراسر جهان.</string>
   <string name="text_copyright_notice">تمامی حقوق محفوظ است.</string>
   <string name="text_created_by">ایجاد شده توسط <a>%s</a></string>

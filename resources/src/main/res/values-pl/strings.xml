@@ -259,7 +259,9 @@
   <string name="button_label_toggle_genre">Przełącz gatunek %s</string>
   <string name="button_label_toggle_search_lists">Szukaj list</string>
   <string name="button_label_toggle_search_media">Szukaj mediów</string>
+  <string name="button_label_toggle_search_movies">Szukaj filmów</string>
   <string name="button_label_toggle_search_people">Szukaj osób</string>
+  <string name="button_label_toggle_search_shows">Szukaj seriali</string>
   <string name="button_label_toggle_streaming_countries">Przełącz kraje dla %s</string>
   <string name="button_label_trivia_category_filter">Filtruj ciekawostki według kategorii</string>
   <string name="button_label_trivia_no_spoilers">Bez spoilerów</string>
@@ -1323,6 +1325,8 @@
   <string name="tag_text_most_popular">Najpopularniejsze</string>
   <string name="tag_text_movies">Filmy</string>
   <string name="tag_text_new">Nowość</string>
+  <string name="tag_text_new_finale">Nowy Finał</string>
+  <string name="tag_text_new_premiere">Nowa Premiera</string>
   <string name="tag_text_new_preview_feature">Nowość</string>
   <string name="tag_text_number_of_episodes">%d odc.</string>
   <string name="tag_text_play">%d odtworzeń</string>
@@ -1403,6 +1407,8 @@
   <string name="text_connection_status_connected_title">Połączono z %s</string>
   <string name="text_connection_status_error_message">Coś poszło nie tak. Spróbuj ponownie.</string>
   <string name="text_connection_status_error_title">Nie udało się połączyć z %s</string>
+  <string name="text_connection_status_expired_message">Twoja sesja wygasła. Spróbuj ponownie połączyć się z %s.</string>
+  <string name="text_connection_status_expired_title">Upłynął limit czasu połączenia</string>
   <string name="text_copyright_crafted_by">Tworzone z pasją na całym świecie.</string>
   <string name="text_copyright_notice">Wszystkie prawa zastrzeżone.</string>
   <string name="text_created_by">Stworzył(a): <a>%s</a></string>

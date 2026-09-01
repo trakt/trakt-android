@@ -259,7 +259,9 @@
   <string name="button_label_toggle_genre">Activează/dezactivează genul %s</string>
   <string name="button_label_toggle_search_lists">Căută liste</string>
   <string name="button_label_toggle_search_media">Căută media</string>
+  <string name="button_label_toggle_search_movies">Caută filme</string>
   <string name="button_label_toggle_search_people">Căută persoane</string>
+  <string name="button_label_toggle_search_shows">Caută seriale</string>
   <string name="button_label_toggle_streaming_countries">Comutați țările pentru %s</string>
   <string name="button_label_trivia_category_filter">Filtrare trivia după categorie</string>
   <string name="button_label_trivia_no_spoilers">Fără spoilere</string>
@@ -1323,6 +1325,8 @@
   <string name="tag_text_most_popular">Cel mai popular</string>
   <string name="tag_text_movies">Filme</string>
   <string name="tag_text_new">Nou</string>
+  <string name="tag_text_new_finale">Nou Final</string>
+  <string name="tag_text_new_premiere">Nouă Premieră</string>
   <string name="tag_text_new_preview_feature">Nou</string>
   <string name="tag_text_number_of_episodes">%d ep.</string>
   <string name="tag_text_play">%d vizionări</string>
@@ -1403,6 +1407,8 @@
   <string name="text_connection_status_connected_title">Conectat la %s</string>
   <string name="text_connection_status_error_message">Ceva nu a mers bine. Te rugăm să încerci din nou.</string>
   <string name="text_connection_status_error_title">Nu s-a putut conecta %s</string>
+  <string name="text_connection_status_expired_message">Sesiunea dumneavoastră a expirat. Încercați să vă conectați din nou la %s.</string>
+  <string name="text_connection_status_expired_title">Conexiunea a expirat</string>
   <string name="text_copyright_crafted_by">Creat cu pasiune în jurul lumii.</string>
   <string name="text_copyright_notice">Toate drepturile rezervate.</string>
   <string name="text_created_by">Creat de <a>%s</a></string>

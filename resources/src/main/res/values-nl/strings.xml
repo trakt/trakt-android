@@ -259,7 +259,9 @@
   <string name="button_label_toggle_genre">Schakel het genre %s in/uit</string>
   <string name="button_label_toggle_search_lists">Zoek naar lijsten</string>
   <string name="button_label_toggle_search_media">Zoek naar media</string>
+  <string name="button_label_toggle_search_movies">Zoek naar films</string>
   <string name="button_label_toggle_search_people">Zoek naar personen</string>
+  <string name="button_label_toggle_search_shows">Zoek naar series</string>
   <string name="button_label_toggle_streaming_countries">Landen voor %s in-/uitschakelen</string>
   <string name="button_label_trivia_category_filter">Filter trivia op categorie</string>
   <string name="button_label_trivia_no_spoilers">Geen spoilers</string>
@@ -1323,6 +1325,8 @@
   <string name="tag_text_most_popular">Meest populair</string>
   <string name="tag_text_movies">Films</string>
   <string name="tag_text_new">Nieuw</string>
+  <string name="tag_text_new_finale">Nieuwe finale</string>
+  <string name="tag_text_new_premiere">Nieuwe première</string>
   <string name="tag_text_new_preview_feature">Nieuw</string>
   <string name="tag_text_number_of_episodes">%d afl.</string>
   <string name="tag_text_play">%d weergave</string>
@@ -1403,6 +1407,8 @@
   <string name="text_connection_status_connected_title">Verbonden met %s</string>
   <string name="text_connection_status_error_message">Er is iets misgegaan. Probeer het opnieuw.</string>
   <string name="text_connection_status_error_title">Kon geen verbinding maken met %s</string>
+  <string name="text_connection_status_expired_message">Je sessie is verlopen. Probeer opnieuw verbinding te maken met %s.</string>
+  <string name="text_connection_status_expired_title">Verbinding verlopen</string>
   <string name="text_copyright_crafted_by">Handgemaakt over de hele wereld.</string>
   <string name="text_copyright_notice">Alle rechten voorbehouden.</string>
   <string name="text_created_by">Gemaakt door <a>%s</a></string>

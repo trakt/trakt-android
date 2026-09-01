@@ -259,7 +259,9 @@
   <string name="button_label_toggle_genre">Genre %s umschalten</string>
   <string name="button_label_toggle_search_lists">Listen suchen</string>
   <string name="button_label_toggle_search_media">Medien suchen</string>
+  <string name="button_label_toggle_search_movies">Filme suchen</string>
   <string name="button_label_toggle_search_people">Personen suchen</string>
+  <string name="button_label_toggle_search_shows">Serien suchen</string>
   <string name="button_label_toggle_streaming_countries">Länder für %s umschalten</string>
   <string name="button_label_trivia_category_filter">Trivia nach Kategorie filtern</string>
   <string name="button_label_trivia_no_spoilers">Keine Spoiler</string>
@@ -1323,6 +1325,8 @@
   <string name="tag_text_most_popular">Am beliebtesten</string>
   <string name="tag_text_movies">Filme</string>
   <string name="tag_text_new">Neu</string>
+  <string name="tag_text_new_finale">Neues Finale</string>
+  <string name="tag_text_new_premiere">Neue Premiere</string>
   <string name="tag_text_new_preview_feature">Neu</string>
   <string name="tag_text_number_of_episodes">%d Folg.</string>
   <string name="tag_text_play">%d Wiedergaben</string>
@@ -1403,6 +1407,8 @@
   <string name="text_connection_status_connected_title">Verbunden mit %s</string>
   <string name="text_connection_status_error_message">Etwas ist schiefgelaufen. Bitte versuche es erneut.</string>
   <string name="text_connection_status_error_title">Verbindung zu %s konnte nicht hergestellt werden</string>
+  <string name="text_connection_status_expired_message">Ihre Sitzung ist abgelaufen. Versuchen Sie, die Verbindung mit %s erneut herzustellen.</string>
+  <string name="text_connection_status_expired_title">Verbindung fehlgeschlagen</string>
   <string name="text_copyright_crafted_by">Weltweit handgefertigt.</string>
   <string name="text_copyright_notice">Alle Rechte vorbehalten.</string>
   <string name="text_created_by">Erstellt von <a>%s</a></string>
