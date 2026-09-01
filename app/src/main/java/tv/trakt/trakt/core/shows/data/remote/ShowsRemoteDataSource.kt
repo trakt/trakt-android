@@ -9,11 +9,11 @@ import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.ExternalShowRatingsDto
 import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
-import tv.trakt.trakt.common.networking.RecommendedShowDto
 import tv.trakt.trakt.common.networking.SeasonDto
 import tv.trakt.trakt.common.networking.ShowCalendarsDto
 import tv.trakt.trakt.common.networking.ShowStatsDto
 import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3ShowRecommendationResponse
 import tv.trakt.trakt.core.shows.data.remote.model.AnticipatedShowDto
 import tv.trakt.trakt.core.shows.data.remote.model.TrendingShowDto
 import java.time.Instant
@@ -34,7 +34,7 @@ internal interface ShowsRemoteDataSource {
     suspend fun getRecommended(
         limit: Int,
         filters: GlobalFilter,
-    ): List<RecommendedShowDto>
+    ): List<V3ShowRecommendationResponse>
 
     suspend fun getAnticipated(
         page: Int = 1,

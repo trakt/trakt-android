@@ -2,7 +2,6 @@ package tv.trakt.trakt.core.movies.data.remote
 
 import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.MoviesApi
-import org.openapitools.client.apis.RecommendationsApi
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
@@ -14,8 +13,9 @@ import tv.trakt.trakt.common.networking.ExtraVideoDto
 import tv.trakt.trakt.common.networking.ListDto
 import tv.trakt.trakt.common.networking.MovieCalendarDto
 import tv.trakt.trakt.common.networking.MovieStatsDto
-import tv.trakt.trakt.common.networking.RecommendedMovieDto
 import tv.trakt.trakt.common.networking.api.v3.V3Api
+import tv.trakt.trakt.common.networking.api.v3.model.V3MovieRecommendationResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationsRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
 import tv.trakt.trakt.core.movies.data.remote.model.AnticipatedMovieDto
 import tv.trakt.trakt.core.movies.data.remote.model.TrendingMovieDto
@@ -24,7 +24,6 @@ import java.time.temporal.ChronoUnit.DAYS
 
 internal class MoviesApiClient(
     private val moviesApi: MoviesApi,
-    private val recommendationsApi: RecommendationsApi,
     private val calendarsApi: CalendarsApi,
     private val v3Api: V3Api,
 ) : MoviesRemoteDataSource {
@@ -92,27 +91,25 @@ internal class MoviesApiClient(
     override suspend fun getRecommended(
         limit: Int,
         filters: GlobalFilter,
-    ): List<RecommendedMovieDto> {
-        val response = recommendationsApi.getRecommendationsMoviesRecommend(
-            extended = "full,streaming_ids,cloud9,colors",
-            limit = limit,
-            watchWindow = 25,
-            watchnow = filters.availability?.joinToString(",") { it.slug },
-            genres = filters.genre?.joinToString(",") { it.slug },
-            subgenres = filters.subgenre?.joinToString(","),
-            years = filters.years?.let { "${it.first}-${it.second}" },
-            ratings = filters.rating?.let { "${it.first}-${it.second}" },
-            runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
-            certifications = filters.certification?.joinToString(",") { it.slug },
-            ignoreWatched = true,
-            ignoreWatchlisted = filters.hideWatchlist,
-            ignoreCollected = true,
-            startDate = null,
-            endDate = null,
-            countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
+    ): List<V3MovieRecommendationResponse> {
+        return v3Api.getMovieRecommendations(
+            V3RecommendationsRequest(
+                limit = limit,
+                extended = "full,streaming_ids,cloud9,colors",
+                watchWindow = 25,
+                watchnow = filters.availability?.joinToString(",") { it.slug },
+                genres = filters.genre?.joinToString(",") { it.slug },
+                subgenres = filters.subgenre?.joinToString(","),
+                years = filters.years?.let { "${it.first}-${it.second}" },
+                ratings = filters.rating?.let { "${it.first}-${it.second}" },
+                runtimes = filters.runtime?.let { "${it.first}-${it.second}" },
+                certifications = filters.certification?.joinToString(",") { it.slug },
+                countries = filters.countries?.joinToString(",") ?: filters.region?.slug,
+                ignoreWatched = true,
+                ignoreWatchlisted = filters.hideWatchlist,
+                ignoreCollected = true,
+            ),
         )
-
-        return response.body()
     }
 
     override suspend fun getAnticipated(

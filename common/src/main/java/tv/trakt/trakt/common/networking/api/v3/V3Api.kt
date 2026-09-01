@@ -3,7 +3,9 @@ package tv.trakt.trakt.common.networking.api.v3
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.call.body
 import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
@@ -11,7 +13,10 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.networking.api.v3.model.V3MediaSocialResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalList
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalWatchlistResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3MovieRecommendationResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationsRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3ShowRecommendationResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3TriviaResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UsageResponse
 
@@ -79,6 +84,43 @@ class V3Api(
     suspend fun getMovieTrivia(movieId: TraktId): V3TriviaResponse {
         val response = client.get("${baseV3Url}media/movie/${movieId.value}/info/5/version/1")
         return response.body<V3TriviaResponse>()
+    }
+
+    // Recommendations
+
+    suspend fun getMovieRecommendations(
+        request: V3RecommendationsRequest,
+    ): List<V3MovieRecommendationResponse> {
+        val response = client.get("${baseUrl}movies/recommendations") {
+            applyRecommendationsRequest(request)
+        }
+        return response.body()
+    }
+
+    suspend fun getShowRecommendations(
+        request: V3RecommendationsRequest,
+    ): List<V3ShowRecommendationResponse> {
+        val response = client.get("${baseUrl}shows/recommendations") {
+            applyRecommendationsRequest(request)
+        }
+        return response.body()
+    }
+
+    private fun HttpRequestBuilder.applyRecommendationsRequest(request: V3RecommendationsRequest) {
+        parameter("limit", request.limit)
+        request.extended?.let { parameter("extended", it) }
+        request.watchWindow?.let { parameter("watch_window", it) }
+        request.watchnow?.let { parameter("watchnow", it) }
+        request.genres?.let { parameter("genres", it) }
+        request.subgenres?.let { parameter("subgenres", it) }
+        request.years?.let { parameter("years", it) }
+        request.ratings?.let { parameter("ratings", it) }
+        request.runtimes?.let { parameter("runtimes", it) }
+        request.certifications?.let { parameter("certifications", it) }
+        request.countries?.let { parameter("countries", it) }
+        request.ignoreWatched?.let { parameter("ignore_watched", it) }
+        request.ignoreWatchlisted?.let { parameter("ignore_watchlisted", it) }
+        request.ignoreCollected?.let { parameter("ignore_collected", it) }
     }
 
     // Social

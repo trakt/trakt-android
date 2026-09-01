@@ -10,6 +10,7 @@ import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.core.discover.DiscoverConfig.DEFAULT_SECTION_LIMIT
 import tv.trakt.trakt.core.home.sections.recommended.local.shows.RecommendedShowsLocalDataSource
 import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedItem
+import tv.trakt.trakt.core.home.sections.recommended.model.RecommendedSource
 import tv.trakt.trakt.core.home.sections.recommended.usecase.GetRecommendedShowsUseCase
 import tv.trakt.trakt.core.shows.data.remote.ShowsRemoteDataSource
 
@@ -33,7 +34,12 @@ internal class DefaultGetRecommendedShowsUseCase(
         filters: GlobalFilter,
     ): ImmutableList<RecommendedItem.ShowItem> {
         return remoteSource.getRecommended(limit = limit, filters = filters)
-            .asyncMap { RecommendedItem.ShowItem(show = Show.fromDto(it)) }
+            .asyncMap { entry ->
+                RecommendedItem.ShowItem(
+                    show = Show.fromDto(entry.show),
+                    sources = entry.sources.orEmpty().map { RecommendedSource.fromDto(it) }.toImmutableList(),
+                )
+            }
             .toImmutableList()
             .also { shows ->
                 if (!skipLocal) {
