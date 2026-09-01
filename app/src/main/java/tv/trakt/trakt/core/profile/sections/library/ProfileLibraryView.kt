@@ -49,9 +49,9 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.core.library.model.LibraryFilter
 import tv.trakt.trakt.core.profile.sections.favorites.context.movie.FavoriteMovieContextSheet
 import tv.trakt.trakt.core.profile.sections.favorites.context.show.FavoriteShowContextSheet
+import tv.trakt.trakt.core.profile.sections.library.model.LibraryFilter
 import tv.trakt.trakt.core.profile.sections.library.views.LibraryItemView
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EmptyListCard

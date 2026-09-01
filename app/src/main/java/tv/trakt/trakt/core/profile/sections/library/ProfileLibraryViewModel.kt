@@ -29,9 +29,9 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.core.library.model.LibraryFilter
 import tv.trakt.trakt.core.lists.ListsConfig.LIBRARY_PAGE_LIMIT
 import tv.trakt.trakt.core.lists.ListsConfig.LIBRARY_SECTION_LIMIT
+import tv.trakt.trakt.core.profile.sections.library.model.LibraryFilter
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.model.CollapsingKey
 
