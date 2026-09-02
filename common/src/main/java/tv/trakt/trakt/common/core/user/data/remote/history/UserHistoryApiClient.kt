@@ -5,12 +5,42 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.networking.SyncHistoryEpisodeItemDto
+import tv.trakt.trakt.common.networking.SyncHistoryItemDto
 import tv.trakt.trakt.common.networking.SyncHistoryMovieItemDto
 import kotlin.time.Instant
 
 class UserHistoryApiClient(
     private val historyApi: HistoryApi,
 ) : UserHistoryRemoteDataSource {
+    override suspend fun getMediaHistory(
+        page: Int,
+        limit: Int,
+        filters: GlobalFilter?,
+        from: Instant?,
+        to: Instant?,
+        userId: String,
+    ): List<SyncHistoryItemDto> {
+        val response = historyApi.getUsersHistoryAll(
+            id = userId,
+            extended = "full,cloud9,colors",
+            startAt = from?.toString(),
+            endAt = to?.toString(),
+            page = page,
+            limit = limit,
+            watchnow = filters?.availability?.joinToString(",") { it.slug },
+            genres = filters?.genre?.joinToString(",") { it.slug },
+            subgenres = filters?.subgenre?.joinToString(","),
+            years = filters?.years?.let { "${it.first}-${it.second}" },
+            ratings = filters?.rating?.let { "${it.first}-${it.second}" },
+            startDate = null,
+            endDate = null,
+            runtimes = filters?.runtime?.let { "${it.first}-${it.second}" },
+            countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
+            certifications = filters?.certification?.joinToString(",") { it.slug },
+        )
+        return response.body()
+    }
+
     override suspend fun getEpisodesHistory(
         page: Int,
         limit: Int,

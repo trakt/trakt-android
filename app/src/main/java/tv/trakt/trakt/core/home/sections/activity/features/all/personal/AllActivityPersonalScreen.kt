@@ -47,7 +47,6 @@ import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState
-import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.isTraktUnknown
@@ -71,8 +70,6 @@ import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.EpisodeItem
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem.MovieItem
 import tv.trakt.trakt.core.home.sections.activity.sheets.HomeActivityItemSheet
-import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextContent
-import tv.trakt.trakt.core.home.sections.upnext.features.all.AllHomeUpNextState
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.MediaFilterIcon
@@ -475,8 +472,8 @@ private fun ContentEmptyView(modifier: Modifier = Modifier) {
 @Composable
 private fun Preview() {
     TraktTheme {
-        AllHomeUpNextContent(
-            state = AllHomeUpNextState(
+        AllActivityPersonalContent(
+            state = AllActivityState(
                 loading = LoadingState.Done,
             ),
         )
@@ -491,9 +488,9 @@ private fun Preview() {
 @Composable
 private fun Preview2() {
     TraktTheme {
-        AllHomeUpNextContent(
-            state = AllHomeUpNextState(
-                loading = Loading,
+        AllActivityPersonalContent(
+            state = AllActivityState(
+                loading = LoadingState.Loading,
             ),
         )
     }

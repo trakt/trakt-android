@@ -2,7 +2,8 @@ package tv.trakt.trakt.core.home.sections.activity.usecases
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.coroutineScope
+import org.openapitools.client.models.GetUsersHistoryAll200ResponseInner.Type.EPISODE
+import org.openapitools.client.models.GetUsersHistoryAll200ResponseInner.Type.MOVIE
 import tv.trakt.trakt.common.core.user.data.remote.history.UserHistoryRemoteDataSource
 import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.toInstant
@@ -15,6 +16,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
+import tv.trakt.trakt.common.networking.SyncHistoryItemDto
 import tv.trakt.trakt.core.home.sections.activity.data.local.personal.HomePersonalLocalDataSource
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
 
@@ -45,11 +47,10 @@ internal class GetPersonalActivityUseCase(
         filter: GlobalFilter,
         skipLocal: Boolean = false,
     ): ImmutableList<HomeActivityItem> {
-        return coroutineScope {
-            val remoteEpisodesAsync = remoteUserSource.getEpisodesHistory(page, limit, filter)
-            val remoteMoviesAsync = remoteUserSource.getMoviesHistory(page, limit, filter)
-
-            val remoteEpisodes = remoteEpisodesAsync
+        val items = when (filter.mode) {
+            Media -> remoteUserSource.getMediaHistory(page, limit, filter)
+                .asyncMap { it.toActivityItem() }
+            Shows -> remoteUserSource.getEpisodesHistory(page, limit, filter)
                 .asyncMap {
                     HomeActivityItem.EpisodeItem(
                         id = it.id,
@@ -69,8 +70,7 @@ internal class GetPersonalActivityUseCase(
                         ),
                     )
                 }
-
-            val remoteMovies = remoteMoviesAsync
+            Movies -> remoteUserSource.getMoviesHistory(page, limit, filter)
                 .asyncMap {
                     HomeActivityItem.MovieItem(
                         id = it.id,
@@ -85,32 +85,59 @@ internal class GetPersonalActivityUseCase(
                         ),
                     )
                 }
+        }
 
-            return@coroutineScope (remoteEpisodes + remoteMovies)
-                .also {
-                    if (!skipLocal) {
-                        if (page == 1) {
-                            localDataSource.setItems(
-                                items = it,
-                                notify = false,
-                            )
-                        } else {
-                            localDataSource.addItems(
-                                items = it,
-                                notify = false,
-                            )
-                        }
+        return items
+            .also {
+                if (!skipLocal) {
+                    if (page == 1) {
+                        localDataSource.setItems(
+                            items = it,
+                            notify = false,
+                        )
+                    } else {
+                        localDataSource.addItems(
+                            items = it,
+                            notify = false,
+                        )
                     }
                 }
-                .filter {
-                    when (filter.mode) {
-                        Shows -> it is HomeActivityItem.EpisodeItem
-                        Movies -> it is HomeActivityItem.MovieItem
-                        Media -> true
-                    }
-                }
-                .sortedByDescending { it.activityAt }
-                .toImmutableList()
+            }
+            .sortedByDescending { it.activityAt }
+            .toImmutableList()
+    }
+
+    private fun SyncHistoryItemDto.toActivityItem(): HomeActivityItem {
+        return when (type) {
+            EPISODE -> HomeActivityItem.EpisodeItem(
+                id = id,
+                user = null,
+                userRating = null,
+                activity = action.value,
+                activityAt = watchedAt.toInstant(),
+                episode = Episode.fromDto(
+                    checkNotNull(episode) {
+                        "Episode should not be null if type is EPISODE"
+                    },
+                ),
+                show = Show.fromDto(
+                    checkNotNull(show) {
+                        "Show should not be null if type is EPISODE"
+                    },
+                ),
+            )
+            MOVIE -> HomeActivityItem.MovieItem(
+                id = id,
+                user = null,
+                userRating = null,
+                activity = action.value,
+                activityAt = watchedAt.toInstant(),
+                movie = Movie.fromDto(
+                    checkNotNull(movie) {
+                        "Movie should not be null if type is MOVIE"
+                    },
+                ),
+            )
         }
     }
 }
