@@ -1527,6 +1527,10 @@
   <string name="text_list_public">Publiczna</string>
   <string name="text_list_public_info">Lista będzie widoczna dla wszystkich użytkowników.</string>
   <string name="text_location">Lokalizacja</string>
+  <string name="text_login_failed_message">Sprawdź połączenie i spróbuj ponownie.</string>
+  <string name="text_login_failed_title">Nie można rozpocząć logowania</string>
+  <string name="text_login_rate_limited_message">Poczekaj chwilę i spróbuj ponownie.</string>
+  <string name="text_login_rate_limited_title">Zbyt wiele prób logowania</string>
   <string name="text_member_count_accessible">Ponad %s zarejestrowanych kont Trakt</string>
   <string name="text_member_count_tagline">osoby śledzące to, co oglądają, a ich liczba rośnie</string>
   <string name="text_member_since">Od %s</string>

@@ -1527,6 +1527,10 @@
   <string name="text_list_public">Públic</string>
   <string name="text_list_public_info">La llista serà visible per a tots els usuaris.</string>
   <string name="text_location">Ubicació</string>
+  <string name="text_login_failed_message">Comprova la teva connexió i torna-ho a intentar.</string>
+  <string name="text_login_failed_title">No s\'ha pogut iniciar la sessió</string>
+  <string name="text_login_rate_limited_message">Espera un moment i torna-ho a intentar.</string>
+  <string name="text_login_rate_limited_title">Massa intents d\'iniciar sessió</string>
   <string name="text_member_count_accessible">Més de %s comptes registrats a Trakt</string>
   <string name="text_member_count_tagline">persones fent seguiment del que veuen, i comptant</string>
   <string name="text_member_since">Des de %s</string>

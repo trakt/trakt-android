@@ -1527,6 +1527,10 @@
   <string name="text_list_public">公开</string>
   <string name="text_list_public_info">列表将对所有用户可见。</string>
   <string name="text_location">位置</string>
+  <string name="text_login_failed_message">请检查您的网络连接，然后重试。</string>
+  <string name="text_login_failed_title">无法开始登录</string>
+  <string name="text_login_rate_limited_message">请稍候片刻，然后重试。</string>
+  <string name="text_login_rate_limited_title">登录尝试次数过多</string>
   <string name="text_member_count_accessible">超过 %s 个已注册 Trakt 帐户</string>
   <string name="text_member_count_tagline">正在追踪观看内容的用户，并且人数还在不断增加</string>
   <string name="text_member_since">自 %s 起</string>

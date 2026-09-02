@@ -1527,6 +1527,10 @@
   <string name="text_list_public">Öffentlich</string>
   <string name="text_list_public_info">Die Liste wird für alle Benutzer sichtbar sein.</string>
   <string name="text_location">Standort</string>
+  <string name="text_login_failed_message">Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.</string>
+  <string name="text_login_failed_title">Anmeldung konnte nicht gestartet werden</string>
+  <string name="text_login_rate_limited_message">Bitte warten Sie einen Moment und versuchen Sie es erneut.</string>
+  <string name="text_login_rate_limited_title">Zu viele Anmeldeversuche</string>
   <string name="text_member_count_accessible">Über %s registrierte Trakt-Konten</string>
   <string name="text_member_count_tagline">Personen, die verfolgen, was sie sehen, und es werden immer mehr</string>
   <string name="text_member_since">Seit %s</string>

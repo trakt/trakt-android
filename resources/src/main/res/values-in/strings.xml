@@ -1527,6 +1527,10 @@
   <string name="text_list_public">Publik</string>
   <string name="text_list_public_info">Daftar akan terlihat oleh semua pengguna.</string>
   <string name="text_location">Lokasi</string>
+  <string name="text_login_failed_message">Periksa koneksi Anda dan coba lagi.</string>
+  <string name="text_login_failed_title">Gagal memulai masuk</string>
+  <string name="text_login_rate_limited_message">Harap tunggu sebentar dan coba lagi.</string>
+  <string name="text_login_rate_limited_title">Terlalu banyak percobaan masuk</string>
   <string name="text_member_count_accessible">Lebih dari %s akun Trakt terdaftar</string>
   <string name="text_member_count_tagline">Pengguna yang melacak tontonan mereka, dan terus bertambah</string>
   <string name="text_member_since">Sejak %s</string>

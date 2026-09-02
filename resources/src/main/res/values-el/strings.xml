@@ -1527,6 +1527,10 @@
   <string name="text_list_public">Δημόσια</string>
   <string name="text_list_public_info">Η λίστα θα είναι ορατή σε όλους τους χρήστες.</string>
   <string name="text_location">Τοποθεσία</string>
+  <string name="text_login_failed_message">Ελέγξτε τη σύνδεσή σας και προσπαθήστε ξανά.</string>
+  <string name="text_login_failed_title">Δεν ήταν δυνατή η έναρξη σύνδεσης</string>
+  <string name="text_login_rate_limited_message">Παρακαλώ περιμένετε λίγο και προσπαθήστε ξανά.</string>
+  <string name="text_login_rate_limited_title">Πάρα πολλές προσπάθειες σύνδεσης</string>
   <string name="text_member_count_accessible">Πάνω από %s εγγεγραμμένους λογαριασμούς Trakt</string>
   <string name="text_member_count_tagline">άτομα που παρακολουθούν τι βλέπουν, και ο αριθμός τους αυξάνεται</string>
   <string name="text_member_since">Από %s</string>
