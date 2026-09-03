@@ -143,6 +143,7 @@ internal class ShowDetailsViewModel(
         loadProgressData()
         loadUserRatingData()
         observeData()
+        observeLists()
 
         analytics.logScreenView(
             screenName = "show_details",
@@ -161,6 +162,16 @@ internal class ShowDetailsViewModel(
                 loadProgressData(
                     ignoreErrors = true,
                 )
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeLists() {
+        showDetailsUpdates.observeUpdates(Source.Lists)
+            .distinctUntilChanged()
+            .debounce(200.milliseconds)
+            .onEach {
+                refreshLists()
             }
             .launchIn(viewModelScope)
     }

@@ -27,6 +27,8 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomListMinimal
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.AddPersonalListItemUseCase
 import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
+import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
 
 internal class ShowDetailsListsViewModel(
     private val show: Show,
@@ -34,6 +36,7 @@ internal class ShowDetailsListsViewModel(
     private val loadListsUseCase: LoadUserListsUseCase,
     private val addListItemUseCase: AddPersonalListItemUseCase,
     private val removeListItemUseCase: RemovePersonalListItemUseCase,
+    private val detailsUpdates: ShowDetailsUpdates,
     private val errorsManager: GlobalErrorsManager,
 ) : ViewModel() {
     private val initialState = ShowDetailsListsState()
@@ -115,6 +118,7 @@ internal class ShowDetailsListsViewModel(
                         show = show,
                     )
                 }
+                detailsUpdates.notifyUpdate(Source.Lists)
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     setListed(list.id, listed = listed)

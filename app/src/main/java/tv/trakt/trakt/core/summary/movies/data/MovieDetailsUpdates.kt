@@ -11,5 +11,6 @@ internal interface MovieDetailsUpdates {
     enum class Source {
         Progress,
         History,
+        Lists,
     }
 }

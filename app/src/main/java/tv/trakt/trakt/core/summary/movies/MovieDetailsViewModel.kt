@@ -144,6 +144,7 @@ internal class MovieDetailsViewModel(
 
         observeHistory()
         observeCheckIn()
+        observeLists()
 
         analytics.logScreenView(
             screenName = "movie_details",
@@ -167,6 +168,16 @@ internal class MovieDetailsViewModel(
             .debounce(200.milliseconds)
             .onEach {
                 loadUserProgressData(force = true)
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeLists() {
+        movieDetailsUpdates.observeUpdates(Source.Lists)
+            .distinctUntilChanged()
+            .debounce(200.milliseconds)
+            .onEach {
+                refreshLists()
             }
             .launchIn(viewModelScope)
     }

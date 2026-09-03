@@ -199,6 +199,7 @@ internal val movieDetailsModule = module {
             loadListsUseCase = get(),
             addListItemUseCase = get(),
             removeListItemUseCase = get(),
+            detailsUpdates = get(),
             errorsManager = get(),
         )
     }
