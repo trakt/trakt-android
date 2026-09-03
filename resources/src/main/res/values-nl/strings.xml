@@ -1527,6 +1527,10 @@
   <string name="text_list_public">Openbaar</string>
   <string name="text_list_public_info">Lijst is zichtbaar voor alle gebruikers.</string>
   <string name="text_location">Locatie</string>
+  <string name="text_login_failed_message">Controleer je verbinding en probeer het opnieuw.</string>
+  <string name="text_login_failed_title">Kon niet aanmelden starten</string>
+  <string name="text_login_rate_limited_message">Wacht even en probeer het opnieuw.</string>
+  <string name="text_login_rate_limited_title">Te veel aanmeldpogingen</string>
   <string name="text_member_count_accessible">Meer dan %s geregistreerde Trakt accounts</string>
   <string name="text_member_count_tagline">mensen die bijhouden wat ze kijken, en het aantal loopt op</string>
   <string name="text_member_since">Sinds %s</string>

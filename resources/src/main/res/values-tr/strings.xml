@@ -1527,6 +1527,10 @@
   <string name="text_list_public">Herkese Açık</string>
   <string name="text_list_public_info">Liste tüm kullanıcılara görünür olacaktır.</string>
   <string name="text_location">Konum</string>
+  <string name="text_login_failed_message">Bağlantınızı kontrol edin ve tekrar deneyin.</string>
+  <string name="text_login_failed_title">Oturum açma başlatılamadı</string>
+  <string name="text_login_rate_limited_message">Lütfen bir süre bekleyin ve tekrar deneyin.</string>
+  <string name="text_login_rate_limited_title">Çok fazla oturum açma denemesi</string>
   <string name="text_member_count_accessible">%s üzerinde kayıtlı Trakt hesabı</string>
   <string name="text_member_count_tagline">izlediklerini takip eden ve saymaya devam eden kişiler</string>
   <string name="text_member_since">%s tarihinden beri</string>

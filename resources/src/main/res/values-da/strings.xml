@@ -1527,6 +1527,10 @@
   <string name="text_list_public">Offentlig</string>
   <string name="text_list_public_info">Listen vil være synlig for alle brugere.</string>
   <string name="text_location">Sted</string>
+  <string name="text_login_failed_message">Tjek din forbindelse, og prøv igen.</string>
+  <string name="text_login_failed_title">Kunne ikke starte login</string>
+  <string name="text_login_rate_limited_message">Vent venligst et øjeblik, og prøv igen.</string>
+  <string name="text_login_rate_limited_title">For mange login-forsøg</string>
   <string name="text_member_count_accessible">Over %s registrerede Trakt-konti</string>
   <string name="text_member_count_tagline">personer, der følger med i, hvad de ser, og tæller</string>
   <string name="text_member_since">Siden %s</string>

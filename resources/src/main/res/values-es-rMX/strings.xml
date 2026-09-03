@@ -1527,6 +1527,10 @@
   <string name="text_list_public">Pública</string>
   <string name="text_list_public_info">La lista será visible para todos los usuarios.</string>
   <string name="text_location">Ubicación</string>
+  <string name="text_login_failed_message">Verifica tu conexión y vuelve a intentarlo.</string>
+  <string name="text_login_failed_title">No se pudo iniciar sesión</string>
+  <string name="text_login_rate_limited_message">Espera un momento y vuelve a intentarlo.</string>
+  <string name="text_login_rate_limited_title">Demasiados intentos de inicio de sesión</string>
   <string name="text_member_count_accessible">Más de %s cuentas Trakt registradas</string>
   <string name="text_member_count_tagline">personas registrando lo que ven y contando</string>
   <string name="text_member_since">Desde %s</string>

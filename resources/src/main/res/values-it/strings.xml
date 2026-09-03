@@ -1527,6 +1527,10 @@
   <string name="text_list_public">Pubblica</string>
   <string name="text_list_public_info">La lista sarà visibile a tutti gli utenti.</string>
   <string name="text_location">Posizione</string>
+  <string name="text_login_failed_message">Controlla la tua connessione e riprova.</string>
+  <string name="text_login_failed_title">Impossibile avviare l\'accesso</string>
+  <string name="text_login_rate_limited_message">Attendi un momento e riprova.</string>
+  <string name="text_login_rate_limited_title">Troppi tentativi di accesso</string>
   <string name="text_member_count_accessible">Oltre %s account Trakt registrati</string>
   <string name="text_member_count_tagline">persone che tengono traccia di ciò che guardano, e il numero continua a crescere</string>
   <string name="text_member_since">Dal %s</string>

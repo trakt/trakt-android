@@ -1527,6 +1527,10 @@
   <string name="text_list_public">Публичен</string>
   <string name="text_list_public_info">Списъкът ще бъде видим за всички потребители.</string>
   <string name="text_location">Местоположение</string>
+  <string name="text_login_failed_message">Проверете връзката си и опитайте отново.</string>
+  <string name="text_login_failed_title">Неуспешно стартиране на влизане</string>
+  <string name="text_login_rate_limited_message">Моля, изчакайте малко и опитайте отново.</string>
+  <string name="text_login_rate_limited_title">Твърде много опити за влизане</string>
   <string name="text_member_count_accessible">Над %s регистрирани Trakt акаунта</string>
   <string name="text_member_count_tagline">хора, които проследяват какво гледат, и броят им расте</string>
   <string name="text_member_since">От %s</string>

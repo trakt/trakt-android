@@ -1527,6 +1527,10 @@
   <string name="text_list_public">Публічний</string>
   <string name="text_list_public_info">Список буде видно всім користувачам.</string>
   <string name="text_location">Місцезнаходження</string>
+  <string name="text_login_failed_message">Перевірте своє з\'єднання та спробуйте ще раз.</string>
+  <string name="text_login_failed_title">Не вдалося розпочати вхід</string>
+  <string name="text_login_rate_limited_message">Зачекайте трохи та спробуйте ще раз.</string>
+  <string name="text_login_rate_limited_title">Забагато спроб входу</string>
   <string name="text_member_count_accessible">Понад %s зареєстрованих облікових записів Trakt</string>
   <string name="text_member_count_tagline">люди, які відстежують переглянуте, і їхня кількість зростає</string>
   <string name="text_member_since">З %s</string>

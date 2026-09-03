@@ -1527,6 +1527,10 @@
   <string name="text_list_public">Nyilvános</string>
   <string name="text_list_public_info">A lista minden felhasználó számára látható lesz.</string>
   <string name="text_location">Hely</string>
+  <string name="text_login_failed_message">Ellenőrizze az internetkapcsolatát, majd próbálja újra.</string>
+  <string name="text_login_failed_title">Nem sikerült elindítani a bejelentkezést</string>
+  <string name="text_login_rate_limited_message">Kérem, várjon egy pillanatot, majd próbálja újra.</string>
+  <string name="text_login_rate_limited_title">Túl sok bejelentkezési kísérlet</string>
   <string name="text_member_count_accessible">Több mint %s regisztrált Trakt fiók</string>
   <string name="text_member_count_tagline">emberek, akik követik, mit néznek, és a szám folyamatosan növekszik</string>
   <string name="text_member_since">Mióta: %s</string>
