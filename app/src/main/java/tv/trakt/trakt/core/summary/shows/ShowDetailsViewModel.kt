@@ -632,28 +632,35 @@ internal class ShowDetailsViewModel(
     }
 
     private suspend fun refreshLists() {
-        return coroutineScope {
-            val watchlistAsync = async {
-                if (!loadWatchlistUseCase.isShowsLoaded()) {
-                    loadWatchlistUseCase.loadWatchlist()
+        try {
+            coroutineScope {
+                val watchlistAsync = async {
+                    if (!loadWatchlistUseCase.isShowsLoaded()) {
+                        loadWatchlistUseCase.loadWatchlist()
+                    }
+                    loadWatchlistUseCase.loadLocalShows()
                 }
-                loadWatchlistUseCase.loadLocalShows()
-            }
-            val listsAsync = async {
-                if (!loadListsUseCase.isLoaded()) {
-                    loadListsUseCase.loadLists()
+                val listsAsync = async {
+                    if (!loadListsUseCase.isLoaded()) {
+                        loadListsUseCase.loadLists()
+                    }
+                    loadListsUseCase.loadLocalLists()
                 }
-                loadListsUseCase.loadLocalLists()
+
+                val watchlist = watchlistAsync.await()
+                val lists = listsAsync.await()
+
+                showProgressState.update {
+                    it?.copy(
+                        inWatchlist = watchlist.contains(showId),
+                        inLists = lists.isNotEmpty(),
+                    )
+                }
             }
-
-            val watchlist = watchlistAsync.await()
-            val lists = listsAsync.await()
-
-            showProgressState.update {
-                it?.copy(
-                    inWatchlist = watchlist.contains(showId),
-                    inLists = lists.isNotEmpty(),
-                )
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                errorState.update { error }
+                Timber.recordError(error)
             }
         }
     }

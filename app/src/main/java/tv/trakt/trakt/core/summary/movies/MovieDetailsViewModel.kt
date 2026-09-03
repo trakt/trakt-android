@@ -678,28 +678,35 @@ internal class MovieDetailsViewModel(
     // Lists
 
     private suspend fun refreshLists() {
-        return coroutineScope {
-            val watchlistAsync = async {
-                if (!loadWatchlistUseCase.isMoviesLoaded()) {
-                    loadWatchlistUseCase.loadWatchlist()
+        try {
+            coroutineScope {
+                val watchlistAsync = async {
+                    if (!loadWatchlistUseCase.isMoviesLoaded()) {
+                        loadWatchlistUseCase.loadWatchlist()
+                    }
+                    loadWatchlistUseCase.loadLocalMovies()
                 }
-                loadWatchlistUseCase.loadLocalMovies()
-            }
-            val listsAsync = async {
-                if (!loadListsUseCase.isLoaded()) {
-                    loadListsUseCase.loadLists()
+                val listsAsync = async {
+                    if (!loadListsUseCase.isLoaded()) {
+                        loadListsUseCase.loadLists()
+                    }
+                    loadListsUseCase.loadLocalLists()
                 }
-                loadListsUseCase.loadLocalLists()
+
+                val watchlist = watchlistAsync.await()
+                val lists = listsAsync.await()
+
+                movieProgressState.update {
+                    it?.copy(
+                        inWatchlist = watchlist.contains(movieId),
+                        inLists = lists.isNotEmpty(),
+                    )
+                }
             }
-
-            val watchlist = watchlistAsync.await()
-            val lists = listsAsync.await()
-
-            movieProgressState.update {
-                it?.copy(
-                    inWatchlist = watchlist.contains(movieId),
-                    inLists = lists.isNotEmpty(),
-                )
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                errorState.update { error }
+                Timber.recordError(error)
             }
         }
     }
