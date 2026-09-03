@@ -807,7 +807,7 @@
   <string name="header_status">Estado</string>
   <string name="header_stream_on">Ver en</string>
   <string name="header_streaming">Disponibilidad</string>
-  <string name="header_streaming_services">Servicios en streaming</string>
+  <string name="header_streaming_services">Servicios de streaming</string>
   <string name="header_streaming_sync">Sincronización de streaming</string>
   <string name="header_streaming_vip_services">Disponible con VIP</string>
   <string name="header_studio">Estudio</string>
@@ -1045,7 +1045,7 @@
   <string name="link_text_preview_settings">Vista previa</string>
   <string name="link_text_privacy">Privacidad</string>
   <string name="link_text_service_status">Estado del servicio de Trakt</string>
-  <string name="link_text_streaming_sync_settings">Transmisión</string>
+  <string name="link_text_streaming_sync_settings">Streaming</string>
   <string name="link_text_support">Soporte</string>
   <string name="link_text_terms">Términos</string>
   <string name="link_text_terms_of_use">Condiciones de uso</string>
