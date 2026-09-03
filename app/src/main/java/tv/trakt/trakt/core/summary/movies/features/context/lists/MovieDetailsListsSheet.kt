@@ -7,6 +7,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -14,7 +15,6 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.model.Movie
-import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import kotlin.random.Random.Default.nextInt
 
@@ -26,11 +26,10 @@ internal fun MovieDetailsListsSheet(
     movie: Movie?,
     inWatchlist: Boolean,
     onWatchlistClick: (() -> Unit)? = null,
-    onAddListClick: ((listId: TraktId, ownerId: TraktId) -> Unit)? = null,
-    onRemoveListClick: ((listId: TraktId, ownerId: TraktId) -> Unit)? = null,
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
+    val viewModelKey = remember(movie) { nextInt().toString() }
 
     if (movie != null) {
         TraktBottomSheet(
@@ -40,26 +39,12 @@ internal fun MovieDetailsListsSheet(
             MovieDetailsListsView(
                 movie = movie,
                 viewModel = koinViewModel(
-                    key = nextInt().toString(),
+                    key = viewModelKey,
                     parameters = { parametersOf(movie) },
                 ),
                 inWatchlist = inWatchlist,
                 onWatchlistClick = {
                     onWatchlistClick?.invoke()
-                    sheetScope.launch {
-                        state.hide()
-                        onDismiss()
-                    }
-                },
-                onAddListClick = { listId, ownerId ->
-                    onAddListClick?.invoke(listId, ownerId)
-                    sheetScope.launch {
-                        state.hide()
-                        onDismiss()
-                    }
-                },
-                onRemoveListClick = { listId, ownerId ->
-                    onRemoveListClick?.invoke(listId, ownerId)
                     sheetScope.launch {
                         state.hide()
                         onDismiss()

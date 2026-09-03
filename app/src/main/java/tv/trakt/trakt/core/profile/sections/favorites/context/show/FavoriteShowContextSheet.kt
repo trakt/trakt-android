@@ -8,6 +8,7 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
@@ -33,6 +34,7 @@ internal fun FavoriteShowContextSheet(
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
+    val viewModelKey = remember(show) { nextInt().toString() }
 
     if (show != null) {
         val localSnack = LocalSnackbarState.current
@@ -45,7 +47,7 @@ internal fun FavoriteShowContextSheet(
             FavoriteShowContextView(
                 show = show,
                 viewModel = koinViewModel(
-                    key = nextInt().toString(),
+                    key = viewModelKey,
                     parameters = { parametersOf(show) },
                 ),
                 onRemovedFromFavorites = {

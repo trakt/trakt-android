@@ -7,6 +7,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.koin.androidx.compose.koinViewModel
@@ -25,6 +26,8 @@ internal fun MovieInfoSheet(
     onPersonClick: (person: Person) -> Unit,
     onDismiss: () -> Unit,
 ) {
+    val viewModelKey = remember(movie) { nextInt().toString() }
+
     if (movie != null) {
         TraktBottomSheet(
             sheetState = state,
@@ -32,7 +35,7 @@ internal fun MovieInfoSheet(
         ) {
             MovieInfoView(
                 viewModel = koinViewModel(
-                    key = nextInt().toString(),
+                    key = viewModelKey,
                     parameters = { parametersOf(movie) },
                 ),
                 onPersonClick = onPersonClick,

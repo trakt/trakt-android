@@ -45,7 +45,6 @@ import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
-import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.errors.GlobalErrorsManager
@@ -59,7 +58,6 @@ import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
-import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
@@ -68,8 +66,6 @@ import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source.MovieDetails
 import tv.trakt.trakt.core.favorites.FavoritesUpdates
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
-import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.AddPersonalListItemUseCase
-import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.movies.MovieDetailsState.UserRatingsState
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
@@ -104,8 +100,6 @@ internal class MovieDetailsViewModel(
     private val updateMovieHistoryUseCase: UpdateMovieHistoryUseCase,
     private val updateMovieWatchlistUseCase: UpdateMovieWatchlistUseCase,
     private val updateMovieFavoritesUseCase: UpdateMovieFavoritesUseCase,
-    private val addListItemUseCase: AddPersonalListItemUseCase,
-    private val removeListItemUseCase: RemovePersonalListItemUseCase,
     private val appReviewUseCase: RequestAppReviewUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalDataSource,
@@ -150,6 +144,7 @@ internal class MovieDetailsViewModel(
 
         observeHistory()
         observeCheckIn()
+        observeLists()
 
         analytics.logScreenView(
             screenName = "movie_details",
@@ -173,6 +168,16 @@ internal class MovieDetailsViewModel(
             .debounce(200.milliseconds)
             .onEach {
                 loadUserProgressData(force = true)
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeLists() {
+        movieDetailsUpdates.observeUpdates(Source.Lists)
+            .distinctUntilChanged()
+            .debounce(200.milliseconds)
+            .onEach {
+                refreshLists()
             }
             .launchIn(viewModelScope)
     }
@@ -672,110 +677,36 @@ internal class MovieDetailsViewModel(
 
     // Lists
 
-    fun toggleList(
-        listId: TraktId,
-        ownerId: TraktId,
-        add: Boolean,
-    ) {
-        if (movieState.value == null ||
-            loadingState.value.isLoading ||
-            loadingProgress.value.isLoading ||
-            loadingLists.value.isLoading
-        ) {
-            return
-        }
-
-        when {
-            add -> addToList(listId, ownerId)
-            else -> removeFromList(listId, ownerId)
-        }
-    }
-
-    private fun addToList(
-        listId: TraktId,
-        ownerId: TraktId,
-    ) {
-        viewModelScope.launch {
-            val movie = movieState.value
-            if (!sessionManager.isAuthenticated() || movie == null) {
-                return@launch
-            }
-            try {
-                loadingLists.update { Loading }
-
-                addListItemUseCase.addMovie(
-                    listId = listId,
-                    ownerId = ownerId,
-                    movie = movie,
-                )
-
-                infoState.update {
-                    DynamicStringResource(R.string.text_info_list_added)
-                }
-
-                loadingLists.update { Done }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    when (error.getHttpCode()) {
-                        HTTP_ERROR_TRAKT_VIP_LIMIT -> {
-                            errorsManager.tryEmit(error)
-                        }
-                        else -> {
-                            errorState.update { error }
-                            Timber.recordError(error)
-                        }
-                    }
-                    loadingLists.update { Idle }
-                }
-            }
-        }
-    }
-
-    private fun removeFromList(
-        listId: TraktId,
-        ownerId: TraktId,
-    ) {
-        viewModelScope.launch {
-            if (!sessionManager.isAuthenticated()) {
-                return@launch
-            }
-            try {
-                loadingLists.update { Loading }
-
-                removeListItemUseCase.removeMovie(
-                    listId = listId,
-                    ownerId = ownerId,
-                    movieId = movieId,
-                )
-
-                refreshLists()
-                infoState.update {
-                    DynamicStringResource(R.string.text_info_list_removed)
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.recordError(error)
-                }
-            } finally {
-                loadingLists.update { Done }
-            }
-        }
-    }
-
     private suspend fun refreshLists() {
-        return coroutineScope {
-            val watchlistAsync = async { loadWatchlistUseCase.loadLocalMovies() }
-            val listsAsync = async { loadListsUseCase.loadLocalLists() }
+        try {
+            coroutineScope {
+                val watchlistAsync = async {
+                    if (!loadWatchlistUseCase.isMoviesLoaded()) {
+                        loadWatchlistUseCase.loadWatchlist()
+                    }
+                    loadWatchlistUseCase.loadLocalMovies()
+                }
+                val listsAsync = async {
+                    if (!loadListsUseCase.isLoaded()) {
+                        loadListsUseCase.loadLists()
+                    }
+                    loadListsUseCase.loadLocalLists()
+                }
 
-            val watchlist = watchlistAsync.await()
-            val lists = listsAsync.await()
+                val watchlist = watchlistAsync.await()
+                val lists = listsAsync.await()
 
-            movieProgressState.update {
-                it?.copy(
-                    inWatchlist = watchlist.contains(movieId),
-                    inLists = lists.isNotEmpty(),
-                )
+                movieProgressState.update {
+                    it?.copy(
+                        inWatchlist = watchlist.contains(movieId),
+                        inLists = lists.isNotEmpty(),
+                    )
+                }
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                errorState.update { error }
+                Timber.recordError(error)
             }
         }
     }

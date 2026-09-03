@@ -14,6 +14,7 @@ import tv.trakt.trakt.common.model.lists.CustomListMinimal
 internal data class MovieDetailsListsState(
     val lists: ImmutableList<CustomListMinimal> = EmptyImmutableList,
     val movieLists: ImmutableSet<TraktId> = EmptyImmutableSet,
+    val toggling: ImmutableSet<TraktId> = EmptyImmutableSet,
     val user: User? = null,
     val loading: LoadingState = LoadingState.Idle,
     val error: Exception? = null,

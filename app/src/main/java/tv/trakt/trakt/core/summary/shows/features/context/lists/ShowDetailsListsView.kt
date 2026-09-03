@@ -56,19 +56,17 @@ internal fun ShowDetailsListsView(
     inWatchlist: Boolean,
     modifier: Modifier = Modifier,
     onWatchlistClick: (() -> Unit)? = null,
-    onAddListClick: ((listId: TraktId, ownerId: TraktId) -> Unit)? = null,
-    onRemoveListClick: ((listId: TraktId, ownerId: TraktId) -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var confirmRemoveWatchlistSheet by remember { mutableStateOf(false) }
-    var confirmRemoveListSheet by remember { mutableStateOf<CustomListMinimal?>(null) }
 
     ShowDetailsListsContent(
         show = show,
         loading = state.loading,
         lists = state.lists,
         showLists = state.showLists,
+        toggling = state.toggling,
         inWatchlist = inWatchlist,
         onWatchlistClick = {
             if (inWatchlist) {
@@ -77,13 +75,7 @@ internal fun ShowDetailsListsView(
                 onWatchlistClick?.invoke()
             }
         },
-        onListClick = {
-            if (viewModel.isListed(it.id)) {
-                confirmRemoveListSheet = it
-            } else {
-                onAddListClick?.invoke(it.id, it.ownerId)
-            }
-        },
+        onListClick = viewModel::toggleList,
         modifier = modifier,
     )
 
@@ -100,23 +92,6 @@ internal fun ShowDetailsListsView(
             show.title,
         ),
     )
-
-    RemoveConfirmationSheet(
-        active = confirmRemoveListSheet != null,
-        onYes = {
-            confirmRemoveListSheet?.let {
-                onRemoveListClick?.invoke(it.id, it.ownerId)
-                confirmRemoveListSheet = null
-            }
-        },
-        onNo = { confirmRemoveListSheet = null },
-        title = stringResource(R.string.button_text_remove_from_list),
-        message = stringResource(
-            R.string.warning_prompt_remove_from_personal_list,
-            show.title,
-            confirmRemoveListSheet?.name ?: "",
-        ),
-    )
 }
 
 @Composable
@@ -126,6 +101,7 @@ private fun ShowDetailsListsContent(
     inWatchlist: Boolean,
     lists: ImmutableList<CustomListMinimal>,
     showLists: ImmutableSet<TraktId>,
+    toggling: ImmutableSet<TraktId>,
     modifier: Modifier = Modifier,
     onWatchlistClick: (() -> Unit)? = null,
     onListClick: ((CustomListMinimal) -> Unit)? = null,
@@ -178,6 +154,7 @@ private fun ShowDetailsListsContent(
             inWatchlist = inWatchlist,
             lists = lists,
             showLists = showLists,
+            toggling = toggling,
             onWatchlistClick = onWatchlistClick,
             onListClick = onListClick,
             modifier = Modifier
@@ -193,6 +170,7 @@ private fun ActionButtons(
     inWatchlist: Boolean,
     lists: ImmutableList<CustomListMinimal>,
     showLists: ImmutableSet<TraktId>,
+    toggling: ImmutableSet<TraktId>,
     onWatchlistClick: (() -> Unit)? = null,
     onListClick: ((CustomListMinimal) -> Unit)? = null,
 ) {
@@ -239,13 +217,14 @@ private fun ActionButtons(
         }
 
         for (list in lists) {
+            val enabled = !loading && !toggling.contains(list.id)
             ListButton(
                 text = list.name,
-                enabled = !loading,
+                enabled = enabled,
                 checked = showLists.contains(list.id),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .onClick(enabled = !loading) {
+                    .onClick(enabled = enabled) {
                         onListClick?.invoke(list)
                     },
             )
@@ -264,6 +243,7 @@ private fun Preview() {
             inWatchlist = true,
             lists = listOf(PreviewData.customListMinimal1).toImmutableList(),
             showLists = setOf(PreviewData.show1.ids.trakt).toImmutableSet(),
+            toggling = emptySet<TraktId>().toImmutableSet(),
         )
     }
 }
@@ -279,6 +259,7 @@ private fun Preview2() {
             inWatchlist = false,
             lists = listOf(PreviewData.customListMinimal1).toImmutableList(),
             showLists = emptySet<TraktId>().toImmutableSet(),
+            toggling = emptySet<TraktId>().toImmutableSet(),
         )
     }
 }

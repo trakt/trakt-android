@@ -13,5 +13,6 @@ internal interface ShowDetailsUpdates {
         Seasons,
         AllSeasons,
         WatchedUntil,
+        Lists,
     }
 }

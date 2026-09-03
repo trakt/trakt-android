@@ -7,6 +7,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
@@ -38,6 +39,7 @@ internal fun UpNextItemContextSheet(
     val localRes = LocalResources.current
 
     val sheetScope = rememberCoroutineScope()
+    val viewModelKey = remember(sheetItem) { nextInt().toString() }
 
     if (sheetItem != null) {
         TraktBottomSheet(
@@ -47,7 +49,7 @@ internal fun UpNextItemContextSheet(
             UpNextItemContextView(
                 item = sheetItem,
                 viewModel = koinViewModel(
-                    key = nextInt().toString(),
+                    key = viewModelKey,
                 ),
                 onAddWatched = {
                     onAddWatched(it)

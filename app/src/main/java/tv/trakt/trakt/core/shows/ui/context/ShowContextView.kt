@@ -354,7 +354,6 @@ private fun ShowActionButtons(
         if (showRecommended) {
             GhostButton(
                 enabled = !isLoadingOrDone,
-                loading = state.loadingWatchlist.isLoading || state.loadingWatchlist.isDone,
                 text = stringResource(R.string.button_text_hide_recommendation),
                 onClick = onHideRecommendationClick,
                 iconSize = 22.dp,
