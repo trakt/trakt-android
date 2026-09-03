@@ -155,7 +155,7 @@
   <string name="button_label_pick_match">Importeer %s.</string>
   <string name="button_label_play_track">Speel %s af</string>
   <string name="button_label_plex_add_server">Een Plex-server toevoegen</string>
-  <string name="button_label_plex_connect">Verbind je Plex-account</string>
+  <string name="button_label_plex_connect">Koppel je Plex-account</string>
   <string name="button_label_plex_disconnect">Koppel je Plex-account los</string>
   <string name="button_label_plex_manage_server">Serverbibliotheken beheren</string>
   <string name="button_label_plex_remove_server">Verwijder %s</string>
