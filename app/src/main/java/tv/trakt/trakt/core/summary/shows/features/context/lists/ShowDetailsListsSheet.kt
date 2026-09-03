@@ -14,7 +14,6 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import kotlin.random.Random.Default.nextInt
 
@@ -26,8 +25,6 @@ internal fun ShowDetailsListsSheet(
     show: Show?,
     inWatchlist: Boolean,
     onWatchlistClick: (() -> Unit)? = null,
-    onAddListClick: ((listId: TraktId, ownerId: TraktId) -> Unit)? = null,
-    onRemoveListClick: ((listId: TraktId, ownerId: TraktId) -> Unit)? = null,
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
@@ -46,20 +43,6 @@ internal fun ShowDetailsListsSheet(
                 inWatchlist = inWatchlist,
                 onWatchlistClick = {
                     onWatchlistClick?.invoke()
-                    sheetScope.launch {
-                        state.hide()
-                        onDismiss()
-                    }
-                },
-                onAddListClick = { listId: TraktId, ownerId: TraktId ->
-                    onAddListClick?.invoke(listId, ownerId)
-                    sheetScope.launch {
-                        state.hide()
-                        onDismiss()
-                    }
-                },
-                onRemoveListClick = { listId: TraktId, ownerId: TraktId ->
-                    onRemoveListClick?.invoke(listId, ownerId)
                     sheetScope.launch {
                         state.hide()
                         onDismiss()

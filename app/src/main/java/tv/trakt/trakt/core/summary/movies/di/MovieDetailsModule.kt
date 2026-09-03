@@ -81,8 +81,6 @@ internal val movieDetailsModule = module {
             updateMovieHistoryUseCase = get(),
             updateMovieWatchlistUseCase = get(),
             updateMovieFavoritesUseCase = get(),
-            addListItemUseCase = get(),
-            removeListItemUseCase = get(),
             appReviewUseCase = get(),
             userWatchlistLocalSource = get(),
             userWatchlistMinLocalSource = get(),
@@ -199,6 +197,9 @@ internal val movieDetailsModule = module {
             movie = movie,
             sessionManager = get(),
             loadListsUseCase = get(),
+            addListItemUseCase = get(),
+            removeListItemUseCase = get(),
+            errorsManager = get(),
         )
     }
 }

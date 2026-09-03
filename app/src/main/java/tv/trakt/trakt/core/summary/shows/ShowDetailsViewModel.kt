@@ -44,7 +44,6 @@ import tv.trakt.trakt.common.firebase.inappreview.RequestAppReviewUseCase
 import tv.trakt.trakt.common.helpers.DynamicStringResource
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
-import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.StringResource
 import tv.trakt.trakt.common.helpers.errors.GlobalErrorsManager
@@ -65,8 +64,6 @@ import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.favorites.FavoritesUpdates
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
-import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.AddPersonalListItemUseCase
-import tv.trakt.trakt.core.lists.sections.personal.usecases.manage.RemovePersonalListItemUseCase
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
@@ -104,8 +101,6 @@ internal class ShowDetailsViewModel(
     private val updateShowHistoryUseCase: UpdateShowHistoryUseCase,
     private val updateShowWatchlistUseCase: UpdateShowWatchlistUseCase,
     private val updateShowFavoritesUseCase: UpdateShowFavoritesUseCase,
-    private val addListItemUseCase: AddPersonalListItemUseCase,
-    private val removeListItemUseCase: RemovePersonalListItemUseCase,
     private val appReviewUseCase: RequestAppReviewUseCase,
     private val userWatchlistLocalSource: UserWatchlistLocalDataSource,
     private val userWatchlistMinLocalSource: UserWatchlistMinimalLocalDataSource,
@@ -535,25 +530,6 @@ internal class ShowDetailsViewModel(
         }
     }
 
-    fun toggleList(
-        listId: TraktId,
-        ownerId: TraktId,
-        add: Boolean,
-    ) {
-        if (showState.value == null ||
-            loadingState.value.isLoading ||
-            loadingProgress.value.isLoading ||
-            loadingLists.value.isLoading
-        ) {
-            return
-        }
-
-        when {
-            add -> addToList(listId, ownerId)
-            else -> removeFromList(listId, ownerId)
-        }
-    }
-
     private fun addToWatchlist() {
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
@@ -633,78 +609,6 @@ internal class ShowDetailsViewModel(
                     mediaType = "show",
                     source = "show_details",
                 )
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    errorState.update { error }
-                    Timber.recordError(error)
-                }
-            } finally {
-                loadingLists.update { Done }
-            }
-        }
-    }
-
-    private fun addToList(
-        listId: TraktId,
-        ownerId: TraktId,
-    ) {
-        viewModelScope.launch {
-            val show = showState.value
-            if (!sessionManager.isAuthenticated() || show == null) {
-                return@launch
-            }
-            try {
-                loadingLists.update { Loading }
-
-                addListItemUseCase.addShow(
-                    listId = listId,
-                    ownerId = ownerId,
-                    show = show,
-                )
-
-                infoState.update {
-                    DynamicStringResource(R.string.text_info_list_added)
-                }
-
-                loadingLists.update { Done }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    when (error.getHttpCode()) {
-                        HTTP_ERROR_TRAKT_VIP_LIMIT -> {
-                            errorsManager.tryEmit(error)
-                        }
-                        else -> {
-                            errorState.update { error }
-                            Timber.recordError(error)
-                        }
-                    }
-                    loadingLists.update { Idle }
-                }
-            }
-        }
-    }
-
-    private fun removeFromList(
-        listId: TraktId,
-        ownerId: TraktId,
-    ) {
-        viewModelScope.launch {
-            if (!sessionManager.isAuthenticated()) {
-                return@launch
-            }
-            try {
-                loadingLists.update { Loading }
-
-                removeListItemUseCase.removeShow(
-                    listId = listId,
-                    ownerId = ownerId,
-                    showId = showId,
-                )
-
-                refreshLists()
-                infoState.update {
-                    DynamicStringResource(R.string.text_info_list_removed)
-                }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
