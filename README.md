@@ -51,3 +51,13 @@ Want to help translating Trakt into your native language?
 Have you spotted a mistake or an improvement?
 
 Join the CrowdIn project: [Translate Trakt](https://crwd.in/trakt-poc/3857d5ea667dd425fbd0cb2e4e80dc192749600)
+
+## Contributions 👏
+
+All contributions are welcome BUT, as a general rule we try to keep our Trakt apps in parity with what's happening on the [Website](github.com/trakt/trakt-web)
+
+If you wish to introduce something new into the app that's NOT already available on the website please open PR for the web first - or even better start with a website Github issue or [Featurebase](https://roadmap.trakt.tv/) request. This way your tokens and time will not be wasted ;)
+
+If you see something that's already available on web but not yet in the Android app then PR is welcome surely (it is still better to start with an Issue first so we can assess and not duplicate any work by accident).
+
+Let's keep the PRs small and focused on a single feature/issue. This way it is easier for everyone to understand it and review.
