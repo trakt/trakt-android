@@ -41,6 +41,7 @@ import timber.log.Timber
 import tv.trakt.trakt.app.TvSplashActivity
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_CUSTOM_THEME_ENABLED
 import tv.trakt.trakt.common.helpers.extensions.isTelevision
+import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.ui.theme.colors.DarkColors
 import tv.trakt.trakt.common.ui.theme.colors.LightColors
 import tv.trakt.trakt.core.auth.ConfigAuth
@@ -262,6 +263,10 @@ internal class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+        } else {
+            Timber.recordError(
+                IllegalArgumentException("Invalid Trakt authorization data: $authData"),
+            )
         }
     }
 
