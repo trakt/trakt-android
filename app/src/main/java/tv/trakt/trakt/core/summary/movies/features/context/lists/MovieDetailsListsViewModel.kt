@@ -102,7 +102,6 @@ internal class MovieDetailsListsViewModel(
 
         val listed = isListed(list.id)
         togglingState.update { (it + list.id).toImmutableSet() }
-        setListed(list.id, listed = !listed)
 
         viewModelScope.launch {
             try {
@@ -118,10 +117,10 @@ internal class MovieDetailsListsViewModel(
                         movie = movie,
                     )
                 }
+                setListed(list.id, listed = !listed)
                 detailsUpdates.notifyUpdate(Source.Lists)
             } catch (error: Exception) {
                 error.rethrowCancellation {
-                    setListed(list.id, listed = listed)
                     when (error.getHttpCode()) {
                         HTTP_ERROR_TRAKT_VIP_LIMIT -> {
                             errorsManager.tryEmit(error)
