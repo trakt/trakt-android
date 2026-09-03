@@ -679,8 +679,18 @@ internal class MovieDetailsViewModel(
 
     private suspend fun refreshLists() {
         return coroutineScope {
-            val watchlistAsync = async { loadWatchlistUseCase.loadLocalMovies() }
-            val listsAsync = async { loadListsUseCase.loadLocalLists() }
+            val watchlistAsync = async {
+                if (!loadWatchlistUseCase.isMoviesLoaded()) {
+                    loadWatchlistUseCase.loadWatchlist()
+                }
+                loadWatchlistUseCase.loadLocalMovies()
+            }
+            val listsAsync = async {
+                if (!loadListsUseCase.isLoaded()) {
+                    loadListsUseCase.loadLists()
+                }
+                loadListsUseCase.loadLocalLists()
+            }
 
             val watchlist = watchlistAsync.await()
             val lists = listsAsync.await()

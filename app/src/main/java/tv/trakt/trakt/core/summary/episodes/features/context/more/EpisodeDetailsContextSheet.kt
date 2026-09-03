@@ -7,6 +7,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -35,6 +36,7 @@ internal fun EpisodeDetailsContextSheet(
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
+    val viewModelKey = remember(show, episode) { nextInt().toString() }
 
     if (active && show != null && episode != null) {
         TraktBottomSheet(
@@ -45,7 +47,7 @@ internal fun EpisodeDetailsContextSheet(
                 episode = episode,
                 watched = watched,
                 viewModel = koinViewModel(
-                    key = nextInt().toString(),
+                    key = viewModelKey,
                     parameters = { parametersOf(show, episode) },
                 ),
                 onHistoryClick = {

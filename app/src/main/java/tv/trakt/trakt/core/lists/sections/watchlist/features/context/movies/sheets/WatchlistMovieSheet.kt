@@ -7,6 +7,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
@@ -36,6 +37,7 @@ internal fun WatchlistMovieSheet(
     onDismiss: () -> Unit,
 ) {
     val sheetScope = rememberCoroutineScope()
+    val viewModelKey = remember(movie) { nextInt().toString() }
 
     if (movie != null) {
         val localSnack = LocalSnackbarState.current
@@ -50,7 +52,7 @@ internal fun WatchlistMovieSheet(
                 watched = watched,
                 addLocally = addLocally,
                 viewModel = koinViewModel(
-                    key = nextInt().toString(),
+                    key = viewModelKey,
                 ),
                 onRemoveWatchlist = {
                     onRemoveWatchlist()

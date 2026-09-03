@@ -79,6 +79,31 @@ Rules:
 - Sheet visibility is transient UI state — `remember { mutableStateOf(false) }` at the caller, not
   in the ViewModel.
 
+### Sheet-scoped ViewModel keys
+
+Sheets that want a fresh ViewModel per open pass a random `key` to `koinViewModel(...)`. That key
+**must be remembered**, keyed on the sheet's subject item(s):
+
+```kotlin
+val viewModelKey = remember(movie) { nextInt().toString() }
+
+MovieDetailsListsView(
+    viewModel = koinViewModel(
+        key = viewModelKey,
+        parameters = { parametersOf(movie) },
+    ),
+)
+```
+
+- **Never inline the key**: `koinViewModel(key = nextInt().toString(), …)` generates a new key on
+  every recomposition — any parent state change silently spawns a brand-new ViewModel mid-flight,
+  re-running `init` loads and wiping in-progress UI state (e.g. an optimistic toggle reverting when
+  another ViewModel reacts to the change and recomposes the screen).
+- `remember(item) { nextInt().toString() }` keeps the key stable while the sheet is open, and
+  regenerates it per open: the item goes `null` on dismiss, so the `remember` key changes on the
+  next open and a fresh ViewModel is created.
+- Multiple subjects → all of them are remember keys: `remember(show, episode) { … }`.
+
 ## CompositionLocal
 
 App-wide ambient UI state already wired:

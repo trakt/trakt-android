@@ -4,6 +4,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalResources
 import kotlinx.coroutines.delay
@@ -33,6 +34,7 @@ internal fun EditListSheet(
     val localRes = LocalResources.current
 
     val sheetScope = rememberCoroutineScope()
+    val viewModelKey = remember(list) { nextInt().toString() }
 
     if (active && list != null) {
         TraktBottomSheet(
@@ -42,7 +44,7 @@ internal fun EditListSheet(
             EditListView(
                 initialList = list,
                 viewModel = koinViewModel(
-                    key = nextInt().toString(),
+                    key = viewModelKey,
                 ),
                 onListEdited = {
                     sheetScope

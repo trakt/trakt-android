@@ -7,6 +7,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.koin.androidx.compose.koinViewModel
@@ -27,6 +28,8 @@ internal fun EpisodeInfoSheet(
     onPersonClick: (person: Person) -> Unit = {},
     onDismiss: () -> Unit,
 ) {
+    val viewModelKey = remember(show, episode) { nextInt().toString() }
+
     if (show != null && episode != null) {
         TraktBottomSheet(
             sheetState = state,
@@ -34,7 +37,7 @@ internal fun EpisodeInfoSheet(
         ) {
             EpisodeInfoView(
                 viewModel = koinViewModel(
-                    key = nextInt().toString(),
+                    key = viewModelKey,
                     parameters = { parametersOf(show, episode) },
                 ),
                 onPersonClick = onPersonClick,
