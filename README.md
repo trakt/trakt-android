@@ -14,13 +14,13 @@
 <br>
 
 <p align="center">
-<img width="240" alt="image" src="https://github.com/user-attachments/assets/81aaaa6e-7d4d-4a29-a264-362f2ea20c26" />
+<img width="230" alt="image" src="https://github.com/user-attachments/assets/81aaaa6e-7d4d-4a29-a264-362f2ea20c26" />
 &nbsp;
-<img width="240" alt="image" src="https://github.com/user-attachments/assets/5f66449e-9046-431b-8024-39ee9a234337" />
+<img width="230" alt="image" src="https://github.com/user-attachments/assets/5f66449e-9046-431b-8024-39ee9a234337" />
 &nbsp;
-<img width="240" alt="image" src="https://github.com/user-attachments/assets/4e756eec-b21a-4e8c-978a-ecfd2abb87d6" />
+<img width="230" alt="image" src="https://github.com/user-attachments/assets/4e756eec-b21a-4e8c-978a-ecfd2abb87d6" />
 &nbsp;
-<img width="240" alt="image" src="https://github.com/user-attachments/assets/e521a011-1e36-46c0-85eb-092dd6a36cb8" />
+<img width="230" alt="image" src="https://github.com/user-attachments/assets/e521a011-1e36-46c0-85eb-092dd6a36cb8" />
 </p>
 
 ## Supported Form Factors
