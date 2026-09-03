@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="200" height="200" alt="logo" src="https://github.com/user-attachments/assets/3ae10e8f-11fa-461d-8046-4502ae005d3a" />
+  <img width="150" height="150" alt="logo" src="https://github.com/user-attachments/assets/3ae10e8f-11fa-461d-8046-4502ae005d3a" />
   <h1>Trakt for Android</h1>
   <p><em>Track everything you watch, wherever you stream it.</em></p>
 </div>
@@ -14,13 +14,13 @@
 <br>
 
 <p align="center">
-<img width="230" alt="image" src="https://github.com/user-attachments/assets/81aaaa6e-7d4d-4a29-a264-362f2ea20c26" />
+<img width="200" alt="image" src="https://github.com/user-attachments/assets/81aaaa6e-7d4d-4a29-a264-362f2ea20c26" />
 &nbsp;
-<img width="230" alt="image" src="https://github.com/user-attachments/assets/5f66449e-9046-431b-8024-39ee9a234337" />
+<img width="200" alt="image" src="https://github.com/user-attachments/assets/5f66449e-9046-431b-8024-39ee9a234337" />
 &nbsp;
-<img width="230" alt="image" src="https://github.com/user-attachments/assets/4e756eec-b21a-4e8c-978a-ecfd2abb87d6" />
+<img width="200" alt="image" src="https://github.com/user-attachments/assets/4e756eec-b21a-4e8c-978a-ecfd2abb87d6" />
 &nbsp;
-<img width="230" alt="image" src="https://github.com/user-attachments/assets/e521a011-1e36-46c0-85eb-092dd6a36cb8" />
+<img width="200" alt="image" src="https://github.com/user-attachments/assets/e521a011-1e36-46c0-85eb-092dd6a36cb8" />
 </p>
 
 ## Supported Form Factors
