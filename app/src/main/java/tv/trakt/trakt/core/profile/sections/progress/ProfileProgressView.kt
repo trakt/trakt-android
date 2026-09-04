@@ -275,7 +275,7 @@ private fun Preview3() {
         ProfileProgressContent(
             state = ProfileProgressState(
                 loading = Done,
-                filter = ProgressFilter.Completed,
+                filter = ProgressFilter.UpToDate,
                 items = EmptyImmutableList,
             ),
         )

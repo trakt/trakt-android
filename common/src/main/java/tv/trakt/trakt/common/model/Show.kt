@@ -12,6 +12,8 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.helpers.serializers.ImmutableListSerializer
 import tv.trakt.trakt.common.helpers.serializers.InstantSerializer
+import tv.trakt.trakt.common.model.MediaStatus.Canceled
+import tv.trakt.trakt.common.model.MediaStatus.Ended
 import tv.trakt.trakt.common.model.MediaStatus.Released
 import tv.trakt.trakt.common.model.Show.Companion
 import tv.trakt.trakt.common.networking.RecommendedShowDto
@@ -58,6 +60,13 @@ data class Show(
     val isReleased: Boolean
         get() = status == Released ||
             releasedAt?.let { !it.isAfter(nowUtcInstant()) } ?: false
+
+    /**
+     * True when the show will not air any new episode, either because it wrapped up
+     * or because it was canceled. An unknown status counts as still airing.
+     */
+    val hasEnded: Boolean
+        get() = status == Ended || status == Canceled
 
     @Composable
     fun rememberReleased(): Boolean {
