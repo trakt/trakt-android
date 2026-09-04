@@ -93,6 +93,7 @@ import tv.trakt.trakt.core.profile.sections.progress.data.local.dropped.Progress
 import tv.trakt.trakt.core.profile.sections.progress.data.local.dropped.ProgressDroppedStorage
 import tv.trakt.trakt.core.profile.sections.progress.data.local.watching.ProgressWatchingLocalDataSource
 import tv.trakt.trakt.core.profile.sections.progress.data.local.watching.ProgressWatchingStorage
+import tv.trakt.trakt.core.profile.sections.progress.filters.GetProgressFilterOrderUseCase
 import tv.trakt.trakt.core.profile.sections.progress.filters.GetProgressFilterUseCase
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressCompleteUseCase
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressDroppedUseCase
@@ -184,6 +185,12 @@ internal val profileModule = module {
 
     factory {
         GetProgressFilterUseCase(
+            dataStore = get(named(PROFILE_PREFERENCES)),
+        )
+    }
+
+    factory {
+        GetProgressFilterOrderUseCase(
             dataStore = get(named(PROFILE_PREFERENCES)),
         )
     }
