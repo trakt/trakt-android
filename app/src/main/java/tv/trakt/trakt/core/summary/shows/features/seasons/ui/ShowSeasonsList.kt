@@ -45,6 +45,7 @@ internal fun ShowSeasonsList(
     snapScrollEnabled: Boolean = false,
     onSeasonClick: (SeasonItem) -> Unit,
     onSeasonLongClick: (SeasonItem) -> Unit,
+    onSeasonCheckClick: (SeasonItem) -> Unit = {},
 ) {
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
@@ -100,6 +101,12 @@ internal fun ShowSeasonsList(
                     if (isSelected) {
                         onSeasonLongClick(item)
                     }
+                },
+                // Only the selected season has its episodes loaded, so only its
+                // chip can act on the history.
+                onCollectionChipClick = when {
+                    isSelected -> ({ onSeasonCheckClick(item) })
+                    else -> null
                 },
                 chipContent = {
                     Column(

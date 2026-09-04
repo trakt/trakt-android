@@ -34,6 +34,16 @@ internal data class ShowSeasons(
         get() = selectedSeasonEpisodes.isNotEmpty() &&
             selectedSeasonEpisodes.all { it.isWatched }
 
+    /**
+     * Episodes a "track" / "watch again" action would add a play for: on an
+     * already completed season every released episode (a rewatch), otherwise
+     * only the gaps.
+     */
+    val selectedSeasonEpisodesToTrack: ImmutableList<EpisodeItem>
+        get() = selectedSeasonEpisodes
+            .filter { it.episode.isReleased && (isSelectedSeasonWatched || !it.isWatched) }
+            .toImmutableList()
+
     /** Prepends a freshly posted [comment] to the selected season's comment list. */
     fun addComment(comment: Comment): ShowSeasons =
         copy(
