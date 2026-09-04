@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
@@ -36,7 +37,8 @@ internal class AllShowSeasonsSheetState {
     var confirmMarkSeason by mutableStateOf(false)
     var confirmRemoveSeason by mutableStateOf(false)
     var episodeDate by mutableStateOf<EpisodeItem?>(null)
-    var episodeWatchedUntil by mutableStateOf<EpisodeItem?>(null)
+    var episodeWatchedUntil by mutableStateOf<Episode?>(null)
+    var confirmWatchedUntil by mutableStateOf<Episode?>(null)
     var episodeContext by mutableStateOf<EpisodeItem?>(null)
     var seasonDate by mutableStateOf(false)
     var postComment by mutableStateOf(false)
@@ -60,7 +62,7 @@ internal fun AllShowSeasonsSheets(
             sheetState.episodeDate = it
         },
         onWatchedUntilClick = {
-            sheetState.episodeWatchedUntil = it
+            sheetState.episodeWatchedUntil = it.episode
         },
         onRemoveClick = {
             sheetState.confirmRemoveEpisode = it
@@ -72,10 +74,25 @@ internal fun AllShowSeasonsSheets(
 
     WatchedUntilSheet(
         show = state.show,
-        episode = sheetState.episodeWatchedUntil?.episode,
+        episode = sheetState.episodeWatchedUntil,
         onDismiss = {
             sheetState.episodeWatchedUntil = null
         },
+    )
+
+    ConfirmationSheet(
+        active = sheetState.confirmWatchedUntil != null,
+        title = stringResource(R.string.button_text_watched_until_here),
+        message = stringResource(
+            R.string.button_label_watched_until_here,
+            sheetState.confirmWatchedUntil?.title.orEmpty(),
+        ),
+        yesText = stringResource(R.string.button_text_watched_until_here),
+        onYes = {
+            sheetState.episodeWatchedUntil = sheetState.confirmWatchedUntil
+            sheetState.confirmWatchedUntil = null
+        },
+        onNo = { sheetState.confirmWatchedUntil = null },
     )
 
     RemoveConfirmationSheet(
