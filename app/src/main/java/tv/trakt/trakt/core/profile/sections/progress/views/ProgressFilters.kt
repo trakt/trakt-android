@@ -80,7 +80,7 @@ internal fun ProgressFilters(
 private fun Preview() {
     TraktTheme {
         ProgressFilters(
-            selected = ProgressFilter.Completed,
+            selected = ProgressFilter.UpToDate,
         )
     }
 }

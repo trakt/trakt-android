@@ -135,7 +135,7 @@ internal fun AllProgressContent(
         ContentList(
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listState = listState,
-            listFilter = state.filter ?: ProgressFilter.Completed,
+            listFilter = state.filter ?: ProgressFilter.UpToDate,
             contentPadding = contentPadding,
             loading = state.loading.isLoading,
             loadingMore = state.loadingMore.isLoading,
