@@ -328,6 +328,7 @@ internal class AllWatchlistViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
+                    Timber.recordError(error)
                 }
             } finally {
                 loadingMoreState.update { Done }

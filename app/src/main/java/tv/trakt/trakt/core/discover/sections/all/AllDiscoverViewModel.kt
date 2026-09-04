@@ -232,39 +232,41 @@ internal class AllDiscoverViewModel(
             try {
                 loadingMoreState.update { Loading }
 
-                val showsAsync = async {
-                    getShowsUseCase.getShows(
-                        source = destination.source,
-                        page = pages + 1,
-                        filters = filterState.value,
-                        skipLocal = true,
-                    )
+                coroutineScope {
+                    val showsAsync = async {
+                        getShowsUseCase.getShows(
+                            source = destination.source,
+                            page = pages + 1,
+                            filters = filterState.value,
+                            skipLocal = true,
+                        )
+                    }
+
+                    val moviesAsync = async {
+                        getMoviesUseCase.getMovies(
+                            source = destination.source,
+                            page = pages + 1,
+                            filters = filterState.value,
+                            skipLocal = true,
+                        )
+                    }
+
+                    val shows = if (filterState.value.mode.isMediaOrShows) showsAsync.await() else emptyList()
+                    val movies = if (filterState.value.mode.isMediaOrMovies) moviesAsync.await() else emptyList()
+
+                    val nextData = listOf(shows, movies)
+                        .interleave()
+
+                    itemsState.update { items ->
+                        items
+                            ?.plus(nextData)
+                            ?.distinctBy { it.key }
+                            ?.toImmutableList()
+                    }
+
+                    pages += 1
+                    hasMoreData = nextData.isNotEmpty()
                 }
-
-                val moviesAsync = async {
-                    getMoviesUseCase.getMovies(
-                        source = destination.source,
-                        page = pages + 1,
-                        filters = filterState.value,
-                        skipLocal = true,
-                    )
-                }
-
-                val shows = if (filterState.value.mode.isMediaOrShows) showsAsync.await() else emptyList()
-                val movies = if (filterState.value.mode.isMediaOrMovies) moviesAsync.await() else emptyList()
-
-                val nextData = listOf(shows, movies)
-                    .interleave()
-
-                itemsState.update { items ->
-                    items
-                        ?.plus(nextData)
-                        ?.distinctBy { it.key }
-                        ?.toImmutableList()
-                }
-
-                pages += 1
-                hasMoreData = nextData.isNotEmpty()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
