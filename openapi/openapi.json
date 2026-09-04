@@ -35456,8 +35456,7 @@
                             },
                             "required": [
                               "number",
-                              "ids",
-                              "aired_episodes"
+                              "ids"
                             ],
                             "nullable": true
                           },
@@ -36850,8 +36849,7 @@
                             },
                             "required": [
                               "number",
-                              "ids",
-                              "aired_episodes"
+                              "ids"
                             ],
                             "nullable": true
                           },
@@ -38244,8 +38242,7 @@
                             },
                             "required": [
                               "number",
-                              "ids",
-                              "aired_episodes"
+                              "ids"
                             ],
                             "nullable": true
                           },
@@ -39638,8 +39635,7 @@
                             },
                             "required": [
                               "number",
-                              "ids",
-                              "aired_episodes"
+                              "ids"
                             ],
                             "nullable": true
                           },
@@ -41050,8 +41046,7 @@
                             },
                             "required": [
                               "number",
-                              "ids",
-                              "aired_episodes"
+                              "ids"
                             ],
                             "nullable": true
                           },
