@@ -24,6 +24,7 @@ internal fun ListDetailsMovieView(
     more: Boolean = true,
     watched: Boolean = false,
     watchlist: Boolean = false,
+    plays: Int = 0,
     onClick: (TraktId) -> Unit = { },
     onLongClick: () -> Unit,
 ) {
@@ -40,6 +41,7 @@ internal fun ListDetailsMovieView(
         enabled = enabled,
         watched = watched,
         watchlist = watchlist,
+        plays = plays,
         contentImageUrl = movie.images?.getPosterUrl(),
         containerImageUrl = movie.images?.getFanartUrl(Images.Size.THUMB),
         onClick = { onClick(movie.ids.trakt) },

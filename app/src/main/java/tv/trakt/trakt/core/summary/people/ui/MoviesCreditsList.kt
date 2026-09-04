@@ -149,6 +149,7 @@ internal fun MoviesCreditsList(
                                         title = item.title,
                                         imageUrl = item.images?.getPosterUrl(),
                                         watched = userCollection.isWatched(item.id, Movie, null),
+                                        plays = userCollection.plays(item.id, Movie, null),
                                         watching = userCollection.isWatching(item.id, Movie, null),
                                         watchlist = userCollection.isWatchlist(item.id, Movie),
                                         onClick = { onClick?.invoke(item.movie) },
