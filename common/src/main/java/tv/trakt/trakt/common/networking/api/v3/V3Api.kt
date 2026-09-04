@@ -19,6 +19,7 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3ShowRecommendationResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3TriviaResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3UsageResponse
+import kotlin.uuid.Uuid
 
 class V3Api(
     private val baseUrl: String,
@@ -78,12 +79,18 @@ class V3Api(
 
     suspend fun getShowTrivia(showId: TraktId): V3TriviaResponse {
         val response = client.get("${baseV3Url}media/show/${showId.value}/info/5/version/1")
-        return response.body<V3TriviaResponse>()
+        val body = response.body<V3TriviaResponse>()
+        return body.copy(
+            items = body.items?.map { it.copy(id = Uuid.random().toHexString()) },
+        )
     }
 
     suspend fun getMovieTrivia(movieId: TraktId): V3TriviaResponse {
         val response = client.get("${baseV3Url}media/movie/${movieId.value}/info/5/version/1")
-        return response.body<V3TriviaResponse>()
+        val body = response.body<V3TriviaResponse>()
+        return body.copy(
+            items = body.items?.map { it.copy(id = Uuid.random().toHexString()) },
+        )
     }
 
     // Recommendations
