@@ -42,6 +42,7 @@ import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.helpers.streamingservices.StreamingServiceApp
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.streamings.StreamingService
+import tv.trakt.trakt.core.summary.shows.ShowDetailsState.ProgressState
 import tv.trakt.trakt.core.summary.shows.features.context.more.ShowDetailsContextState.StreamingsState
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
@@ -51,8 +52,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 @Composable
 internal fun ShowDetailsContextView(
     show: Show,
-    watched: Boolean,
-    lists: Boolean,
+    showProgress: ProgressState?,
     viewModel: ShowDetailsContextViewModel,
     modifier: Modifier = Modifier,
     onHistoryClick: (() -> Unit)? = null,
@@ -65,8 +65,7 @@ internal fun ShowDetailsContextView(
 
     ShowDetailsContextViewContent(
         show = show,
-        watched = watched,
-        lists = lists,
+        showProgress = showProgress,
         state = state,
         onHistoryClick = onHistoryClick,
         onRemoveClick = onRemoveClick,
@@ -80,8 +79,7 @@ internal fun ShowDetailsContextView(
 @Composable
 private fun ShowDetailsContextViewContent(
     show: Show,
-    watched: Boolean,
-    lists: Boolean,
+    showProgress: ProgressState?,
     state: ShowDetailsContextState,
     modifier: Modifier = Modifier,
     onCheckClick: (() -> Unit)? = null,
@@ -162,9 +160,10 @@ private fun ShowDetailsContextViewContent(
         )
 
         ActionButtons(
-            watched = watched,
             released = isReleased,
-            lists = lists,
+            started = showProgress?.isWatching == true,
+            watched = showProgress?.isWatched == true,
+            lists = showProgress?.inLists == true,
             watchOnlyOnce = state.user?.settings?.watchOnlyOnce,
             coverEnabled = !show.images?.getFanartUrl().isNullOrBlank(),
             onCheckClick = onCheckClick ?: {},
@@ -172,8 +171,7 @@ private fun ShowDetailsContextViewContent(
             onRemoveClick = onRemoveClick ?: {},
             onListsClick = onListsClick ?: {},
             onCoverClick = onCoverClick ?: {},
-            modifier = Modifier
-                .padding(top = 14.dp),
+            modifier = Modifier.padding(top = 14.dp),
         )
     }
 }
@@ -219,6 +217,7 @@ private fun WatchButton(
 
 @Composable
 private fun ActionButtons(
+    started: Boolean,
     watched: Boolean,
     released: Boolean,
     lists: Boolean,
@@ -258,7 +257,7 @@ private fun ActionButtons(
             )
         }
 
-        if (watched) {
+        if (watched || started) {
             GhostButton(
                 text = stringResource(R.string.button_text_view_history),
                 icon = painterResource(R.drawable.ic_calendar_check),
@@ -314,18 +313,6 @@ private fun ActionButtons(
                 onClick = onCoverClick,
             )
         }
-
-//        GhostButton(
-//            text = stringResource(R.string.button_text_share),
-//            icon = painterResource(R.drawable.ic_share),
-//            iconSize = 22.dp,
-//            iconSpace = 15.dp,
-//            modifier = Modifier
-//                .graphicsLayer {
-//                    translationX = -5.dp.toPx()
-//                },
-//            onClick = onShareClick,
-//        )
     }
 }
 
@@ -345,8 +332,13 @@ private fun Preview() {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             ShowDetailsContextViewContent(
                 show = PreviewData.show1,
-                watched = true,
-                lists = true,
+                showProgress = ProgressState(
+                    aired = 10,
+                    plays = 5,
+                    playsWithoutSpecials = 5,
+                    inWatchlist = true,
+                    inLists = true,
+                ),
                 state = ShowDetailsContextState(
                     streamings = StreamingsState(
                         loading = false,

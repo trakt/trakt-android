@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.core.summary.shows.ShowDetailsState.ProgressState
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import kotlin.random.Random.Default.nextInt
 
@@ -24,8 +25,7 @@ internal fun ShowDetailsContextSheet(
         skipPartiallyExpanded = true,
     ),
     show: Show?,
-    watched: Boolean,
-    lists: Boolean,
+    showProgress: ProgressState?,
     onHistoryClick: (() -> Unit)? = null,
     onCheckClick: (() -> Unit)? = null,
     onRemoveClick: (() -> Unit)? = null,
@@ -43,8 +43,7 @@ internal fun ShowDetailsContextSheet(
         ) {
             ShowDetailsContextView(
                 show = show,
-                watched = watched,
-                lists = lists,
+                showProgress = showProgress,
                 viewModel = koinViewModel(
                     key = viewModelKey,
                     parameters = { parametersOf(show) },

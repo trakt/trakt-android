@@ -290,8 +290,7 @@ internal fun ShowDetailsScreen(
 
     ShowDetailsContextSheet(
         show = contextSheet,
-        watched = state.showProgress?.isWatched == true,
-        lists = state.showProgress?.inLists == true,
+        showProgress = state.showProgress,
         onHistoryClick = {
             contextSheet = null
             state.show?.let { onNavigateToHistory(it, state.showProgress?.plays ?: 0) }
