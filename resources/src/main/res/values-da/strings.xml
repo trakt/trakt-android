@@ -1312,9 +1312,6 @@
   <string name="tag_label_progress">Status</string>
   <string name="tag_plex_syncing">Synkroniserer</string>
   <string name="tag_text_blocked_user">Blokeret</string>
-  <string name="tag_text_discount_biyearly">Rabatsats første 2 år</string>
-  <string name="tag_text_discount_monthly">Rabatsats første måned</string>
-  <string name="tag_text_discount_yearly">Rabatsats første år</string>
   <string name="tag_text_dropped">Droppet</string>
   <string name="tag_text_episodes">Afsnit</string>
   <string name="tag_text_finale">Finale</string>
@@ -1454,6 +1451,8 @@
   <string name="text_duplicate_plays">duplikerede afspilninger</string>
   <string name="text_during_credits">Under rulleteksterne</string>
   <string name="text_edit_mode_toggle_sections">Skjul/vis sektioner</string>
+  <string name="text_email_unsubscribe_message">Du vil ikke længere modtage disse e-mails fra Trakt.</string>
+  <string name="text_email_unsubscribe_title">Afmeldt</string>
   <string name="text_ends_at">Slutter kl. %s</string>
   <string name="text_episodes_watched">%s afsnit</string>
   <string name="text_export_status_complete">Eksport fuldført.</string>
@@ -1735,7 +1734,6 @@
   <string name="text_vip_billing_cycle_monthly">1 måned</string>
   <string name="text_vip_billing_cycle_year">%s år</string>
   <string name="text_vip_billing_monthly">%s faktureres månedligt</string>
-  <string name="text_vip_billing_now">%s faktureres nu</string>
   <string name="text_vip_billing_yearly">%s faktureres årligt</string>
   <string name="text_vip_built_to_last">Bygget til at holde</string>
   <string name="text_vip_costs">VIP hjælper med at dække de reelle omkostninger ved at drive Trakt, herunder:</string>
@@ -1743,10 +1741,6 @@
   <string name="text_vip_costs_infrastructure">Brugerdefineret API-infrastruktur til en massiv global brugerbase</string>
   <string name="text_vip_costs_metadata">Opdateret metadata, billeder og undertekster</string>
   <string name="text_vip_costs_team">Teamet, der holder det hele kørende</string>
-  <string name="text_vip_discount_first_term_biyearly">%s for 2 år, derefter</string>
-  <string name="text_vip_discount_first_term_monthly">%s for måned 1, derefter</string>
-  <string name="text_vip_discount_first_term_yearly">%s for år 1, derefter</string>
-  <string name="text_vip_discount_then_price">derefter %s</string>
   <string name="text_vip_features_tagline">Ingen hype, bare funktioner.</string>
   <string name="text_vip_get_insights">Få dybere indsigter, smartere sporing og tidlig adgang til, hvad der er nyt.</string>
   <string name="text_vip_join_now">Slut dig til seersamfundet, der behandler hver sæson og hver premiere som en milepæl. Hæv din status og få nøglerne til en mere sofistikeret verden af opdagelse.</string>
@@ -1758,9 +1752,6 @@
   <string name="text_vip_payment_method_other">Andet</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
   <string name="text_vip_powers_trakt">hjælper med at drive Trakt og låser op for funktioner bygget til folk, der virkelig bekymrer sig om, hvad de ser.</string>
-  <string name="text_vip_recurring_biyearly">%s hvert andet år derefter</string>
-  <string name="text_vip_recurring_monthly">%s hver måned derefter</string>
-  <string name="text_vip_recurring_yearly">%s hvert år derefter</string>
   <string name="text_vip_subscription">abonnement</string>
   <string name="text_vip_subscription_missing_message">Vi kunne ikke finde et aktivt abonnement at administrere. Det er muligvis allerede blevet annulleret. <a>Kontakt support</a>, hvis du mener, at der er noget galt.</string>
   <string name="text_vip_subscription_missing_title">Intet aktivt abonnement</string>

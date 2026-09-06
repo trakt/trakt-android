@@ -1312,9 +1312,6 @@
   <string name="tag_label_progress">Progrés</string>
   <string name="tag_plex_syncing">Sincronitzant</string>
   <string name="tag_text_blocked_user">Bloquejat</string>
-  <string name="tag_text_discount_biyearly">Descompte dels primers 2 anys</string>
-  <string name="tag_text_discount_monthly">Descompte del primer mes</string>
-  <string name="tag_text_discount_yearly">Descompte del primer any</string>
   <string name="tag_text_dropped">Abandonat</string>
   <string name="tag_text_episodes">Episodis</string>
   <string name="tag_text_finale">Final</string>
@@ -1454,6 +1451,8 @@
   <string name="text_duplicate_plays">reproduccions duplicades</string>
   <string name="text_during_credits">Durant els crèdits</string>
   <string name="text_edit_mode_toggle_sections">Amaga/mostra seccions</string>
+  <string name="text_email_unsubscribe_message">Ja no rebràs aquests correus electrònics de Trakt.</string>
+  <string name="text_email_unsubscribe_title">Subscripció cancel·lada</string>
   <string name="text_ends_at">Acaba a les %s</string>
   <string name="text_episodes_watched">%s episodis</string>
   <string name="text_export_status_complete">Exportació completada.</string>
@@ -1735,7 +1734,6 @@
   <string name="text_vip_billing_cycle_monthly">1 mes</string>
   <string name="text_vip_billing_cycle_year">%s any</string>
   <string name="text_vip_billing_monthly">%s facturat mensualment</string>
-  <string name="text_vip_billing_now">%s facturat ara</string>
   <string name="text_vip_billing_yearly">%s facturat anualment</string>
   <string name="text_vip_built_to_last">Construït per durar</string>
   <string name="text_vip_costs">VIP ajuda a cobrir els costos reals de manteniment de Trakt, incloent:</string>
@@ -1743,10 +1741,6 @@
   <string name="text_vip_costs_infrastructure">Infraestructura API personalitzada per a una base d\'usuaris global massiva</string>
   <string name="text_vip_costs_metadata">Metadades, imatges i subtítols actualitzats</string>
   <string name="text_vip_costs_team">L\'equip que ho manté tot en funcionament</string>
-  <string name="text_vip_discount_first_term_biyearly">%s per 2 anys, llavors</string>
-  <string name="text_vip_discount_first_term_monthly">%s pel mes 1, llavors</string>
-  <string name="text_vip_discount_first_term_yearly">%s per l\'any 1, llavors</string>
-  <string name="text_vip_discount_then_price">llavors %s</string>
   <string name="text_vip_features_tagline">Sense bombo, només funcions.</string>
   <string name="text_vip_get_insights">Obtén informació més detallada, seguiment més intel·ligent i accés anticipat a les novetats.</string>
   <string name="text_vip_join_now">Uneix-te a la societat d\'espectadors que tracten cada temporada i cada estrena com una fita. Eleva el teu estatus i obtén les claus per a un món de descobriment més sofisticat.</string>
@@ -1758,9 +1752,6 @@
   <string name="text_vip_payment_method_other">Altres</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
   <string name="text_vip_powers_trakt">ajuda a impulsar Trakt i desbloqueja funcions creades per a persones que realment es preocupen pel que veuen.</string>
-  <string name="text_vip_recurring_biyearly">%s cada 2 anys després</string>
-  <string name="text_vip_recurring_monthly">%s cada mes després</string>
-  <string name="text_vip_recurring_yearly">%s cada any després</string>
   <string name="text_vip_subscription">subscripció</string>
   <string name="text_vip_subscription_missing_message">No hem pogut trobar cap subscripció activa per gestionar. Pot ser que ja s\'hagi cancel·lat. <a>Contacta amb el servei d\'assistència</a> si creus que hi ha algun problema.</string>
   <string name="text_vip_subscription_missing_title">Sense subscripció activa</string>
