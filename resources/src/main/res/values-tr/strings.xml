@@ -1312,9 +1312,6 @@
   <string name="tag_label_progress">İlerleme</string>
   <string name="tag_plex_syncing">Senkronize Ediliyor</string>
   <string name="tag_text_blocked_user">Engellendi</string>
-  <string name="tag_text_discount_biyearly">İlk 2 yıl indirimi</string>
-  <string name="tag_text_discount_monthly">İlk ay indirimi</string>
-  <string name="tag_text_discount_yearly">İlk yıl indirimi</string>
   <string name="tag_text_dropped">Bırakıldı</string>
   <string name="tag_text_episodes">Bölümler</string>
   <string name="tag_text_finale">Final</string>
@@ -1454,6 +1451,8 @@
   <string name="text_duplicate_plays">yinelenen oynatmalar</string>
   <string name="text_during_credits">Jenerik sırasında</string>
   <string name="text_edit_mode_toggle_sections">Bölümleri gizle/göster</string>
+  <string name="text_email_unsubscribe_message">Bu e-postaları Trakt\'ten artık almayacaksınız.</string>
+  <string name="text_email_unsubscribe_title">Abonelikten Çıkıldı</string>
   <string name="text_ends_at">%sda biter</string>
   <string name="text_episodes_watched">%s bölüm</string>
   <string name="text_export_status_complete">Dışa aktarma tamamlandı.</string>
@@ -1735,7 +1734,6 @@
   <string name="text_vip_billing_cycle_monthly">1 ay</string>
   <string name="text_vip_billing_cycle_year">%s yıl</string>
   <string name="text_vip_billing_monthly">%s aylık faturalandırılır</string>
-  <string name="text_vip_billing_now">%s şimdi faturalandırıldı</string>
   <string name="text_vip_billing_yearly">%s yıllık faturalandırılır</string>
   <string name="text_vip_built_to_last">Uzun Ömürlü</string>
   <string name="text_vip_costs">VIP, Trakt\'ı işletmenin gerçek maliyetlerini karşılamaya yardımcı olur, bunlar:</string>
@@ -1743,10 +1741,6 @@
   <string name="text_vip_costs_infrastructure">Devasa global kullanıcı tabanı için özel API altyapısı</string>
   <string name="text_vip_costs_metadata">Güncel meta veriler, görseller ve altyazılar</string>
   <string name="text_vip_costs_team">Her şeyi çalışır halde tutan ekip</string>
-  <string name="text_vip_discount_first_term_biyearly">2 yıl için %s, sonra</string>
-  <string name="text_vip_discount_first_term_monthly">1. ay için %s, sonra</string>
-  <string name="text_vip_discount_first_term_yearly">1. yıl için %s, sonra</string>
-  <string name="text_vip_discount_then_price">sonra %s</string>
   <string name="text_vip_features_tagline">Abartı yok, sadece özellikler.</string>
   <string name="text_vip_get_insights">Daha derin içgörüler, daha akıllı takip ve gelecek özelliklere erken erişim sağlayın.</string>
   <string name="text_vip_join_now">Her sezonu ve her galayı bir dönüm noktası olarak gören izleyiciler topluluğuna katılın. Statünüzü yükseltin ve daha sofistike bir keşif dünyasının anahtarlarını kazanın.</string>
@@ -1758,9 +1752,6 @@
   <string name="text_vip_payment_method_other">Diğer</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
   <string name="text_vip_powers_trakt">Trakt\'ı güçlendirmeye yardımcı olur ve izledikleri içeriği gerçekten önemseyen kişiler için tasarlanmış özellikleri açar.</string>
-  <string name="text_vip_recurring_biyearly">sonraki her 2 yıl %s</string>
-  <string name="text_vip_recurring_monthly">sonraki her ay %s</string>
-  <string name="text_vip_recurring_yearly">sonraki her yıl %s</string>
   <string name="text_vip_subscription">abonelik</string>
   <string name="text_vip_subscription_missing_message">Yönetecek aktif bir abonelik bulamadık. Zaten iptal edilmiş olabilir. Bir sorun olduğunu düşünüyorsanız <a>destekle iletişime geçin</a>.</string>
   <string name="text_vip_subscription_missing_title">Aktif abonelik yok</string>

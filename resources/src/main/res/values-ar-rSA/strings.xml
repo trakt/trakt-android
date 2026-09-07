@@ -1312,9 +1312,6 @@
   <string name="tag_label_progress">التقدم</string>
   <string name="tag_plex_syncing">تتم المزامنة</string>
   <string name="tag_text_blocked_user">محظور</string>
-  <string name="tag_text_discount_biyearly">خصم أول سنتين</string>
-  <string name="tag_text_discount_monthly">خصم الشهر الأول</string>
-  <string name="tag_text_discount_yearly">خصم السنة الأولى</string>
   <string name="tag_text_dropped">متوقف</string>
   <string name="tag_text_episodes">الحلقات</string>
   <string name="tag_text_finale">النهاية</string>
@@ -1454,6 +1451,8 @@
   <string name="text_duplicate_plays">مشاهدات مكررة</string>
   <string name="text_during_credits">خلال الاعتمادات</string>
   <string name="text_edit_mode_toggle_sections">إخفاء/إظهار الأقسام</string>
+  <string name="text_email_unsubscribe_message">لن تتلقى بعد الآن هذه الرسائل الإلكترونية من Trakt.</string>
+  <string name="text_email_unsubscribe_title">تم إلغاء الاشتراك</string>
   <string name="text_ends_at">ينتهي في %s</string>
   <string name="text_episodes_watched">%s من الحلَقات</string>
   <string name="text_export_status_complete">اكتمل التصدير.</string>
@@ -1735,7 +1734,6 @@
   <string name="text_vip_billing_cycle_monthly">شهر واحد</string>
   <string name="text_vip_billing_cycle_year">%s سنة</string>
   <string name="text_vip_billing_monthly">%s يتم إصدار فاتورة به شهريًا</string>
-  <string name="text_vip_billing_now">%s يتم الفوترة الآن</string>
   <string name="text_vip_billing_yearly">%s يتم إصدار فاتورة به سنويًا</string>
   <string name="text_vip_built_to_last">بنيت لتدوم</string>
   <string name="text_vip_costs">تساعد VIP في تغطية التكاليف الحقيقية لتشغيل Trakt، بما في ذلك:</string>
@@ -1743,10 +1741,6 @@
   <string name="text_vip_costs_infrastructure">البنية التحتية لواجهة برمجة التطبيقات (API) المخصصة لقاعدة مستخدمين عالمية ضخمة</string>
   <string name="text_vip_costs_metadata">بيانات وصفية محدثة وصور وترجمات</string>
   <string name="text_vip_costs_team">الفريق الذي يبقي كل شيء قيد التشغيل</string>
-  <string name="text_vip_discount_first_term_biyearly">%s لمدة سنتين، ثم</string>
-  <string name="text_vip_discount_first_term_monthly">%s للشهر الأول، ثم</string>
-  <string name="text_vip_discount_first_term_yearly">%s للسنة الأولى، ثم</string>
-  <string name="text_vip_discount_then_price">ثم %s</string>
   <string name="text_vip_features_tagline">لا يوجد ضجيج، فقط الميزات.</string>
   <string name="text_vip_get_insights">احصل على رؤى أعمق وتتبع أكثر ذكاءً ووصولاً مبكرًا إلى الخطوة التالية.</string>
   <string name="text_vip_join_now">انضم إلى مجتمع المشاهدين الذين يتعاملون مع كل موسم وكل عرض أول باعتباره علامة فارقة. ارفع حالتك واحصل على المفاتيح لعالم اكتشاف أكثر تطورًا.</string>
@@ -1758,9 +1752,6 @@
   <string name="text_vip_payment_method_other">أخرى</string>
   <string name="text_vip_payment_method_paypal">باي بال</string>
   <string name="text_vip_powers_trakt">يساعد في تعزيز Trakt ويفتح الميزات المصممة للأشخاص الذين يهتمون حقًا بما يشاهدونه.</string>
-  <string name="text_vip_recurring_biyearly">%s كل سنتين بعد ذلك</string>
-  <string name="text_vip_recurring_monthly">%s كل شهر بعد ذلك</string>
-  <string name="text_vip_recurring_yearly">%s كل سنة بعد ذلك</string>
   <string name="text_vip_subscription">الاشتراك</string>
   <string name="text_vip_subscription_missing_message">لم نتمكن من العثور على اشتراك نشط لإدارته. قد يكون قد تم إلغاؤه بالفعل. <a>اتصل بالدعم</a> إذا كنت تعتقد أن هناك خطأ ما.</string>
   <string name="text_vip_subscription_missing_title">لا يوجد اشتراك نشط</string>

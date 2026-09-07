@@ -1312,9 +1312,6 @@
   <string name="tag_label_progress">進捗</string>
   <string name="tag_plex_syncing">同期中</string>
   <string name="tag_text_blocked_user">ブロック済み</string>
-  <string name="tag_text_discount_biyearly">最初の2年間割引</string>
-  <string name="tag_text_discount_monthly">最初の1ヶ月割引</string>
-  <string name="tag_text_discount_yearly">最初の1年割引</string>
   <string name="tag_text_dropped">視聴中止</string>
   <string name="tag_text_episodes">エピソード</string>
   <string name="tag_text_finale">最終回</string>
@@ -1454,6 +1451,8 @@
   <string name="text_duplicate_plays">重複再生</string>
   <string name="text_during_credits">クレジット中</string>
   <string name="text_edit_mode_toggle_sections">セクションの表示/非表示</string>
+  <string name="text_email_unsubscribe_message">今後、Traktからのメールは届きません。</string>
+  <string name="text_email_unsubscribe_title">登録解除しました</string>
   <string name="text_ends_at">%sに終了</string>
   <string name="text_episodes_watched">%sエピソード</string>
   <string name="text_export_status_complete">エクスポートが完了しました。</string>
@@ -1735,7 +1734,6 @@
   <string name="text_vip_billing_cycle_monthly">1ヶ月</string>
   <string name="text_vip_billing_cycle_year">%s年</string>
   <string name="text_vip_billing_monthly">毎月%s</string>
-  <string name="text_vip_billing_now">今すぐ%sを請求</string>
   <string name="text_vip_billing_yearly">毎年%s</string>
   <string name="text_vip_built_to_last">長く使えるように設計</string>
   <string name="text_vip_costs">VIPは、Traktの運営にかかる実際の費用をカバーするのに役立ちます。これには以下が含まれます。</string>
@@ -1743,10 +1741,6 @@
   <string name="text_vip_costs_infrastructure">大規模なグローバルユーザーベースのためのカスタムAPIインフラストラクチャ</string>
   <string name="text_vip_costs_metadata">最新のメタデータ、画像、字幕</string>
   <string name="text_vip_costs_team">これらすべてを運営するチーム</string>
-  <string name="text_vip_discount_first_term_biyearly">最初の2年間は%s、その後</string>
-  <string name="text_vip_discount_first_term_monthly">最初の1ヶ月は%s、その後</string>
-  <string name="text_vip_discount_first_term_yearly">最初の1年は%s、その後</string>
-  <string name="text_vip_discount_then_price">その後%s</string>
   <string name="text_vip_features_tagline">誇大広告なし、純粋な機能。</string>
   <string name="text_vip_get_insights">より深い洞察、スマートなトラッキング、そして次の機能への早期アクセスを手に入れましょう。</string>
   <string name="text_vip_join_now">すべてのシーズンとすべてのプレミアをマイルストーンとして扱う視聴者のコミュニティに参加しましょう。ステータスを高め、より洗練された発見の世界への鍵を手に入れてください。</string>
@@ -1758,9 +1752,6 @@
   <string name="text_vip_payment_method_other">その他</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
   <string name="text_vip_powers_trakt">はTraktを強化し、視聴内容に本当にこだわる人々のための機能をアンロックします。</string>
-  <string name="text_vip_recurring_biyearly">その後は2年ごと%s</string>
-  <string name="text_vip_recurring_monthly">その後は毎月%s</string>
-  <string name="text_vip_recurring_yearly">その後は毎年%s</string>
   <string name="text_vip_subscription">サブスクリプション</string>
   <string name="text_vip_subscription_missing_message">管理できる有効なサブスクリプションが見つかりませんでした。すでにキャンセルされている可能性があります。問題があると思われる場合は<a>サポートにお問い合わせください</a>。</string>
   <string name="text_vip_subscription_missing_title">有効なサブスクリプションがありません</string>

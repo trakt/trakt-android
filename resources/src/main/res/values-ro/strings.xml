@@ -1312,9 +1312,6 @@
   <string name="tag_label_progress">Progres</string>
   <string name="tag_plex_syncing">Se sincronizează</string>
   <string name="tag_text_blocked_user">Blocat</string>
-  <string name="tag_text_discount_biyearly">Reducere primi 2 ani</string>
-  <string name="tag_text_discount_monthly">Reducere prima lună</string>
-  <string name="tag_text_discount_yearly">Reducere primul an</string>
   <string name="tag_text_dropped">Abandonat</string>
   <string name="tag_text_episodes">Episoade</string>
   <string name="tag_text_finale">Finala</string>
@@ -1454,6 +1451,8 @@
   <string name="text_duplicate_plays">vizionări duplicate</string>
   <string name="text_during_credits">În timpul creditelor</string>
   <string name="text_edit_mode_toggle_sections">Ascunde/afișează secțiunile</string>
+  <string name="text_email_unsubscribe_message">Nu vei mai primi aceste e-mailuri de la Trakt.</string>
+  <string name="text_email_unsubscribe_title">Dezabonat</string>
   <string name="text_ends_at">Se termină la %s</string>
   <string name="text_episodes_watched">%s episoade</string>
   <string name="text_export_status_complete">Export finalizat.</string>
@@ -1735,7 +1734,6 @@
   <string name="text_vip_billing_cycle_monthly">1 lună</string>
   <string name="text_vip_billing_cycle_year">%s an</string>
   <string name="text_vip_billing_monthly">%s facturat lunar</string>
-  <string name="text_vip_billing_now">%s facturat acum</string>
   <string name="text_vip_billing_yearly">%s facturat anual</string>
   <string name="text_vip_built_to_last">Construit să dureze</string>
   <string name="text_vip_costs">VIP ajută la acoperirea costurilor reale de funcționare a Trakt, incluzând:</string>
@@ -1743,10 +1741,6 @@
   <string name="text_vip_costs_infrastructure">Infrastructură API personalizată pentru o bază masivă de utilizatori globali</string>
   <string name="text_vip_costs_metadata">Metadate, imagini și subtitrări actualizate</string>
   <string name="text_vip_costs_team">Echipa care menține totul în funcțiune</string>
-  <string name="text_vip_discount_first_term_biyearly">%s pentru 2 ani, apoi</string>
-  <string name="text_vip_discount_first_term_monthly">%s pentru luna 1, apoi</string>
-  <string name="text_vip_discount_first_term_yearly">%s pentru anul 1, apoi</string>
-  <string name="text_vip_discount_then_price">apoi %s</string>
   <string name="text_vip_features_tagline">Fără tam-tam, doar funcții.</string>
   <string name="text_vip_get_insights">Obține informații mai detaliate, o urmărire mai inteligentă și acces timpuriu la ce urmează.</string>
   <string name="text_vip_join_now">Alătură-te societății de spectatori care tratează fiecare sezon și fiecare premieră ca pe o piatră de hotar. Ridică-ți statutul și obține cheile către o lume mai sofisticată a descoperirii.</string>
@@ -1758,9 +1752,6 @@
   <string name="text_vip_payment_method_other">Altele</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
   <string name="text_vip_powers_trakt">ajută la funcționarea Trakt și deblochează funcții create pentru persoanele cărora le pasă cu adevărat de ceea ce vizionează.</string>
-  <string name="text_vip_recurring_biyearly">%s la fiecare 2 ani după aceea</string>
-  <string name="text_vip_recurring_monthly">%s în fiecare lună după aceea</string>
-  <string name="text_vip_recurring_yearly">%s în fiecare an după aceea</string>
   <string name="text_vip_subscription">abonament</string>
   <string name="text_vip_subscription_missing_message">Nu am putut găsi un abonament activ de gestionat. Este posibil să fi fost deja anulat. <a>Contactează asistența</a> dacă crezi că ceva nu este în regulă.</string>
   <string name="text_vip_subscription_missing_title">Abonament inactiv</string>

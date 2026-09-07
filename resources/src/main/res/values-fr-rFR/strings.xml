@@ -1312,9 +1312,6 @@
   <string name="tag_label_progress">Progression</string>
   <string name="tag_plex_syncing">Synchronisation en cours</string>
   <string name="tag_text_blocked_user">Bloqué</string>
-  <string name="tag_text_discount_biyearly">Remise 2 premières années</string>
-  <string name="tag_text_discount_monthly">Remise premier mois</string>
-  <string name="tag_text_discount_yearly">Remise première année</string>
   <string name="tag_text_dropped">Abandonné</string>
   <string name="tag_text_episodes">Épisodes</string>
   <string name="tag_text_finale">Final</string>
@@ -1454,6 +1451,8 @@
   <string name="text_duplicate_plays">doublons de lectures</string>
   <string name="text_during_credits">Pendant le générique</string>
   <string name="text_edit_mode_toggle_sections">Afficher/masquer les sections</string>
+  <string name="text_email_unsubscribe_message">Vous ne recevrez plus ces e-mails de Trakt.</string>
+  <string name="text_email_unsubscribe_title">Désabonné</string>
   <string name="text_ends_at">Se termine à %s</string>
   <string name="text_episodes_watched">%s épisodes</string>
   <string name="text_export_status_complete">Exportation terminée.</string>
@@ -1735,7 +1734,6 @@
   <string name="text_vip_billing_cycle_monthly">1 mois</string>
   <string name="text_vip_billing_cycle_year">%s an</string>
   <string name="text_vip_billing_monthly">%s facturé mensuellement</string>
-  <string name="text_vip_billing_now">%s facturé maintenant</string>
   <string name="text_vip_billing_yearly">%s facturé annuellement</string>
   <string name="text_vip_built_to_last">Conçu pour durer</string>
   <string name="text_vip_costs">Le statut VIP aide à couvrir les coûts réels de fonctionnement de Trakt, notamment :</string>
@@ -1743,10 +1741,6 @@
   <string name="text_vip_costs_infrastructure">Infrastructure API personnalisée pour une base d\'utilisateurs mondiale massive</string>
   <string name="text_vip_costs_metadata">Métadonnées, images et sous-titres à jour</string>
   <string name="text_vip_costs_team">L\'équipe qui fait tout fonctionner</string>
-  <string name="text_vip_discount_first_term_biyearly">%s pour 2 ans, puis</string>
-  <string name="text_vip_discount_first_term_monthly">%s pour le 1er mois, puis</string>
-  <string name="text_vip_discount_first_term_yearly">%s pour la 1ère année, puis</string>
-  <string name="text_vip_discount_then_price">puis %s</string>
   <string name="text_vip_features_tagline">Pas de chichis, juste des fonctionnalités.</string>
   <string name="text_vip_get_insights">Obtenez des aperçus plus approfondis, un suivi plus intelligent et un accès anticipé aux nouveautés.</string>
   <string name="text_vip_join_now">Rejoignez la communauté de spectateurs qui considèrent chaque saison et chaque première comme un événement marquant. Élevez votre statut et accédez à un monde de découverte plus sophistiqué.</string>
@@ -1758,9 +1752,6 @@
   <string name="text_vip_payment_method_other">Autre</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
   <string name="text_vip_powers_trakt">aide à faire fonctionner Trakt et débloque des fonctionnalités conçues pour les personnes qui se soucient vraiment de ce qu\'elles regardent.</string>
-  <string name="text_vip_recurring_biyearly">%s tous les 2 ans ensuite</string>
-  <string name="text_vip_recurring_monthly">%s chaque mois ensuite</string>
-  <string name="text_vip_recurring_yearly">%s chaque année ensuite</string>
   <string name="text_vip_subscription">abonnement</string>
   <string name="text_vip_subscription_missing_message">Nous n\'avons pas trouvé d\'abonnement actif à gérer. Il a peut-être déjà été annulé. <a>Contacter le support</a> si vous pensez qu\'il y a un problème.</string>
   <string name="text_vip_subscription_missing_title">Aucun abonnement actif</string>

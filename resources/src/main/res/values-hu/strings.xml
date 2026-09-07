@@ -1312,9 +1312,6 @@
   <string name="tag_label_progress">Folyamat</string>
   <string name="tag_plex_syncing">Szinkronizálás</string>
   <string name="tag_text_blocked_user">Blokkolva</string>
-  <string name="tag_text_discount_biyearly">Első 2 év kedvezmény</string>
-  <string name="tag_text_discount_monthly">Első hónap kedvezmény</string>
-  <string name="tag_text_discount_yearly">Első év kedvezmény</string>
   <string name="tag_text_dropped">Félbehagyva</string>
   <string name="tag_text_episodes">Epizódok</string>
   <string name="tag_text_finale">Finálé</string>
@@ -1454,6 +1451,8 @@
   <string name="text_duplicate_plays">duplikált lejátszások</string>
   <string name="text_during_credits">Stáblista közbeni jelenetek</string>
   <string name="text_edit_mode_toggle_sections">Szakaszok elrejtése/megjelenítése</string>
+  <string name="text_email_unsubscribe_message">A továbbiakban nem kap ilyen e-maileket a Trakt-tól.</string>
+  <string name="text_email_unsubscribe_title">Leiratkozva</string>
   <string name="text_ends_at">Vége %s órakor</string>
   <string name="text_episodes_watched">%s epizód</string>
   <string name="text_export_status_complete">Exportálás befejeződött.</string>
@@ -1735,7 +1734,6 @@
   <string name="text_vip_billing_cycle_monthly">1 hónap</string>
   <string name="text_vip_billing_cycle_year">%s év</string>
   <string name="text_vip_billing_monthly">%s havonta számlázva</string>
-  <string name="text_vip_billing_now">%s most számlázva</string>
   <string name="text_vip_billing_yearly">%s évente számlázva</string>
   <string name="text_vip_built_to_last">Tartósra tervezve</string>
   <string name="text_vip_costs">A VIP segít fedezni a Trakt működtetésének valós költségeit, többek között:</string>
@@ -1743,10 +1741,6 @@
   <string name="text_vip_costs_infrastructure">Egyedi API infrastruktúra hatalmas globális felhasználói bázishoz</string>
   <string name="text_vip_costs_metadata">Naprakész metaadatok, képek és feliratok</string>
   <string name="text_vip_costs_team">A csapat, amely mindent működésben tart</string>
-  <string name="text_vip_discount_first_term_biyearly">%s 2 évre, majd</string>
-  <string name="text_vip_discount_first_term_monthly">%s az 1. hónapra, majd</string>
-  <string name="text_vip_discount_first_term_yearly">%s az 1. évre, majd</string>
-  <string name="text_vip_discount_then_price">majd %s</string>
   <string name="text_vip_features_tagline">Semmi sallang, csak a funkciók.</string>
   <string name="text_vip_get_insights">Részletesebb statisztikák, okosabb követés és korai hozzáférés az újdonságokhoz.</string>
   <string name="text_vip_join_now">Csatlakozz azoknak a nézőknek a közösségéhez, akik minden évadot és minden premiert mérföldkőnek tekintenek. Növeld státuszodat, és szerezd meg a kulcsokat a felfedezések kifinomultabb világához.</string>
@@ -1758,9 +1752,6 @@
   <string name="text_vip_payment_method_other">Egyéb</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
   <string name="text_vip_powers_trakt">támogatja a Trakt működését, és olyan funkciókat old fel, amelyek kifejezetten azoknak készültek, akiknek tényleg számít, hogy mit néznek.</string>
-  <string name="text_vip_recurring_biyearly">%s minden 2. évben utána</string>
-  <string name="text_vip_recurring_monthly">%s minden hónapban utána</string>
-  <string name="text_vip_recurring_yearly">%s minden évben utána</string>
   <string name="text_vip_subscription">előfizetés</string>
   <string name="text_vip_subscription_missing_message">Nem találtunk aktív előfizetést, amit kezelhetnénk. Lehet, hogy már lemondásra került. <a>Kapcsolatfelvétel az ügyfélszolgálattal</a>, ha úgy gondolja, valami probléma van.</string>
   <string name="text_vip_subscription_missing_title">Nincs aktív előfizetés</string>

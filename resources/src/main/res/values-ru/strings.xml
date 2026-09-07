@@ -1312,9 +1312,6 @@
   <string name="tag_label_progress">Прогресс</string>
   <string name="tag_plex_syncing">Синхронизируется</string>
   <string name="tag_text_blocked_user">Заблокировано</string>
-  <string name="tag_text_discount_biyearly">Скидка на первые 2 года</string>
-  <string name="tag_text_discount_monthly">Скидка на первый месяц</string>
-  <string name="tag_text_discount_yearly">Скидка на первый год</string>
   <string name="tag_text_dropped">Заброшено</string>
   <string name="tag_text_episodes">Эпизоды</string>
   <string name="tag_text_finale">Финал</string>
@@ -1454,6 +1451,8 @@
   <string name="text_duplicate_plays">дублирующиеся просмотры</string>
   <string name="text_during_credits">Во время титров</string>
   <string name="text_edit_mode_toggle_sections">Скрыть/показать разделы</string>
+  <string name="text_email_unsubscribe_message">Вы больше не будете получать эти письма от Trakt.</string>
+  <string name="text_email_unsubscribe_title">Вы отписались</string>
   <string name="text_ends_at">Заканчивается в %s</string>
   <string name="text_episodes_watched">%s эпизодов</string>
   <string name="text_export_status_complete">Экспорт завершен.</string>
@@ -1735,7 +1734,6 @@
   <string name="text_vip_billing_cycle_monthly">1 месяц</string>
   <string name="text_vip_billing_cycle_year">%s год</string>
   <string name="text_vip_billing_monthly">%s ежемесячно</string>
-  <string name="text_vip_billing_now">%s списано сейчас</string>
   <string name="text_vip_billing_yearly">%s ежегодно</string>
   <string name="text_vip_built_to_last">Создано надолго</string>
   <string name="text_vip_costs">VIP помогает покрыть реальные расходы на работу Trakt, включая:</string>
@@ -1743,10 +1741,6 @@
   <string name="text_vip_costs_infrastructure">Пользовательская API-инфраструктура для огромной глобальной пользовательской базы</string>
   <string name="text_vip_costs_metadata">Актуальные метаданные, изображения и субтитры</string>
   <string name="text_vip_costs_team">Команда, которая поддерживает всю работу</string>
-  <string name="text_vip_discount_first_term_biyearly">%s за 2 года, затем</string>
-  <string name="text_vip_discount_first_term_monthly">%s за 1-й месяц, затем</string>
-  <string name="text_vip_discount_first_term_yearly">%s за 1-й год, затем</string>
-  <string name="text_vip_discount_then_price">затем %s</string>
   <string name="text_vip_features_tagline">Никакой шумихи, только функции.</string>
   <string name="text_vip_get_insights">Получите более глубокие инсайты, умное отслеживание и ранний доступ к будущим функциям.</string>
   <string name="text_vip_join_now">Присоединяйтесь к сообществу зрителей, которые относятся к каждому сезону и каждой премьере как к вехе. Повысьте свой статус и получите ключи к более утонченному миру открытий.</string>
@@ -1758,9 +1752,6 @@
   <string name="text_vip_payment_method_other">Другое</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
   <string name="text_vip_powers_trakt">помогает развивать Trakt и открывает функции, созданные для людей, которые действительно заботятся о том, что смотрят.</string>
-  <string name="text_vip_recurring_biyearly">%s каждые 2 года после этого</string>
-  <string name="text_vip_recurring_monthly">%s каждый месяц после этого</string>
-  <string name="text_vip_recurring_yearly">%s каждый год после этого</string>
   <string name="text_vip_subscription">подписка</string>
   <string name="text_vip_subscription_missing_message">Нам не удалось найти активную подписку для управления. Возможно, она уже была отменена. <a>Свяжитесь со службой поддержки</a>, если считаете, что что-то не так.</string>
   <string name="text_vip_subscription_missing_title">Нет активной подписки</string>
