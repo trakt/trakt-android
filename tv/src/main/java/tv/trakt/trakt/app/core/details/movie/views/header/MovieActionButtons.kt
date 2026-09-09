@@ -97,6 +97,8 @@ internal fun MovieActionButtons(
                                 videoTitle = movieState.movieDetails.title,
                                 videoSubtitle = movieState.movieDetails.yearString,
                                 videoProgress = streamingState.plexStream.progress,
+                                ratingKey = streamingState.plexStream.ratingKey,
+                                token = streamingState.plexStream.token,
                             )
                             context.startActivity(intent)
                         }
