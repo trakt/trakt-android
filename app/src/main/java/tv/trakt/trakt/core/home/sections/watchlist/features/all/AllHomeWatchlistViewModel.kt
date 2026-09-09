@@ -549,7 +549,7 @@ internal class AllHomeWatchlistViewModel(
         viewModelScope.launch {
             try {
                 loadUserProgressUseCase.loadMoviesProgress()
-                ratePromptManager.checkMovies()
+                ratePromptManager.checkRecentlyWatched()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
