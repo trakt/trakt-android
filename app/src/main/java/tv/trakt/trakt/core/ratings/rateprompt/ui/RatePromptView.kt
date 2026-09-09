@@ -68,11 +68,23 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onEmptyClick
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia
+import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia.MovieMedia
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.HorizontalCheckInImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
+
+private val ratePrompts = listOf(
+    R.string.text_rate_prompt_1,
+    R.string.text_rate_prompt_2,
+    R.string.text_rate_prompt_3,
+    R.string.text_rate_prompt_4,
+    R.string.text_rate_prompt_5,
+    R.string.text_rate_prompt_6,
+    R.string.text_rate_prompt_7,
+    R.string.text_rate_prompt_8,
+)
 
 private val viewShape = RoundedCornerShape(20.dp)
 private val viewPadding = 7.dp
@@ -115,20 +127,15 @@ internal fun RatePromptView(
             ),
     ) {
         ExpandedView(
-            key = media.movie.ids.trakt.toString(),
-            image = media.movie.images?.getFanartUrl(Size.THUMB),
-            title = media.movie.title,
+            key = media.id.toString(),
+            image = media.images?.getFanartUrl(Size.THUMB),
+            title = media.title,
             subtitle = stringResource(
-                remember(media.movie.ids.trakt) {
-                    listOf(
-                        R.string.text_rate_prompt_1,
-                        R.string.text_rate_prompt_2,
-                        R.string.text_rate_prompt_3,
-                    ).random()
-                },
+                remember(media.id) { ratePrompts.random() },
             ),
             rating = state.rating,
             favorite = state.favorite,
+            favoriteVisible = media is MovieMedia,
             favoriteLoading = state.loading.isLoading,
             dismissing = state.dismissing,
             onMediaClick = onMediaClick,
@@ -160,6 +167,7 @@ private fun ExpandedView(
     subtitle: String?,
     rating: Int?,
     favorite: Boolean,
+    favoriteVisible: Boolean,
     favoriteLoading: Boolean,
     dismissing: Instant?,
     modifier: Modifier = Modifier,
@@ -240,7 +248,7 @@ private fun ExpandedView(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text(
-                            text = "Rate:",
+                            text = stringResource(R.string.header_rate_now),
                             color = TraktTheme.colors.textPrimary,
                             style = TraktTheme.typography.cardTitle.copy(
                                 fontWeight = W400,
@@ -257,6 +265,7 @@ private fun ExpandedView(
                             textSpacing = 42.dp,
                             rating = rating,
                             favorite = favorite,
+                            favoriteVisible = favoriteVisible,
                             favoriteLoading = favoriteLoading,
                             onRatingDrag = { isDraggingRate = it },
                             onRatingClick = { onRate(it) },
@@ -411,6 +420,7 @@ private fun Preview() {
                         title = "Lord of the Rings: The Fellowship of the Ring",
                         rating = 7,
                         favorite = true,
+                        favoriteVisible = true,
                         favoriteLoading = false,
                         dismissing = null,
                         subtitle = "How did you like it?",

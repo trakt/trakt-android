@@ -17,7 +17,7 @@ import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalRatePromptVisibility
 import tv.trakt.trakt.core.main.MainState
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia
-import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState.UnratedMovies
+import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState.UnratedMedia
 import tv.trakt.trakt.core.ratings.rateprompt.ui.RatePromptView
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -29,12 +29,11 @@ internal fun ColumnScope.MainRatePromptView(
     val localVisibility = LocalRatePromptVisibility.current
 
     val ratePrompt = state.ratePrompt
-    val ratePromptMovies = (ratePrompt as? UnratedMovies)?.movies.orEmpty()
-    val ratePromptFavorites = (ratePrompt as? UnratedMovies)?.favorites.orEmpty()
+    val ratePromptMedia = (ratePrompt as? UnratedMedia)?.media.orEmpty()
 
     AnimatedVisibility(
-        visible = remember(ratePrompt, ratePromptMovies, localVisibility.value) {
-            ratePrompt is UnratedMovies && localVisibility.value
+        visible = remember(ratePrompt, ratePromptMedia, localVisibility.value) {
+            ratePrompt is UnratedMedia && localVisibility.value
         },
         enter = fadeIn(tween(250)) + slideInVertically(initialOffsetY = { it / 10 }),
         exit = fadeOut(tween(200)),
@@ -42,26 +41,14 @@ internal fun ColumnScope.MainRatePromptView(
             .fillMaxWidth()
             .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace - 8.dp),
     ) {
-        ratePromptMovies
+        ratePromptMedia
             .firstOrNull()
-            ?.let { movie ->
-                val media = RatePromptMedia(
-                    movie = movie,
-                    favorite = ratePromptFavorites.contains(movie.ids.trakt),
-                )
-
-                val moreMedia = ratePromptMovies
-                    .filter { it.ids.trakt != movie.ids.trakt }
-                    .map { movie ->
-                        RatePromptMedia(
-                            movie = movie,
-                            favorite = ratePromptFavorites.contains(movie.ids.trakt),
-                        )
-                    }
+            ?.let { media ->
+                val moreMedia = ratePromptMedia.drop(1)
 
                 RatePromptView(
                     viewModel = koinViewModel(
-                        key = media.movie.ids.trakt.value.toString(),
+                        key = "${media.mediaType.value}-${media.id.value}",
                     ) {
                         parametersOf(media, moreMedia)
                     },
