@@ -792,7 +792,7 @@ internal fun DetailsRating(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = spacedBy(16.dp),
+            horizontalArrangement = spacedBy(20.dp),
             modifier = Modifier.padding(
                 horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
             ),
@@ -801,7 +801,9 @@ internal fun DetailsRating(
                 mediaTitle = mediaTitle,
                 topReactions = topReactions,
                 onReactionsSelected = onReactionsSelected,
-                modifier = Modifier.padding(top = 23.dp),
+                modifier = Modifier
+                    .padding(top = 23.dp)
+                    .padding(bottom = 1.dp),
             )
 
             if (visible) {

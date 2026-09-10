@@ -46,7 +46,7 @@ internal fun MediaReactionsChip(
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(3.dp),
         modifier = modifier
             .onClick { showPicker = true },
     ) {
@@ -55,9 +55,9 @@ internal fun MediaReactionsChip(
             contentDescription = null,
             tint = TraktTheme.colors.textPrimary,
             modifier = Modifier
-                .size(22.dp)
+                .size(23.dp)
                 .graphicsLayer {
-                    translationY = 0.5.dp.toPx()
+                    translationY = 0.75.dp.toPx()
                 },
         )
 
@@ -67,7 +67,7 @@ internal fun MediaReactionsChip(
             topReactions.ifEmpty { defaultReactions }.forEach { reaction ->
                 Text(
                     text = reaction.emoji,
-                    fontSize = 16.sp,
+                    fontSize = 17.sp,
                 )
             }
         }

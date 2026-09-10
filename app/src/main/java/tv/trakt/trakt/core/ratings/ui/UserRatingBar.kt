@@ -54,6 +54,7 @@ import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.math.abs
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 internal fun UserRatingBar(
@@ -154,7 +155,7 @@ internal fun UserRatingBar(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = spacedBy(10.dp, CenterHorizontally),
+            horizontalArrangement = spacedBy(8.dp, CenterHorizontally),
         ) {
             Box {
                 Row(
@@ -226,7 +227,7 @@ internal fun UserRatingBar(
                                             tutorialX.snapTo(starSizePx)
                                             tutorialAlpha.snapTo(0f)
                                             launch {
-                                                delay(400)
+                                                delay(400.milliseconds)
                                                 tutorialX.animateTo(
                                                     targetValue = starsWidth,
                                                     animationSpec = tween(500, easing = LinearEasing),
@@ -236,7 +237,7 @@ internal fun UserRatingBar(
                                                 targetValue = 1f,
                                                 animationSpec = tween(300),
                                             )
-                                            delay(800)
+                                            delay(800.milliseconds)
                                             tutorialAlpha.animateTo(
                                                 targetValue = 0f,
                                                 animationSpec = tween(300),
