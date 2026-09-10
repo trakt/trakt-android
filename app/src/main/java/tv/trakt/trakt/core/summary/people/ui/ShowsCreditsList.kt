@@ -147,6 +147,7 @@ internal fun ShowsCreditsList(
                                         title = item.title,
                                         imageUrl = item.images?.getPosterUrl(),
                                         watched = userCollection.isWatched(item.id, Show, item.airedEpisodes),
+                                        plays = userCollection.plays(item.id, Show, item.airedEpisodes),
                                         watching = userCollection.isWatching(item.id, Show, item.airedEpisodes),
                                         watchlist = userCollection.isWatchlist(item.id, Show),
                                         onClick = { onClick?.invoke(item.show) },

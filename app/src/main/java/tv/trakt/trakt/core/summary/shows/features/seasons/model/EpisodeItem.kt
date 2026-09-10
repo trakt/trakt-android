@@ -9,4 +9,6 @@ internal data class EpisodeItem(
     val isWatched: Boolean = false,
     val isLoading: Boolean = false,
     val isCheckable: Boolean = false,
+    /** How many times the user watched this episode. */
+    val plays: Int = 0,
 )

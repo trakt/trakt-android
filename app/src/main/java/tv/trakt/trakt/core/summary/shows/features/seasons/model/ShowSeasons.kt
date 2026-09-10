@@ -101,17 +101,20 @@ internal data class ShowSeasons(
             progress: ImmutableList<ShowItem.Season>?,
             checkable: Boolean,
         ): ImmutableList<EpisodeItem> {
-            val watchedBySeasonNumber = progress?.associate { season ->
-                season.number to season.episodes.mapTo(hashSetOf()) { it.id }
+            val playsBySeasonNumber = progress?.associate { season ->
+                season.number to season.episodes.associate { it.id to it.plays.size }
             }
             return inputEpisodes
                 .map {
+                    val plays = playsBySeasonNumber
+                        ?.get(it.episode.season)
+                        ?.get(it.episode.ids.trakt)
+
                     it.copy(
                         isLoading = false,
                         isCheckable = checkable,
-                        isWatched = watchedBySeasonNumber
-                            ?.get(it.episode.season)
-                            ?.contains(it.episode.ids.trakt) == true,
+                        isWatched = plays != null,
+                        plays = plays ?: 0,
                     )
                 }.toImmutableList()
         }
@@ -123,17 +126,21 @@ internal data class ShowSeasons(
             val progressMap = progress?.associateBy { it.number }
             return inputSeasons
                 .map {
-                    val watchedCount = progressMap
-                        ?.get(it.season.number)
-                        ?.episodes
-                        ?.size
-                        ?: 0
+                    val seasonProgress = progressMap?.get(it.season.number)
+                    val watchedCount = seasonProgress?.episodes?.size ?: 0
+                    val isWatched = watchedCount == it.season.episodeCount
 
                     it.copy(
-                        isWatched = watchedCount == it.season.episodeCount,
+                        isWatched = isWatched,
                         isWatching = watchedCount in 1 until (it.season.episodeCount ?: 0),
                         watchedEpisodes = watchedCount,
                         unwatchedEpisodes = (it.season.episodeCount ?: 0) - watchedCount,
+                        // A gap in the season makes "watched N times" untrue for it, so
+                        // only a complete season carries a count.
+                        plays = when {
+                            isWatched -> seasonProgress?.completedPlays ?: 0
+                            else -> 0
+                        },
                     )
                 }.toImmutableList()
         }

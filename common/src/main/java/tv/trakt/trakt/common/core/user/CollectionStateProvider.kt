@@ -1,7 +1,6 @@
 package tv.trakt.trakt.common.core.user
 
 import kotlinx.collections.immutable.toImmutableMap
-import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
@@ -23,7 +22,6 @@ import tv.trakt.trakt.common.core.user.data.local.watchlist.WatchlistUpdates.Sou
 import tv.trakt.trakt.common.core.user.usecases.lists.LoadUserWatchlistUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.LoadUserProgressUseCase
 import tv.trakt.trakt.common.core.user.usecases.progress.updates.ProgressUpdates
-import tv.trakt.trakt.common.helpers.extensions.asyncMap
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 
@@ -104,9 +102,16 @@ class CollectionStateProvider(
                                 keySelector = { it.showId },
                                 valueTransform = { it.playsDistinctWithoutSpecials },
                             ).toImmutableMap(),
-                        watchedMovies = progressMovies
-                            .asyncMap { it.mediaId }
-                            .toImmutableSet(),
+                        completedShowsPlays = progressShows
+                            .associateBy(
+                                keySelector = { it.showId },
+                                valueTransform = { it.completedPlays },
+                            ).toImmutableMap(),
+                        watchedMoviesPlays = progressMovies
+                            .associateBy(
+                                keySelector = { it.mediaId },
+                                valueTransform = { it.plays.size },
+                            ).toImmutableMap(),
                     )
                 }
             }

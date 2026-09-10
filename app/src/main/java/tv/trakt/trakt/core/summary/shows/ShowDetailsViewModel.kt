@@ -270,6 +270,7 @@ internal class ShowDetailsViewModel(
                             aired = showState.value?.airedEpisodes ?: 0,
                             plays = progress?.plays,
                             playsWithoutSpecials = progress?.playsWithoutSpecials,
+                            completedPlays = progress?.completedPlays,
                             inWatchlist = watchlist.contains(showId),
                             inLists = lists.isNotEmpty(),
                         )
@@ -450,6 +451,7 @@ internal class ShowDetailsViewModel(
                         aired = showState.value?.airedEpisodes ?: 0,
                         plays = progress?.plays,
                         playsWithoutSpecials = progress?.playsWithoutSpecials,
+                        completedPlays = progress?.completedPlays,
                         inWatchlist = false,
                     )
                 }
@@ -501,6 +503,7 @@ internal class ShowDetailsViewModel(
                     it?.copy(
                         plays = 0,
                         playsWithoutSpecials = 0,
+                        completedPlays = 0,
                     )
                 }
 

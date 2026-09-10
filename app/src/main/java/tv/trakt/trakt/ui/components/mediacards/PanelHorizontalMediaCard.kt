@@ -68,6 +68,10 @@ import tv.trakt.trakt.ui.theme.HorizontalEpisodeImageAspectRatio
 import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 
+// The panel cards run a slightly tighter pill than the poster cards.
+private val PanelChipWidth = 22.dp
+private val PanelChipElevation = 1.dp
+
 @Composable
 internal fun PanelHorizontalMediaCard(
     title: String,
@@ -79,6 +83,7 @@ internal fun PanelHorizontalMediaCard(
     more: Boolean = true,
     watched: Boolean = false,
     watchlist: Boolean = false,
+    plays: Int = 0,
     enabled: Boolean = true,
     containerColor: Color = TraktTheme.colors.panelCardContainer,
     onClick: (() -> Unit)? = null,
@@ -204,7 +209,6 @@ internal fun PanelHorizontalMediaCard(
             }
 
             if (watchlist || watched) {
-                val shape = RoundedCornerShape(100)
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(3.dp),
                     modifier = Modifier
@@ -216,44 +220,22 @@ internal fun PanelHorizontalMediaCard(
                         },
                 ) {
                     if (watched) {
-                        Box(
-                            contentAlignment = Alignment.Center,
-                            modifier = Modifier
-                                .size(
-                                    width = 22.dp,
-                                    height = 16.dp,
-                                )
-                                .shadow(1.dp, shape)
-                                .background(TraktTheme.colors.tagChipContainer, shape),
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_check_double),
-                                tint = TraktTheme.colors.tagChipContent,
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .size(10.dp),
-                            )
-                        }
+                        CollectionChip(
+                            iconRes = R.drawable.ic_check_double,
+                            iconSize = 10.dp,
+                            width = PanelChipWidth,
+                            elevation = PanelChipElevation,
+                            count = plays,
+                        )
                     }
 
                     if (watchlist) {
-                        Box(
-                            contentAlignment = Alignment.Center,
-                            modifier = Modifier
-                                .size(
-                                    width = 22.dp,
-                                    height = 16.dp,
-                                )
-                                .shadow(1.dp, shape)
-                                .background(TraktTheme.colors.tagChipContainer, shape),
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_bookmark_on),
-                                tint = TraktTheme.colors.tagChipContent,
-                                contentDescription = null,
-                                modifier = Modifier.size(11.dp),
-                            )
-                        }
+                        CollectionChip(
+                            iconRes = R.drawable.ic_bookmark_on,
+                            iconSize = 11.dp,
+                            width = PanelChipWidth,
+                            elevation = PanelChipElevation,
+                        )
                     }
                 }
             }

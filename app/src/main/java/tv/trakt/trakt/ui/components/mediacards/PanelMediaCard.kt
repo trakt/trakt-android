@@ -65,6 +65,10 @@ import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.VerticalImageAspectRatio
 
+// The panel cards run a slightly tighter pill than the poster cards.
+private val PanelChipWidth = 22.dp
+private val PanelChipElevation = 1.dp
+
 @Composable
 internal fun PanelMediaCard(
     modifier: Modifier = Modifier,
@@ -79,6 +83,7 @@ internal fun PanelMediaCard(
     watched: Boolean = false,
     watching: Boolean = false,
     watchlist: Boolean = false,
+    plays: Int = 0,
     enabled: Boolean = true,
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
@@ -201,7 +206,6 @@ internal fun PanelMediaCard(
             }
 
             if (watchlist || watched || watching) {
-                val shape = RoundedCornerShape(100)
                 Row(
                     horizontalArrangement = spacedBy(3.dp),
                     modifier = Modifier
@@ -213,54 +217,23 @@ internal fun PanelMediaCard(
                         },
                 ) {
                     if (watched || watching) {
-                        Box(
-                            contentAlignment = Alignment.Center,
-                            modifier = Modifier
-                                .size(
-                                    width = 22.dp,
-                                    height = 16.dp,
-                                )
-                                .shadow(1.dp, shape)
-                                .clip(shape)
-                                .background(TraktTheme.colors.tagChipContainer, shape),
-                        ) {
-                            if (watching) {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxHeight()
-                                        .fillMaxWidth(0.5f)
-                                        .align(Alignment.CenterEnd)
-                                        .background(TraktTheme.colors.tagChipContainerLight),
-                                )
-                            }
-                            Icon(
-                                painter = painterResource(R.drawable.ic_check_double),
-                                tint = TraktTheme.colors.tagChipContent,
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .size(10.dp),
-                            )
-                        }
+                        CollectionChip(
+                            iconRes = R.drawable.ic_check_double,
+                            iconSize = 10.dp,
+                            width = PanelChipWidth,
+                            elevation = PanelChipElevation,
+                            halved = watching,
+                            count = plays,
+                        )
                     }
 
                     if (watchlist) {
-                        Box(
-                            contentAlignment = Alignment.Center,
-                            modifier = Modifier
-                                .size(
-                                    width = 22.dp,
-                                    height = 16.dp,
-                                )
-                                .shadow(1.dp, shape)
-                                .background(TraktTheme.colors.tagChipContainer, shape),
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_bookmark_on),
-                                tint = TraktTheme.colors.tagChipContent,
-                                contentDescription = null,
-                                modifier = Modifier.size(11.dp),
-                            )
-                        }
+                        CollectionChip(
+                            iconRes = R.drawable.ic_bookmark_on,
+                            iconSize = 11.dp,
+                            width = PanelChipWidth,
+                            elevation = PanelChipElevation,
+                        )
                     }
                 }
             }

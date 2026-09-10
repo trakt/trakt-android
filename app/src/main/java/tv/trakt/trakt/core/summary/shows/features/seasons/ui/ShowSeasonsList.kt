@@ -93,6 +93,7 @@ internal fun ShowSeasonsList(
                 more = isSelected,
                 watched = item.isWatched,
                 watching = item.isWatching,
+                plays = item.plays,
                 onClick = {
                     onSeasonClick(item)
                 },
