@@ -813,7 +813,7 @@ internal fun DetailsRatingReactions(
                     .padding(bottom = 1.dp),
             )
 
-            if (true) {
+            if (visible) {
                 UserRatingBar(
                     rating = rating?.rating,
                     favoriteLoading = loading,

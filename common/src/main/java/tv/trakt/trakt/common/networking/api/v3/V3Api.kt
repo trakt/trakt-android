@@ -4,8 +4,10 @@ import io.ktor.client.HttpClientConfig
 import io.ktor.client.call.body
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import io.ktor.client.request.put
 import org.openapitools.client.infrastructure.ApiClient
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
@@ -14,6 +16,7 @@ import tv.trakt.trakt.common.networking.api.v3.model.V3MediaSocialResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalList
 import tv.trakt.trakt.common.networking.api.v3.model.V3MinimalWatchlistResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3MovieRecommendationResponse
+import tv.trakt.trakt.common.networking.api.v3.model.V3ReactionsSummaryResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3RecommendationsRequest
 import tv.trakt.trakt.common.networking.api.v3.model.V3SentimentResponse
 import tv.trakt.trakt.common.networking.api.v3.model.V3ShowRecommendationResponse
@@ -124,6 +127,46 @@ class V3Api(
         request.ignoreWatched?.let { parameter("ignore_watched", it) }
         request.ignoreWatchlisted?.let { parameter("ignore_watchlisted", it) }
         request.ignoreCollected?.let { parameter("ignore_collected", it) }
+    }
+
+    // Media Reactions
+
+    suspend fun getMovieReactionsSummary(movieId: TraktId): V3ReactionsSummaryResponse {
+        val response = client.get("${baseV3Url}movies/${movieId.value}/reactions/summary")
+        return response.body()
+    }
+
+    suspend fun getShowReactionsSummary(showId: TraktId): V3ReactionsSummaryResponse {
+        val response = client.get("${baseV3Url}shows/${showId.value}/reactions/summary")
+        return response.body()
+    }
+
+    suspend fun putMovieReactions(
+        movieId: TraktId,
+        reactionTypes: List<String>,
+    ) {
+        client.put("${baseV3Url}movies/${movieId.value}/reactions/${reactionTypes.joinToString(",")}")
+    }
+
+    suspend fun putShowReactions(
+        showId: TraktId,
+        reactionTypes: List<String>,
+    ) {
+        client.put("${baseV3Url}shows/${showId.value}/reactions/${reactionTypes.joinToString(",")}")
+    }
+
+    suspend fun deleteMovieReactions(
+        movieId: TraktId,
+        reactionIds: List<Long>,
+    ) {
+        client.delete("${baseV3Url}movies/${movieId.value}/reactions/${reactionIds.joinToString(",")}")
+    }
+
+    suspend fun deleteShowReactions(
+        showId: TraktId,
+        reactionIds: List<Long>,
+    ) {
+        client.delete("${baseV3Url}shows/${showId.value}/reactions/${reactionIds.joinToString(",")}")
     }
 
     // Social
