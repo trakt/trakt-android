@@ -90,6 +90,13 @@ internal fun AllShowSeasonsScreen(
         viewModel.clearInfo()
     }
 
+    LaunchedEffect(state.watchedUntilPrompt) {
+        state.watchedUntilPrompt?.let {
+            sheetState.confirmWatchedUntil = it
+            viewModel.clearWatchedUntilPrompt()
+        }
+    }
+
     LaunchedEffect(state.navigateEpisode) {
         state.navigateEpisode?.let {
             onEpisodeClick(it.first, it.second)

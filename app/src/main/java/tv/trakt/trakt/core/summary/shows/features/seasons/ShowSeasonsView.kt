@@ -114,7 +114,8 @@ internal fun ShowSeasonsView(
     var confirmRemoveSeasonSheet by remember { mutableStateOf(false) }
 
     var episodeDateSheet by remember { mutableStateOf<EpisodeItem?>(null) }
-    var episodeWatchedUntilSheet by remember { mutableStateOf<EpisodeItem?>(null) }
+    var episodeWatchedUntilSheet by remember { mutableStateOf<Episode?>(null) }
+    var confirmWatchedUntilSheet by remember { mutableStateOf<Episode?>(null) }
     var episodeContextSheet by remember { mutableStateOf<EpisodeItem?>(null) }
     var seasonDateSheet by remember { mutableStateOf(false) }
 
@@ -161,7 +162,7 @@ internal fun ShowSeasonsView(
             episodeDateSheet = it
         },
         onWatchedUntilClick = {
-            episodeWatchedUntilSheet = it
+            episodeWatchedUntilSheet = it.episode
         },
         onRemoveClick = {
             confirmRemoveEpisodeSheet = it
@@ -173,10 +174,25 @@ internal fun ShowSeasonsView(
 
     WatchedUntilSheet(
         show = state.show,
-        episode = episodeWatchedUntilSheet?.episode,
+        episode = episodeWatchedUntilSheet,
         onDismiss = {
             episodeWatchedUntilSheet = null
         },
+    )
+
+    ConfirmationSheet(
+        active = confirmWatchedUntilSheet != null,
+        title = stringResource(R.string.button_text_watched_until_here),
+        message = stringResource(
+            R.string.button_label_watched_until_here,
+            confirmWatchedUntilSheet?.title.orEmpty(),
+        ),
+        yesText = stringResource(R.string.button_text_watched_until_here),
+        onYes = {
+            episodeWatchedUntilSheet = confirmWatchedUntilSheet
+            confirmWatchedUntilSheet = null
+        },
+        onNo = { confirmWatchedUntilSheet = null },
     )
 
     ConfirmationSheet(
@@ -257,6 +273,13 @@ internal fun ShowSeasonsView(
             seasonDateSheet = false
         },
     )
+
+    LaunchedEffect(state.watchedUntilPrompt) {
+        state.watchedUntilPrompt?.let {
+            confirmWatchedUntilSheet = it
+            viewModel.clearWatchedUntilPrompt()
+        }
+    }
 
     LaunchedEffect(state.info) {
         if (state.info == null) {

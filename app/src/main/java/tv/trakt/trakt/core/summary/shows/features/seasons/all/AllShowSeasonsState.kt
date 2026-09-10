@@ -33,6 +33,7 @@ internal data class AllShowSeasonsState(
     val loadingEpisode: LoadingState = LoadingState.Idle,
     val loadingSeason: LoadingState = LoadingState.Idle,
     val navigateEpisode: Pair<TraktId, Episode>? = null,
+    val watchedUntilPrompt: Episode? = null,
     val info: StringResource? = null,
     val error: Exception? = null,
 ) {

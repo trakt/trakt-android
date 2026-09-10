@@ -70,6 +70,7 @@ internal class ShowSeasonsViewModel(
     private val loadingEpisodeState = MutableStateFlow(initialState.loadingEpisode)
     private val loadingSeasonState = MutableStateFlow(initialState.loadingSeason)
     private val infoState = MutableStateFlow(initialState.info)
+    private val watchedUntilPromptState = MutableStateFlow(initialState.watchedUntilPrompt)
     private val errorState = MutableStateFlow(initialState.error)
     private val collapseState = MutableStateFlow(collapsingManager.isCollapsed(CollapsingKey.SHOW_SEASONS))
 
@@ -227,6 +228,13 @@ internal class ShowSeasonsViewModel(
             return
         }
 
+        // Read before the write: how many released episodes this check leaves
+        // behind, and whether it is a rewatch rather than a first play.
+        val skipped = itemsState.value.skippedEpisodesBefore(episode)
+        val wasWatched = itemsState.value.selectedSeasonEpisodes
+            .firstOrNull { it.episode.ids.trakt == episode.ids.trakt }
+            ?.isWatched == true
+
         viewModelScope.launch {
             val authenticated = sessionManager.isAuthenticated()
             if (!authenticated) {
@@ -261,6 +269,10 @@ internal class ShowSeasonsViewModel(
                 }
 
                 showDetailsUpdates.notifyUpdate(Seasons)
+
+                if (!wasWatched && skipped > 0) {
+                    watchedUntilPromptState.update { episode }
+                }
 
                 infoState.update {
                     DynamicStringResource(R.string.text_info_history_added)
@@ -479,6 +491,10 @@ internal class ShowSeasonsViewModel(
         infoState.update { null }
     }
 
+    fun clearWatchedUntilPrompt() {
+        watchedUntilPromptState.update { null }
+    }
+
     fun setCollapsed(collapsed: Boolean) {
         collapseState.update { collapsed }
         collapseJob?.cancel()
@@ -500,6 +516,7 @@ internal class ShowSeasonsViewModel(
         infoState,
         errorState,
         collapseState,
+        watchedUntilPromptState,
     ) { state ->
         ShowSeasonsState(
             show = state[0] as Show,
@@ -510,6 +527,7 @@ internal class ShowSeasonsViewModel(
             info = state[5] as StringResource?,
             error = state[6] as Exception?,
             collapsed = state[7] as Boolean,
+            watchedUntilPrompt = state[8] as Episode?,
         )
     }.stateIn(
         scope = viewModelScope,
