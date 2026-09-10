@@ -89,6 +89,7 @@ internal fun AllProgressScreen(
             }
         },
         onFilterClick = { viewModel.setFilter(it) },
+        onFilterReorder = { viewModel.setFilterOrder(it) },
         onBackClick = onNavigateBack,
     )
 }
@@ -100,6 +101,7 @@ internal fun AllProgressContent(
     onLoadMore: () -> Unit = {},
     onClick: (ProfileProgressItem) -> Unit = {},
     onFilterClick: (ProgressFilter) -> Unit = {},
+    onFilterReorder: (ImmutableList<ProgressFilter>) -> Unit = {},
     onBackClick: () -> Unit = {},
 ) {
     val listState = rememberLazyListState(
@@ -136,12 +138,14 @@ internal fun AllProgressContent(
             listItems = (state.items ?: emptyList()).toImmutableList(),
             listState = listState,
             listFilter = state.filter ?: ProgressFilter.Completed,
+            listFilterOrder = state.filterOrder,
             contentPadding = contentPadding,
             loading = state.loading.isLoading,
             loadingMore = state.loadingMore.isLoading,
             onEndOfList = onLoadMore,
             onClick = onClick,
             onFilterClick = onFilterClick,
+            onFilterReorder = onFilterReorder,
             onBackClick = onBackClick,
         )
 
@@ -191,12 +195,14 @@ private fun ContentList(
     listState: LazyListState,
     listItems: ImmutableList<ProfileProgressItem>,
     listFilter: ProgressFilter,
+    listFilterOrder: ImmutableList<ProgressFilter>,
     contentPadding: PaddingValues,
     loading: Boolean,
     loadingMore: Boolean,
     onEndOfList: () -> Unit,
     onClick: (ProfileProgressItem) -> Unit,
     onFilterClick: (ProgressFilter) -> Unit,
+    onFilterReorder: (ImmutableList<ProgressFilter>) -> Unit,
     onBackClick: () -> Unit,
 ) {
     val isScrolledToBottom by remember(listItems.size) {
@@ -226,10 +232,12 @@ private fun ContentList(
             )
         }
 
-        item {
+        item(key = "progress-filters") {
             ProgressFilters(
+                order = listFilterOrder,
                 selected = listFilter,
                 onClick = onFilterClick,
+                onReorder = onFilterReorder,
                 height = 32.dp,
                 unselectedTextVisible = true,
                 paddingVertical = PaddingValues(bottom = 19.dp),

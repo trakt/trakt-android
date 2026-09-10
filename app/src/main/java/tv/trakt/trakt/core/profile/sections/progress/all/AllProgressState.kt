@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.profile.sections.progress.all
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -11,6 +12,7 @@ import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter
 @Immutable
 internal data class AllProgressState(
     val filter: ProgressFilter? = null,
+    val filterOrder: ImmutableList<ProgressFilter> = ProgressFilter.entries.toImmutableList(),
     val items: ImmutableList<ProfileProgressItem>? = null,
     val navigateShow: TraktId? = null,
     val user: User? = null,

@@ -69,12 +69,8 @@ import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.ui.theme.colors.Red500
-import tv.trakt.trakt.core.lists.features.reorder.ui.DragEdgeInsets
-import tv.trakt.trakt.core.lists.features.reorder.ui.DraggableItem
 import tv.trakt.trakt.core.lists.features.reorder.ui.ListReorderMediaCard
 import tv.trakt.trakt.core.lists.features.reorder.ui.ListReorderMediaSkeletonCard
-import tv.trakt.trakt.core.lists.features.reorder.ui.dragHandle
-import tv.trakt.trakt.core.lists.features.reorder.ui.rememberDragDropState
 import tv.trakt.trakt.core.lists.model.CustomListItem.MovieItem
 import tv.trakt.trakt.core.lists.model.CustomListItem.ShowItem
 import tv.trakt.trakt.resources.R
@@ -82,6 +78,10 @@ import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
 import tv.trakt.trakt.ui.components.input.SingleInputSheet
+import tv.trakt.trakt.ui.components.reorder.DragEdgeInsets
+import tv.trakt.trakt.ui.components.reorder.DraggableItem
+import tv.trakt.trakt.ui.components.reorder.dragHandle
+import tv.trakt.trakt.ui.components.reorder.rememberDragDropState
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.Instant
 
