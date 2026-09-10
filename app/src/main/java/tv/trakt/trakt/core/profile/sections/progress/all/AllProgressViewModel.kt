@@ -34,9 +34,13 @@ import tv.trakt.trakt.core.lists.ListsConfig.PROGRESS_PAGE_LIMIT
 import tv.trakt.trakt.core.profile.sections.progress.filters.GetProgressFilterUseCase
 import tv.trakt.trakt.core.profile.sections.progress.model.ProfileProgressItem
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter
-import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.Completed
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.Dropped
+import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.Ended
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.InProgress
+import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.UpToDate
+import tv.trakt.trakt.core.profile.sections.progress.model.ProgressPage
+import tv.trakt.trakt.core.profile.sections.progress.model.asPage
+import tv.trakt.trakt.core.profile.sections.progress.model.pageOfEnded
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressCompleteUseCase
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressDroppedUseCase
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressWatchingUseCase
@@ -110,7 +114,7 @@ internal class AllProgressViewModel(
 
                 itemsState.update {
                     fetchLocalData(
-                        filter = filterState.value ?: Completed,
+                        filter = filterState.value ?: UpToDate,
                     )
                 }
 
@@ -121,13 +125,13 @@ internal class AllProgressViewModel(
                     }
                 }
 
-                val items = fetchData(
-                    filter = filterState.value ?: Completed,
+                val page = fetchData(
+                    filter = filterState.value ?: UpToDate,
                     page = 1,
                 )
 
-                itemsState.update { items }
-                hasMoreData = items.size >= PROGRESS_PAGE_LIMIT
+                itemsState.update { page.items }
+                hasMoreData = page.fetched >= PROGRESS_PAGE_LIMIT
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     if (!ignoreErrors) {
@@ -151,18 +155,18 @@ internal class AllProgressViewModel(
                 loadingMoreState.update { Loading }
 
                 val nextPage = page + 1
-                val filter = filterState.value ?: Completed
-                val newItems = fetchData(filter, page = nextPage)
+                val filter = filterState.value ?: UpToDate
+                val newPage = fetchData(filter, page = nextPage)
 
                 itemsState.update { items ->
                     items
-                        ?.plus(newItems)
+                        ?.plus(newPage.items)
                         ?.distinctBy { it.key }
                         ?.toImmutableList()
                 }
 
                 page = nextPage
-                hasMoreData = newItems.size >= PROGRESS_PAGE_LIMIT
+                hasMoreData = newPage.fetched >= PROGRESS_PAGE_LIMIT
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -176,7 +180,8 @@ internal class AllProgressViewModel(
 
     private suspend fun fetchLocalData(filter: ProgressFilter): ImmutableList<ProfileProgressItem> {
         return when (filter) {
-            Completed -> getCompletedUseCase.getLocalCompleted(limit = PROGRESS_PAGE_LIMIT)
+            UpToDate -> getCompletedUseCase.getLocalCompleted(limit = PROGRESS_PAGE_LIMIT, ended = false)
+            Ended -> getCompletedUseCase.getLocalCompleted(limit = PROGRESS_PAGE_LIMIT, ended = true)
             InProgress -> getWatchingUseCase.getLocalWatching(limit = PROGRESS_PAGE_LIMIT)
             Dropped -> getDroppedUseCase.getLocalDropped(limit = PROGRESS_PAGE_LIMIT)
         }
@@ -185,11 +190,27 @@ internal class AllProgressViewModel(
     private suspend fun fetchData(
         filter: ProgressFilter,
         page: Int,
-    ): ImmutableList<ProfileProgressItem> {
+    ): ProgressPage {
         return when (filter) {
-            Completed -> getCompletedUseCase.getCompleted(page = page, limit = PROGRESS_PAGE_LIMIT)
-            InProgress -> getWatchingUseCase.getWatching(page = page, limit = PROGRESS_PAGE_LIMIT)
-            Dropped -> getDroppedUseCase.getDropped(page = page, limit = PROGRESS_PAGE_LIMIT)
+            UpToDate ->
+                getCompletedUseCase
+                    .getCompleted(page = page, limit = PROGRESS_PAGE_LIMIT)
+                    .pageOfEnded(ended = false)
+
+            Ended ->
+                getCompletedUseCase
+                    .getCompleted(page = page, limit = PROGRESS_PAGE_LIMIT)
+                    .pageOfEnded(ended = true)
+
+            InProgress ->
+                getWatchingUseCase
+                    .getWatching(page = page, limit = PROGRESS_PAGE_LIMIT)
+                    .asPage()
+
+            Dropped ->
+                getDroppedUseCase
+                    .getDropped(page = page, limit = PROGRESS_PAGE_LIMIT)
+                    .asPage()
         }
     }
 
