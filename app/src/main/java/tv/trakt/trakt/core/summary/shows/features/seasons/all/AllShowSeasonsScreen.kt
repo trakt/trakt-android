@@ -71,7 +71,7 @@ internal fun AllShowSeasonsScreen(
         onCheckEpisodeLongClick = { sheetState.episodeDate = it },
         onMoreClick = { sheetState.episodeContext = it },
         onCheckSeasonClick = { sheetState.confirmMarkSeason = true },
-        onRemoveSeasonClick = { sheetState.confirmRemoveSeason = true },
+        onSeasonMoreClick = { sheetState.seasonContext = it },
         onBackClick = onNavigateBack,
     )
 

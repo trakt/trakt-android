@@ -75,6 +75,7 @@ import tv.trakt.trakt.common.model.toSlugId
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.summary.shows.features.context.episodes.EpisodeContextSheet
+import tv.trakt.trakt.core.summary.shows.features.context.seasons.SeasonContextSheet
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
@@ -116,6 +117,7 @@ internal fun ShowSeasonsView(
     var episodeDateSheet by remember { mutableStateOf<EpisodeItem?>(null) }
     var episodeWatchedUntilSheet by remember { mutableStateOf<EpisodeItem?>(null) }
     var episodeContextSheet by remember { mutableStateOf<EpisodeItem?>(null) }
+    var seasonContextSheet by remember { mutableStateOf<SeasonItem?>(null) }
     var seasonDateSheet by remember { mutableStateOf(false) }
 
     ShowSeasonsContent(
@@ -146,8 +148,8 @@ internal fun ShowSeasonsView(
         onCheckSeasonClick = {
             confirmMarkSeasonSheet = true
         },
-        onRemoveSeasonClick = {
-            confirmRemoveSeasonSheet = true
+        onSeasonMoreClick = {
+            seasonContextSheet = it
         },
         onAllSeasonsClick = {
             onAllSeasonsClick(state.items.selectedSeason?.number)
@@ -157,6 +159,7 @@ internal fun ShowSeasonsView(
 
     EpisodeContextSheet(
         episodeItem = episodeContextSheet,
+        watchOnlyOnce = user?.settings?.watchOnlyOnce,
         onTrackClick = {
             episodeDateSheet = it
         },
@@ -169,6 +172,15 @@ internal fun ShowSeasonsView(
         onDismiss = {
             episodeContextSheet = null
         },
+    )
+
+    SeasonContextSheet(
+        seasonItem = seasonContextSheet,
+        showTitle = state.show?.title,
+        watchOnlyOnce = user?.settings?.watchOnlyOnce,
+        onTrackClick = { confirmMarkSeasonSheet = true },
+        onRemoveClick = { confirmRemoveSeasonSheet = true },
+        onDismiss = { seasonContextSheet = null },
     )
 
     WatchedUntilSheet(
@@ -186,10 +198,13 @@ internal fun ShowSeasonsView(
             seasonDateSheet = true
         },
         onNo = { confirmMarkSeasonSheet = false },
-        title = stringResource(R.string.button_text_track),
+        title = when {
+            state.items.isSelectedSeasonWatched -> stringResource(R.string.button_text_watch_again)
+            else -> stringResource(R.string.button_text_track)
+        },
         message = stringResource(
             R.string.warning_prompt_mark_as_watched_multiple_episodes,
-            state.items.selectedSeasonEpisodes.count { !it.isWatched && it.episode.isReleased },
+            state.items.selectedSeasonEpisodesToTrack.size,
         ),
     )
 
@@ -291,7 +306,7 @@ private fun ShowSeasonsContent(
     onCheckEpisodeLongClick: ((EpisodeItem) -> Unit)? = null,
     onMoreClick: ((EpisodeItem) -> Unit)? = null,
     onCheckSeasonClick: (() -> Unit)? = null,
-    onRemoveSeasonClick: (() -> Unit)? = null,
+    onSeasonMoreClick: ((SeasonItem) -> Unit)? = null,
     onAllSeasonsClick: (() -> Unit)? = null,
     onCollapse: (collapsed: Boolean) -> Unit = {},
 ) {
@@ -423,10 +438,13 @@ private fun ShowSeasonsContent(
                                     if (state.loadingSeason.isLoading) {
                                         return@ContentList
                                     }
-                                    when (state.items.isSelectedSeasonWatched) {
-                                        true -> onRemoveSeasonClick?.invoke()
-                                        else -> onCheckSeasonClick?.invoke()
+                                    onSeasonMoreClick?.invoke(it)
+                                },
+                                onSeasonCheckClick = {
+                                    if (state.loadingSeason.isLoading) {
+                                        return@ContentList
                                     }
+                                    onCheckSeasonClick?.invoke()
                                 },
                                 onCheckEpisodeClick = onCheckEpisodeClick,
                                 onCheckEpisodeLongClick = onCheckEpisodeLongClick,
@@ -522,6 +540,7 @@ private fun ContentList(
     contentPadding: PaddingValues,
     onSeasonClick: ((SeasonItem) -> Unit)? = null,
     onSeasonLongClick: ((SeasonItem) -> Unit)? = null,
+    onSeasonCheckClick: ((SeasonItem) -> Unit)? = null,
     onEpisodeClick: ((EpisodeItem) -> Unit)? = null,
     onCheckEpisodeClick: ((EpisodeItem) -> Unit)? = null,
     onCheckEpisodeLongClick: ((EpisodeItem) -> Unit)? = null,
@@ -537,6 +556,7 @@ private fun ContentList(
             snapScrollEnabled = true,
             onSeasonClick = onSeasonClick ?: {},
             onSeasonLongClick = onSeasonLongClick ?: {},
+            onSeasonCheckClick = onSeasonCheckClick ?: {},
             contentPadding = contentPadding,
             modifier = Modifier.fillMaxWidth(),
         )
