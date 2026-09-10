@@ -2,6 +2,8 @@
 
 package tv.trakt.trakt.core.reactions.media
 
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
@@ -73,14 +75,20 @@ internal fun MediaReactionsChip(
                 },
         )
 
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(0.dp),
-        ) {
-            topReactions.ifEmpty { defaultReactions }.forEach { reaction ->
-                Text(
-                    text = reaction.emoji,
-                    fontSize = 17.sp,
-                )
+        Crossfade(
+            targetState = topReactions.ifEmpty { defaultReactions },
+            animationSpec = tween(350),
+            label = "topReactionsCrossfade",
+        ) { displayReactions ->
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(0.dp),
+            ) {
+                displayReactions.forEach { reaction ->
+                    Text(
+                        text = reaction.emoji,
+                        fontSize = 17.sp,
+                    )
+                }
             }
         }
     }

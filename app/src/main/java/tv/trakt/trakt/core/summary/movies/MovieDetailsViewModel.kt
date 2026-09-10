@@ -67,10 +67,14 @@ import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source.MovieDetai
 import tv.trakt.trakt.core.favorites.FavoritesUpdates
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.DETAILS
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
+import tv.trakt.trakt.core.reactions.media.MediaReactionEmoji
+import tv.trakt.trakt.core.summary.movies.MovieDetailsState.ReactionsState
 import tv.trakt.trakt.core.summary.movies.MovieDetailsState.UserRatingsState
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates
 import tv.trakt.trakt.core.summary.movies.data.MovieDetailsUpdates.Source
 import tv.trakt.trakt.core.summary.movies.features.actors.usecases.GetMovieDirectorUseCase
+import tv.trakt.trakt.core.summary.movies.features.reactions.usecases.GetMovieReactionsUseCase
+import tv.trakt.trakt.core.summary.movies.features.reactions.usecases.UpdateMovieReactionsUseCase
 import tv.trakt.trakt.core.summary.movies.features.socials.GetMovieSocialsUseCase
 import tv.trakt.trakt.core.summary.movies.navigation.MovieDetailsDestination
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
@@ -92,6 +96,8 @@ internal class MovieDetailsViewModel(
     private val getMovieDirectorUseCase: GetMovieDirectorUseCase,
     private val getMovieTranslationsUseCase: GetMovieTranslationsUseCase,
     private val getMovieSocialsUseCase: GetMovieSocialsUseCase,
+    private val getMovieReactionsUseCase: GetMovieReactionsUseCase,
+    private val updateMovieReactionsUseCase: UpdateMovieReactionsUseCase,
     private val loadProgressUseCase: LoadUserProgressUseCase,
     private val loadWatchlistUseCase: LoadUserWatchlistUseCase,
     private val loadListsUseCase: LoadUserListsUseCase,
@@ -125,6 +131,7 @@ internal class MovieDetailsViewModel(
     private val movieProgressState = MutableStateFlow(initialState.movieProgress)
     private val movieTranslationState = MutableStateFlow(initialState.movieTranslation)
     private val movieSocialsState = MutableStateFlow(initialState.movieSocials)
+    private val movieReactionsState = MutableStateFlow(initialState.movieReactions)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingProgress = MutableStateFlow(initialState.loadingProgress)
     private val loadingLists = MutableStateFlow(initialState.loadingLists)
@@ -211,6 +218,7 @@ internal class MovieDetailsViewModel(
                 loadTranslations()
                 loadRatings(movie)
                 loadSocials()
+                loadReactions()
                 loadCreator()
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -247,6 +255,36 @@ internal class MovieDetailsViewModel(
                 movieSocialsState.update {
                     getMovieSocialsUseCase.getSocials(movieId)
                 }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    private fun loadReactions() {
+        viewModelScope.launch {
+            try {
+                movieReactionsState.update { it?.copy(loading = Loading) ?: ReactionsState(loading = Loading) }
+                val reactions = getMovieReactionsUseCase.getReactions(movieId)
+                movieReactionsState.update {
+                    ReactionsState(reactions = reactions, loading = Done)
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    movieReactionsState.update { it?.copy(loading = Done) }
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    fun setReactions(reactions: ImmutableList<MediaReactionEmoji>) {
+        viewModelScope.launch {
+            try {
+                updateMovieReactionsUseCase.updateReactions(movieId, reactions)
+                loadReactions()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
@@ -907,6 +945,7 @@ internal class MovieDetailsViewModel(
         movieUserRatingsState,
         movieTranslationState,
         movieSocialsState,
+        movieReactionsState,
         loadingState,
         loadingProgress,
         loadingLists,
@@ -923,13 +962,14 @@ internal class MovieDetailsViewModel(
             movieUserRating = state[4] as UserRatingsState?,
             movieTranslation = state[5] as MediaTranslation?,
             movieSocials = state[6] as ImmutableList<MediaSocialActivity>?,
-            loading = state[7] as LoadingState,
-            loadingProgress = state[8] as LoadingState,
-            loadingLists = state[9] as LoadingState,
-            loadingFavorite = state[10] as LoadingState,
-            info = state[11] as StringResource?,
-            error = state[12] as Exception?,
-            user = state[13] as User?,
+            movieReactions = state[7] as ReactionsState?,
+            loading = state[8] as LoadingState,
+            loadingProgress = state[9] as LoadingState,
+            loadingLists = state[10] as LoadingState,
+            loadingFavorite = state[11] as LoadingState,
+            info = state[12] as StringResource?,
+            error = state[13] as Exception?,
+            user = state[14] as User?,
         )
     }.stateIn(
         scope = viewModelScope,

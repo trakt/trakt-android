@@ -9,6 +9,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.put
 import org.openapitools.client.infrastructure.ApiClient
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.pagination.Pagination
 import tv.trakt.trakt.common.model.toTraktId
@@ -131,42 +132,41 @@ class V3Api(
 
     // Media Reactions
 
-    suspend fun getMovieReactionsSummary(movieId: TraktId): V3ReactionsSummaryResponse {
-        val response = client.get("${baseV3Url}movies/${movieId.value}/reactions/summary")
+    suspend fun getReactionsSummary(
+        mediaType: MediaType,
+        mediaId: TraktId,
+    ): V3ReactionsSummaryResponse {
+        val response = client.get("${reactionsUrl(mediaType, mediaId)}/summary")
         return response.body()
     }
 
-    suspend fun getShowReactionsSummary(showId: TraktId): V3ReactionsSummaryResponse {
-        val response = client.get("${baseV3Url}shows/${showId.value}/reactions/summary")
-        return response.body()
-    }
-
-    suspend fun putMovieReactions(
-        movieId: TraktId,
+    suspend fun putReactions(
+        mediaType: MediaType,
+        mediaId: TraktId,
         reactionTypes: List<String>,
     ) {
-        client.put("${baseV3Url}movies/${movieId.value}/reactions/${reactionTypes.joinToString(",")}")
+        client.put("${reactionsUrl(mediaType, mediaId)}/${reactionTypes.joinToString(",")}")
     }
 
-    suspend fun putShowReactions(
-        showId: TraktId,
-        reactionTypes: List<String>,
-    ) {
-        client.put("${baseV3Url}shows/${showId.value}/reactions/${reactionTypes.joinToString(",")}")
-    }
-
-    suspend fun deleteMovieReactions(
-        movieId: TraktId,
+    suspend fun deleteReactions(
+        mediaType: MediaType,
+        mediaId: TraktId,
         reactionIds: List<Long>,
     ) {
-        client.delete("${baseV3Url}movies/${movieId.value}/reactions/${reactionIds.joinToString(",")}")
+        client.delete("${reactionsUrl(mediaType, mediaId)}/${reactionIds.joinToString(",")}")
     }
 
-    suspend fun deleteShowReactions(
-        showId: TraktId,
-        reactionIds: List<Long>,
-    ) {
-        client.delete("${baseV3Url}shows/${showId.value}/reactions/${reactionIds.joinToString(",")}")
+    private fun reactionsUrl(
+        mediaType: MediaType,
+        mediaId: TraktId,
+    ): String {
+        val path = when (mediaType) {
+            MediaType.Movie -> "movies"
+            MediaType.Show -> "shows"
+            MediaType.Season -> "seasons"
+            MediaType.Episode -> "episodes"
+        }
+        return "$baseV3Url$path/${mediaId.value}/reactions"
     }
 
     // Social

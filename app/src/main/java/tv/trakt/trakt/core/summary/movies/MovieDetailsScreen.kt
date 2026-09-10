@@ -231,6 +231,7 @@ internal fun MovieDetailsScreen(
                 state.movieUserRating?.rating?.favorite != true,
             )
         },
+        onReactionsSelected = viewModel::setReactions,
         onNavigateToUser = onNavigateToUser,
         onVipClick = onNavigateVip,
         onTriviaClick = {
@@ -416,6 +417,7 @@ internal fun MovieDetailsContent(
     onRatingClick: ((Int) -> Unit)? = null,
     onRatingRemoveClick: (() -> Unit)? = null,
     onFavoriteClick: (() -> Unit)? = null,
+    onReactionsSelected: ((ImmutableList<MediaReactionEmoji>) -> Unit)? = null,
     onNavigateToUser: ((User) -> Unit)? = null,
     onVipClick: (() -> Unit)? = null,
     onTriviaClick: (() -> Unit)? = null,
@@ -564,6 +566,7 @@ internal fun MovieDetailsContent(
                         onRatingClick = onRatingClick ?: {},
                         onRatingRemoveClick = onRatingRemoveClick ?: {},
                         onFavoriteClick = onFavoriteClick ?: {},
+                        onReactionsSelected = onReactionsSelected ?: {},
                     )
                 }
 

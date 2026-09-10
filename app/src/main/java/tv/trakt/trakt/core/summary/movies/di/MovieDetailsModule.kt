@@ -30,6 +30,8 @@ import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieStatsUse
 import tv.trakt.trakt.core.summary.movies.features.info.usecase.GetMovieStudiosUseCase
 import tv.trakt.trakt.core.summary.movies.features.lists.MovieListsViewModel
 import tv.trakt.trakt.core.summary.movies.features.lists.usecases.GetMovieListsUseCase
+import tv.trakt.trakt.core.summary.movies.features.reactions.usecases.GetMovieReactionsUseCase
+import tv.trakt.trakt.core.summary.movies.features.reactions.usecases.UpdateMovieReactionsUseCase
 import tv.trakt.trakt.core.summary.movies.features.related.MovieRelatedViewModel
 import tv.trakt.trakt.core.summary.movies.features.related.usecases.GetMovieRelatedUseCase
 import tv.trakt.trakt.core.summary.movies.features.sentiment.MovieSentimentViewModel
@@ -63,6 +65,8 @@ internal val movieDetailsModule = module {
     factoryOf(::GetMovieListsUseCase)
     factoryOf(::GetMovieTriviaUseCase)
     factoryOf(::GetMovieSocialsUseCase)
+    factoryOf(::GetMovieReactionsUseCase)
+    factoryOf(::UpdateMovieReactionsUseCase)
 
     viewModel {
         MovieDetailsViewModel(
@@ -73,6 +77,8 @@ internal val movieDetailsModule = module {
             getMovieDirectorUseCase = get(),
             getMovieTranslationsUseCase = get(),
             getMovieSocialsUseCase = get(),
+            getMovieReactionsUseCase = get(),
+            updateMovieReactionsUseCase = get(),
             loadProgressUseCase = get(),
             loadWatchlistUseCase = get(),
             loadListsUseCase = get(),
