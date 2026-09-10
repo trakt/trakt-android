@@ -5,11 +5,13 @@ import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.core.translations.model.MediaTranslation
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.StringResource
+import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
+import tv.trakt.trakt.core.reactions.media.data.MediaReaction
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 
 @Immutable
@@ -21,6 +23,7 @@ internal data class MovieDetailsState(
     val movieCreator: Person? = null,
     val movieTranslation: MediaTranslation? = null,
     val movieSocials: ImmutableList<MediaSocialActivity>? = null,
+    val movieReactions: ReactionsState? = null,
     val loading: LoadingState = LoadingState.Idle,
     val loadingProgress: LoadingState = LoadingState.Idle,
     val loadingLists: LoadingState = LoadingState.Idle,
@@ -29,6 +32,11 @@ internal data class MovieDetailsState(
     val error: Exception? = null,
     val user: User? = null,
 ) {
+    data class ReactionsState(
+        val reactions: ImmutableList<MediaReaction> = EmptyImmutableList,
+        val loading: LoadingState = LoadingState.Idle,
+    )
+
     data class ProgressState(
         val plays: Int,
         val inWatchlist: Boolean,

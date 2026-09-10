@@ -24,8 +24,11 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.core.reactions.media.data.MediaReaction
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
+
+private const val TOP_REACTIONS_COUNT = 3
 
 // Placeholder shown until the media has any real top reactions.
 private val defaultReactions = persistentListOf(
@@ -37,12 +40,21 @@ private val defaultReactions = persistentListOf(
 @Composable
 internal fun MediaReactionsChip(
     mediaTitle: String,
-    topReactions: ImmutableList<MediaReactionEmoji>,
+    reactions: ImmutableList<MediaReaction>,
     onReactionsSelected: (ImmutableList<MediaReactionEmoji>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var showPicker by remember { mutableStateOf(false) }
-    var selection by remember(topReactions) { mutableStateOf(topReactions.toPersistentList()) }
+
+    val topReactions = remember(reactions) {
+        reactions
+            .sortedByDescending { it.count }
+            .take(TOP_REACTIONS_COUNT)
+            .map { it.emoji }
+            .toPersistentList()
+    }
+
+    var selection by remember(topReactions) { mutableStateOf(topReactions) }
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -76,6 +88,7 @@ internal fun MediaReactionsChip(
     MediaReactionsSheet(
         visible = showPicker,
         mediaTitle = mediaTitle,
+        reactions = reactions,
         selectedReactions = selection,
         onReactionClick = { reaction ->
             selection = when (reaction) {
@@ -96,10 +109,10 @@ private fun Preview() {
     TraktTheme {
         MediaReactionsChip(
             mediaTitle = "The Matrix",
-            topReactions = persistentListOf(
-                MediaReactionEmoji.SmilingFaceWithTear,
-                MediaReactionEmoji.Popcorn,
-                MediaReactionEmoji.ColdFace,
+            reactions = persistentListOf(
+                MediaReaction(id = 1, count = 1234, emoji = MediaReactionEmoji.SmilingFaceWithTear),
+                MediaReaction(id = 2, count = 87, emoji = MediaReactionEmoji.Popcorn),
+                MediaReaction(id = 3, count = 5, emoji = MediaReactionEmoji.ColdFace),
             ),
             onReactionsSelected = {},
         )
@@ -112,7 +125,7 @@ private fun PreviewEmpty() {
     TraktTheme {
         MediaReactionsChip(
             mediaTitle = "The Matrix",
-            topReactions = persistentListOf(),
+            reactions = persistentListOf(),
             onReactionsSelected = {},
         )
     }

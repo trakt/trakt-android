@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -80,6 +81,7 @@ import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.core.reactions.media.MediaReactionEmoji
 import tv.trakt.trakt.core.reactions.media.MediaReactionsChip
+import tv.trakt.trakt.core.reactions.media.data.MediaReaction
 import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
 import tv.trakt.trakt.core.share.ShareSheet
 import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsView
@@ -548,9 +550,14 @@ internal fun MovieDetailsContent(
 
                 item {
                     val isLoaded = state.movieUserRating?.loading == LoadingState.Done
-                    DetailsRating(
+                    val reactions = remember(state.movieReactions) {
+                        state.movieReactions?.reactions.orEmpty().toPersistentList()
+                    }
+
+                    DetailsRatingReactions(
                         visible = isWatched && isLoaded,
                         rating = state.movieUserRating?.rating,
+                        reactions = reactions,
                         loading = state.loadingFavorite.isLoading,
                         mediaTitle = movie.title,
                         onRatingDrag = { ratingAlphaMaskActive = it },
@@ -763,13 +770,13 @@ private fun DetailsOverview(
 }
 
 @Composable
-internal fun DetailsRating(
+internal fun DetailsRatingReactions(
     modifier: Modifier = Modifier,
     visible: Boolean,
     rating: UserRating?,
     loading: Boolean,
     mediaTitle: String = "",
-    topReactions: ImmutableList<MediaReactionEmoji> = persistentListOf(),
+    reactions: ImmutableList<MediaReaction> = persistentListOf(),
     onRatingDrag: (Boolean) -> Unit,
     onRatingClick: (Int) -> Unit,
     onRatingRemoveClick: () -> Unit,
@@ -799,14 +806,14 @@ internal fun DetailsRating(
         ) {
             MediaReactionsChip(
                 mediaTitle = mediaTitle,
-                topReactions = topReactions,
+                reactions = reactions,
                 onReactionsSelected = onReactionsSelected,
                 modifier = Modifier
-                    .padding(top = 23.dp)
+                    .padding(top = 24.dp)
                     .padding(bottom = 1.dp),
             )
 
-            if (visible) {
+            if (true) {
                 UserRatingBar(
                     rating = rating?.rating,
                     favoriteLoading = loading,

@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
+import tv.trakt.trakt.core.reactions.media.data.MediaReaction
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 
 @Composable
@@ -23,6 +24,7 @@ internal fun MediaReactionsSheet(
     ),
     visible: Boolean,
     mediaTitle: String,
+    reactions: ImmutableList<MediaReaction>,
     selectedReactions: ImmutableList<MediaReactionEmoji>,
     onReactionClick: (MediaReactionEmoji) -> Unit,
     onDismiss: () -> Unit,
@@ -34,6 +36,7 @@ internal fun MediaReactionsSheet(
         ) {
             MediaReactionsPickerView(
                 mediaTitle = mediaTitle,
+                reactions = reactions,
                 selectedReactions = selectedReactions,
                 onReactionClick = onReactionClick,
                 modifier = Modifier
