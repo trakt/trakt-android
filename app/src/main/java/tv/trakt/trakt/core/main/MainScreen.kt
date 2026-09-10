@@ -646,27 +646,23 @@ private fun LaunchedInstallPrompt(state: MainState) {
     var hasPromptedInstall by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(state.welcome, state.installPrompt) {
-        if (!state.installPrompt || state.welcome.isActive || hasPromptedInstall) {
+        if (BuildConfig.DEBUG || !state.installPrompt || state.welcome.isActive || hasPromptedInstall) {
             return@LaunchedEffect
         }
 
         val activity = localActivity ?: return@LaunchedEffect
         hasPromptedInstall = true
 
-        val manager = when {
-            BuildConfig.DEBUG -> CrossDevicePromptManagerFactory.createFake(activity)
-            else -> CrossDevicePromptManagerFactory.create(activity)
+        with(CrossDevicePromptManagerFactory.create(activity)) {
+            requestInstallationPromptFlow(CrossDevicePromptInstallationRequest.create())
+                .addOnSuccessListener { info ->
+                    launchPromptFlow(activity, info)
+                    Timber.d("Cross-device install prompt launched")
+                }
+                .addOnFailureListener { error ->
+                    Timber.d("Cross-device install prompt not shown: %s", error.message)
+                }
         }
-
-        manager
-            .requestInstallationPromptFlow(CrossDevicePromptInstallationRequest.create())
-            .addOnSuccessListener { info ->
-                manager.launchPromptFlow(activity, info)
-                Timber.d("Cross-device install prompt launched")
-            }
-            .addOnFailureListener { error ->
-                Timber.d("Cross-device install prompt not shown: %s", error.message)
-            }
     }
 }
 

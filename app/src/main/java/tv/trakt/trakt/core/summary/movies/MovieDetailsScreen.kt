@@ -13,6 +13,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -53,6 +54,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -76,6 +78,8 @@ import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
+import tv.trakt.trakt.core.reactions.media.MediaReactionEmoji
+import tv.trakt.trakt.core.reactions.media.MediaReactionsChip
 import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
 import tv.trakt.trakt.core.share.ShareSheet
 import tv.trakt.trakt.core.summary.movies.features.actors.MovieActorsView
@@ -548,6 +552,7 @@ internal fun MovieDetailsContent(
                         visible = isWatched && isLoaded,
                         rating = state.movieUserRating?.rating,
                         loading = state.loadingFavorite.isLoading,
+                        mediaTitle = movie.title,
                         onRatingDrag = { ratingAlphaMaskActive = it },
                         onRatingClick = onRatingClick ?: {},
                         onRatingRemoveClick = onRatingRemoveClick ?: {},
@@ -758,15 +763,18 @@ private fun DetailsOverview(
 }
 
 @Composable
-fun DetailsRating(
+internal fun DetailsRating(
     modifier: Modifier = Modifier,
     visible: Boolean,
     rating: UserRating?,
     loading: Boolean,
+    mediaTitle: String = "",
+    topReactions: ImmutableList<MediaReactionEmoji> = persistentListOf(),
     onRatingDrag: (Boolean) -> Unit,
     onRatingClick: (Int) -> Unit,
     onRatingRemoveClick: () -> Unit,
     onFavoriteClick: () -> Unit,
+    onReactionsSelected: (ImmutableList<MediaReactionEmoji>) -> Unit = {},
 ) {
     var animated by remember { mutableStateOf(false) }
 
@@ -782,23 +790,35 @@ fun DetailsRating(
                 ),
             ),
     ) {
-        if (visible) {
-            UserRatingBar(
-                rating = rating?.rating,
-                favoriteLoading = loading,
-                favoriteVisible = true,
-                favorite = rating?.favorite == true,
-                onRatingDrag = {
-                    animated = it
-                    onRatingDrag(it)
-                },
-                onRatingClick = onRatingClick,
-                onRatingRemoveClick = onRatingRemoveClick,
-                onFavoriteClick = onFavoriteClick,
-                modifier = Modifier.padding(
-                    horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
-                ),
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = spacedBy(16.dp),
+            modifier = Modifier.padding(
+                horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
+            ),
+        ) {
+            MediaReactionsChip(
+                mediaTitle = mediaTitle,
+                topReactions = topReactions,
+                onReactionsSelected = onReactionsSelected,
+                modifier = Modifier.padding(top = 23.dp),
             )
+
+            if (visible) {
+                UserRatingBar(
+                    rating = rating?.rating,
+                    favoriteLoading = loading,
+                    favoriteVisible = true,
+                    favorite = rating?.favorite == true,
+                    onRatingDrag = {
+                        animated = it
+                        onRatingDrag(it)
+                    },
+                    onRatingClick = onRatingClick,
+                    onRatingRemoveClick = onRatingRemoveClick,
+                    onFavoriteClick = onFavoriteClick,
+                )
+            }
         }
     }
 }

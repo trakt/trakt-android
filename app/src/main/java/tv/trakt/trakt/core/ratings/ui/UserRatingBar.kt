@@ -64,7 +64,7 @@ internal fun UserRatingBar(
     favoriteVisible: Boolean = true,
     favoriteLoading: Boolean = false,
     size: Dp = 23.dp,
-    spacing: Dp = 8.dp,
+    spacing: Dp = 6.dp,
     textSpacing: Dp = 44.dp,
     onRatingDrag: (Boolean) -> Unit = {},
     onRatingClick: (Int) -> Unit = {},
