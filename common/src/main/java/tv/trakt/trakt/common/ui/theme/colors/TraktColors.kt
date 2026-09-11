@@ -58,6 +58,7 @@ data class TraktColors(
     val streakLevel3: Color = Color.Unspecified,
     val streakLevel4: Color = Color.Unspecified,
     // Nav
+    val detailsBarContainer: Color = Color.Unspecified,
     val navigationHeaderContainer: Color = Color.Unspecified,
     val navigationContainer: Color = Color.Unspecified,
     val navigationContent: Color = Color.Unspecified,

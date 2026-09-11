@@ -4,10 +4,14 @@ package tv.trakt.trakt.core.summary.shows
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -30,12 +34,14 @@ import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment.Companion.BottomEnd
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.TopCenter
@@ -44,6 +50,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType.Companion.Confirm
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
@@ -78,9 +85,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
-import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.core.comments.model.CommentsFilter
-import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
 import tv.trakt.trakt.core.share.ShareSheet
 import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsView
@@ -100,6 +105,8 @@ import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.summary.social.ui.MediaSocialView
 import tv.trakt.trakt.core.summary.ui.DetailsActions
 import tv.trakt.trakt.core.summary.ui.DetailsBackground
+import tv.trakt.trakt.core.summary.ui.DetailsRating
+import tv.trakt.trakt.core.summary.ui.RatingBarFadeDistance
 import tv.trakt.trakt.core.summary.ui.header.DetailsHeader
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
@@ -525,6 +532,16 @@ internal fun ShowDetailsContent(
         label = "alpha",
     )
 
+    val ratingFadeThresholdPx = with(LocalDensity.current) {
+        RatingBarFadeDistance.toPx()
+    }
+    val ratingBarAtTop by remember(ratingFadeThresholdPx) {
+        derivedStateOf {
+            listState.firstVisibleItemIndex == 0 &&
+                listState.firstVisibleItemScrollOffset < ratingFadeThresholdPx
+        }
+    }
+
     Box(
         contentAlignment = TopCenter,
         modifier = modifier
@@ -612,21 +629,6 @@ internal fun ShowDetailsContent(
                                         horizontal = TraktTheme.spacing.detailsActionsHorizontalSpace,
                                     ),
                             ),
-                    )
-                }
-
-                item {
-                    val isLoaded = state.showUserRating?.loading == LoadingState.Done
-                    DetailsRating(
-                        visible = isWatched && isLoaded,
-                        rating = state.showUserRating?.rating,
-                        loading = state.loadingFavorite.isLoading,
-                        onRatingDrag = {
-                            ratingAlphaMaskActive = it
-                        },
-                        onRatingClick = onRatingClick ?: {},
-                        onRatingRemoveClick = onRatingRemoveClick ?: {},
-                        onFavoriteClick = onFavoriteClick ?: {},
                     )
                 }
 
@@ -814,51 +816,34 @@ internal fun ShowDetailsContent(
                     }
                 }
             }
-        }
-    }
-}
 
-@Composable
-fun DetailsRating(
-    modifier: Modifier = Modifier,
-    visible: Boolean,
-    rating: UserRating?,
-    loading: Boolean,
-    onRatingDrag: (Boolean) -> Unit,
-    onRatingClick: (Int) -> Unit,
-    onRatingRemoveClick: () -> Unit,
-    onFavoriteClick: () -> Unit,
-) {
-    var animated by remember { mutableStateOf(false) }
+            val isRatingLoaded = state.showUserRating?.loading == LoadingState.Done
 
-    Box(
-        contentAlignment = Center,
-        modifier = modifier
-            .fillMaxWidth()
-            .ifOrElse(
-                condition = animated,
-                isTrue = Modifier,
-                isFalse = Modifier.animateContentSize(
-                    animationSpec = tween(200, delayMillis = 250),
-                ),
-            ),
-    ) {
-        if (visible) {
-            UserRatingBar(
-                rating = rating?.rating,
-                favoriteLoading = loading,
-                favoriteVisible = true,
-                favorite = rating?.favorite == true,
-                onRatingDrag = {
-                    animated = it
-                    onRatingDrag(it)
-                },
-                onRatingClick = onRatingClick,
-                onRatingRemoveClick = onRatingRemoveClick,
-                onFavoriteClick = onFavoriteClick,
+            AnimatedVisibility(
+                visible = isWatched && isRatingLoaded && ratingBarAtTop,
+                enter = fadeIn(tween(200)) +
+                    slideInVertically(tween(200)) { it / 10 },
+                exit = fadeOut(tween(200)) +
+                    slideOutVertically(tween(200)) { it / 10 },
                 modifier = Modifier
-                    .padding(horizontal = TraktTheme.spacing.mainPageHorizontalSpace),
-            )
+                    .align(BottomEnd)
+                    .padding(
+                        end = TraktTheme.spacing.mainPageHorizontalSpace,
+                        bottom = WindowInsets.navigationBars.asPaddingValues()
+                            .calculateBottomPadding()
+                            .plus(TraktTheme.size.navigationBarHeight)
+                            .plus(8.dp),
+                    ),
+            ) {
+                DetailsRating(
+                    rating = state.showUserRating?.rating,
+                    loading = state.loadingFavorite.isLoading,
+                    onRatingDrag = { ratingAlphaMaskActive = it },
+                    onRatingClick = onRatingClick ?: {},
+                    onRatingRemoveClick = onRatingRemoveClick ?: {},
+                    onFavoriteClick = onFavoriteClick ?: {},
+                )
+            }
         }
     }
 }

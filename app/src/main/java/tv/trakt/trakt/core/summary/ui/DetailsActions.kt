@@ -29,9 +29,7 @@ import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.common.ui.theme.colors.Shade10
 import tv.trakt.trakt.common.ui.theme.colors.Shade400
-import tv.trakt.trakt.common.ui.theme.colors.Shade900
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -70,7 +68,7 @@ internal fun DetailsActions(
                 spotColor = shadowColor,
             )
             .background(
-                color = if (isLight) Shade10 else Shade900,
+                color = TraktTheme.colors.detailsBarContainer,
                 shape = shape,
             )
             .padding(

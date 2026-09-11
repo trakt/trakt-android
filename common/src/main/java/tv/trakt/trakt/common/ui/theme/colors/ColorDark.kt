@@ -27,6 +27,7 @@ val DarkColors: TraktColors = TraktColors(
     navigationContent = White,
     navigationContentOn = Purple400,
     navigationContentOff = Shade300,
+    detailsBarContainer = Shade900,
     inputContainer = Shade920,
     dialogContainer = Shade900,
     dialogOnContainer = Shade800,

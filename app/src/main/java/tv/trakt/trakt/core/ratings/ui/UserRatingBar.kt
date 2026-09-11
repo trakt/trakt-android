@@ -11,7 +11,6 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -54,6 +53,7 @@ import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import kotlin.math.abs
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 internal fun UserRatingBar(
@@ -63,16 +63,17 @@ internal fun UserRatingBar(
     favorite: Boolean = false,
     favoriteVisible: Boolean = true,
     favoriteLoading: Boolean = false,
+    dragLabelVisible: Boolean = true,
     size: Dp = 23.dp,
-    spacing: Dp = 8.dp,
-    textSpacing: Dp = 44.dp,
+    spacing: Dp = 6.dp,
+    textSpacing: Dp = 40.dp,
     onRatingDrag: (Boolean) -> Unit = {},
+    onRatingDragValue: (Float) -> Unit = {},
     onRatingClick: (Int) -> Unit = {},
     onRatingRemoveClick: () -> Unit = {},
     onFavoriteClick: () -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
-    val context = LocalResources.current
     val tutorials = when {
         LocalInspectionMode.current -> StubTutorialsManager()
         else -> koinInject<TutorialsManager>()
@@ -123,19 +124,11 @@ internal fun UserRatingBar(
     }
 
     Box(
-        modifier = modifier.padding(top = 22.dp),
+        modifier = modifier,
     ) {
-        if (ratingAlphaMaskActive) {
-            val ratingText = if (dragStars == 0f) {
-                stringResource(R.string.text_no_rating)
-            } else {
-                val numText = dragStars.toString().removeSuffix(".0")
-                val slugText = UserRating.getSlug(dragStars, context)
-                "$numText • $slugText"
-            }
-
+        if (ratingAlphaMaskActive && dragLabelVisible) {
             Text(
-                text = ratingText,
+                text = userRatingDragText(dragStars),
                 textAlign = TextAlign.Center,
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.meta.copy(
@@ -144,9 +137,6 @@ internal fun UserRatingBar(
                 modifier = Modifier
                     .align(Alignment.Center)
                     .graphicsLayer {
-                        if (favoriteVisible) {
-                            translationX = -16.dp.toPx()
-                        }
                         translationY = -textSpacing.toPx()
                     },
             )
@@ -226,7 +216,7 @@ internal fun UserRatingBar(
                                             tutorialX.snapTo(starSizePx)
                                             tutorialAlpha.snapTo(0f)
                                             launch {
-                                                delay(400)
+                                                delay(400.milliseconds)
                                                 tutorialX.animateTo(
                                                     targetValue = starsWidth,
                                                     animationSpec = tween(500, easing = LinearEasing),
@@ -236,7 +226,7 @@ internal fun UserRatingBar(
                                                 targetValue = 1f,
                                                 animationSpec = tween(300),
                                             )
-                                            delay(800)
+                                            delay(800.milliseconds)
                                             tutorialAlpha.animateTo(
                                                 targetValue = 0f,
                                                 animationSpec = tween(300),
@@ -250,6 +240,7 @@ internal fun UserRatingBar(
                                 onRatingDrag(true)
                                 ratingAlphaMaskActive = true
                                 dragStars = xToStars(activationX)
+                                onRatingDragValue(dragStars)
                                 dragActiveIndex = xToIndex(activationX)
 
                                 while (true) {
@@ -257,6 +248,7 @@ internal fun UserRatingBar(
                                     if (event.changes.all { !it.pressed }) break
                                     event.changes.forEach { change ->
                                         dragStars = xToStars(change.position.x)
+                                        onRatingDragValue(dragStars)
                                         dragActiveIndex = xToIndex(change.position.x)
                                         change.consume()
                                     }
@@ -313,7 +305,7 @@ internal fun UserRatingBar(
                             label = "activeScale$index",
                         )
                         val activeTranslationY by animateFloatAsState(
-                            targetValue = -starSizePx * 0.5f * elevationFraction,
+                            targetValue = -starSizePx * 0.25f * elevationFraction,
                             animationSpec = tween(200),
                             label = "activeTranslationY$index",
                         )
@@ -397,6 +389,17 @@ internal fun UserRatingBar(
             }
         }
     }
+}
+
+@Composable
+internal fun userRatingDragText(stars: Float): String {
+    if (stars == 0f) {
+        return stringResource(R.string.text_no_rating)
+    }
+
+    val numText = stars.toString().removeSuffix(".0")
+    val slugText = UserRating.getSlug(stars, LocalResources.current)
+    return "$numText • $slugText"
 }
 
 private fun runScaleAnimation(
