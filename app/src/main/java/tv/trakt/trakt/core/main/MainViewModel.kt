@@ -331,7 +331,7 @@ internal class MainViewModel(
     private fun loadRatePrompt() {
         viewModelScope.launch {
             try {
-                ratePromptManager.checkMovies()
+                ratePromptManager.checkRecentlyWatched()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)

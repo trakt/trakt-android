@@ -368,7 +368,7 @@ internal class AllReleasesViewModel(
                     date = customDate?.analyticsStrings,
                 )
 
-                ratePromptManager.checkMovies()
+                ratePromptManager.checkRecentlyWatched()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

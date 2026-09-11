@@ -33,6 +33,7 @@ import tv.trakt.trakt.core.ratings.rateprompt.DefaultRatePromptManager
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia
 import tv.trakt.trakt.core.ratings.rateprompt.ui.RatePromptViewModel
+import tv.trakt.trakt.core.ratings.rateprompt.usecases.IsShowRatingCandidateUseCase
 
 internal const val RATINGS_PREFERENCES = "ratings_preferences"
 
@@ -56,8 +57,11 @@ internal val ratingsDataModule = module {
             userFavoritesUseCase = get(),
             updateUserSettingsUseCase = get(),
             userHistoryDataSource = get(),
+            isShowRatingCandidateUseCase = get(),
         )
     }
+
+    factoryOf(::IsShowRatingCandidateUseCase)
 }
 
 internal val ratingsModule = module {

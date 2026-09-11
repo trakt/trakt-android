@@ -234,7 +234,7 @@ internal class ListMovieContextViewModel(
                     ids = setOf(movie.ids.trakt),
                 )
                 watchlistUpdates.notifyUpdate(Source.Default)
-                ratePromptManager.checkMovies()
+                ratePromptManager.checkRecentlyWatched()
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",
