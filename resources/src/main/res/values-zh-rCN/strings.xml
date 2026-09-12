@@ -25,6 +25,7 @@
   <string name="action_toast_removed_from_history_generic">已从你的观看历史记录移除</string>
   <string name="action_toast_removed_from_watchlist"><b>%s</b> 已从你的待看列表移除</string>
   <string name="action_toast_removed_from_watchlist_generic">已从你的待看列表移除</string>
+  <string name="advanced_filter_label_parental_guide">%1$s：%2$s 至 %3$s</string>
   <string name="advanced_filter_label_ratings">评分为 %1$s 至 %2$s</string>
   <string name="advanced_filter_label_release_year">发布于 %1$d 至 %2$d 年</string>
   <string name="advanced_filter_label_runtime">运行时长为 %1$d 至 %2$d 分钟。</string>
@@ -191,6 +192,7 @@
   <string name="button_label_profile_options">资料选项</string>
   <string name="button_label_progress_completed">查看已完成的节目</string>
   <string name="button_label_progress_dropped">查看已放弃的节目</string>
+  <string name="button_label_progress_ended">查看已完结的节目</string>
   <string name="button_label_progress_in_progress">查看进行中的节目</string>
   <string name="button_label_rate">评分“%s”</string>
   <string name="button_label_raw_export">导出包含您的原始数据的 ZIP 文件。</string>
@@ -306,6 +308,7 @@
   <string name="button_label_view_sentiment_analysis">查看情感分析</string>
   <string name="button_label_view_soundtrack">查看原声带</string>
   <string name="button_label_view_trivia">查看趣闻</string>
+  <string name="button_label_vip_paypal_switch">查看VIP套餐并切换到信用卡</string>
   <string name="button_label_vip_upgrade">升级到VIP</string>
   <string name="button_label_watch_on_service">在 %s 上观看</string>
   <string name="button_label_watch_until_here_anchor_end">将所选日期视为狂欢结束</string>
@@ -433,6 +436,7 @@
   <string name="button_text_popular_comments">流行</string>
   <string name="button_text_progress_completed">已完成</string>
   <string name="button_text_progress_dropped">已弃看</string>
+  <string name="button_text_progress_ended">已完结</string>
   <string name="button_text_progress_in_progress">进行中</string>
   <string name="button_text_raw_export">立即导出</string>
   <string name="button_text_recent_comments">最新</string>
@@ -481,7 +485,6 @@
   <string name="button_text_sort_updated_date">更新日期</string>
   <string name="button_text_start_import">开始导入</string>
   <string name="button_text_start_rewatching">开始重新观看</string>
-  <string name="button_text_stop_asking">停止询问</string>
   <string name="button_text_stop_check_in">停止签入</string>
   <string name="button_text_stop_clear">停止清除</string>
   <string name="button_text_stop_export">停止导出</string>
@@ -516,6 +519,7 @@
   <string name="button_text_view_import_guidelines">查看指南</string>
   <string name="button_text_view_photo">查看照片</string>
   <string name="button_text_view_recommendation_sources">为何推荐？</string>
+  <string name="button_text_vip_paypal_switch">查看套餐</string>
   <string name="button_text_vip_upgrade">升级</string>
   <string name="button_text_watch_again">再次观看</string>
   <string name="button_text_watch_until_here_anchor_end">结束时间</string>
@@ -576,7 +580,6 @@
   <string name="confirmation_title_stop_checkin">停止签入?</string>
   <string name="confirmation_title_stop_clear">停止清除?</string>
   <string name="confirmation_title_stop_export">停止导出？</string>
-  <string name="confirmation_title_suppress_ratings_toast">停止询问?</string>
   <string name="confirmation_title_undo_sync">撤销此同步？</string>
   <string name="confirmation_title_unfollow_user">取消关注?</string>
   <string name="confirmation_title_unlink_streaming">解除关联 %s？</string>
@@ -814,6 +817,8 @@
   <string name="header_sync_detail">同步 ID %s</string>
   <string name="header_target">目标</string>
   <string name="header_total_runtime">总时长</string>
+  <string name="header_vip_paypal_switch">切换到信用卡</string>
+  <string name="header_vip_two_year_deal">付费1年，享2年VIP！</string>
   <string name="header_writer">编剧</string>
   <string name="heading_api_application_vip_only">创建新应用需要 Trakt VIP</string>
   <string name="heading_api_applications">API 应用程序</string>
@@ -945,6 +950,15 @@
   <string name="label_genres_drawer_subtitle_loved">最多选择 5 种您希望更多看到的类型。</string>
   <string name="label_keep_play">保留</string>
   <string name="label_list_item_count">%s 个项目</string>
+  <string name="label_parental_guide_category_alcohol">酒精、毒品与吸烟</string>
+  <string name="label_parental_guide_category_frightening">惊悚与紧张场景</string>
+  <string name="label_parental_guide_category_nudity">性与裸露</string>
+  <string name="label_parental_guide_category_profanity">脏话</string>
+  <string name="label_parental_guide_category_violence">暴力与血腥</string>
+  <string name="label_parental_guide_severity_mild">轻微</string>
+  <string name="label_parental_guide_severity_moderate">中等</string>
+  <string name="label_parental_guide_severity_none">无</string>
+  <string name="label_parental_guide_severity_severe">严重</string>
   <string name="label_plex_connected">已连接到Plex</string>
   <string name="label_plex_connection">连接</string>
   <string name="label_plex_history_date">日期</string>
@@ -1262,7 +1276,7 @@
   <string name="preview_feature_description_genre_picker">从可视化网格中选择您喜欢的类型，而非标签列表。</string>
   <string name="preview_feature_description_leaderboard">根据观看时长对您关注的人进行排名，查看您在他们中的位置。</string>
   <string name="preview_feature_description_list_counts">显示列表包含的项目数量，以及版块拥有的列表数量。</string>
-  <string name="preview_feature_description_parental_guide">在电影、节目和剧集的详情抽屉中显示内容风险等级。</string>
+  <string name="preview_feature_description_parental_guide">在电影和节目详情抽屉中显示内容风险等级，并在高级筛选中按严重程度筛选。</string>
   <string name="preview_feature_description_reviewer_stats">显示评论者在其评分旁边观看作品的进度。</string>
   <string name="preview_feature_description_rewatch">开始重温您已看过的节目，直接从会话抽屉中签到或标记已观看剧集。</string>
   <string name="preview_feature_description_scoped_favorites">通过在个人资料上显示当年的收藏以及按年份分组完整的收藏列表来限制收藏列表的时间范围。</string>
@@ -1283,6 +1297,13 @@
   <string name="section_title_season_progress">第 %d 季 进度</string>
   <string name="section_title_seasons_overview">概览</string>
   <string name="section_title_specials_progress">特辑进度</string>
+  <string name="spotlight_dialog_label">快速导航</string>
+  <string name="spotlight_hint_dismiss">关闭</string>
+  <string name="spotlight_hint_navigate">导航</string>
+  <string name="spotlight_hint_select">打开</string>
+  <string name="spotlight_input_placeholder">去哪里？</string>
+  <string name="spotlight_no_results">没有匹配\"%s\"的内容</string>
+  <string name="spotlight_section_pages">页面</string>
   <string name="stat_label_hours">小时</string>
   <string name="stat_label_plays">播放次数</string>
   <string name="stat_text_favorited">我的最爱</string>
@@ -1751,6 +1772,7 @@
   <string name="text_vip_payment_method_google">Google Play</string>
   <string name="text_vip_payment_method_other">其他</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
+  <string name="text_vip_paypal_switch">将您的VIP订阅从PayPal转移到信用卡。您不会丢失任何VIP时间，一旦您选择新套餐，您的PayPal订阅将自动取消。</string>
   <string name="text_vip_powers_trakt">助力 Trakt 运行，并解锁专为真正关心观看内容的用户打造的功能。</string>
   <string name="text_vip_subscription">订阅</string>
   <string name="text_vip_subscription_missing_message">我们找不到可管理的有效订阅。它可能已被取消。<a>联系支持</a>如果您认为有问题。</string>
@@ -1764,6 +1786,7 @@
   <string name="text_vip_transaction_disputed">对<b>%s</b>收费提出异议</string>
   <string name="text_vip_transaction_plan_changed">更改了您的<b>%s</b>套餐</string>
   <string name="text_vip_transaction_refunded">通过<b>%1$s</b>退款<b>%2$s</b></string>
+  <string name="text_vip_two_year_deal">您已解锁2年套餐，价格为%1$s，之后每2年续订价格为%2$s。折扣将在结账时自动应用。</string>
   <string name="text_vip_upsell_default">提升你的 Trakt 体验</string>
   <string name="text_vip_upsell_default_2">升级到VIP！</string>
   <string name="text_vip_upsell_default_description">升级到VIP，解锁完整的 Trakt 体验，其中包含专为电视剧和电影爱好者设计的功能。</string>
@@ -2085,7 +2108,6 @@
   <string name="warning_prompt_set_cover_image">使用“%s”作为你的个人资料背景图片？</string>
   <string name="warning_prompt_simple_filters">切换到简单筛选器将重置您当前的所有筛选器。您确定要继续吗？</string>
   <string name="warning_prompt_stop_checkin">你确定要停止观看“%s”吗？</string>
-  <string name="warning_prompt_suppress_ratings_toast">你想停止被询问评价你最近观看的内容吗？</string>
   <string name="warning_prompt_track_show_episode_count">你确定要将“%1$s”标记为已观看吗？这会标记 %2$d 集为已观看。</string>
   <string name="warning_prompt_unfollow_user">你确定要取消关注 %s 吗？</string>
   <string name="warning_prompt_younify_unlink">你确定要取消关联 %s 吗？</string>
