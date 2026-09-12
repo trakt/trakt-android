@@ -25,6 +25,7 @@
   <string name="action_toast_removed_from_history_generic">تمت الإزالة من سجلك</string>
   <string name="action_toast_removed_from_watchlist">تمت إزالة \n<b>%s</b> من قائمة المشاهدة الخاصة بك</string>
   <string name="action_toast_removed_from_watchlist_generic">تمت الإزالة من قائمة المشاهدة</string>
+  <string name="advanced_filter_label_parental_guide">%1$s من %2$s إلى %3$s</string>
   <string name="advanced_filter_label_ratings">تقييم من %1$s إلى %2$s</string>
   <string name="advanced_filter_label_release_year">صدر في %1$d إلى %2$d</string>
   <string name="advanced_filter_label_runtime">مدة التشغيل من %1$d إلى %2$d دقيقة.</string>
@@ -191,6 +192,7 @@
   <string name="button_label_profile_options">خيارات الملف الشخصي</string>
   <string name="button_label_progress_completed">عرض العروض المكتملة</string>
   <string name="button_label_progress_dropped">عرض العروض المسقطة</string>
+  <string name="button_label_progress_ended">عرض العروض المنتهية</string>
   <string name="button_label_progress_in_progress">عرض قيد التقدم يظهر</string>
   <string name="button_label_rate">قيم \"%s\"</string>
   <string name="button_label_raw_export">قم بتصدير ملف ZIP يحتوي على بياناتك الأولية.</string>
@@ -306,6 +308,7 @@
   <string name="button_label_view_sentiment_analysis">عرض تحليل المشاعر</string>
   <string name="button_label_view_soundtrack">عرض الموسيقى التصويرية</string>
   <string name="button_label_view_trivia">عرض المعلومات</string>
+  <string name="button_label_vip_paypal_switch">عرض خطط VIP والتبديل إلى بطاقة الائتمان</string>
   <string name="button_label_vip_upgrade">الترقية إلى VIP</string>
   <string name="button_label_watch_on_service">شاهد على %s</string>
   <string name="button_label_watch_until_here_anchor_end">تعامل مع التاريخ المختار على أنه نهاية الشراهة</string>
@@ -433,6 +436,7 @@
   <string name="button_text_popular_comments">شائعة</string>
   <string name="button_text_progress_completed">محدث</string>
   <string name="button_text_progress_dropped">سقط</string>
+  <string name="button_text_progress_ended">منتهٍ</string>
   <string name="button_text_progress_in_progress">قيد التنفيذ</string>
   <string name="button_text_raw_export">تصدير الآن</string>
   <string name="button_text_recent_comments">الأخيرة</string>
@@ -481,7 +485,6 @@
   <string name="button_text_sort_updated_date">تاريخ التحديث</string>
   <string name="button_text_start_import">ابدأ الاستيراد</string>
   <string name="button_text_start_rewatching">ابدأ بإعادة المشاهدة</string>
-  <string name="button_text_stop_asking">توقف عن السؤال</string>
   <string name="button_text_stop_check_in">توقف عن تسجيل الدخول</string>
   <string name="button_text_stop_clear">وقف المقاصة</string>
   <string name="button_text_stop_export">إيقاف التصدير</string>
@@ -516,6 +519,7 @@
   <string name="button_text_view_import_guidelines">عرض الإرشادات</string>
   <string name="button_text_view_photo">شاهد الصورة</string>
   <string name="button_text_view_recommendation_sources">لماذا هذا؟</string>
+  <string name="button_text_vip_paypal_switch">عرض الخطط</string>
   <string name="button_text_vip_upgrade">ترقية</string>
   <string name="button_text_watch_again">شاهد مرة أخرى</string>
   <string name="button_text_watch_until_here_anchor_end">نهاية الوقت</string>
@@ -576,7 +580,6 @@
   <string name="confirmation_title_stop_checkin">هل تريد إيقاف تسجيل الوصول؟</string>
   <string name="confirmation_title_stop_clear">التوقف عن المقاصة؟</string>
   <string name="confirmation_title_stop_export">إيقاف التصدير؟</string>
-  <string name="confirmation_title_suppress_ratings_toast">توقف عن السؤال؟</string>
   <string name="confirmation_title_undo_sync">التّراجع عن هذه المزامنة؟</string>
   <string name="confirmation_title_unfollow_user">هل تريد إلغاء متابعة المستخدم؟</string>
   <string name="confirmation_title_unlink_streaming">هل تريد إلغاء ربط %s؟</string>
@@ -814,6 +817,8 @@
   <string name="header_sync_detail">معرف المزامنة %s</string>
   <string name="header_target">الهدف</string>
   <string name="header_total_runtime">إجمالي مدّة العرض</string>
+  <string name="header_vip_paypal_switch">التبديل إلى بطاقة الائتمان</string>
+  <string name="header_vip_two_year_deal">ادفع لسنة واحدة، واحصل على سنتين من VIP!</string>
   <string name="header_writer">الكاتب</string>
   <string name="heading_api_application_vip_only">يتطلب إنشاء تطبيقات جديدة Trakt VIP</string>
   <string name="heading_api_applications">تطبيقات API</string>
@@ -945,6 +950,15 @@
   <string name="label_genres_drawer_subtitle_loved">اختر ما يصل إلى 5 أنواع ترغب في رؤية المزيد منها.</string>
   <string name="label_keep_play">احتفظ</string>
   <string name="label_list_item_count">القائمة: %s</string>
+  <string name="label_parental_guide_category_alcohol">الكحول والمخدرات والتدخين</string>
+  <string name="label_parental_guide_category_frightening">مشاهد مخيفة ومكثفة</string>
+  <string name="label_parental_guide_category_nudity">الجنس والعري</string>
+  <string name="label_parental_guide_category_profanity">الألفاظ البذيئة</string>
+  <string name="label_parental_guide_category_violence">العنف والدماء</string>
+  <string name="label_parental_guide_severity_mild">خفيف</string>
+  <string name="label_parental_guide_severity_moderate">معتدل</string>
+  <string name="label_parental_guide_severity_none">لا شيء</string>
+  <string name="label_parental_guide_severity_severe">شديد</string>
   <string name="label_plex_connected">متصل بـ Plex</string>
   <string name="label_plex_connection">اتصال</string>
   <string name="label_plex_history_date">التاريخ</string>
@@ -1262,7 +1276,7 @@
   <string name="preview_feature_description_genre_picker">اختر أنواعك المفضلة من شبكة مرئية بدلاً من قائمة بالعلامات.</string>
   <string name="preview_feature_description_leaderboard">قم بتصنيف الأشخاص الذين تتابعهم حسب وقت المشاهدة وانظر إلى أين ستصل بينهم.</string>
   <string name="preview_feature_description_list_counts">يعرض عدد العناصر التي تحتويها القائمة، وعدد القوائم التي يملكها القسم.</string>
-  <string name="preview_feature_description_parental_guide">اعرض مستويات خطورة المحتوى في درج التفاصيل للأفلام والعروض والحلقات.</string>
+  <string name="preview_feature_description_parental_guide">اعرض مستويات خطورة المحتوى في درج التفاصيل للأفلام والعروض، وفلتر حسب الخطورة في الفلاتر المتقدمة.</string>
   <string name="preview_feature_description_reviewer_stats">يعرض مقدار ما شاهده المراجع من عنوان بجوار تقييمه.</string>
   <string name="preview_feature_description_rewatch">ابدأ في إعادة مشاهدة الجلسات للعروض التي شاهدتها بالفعل، أو قم بتسجيل الدخول أو وضع علامة على الحلقات التي تمت مشاهدتها مباشرة من درج الجلسة.</string>
   <string name="preview_feature_description_scoped_favorites">قوائم المفضلة في المربع الزمني من خلال إظهار مفضلات العام الحالي في الملفات الشخصية وتجميع قائمة المفضلة الكاملة حسب السنة.</string>
@@ -1283,6 +1297,13 @@
   <string name="section_title_season_progress">تقدم الموسم %d</string>
   <string name="section_title_seasons_overview">نظرة عامة</string>
   <string name="section_title_specials_progress">تقدّم الحلقات الخاصة</string>
+  <string name="spotlight_dialog_label">تنقل سريع</string>
+  <string name="spotlight_hint_dismiss">إغلاق</string>
+  <string name="spotlight_hint_navigate">تنقل</string>
+  <string name="spotlight_hint_select">فتح</string>
+  <string name="spotlight_input_placeholder">إلى أين؟</string>
+  <string name="spotlight_no_results">لا يوجد ما يطابق \"%s\"</string>
+  <string name="spotlight_section_pages">الصفحات</string>
   <string name="stat_label_hours">ساعات</string>
   <string name="stat_label_plays">مشاهدات</string>
   <string name="stat_text_favorited">المفضلة</string>
@@ -1751,6 +1772,7 @@
   <string name="text_vip_payment_method_google">جوجل بلاي</string>
   <string name="text_vip_payment_method_other">أخرى</string>
   <string name="text_vip_payment_method_paypal">باي بال</string>
+  <string name="text_vip_paypal_switch">انقل اشتراكك المميز (VIP) من PayPal إلى بطاقة ائتمان. لن تخسر أي وقت مميز (VIP)، وسيتم إلغاء اشتراكك في PayPal تلقائيًا بمجرد اختيار خطة جديدة.</string>
   <string name="text_vip_powers_trakt">يساعد في تعزيز Trakt ويفتح الميزات المصممة للأشخاص الذين يهتمون حقًا بما يشاهدونه.</string>
   <string name="text_vip_subscription">الاشتراك</string>
   <string name="text_vip_subscription_missing_message">لم نتمكن من العثور على اشتراك نشط لإدارته. قد يكون قد تم إلغاؤه بالفعل. <a>اتصل بالدعم</a> إذا كنت تعتقد أن هناك خطأ ما.</string>
@@ -1764,6 +1786,7 @@
   <string name="text_vip_transaction_disputed">تم الاعتراض على رسوم <b>%s</b></string>
   <string name="text_vip_transaction_plan_changed">تم تغيير خطة <b>%s</b></string>
   <string name="text_vip_transaction_refunded">تم استرداد <b>%1$s</b> عبر <b>%2$s</b></string>
+  <string name="text_vip_two_year_deal">لقد فتحت خطة السنتين مقابل %1$s، ثم %2$s كل سنتين. يتم تطبيق الخصم تلقائيًا عند الدفع.</string>
   <string name="text_vip_upsell_default">تعزيز تجربة Trakt الخاصة بك</string>
   <string name="text_vip_upsell_default_2">الترقية إلى VIP!</string>
   <string name="text_vip_upsell_default_description">قم بالترقية إلى VIP واحصل على تجربة Trakt الكاملة، المليئة بالميزات المصممة لمحبي البرامج التلفزيونية والأفلام.</string>
@@ -2085,7 +2108,6 @@
   <string name="warning_prompt_set_cover_image">هل تريد استخدام \"%s\" كصورة خلفية لملفك الشخصي؟</string>
   <string name="warning_prompt_simple_filters">سيؤدي التبديل إلى المرشحات البسيطة إلى إعادة تعيين جميع المرشحات الحالية. هل أنت متأكد أنك تريد المتابعة؟</string>
   <string name="warning_prompt_stop_checkin">هل أنت متأكد من أنك تريد إيقاف مشاهدة \"%s\"؟</string>
-  <string name="warning_prompt_suppress_ratings_toast">هل تريد التوقف عن طلب تقييم ما شاهدته مؤخرًا؟</string>
   <string name="warning_prompt_track_show_episode_count">هل أنت متأكد من أنك تريد وضع علامة \"%1$s\" كمسلسل تمت مشاهدته؟ سيؤدي هذا إلى وضع علامة على %2$d حلقة كشوهدت.</string>
   <string name="warning_prompt_unfollow_user">هل أنت متأكد من أنك تريد إلغاء متابعة %s؟</string>
   <string name="warning_prompt_younify_unlink">هل أنت متأكد أنك تريد إلغاء ربط %s؟</string>

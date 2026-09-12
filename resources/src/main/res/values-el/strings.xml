@@ -25,6 +25,7 @@
   <string name="action_toast_removed_from_history_generic">Αφαιρέθηκε από το ιστορικό σας</string>
   <string name="action_toast_removed_from_watchlist">Το <b>%s</b> αφαιρέθηκε από τη λίστα παρακολούθησής σας</string>
   <string name="action_toast_removed_from_watchlist_generic">Αφαιρέθηκε από τη λίστα παρακολούθησής σας</string>
+  <string name="advanced_filter_label_parental_guide">%1$s: από %2$s έως %3$s</string>
   <string name="advanced_filter_label_ratings">Βαθμολογία από %1$s έως %2$s</string>
   <string name="advanced_filter_label_release_year">Κυκλοφόρησε από %1$d έως %2$d</string>
   <string name="advanced_filter_label_runtime">Διάρκεια από %1$d έως %2$d λεπτά.</string>
@@ -191,6 +192,7 @@
   <string name="button_label_profile_options">Επιλογές προφίλ</string>
   <string name="button_label_progress_completed">Προβολή ολοκληρωμένων σειρών</string>
   <string name="button_label_progress_dropped">Προβολή σειρών που διακόπηκαν</string>
+  <string name="button_label_progress_ended">Προβολή σειρών που ολοκληρώθηκαν</string>
   <string name="button_label_progress_in_progress">Προβολή σειρών σε εξέλιξη</string>
   <string name="button_label_rate">Βαθμολογήστε \"%s\"</string>
   <string name="button_label_raw_export">Εξαγωγή αρχείου ZIP που περιέχει τα ακατέργαστα δεδομένα σας.</string>
@@ -306,6 +308,7 @@
   <string name="button_label_view_sentiment_analysis">Προβολή ανάλυσης συναισθήματος</string>
   <string name="button_label_view_soundtrack">Προβολή σάουντρακ</string>
   <string name="button_label_view_trivia">Προβολή trivia</string>
+  <string name="button_label_vip_paypal_switch">Προβολή προγραμμάτων VIP και μετάβαση σε πιστωτική κάρτα</string>
   <string name="button_label_vip_upgrade">Αναβαθμίστε σε VIP</string>
   <string name="button_label_watch_on_service">Παρακολούθηση στην %s</string>
   <string name="button_label_watch_until_here_anchor_end">Ορίστε την επιλεγμένη ημερομηνία ως το τέλος του binge-watching</string>
@@ -433,6 +436,7 @@
   <string name="button_text_popular_comments">Δημοφιλή</string>
   <string name="button_text_progress_completed">Ενημερωμένο</string>
   <string name="button_text_progress_dropped">Εγκαταλείφθηκε</string>
+  <string name="button_text_progress_ended">Ολοκληρώθηκε</string>
   <string name="button_text_progress_in_progress">Σε εξέλιξη</string>
   <string name="button_text_raw_export">Εξαγωγή τώρα</string>
   <string name="button_text_recent_comments">Πρόσφατα</string>
@@ -481,7 +485,6 @@
   <string name="button_text_sort_updated_date">Ημερομηνία Ενημέρωσης</string>
   <string name="button_text_start_import">Έναρξη εισαγωγής</string>
   <string name="button_text_start_rewatching">Έναρξη επανάληψης</string>
-  <string name="button_text_stop_asking">Σταμάτα να ρωτάς</string>
   <string name="button_text_stop_check_in">Διακοπή καταχώρισης</string>
   <string name="button_text_stop_clear">Διακοπή Εκκαθάρισης</string>
   <string name="button_text_stop_export">Διακοπή εξαγωγής</string>
@@ -516,6 +519,7 @@
   <string name="button_text_view_import_guidelines">Προβολή οδηγιών</string>
   <string name="button_text_view_photo">Προβολή φωτογραφίας</string>
   <string name="button_text_view_recommendation_sources">Γιατί αυτό;</string>
+  <string name="button_text_vip_paypal_switch">Προβολή προγραμμάτων</string>
   <string name="button_text_vip_upgrade">Αναβάθμιση</string>
   <string name="button_text_watch_again">Παρακολούθηση ξανά</string>
   <string name="button_text_watch_until_here_anchor_end">Ώρα λήξης</string>
@@ -576,7 +580,6 @@
   <string name="confirmation_title_stop_checkin">Διακοπή καταχώρισης;</string>
   <string name="confirmation_title_stop_clear">Διακοπή εκκαθάρισης;</string>
   <string name="confirmation_title_stop_export">Διακοπή εξαγωγής;</string>
-  <string name="confirmation_title_suppress_ratings_toast">Σταμάτα να ρωτάς;</string>
   <string name="confirmation_title_undo_sync">Αναίρεση αυτού του συγχρονισμού;</string>
   <string name="confirmation_title_unfollow_user">Κατάργηση παρακολούθησης χρήστη;</string>
   <string name="confirmation_title_unlink_streaming">Αποσύνδεση %s;</string>
@@ -814,6 +817,8 @@
   <string name="header_sync_detail">Αναγνωριστικό συγχρονισμού %s</string>
   <string name="header_target">Στόχος</string>
   <string name="header_total_runtime">Συνολική Διάρκεια</string>
+  <string name="header_vip_paypal_switch">Μετάβαση σε πιστωτική κάρτα</string>
+  <string name="header_vip_two_year_deal">Πληρώστε για 1 χρόνο, αποκτήστε 2 χρόνια VIP!</string>
   <string name="header_writer">Σεναριογράφος</string>
   <string name="heading_api_application_vip_only">Η δημιουργία νέων εφαρμογών απαιτεί Trakt VIP</string>
   <string name="heading_api_applications">Εφαρμογές API</string>
@@ -945,6 +950,15 @@
   <string name="label_genres_drawer_subtitle_loved">Επιλέξτε έως 5 είδη που θα θέλατε να βλέπετε περισσότερο.</string>
   <string name="label_keep_play">Διατήρηση</string>
   <string name="label_list_item_count">%s στοιχεία</string>
+  <string name="label_parental_guide_category_alcohol">Αλκοόλ, Ναρκωτικά &amp; Κάπνισμα</string>
+  <string name="label_parental_guide_category_frightening">Τρομακτικές &amp; Έντονες Σκηνές</string>
+  <string name="label_parental_guide_category_nudity">Σεξ &amp; Γυμνό</string>
+  <string name="label_parental_guide_category_profanity">Βωμολοχίες</string>
+  <string name="label_parental_guide_category_violence">Βία &amp; Ωμότητα</string>
+  <string name="label_parental_guide_severity_mild">Ήπιο</string>
+  <string name="label_parental_guide_severity_moderate">Μέτριο</string>
+  <string name="label_parental_guide_severity_none">Κανένα</string>
+  <string name="label_parental_guide_severity_severe">Σοβαρό</string>
   <string name="label_plex_connected">Συνδεδεμένο με το Plex</string>
   <string name="label_plex_connection">Σύνδεση</string>
   <string name="label_plex_history_date">Ημερομηνία</string>
@@ -1262,7 +1276,7 @@
   <string name="preview_feature_description_genre_picker">Επιλέξτε τα αγαπημένα σας είδη από ένα οπτικό πλέγμα αντί για μια λίστα ετικετών.</string>
   <string name="preview_feature_description_leaderboard">Κατατάξτε τους ανθρώπους που ακολουθείτε με βάση τον χρόνο παρακολούθησης και δείτε πού βρίσκεστε ανάμεσά τους.</string>
   <string name="preview_feature_description_list_counts">Δείχνει πόσα στοιχεία περιέχει μια λίστα και πόσες λίστες έχει μια ενότητα.</string>
-  <string name="preview_feature_description_parental_guide">Εμφάνιση επιπέδων κινδύνου περιεχομένου στο πλαίσιο λεπτομερειών για ταινίες, σειρές και επεισόδια.</string>
+  <string name="preview_feature_description_parental_guide">Εμφάνιση επιπέδων κινδύνου περιεχομένου στο πλαίσιο λεπτομερειών για ταινίες και σειρές, και φιλτράρισμα κατά σοβαρότητα στα σύνθετα φίλτρα.</string>
   <string name="preview_feature_description_reviewer_stats">Εμφανίζει πόσο από έναν τίτλο παρακολούθησε ένας κριτικός δίπλα στην αξιολόγησή του.</string>
   <string name="preview_feature_description_rewatch">Ξεκινήστε συνεδρίες επανάληψης παρακολούθησης για εκπομπές που έχετε ήδη δει, κάντε check-in ή επισημάνετε επεισόδια ως παρακολουθημένα απευθείας από το συρτάρι συνεδριών.</string>
   <string name="preview_feature_description_scoped_favorites">Οριοθετήστε τις λίστες αγαπημένων εμφανίζοντας τα αγαπημένα του τρέχοντος έτους στα προφίλ και ομαδοποιώντας την πλήρη λίστα αγαπημένων ανά έτος.</string>
@@ -1283,6 +1297,13 @@
   <string name="section_title_season_progress">Πρόοδος Σεζόν %d</string>
   <string name="section_title_seasons_overview">Επισκόπηση</string>
   <string name="section_title_specials_progress">Πρόοδος ειδικών επεισοδίων</string>
+  <string name="spotlight_dialog_label">Γρήγορη πλοήγηση</string>
+  <string name="spotlight_hint_dismiss">Κλείσιμο</string>
+  <string name="spotlight_hint_navigate">Πλοήγηση</string>
+  <string name="spotlight_hint_select">Άνοιγμα</string>
+  <string name="spotlight_input_placeholder">Πού να πάτε;</string>
+  <string name="spotlight_no_results">Τίποτα δεν ταιριάζει με το \"%s\"</string>
+  <string name="spotlight_section_pages">Σελίδες</string>
   <string name="stat_label_hours">ώρες</string>
   <string name="stat_label_plays">προβολές</string>
   <string name="stat_text_favorited">Αγαπημένα</string>
@@ -1751,6 +1772,7 @@
   <string name="text_vip_payment_method_google">Google Play</string>
   <string name="text_vip_payment_method_other">Άλλο</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
+  <string name="text_vip_paypal_switch">Μεταφέρετε τη συνδρομή VIP από το PayPal σε πιστωτική κάρτα. Δεν θα χάσετε καθόλου χρόνο VIP και η συνδρομή σας στο PayPal θα ακυρωθεί αυτόματα μόλις επιλέξετε ένα νέο πρόγραμμα.</string>
   <string name="text_vip_powers_trakt">τροφοδοτεί το Trakt και ξεκλειδώνει λειτουργίες φτιαγμένες για ανθρώπους που νοιάζονται πραγματικά για ό,τι βλέπουν.</string>
   <string name="text_vip_subscription">συνδρομή</string>
   <string name="text_vip_subscription_missing_message">Δεν μπορέσαμε να βρούμε ενεργή συνδρομή για διαχείριση. Ίσως έχει ήδη ακυρωθεί. <a>Επικοινωνήστε με την υποστήριξη</a> αν πιστεύετε ότι κάτι δεν πάει καλά.</string>
@@ -1764,6 +1786,7 @@
   <string name="text_vip_transaction_disputed">Αμφισβητήθηκε μια χρέωση <b>%s</b></string>
   <string name="text_vip_transaction_plan_changed">Άλλαξε το πρόγραμμά σας <b>%s</b></string>
   <string name="text_vip_transaction_refunded">Επιστράφηκε <b>%1$s</b> μέσω <b>%2$s</b></string>
+  <string name="text_vip_two_year_deal">Έχετε ξεκλειδώσει το πρόγραμμα 2 ετών για %1$s, και στη συνέχεια %2$s κάθε 2 χρόνια. Η έκπτωση εφαρμόζεται αυτόματα στο ταμείο.</string>
   <string name="text_vip_upsell_default">Βελτιώστε την εμπειρία σας στο Trakt</string>
   <string name="text_vip_upsell_default_2">Αναβαθμίστε σε VIP!</string>
   <string name="text_vip_upsell_default_description">Αναβαθμίστε σε VIP και ξεκλειδώστε την πλήρη εμπειρία Trakt, γεμάτη με λειτουργίες φτιαγμένες για τους λάτρεις των τηλεοπτικών σειρών και ταινιών.</string>
@@ -2085,7 +2108,6 @@
   <string name="warning_prompt_set_cover_image">Χρήση του \"%s\" ως εικόνας φόντου του προφίλ σας;</string>
   <string name="warning_prompt_simple_filters">Η μετάβαση σε απλά φίλτρα θα επαναφέρει όλα τα τρέχοντα φίλτρα σας. Είστε σίγουροι ότι θέλετε να συνεχίσετε;</string>
   <string name="warning_prompt_stop_checkin">Είστε σίγουροι ότι θέλετε να σταματήσετε να παρακολουθείτε το \"%s\";</string>
-  <string name="warning_prompt_suppress_ratings_toast">Θέλετε να σταματήσετε να σας ζητείται να βαθμολογείτε ό,τι παρακολουθήσατε πρόσφατα;</string>
   <string name="warning_prompt_track_show_episode_count">Είστε σίγουροι ότι θέλετε να σημάνετε το \"%1$s\" ως παρακολουθήθηκε; Αυτό θα σημάνει %2$d επεισόδια ως παρακολουθήθηκαν.</string>
   <string name="warning_prompt_unfollow_user">Είστε σίγουροι ότι θέλετε να διακόψετε την παρακολούθηση του %s;</string>
   <string name="warning_prompt_younify_unlink">Είστε σίγουροι ότι θέλετε να αποσυνδέσετε το %s;</string>

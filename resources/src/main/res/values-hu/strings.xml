@@ -25,6 +25,7 @@
   <string name="action_toast_removed_from_history_generic">Eltávolítva az előzményekből</string>
   <string name="action_toast_removed_from_watchlist"><b>%s</b> el lett távolítva a Megnézendőkből</string>
   <string name="action_toast_removed_from_watchlist_generic">Eltávolítva a Megnézendőkből</string>
+  <string name="advanced_filter_label_parental_guide">%1$s: %2$s és %3$s között</string>
   <string name="advanced_filter_label_ratings">Értékelés: %1$s és %2$s között</string>
   <string name="advanced_filter_label_release_year">Megjelent %1$d és %2$d között</string>
   <string name="advanced_filter_label_runtime">Játékidő: %1$d és %2$d perc között.</string>
@@ -191,6 +192,7 @@
   <string name="button_label_profile_options">Profilbeállítások</string>
   <string name="button_label_progress_completed">Befejezett sorozatok megtekintése</string>
   <string name="button_label_progress_dropped">Eldobott sorozatok megtekintése</string>
+  <string name="button_label_progress_ended">Befejezett sorozatok megtekintése</string>
   <string name="button_label_progress_in_progress">Folyamatban lévő sorozatok megtekintése</string>
   <string name="button_label_rate">„%s” értékelése</string>
   <string name="button_label_raw_export">Exportáld a nyers adataidat ZIP-fájlként.</string>
@@ -306,6 +308,7 @@
   <string name="button_label_view_sentiment_analysis">Hangulatelemzés megtekintése</string>
   <string name="button_label_view_soundtrack">Filmzene megtekintése</string>
   <string name="button_label_view_trivia">Érdekességek megtekintése</string>
+  <string name="button_label_vip_paypal_switch">VIP csomagok megtekintése és váltás hitelkártyára</string>
   <string name="button_label_vip_upgrade">Válts VIP-re</string>
   <string name="button_label_watch_on_service">Megtekintés a(z) %s szolgáltatáson</string>
   <string name="button_label_watch_until_here_anchor_end">A kiválasztott dátum kezelése a sorozatnézés végeként</string>
@@ -433,6 +436,7 @@
   <string name="button_text_popular_comments">Népszerű</string>
   <string name="button_text_progress_completed">Naprakész</string>
   <string name="button_text_progress_dropped">Félbehagyva</string>
+  <string name="button_text_progress_ended">Befejezett</string>
   <string name="button_text_progress_in_progress">Folyamatban</string>
   <string name="button_text_raw_export">Exportálás most</string>
   <string name="button_text_recent_comments">Legújabb</string>
@@ -481,7 +485,6 @@
   <string name="button_text_sort_updated_date">Frissítés dátuma</string>
   <string name="button_text_start_import">Importálás indítása</string>
   <string name="button_text_start_rewatching">Kezdd el újra nézni</string>
-  <string name="button_text_stop_asking">Ne kérdezze többet</string>
   <string name="button_text_stop_check_in">Megtekintés leállítása</string>
   <string name="button_text_stop_clear">Törlés leállítása</string>
   <string name="button_text_stop_export">Exportálás leállítása</string>
@@ -516,6 +519,7 @@
   <string name="button_text_view_import_guidelines">Irányelvek megtekintése</string>
   <string name="button_text_view_photo">Fotó megtekintése</string>
   <string name="button_text_view_recommendation_sources">Miért ez?</string>
+  <string name="button_text_vip_paypal_switch">Csomagok megtekintése</string>
   <string name="button_text_vip_upgrade">Frissítés</string>
   <string name="button_text_watch_again">Megtekintés újra</string>
   <string name="button_text_watch_until_here_anchor_end">Befejezés időpontja</string>
@@ -576,7 +580,6 @@
   <string name="confirmation_title_stop_checkin">Megtekintés leállítása?</string>
   <string name="confirmation_title_stop_clear">Törlés leállítása?</string>
   <string name="confirmation_title_stop_export">Exportálás leállítása?</string>
-  <string name="confirmation_title_suppress_ratings_toast">Ne kérdezze többet?</string>
   <string name="confirmation_title_undo_sync">Visszavonja ezt a szinkronizálást?</string>
   <string name="confirmation_title_unfollow_user">Követés megszüntetése?</string>
   <string name="confirmation_title_unlink_streaming">Leválasztja a(z) %s szolgáltatást?</string>
@@ -814,6 +817,8 @@
   <string name="header_sync_detail">Szinkronizálási azonosító: %s</string>
   <string name="header_target">Cél</string>
   <string name="header_total_runtime">Teljes játékidő</string>
+  <string name="header_vip_paypal_switch">Váltás hitelkártyára</string>
+  <string name="header_vip_two_year_deal">Fizessen 1 évet, kapjon 2 év VIP-et!</string>
   <string name="header_writer">Író</string>
   <string name="heading_api_application_vip_only">Új alkalmazások létrehozásához Trakt VIP tagság szükséges</string>
   <string name="heading_api_applications">API-alkalmazások</string>
@@ -945,6 +950,15 @@
   <string name="label_genres_drawer_subtitle_loved">Válasszon ki legfeljebb 5 műfajt, amelyekből többet szeretne látni.</string>
   <string name="label_keep_play">Megtartás</string>
   <string name="label_list_item_count">%s lista elem</string>
+  <string name="label_parental_guide_category_alcohol">Alkohol, drogok és dohányzás</string>
+  <string name="label_parental_guide_category_frightening">Ijesztő és intenzív jelenetek</string>
+  <string name="label_parental_guide_category_nudity">Szex és meztelenség</string>
+  <string name="label_parental_guide_category_profanity">Trágárság</string>
+  <string name="label_parental_guide_category_violence">Erőszak és vérontás</string>
+  <string name="label_parental_guide_severity_mild">Enyhe</string>
+  <string name="label_parental_guide_severity_moderate">Mérsékelt</string>
+  <string name="label_parental_guide_severity_none">Nincs</string>
+  <string name="label_parental_guide_severity_severe">Súlyos</string>
   <string name="label_plex_connected">Csatlakoztatva a Plexhez</string>
   <string name="label_plex_connection">Csatlakozás</string>
   <string name="label_plex_history_date">Dátum</string>
@@ -1262,7 +1276,7 @@
   <string name="preview_feature_description_genre_picker">Válassza ki kedvenc műfajait egy vizuális rácsból, címkék listája helyett.</string>
   <string name="preview_feature_description_leaderboard">Rangsorold a követett embereket a nézési idő alapján, és nézd meg, hol helyezkedsz el közöttük.</string>
   <string name="preview_feature_description_list_counts">Megmutatja, hány elemet tartalmaz egy lista, és hány lista van egy szekcióban.</string>
-  <string name="preview_feature_description_parental_guide">Tartalomkockázati szintek megjelenítése a részletek panelen filmek, műsorok és epizódok esetén.</string>
+  <string name="preview_feature_description_parental_guide">Tartalomkockázati szintek megjelenítése a részletek panelen filmek és műsorok esetén, és súlyosság szerinti szűrés a speciális szűrőkben.</string>
   <string name="preview_feature_description_reviewer_stats">Megjeleníti, hogy egy értékelő mennyit nézett meg egy címből az értékelése mellett.</string>
   <string name="preview_feature_description_rewatch">Indíts újra nézési munkameneteket olyan műsorokhoz, amiket már láttál, jelentkezz be, vagy jelölj meg nézett epizódokat közvetlenül a munkamenet fiókból.</string>
   <string name="preview_feature_description_scoped_favorites">Időkorlátozza a kedvenc listákat azáltal, hogy megjeleníti az aktuális év kedvenceit a profilokon, és csoportosítja a teljes kedvencek listáját év szerint.</string>
@@ -1283,6 +1297,13 @@
   <string name="section_title_season_progress">%d. évad előrehaladása</string>
   <string name="section_title_seasons_overview">Áttekintés</string>
   <string name="section_title_specials_progress">Különkiadások előrehaladása</string>
+  <string name="spotlight_dialog_label">Gyorsnavigáció</string>
+  <string name="spotlight_hint_dismiss">Bezárás</string>
+  <string name="spotlight_hint_navigate">Navigálás</string>
+  <string name="spotlight_hint_select">Megnyitás</string>
+  <string name="spotlight_input_placeholder">Hová?</string>
+  <string name="spotlight_no_results">Nincs találat erre: \"%s\"</string>
+  <string name="spotlight_section_pages">Oldalak</string>
   <string name="stat_label_hours">órák</string>
   <string name="stat_label_plays">lejátszások</string>
   <string name="stat_text_favorited">Kedvencek</string>
@@ -1751,6 +1772,7 @@
   <string name="text_vip_payment_method_google">Google Play</string>
   <string name="text_vip_payment_method_other">Egyéb</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
+  <string name="text_vip_paypal_switch">Helyezze át VIP előfizetését a PayPal-ról hitelkártyára. Nem veszít VIP időt, és PayPal előfizetése automatikusan törlődik, amint új csomagot választ.</string>
   <string name="text_vip_powers_trakt">támogatja a Trakt működését, és olyan funkciókat old fel, amelyek kifejezetten azoknak készültek, akiknek tényleg számít, hogy mit néznek.</string>
   <string name="text_vip_subscription">előfizetés</string>
   <string name="text_vip_subscription_missing_message">Nem találtunk aktív előfizetést, amit kezelhetnénk. Lehet, hogy már lemondásra került. <a>Kapcsolatfelvétel az ügyfélszolgálattal</a>, ha úgy gondolja, valami probléma van.</string>
@@ -1764,6 +1786,7 @@
   <string name="text_vip_transaction_disputed">Megtámadott egy <b>%s</b> terhelést</string>
   <string name="text_vip_transaction_plan_changed">Módosította <b>%s</b> csomagját</string>
   <string name="text_vip_transaction_refunded">Visszatérítve <b>%1$s</b> <b>%2$s</b> segítségével</string>
+  <string name="text_vip_two_year_deal">Feloldotta a 2 éves csomagot %1$s áron, majd %2$s áron 2 évente. A kedvezményt a fizetéskor automatikusan alkalmazzuk.</string>
   <string name="text_vip_upsell_default">Fokozd Trakt élményedet</string>
   <string name="text_vip_upsell_default_2">Válts VIP-re!</string>
   <string name="text_vip_upsell_default_description">Válts VIP-re, és fedezd fel a teljes Trakt-élményt, amely tele van kifejezetten a film- és sorozatrajongóknak tervezett funkciókkal!</string>
@@ -2085,7 +2108,6 @@
   <string name="warning_prompt_set_cover_image">Használod a(z) „%s” címet profil háttérképedként?</string>
   <string name="warning_prompt_simple_filters">Az egyszerű szűrőkre váltás visszaállítja az összes jelenlegi szűrődet. Biztosan folytatni szeretnéd?</string>
   <string name="warning_prompt_stop_checkin">Biztosan leállítod a(z) \"%s\" nézését?</string>
-  <string name="warning_prompt_suppress_ratings_toast">Szeretnéd, ha a jövőben nem kérnénk, hogy értékeld a nemrég megtekintett tartalmat?</string>
   <string name="warning_prompt_track_show_episode_count">Biztosan megtekintettként jelölöd a(z) \"%1$s\" sorozatot? Ez %2$d epizódot fog megtekintettként jelölni.</string>
   <string name="warning_prompt_unfollow_user">Biztosan megszünteti %s követését?</string>
   <string name="warning_prompt_younify_unlink">Biztosan leválasztod a(z) %s szolgáltatást?</string>

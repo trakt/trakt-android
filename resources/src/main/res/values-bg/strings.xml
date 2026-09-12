@@ -25,6 +25,7 @@
   <string name="action_toast_removed_from_history_generic">Премахнато от историята ви</string>
   <string name="action_toast_removed_from_watchlist"><b>%s</b> беше премахнат от списъка ви за гледане</string>
   <string name="action_toast_removed_from_watchlist_generic">Премахнато от списъка ви за гледане</string>
+  <string name="advanced_filter_label_parental_guide">%1$s: от %2$s до %3$s</string>
   <string name="advanced_filter_label_ratings">Оценка от %1$s до %2$s</string>
   <string name="advanced_filter_label_release_year">Издадени от %1$d до %2$d г.</string>
   <string name="advanced_filter_label_runtime">Продължителност от %1$d до %2$d минути.</string>
@@ -191,6 +192,7 @@
   <string name="button_label_profile_options">Опции на профила</string>
   <string name="button_label_progress_completed">Виж завършените сериали</string>
   <string name="button_label_progress_dropped">Виж изоставените сериали</string>
+  <string name="button_label_progress_ended">Виж завършилите сериали</string>
   <string name="button_label_progress_in_progress">Виж продължаващите сериали</string>
   <string name="button_label_rate">Оцени \"%s\"</string>
   <string name="button_label_raw_export">Експортиране на ZIP файл, съдържащ необработените ви данни.</string>
@@ -306,6 +308,7 @@
   <string name="button_label_view_sentiment_analysis">Преглед на анализа на настроенията</string>
   <string name="button_label_view_soundtrack">Преглед на саундтрака</string>
   <string name="button_label_view_trivia">Преглед на любопитни факти</string>
+  <string name="button_label_vip_paypal_switch">Преглед на VIP плановете и преминаване към кредитна карта</string>
   <string name="button_label_vip_upgrade">Надстройте до VIP</string>
   <string name="button_label_watch_on_service">Гледайте на %s</string>
   <string name="button_label_watch_until_here_anchor_end">Приемете избраната дата като край на маратона</string>
@@ -433,6 +436,7 @@
   <string name="button_text_popular_comments">Популярни</string>
   <string name="button_text_progress_completed">Актуален</string>
   <string name="button_text_progress_dropped">Спрян</string>
+  <string name="button_text_progress_ended">Приключил</string>
   <string name="button_text_progress_in_progress">В процес</string>
   <string name="button_text_raw_export">Експортирай сега</string>
   <string name="button_text_recent_comments">Скорошни</string>
@@ -481,7 +485,6 @@
   <string name="button_text_sort_updated_date">Дата на актуализация</string>
   <string name="button_text_start_import">Започнете импортиране</string>
   <string name="button_text_start_rewatching">Започнете преглед</string>
-  <string name="button_text_stop_asking">Спри да питаш</string>
   <string name="button_text_stop_check_in">Спиране на чекирането</string>
   <string name="button_text_stop_clear">Спри изчистването</string>
   <string name="button_text_stop_export">Спри експортирането</string>
@@ -516,6 +519,7 @@
   <string name="button_text_view_import_guidelines">Преглед на указанията</string>
   <string name="button_text_view_photo">Виж снимка</string>
   <string name="button_text_view_recommendation_sources">Защо това?</string>
+  <string name="button_text_vip_paypal_switch">Преглед на плановете</string>
   <string name="button_text_vip_upgrade">Надграждане</string>
   <string name="button_text_watch_again">Гледай отново</string>
   <string name="button_text_watch_until_here_anchor_end">Краен час</string>
@@ -576,7 +580,6 @@
   <string name="confirmation_title_stop_checkin">Спри чекирането?</string>
   <string name="confirmation_title_stop_clear">Спри изчистването?</string>
   <string name="confirmation_title_stop_export">Спиране на експортирането?</string>
-  <string name="confirmation_title_suppress_ratings_toast">Спри да питаш?</string>
   <string name="confirmation_title_undo_sync">Да отмените ли тази синхронизация?</string>
   <string name="confirmation_title_unfollow_user">Прекрати следването?</string>
   <string name="confirmation_title_unlink_streaming">Да прекъснете ли връзката с %s?</string>
@@ -814,6 +817,8 @@
   <string name="header_sync_detail">ID на синхронизация %s</string>
   <string name="header_target">Цел</string>
   <string name="header_total_runtime">Общо времетраене</string>
+  <string name="header_vip_paypal_switch">Премини към кредитна карта</string>
+  <string name="header_vip_two_year_deal">Плати за 1 година, получи 2 години VIP!</string>
   <string name="header_writer">Сценарист</string>
   <string name="heading_api_application_vip_only">Създаването на нови приложения изисква Trakt VIP</string>
   <string name="heading_api_applications">API приложения</string>
@@ -945,6 +950,15 @@
   <string name="label_genres_drawer_subtitle_loved">Изберете до 5 жанра, които бихте искали да виждате по-често.</string>
   <string name="label_keep_play">Запази</string>
   <string name="label_list_item_count">%s елементи</string>
+  <string name="label_parental_guide_category_alcohol">Алкохол, наркотици и тютюнопушене</string>
+  <string name="label_parental_guide_category_frightening">Плашещи и интензивни сцени</string>
+  <string name="label_parental_guide_category_nudity">Секс и голота</string>
+  <string name="label_parental_guide_category_profanity">Нецензурен език</string>
+  <string name="label_parental_guide_category_violence">Насилие и жестокост</string>
+  <string name="label_parental_guide_severity_mild">Леко</string>
+  <string name="label_parental_guide_severity_moderate">Умерено</string>
+  <string name="label_parental_guide_severity_none">Няма</string>
+  <string name="label_parental_guide_severity_severe">Тежко</string>
   <string name="label_plex_connected">Свързан с Plex</string>
   <string name="label_plex_connection">Връзка</string>
   <string name="label_plex_history_date">Дата</string>
@@ -1262,7 +1276,7 @@
   <string name="preview_feature_description_genre_picker">Изберете любимите си жанрове от визуална мрежа вместо от списък с тагове.</string>
   <string name="preview_feature_description_leaderboard">Класирайте хората, които следите, по време на гледане и вижте къде се намирате сред тях.</string>
   <string name="preview_feature_description_list_counts">Показва колко елемента съдържа един списък и колко списъка има една секция.</string>
-  <string name="preview_feature_description_parental_guide">Показване на нивата на риск на съдържанието в чекмеджето с подробности за филми, предавания и епизоди.</string>
+  <string name="preview_feature_description_parental_guide">Показване на нивата на риск на съдържанието в чекмеджето с подробности за филми и предавания, и филтриране по тежест в разширените филтри.</string>
   <string name="preview_feature_description_reviewer_stats">Показва колко от дадено заглавие е гледал рецензент до оценката си.</string>
   <string name="preview_feature_description_rewatch">Започнете сесии за повторно гледане на предавания, които вече сте гледали, отбележете гледани епизоди директно от прозореца на сесията.</string>
   <string name="preview_feature_description_scoped_favorites">Ограничете във времето списъците с любими, като показвате любими от текущата година в профилите и групирате пълния списък с любими по година.</string>
@@ -1283,6 +1297,13 @@
   <string name="section_title_season_progress">Сезон %d напредък</string>
   <string name="section_title_seasons_overview">Преглед</string>
   <string name="section_title_specials_progress">Напредък на специални епизоди</string>
+  <string name="spotlight_dialog_label">Бърза навигация</string>
+  <string name="spotlight_hint_dismiss">Затвори</string>
+  <string name="spotlight_hint_navigate">Навигиране</string>
+  <string name="spotlight_hint_select">Отваряне</string>
+  <string name="spotlight_input_placeholder">Накъде?</string>
+  <string name="spotlight_no_results">Няма съвпадения за \"%s\"</string>
+  <string name="spotlight_section_pages">Страници</string>
   <string name="stat_label_hours">часове</string>
   <string name="stat_label_plays">гледания</string>
   <string name="stat_text_favorited">Любими</string>
@@ -1751,6 +1772,7 @@
   <string name="text_vip_payment_method_google">Google Play</string>
   <string name="text_vip_payment_method_other">Други</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
+  <string name="text_vip_paypal_switch">Прехвърли своя VIP абонамент от PayPal към кредитна карта. Няма да загубиш VIP време, а абонаментът ти в PayPal ще бъде автоматично анулиран, щом избереш нов план.</string>
   <string name="text_vip_powers_trakt">поддържа Trakt и отключва функции, създадени за хора, които наистина се интересуват от това, което гледат.</string>
   <string name="text_vip_subscription">абонамент</string>
   <string name="text_vip_subscription_missing_message">Не успяхме да намерим активен абонамент за управление. Може вече да е бил анулиран. <a>Свържете се с поддръжката</a>, ако смятате, че нещо не е наред.</string>
@@ -1764,6 +1786,7 @@
   <string name="text_vip_transaction_disputed">Оспорено <b>%s</b> плащане</string>
   <string name="text_vip_transaction_plan_changed">Променен <b>%s</b> план</string>
   <string name="text_vip_transaction_refunded">Възстановена сума <b>%1$s</b> чрез <b>%2$s</b></string>
+  <string name="text_vip_two_year_deal">Отключи 2-годишен план за %1$s, след това %2$s на всеки 2 години. Отстъпката се прилага автоматично при плащане.</string>
   <string name="text_vip_upsell_default">Подобрете вашето Trakt изживяване</string>
   <string name="text_vip_upsell_default_2">Надградете до VIP!</string>
   <string name="text_vip_upsell_default_description">Надградете до VIP и отключете пълното изживяване с Trakt, изпълнено с функции, създадени за любителите на сериали и филми.</string>
@@ -2085,7 +2108,6 @@
   <string name="warning_prompt_set_cover_image">Да използвате ли \"%s\" като изображение за фон на профила си?</string>
   <string name="warning_prompt_simple_filters">Превключването към опростени филтри ще нулира всичките ви текущи филтри. Сигурни ли сте, че искате да продължите?</string>
   <string name="warning_prompt_stop_checkin">Сигурни ли сте, че искате да спрете да гледате \"%s\"?</string>
-  <string name="warning_prompt_suppress_ratings_toast">Искате ли да спрем да ви питаме да оценявате какво сте гледали наскоро?</string>
   <string name="warning_prompt_track_show_episode_count">Сигурни ли сте, че искате да маркирате \"%1$s\" като гледан? Това ще маркира %2$d епизода като гледани.</string>
   <string name="warning_prompt_unfollow_user">Сигурни ли сте, че искате да прекратите следването на %s?</string>
   <string name="warning_prompt_younify_unlink">Сигурни ли сте, че искате да откачите %s?</string>

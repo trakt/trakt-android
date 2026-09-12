@@ -25,6 +25,7 @@
   <string name="action_toast_removed_from_history_generic">Eliminado de tu historial</string>
   <string name="action_toast_removed_from_watchlist"><b>%s</b> fue eliminada de tu lista de seguimiento</string>
   <string name="action_toast_removed_from_watchlist_generic">Eliminado de tu lista de seguimiento</string>
+  <string name="advanced_filter_label_parental_guide">%1$s: de %2$s a %3$s</string>
   <string name="advanced_filter_label_ratings">Calificación de %1$s a %2$s</string>
   <string name="advanced_filter_label_release_year">Lanzada entre %1$d y %2$d</string>
   <string name="advanced_filter_label_runtime">Duración de %1$d a %2$d minutos.</string>
@@ -191,6 +192,7 @@
   <string name="button_label_profile_options">Opciones de perfil</string>
   <string name="button_label_progress_completed">Ver series completadas</string>
   <string name="button_label_progress_dropped">Ver series abandonadas</string>
+  <string name="button_label_progress_ended">Ver series finalizadas</string>
   <string name="button_label_progress_in_progress">Ver series en progreso</string>
   <string name="button_label_rate">Calificar \"%s\"</string>
   <string name="button_label_raw_export">Exportar un archivo ZIP con tus datos en bruto.</string>
@@ -306,6 +308,7 @@
   <string name="button_label_view_sentiment_analysis">Ver análisis de sentimiento</string>
   <string name="button_label_view_soundtrack">Ver banda sonora</string>
   <string name="button_label_view_trivia">Ver trivia</string>
+  <string name="button_label_vip_paypal_switch">Ver planes VIP y cambiar a tarjeta de crédito</string>
   <string name="button_label_vip_upgrade">Actualizar a VIP</string>
   <string name="button_label_watch_on_service">Ver en %s</string>
   <string name="button_label_watch_until_here_anchor_end">Considerar la fecha seleccionada como el fin del maratón</string>
@@ -433,6 +436,7 @@
   <string name="button_text_popular_comments">Popular</string>
   <string name="button_text_progress_completed">Completado</string>
   <string name="button_text_progress_dropped">Abandonado</string>
+  <string name="button_text_progress_ended">Finalizado</string>
   <string name="button_text_progress_in_progress">En progreso</string>
   <string name="button_text_raw_export">Exportar ahora</string>
   <string name="button_text_recent_comments">Reciente</string>
@@ -481,7 +485,6 @@
   <string name="button_text_sort_updated_date">Fecha de actualización</string>
   <string name="button_text_start_import">Iniciar importación</string>
   <string name="button_text_start_rewatching">Empezar a volver a ver</string>
-  <string name="button_text_stop_asking">Dejar de preguntar</string>
   <string name="button_text_stop_check_in">Detener seguimiento</string>
   <string name="button_text_stop_clear">Detener borrado</string>
   <string name="button_text_stop_export">Detener exportación</string>
@@ -516,6 +519,7 @@
   <string name="button_text_view_import_guidelines">Ver directrices</string>
   <string name="button_text_view_photo">Ver foto</string>
   <string name="button_text_view_recommendation_sources">¿Por qué esto?</string>
+  <string name="button_text_vip_paypal_switch">Ver planes</string>
   <string name="button_text_vip_upgrade">Actualizar</string>
   <string name="button_text_watch_again">Volver a ver</string>
   <string name="button_text_watch_until_here_anchor_end">Hora de finalización</string>
@@ -576,7 +580,6 @@
   <string name="confirmation_title_stop_checkin">Detener registro?</string>
   <string name="confirmation_title_stop_clear">Detener limpieza?</string>
   <string name="confirmation_title_stop_export">¿Detener exportación?</string>
-  <string name="confirmation_title_suppress_ratings_toast">Dejar de preguntar?</string>
   <string name="confirmation_title_undo_sync">¿Deshacer esta sincronización?</string>
   <string name="confirmation_title_unfollow_user">Dejar de seguir?</string>
   <string name="confirmation_title_unlink_streaming">¿Desvincular %s?</string>
@@ -814,6 +817,8 @@
   <string name="header_sync_detail">ID de sincronización %s</string>
   <string name="header_target">Objetivo</string>
   <string name="header_total_runtime">Duración total</string>
+  <string name="header_vip_paypal_switch">Cambiar a tarjeta de crédito</string>
+  <string name="header_vip_two_year_deal">¡Paga 1 año, obtén 2 años de VIP!</string>
   <string name="header_writer">Guionista</string>
   <string name="heading_api_application_vip_only">Crear nuevas aplicaciones requiere Trakt VIP</string>
   <string name="heading_api_applications">Aplicaciones de API</string>
@@ -945,6 +950,15 @@
   <string name="label_genres_drawer_subtitle_loved">Selecciona hasta 5 géneros de los que te gustaría ver más.</string>
   <string name="label_keep_play">Conservar</string>
   <string name="label_list_item_count">%s elementos</string>
+  <string name="label_parental_guide_category_alcohol">Alcohol, drogas y tabaquismo</string>
+  <string name="label_parental_guide_category_frightening">Escenas aterradoras e intensas</string>
+  <string name="label_parental_guide_category_nudity">Sexo y desnudez</string>
+  <string name="label_parental_guide_category_profanity">Groserías</string>
+  <string name="label_parental_guide_category_violence">Violencia y sangre</string>
+  <string name="label_parental_guide_severity_mild">Leve</string>
+  <string name="label_parental_guide_severity_moderate">Moderado</string>
+  <string name="label_parental_guide_severity_none">Ninguno</string>
+  <string name="label_parental_guide_severity_severe">Grave</string>
   <string name="label_plex_connected">Conectado a Plex</string>
   <string name="label_plex_connection">Conexión</string>
   <string name="label_plex_history_date">Fecha</string>
@@ -1262,7 +1276,7 @@
   <string name="preview_feature_description_genre_picker">Elige tus géneros favoritos de una cuadrícula visual en lugar de una lista de etiquetas.</string>
   <string name="preview_feature_description_leaderboard">Clasifica a las personas que sigues por tiempo de visualización y ve dónde te encuentras entre ellas.</string>
   <string name="preview_feature_description_list_counts">Muestra cuántos elementos contiene una lista y cuántas listas tiene una sección.</string>
-  <string name="preview_feature_description_parental_guide">Mostrar niveles de riesgo de contenido en el panel de detalles para películas, series y episodios.</string>
+  <string name="preview_feature_description_parental_guide">Mostrar niveles de riesgo de contenido en el panel de detalles para películas y series, y filtrar por gravedad en los filtros avanzados.</string>
   <string name="preview_feature_description_reviewer_stats">Muestra cuánto de un título vio un revisor junto a su calificación.</string>
   <string name="preview_feature_description_rewatch">Inicia sesiones para volver a ver programas que ya has visto, haz check-in o marca episodios como vistos directamente desde el panel de sesión.</string>
   <string name="preview_feature_description_scoped_favorites">Delimita las listas de favoritos mostrando los favoritos del año actual en los perfiles y agrupando la lista completa de favoritos por año.</string>
@@ -1283,6 +1297,13 @@
   <string name="section_title_season_progress">Progreso de la temporada %d</string>
   <string name="section_title_seasons_overview">Resumen</string>
   <string name="section_title_specials_progress">Progreso de especiales</string>
+  <string name="spotlight_dialog_label">Navegación rápida</string>
+  <string name="spotlight_hint_dismiss">Cerrar</string>
+  <string name="spotlight_hint_navigate">Navegar</string>
+  <string name="spotlight_hint_select">Abrir</string>
+  <string name="spotlight_input_placeholder">¿A dónde?</string>
+  <string name="spotlight_no_results">Nada coincide con \"%s\"</string>
+  <string name="spotlight_section_pages">Páginas</string>
   <string name="stat_label_hours">horas</string>
   <string name="stat_label_plays">reproducciones</string>
   <string name="stat_text_favorited">Favoritos</string>
@@ -1751,6 +1772,7 @@
   <string name="text_vip_payment_method_google">Google Play</string>
   <string name="text_vip_payment_method_other">Otro</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
+  <string name="text_vip_paypal_switch">Cambia tu suscripción VIP de PayPal a una tarjeta de crédito. No perderás tiempo VIP, y tu suscripción de PayPal se cancelará automáticamente una vez que elijas un nuevo plan.</string>
   <string name="text_vip_powers_trakt">ayuda a impulsar Trakt y desbloquea funciones creadas para personas que realmente se preocupan por lo que ven.</string>
   <string name="text_vip_subscription">suscripción</string>
   <string name="text_vip_subscription_missing_message">No pudimos encontrar una suscripción activa para administrar. Es posible que ya haya sido cancelada. <a>Contactar a soporte</a> si crees que algo anda mal.</string>
@@ -1764,6 +1786,7 @@
   <string name="text_vip_transaction_disputed">Se disputó un cargo con <b>%s</b></string>
   <string name="text_vip_transaction_plan_changed">Se cambió tu plan de <b>%s</b></string>
   <string name="text_vip_transaction_refunded">Se reembolsaron <b>%1$s</b> a través de <b>%2$s</b></string>
+  <string name="text_vip_two_year_deal">Has desbloqueado el plan de 2 años por %1$s, luego %2$s cada 2 años. El descuento se aplica automáticamente al finalizar la compra.</string>
   <string name="text_vip_upsell_default">Mejora tu experiencia Trakt</string>
   <string name="text_vip_upsell_default_2">¡Actualiza a VIP!</string>
   <string name="text_vip_upsell_default_description">Actualiza a VIP y desbloquea la experiencia completa de Trakt, repleta de funciones diseñadas para amantes de las series y películas.</string>
@@ -2085,7 +2108,6 @@
   <string name="warning_prompt_set_cover_image">¿Usar \"%s\" como imagen de fondo de tu perfil?</string>
   <string name="warning_prompt_simple_filters">Cambiar a filtros simples restablecerá todos tus filtros actuales. ¿Estás seguro de que quieres continuar?</string>
   <string name="warning_prompt_stop_checkin">¿Estás seguro de que quieres dejar de ver \"%s\"?</string>
-  <string name="warning_prompt_suppress_ratings_toast">¿Quieres dejar de recibir solicitudes para calificar lo que has visto recientemente?</string>
   <string name="warning_prompt_track_show_episode_count">¿Estás seguro de que quieres marcar \"%1$s\" como visto? Esto marcará %2$d episodios como vistos.</string>
   <string name="warning_prompt_unfollow_user">¿Estás seguro de que quieres dejar de seguir a %s?</string>
   <string name="warning_prompt_younify_unlink">¿Estás seguro de que quieres desvincular %s?</string>

@@ -25,6 +25,7 @@
   <string name="action_toast_removed_from_history_generic">از تاریخچه شما حذف شد</string>
   <string name="action_toast_removed_from_watchlist"><b>%s</b> از لیست تماشای شما حذف شد</string>
   <string name="action_toast_removed_from_watchlist_generic">از لیست تماشای شما حذف شد</string>
+  <string name="advanced_filter_label_parental_guide">%1$s: از %2$s تا %3$s</string>
   <string name="advanced_filter_label_ratings">امتیاز از %1$s تا %2$s</string>
   <string name="advanced_filter_label_release_year">منتشر شده در %1$d تا %2$d</string>
   <string name="advanced_filter_label_runtime">مدت زمان پخش از %1$d تا %2$d دقیقه.</string>
@@ -191,6 +192,7 @@
   <string name="button_label_profile_options">گزینه‌های پروفایل</string>
   <string name="button_label_progress_completed">مشاهده نمایش‌های تکمیل شده</string>
   <string name="button_label_progress_dropped">مشاهده نمایش‌های رها شده</string>
+  <string name="button_label_progress_ended">مشاهده نمایش‌های تمام‌شده</string>
   <string name="button_label_progress_in_progress">مشاهده نمایش‌های در حال انجام</string>
   <string name="button_label_rate">امتیاز دادن به \"%s\"</string>
   <string name="button_label_raw_export">یک فایل ZIP حاوی داده‌های خام خود را صادر کنید.</string>
@@ -306,6 +308,7 @@
   <string name="button_label_view_sentiment_analysis">مشاهده تحلیل احساسات</string>
   <string name="button_label_view_soundtrack">مشاهده موسیقی متن</string>
   <string name="button_label_view_trivia">مشاهده جزئیات جالب</string>
+  <string name="button_label_vip_paypal_switch">مشاهده طرح‌های VIP و تغییر به کارت اعتباری</string>
   <string name="button_label_vip_upgrade">ارتقاء به VIP</string>
   <string name="button_label_watch_on_service">تماشا در %s</string>
   <string name="button_label_watch_until_here_anchor_end">تاریخ انتخاب شده را به عنوان زمان پایان تماشای فشرده در نظر بگیرید</string>
@@ -433,6 +436,7 @@
   <string name="button_text_popular_comments">محبوب</string>
   <string name="button_text_progress_completed">به روز</string>
   <string name="button_text_progress_dropped">رها شده</string>
+  <string name="button_text_progress_ended">پایان یافته</string>
   <string name="button_text_progress_in_progress">در حال انجام</string>
   <string name="button_text_raw_export">همین حالا خروجی بگیر</string>
   <string name="button_text_recent_comments">اخیر</string>
@@ -481,7 +485,6 @@
   <string name="button_text_sort_updated_date">تاریخ آخرین بروزرسانی</string>
   <string name="button_text_start_import">شروع وارد کردن</string>
   <string name="button_text_start_rewatching">شروع بازتماشا</string>
-  <string name="button_text_stop_asking">دیگر نپرس</string>
   <string name="button_text_stop_check_in">توقف ورود</string>
   <string name="button_text_stop_clear">توقف پاک کردن</string>
   <string name="button_text_stop_export">توقف صدور</string>
@@ -516,6 +519,7 @@
   <string name="button_text_view_import_guidelines">مشاهده دستورالعمل‌ها</string>
   <string name="button_text_view_photo">مشاهده عکس</string>
   <string name="button_text_view_recommendation_sources">چرا این؟</string>
+  <string name="button_text_vip_paypal_switch">مشاهده طرح‌ها</string>
   <string name="button_text_vip_upgrade">ارتقا</string>
   <string name="button_text_watch_again">دوباره تماشا کن</string>
   <string name="button_text_watch_until_here_anchor_end">زمان پایان</string>
@@ -576,7 +580,6 @@
   <string name="confirmation_title_stop_checkin">اعلام حضور متوقف شود؟</string>
   <string name="confirmation_title_stop_clear">توقف پاک کردن؟</string>
   <string name="confirmation_title_stop_export">توقف خروجی گرفتن؟</string>
-  <string name="confirmation_title_suppress_ratings_toast">پرسیدن متوقف شود؟</string>
   <string name="confirmation_title_undo_sync">لغو این همگام‌سازی؟</string>
   <string name="confirmation_title_unfollow_user">دنبال کردن کاربر لغو شود؟</string>
   <string name="confirmation_title_unlink_streaming">قطع اتصال %s؟</string>
@@ -814,6 +817,8 @@
   <string name="header_sync_detail">شناسه همگام‌سازی %s</string>
   <string name="header_target">هدف</string>
   <string name="header_total_runtime">مدت زمان کل</string>
+  <string name="header_vip_paypal_switch">تغییر به کارت اعتباری</string>
+  <string name="header_vip_two_year_deal">با پرداخت برای ۱ سال، ۲ سال VIP بگیرید!</string>
   <string name="header_writer">نویسنده</string>
   <string name="heading_api_application_vip_only">ایجاد برنامه‌های جدید نیازمند Trakt VIP است</string>
   <string name="heading_api_applications">برنامه‌های API</string>
@@ -945,6 +950,15 @@
   <string name="label_genres_drawer_subtitle_loved">حداکثر ۵ ژانر را انتخاب کنید که مایلید بیشتر از آن‌ها را ببینید.</string>
   <string name="label_keep_play">نگه داشتن</string>
   <string name="label_list_item_count">%s مورد</string>
+  <string name="label_parental_guide_category_alcohol">الکل، مواد مخدر و سیگار</string>
+  <string name="label_parental_guide_category_frightening">صحنه‌های ترسناک و شدید</string>
+  <string name="label_parental_guide_category_nudity">رابطه جنسی و برهنگی</string>
+  <string name="label_parental_guide_category_profanity">کلمات رکیک</string>
+  <string name="label_parental_guide_category_violence">خشونت و خونریزی</string>
+  <string name="label_parental_guide_severity_mild">خفیف</string>
+  <string name="label_parental_guide_severity_moderate">متوسط</string>
+  <string name="label_parental_guide_severity_none">هیچ‌کدام</string>
+  <string name="label_parental_guide_severity_severe">شدید</string>
   <string name="label_plex_connected">متصل به Plex</string>
   <string name="label_plex_connection">اتصال</string>
   <string name="label_plex_history_date">تاریخ</string>
@@ -1262,7 +1276,7 @@
   <string name="preview_feature_description_genre_picker">ژانرهای مورد علاقه خود را از یک شبکه بصری انتخاب کنید، نه از یک لیست برچسب.</string>
   <string name="preview_feature_description_leaderboard">افرادی که دنبال می‌کنید را بر اساس زمان تماشا رتبه‌بندی کنید و ببینید در میان آن‌ها کجا قرار می‌گیرید.</string>
   <string name="preview_feature_description_list_counts">تعداد آیتم‌های موجود در هر لیست و تعداد لیست‌ها در هر بخش را نمایش می‌دهد</string>
-  <string name="preview_feature_description_parental_guide">نمایش سطوح خطر محتوا در کشوی جزئیات برای فیلم‌ها، نمایش‌ها و اپیزودها.</string>
+  <string name="preview_feature_description_parental_guide">نمایش سطوح خطر محتوا در کشوی جزئیات برای فیلم‌ها و نمایش‌ها، و فیلتر کردن بر اساس شدت در فیلترهای پیشرفته.</string>
   <string name="preview_feature_description_reviewer_stats">نشان می دهد که یک بازبین چه مقدار از یک عنوان را در کنار امتیاز خود تماشا کرده است.</string>
   <string name="preview_feature_description_rewatch">جلسات بازتماشا را برای سریال‌هایی که قبلاً دیده‌اید شروع کنید، قسمت‌های تماشا شده را مستقیماً از کشوی جلسه ثبت کنید یا علامت بزنید.</string>
   <string name="preview_feature_description_scoped_favorites">لیست‌های علاقه‌مندی را با نمایش علاقه‌مندی‌های سال جاری در پروفایل‌ها و گروه‌بندی لیست کامل علاقه‌مندی‌ها بر اساس سال، محدود کنید.</string>
@@ -1283,6 +1297,13 @@
   <string name="section_title_season_progress">فصل %d پیشرفت</string>
   <string name="section_title_seasons_overview">مرور کلی</string>
   <string name="section_title_specials_progress">پیشرفت قسمت‌های ویژه</string>
+  <string name="spotlight_dialog_label">پیمایش سریع</string>
+  <string name="spotlight_hint_dismiss">بستن</string>
+  <string name="spotlight_hint_navigate">پیمایش</string>
+  <string name="spotlight_hint_select">باز کردن</string>
+  <string name="spotlight_input_placeholder">به کجا برویم؟</string>
+  <string name="spotlight_no_results">چیزی با \"%s\" مطابقت ندارد</string>
+  <string name="spotlight_section_pages">صفحات</string>
   <string name="stat_label_hours">ساعات</string>
   <string name="stat_label_plays">بازدیدها</string>
   <string name="stat_text_favorited">علاقه‌مندی‌ها</string>
@@ -1751,6 +1772,7 @@
   <string name="text_vip_payment_method_google">گوگل پلی</string>
   <string name="text_vip_payment_method_other">دیگر</string>
   <string name="text_vip_payment_method_paypal">پی‌پَل</string>
+  <string name="text_vip_paypal_switch">اشتراک VIP خود را از پی‌پال به کارت اعتباری منتقل کنید. هیچ زمان VIP از دست نخواهید داد و اشتراک پی‌پال شما به محض انتخاب طرح جدید به طور خودکار لغو می‌شود.</string>
   <string name="text_vip_powers_trakt">به قدرت بخشیدن به Trakt کمک می‌کند و ویژگی‌هایی را برای افرادی که واقعاً به آنچه تماشا می‌کنند اهمیت می‌دهند، باز می‌کند.</string>
   <string name="text_vip_subscription">اشتراک</string>
   <string name="text_vip_subscription_missing_message">نتوانستیم اشتراک فعالی برای مدیریت پیدا کنیم. ممکن است قبلاً لغو شده باشد. اگر فکر می‌کنید مشکلی وجود دارد، <a>با پشتیبانی تماس بگیرید</a>.</string>
@@ -1764,6 +1786,7 @@
   <string name="text_vip_transaction_disputed">اعتراض به پرداخت <b>%s</b></string>
   <string name="text_vip_transaction_plan_changed">طرح <b>%s</b> شما تغییر کرد</string>
   <string name="text_vip_transaction_refunded"><b>%1$s</b> از طریق <b>%2$s</b> بازپرداخت شد</string>
+  <string name="text_vip_two_year_deal">شما طرح ۲ ساله را با %1$s باز کرده‌اید، سپس هر ۲ سال %2$s. تخفیف به طور خودکار هنگام تسویه حساب اعمال می‌شود.</string>
   <string name="text_vip_upsell_default">تجربه Trakt خود را بهبود بخشید</string>
   <string name="text_vip_upsell_default_2">به VIP ارتقا دهید!</string>
   <string name="text_vip_upsell_default_description">به VIP ارتقا دهید و تجربه کامل Trakt را باز کنید، که با ویژگی‌هایی برای دوستداران برنامه‌های تلویزیونی و فیلم‌ها پر شده است.</string>
@@ -2085,7 +2108,6 @@
   <string name="warning_prompt_set_cover_image">آیا می‌خواهید \"%s\" را به عنوان تصویر پس‌زمینه پروفایل خود استفاده کنید؟</string>
   <string name="warning_prompt_simple_filters">تغییر به فیلترهای ساده، تمام فیلترهای فعلی شما را بازنشانی می‌کند. آیا مطمئن هستید که می‌خواهید ادامه دهید؟</string>
   <string name="warning_prompt_stop_checkin">آیا مطمئن هستید که می‌خواهید تماشای \"%s\" را متوقف کنید؟</string>
-  <string name="warning_prompt_suppress_ratings_toast">آیا می‌خواهید از شما خواسته نشود که آنچه اخیراً تماشا کرده‌اید را امتیاز دهید؟</string>
   <string name="warning_prompt_track_show_episode_count">آیا مطمئن هستید که می‌خواهید \"%1$s\" را به عنوان تماشا شده علامت‌گذاری کنید؟ این کار %2$d اپیزود را به عنوان تماشا شده علامت‌گذاری می‌کند.</string>
   <string name="warning_prompt_unfollow_user">آیا مطمئن هستید که می‌خواهید %s را لغو دنبال کنید؟</string>
   <string name="warning_prompt_younify_unlink">آیا مطمئن هستید که می‌خواهید %s را قطع پیوند کنید؟</string>
