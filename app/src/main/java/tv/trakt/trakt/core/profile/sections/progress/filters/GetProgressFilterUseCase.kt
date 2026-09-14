@@ -15,7 +15,7 @@ internal class GetProgressFilterUseCase(
         val storedFilter = dataStore.data.first()[KEY_PROGRESS_FILTER]
         return storedFilter?.let {
             runCatching { ProgressFilter.valueOf(it) }.getOrNull()
-        } ?: ProgressFilter.Completed
+        } ?: ProgressFilter.UpToDate
     }
 
     suspend fun setFilter(filter: ProgressFilter) {
