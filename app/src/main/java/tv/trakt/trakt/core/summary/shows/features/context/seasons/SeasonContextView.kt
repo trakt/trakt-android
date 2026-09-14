@@ -1,6 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
-package tv.trakt.trakt.core.summary.shows.features.context.episodes
+package tv.trakt.trakt.core.summary.shows.features.context.seasons
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
@@ -10,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.TextAutoSize
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,23 +19,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.helpers.preview.PreviewData
-import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.GhostButton
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun EpisodeContextView(
-    episode: Episode,
+internal fun SeasonContextView(
+    season: Season,
     watched: Boolean,
     watchOnlyOnce: Boolean?,
     modifier: Modifier = Modifier,
+    showTitle: String? = null,
     onTrackClick: () -> Unit = {},
-    onWatchedUntilClick: () -> Unit = {},
     onRemoveClick: () -> Unit = {},
 ) {
-    val released = episode.rememberReleased()
-
     Column(
         verticalArrangement = spacedBy(0.dp),
         modifier = modifier,
@@ -47,7 +42,10 @@ internal fun EpisodeContextView(
             verticalArrangement = spacedBy(2.dp),
         ) {
             Text(
-                text = episode.title,
+                text = when {
+                    season.isSpecial -> stringResource(R.string.text_season_specials)
+                    else -> stringResource(R.string.text_season_number, season.number)
+                },
                 color = TraktTheme.colors.textPrimary,
                 style = TraktTheme.typography.heading3,
                 maxLines = 1,
@@ -59,15 +57,15 @@ internal fun EpisodeContextView(
                 ),
             )
 
-            Text(
-                text = stringResource(
-                    R.string.episode_footer_season_episode,
-                    episode.season,
-                    episode.number,
-                ),
-                color = TraktTheme.colors.textSecondary,
-                style = TraktTheme.typography.paragraphSmall,
-            )
+            showTitle?.let {
+                Text(
+                    text = it,
+                    color = TraktTheme.colors.textSecondary,
+                    style = TraktTheme.typography.paragraphSmall,
+                    maxLines = 1,
+                    overflow = Ellipsis,
+                )
+            }
         }
 
         Spacer(
@@ -82,22 +80,27 @@ internal fun EpisodeContextView(
             verticalArrangement = spacedBy(TraktTheme.spacing.contextItemsSpace),
             modifier = Modifier.padding(top = 14.dp),
         ) {
-            if (watched) {
-                if (watchOnlyOnce != true) {
-                    GhostButton(
-                        enabled = released,
-                        text = stringResource(R.string.button_text_watch_again),
-                        icon = painterResource(R.drawable.ic_check_double),
-                        iconSize = 22.dp,
-                        iconSpace = 14.dp,
-                        onClick = onTrackClick,
-                        modifier = Modifier
-                            .graphicsLayer {
-                                translationX = -4.dp.toPx()
-                            },
-                    )
-                }
+            if (!watched || watchOnlyOnce != true) {
+                GhostButton(
+                    text = when {
+                        !watched -> stringResource(R.string.button_text_track)
+                        else -> stringResource(R.string.button_text_watch_again)
+                    },
+                    icon = when {
+                        !watched -> painterResource(R.drawable.ic_check_2)
+                        else -> painterResource(R.drawable.ic_check_double)
+                    },
+                    iconSize = 22.dp,
+                    iconSpace = 14.dp,
+                    onClick = onTrackClick,
+                    modifier = Modifier
+                        .graphicsLayer {
+                            translationX = -4.dp.toPx()
+                        },
+                )
+            }
 
+            if (watched) {
                 GhostButton(
                     text = stringResource(R.string.button_text_remove_from_history),
                     icon = painterResource(R.drawable.ic_close),
@@ -107,32 +110,6 @@ internal fun EpisodeContextView(
                     modifier = Modifier
                         .graphicsLayer {
                             translationX = -6.dp.toPx()
-                        },
-                )
-            } else {
-                GhostButton(
-                    enabled = released,
-                    text = stringResource(R.string.button_text_track),
-                    icon = painterResource(R.drawable.ic_check_2),
-                    iconSize = 20.dp,
-                    iconSpace = 16.dp,
-                    onClick = onTrackClick,
-                    modifier = Modifier
-                        .graphicsLayer {
-                            translationX = -7.dp.toPx()
-                        },
-                )
-
-                GhostButton(
-                    enabled = released,
-                    text = stringResource(R.string.button_text_watched_until_here),
-                    icon = painterResource(R.drawable.ic_check_2),
-                    iconSize = 20.dp,
-                    iconSpace = 16.dp,
-                    onClick = onWatchedUntilClick,
-                    modifier = Modifier
-                        .graphicsLayer {
-                            translationX = -7.dp.toPx()
                         },
                 )
             }
@@ -148,10 +125,11 @@ internal fun EpisodeContextView(
 @Composable
 private fun Preview() {
     TraktTheme {
-        EpisodeContextView(
-            episode = PreviewData.episode1,
+        SeasonContextView(
+            season = PreviewData.season1,
             watched = false,
             watchOnlyOnce = false,
+            showTitle = PreviewData.show1.title,
         )
     }
 }
@@ -164,10 +142,11 @@ private fun Preview() {
 @Composable
 private fun PreviewWatched() {
     TraktTheme {
-        EpisodeContextView(
-            episode = PreviewData.episode1,
+        SeasonContextView(
+            season = PreviewData.season1,
             watched = true,
             watchOnlyOnce = false,
+            showTitle = PreviewData.show1.title,
         )
     }
 }
@@ -180,10 +159,11 @@ private fun PreviewWatched() {
 @Composable
 private fun PreviewWatchedOnlyOnce() {
     TraktTheme {
-        EpisodeContextView(
-            episode = PreviewData.episode1,
+        SeasonContextView(
+            season = PreviewData.season1,
             watched = true,
             watchOnlyOnce = true,
+            showTitle = PreviewData.show1.title,
         )
     }
 }
