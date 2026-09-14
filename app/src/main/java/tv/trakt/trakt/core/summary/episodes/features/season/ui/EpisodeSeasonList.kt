@@ -88,6 +88,7 @@ internal fun EpisodeSeasonList(
                 title = "",
                 more = item.isWatched,
                 watched = item.isWatched,
+                plays = item.plays,
                 containerImageUrl = item.episode.images?.getScreenshotUrl()
                     ?: show?.images?.getFanartUrl(),
                 onClick = { onEpisodeClick(item) },

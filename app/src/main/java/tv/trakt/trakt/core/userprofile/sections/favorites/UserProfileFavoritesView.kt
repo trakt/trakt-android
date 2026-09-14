@@ -203,6 +203,7 @@ private fun ContentList(
                 showMore = false,
                 showMediaIcon = true,
                 watched = collectionState.isWatched(item.id, item.type, item.airedEpisodes),
+                plays = collectionState.plays(item.id, item.type, item.airedEpisodes),
                 watching = collectionState.isWatching(item.id, item.type, item.airedEpisodes),
                 watchlist = collectionState.isWatchlist(item.id, item.type),
                 onShowClick = {

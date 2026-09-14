@@ -182,6 +182,7 @@ private fun ContentList(
                 title = item.title,
                 imageUrl = item.images?.getPosterUrl(),
                 watched = collection.isWatched(item.ids.trakt, MediaType.Show, item.airedEpisodes),
+                plays = collection.plays(item.ids.trakt, MediaType.Show, item.airedEpisodes),
                 watching = collection.isWatching(item.ids.trakt, MediaType.Show, item.airedEpisodes),
                 watchlist = collection.isWatchlist(item.ids.trakt, MediaType.Show),
                 onClick = { onClick?.invoke(item) },

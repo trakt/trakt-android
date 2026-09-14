@@ -36,6 +36,8 @@ internal data class ShowDetailsState(
         val aired: Int,
         val plays: Int?,
         val playsWithoutSpecials: Int?,
+        /** Complete watches of the show, zero unless every aired episode was watched. */
+        val completedPlays: Int?,
         val inWatchlist: Boolean,
         val inLists: Boolean,
     ) {

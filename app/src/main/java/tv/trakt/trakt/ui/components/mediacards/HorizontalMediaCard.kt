@@ -1,7 +1,6 @@
 package tv.trakt.trakt.ui.components.mediacards
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -32,7 +31,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush.Companion.verticalGradient
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -72,6 +70,7 @@ internal fun HorizontalMediaCard(
     corner: Dp = 15.dp,
     more: Boolean = true,
     watched: Boolean = false,
+    plays: Int = 0,
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
     footerContent: @Composable (() -> Unit)? = null,
@@ -269,6 +268,7 @@ internal fun HorizontalMediaCard(
                     CollectionChip(
                         iconRes = R.drawable.ic_check_double,
                         iconSize = 11.5.dp,
+                        count = plays,
                     )
                 }
             }
@@ -281,31 +281,6 @@ internal fun HorizontalMediaCard(
                 footerContent()
             }
         }
-    }
-}
-
-@Composable
-private fun CollectionChip(
-    iconRes: Int,
-    iconSize: Dp,
-) {
-    val shape = RoundedCornerShape(100)
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .size(
-                width = 24.dp,
-                height = 16.dp,
-            )
-            .shadow(1.5.dp, shape)
-            .background(TraktTheme.colors.tagChipContainer, shape),
-    ) {
-        Icon(
-            painter = painterResource(iconRes),
-            tint = TraktTheme.colors.tagChipContent,
-            contentDescription = null,
-            modifier = Modifier.size(iconSize),
-        )
     }
 }
 

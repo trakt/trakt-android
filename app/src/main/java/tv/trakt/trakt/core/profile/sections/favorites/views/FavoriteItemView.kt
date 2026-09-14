@@ -37,6 +37,7 @@ internal fun FavoriteItemView(
     watched: Boolean = false,
     watching: Boolean = false,
     watchlist: Boolean = false,
+    plays: Int = 0,
     onShowClick: () -> Unit = {},
     onMovieClick: () -> Unit = {},
     onShowLongClick: () -> Unit = {},
@@ -52,6 +53,7 @@ internal fun FavoriteItemView(
                 watched = watched,
                 watching = watching,
                 watchlist = watchlist,
+                plays = plays,
                 onClick = onShowClick,
                 onLongClick = onShowLongClick,
                 chipContent = { modifier ->
@@ -138,6 +140,7 @@ internal fun FavoriteItemView(
                 watched = watched,
                 watching = watching,
                 watchlist = watchlist,
+                plays = plays,
                 onLongClick = onMovieLongClick,
                 chipContent = { modifier ->
                     if (isReleased) {
