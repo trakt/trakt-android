@@ -13,6 +13,7 @@ import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableSet
 import tv.trakt.trakt.common.model.CastPerson
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CrewPerson
+import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Season
 import tv.trakt.trakt.common.model.TraktId
 
@@ -33,6 +34,28 @@ internal data class ShowSeasons(
     val isSelectedSeasonWatched: Boolean
         get() = selectedSeasonEpisodes.isNotEmpty() &&
             selectedSeasonEpisodes.all { it.isWatched }
+
+    /**
+     * Released episodes still unwatched between the show's first episode and
+     * [episode]: the gaps a "watched until here" would fill. Specials are left
+     * out, matching what GetWatchedUntilEpisodesUseCase would actually mark.
+     */
+    fun skippedEpisodesBefore(episode: Episode): Int {
+        if (episode.season <= 0) return 0
+
+        val previousSeasons = seasons
+            .filter { it.season.number in 1 until episode.season }
+            .sumOf { it.unwatchedEpisodes.coerceAtLeast(0) }
+
+        val sameSeason = selectedSeasonEpisodes.count {
+            it.episode.season == episode.season &&
+                it.episode.number < episode.number &&
+                it.episode.isReleased &&
+                !it.isWatched
+        }
+
+        return previousSeasons + sameSeason
+    }
 
     /** Prepends a freshly posted [comment] to the selected season's comment list. */
     fun addComment(comment: Comment): ShowSeasons =
