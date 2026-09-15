@@ -25,6 +25,7 @@
   <string name="action_toast_removed_from_history_generic">履歴から削除されました</string>
   <string name="action_toast_removed_from_watchlist"><b>%s</b> がウォッチリストから削除されました</string>
   <string name="action_toast_removed_from_watchlist_generic">ウォッチリストから削除されました</string>
+  <string name="advanced_filter_label_parental_guide">%1$s: %2$s～%3$s</string>
   <string name="advanced_filter_label_ratings">評価 %1$s～%2$s</string>
   <string name="advanced_filter_label_release_year">発売年 %1$d～%2$d</string>
   <string name="advanced_filter_label_runtime">再生時間 %1$d～%2$d分</string>
@@ -191,6 +192,7 @@
   <string name="button_label_profile_options">プロフィールオプション</string>
   <string name="button_label_progress_completed">完了済みの番組を表示</string>
   <string name="button_label_progress_dropped">ドロップした番組を表示</string>
+  <string name="button_label_progress_ended">終了した番組を表示</string>
   <string name="button_label_progress_in_progress">進行中の番組を表示</string>
   <string name="button_label_rate">「%s」を評価</string>
   <string name="button_label_raw_export">生データを含むZIPファイルをエクスポートする</string>
@@ -306,6 +308,7 @@
   <string name="button_label_view_sentiment_analysis">感情分析を表示</string>
   <string name="button_label_view_soundtrack">サウンドトラックを表示</string>
   <string name="button_label_view_trivia">トリビアを表示</string>
+  <string name="button_label_vip_paypal_switch">VIPプランを表示し、クレジットカードに切り替える</string>
   <string name="button_label_vip_upgrade">VIPにアップグレード</string>
   <string name="button_label_watch_on_service">%sで視聴</string>
   <string name="button_label_watch_until_here_anchor_end">選択した日時を視聴終了時刻として設定</string>
@@ -433,6 +436,7 @@
   <string name="button_text_popular_comments">人気</string>
   <string name="button_text_progress_completed">完了済み</string>
   <string name="button_text_progress_dropped">視聴中止</string>
+  <string name="button_text_progress_ended">終了</string>
   <string name="button_text_progress_in_progress">進行中</string>
   <string name="button_text_raw_export">今すぐエクスポート</string>
   <string name="button_text_recent_comments">最新</string>
@@ -481,7 +485,6 @@
   <string name="button_text_sort_updated_date">更新日</string>
   <string name="button_text_start_import">インポートを開始</string>
   <string name="button_text_start_rewatching">再視聴を開始</string>
-  <string name="button_text_stop_asking">質問を停止</string>
   <string name="button_text_stop_check_in">チェックインを停止</string>
   <string name="button_text_stop_clear">クリアを停止</string>
   <string name="button_text_stop_export">エクスポートを停止</string>
@@ -516,6 +519,7 @@
   <string name="button_text_view_import_guidelines">ガイドラインを表示</string>
   <string name="button_text_view_photo">写真を見る</string>
   <string name="button_text_view_recommendation_sources">なぜこれ？</string>
+  <string name="button_text_vip_paypal_switch">プランを見る</string>
   <string name="button_text_vip_upgrade">アップグレード</string>
   <string name="button_text_watch_again">再視聴</string>
   <string name="button_text_watch_until_here_anchor_end">終了時間</string>
@@ -576,7 +580,6 @@
   <string name="confirmation_title_stop_checkin">チェックインを停止?</string>
   <string name="confirmation_title_stop_clear">クリアを停止?</string>
   <string name="confirmation_title_stop_export">エクスポートを停止しますか？</string>
-  <string name="confirmation_title_suppress_ratings_toast">確認を停止?</string>
   <string name="confirmation_title_undo_sync">この同期を元に戻しますか？</string>
   <string name="confirmation_title_unfollow_user">ユーザーのフォローを解除?</string>
   <string name="confirmation_title_unlink_streaming">%sのリンクを解除しますか？</string>
@@ -814,6 +817,8 @@
   <string name="header_sync_detail">同期ID %s</string>
   <string name="header_target">ターゲット</string>
   <string name="header_total_runtime">総上映時間</string>
+  <string name="header_vip_paypal_switch">クレジットカードに切り替える</string>
+  <string name="header_vip_two_year_deal">1年分の料金で、2年間VIP！</string>
   <string name="header_writer">脚本家</string>
   <string name="heading_api_application_vip_only">新しいアプリの作成にはTrakt VIPが必要です</string>
   <string name="heading_api_applications">APIアプリケーション</string>
@@ -945,6 +950,15 @@
   <string name="label_genres_drawer_subtitle_loved">さらに表示したいジャンルを最大5つ選択してください。</string>
   <string name="label_keep_play">保持</string>
   <string name="label_list_item_count">%sアイテム</string>
+  <string name="label_parental_guide_category_alcohol">アルコール、薬物、喫煙</string>
+  <string name="label_parental_guide_category_frightening">恐ろしい・衝撃的なシーン</string>
+  <string name="label_parental_guide_category_nudity">性とヌード</string>
+  <string name="label_parental_guide_category_profanity">暴言</string>
+  <string name="label_parental_guide_category_violence">暴力とゴア</string>
+  <string name="label_parental_guide_severity_mild">軽度</string>
+  <string name="label_parental_guide_severity_moderate">中程度</string>
+  <string name="label_parental_guide_severity_none">なし</string>
+  <string name="label_parental_guide_severity_severe">重度</string>
   <string name="label_plex_connected">Plexに接続済み</string>
   <string name="label_plex_connection">接続</string>
   <string name="label_plex_history_date">日付</string>
@@ -1262,7 +1276,7 @@
   <string name="preview_feature_description_genre_picker">タグのリストではなく、ビジュアルグリッドからお気に入りのジャンルを選びましょう。</string>
   <string name="preview_feature_description_leaderboard">フォローしている人の視聴時間でランキングを作成し、その中で自分がどこに位置するかを確認できます。</string>
   <string name="preview_feature_description_list_counts">リストが保持するアイテム数と、セクションが持つリスト数を示します。</string>
-  <string name="preview_feature_description_parental_guide">映画、番組、エピソードの詳細ドロワーにコンテンツのリスクレベルを表示します。</string>
+  <string name="preview_feature_description_parental_guide">映画や番組の詳細ドロワーにコンテンツのリスクレベルを表示し、詳細フィルターで深刻度別に絞り込みます。</string>
   <string name="preview_feature_description_reviewer_stats">レビュアーがタイトルをどのくらい視聴したかを評価の横に表示します。</string>
   <string name="preview_feature_description_rewatch">既に視聴済みの番組の再視聴セッションを開始し、セッションドロワーから直接エピソードをチェックインまたは視聴済みとしてマークできます。</string>
   <string name="preview_feature_description_scoped_favorites">プロフィールに今年の「お気に入り」を表示し、お気に入りリスト全体を年別にグループ化することで、お気に入りリストを期間で区切ります。</string>
@@ -1283,6 +1297,13 @@
   <string name="section_title_season_progress">シーズン%dの進捗</string>
   <string name="section_title_seasons_overview">概要</string>
   <string name="section_title_specials_progress">スペシャルエピソードの進捗</string>
+  <string name="spotlight_dialog_label">クイックナビゲーション</string>
+  <string name="spotlight_hint_dismiss">閉じる</string>
+  <string name="spotlight_hint_navigate">移動</string>
+  <string name="spotlight_hint_select">開く</string>
+  <string name="spotlight_input_placeholder">どこへ？</string>
+  <string name="spotlight_no_results">\"%s\" に一致するものはありません</string>
+  <string name="spotlight_section_pages">ページ</string>
   <string name="stat_label_hours">時間</string>
   <string name="stat_label_plays">再生回数</string>
   <string name="stat_text_favorited">お気に入り</string>
@@ -1751,6 +1772,7 @@
   <string name="text_vip_payment_method_google">Google Play</string>
   <string name="text_vip_payment_method_other">その他</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
+  <string name="text_vip_paypal_switch">VIPサブスクリプションをPayPalからクレジットカードに移行します。VIP期間が失われることはなく、新しいプランを選択するとPayPalサブスクリプションは自動的にキャンセルされます。</string>
   <string name="text_vip_powers_trakt">はTraktを強化し、視聴内容に本当にこだわる人々のための機能をアンロックします。</string>
   <string name="text_vip_subscription">サブスクリプション</string>
   <string name="text_vip_subscription_missing_message">管理できる有効なサブスクリプションが見つかりませんでした。すでにキャンセルされている可能性があります。問題があると思われる場合は<a>サポートにお問い合わせください</a>。</string>
@@ -1764,6 +1786,7 @@
   <string name="text_vip_transaction_disputed"><b>%s</b>の請求に対して異議が申し立てられました</string>
   <string name="text_vip_transaction_plan_changed"><b>%s</b>プランが変更されました</string>
   <string name="text_vip_transaction_refunded"><b>%1$s</b>経由で<b>%2$s</b>が返金されました</string>
+  <string name="text_vip_two_year_deal">2年プランを%1$sでアンロックしました。その後は2年ごとに%2$sです。割引はチェックアウト時に自動的に適用されます。</string>
   <string name="text_vip_upsell_default">Trakt体験を向上させる</string>
   <string name="text_vip_upsell_default_2">VIPにアップグレード！</string>
   <string name="text_vip_upsell_default_description">VIPにアップグレードして、TV番組や映画ファン向けに作られた機能満載のTraktをフル体験しましょう。</string>
@@ -2085,7 +2108,6 @@
   <string name="warning_prompt_set_cover_image">「%s」をプロフィール背景画像として使用しますか？</string>
   <string name="warning_prompt_simple_filters">シンプルフィルターに切り替えると、現在のすべてのフィルターがリセットされます。続行してもよろしいですか？</string>
   <string name="warning_prompt_stop_checkin">「%s」の視聴を停止しますか？</string>
-  <string name="warning_prompt_suppress_ratings_toast">最近視聴した作品の評価を求められるのを停止しますか？</string>
   <string name="warning_prompt_track_show_episode_count">「%1$s」を視聴済みにしますか？これにより、%2$dエピソードが視聴済みになります。</string>
   <string name="warning_prompt_unfollow_user">%sのフォローを解除しますか？</string>
   <string name="warning_prompt_younify_unlink">%sのリンクを解除してもよろしいですか？</string>

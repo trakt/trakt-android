@@ -25,6 +25,7 @@
   <string name="action_toast_removed_from_history_generic">Togs bort från din historik</string>
   <string name="action_toast_removed_from_watchlist"><b>%s</b> togs bort från din bevakningslista</string>
   <string name="action_toast_removed_from_watchlist_generic">Togs bort från din bevakningslista</string>
+  <string name="advanced_filter_label_parental_guide">%1$s: %2$s till %3$s</string>
   <string name="advanced_filter_label_ratings">Betyg från %1$s till %2$s</string>
   <string name="advanced_filter_label_release_year">Släppt mellan %1$d och %2$d</string>
   <string name="advanced_filter_label_runtime">Speltid från %1$d till %2$d minuter.</string>
@@ -191,6 +192,7 @@
   <string name="button_label_profile_options">Profilalternativ</string>
   <string name="button_label_progress_completed">Visa slutförda serier</string>
   <string name="button_label_progress_dropped">Visa avbrutna serier</string>
+  <string name="button_label_progress_ended">Visa avslutade serier</string>
   <string name="button_label_progress_in_progress">Visa pågående serier</string>
   <string name="button_label_rate">Betygsätt \"%s\"</string>
   <string name="button_label_raw_export">Exportera en ZIP-fil som innehåller din råa data.</string>
@@ -306,6 +308,7 @@
   <string name="button_label_view_sentiment_analysis">Visa sentimentanalys</string>
   <string name="button_label_view_soundtrack">Visa soundtrack</string>
   <string name="button_label_view_trivia">Visa trivia</string>
+  <string name="button_label_vip_paypal_switch">Visa VIP-planer och byt till kreditkort</string>
   <string name="button_label_vip_upgrade">Uppgradera till VIP</string>
   <string name="button_label_watch_on_service">Titta på %s</string>
   <string name="button_label_watch_until_here_anchor_end">Behandla det valda datumet som slutet på bingetittandet</string>
@@ -433,6 +436,7 @@
   <string name="button_text_popular_comments">Populärt</string>
   <string name="button_text_progress_completed">Klar</string>
   <string name="button_text_progress_dropped">Avbruten</string>
+  <string name="button_text_progress_ended">Avslutad</string>
   <string name="button_text_progress_in_progress">Pågående</string>
   <string name="button_text_raw_export">Exportera nu</string>
   <string name="button_text_recent_comments">Senaste</string>
@@ -481,7 +485,6 @@
   <string name="button_text_sort_updated_date">Uppdateringsdatum</string>
   <string name="button_text_start_import">Starta import</string>
   <string name="button_text_start_rewatching">Börja titta om</string>
-  <string name="button_text_stop_asking">Sluta fråga</string>
   <string name="button_text_stop_check_in">Avbryt incheckning</string>
   <string name="button_text_stop_clear">Stoppa rensning</string>
   <string name="button_text_stop_export">Stoppa export</string>
@@ -516,6 +519,7 @@
   <string name="button_text_view_import_guidelines">Visa riktlinjer</string>
   <string name="button_text_view_photo">Visa foto</string>
   <string name="button_text_view_recommendation_sources">Varför detta?</string>
+  <string name="button_text_vip_paypal_switch">Visa planer</string>
   <string name="button_text_vip_upgrade">Uppgradera</string>
   <string name="button_text_watch_again">Titta igen</string>
   <string name="button_text_watch_until_here_anchor_end">Sluttid</string>
@@ -576,7 +580,6 @@
   <string name="confirmation_title_stop_checkin">Avbryt incheckning?</string>
   <string name="confirmation_title_stop_clear">Stoppa rensning?</string>
   <string name="confirmation_title_stop_export">Stoppa export?</string>
-  <string name="confirmation_title_suppress_ratings_toast">Sluta fråga?</string>
   <string name="confirmation_title_undo_sync">Ångra denna synkronisering?</string>
   <string name="confirmation_title_unfollow_user">Sluta följa användare?</string>
   <string name="confirmation_title_unlink_streaming">Koppla bort %s?</string>
@@ -814,6 +817,8 @@
   <string name="header_sync_detail">Synkroniserings-ID %s</string>
   <string name="header_target">Mål</string>
   <string name="header_total_runtime">Total speltid</string>
+  <string name="header_vip_paypal_switch">Byt till kreditkort</string>
+  <string name="header_vip_two_year_deal">Betala för 1 år, få 2 år som VIP!</string>
   <string name="header_writer">Manusförfattare</string>
   <string name="heading_api_application_vip_only">Att skapa nya appar kräver Trakt VIP</string>
   <string name="heading_api_applications">API-applikationer</string>
@@ -945,6 +950,15 @@
   <string name="label_genres_drawer_subtitle_loved">Välj upp till 5 genrer som du vill se mer av.</string>
   <string name="label_keep_play">Behåll</string>
   <string name="label_list_item_count">%s poster</string>
+  <string name="label_parental_guide_category_alcohol">Alkohol, Droger &amp; Rökning</string>
+  <string name="label_parental_guide_category_frightening">Skrämmande &amp; Intensiva Scener</string>
+  <string name="label_parental_guide_category_nudity">Sex &amp; Nakenhet</string>
+  <string name="label_parental_guide_category_profanity">Svordomar</string>
+  <string name="label_parental_guide_category_violence">Våld &amp; Blod</string>
+  <string name="label_parental_guide_severity_mild">Mild</string>
+  <string name="label_parental_guide_severity_moderate">Måttlig</string>
+  <string name="label_parental_guide_severity_none">Ingen</string>
+  <string name="label_parental_guide_severity_severe">Allvarlig</string>
   <string name="label_plex_connected">Ansluten till Plex</string>
   <string name="label_plex_connection">Anslutning</string>
   <string name="label_plex_history_date">Datum</string>
@@ -1262,7 +1276,7 @@
   <string name="preview_feature_description_genre_picker">Välj dina favoritgenrer från ett visuellt rutnät istället för en lista med taggar.</string>
   <string name="preview_feature_description_leaderboard">Rankar de personer du följer efter tittartid och se var du hamnar bland dem.</string>
   <string name="preview_feature_description_list_counts">Visar hur många poster en lista innehåller, och hur många listor en sektion har.</string>
-  <string name="preview_feature_description_parental_guide">Visa risknivåer för innehåll i detaljlådan för filmer, serier och avsnitt.</string>
+  <string name="preview_feature_description_parental_guide">Visa risknivåer för innehåll i detaljlådan för filmer och serier, och filtrera efter allvarlighetsgrad i avancerade filter.</string>
   <string name="preview_feature_description_reviewer_stats">Visar hur mycket av en titel en recensent har sett bredvid sitt betyg.</string>
   <string name="preview_feature_description_rewatch">Starta omtittningssessioner för serier du redan har sett, checka in eller markera avsnitt som sedda direkt från sessionslådan.</string>
   <string name="preview_feature_description_scoped_favorites">Tidsavgränsa favoritlistor genom att visa favoriter från innevarande år på profiler och gruppera hela favoritlistan per år.</string>
@@ -1283,6 +1297,13 @@
   <string name="section_title_season_progress">Säsong %d förlopp</string>
   <string name="section_title_seasons_overview">Översikt</string>
   <string name="section_title_specials_progress">Specialavsnitt förlopp</string>
+  <string name="spotlight_dialog_label">Snabbnavigering</string>
+  <string name="spotlight_hint_dismiss">Stäng</string>
+  <string name="spotlight_hint_navigate">Navigera</string>
+  <string name="spotlight_hint_select">Öppna</string>
+  <string name="spotlight_input_placeholder">Vart ska vi?</string>
+  <string name="spotlight_no_results">Inget matchar \"%s\"</string>
+  <string name="spotlight_section_pages">Sidor</string>
   <string name="stat_label_hours">timmar</string>
   <string name="stat_label_plays">spelningar</string>
   <string name="stat_text_favorited">Favoriter</string>
@@ -1751,6 +1772,7 @@
   <string name="text_vip_payment_method_google">Google Play</string>
   <string name="text_vip_payment_method_other">Övrigt</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
+  <string name="text_vip_paypal_switch">Flytta din VIP-prenumeration från PayPal till ett kreditkort. Du förlorar ingen VIP-tid, och din PayPal-prenumeration avbryts automatiskt när du väljer en ny plan.</string>
   <string name="text_vip_powers_trakt">hjälper till att driva Trakt och låser upp funktioner byggda för personer som verkligen bryr sig om vad de tittar på.</string>
   <string name="text_vip_subscription">prenumeration</string>
   <string name="text_vip_subscription_missing_message">Vi kunde inte hitta en aktiv prenumeration att hantera. Den kan redan ha sagts upp. <a>Kontakta supporten</a> om du tror att något är fel.</string>
@@ -1764,6 +1786,7 @@
   <string name="text_vip_transaction_disputed">Bestred en <b>%s</b> debitering</string>
   <string name="text_vip_transaction_plan_changed">Ändrade din <b>%s</b> plan</string>
   <string name="text_vip_transaction_refunded">Återbetalade <b>%1$s</b> via <b>%2$s</b></string>
+  <string name="text_vip_two_year_deal">Du har låst upp 2-årsplanen för %1$s, sedan %2$s varannat år. Rabatten dras automatiskt i kassan.</string>
   <string name="text_vip_upsell_default">Förbättra din Trakt-upplevelse</string>
   <string name="text_vip_upsell_default_2">Uppgradera till VIP!</string>
   <string name="text_vip_upsell_default_description">Uppgradera till VIP och lås upp den fullständiga Trakt-upplevelsen, fylld med funktioner byggda för älskare av TV-serier och filmer.</string>
@@ -2085,7 +2108,6 @@
   <string name="warning_prompt_set_cover_image">Använda \"%s\" som din profilbakgrundsbild?</string>
   <string name="warning_prompt_simple_filters">Att byta till enkla filter kommer att återställa alla dina nuvarande filter. Är du säker på att du vill fortsätta?</string>
   <string name="warning_prompt_stop_checkin">Är du säker på att du vill sluta titta på \"%s\"?</string>
-  <string name="warning_prompt_suppress_ratings_toast">Vill du sluta bli tillfrågad att betygsätta det du nyligen tittat på?</string>
   <string name="warning_prompt_track_show_episode_count">Är du säker på att du vill markera \"%1$s\" som sedd? Detta kommer att markera %2$d avsnitt som sedda.</string>
   <string name="warning_prompt_unfollow_user">Är du säker på att du vill sluta följa %s?</string>
   <string name="warning_prompt_younify_unlink">Är du säker på att du vill avlänka %s?</string>

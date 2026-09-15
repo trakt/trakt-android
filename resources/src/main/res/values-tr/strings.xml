@@ -25,6 +25,7 @@
   <string name="action_toast_removed_from_history_generic">Geçmişinizden kaldırıldı</string>
   <string name="action_toast_removed_from_watchlist"><b>%s</b> izleme listenizden kaldırıldı</string>
   <string name="action_toast_removed_from_watchlist_generic">İzleme listenizden kaldırıldı</string>
+  <string name="advanced_filter_label_parental_guide">%1$s: %2$s ila %3$s arası</string>
   <string name="advanced_filter_label_ratings">%1$s ila %2$s arası Derecelendirme</string>
   <string name="advanced_filter_label_release_year">%1$d ila %2$d yılları arasında yayınlandı</string>
   <string name="advanced_filter_label_runtime">%1$d ila %2$d dakika oynatma süresi.</string>
@@ -191,6 +192,7 @@
   <string name="button_label_profile_options">Profil seçenekleri</string>
   <string name="button_label_progress_completed">Tamamlanan dizileri görüntüle</string>
   <string name="button_label_progress_dropped">Bırakılan dizileri görüntüle</string>
+  <string name="button_label_progress_ended">Biten dizileri görüntüle</string>
   <string name="button_label_progress_in_progress">Devam eden dizileri görüntüle</string>
   <string name="button_label_rate">\"%s\" Oyla</string>
   <string name="button_label_raw_export">Ham verilerinizi içeren bir ZIP dosyasını dışa aktar.</string>
@@ -306,6 +308,7 @@
   <string name="button_label_view_sentiment_analysis">Duygu analizini görüntüle</string>
   <string name="button_label_view_soundtrack">Film müziğini görüntüle</string>
   <string name="button_label_view_trivia">Trivia\'yı görüntüle</string>
+  <string name="button_label_vip_paypal_switch">VIP planlarını görüntüle ve kredi kartına geç</string>
   <string name="button_label_vip_upgrade">VIP\'ye yükselt</string>
   <string name="button_label_watch_on_service">%s üzerinde izle</string>
   <string name="button_label_watch_until_here_anchor_end">Seçilen tarihi art arda izlemenin bitişi olarak kabul et</string>
@@ -433,6 +436,7 @@
   <string name="button_text_popular_comments">Popüler</string>
   <string name="button_text_progress_completed">Güncel</string>
   <string name="button_text_progress_dropped">Bırakıldı</string>
+  <string name="button_text_progress_ended">Bitti</string>
   <string name="button_text_progress_in_progress">Devam Ediyor</string>
   <string name="button_text_raw_export">Şimdi dışa aktar</string>
   <string name="button_text_recent_comments">En Yeni</string>
@@ -481,7 +485,6 @@
   <string name="button_text_sort_updated_date">Güncelleme Tarihi</string>
   <string name="button_text_start_import">İçe Aktarmayı Başlat</string>
   <string name="button_text_start_rewatching">Yeniden İzlemeye Başla</string>
-  <string name="button_text_stop_asking">Sormayı bırak</string>
   <string name="button_text_stop_check_in">Girişi durdur</string>
   <string name="button_text_stop_clear">Temizlemeyi Durdur</string>
   <string name="button_text_stop_export">Dışa Aktarmayı Durdur</string>
@@ -516,6 +519,7 @@
   <string name="button_text_view_import_guidelines">Yönergeleri görüntüle</string>
   <string name="button_text_view_photo">Fotoğrafı görüntüle</string>
   <string name="button_text_view_recommendation_sources">Neden bu?</string>
+  <string name="button_text_vip_paypal_switch">Planları görüntüle</string>
   <string name="button_text_vip_upgrade">Yükselt</string>
   <string name="button_text_watch_again">Tekrar İzle</string>
   <string name="button_text_watch_until_here_anchor_end">Bitiş saati</string>
@@ -576,7 +580,6 @@
   <string name="confirmation_title_stop_checkin">Girişi durdur?</string>
   <string name="confirmation_title_stop_clear">Temizlemeyi durdur?</string>
   <string name="confirmation_title_stop_export">Dışa aktarmayı durdur?</string>
-  <string name="confirmation_title_suppress_ratings_toast">Sormayı bırak?</string>
   <string name="confirmation_title_undo_sync">Bu senkronizasyonu geri al?</string>
   <string name="confirmation_title_unfollow_user">Kullanıcının takibini bırak?</string>
   <string name="confirmation_title_unlink_streaming">%s bağlantısı kesilsin mi?</string>
@@ -814,6 +817,8 @@
   <string name="header_sync_detail">Senkronizasyon Kimliği %s</string>
   <string name="header_target">Hedef</string>
   <string name="header_total_runtime">Toplam Süre</string>
+  <string name="header_vip_paypal_switch">Kredi kartına geç</string>
+  <string name="header_vip_two_year_deal">1 yıllık öde, 2 yıllık VIP al!</string>
   <string name="header_writer">Yazar</string>
   <string name="heading_api_application_vip_only">Yeni uygulamalar oluşturmak için Trakt VIP gereklidir.</string>
   <string name="heading_api_applications">API Uygulamaları</string>
@@ -945,6 +950,15 @@
   <string name="label_genres_drawer_subtitle_loved">Daha fazlasını görmek istediğiniz en fazla 5 tür seçin.</string>
   <string name="label_keep_play">Tut</string>
   <string name="label_list_item_count">%s öğe</string>
+  <string name="label_parental_guide_category_alcohol">Alkol, Uyuşturucu ve Sigara</string>
+  <string name="label_parental_guide_category_frightening">Korkutucu ve Yoğun Sahneler</string>
+  <string name="label_parental_guide_category_nudity">Cinsellik ve Çıplaklık</string>
+  <string name="label_parental_guide_category_profanity">Argo / Küfür</string>
+  <string name="label_parental_guide_category_violence">Şiddet ve Kan</string>
+  <string name="label_parental_guide_severity_mild">Hafif</string>
+  <string name="label_parental_guide_severity_moderate">Orta</string>
+  <string name="label_parental_guide_severity_none">Yok</string>
+  <string name="label_parental_guide_severity_severe">Şiddetli</string>
   <string name="label_plex_connected">Plex\'e bağlı</string>
   <string name="label_plex_connection">Bağlantı</string>
   <string name="label_plex_history_date">Tarih</string>
@@ -1262,7 +1276,7 @@
   <string name="preview_feature_description_genre_picker">Favori türlerinizi bir etiket listesi yerine görsel bir ızgaradan seçin.</string>
   <string name="preview_feature_description_leaderboard">Takip ettiğin kişileri izleme süresine göre sırala ve aralarında nerede olduğunu gör.</string>
   <string name="preview_feature_description_list_counts">Bir listenin kaç öğe içerdiğini ve bir bölümün kaç listesi olduğunu gösterir.</string>
-  <string name="preview_feature_description_parental_guide">Filmler, diziler ve bölümler için detay çekmecesinde içerik risk seviyelerini göster.</string>
+  <string name="preview_feature_description_parental_guide">Filmler ve diziler için detay çekmecesinde içerik risk seviyelerini göster ve gelişmiş filtrelerde şiddete göre filtrele.</string>
   <string name="preview_feature_description_reviewer_stats">Bir yorumcunun bir içeriğin ne kadarını izlediğini derecelendirmesinin yanında gösterir.</string>
   <string name="preview_feature_description_rewatch">Halihazırda izlediğiniz diziler için yeniden izleme oturumları başlatın, izlenen bölümleri doğrudan oturum çekmecesinden kaydedin veya izlendi olarak işaretleyin.</string>
   <string name="preview_feature_description_scoped_favorites">Favori listelerini, profillerde güncel yılın favorilerini göstererek ve tüm favori listesini yıla göre gruplandırarak zaman kutucuklarına ayırın.</string>
@@ -1283,6 +1297,13 @@
   <string name="section_title_season_progress">Sezon %d ilerlemesi</string>
   <string name="section_title_seasons_overview">Genel Bakış</string>
   <string name="section_title_specials_progress">Özel bölümler ilerlemesi</string>
+  <string name="spotlight_dialog_label">Hızlı gezinme</string>
+  <string name="spotlight_hint_dismiss">Kapat</string>
+  <string name="spotlight_hint_navigate">Gezin</string>
+  <string name="spotlight_hint_select">Aç</string>
+  <string name="spotlight_input_placeholder">Nereye?</string>
+  <string name="spotlight_no_results">Hiçbir şey \"%s\" ile eşleşmiyor</string>
+  <string name="spotlight_section_pages">Sayfalar</string>
   <string name="stat_label_hours">saat</string>
   <string name="stat_label_plays">oynatma</string>
   <string name="stat_text_favorited">Favoriler</string>
@@ -1751,6 +1772,7 @@
   <string name="text_vip_payment_method_google">Google Play</string>
   <string name="text_vip_payment_method_other">Diğer</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
+  <string name="text_vip_paypal_switch">VIP aboneliğinizi PayPal\'dan kredi kartına taşıyın. Hiçbir VIP süresi kaybetmezsiniz ve yeni bir plan seçtiğinizde PayPal aboneliğiniz otomatik olarak iptal edilir.</string>
   <string name="text_vip_powers_trakt">Trakt\'ı güçlendirmeye yardımcı olur ve izledikleri içeriği gerçekten önemseyen kişiler için tasarlanmış özellikleri açar.</string>
   <string name="text_vip_subscription">abonelik</string>
   <string name="text_vip_subscription_missing_message">Yönetecek aktif bir abonelik bulamadık. Zaten iptal edilmiş olabilir. Bir sorun olduğunu düşünüyorsanız <a>destekle iletişime geçin</a>.</string>
@@ -1764,6 +1786,7 @@
   <string name="text_vip_transaction_disputed">Bir <b>%s</b> ödemesine itiraz edildi</string>
   <string name="text_vip_transaction_plan_changed"><b>%s</b> planınız değiştirildi</string>
   <string name="text_vip_transaction_refunded"><b>%1$s</b> tutarı <b>%2$s</b> aracılığıyla iade edildi</string>
+  <string name="text_vip_two_year_deal">2 yıllık planı %1$s karşılığında açtınız, sonraki her 2 yıl için %2$s. İndirim, ödeme sırasında otomatik olarak uygulanır.</string>
   <string name="text_vip_upsell_default">Trakt deneyiminizi geliştirin</string>
   <string name="text_vip_upsell_default_2">VIP\'ye yükseltin!</string>
   <string name="text_vip_upsell_default_description">VIP\'ye yükseltin ve dizi ve film severler için özel olarak geliştirilmiş özelliklerle dolu tam Trakt deneyimini keşfedin.</string>
@@ -2085,7 +2108,6 @@
   <string name="warning_prompt_set_cover_image">Profil arka plan resminiz olarak \"%s\" kullanılsın mı?</string>
   <string name="warning_prompt_simple_filters">Basit filtrelere geçmek, tüm mevcut filtrelerinizi sıfırlayacaktır. Devam etmek istediğinizden emin misiniz?</string>
   <string name="warning_prompt_stop_checkin">\"%s\" izlemeyi durdurmak istediğinizden emin misiniz?</string>
-  <string name="warning_prompt_suppress_ratings_toast">Yakın zamanda izlediklerinizi derecelendirmeniz istenmesini durdurmak ister misiniz?</string>
   <string name="warning_prompt_track_show_episode_count">\"%1$s\" öğesini izlendi olarak işaretlemek istediğinizden emin misiniz? Bu, %2$d bölümü izlendi olarak işaretleyecektir.</string>
   <string name="warning_prompt_unfollow_user">%s takibi bırakmak istediğinizden emin misiniz?</string>
   <string name="warning_prompt_younify_unlink">%s bağlantısını kesmek istediğinizden emin misiniz?</string>

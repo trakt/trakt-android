@@ -25,6 +25,7 @@
   <string name="action_toast_removed_from_history_generic">Dihapus dari riwayat tontonan Anda</string>
   <string name="action_toast_removed_from_watchlist"><b>%s</b> telah dihapus dari daftar tontonan Anda</string>
   <string name="action_toast_removed_from_watchlist_generic">Dihapus dari daftar tontonan Anda</string>
+  <string name="advanced_filter_label_parental_guide">%1$s: %2$s hingga %3$s</string>
   <string name="advanced_filter_label_ratings">Rating %1$s hingga %2$s</string>
   <string name="advanced_filter_label_release_year">Dirilis pada tahun %1$d hingga %2$d</string>
   <string name="advanced_filter_label_runtime">Durasi %1$d hingga %2$d menit.</string>
@@ -191,6 +192,7 @@
   <string name="button_label_profile_options">Opsi profil</string>
   <string name="button_label_progress_completed">Lihat acara yang sudah selesai</string>
   <string name="button_label_progress_dropped">Lihat acara yang dibatalkan</string>
+  <string name="button_label_progress_ended">Lihat acara yang sudah tamat</string>
   <string name="button_label_progress_in_progress">Lihat acara yang sedang berlangsung</string>
   <string name="button_label_rate">Nilai \"%s\"</string>
   <string name="button_label_raw_export">Ekspor file ZIP yang berisi data mentah Anda.</string>
@@ -306,6 +308,7 @@
   <string name="button_label_view_sentiment_analysis">Lihat analisis sentimen</string>
   <string name="button_label_view_soundtrack">Lihat soundtrack</string>
   <string name="button_label_view_trivia">Lihat trivia</string>
+  <string name="button_label_vip_paypal_switch">Lihat paket VIP dan beralih ke kartu kredit</string>
   <string name="button_label_vip_upgrade">Tingkatkan ke VIP</string>
   <string name="button_label_watch_on_service">Tonton di %s</string>
   <string name="button_label_watch_until_here_anchor_end">Perlakukan tanggal yang dipilih sebagai akhir tontonan maraton</string>
@@ -433,6 +436,7 @@
   <string name="button_text_popular_comments">Populer</string>
   <string name="button_text_progress_completed">Selesai</string>
   <string name="button_text_progress_dropped">Dihentikan</string>
+  <string name="button_text_progress_ended">Berakhir</string>
   <string name="button_text_progress_in_progress">Sedang Berlangsung</string>
   <string name="button_text_raw_export">Ekspor sekarang</string>
   <string name="button_text_recent_comments">Terbaru</string>
@@ -481,7 +485,6 @@
   <string name="button_text_sort_updated_date">Tanggal Diperbarui</string>
   <string name="button_text_start_import">Mulai Impor</string>
   <string name="button_text_start_rewatching">Mulai menonton ulang</string>
-  <string name="button_text_stop_asking">Berhenti bertanya</string>
   <string name="button_text_stop_check_in">Hentikan *check-in*</string>
   <string name="button_text_stop_clear">Hentikan Penghapusan</string>
   <string name="button_text_stop_export">Hentikan Ekspor</string>
@@ -516,6 +519,7 @@
   <string name="button_text_view_import_guidelines">Lihat panduan</string>
   <string name="button_text_view_photo">Lihat foto</string>
   <string name="button_text_view_recommendation_sources">Mengapa ini?</string>
+  <string name="button_text_vip_paypal_switch">Lihat paket</string>
   <string name="button_text_vip_upgrade">Tingkatkan</string>
   <string name="button_text_watch_again">Tonton lagi</string>
   <string name="button_text_watch_until_here_anchor_end">Waktu berakhir</string>
@@ -576,7 +580,6 @@
   <string name="confirmation_title_stop_checkin">Hentikan check-in?</string>
   <string name="confirmation_title_stop_clear">Hentikan penghapusan?</string>
   <string name="confirmation_title_stop_export">Hentikan ekspor?</string>
-  <string name="confirmation_title_suppress_ratings_toast">Berhenti bertanya?</string>
   <string name="confirmation_title_undo_sync">Batalkan sinkronisasi ini?</string>
   <string name="confirmation_title_unfollow_user">Berhenti mengikuti pengguna?</string>
   <string name="confirmation_title_unlink_streaming">Putuskan %s?</string>
@@ -814,6 +817,8 @@
   <string name="header_sync_detail">ID Sinkronisasi %s</string>
   <string name="header_target">Target</string>
   <string name="header_total_runtime">Total Durasi</string>
+  <string name="header_vip_paypal_switch">Beralih ke kartu kredit</string>
+  <string name="header_vip_two_year_deal">Bayar 1 tahun, dapatkan 2 tahun VIP!</string>
   <string name="header_writer">Penulis</string>
   <string name="heading_api_application_vip_only">Membuat aplikasi baru memerlukan Trakt VIP</string>
   <string name="heading_api_applications">Aplikasi API</string>
@@ -945,6 +950,15 @@
   <string name="label_genres_drawer_subtitle_loved">Pilih hingga 5 genre yang ingin Anda lihat lebih banyak.</string>
   <string name="label_keep_play">Simpan</string>
   <string name="label_list_item_count">%s item</string>
+  <string name="label_parental_guide_category_alcohol">Alkohol, Narkoba &amp; Merokok</string>
+  <string name="label_parental_guide_category_frightening">Adegan Menakutkan &amp; Intens</string>
+  <string name="label_parental_guide_category_nudity">Seks &amp; Ketelanjangan</string>
+  <string name="label_parental_guide_category_profanity">Kata-kata Kasar</string>
+  <string name="label_parental_guide_category_violence">Kekerasan &amp; Kekejaman</string>
+  <string name="label_parental_guide_severity_mild">Ringan</string>
+  <string name="label_parental_guide_severity_moderate">Sedang</string>
+  <string name="label_parental_guide_severity_none">Tidak Ada</string>
+  <string name="label_parental_guide_severity_severe">Parah</string>
   <string name="label_plex_connected">Terhubung ke Plex</string>
   <string name="label_plex_connection">Koneksi</string>
   <string name="label_plex_history_date">Tanggal</string>
@@ -1262,7 +1276,7 @@
   <string name="preview_feature_description_genre_picker">Pilih genre favorit Anda dari kisi visual, bukan daftar tag.</string>
   <string name="preview_feature_description_leaderboard">Peringkat orang yang Anda ikuti berdasarkan waktu tonton dan lihat posisi Anda di antara mereka.</string>
   <string name="preview_feature_description_list_counts">Menampilkan berapa banyak item yang dimiliki sebuah daftar, dan berapa banyak daftar yang dimiliki sebuah bagian.</string>
-  <string name="preview_feature_description_parental_guide">Tampilkan tingkat risiko konten di laci detail untuk film, acara, dan episode.</string>
+  <string name="preview_feature_description_parental_guide">Tampilkan tingkat risiko konten di laci detail untuk film dan acara, serta saring berdasarkan tingkat keparahan di filter lanjutan.</string>
   <string name="preview_feature_description_reviewer_stats">Menampilkan berapa banyak dari sebuah judul yang ditonton pengulas di samping rating mereka.</string>
   <string name="preview_feature_description_rewatch">Mulai sesi menonton ulang untuk acara yang sudah Anda tonton, check-in atau tandai episode yang sudah ditonton langsung dari panel sesi.</string>
   <string name="preview_feature_description_scoped_favorites">Batas waktu daftar favorit dengan menampilkan favorit tahun berjalan di profil dan mengelompokkan daftar favorit lengkap berdasarkan tahun.</string>
@@ -1283,6 +1297,13 @@
   <string name="section_title_season_progress">Musim %d kemajuan</string>
   <string name="section_title_seasons_overview">Ikhtisar</string>
   <string name="section_title_specials_progress">Kemajuan Spesial</string>
+  <string name="spotlight_dialog_label">Navigasi cepat</string>
+  <string name="spotlight_hint_dismiss">Tutup</string>
+  <string name="spotlight_hint_navigate">Navigasi</string>
+  <string name="spotlight_hint_select">Buka</string>
+  <string name="spotlight_input_placeholder">Ke mana?</string>
+  <string name="spotlight_no_results">Tidak ada yang cocok dengan \"%s\"</string>
+  <string name="spotlight_section_pages">Halaman</string>
   <string name="stat_label_hours">jam</string>
   <string name="stat_label_plays">tontonan</string>
   <string name="stat_text_favorited">Favorit</string>
@@ -1751,6 +1772,7 @@
   <string name="text_vip_payment_method_google">Google Play</string>
   <string name="text_vip_payment_method_other">Lain-lain</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
+  <string name="text_vip_paypal_switch">Pindahkan langganan VIP Anda dari PayPal ke kartu kredit. Anda tidak akan kehilangan waktu VIP, dan langganan PayPal Anda akan dibatalkan secara otomatis setelah Anda memilih paket baru.</string>
   <string name="text_vip_powers_trakt">membantu menggerakkan Trakt dan membuka fitur yang dibuat untuk orang-orang yang benar-benar peduli dengan apa yang mereka tonton.</string>
   <string name="text_vip_subscription">langganan</string>
   <string name="text_vip_subscription_missing_message">Kami tidak dapat menemukan langganan aktif untuk dikelola. Mungkin sudah dibatalkan. <a>Hubungi dukungan</a> jika Anda merasa ada yang salah.</string>
@@ -1764,6 +1786,7 @@
   <string name="text_vip_transaction_disputed">Membantah tagihan <b>%s</b></string>
   <string name="text_vip_transaction_plan_changed">Mengubah paket <b>%s</b> Anda</string>
   <string name="text_vip_transaction_refunded">Dikembalikan <b>%1$s</b> melalui <b>%2$s</b></string>
+  <string name="text_vip_two_year_deal">Anda telah membuka paket 2 tahun seharga %1$s, kemudian %2$s setiap 2 tahun. Diskon diterapkan secara otomatis saat pembayaran.</string>
   <string name="text_vip_upsell_default">Tingkatkan pengalaman Trakt Anda</string>
   <string name="text_vip_upsell_default_2">Tingkatkan ke VIP!</string>
   <string name="text_vip_upsell_default_description">Tingkatkan ke VIP dan buka pengalaman Trakt penuh, dilengkapi dengan fitur yang dibangun untuk pecinta Acara TV dan Film.</string>
@@ -2085,7 +2108,6 @@
   <string name="warning_prompt_set_cover_image">Gunakan \"%s\" sebagai gambar latar belakang profil Anda?</string>
   <string name="warning_prompt_simple_filters">Beralih ke filter sederhana akan mengatur ulang semua filter Anda saat ini. Apakah Anda yakin ingin melanjutkan?</string>
   <string name="warning_prompt_stop_checkin">Anda yakin ingin berhenti menonton \"%s\"?</string>
-  <string name="warning_prompt_suppress_ratings_toast">Apakah Anda ingin berhenti diminta untuk menilai apa yang baru saja Anda tonton?</string>
   <string name="warning_prompt_track_show_episode_count">Anda yakin ingin menandai \"%1$s\" sudah ditonton? Ini akan menandai %2$d episode sebagai sudah ditonton.</string>
   <string name="warning_prompt_unfollow_user">Anda yakin ingin berhenti mengikuti %s?</string>
   <string name="warning_prompt_younify_unlink">Anda yakin ingin melepaskan tautan %s?</string>
