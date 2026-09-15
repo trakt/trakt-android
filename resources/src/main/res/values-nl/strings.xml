@@ -25,6 +25,7 @@
   <string name="action_toast_removed_from_history_generic">Verwijderd uit je kijkgeschiedenis</string>
   <string name="action_toast_removed_from_watchlist"><b>%s</b> is verwijderd van je kijklijst</string>
   <string name="action_toast_removed_from_watchlist_generic">Verwijderd van je kijklijst</string>
+  <string name="advanced_filter_label_parental_guide">%1$s: %2$s tot %3$s</string>
   <string name="advanced_filter_label_ratings">Beoordeling van %1$s tot %2$s</string>
   <string name="advanced_filter_label_release_year">Uitgebracht in %1$d tot %2$d</string>
   <string name="advanced_filter_label_runtime">Speelduur van %1$d tot %2$d minuten.</string>
@@ -191,6 +192,7 @@
   <string name="button_label_profile_options">Profielopties</string>
   <string name="button_label_progress_completed">Bekijk voltooide series</string>
   <string name="button_label_progress_dropped">Bekijk laten vallen series</string>
+  <string name="button_label_progress_ended">Bekijk geëindigde series</string>
   <string name="button_label_progress_in_progress">Bekijk series die bezig zijn</string>
   <string name="button_label_rate">Beoordeel \"%s\"</string>
   <string name="button_label_raw_export">Exporteer een ZIP-bestand met uw ruwe gegevens.</string>
@@ -306,6 +308,7 @@
   <string name="button_label_view_sentiment_analysis">Bekijk sentimentanalyse</string>
   <string name="button_label_view_soundtrack">Bekijk soundtrack</string>
   <string name="button_label_view_trivia">Bekijk trivia</string>
+  <string name="button_label_vip_paypal_switch">Bekijk VIP-abonnementen en schakel over naar creditcard</string>
   <string name="button_label_vip_upgrade">Upgrade naar VIP</string>
   <string name="button_label_watch_on_service">Bekijk op %s</string>
   <string name="button_label_watch_until_here_anchor_end">Behandel de gekozen datum als het einde van de bingewatchsessie</string>
@@ -433,6 +436,7 @@
   <string name="button_text_popular_comments">Populair</string>
   <string name="button_text_progress_completed">Bijgewerkt</string>
   <string name="button_text_progress_dropped">Gestopt</string>
+  <string name="button_text_progress_ended">Beëindigd</string>
   <string name="button_text_progress_in_progress">Bezig</string>
   <string name="button_text_raw_export">Nu exporteren</string>
   <string name="button_text_recent_comments">Recent</string>
@@ -481,7 +485,6 @@
   <string name="button_text_sort_updated_date">Datum laatst bijgewerkt</string>
   <string name="button_text_start_import">Import starten</string>
   <string name="button_text_start_rewatching">Opnieuw kijken starten</string>
-  <string name="button_text_stop_asking">Stop met vragen</string>
   <string name="button_text_stop_check_in">Stop check-in</string>
   <string name="button_text_stop_clear">Wissen stoppen</string>
   <string name="button_text_stop_export">Exporteren stoppen</string>
@@ -516,6 +519,7 @@
   <string name="button_text_view_import_guidelines">Richtlijnen bekijken</string>
   <string name="button_text_view_photo">Bekijk foto</string>
   <string name="button_text_view_recommendation_sources">Waarom dit?</string>
+  <string name="button_text_vip_paypal_switch">Bekijk abonnementen</string>
   <string name="button_text_vip_upgrade">Upgraden</string>
   <string name="button_text_watch_again">Opnieuw bekijken</string>
   <string name="button_text_watch_until_here_anchor_end">Eindtijd</string>
@@ -576,7 +580,6 @@
   <string name="confirmation_title_stop_checkin">Check-in stoppen?</string>
   <string name="confirmation_title_stop_clear">Wissen stoppen?</string>
   <string name="confirmation_title_stop_export">Exporteren stoppen?</string>
-  <string name="confirmation_title_suppress_ratings_toast">Stoppen met vragen?</string>
   <string name="confirmation_title_undo_sync">Deze synchronisatie ongedaan maken?</string>
   <string name="confirmation_title_unfollow_user">Gebruiker ontvolgen?</string>
   <string name="confirmation_title_unlink_streaming">%s ontkoppelen?</string>
@@ -814,6 +817,8 @@
   <string name="header_sync_detail">Synchronisatie-ID %s</string>
   <string name="header_target">Doel</string>
   <string name="header_total_runtime">Totale speelduur</string>
+  <string name="header_vip_paypal_switch">Overschakelen naar creditcard</string>
+  <string name="header_vip_two_year_deal">Betaal voor 1 jaar, krijg 2 jaar VIP!</string>
   <string name="header_writer">Schrijver</string>
   <string name="heading_api_application_vip_only">Nieuwe apps maken vereist Trakt VIP</string>
   <string name="heading_api_applications">API-applicaties</string>
@@ -945,6 +950,15 @@
   <string name="label_genres_drawer_subtitle_loved">Selecteer maximaal 5 genres waarvan je meer wilt zien.</string>
   <string name="label_keep_play">Behouden</string>
   <string name="label_list_item_count">%s items</string>
+  <string name="label_parental_guide_category_alcohol">Alcohol, Drugs &amp; Roken</string>
+  <string name="label_parental_guide_category_frightening">Angstaanjagende &amp; Intense Scènes</string>
+  <string name="label_parental_guide_category_nudity">Seks &amp; Naaktheid</string>
+  <string name="label_parental_guide_category_profanity">Grof Taalgebruik</string>
+  <string name="label_parental_guide_category_violence">Geweld &amp; Bloed</string>
+  <string name="label_parental_guide_severity_mild">Mild</string>
+  <string name="label_parental_guide_severity_moderate">Matig</string>
+  <string name="label_parental_guide_severity_none">Geen</string>
+  <string name="label_parental_guide_severity_severe">Ernstig</string>
   <string name="label_plex_connected">Verbonden met Plex</string>
   <string name="label_plex_connection">Verbinding</string>
   <string name="label_plex_history_date">Datum</string>
@@ -1262,7 +1276,7 @@
   <string name="preview_feature_description_genre_picker">Kies je favoriete genres uit een visueel raster in plaats van een lijst met tags.</string>
   <string name="preview_feature_description_leaderboard">Rangschik de mensen die je volgt op kijktijd en zie waar jij eindigt.</string>
   <string name="preview_feature_description_list_counts">Toont hoeveel items een lijst bevat en hoeveel lijsten een sectie heeft.</string>
-  <string name="preview_feature_description_parental_guide">Toon risiconiveaus van de inhoud in het detailscherm voor films, series en afleveringen.</string>
+  <string name="preview_feature_description_parental_guide">Toon risiconiveaus van de inhoud in het detailscherm voor films en series, en filter op ernst in geavanceerde filters.</string>
   <string name="preview_feature_description_reviewer_stats">Toont hoeveel van een titel een recensent heeft bekeken naast hun beoordeling.</string>
   <string name="preview_feature_description_rewatch">Start nieuwe kijkbeurten voor series die je al hebt gezien, check in of markeer afleveringen als bekeken, direct vanuit het sessiepaneel.</string>
   <string name="preview_feature_description_scoped_favorites">Beperk favorietenlijsten door favorieten van het huidige jaar op profielen weer te geven en de volledige favorietenlijst per jaar te groeperen.</string>
@@ -1283,6 +1297,13 @@
   <string name="section_title_season_progress">Seizoen %d voortgang</string>
   <string name="section_title_seasons_overview">Overzicht</string>
   <string name="section_title_specials_progress">Specials voortgang</string>
+  <string name="spotlight_dialog_label">Snelle navigatie</string>
+  <string name="spotlight_hint_dismiss">Sluiten</string>
+  <string name="spotlight_hint_navigate">Navigeren</string>
+  <string name="spotlight_hint_select">Openen</string>
+  <string name="spotlight_input_placeholder">Waarheen?</string>
+  <string name="spotlight_no_results">Niets komt overeen met \"%s\"</string>
+  <string name="spotlight_section_pages">Pagina\'s</string>
   <string name="stat_label_hours">uren</string>
   <string name="stat_label_plays">bekeken</string>
   <string name="stat_text_favorited">Favorieten</string>
@@ -1751,6 +1772,7 @@
   <string name="text_vip_payment_method_google">Google Play</string>
   <string name="text_vip_payment_method_other">Overig</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
+  <string name="text_vip_paypal_switch">Verplaats je VIP-abonnement van PayPal naar een creditcard. Je verliest geen VIP-tijd en je PayPal-abonnement wordt automatisch opgezegd zodra je een nieuw abonnement kiest.</string>
   <string name="text_vip_powers_trakt">ondersteunt Trakt en ontgrendelt functies voor mensen die echt geven om wat ze kijken.</string>
   <string name="text_vip_subscription">abonnement</string>
   <string name="text_vip_subscription_missing_message">We konden geen actief abonnement vinden om te beheren. Het is mogelijk al opgezegd. <a>Neem contact op met de ondersteuning</a> als u denkt dat er iets mis is.</string>
@@ -1764,6 +1786,7 @@
   <string name="text_vip_transaction_disputed">Een <b>%s</b>-afschrijving betwist</string>
   <string name="text_vip_transaction_plan_changed">Uw <b>%s</b>-abonnement gewijzigd</string>
   <string name="text_vip_transaction_refunded"><b>%1$s</b> terugbetaald via <b>%2$s</b></string>
+  <string name="text_vip_two_year_deal">Je hebt het 2-jarenabonnement ontgrendeld voor %1$s, daarna %2$s elke 2 jaar. De korting wordt automatisch toegepast bij het afrekenen.</string>
   <string name="text_vip_upsell_default">Verbeter je Trakt-ervaring</string>
   <string name="text_vip_upsell_default_2">Upgrade naar VIP!</string>
   <string name="text_vip_upsell_default_description">Upgrade naar VIP en ontgrendel de volledige Trakt-ervaring, boordevol functies gemaakt voor liefhebbers van tv-series en films.</string>
@@ -2085,7 +2108,6 @@
   <string name="warning_prompt_set_cover_image">Gebruik \"%s\" als je profielachtergrondafbeelding?</string>
   <string name="warning_prompt_simple_filters">Als u overschakelt naar eenvoudige filters, worden al uw huidige filters gereset. Weet u zeker dat u wilt doorgaan?</string>
   <string name="warning_prompt_stop_checkin">Weet je zeker dat je wilt stoppen met het kijken naar \"%s\"?</string>
-  <string name="warning_prompt_suppress_ratings_toast">Wil je niet meer gevraagd worden om te beoordelen wat je onlangs hebt bekeken?</string>
   <string name="warning_prompt_track_show_episode_count">Weet je zeker dat je \"%1$s\" als bekeken wilt markeren? Hiermee worden %2$d afleveringen als bekeken gemarkeerd.</string>
   <string name="warning_prompt_unfollow_user">Weet je zeker dat je %s wilt ontvolgen?</string>
   <string name="warning_prompt_younify_unlink">Weet je zeker dat je %s wilt ontkoppelen?</string>
