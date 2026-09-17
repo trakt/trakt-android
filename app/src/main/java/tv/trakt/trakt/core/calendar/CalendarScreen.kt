@@ -2,6 +2,7 @@
 
 package tv.trakt.trakt.core.calendar
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloatAsState
@@ -467,44 +468,45 @@ private fun CalendarScreen(
                 )
             }
 
-            Row(
-                verticalAlignment = CenterVertically,
-                horizontalArrangement = SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 12.dp),
-            ) {
-                FilterChipGroup(
-                    paddingVertical = PaddingValues.Zero,
-                ) {
-                    for (type in ReleaseType.entries) {
-                        FilterChip(
-                            selected = state.type == type,
-                            text = stringResource(type.textRes),
-                            leadingContent = {
-                                Icon(
-                                    painter = painterResource(type.iconRes),
-                                    contentDescription = null,
-                                    tint = TraktTheme.colors.textPrimaryOnAccent,
-                                    modifier = Modifier.size(type.iconSize),
-                                )
-                            },
-                            onClick = { onTypeClick(type) },
-                        )
-                    }
-                }
-                MediaFilterIcon(
-                    active = state.filter?.isActive == true,
-                    enabled = state.loading.isDone,
-                    onClick = onFiltersClick,
+            AnimatedVisibility(visible = atTop || scrollingUp) {
+                Row(
+                    verticalAlignment = CenterVertically,
+                    horizontalArrangement = SpaceBetween,
                     modifier = Modifier
-                        .padding(bottom = 1.dp),
-                )
+                        .fillMaxWidth()
+                        .padding(bottom = 12.dp),
+                ) {
+                    FilterChipGroup(
+                        paddingVertical = PaddingValues.Zero,
+                    ) {
+                        for (type in ReleaseType.entries) {
+                            FilterChip(
+                                selected = state.type == type,
+                                text = stringResource(type.textRes),
+                                leadingContent = {
+                                    Icon(
+                                        painter = painterResource(type.iconRes),
+                                        contentDescription = null,
+                                        tint = TraktTheme.colors.textPrimaryOnAccent,
+                                        modifier = Modifier.size(type.iconSize),
+                                    )
+                                },
+                                onClick = { onTypeClick(type) },
+                            )
+                        }
+                    }
+                    MediaFilterIcon(
+                        active = state.filter?.isActive == true,
+                        enabled = state.loading.isDone,
+                        onClick = onFiltersClick,
+                        modifier = Modifier
+                            .padding(bottom = 1.dp),
+                    )
+                }
             }
 
             CalendarControlsView(
                 enabled = !state.loading.isLoading,
-                expanded = atTop || scrollingUp,
                 startDate = stripStartDate,
                 focusedDate = focusedDate,
                 lastTapFocusedDate = lastTapFocusedDay,
