@@ -54,6 +54,7 @@ import tv.trakt.trakt.core.share.model.ShareImageVariant
 import tv.trakt.trakt.core.share.model.ShareImageVariant.Default
 import tv.trakt.trakt.core.share.model.ShareImageVariant.Feed
 import tv.trakt.trakt.core.share.model.ShareImageVariant.Story
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
@@ -268,7 +269,10 @@ private fun ShareButtons(
             ) {
                 Text(
                     text = stringResource(variant.displayRes),
-                    color = TraktTheme.colors.textPrimaryOnAccent,
+                    color = when {
+                        selectedVariant == variant -> TraktTheme.colors.textPrimaryOnAccent
+                        else -> TraktTheme.colors.textPrimary
+                    },
                     style = TraktTheme.typography.buttonTertiary,
                     maxLines = 1,
                     overflow = Ellipsis,
@@ -349,7 +353,7 @@ private suspend fun shareToInstagramStories(
 )
 @Composable
 private fun PreviewShareContent() {
-    TraktTheme {
+    TraktThemeLightDark {
         ShareContent(
             state = ShareState(
                 media = ShareState.Media(
