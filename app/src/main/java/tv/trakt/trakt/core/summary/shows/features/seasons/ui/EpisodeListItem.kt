@@ -125,6 +125,12 @@ internal fun EpisodeListItem(
             if (episode.isWatched || isReleased) onMoreClick?.invoke(episode)
         },
         onImageClick = { onClick?.invoke(episode) },
+        // The watched chip is the only affordance on a watched row, so it opens
+        // the same context menu as the long press.
+        onCollectionChipClick = when {
+            episode.isWatched -> ({ onMoreClick?.invoke(episode) })
+            else -> null
+        },
         modifier = modifier,
     )
 }
