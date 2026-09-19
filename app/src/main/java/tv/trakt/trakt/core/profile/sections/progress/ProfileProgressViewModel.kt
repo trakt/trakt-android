@@ -28,6 +28,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.core.lists.ListsConfig.PROGRESS_SECTION_LIMIT
+import tv.trakt.trakt.core.profile.sections.progress.filters.GetProgressFilterOrderUseCase
 import tv.trakt.trakt.core.profile.sections.progress.filters.GetProgressFilterUseCase
 import tv.trakt.trakt.core.profile.sections.progress.model.ProfileProgressItem
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter
@@ -49,6 +50,7 @@ import kotlin.time.Duration.Companion.milliseconds
 
 internal class ProfileProgressViewModel(
     private val getFilterUseCase: GetProgressFilterUseCase,
+    private val getFilterOrderUseCase: GetProgressFilterOrderUseCase,
     private val getDroppedUseCase: GetProgressDroppedUseCase,
     private val getCompletedUseCase: GetProgressCompleteUseCase,
     private val getWatchingUseCase: GetProgressWatchingUseCase,
@@ -62,6 +64,7 @@ internal class ProfileProgressViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val itemsState = MutableStateFlow(initialState.items)
     private val filterState = MutableStateFlow(initialState.filter)
+    private val filterOrderState = MutableStateFlow(initialState.filterOrder)
     private val navigateShow = MutableStateFlow(initialState.navigateShow)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val collapseState = MutableStateFlow(isCollapsed())
@@ -72,6 +75,7 @@ internal class ProfileProgressViewModel(
 
     init {
         loadData()
+        loadFilterOrder()
         observeData()
     }
 
@@ -143,6 +147,22 @@ internal class ProfileProgressViewModel(
         return filter
     }
 
+    private fun loadFilterOrder() {
+        viewModelScope.launch {
+            filterOrderState.update { getFilterOrderUseCase.getOrder() }
+        }
+    }
+
+    fun setFilterOrder(newOrder: ImmutableList<ProgressFilter>) {
+        if (newOrder == filterOrderState.value) {
+            return
+        }
+        filterOrderState.update { newOrder }
+        viewModelScope.launch {
+            getFilterOrderUseCase.setOrder(newOrder)
+        }
+    }
+
     fun setFilter(newFilter: ProgressFilter) {
         if (newFilter == filterState.value || loadingState.value.isLoading) {
             return
@@ -189,6 +209,7 @@ internal class ProfileProgressViewModel(
         collapseState,
         errorState,
         userState,
+        filterOrderState,
     ) { states ->
         ProfileProgressState(
             loading = states[0] as LoadingState,
@@ -198,6 +219,7 @@ internal class ProfileProgressViewModel(
             collapsed = states[4] as Boolean,
             error = states[5] as Exception?,
             user = states[6] as User?,
+            filterOrder = states[7] as ImmutableList<ProgressFilter>,
         )
     }.stateIn(
         scope = viewModelScope,
