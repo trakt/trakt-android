@@ -42,6 +42,18 @@ sealed class ProgressItem(
                 .flatMap { it.episodes }
                 .sumOf { it.playsDistinct }
 
+        /**
+         * How many times the whole show was watched: the lowest play count among its
+         * non-special episodes. The minimum is the only figure true for every episode,
+         * so a partial rewatch never reads as a complete one.
+         */
+        val completedPlays: Int
+            get() = seasons
+                .filter { !it.isSpecial }
+                .flatMap { it.episodes }
+                .minOfOrNull { it.plays.size }
+                ?: 0
+
         data class Season(
             val id: TraktId,
             val number: Int,
@@ -49,6 +61,12 @@ sealed class ProgressItem(
         ) {
             val isSpecial: Boolean
                 get() = number == 0
+
+            /** Same as [ShowItem.completedPlays], scoped to this season's episodes. */
+            val completedPlays: Int
+                get() = episodes
+                    .minOfOrNull { it.plays.size }
+                    ?: 0
         }
 
         data class Episode(

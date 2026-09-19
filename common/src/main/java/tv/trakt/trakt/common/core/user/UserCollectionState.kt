@@ -13,7 +13,8 @@ import tv.trakt.trakt.common.model.TraktId
 @Immutable
 data class UserCollectionState(
     private val watchedShowsPlays: ImmutableMap<TraktId, Int> = persistentMapOf(),
-    private val watchedMovies: ImmutableSet<TraktId> = EmptyImmutableSet,
+    private val completedShowsPlays: ImmutableMap<TraktId, Int> = persistentMapOf(),
+    private val watchedMoviesPlays: ImmutableMap<TraktId, Int> = persistentMapOf(),
     private val watchlistShows: ImmutableSet<TraktId> = EmptyImmutableSet,
     private val watchlistMovies: ImmutableSet<TraktId> = EmptyImmutableSet,
 ) {
@@ -44,7 +45,7 @@ data class UserCollectionState(
                 watchedShowsPlays.getOrDefault(traktId, 0) >= airedEpisodes
             }
             Movie -> {
-                watchedMovies.contains(traktId)
+                watchedMoviesPlays.containsKey(traktId)
             }
             else -> {
                 false
@@ -67,6 +68,25 @@ data class UserCollectionState(
             else -> {
                 false
             }
+        }
+    }
+
+    /**
+     * How many times the user watched [traktId] end to end: a movie's play count, or
+     * the lowest play count across a show's non-special episodes. Zero unless the
+     * title reads as fully watched, so a partial rewatch never claims a complete one.
+     */
+    fun plays(
+        traktId: TraktId,
+        type: MediaType?,
+        airedEpisodes: Int?,
+    ): Int {
+        if (!isWatched(traktId, type, airedEpisodes)) return 0
+
+        return when (type) {
+            Show -> completedShowsPlays.getOrDefault(traktId, 0)
+            Movie -> watchedMoviesPlays.getOrDefault(traktId, 0)
+            else -> 0
         }
     }
 }
