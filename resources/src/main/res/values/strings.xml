@@ -1589,6 +1589,11 @@
   <string name="text_rate_prompt_1">How did you like it?</string>
   <string name="text_rate_prompt_2">Your verdict?</string>
   <string name="text_rate_prompt_3">Worth the watch?</string>
+  <string name="text_rate_prompt_4">Thoughts?</string>
+  <string name="text_rate_prompt_5">Out of five stars?</string>
+  <string name="text_rate_prompt_6">How many stars does it earn?</string>
+  <string name="text_rate_prompt_7">Rate your experience.</string>
+  <string name="text_rate_prompt_8">Give it a grade.</string>
   <string name="text_rating_1">Weak</string>
   <string name="text_rating_10">Absolute Cinema!</string>
   <string name="text_rating_2">Terrible</string>

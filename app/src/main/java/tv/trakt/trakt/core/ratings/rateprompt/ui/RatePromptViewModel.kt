@@ -27,12 +27,12 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
-import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.core.favorites.FavoritesUpdates
 import tv.trakt.trakt.core.favorites.FavoritesUpdates.Source.RATE_PROMPT
 import tv.trakt.trakt.core.ratings.data.work.PostRatingWorker
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia
+import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia.MovieMedia
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState
 import tv.trakt.trakt.core.sync.usecases.UpdateMovieFavoritesUseCase
 import java.time.Instant
@@ -91,8 +91,8 @@ internal class RatePromptViewModel(
 
             PostRatingWorker.scheduleOneTime(
                 appContext = appContext,
-                mediaId = media.movie.ids.trakt,
-                mediaType = Movie,
+                mediaId = media.id,
+                mediaType = media.mediaType,
                 rating = newRating,
             )
         }
@@ -115,14 +115,16 @@ internal class RatePromptViewModel(
 
             PostRatingWorker.scheduleOneTime(
                 appContext = appContext,
-                mediaId = media.movie.ids.trakt,
-                mediaType = Movie,
+                mediaId = media.id,
+                mediaType = media.mediaType,
                 rating = 0, // A rating of 0 indicates removal of rating
             )
         }
     }
 
     fun addToFavorites() {
+        val movie = (media as? MovieMedia)?.movie ?: return
+
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
                 return@launch
@@ -133,12 +135,12 @@ internal class RatePromptViewModel(
                 dismissingState.update { nowUtcInstant() }
 
                 delay(300) // Small delay to allow UI to settle.
-                updateMovieFavoritesUseCase.addToFavorites(media.movie.ids.trakt)
+                updateMovieFavoritesUseCase.addToFavorites(movie.ids.trakt)
                 userFavoritesLocalSource.addMovies(
                     movies = listOf(
                         FavoriteItem.MovieItem(
                             rank = 0,
-                            movie = media.movie,
+                            movie = movie,
                             listedAt = nowUtcInstant(),
                         ),
                     ),
@@ -162,6 +164,8 @@ internal class RatePromptViewModel(
     }
 
     fun removeFromFavorites() {
+        val movie = (media as? MovieMedia)?.movie ?: return
+
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) {
                 return@launch
@@ -172,8 +176,8 @@ internal class RatePromptViewModel(
                 dismissingState.update { nowUtcInstant() }
 
                 delay(300) // Small delay to allow UI to settle.
-                updateMovieFavoritesUseCase.removeFromFavorites(media.movie.ids.trakt)
-                userFavoritesLocalSource.removeMovies(setOf(media.movie.ids.trakt))
+                updateMovieFavoritesUseCase.removeFromFavorites(movie.ids.trakt)
+                userFavoritesLocalSource.removeMovies(setOf(movie.ids.trakt))
                 favoritesUpdates.notifyUpdate(RATE_PROMPT)
 
                 favoriteState.update { false }
@@ -196,7 +200,7 @@ internal class RatePromptViewModel(
         viewModelScope.launch {
             try {
                 ratePromptManager.onUserDismiss(
-                    movieId = media.movie.ids.trakt,
+                    media = media,
                     hasRated = ratingsState.value != null || favoriteState.value,
                     hasMoreMedia = moreMedia,
                 )

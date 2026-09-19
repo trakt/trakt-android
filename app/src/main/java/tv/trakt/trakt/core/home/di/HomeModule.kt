@@ -116,6 +116,7 @@ internal val homeModule = module {
             filterManager = get(),
             sessionManager = get(),
             collapsingManager = get(),
+            ratePromptManager = get(),
             checkInManager = get(),
             analytics = get(),
         )

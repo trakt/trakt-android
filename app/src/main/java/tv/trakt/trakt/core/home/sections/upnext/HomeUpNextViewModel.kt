@@ -56,6 +56,7 @@ import tv.trakt.trakt.core.home.sections.upnext.HomeUpNextState.ItemsState
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates
 import tv.trakt.trakt.core.home.sections.upnext.features.all.data.local.UpNextUpdates.Source.Widget
 import tv.trakt.trakt.core.home.sections.upnext.usecases.GetUpNextUseCase
+import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Calendar
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.History
@@ -86,6 +87,7 @@ internal class HomeUpNextViewModel(
     private val filterManager: GlobalFilterManager,
     private val sessionManager: SessionManager,
     private val collapsingManager: CollapsingManager,
+    private val ratePromptManager: RatePromptManager,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = HomeUpNextState()
@@ -316,6 +318,7 @@ internal class HomeUpNextViewModel(
                 itemsOrder = itemsState.value.items?.map { "${it.mediaId}-${it.type}" }
 
                 appReviewUseCase.incrementCount()
+                ratePromptManager.checkRecentlyWatched()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }

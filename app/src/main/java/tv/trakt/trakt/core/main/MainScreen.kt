@@ -114,6 +114,8 @@ import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_TRIVIA_EX
 import tv.trakt.trakt.core.notifications.model.NotificationIntentExtras
 import tv.trakt.trakt.core.profile.navigation.ProfileDestination
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
+import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia.MovieMedia
+import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia.ShowMedia
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState.AskSuppress
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.SearchDestination
@@ -415,9 +417,14 @@ private fun MainScreenContent(
                             MainRatePromptView(
                                 state = state,
                                 onMediaClick = {
-                                    navController.navigateToMovie(
-                                        movieId = it.movie.ids.trakt,
-                                    )
+                                    when (it) {
+                                        is MovieMedia -> navController.navigateToMovie(
+                                            movieId = it.movie.ids.trakt,
+                                        )
+                                        is ShowMedia -> navController.navigateToShow(
+                                            showId = it.show.ids.trakt,
+                                        )
+                                    }
                                 },
                             )
 
