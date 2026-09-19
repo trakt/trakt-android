@@ -25,6 +25,7 @@
   <string name="action_toast_removed_from_history_generic">Eliminat(ă) din istoricul tău</string>
   <string name="action_toast_removed_from_watchlist"><b>%s</b> a fost eliminat(ă) din lista ta de vizionare</string>
   <string name="action_toast_removed_from_watchlist_generic">Eliminat(ă) din lista ta de vizionare</string>
+  <string name="advanced_filter_label_parental_guide">%1$s: de la %2$s la %3$s</string>
   <string name="advanced_filter_label_ratings">Evaluare de la %1$s la %2$s</string>
   <string name="advanced_filter_label_release_year">Lansat între %1$d și %2$d</string>
   <string name="advanced_filter_label_runtime">Durată de la %1$d la %2$d minute.</string>
@@ -46,6 +47,7 @@
   <string name="button_label_activity_ratings">Vezi evaluări</string>
   <string name="button_label_activity_reviews">Vezi recenzii</string>
   <string name="button_label_add_comment">Adaugă recenzie</string>
+  <string name="button_label_add_gif">Adăugați un GIF</string>
   <string name="button_label_add_new_comment">Adaugă o nouă recenzie</string>
   <string name="button_label_add_note">Adaugă o notă la %s</string>
   <string name="button_label_add_to_favorites">Adaugă \"%s\" la Favoritele tale</string>
@@ -191,6 +193,7 @@
   <string name="button_label_profile_options">Opțiuni profil</string>
   <string name="button_label_progress_completed">Vezi serialele finalizate</string>
   <string name="button_label_progress_dropped">Vezi serialele abandonate</string>
+  <string name="button_label_progress_ended">Vezi serialele încheiate</string>
   <string name="button_label_progress_in_progress">Vezi serialele în desfășurare</string>
   <string name="button_label_rate">Notează \"%s\"</string>
   <string name="button_label_raw_export">Exportă un fișier ZIP care conține datele tale brute.</string>
@@ -204,6 +207,7 @@
   <string name="button_label_remove_from_personal_list">Elimină \"%1$s\" din %2$s</string>
   <string name="button_label_remove_from_watched">Elimină \"%s\" din istoricul tău de vizionate</string>
   <string name="button_label_remove_from_watchlist">Elimină \"%s\" din lista ta de vizionare</string>
+  <string name="button_label_remove_gif">Eliminați GIF-ul</string>
   <string name="button_label_remove_photo">Elimină fotografia ta de profil</string>
   <string name="button_label_renew_vip">Reînnoiește abonamentul</string>
   <string name="button_label_reorder_item">Rearanjează %s</string>
@@ -306,6 +310,7 @@
   <string name="button_label_view_sentiment_analysis">Vezi analiza sentimentului</string>
   <string name="button_label_view_soundtrack">Vezi coloana sonoră</string>
   <string name="button_label_view_trivia">Vezi curiozități</string>
+  <string name="button_label_vip_paypal_switch">Vezi planurile VIP și treci la cardul de credit</string>
   <string name="button_label_vip_upgrade">Upgrade la VIP</string>
   <string name="button_label_watch_on_service">Vizionează pe %s</string>
   <string name="button_label_watch_until_here_anchor_end">Tratați data selectată ca sfârșitul vizionării intense</string>
@@ -433,6 +438,7 @@
   <string name="button_text_popular_comments">Populare</string>
   <string name="button_text_progress_completed">Finalizate</string>
   <string name="button_text_progress_dropped">Abandonat</string>
+  <string name="button_text_progress_ended">Încheiat</string>
   <string name="button_text_progress_in_progress">În desfășurare</string>
   <string name="button_text_raw_export">Exportă acum</string>
   <string name="button_text_recent_comments">Recente</string>
@@ -481,7 +487,6 @@
   <string name="button_text_sort_updated_date">Data actualizării</string>
   <string name="button_text_start_import">Începe importul</string>
   <string name="button_text_start_rewatching">Începe revizionarea</string>
-  <string name="button_text_stop_asking">Nu mai întreba</string>
   <string name="button_text_stop_check_in">Oprește check-in</string>
   <string name="button_text_stop_clear">Oprește ștergerea</string>
   <string name="button_text_stop_export">Oprește exportul</string>
@@ -516,6 +521,7 @@
   <string name="button_text_view_import_guidelines">Vizualizați ghidurile</string>
   <string name="button_text_view_photo">Vezi fotografia</string>
   <string name="button_text_view_recommendation_sources">De ce asta?</string>
+  <string name="button_text_vip_paypal_switch">Vezi planurile</string>
   <string name="button_text_vip_upgrade">Actualizează</string>
   <string name="button_text_watch_again">Vizionează din nou</string>
   <string name="button_text_watch_until_here_anchor_end">Ora de încheiere</string>
@@ -576,7 +582,6 @@
   <string name="confirmation_title_stop_checkin">Oprește check-in-ul?</string>
   <string name="confirmation_title_stop_clear">Oprește ștergerea?</string>
   <string name="confirmation_title_stop_export">Oprești exportul?</string>
-  <string name="confirmation_title_suppress_ratings_toast">Nu mai întreba?</string>
   <string name="confirmation_title_undo_sync">Anulezi această sincronizare?</string>
   <string name="confirmation_title_unfollow_user">Nu mai urmări utilizatorul?</string>
   <string name="confirmation_title_unlink_streaming">Deconectezi %s?</string>
@@ -631,6 +636,7 @@
   <string name="drawer_meta_info_cast">Distribuție</string>
   <string name="drawer_meta_info_cast_and_crew">Distribuție &amp; Echipă</string>
   <string name="drawer_meta_info_crew">Echipă</string>
+  <string name="drawer_title_add_gif">Adăugați un GIF</string>
   <string name="drawer_title_add_note">Notă</string>
   <string name="drawer_title_episode_information">Informații episod</string>
   <string name="drawer_title_notes">Note</string>
@@ -814,6 +820,8 @@
   <string name="header_sync_detail">ID sincronizare %s</string>
   <string name="header_target">Țintă</string>
   <string name="header_total_runtime">Durată totală</string>
+  <string name="header_vip_paypal_switch">Treci la card de credit</string>
+  <string name="header_vip_two_year_deal">Plătește pentru 1 an, primești 2 ani de VIP!</string>
   <string name="header_writer">Scenarist</string>
   <string name="heading_api_application_vip_only">Crearea de aplicații noi necesită Trakt VIP</string>
   <string name="heading_api_applications">Aplicații API</string>
@@ -834,9 +842,11 @@
   <string name="hint_app_origins">O origine pe linie. Fără wildcard-uri sau căi.</string>
   <string name="hint_app_redirect_uris">Un URI pe linie. Fără șiruri de interogare, doar calea URI completă. Folosește urn:ietf:wg:oauth:2.0:oob pentru autentificarea dispozitivului.</string>
   <string name="iframe_title_spotify_player">Player Spotify pentru %s</string>
+  <string name="image_alt_comment_gif">GIF atașat comentariului</string>
   <string name="image_alt_list_preview_poster">Afiș pentru o intrare în %s</string>
   <string name="image_alt_media_poster">Afișul \"%s\"</string>
   <string name="image_alt_person_headshot">Fotografie tip portret cu %s</string>
+  <string name="image_alt_selected_gif">GIF selectat</string>
   <string name="image_alt_streaming_service_logo">Sigla %s</string>
   <string name="image_alt_user_avatar">Avatarul lui %s</string>
   <string name="import_ambiguous_skip">Nu importa</string>
@@ -899,6 +909,7 @@
   <string name="import_tab_unresolved">Omise</string>
   <string name="import_vip_limit_exceeded">Importul tău depășește limita nivelului gratuit. Actualizează la VIP pentru a importa toate cele %d elemente.</string>
   <string name="input_label_search_credit_members">Căutați persoane</string>
+  <string name="input_label_search_gifs">Căutați KLIPY</string>
   <string name="input_label_search_streaming_services">Căutați servicii de streaming</string>
   <string name="input_placeholder_app_name">Aplicația mea</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
@@ -914,6 +925,7 @@
   <string name="input_placeholder_report_reason">Selectați un motiv</string>
   <string name="input_placeholder_search">Căutați seriale și filme…</string>
   <string name="input_placeholder_search_credit_members">Căutați nume, personaj sau ocupație…</string>
+  <string name="input_placeholder_search_gifs">Căutați KLIPY</string>
   <string name="input_placeholder_search_lists">Căutați liste…</string>
   <string name="input_placeholder_search_movies">Căutați filme…</string>
   <string name="input_placeholder_search_people">Căutați persoane…</string>
@@ -945,6 +957,15 @@
   <string name="label_genres_drawer_subtitle_loved">Selectează până la 5 genuri pe care ai vrea să le vezi mai des.</string>
   <string name="label_keep_play">Păstrează</string>
   <string name="label_list_item_count">%s elemente</string>
+  <string name="label_parental_guide_category_alcohol">Alcool, droguri și fumat</string>
+  <string name="label_parental_guide_category_frightening">Scene înfricoșătoare și intense</string>
+  <string name="label_parental_guide_category_nudity">Sex și nuditate</string>
+  <string name="label_parental_guide_category_profanity">Limbaj licențios</string>
+  <string name="label_parental_guide_category_violence">Violență și sânge</string>
+  <string name="label_parental_guide_severity_mild">Ușor</string>
+  <string name="label_parental_guide_severity_moderate">Moderat</string>
+  <string name="label_parental_guide_severity_none">Niciunul</string>
+  <string name="label_parental_guide_severity_severe">Sever</string>
   <string name="label_plex_connected">Conectat la Plex</string>
   <string name="label_plex_connection">Conexiune</string>
   <string name="label_plex_history_date">Dată</string>
@@ -1258,17 +1279,19 @@
   <string name="page_title_year_in_review">Retrospectiva anului %s</string>
   <string name="page_title_year_to_date">Anul curent</string>
   <string name="preview_feature_description_action_confirmations">Afișează o notificare de confirmare cu o opțiune rapidă de anulare când adaugi, elimini, evaluezi sau marchezi ceva ca vizionat.</string>
+  <string name="preview_feature_description_comment_gifs">Atașați un GIF oricărui comentariu sau recenzii pe care le scrieți.</string>
   <string name="preview_feature_description_edit_mode">Activează controale pentru ascunderea sau afișarea secțiunilor configurabile în întreaga aplicație.</string>
   <string name="preview_feature_description_genre_picker">Alege genurile tale preferate dintr-o grilă vizuală în loc de o listă de etichete.</string>
   <string name="preview_feature_description_leaderboard">Clasați persoanele pe care le urmăriți după timpul de vizionare și vedeți unde vă situați printre ele.</string>
   <string name="preview_feature_description_list_counts">Arată câte elemente conține o listă și câte liste are o secțiune.</string>
-  <string name="preview_feature_description_parental_guide">Afișați nivelurile de risc ale conținutului în sertarul de detalii pentru filme, seriale și episoade.</string>
+  <string name="preview_feature_description_parental_guide">Afișați nivelurile de risc ale conținutului în sertarul de detalii pentru filme și seriale, și filtrați după gravitate în filtrele avansate.</string>
   <string name="preview_feature_description_reviewer_stats">Arată cât de mult dintr-un titlu a vizionat un recenzor lângă evaluarea sa.</string>
   <string name="preview_feature_description_rewatch">Începeți sesiuni de revizionare pentru emisiunile pe care le-ați văzut deja, înregistrați-vă sau marcați episoadele vizionate direct din panoul de sesiune.</string>
   <string name="preview_feature_description_scoped_favorites">Organizează listele de favorite pe perioade, afișând favoritele din anul curent pe profile și grupând lista completă de favorite pe ani.</string>
   <string name="preview_feature_description_soundtrack">Adaugă o secțiune de coloană sonoră la paginile de filme și seriale, cu redare acolo unde o melodie poate fi potrivită.</string>
   <string name="preview_feature_description_up_next_smart_sort">Testează o modalitate mai inteligentă de a sorta elementele din Continuă vizionarea.</string>
   <string name="preview_feature_title_action_confirmations">Confirmări de acțiune</string>
+  <string name="preview_feature_title_comment_gifs">GIF-uri în comentarii</string>
   <string name="preview_feature_title_edit_mode">Mod editare</string>
   <string name="preview_feature_title_genre_picker">Selector de genuri</string>
   <string name="preview_feature_title_leaderboard">Panteon</string>
@@ -1283,6 +1306,13 @@
   <string name="section_title_season_progress">Sezonul %d progres</string>
   <string name="section_title_seasons_overview">Prezentare generală</string>
   <string name="section_title_specials_progress">Progresul episoadelor speciale</string>
+  <string name="spotlight_dialog_label">Navigare rapidă</string>
+  <string name="spotlight_hint_dismiss">Închide</string>
+  <string name="spotlight_hint_navigate">Navighează</string>
+  <string name="spotlight_hint_select">Deschide</string>
+  <string name="spotlight_input_placeholder">Încotro?</string>
+  <string name="spotlight_no_results">Nimic nu se potrivește cu \"%s\"</string>
+  <string name="spotlight_section_pages">Pagini</string>
   <string name="stat_label_hours">ore</string>
   <string name="stat_label_plays">vizionări</string>
   <string name="stat_text_favorited">Favorite</string>
@@ -1751,6 +1781,7 @@
   <string name="text_vip_payment_method_google">Google Play</string>
   <string name="text_vip_payment_method_other">Altele</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
+  <string name="text_vip_paypal_switch">Mută-ți abonamentul VIP de la PayPal la un card de credit. Nu vei pierde timp VIP, iar abonamentul tău PayPal este anulat automat odată ce alegi un nou plan.</string>
   <string name="text_vip_powers_trakt">ajută la funcționarea Trakt și deblochează funcții create pentru persoanele cărora le pasă cu adevărat de ceea ce vizionează.</string>
   <string name="text_vip_subscription">abonament</string>
   <string name="text_vip_subscription_missing_message">Nu am putut găsi un abonament activ de gestionat. Este posibil să fi fost deja anulat. <a>Contactează asistența</a> dacă crezi că ceva nu este în regulă.</string>
@@ -1764,6 +1795,7 @@
   <string name="text_vip_transaction_disputed">S-a contestat o plată prin <b>%s</b></string>
   <string name="text_vip_transaction_plan_changed">Ți-ai schimbat planul prin <b>%s</b></string>
   <string name="text_vip_transaction_refunded">S-a rambursat <b>%1$s</b> prin <b>%2$s</b></string>
+  <string name="text_vip_two_year_deal">Ai deblocat planul de 2 ani pentru %1$s, apoi %2$s la fiecare 2 ani. Reducerea se aplică automat la finalizarea comenzii.</string>
   <string name="text_vip_upsell_default">Îmbunătățește-ți experiența Trakt</string>
   <string name="text_vip_upsell_default_2">Treci la VIP!</string>
   <string name="text_vip_upsell_default_description">Treci la VIP și deblochează experiența completă Trakt, plină de funcții create pentru iubitorii de seriale TV și filme.</string>
@@ -2085,7 +2117,6 @@
   <string name="warning_prompt_set_cover_image">Folosești \"%s\" ca imagine de fundal pentru profil?</string>
   <string name="warning_prompt_simple_filters">Trecerea la filtre simple va reseta toate filtrele tale curente. Ești sigur că vrei să continui?</string>
   <string name="warning_prompt_stop_checkin">Ești sigur că vrei să oprești vizionarea \"%s\"?</string>
-  <string name="warning_prompt_suppress_ratings_toast">Dorești să nu mai fii întrebat să evaluezi ce ai vizionat recent?</string>
   <string name="warning_prompt_track_show_episode_count">Ești sigur că vrei să marchezi \"%1$s\" ca vizionat? Aceasta va marca %2$d episoade ca vizionate.</string>
   <string name="warning_prompt_unfollow_user">Ești sigur că vrei să nu-l mai urmărești pe %s?</string>
   <string name="warning_prompt_younify_unlink">Ești sigur că vrei să deconectezi %s?</string>
