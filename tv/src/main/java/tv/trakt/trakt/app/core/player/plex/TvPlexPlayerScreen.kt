@@ -66,13 +66,20 @@ import androidx.media3.ui.SubtitleView
 import androidx.media3.ui.compose.ContentFrame
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import timber.log.Timber
 import tv.trakt.trakt.app.core.player.plex.audio.TvPlexPlayerAudioDialog
 import tv.trakt.trakt.app.core.player.plex.controls.TvPlexPlayerControls
 import tv.trakt.trakt.app.core.player.plex.subtitles.TvPlexPlayerSubtitlesDialog
 import tv.trakt.trakt.app.core.player.plex.subtitles.model.SubtitleSize
+import tv.trakt.trakt.app.core.plex.data.PlexTimelineClient
+import tv.trakt.trakt.app.core.plex.data.PlexTimelineClient.Snapshot
+import tv.trakt.trakt.app.core.plex.data.PlexTimelineClient.State
 import tv.trakt.trakt.app.core.scrobble.data.work.PostScrobbleStartWorker
 import tv.trakt.trakt.app.core.scrobble.data.work.PostScrobbleStopWorker
 import tv.trakt.trakt.app.ui.theme.TraktTheme
@@ -94,10 +101,13 @@ internal fun TvPlexPlayerScreen(
     videoProgress: Float,
     mediaId: TraktId,
     mediaType: MediaType,
+    ratingKey: String? = null,
+    token: String? = null,
 ) {
     val activity = LocalActivity.current
     val appContext = LocalContext.current.applicationContext
     val analytics = koinInject<Analytics>()
+    val timelineClient = koinInject<PlexTimelineClient>()
 
     val player = retain {
         ExoPlayer
@@ -159,7 +169,54 @@ internal fun TvPlexPlayerScreen(
         var initialSeekDone = false
         var scrobbleStartScheduled = false
 
+        // Plex-side progress report, parallel to Trakt scrobbling. Snapshots go through a conflated
+        // channel so requests are sent one at a time and the newest state always wins.
+        val timelineScope = CoroutineScope(Dispatchers.Main.immediate)
+        val timelines = Channel<Snapshot>(Channel.CONFLATED)
+
+        fun reportTimeline(state: State) {
+            // Before the resume seek lands the position is 0, which would reset the server's view offset.
+            if (videoProgress > 0f && !initialSeekDone) return
+            timelines.trySend(
+                Snapshot(
+                    baseUrl = allUrls[currentUrlIndex.intValue].substringBefore("/library/"),
+                    position = player.currentPosition,
+                    duration = player.duration,
+                    state = state,
+                ),
+            )
+        }
+
+        timelineScope.launch {
+            for (snapshot in timelines) {
+                timelineClient.report(
+                    ratingKey = ratingKey,
+                    token = token,
+                    snapshot = snapshot,
+                )
+            }
+        }
+        val timelineTick = timelineScope.launch {
+            while (true) {
+                delay(10.seconds)
+                if (player.isPlaying) {
+                    reportTimeline(State.Playing)
+                }
+            }
+        }
+
         val listener = object : Player.Listener {
+            override fun onPlayWhenReadyChanged(
+                playWhenReady: Boolean,
+                reason: Int,
+            ) {
+                reportTimeline(if (playWhenReady) State.Playing else State.Paused)
+            }
+
+            override fun onRenderedFirstFrame() {
+                reportTimeline(if (player.playWhenReady) State.Playing else State.Paused)
+            }
+
             override fun onIsPlayingChanged(isPlayingNow: Boolean) {
                 isPlaying.value = isPlayingNow
 
@@ -255,6 +312,10 @@ internal fun TvPlexPlayerScreen(
         player.play()
 
         onRetire {
+            timelineTick.cancel()
+            reportTimeline(State.Stopped)
+            // Closing lets the consumer drain the final snapshot after the player is released.
+            timelines.close()
             player.removeListener(listener)
             player.release()
 
