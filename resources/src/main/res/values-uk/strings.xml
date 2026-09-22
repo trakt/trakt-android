@@ -25,6 +25,7 @@
   <string name="action_toast_removed_from_history_generic">Видалено з вашої історії переглядів</string>
   <string name="action_toast_removed_from_watchlist"><b>%s</b> видалено з вашого Списку перегляду</string>
   <string name="action_toast_removed_from_watchlist_generic">Видалено з вашого Списку перегляду</string>
+  <string name="advanced_filter_label_parental_guide">%1$s: від %2$s до %3$s</string>
   <string name="advanced_filter_label_ratings">Рейтинг від %1$s до %2$s</string>
   <string name="advanced_filter_label_release_year">Випущено з %1$d по %2$d</string>
   <string name="advanced_filter_label_runtime">Тривалість від %1$d до %2$d хвилин.</string>
@@ -46,6 +47,7 @@
   <string name="button_label_activity_ratings">Переглянути оцінки</string>
   <string name="button_label_activity_reviews">Переглянути відгуки</string>
   <string name="button_label_add_comment">Додати відгук</string>
+  <string name="button_label_add_gif">Додати GIF</string>
   <string name="button_label_add_new_comment">Додати новий відгук</string>
   <string name="button_label_add_note">Додати нотатку до %s</string>
   <string name="button_label_add_to_favorites">Додати \"%s\" до ваших улюблених</string>
@@ -71,6 +73,7 @@
   <string name="button_label_change_email">Змінити електронну пошту</string>
   <string name="button_label_change_location">Змінити місцезнаходження</string>
   <string name="button_label_change_plex_home_users">Змінити користувачів Plex Home</string>
+  <string name="button_label_change_rating">Змінити рейтинг для \"%s\"</string>
   <string name="button_label_change_username">Змінити ім\'я користувача</string>
   <string name="button_label_checkin">Зараз дивлюся \"%s\"</string>
   <string name="button_label_clean_up_episodes">Видалити повторні перегляди епізодів з вашої історії.</string>
@@ -191,6 +194,7 @@
   <string name="button_label_profile_options">Параметри профілю</string>
   <string name="button_label_progress_completed">Переглянути завершені серіали</string>
   <string name="button_label_progress_dropped">Переглянути серіали, від яких відмовилися</string>
+  <string name="button_label_progress_ended">Переглянути завершені серіали</string>
   <string name="button_label_progress_in_progress">Переглянути серіали в процесі</string>
   <string name="button_label_rate">Оцінити \"%s\"</string>
   <string name="button_label_raw_export">Експортувати ZIP-файл, що містить ваші вихідні дані.</string>
@@ -204,6 +208,7 @@
   <string name="button_label_remove_from_personal_list">Видалити \"%1$s\" зі списку %2$s</string>
   <string name="button_label_remove_from_watched">Видалити \"%s\" з історії переглядів</string>
   <string name="button_label_remove_from_watchlist">Видалити \"%s\" зі Списку перегляду</string>
+  <string name="button_label_remove_gif">Видалити GIF</string>
   <string name="button_label_remove_photo">Видалити фото профілю</string>
   <string name="button_label_renew_vip">Поновити підписку</string>
   <string name="button_label_reorder_item">Перевпорядкувати %s</string>
@@ -306,6 +311,7 @@
   <string name="button_label_view_sentiment_analysis">Переглянути аналіз настроїв</string>
   <string name="button_label_view_soundtrack">Переглянути саундтрек</string>
   <string name="button_label_view_trivia">Переглянути цікаві факти</string>
+  <string name="button_label_vip_paypal_switch">Переглянути VIP-плани та перейти на кредитну картку</string>
   <string name="button_label_vip_upgrade">Оновити до VIP</string>
   <string name="button_label_watch_on_service">Дивитись на %s</string>
   <string name="button_label_watch_until_here_anchor_end">Вважати обрану дату закінченням перегляду</string>
@@ -433,6 +439,7 @@
   <string name="button_text_popular_comments">Популярні</string>
   <string name="button_text_progress_completed">Завершені</string>
   <string name="button_text_progress_dropped">Покинуто</string>
+  <string name="button_text_progress_ended">Завершено</string>
   <string name="button_text_progress_in_progress">У процесі</string>
   <string name="button_text_raw_export">Експортувати зараз</string>
   <string name="button_text_recent_comments">Останні</string>
@@ -481,7 +488,6 @@
   <string name="button_text_sort_updated_date">Дата оновлення</string>
   <string name="button_text_start_import">Почати імпорт</string>
   <string name="button_text_start_rewatching">Почати повторний перегляд</string>
-  <string name="button_text_stop_asking">Припинити питати</string>
   <string name="button_text_stop_check_in">Зупинити відмітку перегляду</string>
   <string name="button_text_stop_clear">Зупинити очищення</string>
   <string name="button_text_stop_export">Зупинити експорт</string>
@@ -516,6 +522,7 @@
   <string name="button_text_view_import_guidelines">Переглянути інструкції</string>
   <string name="button_text_view_photo">Переглянути фото</string>
   <string name="button_text_view_recommendation_sources">Чому це?</string>
+  <string name="button_text_vip_paypal_switch">Переглянути плани</string>
   <string name="button_text_vip_upgrade">Оновити</string>
   <string name="button_text_watch_again">Переглянути знову</string>
   <string name="button_text_watch_until_here_anchor_end">Час закінчення</string>
@@ -576,10 +583,10 @@
   <string name="confirmation_title_stop_checkin">Зупинити відмітку перегляду?</string>
   <string name="confirmation_title_stop_clear">Зупинити очищення?</string>
   <string name="confirmation_title_stop_export">Зупинити експорт?</string>
-  <string name="confirmation_title_suppress_ratings_toast">Припинити запитувати?</string>
   <string name="confirmation_title_undo_sync">Скасувати цю синхронізацію?</string>
   <string name="confirmation_title_unfollow_user">Відписатися від користувача?</string>
   <string name="confirmation_title_unlink_streaming">Відключити %s?</string>
+  <string name="confirmation_title_watched_until_here">Заповнити пропущені епізоди?</string>
   <string name="date_time_label_watch_until_here">Виберіть дату та час для фіксації перегляду</string>
   <string name="date_time_label_watched">Оберіть дату та час, коли ви переглянули \"%s\"</string>
   <string name="description_account_details">Змініть своє фото, ім\'я та інші деталі.</string>
@@ -631,6 +638,7 @@
   <string name="drawer_meta_info_cast">Акторський склад</string>
   <string name="drawer_meta_info_cast_and_crew">Акторський склад та знімальна група</string>
   <string name="drawer_meta_info_crew">Команда</string>
+  <string name="drawer_title_add_gif">Додати GIF</string>
   <string name="drawer_title_add_note">Нотатка</string>
   <string name="drawer_title_episode_information">Інформація про епізод</string>
   <string name="drawer_title_notes">Нотатки</string>
@@ -649,8 +657,12 @@
   <string name="dropdown_label_person_position">Позиція</string>
   <string name="episode_footer_season_episode">С%1$d • Е%2$d</string>
   <string name="episode_footer_season_episode_range">С%1$d • Е%2$d-%3$d</string>
+  <string name="error_kicker_404">Відсутній ролик</string>
+  <string name="error_kicker_account_locked">Театр зачинено</string>
+  <string name="error_kicker_service_unavailable">Антракт</string>
+  <string name="error_kicker_unexpected_error">Невдалий дубль</string>
   <string name="error_search_partial_results">Деякі результати можуть бути відсутні</string>
-  <string name="error_text_404">(Не хвилюйтесь, таке буває! Навіть Сила іноді виходить з ладу.)</string>
+  <string name="error_text_404">Не хвилюйтесь, таке буває! Навіть Сила іноді виходить з ладу.</string>
   <string name="error_text_app_save_failed">Збереження додатка не вдалося. Будь ласка, спробуйте ще раз.</string>
   <string name="error_text_delete_account">Сталася помилка під час видалення вашого облікового запису. Будь ласка, спробуйте ще раз.</string>
   <string name="error_text_email">Оновлення електронної пошти не вдалося. Переконайтеся, що адреса дійсна.</string>
@@ -683,7 +695,8 @@
   <string name="error_text_report_already_reported">Ви вже повідомили про це.</string>
   <string name="error_text_report_rate_limited">Занадто багато повідомлень за короткий період. Спробуйте пізніше.</string>
   <string name="error_text_report_unknown">Щось пішло не так під час надсилання цього повідомлення. Якщо це повторюється, будь ласка, <a>повідомте про нову проблему</a>.</string>
-  <string name="error_text_service_unavailable">З’єднання… відсутнє. Наче забутий спогад.</string>
+  <string name="error_text_service_unavailable">Зараз Trakt недоступний. Ваша історія переглядів у безпеці.</string>
+  <string name="error_text_service_unavailable_resume">Ми продовжимо точно з того місця, де ви зупинились.</string>
   <string name="error_text_sync_load_failed">Наразі не вдалося завантажити. Будь ласка, спробуйте ще раз.</string>
   <string name="error_text_unexpected_error">Ой… це не було заплановано. Якщо це повториться, будь ласка, <a>надішліть нову проблему</a>.</string>
   <string name="error_text_unexpected_error_include_details">Будь ласка, вкажіть ці деталі, повідомляючи про проблему:</string>
@@ -814,6 +827,8 @@
   <string name="header_sync_detail">ID синхронізації %s</string>
   <string name="header_target">Ціль</string>
   <string name="header_total_runtime">Загальна тривалість</string>
+  <string name="header_vip_paypal_switch">Перейти на кредитну картку</string>
+  <string name="header_vip_two_year_deal">Сплатіть за 1 рік, отримайте 2 роки VIP!</string>
   <string name="header_writer">Сценарист</string>
   <string name="heading_api_application_vip_only">Створення нових застосунків вимагає Trakt VIP</string>
   <string name="heading_api_applications">Програми API</string>
@@ -834,9 +849,11 @@
   <string name="hint_app_origins">Одне джерело на рядок. Без підстановчих знаків або шляхів.</string>
   <string name="hint_app_redirect_uris">Один URI на рядок. Без рядків запиту, лише повний шлях URI. Використовуйте urn:ietf:wg:oauth:2.0:oob для автентифікації пристрою.</string>
   <string name="iframe_title_spotify_player">Spotify плеєр для %s</string>
+  <string name="image_alt_comment_gif">GIF, прикріплений до коментаря</string>
   <string name="image_alt_list_preview_poster">Постер до елемента в %s</string>
   <string name="image_alt_media_poster">Постер \"%s\"</string>
   <string name="image_alt_person_headshot">Портрет %s</string>
+  <string name="image_alt_selected_gif">Вибраний GIF</string>
   <string name="image_alt_streaming_service_logo">Логотип %s</string>
   <string name="image_alt_user_avatar">Аватар %s</string>
   <string name="import_ambiguous_skip">Не імпортувати</string>
@@ -899,6 +916,7 @@
   <string name="import_tab_unresolved">Пропущено</string>
   <string name="import_vip_limit_exceeded">Ваш імпорт перевищує ліміт безкоштовного рівня. Оновіть до VIP, щоб імпортувати всі %d елементів.</string>
   <string name="input_label_search_credit_members">Шукати людей</string>
+  <string name="input_label_search_gifs">Пошук KLIPY</string>
   <string name="input_label_search_streaming_services">Пошук потокових сервісів</string>
   <string name="input_placeholder_app_name">Моя програма</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
@@ -914,6 +932,7 @@
   <string name="input_placeholder_report_reason">Виберіть причину</string>
   <string name="input_placeholder_search">Пошук серіалів та фільмів…</string>
   <string name="input_placeholder_search_credit_members">Пошук імені, персонажа або посади…</string>
+  <string name="input_placeholder_search_gifs">Пошук KLIPY</string>
   <string name="input_placeholder_search_lists">Шукати списки…</string>
   <string name="input_placeholder_search_movies">Пошук фільмів…</string>
   <string name="input_placeholder_search_people">Шукати людей…</string>
@@ -945,6 +964,15 @@
   <string name="label_genres_drawer_subtitle_loved">Виберіть до 5 жанрів, які ви б хотіли бачити частіше.</string>
   <string name="label_keep_play">Залишити</string>
   <string name="label_list_item_count">%s елементів</string>
+  <string name="label_parental_guide_category_alcohol">Алкоголь, наркотики та куріння</string>
+  <string name="label_parental_guide_category_frightening">Моторошні та напружені сцени</string>
+  <string name="label_parental_guide_category_nudity">Секс і оголеність</string>
+  <string name="label_parental_guide_category_profanity">Ненормативна лексика</string>
+  <string name="label_parental_guide_category_violence">Насильство та кров</string>
+  <string name="label_parental_guide_severity_mild">Легкий</string>
+  <string name="label_parental_guide_severity_moderate">Помірний</string>
+  <string name="label_parental_guide_severity_none">Немає</string>
+  <string name="label_parental_guide_severity_severe">Суворий</string>
   <string name="label_plex_connected">Підключено до Plex</string>
   <string name="label_plex_connection">Підключення</string>
   <string name="label_plex_history_date">Дата</string>
@@ -1237,7 +1265,7 @@
   <string name="page_title_releases">Релізи</string>
   <string name="page_title_search">Пошук</string>
   <string name="page_title_search_results">Результати для %s</string>
-  <string name="page_title_service_unavailable">Сервіс Trakt недоступний</string>
+  <string name="page_title_service_unavailable">Ми втратили сигнал</string>
   <string name="page_title_settings">Налаштування</string>
   <string name="page_title_shows">Серіали</string>
   <string name="page_title_smart_lists">Розумні списки</string>
@@ -1258,17 +1286,19 @@
   <string name="page_title_year_in_review">%s в огляді</string>
   <string name="page_title_year_to_date">Рік до сьогодні</string>
   <string name="preview_feature_description_action_confirmations">Показати спливаюче підтвердження з можливістю швидкого скасування, коли ви додаєте, видаляєте, оцінюєте або позначаєте щось як переглянуте.</string>
+  <string name="preview_feature_description_comment_gifs">Додайте GIF до будь-якого коментаря або відгуку, який ви пишете.</string>
   <string name="preview_feature_description_edit_mode">Увімкніть елементи керування для приховування або відображення настроюваних розділів у всьому застосунку.</string>
   <string name="preview_feature_description_genre_picker">Обирайте улюблені жанри з візуальної сітки замість списку тегів.</string>
   <string name="preview_feature_description_leaderboard">Ранжуйте людей, за якими стежите, за часом перегляду та подивіться, яке місце ви посідаєте серед них.</string>
   <string name="preview_feature_description_list_counts">Показує, скільки елементів містить список, і скільки списків є в розділі.</string>
-  <string name="preview_feature_description_parental_guide">Показувати рівні ризику вмісту у висувній панелі деталей для фільмів, серіалів та епізодів.</string>
+  <string name="preview_feature_description_parental_guide">Показувати рівні ризику вмісту у висувній панелі деталей для фільмів та серіалів, а також фільтрувати за рівнем важкості у розширених фільтрах.</string>
   <string name="preview_feature_description_reviewer_stats">Показує, яку частину назви рецензент переглянув поруч зі своєю оцінкою.</string>
   <string name="preview_feature_description_rewatch">Почніть сеанси повторного перегляду для шоу, які ви вже бачили, реєструйте або відмічайте переглянуті серії безпосередньо з вікна сеансу.</string>
   <string name="preview_feature_description_scoped_favorites">Обмежте списки улюблених за часом, відображаючи улюблене поточного року в профілях та групуючи повний список улюблених за роками.</string>
   <string name="preview_feature_description_soundtrack">Додає розділ саундтреків до сторінок фільмів та серіалів, з відтворенням там, де трек може бути зіставлений.</string>
   <string name="preview_feature_description_up_next_smart_sort">Спробуйте розумніший спосіб сортування вашого розділу «Продовжити перегляд».</string>
   <string name="preview_feature_title_action_confirmations">Підтвердження дій</string>
+  <string name="preview_feature_title_comment_gifs">GIFи в коментарях</string>
   <string name="preview_feature_title_edit_mode">Режим редагування</string>
   <string name="preview_feature_title_genre_picker">Вибір жанрів</string>
   <string name="preview_feature_title_leaderboard">Пантеон</string>
@@ -1279,10 +1309,18 @@
   <string name="preview_feature_title_soundtrack">Саундтрек</string>
   <string name="preview_feature_title_up_next_smart_sort">Розумне сортування «Продовжити перегляд»</string>
   <string name="reset_status_cleared">Список перегляду очищено.</string>
+  <string name="row_label_loading_title">Завантаження назви</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt використовує мовні налаштування вашого Apple TV. Щоб оновити їх, перейдіть до:\n\nНалаштування Apple TV &gt; Загальні &gt; Мови Apple TV</string>
   <string name="section_title_season_progress">Прогрес сезону %d</string>
   <string name="section_title_seasons_overview">Огляд</string>
   <string name="section_title_specials_progress">Прогрес спецвипусків</string>
+  <string name="spotlight_dialog_label">Швидка навігація</string>
+  <string name="spotlight_hint_dismiss">Закрити</string>
+  <string name="spotlight_hint_navigate">Навігація</string>
+  <string name="spotlight_hint_select">Відкрити</string>
+  <string name="spotlight_input_placeholder">Куди?</string>
+  <string name="spotlight_no_results">Нічого не знайдено за запитом \"%s\"</string>
+  <string name="spotlight_section_pages">Сторінки</string>
   <string name="stat_label_hours">години</string>
   <string name="stat_label_plays">перегляди</string>
   <string name="stat_text_favorited">Улюблені</string>
@@ -1751,6 +1789,7 @@
   <string name="text_vip_payment_method_google">Google Play</string>
   <string name="text_vip_payment_method_other">Інше</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
+  <string name="text_vip_paypal_switch">Перемістіть свою VIP-підписку з PayPal на кредитну картку. Ви не втратите жодного VIP-часу, а ваша підписка PayPal буде автоматично скасована, щойно ви оберете новий план.</string>
   <string name="text_vip_powers_trakt">допомагає розвивати Trakt і розблоковує функції, створені для людей, яким дійсно важливо те, що вони дивляться.</string>
   <string name="text_vip_subscription">підписка</string>
   <string name="text_vip_subscription_missing_message">Нам не вдалося знайти активну підписку для керування. Можливо, її вже було скасовано. <a>Зв\'яжіться зі службою підтримки</a>, якщо вважаєте, що щось не так.</string>
@@ -1764,6 +1803,7 @@
   <string name="text_vip_transaction_disputed">Оскаржено списання через <b>%s</b></string>
   <string name="text_vip_transaction_plan_changed">Змінено ваш план через <b>%s</b></string>
   <string name="text_vip_transaction_refunded">Відшкодовано <b>%1$s</b> через <b>%2$s</b></string>
+  <string name="text_vip_two_year_deal">Ви розблокували 2-річний план за %1$s, потім %2$s кожні 2 роки. Знижка застосовується автоматично під час оформлення замовлення.</string>
   <string name="text_vip_upsell_default">Покращте свій досвід Trakt</string>
   <string name="text_vip_upsell_default_2">Оновіть до VIP!</string>
   <string name="text_vip_upsell_default_description">Оновіть до VIP і розблокуйте повний досвід Trakt, наповнений функціями, створеними для любителів серіалів та фільмів.</string>
@@ -2085,9 +2125,9 @@
   <string name="warning_prompt_set_cover_image">Використовувати \"%s\" як фонове зображення вашого профілю?</string>
   <string name="warning_prompt_simple_filters">Перехід до простих фільтрів скине всі ваші поточні фільтри. Ви впевнені, що бажаєте продовжити?</string>
   <string name="warning_prompt_stop_checkin">Ви впевнені, що хочете припинити перегляд \"%s\"?</string>
-  <string name="warning_prompt_suppress_ratings_toast">Ви хочете, щоб вас більше не запитували про оцінку нещодавно переглянутого?</string>
   <string name="warning_prompt_track_show_episode_count">Ви впевнені, що хочете позначити \"%1$s\" як переглянуте? Це позначить %2$d епізодів як переглянуті.</string>
   <string name="warning_prompt_unfollow_user">Ви впевнені, що хочете відписатися від %s?</string>
+  <string name="warning_prompt_watched_until_here">Позначення \"%s\" як переглянутого залишило попередні епізоди непроглянутими. Позначити все до нього як переглянуте?</string>
   <string name="warning_prompt_younify_unlink">Ви впевнені, що хочете відв\'язати %s?</string>
   <string name="warning_smart_lists_limit">Ви досягли ліміту розумних списків</string>
   <string name="welcome_banner_action">Імпортувати ваші дані</string>

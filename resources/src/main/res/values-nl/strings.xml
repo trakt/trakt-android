@@ -25,6 +25,7 @@
   <string name="action_toast_removed_from_history_generic">Verwijderd uit je kijkgeschiedenis</string>
   <string name="action_toast_removed_from_watchlist"><b>%s</b> is verwijderd van je kijklijst</string>
   <string name="action_toast_removed_from_watchlist_generic">Verwijderd van je kijklijst</string>
+  <string name="advanced_filter_label_parental_guide">%1$s: %2$s tot %3$s</string>
   <string name="advanced_filter_label_ratings">Beoordeling van %1$s tot %2$s</string>
   <string name="advanced_filter_label_release_year">Uitgebracht in %1$d tot %2$d</string>
   <string name="advanced_filter_label_runtime">Speelduur van %1$d tot %2$d minuten.</string>
@@ -46,6 +47,7 @@
   <string name="button_label_activity_ratings">Bekijk beoordelingen</string>
   <string name="button_label_activity_reviews">Bekijk recensies</string>
   <string name="button_label_add_comment">Recensie toevoegen</string>
+  <string name="button_label_add_gif">Voeg een GIF toe</string>
   <string name="button_label_add_new_comment">Voeg een nieuwe recensie toe</string>
   <string name="button_label_add_note">Notitie toevoegen aan %s</string>
   <string name="button_label_add_to_favorites">\"%s\" toevoegen aan je favorieten</string>
@@ -71,6 +73,7 @@
   <string name="button_label_change_email">Wijzig e-mail</string>
   <string name="button_label_change_location">Wijzig locatie</string>
   <string name="button_label_change_plex_home_users">Plex Home-gebruikers wijzigen</string>
+  <string name="button_label_change_rating">Wijzig beoordeling voor \"%s\"</string>
   <string name="button_label_change_username">Gebruikersnaam wijzigen</string>
   <string name="button_label_checkin">Nu \"%s\" aan het kijken</string>
   <string name="button_label_clean_up_episodes">Verwijder dubbele afleveringweergaven uit je geschiedenis.</string>
@@ -191,6 +194,7 @@
   <string name="button_label_profile_options">Profielopties</string>
   <string name="button_label_progress_completed">Bekijk voltooide series</string>
   <string name="button_label_progress_dropped">Bekijk laten vallen series</string>
+  <string name="button_label_progress_ended">Bekijk geëindigde series</string>
   <string name="button_label_progress_in_progress">Bekijk series die bezig zijn</string>
   <string name="button_label_rate">Beoordeel \"%s\"</string>
   <string name="button_label_raw_export">Exporteer een ZIP-bestand met uw ruwe gegevens.</string>
@@ -204,6 +208,7 @@
   <string name="button_label_remove_from_personal_list">Verwijder \"%1$s\" uit %2$s</string>
   <string name="button_label_remove_from_watched">\"%s\" uit je kijkgeschiedenis verwijderen</string>
   <string name="button_label_remove_from_watchlist">\"%s\" van je kijklijst verwijderen</string>
+  <string name="button_label_remove_gif">Verwijder GIF</string>
   <string name="button_label_remove_photo">Verwijder je profielfoto</string>
   <string name="button_label_renew_vip">Abonnement verlengen</string>
   <string name="button_label_reorder_item">Herschik %s</string>
@@ -306,6 +311,7 @@
   <string name="button_label_view_sentiment_analysis">Bekijk sentimentanalyse</string>
   <string name="button_label_view_soundtrack">Bekijk soundtrack</string>
   <string name="button_label_view_trivia">Bekijk trivia</string>
+  <string name="button_label_vip_paypal_switch">Bekijk VIP-abonnementen en schakel over naar creditcard</string>
   <string name="button_label_vip_upgrade">Upgrade naar VIP</string>
   <string name="button_label_watch_on_service">Bekijk op %s</string>
   <string name="button_label_watch_until_here_anchor_end">Behandel de gekozen datum als het einde van de bingewatchsessie</string>
@@ -433,6 +439,7 @@
   <string name="button_text_popular_comments">Populair</string>
   <string name="button_text_progress_completed">Bijgewerkt</string>
   <string name="button_text_progress_dropped">Gestopt</string>
+  <string name="button_text_progress_ended">Beëindigd</string>
   <string name="button_text_progress_in_progress">Bezig</string>
   <string name="button_text_raw_export">Nu exporteren</string>
   <string name="button_text_recent_comments">Recent</string>
@@ -481,7 +488,6 @@
   <string name="button_text_sort_updated_date">Datum laatst bijgewerkt</string>
   <string name="button_text_start_import">Import starten</string>
   <string name="button_text_start_rewatching">Opnieuw kijken starten</string>
-  <string name="button_text_stop_asking">Stop met vragen</string>
   <string name="button_text_stop_check_in">Stop check-in</string>
   <string name="button_text_stop_clear">Wissen stoppen</string>
   <string name="button_text_stop_export">Exporteren stoppen</string>
@@ -516,6 +522,7 @@
   <string name="button_text_view_import_guidelines">Richtlijnen bekijken</string>
   <string name="button_text_view_photo">Bekijk foto</string>
   <string name="button_text_view_recommendation_sources">Waarom dit?</string>
+  <string name="button_text_vip_paypal_switch">Bekijk abonnementen</string>
   <string name="button_text_vip_upgrade">Upgraden</string>
   <string name="button_text_watch_again">Opnieuw bekijken</string>
   <string name="button_text_watch_until_here_anchor_end">Eindtijd</string>
@@ -576,10 +583,10 @@
   <string name="confirmation_title_stop_checkin">Check-in stoppen?</string>
   <string name="confirmation_title_stop_clear">Wissen stoppen?</string>
   <string name="confirmation_title_stop_export">Exporteren stoppen?</string>
-  <string name="confirmation_title_suppress_ratings_toast">Stoppen met vragen?</string>
   <string name="confirmation_title_undo_sync">Deze synchronisatie ongedaan maken?</string>
   <string name="confirmation_title_unfollow_user">Gebruiker ontvolgen?</string>
   <string name="confirmation_title_unlink_streaming">%s ontkoppelen?</string>
+  <string name="confirmation_title_watched_until_here">Overgeslagen afleveringen aanvullen?</string>
   <string name="date_time_label_watch_until_here">Kies de datum en tijd die wordt gebruikt om de bingewatchsessie te ankeren</string>
   <string name="date_time_label_watched">Een datum en tijd waarop je \"%s\" hebt bekeken kiezen</string>
   <string name="description_account_details">Wijzig je foto, naam en andere gegevens.</string>
@@ -631,6 +638,7 @@
   <string name="drawer_meta_info_cast">Rolverdeling</string>
   <string name="drawer_meta_info_cast_and_crew">Rolverdeling &amp; Crew</string>
   <string name="drawer_meta_info_crew">Crew</string>
+  <string name="drawer_title_add_gif">Voeg een GIF toe</string>
   <string name="drawer_title_add_note">Notitie</string>
   <string name="drawer_title_episode_information">Afleveringinformatie</string>
   <string name="drawer_title_notes">Notities</string>
@@ -649,8 +657,12 @@
   <string name="dropdown_label_person_position">Functie</string>
   <string name="episode_footer_season_episode">S%1$d • A%2$d</string>
   <string name="episode_footer_season_episode_range">S%1$d • A%2$d-%3$d</string>
+  <string name="error_kicker_404">Ontbrekende spoel</string>
+  <string name="error_kicker_account_locked">Huis gesloten</string>
+  <string name="error_kicker_service_unavailable">Pauze</string>
+  <string name="error_kicker_unexpected_error">Mislukte opname</string>
   <string name="error_search_partial_results">Sommige resultaten ontbreken mogelijk</string>
-  <string name="error_text_404">(Geen zorgen, kan gebeuren! Zelfs de Force is soms uit balans.)</string>
+  <string name="error_text_404">Geen zorgen, kan gebeuren! Zelfs de Force is soms uit balans.</string>
   <string name="error_text_app_save_failed">Het opslaan van de applicatie is mislukt. Probeer het opnieuw.</string>
   <string name="error_text_delete_account">Er is iets misgegaan bij het verwijderen van je account. Probeer het opnieuw.</string>
   <string name="error_text_email">E-mailupdate mislukt. Zorg ervoor dat het een geldig adres is.</string>
@@ -683,7 +695,8 @@
   <string name="error_text_report_already_reported">Dit is al door u gemeld.</string>
   <string name="error_text_report_rate_limited">Te veel meldingen in korte tijd. Probeer het later opnieuw.</string>
   <string name="error_text_report_unknown">Er ging iets mis tijdens het indienen van dit rapport. Als dit blijft gebeuren, kunt u alstublieft <a>een nieuw probleem indienen</a>.</string>
-  <string name="error_text_service_unavailable">De verbinding is… afwezig. Als een vergeten herinnering.</string>
+  <string name="error_text_service_unavailable">Trakt is momenteel onbereikbaar. Je kijkgeschiedenis is veilig.</string>
+  <string name="error_text_service_unavailable_resume">We gaan verder precies waar je gebleven was.</string>
   <string name="error_text_sync_load_failed">We konden dit nu niet laden. Probeer het opnieuw.</string>
   <string name="error_text_unexpected_error">Oeps… dit was niet de bedoeling. Als dit blijft gebeuren, <a>dien dan een nieuw probleem in</a>.</string>
   <string name="error_text_unexpected_error_include_details">Vermeld alstublieft deze details bij het melden van het probleem:</string>
@@ -814,6 +827,8 @@
   <string name="header_sync_detail">Synchronisatie-ID %s</string>
   <string name="header_target">Doel</string>
   <string name="header_total_runtime">Totale speelduur</string>
+  <string name="header_vip_paypal_switch">Overschakelen naar creditcard</string>
+  <string name="header_vip_two_year_deal">Betaal voor 1 jaar, krijg 2 jaar VIP!</string>
   <string name="header_writer">Schrijver</string>
   <string name="heading_api_application_vip_only">Nieuwe apps maken vereist Trakt VIP</string>
   <string name="heading_api_applications">API-applicaties</string>
@@ -834,9 +849,11 @@
   <string name="hint_app_origins">Eén oorsprong per regel. Geen wildcards of paden.</string>
   <string name="hint_app_redirect_uris">Eén URI per regel. Geen queryreeksen, alleen het volledige URI-pad. Gebruik urn:ietf:wg:oauth:2.0:oob voor apparaatverificatie.</string>
   <string name="iframe_title_spotify_player">Spotify-speler voor %s</string>
+  <string name="image_alt_comment_gif">GIF toegevoegd aan de reactie</string>
   <string name="image_alt_list_preview_poster">Poster voor een item in %s</string>
   <string name="image_alt_media_poster">Poster van \"%s\"</string>
   <string name="image_alt_person_headshot">Portret van %s</string>
+  <string name="image_alt_selected_gif">Geselecteerde GIF</string>
   <string name="image_alt_streaming_service_logo">%s logo</string>
   <string name="image_alt_user_avatar">Avatar van %s</string>
   <string name="import_ambiguous_skip">Niet importeren</string>
@@ -899,6 +916,7 @@
   <string name="import_tab_unresolved">Overgeslagen</string>
   <string name="import_vip_limit_exceeded">Uw import overschrijdt de limiet van de gratis versie. Upgrade naar VIP om alle %d items te importeren.</string>
   <string name="input_label_search_credit_members">Zoek personen</string>
+  <string name="input_label_search_gifs">Zoek KLIPY</string>
   <string name="input_label_search_streaming_services">Zoek streamingdiensten</string>
   <string name="input_placeholder_app_name">Mijn applicatie</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
@@ -914,6 +932,7 @@
   <string name="input_placeholder_report_reason">Selecteer een reden</string>
   <string name="input_placeholder_search">Series &amp; films zoeken…</string>
   <string name="input_placeholder_search_credit_members">Zoek naam, personage of functie…</string>
+  <string name="input_placeholder_search_gifs">Zoek KLIPY</string>
   <string name="input_placeholder_search_lists">Zoek lijsten…</string>
   <string name="input_placeholder_search_movies">Films zoeken…</string>
   <string name="input_placeholder_search_people">Zoek personen…</string>
@@ -945,6 +964,15 @@
   <string name="label_genres_drawer_subtitle_loved">Selecteer maximaal 5 genres waarvan je meer wilt zien.</string>
   <string name="label_keep_play">Behouden</string>
   <string name="label_list_item_count">%s items</string>
+  <string name="label_parental_guide_category_alcohol">Alcohol, Drugs &amp; Roken</string>
+  <string name="label_parental_guide_category_frightening">Angstaanjagende &amp; Intense Scènes</string>
+  <string name="label_parental_guide_category_nudity">Seks &amp; Naaktheid</string>
+  <string name="label_parental_guide_category_profanity">Grof Taalgebruik</string>
+  <string name="label_parental_guide_category_violence">Geweld &amp; Bloed</string>
+  <string name="label_parental_guide_severity_mild">Mild</string>
+  <string name="label_parental_guide_severity_moderate">Matig</string>
+  <string name="label_parental_guide_severity_none">Geen</string>
+  <string name="label_parental_guide_severity_severe">Ernstig</string>
   <string name="label_plex_connected">Verbonden met Plex</string>
   <string name="label_plex_connection">Verbinding</string>
   <string name="label_plex_history_date">Datum</string>
@@ -1237,7 +1265,7 @@
   <string name="page_title_releases">Uitgaven</string>
   <string name="page_title_search">Zoeken</string>
   <string name="page_title_search_results">Resultaten voor %s</string>
-  <string name="page_title_service_unavailable">Trakt-service onbereikbaar</string>
+  <string name="page_title_service_unavailable">Signaal verloren</string>
   <string name="page_title_settings">Instellingen</string>
   <string name="page_title_shows">Series</string>
   <string name="page_title_smart_lists">Slimme lijsten</string>
@@ -1258,17 +1286,19 @@
   <string name="page_title_year_in_review">%s in overzicht</string>
   <string name="page_title_year_to_date">Jaar tot nu toe</string>
   <string name="preview_feature_description_action_confirmations">Toon een bevestigingstoast met een snelle ongedaanmakingsoptie wanneer je iets toevoegt, verwijdert, beoordeelt of markeert als bekeken.</string>
+  <string name="preview_feature_description_comment_gifs">Voeg een GIF toe aan elke reactie of recensie die je schrijft.</string>
   <string name="preview_feature_description_edit_mode">Schakel besturingselementen in voor het verbergen of weergeven van configureerbare secties in de app.</string>
   <string name="preview_feature_description_genre_picker">Kies je favoriete genres uit een visueel raster in plaats van een lijst met tags.</string>
   <string name="preview_feature_description_leaderboard">Rangschik de mensen die je volgt op kijktijd en zie waar jij eindigt.</string>
   <string name="preview_feature_description_list_counts">Toont hoeveel items een lijst bevat en hoeveel lijsten een sectie heeft.</string>
-  <string name="preview_feature_description_parental_guide">Toon risiconiveaus van de inhoud in het detailscherm voor films, series en afleveringen.</string>
+  <string name="preview_feature_description_parental_guide">Toon risiconiveaus van de inhoud in het detailscherm voor films en series, en filter op ernst in geavanceerde filters.</string>
   <string name="preview_feature_description_reviewer_stats">Toont hoeveel van een titel een recensent heeft bekeken naast hun beoordeling.</string>
   <string name="preview_feature_description_rewatch">Start nieuwe kijkbeurten voor series die je al hebt gezien, check in of markeer afleveringen als bekeken, direct vanuit het sessiepaneel.</string>
   <string name="preview_feature_description_scoped_favorites">Beperk favorietenlijsten door favorieten van het huidige jaar op profielen weer te geven en de volledige favorietenlijst per jaar te groeperen.</string>
   <string name="preview_feature_description_soundtrack">Voegt een soundtracksectie toe aan film- en seriepagina\'s, met afspeelmogelijkheden wanneer een nummer kan worden gematcht.</string>
   <string name="preview_feature_description_up_next_smart_sort">Probeer een slimmere manier om je \'Verder kijken\' te sorteren.</string>
   <string name="preview_feature_title_action_confirmations">Actiebevestigingen</string>
+  <string name="preview_feature_title_comment_gifs">GIF\'s in reacties</string>
   <string name="preview_feature_title_edit_mode">Bewerkmodus</string>
   <string name="preview_feature_title_genre_picker">Genrekiezer</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
@@ -1279,10 +1309,18 @@
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_up_next_smart_sort">Verder kijken slim sorteren</string>
   <string name="reset_status_cleared">Kijklijst gewist.</string>
+  <string name="row_label_loading_title">Naam laden</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt gebruikt de taalinstellingen van uw Apple TV. Om deze bij te werken, gaat u naar:\n\nApple TV Instellingen &gt; Algemeen &gt; Apple TV Talen</string>
   <string name="section_title_season_progress">Seizoen %d voortgang</string>
   <string name="section_title_seasons_overview">Overzicht</string>
   <string name="section_title_specials_progress">Specials voortgang</string>
+  <string name="spotlight_dialog_label">Snelle navigatie</string>
+  <string name="spotlight_hint_dismiss">Sluiten</string>
+  <string name="spotlight_hint_navigate">Navigeren</string>
+  <string name="spotlight_hint_select">Openen</string>
+  <string name="spotlight_input_placeholder">Waarheen?</string>
+  <string name="spotlight_no_results">Niets komt overeen met \"%s\"</string>
+  <string name="spotlight_section_pages">Pagina\'s</string>
   <string name="stat_label_hours">uren</string>
   <string name="stat_label_plays">bekeken</string>
   <string name="stat_text_favorited">Favorieten</string>
@@ -1751,6 +1789,7 @@
   <string name="text_vip_payment_method_google">Google Play</string>
   <string name="text_vip_payment_method_other">Overig</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
+  <string name="text_vip_paypal_switch">Verplaats je VIP-abonnement van PayPal naar een creditcard. Je verliest geen VIP-tijd en je PayPal-abonnement wordt automatisch opgezegd zodra je een nieuw abonnement kiest.</string>
   <string name="text_vip_powers_trakt">ondersteunt Trakt en ontgrendelt functies voor mensen die echt geven om wat ze kijken.</string>
   <string name="text_vip_subscription">abonnement</string>
   <string name="text_vip_subscription_missing_message">We konden geen actief abonnement vinden om te beheren. Het is mogelijk al opgezegd. <a>Neem contact op met de ondersteuning</a> als u denkt dat er iets mis is.</string>
@@ -1764,6 +1803,7 @@
   <string name="text_vip_transaction_disputed">Een <b>%s</b>-afschrijving betwist</string>
   <string name="text_vip_transaction_plan_changed">Uw <b>%s</b>-abonnement gewijzigd</string>
   <string name="text_vip_transaction_refunded"><b>%1$s</b> terugbetaald via <b>%2$s</b></string>
+  <string name="text_vip_two_year_deal">Je hebt het 2-jarenabonnement ontgrendeld voor %1$s, daarna %2$s elke 2 jaar. De korting wordt automatisch toegepast bij het afrekenen.</string>
   <string name="text_vip_upsell_default">Verbeter je Trakt-ervaring</string>
   <string name="text_vip_upsell_default_2">Upgrade naar VIP!</string>
   <string name="text_vip_upsell_default_description">Upgrade naar VIP en ontgrendel de volledige Trakt-ervaring, boordevol functies gemaakt voor liefhebbers van tv-series en films.</string>
@@ -2085,9 +2125,9 @@
   <string name="warning_prompt_set_cover_image">Gebruik \"%s\" als je profielachtergrondafbeelding?</string>
   <string name="warning_prompt_simple_filters">Als u overschakelt naar eenvoudige filters, worden al uw huidige filters gereset. Weet u zeker dat u wilt doorgaan?</string>
   <string name="warning_prompt_stop_checkin">Weet je zeker dat je wilt stoppen met het kijken naar \"%s\"?</string>
-  <string name="warning_prompt_suppress_ratings_toast">Wil je niet meer gevraagd worden om te beoordelen wat je onlangs hebt bekeken?</string>
   <string name="warning_prompt_track_show_episode_count">Weet je zeker dat je \"%1$s\" als bekeken wilt markeren? Hiermee worden %2$d afleveringen als bekeken gemarkeerd.</string>
   <string name="warning_prompt_unfollow_user">Weet je zeker dat je %s wilt ontvolgen?</string>
+  <string name="warning_prompt_watched_until_here">Door \"%s\" als bekeken te markeren, zijn eerdere afleveringen onbekeken gebleven. Alles tot en met deze aflevering ook als bekeken markeren?</string>
   <string name="warning_prompt_younify_unlink">Weet je zeker dat je %s wilt ontkoppelen?</string>
   <string name="warning_smart_lists_limit">U heeft de limiet voor slimme lijsten bereikt</string>
   <string name="welcome_banner_action">Importeer je gegevens</string>

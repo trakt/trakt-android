@@ -25,6 +25,7 @@
   <string name="action_toast_removed_from_history_generic">Usunięto z historii</string>
   <string name="action_toast_removed_from_watchlist"><b>%s</b> został(a) usunięty(a) z obserwowanych</string>
   <string name="action_toast_removed_from_watchlist_generic">Usunięto z obserwowanych</string>
+  <string name="advanced_filter_label_parental_guide">%1$s: od %2$s do %3$s</string>
   <string name="advanced_filter_label_ratings">Ocena od %1$s do %2$s</string>
   <string name="advanced_filter_label_release_year">Wydany w latach %1$d–%2$d</string>
   <string name="advanced_filter_label_runtime">Czas trwania od %1$d do %2$d minut.</string>
@@ -46,6 +47,7 @@
   <string name="button_label_activity_ratings">Zobacz oceny</string>
   <string name="button_label_activity_reviews">Zobacz recenzje</string>
   <string name="button_label_add_comment">Dodaj recenzję</string>
+  <string name="button_label_add_gif">Dodaj GIF</string>
   <string name="button_label_add_new_comment">Dodaj recenzję</string>
   <string name="button_label_add_note">Dodaj notatkę do \"%s\"</string>
   <string name="button_label_add_to_favorites">Dodaj \"%s\" do ulubionych</string>
@@ -71,6 +73,7 @@
   <string name="button_label_change_email">Zmień adres e-mail</string>
   <string name="button_label_change_location">Zmień lokalizację</string>
   <string name="button_label_change_plex_home_users">Zmień użytkowników Plex Home</string>
+  <string name="button_label_change_rating">Zmień ocenę dla \"%s\"</string>
   <string name="button_label_change_username">Zmień nazwę użytkownika</string>
   <string name="button_label_checkin">Teraz oglądam \"%s\"</string>
   <string name="button_label_clean_up_episodes">Usuń zduplikowane odtworzenia odcinków z historii.</string>
@@ -191,6 +194,7 @@
   <string name="button_label_profile_options">Opcje profilu</string>
   <string name="button_label_progress_completed">Zobacz ukończone seriale</string>
   <string name="button_label_progress_dropped">Zobacz porzucone seriale</string>
+  <string name="button_label_progress_ended">Zobacz zakończone seriale</string>
   <string name="button_label_progress_in_progress">Zobacz seriale w trakcie</string>
   <string name="button_label_rate">Oceń \"%s\"</string>
   <string name="button_label_raw_export">Eksportuj plik ZIP zawierający twoje dane.</string>
@@ -204,6 +208,7 @@
   <string name="button_label_remove_from_personal_list">Usuń \"%1$s\" z %2$s</string>
   <string name="button_label_remove_from_watched">Usuń \"%s\" z historii</string>
   <string name="button_label_remove_from_watchlist">Usuń \"%s\" z obserwowanych</string>
+  <string name="button_label_remove_gif">Usuń GIF</string>
   <string name="button_label_remove_photo">Usuń swoje zdjęcie profilowe</string>
   <string name="button_label_renew_vip">Odnów subskrypcję</string>
   <string name="button_label_reorder_item">Zmień kolejność %s</string>
@@ -306,6 +311,7 @@
   <string name="button_label_view_sentiment_analysis">Zobacz analizę nastrojów</string>
   <string name="button_label_view_soundtrack">Wyświetl ścieżkę dźwiękową</string>
   <string name="button_label_view_trivia">Zobacz ciekawostki</string>
+  <string name="button_label_vip_paypal_switch">Wyświetl plany VIP i przełącz się na kartę kredytową</string>
   <string name="button_label_vip_upgrade">Zostań VIP</string>
   <string name="button_label_watch_on_service">Obejrzyj na %s</string>
   <string name="button_label_watch_until_here_anchor_end">Traktuj wybraną datę jako koniec maratonu</string>
@@ -433,6 +439,7 @@
   <string name="button_text_popular_comments">Popularne</string>
   <string name="button_text_progress_completed">Ukończone</string>
   <string name="button_text_progress_dropped">Porzucony</string>
+  <string name="button_text_progress_ended">Zakończony</string>
   <string name="button_text_progress_in_progress">W trakcie</string>
   <string name="button_text_raw_export">Eksportuj teraz</string>
   <string name="button_text_recent_comments">Najnowsze</string>
@@ -481,7 +488,6 @@
   <string name="button_text_sort_updated_date">Data aktualizacji</string>
   <string name="button_text_start_import">Rozpocznij import</string>
   <string name="button_text_start_rewatching">Rozpocznij ponowne oglądanie</string>
-  <string name="button_text_stop_asking">Nie pytaj więcej</string>
   <string name="button_text_stop_check_in">Zatrzymaj</string>
   <string name="button_text_stop_clear">Zatrzymaj</string>
   <string name="button_text_stop_export">Zatrzymaj eksportowanie</string>
@@ -516,6 +522,7 @@
   <string name="button_text_view_import_guidelines">Zobacz instrukcje</string>
   <string name="button_text_view_photo">Zobacz zdjęcie</string>
   <string name="button_text_view_recommendation_sources">Dlaczego to?</string>
+  <string name="button_text_vip_paypal_switch">Zobacz plany</string>
   <string name="button_text_vip_upgrade">Ulepsz</string>
   <string name="button_text_watch_again">Obejrzyj ponownie</string>
   <string name="button_text_watch_until_here_anchor_end">Czas zakończenia</string>
@@ -576,10 +583,10 @@
   <string name="confirmation_title_stop_checkin">Zatrzymać zameldowanie?</string>
   <string name="confirmation_title_stop_clear">Zatrzymać czyszczenie?</string>
   <string name="confirmation_title_stop_export">Zatrzymać eksportowanie?</string>
-  <string name="confirmation_title_suppress_ratings_toast">Nie pytać więcej?</string>
   <string name="confirmation_title_undo_sync">Cofnąć tę synchronizację?</string>
   <string name="confirmation_title_unfollow_user">Przestać obserwować użytkownika?</string>
   <string name="confirmation_title_unlink_streaming">Odłączyć %s?</string>
+  <string name="confirmation_title_watched_until_here">Uzupełnić pominięte odcinki?</string>
   <string name="date_time_label_watch_until_here">Wybierz datę i godzinę, aby zakotwiczyć maraton</string>
   <string name="date_time_label_watched">Wybierz datę i godzinę dla \"%s\"</string>
   <string name="description_account_details">Zmień swoje zdjęcie, imię i inne dane.</string>
@@ -631,6 +638,7 @@
   <string name="drawer_meta_info_cast">Obsada</string>
   <string name="drawer_meta_info_cast_and_crew">Obsada i ekipa</string>
   <string name="drawer_meta_info_crew">Ekipa</string>
+  <string name="drawer_title_add_gif">Dodaj GIF</string>
   <string name="drawer_title_add_note">Notatka</string>
   <string name="drawer_title_episode_information">Informacje o odcinku</string>
   <string name="drawer_title_notes">Notatki</string>
@@ -649,8 +657,12 @@
   <string name="dropdown_label_person_position">Stanowisko</string>
   <string name="episode_footer_season_episode">S%1$d • O%2$d</string>
   <string name="episode_footer_season_episode_range">S%1$d • O%2$d-%3$d</string>
+  <string name="error_kicker_404">Brakująca rolka</string>
+  <string name="error_kicker_account_locked">Kino zamknięte</string>
+  <string name="error_kicker_service_unavailable">Przerwa</string>
+  <string name="error_kicker_unexpected_error">Złe ujęcie</string>
   <string name="error_search_partial_results">Niektóre wyniki mogą brakować</string>
-  <string name="error_text_404">(Nie martw się, to się zdarza! Nawet Moc bywa czasem w rozsypce.)</string>
+  <string name="error_text_404">Nie martw się, to się zdarza! Nawet Moc bywa czasem w rozsypce.</string>
   <string name="error_text_app_save_failed">Zapisanie aplikacji nie powiodło się. Spróbuj ponownie.</string>
   <string name="error_text_delete_account">Coś poszło nie tak podczas usuwania Twojego konta. Spróbuj ponownie.</string>
   <string name="error_text_email">Aktualizacja e-maila nie powiodła się. Upewnij się, że adres jest prawidłowy.</string>
@@ -683,7 +695,8 @@
   <string name="error_text_report_already_reported">Już to zgłosiłeś.</string>
   <string name="error_text_report_rate_limited">Zbyt wiele zgłoszeń w krótkim czasie. Spróbuj ponownie później.</string>
   <string name="error_text_report_unknown">Coś poszło nie tak podczas wysyłania tego zgłoszenia. Jeśli problem będzie się powtarzał, prosimy o <a>zgłoszenie nowego problemu</a>.</string>
-  <string name="error_text_service_unavailable">Brak połączenia.</string>
+  <string name="error_text_service_unavailable">Trakt jest teraz niedostępny. Twoja historia oglądania jest bezpieczna.</string>
+  <string name="error_text_service_unavailable_resume">Wznowimy dokładnie tam, gdzie skończyłeś(-aś).</string>
   <string name="error_text_sync_load_failed">Nie udało się załadować. Spróbuj ponownie.</string>
   <string name="error_text_unexpected_error">Ojoj… to nie było planowane. Jeśli problem będzie się powtarzał, prosimy o <a>zgłoszenie nowego problemu</a>.</string>
   <string name="error_text_unexpected_error_include_details">Proszę uwzględnić te szczegóły podczas zgłaszania problemu:</string>
@@ -814,6 +827,8 @@
   <string name="header_sync_detail">Identyfikator synchronizacji %s</string>
   <string name="header_target">Cel</string>
   <string name="header_total_runtime">Całkowity czas trwania</string>
+  <string name="header_vip_paypal_switch">Przejdź na kartę kredytową</string>
+  <string name="header_vip_two_year_deal">Zapłać za 1 rok, zyskaj 2 lata VIP!</string>
   <string name="header_writer">Scenarzysta</string>
   <string name="heading_api_application_vip_only">Tworzenie nowych aplikacji wymaga Trakt VIP</string>
   <string name="heading_api_applications">Aplikacje API</string>
@@ -834,9 +849,11 @@
   <string name="hint_app_origins">Jedno źródło na linię. Bez symboli wieloznacznych ani ścieżek.</string>
   <string name="hint_app_redirect_uris">Jeden URI na linię. Bez ciągów zapytań, tylko pełna ścieżka URI. Użyj urn:ietf:wg:oauth:2.0:oob do uwierzytelniania urządzenia.</string>
   <string name="iframe_title_spotify_player">Odtwarzacz Spotify dla %s</string>
+  <string name="image_alt_comment_gif">GIF dołączony do komentarza</string>
   <string name="image_alt_list_preview_poster">Plakat dla %s</string>
   <string name="image_alt_media_poster">Plakat \"%s\"</string>
   <string name="image_alt_person_headshot">Zdjęcie %s</string>
+  <string name="image_alt_selected_gif">Wybrany GIF</string>
   <string name="image_alt_streaming_service_logo">Logo %s</string>
   <string name="image_alt_user_avatar">Awatar użytkownika %s</string>
   <string name="import_ambiguous_skip">Nie importuj</string>
@@ -899,6 +916,7 @@
   <string name="import_tab_unresolved">Pominięte</string>
   <string name="import_vip_limit_exceeded">Twój import przekracza limit darmowego planu. Uaktualnij do VIP, aby zaimportować wszystkie %d elementów.</string>
   <string name="input_label_search_credit_members">Szukaj osób</string>
+  <string name="input_label_search_gifs">Szukaj KLIPY</string>
   <string name="input_label_search_streaming_services">Wyszukaj usługi streamingowe</string>
   <string name="input_placeholder_app_name">Moja aplikacja</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
@@ -914,6 +932,7 @@
   <string name="input_placeholder_report_reason">Wybierz powód</string>
   <string name="input_placeholder_search">Szukaj seriali i filmów…</string>
   <string name="input_placeholder_search_credit_members">Szukaj imienia, postaci lub zawodu…</string>
+  <string name="input_placeholder_search_gifs">Szukaj KLIPY</string>
   <string name="input_placeholder_search_lists">Szukaj list…</string>
   <string name="input_placeholder_search_movies">Szukaj filmów…</string>
   <string name="input_placeholder_search_people">Szukaj osób…</string>
@@ -945,6 +964,15 @@
   <string name="label_genres_drawer_subtitle_loved">Wybierz do 5 gatunków, których chciałbyś widzieć więcej.</string>
   <string name="label_keep_play">Zachowaj</string>
   <string name="label_list_item_count">%s pozycje</string>
+  <string name="label_parental_guide_category_alcohol">Alkohol, narkotyki i palenie</string>
+  <string name="label_parental_guide_category_frightening">Sceny przerażające i intensywne</string>
+  <string name="label_parental_guide_category_nudity">Seks i nagość</string>
+  <string name="label_parental_guide_category_profanity">Wulgaryzmy</string>
+  <string name="label_parental_guide_category_violence">Przemoc i drastyczne sceny</string>
+  <string name="label_parental_guide_severity_mild">Łagodny</string>
+  <string name="label_parental_guide_severity_moderate">Umiarkowany</string>
+  <string name="label_parental_guide_severity_none">Brak</string>
+  <string name="label_parental_guide_severity_severe">Poważny</string>
   <string name="label_plex_connected">Połączono z Plex</string>
   <string name="label_plex_connection">Połączenie</string>
   <string name="label_plex_history_date">Data</string>
@@ -1237,7 +1265,7 @@
   <string name="page_title_releases">Premiery</string>
   <string name="page_title_search">Szukaj</string>
   <string name="page_title_search_results">Wyniki dla %s</string>
-  <string name="page_title_service_unavailable">Trakt jest obecnie niedostępny</string>
+  <string name="page_title_service_unavailable">Utraciliśmy sygnał</string>
   <string name="page_title_settings">Ustawienia</string>
   <string name="page_title_shows">Seriale</string>
   <string name="page_title_smart_lists">Inteligentne listy</string>
@@ -1258,17 +1286,19 @@
   <string name="page_title_year_in_review">Podsumowanie roku %s</string>
   <string name="page_title_year_to_date">Od początku roku</string>
   <string name="preview_feature_description_action_confirmations">Pokaż wyskakujące powiadomienie z możliwością szybkiego cofnięcia, gdy dodasz, usuniesz, ocenisz lub oznaczysz coś jako obejrzane.</string>
+  <string name="preview_feature_description_comment_gifs">Dołącz GIF do dowolnego komentarza lub recenzji, którą piszesz.</string>
   <string name="preview_feature_description_edit_mode">Włącz sterowanie ukrywaniem lub pokazywaniem konfigurowalnych sekcji w całej aplikacji.</string>
   <string name="preview_feature_description_genre_picker">Wybieraj ulubione gatunki z siatki wizualnej zamiast z listy tagów.</string>
   <string name="preview_feature_description_leaderboard">Oceniaj osoby, które obserwujesz, według czasu oglądania i sprawdź, gdzie znajdziesz się wśród nich.</string>
   <string name="preview_feature_description_list_counts">Pokazuje, ile pozycji zawiera lista, oraz ile list zawiera sekcja.</string>
-  <string name="preview_feature_description_parental_guide">Wyświetlaj poziomy ryzyka treści w panelu szczegółów dla filmów, seriali i odcinków.</string>
+  <string name="preview_feature_description_parental_guide">Wyświetlaj poziomy ryzyka treści w panelu szczegółów dla filmów i seriali oraz filtruj według poziomu w filtrach zaawansowanych.</string>
   <string name="preview_feature_description_reviewer_stats">Pokazuje, ile tytułu recenzent obejrzał obok swojej oceny.</string>
   <string name="preview_feature_description_rewatch">Rozpocznij sesje ponownego oglądania dla programów, które już widziałeś, melduj się lub oznaczaj obejrzane odcinki bezpośrednio z szuflady sesji.</string>
   <string name="preview_feature_description_scoped_favorites">Ograniczaj listy ulubionych czasowo, pokazując ulubione z bieżącego roku w profilach i grupując pełną listę ulubionych według roku.</string>
   <string name="preview_feature_description_soundtrack">Dodaje sekcję ścieżek dźwiękowych do stron filmów i seriali, z możliwością odtwarzania, gdy utwór może zostać dopasowany.</string>
   <string name="preview_feature_description_up_next_smart_sort">Wypróbuj inteligentniejszy sposób sortowania pozycji Oglądaj dalej.</string>
   <string name="preview_feature_title_action_confirmations">Potwierdzenia akcji</string>
+  <string name="preview_feature_title_comment_gifs">GIF-y w komentarzach</string>
   <string name="preview_feature_title_edit_mode">Tryb edycji</string>
   <string name="preview_feature_title_genre_picker">Wybór Gatunków</string>
   <string name="preview_feature_title_leaderboard">Panteon</string>
@@ -1279,10 +1309,18 @@
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_up_next_smart_sort">Oglądaj dalej: Inteligentne sortowanie</string>
   <string name="reset_status_cleared">Lista obserwowanych usunięta.</string>
+  <string name="row_label_loading_title">Ładowanie nazwy</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt używa ustawień języka z Apple TV. Aby je zaktualizować, przejdź do:\n\nUstawienia Apple TV &gt; Ogólne &gt; Języki Apple TV</string>
   <string name="section_title_season_progress">Sezon %d postęp</string>
   <string name="section_title_seasons_overview">Przegląd</string>
   <string name="section_title_specials_progress">Postęp odcinków specjalnych</string>
+  <string name="spotlight_dialog_label">Szybka nawigacja</string>
+  <string name="spotlight_hint_dismiss">Zamknij</string>
+  <string name="spotlight_hint_navigate">Nawiguj</string>
+  <string name="spotlight_hint_select">Otwórz</string>
+  <string name="spotlight_input_placeholder">Dokąd?</string>
+  <string name="spotlight_no_results">Brak wyników dla \"%s\"</string>
+  <string name="spotlight_section_pages">Strony</string>
   <string name="stat_label_hours">godziny</string>
   <string name="stat_label_plays">odtworzenia</string>
   <string name="stat_text_favorited">Ulubione</string>
@@ -1751,6 +1789,7 @@
   <string name="text_vip_payment_method_google">Google Play</string>
   <string name="text_vip_payment_method_other">Inne</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
+  <string name="text_vip_paypal_switch">Przenieś swoją subskrypcję VIP z PayPal na kartę kredytową. Nie stracisz żadnego czasu VIP, a Twoja subskrypcja PayPal zostanie automatycznie anulowana, gdy wybierzesz nowy plan.</string>
   <string name="text_vip_powers_trakt">pomaga napędzać Trakt i odblokowuje funkcje stworzone dla osób, którym naprawdę zależy na tym, co oglądają.</string>
   <string name="text_vip_subscription">subskrypcja</string>
   <string name="text_vip_subscription_missing_message">Nie mogliśmy znaleźć aktywnej subskrypcji do zarządzania. Mogła zostać już anulowana. <a>Skontaktuj się z pomocą techniczną</a>, jeśli uważasz, że coś jest nie tak.</string>
@@ -1764,6 +1803,7 @@
   <string name="text_vip_transaction_disputed">Zakwestionowano opłatę <b>%s</b></string>
   <string name="text_vip_transaction_plan_changed">Zmieniono plan <b>%s</b></string>
   <string name="text_vip_transaction_refunded">Zwrócono <b>%1$s</b> przez <b>%2$s</b></string>
+  <string name="text_vip_two_year_deal">Odblokowano plan dwuletni za %1$s, a następnie %2$s co 2 lata. Rabat zostanie zastosowany automatycznie przy kasie.</string>
   <string name="text_vip_upsell_default">Wzbogać swoje doświadczenia z Trakt</string>
   <string name="text_vip_upsell_default_2">Zostań VIP!</string>
   <string name="text_vip_upsell_default_description">Zostań VIP i odblokuj pełne doświadczenie Trakt, wypełnione funkcjami dla miłośników seriali i filmów.</string>
@@ -2085,9 +2125,9 @@
   <string name="warning_prompt_set_cover_image">Użyć \"%s\" jako obrazu w tle Twojego profilu?</string>
   <string name="warning_prompt_simple_filters">Zmiana na proste filtry zresetuje wszystkie twoje obecne filtry. Czy chcesz kontynuować?</string>
   <string name="warning_prompt_stop_checkin">Czy na pewno chcesz przestać oglądać \"%s\"?</string>
-  <string name="warning_prompt_suppress_ratings_toast">Czy chcesz przestać być pytany o ocenę ostatnio obejrzanych filmów i seriali?</string>
   <string name="warning_prompt_track_show_episode_count">Czy na pewno chcesz dodać \"%1$s\" jako obejrzany? Spowoduje to dodanie %2$d odcinków.</string>
   <string name="warning_prompt_unfollow_user">Czy na pewno chcesz przestać obserwować %s?</string>
+  <string name="warning_prompt_watched_until_here">Oznaczenie \"%s\" jako obejrzanego pozostawiło wcześniejsze odcinki nieobejrzane. Oznaczyć również wszystko do tego momentu jako obejrzane?</string>
   <string name="warning_prompt_younify_unlink">Czy na pewno chcesz rozłączyć %s?</string>
   <string name="warning_smart_lists_limit">Osiągnąłeś limit inteligentnych list</string>
   <string name="welcome_banner_action">Importuj swoje dane</string>
