@@ -47,6 +47,13 @@ internal class FirebaseAnalytics(
         userId?.let { firebaseCrashlytics.setUserId(it) }
     }
 
+    override fun setUserProperty(
+        key: String,
+        value: String?,
+    ) {
+        firebaseAnalytics.setUserProperty(key, value)
+    }
+
     override fun logScreenView(screenName: String) {
         firebaseAnalytics.logEvent(
             eventName(SCREEN_VIEW),

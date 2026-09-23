@@ -211,6 +211,7 @@ internal class MainViewModel(
                 delay(500.milliseconds)
                 getUserUseCase.loadUserProfile()?.let {
                     analytics.setUserId(it.ids.trakt.value.toString())
+                    analytics.setUserProperty("vip", it.isAnyVip.toString().lowercase())
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -357,6 +358,7 @@ internal class MainViewModel(
                 )
                 getUserUseCase.loadUserProfile()?.let {
                     analytics.setUserId(it.ids.trakt.value.toString())
+                    analytics.setUserProperty("vip", it.isAnyVip.toString().lowercase())
                     analytics.logUserLogin()
                     dismissPaywall(it)
                 }

@@ -120,7 +120,10 @@ internal class LogoutUserUseCase(
         localRecommendedMovies.clear()
 
         appReviewUseCase.clear()
+
         analytics.setUserId(null)
+        analytics.setUserProperty("vip", null)
+
         ScheduleNotificationsWorker.clear(appContext)
         WorkManager.getInstance(appContext).cancelAllWork()
     }

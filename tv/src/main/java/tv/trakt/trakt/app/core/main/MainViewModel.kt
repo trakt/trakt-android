@@ -80,6 +80,7 @@ internal class MainViewModel(
                 val user = loadUserProfileUseCase.loadUserProfile()
                 user?.let {
                     analytics.setUserId(user.ids.trakt.value.toString())
+                    analytics.setUserProperty("vip", user.isAnyVip.toString().lowercase())
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation()

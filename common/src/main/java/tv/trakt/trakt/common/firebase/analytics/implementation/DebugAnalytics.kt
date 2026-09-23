@@ -15,6 +15,13 @@ internal class DebugAnalytics(
         Timber.d("setUserId: $userId")
     }
 
+    override fun setUserProperty(
+        key: String,
+        value: String?,
+    ) {
+        Timber.d("setUserProperty: key=$key, value=$value")
+    }
+
     override fun logScreenView(screenName: String) {
         Timber.d("logScreenView: screenName=$screenName")
     }

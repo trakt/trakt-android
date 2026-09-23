@@ -97,7 +97,10 @@ internal class AuthViewModel(
                 when (val state = getDeviceTokenUseCase.getDeviceToken(deviceCode)) {
                     is Success -> {
                         val user = loadUserProfileUseCase.loadUserProfile()
-                        user?.let { analytics.setUserId(user.ids.trakt.value.toString()) }
+                        user?.let {
+                            analytics.setUserId(user.ids.trakt.value.toString())
+                            analytics.setUserProperty("vip", user.isAnyVip.toString().lowercase())
+                        }
                         deviceCodeState.update { null }
                         loadingState.update { SUCCESS }
                         Timber.i("Device token received successfully")

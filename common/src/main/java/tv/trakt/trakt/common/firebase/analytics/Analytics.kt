@@ -17,6 +17,14 @@ interface Analytics {
     fun setUserId(userId: String?)
 
     /**
+     * Sets a user property for analytics.
+     */
+    fun setUserProperty(
+        key: String,
+        value: String?,
+    )
+
+    /**
      * Logs a screen view event.
      */
     fun logScreenView(screenName: String)
