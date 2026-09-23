@@ -360,7 +360,7 @@ private fun CommentHeader(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Absolute.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.Absolute.spacedBy(16.dp),
             modifier = Modifier.fillMaxWidth(),
         ) {
             Spacer(modifier = Modifier.weight(1f))
@@ -369,19 +369,17 @@ private fun CommentHeader(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = spacedBy(3.dp),
                 ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_star_trakt_on),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier.size(15.dp),
+                    )
                     Text(
                         text = rating,
                         style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
                         color = TraktTheme.colors.textPrimary,
                         maxLines = 1,
-                    )
-
-                    Icon(
-                        painter = painterResource(R.drawable.ic_star_trakt_on),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier
-                            .size(15.dp),
                     )
                 }
             }
