@@ -71,7 +71,7 @@ internal fun TraktSectionHeader(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = spacedBy(8.dp),
+            horizontalArrangement = spacedBy(12.dp),
             modifier = Modifier.padding(start = 16.dp),
         ) {
             if (extraIcon != null && !collapsed) {
