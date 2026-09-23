@@ -2,9 +2,9 @@ package tv.trakt.trakt.core.klipy
 
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
@@ -111,65 +111,66 @@ private fun GifPickerContent(
         }
     }
 
-    Column(
+    val inputHeight = 48.dp
+
+    Box(
+        contentAlignment = Alignment.Center,
         modifier = modifier
             .fillMaxHeight()
             .imePadding()
             .padding(horizontal = 24.dp),
     ) {
+        when {
+            state.error != null -> {
+                EmptyListCard(text = stringResource(R.string.error_text_unexpected_error_short))
+            }
+
+            state.isEmpty -> {
+                EmptyListCard(text = stringResource(R.string.list_placeholder_empty))
+            }
+
+            else -> {
+                val spacing = 8.dp
+                LazyVerticalStaggeredGrid(
+                    state = gridState,
+                    columns = StaggeredGridCells.Fixed(2),
+                    horizontalArrangement = spacedBy(spacing),
+                    verticalItemSpacing = spacing,
+                    contentPadding = PaddingValues(
+                        top = inputHeight / 2 + 16.dp,
+                    ),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = inputHeight / 2),
+                ) {
+                    items(
+                        items = state.gifs,
+                        key = { it.id },
+                    ) { gif ->
+                        GifCard(
+                            gif = gif,
+                            preview = true,
+                            onClick = { onGifClick(gif) },
+                        )
+                    }
+                }
+            }
+        }
+
+        // The grid is clipped at the bar's midline, so items vanish behind the opaque rounded bar.
         InputField(
             state = inputState,
             icon = painterResource(R.drawable.ic_search_off),
             placeholder = stringResource(R.string.input_placeholder_search_gifs),
             loading = state.loading.isLoading,
-            containerColor = Color.Transparent,
+            height = inputHeight,
+            containerColor = TraktTheme.colors.dialogContainer,
             imeAction = ImeAction.Done,
             modifier = Modifier
                 .fillMaxWidth()
+                .align(Alignment.TopCenter)
                 .focusRequester(focusRequester),
         )
-
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1F),
-        ) {
-            when {
-                state.error != null -> {
-                    EmptyListCard(text = stringResource(R.string.error_text_unexpected_error_short))
-                }
-
-                state.isEmpty -> {
-                    EmptyListCard(text = stringResource(R.string.list_placeholder_empty))
-                }
-
-                else -> {
-                    val spacing = 8.dp
-                    LazyVerticalStaggeredGrid(
-                        state = gridState,
-                        columns = StaggeredGridCells.Fixed(2),
-                        horizontalArrangement = spacedBy(spacing),
-                        verticalItemSpacing = spacing,
-                        contentPadding = PaddingValues(
-                            top = 16.dp,
-                        ),
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        items(
-                            items = state.gifs,
-                            key = { it.id },
-                        ) { gif ->
-                            GifCard(
-                                gif = gif,
-                                preview = true,
-                                onClick = { onGifClick(gif) },
-                            )
-                        }
-                    }
-                }
-            }
-        }
     }
 }
 

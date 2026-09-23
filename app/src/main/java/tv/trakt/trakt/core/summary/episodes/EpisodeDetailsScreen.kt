@@ -417,6 +417,10 @@ internal fun EpisodeDetailsContent(
             DetailsBackground(
                 imageUrl = state.show.images?.getFanartUrl(Size.THUMB),
                 color = state.show.colors?.colors?.second,
+                colorAlpha = when (TraktTheme.colors.isLight) {
+                    true -> 0.33F
+                    false -> 0.63F
+                },
                 translation = listScrollConnection.resultOffset,
                 modifier = Modifier.alpha(ratingAlphaMask),
             )

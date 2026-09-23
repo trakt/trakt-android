@@ -38,6 +38,7 @@ internal fun DetailsBackground(
     imageUrl: String?,
     modifier: Modifier = Modifier,
     color: Color? = null,
+    colorAlpha: Float = 0.63F,
     translation: Float = 0F,
     aspectRatio: Float = TraktTheme.size.detailsBackgroundRatio,
 ) {
@@ -57,7 +58,7 @@ internal fun DetailsBackground(
     val colorGradient = remember {
         verticalGradient(
             colors = listOf(
-                color?.copy(alpha = 0.63F) ?: Color.Transparent,
+                color?.copy(alpha = colorAlpha) ?: Color.Transparent,
                 background,
             ),
         )
