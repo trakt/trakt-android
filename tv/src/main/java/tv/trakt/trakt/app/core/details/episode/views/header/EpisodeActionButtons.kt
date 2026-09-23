@@ -89,6 +89,8 @@ internal fun EpisodeActionButtons(
                                 videoTitle = detailsState.showDetails?.title ?: "",
                                 videoSubtitle = seString,
                                 videoProgress = streamingState.plexStream.progress,
+                                ratingKey = streamingState.plexStream.ratingKey,
+                                token = streamingState.plexStream.token,
                             )
                             context.startActivity(intent)
                         } else {
