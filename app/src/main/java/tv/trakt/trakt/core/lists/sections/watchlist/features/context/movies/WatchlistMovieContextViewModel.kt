@@ -87,7 +87,7 @@ internal class WatchlistMovieContextViewModel(
                 userWatchlistMinLocalSource.removeMovies(setOf(movieId))
 
                 loadProgressUseCase.loadMoviesProgress()
-                ratePromptManager.checkMovies()
+                ratePromptManager.checkRecentlyWatched()
 
                 analytics.progress.logAddWatchedMedia(
                     mediaType = "movie",

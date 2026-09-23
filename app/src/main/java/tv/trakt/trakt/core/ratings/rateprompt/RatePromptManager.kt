@@ -1,15 +1,14 @@
 package tv.trakt.trakt.core.ratings.rateprompt
 
 import kotlinx.coroutines.flow.Flow
-import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState
 
 internal interface RatePromptManager {
-    suspend fun checkMovies()
+    suspend fun checkRecentlyWatched()
 
     suspend fun onUserDismiss(
-        movieId: TraktId,
+        media: RatePromptMedia,
         hasRated: Boolean,
         hasMoreMedia: List<RatePromptMedia>,
     )

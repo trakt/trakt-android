@@ -54,7 +54,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.compose.LifecycleEventEffect
@@ -115,7 +114,8 @@ import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_TRIVIA_EX
 import tv.trakt.trakt.core.notifications.model.NotificationIntentExtras
 import tv.trakt.trakt.core.profile.navigation.ProfileDestination
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
-import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState.AskSuppress
+import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia.MovieMedia
+import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia.ShowMedia
 import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.SearchDestination
 import tv.trakt.trakt.core.search.navigation.navigateToSearch
@@ -126,7 +126,6 @@ import tv.trakt.trakt.core.trivia.navigation.navigateToTrivia
 import tv.trakt.trakt.core.welcome.WelcomeScreen
 import tv.trakt.trakt.core.welcome.onboarding.OnboardingScreen
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.confirmation.RemoveConfirmationSheet
 import tv.trakt.trakt.ui.components.whatsnew.WhatsNewSheet
 import tv.trakt.trakt.ui.snackbar.MainSnackbarHost
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -158,7 +157,6 @@ internal fun MainScreen(
 
     val searchState = rememberSearchState(currentDestination.value?.destination)
     var whatsNewState by remember { mutableStateOf<WhatsNew?>(null) }
-    var stopRatePromptSheet by remember { mutableStateOf(false) }
     var pendingSearchQuery by remember { mutableStateOf<String?>(null) }
 
     LifecycleEventEffect(ON_RESUME) {
@@ -251,13 +249,6 @@ internal fun MainScreen(
         }
     }
 
-    LaunchedEffect(state.ratePrompt) {
-        if (state.ratePrompt is AskSuppress) {
-            stopRatePromptSheet = true
-            viewModel.clearRatePrompt()
-        }
-    }
-
     LaunchedEffect(state.error) {
         val error = state.error ?: return@LaunchedEffect
         when {
@@ -303,19 +294,6 @@ internal fun MainScreen(
                 viewModel.dismissWhatsNew(id)
                 whatsNewState = null
             }
-        },
-    )
-
-    RemoveConfirmationSheet(
-        active = stopRatePromptSheet,
-        title = stringResource(R.string.button_text_stop_asking),
-        message = stringResource(R.string.warning_prompt_suppress_ratings_toast),
-        onYes = {
-            stopRatePromptSheet = false
-            viewModel.suppressRatePrompt()
-        },
-        onNo = {
-            stopRatePromptSheet = false
         },
     )
 
@@ -418,9 +396,14 @@ private fun MainScreenContent(
                             MainRatePromptView(
                                 state = state,
                                 onMediaClick = {
-                                    navController.navigateToMovie(
-                                        movieId = it.movie.ids.trakt,
-                                    )
+                                    when (it) {
+                                        is MovieMedia -> navController.navigateToMovie(
+                                            movieId = it.movie.ids.trakt,
+                                        )
+                                        is ShowMedia -> navController.navigateToShow(
+                                            showId = it.show.ids.trakt,
+                                        )
+                                    }
                                 },
                             )
 
