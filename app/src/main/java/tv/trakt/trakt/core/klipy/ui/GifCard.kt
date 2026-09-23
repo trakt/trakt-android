@@ -53,6 +53,7 @@ internal fun GifCard(
                 .data(preview.url)
                 .crossfade(true)
                 .build(),
+            placeholder = rememberBlurPreviewPainter(gif.blurPreview),
             contentDescription = gif.title.ifBlank { null },
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize(),

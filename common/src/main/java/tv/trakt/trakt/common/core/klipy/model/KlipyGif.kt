@@ -19,12 +19,11 @@ data class KlipyGif(
     val fullMedia: KlipyGifMedia?
         get() = renditions.md?.animated ?: renditions.hd?.animated ?: previewMedia
 
-    /** Plain GIF rendition for the Trakt API - every client can play it, unlike WebP. */
-    val postMedia: KlipyGifMedia?
+    val apiMedia: KlipyGifMedia?
         get() = renditions.md?.gif ?: renditions.hd?.gif ?: renditions.sm?.gif ?: fullMedia
 
     fun toCommentGif(): CommentGif? {
-        val media = postMedia ?: return null
+        val media = apiMedia ?: return null
         return CommentGif(
             url = media.url,
             size = media.width to media.height,

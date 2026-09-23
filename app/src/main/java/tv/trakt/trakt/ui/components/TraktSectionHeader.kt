@@ -59,10 +59,6 @@ internal fun TraktSectionHeader(
                 modifier = Modifier.weight(1F, false),
             )
 
-            if (extraIcon != null && !collapsed) {
-                extraIcon()
-            }
-
             if (!collapsed && chevron) {
                 Icon(
                     painter = painterResource(R.drawable.ic_chevron_right),
@@ -73,17 +69,26 @@ internal fun TraktSectionHeader(
             }
         }
 
-        if (collapsable) {
-            Icon(
-                painter = painterResource(R.drawable.ic_arrow_dropdown),
-                contentDescription = null,
-                tint = TraktTheme.colors.textSecondary,
-                modifier = Modifier
-                    .padding(start = 48.dp)
-                    .rotate(animateRotation)
-                    .size(16.dp)
-                    .onClick(onClick = onCollapseClick),
-            )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = spacedBy(8.dp),
+            modifier = Modifier.padding(start = 16.dp),
+        ) {
+            if (extraIcon != null && !collapsed) {
+                extraIcon()
+            }
+
+            if (collapsable) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_arrow_dropdown),
+                    contentDescription = null,
+                    tint = TraktTheme.colors.textSecondary,
+                    modifier = Modifier
+                        .rotate(animateRotation)
+                        .size(16.dp)
+                        .onClick(onClick = onCollapseClick),
+                )
+            }
         }
     }
 }
@@ -131,7 +136,7 @@ private fun Preview2() {
 private fun Preview3() {
     TraktTheme {
         TraktSectionHeader(
-            title = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec suscipit auctor dui.",
+            title = "Lorem ipsum dolor  elit. ",
             subtitle = "Subtitle Lorem Ipsum",
             collapsed = false,
             extraIcon = {

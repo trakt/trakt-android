@@ -32,6 +32,7 @@ internal fun PostReplySheet(
     active: Boolean,
     comment: Comment?,
     user: User? = null,
+    gifQuery: String? = null,
     onReplyPost: (Comment) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -52,6 +53,7 @@ internal fun PostReplySheet(
                         parametersOf(comment, user)
                     },
                 ),
+                gifQuery = gifQuery,
                 onReplyPost = {
                     onReplyPost(it)
                     sheetScope.dismissWithAction(

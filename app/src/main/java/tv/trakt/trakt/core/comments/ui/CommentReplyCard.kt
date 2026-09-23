@@ -60,6 +60,7 @@ import tv.trakt.trakt.common.helpers.extensions.highlightMentions
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openGoogleTranslate
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CommentGif
@@ -232,25 +233,32 @@ private fun CommentReplyBody(
     modifier: Modifier = Modifier,
 ) {
     val body = @Composable {
-        Text(
-            text = text,
-            style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.3.em),
-            color = TraktTheme.colors.textSecondary,
-            maxLines = Int.MAX_VALUE,
-            modifier = modifier.then(
-                if (blurred) {
-                    Modifier
-                        .blur(4.dp)
-                        .padding(top = 12.dp)
-                        .padding(horizontal = 16.dp)
-                        .onClick { onRevealSpoiler() }
-                } else {
-                    Modifier
-                        .padding(top = 12.dp)
-                        .padding(horizontal = 16.dp)
-                },
-            ),
-        )
+        if (text.isNotBlank()) {
+            Text(
+                text = text,
+                style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.3.em),
+                color = TraktTheme.colors.textSecondary,
+                maxLines = Int.MAX_VALUE,
+                modifier = modifier.then(
+                    if (blurred) {
+                        Modifier
+                            .blur(4.dp)
+                            .padding(top = 12.dp)
+                            .padding(horizontal = 16.dp)
+                            .onClick { onRevealSpoiler() }
+                    } else {
+                        Modifier
+                            .padding(top = 12.dp)
+                            .padding(horizontal = 16.dp)
+                    },
+                ),
+            )
+        } else {
+            Spacer(
+                modifier = modifier
+                    .padding(top = 6.dp),
+            )
+        }
     }
 
     if (blurred) {
@@ -334,7 +342,7 @@ private fun CommentHeader(
                     )
                 }
                 Text(
-                    text = comment.createdAt.format(longDateTimeFormat()).capitalize(),
+                    text = comment.createdAt.toLocal().format(longDateTimeFormat()).capitalize(),
                     style = TraktTheme.typography.meta,
                     color = TraktTheme.colors.textSecondary
                         .copy(alpha = 0.66f),
@@ -496,6 +504,7 @@ private fun Preview() {
                     onClick = {},
                     user = null,
                     reply = PreviewData.comment1.copy(
+                        comment = "",
                         gif = CommentGif(
                             url = "https://example.com/gif.gif",
                             size = 320 to 180,

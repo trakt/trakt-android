@@ -17,13 +17,15 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.core.klipy.model.KlipyGif
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import kotlin.random.Random.Default.nextInt
 
 /**
- * GIF picker: search input on top, trending GIFs below, search results in their place while the
- * user types. Tapping a GIF closes the sheet and reports the pick through [onGifSelected].
+ * GIF picker: search input on top, default results below ([defaultQuery] search, or trending when
+ * null), search results in their place while the user types. Tapping a GIF closes the sheet and
+ * reports the pick through [onGifSelected].
  */
 @Composable
 internal fun GifPickerSheet(
@@ -32,12 +34,13 @@ internal fun GifPickerSheet(
         initialValue = Hidden,
         enabledValues = setOf(Hidden, Expanded),
     ),
+    defaultQuery: String? = null,
     onGifSelected: (KlipyGif) -> Unit,
     onDismiss: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
 
-    // A fresh ViewModel per opening - the picker always starts on trending with an empty input.
+    // A fresh ViewModel per opening - the picker always starts on default results with an empty input.
     val viewModelKey = remember(visible) { nextInt().toString() }
 
     if (visible) {
@@ -46,7 +49,10 @@ internal fun GifPickerSheet(
             onDismiss = onDismiss,
         ) {
             GifPickerView(
-                viewModel = koinViewModel(key = viewModelKey),
+                viewModel = koinViewModel(
+                    key = viewModelKey,
+                    parameters = { parametersOf(defaultQuery) },
+                ),
                 onGifClick = { gif ->
                     scope.dismissWithAction(
                         sheet = state,

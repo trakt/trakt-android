@@ -10,7 +10,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,8 +18,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -57,20 +54,19 @@ import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.klipy.GifPickerSheet
-import tv.trakt.trakt.core.klipy.ui.GifCard
+import tv.trakt.trakt.core.klipy.ui.SelectedGifPreview
+import tv.trakt.trakt.core.klipy.ui.SelectedGifWidth
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InputField
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.switch.TraktSwitch
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-// Preview sits beside the text area; wide enough to read, narrow enough to keep the input usable.
-private val SelectedGifWidth = 112.dp
-
 @Composable
 internal fun PostCommentView(
     viewModel: PostCommentViewModel,
     modifier: Modifier = Modifier,
+    gifQuery: String? = null,
     onCommentPost: (Comment) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -83,6 +79,7 @@ internal fun PostCommentView(
 
     ViewContent(
         state = state,
+        gifQuery = gifQuery,
         onSubmitClick = { comment, spoiler, gif ->
             viewModel.submitComment(
                 comment = comment,
@@ -101,6 +98,7 @@ internal fun PostCommentView(
 private fun ViewContent(
     state: PostCommentState,
     modifier: Modifier = Modifier,
+    gifQuery: String? = null,
     onSubmitClick: (comment: String, spoiler: Boolean, gif: CommentGif?) -> Unit,
     onErrorClick: () -> Unit,
 ) {
@@ -198,6 +196,7 @@ private fun ViewContent(
 
         GifPickerSheet(
             visible = isGifPickerVisible,
+            defaultQuery = gifQuery,
             onGifSelected = { gif -> selectedGif = gif },
             onDismiss = { isGifPickerVisible = false },
         )
@@ -274,38 +273,6 @@ private fun ViewContent(
                 )
             },
             modifier = Modifier.fillMaxWidth(),
-        )
-    }
-}
-
-@Composable
-private fun SelectedGifPreview(
-    gif: KlipyGif,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    onRemoveClick: () -> Unit = {},
-) {
-    Box(modifier = modifier) {
-        GifCard(
-            gif = gif,
-            preview = false,
-            shape = RoundedCornerShape(16.dp),
-        )
-
-        Icon(
-            painter = painterResource(R.drawable.ic_close),
-            contentDescription = null,
-            tint = TraktTheme.colors.textPrimary,
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(6.dp)
-                .background(
-                    color = TraktTheme.colors.dialogContainer.copy(alpha = 0.8F),
-                    shape = CircleShape,
-                )
-                .size(24.dp)
-                .padding(5.dp)
-                .onClick(enabled = enabled, onClick = onRemoveClick),
         )
     }
 }

@@ -259,7 +259,9 @@ private fun CommentCardContent(
                 body()
                 CommentGifView(
                     gif = gif,
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 20.dp),
                 )
             }
             gifLayout == CommentGifLayout.Side -> {
@@ -490,27 +492,24 @@ private fun CommentHeader(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_star_trakt_on),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier
-                            .size(15.dp),
-                    )
-
-                    Spacer(modifier = Modifier.width(3.dp))
-
                     Text(
                         text = rating,
                         style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
                         color = TraktTheme.colors.textPrimary,
                         maxLines = 1,
                     )
+                    Spacer(modifier = Modifier.width(3.dp))
+                    Icon(
+                        painter = painterResource(R.drawable.ic_star_trakt_on),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier.size(15.dp),
+                    )
                 }
             }
 
             if (userComment && deleteEnabled) {
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(14.dp))
 
                 Icon(
                     painter = painterResource(R.drawable.ic_trash),

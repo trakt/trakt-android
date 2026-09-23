@@ -224,6 +224,7 @@ internal fun NavGraphBuilder.showsScreens(
                     mediaId = show.ids.trakt,
                     mediaType = Show,
                     mediaImage = show.images?.getFanartUrl(),
+                    mediaTitle = show.title,
                     filter = filter,
                 )
             },
@@ -322,6 +323,7 @@ internal fun NavGraphBuilder.episodesScreens(
                     episodeId = episode.ids.trakt,
                     showId = show.ids.trakt,
                     showImage = show.images?.getFanartUrl(),
+                    showTitle = show.title,
                     seasonEpisode = episode.seasonEpisode,
                     filter = filter,
                 )
@@ -384,6 +386,7 @@ internal fun NavGraphBuilder.moviesScreens(
                     mediaId = movie.ids.trakt,
                     mediaType = Movie,
                     mediaImage = movie.images?.getFanartUrl(),
+                    mediaTitle = movie.title,
                     filter = filter,
                 )
             },

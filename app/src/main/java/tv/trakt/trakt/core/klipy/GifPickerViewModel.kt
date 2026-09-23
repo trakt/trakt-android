@@ -33,6 +33,7 @@ private val SEARCH_DEBOUNCE = 350.milliseconds
 
 @Suppress("UNCHECKED_CAST")
 internal class GifPickerViewModel(
+    private val defaultQuery: String?,
     private val remoteSource: GifsRemoteDataSource,
     private val sessionManager: SessionManager,
 ) : ViewModel() {
@@ -46,7 +47,7 @@ internal class GifPickerViewModel(
 
     private var page = 1
     private var hasNextPage = false
-    private var trending: TrendingGifs? = null
+    private var defaultGifs: DefaultGifs? = null
     private var loadJob: Job? = null
     private var loadMoreJob: Job? = null
     private var userId: TraktId? = null
@@ -79,7 +80,7 @@ internal class GifPickerViewModel(
                 page = result.page
                 hasNextPage = result.hasNext
                 gifsState.update { current -> (current + result.items).toImmutableList() }
-                cacheTrending()
+                cacheDefaultGifs()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -94,15 +95,16 @@ internal class GifPickerViewModel(
     }
 
     /**
-     * Loads the first page for the current query. An empty query means trending, which is kept
-     * in memory so clearing the input restores it without another round trip.
+     * Loads the first page for the current query. An empty input means the default results
+     * (media-based search when [defaultQuery] is set, trending otherwise), which are kept in
+     * memory so clearing the input restores them without another round trip.
      */
     private fun loadGifs(debounce: Duration) {
         loadJob?.cancel()
         loadMoreJob?.cancel()
 
         if (queryState.value.isBlank()) {
-            trending?.let { cached ->
+            defaultGifs?.let { cached ->
                 page = cached.page
                 hasNextPage = cached.hasNext
                 gifsState.update { cached.gifs }
@@ -126,7 +128,7 @@ internal class GifPickerViewModel(
                 hasNextPage = result.hasNext
                 gifsState.update { result.items }
 
-                cacheTrending()
+                cacheDefaultGifs()
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -141,7 +143,7 @@ internal class GifPickerViewModel(
     }
 
     private suspend fun loadPage(page: Int): GifPage {
-        val term = queryState.value.trim()
+        val term = queryState.value.trim().ifEmpty { defaultQuery?.trim().orEmpty() }
         val query = GifsQuery(
             term = term.ifEmpty { null },
             pagination = Pagination(page = page, limit = GIFS_DEFAULT_PER_PAGE),
@@ -154,17 +156,17 @@ internal class GifPickerViewModel(
         }
     }
 
-    private fun cacheTrending() {
+    private fun cacheDefaultGifs() {
         if (queryState.value.isNotBlank()) return
 
-        trending = TrendingGifs(
+        defaultGifs = DefaultGifs(
             gifs = gifsState.value,
             page = page,
             hasNext = hasNextPage,
         )
     }
 
-    private data class TrendingGifs(
+    private data class DefaultGifs(
         val gifs: ImmutableList<KlipyGif>,
         val page: Int,
         val hasNext: Boolean,

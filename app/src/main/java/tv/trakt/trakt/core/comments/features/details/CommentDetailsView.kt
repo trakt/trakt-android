@@ -63,6 +63,7 @@ import tv.trakt.trakt.common.helpers.extensions.googleTranslateActivityInfo
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openGoogleTranslate
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CommentGif
@@ -86,6 +87,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun CommentDetailsView(
     viewModel: CommentDetailsViewModel,
     modifier: Modifier = Modifier,
+    gifQuery: String? = null,
     onDeleteComment: (commentId: TraktId) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -118,6 +120,7 @@ internal fun CommentDetailsView(
         active = postReplySheet != null,
         comment = state.comment,
         user = postReplySheet,
+        gifQuery = gifQuery,
         onReplyPost = viewModel::addReply,
         onDismiss = {
             postReplySheet = null
@@ -346,7 +349,7 @@ private fun CommentHeader(
                 )
             }
             Text(
-                text = comment.createdAt.format(longDateTimeFormat()).capitalize(),
+                text = comment.createdAt.toLocal().format(longDateTimeFormat()).capitalize(),
                 style = TraktTheme.typography.meta,
                 color = TraktTheme.colors.textSecondary
                     .copy(alpha = 0.66f),

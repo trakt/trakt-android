@@ -2,15 +2,27 @@
 
 package tv.trakt.trakt.core.comments.features.postreply
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -24,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.text.input.ImeAction
@@ -35,12 +48,17 @@ import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import tv.trakt.trakt.common.core.klipy.model.KlipyGif
 import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.core.klipy.GifPickerSheet
+import tv.trakt.trakt.core.klipy.ui.SelectedGifPreview
+import tv.trakt.trakt.core.klipy.ui.SelectedGifWidth
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InputField
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
@@ -51,6 +69,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun PostReplyView(
     viewModel: PostReplyViewModel,
     modifier: Modifier = Modifier,
+    gifQuery: String? = null,
     onReplyPost: (Comment) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -63,10 +82,12 @@ internal fun PostReplyView(
 
     ViewContent(
         state = state,
-        onSubmitClick = { reply, spoiler ->
+        gifQuery = gifQuery,
+        onSubmitClick = { reply, spoiler, gif ->
             viewModel.submitReply(
                 reply = reply,
                 spoiler = spoiler,
+                gif = gif,
             )
         },
         onErrorClick = {
@@ -80,15 +101,22 @@ internal fun PostReplyView(
 private fun ViewContent(
     state: PostReplyState,
     modifier: Modifier = Modifier,
-    onSubmitClick: (comment: String, spoiler: Boolean) -> Unit,
+    gifQuery: String? = null,
+    onSubmitClick: (comment: String, spoiler: Boolean, gif: CommentGif?) -> Unit,
     onErrorClick: () -> Unit,
 ) {
     val inputInitial = "@${state.commentUser?.username} "
     val inputState = rememberTextFieldState()
 
+    var isGifPickerVisible by remember { mutableStateOf(false) }
+    var selectedGif by remember { mutableStateOf<KlipyGif?>(null) }
+
+    // A picked GIF is content on its own, so the minimum word count applies to text-only replies.
     val isValid = remember {
         val spaceRegex = "\\s+".toRegex()
         derivedStateOf {
+            if (selectedGif != null) return@derivedStateOf true
+
             val input = inputState.text.toString().trim()
             input.isNotBlank() && input.split(spaceRegex).size >= 5
         }
@@ -115,36 +143,91 @@ private fun ViewContent(
         verticalArrangement = spacedBy(0.dp),
         modifier = modifier,
     ) {
-        InputField(
-            state = inputState,
-            enabled = !isLoading,
-            placeholder = inputInitial,
-            containerColor = Color.Transparent,
-            borderColor = when {
-                isNotEmpty.value && !isValid.value -> Red400
-                else -> TraktTheme.colors.accent
-            },
-            lineLimits = TextFieldLineLimits.MultiLine(
-                minHeightInLines = 5,
-                maxHeightInLines = 15,
-            ),
-            imeAction = ImeAction.Default,
-            modifier = Modifier.fillMaxWidth(),
+        Row(
+            verticalAlignment = Alignment.Bottom,
+            modifier = Modifier
+                .fillMaxWidth()
+                .animateContentSize(),
+        ) {
+            Box(
+                modifier = Modifier.weight(1F),
+            ) {
+                InputField(
+                    state = inputState,
+                    enabled = !isLoading,
+                    placeholder = inputInitial,
+                    containerColor = Color.Transparent,
+                    borderColor = when {
+                        isNotEmpty.value && !isValid.value -> Red400
+                        else -> TraktTheme.colors.accent
+                    },
+                    lineLimits = TextFieldLineLimits.MultiLine(
+                        minHeightInLines = 5,
+                        maxHeightInLines = 15,
+                    ),
+                    imeAction = ImeAction.Default,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+
+                Icon(
+                    painter = painterResource(R.drawable.ic_gif),
+                    contentDescription = stringResource(R.string.button_label_add_gif),
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .size(42.dp)
+                        .padding(10.dp)
+                        .onClick(enabled = !isLoading) {
+                            isGifPickerVisible = true
+                        },
+                )
+            }
+
+            AnimatedContent(
+                targetState = selectedGif,
+                contentKey = { it?.id },
+                transitionSpec = {
+                    (fadeIn() + expandHorizontally(expandFrom = Alignment.Start))
+                        .togetherWith(fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start))
+                        .using(SizeTransform(clip = false))
+                },
+                label = "selectedGif",
+            ) { gif ->
+                if (gif != null) {
+                    SelectedGifPreview(
+                        gif = gif,
+                        enabled = !isLoading,
+                        onRemoveClick = { selectedGif = null },
+                        modifier = Modifier
+                            .padding(start = 12.dp)
+                            .width(SelectedGifWidth),
+                    )
+                }
+            }
+        }
+
+        GifPickerSheet(
+            visible = isGifPickerVisible,
+            defaultQuery = gifQuery,
+            onGifSelected = { gif -> selectedGif = gif },
+            onDismiss = { isGifPickerVisible = false },
         )
 
-        Text(
-            text = stringResource(R.string.translated_value_error_reply_invalid_content),
-            color = when {
-                isNotEmpty.value && !isValid.value -> Red400
-                else -> TraktTheme.colors.textSecondary
-            },
-            style = TraktTheme.typography.meta.copy(fontWeight = W400),
-            maxLines = 1,
-            overflow = Ellipsis,
-            modifier = Modifier
-                .align(Alignment.End)
-                .padding(top = 4.dp, end = 8.dp),
-        )
+        if (selectedGif == null) {
+            Text(
+                text = stringResource(R.string.translated_value_error_reply_invalid_content),
+                color = when {
+                    isNotEmpty.value && !isValid.value -> Red400
+                    else -> TraktTheme.colors.textSecondary
+                },
+                style = TraktTheme.typography.meta.copy(fontWeight = W400),
+                maxLines = 1,
+                overflow = Ellipsis,
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(top = 4.dp, end = 8.dp),
+            )
+        }
 
         if (state.error != null) {
             Text(
@@ -164,7 +247,10 @@ private fun ViewContent(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = spacedBy(12.dp),
             modifier = Modifier.padding(
-                top = 0.dp,
+                top = when {
+                    selectedGif == null -> 0.dp
+                    else -> 15.dp
+                },
                 bottom = 17.dp,
             ),
         ) {
@@ -195,6 +281,7 @@ private fun ViewContent(
                 onSubmitClick(
                     input,
                     isSpoiler,
+                    selectedGif?.toCommentGif(),
                 )
             },
             modifier = Modifier.fillMaxWidth(),
@@ -219,7 +306,7 @@ private fun Preview() {
                 state = PostReplyState(
                     commentUser = PreviewData.user1,
                 ),
-                onSubmitClick = { _, _ -> },
+                onSubmitClick = { _, _, _ -> },
                 onErrorClick = { },
             )
         }

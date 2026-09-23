@@ -20,6 +20,7 @@ import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.klipy.toGifQuery
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
@@ -34,6 +35,7 @@ internal fun PostCommentSheet(
     active: Boolean,
     mediaId: TraktId?,
     mediaType: MediaType?,
+    mediaTitle: String? = null,
     onCommentPost: (Comment) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -54,6 +56,7 @@ internal fun PostCommentSheet(
                         parametersOf(mediaId, mediaType)
                     },
                 ),
+                gifQuery = mediaType?.toGifQuery(mediaTitle),
                 onCommentPost = {
                     onCommentPost(it)
                     sheetScope.dismissWithAction(

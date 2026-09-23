@@ -73,6 +73,7 @@ import tv.trakt.trakt.core.comments.ui.CommentCard
 import tv.trakt.trakt.core.comments.ui.CommentGifLayout
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
 import tv.trakt.trakt.core.comments.ui.CommentsLanguageDropdown
+import tv.trakt.trakt.core.klipy.toGifQuery
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EmptyListCard
 import tv.trakt.trakt.ui.components.TraktSectionHeader
@@ -129,6 +130,7 @@ internal fun EpisodeCommentsView(
 
     CommentDetailsSheet(
         comment = commentSheet,
+        gifQuery = MediaType.Episode.toGifQuery(state.media?.first?.title),
         onDeleteComment = viewModel::deleteComment,
         onDismiss = {
             commentSheet = null
@@ -139,6 +141,7 @@ internal fun EpisodeCommentsView(
         active = postCommentSheet,
         mediaId = state.media?.second?.ids?.trakt,
         mediaType = MediaType.Episode,
+        mediaTitle = state.media?.first?.title,
         onCommentPost = viewModel::addComment,
         onDismiss = {
             postCommentSheet = false
