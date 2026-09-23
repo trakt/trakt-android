@@ -1,9 +1,7 @@
 package tv.trakt.trakt.ui.components.dateselection.otherdatepicker
 
-import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.keyframes
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
@@ -30,13 +28,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush.Companion.verticalGradient
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -67,7 +65,6 @@ import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
-import tv.trakt.trakt.ui.components.dateselection.RangeSelectableDates
 import tv.trakt.trakt.ui.components.dateselection.TraktDatePicker
 import tv.trakt.trakt.ui.components.dateselection.TraktTimePicker
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
@@ -117,14 +114,10 @@ private fun OtherDatePickerContent(
     var selectedDate by remember { mutableStateOf<Instant?>(null) }
     var selectedSlotId by remember { mutableStateOf<Long?>(null) }
 
-    // Bounds of the selected slot: manual edits stay between the neighbour items.
-    var newerLimit by remember { mutableStateOf<Instant?>(null) }
-    var olderLimit by remember { mutableStateOf<Instant?>(null) }
-
     var editingDate by remember { mutableStateOf(false) }
     var pendingDate by remember { mutableStateOf<Instant?>(null) }
 
-    var wobbleTrigger by remember { mutableStateOf(0) }
+    var wobbleTrigger by remember { mutableIntStateOf(0) }
     val wobbleOffset = remember { Animatable(0f) }
     val wobbleAmplitude = with(LocalDensity.current) { 6.dp.toPx() }
 
@@ -136,9 +129,9 @@ private fun OtherDatePickerContent(
                 durationMillis = 450
                 0f at 0
                 wobbleAmplitude at 75
-                -wobbleAmplitude at 150
+                (-wobbleAmplitude) at 150
                 wobbleAmplitude * 0.6F at 225
-                -wobbleAmplitude * 0.6F at 300
+                (-wobbleAmplitude) * 0.6F at 300
                 wobbleAmplitude * 0.3F at 375
                 0f at 450
             },
@@ -176,43 +169,30 @@ private fun OtherDatePickerContent(
                 )
             }
 
-            val fieldHeight = 64.dp
-            Crossfade(
-                targetState = selectedDate != null,
-                animationSpec = tween(200),
+            Column(
+                verticalArrangement = spacedBy(24.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(fieldHeight),
-            ) { selected ->
-                Box(
-                    contentAlignment = Alignment.CenterStart,
+                    .padding(contentPadding)
+                    .padding(top = 16.dp),
+            ) {
+                SelectedDateField(
+                    date = selectedDate,
+                    onClick = { editingDate = true },
+                    modifier = Modifier.height(48.dp),
+                )
+
+                Text(
+                    text = stringResource(R.string.text_pick_history_slot, title),
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.paragraphSmall,
+                    maxLines = 1,
+                    overflow = Ellipsis,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(fieldHeight)
-                        .clip(RoundedCornerShape(12.dp))
-                        .padding(contentPadding)
-                        .padding(top = 16.dp),
-                ) {
-                    if (selected) {
-                        SelectedDateField(
-                            date = selectedDate,
-                            onClick = { editingDate = true },
-                            modifier = Modifier.height(fieldHeight),
-                        )
-                    } else {
-                        Text(
-                            text = stringResource(R.string.text_pick_history_slot, title),
-                            color = TraktTheme.colors.textPrimary,
-                            style = TraktTheme.typography.paragraphSmall,
-                            maxLines = 1,
-                            overflow = Ellipsis,
-                            modifier = Modifier
-                                .graphicsLayer {
-                                    translationX = wobbleOffset.value
-                                },
-                        )
-                    }
-                }
+                        .graphicsLayer {
+                            translationX = wobbleOffset.value
+                        },
+                )
             }
 
             HistoryList(
@@ -222,8 +202,6 @@ private fun OtherDatePickerContent(
                 onSlotClick = { before, after ->
                     if (after != null) {
                         selectedSlotId = after.id
-                        newerLimit = before?.activityAt ?: nowUtcInstant()
-                        olderLimit = after.activityAt
                         selectedDate = midpointDate(
                             newer = before?.activityAt ?: nowUtcInstant(),
                             older = after.activityAt,
@@ -234,7 +212,7 @@ private fun OtherDatePickerContent(
                 modifier = Modifier
                     .fillMaxHeight()
                     .padding(contentPadding)
-                    .padding(top = 2.dp),
+                    .padding(top = 8.dp),
             )
         }
 
@@ -270,16 +248,10 @@ private fun OtherDatePickerContent(
         }
     }
 
-    val older = olderLimit
-    val newer = newerLimit
-    if (editingDate && older != null && newer != null) {
+    if (editingDate) {
         TraktDatePicker(
             active = pendingDate == null,
-            initialDate = (selectedDate ?: newer).toLocalDay(),
-            selectableDates = RangeSelectableDates(
-                minDay = older.toLocalDay(),
-                maxDay = newer.toLocalDay(),
-            ),
+            initialDate = (selectedDate ?: nowUtcInstant()).toLocalDay(),
             onDateSelected = { pendingDate = it },
             onDismiss = {
                 editingDate = false
@@ -293,8 +265,7 @@ private fun OtherDatePickerContent(
             initialTime = selectedDate?.toLocalTime(),
             onDateTimeSelected = { dateTimeUtc ->
                 val localDateTime = LocalDateTime.ofInstant(dateTimeUtc, UTC)
-                val instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant()
-                selectedDate = instant.coerceIn(older, newer)
+                selectedDate = localDateTime.atZone(ZoneId.systemDefault()).toInstant()
                 editingDate = false
                 pendingDate = null
             },
@@ -324,7 +295,7 @@ private fun SelectedDateField(
     ) {
         Text(
             text = date?.toLocal()?.format(longDateTimeFormat())
-                ?: stringResource(R.string.date_time_label_watched),
+                ?: stringResource(R.string.button_text_mark_as_watched_other_date),
             color = when (date) {
                 null -> TraktTheme.colors.textSecondary
                 else -> TraktTheme.colors.textPrimary
@@ -333,14 +304,12 @@ private fun SelectedDateField(
             modifier = Modifier.weight(1F),
         )
 
-        if (date != null) {
-            Icon(
-                painter = painterResource(R.drawable.ic_edit),
-                contentDescription = null,
-                tint = TraktTheme.colors.textPrimary,
-                modifier = Modifier.size(19.dp),
-            )
-        }
+        Icon(
+            painter = painterResource(R.drawable.ic_edit),
+            contentDescription = null,
+            tint = TraktTheme.colors.textPrimary,
+            modifier = Modifier.size(19.dp),
+        )
     }
 }
 
