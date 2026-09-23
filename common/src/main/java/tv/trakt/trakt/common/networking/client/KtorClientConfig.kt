@@ -60,6 +60,45 @@ internal fun HttpClientConfig<*>.applyConfig(
     fileStorage: CacheStorage,
     cacheMarkerProvider: CacheMarkerProvider,
 ) {
+    applyBaseConfig(
+        fileStorage = fileStorage,
+        debugLogLevel = LogLevel.ALL,
+    )
+
+    install(CacheBusterPlugin) {
+        this.cacheMarkerProvider = cacheMarkerProvider
+    }
+
+    if (BuildConfig.DEBUG && BuildConfig.DEBUG_DELAY_ENABLED) {
+        install(NetworkDelayPlugin)
+    }
+
+    defaultRequest {
+        header(HttpHeaders.ContentType, Application.Json)
+        header(HEADER_TRAKT_API_KEY, BuildConfig.TRAKT_API_KEY)
+        header(HEADER_TRAKT_API_VERSION, TRAKT_API_VERSION_VALUE)
+    }
+}
+
+/**
+ * KLIPY identifies the app through its path key, so no Trakt headers and no cache buster - the
+ * responses are safe to serve from the HTTP cache.
+ */
+internal fun HttpClientConfig<*>.applyKlipyConfig(fileStorage: CacheStorage) {
+    applyBaseConfig(
+        fileStorage = fileStorage,
+        debugLogLevel = LogLevel.HEADERS,
+    )
+
+    defaultRequest {
+        header(HttpHeaders.ContentType, Application.Json)
+    }
+}
+
+private fun HttpClientConfig<*>.applyBaseConfig(
+    fileStorage: CacheStorage,
+    debugLogLevel: LogLevel,
+) {
     expectSuccess = true
 
     install(UserAgent) {
@@ -96,24 +135,10 @@ internal fun HttpClientConfig<*>.applyConfig(
             }
         }
         level = when {
-            BuildConfig.DEBUG -> LogLevel.ALL
+            BuildConfig.DEBUG -> debugLogLevel
             else -> LogLevel.NONE
         }
         sanitizeHeader { !BuildConfig.DEBUG && it == HttpHeaders.Authorization }
-    }
-
-    install(CacheBusterPlugin) {
-        this.cacheMarkerProvider = cacheMarkerProvider
-    }
-
-    if (BuildConfig.DEBUG && BuildConfig.DEBUG_DELAY_ENABLED) {
-        install(NetworkDelayPlugin)
-    }
-
-    defaultRequest {
-        header(HttpHeaders.ContentType, Application.Json)
-        header(HEADER_TRAKT_API_KEY, BuildConfig.TRAKT_API_KEY)
-        header(HEADER_TRAKT_API_VERSION, TRAKT_API_VERSION_VALUE)
     }
 }
 

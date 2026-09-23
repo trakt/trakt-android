@@ -6,7 +6,9 @@ import org.openapitools.client.models.PostCommentsPostRequest
 import org.openapitools.client.models.PostCommentsPostRequestAllOfOneOfMovie
 import org.openapitools.client.models.PostCommentsPostRequestAllOfOneOfMovieIds
 import org.openapitools.client.models.PostCommentsReplyRequest
+import org.openapitools.client.models.PostCommentsReplyRequestGif
 import org.openapitools.client.models.PostCommentsReportRequest
+import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CommentDto
 import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
@@ -20,10 +22,12 @@ class CommentsApiClient(
         showId: TraktId,
         text: String,
         spoiler: Boolean,
+        gif: CommentGif?,
     ): CommentDto {
         val request = PostCommentsPostRequest(
             comment = text,
             spoiler = spoiler,
+            gif = gif?.toRequest(),
             show = PostCommentsPostRequestAllOfOneOfMovie(
                 ids = PostCommentsPostRequestAllOfOneOfMovieIds(
                     trakt = showId.value,
@@ -41,10 +45,12 @@ class CommentsApiClient(
         movieId: TraktId,
         text: String,
         spoiler: Boolean,
+        gif: CommentGif?,
     ): CommentDto {
         val request = PostCommentsPostRequest(
             comment = text,
             spoiler = spoiler,
+            gif = gif?.toRequest(),
             movie = PostCommentsPostRequestAllOfOneOfMovie(
                 ids = PostCommentsPostRequestAllOfOneOfMovieIds(
                     trakt = movieId.value,
@@ -62,10 +68,12 @@ class CommentsApiClient(
         seasonId: TraktId,
         text: String,
         spoiler: Boolean,
+        gif: CommentGif?,
     ): CommentDto {
         val request = PostCommentsPostRequest(
             comment = text,
             spoiler = spoiler,
+            gif = gif?.toRequest(),
             season = PostCommentsPostRequestAllOfOneOfMovie(
                 ids = PostCommentsPostRequestAllOfOneOfMovieIds(
                     trakt = seasonId.value,
@@ -83,10 +91,12 @@ class CommentsApiClient(
         episodeId: TraktId,
         text: String,
         spoiler: Boolean,
+        gif: CommentGif?,
     ): CommentDto {
         val request = PostCommentsPostRequest(
             comment = text,
             spoiler = spoiler,
+            gif = gif?.toRequest(),
             episode = PostCommentsPostRequestAllOfOneOfMovie(
                 ids = PostCommentsPostRequestAllOfOneOfMovieIds(
                     trakt = episodeId.value,
@@ -104,10 +114,12 @@ class CommentsApiClient(
         commentId: TraktId,
         text: String,
         spoiler: Boolean,
+        gif: CommentGif?,
     ): CommentDto {
         val request = PostCommentsReplyRequest(
             comment = text,
             spoiler = spoiler,
+            gif = gif?.toRequest(),
         )
 
         val result = authorizedApi.postCommentsReply(
@@ -159,4 +171,12 @@ class CommentsApiClient(
 
         return response.body()
     }
+}
+
+private fun CommentGif.toRequest(): PostCommentsReplyRequestGif {
+    return PostCommentsReplyRequestGif(
+        url = url,
+        width = size.first.takeIf { it > 0 },
+        height = size.second.takeIf { it > 0 },
+    )
 }
