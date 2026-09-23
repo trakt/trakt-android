@@ -92,6 +92,7 @@ import tv.trakt.trakt.common.model.MediaType.Episode
 import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.WhatsNew
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.auth.model.AuthorizationException
 import tv.trakt.trakt.core.billing.navigation.navigateToBilling
 import tv.trakt.trakt.core.calendar.navigation.navigateToCalendar
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveEpisode
@@ -258,12 +259,14 @@ internal fun MainScreen(
     }
 
     LaunchedEffect(state.error) {
-        state.error?.let {
-            if (it.getHttpCode() == HTTP_ERROR_TRAKT_VIP_LIMIT) {
-                navController.navigateToBilling()
-            }
-            viewModel.clearError()
+        val error = state.error ?: return@LaunchedEffect
+        when {
+            error is AuthorizationException -> localSnackbar.showSnackbar(
+                message = localRes.getString(R.string.error_text_unexpected_error_short),
+            )
+            error.getHttpCode() == HTTP_ERROR_TRAKT_VIP_LIMIT -> navController.navigateToBilling()
         }
+        viewModel.clearError()
     }
 
     LaunchedAppReview(

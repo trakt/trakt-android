@@ -6,7 +6,8 @@ import tv.trakt.trakt.common.Config
 import java.util.Locale
 
 internal object ConfigAuth {
-    const val OAUTH_REDIRECT_URI = "trakt://auth"
+    const val OAUTH_REDIRECT_SCHEME = "trakt"
+    const val OAUTH_REDIRECT_URI = "$OAUTH_REDIRECT_SCHEME://auth"
 
     /**
      * Builds the OAuth authorization URL for the given PKCE [codeVerifier] (RFC 7636). The

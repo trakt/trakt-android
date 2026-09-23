@@ -6,7 +6,6 @@ import android.content.pm.ActivityInfo
 import android.content.res.Configuration.UI_MODE_NIGHT_MASK
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -45,6 +44,7 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.ui.theme.colors.DarkColors
 import tv.trakt.trakt.common.ui.theme.colors.LightColors
 import tv.trakt.trakt.core.auth.ConfigAuth
+import tv.trakt.trakt.core.auth.ConfigAuth.OAUTH_REDIRECT_SCHEME
 import tv.trakt.trakt.core.auth.ConfigAuth.OAUTH_REDIRECT_URI
 import tv.trakt.trakt.core.auth.Pkce
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
@@ -94,6 +94,7 @@ internal class MainActivity : AppCompatActivity() {
 
         setupOrientation()
         setupWindowBackground(mode = themeModeCache.read() ?: ThemeMode.Default)
+        handleTraktAuthorization(intent)
 
         enableEdgeToEdge(
             navigationBarStyle = SystemBarStyle.dark(
@@ -205,7 +206,7 @@ internal class MainActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         newIntent.value = intent
-        handleTraktAuthorization(intent.data)
+        handleTraktAuthorization(intent)
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -253,20 +254,32 @@ internal class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun handleTraktAuthorization(authData: Uri?) {
-        Timber.d("Handling Trakt authorization with data: $authData")
-        if (authData.toString().startsWith(OAUTH_REDIRECT_URI)) {
-            authData?.getQueryParameter("code")?.let { code ->
-                runBlocking {
-                    authPreferences.edit {
-                        it[authCodeKey] = code
-                    }
-                }
-            }
-        } else {
+    private fun handleTraktAuthorization(intent: Intent?) {
+        val authData = intent?.data ?: return
+        if (authData.scheme != OAUTH_REDIRECT_SCHEME) return
+
+        Timber.d("Handling Trakt authorization with data: %s", authData)
+        if (!authData.toString().startsWith(OAUTH_REDIRECT_URI)) {
             Timber.recordError(
                 IllegalArgumentException("Invalid Trakt authorization data: $authData"),
             )
+            return
+        }
+
+        val code = authData.getQueryParameter("code")
+        if (code.isNullOrBlank()) {
+            Timber.recordError(
+                IllegalArgumentException("Trakt authorization redirect is missing code: $authData"),
+            )
+            return
+        }
+
+        // Consume the intent so a configuration change does not replay the same code.
+        intent.data = null
+        runBlocking {
+            authPreferences.edit {
+                it[authCodeKey] = code
+            }
         }
     }
 

@@ -45,6 +45,7 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.WhatsNew
+import tv.trakt.trakt.core.auth.model.AuthorizationException
 import tv.trakt.trakt.core.auth.usecase.AuthorizeUserUseCase
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
 import tv.trakt.trakt.core.auth.usecase.codeVerifierKey
@@ -362,6 +363,7 @@ internal class MainViewModel(
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     logoutUser()
+                    errorState.update { AuthorizationException(error) }
                     Timber.recordError(error)
                 }
             } finally {
