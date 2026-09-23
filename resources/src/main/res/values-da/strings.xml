@@ -25,6 +25,7 @@
   <string name="action_toast_removed_from_history_generic">Fjernet fra din historik</string>
   <string name="action_toast_removed_from_watchlist"><b>%s</b> blev fjernet fra din huskeliste</string>
   <string name="action_toast_removed_from_watchlist_generic">Fjernet fra din huskeliste</string>
+  <string name="advanced_filter_label_parental_guide">%1$s: %2$s til %3$s</string>
   <string name="advanced_filter_label_ratings">Bedømmelse fra %1$s til %2$s</string>
   <string name="advanced_filter_label_release_year">Udgivet i %1$d til %2$d</string>
   <string name="advanced_filter_label_runtime">Spilletid fra %1$d til %2$d minutter.</string>
@@ -46,6 +47,7 @@
   <string name="button_label_activity_ratings">Se bedømmelser</string>
   <string name="button_label_activity_reviews">Se anmeldelser</string>
   <string name="button_label_add_comment">Tilføj anmeldelse</string>
+  <string name="button_label_add_gif">Tilføj en GIF</string>
   <string name="button_label_add_new_comment">Tilføj en ny anmeldelse</string>
   <string name="button_label_add_note">Tilføj en note til %s</string>
   <string name="button_label_add_to_favorites">Føj \"%s\" til dine favoritter</string>
@@ -71,6 +73,7 @@
   <string name="button_label_change_email">Skift e-mail</string>
   <string name="button_label_change_location">Skift sted</string>
   <string name="button_label_change_plex_home_users">Skift Plex Home-brugere</string>
+  <string name="button_label_change_rating">Ændr vurdering for \"%s\"</string>
   <string name="button_label_change_username">Skift brugernavn</string>
   <string name="button_label_checkin">Ser nu \"%s\"</string>
   <string name="button_label_clean_up_episodes">Fjern duplikerede episodeafspilninger fra din historik.</string>
@@ -191,6 +194,7 @@
   <string name="button_label_profile_options">Profilindstillinger</string>
   <string name="button_label_progress_completed">Se afsluttede serier</string>
   <string name="button_label_progress_dropped">Se opgivne serier</string>
+  <string name="button_label_progress_ended">Se afsluttede serier</string>
   <string name="button_label_progress_in_progress">Se serier i gang</string>
   <string name="button_label_rate">Bedøm \"%s\"</string>
   <string name="button_label_raw_export">Eksporter en ZIP-fil indeholdende dine rå data.</string>
@@ -204,6 +208,7 @@
   <string name="button_label_remove_from_personal_list">Fjern \"%1$s\" fra %2$s</string>
   <string name="button_label_remove_from_watched">Fjern \"%s\" fra din Set historik</string>
   <string name="button_label_remove_from_watchlist">Fjern \"%s\" fra din Huskeliste</string>
+  <string name="button_label_remove_gif">Fjern GIF</string>
   <string name="button_label_remove_photo">Fjern dit profilfoto</string>
   <string name="button_label_renew_vip">Forny abonnement</string>
   <string name="button_label_reorder_item">Omarranger %s</string>
@@ -306,6 +311,7 @@
   <string name="button_label_view_sentiment_analysis">Se sentimentanalyse</string>
   <string name="button_label_view_soundtrack">Vis soundtrack</string>
   <string name="button_label_view_trivia">Se trivia</string>
+  <string name="button_label_vip_paypal_switch">Se VIP-planer og skift til kreditkort</string>
   <string name="button_label_vip_upgrade">Opgrader til VIP</string>
   <string name="button_label_watch_on_service">Se på %s</string>
   <string name="button_label_watch_until_here_anchor_end">Betragt den valgte dato som slut på maratonkiggeriet</string>
@@ -433,6 +439,7 @@
   <string name="button_text_popular_comments">Populære</string>
   <string name="button_text_progress_completed">Fuldført</string>
   <string name="button_text_progress_dropped">Droppet</string>
+  <string name="button_text_progress_ended">Afsluttet</string>
   <string name="button_text_progress_in_progress">I gang</string>
   <string name="button_text_raw_export">Eksporter nu</string>
   <string name="button_text_recent_comments">Seneste</string>
@@ -481,7 +488,6 @@
   <string name="button_text_sort_updated_date">Opdateringsdato</string>
   <string name="button_text_start_import">Start import</string>
   <string name="button_text_start_rewatching">Begynd at gense</string>
-  <string name="button_text_stop_asking">Stop med at spørge</string>
   <string name="button_text_stop_check_in">Stop check-in</string>
   <string name="button_text_stop_clear">Stop rydning</string>
   <string name="button_text_stop_export">Stop eksport</string>
@@ -516,6 +522,7 @@
   <string name="button_text_view_import_guidelines">Se retningslinjer</string>
   <string name="button_text_view_photo">Vis foto</string>
   <string name="button_text_view_recommendation_sources">Hvorfor denne?</string>
+  <string name="button_text_vip_paypal_switch">Se planer</string>
   <string name="button_text_vip_upgrade">Opgrader</string>
   <string name="button_text_watch_again">Se igen</string>
   <string name="button_text_watch_until_here_anchor_end">Sluttidspunkt</string>
@@ -576,10 +583,10 @@
   <string name="confirmation_title_stop_checkin">Stop check-in?</string>
   <string name="confirmation_title_stop_clear">Stop rydning?</string>
   <string name="confirmation_title_stop_export">Stop eksport?</string>
-  <string name="confirmation_title_suppress_ratings_toast">Stop med at spørge?</string>
   <string name="confirmation_title_undo_sync">Fortryd denne synkronisering?</string>
   <string name="confirmation_title_unfollow_user">Følg ikke længere?</string>
   <string name="confirmation_title_unlink_streaming">Fjern tilknytning af %s?</string>
+  <string name="confirmation_title_watched_until_here">Udfyld de episoder, du sprang over?</string>
   <string name="date_time_label_watch_until_here">Vælg dato og tidspunkt til at fastsætte maratonkiggeriet</string>
   <string name="date_time_label_watched">Vælg dato og tidspunkt for, hvornår du så \"%s\"</string>
   <string name="description_account_details">Skift dit foto, navn og andre detaljer.</string>
@@ -631,6 +638,7 @@
   <string name="drawer_meta_info_cast">Medvirkende</string>
   <string name="drawer_meta_info_cast_and_crew">Medvirkende og Stab</string>
   <string name="drawer_meta_info_crew">Hold</string>
+  <string name="drawer_title_add_gif">Tilføj en GIF</string>
   <string name="drawer_title_add_note">Note</string>
   <string name="drawer_title_episode_information">Episodeinformation</string>
   <string name="drawer_title_notes">Noter</string>
@@ -649,8 +657,12 @@
   <string name="dropdown_label_person_position">Stilling</string>
   <string name="episode_footer_season_episode">S%1$d • A%2$d</string>
   <string name="episode_footer_season_episode_range">S%1$d • A%2$d-%3$d</string>
+  <string name="error_kicker_404">Mangler filmrulle</string>
+  <string name="error_kicker_account_locked">Huset lukket</string>
+  <string name="error_kicker_service_unavailable">Pause</string>
+  <string name="error_kicker_unexpected_error">Dårligt take</string>
   <string name="error_search_partial_results">Nogle resultater mangler muligvis</string>
-  <string name="error_text_404">(Bare rolig, det sker! Selv Kraften kan nogle gange være ude af balance.)</string>
+  <string name="error_text_404">Bare rolig, det sker! Selv Kraften kan nogle gange være ude af balance.</string>
   <string name="error_text_app_save_failed">Gemning af applikationen mislykkedes. Prøv venligst igen.</string>
   <string name="error_text_delete_account">Noget gik galt under sletning af din konto. Prøv venligst igen.</string>
   <string name="error_text_email">E-mailopdatering mislykkedes. Sørg for, at det er en gyldig adresse.</string>
@@ -683,7 +695,8 @@
   <string name="error_text_report_already_reported">Du har allerede rapporteret dette.</string>
   <string name="error_text_report_rate_limited">For mange rapporter på kort tid. Prøv venligst igen senere.</string>
   <string name="error_text_report_unknown">Der opstod en fejl under indsendelsen af denne rapport. Hvis dette fortsætter, bedes du <a>indgive en ny fejlrapport</a>.</string>
-  <string name="error_text_service_unavailable">Forbindelsen er… fraværende. Som et glemt minde.</string>
+  <string name="error_text_service_unavailable">Trakt kan ikke nås lige nu. Din visningshistorik er sikker.</string>
+  <string name="error_text_service_unavailable_resume">Vi fortsætter præcis, hvor du slap.</string>
   <string name="error_text_sync_load_failed">Vi kunne ikke indlæse dette lige nu. Prøv venligst igen.</string>
   <string name="error_text_unexpected_error">Åh nej… dette var ikke planlagt. Hvis dette fortsætter, bedes du <a>indsende et nyt problem</a>.</string>
   <string name="error_text_unexpected_error_include_details">Medtag venligst disse detaljer, når du rapporterer problemet:</string>
@@ -814,6 +827,8 @@
   <string name="header_sync_detail">Synkroniserings-ID %s</string>
   <string name="header_target">Mål</string>
   <string name="header_total_runtime">Samlet spilletid</string>
+  <string name="header_vip_paypal_switch">Skift til kreditkort</string>
+  <string name="header_vip_two_year_deal">Betal for 1 år, få 2 års VIP!</string>
   <string name="header_writer">Forfatter</string>
   <string name="heading_api_application_vip_only">Oprettelse af nye apps kræver Trakt VIP</string>
   <string name="heading_api_applications">API-applikationer</string>
@@ -834,9 +849,11 @@
   <string name="hint_app_origins">Én oprindelse per linje. Ingen jokere eller stier.</string>
   <string name="hint_app_redirect_uris">Én URI per linje. Ingen forespørgselsstrenge, kun den fulde URI-sti. Brug urn:ietf:wg:oauth:2.0:oob til enhedsgodkendelse.</string>
   <string name="iframe_title_spotify_player">Spotify-afspiller for %s</string>
+  <string name="image_alt_comment_gif">GIF vedhæftet kommentaren</string>
   <string name="image_alt_list_preview_poster">Plakat for et element i %s</string>
   <string name="image_alt_media_poster">\"%s\" plakat</string>
   <string name="image_alt_person_headshot">Portrætfoto af %s</string>
+  <string name="image_alt_selected_gif">Valgt GIF</string>
   <string name="image_alt_streaming_service_logo">%s logo</string>
   <string name="image_alt_user_avatar">%s\'s avatar</string>
   <string name="import_ambiguous_skip">Importer ikke</string>
@@ -899,6 +916,7 @@
   <string name="import_tab_unresolved">Oversprunget</string>
   <string name="import_vip_limit_exceeded">Din import overskrider grænsen for gratis niveau. Opgrader til VIP for at importere alle %d elementer.</string>
   <string name="input_label_search_credit_members">Søg personer</string>
+  <string name="input_label_search_gifs">Søg KLIPY</string>
   <string name="input_label_search_streaming_services">Søg streamingtjenester</string>
   <string name="input_placeholder_app_name">Min applikation</string>
   <string name="input_placeholder_app_origins">https://example.com</string>
@@ -914,6 +932,7 @@
   <string name="input_placeholder_report_reason">Vælg en årsag</string>
   <string name="input_placeholder_search">Søg serier &amp; film…</string>
   <string name="input_placeholder_search_credit_members">Søg navn, karakter eller job…</string>
+  <string name="input_placeholder_search_gifs">Søg KLIPY</string>
   <string name="input_placeholder_search_lists">Søg lister…</string>
   <string name="input_placeholder_search_movies">Søg film…</string>
   <string name="input_placeholder_search_people">Søg personer…</string>
@@ -945,6 +964,15 @@
   <string name="label_genres_drawer_subtitle_loved">Vælg op til 5 genrer, som du gerne vil se mere af.</string>
   <string name="label_keep_play">Behold</string>
   <string name="label_list_item_count">%s elementer</string>
+  <string name="label_parental_guide_category_alcohol">Alkohol, stoffer og rygning</string>
+  <string name="label_parental_guide_category_frightening">Uhyggelige og intense scener</string>
+  <string name="label_parental_guide_category_nudity">Sex og nøgenhed</string>
+  <string name="label_parental_guide_category_profanity">Bandemål</string>
+  <string name="label_parental_guide_category_violence">Vold og gru</string>
+  <string name="label_parental_guide_severity_mild">Mild</string>
+  <string name="label_parental_guide_severity_moderate">Moderat</string>
+  <string name="label_parental_guide_severity_none">Ingen</string>
+  <string name="label_parental_guide_severity_severe">Alvorlig</string>
   <string name="label_plex_connected">Forbundet til Plex</string>
   <string name="label_plex_connection">Forbindelse</string>
   <string name="label_plex_history_date">Dato</string>
@@ -1237,7 +1265,7 @@
   <string name="page_title_releases">Udgivelser</string>
   <string name="page_title_search">Søg</string>
   <string name="page_title_search_results">Resultater for %s</string>
-  <string name="page_title_service_unavailable">Trakt-tjeneste utilgængelig</string>
+  <string name="page_title_service_unavailable">Vi har mistet signalet</string>
   <string name="page_title_settings">Indstillinger</string>
   <string name="page_title_shows">Serier</string>
   <string name="page_title_smart_lists">Smarte lister</string>
@@ -1258,17 +1286,19 @@
   <string name="page_title_year_in_review">%s i overblik</string>
   <string name="page_title_year_to_date">År til dato</string>
   <string name="preview_feature_description_action_confirmations">Vis en bekræftelsestoast med en hurtig fortryd-funktion, når du tilføjer, fjerner, bedømmer eller markerer noget som set.</string>
+  <string name="preview_feature_description_comment_gifs">Vedhæft en GIF til enhver kommentar eller anmeldelse, du skriver.</string>
   <string name="preview_feature_description_edit_mode">Aktiver kontroller til at skjule eller vise konfigurerbare sektioner i hele appen.</string>
   <string name="preview_feature_description_genre_picker">Vælg dine foretrukne genrer fra et visuelt gitter i stedet for en liste med tags.</string>
   <string name="preview_feature_description_leaderboard">Ranger de personer, du følger, efter set tid, og se hvor du lander blandt dem.</string>
   <string name="preview_feature_description_list_counts">Viser hvor mange elementer en liste indeholder, og hvor mange lister en sektion har.</string>
-  <string name="preview_feature_description_parental_guide">Vis risikoniveauer for indhold i detaljeskuffen for film, serier og episoder.</string>
+  <string name="preview_feature_description_parental_guide">Vis risikoniveauer for indhold i detaljeskuffen for film og serier, og filtrer efter alvorlighedsgrad i avancerede filtre.</string>
   <string name="preview_feature_description_reviewer_stats">Viser hvor meget af en titel en anmelder har set ud for deres vurdering.</string>
   <string name="preview_feature_description_rewatch">Start gensynssessioner for serier, du allerede har set, tjek ind eller marker sete episoder direkte fra sessionsskuffen.</string>
   <string name="preview_feature_description_scoped_favorites">Tidsbegræns favoritlister ved at vise indeværende års favoritter på profiler og gruppere den fulde favoritliste efter år.</string>
   <string name="preview_feature_description_soundtrack">Tilføjer en soundtrack-sektion til film- og seriesider, med afspilning hvor et nummer kan matches.</string>
   <string name="preview_feature_description_up_next_smart_sort">Test en smartere måde at sortere din \'Se videre\' på.</string>
   <string name="preview_feature_title_action_confirmations">Handlingsbekræftelser</string>
+  <string name="preview_feature_title_comment_gifs">GIF\'er i kommentarer</string>
   <string name="preview_feature_title_edit_mode">Redigeringstilstand</string>
   <string name="preview_feature_title_genre_picker">Genre-vælger</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
@@ -1279,10 +1309,18 @@
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_up_next_smart_sort">Se videre Smart Sortering</string>
   <string name="reset_status_cleared">Huskeliste ryddet.</string>
+  <string name="row_label_loading_title">Indlæser navn</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt bruger dine Apple TV-sprogindstillinger. For at opdatere, gå til:\n\nApple TV Indstillinger &gt; Generelt &gt; Apple TV Sprog</string>
   <string name="section_title_season_progress">Sæson %d status</string>
   <string name="section_title_seasons_overview">Oversigt</string>
   <string name="section_title_specials_progress">Specials status</string>
+  <string name="spotlight_dialog_label">Hurtig navigation</string>
+  <string name="spotlight_hint_dismiss">Luk</string>
+  <string name="spotlight_hint_navigate">Naviger</string>
+  <string name="spotlight_hint_select">Åbn</string>
+  <string name="spotlight_input_placeholder">Hvorhen?</string>
+  <string name="spotlight_no_results">Intet matcher \"%s\"</string>
+  <string name="spotlight_section_pages">Sider</string>
   <string name="stat_label_hours">timer</string>
   <string name="stat_label_plays">afspilninger</string>
   <string name="stat_text_favorited">Favoritter</string>
@@ -1751,6 +1789,7 @@
   <string name="text_vip_payment_method_google">Google Play</string>
   <string name="text_vip_payment_method_other">Andet</string>
   <string name="text_vip_payment_method_paypal">PayPal</string>
+  <string name="text_vip_paypal_switch">Flyt dit VIP-abonnement fra PayPal til et kreditkort. Du mister ikke VIP-tid, og dit PayPal-abonnement annulleres automatisk, når du vælger en ny plan.</string>
   <string name="text_vip_powers_trakt">hjælper med at drive Trakt og låser op for funktioner bygget til folk, der virkelig bekymrer sig om, hvad de ser.</string>
   <string name="text_vip_subscription">abonnement</string>
   <string name="text_vip_subscription_missing_message">Vi kunne ikke finde et aktivt abonnement at administrere. Det er muligvis allerede blevet annulleret. <a>Kontakt support</a>, hvis du mener, at der er noget galt.</string>
@@ -1764,6 +1803,7 @@
   <string name="text_vip_transaction_disputed">Bestridt en <b>%s</b> opkrævning</string>
   <string name="text_vip_transaction_plan_changed">Ændret din <b>%s</b> plan</string>
   <string name="text_vip_transaction_refunded">Refunderet <b>%1$s</b> via <b>%2$s</b></string>
+  <string name="text_vip_two_year_deal">Du har låst op for 2-årsplanen for %1$s, derefter %2$s hvert 2. år. Rabatten anvendes automatisk ved kassen.</string>
   <string name="text_vip_upsell_default">Forbedr din Trakt-oplevelse</string>
   <string name="text_vip_upsell_default_2">Opgrader til VIP!</string>
   <string name="text_vip_upsell_default_description">Opgrader til VIP og lås op for den fulde Trakt-oplevelse, spækket med funktioner bygget til tv-serie- og filmentusiaster.</string>
@@ -2085,9 +2125,9 @@
   <string name="warning_prompt_set_cover_image">Brug \"%s\" som dit profilbaggrundsbillede?</string>
   <string name="warning_prompt_simple_filters">Skift til simple filtre nulstiller alle dine nuværende filtre. Er du sikker på, at du vil fortsætte?</string>
   <string name="warning_prompt_stop_checkin">Er du sikker på, at du vil stoppe med at se \"%s\"?</string>
-  <string name="warning_prompt_suppress_ratings_toast">Vil du stoppe med at blive spurgt om at bedømme det, du for nylig har set?</string>
   <string name="warning_prompt_track_show_episode_count">Er du sikker på, at du vil markere \"%1$s\" som set? Dette vil markere %2$d afsnit som set.</string>
   <string name="warning_prompt_unfollow_user">Er du sikker på, at du vil stoppe med at følge %s?</string>
+  <string name="warning_prompt_watched_until_here">Markering af \"%s\" som set efterlod tidligere episoder usete. Skal alt op til den også markeres som set?</string>
   <string name="warning_prompt_younify_unlink">Er du sikker på, at du vil frakoble %s?</string>
   <string name="warning_smart_lists_limit">Du har nået din grænse for smarte lister</string>
   <string name="welcome_banner_action">Importer dine data</string>
