@@ -102,6 +102,8 @@ internal class GifPickerViewModel(
     private fun loadGifs(debounce: Duration) {
         loadJob?.cancel()
         loadMoreJob?.cancel()
+        // A cancelled loadMore skips its finally reset, so clear the flag here or pagination stalls.
+        loadingMoreState.update { LoadingState.Idle }
 
         if (queryState.value.isBlank()) {
             defaultGifs?.let { cached ->
@@ -147,7 +149,7 @@ internal class GifPickerViewModel(
         val query = GifsQuery(
             term = term.ifEmpty { null },
             pagination = Pagination(page = page, limit = GIFS_DEFAULT_PER_PAGE),
-            customerId = userId.toString(),
+            customerId = userId?.value?.toString(),
         )
 
         return when {

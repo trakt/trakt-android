@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -17,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.ui.theme.DefaultCardShape
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -28,20 +30,20 @@ internal enum class CommentGifLayout {
     Side,
 }
 
-// Side gif has to leave room for header and footer inside the fixed-height horizontal card.
 internal val SideGifMaxSize = DpSize(width = 120.dp, height = 60.dp)
+private val SpoilerBlurRadius = 24.dp
 
 @Composable
 internal fun CommentGifView(
     gif: CommentGif,
     modifier: Modifier = Modifier,
     shape: RoundedCornerShape = DefaultCardShape,
+    blurred: Boolean = false,
+    onRevealSpoiler: () -> Unit = {},
 ) {
     val (width, height) = gif.size
     val hasSize = width > 0 && height > 0
 
-    // Max-only bounds let aspectRatio pick the largest size that fits both the model size
-    // and the parent constraints, so the gif shrinks in tight cards instead of overflowing.
     val sizeModifier = when {
         hasSize -> {
             Modifier
@@ -59,7 +61,10 @@ internal fun CommentGifView(
         modifier = modifier
             .then(sizeModifier)
             .clip(shape)
-            .background(TraktTheme.colors.skeletonShimmer),
+            .background(TraktTheme.colors.skeletonShimmer)
+            .then(
+                if (blurred) Modifier.onClick { onRevealSpoiler() } else Modifier,
+            ),
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
@@ -68,7 +73,11 @@ internal fun CommentGifView(
                 .build(),
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .then(
+                    if (blurred) Modifier.blur(SpoilerBlurRadius) else Modifier,
+                ),
         )
     }
 }

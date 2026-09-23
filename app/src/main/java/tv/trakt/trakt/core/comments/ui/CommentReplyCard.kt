@@ -192,15 +192,18 @@ private fun CommentReplyCardContent(
             comment.commentNoSpoilers.highlightMentions(mentionsColor)
         }
 
+        val spoilerBlurred = comment.hasSpoilers && !isUserReply && !showSpoilers
         CommentReplyBody(
             text = mentionsText,
-            blurred = comment.hasSpoilers && !isUserReply && !showSpoilers,
+            blurred = spoilerBlurred,
             onRevealSpoiler = { showSpoilers = true },
         )
 
         comment.gif?.let { gif ->
             CommentGifView(
                 gif = gif,
+                blurred = spoilerBlurred,
+                onRevealSpoiler = { showSpoilers = true },
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(top = 12.dp)

@@ -242,10 +242,11 @@ private fun CommentCardContent(
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
+        val spoilerBlurred = comment.hasSpoilers && !isUserComment && !isSpoilerRevealed
         val body = @Composable {
             CommentBody(
                 text = comment.commentNoSpoilers,
-                blurred = comment.hasSpoilers && !isUserComment && !isSpoilerRevealed,
+                blurred = spoilerBlurred,
                 onRevealSpoiler = { isSpoilerRevealed = true },
             )
         }
@@ -259,6 +260,8 @@ private fun CommentCardContent(
                 body()
                 CommentGifView(
                     gif = gif,
+                    blurred = spoilerBlurred,
+                    onRevealSpoiler = { isSpoilerRevealed = true },
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .padding(bottom = 20.dp),
@@ -275,6 +278,8 @@ private fun CommentCardContent(
                     CommentGifView(
                         gif = gif,
                         shape = RoundedCornerShape(12.dp),
+                        blurred = spoilerBlurred,
+                        onRevealSpoiler = { isSpoilerRevealed = true },
                         modifier = Modifier
                             .padding(top = 16.dp, end = 16.dp)
                             .sizeIn(
@@ -492,18 +497,18 @@ private fun CommentHeader(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(
-                        text = rating,
-                        style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
-                        color = TraktTheme.colors.textPrimary,
-                        maxLines = 1,
-                    )
-                    Spacer(modifier = Modifier.width(3.dp))
                     Icon(
                         painter = painterResource(R.drawable.ic_star_trakt_on),
                         contentDescription = null,
                         tint = TraktTheme.colors.textPrimary,
                         modifier = Modifier.size(15.dp),
+                    )
+                    Spacer(modifier = Modifier.width(3.dp))
+                    Text(
+                        text = rating,
+                        style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
+                        color = TraktTheme.colors.textPrimary,
+                        maxLines = 1,
                     )
                 }
             }
