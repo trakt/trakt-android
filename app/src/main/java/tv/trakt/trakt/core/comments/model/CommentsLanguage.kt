@@ -11,6 +11,20 @@ import tv.trakt.trakt.common.helpers.extensions.countryFlag
 import java.util.Locale
 
 /**
+ * Default representative countries for languages with multiple regional variants.
+ *
+ * The active app locale overrides these defaults when the exact regional variant
+ * is supported. For example, `pt-BR` uses Brazil and `es-MX` uses Mexico when
+ * those variants are available.
+ */
+private val defaultFlagCountries = mapOf(
+    "en" to "GB",
+    "es" to "ES",
+    "fr" to "FR",
+    "pt" to "PT",
+)
+
+/**
  * A single language option for the comments language filter. [code] is the code Trakt accepts in
  * the `language` query parameter, which is not always the code Android's [Locale] reports - see
  * [apiLanguage].
@@ -29,9 +43,10 @@ internal data class CommentsLanguage(
  */
 internal fun commentsLanguages(): ImmutableList<CommentsLanguage> {
     val appLocale = activeAppLocale()
-
-    return BuildConfig.SUPPORTED_LOCALES
+    val supportedLocales = BuildConfig.SUPPORTED_LOCALES
         .map { Locale.forLanguageTag(it) }
+
+    return supportedLocales
         .distinctBy { it.apiLanguage }
         .map { locale ->
             CommentsLanguage(
@@ -46,7 +61,12 @@ internal fun commentsLanguages(): ImmutableList<CommentsLanguage> {
                             char.toString()
                         }
                     },
-                flag = countryFlag(locale.flagCountry(appLocale)),
+                flag = countryFlag(
+                    locale.flagCountry(
+                        appLocale = appLocale,
+                        supportedLocales = supportedLocales,
+                    ),
+                ),
             )
         }
         .sortedBy { it.displayName }
@@ -88,22 +108,32 @@ private fun activeAppLocale(): Locale {
 }
 
 /**
- * Returns the representative country for a language flag.
+ * Returns the representative country used for a language flag.
  *
- * When the language matches the active app language and the app locale includes
- * a region, that region is used for the flag. Otherwise, the supported locale's
- * region is preserved, falling back to ICU for locale tags without a country.
+ * If the active app locale matches this language and its regional variant is
+ * supported, the active region is used. Otherwise, a representative default
+ * is used for languages with multiple supported regional variants.
+ *
+ * For languages without an explicit default, the supported locale's region is
+ * preserved, falling back to ICU when the locale does not include a country.
  */
-private fun Locale.flagCountry(appLocale: Locale): String {
-    return when {
-        language == appLocale.language && appLocale.country.isNotBlank() -> {
-            appLocale.country
+private fun Locale.flagCountry(
+    appLocale: Locale,
+    supportedLocales: List<Locale>,
+): String {
+    val appRegionIsSupported = language == appLocale.language &&
+        appLocale.country.isNotBlank() &&
+        supportedLocales.any { supportedLocale ->
+            supportedLocale.apiLanguage == apiLanguage &&
+                supportedLocale.country == appLocale.country
         }
 
-        else -> {
-            country.ifBlank {
-                ULocale.addLikelySubtags(ULocale.forLocale(this)).country
-            }
-        }
+    if (appRegionIsSupported) {
+        return appLocale.country
     }
+
+    return defaultFlagCountries[apiLanguage]
+        ?: country.ifBlank {
+            ULocale.addLikelySubtags(ULocale.forLocale(this)).country
+        }
 }
