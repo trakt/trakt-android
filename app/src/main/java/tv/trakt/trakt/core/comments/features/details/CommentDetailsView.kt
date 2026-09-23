@@ -366,7 +366,7 @@ private fun CommentHeader(
                     Icon(
                         painter = painterResource(R.drawable.ic_star_trakt_on),
                         contentDescription = null,
-                        tint = Color.White,
+                        tint = TraktTheme.colors.textPrimary,
                         modifier = Modifier
                             .size(15.dp),
                     )
