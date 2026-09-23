@@ -175,7 +175,7 @@ private fun ViewContent(
                     tint = TraktTheme.colors.textPrimary,
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
-                        .size(42.dp)
+                        .size(44.dp)
                         .padding(10.dp)
                         .onClick(enabled = !isLoading) {
                             isGifPickerVisible = true
