@@ -224,6 +224,7 @@ object PreviewData {
         userRating = 2,
         language = null,
         user = user1,
+        gif = null,
     )
 
     val person1 = Person(

@@ -102,6 +102,7 @@ dependencies {
     api(libs.coil.compose)
     api(libs.coil.network)
     api(libs.coil.svg)
+    api(libs.coil.gif)
 
     api(libs.youtube.player)
     api(libs.youtube.player.ui)

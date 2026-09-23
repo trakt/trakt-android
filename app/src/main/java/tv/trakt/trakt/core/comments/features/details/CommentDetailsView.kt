@@ -65,6 +65,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openGoogleTranslate
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
@@ -73,6 +74,7 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade800
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.features.postreply.PostReplySheet
+import tv.trakt.trakt.core.comments.ui.CommentGifView
 import tv.trakt.trakt.core.comments.ui.CommentReplyCard
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
 import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
@@ -238,6 +240,14 @@ private fun CommentContent(
                         isCollapsed = !isCollapsed
                     }
                     .padding(top = 16.dp),
+            )
+        }
+
+        comment.gif?.let { gif ->
+            CommentGifView(
+                gif = gif,
+                modifier = Modifier
+                    .padding(top = 18.dp),
             )
         }
 
@@ -504,7 +514,12 @@ private fun Preview() {
                 CommentDetailsViewContent(
                     state = CommentDetailsState(
                         user = PreviewData.user1,
-                        comment = PreviewData.comment1,
+                        comment = PreviewData.comment1.copy(
+                            gif = CommentGif(
+                                url = "https://example.com/gif.gif",
+                                size = 480 to 270,
+                            ),
+                        ),
                         replies = listOf(
                             PreviewData.comment1,
                         ).toImmutableList(),
