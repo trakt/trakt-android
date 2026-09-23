@@ -12,13 +12,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -73,6 +76,7 @@ import tv.trakt.trakt.common.helpers.extensions.openGoogleTranslate
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
@@ -82,6 +86,7 @@ import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
 import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.DefaultCardShape
+import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.util.Locale
 
@@ -101,6 +106,7 @@ internal fun CommentCard(
     repliesButtonEnabled: Boolean = false,
     repliesCountEnabled: Boolean = true,
     repliesLoading: Boolean = false,
+    gifLayout: CommentGifLayout = CommentGifLayout.Bottom,
     onClick: (() -> Unit)? = null,
     onRequestReactions: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
@@ -131,6 +137,7 @@ internal fun CommentCard(
             repliesButtonEnabled = repliesButtonEnabled,
             repliesCountEnabled = repliesCountEnabled,
             repliesLoading = repliesLoading,
+            gifLayout = gifLayout,
             onRequestReactions = onRequestReactions,
             onReactionClick = onReactionClick,
             onReplyClick = { onReplyClick?.invoke(comment) },
@@ -201,6 +208,7 @@ private fun CommentCardContent(
     repliesButtonEnabled: Boolean,
     repliesCountEnabled: Boolean,
     repliesLoading: Boolean,
+    gifLayout: CommentGifLayout,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
@@ -234,11 +242,54 @@ private fun CommentCardContent(
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
-        CommentBody(
-            text = comment.commentNoSpoilers,
-            blurred = comment.hasSpoilers && !isUserComment && !isSpoilerRevealed,
-            onRevealSpoiler = { isSpoilerRevealed = true },
-        )
+        val spoilerBlurred = comment.hasSpoilers && !isUserComment && !isSpoilerRevealed
+        val body = @Composable {
+            CommentBody(
+                text = comment.commentNoSpoilers,
+                blurred = spoilerBlurred,
+                onRevealSpoiler = { isSpoilerRevealed = true },
+            )
+        }
+
+        val gif = comment.gif
+        when {
+            gif == null -> {
+                body()
+            }
+            gifLayout == CommentGifLayout.Bottom -> {
+                body()
+                CommentGifView(
+                    gif = gif,
+                    blurred = spoilerBlurred,
+                    onRevealSpoiler = { isSpoilerRevealed = true },
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 20.dp),
+                )
+            }
+            gifLayout == CommentGifLayout.Side -> {
+                Row(
+                    verticalAlignment = Alignment.Top,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Box(modifier = Modifier.weight(1f)) {
+                        body()
+                    }
+                    CommentGifView(
+                        gif = gif,
+                        shape = RoundedCornerShape(12.dp),
+                        blurred = spoilerBlurred,
+                        onRevealSpoiler = { isSpoilerRevealed = true },
+                        modifier = Modifier
+                            .padding(top = 16.dp, end = 16.dp)
+                            .sizeIn(
+                                maxWidth = SideGifMaxSize.width,
+                                maxHeight = SideGifMaxSize.height,
+                            ),
+                    )
+                }
+            }
+        }
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -450,12 +501,9 @@ private fun CommentHeader(
                         painter = painterResource(R.drawable.ic_star_trakt_on),
                         contentDescription = null,
                         tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier
-                            .size(15.dp),
+                        modifier = Modifier.size(15.dp),
                     )
-
                     Spacer(modifier = Modifier.width(3.dp))
-
                     Text(
                         text = rating,
                         style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
@@ -466,7 +514,7 @@ private fun CommentHeader(
             }
 
             if (userComment && deleteEnabled) {
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(14.dp))
 
                 Icon(
                     painter = painterResource(R.drawable.ic_trash),
@@ -682,6 +730,33 @@ fun CommentPreview() {
                     replies = listOf(PreviewData.comment1).toImmutableList(),
                     modifier = Modifier
                         .height(400.dp),
+                )
+                CommentCard(
+                    onClick = {},
+                    user = PreviewData.user1,
+                    comment = PreviewData.comment1.copy(
+                        gif = CommentGif(
+                            url = "https://example.com/gif.gif",
+                            size = 320 to 180,
+                        ),
+                    ),
+                    replies = EmptyImmutableList,
+                )
+                CommentCard(
+                    onClick = {},
+                    user = PreviewData.user1,
+                    comment = PreviewData.comment1.copy(
+                        comment = "Your go to comfort TV",
+                        gif = CommentGif(
+                            url = "https://example.com/gif.gif",
+                            size = 320 to 240,
+                        ),
+                    ),
+                    replies = EmptyImmutableList,
+                    gifLayout = CommentGifLayout.Side,
+                    modifier = Modifier
+                        .height(TraktTheme.size.commentCardSize)
+                        .aspectRatio(HorizontalImageAspectRatio),
                 )
             }
         }

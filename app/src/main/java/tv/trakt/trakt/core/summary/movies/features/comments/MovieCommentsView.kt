@@ -71,8 +71,10 @@ import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.model.commentsLanguageDisplayName
 import tv.trakt.trakt.core.comments.ui.CommentCard
+import tv.trakt.trakt.core.comments.ui.CommentGifLayout
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
 import tv.trakt.trakt.core.comments.ui.CommentsLanguageDropdown
+import tv.trakt.trakt.core.klipy.toGifQuery
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EmptyListCard
 import tv.trakt.trakt.ui.components.TraktSectionHeader
@@ -133,6 +135,7 @@ internal fun MovieCommentsView(
 
     CommentDetailsSheet(
         comment = commentSheet,
+        gifQuery = MediaType.Movie.toGifQuery(state.movie?.title),
         onDeleteComment = viewModel::deleteComment,
         onDismiss = {
             commentSheet = null
@@ -143,6 +146,7 @@ internal fun MovieCommentsView(
         active = postCommentSheet,
         mediaId = state.movie?.ids?.trakt,
         mediaType = MediaType.Movie,
+        mediaTitle = state.movie?.title,
         onCommentPost = viewModel::addComment,
         onDismiss = {
             postCommentSheet = false
@@ -348,6 +352,7 @@ private fun ContentList(
                 reactions = listReactions,
                 userReactions = userReactions,
                 deleteEnabled = false,
+                gifLayout = CommentGifLayout.Side,
                 onClick = { onCommentClick?.invoke(comment) },
                 onRepliesClick = { onCommentClick?.invoke(comment) },
                 onDeleteClick = { onDeleteCommentClick?.invoke(comment) },

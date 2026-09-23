@@ -73,6 +73,7 @@ import tv.trakt.trakt.core.comments.model.commentsLanguageDisplayName
 import tv.trakt.trakt.core.comments.ui.CommentCard
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
 import tv.trakt.trakt.core.comments.ui.CommentsLanguageDropdown
+import tv.trakt.trakt.core.klipy.toGifQuery
 import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EmptyListCard
@@ -94,6 +95,8 @@ internal fun CommentsScreen(
     var postReplySheet by remember { mutableStateOf<Pair<Comment, User?>?>(null) }
     var deleteCommentSheet by remember { mutableStateOf<Comment?>(null) }
     var deleteReplySheet by remember { mutableStateOf<Comment?>(null) }
+
+    val gifQuery = state.media?.let { it.type.toGifQuery(it.title) }
 
     CommentsContent(
         state = state,
@@ -132,6 +135,7 @@ internal fun CommentsScreen(
         active = postCommentSheet,
         mediaId = state.media?.id,
         mediaType = state.media?.type,
+        mediaTitle = state.media?.title,
         onCommentPost = viewModel::addComment,
         onDismiss = {
             postCommentSheet = false
@@ -142,6 +146,7 @@ internal fun CommentsScreen(
         active = postReplySheet != null,
         comment = postReplySheet?.first,
         user = postReplySheet?.second,
+        gifQuery = gifQuery,
         onReplyPost = viewModel::addReply,
         onDismiss = {
             postReplySheet = null

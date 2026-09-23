@@ -85,6 +85,7 @@ internal class CommentsViewModel(
         CommentsState.MediaState(
             id = destination.mediaId.toTraktId(),
             type = destination.mediaType,
+            title = destination.mediaTitle,
         ),
     )
 

@@ -24,6 +24,7 @@ data class Comment(
     val userRating: Int?,
     val user: User,
     val language: Locale?,
+    val gif: CommentGif?,
     val createdAt: ZonedDateTime,
     val updatedAt: ZonedDateTime,
 ) {
@@ -34,9 +35,6 @@ data class Comment(
         get() = comment.replace("[spoiler]", "", ignoreCase = true)
             .replace("[/spoiler]", "", ignoreCase = true)
             .trim()
-
-    val userLiteRating: LiteRating?
-        get() = userRating?.let { LiteRating.fromValue(it) }
 
     val user5Rating: String?
         get() = when {
@@ -69,6 +67,12 @@ data class Comment(
                 id = dto.id,
                 parentId = dto.parentId,
                 comment = dto.comment,
+                gif = dto.gif?.let {
+                    CommentGif(
+                        url = it.url,
+                        size = it.width to it.height,
+                    )
+                },
                 isSpoiler = dto.spoiler,
                 isReview = dto.review,
                 replies = dto.replies,

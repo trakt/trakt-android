@@ -2,6 +2,7 @@ package tv.trakt.trakt.common.helpers.coil
 
 import coil3.ImageLoader
 import coil3.SingletonImageLoader
+import coil3.gif.AnimatedImageDecoder
 import coil3.svg.SvgDecoder
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -15,6 +16,7 @@ val coilModule = module {
             .components {
                 add(TimeoutInterceptor())
                 add(SvgDecoder.Factory())
+                add(AnimatedImageDecoder.Factory())
             }
             .build()
     }

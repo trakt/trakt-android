@@ -1,6 +1,7 @@
 package tv.trakt.trakt.common.core.comments.data.remote
 
 import org.openapitools.client.models.GetCommentsReactionsSummary200Response
+import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CommentDto
 
@@ -9,30 +10,35 @@ interface CommentsRemoteDataSource {
         showId: TraktId,
         text: String,
         spoiler: Boolean,
+        gif: CommentGif?,
     ): CommentDto
 
     suspend fun postMovieComment(
         movieId: TraktId,
         text: String,
         spoiler: Boolean,
+        gif: CommentGif?,
     ): CommentDto
 
     suspend fun postSeasonComment(
         seasonId: TraktId,
         text: String,
         spoiler: Boolean,
+        gif: CommentGif?,
     ): CommentDto
 
     suspend fun postEpisodeComment(
         episodeId: TraktId,
         text: String,
         spoiler: Boolean,
+        gif: CommentGif?,
     ): CommentDto
 
     suspend fun postReply(
         commentId: TraktId,
         text: String,
         spoiler: Boolean,
+        gif: CommentGif?,
     ): CommentDto
 
     suspend fun postReport(

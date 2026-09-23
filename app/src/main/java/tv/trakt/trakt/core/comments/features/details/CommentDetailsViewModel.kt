@@ -38,6 +38,7 @@ import tv.trakt.trakt.core.reactions.data.ReactionsUpdates.Source
 import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
 import tv.trakt.trakt.core.reactions.data.work.PostReactionWorker
 import tv.trakt.trakt.core.user.usecases.reactions.LoadUserReactionsUseCase
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 internal class CommentDetailsViewModel(
@@ -81,7 +82,7 @@ internal class CommentDetailsViewModel(
 
     private fun loadData() {
         loadingJob = viewModelScope.launch {
-            delay(750)
+            delay(750.milliseconds)
             loadingState.update { Loading }
         }
 

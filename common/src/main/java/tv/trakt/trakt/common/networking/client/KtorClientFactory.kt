@@ -36,6 +36,12 @@ internal class KtorClientFactory(
         }
     }
 
+    fun createKlipyClientConfig(): (HttpClientConfig<*>) -> Unit {
+        return {
+            it.applyKlipyConfig(fileStorage = fileStorage)
+        }
+    }
+
     fun createClientEngine(): HttpClientEngine {
         return OkHttp.create()
     }

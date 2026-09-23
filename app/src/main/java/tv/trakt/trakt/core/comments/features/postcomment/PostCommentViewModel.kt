@@ -19,6 +19,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
@@ -62,6 +63,7 @@ internal class PostCommentViewModel(
     fun submitComment(
         comment: String,
         spoiler: Boolean,
+        gif: CommentGif?,
     ) {
         if (job?.isActive == true) {
             return
@@ -77,6 +79,7 @@ internal class PostCommentViewModel(
                         mediaId = mediaId,
                         comment = comment,
                         spoiler = spoiler,
+                        gif = gif,
                     )
                 }
 

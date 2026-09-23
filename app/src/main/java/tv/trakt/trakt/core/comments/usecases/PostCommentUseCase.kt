@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.comments.usecases
 
 import tv.trakt.trakt.common.core.comments.data.remote.CommentsRemoteDataSource
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.MediaType.Episode
 import tv.trakt.trakt.common.model.MediaType.Movie
@@ -17,12 +18,13 @@ internal class PostCommentUseCase(
         mediaId: TraktId,
         comment: String,
         spoiler: Boolean,
+        gif: CommentGif? = null,
     ): Comment {
         return when (type) {
-            Show -> postShowComment(mediaId, comment, spoiler)
-            Movie -> postMovieComment(mediaId, comment, spoiler)
-            Season -> postSeasonComment(mediaId, comment, spoiler)
-            Episode -> postEpisodeComment(mediaId, comment, spoiler)
+            Show -> postShowComment(mediaId, comment, spoiler, gif)
+            Movie -> postMovieComment(mediaId, comment, spoiler, gif)
+            Season -> postSeasonComment(mediaId, comment, spoiler, gif)
+            Episode -> postEpisodeComment(mediaId, comment, spoiler, gif)
         }
     }
 
@@ -30,11 +32,13 @@ internal class PostCommentUseCase(
         showId: TraktId,
         comment: String,
         spoiler: Boolean,
+        gif: CommentGif?,
     ): Comment {
         return remoteSource.postShowComment(
             showId = showId,
             text = comment,
             spoiler = spoiler,
+            gif = gif,
         ).let {
             Comment.fromDto(it)
         }
@@ -44,11 +48,13 @@ internal class PostCommentUseCase(
         movieId: TraktId,
         comment: String,
         spoiler: Boolean,
+        gif: CommentGif?,
     ): Comment {
         return remoteSource.postMovieComment(
             movieId = movieId,
             text = comment,
             spoiler = spoiler,
+            gif = gif,
         ).let {
             Comment.fromDto(it)
         }
@@ -58,11 +64,13 @@ internal class PostCommentUseCase(
         seasonId: TraktId,
         comment: String,
         spoiler: Boolean,
+        gif: CommentGif?,
     ): Comment {
         return remoteSource.postSeasonComment(
             seasonId = seasonId,
             text = comment,
             spoiler = spoiler,
+            gif = gif,
         ).let {
             Comment.fromDto(it)
         }
@@ -72,11 +80,13 @@ internal class PostCommentUseCase(
         episodeId: TraktId,
         comment: String,
         spoiler: Boolean,
+        gif: CommentGif?,
     ): Comment {
         return remoteSource.postEpisodeComment(
             episodeId = episodeId,
             text = comment,
             spoiler = spoiler,
+            gif = gif,
         ).let {
             Comment.fromDto(it)
         }

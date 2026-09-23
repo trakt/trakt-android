@@ -32,6 +32,7 @@ internal fun CommentDetailsSheet(
         skipPartiallyExpanded = true,
     ),
     comment: Comment?,
+    gifQuery: String? = null,
     onDeleteComment: (commentId: TraktId) -> Unit = {},
     onDismiss: () -> Unit,
 ) {
@@ -52,6 +53,7 @@ internal fun CommentDetailsSheet(
                     key = viewModelKey,
                     parameters = { parametersOf(comment) },
                 ),
+                gifQuery = gifQuery,
                 onDeleteComment = {
                     onDeleteComment(it)
                     sheetScope.dismissWithAction(

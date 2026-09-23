@@ -31,5 +31,6 @@ internal data class CommentsState(
     data class MediaState(
         val id: TraktId,
         val type: MediaType,
+        val title: String?,
     )
 }

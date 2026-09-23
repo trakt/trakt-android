@@ -63,8 +63,10 @@ import tv.trakt.trakt.common.helpers.extensions.googleTranslateActivityInfo
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openGoogleTranslate
+import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
@@ -73,6 +75,7 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade800
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.features.postreply.PostReplySheet
+import tv.trakt.trakt.core.comments.ui.CommentGifView
 import tv.trakt.trakt.core.comments.ui.CommentReplyCard
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
 import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
@@ -84,6 +87,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun CommentDetailsView(
     viewModel: CommentDetailsViewModel,
     modifier: Modifier = Modifier,
+    gifQuery: String? = null,
     onDeleteComment: (commentId: TraktId) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -116,6 +120,7 @@ internal fun CommentDetailsView(
         active = postReplySheet != null,
         comment = state.comment,
         user = postReplySheet,
+        gifQuery = gifQuery,
         onReplyPost = viewModel::addReply,
         onDismiss = {
             postReplySheet = null
@@ -241,6 +246,14 @@ private fun CommentContent(
             )
         }
 
+        comment.gif?.let { gif ->
+            CommentGifView(
+                gif = gif,
+                modifier = Modifier
+                    .padding(top = 18.dp),
+            )
+        }
+
         CommentFooter(
             user = user,
             comment = comment,
@@ -336,7 +349,7 @@ private fun CommentHeader(
                 )
             }
             Text(
-                text = comment.createdAt.format(longDateTimeFormat()).capitalize(),
+                text = comment.createdAt.toLocal().format(longDateTimeFormat()).capitalize(),
                 style = TraktTheme.typography.meta,
                 color = TraktTheme.colors.textSecondary
                     .copy(alpha = 0.66f),
@@ -347,7 +360,7 @@ private fun CommentHeader(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Absolute.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.Absolute.spacedBy(16.dp),
             modifier = Modifier.fillMaxWidth(),
         ) {
             Spacer(modifier = Modifier.weight(1f))
@@ -356,19 +369,17 @@ private fun CommentHeader(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = spacedBy(3.dp),
                 ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_star_trakt_on),
+                        contentDescription = null,
+                        tint = TraktTheme.colors.textPrimary,
+                        modifier = Modifier.size(15.dp),
+                    )
                     Text(
                         text = rating,
                         style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
                         color = TraktTheme.colors.textPrimary,
                         maxLines = 1,
-                    )
-
-                    Icon(
-                        painter = painterResource(R.drawable.ic_star_trakt_on),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier
-                            .size(15.dp),
                     )
                 }
             }
@@ -504,7 +515,12 @@ private fun Preview() {
                 CommentDetailsViewContent(
                     state = CommentDetailsState(
                         user = PreviewData.user1,
-                        comment = PreviewData.comment1,
+                        comment = PreviewData.comment1.copy(
+                            gif = CommentGif(
+                                url = "https://example.com/gif.gif",
+                                size = 480 to 270,
+                            ),
+                        ),
                         replies = listOf(
                             PreviewData.comment1,
                         ).toImmutableList(),
