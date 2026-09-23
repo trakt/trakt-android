@@ -90,7 +90,6 @@ internal val mainModule = module {
             getUserUseCase = get(),
             logoutUseCase = get(),
             dismissWelcomeUseCase = get(),
-            loadWhatsNewUseCase = get(),
             inAppReviewUseCase = get(),
             installPromptUseCase = get(),
             inAppUpdateManager = get(),

@@ -4,7 +4,6 @@ import androidx.compose.runtime.Immutable
 import com.google.android.play.core.ktx.AppUpdateResult
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.common.model.WhatsNew
 import tv.trakt.trakt.core.checkin.model.CheckInState
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState
 
@@ -16,7 +15,6 @@ internal data class MainState(
     val checkIn: CheckInState? = null,
     val ratePrompt: RatePromptState? = null,
     val welcome: WelcomeState = WelcomeState(),
-    val whatsNew: WhatsNew? = null,
     val review: Boolean? = null,
     val installPrompt: Boolean = false,
     val paywall: Boolean? = null,

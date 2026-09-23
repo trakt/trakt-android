@@ -27,12 +27,14 @@ import tv.trakt.trakt.core.filters.data.GlobalFilterManager
 import tv.trakt.trakt.core.home.HomeState.UserState
 import tv.trakt.trakt.core.home.sections.welcome.usecases.DismissWelcomeBannerUseCase
 import tv.trakt.trakt.core.home.sections.welcome.usecases.GetUserUsageUseCase
+import tv.trakt.trakt.core.main.usecases.LoadWhatsNewUseCase
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(FlowPreview::class)
 internal class HomeViewModel(
     private val dismissWelcomeUseCase: DismissWelcomeBannerUseCase,
     private val getUserUsageUseCase: GetUserUsageUseCase,
+    private val loadWhatsNewUseCase: LoadWhatsNewUseCase,
     private val filterManager: GlobalFilterManager,
     private val sessionManager: SessionManager,
     private val collectionStateProvider: CollectionStateProvider,
@@ -44,11 +46,13 @@ internal class HomeViewModel(
     private val modeState = MutableStateFlow(initialMode)
     private val userState = MutableStateFlow(initialState.user)
     private val welcomeBannerState = MutableStateFlow(initialState.welcomeBanner)
+    private val whatsNewState = MutableStateFlow(initialState.whatsNew)
 
     init {
         observeUser()
         observeMode()
         observeCollection()
+        loadWhatsNew()
 
         analytics.logScreenView(screenName = "home")
         analytics.logMediaMode(mode = initialMode.name)
@@ -109,17 +113,46 @@ internal class HomeViewModel(
         }
     }
 
+    private fun loadWhatsNew() {
+        viewModelScope.launch {
+            try {
+                whatsNewState.update {
+                    loadWhatsNewUseCase.getWhatsNew()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    fun dismissWhatsNew(id: Int) {
+        viewModelScope.launch {
+            try {
+                loadWhatsNewUseCase.dismissWhatsNew(id)
+                whatsNewState.update { null }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
     val state = combine(
         modeState,
         userState,
         welcomeBannerState,
         collectionStateProvider.stateFlow,
-    ) { s1, s2, s3, s4 ->
+        whatsNewState,
+    ) { s1, s2, s3, s4, s5 ->
         HomeState(
             mode = s1,
             user = s2,
             welcomeBanner = s3,
             collection = s4,
+            whatsNew = s5,
         )
     }.stateIn(
         scope = viewModelScope,

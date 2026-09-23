@@ -5,6 +5,7 @@ import tv.trakt.trakt.common.core.user.UserCollectionState
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.model.MediaMode
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.WhatsNew
 
 @Immutable
 internal data class HomeState(
@@ -12,6 +13,7 @@ internal data class HomeState(
     val user: UserState = UserState(),
     val welcomeBanner: Boolean = false,
     val collection: UserCollectionState = UserCollectionState.Default,
+    val whatsNew: WhatsNew? = null,
 ) {
     data class UserState(
         val user: User? = null,

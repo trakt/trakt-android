@@ -42,6 +42,7 @@ import tv.trakt.trakt.ui.components.MediaModeButtons
 import tv.trakt.trakt.ui.components.buttons.TertiaryButton
 import tv.trakt.trakt.ui.components.switch.TraktThemeSwitch
 import tv.trakt.trakt.ui.components.vip.VipChip
+import tv.trakt.trakt.ui.components.whatsnew.WhatsNewIcon
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.ui.theme.model.CustomTheme
 
@@ -53,9 +54,11 @@ internal fun HeaderBar(
     showFilters: Boolean = false,
     showLogin: Boolean = false,
     showVip: Boolean = false,
+    showWhatsNew: Boolean = false,
     userLoading: Boolean = false,
     onVipClick: () -> Unit = {},
     onFilterClick: () -> Unit = {},
+    onWhatsNewClick: () -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
     val localActivity = LocalActivity.current
@@ -77,10 +80,12 @@ internal fun HeaderBar(
         showLogin = showLogin,
         showVip = showVip,
         showFilters = showFilters,
+        showWhatsNew = showWhatsNew,
         userLoading = userLoading,
         customTheme = customThemeConfig,
         onVipClick = onVipClick,
         onFilterClick = onFilterClick,
+        onWhatsNewClick = onWhatsNewClick,
         onCustomThemeChange = {
             (localActivity as? MainActivity)?.toggleCustomTheme(it)
         },
@@ -101,12 +106,14 @@ private fun HeaderBar(
     showLogin: Boolean = false,
     showVip: Boolean = false,
     showFilters: Boolean = false,
+    showWhatsNew: Boolean = false,
     userLoading: Boolean = false,
     customTheme: CustomThemeUseCase.CustomThemeConfig? = null,
     onMediaModeSelect: (MediaMode) -> Unit = {},
     onCustomThemeChange: (Boolean) -> Unit = {},
     onVipClick: () -> Unit = {},
     onFilterClick: () -> Unit = {},
+    onWhatsNewClick: () -> Unit = {},
 ) {
     val startAuthorization = LocalStartAuthorization.current
 
@@ -179,6 +186,12 @@ private fun HeaderBar(
                     )
                 }
 
+                if (showWhatsNew) {
+                    WhatsNewIcon(
+                        onClick = onWhatsNewClick,
+                    )
+                }
+
                 if (showFilters) {
                     MediaFilterIcon(
                         active = filter.isActive,
@@ -244,6 +257,7 @@ private fun Preview4() {
             ),
             showVip = true,
             showFilters = true,
+            showWhatsNew = true,
         )
     }
 }

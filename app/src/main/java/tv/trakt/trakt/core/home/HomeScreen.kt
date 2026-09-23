@@ -45,6 +45,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.common.model.WhatsNew
 import tv.trakt.trakt.core.filters.GlobalFiltersSheet
 import tv.trakt.trakt.core.home.sections.activity.features.history.HomeHistoryView
 import tv.trakt.trakt.core.home.sections.activity.features.social.HomeSocialView
@@ -59,6 +60,7 @@ import tv.trakt.trakt.helpers.ScreenHeaderState
 import tv.trakt.trakt.helpers.rememberHeaderState
 import tv.trakt.trakt.ui.components.ScrollableBackdropImage
 import tv.trakt.trakt.ui.components.headerbar.HeaderBar
+import tv.trakt.trakt.ui.components.whatsnew.WhatsNewSheet
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -84,6 +86,7 @@ internal fun HomeScreen(
 
     var filtersSheet by remember { mutableStateOf(false) }
     var streaksSheet by remember { mutableStateOf(false) }
+    var whatsNewSheet by remember { mutableStateOf<WhatsNew?>(null) }
 
     HomeScreenContent(
         state = state,
@@ -119,6 +122,12 @@ internal fun HomeScreen(
         onFiltersClick = {
             filtersSheet = true
         },
+        onWhatsNewClick = {
+            state.whatsNew?.let {
+                whatsNewSheet = it
+                viewModel.dismissWhatsNew(it.id)
+            }
+        },
         onDismissWelcomeClick = viewModel::dismissWelcomeBanner,
     )
 
@@ -133,6 +142,13 @@ internal fun HomeScreen(
         visible = streaksSheet,
         onDismiss = {
             streaksSheet = false
+        },
+    )
+
+    WhatsNewSheet(
+        data = whatsNewSheet,
+        onDismiss = {
+            whatsNewSheet = null
         },
     )
 }
@@ -157,6 +173,7 @@ private fun HomeScreenContent(
     onCalendarClick: () -> Unit = {},
     onStreakClick: () -> Unit = {},
     onFiltersClick: () -> Unit = {},
+    onWhatsNewClick: () -> Unit = {},
     onUserClick: (user: User) -> Unit = {},
     onDismissWelcomeClick: () -> Unit = {},
 ) {
@@ -339,6 +356,7 @@ private fun HomeScreenContent(
             isScrolledToTop = isScrolledToTop,
             onVipClick = onVipClick,
             onFiltersClick = onFiltersClick,
+            onWhatsNewClick = onWhatsNewClick,
         )
     }
 }
@@ -351,6 +369,7 @@ private fun HomeScreenHeader(
     isScrolledToTop: Boolean,
     onVipClick: () -> Unit,
     onFiltersClick: () -> Unit,
+    onWhatsNewClick: () -> Unit,
 ) {
     val (userLoaded, userLoggedIn) = remember(state.user) {
         val userLoaded = state.user.loading == Done
@@ -363,9 +382,11 @@ private fun HomeScreenHeader(
         showLogin = userLoaded && !userLoggedIn,
         showVip = userLoggedIn && state.user.user?.isVip == false,
         showFilters = userLoggedIn,
+        showWhatsNew = state.whatsNew != null,
         userLoading = userLoading,
         onVipClick = onVipClick,
         onFilterClick = onFiltersClick,
+        onWhatsNewClick = onWhatsNewClick,
         modifier = Modifier.offset {
             IntOffset(0, headerState.connection.barOffset.fastRoundToInt())
         },

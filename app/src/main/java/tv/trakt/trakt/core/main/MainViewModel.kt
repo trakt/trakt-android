@@ -44,7 +44,6 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
-import tv.trakt.trakt.common.model.WhatsNew
 import tv.trakt.trakt.core.auth.model.AuthorizationException
 import tv.trakt.trakt.core.auth.usecase.AuthorizeUserUseCase
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
@@ -54,7 +53,6 @@ import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source
 import tv.trakt.trakt.core.checkin.model.CheckInState
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
 import tv.trakt.trakt.core.main.usecases.InstallPromptUseCase
-import tv.trakt.trakt.core.main.usecases.LoadWhatsNewUseCase
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState
@@ -74,7 +72,6 @@ internal class MainViewModel(
     private val ratePromptManager: RatePromptManager,
     private val authorizePreferences: DataStore<Preferences>,
     private val authorizeUseCase: AuthorizeUserUseCase,
-    private val loadWhatsNewUseCase: LoadWhatsNewUseCase,
     private val getUserUseCase: LoadUserProfileUseCase,
     private val logoutUseCase: LogoutUserUseCase,
     private val loadUserProgressUseCase: LoadUserProgressUseCase,
@@ -97,7 +94,6 @@ internal class MainViewModel(
     private val ratePromptState = MutableStateFlow(initialState.ratePrompt)
     private val loadingUserState = MutableStateFlow(initialState.userLoading)
     private val welcomeState = MutableStateFlow(initialState.welcome)
-    private val whatsNewState = MutableStateFlow(initialState.whatsNew)
     private val reviewState = MutableStateFlow(initialState.review)
     private val installPromptState = MutableStateFlow(initialState.installPrompt)
     private val paywallState = MutableStateFlow(initialState.paywall)
@@ -108,7 +104,6 @@ internal class MainViewModel(
 
     init {
         loadWelcome()
-        loadWhatsNew()
         loadUser()
         loadInstallPrompt()
 
@@ -239,20 +234,6 @@ internal class MainViewModel(
                     welcome = !authenticated && !welcomeDismissed,
                     onboarding = !authenticated && !onboardingDismissed,
                 )
-            }
-        }
-    }
-
-    private fun loadWhatsNew() {
-        viewModelScope.launch {
-            try {
-                whatsNewState.update {
-                    loadWhatsNewUseCase.getWhatsNew()
-                }
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
             }
         }
     }
@@ -399,18 +380,6 @@ internal class MainViewModel(
         }
     }
 
-    fun suppressRatePrompt() {
-        viewModelScope.launch {
-            try {
-                ratePromptManager.onUserSuppress()
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
-    }
-
     fun dismissWelcome() {
         viewModelScope.launch {
             welcomeState.update { it.copy(welcome = false) }
@@ -425,19 +394,6 @@ internal class MainViewModel(
                     source = Source.Default,
                     context = appContext,
                 )
-            } catch (error: Exception) {
-                error.rethrowCancellation {
-                    Timber.recordError(error)
-                }
-            }
-        }
-    }
-
-    fun dismissWhatsNew(id: Int) {
-        viewModelScope.launch {
-            try {
-                loadWhatsNewUseCase.dismissWhatsNew(id)
-                whatsNewState.update { null }
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     Timber.recordError(error)
@@ -494,7 +450,6 @@ internal class MainViewModel(
         ratePromptState,
         loadingUserState,
         welcomeState,
-        whatsNewState,
         reviewState,
         installPromptState,
         paywallState,
@@ -508,12 +463,11 @@ internal class MainViewModel(
             ratePrompt = state[3] as RatePromptState?,
             userLoading = state[4] as LoadingState,
             welcome = state[5] as MainState.WelcomeState,
-            whatsNew = state[6] as WhatsNew?,
-            review = state[7] as Boolean?,
-            installPrompt = state[8] as Boolean,
-            paywall = state[9] as Boolean?,
-            update = state[10] as AppUpdateResult?,
-            error = state[11] as Exception?,
+            review = state[6] as Boolean?,
+            installPrompt = state[7] as Boolean,
+            paywall = state[8] as Boolean?,
+            update = state[9] as AppUpdateResult?,
+            error = state[10] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,

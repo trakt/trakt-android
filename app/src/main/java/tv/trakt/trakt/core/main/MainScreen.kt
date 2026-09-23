@@ -89,7 +89,6 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.model.MediaType.Episode
 import tv.trakt.trakt.common.model.MediaType.Movie
-import tv.trakt.trakt.common.model.WhatsNew
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.auth.model.AuthorizationException
 import tv.trakt.trakt.core.billing.navigation.navigateToBilling
@@ -126,7 +125,6 @@ import tv.trakt.trakt.core.trivia.navigation.navigateToTrivia
 import tv.trakt.trakt.core.welcome.WelcomeScreen
 import tv.trakt.trakt.core.welcome.onboarding.OnboardingScreen
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.whatsnew.WhatsNewSheet
 import tv.trakt.trakt.ui.snackbar.MainSnackbarHost
 import tv.trakt.trakt.ui.theme.TraktTheme
 import tv.trakt.trakt.widgets.INTENT_WIDGET_TARGET_EXTRA
@@ -156,7 +154,6 @@ internal fun MainScreen(
         .collectAsStateWithLifecycle(initialValue = null)
 
     val searchState = rememberSearchState(currentDestination.value?.destination)
-    var whatsNewState by remember { mutableStateOf<WhatsNew?>(null) }
     var pendingSearchQuery by remember { mutableStateOf<String?>(null) }
 
     LifecycleEventEffect(ON_RESUME) {
@@ -203,10 +200,6 @@ internal fun MainScreen(
             navController.navigateToBilling()
             viewModel.clearPaywall()
         }
-    }
-
-    LaunchedEffect(state.whatsNew) {
-        whatsNewState = state.whatsNew
     }
 
     LaunchedEffect(intent, newIntent?.value) {
@@ -285,16 +278,6 @@ internal fun MainScreen(
         currentDestination = currentDestination,
         onDismissWelcome = viewModel::dismissWelcome,
         onDismissCheckIn = viewModel::dismissCheckIn,
-    )
-
-    WhatsNewSheet(
-        data = whatsNewState,
-        onDismiss = {
-            whatsNewState?.id?.let { id ->
-                viewModel.dismissWhatsNew(id)
-                whatsNewState = null
-            }
-        },
     )
 
     BackHandler(
