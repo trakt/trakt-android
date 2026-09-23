@@ -11177,6 +11177,26 @@
                           "comment": {
                             "type": "string"
                           },
+                          "gif": {
+                            "type": "object",
+                            "properties": {
+                              "url": {
+                                "type": "string"
+                              },
+                              "width": {
+                                "type": "integer"
+                              },
+                              "height": {
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "url",
+                              "width",
+                              "height"
+                            ],
+                            "nullable": true
+                          },
                           "spoiler": {
                             "type": "boolean"
                           },
@@ -11442,6 +11462,26 @@
                                   },
                                   "comment": {
                                     "type": "string"
+                                  },
+                                  "gif": {
+                                    "type": "object",
+                                    "properties": {
+                                      "url": {
+                                        "type": "string"
+                                      },
+                                      "width": {
+                                        "type": "integer"
+                                      },
+                                      "height": {
+                                        "type": "integer"
+                                      }
+                                    },
+                                    "required": [
+                                      "url",
+                                      "width",
+                                      "height"
+                                    ],
+                                    "nullable": true
                                   },
                                   "spoiler": {
                                     "type": "boolean"
@@ -12896,7 +12936,7 @@
     },
     "/users/avatar": {
       "put": {
-        "description": "#### 🔒 OAuth Required\nUpdate the authenticated user avatar. Send the avatar request body; a successful update returns a `204` response, and invalid image data returns `400`.",
+        "description": "#### 🫣 Limited Access 🔒 OAuth Required\nThis endpoint is currently available only to first-party Trakt applications. Third-party applications receive a `401` response even with a valid OAuth token.\n\nUpdate the authenticated user avatar. Send the avatar request body; a successful update returns a `204` response, and invalid image data returns `400`.",
         "summary": "Update avatar",
         "tags": [
           "users"
@@ -12960,7 +13000,7 @@
     },
     "/users/set_cover": {
       "put": {
-        "description": "#### 🔒 OAuth Required\nUpdate the authenticated user cover image. Send the cover request body; a successful update returns a `204` response, and invalid image data returns `400`.",
+        "description": "#### 🫣 Limited Access 🔒 OAuth Required\nThis endpoint is currently available only to first-party Trakt applications. Third-party applications receive a `401` response even with a valid OAuth token.\n\nUpdate the authenticated user cover image. Send the cover request body; a successful update returns a `204` response, and invalid image data returns `400`.",
         "summary": "Update cover image",
         "tags": [
           "users"
@@ -13191,7 +13231,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -13387,7 +13427,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -13811,7 +13851,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -14130,7 +14170,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -15888,7 +15928,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -17180,7 +17220,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -17236,6 +17276,26 @@
                           },
                           "comment": {
                             "type": "string"
+                          },
+                          "gif": {
+                            "type": "object",
+                            "properties": {
+                              "url": {
+                                "type": "string"
+                              },
+                              "width": {
+                                "type": "integer"
+                              },
+                              "height": {
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "url",
+                              "width",
+                              "height"
+                            ],
+                            "nullable": true
                           },
                           "spoiler": {
                             "type": "boolean"
@@ -18297,7 +18357,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -18386,7 +18446,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -26417,7 +26477,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -26496,7 +26556,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -26992,7 +27052,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -27886,7 +27946,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -28331,7 +28391,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -28953,7 +29013,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -29493,7 +29553,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -29856,7 +29916,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -30396,7 +30456,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -30945,7 +31005,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -31761,7 +31821,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -32239,7 +32299,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -32748,7 +32808,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -33546,7 +33606,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -34302,7 +34362,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -34333,6 +34393,26 @@
                       },
                       "comment": {
                         "type": "string"
+                      },
+                      "gif": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string"
+                          },
+                          "width": {
+                            "type": "integer"
+                          },
+                          "height": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "width",
+                          "height"
+                        ],
+                        "nullable": true
                       },
                       "spoiler": {
                         "type": "boolean"
@@ -34546,7 +34626,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -35952,7 +36032,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -37358,7 +37438,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -38764,7 +38844,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -40188,7 +40268,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -41624,7 +41704,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -42290,7 +42370,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -42655,7 +42735,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -43070,7 +43150,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -43713,7 +43793,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -43744,6 +43824,26 @@
                       },
                       "comment": {
                         "type": "string"
+                      },
+                      "gif": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string"
+                          },
+                          "width": {
+                            "type": "integer"
+                          },
+                          "height": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "width",
+                          "height"
+                        ],
+                        "nullable": true
                       },
                       "spoiler": {
                         "type": "boolean"
@@ -43957,7 +44057,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -54162,7 +54262,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -54468,7 +54568,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -54499,6 +54599,26 @@
                       },
                       "comment": {
                         "type": "string"
+                      },
+                      "gif": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string"
+                          },
+                          "width": {
+                            "type": "integer"
+                          },
+                          "height": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "width",
+                          "height"
+                        ],
+                        "nullable": true
                       },
                       "spoiler": {
                         "type": "boolean"
@@ -57808,7 +57928,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -58161,7 +58281,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -58517,7 +58637,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -64351,7 +64471,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -64942,7 +65062,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -68336,7 +68456,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -69057,7 +69177,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -69845,7 +69965,7 @@
     },
     "/sync/playback/movies": {
       "get": {
-        "description": "#### 🔒 OAuth Required 📄 Pagination Optional ✨ Extended Info\nReturns in-progress movie playback items for the authenticated user. Use `start_at` and `end_at` to filter progress updated within a UTC datetime range.",
+        "description": "#### 🔒 OAuth Required 📄 Pagination Optional ✨ Extended Info\nReturns in-progress movie playback items for the authenticated user, most recently paused first. Use `start_at` and `end_at` to filter on `paused_at` within a UTC datetime range.\n\nPagination is opt-in: without `page` or `limit` the whole set is returned and no `X-Pagination-*` headers are sent. Sending either paginates and adds the headers.",
         "summary": "Get movie playback progress",
         "tags": [
           "sync",
@@ -69861,96 +69981,6 @@
             }
           },
           {
-            "name": "watchnow",
-            "in": "query",
-            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "favorites",
-                "any",
-                "any_all",
-                "free",
-                "free_all",
-                "subscriptions",
-                "subscriptions_all"
-              ],
-              "nullable": true
-            }
-          },
-          {
-            "name": "genres",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "subgenres",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "years",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "ratings",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "start_date",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "end_date",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "runtimes",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "countries",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "certifications",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
             "name": "page",
             "in": "query",
             "description": "The page number to retrieve",
@@ -69962,7 +69992,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -70272,119 +70302,20 @@
         "operationId": "getSyncProgressMovies"
       }
     },
-    "/sync/playback/{type}": {
+    "/sync/playback/episodes": {
       "get": {
-        "description": "#### 🔒 OAuth Required 📄 Pagination Optional ✨ Extended Info\nReturns playback progress for the requested media `type`. Use `start_at` and `end_at` to filter progress updated within a UTC datetime range.",
-        "summary": "Get playback progress",
+        "description": "#### 🔒 OAuth Required 📄 Pagination Optional ✨ Extended Info\nReturns in-progress episode playback items for the authenticated user, most recently paused first. Each item carries the parent `show`. Use `start_at` and `end_at` to filter on `paused_at` within a UTC datetime range.\n\nPagination is opt-in: without `page` or `limit` the whole set is returned and no `X-Pagination-*` headers are sent. Sending either paginates and adds the headers.",
+        "summary": "Get episode playback progress",
         "tags": [
           "sync",
           "progress"
         ],
         "parameters": [
           {
-            "name": "type",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "Sync media type filter."
-          },
-          {
             "name": "extended",
             "in": "query",
             "description": "Extended information to include in the response.",
             "schema": {
-              "nullable": true
-            }
-          },
-          {
-            "name": "watchnow",
-            "in": "query",
-            "description": "Use \"favorites\" for streaming on a favorite service of the user.\n      Use \"any\" for streaming on any service in the user's country.\n      Use \"any_all\" for streaming on any service in all countries.\n      Use \"free\" for streaming for free in the user's country.\n      Use \"free_all\" for streaming for free in all countries.\n      Use \"subscriptions\" for streaming on any subscription service (Netflix, Hulu, etc) in the user's country.\n      Use \"subscriptions_all\" streaming on any subscription service in all countries",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "favorites",
-                "any",
-                "any_all",
-                "free",
-                "free_all",
-                "subscriptions",
-                "subscriptions_all"
-              ],
-              "nullable": true
-            }
-          },
-          {
-            "name": "genres",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "subgenres",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "years",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "ratings",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "start_date",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "end_date",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "runtimes",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "countries",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "certifications",
-            "in": "query",
-            "schema": {
-              "type": "string",
               "nullable": true
             }
           },
@@ -70400,7 +70331,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -70449,7 +70380,524 @@
                       "type": {
                         "type": "string",
                         "enum": [
-                          "movie"
+                          "episode"
+                        ]
+                      },
+                      "episode": {
+                        "type": "object",
+                        "properties": {
+                          "season": {
+                            "type": "integer"
+                          },
+                          "number": {
+                            "type": "integer"
+                          },
+                          "title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "first_aired": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "released": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "effective_release_date": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "number_abs": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "rating": {
+                            "type": "number",
+                            "format": "float",
+                            "nullable": true
+                          },
+                          "votes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "comment_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "available_translations": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "overview": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "episode_type": {
+                            "type": "string",
+                            "enum": [
+                              "standard",
+                              "series_premiere",
+                              "season_premiere",
+                              "mid_season_finale",
+                              "mid_season_premiere",
+                              "season_finale",
+                              "series_finale"
+                            ],
+                            "nullable": true
+                          },
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "tvdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "imdb": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "tmdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "plex": {
+                                "type": "object",
+                                "properties": {
+                                  "guid": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "slug": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "trakt"
+                            ]
+                          },
+                          "original_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "after_credits": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "during_credits": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "screenshot": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "screenshot"
+                            ],
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "season",
+                          "number",
+                          "ids"
+                        ]
+                      },
+                      "show": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "year": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "tvdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "imdb": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "tmdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "plex": {
+                                "type": "object",
+                                "properties": {
+                                  "guid": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "slug": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "slug": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "trakt",
+                              "slug"
+                            ]
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "fanart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "logo": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "clearart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "banner": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "thumb": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "fanart",
+                              "poster",
+                              "logo",
+                              "clearart",
+                              "banner",
+                              "thumb"
+                            ],
+                            "nullable": true
+                          },
+                          "aired_episodes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "tagline": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "overview": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "first_aired": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "last_aired": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "airs": {
+                            "type": "object",
+                            "properties": {
+                              "day": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "time": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "timezone": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          },
+                          "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "total_runtime": {
+                            "type": "integer",
+                            "nullable": true,
+                            "description": "Total runtime in minutes. When exact runtime data is unavailable, this value may include estimated fallback runtimes and should be treated as an approximation."
+                          },
+                          "certification": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "network": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "country": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "rating": {
+                            "type": "number",
+                            "format": "float",
+                            "nullable": true
+                          },
+                          "votes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "comment_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "trailer": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "homepage": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "language": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "languages": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "available_translations": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "original_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "colors": {
+                            "type": "object",
+                            "properties": {
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          },
+                          "social_ids": {
+                            "type": "object",
+                            "properties": {
+                              "twitter": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "facebook": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "instagram": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "wikipedia": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "ids"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "progress",
+                      "paused_at",
+                      "id",
+                      "type",
+                      "episode",
+                      "show"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "traktAPI": [],
+            "traktOAuth": []
+          }
+        ],
+        "operationId": "getSyncProgressEpisodes"
+      }
+    },
+    "/sync/playback": {
+      "get": {
+        "description": "#### 🔒 OAuth Required 📄 Pagination Optional ✨ Extended Info\nReturns in-progress movie and episode playback items for the authenticated user, most recently paused first. Use `start_at` and `end_at` to filter on `paused_at` within a UTC datetime range.\n\nDiscriminate on `type`: movie items carry `movie`, episode items carry `episode` and the parent `show`.\n\nPagination is opt-in: without `page` or `limit` the whole set is returned and no `X-Pagination-*` headers are sent. Sending either paginates and adds the headers.",
+        "summary": "Get playback progress",
+        "tags": [
+          "sync",
+          "progress"
+        ],
+        "parameters": [
+          {
+            "name": "extended",
+            "in": "query",
+            "description": "Extended information to include in the response.",
+            "schema": {
+              "nullable": true
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page number to retrieve",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
+            "schema": {
+              "type": "integer",
+              "nullable": true
+            }
+          },
+          {
+            "name": "start_at",
+            "in": "query",
+            "description": "Start date for the range. Must be formatted as \"YYYY-MM-DD\".",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "end_at",
+            "in": "query",
+            "description": "End date for the range. Must be formatted as \"YYYY-MM-DD\".",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "progress": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 100,
+                        "format": "float"
+                      },
+                      "paused_at": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "number",
+                        "format": "int64"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "movie",
+                          "episode"
                         ]
                       },
                       "movie": {
@@ -70685,15 +71133,428 @@
                         "required": [
                           "title",
                           "ids"
-                        ]
+                        ],
+                        "nullable": true
+                      },
+                      "episode": {
+                        "type": "object",
+                        "properties": {
+                          "season": {
+                            "type": "integer"
+                          },
+                          "number": {
+                            "type": "integer"
+                          },
+                          "title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "first_aired": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "released": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "effective_release_date": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "number_abs": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "rating": {
+                            "type": "number",
+                            "format": "float",
+                            "nullable": true
+                          },
+                          "votes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "comment_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "available_translations": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "overview": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "episode_type": {
+                            "type": "string",
+                            "enum": [
+                              "standard",
+                              "series_premiere",
+                              "season_premiere",
+                              "mid_season_finale",
+                              "mid_season_premiere",
+                              "season_finale",
+                              "series_finale"
+                            ],
+                            "nullable": true
+                          },
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "tvdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "imdb": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "tmdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "plex": {
+                                "type": "object",
+                                "properties": {
+                                  "guid": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "slug": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "required": [
+                              "trakt"
+                            ]
+                          },
+                          "original_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "after_credits": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "during_credits": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "screenshot": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "screenshot"
+                            ],
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "season",
+                          "number",
+                          "ids"
+                        ],
+                        "nullable": true
+                      },
+                      "show": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "year": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "ids": {
+                            "type": "object",
+                            "properties": {
+                              "trakt": {
+                                "type": "integer"
+                              },
+                              "tvdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "imdb": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "tmdb": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "plex": {
+                                "type": "object",
+                                "properties": {
+                                  "guid": {
+                                    "type": "string",
+                                    "nullable": true
+                                  },
+                                  "slug": {
+                                    "type": "string",
+                                    "nullable": true
+                                  }
+                                },
+                                "nullable": true
+                              },
+                              "slug": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "trakt",
+                              "slug"
+                            ]
+                          },
+                          "images": {
+                            "type": "object",
+                            "properties": {
+                              "fanart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "logo": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "clearart": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "banner": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "thumb": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "fanart",
+                              "poster",
+                              "logo",
+                              "clearart",
+                              "banner",
+                              "thumb"
+                            ],
+                            "nullable": true
+                          },
+                          "aired_episodes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "tagline": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "overview": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "first_aired": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "last_aired": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "airs": {
+                            "type": "object",
+                            "properties": {
+                              "day": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "time": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "timezone": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          },
+                          "runtime": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "total_runtime": {
+                            "type": "integer",
+                            "nullable": true,
+                            "description": "Total runtime in minutes. When exact runtime data is unavailable, this value may include estimated fallback runtimes and should be treated as an approximation."
+                          },
+                          "certification": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "network": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "country": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "status": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "rating": {
+                            "type": "number",
+                            "format": "float",
+                            "nullable": true
+                          },
+                          "votes": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "comment_count": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "trailer": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "homepage": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "language": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "languages": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "available_translations": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "genres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "subgenres": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          },
+                          "original_title": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "colors": {
+                            "type": "object",
+                            "properties": {
+                              "poster": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          },
+                          "social_ids": {
+                            "type": "object",
+                            "properties": {
+                              "twitter": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "facebook": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "instagram": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "wikipedia": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "ids"
+                        ],
+                        "nullable": true
                       }
                     },
                     "required": [
                       "progress",
                       "paused_at",
                       "id",
-                      "type",
-                      "movie"
+                      "type"
                     ]
                   }
                 }
@@ -70778,7 +71639,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -71608,7 +72469,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -76846,7 +77707,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -78846,7 +79707,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -81085,7 +81946,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -82215,7 +83076,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -82938,7 +83799,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -83453,7 +84314,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -90639,7 +91500,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -91344,7 +92205,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -92049,7 +92910,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -93610,7 +94471,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -95207,7 +96068,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -95535,6 +96396,26 @@
                       },
                       "comment": {
                         "type": "string"
+                      },
+                      "gif": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string"
+                          },
+                          "width": {
+                            "type": "integer"
+                          },
+                          "height": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "width",
+                          "height"
+                        ],
+                        "nullable": true
                       },
                       "spoiler": {
                         "type": "boolean"
@@ -96074,7 +96955,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -96422,7 +97303,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -96778,7 +97659,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -97126,7 +98007,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -97482,7 +98363,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -98119,7 +99000,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -98426,7 +99307,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -98578,7 +99459,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -99001,7 +99882,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -99424,7 +100305,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -99848,7 +100729,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -102695,7 +103576,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -105268,6 +106149,26 @@
                       "comment": {
                         "type": "string"
                       },
+                      "gif": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string"
+                          },
+                          "width": {
+                            "type": "integer"
+                          },
+                          "height": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "width",
+                          "height"
+                        ],
+                        "nullable": true
+                      },
                       "spoiler": {
                         "type": "boolean"
                       },
@@ -105521,7 +106422,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -107144,7 +108045,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -107472,6 +108373,26 @@
                       },
                       "comment": {
                         "type": "string"
+                      },
+                      "gif": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string"
+                          },
+                          "width": {
+                            "type": "integer"
+                          },
+                          "height": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "width",
+                          "height"
+                        ],
+                        "nullable": true
                       },
                       "spoiler": {
                         "type": "boolean"
@@ -108944,6 +109865,26 @@
                       "comment": {
                         "type": "string"
                       },
+                      "gif": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string"
+                          },
+                          "width": {
+                            "type": "integer"
+                          },
+                          "height": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "width",
+                          "height"
+                        ],
+                        "nullable": true
+                      },
                       "spoiler": {
                         "type": "boolean"
                       },
@@ -109597,7 +110538,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -110663,7 +111604,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -111132,7 +112073,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -111613,7 +112554,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -112082,7 +113023,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -112563,7 +113504,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -112948,7 +113889,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -113286,7 +114227,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -113438,7 +114379,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -113892,7 +114833,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -114346,7 +115287,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -114801,7 +115742,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -115186,7 +116127,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -116258,7 +117199,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -117334,7 +118275,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -118398,7 +119339,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -119301,7 +120242,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -119488,7 +120429,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -120968,7 +121909,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -122226,7 +123167,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -122602,7 +123543,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -122969,7 +123910,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -123345,7 +124286,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -129107,6 +130048,26 @@
                       "comment": {
                         "type": "string"
                       },
+                      "gif": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string"
+                          },
+                          "width": {
+                            "type": "integer"
+                          },
+                          "height": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "width",
+                          "height"
+                        ],
+                        "nullable": true
+                      },
                       "spoiler": {
                         "type": "boolean"
                       },
@@ -129318,7 +130279,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -130621,6 +131582,26 @@
                     "comment": {
                       "type": "string"
                     },
+                    "gif": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string"
+                        },
+                        "width": {
+                          "type": "integer"
+                        },
+                        "height": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "url",
+                        "width",
+                        "height"
+                      ],
+                      "nullable": true
+                    },
                     "spoiler": {
                       "type": "boolean"
                     },
@@ -131722,7 +132703,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -132083,7 +133064,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "The number of items per page",
+            "description": "The number of items per page. Defaults and maximums vary by endpoint. When pagination parameters are omitted, a low default limit is applied (often 10). When a limit is provided, it is capped at the endpoint maximum (often 250); higher values are clamped rather than rejected.",
             "schema": {
               "type": "integer",
               "nullable": true
@@ -132114,6 +133095,26 @@
                       },
                       "comment": {
                         "type": "string"
+                      },
+                      "gif": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string"
+                          },
+                          "width": {
+                            "type": "integer"
+                          },
+                          "height": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "width",
+                          "height"
+                        ],
+                        "nullable": true
                       },
                       "spoiler": {
                         "type": "boolean"
@@ -132289,7 +133290,7 @@
         "operationId": "getCommentsReplies"
       },
       "post": {
-        "description": "#### 🔒 OAuth Required 😁 Emojis\nAdd a new reply to an existing comment. Make sure to allow and encourage *spoilers* to be indicated in your app and follow the rules listed above.\n\n> ### Note\n> Replies can only be added to top level comments. If you try to reply to a reply, a `404` HTTP status code is returned.\n\n#### JSON POST Data\n| Key | Type | Default | Value |\n|---|---|---|---|\n| `comment` * | string |  | Text for the reply. |\n| `spoiler` | boolean | `false` | Is this a spoiler? |",
+        "description": "#### 🔒 OAuth Required 😁 Emojis\nAdd a new reply to an existing comment. Make sure to allow and encourage *spoilers* to be indicated in your app and follow the rules listed above.\n\n> ### Note\n> Replies can only be added to top level comments. If you try to reply to a reply, a `404` HTTP status code is returned.\n\n#### JSON POST Data\n| Key | Type | Default | Value |\n|---|---|---|---|\n| `comment` * | string |  | Text for the reply. |\n| `spoiler` | boolean | `false` | Is this a spoiler? |\n| `gif` | object |  | Klipy GIF to attach. A GIF on its own is a valid comment. (see below &#8595;) |\n\n#### GIF\nSend `null` to remove the GIF. The size is the GIF's intrinsic size in pixels; a reader uses it to reserve the GIF's box before it downloads.\n\n| Key | Type | Value |\n|---|---|---|\n| `url` * | string | Klipy GIF url. |\n| `width` | integer | Intrinsic width in pixels. |\n| `height` | integer | Intrinsic height in pixels. |",
         "summary": "Post a reply for a comment",
         "tags": [
           "comments"
@@ -132317,6 +133318,26 @@
                   },
                   "spoiler": {
                     "type": "boolean"
+                  },
+                  "gif": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string"
+                      },
+                      "width": {
+                        "type": "integer",
+                        "nullable": true
+                      },
+                      "height": {
+                        "type": "integer",
+                        "nullable": true
+                      }
+                    },
+                    "required": [
+                      "url"
+                    ],
+                    "nullable": true
                   }
                 },
                 "required": [
@@ -132349,6 +133370,26 @@
                     },
                     "comment": {
                       "type": "string"
+                    },
+                    "gif": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string"
+                        },
+                        "width": {
+                          "type": "integer"
+                        },
+                        "height": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "url",
+                        "width",
+                        "height"
+                      ],
+                      "nullable": true
                     },
                     "spoiler": {
                       "type": "boolean"
@@ -132525,7 +133566,7 @@
     },
     "/comments/{id}/": {
       "put": {
-        "description": "#### 🔒 OAuth Required 😁 Emojis\nUpdate a single comment. The OAuth user must match the author of the comment in order to update it. If not, a `401` HTTP status is returned.\n\n#### JSON POST Data\n| Key | Type | Default | Value |\n|---|---|---|---|\n| `comment` | string |  | Text for the comment. |\n| `spoiler` | boolean | `false` | Is this a spoiler? |",
+        "description": "#### 🔒 OAuth Required 😁 Emojis\nUpdate a single comment. The OAuth user must match the author of the comment in order to update it. If not, a `401` HTTP status is returned.\n\n#### JSON POST Data\n| Key | Type | Default | Value |\n|---|---|---|---|\n| `comment` | string |  | Text for the comment. |\n| `spoiler` | boolean | `false` | Is this a spoiler? |\n| `gif` | object |  | Klipy GIF to attach. A GIF on its own is a valid comment. (see below &#8595;) |\n\n#### GIF\nSend `null` to remove the GIF. The size is the GIF's intrinsic size in pixels; a reader uses it to reserve the GIF's box before it downloads.\n\n| Key | Type | Value |\n|---|---|---|\n| `url` * | string | Klipy GIF url. |\n| `width` | integer | Intrinsic width in pixels. |\n| `height` | integer | Intrinsic height in pixels. |",
         "summary": "Update a comment or reply",
         "tags": [
           "comments"
@@ -132553,6 +133594,26 @@
                   },
                   "spoiler": {
                     "type": "boolean"
+                  },
+                  "gif": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string"
+                      },
+                      "width": {
+                        "type": "integer",
+                        "nullable": true
+                      },
+                      "height": {
+                        "type": "integer",
+                        "nullable": true
+                      }
+                    },
+                    "required": [
+                      "url"
+                    ],
+                    "nullable": true
                   }
                 },
                 "required": [
@@ -132585,6 +133646,26 @@
                     },
                     "comment": {
                       "type": "string"
+                    },
+                    "gif": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string"
+                        },
+                        "width": {
+                          "type": "integer"
+                        },
+                        "height": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "url",
+                        "width",
+                        "height"
+                      ],
+                      "nullable": true
                     },
                     "spoiler": {
                       "type": "boolean"
@@ -133268,6 +134349,26 @@
                       "comment": {
                         "type": "string"
                       },
+                      "gif": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string"
+                          },
+                          "width": {
+                            "type": "integer"
+                          },
+                          "height": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "width",
+                          "height"
+                        ],
+                        "nullable": true
+                      },
                       "spoiler": {
                         "type": "boolean"
                       },
@@ -133527,6 +134628,26 @@
                       },
                       "comment": {
                         "type": "string"
+                      },
+                      "gif": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string"
+                          },
+                          "width": {
+                            "type": "integer"
+                          },
+                          "height": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "width",
+                          "height"
+                        ],
+                        "nullable": true
                       },
                       "spoiler": {
                         "type": "boolean"
@@ -133788,6 +134909,26 @@
                       "comment": {
                         "type": "string"
                       },
+                      "gif": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string"
+                          },
+                          "width": {
+                            "type": "integer"
+                          },
+                          "height": {
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "url",
+                          "width",
+                          "height"
+                        ],
+                        "nullable": true
+                      },
                       "spoiler": {
                         "type": "boolean"
                       },
@@ -133964,7 +135105,7 @@
     },
     "/comments/": {
       "post": {
-        "description": "#### 🔒 OAuth Required 😁 Emojis\nAdd a new comment to a movie, show, season, episode, or list. Make sure to allow and encourage *spoilers* to be indicated in your app and follow the rules listed above.\n\n#### JSON POST Data\n| Key | Type | Default | Value |\n|---|---|---|---|\n| item * | object | | `movie`, `show`, `season`, `episode`, or `list` object. (see examples ->) |\n| `comment` * | string |  | Text for the comment. |\n| `spoiler` | boolean | `false` | Is this a spoiler? |\n| `sharing`  | object | | Control sharing to any connected social networks. (see below &#8595;) |\n\n#### Sharing\nThe `sharing` object is optional and will apply the user's settings if not sent. If `sharing` is sent, each key will override the user's setting for that social network. Send `true` to post or `false` to not post on the indicated social network. You can see which social networks a user has connected with the [**/users/settings**](/reference/users/settings) method.\n\n| Key | Type |\n|---|---|\n| `twitter` | boolean |\n| `tumblr` | boolean |\n| `medium` | boolean |",
+        "description": "#### 🔒 OAuth Required 😁 Emojis\nAdd a new comment to a movie, show, season, episode, or list. Make sure to allow and encourage *spoilers* to be indicated in your app and follow the rules listed above.\n\n#### JSON POST Data\n| Key | Type | Default | Value |\n|---|---|---|---|\n| item * | object | | `movie`, `show`, `season`, `episode`, or `list` object. (see examples ->) |\n| `comment` * | string |  | Text for the comment. |\n| `spoiler` | boolean | `false` | Is this a spoiler? |\n| `gif` | object |  | Klipy GIF to attach. A GIF on its own is a valid comment. (see below &#8595;) |\n| `sharing`  | object | | Control sharing to any connected social networks. (see below &#8595;) |\n\n#### GIF\nSend `null` to remove the GIF. The size is the GIF's intrinsic size in pixels; a reader uses it to reserve the GIF's box before it downloads.\n\n| Key | Type | Value |\n|---|---|---|\n| `url` * | string | Klipy GIF url. |\n| `width` | integer | Intrinsic width in pixels. |\n| `height` | integer | Intrinsic height in pixels. |\n\n#### Sharing\nThe `sharing` object is optional and will apply the user's settings if not sent. If `sharing` is sent, each key will override the user's setting for that social network. Send `true` to post or `false` to not post on the indicated social network. You can see which social networks a user has connected with the [**/users/settings**](/reference/users/settings) method.\n\n| Key | Type |\n|---|---|\n| `twitter` | boolean |\n| `tumblr` | boolean |\n| `medium` | boolean |",
         "summary": "Post a comment",
         "tags": [
           "comments"
@@ -133984,6 +135125,26 @@
                       },
                       "spoiler": {
                         "type": "boolean"
+                      },
+                      "gif": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string"
+                          },
+                          "width": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "height": {
+                            "type": "integer",
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "url"
+                        ],
+                        "nullable": true
                       }
                     },
                     "required": [
@@ -134147,6 +135308,26 @@
                     },
                     "comment": {
                       "type": "string"
+                    },
+                    "gif": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string"
+                        },
+                        "width": {
+                          "type": "integer"
+                        },
+                        "height": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "url",
+                        "width",
+                        "height"
+                      ],
+                      "nullable": true
                     },
                     "spoiler": {
                       "type": "boolean"

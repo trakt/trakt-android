@@ -2,7 +2,6 @@ package tv.trakt.trakt.core.sync.data.remote.movies
 
 import org.openapitools.client.apis.RecommendationsApi
 import org.openapitools.client.apis.SyncApi
-import org.openapitools.client.apis.UsersApi
 import org.openapitools.client.models.PostCheckinStartRequestOneOf1MovieIds
 import org.openapitools.client.models.PostSyncHistoryAdd200Response
 import org.openapitools.client.models.PostSyncHistoryRemoveRequest
@@ -17,7 +16,6 @@ import tv.trakt.trakt.common.networking.helpers.CacheMarkerProvider
 
 internal class MoviesSyncApiClient(
     private val syncApi: SyncApi,
-    private val usersApi: UsersApi,
     private val recommendationsApi: RecommendationsApi,
     private val cacheMarker: CacheMarkerProvider,
 ) : MoviesSyncRemoteDataSource {
@@ -32,16 +30,6 @@ internal class MoviesSyncApiClient(
             limit = limit,
             startAt = null,
             endAt = null,
-            watchnow = filters?.availability?.joinToString(",") { it.slug },
-            genres = filters?.genre?.joinToString(",") { it.slug },
-            subgenres = filters?.subgenre?.joinToString(","),
-            years = filters?.years?.let { "${it.first}-${it.second}" },
-            ratings = filters?.rating?.let { "${it.first}-${it.second}" },
-            startDate = null,
-            endDate = null,
-            runtimes = filters?.runtime?.let { "${it.first}-${it.second}" },
-            countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
-            certifications = filters?.certification?.joinToString(",") { it.slug },
         )
         return response.body()
     }
