@@ -3,7 +3,6 @@ package tv.trakt.trakt.core.ratings.rateprompt
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableList
@@ -38,7 +37,6 @@ import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia.MovieMedia
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia.ShowMedia
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState
-import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState.AskSuppress
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState.Idle
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState.UnratedMedia
 import tv.trakt.trakt.core.ratings.rateprompt.usecases.IsShowRatingCandidateUseCase
@@ -50,7 +48,6 @@ import kotlin.time.Duration.Companion.hours
 import kotlin.time.toJavaDuration
 import kotlin.time.toKotlinInstant
 
-private const val USER_DISMISS_LIMIT = 5
 private const val UNRATED_MEDIA_LIMIT = 5
 private const val MOVIE_HISTORY_LIMIT = 10
 
@@ -63,7 +60,6 @@ private const val EPISODE_HISTORY_LIMIT = 100
 private val RECENTLY_WATCHED_DURATION = 24.hours.toJavaDuration()
 private val SHOW_BINGE_DURATION = 7.days.toJavaDuration()
 
-private val KEY_USER_DISMISS_COUNT = intPreferencesKey("key_dismiss_count")
 private val KEY_DISMISSED_MEDIA = stringSetPreferencesKey("key_dismissed_media")
 
 /**
@@ -183,7 +179,7 @@ internal class DefaultRatePromptManager(
             // Every episode in the payload already sits inside the binge window.
             val showPlaysInBingeWindow = episodeItems.groupingBy { it.show.ids.trakt }.eachCount()
 
-            // Only consider media the user hasn't rated, favorited, or dismissed, that was watched
+            // Only consider media the user hasn't rated, favorite, or dismissed, that was watched
             // within the recently watched duration, and - for shows - that hit a rating moment.
             val media = (movieItems + episodeItems)
                 .filter { it.activityAt >= recentlyWatchedWindow }
@@ -229,35 +225,13 @@ internal class DefaultRatePromptManager(
             val dismissedMedia = it.dismissedMedia(now).toMutableSet()
             dismissedMedia.add(media.toDismissalEntry(now))
             it[KEY_DISMISSED_MEDIA] = dismissedMedia
-
-            if (!hasRated) {
-                // Only increment the dismiss count if the user dismissed the prompt without rating the media.
-                val dismissCount = it[KEY_USER_DISMISS_COUNT] ?: 0
-                it[KEY_USER_DISMISS_COUNT] = dismissCount + 1
-                Timber.d(
-                    "User dismissed rate prompt for %s. Dismiss count: %s",
-                    media.dismissalKey(),
-                    dismissCount + 1,
-                )
-            } else {
-                // If the user rated the media, reset the dismiss count.
-                it[KEY_USER_DISMISS_COUNT] = 0
-                Timber.d("User rated %s after dismissing. Resetting dismiss count.", media.dismissalKey())
-            }
         }
 
-        // After updating the dismiss count, check if the user has reached the dismissal limit.
-        val dismissCount = dataStore.data.firstOrNull()?.get(KEY_USER_DISMISS_COUNT) ?: 0
-        if (dismissCount > 0 && dismissCount % USER_DISMISS_LIMIT == 0) {
-            // If the user has dismissed the prompt a multiple of the dismissal limit, ask to suppress future prompts.
-            state.update { AskSuppress }
+        // If there are more media to show, update the state with the remaining media.
+        if (hasMoreMedia.isEmpty()) {
+            state.update { Idle }
         } else {
-            // If there are more media to show, update the state with the remaining media.
-            if (hasMoreMedia.isEmpty()) {
-                state.update { Idle }
-            } else {
-                state.update { UnratedMedia(hasMoreMedia.toImmutableList()) }
-            }
+            state.update { UnratedMedia(hasMoreMedia.toImmutableList()) }
         }
     }
 
@@ -326,7 +300,7 @@ internal class DefaultRatePromptManager(
                 val media = ShowMedia(show = show)
                 val isEligible = !showsRatings.contains(show.ids.trakt) &&
                     !dismissed.contains(media.dismissalKey()) &&
-                    isShowRatingCandidateUseCase(
+                    isShowRatingCandidateUseCase.isCandidate(
                         episodeType = episode.type,
                         showPlaysInBingeWindow = showPlaysInBingeWindow[show.ids.trakt] ?: 0,
                     )

@@ -7,8 +7,6 @@ sealed interface RatePromptState {
 
     object Loading : RatePromptState
 
-    object AskSuppress : RatePromptState
-
     data class UnratedMedia(
         val media: ImmutableList<RatePromptMedia>,
     ) : RatePromptState

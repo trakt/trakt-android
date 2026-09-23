@@ -79,11 +79,6 @@ private val ratePrompts = listOf(
     R.string.text_rate_prompt_1,
     R.string.text_rate_prompt_2,
     R.string.text_rate_prompt_3,
-    R.string.text_rate_prompt_4,
-    R.string.text_rate_prompt_5,
-    R.string.text_rate_prompt_6,
-    R.string.text_rate_prompt_7,
-    R.string.text_rate_prompt_8,
 )
 
 private val viewShape = RoundedCornerShape(20.dp)

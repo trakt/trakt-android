@@ -14,7 +14,11 @@ internal const val SHOW_BINGE_EPISODE_THRESHOLD = 3
  * up-next tags and excludes [MID_SEASON_FINALE], which still counts as a rating moment here.
  */
 internal class IsShowRatingCandidateUseCase {
-    operator fun invoke(
+    private companion object {
+        val finaleTypes = setOf(SERIES_FINALE, SEASON_FINALE, MID_SEASON_FINALE)
+    }
+
+    fun isCandidate(
         episodeType: EpisodeType?,
         showPlaysInBingeWindow: Int,
     ): Boolean {
@@ -22,9 +26,5 @@ internal class IsShowRatingCandidateUseCase {
         val isBinge = showPlaysInBingeWindow >= SHOW_BINGE_EPISODE_THRESHOLD
 
         return isFinale || isBinge
-    }
-
-    private companion object {
-        val finaleTypes = setOf(SERIES_FINALE, SEASON_FINALE, MID_SEASON_FINALE)
     }
 }
