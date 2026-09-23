@@ -52,7 +52,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -92,9 +91,6 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 import java.util.Locale
 
 private val EmptyReactionsSummary = emptyMap<Int, ReactionsSummary>().toImmutableMap()
-
-// Side gif has to leave room for header and footer inside the fixed-height horizontal card.
-private val SideGifMaxSize = DpSize(width = 120.dp, height = 60.dp)
 private val EmptyReactions = emptyMap<Int, Reaction?>().toImmutableMap()
 
 @Composable
@@ -278,7 +274,7 @@ private fun CommentCardContent(
                         gif = gif,
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier
-                            .padding(top = 14.dp, end = 16.dp)
+                            .padding(top = 16.dp, end = 16.dp)
                             .sizeIn(
                                 maxWidth = SideGifMaxSize.width,
                                 maxHeight = SideGifMaxSize.height,

@@ -53,6 +53,7 @@ import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.comments.features.details.CommentDetailsSheet
+import tv.trakt.trakt.core.comments.ui.CommentGifLayout
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter.Comments
@@ -429,6 +430,7 @@ private fun CommentsContentList(
             ProfileCommentItemView(
                 item = item,
                 reactions = listReactions,
+                gifLayout = CommentGifLayout.Side,
                 onClick = { onCommentClick(item.comment) },
                 onShowClick = { onShowClick(it) },
                 onMovieClick = { onMovieClick(it) },

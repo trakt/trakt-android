@@ -2,14 +2,17 @@ package tv.trakt.trakt.core.profile.sections.activity.ui.comments
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -49,12 +52,18 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.core.comments.ui.CommentGifLayout
+import tv.trakt.trakt.core.comments.ui.CommentGifLayout.Bottom
+import tv.trakt.trakt.core.comments.ui.CommentGifLayout.Side
+import tv.trakt.trakt.core.comments.ui.CommentGifView
+import tv.trakt.trakt.core.comments.ui.SideGifMaxSize
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileCommentItem
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileCommentItem.EpisodeItem
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileCommentItem.MovieItem
@@ -65,16 +74,17 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.components.mediacards.VerticalMediaCard
 import tv.trakt.trakt.ui.theme.DefaultCardShape
+import tv.trakt.trakt.ui.theme.HorizontalImageAspectRatio
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private val EmptyReactionsSummary = emptyMap<Int, ReactionsSummary>().toImmutableMap()
-private val EmptyReactions = emptyMap<Int, Reaction?>().toImmutableMap()
 
 @Composable
 internal fun ProfileCommentItemView(
     item: ProfileCommentItem,
     modifier: Modifier = Modifier,
     reactions: ImmutableMap<Int, ReactionsSummary> = EmptyReactionsSummary,
+    gifLayout: CommentGifLayout = Bottom,
     onClick: () -> Unit = {},
     onShowClick: ((Show) -> Unit)? = null,
     onMovieClick: ((Movie) -> Unit)? = null,
@@ -105,6 +115,7 @@ internal fun ProfileCommentItemView(
             CommentCardContent(
                 item = item,
                 reactions = reactions,
+                gifLayout = gifLayout,
                 onShowClick = onShowClick,
                 onMovieClick = onMovieClick,
                 onEpisodeClick = onEpisodeClick,
@@ -119,6 +130,7 @@ internal fun ProfileCommentItemView(
 private fun CommentCardContent(
     item: ProfileCommentItem,
     reactions: ImmutableMap<Int, ReactionsSummary>,
+    gifLayout: CommentGifLayout,
     modifier: Modifier = Modifier,
     onShowClick: ((Show) -> Unit)? = null,
     onMovieClick: ((Movie) -> Unit)? = null,
@@ -141,18 +153,55 @@ private fun CommentCardContent(
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
-        Text(
-            text = item.comment.commentNoSpoilers,
-            style = TraktTheme.typography.paragraphSmall.copy(
-                fontSize = 13.sp,
-                lineHeight = 1.3.em,
-            ),
-            color = TraktTheme.colors.textSecondary,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .padding(top = 11.dp, bottom = 20.dp),
-        )
+        val body = @Composable {
+            Text(
+                text = item.comment.commentNoSpoilers,
+                style = TraktTheme.typography.paragraphSmall.copy(
+                    fontSize = 13.sp,
+                    lineHeight = 1.3.em,
+                ),
+                color = TraktTheme.colors.textSecondary,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .padding(top = 11.dp, bottom = 20.dp),
+            )
+        }
+
+        val gif = item.comment.gif
+        when {
+            gif == null -> {
+                body()
+            }
+            gifLayout == Bottom -> {
+                body()
+                CommentGifView(
+                    gif = gif,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp),
+                )
+            }
+            gifLayout == Side -> {
+                Row(
+                    verticalAlignment = Alignment.Top,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Box(modifier = Modifier.weight(1f)) {
+                        body()
+                    }
+                    CommentGifView(
+                        gif = gif,
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier
+                            .padding(top = 14.dp, end = 16.dp)
+                            .sizeIn(
+                                maxWidth = SideGifMaxSize.width,
+                                maxHeight = SideGifMaxSize.height,
+                            ),
+                    )
+                }
+            }
+        }
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -367,6 +416,36 @@ fun CommentPreview() {
                     ),
                     modifier = Modifier
                         .height(TraktTheme.size.commentCardSize),
+                )
+
+                ProfileCommentItemView(
+                    item = ShowItem(
+                        show = PreviewData.show1,
+                        comment = PreviewData.comment1.copy(
+                            comment = "Your go to comfort TV",
+                            gif = CommentGif(
+                                url = "https://example.com/gif.gif",
+                                size = 320 to 240,
+                            ),
+                        ),
+                    ),
+                    gifLayout = Side,
+                    modifier = Modifier
+                        .height(TraktTheme.size.commentCardSize)
+                        .aspectRatio(HorizontalImageAspectRatio),
+                )
+
+                ProfileCommentItemView(
+                    item = ShowItem(
+                        show = PreviewData.show1,
+                        comment = PreviewData.comment1.copy(
+                            gif = CommentGif(
+                                url = "https://example.com/gif.gif",
+                                size = 320 to 180,
+                            ),
+                        ),
+                    ),
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
         }

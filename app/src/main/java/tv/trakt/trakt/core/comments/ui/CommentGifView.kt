@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
@@ -26,6 +27,9 @@ internal enum class CommentGifLayout {
     Bottom,
     Side,
 }
+
+// Side gif has to leave room for header and footer inside the fixed-height horizontal card.
+internal val SideGifMaxSize = DpSize(width = 120.dp, height = 60.dp)
 
 @Composable
 internal fun CommentGifView(
