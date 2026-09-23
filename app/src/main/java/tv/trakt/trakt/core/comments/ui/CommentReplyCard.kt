@@ -62,6 +62,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openGoogleTranslate
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
@@ -195,6 +196,16 @@ private fun CommentReplyCardContent(
             blurred = comment.hasSpoilers && !isUserReply && !showSpoilers,
             onRevealSpoiler = { showSpoilers = true },
         )
+
+        comment.gif?.let { gif ->
+            CommentGifView(
+                gif = gif,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 12.dp)
+                    .padding(horizontal = 16.dp),
+            )
+        }
 
         CommentFooter(
             user = user,
@@ -479,6 +490,17 @@ private fun Preview() {
                     onClick = {},
                     user = null,
                     reply = PreviewData.comment1.copy(userRating = 7),
+                )
+
+                CommentReplyCard(
+                    onClick = {},
+                    user = null,
+                    reply = PreviewData.comment1.copy(
+                        gif = CommentGif(
+                            url = "https://example.com/gif.gif",
+                            size = 320 to 180,
+                        ),
+                    ),
                 )
             }
         }

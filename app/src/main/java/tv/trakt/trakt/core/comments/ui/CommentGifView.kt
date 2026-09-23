@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,6 +22,11 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val FALLBACK_ASPECT_RATIO = 1F
 
+internal enum class CommentGifLayout {
+    Bottom,
+    Side,
+}
+
 @Composable
 internal fun CommentGifView(
     gif: CommentGif,
@@ -31,11 +36,12 @@ internal fun CommentGifView(
     val (width, height) = gif.size
     val hasSize = width > 0 && height > 0
 
-    // width() clamps to parent max constraints, so an oversized gif shrinks while keeping its ratio.
+    // Max-only bounds let aspectRatio pick the largest size that fits both the model size
+    // and the parent constraints, so the gif shrinks in tight cards instead of overflowing.
     val sizeModifier = when {
         hasSize -> {
             Modifier
-                .width(width.dp)
+                .sizeIn(maxWidth = width.dp, maxHeight = height.dp)
                 .aspectRatio(width.toFloat() / height)
         }
         else -> {

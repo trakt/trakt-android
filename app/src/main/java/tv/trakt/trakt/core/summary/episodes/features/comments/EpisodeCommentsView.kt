@@ -70,6 +70,7 @@ import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.model.commentsLanguageDisplayName
 import tv.trakt.trakt.core.comments.ui.CommentCard
+import tv.trakt.trakt.core.comments.ui.CommentGifLayout
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
 import tv.trakt.trakt.core.comments.ui.CommentsLanguageDropdown
 import tv.trakt.trakt.resources.R
@@ -344,6 +345,7 @@ private fun ContentList(
                 reactions = listReactions,
                 userReactions = userReactions,
                 deleteEnabled = false,
+                gifLayout = CommentGifLayout.Side,
                 onClick = { onCommentClick?.invoke(comment) },
                 onRepliesClick = { onCommentClick?.invoke(comment) },
                 onDeleteClick = { onDeleteCommentClick?.invoke(comment) },
