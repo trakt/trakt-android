@@ -8,12 +8,14 @@ import org.koin.androidx.compose.koinViewModel
 import timber.log.Timber
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.summary.people.PersonDetailsScreen
+import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 
 @Serializable
 internal data class PersonDestination(
     val personId: Int,
     val sourceMediaId: Int?,
     val backdropUrl: String?,
+    val creditsFilter: String? = null,
 )
 
 internal fun NavGraphBuilder.personDetailsScreen(
@@ -35,6 +37,7 @@ internal fun NavController.navigateToPerson(
     personId: TraktId,
     sourceMediaId: TraktId?,
     backdropUrl: String?,
+    creditsRole: PersonCreditsRole? = null,
 ) {
     if (personId.value <= 0) {
         Timber.d("Invalid personId: ${personId.value}")
@@ -46,6 +49,7 @@ internal fun NavController.navigateToPerson(
             personId = personId.value,
             sourceMediaId = sourceMediaId?.value,
             backdropUrl = backdropUrl,
+            creditsFilter = creditsRole?.filterKey,
         ),
     )
 }

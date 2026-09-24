@@ -14,6 +14,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.summary.movies.MovieDetailsScreen
+import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 
 @Serializable
 internal data class MovieDetailsDestination(
@@ -23,7 +24,7 @@ internal data class MovieDetailsDestination(
 internal fun NavGraphBuilder.movieDetailsScreen(
     onNavigateToMovie: (TraktId) -> Unit,
     onNavigateToComments: (Movie, CommentsFilter) -> Unit,
-    onNavigateToPerson: (Movie, Person) -> Unit,
+    onNavigateToPerson: (Movie, Person, PersonCreditsRole) -> Unit,
     onNavigateToList: (Movie, CustomList) -> Unit,
     onNavigateToTrivia: (Movie) -> Unit,
     onNavigateToSentiment: (Movie, Sentiments) -> Unit,
@@ -43,7 +44,7 @@ internal fun NavGraphBuilder.movieDetailsScreen(
                 onNavigateToComments(movie, filter)
             },
             onListClick = { movie, list -> onNavigateToList(movie, list) },
-            onPersonClick = { movie, person -> onNavigateToPerson(movie, person) },
+            onPersonClick = { movie, person, role -> onNavigateToPerson(movie, person, role) },
             onTriviaClick = { movie -> onNavigateToTrivia(movie) },
             onSentimentClick = { movie, sentiments -> onNavigateToSentiment(movie, sentiments) },
             onTrailerClick = { url -> onNavigateToTrailer(url) },

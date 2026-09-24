@@ -274,6 +274,7 @@ internal fun PersonDetailsContent(
                         ShowsCreditsList(
                             loading = state.loadingCredits,
                             person = state.personDetails,
+                            preferredFilter = state.preferredCreditsFilter,
                             listItems = (state.personShowCredits ?: emptyMap()).toImmutableMap(),
                             userCollection = state.collection,
                             sectionPadding = sectionPadding,
@@ -296,6 +297,7 @@ internal fun PersonDetailsContent(
                         MoviesCreditsList(
                             loading = state.loadingCredits,
                             person = state.personDetails,
+                            preferredFilter = state.preferredCreditsFilter,
                             listItems = (state.personMovieCredits ?: emptyMap()).toImmutableMap(),
                             userCollection = state.collection,
                             sectionPadding = sectionPadding,

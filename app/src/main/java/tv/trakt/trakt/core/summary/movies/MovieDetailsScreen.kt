@@ -89,6 +89,7 @@ import tv.trakt.trakt.core.summary.movies.features.related.MovieRelatedView
 import tv.trakt.trakt.core.summary.movies.features.sentiment.MovieSentimentView
 import tv.trakt.trakt.core.summary.movies.features.streaming.MovieStreamingsView
 import tv.trakt.trakt.core.summary.movies.features.trivia.MovieTriviaView
+import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.core.summary.social.MediaSocialActivitySheet
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.summary.social.ui.MediaSocialView
@@ -111,7 +112,7 @@ internal fun MovieDetailsScreen(
     onMovieClick: ((Movie) -> Unit),
     onCommentsClick: ((Movie, CommentsFilter) -> Unit),
     onListClick: ((Movie, CustomList) -> Unit),
-    onPersonClick: ((Movie, Person) -> Unit),
+    onPersonClick: ((Movie, Person, PersonCreditsRole) -> Unit),
     onTriviaClick: (Movie) -> Unit,
     onSentimentClick: ((Movie, Sentiments) -> Unit)? = null,
     onTrailerClick: (String) -> Unit,
@@ -157,9 +158,9 @@ internal fun MovieDetailsScreen(
                 detailsSheet = it
             }
         },
-        onPersonClick = {
+        onPersonClick = { person, role ->
             state.movie?.let { movie ->
-                onPersonClick(movie, it)
+                onPersonClick(movie, person, role)
             }
         },
         onListClick = {
@@ -247,10 +248,9 @@ internal fun MovieDetailsScreen(
 
     MovieInfoSheet(
         movie = detailsSheet,
-        onPersonClick = {
-            detailsSheet = null
+        onPersonClick = { person, role ->
             state.movie?.let { movie ->
-                onPersonClick(movie, it)
+                onPersonClick(movie, person, role)
             }
         },
         onDismiss = {
@@ -405,7 +405,7 @@ internal fun MovieDetailsContent(
     onListsClick: (() -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
     onMoreCommentsClick: ((CommentsFilter) -> Unit)? = null,
-    onPersonClick: ((Person) -> Unit)? = null,
+    onPersonClick: ((Person, PersonCreditsRole) -> Unit)? = null,
     onListClick: ((CustomList) -> Unit)? = null,
     onRatingClick: ((Int) -> Unit)? = null,
     onRatingRemoveClick: (() -> Unit)? = null,
@@ -492,7 +492,7 @@ internal fun MovieDetailsContent(
                         playsCount = state.movieProgress?.plays ?: 0,
                         loading = state.loading.isLoading ||
                             state.loadingProgress.isLoading,
-                        onCreatorClick = onPersonClick ?: {},
+                        onCreatorClick = { onPersonClick?.invoke(it, PersonCreditsRole.Directing) },
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},
                         onShareImageClick = onShareImageClick ?: {},
@@ -643,7 +643,7 @@ internal fun MovieDetailsContent(
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
-                            onPersonClick = onPersonClick ?: {},
+                            onPersonClick = { onPersonClick?.invoke(it, PersonCreditsRole.Acting) },
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp - TraktTheme.spacing.shadowClipSpace),

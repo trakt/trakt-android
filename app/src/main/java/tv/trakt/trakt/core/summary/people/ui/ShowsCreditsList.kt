@@ -62,6 +62,7 @@ internal fun ShowsCreditsList(
     userCollection: UserCollectionState,
     person: Person,
     modifier: Modifier = Modifier,
+    preferredFilter: String? = null,
     sectionPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onClick: ((Show) -> Unit)? = null,
@@ -115,7 +116,7 @@ internal fun ShowsCreditsList(
                         Column {
                             var selectedFilter by remember {
                                 mutableStateOf(
-                                    resolveSelectedCreditsFilter(listItems, person.knownForDepartment)
+                                    resolveSelectedCreditsFilter(listItems, person.knownForDepartment, preferredFilter)
                                         ?: listItems.keys.first(),
                                 )
                             }

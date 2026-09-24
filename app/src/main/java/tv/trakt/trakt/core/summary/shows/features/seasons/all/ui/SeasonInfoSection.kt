@@ -50,6 +50,7 @@ import tv.trakt.trakt.common.model.CrewPerson
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
+import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.AllShowSeasonsState
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonsPeopleMode
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonsPeopleMode.Cast
@@ -71,7 +72,7 @@ internal fun LazyListScope.SeasonInfoSection(
     contentPadding: PaddingValues,
     state: AllShowSeasonsState,
     searchState: TextFieldState,
-    onPersonClick: (person: Person) -> Unit,
+    onPersonClick: (person: Person, role: PersonCreditsRole?) -> Unit,
     onModeClick: ((SeasonsPeopleMode) -> Unit),
     onRatingClick: (Int) -> Unit = {},
     onRatingRemoveClick: () -> Unit = {},
@@ -250,7 +251,7 @@ internal fun LazyListScope.SeasonInfoSection(
                     ) { item ->
                         CastPersonListItem(
                             person = item,
-                            onClick = { onPersonClick(it.person) },
+                            onClick = { onPersonClick(it.person, PersonCreditsRole.Acting) },
                             modifier = Modifier
                                 .padding(contentPadding)
                                 .padding(bottom = 12.dp)
@@ -281,7 +282,7 @@ internal fun LazyListScope.SeasonInfoSection(
                     ) { item ->
                         CrewPersonListItem(
                             person = item,
-                            onClick = { onPersonClick(it.person) },
+                            onClick = { onPersonClick(it.person, null) },
                             modifier = Modifier
                                 .padding(contentPadding)
                                 .padding(bottom = 12.dp)
@@ -393,7 +394,7 @@ private fun PreviewSeasonInfoSection() {
                     ),
                 ),
                 searchState = searchState,
-                onPersonClick = {},
+                onPersonClick = { _, _ -> },
                 onModeClick = {},
             )
         }

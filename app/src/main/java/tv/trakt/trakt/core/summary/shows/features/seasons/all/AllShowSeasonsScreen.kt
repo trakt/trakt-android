@@ -15,12 +15,13 @@ import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 
 @Composable
 internal fun AllShowSeasonsScreen(
     viewModel: AllShowSeasonsViewModel,
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
-    onPersonClick: (show: Show, person: Person) -> Unit,
+    onPersonClick: (show: Show, person: Person, role: PersonCreditsRole?) -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -52,7 +53,7 @@ internal fun AllShowSeasonsScreen(
         onCommentReplyUserClick = { comment, user -> sheetState.postReply = comment to user },
         onCommentDeleteClick = { sheetState.deleteComment = it },
         onCommentReplyDeleteClick = { sheetState.deleteReply = it },
-        onPersonClick = { person -> state.show?.let { onPersonClick(it, person) } },
+        onPersonClick = { person, role -> state.show?.let { onPersonClick(it, person, role) } },
         onSeasonRatingClick = {
             viewModel.addSeasonRating(it)
             haptic.performHapticFeedback(Confirm)

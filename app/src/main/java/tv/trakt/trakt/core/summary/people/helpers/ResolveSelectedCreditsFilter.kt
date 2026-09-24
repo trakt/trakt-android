@@ -4,8 +4,8 @@ private val NON_PREFERRED_CREDITS_FILTERS = setOf("self", "narrator")
 
 /**
  * Picks the default department filter for a person's credits list. Honors
- * [knownForDepartment] when it actually matches one of [listItems]'s
- * departments. Otherwise, ranks the remaining departments by credit count,
+ * [preferredDepartment] first, then [knownForDepartment], when either actually
+ * matches one of [listItems]'s departments. Otherwise, ranks the remaining departments by credit count,
  * preferring acting/crew departments over self/narrator - but falling back
  * to those when they're the only credits the person has, so a documentary
  * subject with only "self" appearances still gets a populated default
@@ -15,7 +15,11 @@ private val NON_PREFERRED_CREDITS_FILTERS = setOf("self", "narrator")
 fun <T> resolveSelectedCreditsFilter(
     listItems: Map<String, List<T>>,
     knownForDepartment: String?,
+    preferredDepartment: String? = null,
 ): String? {
+    val validPreferred = listItems.keys.firstOrNull { it.equals(preferredDepartment, ignoreCase = true) }
+    if (validPreferred != null) return validPreferred
+
     val validKnownFor = listItems.keys.firstOrNull { it.equals(knownForDepartment, ignoreCase = true) }
     if (validKnownFor != null) return validKnownFor
 

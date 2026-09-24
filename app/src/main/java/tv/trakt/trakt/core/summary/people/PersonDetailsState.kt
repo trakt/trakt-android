@@ -15,6 +15,7 @@ internal data class PersonDetailsState(
     val user: User? = null,
     val personDetails: Person? = null,
     val personBackdropUrl: String? = null,
+    val preferredCreditsFilter: String? = null,
     val personShowCredits: ImmutableMap<String, ImmutableList<PersonCreditItem.ShowItem>>? = null,
     val personMovieCredits: ImmutableMap<String, ImmutableList<PersonCreditItem.MovieItem>>? = null,
     val collection: UserCollectionState = UserCollectionState.Default,

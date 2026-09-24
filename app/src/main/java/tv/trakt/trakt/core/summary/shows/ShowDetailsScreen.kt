@@ -83,6 +83,7 @@ import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.ratings.ui.UserRatingBar
 import tv.trakt.trakt.core.settings.features.cover.CoverImageSheet
 import tv.trakt.trakt.core.share.ShareSheet
+import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.core.summary.shows.features.actors.ShowActorsView
 import tv.trakt.trakt.core.summary.shows.features.comments.ShowCommentsView
 import tv.trakt.trakt.core.summary.shows.features.context.lists.ShowDetailsListsSheet
@@ -119,7 +120,7 @@ internal fun ShowDetailsScreen(
     onEpisodeClick: (showId: TraktId, episode: Episode) -> Unit,
     onCommentsClick: ((Show, CommentsFilter) -> Unit),
     onListClick: ((Show, CustomList) -> Unit),
-    onPersonClick: ((Show, Person) -> Unit),
+    onPersonClick: ((Show, Person, PersonCreditsRole) -> Unit),
     onTriviaClick: ((Show) -> Unit)? = null,
     onSentimentClick: ((Show, Sentiments) -> Unit)? = null,
     onTrailerClick: (String) -> Unit,
@@ -167,9 +168,9 @@ internal fun ShowDetailsScreen(
                 detailsSheet = it
             }
         },
-        onPersonClick = {
+        onPersonClick = { person, role ->
             state.show?.let { show ->
-                onPersonClick(show, it)
+                onPersonClick(show, person, role)
             }
         },
         onShowClick = onShowClick,
@@ -266,10 +267,9 @@ internal fun ShowDetailsScreen(
 
     ShowInfoSheet(
         show = detailsSheet,
-        onPersonClick = {
-            detailsSheet = null
+        onPersonClick = { person, role ->
             state.show?.let { show ->
-                onPersonClick(show, it)
+                onPersonClick(show, person, role)
             }
         },
         onDismiss = {
@@ -477,7 +477,7 @@ internal fun ShowDetailsContent(
     onWatchlistClick: (() -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
     onMoreCommentsClick: ((CommentsFilter) -> Unit)? = null,
-    onPersonClick: ((Person) -> Unit)? = null,
+    onPersonClick: ((Person, PersonCreditsRole) -> Unit)? = null,
     onListClick: ((CustomList) -> Unit)? = null,
     onRatingClick: ((Int) -> Unit)? = null,
     onRatingRemoveClick: (() -> Unit)? = null,
@@ -563,7 +563,7 @@ internal fun ShowDetailsContent(
                         watching = state.showProgress?.isWatching == true,
                         loading = state.loading.isLoading ||
                             state.loadingProgress.isLoading,
-                        onCreatorClick = onPersonClick ?: {},
+                        onCreatorClick = { onPersonClick?.invoke(it, PersonCreditsRole.CreatedBy) },
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},
                         onShareImageClick = onShareImageClick ?: {},
@@ -734,7 +734,7 @@ internal fun ShowDetailsContent(
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
-                            onPersonClick = onPersonClick ?: {},
+                            onPersonClick = { onPersonClick?.invoke(it, PersonCreditsRole.Acting) },
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),

@@ -15,6 +15,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Person
+import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
 import tv.trakt.trakt.core.summary.ui.views.info.MetaView
 import tv.trakt.trakt.resources.R
@@ -27,7 +28,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun EpisodeInfoView(
     viewModel: EpisodeInfoViewModel,
     modifier: Modifier = Modifier,
-    onPersonClick: (person: Person) -> Unit = {},
+    onPersonClick: (person: Person, role: PersonCreditsRole) -> Unit = { _, _ -> },
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -42,7 +43,7 @@ internal fun EpisodeInfoView(
 private fun EpisodeInfoView(
     state: EpisodeInfoState,
     modifier: Modifier = Modifier,
-    onPersonClick: (person: Person) -> Unit = {},
+    onPersonClick: (person: Person, role: PersonCreditsRole) -> Unit = { _, _ -> },
 ) {
     Column(
         verticalArrangement = spacedBy(20.dp),

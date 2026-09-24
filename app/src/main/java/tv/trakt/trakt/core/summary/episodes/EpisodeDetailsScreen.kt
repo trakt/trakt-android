@@ -83,6 +83,7 @@ import tv.trakt.trakt.core.summary.episodes.features.info.EpisodeInfoSheet
 import tv.trakt.trakt.core.summary.episodes.features.related.EpisodeRelatedView
 import tv.trakt.trakt.core.summary.episodes.features.season.EpisodeSeasonView
 import tv.trakt.trakt.core.summary.episodes.features.streaming.EpisodeStreamingsView
+import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.core.summary.social.MediaSocialActivitySheet
 import tv.trakt.trakt.core.summary.social.model.MediaSocialActivity
 import tv.trakt.trakt.core.summary.social.ui.MediaSocialView
@@ -105,7 +106,7 @@ internal fun EpisodeDetailsScreen(
     onShowClick: ((Show) -> Unit),
     onEpisodeClick: ((TraktId, Episode) -> Unit),
     onCommentsClick: ((Show, Episode, CommentsFilter) -> Unit),
-    onPersonClick: ((Show, Episode, Person) -> Unit),
+    onPersonClick: ((Show, Episode, Person, PersonCreditsRole) -> Unit),
     onAllSeasonsClick: (Show, Int?) -> Unit,
     onNavigateToHistory: (Show, Episode, Int) -> Unit,
     onNavigateToAllStreamings: (Show, Episode) -> Unit,
@@ -188,11 +189,11 @@ internal fun EpisodeDetailsScreen(
                 onCommentsClick(show, episode, filter)
             }
         },
-        onPersonClick = {
+        onPersonClick = { person, role ->
             val show = state.show
             val episode = state.episode
             if (show != null && episode != null) {
-                onPersonClick(show, episode, it)
+                onPersonClick(show, episode, person, role)
             }
         },
         onRatingClick = {
@@ -289,12 +290,11 @@ internal fun EpisodeDetailsScreen(
     EpisodeInfoSheet(
         show = detailsSheet?.first,
         episode = detailsSheet?.second,
-        onPersonClick = {
+        onPersonClick = { person, role ->
             val show = detailsSheet?.first
             val episode = detailsSheet?.second
-            detailsSheet = null
             if (show != null && episode != null) {
-                onPersonClick(show, episode, it)
+                onPersonClick(show, episode, person, role)
             }
         },
         onDismiss = { detailsSheet = null },
@@ -361,7 +361,7 @@ internal fun EpisodeDetailsContent(
     onMoreClick: (() -> Unit)? = null,
     onMoreCommentsClick: ((CommentsFilter) -> Unit)? = null,
     onWatchedClick: (() -> Unit)? = null,
-    onPersonClick: ((Person) -> Unit)? = null,
+    onPersonClick: ((Person, PersonCreditsRole) -> Unit)? = null,
     onRatingClick: ((Int) -> Unit)? = null,
     onRatingRemoveClick: (() -> Unit)? = null,
     onAllSeasonsClick: ((Show, Int?) -> Unit)? = null,
@@ -449,7 +449,7 @@ internal fun EpisodeDetailsContent(
                         creator = state.episodeCreator,
                         playsCount = state.episodeProgress?.plays ?: 0,
                         loading = state.loading.isLoading || state.loadingProgress.isLoading,
-                        onCreatorClick = onPersonClick ?: {},
+                        onCreatorClick = { onPersonClick?.invoke(it, PersonCreditsRole.Directing) },
                         onShowClick = onShowClick ?: {},
                         onBackClick = onBackClick ?: {},
                         onShareClick = onShareClick ?: {},
@@ -575,7 +575,7 @@ internal fun EpisodeDetailsContent(
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
-                            onPersonClick = onPersonClick ?: {},
+                            onPersonClick = { onPersonClick?.invoke(it, PersonCreditsRole.Acting) },
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(

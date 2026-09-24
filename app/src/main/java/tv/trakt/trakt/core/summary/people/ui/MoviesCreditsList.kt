@@ -64,6 +64,7 @@ internal fun MoviesCreditsList(
     userCollection: UserCollectionState,
     person: Person,
     modifier: Modifier = Modifier,
+    preferredFilter: String? = null,
     sectionPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
     onClick: ((Movie) -> Unit)? = null,
@@ -116,7 +117,7 @@ internal fun MoviesCreditsList(
                     } else {
                         var selectedFilter by rememberSaveable {
                             mutableStateOf(
-                                resolveSelectedCreditsFilter(listItems, person.knownForDepartment)
+                                resolveSelectedCreditsFilter(listItems, person.knownForDepartment, preferredFilter)
                                     ?: listItems.keys.first(),
                             )
                         }

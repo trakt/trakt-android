@@ -40,6 +40,7 @@ import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.theme.colors.LightColors
 import tv.trakt.trakt.core.comments.model.CommentsFilter
+import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.ui.SeasonEpisodesSection
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.ui.SeasonInfoSection
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.ui.SeasonReviewsSection
@@ -75,7 +76,7 @@ internal fun AllShowSeasonsContent(
     onCommentReplyUserClick: ((Comment, User) -> Unit)? = null,
     onCommentDeleteClick: ((Comment) -> Unit)? = null,
     onCommentReplyDeleteClick: ((Comment) -> Unit)? = null,
-    onPersonClick: ((Person) -> Unit)? = null,
+    onPersonClick: ((Person, PersonCreditsRole?) -> Unit)? = null,
     onSeasonRatingClick: ((Int) -> Unit)? = null,
     onSeasonRatingRemoveClick: (() -> Unit)? = null,
     onEpisodeClick: ((EpisodeItem) -> Unit)? = null,
@@ -214,7 +215,7 @@ internal fun AllShowSeasonsContent(
                         state = state,
                         contentPadding = contentPadding,
                         searchState = peopleSearchState,
-                        onPersonClick = { onPersonClick?.invoke(it) },
+                        onPersonClick = { person, role -> onPersonClick?.invoke(person, role) },
                         onModeClick = { onPeopleModeClick?.invoke(it) },
                         onRatingClick = { onSeasonRatingClick?.invoke(it) },
                         onRatingRemoveClick = { onSeasonRatingRemoveClick?.invoke() },

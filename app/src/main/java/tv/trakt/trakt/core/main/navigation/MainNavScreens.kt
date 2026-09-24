@@ -239,11 +239,12 @@ internal fun NavGraphBuilder.showsScreens(
             onNavigateToEpisode = { showId, episode ->
                 navigateToEpisode(showId, episode)
             },
-            onNavigateToPerson = { show, person ->
+            onNavigateToPerson = { show, person, role ->
                 navigateToPerson(
                     personId = person.ids.trakt,
                     sourceMediaId = show.ids.trakt,
                     backdropUrl = show.images?.getFanartUrl(Size.THUMB),
+                    creditsRole = role,
                 )
             },
             onNavigateToTrivia = { show ->
@@ -328,11 +329,12 @@ internal fun NavGraphBuilder.episodesScreens(
                     filter = filter,
                 )
             },
-            onPersonClick = { show, _, person ->
+            onPersonClick = { show, _, person, role ->
                 navigateToPerson(
                     personId = person.ids.trakt,
                     sourceMediaId = show.ids.trakt,
                     backdropUrl = show.images?.getFanartUrl(Size.THUMB),
+                    creditsRole = role,
                 )
             },
             onAllSeasonsClick = { show, season ->
@@ -398,11 +400,12 @@ internal fun NavGraphBuilder.moviesScreens(
                     mediaImage = movie.images?.getFanartUrl(),
                 )
             },
-            onNavigateToPerson = { movie, person ->
+            onNavigateToPerson = { movie, person, role ->
                 navigateToPerson(
                     personId = person.ids.trakt,
                     sourceMediaId = movie.ids.trakt,
                     backdropUrl = movie.images?.getFanartUrl(Size.THUMB),
+                    creditsRole = role,
                 )
             },
             onNavigateToTrivia = { movie ->
@@ -671,11 +674,12 @@ internal fun NavGraphBuilder.allShowSeasonsScreens(controller: NavHostController
             onNavigateToEpisode = { showId, episode ->
                 navigateToEpisode(showId, episode)
             },
-            onNavigateToPerson = { show, person ->
+            onNavigateToPerson = { show, person, role ->
                 navigateToPerson(
                     personId = person.ids.trakt,
                     sourceMediaId = show.ids.trakt,
                     backdropUrl = show.images?.getFanartUrl(Size.THUMB),
+                    creditsRole = role,
                 )
             },
             onNavigateBack = { popBackStack() },

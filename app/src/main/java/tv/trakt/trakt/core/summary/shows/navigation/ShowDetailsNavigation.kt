@@ -14,6 +14,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.comments.model.CommentsFilter
+import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.core.summary.shows.ShowDetailsScreen
 
 @Serializable
@@ -25,7 +26,7 @@ internal fun NavGraphBuilder.showDetailsScreen(
     onNavigateToShow: (TraktId) -> Unit,
     onNavigateToComments: (Show, CommentsFilter) -> Unit,
     onNavigateToList: (Show, CustomList) -> Unit,
-    onNavigateToPerson: (Show, Person) -> Unit,
+    onNavigateToPerson: (Show, Person, PersonCreditsRole) -> Unit,
     onNavigateToEpisode: (showId: TraktId, episode: Episode) -> Unit,
     onNavigateToTrivia: (Show) -> Unit,
     onNavigateToSentiment: (Show, Sentiments) -> Unit,
@@ -47,7 +48,7 @@ internal fun NavGraphBuilder.showDetailsScreen(
                 onNavigateToComments(show, filter)
             },
             onListClick = { show, list -> onNavigateToList(show, list) },
-            onPersonClick = { show, person -> onNavigateToPerson(show, person) },
+            onPersonClick = { show, person, role -> onNavigateToPerson(show, person, role) },
             onTriviaClick = { show -> onNavigateToTrivia(show) },
             onSentimentClick = { show, sentiments -> onNavigateToSentiment(show, sentiments) },
             onTrailerClick = { url -> onNavigateToTrailer(url) },

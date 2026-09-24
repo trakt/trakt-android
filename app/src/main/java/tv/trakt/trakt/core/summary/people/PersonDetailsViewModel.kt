@@ -54,6 +54,7 @@ internal class PersonDetailsViewModel(
     private val userState = MutableStateFlow(initialState.user)
     private val personDetailsState = MutableStateFlow(initialState.personDetails)
     private val personBackdropState = MutableStateFlow(destination.backdropUrl)
+    private val preferredCreditsFilterState = MutableStateFlow(destination.creditsFilter)
     private val personShowCreditsState = MutableStateFlow(initialState.personShowCredits)
     private val personMovieCreditsState = MutableStateFlow(initialState.personMovieCredits)
 
@@ -197,6 +198,7 @@ internal class PersonDetailsViewModel(
         navigateShow,
         navigateMovie,
         errorState,
+        preferredCreditsFilterState,
     ) { state ->
         PersonDetailsState(
             user = state[0] as User?,
@@ -210,6 +212,7 @@ internal class PersonDetailsViewModel(
             navigateShow = state[8] as TraktId?,
             navigateMovie = state[9] as TraktId?,
             error = state[10] as Exception?,
+            preferredCreditsFilter = state[11] as String?,
         )
     }.stateIn(
         scope = viewModelScope,

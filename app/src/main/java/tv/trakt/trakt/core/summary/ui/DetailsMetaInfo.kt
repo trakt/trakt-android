@@ -29,6 +29,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.LocalDate
@@ -42,7 +43,7 @@ internal fun DetailsMetaInfo(
     showStudios: ImmutableList<String>? = null,
     showCreators: ImmutableList<Person>? = null,
     showWriters: ImmutableList<Person>? = null,
-    onPersonClick: (person: Person) -> Unit = {},
+    onPersonClick: (person: Person, role: PersonCreditsRole) -> Unit = { _, _ -> },
 ) {
     DetailsMetaInfo(
         modifier = modifier,
@@ -71,7 +72,7 @@ internal fun DetailsMetaInfo(
     modifier: Modifier = Modifier,
     episodeDirectors: ImmutableList<Person>? = null,
     episodeWriters: ImmutableList<Person>? = null,
-    onPersonClick: (person: Person) -> Unit = {},
+    onPersonClick: (person: Person, role: PersonCreditsRole) -> Unit = { _, _ -> },
 ) {
     DetailsMetaInfo(
         modifier = modifier,
@@ -94,7 +95,7 @@ internal fun DetailsMetaInfo(
     movieStudios: ImmutableList<String>? = null,
     movieDirectors: ImmutableList<Person>? = null,
     movieWriters: ImmutableList<Person>? = null,
-    onPersonClick: (person: Person) -> Unit = {},
+    onPersonClick: (person: Person, role: PersonCreditsRole) -> Unit = { _, _ -> },
 ) {
     DetailsMetaInfo(
         modifier = modifier,
@@ -131,7 +132,7 @@ private fun DetailsMetaInfo(
     directors: ImmutableList<Person>? = null,
     writers: ImmutableList<Person>? = null,
     episodeRowsOnly: Boolean = false,
-    onPersonClick: (person: Person) -> Unit = {},
+    onPersonClick: (person: Person, role: PersonCreditsRole) -> Unit = { _, _ -> },
 ) {
     val runtimeString = rememberDurationFormat(runtime?.inWholeMinutes)
     val totalRuntimeString = rememberDurationFormat(totalRuntime?.inWholeMinutes)
@@ -229,6 +230,10 @@ private fun DetailsMetaInfo(
                     else -> EmptyImmutableList
                 }
             }
+            val peopleRole = when {
+                directors != null -> PersonCreditsRole.Directing
+                else -> PersonCreditsRole.CreatedBy
+            }
 
             DetailsMeta(
                 title = stringResource(
@@ -244,7 +249,7 @@ private fun DetailsMetaInfo(
                 onValueClick = { name ->
                     people
                         .firstOrNull { it.name == name }
-                        ?.let(onPersonClick)
+                        ?.let { onPersonClick(it, peopleRole) }
                 },
                 modifier = Modifier.weight(1F),
             )
@@ -258,7 +263,7 @@ private fun DetailsMetaInfo(
                 onValueClick = { name ->
                     (writers ?: EmptyImmutableList)
                         .firstOrNull { it.name == name }
-                        ?.let(onPersonClick)
+                        ?.let { onPersonClick(it, PersonCreditsRole.Writing) }
                 },
                 modifier = Modifier.weight(1F),
             )

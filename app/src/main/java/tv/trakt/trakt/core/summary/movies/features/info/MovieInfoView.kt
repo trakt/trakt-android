@@ -17,6 +17,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
+import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
 import tv.trakt.trakt.core.summary.ui.views.info.MetaView
 import tv.trakt.trakt.resources.R
@@ -29,7 +30,7 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun MovieInfoView(
     viewModel: MovieInfoViewModel,
     modifier: Modifier = Modifier,
-    onPersonClick: (person: Person) -> Unit = {},
+    onPersonClick: (person: Person, role: PersonCreditsRole) -> Unit = { _, _ -> },
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -44,7 +45,7 @@ internal fun MovieInfoView(
 private fun MovieInfoView(
     state: MovieInfoState,
     modifier: Modifier = Modifier,
-    onPersonClick: (person: Person) -> Unit = {},
+    onPersonClick: (person: Person, role: PersonCreditsRole) -> Unit = { _, _ -> },
 ) {
     Column(
         verticalArrangement = spacedBy(20.dp),
@@ -93,7 +94,7 @@ private fun DetailsView(
     movieStudios: ImmutableList<String>?,
     movieDirectors: ImmutableList<Person>?,
     movieWriters: ImmutableList<Person>?,
-    onPersonClick: (person: Person) -> Unit,
+    onPersonClick: (person: Person, role: PersonCreditsRole) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val windowClass = currentWindowAdaptiveInfo().windowSizeClass
