@@ -52,7 +52,13 @@ import tv.trakt.trakt.core.shows.ui.context.ShowContextViewModel
 private const val SHOWS_PREFERENCES = "shows_preferences"
 
 internal val showsDataModule = module {
-    singleOf(::ShowsApiClient) { bind<ShowsRemoteDataSource>() }
+    single<ShowsRemoteDataSource> {
+        ShowsApiClient(
+            showsApi = get(),
+            calendarsApi = get(named("publicCalendarsApi")),
+            v3Api = get(),
+        )
+    }
 
     singleOf(::EpisodesApiClient) { bind<EpisodesRemoteDataSource>() }
 

@@ -1,6 +1,7 @@
 package tv.trakt.trakt.app.core.shows.di
 
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.trakt.trakt.app.core.shows.ShowsViewModel
 import tv.trakt.trakt.app.core.shows.data.remote.ShowsApiClient
@@ -22,7 +23,7 @@ internal val showsDataModule = module {
         ShowsApiClient(
             api = get(),
             recommendationsApi = get(),
-            calendarsApi = get(),
+            calendarsApi = get(named("publicCalendarsApi")),
         )
     }
 

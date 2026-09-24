@@ -308,6 +308,16 @@ val networkingApiModule = module {
         )
     }
 
+    // Unauthenticated so the hot releases feed, which is the same for every caller,
+    // can be served from the shared public cache.
+    single<CalendarsApi>(named("publicCalendarsApi")) {
+        CalendarsApi(
+            baseUrl = API_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
+        )
+    }
+
     single<HistoryApi> {
         HistoryApi(
             baseUrl = API_BASE_URL,
