@@ -371,9 +371,11 @@ private fun MainContent(
                     streamingState = state.showStreamings,
                     collectionState = state.showCollection,
                     watchAgainEnabled = state.user.settings?.watchOnlyOnce != true,
+                    trailerUrl = state.showVideos?.firstOrNull { it.type == "trailer" }?.url,
                     onHistoryClick = onHistoryClick,
                     onRemoveHistoryClick = onRemoveAllHistoryClick,
                     onWatchlistClick = onWatchlistClick,
+                    onTrailerClick = onVideoClick,
                     onStreamingLongClick = onStreamingsClick,
                     modifier = Modifier
                         .focusGroup()

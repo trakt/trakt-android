@@ -369,6 +369,7 @@ private fun MainContent(
                     onHistoryClick = onHistoryClick,
                     onRemoveHistoryClick = onRemoveHistoryClick,
                     onWatchlistClick = onWatchlistClick,
+                    onTrailerClick = onVideoClick,
                     onStreamingLongClick = onStreamingsClick,
                     onDropMovieClick = onDropMovieClick,
                     modifier = Modifier

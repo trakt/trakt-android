@@ -1,11 +1,11 @@
 package tv.trakt.trakt.app.core.details.movie.views.header
 
+import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.runtime.Composable
@@ -17,7 +17,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
@@ -26,8 +30,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.app.Config.DEFAULT_PLEX_LOGO_URL
-import tv.trakt.trakt.app.common.ui.buttons.IconButton
+import tv.trakt.trakt.app.common.ui.buttons.OutlineButton
 import tv.trakt.trakt.app.common.ui.buttons.PrimaryButton
 import tv.trakt.trakt.app.common.ui.buttons.WatchNowButton
 import tv.trakt.trakt.app.common.ui.menus.TvDropdownMenu
@@ -38,16 +43,17 @@ import tv.trakt.trakt.app.core.details.movie.MovieDetailsState.StreamingsState
 import tv.trakt.trakt.app.core.details.movie.usecases.streamings.GetPlexUseCase
 import tv.trakt.trakt.app.core.details.ui.dateselection.DateSelectionMenu
 import tv.trakt.trakt.app.core.player.plex.TvPlexPlayerActivity
+import tv.trakt.trakt.app.helpers.extensions.requestSafeFocus
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.openPlexLink
 import tv.trakt.trakt.common.helpers.extensions.openWatchNowLink
 import tv.trakt.trakt.common.model.DateSelectionResult
+import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.MediaType
-import tv.trakt.trakt.common.ui.theme.colors.Blue50
-import tv.trakt.trakt.common.ui.theme.colors.Blue500
 import tv.trakt.trakt.common.ui.theme.colors.Purple50
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.resources.R
+import java.time.ZonedDateTime
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -56,6 +62,7 @@ internal fun MovieActionButtons(
     onHistoryClick: (DateSelectionResult) -> Unit,
     onRemoveHistoryClick: () -> Unit,
     onWatchlistClick: () -> Unit,
+    onTrailerClick: (String) -> Unit,
     onStreamingLongClick: () -> Unit,
     onDropMovieClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -67,120 +74,120 @@ internal fun MovieActionButtons(
     val collectionState = movieState.movieCollection
     val streamingState = movieState.movieStreamings
 
+    val trailerUrl = remember(movieState.movieVideos) {
+        movieState.movieVideos?.firstOrNull { it.type == "trailer" }?.url
+    }
+
     Column(
         verticalArrangement = spacedBy(8.dp),
         modifier = modifier.width(buttonsWidth),
     ) {
-        Row(
-            horizontalArrangement = spacedBy(6.dp),
-            verticalAlignment = CenterVertically,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            StreamingButton(
-                streamingState = movieState.movieStreamings,
-                onLongClick = onStreamingLongClick,
-                onClick = {
-                    if (streamingState.plex) {
-                        if (streamingState.plexStream?.primaryUrl.isNullOrBlank()) {
-                            openPlexLink(
-                                uriHandler = uriHandler,
-                                slug = streamingState.slug?.value,
-                                type = "movie",
-                            )
-                        } else {
-                            val intent = TvPlexPlayerActivity.createIntent(
-                                context = context,
-                                mediaId = movieState.movieDetails?.ids?.trakt ?: return@StreamingButton,
-                                mediaType = MediaType.Movie,
-                                primaryVideoUrl = streamingState.plexStream.primaryUrl,
-                                secondaryVideoUrls = streamingState.plexStream.secondaryUrls,
-                                videoTitle = movieState.movieDetails.title,
-                                videoSubtitle = movieState.movieDetails.yearString,
-                                videoProgress = streamingState.plexStream.progress,
-                            )
-                            context.startActivity(intent)
-                        }
-                    } else {
-                        openWatchNowLink(
-                            context = context,
-                            uriHandler = uriHandler,
-                            link = streamingState.service?.linkDirect,
-                        )
-                    }
-                },
-                modifier = Modifier.weight(1f, false),
-            )
-
-            if (streamingState.plex ||
-                !streamingState.plexStream?.primaryUrl.isNullOrBlank() ||
-                !streamingState.service?.linkDirect.isNullOrBlank()
-            ) {
-                StreamingDropDownButton(
-                    enabled = !streamingState.loading,
-                    streamingState = movieState.movieStreamings,
-                    onStreamOnPlexClick = {
+        StreamingButton(
+            streamingState = streamingState,
+            onLongClick = onStreamingLongClick,
+            onClick = {
+                if (streamingState.plex) {
+                    if (streamingState.plexStream?.primaryUrl.isNullOrBlank()) {
                         openPlexLink(
                             uriHandler = uriHandler,
                             slug = streamingState.slug?.value,
                             type = "movie",
                         )
-                    },
-                    onWhereToWatchClick = onStreamingLongClick,
-                    onDropMovieClick = onDropMovieClick,
-                )
-            }
-        }
+                    } else {
+                        val intent = TvPlexPlayerActivity.createIntent(
+                            context = context,
+                            mediaId = movieState.movieDetails?.ids?.trakt ?: return@StreamingButton,
+                            mediaType = MediaType.Movie,
+                            primaryVideoUrl = streamingState.plexStream.primaryUrl,
+                            secondaryVideoUrls = streamingState.plexStream.secondaryUrls,
+                            videoTitle = movieState.movieDetails.title,
+                            videoSubtitle = movieState.movieDetails.yearString,
+                            videoProgress = streamingState.plexStream.progress,
+                        )
+                        context.startActivity(intent)
+                    }
+                } else {
+                    openWatchNowLink(
+                        context = context,
+                        uriHandler = uriHandler,
+                        link = streamingState.service?.linkDirect,
+                    )
+                }
+            },
+            modifier = Modifier.fillMaxWidth(),
+        )
 
         val isHistory = remember(collectionState.isHistory) { collectionState.isHistory }
+        MarkAsWatchedButton(
+            isHistory = isHistory,
+            collectionState = collectionState,
+            onHistoryClick = onHistoryClick,
+            onRemoveHistoryClick = onRemoveHistoryClick,
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        val watchlistFocusRequester = remember { FocusRequester() }
         Row(
             horizontalArrangement = spacedBy(6.dp),
             verticalAlignment = CenterVertically,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusProperties {
+                    onEnter = { watchlistFocusRequester.requestSafeFocus() }
+                }
+                .focusGroup(),
         ) {
-            val dateMenuVisible = remember { mutableStateOf(false) }
-
-            MarkAsWatchedButton(
-                isHistory = isHistory,
+            WatchlistButton(
                 collectionState = collectionState,
-                onHistoryClick = onHistoryClick,
-                onRemoveHistoryClick = onRemoveHistoryClick,
-                modifier = Modifier.weight(1f, false),
+                onClick = onWatchlistClick,
+                modifier = Modifier
+                    .weight(1F)
+                    .focusRequester(watchlistFocusRequester),
             )
 
-            if (!collectionState.isLoading && collectionState.isHistory) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                ) {
-                    HistoryDropDownButton(
-                        enabled = !collectionState.isLoading,
-                        watchAgainEnabled = movieState.user?.settings?.watchOnlyOnce != true,
-                        onWatchAgainClick = { dateMenuVisible.value = true },
-                        onRemoveFromHistoryClick = onRemoveHistoryClick,
-                    )
+            OutlineButton(
+                icon = painterResource(R.drawable.ic_trailer),
+                iconSize = 20.dp,
+                enabled = trailerUrl != null && !collectionState.isLoading,
+                onClick = { trailerUrl?.let(onTrailerClick) },
+                modifier = Modifier.weight(1F),
+            )
 
-                    DateSelectionMenu(
-                        expanded = dateMenuVisible.value,
-                        onDismissRequest = { dateMenuVisible.value = false },
-                        onSelect = onHistoryClick,
+            MoreButton(
+                movieState = movieState,
+                isHistory = isHistory,
+                onHistoryClick = onHistoryClick,
+                onRemoveHistoryClick = onRemoveHistoryClick,
+                onStreamOnPlexClick = {
+                    openPlexLink(
+                        uriHandler = uriHandler,
+                        slug = streamingState.slug?.value,
+                        type = "movie",
                     )
-                }
-            }
+                },
+                onWhereToWatchClick = onStreamingLongClick,
+                onDropMovieClick = onDropMovieClick,
+                modifier = Modifier.weight(1F),
+            )
         }
-
-        val isWatchlist = remember(collectionState.isWatchlist) { collectionState.isWatchlist }
-        PrimaryButton(
-            text = stringResource(
-                if (isWatchlist) R.string.button_text_watchlist else R.string.button_text_watchlist,
-            ),
-            icon = painterResource(if (isWatchlist) R.drawable.ic_minus else R.drawable.ic_plus),
-            onClick = onWatchlistClick,
-            containerColor = if (isWatchlist) Blue500 else Blue50,
-            contentColor = if (isWatchlist) Color.White else Blue500,
-            borderColor = if (isWatchlist) Color.White else Blue500,
-            enabled = !collectionState.isLoading,
-            loading = collectionState.isWatchlistLoading,
-        )
     }
+}
+
+@Composable
+private fun WatchlistButton(
+    collectionState: CollectionState,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val isWatchlist = remember(collectionState.isWatchlist) { collectionState.isWatchlist }
+    OutlineButton(
+        icon = painterResource(if (isWatchlist) R.drawable.ic_bookmark_on else R.drawable.ic_bookmark_off),
+        iconSize = 22.dp,
+        onClick = onClick,
+        enabled = !collectionState.isLoading,
+        loading = collectionState.isWatchlistLoading,
+        modifier = modifier,
+    )
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -194,7 +201,7 @@ private fun MarkAsWatchedButton(
 ) {
     val menuVisible = remember { mutableStateOf(false) }
 
-    Box(modifier = modifier.fillMaxWidth()) {
+    Box(modifier = modifier) {
         PrimaryButton(
             text = stringResource(
                 if (isHistory) R.string.tag_text_watched else R.string.button_text_mark_as_watched,
@@ -293,39 +300,87 @@ private fun StreamingButton(
     )
 }
 
+private data class MoreMenuItem(
+    val text: String,
+    val icon: Painter? = null,
+    val enabled: Boolean = true,
+    val onClick: () -> Unit,
+)
+
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-private fun StreamingDropDownButton(
-    streamingState: StreamingsState,
+private fun MoreButton(
+    movieState: MovieDetailsState,
+    isHistory: Boolean,
+    onHistoryClick: (DateSelectionResult) -> Unit,
+    onRemoveHistoryClick: () -> Unit,
     onStreamOnPlexClick: () -> Unit,
     onWhereToWatchClick: () -> Unit,
     onDropMovieClick: () -> Unit,
-    enabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val plex = streamingState.plex
-    val plexStream = !streamingState.plexStream?.primaryUrl.isNullOrBlank()
+    val collectionState = movieState.movieCollection
+    val streamingState = movieState.movieStreamings
+    val plexStream = streamingState.plex && !streamingState.plexStream?.primaryUrl.isNullOrBlank()
+    val plexProgress = streamingState.plexStream?.progress ?: 0F
+    val watchAgainEnabled = movieState.user?.settings?.watchOnlyOnce != true
+
+    val menuVisible = remember { mutableStateOf(false) }
+    val dateMenuVisible = remember { mutableStateOf(false) }
+
+    val items = buildList {
+        if (plexStream) {
+            add(
+                MoreMenuItem(
+                    text = "${stringResource(R.string.button_text_stream)} Plex",
+                    onClick = onStreamOnPlexClick,
+                ),
+            )
+        }
+        add(
+            MoreMenuItem(
+                text = stringResource(R.string.button_text_where_to_watch),
+                icon = painterResource(R.drawable.ic_play),
+                onClick = onWhereToWatchClick,
+            ),
+        )
+        if (plexStream && plexProgress > 0F) {
+            add(
+                MoreMenuItem(
+                    text = stringResource(R.string.button_text_drop_movie).uppercase(),
+                    onClick = onDropMovieClick,
+                ),
+            )
+        }
+        if (isHistory) {
+            add(
+                MoreMenuItem(
+                    text = stringResource(R.string.button_text_watch_again),
+                    icon = painterResource(R.drawable.ic_check_double),
+                    enabled = watchAgainEnabled,
+                    onClick = { dateMenuVisible.value = true },
+                ),
+            )
+            add(
+                MoreMenuItem(
+                    text = stringResource(R.string.button_text_remove_from_history),
+                    icon = painterResource(R.drawable.ic_trash),
+                    onClick = onRemoveHistoryClick,
+                ),
+            )
+        }
+    }.toImmutableList()
 
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier,
     ) {
-        val menuVisible = remember { mutableStateOf(false) }
-        IconButton(
+        OutlineButton(
             icon = painterResource(R.drawable.ic_more_vertical),
-            iconSize = 14.dp,
-            size = 32.dp,
-            onClick = {
-                when {
-                    plex && plexStream -> menuVisible.value = true
-                    else -> onWhereToWatchClick()
-                }
-            },
-            containerColor = Color.Transparent,
-            contentColor = TraktTheme.colors.primaryButtonContent,
-            borderColor = Color.White,
-            enabled = enabled,
-            modifier = Modifier.height(42.dp),
+            iconSize = 17.dp,
+            onClick = { menuVisible.value = true },
+            enabled = !collectionState.isLoading && !streamingState.loading,
+            modifier = Modifier.fillMaxWidth(),
         )
 
         TvDropdownMenu(
@@ -334,89 +389,25 @@ private fun StreamingDropDownButton(
         ) {
             var focusedIndex by remember { mutableIntStateOf(0) }
 
-            TvDropdownMenuItem(
-                text = "${stringResource(R.string.button_text_stream)} Plex",
-                focused = focusedIndex == 0,
-                onFocus = { focusedIndex = 0 },
-                onClick = {
-                    menuVisible.value = false
-                    onStreamOnPlexClick()
-                },
-            )
-
-            TvDropdownMenuItem(
-                text = stringResource(R.string.button_text_where_to_watch),
-                focused = focusedIndex == 1,
-                onFocus = { focusedIndex = 1 },
-                onClick = {
-                    menuVisible.value = false
-                    onWhereToWatchClick()
-                },
-            )
-
-            if ((streamingState.plexStream?.progress ?: 0F) > 0F) {
+            items.forEachIndexed { index, item ->
                 TvDropdownMenuItem(
-                    text = stringResource(R.string.button_text_drop_movie).uppercase(),
-                    focused = focusedIndex == 2,
-                    onFocus = { focusedIndex = 2 },
+                    text = item.text,
+                    icon = item.icon,
+                    enabled = item.enabled,
+                    focused = focusedIndex == index,
+                    onFocus = { focusedIndex = index },
                     onClick = {
                         menuVisible.value = false
-                        onDropMovieClick()
+                        item.onClick()
                     },
                 )
             }
         }
-    }
-}
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
-@Composable
-private fun HistoryDropDownButton(
-    enabled: Boolean,
-    watchAgainEnabled: Boolean,
-    onWatchAgainClick: () -> Unit,
-    onRemoveFromHistoryClick: () -> Unit,
-) {
-    val menuVisible = remember { mutableStateOf(false) }
-    IconButton(
-        icon = painterResource(R.drawable.ic_more_vertical),
-        iconSize = 14.dp,
-        size = 32.dp,
-        onClick = { menuVisible.value = true },
-        containerColor = Color.Transparent,
-        contentColor = TraktTheme.colors.primaryButtonContent,
-        borderColor = Color.White,
-        enabled = enabled,
-        modifier = Modifier.height(42.dp),
-    )
-
-    TvDropdownMenu(
-        visible = menuVisible.value,
-        onDismiss = { menuVisible.value = false },
-    ) {
-        var focusedIndex by remember { mutableIntStateOf(0) }
-
-        TvDropdownMenuItem(
-            text = stringResource(R.string.button_text_watch_again),
-            icon = painterResource(R.drawable.ic_check_double),
-            enabled = watchAgainEnabled,
-            focused = focusedIndex == 0,
-            onFocus = { focusedIndex = 0 },
-            onClick = {
-                menuVisible.value = false
-                onWatchAgainClick()
-            },
-        )
-
-        TvDropdownMenuItem(
-            text = stringResource(R.string.button_text_remove_from_history),
-            icon = painterResource(R.drawable.ic_trash),
-            focused = focusedIndex == 1,
-            onFocus = { focusedIndex = 1 },
-            onClick = {
-                menuVisible.value = false
-                onRemoveFromHistoryClick()
-            },
+        DateSelectionMenu(
+            expanded = dateMenuVisible.value,
+            onDismissRequest = { dateMenuVisible.value = false },
+            onSelect = onHistoryClick,
         )
     }
 }
@@ -439,10 +430,21 @@ private fun Preview1() {
                         progress = 50F,
                     ),
                 ),
+                movieVideos = listOf(
+                    ExtraVideo(
+                        title = "Trailer",
+                        url = "https://youtube.com/watch?v=4mdAbk4dXXY",
+                        site = "youtube",
+                        type = "trailer",
+                        official = true,
+                        publishedAt = ZonedDateTime.now(),
+                    ),
+                ).toImmutableList(),
             ),
             onHistoryClick = {},
             onRemoveHistoryClick = {},
             onWatchlistClick = {},
+            onTrailerClick = {},
             onStreamingLongClick = {},
             onDropMovieClick = {},
         )
@@ -466,6 +468,7 @@ private fun Preview2(
             onHistoryClick = {},
             onRemoveHistoryClick = {},
             onWatchlistClick = {},
+            onTrailerClick = {},
             onStreamingLongClick = {},
             onDropMovieClick = {},
         )

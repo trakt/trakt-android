@@ -63,6 +63,7 @@ import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Images.Size.MEDIUM
+import tv.trakt.trakt.common.model.MediaGenre.Anime
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.resources.R
@@ -263,6 +264,7 @@ internal fun ShowHeader(
                     ExternalRatingsStrip(
                         externalRating = externalRating,
                         hidden = hidden,
+                        malEnabled = remember(show.genres) { show.genres.contains(Anime) },
                     )
                 }
             }

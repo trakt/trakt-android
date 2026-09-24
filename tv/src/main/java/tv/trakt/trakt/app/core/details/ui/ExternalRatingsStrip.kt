@@ -5,12 +5,14 @@ import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.res.painterResource
@@ -29,6 +31,7 @@ internal fun ExternalRatingsStrip(
     externalRating: ExternalRating?,
     modifier: Modifier = Modifier,
     hidden: Boolean = false,
+    malEnabled: Boolean = false,
 ) {
     val grayFilter = remember {
         ColorFilter.colorMatrix(
@@ -82,6 +85,49 @@ internal fun ExternalRatingsStrip(
             }
         }
 
+        // MyAnimeList Rating
+        if (malEnabled) {
+            val malRating = externalRating?.mal?.rating ?: 0F
+            Row(
+                horizontalArrangement = spacedBy(4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.ic_mal),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(14.dp)
+                        .clip(RoundedCornerShape(2.dp)),
+                    colorFilter = if (malRating > 0 && !hidden) null else grayFilter,
+                )
+                Text(
+                    text = if (malRating > 0 && !hidden) externalRating?.mal?.ratingString ?: "-" else "-",
+                    color = TraktTheme.colors.textPrimary,
+                    style = TraktTheme.typography.ratingLabel,
+                )
+
+                val malVotes = externalRating?.mal?.votes ?: 0
+                if (malVotes > 0 && !hidden) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.align(Alignment.Top),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Person,
+                            contentDescription = null,
+                            tint = TraktTheme.colors.textSecondary,
+                            modifier = Modifier.size(12.5.dp),
+                        )
+                        Text(
+                            text = rememberThousandsFormat(malVotes),
+                            color = TraktTheme.colors.textSecondary,
+                            style = TraktTheme.typography.ratingLabel.copy(fontSize = 12.sp),
+                        )
+                    }
+                }
+            }
+        }
+
         // Rotten Tomatoes Rating
         val rottenRating = externalRating?.rotten?.rating?.toInt() ?: 0
         Row(
@@ -130,6 +176,7 @@ private fun ExternalRatingsStripPreview() {
     TraktTheme {
         ExternalRatingsStrip(
             hidden = false,
+            malEnabled = true,
             externalRating = ExternalRating(
                 trakt = null,
                 imdb = ExternalRating.ImdbRating(

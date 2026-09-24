@@ -63,6 +63,7 @@ import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.ExternalRating
 import tv.trakt.trakt.common.model.Images.Size.MEDIUM
+import tv.trakt.trakt.common.model.MediaGenre.Anime
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.resources.R
@@ -274,6 +275,7 @@ internal fun MovieHeader(
                     ExternalRatingsStrip(
                         externalRating = externalRating,
                         hidden = hidden,
+                        malEnabled = remember(movie.genres) { movie.genres.contains(Anime) },
                     )
                 }
             }
