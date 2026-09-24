@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -154,21 +155,28 @@ private fun CommentCardContent(
         )
 
         val body = @Composable {
-            Text(
-                text = item.comment.commentNoSpoilers,
-                style = TraktTheme.typography.paragraphSmall.copy(
-                    fontSize = 13.sp,
-                    lineHeight = 1.3.em,
-                ),
-                color = TraktTheme.colors.textSecondary,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .padding(top = 11.dp, bottom = 20.dp),
-            )
+            if (item.comment.commentNoSpoilers.isNotBlank()) {
+                Text(
+                    text = item.comment.commentNoSpoilers,
+                    style = TraktTheme.typography.paragraphSmall.copy(
+                        fontSize = 13.sp,
+                        lineHeight = 1.3.em,
+                    ),
+                    color = TraktTheme.colors.textSecondary,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 11.dp, bottom = 20.dp),
+                )
+            } else {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
         }
 
         val gif = item.comment.gif
+        val gifOnly = gif != null &&
+            gifLayout == Side &&
+            item.comment.commentNoSpoilers.isBlank()
         when {
             gif == null -> {
                 body()
@@ -180,6 +188,23 @@ private fun CommentCardContent(
                     modifier = Modifier
                         .padding(horizontal = 16.dp),
                 )
+            }
+            gifOnly -> {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                ) {
+                    CommentGifView(
+                        gif = gif,
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .padding(top = 11.dp, bottom = 20.dp)
+                            .fillMaxHeight(),
+                    )
+                }
             }
             gifLayout == Side -> {
                 Row(
@@ -203,7 +228,9 @@ private fun CommentCardContent(
             }
         }
 
-        Spacer(modifier = Modifier.weight(1f))
+        if (!gifOnly) {
+            Spacer(modifier = Modifier.weight(1f))
+        }
 
         CommentFooter(
             comment = item.comment,

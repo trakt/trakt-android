@@ -44,6 +44,8 @@ data class Comment(
 
     @Composable
     fun rememberTranslatable(): Boolean {
+        if (comment.isBlank()) return false
+
         val context = LocalContext.current
         val configuration = LocalConfiguration.current
 

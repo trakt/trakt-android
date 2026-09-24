@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -252,6 +253,9 @@ private fun CommentCardContent(
         }
 
         val gif = comment.gif
+        val gifOnly = gif != null &&
+            gifLayout == CommentGifLayout.Side &&
+            comment.commentNoSpoilers.isBlank()
         when {
             gif == null -> {
                 body()
@@ -266,6 +270,25 @@ private fun CommentCardContent(
                         .padding(horizontal = 16.dp)
                         .padding(bottom = 20.dp),
                 )
+            }
+            gifOnly -> {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                ) {
+                    CommentGifView(
+                        gif = gif,
+                        shape = RoundedCornerShape(12.dp),
+                        blurred = spoilerBlurred,
+                        onRevealSpoiler = { isSpoilerRevealed = true },
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .padding(top = 14.dp, bottom = 20.dp)
+                            .fillMaxHeight(),
+                    )
+                }
             }
             gifLayout == CommentGifLayout.Side -> {
                 Row(
@@ -291,7 +314,9 @@ private fun CommentCardContent(
             }
         }
 
-        Spacer(modifier = Modifier.weight(1f))
+        if (!gifOnly) {
+            Spacer(modifier = Modifier.weight(1f))
+        }
 
         CommentFooter(
             comment = comment,
@@ -337,25 +362,29 @@ private fun CommentBody(
     modifier: Modifier = Modifier,
 ) {
     val body = @Composable {
-        Text(
-            text = text,
-            style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.3.em),
-            color = TraktTheme.colors.textSecondary,
-            overflow = TextOverflow.Ellipsis,
-            modifier = modifier.then(
-                if (blurred) {
-                    Modifier
-                        .blur(4.dp)
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 14.dp, bottom = 20.dp)
-                        .onClick { onRevealSpoiler() }
-                } else {
-                    Modifier
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 14.dp, bottom = 20.dp)
-                },
-            ),
-        )
+        if (text.isBlank()) {
+            Spacer(modifier = Modifier.height(16.dp))
+        } else {
+            Text(
+                text = text,
+                style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.3.em),
+                color = TraktTheme.colors.textSecondary,
+                overflow = TextOverflow.Ellipsis,
+                modifier = modifier.then(
+                    if (blurred) {
+                        Modifier
+                            .blur(4.dp)
+                            .padding(horizontal = 16.dp)
+                            .padding(top = 14.dp, bottom = 20.dp)
+                            .onClick { onRevealSpoiler() }
+                    } else {
+                        Modifier
+                            .padding(horizontal = 16.dp)
+                            .padding(top = 14.dp, bottom = 20.dp)
+                    },
+                ),
+            )
+        }
     }
 
     if (blurred) {

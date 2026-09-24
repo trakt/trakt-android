@@ -231,19 +231,21 @@ private fun CommentContent(
             modifier = Modifier.padding(top = 5.dp),
         )
 
-        SelectionContainer {
-            Text(
-                text = comment.commentNoSpoilers,
-                style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.3.em),
-                color = TraktTheme.colors.textSecondary,
-                overflow = if (isCollapsed) TextOverflow.Ellipsis else TextOverflow.Clip,
-                maxLines = if (isCollapsed) 20 else Int.MAX_VALUE,
-                modifier = Modifier
-                    .onClick {
-                        isCollapsed = !isCollapsed
-                    }
-                    .padding(top = 16.dp),
-            )
+        if (comment.commentNoSpoilers.isNotBlank()) {
+            SelectionContainer {
+                Text(
+                    text = comment.commentNoSpoilers,
+                    style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.3.em),
+                    color = TraktTheme.colors.textSecondary,
+                    overflow = if (isCollapsed) TextOverflow.Ellipsis else TextOverflow.Clip,
+                    maxLines = if (isCollapsed) 20 else Int.MAX_VALUE,
+                    modifier = Modifier
+                        .onClick {
+                            isCollapsed = !isCollapsed
+                        }
+                        .padding(top = 16.dp),
+                )
+            }
         }
 
         comment.gif?.let { gif ->
