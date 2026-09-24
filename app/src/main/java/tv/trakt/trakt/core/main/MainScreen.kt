@@ -23,6 +23,8 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -43,6 +45,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.BottomCenter
+import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.dropShadow
@@ -406,66 +409,52 @@ private fun MainScreenContent(
                                 onDismiss = onDismissCheckIn,
                             )
 
-                            NavigationBar(
-                                containerColor = TraktTheme.colors.navigationContainer,
-                                contentColor = TraktTheme.colors.accent,
+                            Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .dropShadow(
-                                        shape = RoundedCornerShape(
-                                            topStart = 24.dp,
-                                            topEnd = 24.dp,
-                                        ),
-                                        shadow = if (TraktTheme.colors.isLight) {
-                                            Shadow(
-                                                radius = 4.dp,
-                                                color = Color.Black,
-                                                spread = 2.dp,
-                                                alpha = 0.1F,
-                                            )
-                                        } else {
-                                            Shadow(
-                                                radius = 6.dp,
-                                                color = Color.Black,
-                                                spread = 2.dp,
-                                                alpha = 0.2F,
-                                            )
+                                    .imePadding(),
+                            ) {
+                                NavigationBarShadow(
+                                    modifier = Modifier
+                                        .align(TopCenter)
+                                        .fillMaxWidth(),
+                                )
+
+                                NavigationBar(
+                                    containerColor = TraktTheme.colors.navigationContainer,
+                                    contentColor = TraktTheme.colors.accent,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clip(navigationBarShape),
+                                ) {
+                                    TraktMenuBar(
+                                        currentDestination = currentDestination.value?.destination,
+                                        enabled = localBottomBarVisibility.value,
+                                        user = state.user,
+                                        searchState = searchState,
+                                        onSelected = {
+                                            if (state.user != null || it.destination == HomeDestination) {
+                                                navController.navigateToMainDestination(it.destination)
+                                            } else {
+                                                startAuthorization()
+                                            }
+                                        },
+                                        onProfileSelected = {
+                                            if (state.user != null) {
+                                                navController.navigateToMainDestination(ProfileDestination)
+                                            } else {
+                                                startAuthorization()
+                                            }
+                                        },
+                                        onReselected = {
+                                            currentDestination.value?.destination?.let {
+                                                if (it.hasRoute(ListsDestination::class) && state.user != null) {
+                                                    navController.navigateToWatchlist()
+                                                }
+                                            }
                                         },
                                     )
-                                    .clip(
-                                        RoundedCornerShape(
-                                            topStart = 24.dp,
-                                            topEnd = 24.dp,
-                                        ),
-                                    ),
-                            ) {
-                                TraktMenuBar(
-                                    currentDestination = currentDestination.value?.destination,
-                                    enabled = localBottomBarVisibility.value,
-                                    user = state.user,
-                                    searchState = searchState,
-                                    onSelected = {
-                                        if (state.user != null || it.destination == HomeDestination) {
-                                            navController.navigateToMainDestination(it.destination)
-                                        } else {
-                                            startAuthorization()
-                                        }
-                                    },
-                                    onProfileSelected = {
-                                        if (state.user != null) {
-                                            navController.navigateToMainDestination(ProfileDestination)
-                                        } else {
-                                            startAuthorization()
-                                        }
-                                    },
-                                    onReselected = {
-                                        currentDestination.value?.destination?.let {
-                                            if (it.hasRoute(ListsDestination::class) && state.user != null) {
-                                                navController.navigateToWatchlist()
-                                            }
-                                        }
-                                    },
-                                )
+                                }
                             }
                         }
                     }
@@ -604,6 +593,43 @@ private fun LaunchedAppUpdate(
             else -> {}
         }
     }
+}
+
+private val navigationBarShape = RoundedCornerShape(
+    topStart = 24.dp,
+    topEnd = 24.dp,
+)
+
+// Only the top edge of the bar shadow is ever visible. Drawing it on a fixed-height cap keeps the
+// blurred layer at a constant size, so IME padding and the search field height animation only
+// translate it instead of re-rendering the blur every frame. The bar draws over the cap.
+private val navigationBarShadowCapHeight = 48.dp
+
+@Composable
+private fun NavigationBarShadow(modifier: Modifier = Modifier) {
+    val shadow = if (TraktTheme.colors.isLight) {
+        Shadow(
+            radius = 4.dp,
+            color = Color.Black,
+            spread = 2.dp,
+            alpha = 0.1F,
+        )
+    } else {
+        Shadow(
+            radius = 6.dp,
+            color = Color.Black,
+            spread = 2.dp,
+            alpha = 0.2F,
+        )
+    }
+    Box(
+        modifier = modifier
+            .height(navigationBarShadowCapHeight)
+            .dropShadow(
+                shape = navigationBarShape,
+                shadow = shadow,
+            ),
+    )
 }
 
 @Composable
