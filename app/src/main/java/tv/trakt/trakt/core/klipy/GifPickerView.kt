@@ -27,6 +27,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -80,6 +81,7 @@ private fun GifPickerContent(
     val inputState = rememberTextFieldState()
     val gridState = rememberLazyStaggeredGridState()
     val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
 
     // Open with the keyboard up: the sheet window needs a frame to attach before it can take focus.
     LaunchedEffect(Unit) {
@@ -150,7 +152,10 @@ private fun GifPickerContent(
                         GifCard(
                             gif = gif,
                             preview = true,
-                            onClick = { onGifClick(gif) },
+                            onClick = {
+                                focusManager.clearFocus()
+                                onGifClick(gif)
+                            },
                         )
                     }
                 }

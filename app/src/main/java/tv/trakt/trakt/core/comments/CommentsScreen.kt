@@ -41,10 +41,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.dropShadow
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -261,26 +259,19 @@ internal fun CommentsContent(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(
-                    end = TraktTheme.spacing.mainPageHorizontalSpace + 10.dp,
+                    end = TraktTheme.spacing.mainPageHorizontalSpace + 6.dp,
                     bottom = WindowInsets.navigationBars.asPaddingValues()
                         .calculateBottomPadding()
                         .plus(TraktTheme.size.navigationBarHeight)
-                        .plus(10.dp),
+                        .plus(6.dp),
                 ),
         ) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
+                    .padding(4.dp)
                     .size(54.dp)
-                    .dropShadow(
-                        shape = RoundedCornerShape(16.dp),
-                        shadow = Shadow(
-                            radius = 4.dp,
-                            color = Color.Black,
-                            spread = 2.dp,
-                            alpha = 0.2f,
-                        ),
-                    )
+                    .shadow(2.dp, RoundedCornerShape(16.dp))
                     .background(
                         TraktTheme.colors.accent,
                         RoundedCornerShape(16.dp),
