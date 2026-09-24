@@ -115,7 +115,6 @@ import tv.trakt.trakt.core.profile.navigation.ProfileDestination
 import tv.trakt.trakt.core.profile.navigation.navigateToProfile
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia.MovieMedia
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia.ShowMedia
-import tv.trakt.trakt.core.search.model.SearchInput
 import tv.trakt.trakt.core.search.navigation.SearchDestination
 import tv.trakt.trakt.core.search.navigation.navigateToSearch
 import tv.trakt.trakt.core.summary.episodes.navigation.navigateToEpisode
@@ -236,7 +235,7 @@ internal fun MainScreen(
             ?.hasRoute(SearchDestination::class) == true
 
         if (onSearch) {
-            searchState.onSearchInput(SearchInput(query = query))
+            searchState.onSearchQuery(query)
             searchState.onRequestFocus()
             pendingSearchQuery = null
         }
@@ -466,7 +465,6 @@ private fun MainScreenContent(
                                             }
                                         }
                                     },
-                                    onSearchInput = searchState.onSearchInput,
                                 )
                             }
                         }

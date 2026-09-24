@@ -18,9 +18,8 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
-import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -60,7 +59,7 @@ import tv.trakt.trakt.core.main.MainSearchState
 import tv.trakt.trakt.core.main.MainSearchStateHolder
 import tv.trakt.trakt.core.main.model.NavigationItem
 import tv.trakt.trakt.core.profile.navigation.ProfileDestination
-import tv.trakt.trakt.core.search.model.SearchInput
+import tv.trakt.trakt.core.search.model.SearchFilter
 import tv.trakt.trakt.core.search.navigation.SearchDestination
 import tv.trakt.trakt.core.search.views.SearchFiltersList
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
@@ -105,7 +104,6 @@ internal fun TraktMenuBar(
     onSelected: (NavigationItem) -> Unit = {},
     onProfileSelected: () -> Unit = {},
     onReselected: () -> Unit = {},
-    onSearchInput: (SearchInput) -> Unit = {},
 ) {
     TraktMenuBarContent(
         destination = currentDestination,
@@ -116,7 +114,6 @@ internal fun TraktMenuBar(
         onSelected = onSelected,
         onProfileClick = onProfileSelected,
         onReselected = onReselected,
-        onSearchInput = onSearchInput,
     )
 }
 
@@ -130,7 +127,6 @@ private fun TraktMenuBarContent(
     onSelected: (NavigationItem) -> Unit = {},
     onProfileClick: () -> Unit = {},
     onReselected: () -> Unit = {},
-    onSearchInput: (SearchInput) -> Unit = {},
 ) {
     val searchFocusRequester = remember { FocusRequester() }
 
@@ -156,11 +152,12 @@ private fun TraktMenuBarContent(
 
         SearchContent(
             enabled = enabled,
-            searchInput = stateHolder.searchInput,
+            queryState = stateHolder.queryState,
+            filter = stateHolder.searchInput.filter,
             visible = stateHolder.searchVisible,
             loading = stateHolder.searchLoading,
             searchFocusRequester = searchFocusRequester,
-            onSearchInput = onSearchInput,
+            onFilterClick = stateHolder.onSearchFilter,
         )
 
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
@@ -292,28 +289,10 @@ private fun SearchContent(
     enabled: Boolean,
     loading: Boolean,
     searchFocusRequester: FocusRequester,
-    searchInput: SearchInput,
-    onSearchInput: (SearchInput) -> Unit,
+    queryState: TextFieldState,
+    filter: SearchFilter,
+    onFilterClick: (SearchFilter) -> Unit,
 ) {
-    val searchQuery = rememberTextFieldState(searchInput.query)
-
-    LaunchedEffect(searchQuery.text) {
-        onSearchInput(
-            searchInput.copy(query = searchQuery.text.toString()),
-        )
-    }
-
-    LaunchedEffect(searchInput.query) {
-        when {
-            searchInput.query.isEmpty() -> {
-                searchQuery.clearText()
-            }
-            searchInput.query != searchQuery.text.toString() -> {
-                searchQuery.setTextAndPlaceCursorAtEnd(searchInput.query)
-            }
-        }
-    }
-
     AnimatedVisibility(
         visible = visible,
         enter = fadeIn(tween(durationMillis = 200, delayMillis = 200)) + expandVertically(),
@@ -326,25 +305,25 @@ private fun SearchContent(
                 .padding(top = 16.dp),
         ) {
             SearchFiltersList(
-                selectedFilter = searchInput.filter,
+                selectedFilter = filter,
                 onFilterClick = {
                     if (!visible) {
                         return@SearchFiltersList
                     }
-                    onSearchInput(searchInput.copy(filter = it))
+                    onFilterClick(it)
                 },
                 modifier = Modifier
                     .fillMaxWidth(),
             )
 
             InputField(
-                state = searchQuery,
-                placeholder = stringResource(searchInput.filter.placeholderRes),
+                state = queryState,
+                placeholder = stringResource(filter.placeholderRes),
                 icon = painterResource(R.drawable.ic_search_off),
                 enabled = enabled && visible,
                 loading = loading,
                 endSlot = {
-                    if (searchQuery.text.isNotBlank()) {
+                    if (queryState.text.isNotBlank()) {
                         Icon(
                             painter = painterResource(R.drawable.ic_close),
                             contentDescription = null,
@@ -352,7 +331,7 @@ private fun SearchContent(
                             modifier = Modifier
                                 .size(18.dp)
                                 .onClick {
-                                    searchQuery.clearText()
+                                    queryState.clearText()
                                 },
                         )
                     }
