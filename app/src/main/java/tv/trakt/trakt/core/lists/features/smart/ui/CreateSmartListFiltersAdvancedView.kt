@@ -337,8 +337,8 @@ private fun RegionFilter(
         addAll(
             Region.AllLocales.map { locale ->
                 DropdownOption(
-                    raw = locale.language,
-                    displayString = Locale("", locale.language).displayCountry,
+                    raw = locale.country.lowercase(),
+                    displayString = locale.displayCountry,
                 )
             },
         )

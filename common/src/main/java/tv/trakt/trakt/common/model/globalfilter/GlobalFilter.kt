@@ -93,16 +93,18 @@ data class GlobalFilter(
         ;
 
         companion object {
+            // Defunct codes kept in slugs for the API; ICU resolves them to
+            // successor states (SU -> Russia, YU -> Serbia) and duplicates entries.
+            private val defunctCountryCodes = setOf("su", "yu")
+
+            // Country-only locales: passing the code as language triggers legacy
+            // ISO 639 remapping (e.g. "in" -> "id").
             val AllLocales = entries
                 .flatMap { it.slug.split(',') }
-                .mapNotNull { code ->
-                    val locale = java.util.Locale(code, code)
-                    if (locale.country.isNotEmpty()) {
-                        locale
-                    } else {
-                        null
-                    }
-                }
+                .filterNot { it in defunctCountryCodes }
+                .map { code -> java.util.Locale("", code) }
+                .filter { it.country.isNotEmpty() }
+                .distinctBy { it.country }
                 .sortedBy { it.displayCountry }
         }
     }
