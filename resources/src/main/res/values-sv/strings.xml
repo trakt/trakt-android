@@ -1254,7 +1254,6 @@
   <string name="page_title_year_in_review">Sammanfattning för %s</string>
   <string name="page_title_year_to_date">År hittills</string>
   <string name="preview_feature_description_action_confirmations">Visa en bekräftelseruta med en snabb ångra-funktion när du lägger till, tar bort, betygsätter eller markerar något som sett.</string>
-  <string name="preview_feature_description_comment_gifs">Bifoga en GIF till valfri kommentar eller recension du skriver.</string>
   <string name="preview_feature_description_edit_mode">Aktivera kontroller för att dölja eller visa konfigurerbara sektioner i hela appen.</string>
   <string name="preview_feature_description_genre_picker">Välj dina favoritgenrer från ett visuellt rutnät istället för en lista med taggar.</string>
   <string name="preview_feature_description_leaderboard">Rankar de personer du följer efter tittartid och se var du hamnar bland dem.</string>
@@ -1266,7 +1265,6 @@
   <string name="preview_feature_description_soundtrack">Lägger till en soundtrack-sektion på film- och seriesidor, med uppspelning där ett spår kan matchas.</string>
   <string name="preview_feature_description_up_next_smart_sort">Testa ett smartare sätt att sortera det du tittar på.</string>
   <string name="preview_feature_title_action_confirmations">Bekräftelser för åtgärder</string>
-  <string name="preview_feature_title_comment_gifs">GIFar i kommentarer</string>
   <string name="preview_feature_title_edit_mode">Redigeringsläge</string>
   <string name="preview_feature_title_genre_picker">Genreval</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>

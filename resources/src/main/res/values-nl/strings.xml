@@ -1254,7 +1254,6 @@
   <string name="page_title_year_in_review">%s in overzicht</string>
   <string name="page_title_year_to_date">Jaar tot nu toe</string>
   <string name="preview_feature_description_action_confirmations">Toon een bevestigingstoast met een snelle ongedaanmakingsoptie wanneer je iets toevoegt, verwijdert, beoordeelt of markeert als bekeken.</string>
-  <string name="preview_feature_description_comment_gifs">Voeg een GIF toe aan elke reactie of recensie die je schrijft.</string>
   <string name="preview_feature_description_edit_mode">Schakel besturingselementen in voor het verbergen of weergeven van configureerbare secties in de app.</string>
   <string name="preview_feature_description_genre_picker">Kies je favoriete genres uit een visueel raster in plaats van een lijst met tags.</string>
   <string name="preview_feature_description_leaderboard">Rangschik de mensen die je volgt op kijktijd en zie waar jij eindigt.</string>
@@ -1266,7 +1265,6 @@
   <string name="preview_feature_description_soundtrack">Voegt een soundtracksectie toe aan film- en seriepagina\'s, met afspeelmogelijkheden wanneer een nummer kan worden gematcht.</string>
   <string name="preview_feature_description_up_next_smart_sort">Probeer een slimmere manier om je \'Verder kijken\' te sorteren.</string>
   <string name="preview_feature_title_action_confirmations">Actiebevestigingen</string>
-  <string name="preview_feature_title_comment_gifs">GIF\'s in reacties</string>
   <string name="preview_feature_title_edit_mode">Bewerkmodus</string>
   <string name="preview_feature_title_genre_picker">Genrekiezer</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
