@@ -27,7 +27,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.text.style.TextOverflow
@@ -120,10 +119,6 @@ private fun CommentCardContent(
         )
 
         Spacer(modifier = Modifier.height(16.dp))
-
-        CommentFooter(
-            comment = comment,
-        )
     }
 }
 
@@ -206,31 +201,6 @@ private fun CommentHeader(comment: Comment) {
                     overflow = TextOverflow.Ellipsis,
                 )
             }
-        }
-    }
-}
-
-@Composable
-private fun CommentFooter(comment: Comment) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(16.dp),
-    ) {
-        Row(
-            horizontalArrangement = spacedBy(3.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_thumb_up),
-                contentDescription = "Likes",
-                tint = TraktTheme.colors.textSecondary,
-                modifier = Modifier.size(16.dp),
-            )
-            Text(
-                text = stringResource(R.string.button_text_comment_likes, comment.likes).uppercase(),
-                style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
-                color = TraktTheme.colors.textSecondary,
-            )
         }
     }
 }

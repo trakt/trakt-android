@@ -227,23 +227,6 @@ private fun CommentFooter(
         modifier = modifier,
     ) {
         Row(
-            horizontalArrangement = spacedBy(3.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_thumb_up),
-                contentDescription = "Likes",
-                tint = TraktTheme.colors.textSecondary,
-                modifier = Modifier.size(16.dp),
-            )
-            Text(
-                text = stringResource(R.string.button_text_comment_likes, comment.likes).uppercase(),
-                style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
-                color = TraktTheme.colors.textSecondary,
-            )
-        }
-
-        Row(
             horizontalArrangement = spacedBy(2.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
