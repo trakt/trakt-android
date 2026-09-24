@@ -56,7 +56,7 @@ internal val profileDataModule = module {
     single<ProfileRemoteDataSource> {
         ProfileApiClient(
             usersApi = get(),
-            calendarsApi = get(),
+            calendarsApi = get(named("authorizedCalendarsApi")),
             historyApi = get(),
         )
     }
@@ -96,7 +96,7 @@ internal val profileDataModule = module {
 
     single<UserCalendarRemoteDataSource> {
         UserCalendarApiClient(
-            calendarsApi = get(),
+            calendarsApi = get(named("authorizedCalendarsApi")),
         )
     }
 

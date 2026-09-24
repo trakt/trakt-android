@@ -124,7 +124,6 @@ internal val profileDataModule = module {
     singleOf(::UserWatchlistApiClient) { bind<UserWatchlistRemoteDataSource>() }
     singleOf(::UserFavoritesApiClient) { bind<UserFavoritesRemoteDataSource>() }
     singleOf(::UserOtherListsApiClient) { bind<UserOtherListsRemoteDataSource>() }
-    singleOf(::UserCalendarApiClient) { bind<UserCalendarRemoteDataSource>() }
     singleOf(::UserRatingsApiClient) { bind<UserRatingsRemoteDataSource>() }
     singleOf(::UserPersonalListsApiClient) { bind<UserPersonalListsRemoteDataSource>() }
     singleOf(::UserSmartListsApiClient) { bind<UserSmartListsRemoteDataSource>() }
@@ -137,6 +136,11 @@ internal val profileDataModule = module {
     singleOf(::UserFavoritesStorage) { bind<UserFavoritesLocalDataSource>() }
     singleOf(::UserLibraryStorage) { bind<UserLibraryLocalDataSource>() }
     singleOf(::UserRatingsStorage) { bind<UserRatingsLocalDataSource>() }
+    single<UserCalendarRemoteDataSource> {
+        UserCalendarApiClient(
+            calendarsApi = get(named("authorizedCalendarsApi")),
+        )
+    }
 
     singleOf(::ProgressCompletedStorage) { bind<ProgressCompletedLocalDataSource>() }
     singleOf(::ProgressWatchingStorage) { bind<ProgressWatchingLocalDataSource>() }

@@ -87,6 +87,7 @@ val networkingApiModule = module {
     single(named("apiClients")) {
         arrayOf(
             get<CalendarsApi>(),
+            get<CalendarsApi>(named("authorizedCalendarsApi")),
             get<CheckinApi>(),
             get<CollectionApi>(),
             get<CommentsApi>(),
@@ -195,7 +196,6 @@ val networkingApiModule = module {
         )
     }
 
-    // Watchnow sources are public data - no token needed.
     single<WatchnowApi> {
         WatchnowApi(
             baseUrl = API_BASE_URL,
@@ -276,6 +276,22 @@ val networkingApiModule = module {
         )
     }
 
+    single<CalendarsApi> {
+        CalendarsApi(
+            baseUrl = API_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("clientConfig")),
+        )
+    }
+
+    single<CalendarsApi>(named("authorizedCalendarsApi")) {
+        CalendarsApi(
+            baseUrl = API_BASE_URL,
+            httpClientEngine = get(),
+            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
+        )
+    }
+
     single<SyncApi> {
         SyncApi(
             baseUrl = API_BASE_URL,
@@ -294,14 +310,6 @@ val networkingApiModule = module {
 
     single<SmartListsApi> {
         SmartListsApi(
-            baseUrl = API_BASE_URL,
-            httpClientEngine = get(),
-            httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),
-        )
-    }
-
-    single<CalendarsApi> {
-        CalendarsApi(
             baseUrl = API_BASE_URL,
             httpClientEngine = get(),
             httpClientConfig = get<(HttpClientConfig<*>) -> Unit>(named("authorizedClientConfig")),

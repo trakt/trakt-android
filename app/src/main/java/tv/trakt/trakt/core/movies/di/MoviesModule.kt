@@ -12,9 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidApplication
-import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
-import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -51,7 +49,13 @@ private const val MOVIES_PREFERENCES = "movies_preferences"
 
 internal val moviesDataModule = module {
 
-    singleOf(::MoviesApiClient) { bind<MoviesRemoteDataSource>() }
+    single<MoviesRemoteDataSource> {
+        MoviesApiClient(
+            moviesApi = get(),
+            calendarsApi = get(),
+            v3Api = get(),
+        )
+    }
 
     single<PopularMoviesLocalDataSource> {
         PopularMoviesStorage(
