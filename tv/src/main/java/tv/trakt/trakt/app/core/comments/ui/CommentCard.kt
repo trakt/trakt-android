@@ -10,10 +10,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -49,6 +52,7 @@ import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.resources.R
 
 @Composable
@@ -98,25 +102,62 @@ private fun CommentCardContent(comment: Comment) {
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
-        Text(
-            text = comment.commentNoSpoilers,
-            style = TraktTheme.typography.paragraphSmall,
-            color = TraktTheme.colors.textSecondary,
-            maxLines = 3,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.then(
-                if (comment.hasSpoilers) {
-                    Modifier
-                        .blur(4.dp)
-                        .padding(16.dp)
-                } else {
-                    Modifier
-                        .padding(16.dp)
-                },
-            ),
-        )
+        val body = @Composable { modifier: Modifier ->
+            Text(
+                text = comment.commentNoSpoilers,
+                style = TraktTheme.typography.paragraphSmall,
+                color = TraktTheme.colors.textSecondary,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
+                modifier = modifier.then(
+                    if (comment.hasSpoilers) Modifier.blur(4.dp) else Modifier,
+                ),
+            )
+        }
 
-        Spacer(modifier = Modifier.weight(1F))
+        val gif = comment.gif
+        val gifOnly = gif != null && comment.commentNoSpoilers.isBlank()
+        when {
+            gif == null -> {
+                body(Modifier.padding(16.dp))
+                Spacer(modifier = Modifier.weight(1F))
+            }
+            gifOnly -> {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .weight(1F)
+                        .fillMaxWidth(),
+                ) {
+                    CommentGifView(
+                        gif = gif,
+                        blurred = comment.hasSpoilers,
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .padding(top = 12.dp, bottom = 16.dp)
+                            .fillMaxHeight(),
+                    )
+                }
+            }
+            else -> {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = spacedBy(12.dp),
+                    modifier = Modifier.padding(16.dp),
+                ) {
+                    body(Modifier.weight(1F))
+                    CommentGifView(
+                        gif = gif,
+                        blurred = comment.hasSpoilers,
+                        modifier = Modifier.sizeIn(
+                            maxWidth = SideGifMaxSize.width,
+                            maxHeight = SideGifMaxSize.height,
+                        ),
+                    )
+                }
+                Spacer(modifier = Modifier.weight(1F))
+            }
+        }
 
         CommentFooter(
             comment = comment,
@@ -283,3 +324,46 @@ fun CommentPreview() {
         }
     }
 }
+
+@OptIn(ExperimentalCoilApi::class)
+@Preview
+@Composable
+fun CommentGifPreview() {
+    TraktTheme {
+        val previewHandler = AsyncImagePreviewHandler {
+            ColorImage(Color.LightGray.toArgb())
+        }
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            Column(
+                verticalArrangement = spacedBy(32.dp),
+            ) {
+                CommentCard(
+                    onClick = {},
+                    comment = PreviewData.comment1.copy(gif = PreviewGif),
+                    modifier = Modifier
+                        .height(TraktTheme.size.detailsCommentSize)
+                        .aspectRatio(CardDefaults.HorizontalImageAspectRatio),
+                )
+                CommentCard(
+                    onClick = {},
+                    comment = PreviewData.comment1.copy(comment = "", gif = PreviewGif),
+                    modifier = Modifier
+                        .height(TraktTheme.size.detailsCommentSize)
+                        .aspectRatio(CardDefaults.HorizontalImageAspectRatio),
+                )
+                CommentCard(
+                    onClick = {},
+                    comment = PreviewData.comment1.copy(isSpoiler = true, gif = PreviewGif),
+                    modifier = Modifier
+                        .height(TraktTheme.size.detailsCommentSize)
+                        .aspectRatio(CardDefaults.HorizontalImageAspectRatio),
+                )
+            }
+        }
+    }
+}
+
+private val PreviewGif = CommentGif(
+    url = "https://example.com/preview.gif",
+    size = 200 to 150,
+)

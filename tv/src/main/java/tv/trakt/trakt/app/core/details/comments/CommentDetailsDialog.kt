@@ -58,6 +58,7 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import kotlinx.collections.immutable.ImmutableList
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.app.core.comments.ui.CommentGifView
 import tv.trakt.trakt.app.core.comments.ui.CommentReplyCard
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.capitalize
@@ -134,37 +135,48 @@ private fun CommentDetailsContent(
                 .focusable(),
         )
 
-        Text(
-            text = comment.commentNoSpoilers,
-            style = TraktTheme.typography.paragraphSmall,
-            color = TraktTheme.colors.textSecondary,
-            maxLines = if (isExpanded) Int.MAX_VALUE else 3,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-                .padding(top = 16.dp)
-                .onFocusChanged {
-                    isFocused = it.isFocused
-                }
-                .onClick {
-                    isExpanded = !isExpanded
-                }
-                .drawWithContent {
-                    drawContent()
-                    if (isFocused) {
-                        val offset = 10.dp
-                        drawRoundRect(
-                            color = accentColor,
-                            topLeft = Offset(-offset.toPx(), -(offset / 1.5F).toPx()),
-                            size = Size(
-                                width = size.width + (offset * 2).toPx(),
-                                height = size.height + (offset * 1.5F).toPx(),
-                            ),
-                            cornerRadius = CornerRadius(16.dp.toPx()),
-                            style = Stroke(width = 2.5.dp.toPx()),
-                        )
+        if (comment.commentNoSpoilers.isNotBlank()) {
+            Text(
+                text = comment.commentNoSpoilers,
+                style = TraktTheme.typography.paragraphSmall,
+                color = TraktTheme.colors.textSecondary,
+                maxLines = if (isExpanded) Int.MAX_VALUE else 3,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .onFocusChanged {
+                        isFocused = it.isFocused
                     }
-                },
-        )
+                    .onClick {
+                        isExpanded = !isExpanded
+                    }
+                    .drawWithContent {
+                        drawContent()
+                        if (isFocused) {
+                            val offset = 10.dp
+                            drawRoundRect(
+                                color = accentColor,
+                                topLeft = Offset(-offset.toPx(), -(offset / 1.5F).toPx()),
+                                size = Size(
+                                    width = size.width + (offset * 2).toPx(),
+                                    height = size.height + (offset * 1.5F).toPx(),
+                                ),
+                                cornerRadius = CornerRadius(16.dp.toPx()),
+                                style = Stroke(width = 2.5.dp.toPx()),
+                            )
+                        }
+                    },
+            )
+        }
+
+        comment.gif?.let { gif ->
+            CommentGifView(
+                gif = gif,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 12.dp),
+            )
+        }
 
         if (state.isLoading) {
             FilmProgressIndicator(
@@ -185,7 +197,7 @@ private fun CommentDetailsContent(
 
         if (!state.isLoading && state.commentReplies?.isEmpty() == true) {
             Text(
-                text = stringResource(R.string.list_placeholder_comments),
+                text = stringResource(R.string.button_text_comment_replies, state.commentReplies.size),
                 style = TraktTheme.typography.paragraphSmall,
                 color = TraktTheme.colors.textSecondary,
                 textAlign = TextAlign.Center,

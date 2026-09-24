@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -37,13 +39,17 @@ import androidx.tv.material3.Card
 import androidx.tv.material3.CardDefaults
 import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
+import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
+import coil3.compose.AsyncImagePreviewHandler
+import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.resources.R
 
 @Composable
@@ -103,20 +109,32 @@ private fun CommentCardContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
-            text = comment.commentNoSpoilers,
-            style = TraktTheme.typography.paragraphSmall,
-            color = TraktTheme.colors.textSecondary,
-            maxLines = if (isExpanded) Int.MAX_VALUE else 3,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.then(
-                if (comment.hasSpoilers && spoilersHidden) {
-                    Modifier.blur(4.dp)
-                } else {
-                    Modifier
-                },
-            ),
-        )
+        if (comment.commentNoSpoilers.isNotBlank()) {
+            Text(
+                text = comment.commentNoSpoilers,
+                style = TraktTheme.typography.paragraphSmall,
+                color = TraktTheme.colors.textSecondary,
+                maxLines = if (isExpanded) Int.MAX_VALUE else 3,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.then(
+                    if (comment.hasSpoilers && spoilersHidden) {
+                        Modifier.blur(4.dp)
+                    } else {
+                        Modifier
+                    },
+                ),
+            )
+        }
+
+        comment.gif?.let { gif ->
+            CommentGifView(
+                gif = gif,
+                blurred = comment.hasSpoilers && spoilersHidden,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 12.dp),
+            )
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
     }
@@ -219,3 +237,34 @@ fun CommentReplyPreview() {
         }
     }
 }
+
+@OptIn(ExperimentalCoilApi::class)
+@Preview
+@Composable
+fun CommentReplyGifPreview() {
+    TraktTheme {
+        val previewHandler = AsyncImagePreviewHandler {
+            ColorImage(Color.LightGray.toArgb())
+        }
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            Column(
+                verticalArrangement = spacedBy(32.dp),
+            ) {
+                CommentReplyCard(
+                    comment = PreviewData.comment1.copy(gif = PreviewGif),
+                )
+                CommentReplyCard(
+                    comment = PreviewData.comment1.copy(comment = "", gif = PreviewGif),
+                )
+                CommentReplyCard(
+                    comment = PreviewData.comment1.copy(isSpoiler = true, gif = PreviewGif),
+                )
+            }
+        }
+    }
+}
+
+private val PreviewGif = CommentGif(
+    url = "https://example.com/preview.gif",
+    size = 200 to 150,
+)
