@@ -1254,7 +1254,6 @@
   <string name="page_title_year_in_review">مرور سال %s</string>
   <string name="page_title_year_to_date">سال تا به امروز</string>
   <string name="preview_feature_description_action_confirmations">هنگامی که چیزی را اضافه، حذف، رتبه‌بندی یا به عنوان تماشا شده علامت‌گذاری می‌کنید، یک پیام تأیید با قابلیت لغو سریع نمایش داده شود.</string>
-  <string name="preview_feature_description_comment_gifs">یک گیف را به هر نظر یا نقدی که می‌نویسید پیوست کنید.</string>
   <string name="preview_feature_description_edit_mode">کنترل‌هایی را برای پنهان کردن یا نمایش بخش‌های قابل تنظیم در سراسر برنامه فعال کنید.</string>
   <string name="preview_feature_description_genre_picker">ژانرهای مورد علاقه خود را از یک شبکه بصری انتخاب کنید، نه از یک لیست برچسب.</string>
   <string name="preview_feature_description_leaderboard">افرادی که دنبال می‌کنید را بر اساس زمان تماشا رتبه‌بندی کنید و ببینید در میان آن‌ها کجا قرار می‌گیرید.</string>
@@ -1266,7 +1265,6 @@
   <string name="preview_feature_description_soundtrack">بخش موسیقی متن را به صفحات فیلم و نمایش اضافه می‌کند، با قابلیت پخش در جایی که یک قطعه می‌تواند مطابقت داده شود.</string>
   <string name="preview_feature_description_up_next_smart_sort">راهی هوشمندانه‌تر برای مرتب\n\n\n\n‌سازی موارد در حال تماشای خود را آزمایش کنید.</string>
   <string name="preview_feature_title_action_confirmations">تأیید اقدامات</string>
-  <string name="preview_feature_title_comment_gifs">گیف‌ها در نظرات</string>
   <string name="preview_feature_title_edit_mode">حالت ویرایش</string>
   <string name="preview_feature_title_genre_picker">انتخاب‌کننده ژانر</string>
   <string name="preview_feature_title_leaderboard">پانتئون</string>

@@ -1254,7 +1254,6 @@
   <string name="page_title_year_in_review">%s Yılına Genel Bakış</string>
   <string name="page_title_year_to_date">Yıl Başından Bugüne</string>
   <string name="preview_feature_description_action_confirmations">Bir şeyi eklediğinizde, kaldırdığınızda, derecelendirdiğinizde veya izlendi olarak işaretlediğinizde hızlı bir geri alma seçeneği sunan bir onay bildirimi göster.</string>
-  <string name="preview_feature_description_comment_gifs">Yazdığınız herhangi bir yoruma veya incelemeye bir GIF ekleyin.</string>
   <string name="preview_feature_description_edit_mode">Uygulama genelinde yapılandırılabilir bölümleri gizleme veya gösterme kontrollerini etkinleştirin.</string>
   <string name="preview_feature_description_genre_picker">Favori türlerinizi bir etiket listesi yerine görsel bir ızgaradan seçin.</string>
   <string name="preview_feature_description_leaderboard">Takip ettiğin kişileri izleme süresine göre sırala ve aralarında nerede olduğunu gör.</string>
@@ -1266,7 +1265,6 @@
   <string name="preview_feature_description_soundtrack">Film ve dizi sayfalarına, eşleşen parçaların çalınabildiği bir film müziği bölümü ekler.</string>
   <string name="preview_feature_description_up_next_smart_sort">İzlemeye Devam Edin listenizi sıralamak için daha akıllı bir yolu test edin.</string>
   <string name="preview_feature_title_action_confirmations">Eylem onayları</string>
-  <string name="preview_feature_title_comment_gifs">Yorumlardaki GIF\'ler</string>
   <string name="preview_feature_title_edit_mode">Düzenleme Modu</string>
   <string name="preview_feature_title_genre_picker">Tür Seçici</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
