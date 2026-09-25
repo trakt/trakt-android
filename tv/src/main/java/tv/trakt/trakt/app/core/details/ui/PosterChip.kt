@@ -28,7 +28,7 @@ internal fun PosterChip(
     val shape = RoundedCornerShape(100)
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = spacedBy(6.dp),
+        horizontalArrangement = spacedBy(4.dp),
         modifier = modifier
             .clip(shape)
             .background(TraktTheme.colors.tagChipContainer)
@@ -37,19 +37,20 @@ internal fun PosterChip(
                 vertical = 4.dp,
             ),
     ) {
+        if (text.isNotBlank()) {
+            Text(
+                text = text.uppercase(),
+                color = TraktTheme.colors.tagChipContent,
+                style = TraktTheme.typography.meta,
+            )
+        }
+
         icon?.let {
             Icon(
                 painter = it,
                 tint = TraktTheme.colors.tagChipContent,
                 contentDescription = null,
                 modifier = Modifier.size(13.dp),
-            )
-        }
-        if (text.isNotBlank()) {
-            Text(
-                text = text.uppercase(),
-                color = TraktTheme.colors.tagChipContent,
-                style = TraktTheme.typography.meta,
             )
         }
     }

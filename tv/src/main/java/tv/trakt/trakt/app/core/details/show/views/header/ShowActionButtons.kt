@@ -45,7 +45,6 @@ import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.openPlexLink
 import tv.trakt.trakt.common.helpers.extensions.openWatchNowLink
 import tv.trakt.trakt.common.model.DateSelectionResult
-import tv.trakt.trakt.common.ui.theme.colors.Purple50
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.resources.R
 
@@ -95,7 +94,7 @@ internal fun ShowActionButtons(
         val isWatched = remember(collectionState.isWatched) { collectionState.isWatched }
         val isAllWatched = remember(collectionState.isAllWatched) { collectionState.isAllWatched }
         MarkAsWatchedButton(
-            isWatched = isWatched,
+            isHistory = isWatched,
             isAllWatched = isAllWatched,
             collectionState = collectionState,
             onHistoryClick = onHistoryClick,
@@ -163,7 +162,7 @@ private fun WatchlistButton(
 
 @Composable
 private fun MarkAsWatchedButton(
-    isWatched: Boolean,
+    isHistory: Boolean,
     isAllWatched: Boolean,
     collectionState: CollectionState,
     onHistoryClick: (DateSelectionResult) -> Unit,
@@ -181,7 +180,7 @@ private fun MarkAsWatchedButton(
                 collectionState.fullWatchesCount > 1 -> {
                     "${stringResource(R.string.tag_text_watched)} • ${collectionState.fullWatchesCount}"
                 }
-                isWatched -> {
+                isHistory -> {
                     stringResource(R.string.tag_text_watched)
                 }
                 else -> {
@@ -192,15 +191,15 @@ private fun MarkAsWatchedButton(
                 if (isAllWatched) R.drawable.ic_check_double else R.drawable.ic_check_2,
             ),
             onClick = {
-                if (isWatched) {
+                if (isHistory) {
                     onRemoveHistoryClick()
                 } else {
                     menuVisible.value = true
                 }
             },
-            containerColor = if (!isWatched) Purple50 else Purple500,
-            contentColor = if (!isWatched) Purple500 else Color.White,
-            borderColor = if (!isWatched) Purple500 else Color.White,
+            containerColor = if (isHistory) Color.White else Purple500,
+            contentColor = if (isHistory) Color.Black else Color.White,
+            borderColor = if (isHistory) Purple500 else Color.White,
             enabled = !collectionState.isLoading,
             loading = collectionState.isWatchedLoading,
             modifier = Modifier.fillMaxWidth(),

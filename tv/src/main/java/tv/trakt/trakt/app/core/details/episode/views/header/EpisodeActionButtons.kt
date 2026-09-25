@@ -50,7 +50,6 @@ import tv.trakt.trakt.common.model.Rating
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
-import tv.trakt.trakt.common.ui.theme.colors.Purple50
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.resources.R
 import java.time.ZonedDateTime
@@ -122,7 +121,7 @@ internal fun EpisodeActionButtons(
         )
 
         MarkAsWatchedButton(
-            isWatched = isWatched,
+            isHistory = isWatched,
             historyState = historyState,
             onHistoryClick = onHistoryClick,
             onRemoveHistoryClick = onRemoveHistoryClick,
@@ -153,7 +152,7 @@ internal fun EpisodeActionButtons(
 
 @Composable
 private fun MarkAsWatchedButton(
-    isWatched: Boolean,
+    isHistory: Boolean,
     historyState: HistoryState,
     onHistoryClick: (DateSelectionResult) -> Unit,
     onRemoveHistoryClick: () -> Unit,
@@ -164,19 +163,19 @@ private fun MarkAsWatchedButton(
     Box(modifier = modifier) {
         PrimaryButton(
             text = stringResource(
-                if (isWatched) R.string.tag_text_watched else R.string.button_text_mark_as_watched,
+                if (isHistory) R.string.tag_text_watched else R.string.button_text_mark_as_watched,
             ),
-            icon = painterResource(if (isWatched) R.drawable.ic_check_double else R.drawable.ic_check_2),
+            icon = painterResource(if (isHistory) R.drawable.ic_check_double else R.drawable.ic_check_2),
             onClick = {
-                if (isWatched) {
+                if (isHistory) {
                     onRemoveHistoryClick()
                 } else {
                     menuVisible.value = true
                 }
             },
-            containerColor = if (!isWatched) Purple50 else Purple500,
-            contentColor = if (!isWatched) Purple500 else Color.White,
-            borderColor = if (!isWatched) Purple500 else Color.White,
+            containerColor = if (isHistory) Color.White else Purple500,
+            contentColor = if (isHistory) Color.Black else Color.White,
+            borderColor = if (isHistory) Purple500 else Color.White,
             enabled = !historyState.isLoading,
             loading = historyState.isLoading,
             modifier = Modifier.fillMaxWidth(),

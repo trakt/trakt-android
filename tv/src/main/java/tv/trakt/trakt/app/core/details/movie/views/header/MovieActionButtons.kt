@@ -50,7 +50,6 @@ import tv.trakt.trakt.common.helpers.extensions.openWatchNowLink
 import tv.trakt.trakt.common.model.DateSelectionResult
 import tv.trakt.trakt.common.model.ExtraVideo
 import tv.trakt.trakt.common.model.MediaType
-import tv.trakt.trakt.common.ui.theme.colors.Purple50
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.resources.R
 import java.time.ZonedDateTime
@@ -214,9 +213,9 @@ private fun MarkAsWatchedButton(
                     menuVisible.value = true
                 }
             },
-            containerColor = if (isHistory) Purple500 else Purple50,
-            contentColor = if (isHistory) Color.White else Purple500,
-            borderColor = if (isHistory) Color.White else Purple500,
+            containerColor = if (isHistory) Color.White else Purple500,
+            contentColor = if (isHistory) Color.Black else Color.White,
+            borderColor = if (isHistory) Purple500 else Color.White,
             enabled = !collectionState.isLoading,
             loading = collectionState.isHistoryLoading,
             modifier = Modifier.fillMaxWidth(),
