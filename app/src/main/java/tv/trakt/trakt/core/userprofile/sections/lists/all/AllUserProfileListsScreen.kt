@@ -43,6 +43,7 @@ import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
@@ -63,6 +64,7 @@ internal fun AllUserProfileListsScreen(
     modifier: Modifier = Modifier,
     viewModel: AllUserProfileListsViewModel = koinViewModel(),
     onNavigateToList: (CustomList) -> Unit,
+    onNavigateToUser: (User) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -71,6 +73,7 @@ internal fun AllUserProfileListsScreen(
         state = state,
         modifier = modifier,
         onListClick = onNavigateToList,
+        onUserClick = onNavigateToUser,
         onFilterClick = viewModel::setFilter,
         onEndOfList = viewModel::loadMoreData,
         onBackClick = onNavigateBack,
@@ -82,6 +85,7 @@ private fun AllUserProfileListsContent(
     state: AllUserProfileListsState,
     modifier: Modifier = Modifier,
     onListClick: (CustomList) -> Unit = {},
+    onUserClick: (User) -> Unit = {},
     onFilterClick: (PersonalListType) -> Unit = {},
     onEndOfList: () -> Unit = {},
     onBackClick: () -> Unit = {},
@@ -190,6 +194,7 @@ private fun AllUserProfileListsContent(
                             userVisible = true,
                             descriptionVisible = true,
                             onClick = { onListClick(list) },
+                            onUserClick = onUserClick,
                             modifier = Modifier
                                 .padding(contentHorizontalPadding)
                                 .padding(top = verticalPadding)
@@ -205,6 +210,7 @@ private fun AllUserProfileListsContent(
                             list = list,
                             userVisible = true,
                             onClick = { onListClick(list) },
+                            onUserClick = onUserClick,
                             modifier = Modifier
                                 .padding(contentHorizontalPadding)
                                 .padding(top = verticalPadding)

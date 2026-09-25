@@ -55,6 +55,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.ListsItem
 import tv.trakt.trakt.common.model.lists.SmartList
@@ -99,6 +100,7 @@ internal fun ListsScreen(
     onNavigateToCreateSmartList: () -> Unit,
     onNavigateToAllLists: (PersonalListType) -> Unit,
     onNavigateToVip: () -> Unit,
+    onNavigateToUser: (User) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -154,6 +156,7 @@ internal fun ListsScreen(
         onSmartListDeleteClick = { smartListToDelete = it },
         onAllListsClick = { onNavigateToAllLists(state.filter) },
         onVipClick = onNavigateToVip,
+        onUserClick = onNavigateToUser,
         onFiltersClick = {
             filtersSheet = true
         },
@@ -224,6 +227,7 @@ private fun ListsScreenContent(
     onAllListsClick: () -> Unit = { },
     onVipClick: () -> Unit = {},
     onFiltersClick: () -> Unit = {},
+    onUserClick: (User) -> Unit = {},
 ) {
     val headerState = rememberHeaderState()
     val lazyListState = rememberLazyListState(
@@ -348,6 +352,7 @@ private fun ListsScreenContent(
                                     moreVisible = true,
                                     onClick = { onPersonalListClick(list) },
                                     onMoreClick = { onEditListClick(list) },
+                                    onUserClick = onUserClick,
                                     modifier = cardModifier,
                                 )
                             }
@@ -357,6 +362,7 @@ private fun ListsScreenContent(
                                     liked = true,
                                     likesVisible = true,
                                     onClick = { onCustomListClick(list) },
+                                    onUserClick = onUserClick,
                                     modifier = cardModifier,
                                 )
                             }
@@ -364,6 +370,7 @@ private fun ListsScreenContent(
                                 CustomListCard(
                                     list = list,
                                     onClick = { onCustomListClick(list) },
+                                    onUserClick = onUserClick,
                                     modifier = cardModifier,
                                 )
                             }

@@ -58,6 +58,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.CustomList.Type
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
@@ -79,6 +80,7 @@ internal fun CustomListCard(
     descriptionVisible: Boolean = false,
     onClick: () -> Unit,
     onMoreClick: () -> Unit = {},
+    onUserClick: ((User) -> Unit)? = null,
 ) {
     Card(
         onClick = onClick,
@@ -102,6 +104,7 @@ internal fun CustomListCard(
                 descriptionVisible = descriptionVisible,
                 onClick = onClick,
                 onMoreClick = onMoreClick,
+                onUserClick = onUserClick,
             )
         },
     )
@@ -117,6 +120,7 @@ private fun CustomListContent(
     descriptionVisible: Boolean,
     onClick: () -> Unit,
     onMoreClick: () -> Unit,
+    onUserClick: ((User) -> Unit)?,
 ) {
     val containerColor = TraktTheme.colors.customListContainer
     val gradientColor = TraktTheme.colors.customListGradient
@@ -161,6 +165,7 @@ private fun CustomListContent(
             moreVisible = moreVisible,
             descriptionVisible = descriptionVisible,
             onMoreClick = onMoreClick,
+            onUserClick = onUserClick,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
@@ -245,6 +250,7 @@ private fun CustomListHeader(
     moreVisible: Boolean,
     descriptionVisible: Boolean,
     onMoreClick: () -> Unit,
+    onUserClick: ((User) -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -258,7 +264,9 @@ private fun CustomListHeader(
         ) {
             if (userVisible) {
                 Box(
-                    modifier = Modifier.size(36.dp),
+                    modifier = Modifier
+                        .size(36.dp)
+                        .onClick { onUserClick?.invoke(list.user) },
                 ) {
                     val avatarBorder = if (list.user.isAnyVip) TraktTheme.colors.vipAccent else Color.Transparent
                     val avatar = list.user.images?.avatar?.full
@@ -312,6 +320,7 @@ private fun CustomListHeader(
                     Row(
                         horizontalArrangement = spacedBy(3.dp),
                         verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.onClick { onUserClick?.invoke(list.user) },
                     ) {
                         Text(
                             text = stringResource(R.string.text_by),

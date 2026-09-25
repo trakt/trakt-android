@@ -44,6 +44,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.movies.ui.context.sheet.MovieContextSheet
 import tv.trakt.trakt.core.search.model.SearchFilter.LISTS
@@ -74,6 +75,7 @@ internal fun SearchScreen(
     onMovieClick: (TraktId) -> Unit,
     onPersonClick: ((TraktId) -> Unit),
     onListClick: ((CustomList) -> Unit),
+    onUserClick: (User) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val localCheckInVisibility = LocalCheckInVisibility.current
@@ -144,6 +146,7 @@ internal fun SearchScreen(
         },
         onPersonClick = viewModel::navigateToPerson,
         onListClick = viewModel::navigateToList,
+        onUserClick = onUserClick,
     )
 
     ShowContextSheet(
@@ -169,6 +172,7 @@ private fun SearchScreenContent(
     onMovieLongClick: (Movie) -> Unit = {},
     onPersonClick: (Person) -> Unit = {},
     onListClick: (CustomList) -> Unit = {},
+    onUserClick: (User) -> Unit = {},
 ) {
     Box(
         modifier = modifier
@@ -188,6 +192,7 @@ private fun SearchScreenContent(
             onMovieLongClick = onMovieLongClick,
             onPersonClick = onPersonClick,
             onListClick = onListClick,
+            onUserClick = onUserClick,
             error = state.error,
         )
     }
@@ -203,6 +208,7 @@ private fun ContentList(
     onMovieLongClick: (Movie) -> Unit,
     onPersonClick: (Person) -> Unit,
     onListClick: (CustomList) -> Unit,
+    onUserClick: (User) -> Unit,
     error: Exception? = null,
 ) {
     val topPadding = WindowInsets.statusBars.asPaddingValues()
@@ -240,6 +246,7 @@ private fun ContentList(
                 onMovieLongClick = onMovieLongClick,
                 onPersonClick = onPersonClick,
                 onListClick = onListClick,
+                onUserClick = onUserClick,
                 error = error,
             )
         }
@@ -254,6 +261,7 @@ private fun ContentList(
                 onMovieLongClick = onMovieLongClick,
                 onPersonClick = onPersonClick,
                 onListClick = onListClick,
+                onUserClick = onUserClick,
             )
         }
 
@@ -279,6 +287,7 @@ private fun LazyGridScope.popularSearchesContent(
     onMovieLongClick: (Movie) -> Unit,
     onPersonClick: (Person) -> Unit,
     onListClick: (CustomList) -> Unit,
+    onUserClick: (User) -> Unit,
     error: Exception?,
 ) {
     item(span = { GridItemSpan(maxLineSpan) }) {
@@ -329,6 +338,7 @@ private fun LazyGridScope.popularSearchesContent(
                     onMovieLongClick = onMovieLongClick,
                     onPersonClick = onPersonClick,
                     onListClick = onListClick,
+                    onUserClick = onUserClick,
                     modifier = Modifier
                         .padding(bottom = if (isLists) 3.dp else 6.dp)
                         .animateItem(
@@ -350,6 +360,7 @@ private fun LazyGridScope.searchingContent(
     onMovieLongClick: (Movie) -> Unit,
     onPersonClick: (Person) -> Unit,
     onListClick: (CustomList) -> Unit,
+    onUserClick: (User) -> Unit,
 ) {
     val resultItems = state.searchResult?.items ?: EmptyImmutableList
 
@@ -393,6 +404,7 @@ private fun LazyGridScope.searchingContent(
                     onMovieLongClick = onMovieLongClick,
                     onPersonClick = onPersonClick,
                     onListClick = onListClick,
+                    onUserClick = onUserClick,
                     modifier = Modifier
                         .padding(bottom = if (isLists) 3.dp else 6.dp)
                         .animateItem(

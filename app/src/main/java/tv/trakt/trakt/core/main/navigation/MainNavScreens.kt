@@ -458,7 +458,10 @@ internal fun NavGraphBuilder.moviesScreens(
     }
 }
 
-internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
+internal fun NavGraphBuilder.listsScreens(
+    controller: NavHostController,
+    userId: TraktId?,
+) {
     with(controller) {
         listsScreen(
             onNavigateToProfile = { navigateToProfile() },
@@ -487,6 +490,12 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
             onNavigateToCreateSmartList = { navigateToCreateSmartList() },
             onNavigateToAllLists = { navigateToAllLists(it) },
             onNavigateToVip = { navigateToBilling() },
+            onNavigateToUser = {
+                navigateToUserProfile(
+                    user = it,
+                    currentUserId = userId,
+                )
+            },
         )
         createSmartListScreen(
             onNavigateBack = { popBackStack() },
@@ -511,6 +520,12 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
             onNavigateToSmartList = { navigateToSmartListDetails(it) },
             onNavigateToCreateSmartList = { navigateToCreateSmartList() },
             onNavigateBack = { popBackStack() },
+            onNavigateToUser = {
+                navigateToUserProfile(
+                    user = it,
+                    currentUserId = userId,
+                )
+            },
         )
         allWatchlistScreen(
             onNavigateToShow = { navigateToShow(it) },
@@ -552,6 +567,7 @@ internal fun NavGraphBuilder.listsScreens(controller: NavHostController) {
 internal fun NavGraphBuilder.searchScreens(
     controller: NavHostController,
     searchInput: SearchInput,
+    userId: TraktId?,
     onSearchLoading: (Boolean) -> Unit,
 ) {
     with(controller) {
@@ -567,6 +583,12 @@ internal fun NavGraphBuilder.searchScreens(
                     mediaId = (-1).toTraktId(),
                     mediaType = listOf(Show, Movie),
                     mediaImage = null,
+                )
+            },
+            onNavigateToUser = {
+                navigateToUserProfile(
+                    user = it,
+                    currentUserId = userId,
                 )
             },
         )
@@ -790,6 +812,12 @@ internal fun NavGraphBuilder.userProfileScreens(
                     mediaId = (-1).toTraktId(),
                     mediaType = listOf(Show, Movie),
                     mediaImage = null,
+                )
+            },
+            onNavigateToUser = {
+                navigateToUserProfile(
+                    user = it,
+                    currentUserId = userId,
                 )
             },
             onNavigateBack = { popBackStack() },

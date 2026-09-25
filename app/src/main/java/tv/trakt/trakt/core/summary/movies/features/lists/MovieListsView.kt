@@ -50,6 +50,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableSet
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktSectionHeader
@@ -65,6 +66,7 @@ internal fun MovieListsView(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     onClick: ((CustomList) -> Unit),
+    onUserClick: ((User) -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -75,6 +77,7 @@ internal fun MovieListsView(
         contentPadding = contentPadding,
         onCollapse = viewModel::setCollapsed,
         onClick = onClick,
+        onUserClick = onUserClick,
     )
 }
 
@@ -86,6 +89,7 @@ private fun MovieListsContent(
     contentPadding: PaddingValues = PaddingValues(),
     onCollapse: (collapsed: Boolean) -> Unit = {},
     onClick: ((CustomList) -> Unit)? = null,
+    onUserClick: ((User) -> Unit)? = null,
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
 
@@ -141,6 +145,7 @@ private fun MovieListsContent(
                                     listLikedItems = state.likedItems ?: EmptyImmutableSet,
                                     contentPadding = contentPadding,
                                     onClick = onClick,
+                                    onUserClick = onUserClick,
                                 )
                             }
                         }
@@ -158,6 +163,7 @@ private fun ContentList(
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
     onClick: ((CustomList) -> Unit)? = null,
+    onUserClick: ((User) -> Unit)? = null,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -186,6 +192,7 @@ private fun ContentList(
                 },
                 likesVisible = true,
                 onClick = { onClick?.invoke(item) },
+                onUserClick = onUserClick,
                 modifier = Modifier
                     .height(TraktTheme.size.customListCardSize)
                     .aspectRatio(HorizontalImageAspectRatio),

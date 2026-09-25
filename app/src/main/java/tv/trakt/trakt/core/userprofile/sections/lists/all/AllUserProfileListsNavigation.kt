@@ -17,11 +17,13 @@ internal data class AllUserProfileListsDestination(
 
 internal fun NavGraphBuilder.allUserProfileListsScreen(
     onNavigateToList: (CustomList) -> Unit,
+    onNavigateToUser: (User) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     composable<AllUserProfileListsDestination> {
         AllUserProfileListsScreen(
             onNavigateToList = onNavigateToList,
+            onNavigateToUser = onNavigateToUser,
             onNavigateBack = onNavigateBack,
         )
     }

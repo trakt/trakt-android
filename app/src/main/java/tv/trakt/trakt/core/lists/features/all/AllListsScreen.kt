@@ -50,6 +50,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.ListsItem
 import tv.trakt.trakt.common.model.lists.SmartList
@@ -81,6 +82,7 @@ internal fun AllListsScreen(
     onNavigateSmartList: (SmartList) -> Unit,
     onNavigateCreateSmartList: () -> Unit,
     onNavigateBack: () -> Unit,
+    onNavigateUser: (User) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -114,6 +116,7 @@ internal fun AllListsScreen(
         onFilterClick = viewModel::setFilter,
         onEndOfList = viewModel::loadMoreData,
         onBackClick = onNavigateBack,
+        onUserClick = onNavigateUser,
     )
 
     CreateListTypeSheet(
@@ -165,6 +168,7 @@ private fun AllListsScreen(
     onFilterClick: (PersonalListType) -> Unit = {},
     onEndOfList: () -> Unit = {},
     onBackClick: () -> Unit = {},
+    onUserClick: (User) -> Unit = {},
 ) {
     val listState = rememberLazyListState(
         cacheWindow = LazyLayoutCacheWindow(
@@ -289,6 +293,7 @@ private fun AllListsScreen(
                                     moreVisible = true,
                                     onClick = { onListPersonalClick(list) },
                                     onMoreClick = { onListEditClick(list) },
+                                    onUserClick = onUserClick,
                                     modifier = cardModifier,
                                 )
                             }
@@ -298,6 +303,7 @@ private fun AllListsScreen(
                                     liked = true,
                                     likesVisible = true,
                                     onClick = { onListClick(list) },
+                                    onUserClick = onUserClick,
                                     modifier = cardModifier,
                                 )
                             }
@@ -305,6 +311,7 @@ private fun AllListsScreen(
                                 CustomListCard(
                                     list = list,
                                     onClick = { onListClick(list) },
+                                    onUserClick = onUserClick,
                                     modifier = cardModifier,
                                 )
                             }

@@ -19,7 +19,7 @@ data class KlipyGif(
     val fullMedia: KlipyGifMedia?
         get() = renditions.md?.animated ?: renditions.hd?.animated ?: previewMedia
 
-    val apiMedia: KlipyGifMedia?
+    private val apiMedia: KlipyGifMedia?
         get() = renditions.md?.gif ?: renditions.hd?.gif ?: renditions.sm?.gif ?: fullMedia
 
     fun toCommentGif(): CommentGif? {

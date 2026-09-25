@@ -702,6 +702,7 @@ internal fun MovieDetailsContent(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
                             onClick = onListClick ?: {},
+                            onUserClick = onNavigateToUser,
                             modifier = Modifier
                                 .alpha(ratingAlphaMask)
                                 .padding(top = 32.dp),

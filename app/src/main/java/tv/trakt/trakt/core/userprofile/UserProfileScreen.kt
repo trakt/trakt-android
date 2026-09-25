@@ -449,6 +449,7 @@ private fun LazyListScope.userProfilePublicContent(
             headerPadding = sectionPadding,
             contentPadding = sectionPadding,
             onListClick = onNavigateToList,
+            onUserClick = onNavigateToUser,
             onMoreClick = { onNavigateToAllLists(state.user, it) },
             modifier = Modifier
                 .padding(bottom = TraktTheme.spacing.mainSectionVerticalSpace),

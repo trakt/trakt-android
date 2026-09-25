@@ -41,7 +41,7 @@ internal fun MainNavHost(
         showsScreens(navController, userId)
         moviesScreens(navController, userId)
         episodesScreens(navController, userId)
-        listsScreens(navController)
+        listsScreens(navController, userId)
         profileScreens(navController, userId)
         commentsScreens(navController, userId)
         allShowSeasonsScreens(navController)
@@ -51,6 +51,7 @@ internal fun MainNavHost(
         searchScreens(
             controller = navController,
             searchInput = searchInput,
+            userId = userId,
             onSearchLoading = onSearchLoading,
         )
         settingsScreens(navController)

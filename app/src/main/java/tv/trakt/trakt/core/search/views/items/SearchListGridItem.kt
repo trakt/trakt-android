@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.search.model.SearchItem
 import tv.trakt.trakt.ui.components.mediacards.list.CustomListCard
@@ -16,6 +17,7 @@ internal fun SearchListGridItem(
     item: SearchItem.List,
     onListClick: (CustomList) -> Unit,
     modifier: Modifier = Modifier,
+    onUserClick: (User) -> Unit = {},
 ) {
     CustomListCard(
         list = item.list,
@@ -24,6 +26,7 @@ internal fun SearchListGridItem(
         onClick = {
             onListClick(item.list)
         },
+        onUserClick = onUserClick,
         modifier = modifier
             .aspectRatio(HorizontalImageAspectRatio),
     )

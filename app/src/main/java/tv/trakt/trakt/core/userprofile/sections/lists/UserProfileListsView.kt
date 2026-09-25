@@ -37,6 +37,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.core.lists.sections.personal.model.PersonalListType
 import tv.trakt.trakt.core.lists.sections.personal.ui.ListsFilters
@@ -55,6 +56,7 @@ internal fun UserProfileListsView(
     contentPadding: PaddingValues,
     onListClick: (CustomList) -> Unit,
     onMoreClick: (PersonalListType) -> Unit = {},
+    onUserClick: (User) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -66,6 +68,7 @@ internal fun UserProfileListsView(
         onCollapse = viewModel::setCollapsed,
         onFilterClick = viewModel::setFilter,
         onListClick = onListClick,
+        onUserClick = onUserClick,
         onMoreClick = {
             if (state.loading.isLoading) {
                 return@UserProfileListsContent
@@ -85,6 +88,7 @@ internal fun UserProfileListsContent(
     onFilterClick: (PersonalListType) -> Unit = {},
     onListClick: (CustomList) -> Unit = {},
     onMoreClick: () -> Unit = {},
+    onUserClick: (User) -> Unit = {},
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
 
@@ -161,6 +165,7 @@ internal fun UserProfileListsContent(
                                     listItems = (state.items ?: emptyList()).toImmutableList(),
                                     contentPadding = contentPadding,
                                     onListClick = onListClick,
+                                    onUserClick = onUserClick,
                                 )
                             }
                         }
@@ -200,6 +205,7 @@ private fun ContentList(
     listState: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues,
     onListClick: (CustomList) -> Unit,
+    onUserClick: (User) -> Unit,
 ) {
     LazyRow(
         state = listState,
@@ -222,6 +228,7 @@ private fun ContentList(
                         fadeOutSpec = null,
                     ),
                 onClick = { onListClick(list) },
+                onUserClick = onUserClick,
             )
         }
     }

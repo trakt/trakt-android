@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.extensions.popUpToTop
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.SmartList
 import tv.trakt.trakt.core.lists.ListsScreen
@@ -28,6 +29,7 @@ internal fun NavGraphBuilder.listsScreen(
     onNavigateToCreateSmartList: () -> Unit,
     onNavigateToAllLists: (PersonalListType) -> Unit,
     onNavigateToVip: () -> Unit,
+    onNavigateToUser: (User) -> Unit,
 ) {
     composable<ListsDestination> {
         ListsScreen(
@@ -44,6 +46,7 @@ internal fun NavGraphBuilder.listsScreen(
             onNavigateToCreateSmartList = onNavigateToCreateSmartList,
             onNavigateToAllLists = onNavigateToAllLists,
             onNavigateToVip = onNavigateToVip,
+            onNavigateToUser = onNavigateToUser,
         )
     }
 }
