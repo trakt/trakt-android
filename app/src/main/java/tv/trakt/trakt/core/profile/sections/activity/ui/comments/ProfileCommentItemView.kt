@@ -86,6 +86,7 @@ internal fun ProfileCommentItemView(
     modifier: Modifier = Modifier,
     reactions: ImmutableMap<Int, ReactionsSummary> = EmptyReactionsSummary,
     gifLayout: CommentGifLayout = Bottom,
+    gifPaused: Boolean = false,
     onClick: () -> Unit = {},
     onShowClick: ((Show) -> Unit)? = null,
     onMovieClick: ((Movie) -> Unit)? = null,
@@ -117,6 +118,7 @@ internal fun ProfileCommentItemView(
                 item = item,
                 reactions = reactions,
                 gifLayout = gifLayout,
+                gifPaused = gifPaused,
                 onShowClick = onShowClick,
                 onMovieClick = onMovieClick,
                 onEpisodeClick = onEpisodeClick,
@@ -132,6 +134,7 @@ private fun CommentCardContent(
     item: ProfileCommentItem,
     reactions: ImmutableMap<Int, ReactionsSummary>,
     gifLayout: CommentGifLayout,
+    gifPaused: Boolean,
     modifier: Modifier = Modifier,
     onShowClick: ((Show) -> Unit)? = null,
     onMovieClick: ((Movie) -> Unit)? = null,
@@ -185,6 +188,7 @@ private fun CommentCardContent(
                 body()
                 CommentGifView(
                     gif = gif,
+                    paused = gifPaused,
                     modifier = Modifier
                         .padding(horizontal = 16.dp),
                 )
@@ -199,6 +203,7 @@ private fun CommentCardContent(
                     CommentGifView(
                         gif = gif,
                         shape = RoundedCornerShape(12.dp),
+                        paused = gifPaused,
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
                             .padding(top = 11.dp, bottom = 20.dp)
@@ -217,6 +222,7 @@ private fun CommentCardContent(
                     CommentGifView(
                         gif = gif,
                         shape = RoundedCornerShape(12.dp),
+                        paused = gifPaused,
                         modifier = Modifier
                             .padding(top = 14.dp, end = 16.dp)
                             .sizeIn(

@@ -89,6 +89,7 @@ internal fun MovieCommentsView(
     headerPadding: PaddingValues,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
+    gifPaused: Boolean = false,
     onMoreClick: ((CommentsFilter) -> Unit)?,
     onUserClick: ((User) -> Unit)?,
 ) {
@@ -103,6 +104,7 @@ internal fun MovieCommentsView(
         modifier = modifier,
         headerPadding = headerPadding,
         contentPadding = contentPadding,
+        gifPaused = gifPaused,
         onMoreClick = {
             if (!state.items.isNullOrEmpty()) {
                 onMoreClick?.invoke(state.filter)
@@ -169,6 +171,7 @@ private fun MovieCommentsContent(
     modifier: Modifier = Modifier,
     headerPadding: PaddingValues = PaddingValues(),
     contentPadding: PaddingValues = PaddingValues(),
+    gifPaused: Boolean = false,
     onCommentLoaded: ((Comment) -> Unit)? = null,
     onCommentClick: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
@@ -295,6 +298,7 @@ private fun MovieCommentsContent(
                                     listItems = (state.items ?: emptyList()).toImmutableList(),
                                     listReactions = (state.reactions ?: emptyMap()).toImmutableMap(),
                                     user = state.user,
+                                    gifPaused = gifPaused,
                                     userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
                                     contentPadding = contentPadding,
                                     onCommentClick = onCommentClick,
@@ -320,6 +324,7 @@ private fun ContentList(
     user: User?,
     userReactions: ImmutableMap<Int, Reaction?>,
     contentPadding: PaddingValues,
+    gifPaused: Boolean,
     onCommentLoaded: ((Comment) -> Unit)? = null,
     onCommentClick: ((Comment) -> Unit)? = null,
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
@@ -353,6 +358,7 @@ private fun ContentList(
                 userReactions = userReactions,
                 deleteEnabled = false,
                 gifLayout = CommentGifLayout.Side,
+                gifPaused = gifPaused,
                 onClick = { onCommentClick?.invoke(comment) },
                 onRepliesClick = { onCommentClick?.invoke(comment) },
                 onDeleteClick = { onDeleteCommentClick?.invoke(comment) },

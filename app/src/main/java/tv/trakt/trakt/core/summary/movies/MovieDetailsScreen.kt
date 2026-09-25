@@ -657,6 +657,7 @@ internal fun MovieDetailsContent(
                             ),
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
+                            gifPaused = listState.isScrollInProgress,
                             onMoreClick = onMoreCommentsClick,
                             onUserClick = onNavigateToUser,
                             modifier = Modifier

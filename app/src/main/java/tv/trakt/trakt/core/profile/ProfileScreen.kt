@@ -325,6 +325,7 @@ private fun ProfileScreen(
                         ProfileActivityView(
                             headerPadding = sectionPadding,
                             contentPadding = sectionPadding,
+                            gifPaused = listState.isScrollInProgress,
                             onMovieClick = onNavigateToMovie,
                             onShowClick = onNavigateToShow,
                             onEpisodeClick = onNavigateToEpisode,

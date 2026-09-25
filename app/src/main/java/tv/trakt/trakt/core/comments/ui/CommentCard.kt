@@ -108,6 +108,7 @@ internal fun CommentCard(
     repliesCountEnabled: Boolean = true,
     repliesLoading: Boolean = false,
     gifLayout: CommentGifLayout = CommentGifLayout.Bottom,
+    gifPaused: Boolean = false,
     onClick: (() -> Unit)? = null,
     onRequestReactions: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
@@ -139,6 +140,7 @@ internal fun CommentCard(
             repliesCountEnabled = repliesCountEnabled,
             repliesLoading = repliesLoading,
             gifLayout = gifLayout,
+            gifPaused = gifPaused,
             onRequestReactions = onRequestReactions,
             onReactionClick = onReactionClick,
             onReplyClick = { onReplyClick?.invoke(comment) },
@@ -210,6 +212,7 @@ private fun CommentCardContent(
     repliesCountEnabled: Boolean,
     repliesLoading: Boolean,
     gifLayout: CommentGifLayout,
+    gifPaused: Boolean,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
@@ -265,6 +268,7 @@ private fun CommentCardContent(
                 CommentGifView(
                     gif = gif,
                     blurred = spoilerBlurred,
+                    paused = gifPaused,
                     onRevealSpoiler = { isSpoilerRevealed = true },
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
@@ -282,6 +286,7 @@ private fun CommentCardContent(
                         gif = gif,
                         shape = RoundedCornerShape(12.dp),
                         blurred = spoilerBlurred,
+                        paused = gifPaused,
                         onRevealSpoiler = { isSpoilerRevealed = true },
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
@@ -302,6 +307,7 @@ private fun CommentCardContent(
                         gif = gif,
                         shape = RoundedCornerShape(12.dp),
                         blurred = spoilerBlurred,
+                        paused = gifPaused,
                         onRevealSpoiler = { isSpoilerRevealed = true },
                         modifier = Modifier
                             .padding(top = 16.dp, end = 16.dp)

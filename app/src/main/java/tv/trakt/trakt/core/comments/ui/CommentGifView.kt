@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.comments.ui
 
+import android.graphics.drawable.Animatable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
@@ -8,6 +9,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
@@ -15,6 +21,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import coil3.DrawableImage
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
@@ -39,10 +46,17 @@ internal fun CommentGifView(
     modifier: Modifier = Modifier,
     shape: RoundedCornerShape = DefaultCardShape,
     blurred: Boolean = false,
+    paused: Boolean = false,
     onRevealSpoiler: () -> Unit = {},
 ) {
     val (width, height) = gif.size
     val hasSize = width > 0 && height > 0
+
+    var animatable by remember(gif.url) { mutableStateOf<Animatable?>(null) }
+    LaunchedEffect(animatable, paused) {
+        val drawable = animatable ?: return@LaunchedEffect
+        if (paused) drawable.stop() else drawable.start()
+    }
 
     val sizeModifier = when {
         hasSize -> {
@@ -73,6 +87,9 @@ internal fun CommentGifView(
                 .build(),
             contentDescription = null,
             contentScale = ContentScale.Crop,
+            onSuccess = { state ->
+                animatable = (state.result.image as? DrawableImage)?.drawable as? Animatable
+            },
             modifier = Modifier
                 .fillMaxSize()
                 .then(
