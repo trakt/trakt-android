@@ -41,7 +41,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -49,19 +48,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import androidx.window.core.layout.WindowSizeClass
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
-import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
-import tv.trakt.trakt.common.Config.WEB_ABOUT_US_URL
-import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Purple1000
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Purple900
-import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.common.ui.theme.colors.Shade800
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
@@ -147,7 +141,7 @@ internal fun WelcomeScreen(
                 modifier = Modifier
                     .padding(horizontal = 24.dp)
                     .padding(
-                        top = 72.dp,
+                        top = 64.dp,
                         bottom = 16.dp,
                     ),
             ) {
@@ -294,7 +288,8 @@ private fun WelcomeFooter(
             horizontalArrangement = spacedBy(6.dp),
         ) {
             Column(
-                verticalArrangement = spacedBy(2.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = spacedBy(10.dp),
                 modifier = Modifier.weight(1F),
             ) {
                 Row(
@@ -302,7 +297,7 @@ private fun WelcomeFooter(
                     horizontalArrangement = spacedBy(6.dp),
                 ) {
                     Text(
-                        text = stringResource(R.string.header_landing_welcome),
+                        text = stringResource(R.string.button_text_join_trakt_for_free),
                         style = TraktTheme.typography.heading5,
                         color = TraktTheme.colors.textPrimary,
                         maxLines = 1,
@@ -317,44 +312,17 @@ private fun WelcomeFooter(
                     )
                 }
                 Text(
-                    text = stringResource(R.string.text_landing_welcome),
+                    text = stringResource(R.string.text_landing_hero),
                     style = TraktTheme.typography.paragraphSmaller,
                     color = TraktTheme.colors.textPrimary,
-                    maxLines = 3,
+                    textAlign = TextAlign.Center,
+                    maxLines = 5,
                 )
-            }
-
-            Box(
-                modifier = Modifier.onClick {
-                    uriHandler.openUri(WEB_ABOUT_US_URL)
-                },
-            ) {
-                val users = remember {
-                    listOf(
-                        "https://walter-r2.trakt.tv/images/admins/000/000/001/avatars/thumb/2e6df69058.jpg",
-                        "https://walter-r2.trakt.tv/images/admins/000/000/002/avatars/thumb/0f9ac9e4e6.jpg",
-                        "https://walter-r2.trakt.tv/images/admins/000/410/291/avatars/thumb/348b7bf208.png",
-                    )
-                }
-                users.forEachIndexed { index, model ->
-                    AsyncImage(
-                        model = model,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        error = painterResource(R.drawable.ic_person_placeholder),
-                        modifier = Modifier
-                            .zIndex(10 - index.toFloat())
-                            .padding(start = (index * 20).dp)
-                            .size(42.dp)
-                            .border(2.dp, Red500, CircleShape)
-                            .clip(CircleShape),
-                    )
-                }
             }
         }
 
         PrimaryButton(
-            text = stringResource(R.string.button_text_join_trakt_for_free),
+            text = stringResource(R.string.button_text_join_trakt),
             containerColor = Purple500,
             contentColor = Color.White,
             onClick = onDismiss,
