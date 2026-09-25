@@ -23,7 +23,7 @@ val DarkColors: TraktColors = TraktColors(
     chipContainerOnContent = Shade700.copy(alpha = 0.64F),
     chipContent = White,
     navigationHeaderContainer = Shade900.copy(alpha = 0.98F),
-    navigationContainer = Shade900.copy(alpha = 0.98F),
+    navigationContainer = Shade900,
     navigationContent = White,
     navigationContentOn = Purple400,
     navigationContentOff = Shade300,

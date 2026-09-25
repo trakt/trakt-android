@@ -23,7 +23,7 @@ val LightColors: TraktColors = TraktColors(
     chipContainerOnContent = Shade500.copy(alpha = 0.64F),
     chipContent = Shade900,
     navigationHeaderContainer = Shade20.copy(alpha = 0.98F),
-    navigationContainer = Shade20.copy(alpha = 0.98F),
+    navigationContainer = Shade20,
     navigationContent = Shade900,
     navigationContentOn = Purple600,
     navigationContentOff = Shade400,

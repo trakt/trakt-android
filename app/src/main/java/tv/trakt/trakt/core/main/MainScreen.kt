@@ -135,6 +135,9 @@ import tv.trakt.trakt.widgets.WidgetIntentTarget
 private const val IN_APP_UPDATE_REQUEST_CODE = 4001
 private const val IN_APP_UPDATE_STALENESS_DAYS = 7
 
+private val navigationBarShadowCapHeight = 48.dp
+private val navigationBarShape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+
 @Composable
 internal fun MainScreen(
     viewModel: MainViewModel,
@@ -594,16 +597,6 @@ private fun LaunchedAppUpdate(
         }
     }
 }
-
-private val navigationBarShape = RoundedCornerShape(
-    topStart = 24.dp,
-    topEnd = 24.dp,
-)
-
-// Only the top edge of the bar shadow is ever visible. Drawing it on a fixed-height cap keeps the
-// blurred layer at a constant size, so IME padding and the search field height animation only
-// translate it instead of re-rendering the blur every frame. The bar draws over the cap.
-private val navigationBarShadowCapHeight = 48.dp
 
 @Composable
 private fun NavigationBarShadow(modifier: Modifier = Modifier) {
