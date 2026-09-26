@@ -122,6 +122,7 @@ internal class AllShowSeasonsViewModel(
     private val navigateEpisode = MutableStateFlow(initialState.navigateEpisode)
     private val infoState = MutableStateFlow(initialState.info)
     private val errorState = MutableStateFlow(initialState.error)
+    private val watchedUntilPromptState = MutableStateFlow(initialState.watchedUntilPrompt)
 
     private val reactions = SeasonReactionsController(
         scope = viewModelScope,
@@ -515,6 +516,13 @@ internal class AllShowSeasonsViewModel(
             return
         }
 
+        // Read before the write: how many released episodes this check leaves
+        // behind, and whether it is a rewatch rather than a first play.
+        val skipped = itemsState.value.skippedEpisodesBefore(episode)
+        val wasWatched = itemsState.value.selectedSeasonEpisodes
+            .firstOrNull { it.episode.ids.trakt == episode.ids.trakt }
+            ?.isWatched == true
+
         viewModelScope.launch {
             if (!sessionManager.isAuthenticated()) return@launch
 
@@ -545,6 +553,10 @@ internal class AllShowSeasonsViewModel(
 
                 showDetailsUpdates.notifyUpdate(Seasons)
                 showDetailsUpdates.notifyUpdate(AllSeasons)
+
+                if (!wasWatched && skipped > 0) {
+                    watchedUntilPromptState.update { episode }
+                }
 
                 infoState.update { DynamicStringResource(R.string.text_info_history_added) }
                 analytics.progress.logAddWatchedMedia(
@@ -767,6 +779,10 @@ internal class AllShowSeasonsViewModel(
         navigateEpisode.update { null }
     }
 
+    fun clearWatchedUntilPrompt() {
+        watchedUntilPromptState.update { null }
+    }
+
     @Suppress("UNCHECKED_CAST")
     val state = combine(
         showState,
@@ -782,6 +798,7 @@ internal class AllShowSeasonsViewModel(
         navigateEpisode,
         infoState,
         errorState,
+        watchedUntilPromptState,
         reactions.commentReactions,
         reactions.userReactions,
         rating.rating,
@@ -800,9 +817,10 @@ internal class AllShowSeasonsViewModel(
             navigateEpisode = state[10] as Pair<TraktId, Episode>?,
             info = state[11] as StringResource?,
             error = state[12] as Exception?,
-            commentReactions = state[13] as ImmutableMap<Int, ReactionsSummary>,
-            userReactions = state[14] as ImmutableMap<Int, Reaction?>,
-            seasonUserRating = state[15] as AllShowSeasonsState.UserRatingState,
+            watchedUntilPrompt = state[13] as Episode?,
+            commentReactions = state[14] as ImmutableMap<Int, ReactionsSummary>,
+            userReactions = state[15] as ImmutableMap<Int, Reaction?>,
+            seasonUserRating = state[16] as AllShowSeasonsState.UserRatingState,
         )
     }.stateIn(
         scope = viewModelScope,
