@@ -312,6 +312,7 @@ private fun ContentList(
                 item = item,
                 showMediaIcon = (filter == Media),
                 watched = collection.isWatched(item.id, item.type, item.airedEpisodes),
+                plays = collection.plays(item.id, item.type, item.airedEpisodes),
                 watching = collection.isWatching(item.id, item.type, item.airedEpisodes),
                 onShowClick = {
                     if (item is WatchlistItem.ShowItem && !item.loading) {
