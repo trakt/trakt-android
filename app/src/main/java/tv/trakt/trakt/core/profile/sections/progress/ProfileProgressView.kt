@@ -74,6 +74,7 @@ internal fun ProfileProgressView(
         contentPadding = contentPadding,
         onCollapse = viewModel::setCollapsed,
         onFilterClick = viewModel::setFilter,
+        onFilterReorder = viewModel::setFilterOrder,
         onShowClick = viewModel::navigateToShow,
         onProgressClick = { onMoreClick() },
     )
@@ -87,6 +88,7 @@ internal fun ProfileProgressContent(
     contentPadding: PaddingValues = PaddingValues(),
     onCollapse: (collapsed: Boolean) -> Unit = {},
     onFilterClick: (ProgressFilter) -> Unit = {},
+    onFilterReorder: (ImmutableList<ProgressFilter>) -> Unit = {},
     onShowClick: (Show) -> Unit = {},
     onProgressClick: () -> Unit = {},
 ) {
@@ -117,8 +119,10 @@ internal fun ProfileProgressContent(
 
         if (state.collapsed != true) {
             ProgressFilters(
+                order = state.filterOrder,
                 selected = state.filter,
                 onClick = onFilterClick,
+                onReorder = onFilterReorder,
                 paddingHorizontal = headerPadding,
                 paddingVertical = PaddingValues(top = 13.dp, bottom = 15.dp),
             )
