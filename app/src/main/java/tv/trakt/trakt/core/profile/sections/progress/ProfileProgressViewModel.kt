@@ -31,9 +31,11 @@ import tv.trakt.trakt.core.lists.ListsConfig.PROGRESS_SECTION_LIMIT
 import tv.trakt.trakt.core.profile.sections.progress.filters.GetProgressFilterUseCase
 import tv.trakt.trakt.core.profile.sections.progress.model.ProfileProgressItem
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter
-import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.Completed
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.Dropped
+import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.Ended
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.InProgress
+import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.UpToDate
+import tv.trakt.trakt.core.profile.sections.progress.model.pageOfEnded
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressCompleteUseCase
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressDroppedUseCase
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressWatchingUseCase
@@ -103,7 +105,8 @@ internal class ProfileProgressViewModel(
 
                 itemsState.update {
                     when (filter) {
-                        Completed -> getCompletedUseCase.getLocalCompleted(PROGRESS_SECTION_LIMIT)
+                        UpToDate -> getCompletedUseCase.getLocalCompleted(PROGRESS_SECTION_LIMIT, ended = false)
+                        Ended -> getCompletedUseCase.getLocalCompleted(PROGRESS_SECTION_LIMIT, ended = true)
                         InProgress -> getWatchingUseCase.getLocalWatching(PROGRESS_SECTION_LIMIT)
                         Dropped -> getDroppedUseCase.getLocalDropped(PROGRESS_SECTION_LIMIT)
                     }
@@ -118,7 +121,18 @@ internal class ProfileProgressViewModel(
 
                 itemsState.update {
                     when (filter) {
-                        Completed -> getCompletedUseCase.getCompleted(page = 1, limit = PROGRESS_SECTION_LIMIT)
+                        UpToDate ->
+                            getCompletedUseCase
+                                .getCompleted(page = 1, limit = PROGRESS_SECTION_LIMIT)
+                                .pageOfEnded(ended = false)
+                                .items
+
+                        Ended ->
+                            getCompletedUseCase
+                                .getCompleted(page = 1, limit = PROGRESS_SECTION_LIMIT)
+                                .pageOfEnded(ended = true)
+                                .items
+
                         InProgress -> getWatchingUseCase.getWatching(page = 1, limit = PROGRESS_SECTION_LIMIT)
                         Dropped -> getDroppedUseCase.getDropped(page = 1, limit = PROGRESS_SECTION_LIMIT)
                     }
