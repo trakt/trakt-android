@@ -85,7 +85,7 @@ internal fun AllShowSeasonsContent(
     onCheckEpisodeLongClick: ((EpisodeItem) -> Unit)? = null,
     onMoreClick: ((EpisodeItem) -> Unit)? = null,
     onCheckSeasonClick: (() -> Unit)? = null,
-    onRemoveSeasonClick: (() -> Unit)? = null,
+    onSeasonMoreClick: ((SeasonItem) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val peopleSearchState = rememberTextFieldState()
@@ -172,11 +172,12 @@ internal fun AllShowSeasonsContent(
                             snapScrollEnabled = true,
                             onSeasonClick = onSeasonClick ?: {},
                             onSeasonLongClick = {
-                                when {
-                                    state.loadingSeason.isLoading -> return@ShowSeasonsList
-                                    state.items.isSelectedSeasonWatched -> onRemoveSeasonClick?.invoke()
-                                    else -> onCheckSeasonClick?.invoke()
-                                }
+                                if (state.loadingSeason.isLoading) return@ShowSeasonsList
+                                onSeasonMoreClick?.invoke(it)
+                            },
+                            onSeasonCheckClick = {
+                                if (state.loadingSeason.isLoading) return@ShowSeasonsList
+                                onCheckSeasonClick?.invoke()
                             },
                             modifier = Modifier.fillMaxWidth(),
                         )

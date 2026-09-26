@@ -19,7 +19,9 @@ import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.features.postreply.PostReplySheet
 import tv.trakt.trakt.core.klipy.toGifQuery
 import tv.trakt.trakt.core.summary.shows.features.context.episodes.EpisodeContextSheet
+import tv.trakt.trakt.core.summary.shows.features.context.seasons.SeasonContextSheet
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
+import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonItem
 import tv.trakt.trakt.core.summary.shows.features.seasons.watcheduntil.WatchedUntilSheet
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.confirmation.ConfirmationSheet
@@ -39,6 +41,7 @@ internal class AllShowSeasonsSheetState {
     var episodeDate by mutableStateOf<EpisodeItem?>(null)
     var episodeWatchedUntil by mutableStateOf<EpisodeItem?>(null)
     var episodeContext by mutableStateOf<EpisodeItem?>(null)
+    var seasonContext by mutableStateOf<SeasonItem?>(null)
     var seasonDate by mutableStateOf(false)
     var postComment by mutableStateOf(false)
     var postReply by mutableStateOf<Pair<Comment, User?>?>(null)
@@ -57,6 +60,7 @@ internal fun AllShowSeasonsSheets(
 ) {
     EpisodeContextSheet(
         episodeItem = sheetState.episodeContext,
+        watchOnlyOnce = state.user?.settings?.watchOnlyOnce,
         onTrackClick = {
             sheetState.episodeDate = it
         },
@@ -69,6 +73,15 @@ internal fun AllShowSeasonsSheets(
         onDismiss = {
             sheetState.episodeContext = null
         },
+    )
+
+    SeasonContextSheet(
+        seasonItem = sheetState.seasonContext,
+        showTitle = state.show?.title,
+        watchOnlyOnce = state.user?.settings?.watchOnlyOnce,
+        onTrackClick = { sheetState.confirmMarkSeason = true },
+        onRemoveClick = { sheetState.confirmRemoveSeason = true },
+        onDismiss = { sheetState.seasonContext = null },
     )
 
     WatchedUntilSheet(
@@ -102,10 +115,13 @@ internal fun AllShowSeasonsSheets(
             sheetState.seasonDate = true
         },
         onNo = { sheetState.confirmMarkSeason = false },
-        title = stringResource(R.string.button_text_track),
+        title = when {
+            state.items.isSelectedSeasonWatched -> stringResource(R.string.button_text_watch_again)
+            else -> stringResource(R.string.button_text_track)
+        },
         message = stringResource(
             R.string.warning_prompt_mark_as_watched_multiple_episodes,
-            state.items.selectedSeasonEpisodes.count { !it.isWatched && it.episode.isReleased },
+            state.items.selectedSeasonEpisodesToTrack.size,
         ),
     )
 
