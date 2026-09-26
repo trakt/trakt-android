@@ -51,8 +51,11 @@ import tv.trakt.trakt.core.auth.usecase.codeVerifierKey
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source
 import tv.trakt.trakt.core.checkin.model.CheckInState
+import tv.trakt.trakt.core.main.model.ImdbLink
+import tv.trakt.trakt.core.main.model.ImdbLinkTarget
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
 import tv.trakt.trakt.core.main.usecases.InstallPromptUseCase
+import tv.trakt.trakt.core.main.usecases.ResolveImdbLinkUseCase
 import tv.trakt.trakt.core.notifications.data.work.ScheduleNotificationsWorker
 import tv.trakt.trakt.core.ratings.rateprompt.RatePromptManager
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptState
@@ -81,6 +84,7 @@ internal class MainViewModel(
     private val dismissWelcomeUseCase: DismissWelcomeUseCase,
     private val inAppReviewUseCase: RequestAppReviewUseCase,
     private val installPromptUseCase: InstallPromptUseCase,
+    private val resolveImdbLinkUseCase: ResolveImdbLinkUseCase,
     private val inAppUpdateManager: AppUpdateManager,
     private val errorsManager: GlobalErrorsManager,
     private val widgetsUpdates: WidgetsUpdater,
@@ -98,6 +102,7 @@ internal class MainViewModel(
     private val installPromptState = MutableStateFlow(initialState.installPrompt)
     private val paywallState = MutableStateFlow(initialState.paywall)
     private val updateState = MutableStateFlow(initialState.update)
+    private val imdbLinkTargetState = MutableStateFlow(initialState.imdbLinkTarget)
     private val errorState = MutableStateFlow(initialState.error)
 
     private var lastLoadTime: Instant? = null
@@ -443,6 +448,24 @@ internal class MainViewModel(
         paywallState.update { false }
     }
 
+    fun openImdbLink(url: String?) {
+        val link = ImdbLink.parse(url) ?: return
+        viewModelScope.launch {
+            try {
+                imdbLinkTargetState.update { resolveImdbLinkUseCase.resolve(link) }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    imdbLinkTargetState.update { ImdbLinkTarget.Failed }
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    fun clearImdbLinkTarget() {
+        imdbLinkTargetState.update { null }
+    }
+
     val state = combine(
         userState,
         userVipState,
@@ -454,6 +477,7 @@ internal class MainViewModel(
         installPromptState,
         paywallState,
         updateState,
+        imdbLinkTargetState,
         errorState,
     ) { state ->
         MainState(
@@ -467,7 +491,8 @@ internal class MainViewModel(
             installPrompt = state[7] as Boolean,
             paywall = state[8] as Boolean?,
             update = state[9] as AppUpdateResult?,
-            error = state[10] as Exception?,
+            imdbLinkTarget = state[10] as ImdbLinkTarget?,
+            error = state[11] as Exception?,
         )
     }.stateIn(
         scope = viewModelScope,
