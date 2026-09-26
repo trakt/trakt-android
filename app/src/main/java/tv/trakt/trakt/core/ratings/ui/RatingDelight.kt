@@ -9,9 +9,9 @@ private const val MAX_RATING = 10
 private const val LOWEST_RATINGS_CEILING = 2
 
 internal fun ratingDelight(rating: Int): RatingDelight? {
-    return when {
-        rating == MAX_RATING -> RatingDelight.Popcorn
-        rating in 1..LOWEST_RATINGS_CEILING -> RatingDelight.RottenTomato
+    return when (rating) {
+        MAX_RATING -> RatingDelight.Popcorn
+        in 1..LOWEST_RATINGS_CEILING -> RatingDelight.RottenTomato
         else -> null
     }
 }

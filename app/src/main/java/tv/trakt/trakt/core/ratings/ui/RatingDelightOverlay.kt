@@ -1,27 +1,44 @@
 package tv.trakt.trakt.core.ratings.ui
 
 import android.provider.Settings
+import android.view.WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+import android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+import android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.geometry.isUnspecified
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.vector.PathParser
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntRect
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.util.lerp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupPositionProvider
+import androidx.compose.ui.window.PopupProperties
 import tv.trakt.trakt.common.ui.theme.colors.Green500
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.common.ui.theme.colors.Shade10
@@ -48,6 +65,23 @@ private val DecelerateEasing = CubicBezierEasing(0.2f, 0.7f, 0.4f, 1f)
 private val AccelerateEasing = CubicBezierEasing(0.5f, 0f, 0.8f, 0.5f)
 private val EaseOut = CubicBezierEasing(0f, 0f, 0.58f, 1f)
 private val EaseIn = CubicBezierEasing(0.42f, 0f, 1f, 1f)
+
+// Separate window above everything else on screen, which lets all touches pass through.
+private val OverlayPopupProperties = PopupProperties(
+    flags = FLAG_NOT_FOCUSABLE or FLAG_NOT_TOUCHABLE or FLAG_LAYOUT_NO_LIMITS,
+    dismissOnBackPress = false,
+    dismissOnClickOutside = false,
+    excludeFromSystemGesture = false,
+)
+
+private object FullWindowPositionProvider : PopupPositionProvider {
+    override fun calculatePosition(
+        anchorBounds: IntRect,
+        windowSize: IntSize,
+        layoutDirection: LayoutDirection,
+        popupContentSize: IntSize,
+    ): IntOffset = IntOffset.Zero
+}
 
 private data class Drop(
     val x: Float,
@@ -100,25 +134,38 @@ internal fun RatingDelightOverlay(
     val kernels = remember(key) { kernels() }
     val leaf = remember { PathParser().parsePathString(TOMATO_LEAF_PATH).toPath() }
 
-    Canvas(modifier = modifier) {
-        val ms = elapsed.value
-        if (ms >= totalMs) return@Canvas
+    var anchorInWindow by remember { mutableStateOf(Offset.Unspecified) }
+    Spacer(
+        modifier = modifier.onGloballyPositioned {
+            anchorInWindow = it.positionInWindow()
+        },
+    )
 
-        when (delight) {
-            RatingDelight.RottenTomato -> drawRottenTomato(
-                ms = ms,
-                origin = origin,
-                direction = direction,
-                leaf = leaf,
-                splat = splat,
-                drops = drops,
-            )
-            RatingDelight.Popcorn -> drawPopcorn(
-                ms = ms,
-                origin = origin,
-                direction = direction,
-                kernels = kernels,
-            )
+    Popup(
+        popupPositionProvider = FullWindowPositionProvider,
+        properties = OverlayPopupProperties,
+    ) {
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val ms = elapsed.value
+            if (ms >= totalMs || anchorInWindow.isUnspecified) return@Canvas
+
+            val windowOrigin = anchorInWindow + origin
+            when (delight) {
+                RatingDelight.RottenTomato -> drawRottenTomato(
+                    ms = ms,
+                    origin = windowOrigin,
+                    direction = direction,
+                    leaf = leaf,
+                    splat = splat,
+                    drops = drops,
+                )
+                RatingDelight.Popcorn -> drawPopcorn(
+                    ms = ms,
+                    origin = windowOrigin,
+                    direction = direction,
+                    kernels = kernels,
+                )
+            }
         }
     }
 }
