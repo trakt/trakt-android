@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+  <string name="error_text_imdb_link_not_found">We couldn\'t find this IMDb title on Trakt.</string>
+  <string name="text_settings_open_imdb_links">Open IMDb links in Trakt</string>
+  <string name="text_settings_open_imdb_links_description">Turn on \"Open supported links\" and add the IMDb links.</string>
+</resources>

@@ -104,6 +104,8 @@ import tv.trakt.trakt.core.home.sections.upnext.features.all.navigation.navigate
 import tv.trakt.trakt.core.lists.navigation.ListsDestination
 import tv.trakt.trakt.core.lists.navigation.navigateToLists
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.navigateToWatchlist
+import tv.trakt.trakt.core.main.model.ImdbLink
+import tv.trakt.trakt.core.main.model.ImdbLinkTarget
 import tv.trakt.trakt.core.main.navigation.MainNavHost
 import tv.trakt.trakt.core.main.navigation.isMainDestination
 import tv.trakt.trakt.core.main.navigation.isStartDestination
@@ -122,6 +124,7 @@ import tv.trakt.trakt.core.search.navigation.SearchDestination
 import tv.trakt.trakt.core.search.navigation.navigateToSearch
 import tv.trakt.trakt.core.summary.episodes.navigation.navigateToEpisode
 import tv.trakt.trakt.core.summary.movies.navigation.navigateToMovie
+import tv.trakt.trakt.core.summary.people.navigation.navigateToPerson
 import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
 import tv.trakt.trakt.core.trivia.navigation.navigateToTrivia
 import tv.trakt.trakt.core.welcome.WelcomeScreen
@@ -208,6 +211,12 @@ internal fun MainScreen(
     }
 
     LaunchedEffect(intent, newIntent?.value) {
+        val imdbLinkUrl = extractImdbLinkUrl(newIntent?.value ?: intent)
+        if (imdbLinkUrl != null) {
+            viewModel.openImdbLink(imdbLinkUrl)
+            return@LaunchedEffect
+        }
+
         val processTextQuery = extractProcessTextQuery(newIntent?.value ?: intent)
         if (processTextQuery != null) {
             // Defer applying the query until the search destination is active,
@@ -232,6 +241,51 @@ internal fun MainScreen(
             intent = newIntent?.value ?: intent,
             navController = navController,
         )
+    }
+
+    LaunchedEffect(state.imdbLinkTarget, state.welcome.isActive) {
+        val target = state.imdbLinkTarget
+        if (target == null || state.welcome.isActive) {
+            return@LaunchedEffect
+        }
+
+        viewModel.clearImdbLinkTarget()
+        when (target) {
+            is ImdbLinkTarget.Movie -> navController.navigateToMovie(
+                movieId = target.movieId,
+            )
+
+            is ImdbLinkTarget.Show -> navController.navigateToShow(
+                showId = target.showId,
+            )
+
+            is ImdbLinkTarget.Episode -> navController.navigateToEpisode(
+                showId = target.showId,
+                episodeId = target.episodeId,
+                episodeSeason = target.season,
+                episodeNumber = target.number,
+            )
+
+            is ImdbLinkTarget.Person -> navController.navigateToPerson(
+                personId = target.personId,
+                sourceMediaId = null,
+                backdropUrl = null,
+            )
+
+            ImdbLinkTarget.NotFound -> scope.launch {
+                localSnackbar.showSnackbar(
+                    message = localRes.getString(R.string.error_text_imdb_link_not_found),
+                    duration = SnackbarDuration.Short,
+                )
+            }
+
+            ImdbLinkTarget.Failed -> scope.launch {
+                localSnackbar.showSnackbar(
+                    message = localRes.getString(R.string.error_text_sync_load_failed),
+                    duration = SnackbarDuration.Short,
+                )
+            }
+        }
     }
 
     LaunchedEffect(currentDestination.value, pendingSearchQuery) {
@@ -650,6 +704,22 @@ private fun LaunchedInstallPrompt(state: MainState) {
                 }
         }
     }
+}
+
+private fun extractImdbLinkUrl(intent: Intent?): String? {
+    if (intent == null || intent.action != Intent.ACTION_VIEW) {
+        return null
+    }
+
+    val url = intent.dataString
+    if (ImdbLink.parse(url) == null) {
+        return null
+    }
+
+    intent.data = null
+    intent.action = null
+
+    return url
 }
 
 private fun extractProcessTextQuery(intent: Intent?): String? {

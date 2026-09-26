@@ -28,6 +28,7 @@ import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
 import tv.trakt.trakt.core.main.usecases.DismissWelcomeUseCase
 import tv.trakt.trakt.core.main.usecases.InstallPromptUseCase
 import tv.trakt.trakt.core.main.usecases.LoadWhatsNewUseCase
+import tv.trakt.trakt.core.main.usecases.ResolveImdbLinkUseCase
 import tv.trakt.trakt.helpers.collapsing.CollapsingManager
 import tv.trakt.trakt.helpers.collapsing.DefaultCollapsingManager
 
@@ -92,6 +93,7 @@ internal val mainModule = module {
             dismissWelcomeUseCase = get(),
             inAppReviewUseCase = get(),
             installPromptUseCase = get(),
+            resolveImdbLinkUseCase = get(),
             inAppUpdateManager = get(),
             errorsManager = get(),
             widgetsUpdates = get(),
@@ -108,6 +110,12 @@ internal val mainModule = module {
     factory {
         InstallPromptUseCase(
             mainDataStore = get(named(MAIN_PREFERENCES)),
+        )
+    }
+
+    factory {
+        ResolveImdbLinkUseCase(
+            imdbLookupApi = get(),
         )
     }
 
