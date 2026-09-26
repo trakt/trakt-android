@@ -51,7 +51,6 @@ applyTo: '**/*.kt'
 | Repository                               | `MovieRepository.kt`                    |
 | Mapper                                   | `MovieMapper.kt` or `mapToMovie.kt`     |
 | Domain model                             | `Movie.kt`                              |
-| Test                                     | `MovieSummaryViewModelTest.kt`          |
 
 ### Package Naming
 
