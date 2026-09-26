@@ -28,15 +28,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineScope
@@ -73,6 +78,8 @@ internal fun UserRatingBar(
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalResources.current
+    val haptic = LocalHapticFeedback.current
+    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
     val tutorials = when {
         LocalInspectionMode.current -> StubTutorialsManager()
         else -> koinInject<TutorialsManager>()
@@ -96,6 +103,40 @@ internal fun UserRatingBar(
     val spacingPx = with(density) { 8.dp.toPx() }
     val starsWidth = 5 * starSizePx
     val totalWidth = 5 * starSizePx + 4 * spacingPx
+    val activeLiftPx = with(density) { 12.dp.toPx() }
+
+    var activeDelight by remember { mutableStateOf<ActiveDelight?>(null) }
+
+    fun starCenter(index: Int): Offset {
+        val ltrX = index * (starSizePx + spacingPx) + starSizePx / 2
+        return Offset(
+            x = if (isRtl) totalWidth - ltrX else ltrX,
+            y = starSizePx / 2,
+        )
+    }
+
+    fun commitRating(finalRating: Float) {
+        val starIndex = (finalRating - 0.5f).toInt().coerceIn(0, 4)
+        if (finalRating == 0f) {
+            onRatingRemoveClick()
+        } else {
+            val rating = UserRating.scaleTo10(finalRating)
+            onRatingClick(rating)
+            activeDelight = ratingDelight(rating)?.let { delight ->
+                ActiveDelight(
+                    delight = delight,
+                    origin = starCenter(starIndex),
+                    id = (activeDelight?.id ?: 0) + 1,
+                )
+            }
+        }
+
+        lastClickedIndex.intValue = starIndex
+        runScaleAnimation(
+            scope = scope,
+            animation = scaleAnimation,
+        )
+    }
 
     val tutorialX = remember { Animatable(0f) }
     val tutorialAlpha = remember { Animatable(0f) }
@@ -161,10 +202,13 @@ internal fun UserRatingBar(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = spacedBy(spacing, CenterHorizontally),
                     modifier = Modifier
-                        .pointerInput(key ?: Unit) {
+                        .pointerInput(key ?: Unit, isRtl) {
                             val starUnit = starSizePx + spacingPx
 
-                            fun xToStars(x: Float): Float {
+                            fun toLtrX(x: Float): Float = if (isRtl) totalWidth - x else x
+
+                            fun xToStars(rawX: Float): Float {
+                                val x = toLtrX(rawX)
                                 if (x < 0f) return 0f
                                 val clampedX = x.coerceIn(0f, totalWidth)
                                 val starIndex = (clampedX / starUnit).toInt().coerceIn(0, 4)
@@ -178,7 +222,8 @@ internal fun UserRatingBar(
                                 return (starIndex + ratingInStar).coerceIn(0.5f, 5f)
                             }
 
-                            fun xToIndex(x: Float): Int {
+                            fun xToIndex(rawX: Float): Int {
+                                val x = toLtrX(rawX)
                                 if (x < 0f) return -1
                                 val clampedX = x.coerceIn(0f, totalWidth)
                                 return (clampedX / starUnit).toInt().coerceIn(0, 4)
@@ -221,6 +266,10 @@ internal fun UserRatingBar(
                                 }
 
                                 if (!dragActivated) {
+                                    val tappedIndex = xToIndex(startPosition.x)
+                                    if (!verticalScrollDetected && tappedIndex >= 0) {
+                                        commitRating((tappedIndex + 1).toFloat())
+                                    }
                                     if (!tutorialDone && !verticalScrollDetected) {
                                         scope.launch {
                                             tutorialX.snapTo(starSizePx)
@@ -256,7 +305,11 @@ internal fun UserRatingBar(
                                     val event = awaitPointerEvent()
                                     if (event.changes.all { !it.pressed }) break
                                     event.changes.forEach { change ->
-                                        dragStars = xToStars(change.position.x)
+                                        val stepStars = xToStars(change.position.x)
+                                        if (stepStars != dragStars) {
+                                            haptic.performHapticFeedback(HapticFeedbackType.SegmentTick)
+                                        }
+                                        dragStars = stepStars
                                         dragActiveIndex = xToIndex(change.position.x)
                                         change.consume()
                                     }
@@ -274,19 +327,7 @@ internal fun UserRatingBar(
                                 }
 
                                 dragActiveIndex = -1
-                                val finalRating = dragStars
-                                if (finalRating == 0f) {
-                                    onRatingRemoveClick()
-                                } else {
-                                    onRatingClick(UserRating.scaleTo10(finalRating))
-                                }
-
-                                lastClickedIndex.intValue =
-                                    (finalRating - 0.5f).toInt().coerceIn(0, 4)
-                                runScaleAnimation(
-                                    scope = scope,
-                                    animation = scaleAnimation,
-                                )
+                                commitRating(dragStars)
                             }
                         },
                 ) {
@@ -297,23 +338,15 @@ internal fun UserRatingBar(
                             Int.MAX_VALUE
                         }
 
-                        val isLeftNeighbor = isDragging &&
-                            dragActiveIndex >= 0 &&
-                            index == dragActiveIndex - 1
-
-                        val elevationFraction = when {
-                            distance == 0 -> 1f
-                            isLeftNeighbor -> 0.33f
-                            else -> 0f
-                        }
+                        val elevationFraction = if (distance == 0) 1f else 0f
 
                         val activeScale by animateFloatAsState(
-                            targetValue = 1f + 0.35f * elevationFraction,
+                            targetValue = 1f + 0.2f * elevationFraction,
                             animationSpec = tween(200),
                             label = "activeScale$index",
                         )
                         val activeTranslationY by animateFloatAsState(
-                            targetValue = -starSizePx * 0.5f * elevationFraction,
+                            targetValue = -activeLiftPx * elevationFraction,
                             animationSpec = tween(200),
                             label = "activeTranslationY$index",
                         )
@@ -342,6 +375,15 @@ internal fun UserRatingBar(
                                 },
                         )
                     }
+                }
+
+                activeDelight?.let { active ->
+                    RatingDelightOverlay(
+                        delight = active.delight,
+                        origin = active.origin,
+                        key = active.id,
+                        modifier = Modifier.matchParentSize(),
+                    )
                 }
 
                 if (!tutorialDone && tutorialAlpha.value > 0f) {
@@ -398,6 +440,12 @@ internal fun UserRatingBar(
         }
     }
 }
+
+private data class ActiveDelight(
+    val delight: RatingDelight,
+    val origin: Offset,
+    val id: Int,
+)
 
 private fun runScaleAnimation(
     scope: CoroutineScope,
