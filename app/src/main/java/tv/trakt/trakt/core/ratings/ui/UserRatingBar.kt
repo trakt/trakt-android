@@ -55,6 +55,7 @@ import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
+import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -415,7 +416,7 @@ internal fun UserRatingBar(
                         },
                     ),
                     contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
+                    tint = if (favorite) Red500 else TraktTheme.colors.textPrimary,
                     modifier = Modifier
                         .size(size)
                         .alpha(if (ratingAlphaMaskActive) ratingAlphaMask else animatedAlpha)
