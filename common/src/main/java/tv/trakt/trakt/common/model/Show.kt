@@ -61,11 +61,7 @@ data class Show(
         get() = status == Released ||
             releasedAt?.let { !it.isAfter(nowUtcInstant()) } ?: false
 
-    /**
-     * True when the show will not air any new episode, either because it wrapped up
-     * or because it was canceled. An unknown status counts as still airing.
-     */
-    val hasEnded: Boolean
+    val isEnded: Boolean
         get() = status == Ended || status == Canceled
 
     @Composable

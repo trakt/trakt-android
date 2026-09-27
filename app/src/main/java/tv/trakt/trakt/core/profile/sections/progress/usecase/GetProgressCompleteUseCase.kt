@@ -13,18 +13,13 @@ internal class GetProgressCompleteUseCase(
     private val remoteShowsSyncSource: ShowsSyncRemoteDataSource,
     private val localDataSource: ProgressCompletedLocalDataSource,
 ) {
-    /**
-     * Reads the cached completed bucket, keeping only shows that have ended or only shows
-     * still airing. Filtering happens before [limit] is applied so a caller asking for N
-     * items is not short-changed by whatever the cache happens to hold first.
-     */
     suspend fun getLocalCompleted(
         limit: Int,
         ended: Boolean,
     ): ImmutableList<ProfileProgressItem> {
         return localDataSource.getItems()
             .filterIsInstance<ProfileProgressItem.ShowItem>()
-            .filter { it.show.hasEnded == ended }
+            .filter { it.show.isEnded == ended }
             .take(limit)
             .toImmutableList()
     }
