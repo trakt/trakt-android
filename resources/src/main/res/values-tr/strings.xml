@@ -119,6 +119,7 @@
   <string name="button_label_follow_requests">Takip istekleri</string>
   <string name="button_label_followers">Takipçiler</string>
   <string name="button_label_following">Takip Edilenler</string>
+  <string name="button_label_get_started">Trakt ile Başla</string>
   <string name="button_label_get_vip">VIP özelliklerini aç</string>
   <string name="button_label_go_to_calendar_day">%d tarihine git</string>
   <string name="button_label_hide_recommendation">\"%s\" öğesini önerilerden gizle</string>
@@ -309,6 +310,8 @@
   <string name="button_label_vip_claim_deal">2 Yıl ile Devam Et</string>
   <string name="button_label_vip_paypal_switch">VIP planlarını görüntüle ve kredi kartına geç</string>
   <string name="button_label_vip_upgrade">VIP\'ye yükselt</string>
+  <string name="button_label_watch_fan_upload_on_youtube">Bir hayran yüklemesini YouTube\'da ücretsiz izle</string>
+  <string name="button_label_watch_official_upload_on_youtube">Resmi yüklemeyi YouTube\'da ücretsiz izle</string>
   <string name="button_label_watch_on_service">%s üzerinde izle</string>
   <string name="button_label_watch_until_here_anchor_end">Seçilen tarihi art arda izlemenin bitişi olarak kabul et</string>
   <string name="button_label_watch_until_here_anchor_start">Seçilen tarihi art arda izlemenin başlangıcı olarak kabul et</string>
@@ -381,6 +384,7 @@
   <string name="button_text_follow_requests">İstekler</string>
   <string name="button_text_followers">Takipçiler</string>
   <string name="button_text_following">Takip Edilenler</string>
+  <string name="button_text_get_started">Başla</string>
   <string name="button_text_get_vip">Al</string>
   <string name="button_text_hide">Gizle</string>
   <string name="button_text_hide_description">Açıklamayı Gizle</string>
@@ -392,7 +396,6 @@
   <string name="button_text_import_selected">Seçilenleri içe aktar</string>
   <string name="button_text_install">Yükle</string>
   <string name="button_text_join_trakt">Trakt\'a Katıl</string>
-  <string name="button_text_join_trakt_for_free">Trakt\'a Ücretsiz Katıl</string>
   <string name="button_text_keep_newest_play">En Yeni</string>
   <string name="button_text_keep_oldest_play">En Eski</string>
   <string name="button_text_keep_vip_prompt">Premium Ayrıcalıklarımı Tut</string>
@@ -1265,6 +1268,7 @@
   <string name="preview_feature_description_scoped_favorites">Favori listelerini, profillerde güncel yılın favorilerini göstererek ve tüm favori listesini yıla göre gruplandırarak zaman kutucuklarına ayırın.</string>
   <string name="preview_feature_description_soundtrack">Film ve dizi sayfalarına, eşleşen parçaların çalınabildiği bir film müziği bölümü ekler.</string>
   <string name="preview_feature_description_up_next_smart_sort">İzlemeye Devam Edin listenizi sıralamak için daha akıllı bir yolu test edin.</string>
+  <string name="preview_feature_description_youtube_specials">Stand-up özel içeriklerinin ücretsiz YouTube yüklemelerini film sayfalarındaki \"Nereden İzlenir\" bölümüne ekler.</string>
   <string name="preview_feature_title_action_confirmations">Eylem onayları</string>
   <string name="preview_feature_title_edit_mode">Düzenleme Modu</string>
   <string name="preview_feature_title_genre_picker">Tür Seçici</string>
@@ -1275,6 +1279,7 @@
   <string name="preview_feature_title_scoped_favorites">Kapsamlı Favoriler</string>
   <string name="preview_feature_title_soundtrack">Film Müziği</string>
   <string name="preview_feature_title_up_next_smart_sort">İzlemeye Devam Et Akıllı Sıralama</string>
+  <string name="preview_feature_title_youtube_specials">YouTube özel içerikleri</string>
   <string name="reset_status_cleared">İzleme listesi temizlendi.</string>
   <string name="row_label_loading_title">İsim yükleniyor</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt, Apple TV dil ayarlarınızı kullanır. Güncellemek için şu adrese gidin:\n\nApple TV Ayarları &gt; Genel &gt; Apple TV Dilleri</string>
@@ -1314,6 +1319,7 @@
   <string name="tab_text_seasons_info">Bilgi</string>
   <string name="tab_text_seasons_reviews">Yorumlar</string>
   <string name="tab_text_simple_filters">Basit</string>
+  <string name="tag_label_fan_upload">Hayran yüklemesi</string>
   <string name="tag_label_progress">İlerleme</string>
   <string name="tag_plex_syncing">Senkronize Ediliyor</string>
   <string name="tag_text_blocked_user">Engellendi</string>
@@ -1478,6 +1484,7 @@
   <string name="text_footer_category_community">Topluluk</string>
   <string name="text_footer_category_legal">Yasal</string>
   <string name="text_footer_category_platform">Platform</string>
+  <string name="text_free">Ücretsiz</string>
   <string name="text_history_sync_filter">Senkronizasyon Kimliği %d</string>
   <string name="text_history_sync_filter_with_source">Senkronizasyon Kimliği %1$d (%2$s)</string>
   <string name="text_hours_watched">%d saat</string>

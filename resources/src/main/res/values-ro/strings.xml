@@ -119,6 +119,7 @@
   <string name="button_label_follow_requests">Cereri de urmărire</string>
   <string name="button_label_followers">Urmăritori</string>
   <string name="button_label_following">Urmărește</string>
+  <string name="button_label_get_started">Începe cu Trakt</string>
   <string name="button_label_get_vip">Deblochează funcții VIP</string>
   <string name="button_label_go_to_calendar_day">Mergi la %d</string>
   <string name="button_label_hide_recommendation">Ascunde „%s” din recomandări</string>
@@ -309,6 +310,8 @@
   <string name="button_label_vip_claim_deal">Continuă cu 2 ani</string>
   <string name="button_label_vip_paypal_switch">Vezi planurile VIP și treci la cardul de credit</string>
   <string name="button_label_vip_upgrade">Upgrade la VIP</string>
+  <string name="button_label_watch_fan_upload_on_youtube">Urmărește o încărcare fan gratuit pe YouTube</string>
+  <string name="button_label_watch_official_upload_on_youtube">Urmărește încărcarea oficială gratuit pe YouTube</string>
   <string name="button_label_watch_on_service">Vizionează pe %s</string>
   <string name="button_label_watch_until_here_anchor_end">Tratați data selectată ca sfârșitul vizionării intense</string>
   <string name="button_label_watch_until_here_anchor_start">Tratați data selectată ca începutul vizionării intense</string>
@@ -381,6 +384,7 @@
   <string name="button_text_follow_requests">Cereri</string>
   <string name="button_text_followers">Urmăritori</string>
   <string name="button_text_following">Urmărește</string>
+  <string name="button_text_get_started">Începe</string>
   <string name="button_text_get_vip">Obține</string>
   <string name="button_text_hide">Ascunde</string>
   <string name="button_text_hide_description">Ascunde descrierea</string>
@@ -392,7 +396,6 @@
   <string name="button_text_import_selected">Importă selectate</string>
   <string name="button_text_install">Instalează</string>
   <string name="button_text_join_trakt">Alătură-te Trakt</string>
-  <string name="button_text_join_trakt_for_free">Alătură-te Trakt gratuit</string>
   <string name="button_text_keep_newest_play">Cel mai nou</string>
   <string name="button_text_keep_oldest_play">Cel mai vechi</string>
   <string name="button_text_keep_vip_prompt">Păstrează avantajele premium</string>
@@ -1265,6 +1268,7 @@
   <string name="preview_feature_description_scoped_favorites">Organizează listele de favorite pe perioade, afișând favoritele din anul curent pe profile și grupând lista completă de favorite pe ani.</string>
   <string name="preview_feature_description_soundtrack">Adaugă o secțiune de coloană sonoră la paginile de filme și seriale, cu redare acolo unde o melodie poate fi potrivită.</string>
   <string name="preview_feature_description_up_next_smart_sort">Testează o modalitate mai inteligentă de a sorta elementele din Continuă vizionarea.</string>
+  <string name="preview_feature_description_youtube_specials">Adaugă încărcări gratuite pe YouTube de speciale de stand-up în secțiunea Unde să vizionezi pe paginile filmelor.</string>
   <string name="preview_feature_title_action_confirmations">Confirmări de acțiune</string>
   <string name="preview_feature_title_edit_mode">Mod editare</string>
   <string name="preview_feature_title_genre_picker">Selector de genuri</string>
@@ -1275,6 +1279,7 @@
   <string name="preview_feature_title_scoped_favorites">Favorite Contextuale</string>
   <string name="preview_feature_title_soundtrack">Coloană sonoră</string>
   <string name="preview_feature_title_up_next_smart_sort">Sortare inteligentă pentru Continuă vizionarea</string>
+  <string name="preview_feature_title_youtube_specials">Speciale YouTube</string>
   <string name="reset_status_cleared">Lista de vizionare a fost ștearsă.</string>
   <string name="row_label_loading_title">Se încarcă numele</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt folosește setările de limbă ale Apple TV-ului tău. Pentru a le actualiza, mergi la:\n\nSetări Apple TV &gt; General &gt; Limbi Apple TV</string>
@@ -1314,6 +1319,7 @@
   <string name="tab_text_seasons_info">Informații</string>
   <string name="tab_text_seasons_reviews">Recenzii</string>
   <string name="tab_text_simple_filters">Simplu</string>
+  <string name="tag_label_fan_upload">Încărcare fan</string>
   <string name="tag_label_progress">Progres</string>
   <string name="tag_plex_syncing">Se sincronizează</string>
   <string name="tag_text_blocked_user">Blocat</string>
@@ -1478,6 +1484,7 @@
   <string name="text_footer_category_community">Comunitate</string>
   <string name="text_footer_category_legal">Legal</string>
   <string name="text_footer_category_platform">Platformă</string>
+  <string name="text_free">Gratuit</string>
   <string name="text_history_sync_filter">ID sincronizare %d</string>
   <string name="text_history_sync_filter_with_source">ID sincronizare %1$d (%2$s)</string>
   <string name="text_hours_watched">%d ore</string>

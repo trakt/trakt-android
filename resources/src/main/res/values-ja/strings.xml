@@ -119,6 +119,7 @@
   <string name="button_label_follow_requests">フォローリクエスト</string>
   <string name="button_label_followers">フォロワー</string>
   <string name="button_label_following">フォロー中</string>
+  <string name="button_label_get_started">Traktの利用を開始する</string>
   <string name="button_label_get_vip">VIP機能をアンロック</string>
   <string name="button_label_go_to_calendar_day">%dへ移動</string>
   <string name="button_label_hide_recommendation">「%s」を おすすめから非表示にする</string>
@@ -309,6 +310,8 @@
   <string name="button_label_vip_claim_deal">2年間で続行</string>
   <string name="button_label_vip_paypal_switch">VIPプランを表示し、クレジットカードに切り替える</string>
   <string name="button_label_vip_upgrade">VIPにアップグレード</string>
+  <string name="button_label_watch_fan_upload_on_youtube">ファンによるアップロードをYouTubeで無料で視聴</string>
+  <string name="button_label_watch_official_upload_on_youtube">公式アップロードをYouTubeで無料で視聴</string>
   <string name="button_label_watch_on_service">%sで視聴</string>
   <string name="button_label_watch_until_here_anchor_end">選択した日時を視聴終了時刻として設定</string>
   <string name="button_label_watch_until_here_anchor_start">選択した日時を視聴開始時刻として設定</string>
@@ -381,6 +384,7 @@
   <string name="button_text_follow_requests">リクエスト</string>
   <string name="button_text_followers">フォロワー</string>
   <string name="button_text_following">フォロー中</string>
+  <string name="button_text_get_started">開始</string>
   <string name="button_text_get_vip">ゲット</string>
   <string name="button_text_hide">非表示</string>
   <string name="button_text_hide_description">説明を非表示</string>
@@ -392,7 +396,6 @@
   <string name="button_text_import_selected">選択した項目をインポート</string>
   <string name="button_text_install">インストール</string>
   <string name="button_text_join_trakt">Traktに参加</string>
-  <string name="button_text_join_trakt_for_free">無料でTraktに参加</string>
   <string name="button_text_keep_newest_play">最も新しい</string>
   <string name="button_text_keep_oldest_play">最も古い</string>
   <string name="button_text_keep_vip_prompt">プレミアム特典を維持</string>
@@ -1265,6 +1268,7 @@
   <string name="preview_feature_description_scoped_favorites">プロフィールに今年の「お気に入り」を表示し、お気に入りリスト全体を年別にグループ化することで、お気に入りリストを期間で区切ります。</string>
   <string name="preview_feature_description_soundtrack">映画や番組のページにサウンドトラックセクションを追加し、一致するトラックがあれば再生できます。</string>
   <string name="preview_feature_description_up_next_smart_sort">続きを視聴のよりスマートな並べ替えをお試しください。</string>
+  <string name="preview_feature_description_youtube_specials">映画ページの「視聴場所」に、スタンドアップスペシャルの無料YouTubeアップロードを追加します。</string>
   <string name="preview_feature_title_action_confirmations">アクション確認</string>
   <string name="preview_feature_title_edit_mode">編集モード</string>
   <string name="preview_feature_title_genre_picker">ジャンルピッカー</string>
@@ -1275,6 +1279,7 @@
   <string name="preview_feature_title_scoped_favorites">範囲指定されたお気に入り</string>
   <string name="preview_feature_title_soundtrack">サウンドトラック</string>
   <string name="preview_feature_title_up_next_smart_sort">続きを視聴 スマートソート</string>
+  <string name="preview_feature_title_youtube_specials">YouTubeスペシャル</string>
   <string name="reset_status_cleared">ウォッチリストをクリアしました。</string>
   <string name="row_label_loading_title">名前を読み込み中</string>
   <string name="screen_account_settings_language_system_message_tvos">TraktはApple TVの言語設定を使用します。更新するには、以下に移動してください:\n\nApple TV 設定 &gt; 一般 &gt; Apple TVの言語</string>
@@ -1314,6 +1319,7 @@
   <string name="tab_text_seasons_info">情報</string>
   <string name="tab_text_seasons_reviews">レビュー</string>
   <string name="tab_text_simple_filters">シンプル</string>
+  <string name="tag_label_fan_upload">ファンアップロード</string>
   <string name="tag_label_progress">進捗</string>
   <string name="tag_plex_syncing">同期中</string>
   <string name="tag_text_blocked_user">ブロック済み</string>
@@ -1478,6 +1484,7 @@
   <string name="text_footer_category_community">コミュニティ</string>
   <string name="text_footer_category_legal">法務</string>
   <string name="text_footer_category_platform">プラットフォーム</string>
+  <string name="text_free">無料</string>
   <string name="text_history_sync_filter">同期ID %d</string>
   <string name="text_history_sync_filter_with_source">同期ID %1$d (%2$s)</string>
   <string name="text_hours_watched">%d時間</string>

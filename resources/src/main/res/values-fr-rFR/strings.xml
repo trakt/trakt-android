@@ -119,6 +119,7 @@
   <string name="button_label_follow_requests">Demandes de suivi</string>
   <string name="button_label_followers">Abonnés</string>
   <string name="button_label_following">Abonnements</string>
+  <string name="button_label_get_started">Commencer avec Trakt</string>
   <string name="button_label_get_vip">Débloquer les fonctionnalités VIP</string>
   <string name="button_label_go_to_calendar_day">Aller au %d</string>
   <string name="button_label_hide_recommendation">Masquer \"%s\" des recommandations</string>
@@ -309,6 +310,8 @@
   <string name="button_label_vip_claim_deal">Continuer avec 2 ans</string>
   <string name="button_label_vip_paypal_switch">Voir les plans VIP et passer à la carte de crédit</string>
   <string name="button_label_vip_upgrade">Passer au VIP</string>
+  <string name="button_label_watch_fan_upload_on_youtube">Regarder une mise en ligne par un fan gratuitement sur YouTube</string>
+  <string name="button_label_watch_official_upload_on_youtube">Regarder la mise en ligne officielle gratuitement sur YouTube</string>
   <string name="button_label_watch_on_service">Regarder sur %s</string>
   <string name="button_label_watch_until_here_anchor_end">Traiter la date sélectionnée comme la fin du visionnage intensif</string>
   <string name="button_label_watch_until_here_anchor_start">Traiter la date sélectionnée comme le début du visionnage intensif</string>
@@ -381,6 +384,7 @@
   <string name="button_text_follow_requests">Demandes</string>
   <string name="button_text_followers">Abonnés</string>
   <string name="button_text_following">Abonnements</string>
+  <string name="button_text_get_started">Commencer</string>
   <string name="button_text_get_vip">Obtenir</string>
   <string name="button_text_hide">Masquer</string>
   <string name="button_text_hide_description">Masquer la description</string>
@@ -392,7 +396,6 @@
   <string name="button_text_import_selected">Importer la sélection</string>
   <string name="button_text_install">Installer</string>
   <string name="button_text_join_trakt">Rejoindre Trakt</string>
-  <string name="button_text_join_trakt_for_free">Rejoindre Trakt gratuitement</string>
   <string name="button_text_keep_newest_play">Plus récent</string>
   <string name="button_text_keep_oldest_play">Plus ancien</string>
   <string name="button_text_keep_vip_prompt">Garder mes avantages premium</string>
@@ -1265,6 +1268,7 @@
   <string name="preview_feature_description_scoped_favorites">Délimitez les listes de favoris en affichant les favoris de l\'année en cours sur les profils et en regroupant la liste complète des favoris par année.</string>
   <string name="preview_feature_description_soundtrack">Ajoute une section bande-son aux pages de films et d\'émissions, avec lecture si une piste peut être associée.</string>
   <string name="preview_feature_description_up_next_smart_sort">Découvrez une façon plus intelligente de trier votre liste Continuer à regarder.</string>
+  <string name="preview_feature_description_youtube_specials">Ajoute les mises en ligne gratuites de spectacles d\'humour sur YouTube à la section Où regarder sur les pages de films.</string>
   <string name="preview_feature_title_action_confirmations">Confirmations d\'action</string>
   <string name="preview_feature_title_edit_mode">Mode édition</string>
   <string name="preview_feature_title_genre_picker">Sélecteur de genre</string>
@@ -1275,6 +1279,7 @@
   <string name="preview_feature_title_scoped_favorites">Favoris délimités</string>
   <string name="preview_feature_title_soundtrack">Bande-son</string>
   <string name="preview_feature_title_up_next_smart_sort">Continuer à regarder : Tri intelligent</string>
+  <string name="preview_feature_title_youtube_specials">Spéciaux YouTube</string>
   <string name="reset_status_cleared">Liste de suivi vidée.</string>
   <string name="row_label_loading_title">Chargement du nom</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt utilise les réglages de langue de votre Apple TV. Pour les mettre à jour, accédez à :\n\nRéglages Apple TV &gt; Général &gt; Langues Apple TV</string>
@@ -1314,6 +1319,7 @@
   <string name="tab_text_seasons_info">Infos</string>
   <string name="tab_text_seasons_reviews">Avis</string>
   <string name="tab_text_simple_filters">Simple</string>
+  <string name="tag_label_fan_upload">Mise en ligne par un fan</string>
   <string name="tag_label_progress">Progression</string>
   <string name="tag_plex_syncing">Synchronisation en cours</string>
   <string name="tag_text_blocked_user">Bloqué</string>
@@ -1478,6 +1484,7 @@
   <string name="text_footer_category_community">Communauté</string>
   <string name="text_footer_category_legal">Juridique</string>
   <string name="text_footer_category_platform">Plateforme</string>
+  <string name="text_free">Gratuit</string>
   <string name="text_history_sync_filter">ID de synchronisation %d</string>
   <string name="text_history_sync_filter_with_source">ID de synchronisation %1$d (%2$s)</string>
   <string name="text_hours_watched">%d heures</string>

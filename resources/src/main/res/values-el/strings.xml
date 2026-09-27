@@ -119,6 +119,7 @@
   <string name="button_label_follow_requests">Αιτήσεις παρακολούθησης</string>
   <string name="button_label_followers">Ακόλουθοι</string>
   <string name="button_label_following">Ακολουθώντας</string>
+  <string name="button_label_get_started">Έναρξη με Trakt</string>
   <string name="button_label_get_vip">Ξεκλειδώστε λειτουργίες VIP</string>
   <string name="button_label_go_to_calendar_day">Μετάβαση στην %d</string>
   <string name="button_label_hide_recommendation">Απόκρυψη του \"%s\" από τις προτάσεις</string>
@@ -309,6 +310,8 @@
   <string name="button_label_vip_claim_deal">Συνέχιση με 2 έτη</string>
   <string name="button_label_vip_paypal_switch">Προβολή προγραμμάτων VIP και μετάβαση σε πιστωτική κάρτα</string>
   <string name="button_label_vip_upgrade">Αναβαθμίστε σε VIP</string>
+  <string name="button_label_watch_fan_upload_on_youtube">Δείτε μια ανάρτηση θαυμαστή δωρεάν στο YouTube</string>
+  <string name="button_label_watch_official_upload_on_youtube">Δείτε την επίσημη ανάρτηση δωρεάν στο YouTube</string>
   <string name="button_label_watch_on_service">Παρακολούθηση στην %s</string>
   <string name="button_label_watch_until_here_anchor_end">Ορίστε την επιλεγμένη ημερομηνία ως το τέλος του binge-watching</string>
   <string name="button_label_watch_until_here_anchor_start">Ορίστε την επιλεγμένη ημερομηνία ως την έναρξη του binge-watching</string>
@@ -381,6 +384,7 @@
   <string name="button_text_follow_requests">Αιτήσεις</string>
   <string name="button_text_followers">Ακόλουθοι</string>
   <string name="button_text_following">Ακολουθώντας</string>
+  <string name="button_text_get_started">Έναρξη</string>
   <string name="button_text_get_vip">Αποκτήστε</string>
   <string name="button_text_hide">Απόκρυψη</string>
   <string name="button_text_hide_description">Απόκρυψη Περιγραφής</string>
@@ -392,7 +396,6 @@
   <string name="button_text_import_selected">Εισαγωγή επιλεγμένων</string>
   <string name="button_text_install">Εγκατάσταση</string>
   <string name="button_text_join_trakt">Εγγραφή στο Trakt</string>
-  <string name="button_text_join_trakt_for_free">Εγγραφή στο Trakt δωρεάν</string>
   <string name="button_text_keep_newest_play">Νεότερο</string>
   <string name="button_text_keep_oldest_play">Παλαιότερο</string>
   <string name="button_text_keep_vip_prompt">Διατήρηση των premium προνομίων μου</string>
@@ -1265,6 +1268,7 @@
   <string name="preview_feature_description_scoped_favorites">Οριοθετήστε τις λίστες αγαπημένων εμφανίζοντας τα αγαπημένα του τρέχοντος έτους στα προφίλ και ομαδοποιώντας την πλήρη λίστα αγαπημένων ανά έτος.</string>
   <string name="preview_feature_description_soundtrack">Προσθέτει μια ενότητα σάουντρακ στις σελίδες ταινιών και εκπομπών, με αναπαραγωγή όπου ένα κομμάτι μπορεί να αντιστοιχιστεί.</string>
   <string name="preview_feature_description_up_next_smart_sort">Δοκιμάστε έναν πιο έξυπνο τρόπο να ταξινομήσετε τη Συνέχιση Παρακολούθησης.</string>
+  <string name="preview_feature_description_youtube_specials">Προσθέτει δωρεάν αναρτήσεις YouTube από ειδικές εκπομπές stand-up στην ενότητα \"Πού να παρακολουθήσετε\" στις σελίδες ταινιών.</string>
   <string name="preview_feature_title_action_confirmations">Επιβεβαιώσεις ενέργειας</string>
   <string name="preview_feature_title_edit_mode">Λειτουργία επεξεργασίας</string>
   <string name="preview_feature_title_genre_picker">Επιλογέας Είδους</string>
@@ -1275,6 +1279,7 @@
   <string name="preview_feature_title_scoped_favorites">Αγαπημένα με χρονικό πλαίσιο</string>
   <string name="preview_feature_title_soundtrack">Σάουντρακ</string>
   <string name="preview_feature_title_up_next_smart_sort">Συνέχιση Παρακολούθησης Έξυπνη Ταξινόμηση</string>
+  <string name="preview_feature_title_youtube_specials">Αφιερώματα YouTube</string>
   <string name="reset_status_cleared">Η λίστα παρακολούθησης εκκαθαρίστηκε.</string>
   <string name="row_label_loading_title">Φόρτωση ονόματος</string>
   <string name="screen_account_settings_language_system_message_tvos">Το Trakt χρησιμοποιεί τις ρυθμίσεις γλώσσας του Apple TV σας. Για να την ενημερώσετε, μεταβείτε σε:\n\nΡυθμίσεις Apple TV &gt; Γενικά &gt; Γλώσσες Apple TV</string>
@@ -1314,6 +1319,7 @@
   <string name="tab_text_seasons_info">Πληροφορίες</string>
   <string name="tab_text_seasons_reviews">Κριτικές</string>
   <string name="tab_text_simple_filters">Απλό</string>
+  <string name="tag_label_fan_upload">Ανάρτηση θαυμαστή</string>
   <string name="tag_label_progress">Πρόοδος</string>
   <string name="tag_plex_syncing">Συγχρονίζεται</string>
   <string name="tag_text_blocked_user">Αποκλεισμένοι</string>
@@ -1478,6 +1484,7 @@
   <string name="text_footer_category_community">Κοινότητα</string>
   <string name="text_footer_category_legal">Νομικά</string>
   <string name="text_footer_category_platform">Πλατφόρμα</string>
+  <string name="text_free">Δωρεάν</string>
   <string name="text_history_sync_filter">Αναγνωριστικό συγχρονισμού %d</string>
   <string name="text_history_sync_filter_with_source">Αναγνωριστικό συγχρονισμού %1$d (%2$s)</string>
   <string name="text_hours_watched">%d ώρες</string>

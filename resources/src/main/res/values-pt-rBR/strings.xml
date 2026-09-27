@@ -119,6 +119,7 @@
   <string name="button_label_follow_requests">Solicitações para seguir</string>
   <string name="button_label_followers">Seguidores</string>
   <string name="button_label_following">Seguindo</string>
+  <string name="button_label_get_started">Começar com o Trakt</string>
   <string name="button_label_get_vip">Desbloquear recursos VIP</string>
   <string name="button_label_go_to_calendar_day">Ir para %d</string>
   <string name="button_label_hide_recommendation">Ocultar \"%s\" das recomendações</string>
@@ -309,6 +310,8 @@
   <string name="button_label_vip_claim_deal">Continuar com 2 anos</string>
   <string name="button_label_vip_paypal_switch">Ver planos VIP e mudar para cartão de crédito</string>
   <string name="button_label_vip_upgrade">Fazer upgrade para VIP</string>
+  <string name="button_label_watch_fan_upload_on_youtube">Assista a um upload de fã gratuito no YouTube</string>
+  <string name="button_label_watch_official_upload_on_youtube">Assista ao upload oficial gratuito no YouTube</string>
   <string name="button_label_watch_on_service">Assistir em %s</string>
   <string name="button_label_watch_until_here_anchor_end">Tratar a data selecionada como o fim da maratona</string>
   <string name="button_label_watch_until_here_anchor_start">Tratar a data selecionada como o início da maratona</string>
@@ -381,6 +384,7 @@
   <string name="button_text_follow_requests">Solicitações</string>
   <string name="button_text_followers">Seguidores</string>
   <string name="button_text_following">Seguindo</string>
+  <string name="button_text_get_started">Começar</string>
   <string name="button_text_get_vip">Obter</string>
   <string name="button_text_hide">Ocultar</string>
   <string name="button_text_hide_description">Ocultar Descrição</string>
@@ -392,7 +396,6 @@
   <string name="button_text_import_selected">Importar selecionados</string>
   <string name="button_text_install">Instalar</string>
   <string name="button_text_join_trakt">Junte-se ao Trakt</string>
-  <string name="button_text_join_trakt_for_free">Cadastre-se Grátis</string>
   <string name="button_text_keep_newest_play">Mais nova</string>
   <string name="button_text_keep_oldest_play">Mais antiga</string>
   <string name="button_text_keep_vip_prompt">Manter meus benefícios premium</string>
@@ -1265,6 +1268,7 @@
   <string name="preview_feature_description_scoped_favorites">Limite as listas de favoritos por tempo, mostrando os favoritos do ano atual nos perfis e agrupando a lista completa de favoritos por ano.</string>
   <string name="preview_feature_description_soundtrack">Adiciona uma seção de trilha sonora às páginas de filmes e séries, com reprodução onde uma faixa pode ser encontrada.</string>
   <string name="preview_feature_description_up_next_smart_sort">Experimente uma maneira mais inteligente de organizar o seu Continuar Assistindo.</string>
+  <string name="preview_feature_description_youtube_specials">Adiciona uploads gratuitos de especiais de stand-up do YouTube em Onde assistir nas páginas de filmes.</string>
   <string name="preview_feature_title_action_confirmations">Confirmações de ação</string>
   <string name="preview_feature_title_edit_mode">Modo de edição</string>
   <string name="preview_feature_title_genre_picker">Seletor de Gênero</string>
@@ -1275,6 +1279,7 @@
   <string name="preview_feature_title_scoped_favorites">Favoritos Restritos</string>
   <string name="preview_feature_title_soundtrack">Trilha Sonora</string>
   <string name="preview_feature_title_up_next_smart_sort">Continuar Assistindo com Ordem Inteligente</string>
+  <string name="preview_feature_title_youtube_specials">Especiais do YouTube</string>
   <string name="reset_status_cleared">Lista para Assistir limpa.</string>
   <string name="row_label_loading_title">Carregando nome</string>
   <string name="screen_account_settings_language_system_message_tvos">O Trakt usa as configurações de idioma da sua Apple TV. Para atualizá-las, vá para:\n\nAjustes da Apple TV &gt; Geral &gt; Idiomas da Apple TV</string>
@@ -1314,6 +1319,7 @@
   <string name="tab_text_seasons_info">Informações</string>
   <string name="tab_text_seasons_reviews">Avaliações</string>
   <string name="tab_text_simple_filters">Simples</string>
+  <string name="tag_label_fan_upload">Upload de fã</string>
   <string name="tag_label_progress">Progresso</string>
   <string name="tag_plex_syncing">Sincronizando</string>
   <string name="tag_text_blocked_user">Bloqueado</string>
@@ -1478,6 +1484,7 @@
   <string name="text_footer_category_community">Comunidade</string>
   <string name="text_footer_category_legal">Legal</string>
   <string name="text_footer_category_platform">Plataforma</string>
+  <string name="text_free">Gratuito</string>
   <string name="text_history_sync_filter">ID da Sincronização %d</string>
   <string name="text_history_sync_filter_with_source">ID da Sincronização %1$d (%2$s)</string>
   <string name="text_hours_watched">%d horas</string>

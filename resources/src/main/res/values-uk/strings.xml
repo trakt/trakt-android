@@ -119,6 +119,7 @@
   <string name="button_label_follow_requests">Запити на підписку</string>
   <string name="button_label_followers">Підписники</string>
   <string name="button_label_following">Підписки</string>
+  <string name="button_label_get_started">Почати з Trakt</string>
   <string name="button_label_get_vip">Розблокувати VIP-функції</string>
   <string name="button_label_go_to_calendar_day">Перейти до %d</string>
   <string name="button_label_hide_recommendation">Приховати \"%s\" з рекомендацій</string>
@@ -309,6 +310,8 @@
   <string name="button_label_vip_claim_deal">Продовжити на 2 роки</string>
   <string name="button_label_vip_paypal_switch">Переглянути VIP-плани та перейти на кредитну картку</string>
   <string name="button_label_vip_upgrade">Оновити до VIP</string>
+  <string name="button_label_watch_fan_upload_on_youtube">Дивіться завантажене фанатом безкоштовно на YouTube</string>
+  <string name="button_label_watch_official_upload_on_youtube">Дивіться офіційне завантаження безкоштовно на YouTube</string>
   <string name="button_label_watch_on_service">Дивитись на %s</string>
   <string name="button_label_watch_until_here_anchor_end">Вважати обрану дату закінченням перегляду</string>
   <string name="button_label_watch_until_here_anchor_start">Вважати обрану дату початком перегляду</string>
@@ -381,6 +384,7 @@
   <string name="button_text_follow_requests">Запити</string>
   <string name="button_text_followers">Підписники</string>
   <string name="button_text_following">Підписки</string>
+  <string name="button_text_get_started">Почати</string>
   <string name="button_text_get_vip">Отримати</string>
   <string name="button_text_hide">Сховати</string>
   <string name="button_text_hide_description">Приховати опис</string>
@@ -392,7 +396,6 @@
   <string name="button_text_import_selected">Імпортувати вибране</string>
   <string name="button_text_install">Встановити</string>
   <string name="button_text_join_trakt">Приєднатися до Trakt</string>
-  <string name="button_text_join_trakt_for_free">Приєднатися до Trakt безкоштовно</string>
   <string name="button_text_keep_newest_play">Найновіший</string>
   <string name="button_text_keep_oldest_play">Найстаріший</string>
   <string name="button_text_keep_vip_prompt">Зберегти мої преміум-переваги</string>
@@ -1265,6 +1268,7 @@
   <string name="preview_feature_description_scoped_favorites">Обмежте списки улюблених за часом, відображаючи улюблене поточного року в профілях та групуючи повний список улюблених за роками.</string>
   <string name="preview_feature_description_soundtrack">Додає розділ саундтреків до сторінок фільмів та серіалів, з відтворенням там, де трек може бути зіставлений.</string>
   <string name="preview_feature_description_up_next_smart_sort">Спробуйте розумніший спосіб сортування вашого розділу «Продовжити перегляд».</string>
+  <string name="preview_feature_description_youtube_specials">Додає безкоштовні YouTube-завантаження стендап-спеціалів до розділу \"Де дивитися\" на сторінках фільмів.</string>
   <string name="preview_feature_title_action_confirmations">Підтвердження дій</string>
   <string name="preview_feature_title_edit_mode">Режим редагування</string>
   <string name="preview_feature_title_genre_picker">Вибір жанрів</string>
@@ -1275,6 +1279,7 @@
   <string name="preview_feature_title_scoped_favorites">Вибране за періодом</string>
   <string name="preview_feature_title_soundtrack">Саундтрек</string>
   <string name="preview_feature_title_up_next_smart_sort">Розумне сортування «Продовжити перегляд»</string>
+  <string name="preview_feature_title_youtube_specials">Спеціальні випуски YouTube</string>
   <string name="reset_status_cleared">Список перегляду очищено.</string>
   <string name="row_label_loading_title">Завантаження назви</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt використовує мовні налаштування вашого Apple TV. Щоб оновити їх, перейдіть до:\n\nНалаштування Apple TV &gt; Загальні &gt; Мови Apple TV</string>
@@ -1314,6 +1319,7 @@
   <string name="tab_text_seasons_info">Інформація</string>
   <string name="tab_text_seasons_reviews">Відгуки</string>
   <string name="tab_text_simple_filters">Прості</string>
+  <string name="tag_label_fan_upload">Завантажено фанатом</string>
   <string name="tag_label_progress">Прогрес</string>
   <string name="tag_plex_syncing">Синхронізація</string>
   <string name="tag_text_blocked_user">Заблоковано</string>
@@ -1478,6 +1484,7 @@
   <string name="text_footer_category_community">Спільнота</string>
   <string name="text_footer_category_legal">Правова інформація</string>
   <string name="text_footer_category_platform">Платформа</string>
+  <string name="text_free">Безкоштовно</string>
   <string name="text_history_sync_filter">ID синхронізації %d</string>
   <string name="text_history_sync_filter_with_source">Sync ID %1$d (%2$s)</string>
   <string name="text_hours_watched">%d годин</string>

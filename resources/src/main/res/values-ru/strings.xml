@@ -119,6 +119,7 @@
   <string name="button_label_follow_requests">Запросы на подписку</string>
   <string name="button_label_followers">Подписчики</string>
   <string name="button_label_following">Подписки</string>
+  <string name="button_label_get_started">Начать с Trakt</string>
   <string name="button_label_get_vip">Разблокировать VIP-функции</string>
   <string name="button_label_go_to_calendar_day">Перейти к %d</string>
   <string name="button_label_hide_recommendation">Скрыть \"%s\" из рекомендаций</string>
@@ -309,6 +310,8 @@
   <string name="button_label_vip_claim_deal">Продолжить на 2 года</string>
   <string name="button_label_vip_paypal_switch">Посмотреть VIP-планы и перейти на оплату картой</string>
   <string name="button_label_vip_upgrade">Обновить до VIP</string>
+  <string name="button_label_watch_fan_upload_on_youtube">Смотреть фан-загрузку бесплатно на YouTube</string>
+  <string name="button_label_watch_official_upload_on_youtube">Смотреть официальную загрузку бесплатно на YouTube</string>
   <string name="button_label_watch_on_service">Смотреть на %s</string>
   <string name="button_label_watch_until_here_anchor_end">Считать выбранную дату окончанием просмотра запоем</string>
   <string name="button_label_watch_until_here_anchor_start">Считать выбранную дату началом просмотра запоем</string>
@@ -381,6 +384,7 @@
   <string name="button_text_follow_requests">Запросы</string>
   <string name="button_text_followers">Подписчики</string>
   <string name="button_text_following">Подписки</string>
+  <string name="button_text_get_started">Начать</string>
   <string name="button_text_get_vip">Получить</string>
   <string name="button_text_hide">Скрыть</string>
   <string name="button_text_hide_description">Скрыть описание</string>
@@ -392,7 +396,6 @@
   <string name="button_text_import_selected">Импортировать выбранное</string>
   <string name="button_text_install">Установить</string>
   <string name="button_text_join_trakt">Присоединиться к Trakt</string>
-  <string name="button_text_join_trakt_for_free">Присоединиться к Trakt бесплатно</string>
   <string name="button_text_keep_newest_play">Самый новый</string>
   <string name="button_text_keep_oldest_play">Самый старый</string>
   <string name="button_text_keep_vip_prompt">Сохранить премиум-привилегии</string>
@@ -1136,7 +1139,7 @@
   <string name="list_title_upcoming_schedule">Календарь</string>
   <string name="list_title_user_lists">Списки</string>
   <string name="list_title_watch_history">История просмотров</string>
-  <string name="list_title_watchlist">Список просмотра</string>
+  <string name="list_title_watchlist">Буду смотреть</string>
   <string name="list_title_watchlist_movies">Список фильмов</string>
   <string name="list_title_watchlist_shows">Список сериалов</string>
   <string name="list_title_where_to_watch">Где посмотреть</string>
@@ -1248,7 +1251,7 @@
   <string name="page_title_unexpected_error">Что-то пошло не так</string>
   <string name="page_title_up_next">Смотреть дальше</string>
   <string name="page_title_user_profile">Профиль пользователя %s</string>
-  <string name="page_title_watchlist">Список просмотра</string>
+  <string name="page_title_watchlist">Буду смотреть</string>
   <string name="page_title_welcome">Добро пожаловать</string>
   <string name="page_title_where_to_watch">Где посмотреть</string>
   <string name="page_title_widget_background">Фон</string>
@@ -1265,6 +1268,7 @@
   <string name="preview_feature_description_scoped_favorites">Ограничивайте списки избранного по времени, показывая избранное текущего года в профилях и группируя полный список избранного по годам.</string>
   <string name="preview_feature_description_soundtrack">Добавляет раздел саундтреков на страницы фильмов и сериалов с возможностью воспроизведения, если трек может быть сопоставлен.</string>
   <string name="preview_feature_description_up_next_smart_sort">Попробуйте более умный способ сортировки раздела \"Смотреть дальше\".</string>
+  <string name="preview_feature_description_youtube_specials">Добавляет бесплатные загрузки стендап-спецвыпусков с YouTube в раздел «Где смотреть» на страницах фильмов.</string>
   <string name="preview_feature_title_action_confirmations">Подтверждения действий</string>
   <string name="preview_feature_title_edit_mode">Режим редактирования</string>
   <string name="preview_feature_title_genre_picker">Выбор жанра</string>
@@ -1275,6 +1279,7 @@
   <string name="preview_feature_title_scoped_favorites">Избранное по времени</string>
   <string name="preview_feature_title_soundtrack">Саундтрек</string>
   <string name="preview_feature_title_up_next_smart_sort">Умная сортировка \"Смотреть дальше\"</string>
+  <string name="preview_feature_title_youtube_specials">Спецвыпуски YouTube</string>
   <string name="reset_status_cleared">Список просмотра очищен.</string>
   <string name="row_label_loading_title">Загрузка названия</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt использует языковые настройки вашего Apple TV. Чтобы обновить их, перейдите:\n\nНастройки Apple TV &gt; Основные &gt; Языки Apple TV</string>
@@ -1314,6 +1319,7 @@
   <string name="tab_text_seasons_info">Информация</string>
   <string name="tab_text_seasons_reviews">Отзывы</string>
   <string name="tab_text_simple_filters">Простые</string>
+  <string name="tag_label_fan_upload">Фан-загрузка</string>
   <string name="tag_label_progress">Прогресс</string>
   <string name="tag_plex_syncing">Синхронизируется</string>
   <string name="tag_text_blocked_user">Заблокировано</string>
@@ -1405,7 +1411,7 @@
   <string name="text_clear_source_history">История</string>
   <string name="text_clear_source_library">Библиотека</string>
   <string name="text_clear_source_ratings">Рейтинги</string>
-  <string name="text_clear_source_watchlist">Список просмотра</string>
+  <string name="text_clear_source_watchlist">Буду смотреть</string>
   <string name="text_clear_watchlist">Очистить список просмотра</string>
   <string name="text_connection_status_cancelled_message">Вы можете подключить %s, когда будете готовы.</string>
   <string name="text_connection_status_cancelled_title">Подключение отменено</string>
@@ -1478,6 +1484,7 @@
   <string name="text_footer_category_community">Сообщество</string>
   <string name="text_footer_category_legal">Право</string>
   <string name="text_footer_category_platform">Платформа</string>
+  <string name="text_free">Бесплатно</string>
   <string name="text_history_sync_filter">Идентификатор синхронизации %d</string>
   <string name="text_history_sync_filter_with_source">Идентификатор синхронизации %1$d (%2$s)</string>
   <string name="text_hours_watched">%d часов</string>
@@ -1727,7 +1734,7 @@
   <string name="text_table_history">История</string>
   <string name="text_table_library">Библиотека</string>
   <string name="text_table_ratings">Рейтинги</string>
-  <string name="text_table_watchlist">Список просмотра</string>
+  <string name="text_table_watchlist">Буду смотреть</string>
   <string name="text_theme">Тема</string>
   <string name="text_this_month">В этом месяце</string>
   <string name="text_this_year">В этом году</string>

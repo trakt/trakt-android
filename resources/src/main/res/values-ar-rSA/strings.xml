@@ -119,6 +119,7 @@
   <string name="button_label_follow_requests">متابعة الطلبات</string>
   <string name="button_label_followers">متابعون</string>
   <string name="button_label_following">متابعة</string>
+  <string name="button_label_get_started">ابدأ مع Trakt</string>
   <string name="button_label_get_vip">فتح ميزات VIP</string>
   <string name="button_label_go_to_calendar_day">اذهب إلى %d</string>
   <string name="button_label_hide_recommendation">إخفاء \"%s\" من التوصيات</string>
@@ -309,6 +310,8 @@
   <string name="button_label_vip_claim_deal">متابعة لمدة سنتين</string>
   <string name="button_label_vip_paypal_switch">عرض خطط VIP والتبديل إلى بطاقة الائتمان</string>
   <string name="button_label_vip_upgrade">الترقية إلى VIP</string>
+  <string name="button_label_watch_fan_upload_on_youtube">شاهد تحميلًا من معجب مجانًا على يوتيوب</string>
+  <string name="button_label_watch_official_upload_on_youtube">شاهد التحميل الرسمي مجانًا على يوتيوب</string>
   <string name="button_label_watch_on_service">شاهد على %s</string>
   <string name="button_label_watch_until_here_anchor_end">تعامل مع التاريخ المختار على أنه نهاية الشراهة</string>
   <string name="button_label_watch_until_here_anchor_start">تعامل مع التاريخ المختار على أنه بداية الشراهة</string>
@@ -381,6 +384,7 @@
   <string name="button_text_follow_requests">طلبات</string>
   <string name="button_text_followers">متابعون</string>
   <string name="button_text_following">متابعة</string>
+  <string name="button_text_get_started">ابدأ</string>
   <string name="button_text_get_vip">احصل على</string>
   <string name="button_text_hide">إخفاء</string>
   <string name="button_text_hide_description">إخفاء الوصف</string>
@@ -392,7 +396,6 @@
   <string name="button_text_import_selected">استيراد المحدد</string>
   <string name="button_text_install">تثبيت</string>
   <string name="button_text_join_trakt">انضم إلى Trakt</string>
-  <string name="button_text_join_trakt_for_free">انضم إلى Trakt مجانًا</string>
   <string name="button_text_keep_newest_play">الأحدث</string>
   <string name="button_text_keep_oldest_play">الأقدم</string>
   <string name="button_text_keep_vip_prompt">احتفظ بامتيازاتي المميزة</string>
@@ -1265,6 +1268,7 @@
   <string name="preview_feature_description_scoped_favorites">قوائم المفضلة في المربع الزمني من خلال إظهار مفضلات العام الحالي في الملفات الشخصية وتجميع قائمة المفضلة الكاملة حسب السنة.</string>
   <string name="preview_feature_description_soundtrack">يضيف قسم الموسيقى التصويرية إلى صفحات الأفلام والعروض، مع إمكانية التشغيل حيث يمكن مطابقة المقطع.</string>
   <string name="preview_feature_description_up_next_smart_sort">اختبر طريقة أكثر ذكاءً لفرز متابعة المشاهدة.</string>
+  <string name="preview_feature_description_youtube_specials">أين تشاهد</string>
   <string name="preview_feature_title_action_confirmations">تأكيدات الإجراءات</string>
   <string name="preview_feature_title_edit_mode">تعديل الوضع</string>
   <string name="preview_feature_title_genre_picker">منتقي النوع</string>
@@ -1275,6 +1279,7 @@
   <string name="preview_feature_title_scoped_favorites">نطاق المفضلة</string>
   <string name="preview_feature_title_soundtrack">الموسيقى التصويرية</string>
   <string name="preview_feature_title_up_next_smart_sort">متابعة مشاهدة الفرز الذكي</string>
+  <string name="preview_feature_title_youtube_specials">عروض يوتيوب الخاصة</string>
   <string name="reset_status_cleared">تم مسح قائمة المشاهدة.</string>
   <string name="row_label_loading_title">جاري تحميل الاسم</string>
   <string name="screen_account_settings_language_system_message_tvos">يستخدم Trakt إعدادات لغة Apple TV الخاصة بك. لتحديثها، انتقل إلى:\n\nإعدادات Apple TV &gt; عام &gt; لغات Apple TV</string>
@@ -1314,6 +1319,7 @@
   <string name="tab_text_seasons_info">معلومات</string>
   <string name="tab_text_seasons_reviews">التعليقات</string>
   <string name="tab_text_simple_filters">بسيط</string>
+  <string name="tag_label_fan_upload">تحميل من معجب</string>
   <string name="tag_label_progress">التقدم</string>
   <string name="tag_plex_syncing">تتم المزامنة</string>
   <string name="tag_text_blocked_user">محظور</string>
@@ -1478,6 +1484,7 @@
   <string name="text_footer_category_community">المجتمع</string>
   <string name="text_footer_category_legal">قانوني</string>
   <string name="text_footer_category_platform">منصة</string>
+  <string name="text_free">مجاني</string>
   <string name="text_history_sync_filter">معرف المزامنة %d</string>
   <string name="text_history_sync_filter_with_source">معرف المزامنة %1$d (%2$s)</string>
   <string name="text_hours_watched">%d ساعة</string>
