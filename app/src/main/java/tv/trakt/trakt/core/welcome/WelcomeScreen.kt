@@ -297,7 +297,7 @@ private fun WelcomeFooter(
                     horizontalArrangement = spacedBy(6.dp),
                 ) {
                     Text(
-                        text = stringResource(R.string.button_text_join_trakt_for_free),
+                        text = stringResource(R.string.button_text_join_trakt),
                         style = TraktTheme.typography.heading5,
                         color = TraktTheme.colors.textPrimary,
                         maxLines = 1,
@@ -322,7 +322,7 @@ private fun WelcomeFooter(
         }
 
         PrimaryButton(
-            text = stringResource(R.string.button_text_join_trakt),
+            text = stringResource(R.string.button_text_get_started),
             containerColor = Purple500,
             contentColor = Color.White,
             onClick = onDismiss,
