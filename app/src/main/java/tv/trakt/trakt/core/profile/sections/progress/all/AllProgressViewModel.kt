@@ -34,9 +34,13 @@ import tv.trakt.trakt.core.lists.ListsConfig.PROGRESS_PAGE_LIMIT
 import tv.trakt.trakt.core.profile.sections.progress.filters.GetProgressFilterUseCase
 import tv.trakt.trakt.core.profile.sections.progress.model.ProfileProgressItem
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter
-import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.Completed
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.Dropped
+import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.Ended
 import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.InProgress
+import tv.trakt.trakt.core.profile.sections.progress.model.ProgressFilter.UpToDate
+import tv.trakt.trakt.core.profile.sections.progress.model.ProgressPage
+import tv.trakt.trakt.core.profile.sections.progress.model.asPage
+import tv.trakt.trakt.core.profile.sections.progress.model.pageOfEnded
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressCompleteUseCase
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressDroppedUseCase
 import tv.trakt.trakt.core.profile.sections.progress.usecase.GetProgressWatchingUseCase
@@ -46,6 +50,7 @@ import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Pr
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Season
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class AllProgressViewModel(
     private val getFilterUseCase: GetProgressFilterUseCase,
@@ -87,7 +92,7 @@ internal class AllProgressViewModel(
             episodeUpdates.observeUpdates(History),
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
             }.launchIn(viewModelScope)
@@ -110,7 +115,7 @@ internal class AllProgressViewModel(
 
                 itemsState.update {
                     fetchLocalData(
-                        filter = filterState.value ?: Completed,
+                        filter = filterState.value ?: UpToDate,
                     )
                 }
 
@@ -121,13 +126,14 @@ internal class AllProgressViewModel(
                     }
                 }
 
-                val items = fetchData(
-                    filter = filterState.value ?: Completed,
+                val (lastPage, result) = fetchFilledPage(
+                    filter = filterState.value ?: UpToDate,
                     page = 1,
                 )
 
-                itemsState.update { items }
-                hasMoreData = items.size >= PROGRESS_PAGE_LIMIT
+                itemsState.update { result.items }
+                page = lastPage
+                hasMoreData = result.fetched >= PROGRESS_PAGE_LIMIT
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     if (!ignoreErrors) {
@@ -150,19 +156,20 @@ internal class AllProgressViewModel(
             try {
                 loadingMoreState.update { Loading }
 
-                val nextPage = page + 1
-                val filter = filterState.value ?: Completed
-                val newItems = fetchData(filter, page = nextPage)
+                val (lastPage, result) = fetchFilledPage(
+                    filter = filterState.value ?: UpToDate,
+                    page = page + 1,
+                )
 
                 itemsState.update { items ->
                     items
-                        ?.plus(newItems)
+                        ?.plus(result.items)
                         ?.distinctBy { it.key }
                         ?.toImmutableList()
                 }
 
-                page = nextPage
-                hasMoreData = newItems.size >= PROGRESS_PAGE_LIMIT
+                page = lastPage
+                hasMoreData = result.fetched >= PROGRESS_PAGE_LIMIT
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -176,20 +183,52 @@ internal class AllProgressViewModel(
 
     private suspend fun fetchLocalData(filter: ProgressFilter): ImmutableList<ProfileProgressItem> {
         return when (filter) {
-            Completed -> getCompletedUseCase.getLocalCompleted(limit = PROGRESS_PAGE_LIMIT)
+            UpToDate -> getCompletedUseCase.getLocalCompleted(limit = PROGRESS_PAGE_LIMIT, ended = false)
+            Ended -> getCompletedUseCase.getLocalCompleted(limit = PROGRESS_PAGE_LIMIT, ended = true)
             InProgress -> getWatchingUseCase.getLocalWatching(limit = PROGRESS_PAGE_LIMIT)
             Dropped -> getDroppedUseCase.getLocalDropped(limit = PROGRESS_PAGE_LIMIT)
         }
     }
 
+    private tailrec suspend fun fetchFilledPage(
+        filter: ProgressFilter,
+        page: Int,
+    ): Pair<Int, ProgressPage> {
+        val result = fetchData(filter, page)
+        if (result.items.isNotEmpty() || result.fetched < PROGRESS_PAGE_LIMIT) {
+            return page to result
+        }
+        return fetchFilledPage(filter, page + 1)
+    }
+
     private suspend fun fetchData(
         filter: ProgressFilter,
         page: Int,
-    ): ImmutableList<ProfileProgressItem> {
+    ): ProgressPage {
         return when (filter) {
-            Completed -> getCompletedUseCase.getCompleted(page = page, limit = PROGRESS_PAGE_LIMIT)
-            InProgress -> getWatchingUseCase.getWatching(page = page, limit = PROGRESS_PAGE_LIMIT)
-            Dropped -> getDroppedUseCase.getDropped(page = page, limit = PROGRESS_PAGE_LIMIT)
+            UpToDate -> {
+                getCompletedUseCase
+                    .getCompleted(page = page, limit = PROGRESS_PAGE_LIMIT)
+                    .pageOfEnded(ended = false)
+            }
+
+            Ended -> {
+                getCompletedUseCase
+                    .getCompleted(page = page, limit = PROGRESS_PAGE_LIMIT)
+                    .pageOfEnded(ended = true)
+            }
+
+            InProgress -> {
+                getWatchingUseCase
+                    .getWatching(page = page, limit = PROGRESS_PAGE_LIMIT)
+                    .asPage()
+            }
+
+            Dropped -> {
+                getDroppedUseCase
+                    .getDropped(page = page, limit = PROGRESS_PAGE_LIMIT)
+                    .asPage()
+            }
         }
     }
 

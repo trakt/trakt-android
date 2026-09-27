@@ -13,9 +13,13 @@ internal class GetProgressCompleteUseCase(
     private val remoteShowsSyncSource: ShowsSyncRemoteDataSource,
     private val localDataSource: ProgressCompletedLocalDataSource,
 ) {
-    suspend fun getLocalCompleted(limit: Int): ImmutableList<ProfileProgressItem> {
+    suspend fun getLocalCompleted(
+        limit: Int,
+        ended: Boolean,
+    ): ImmutableList<ProfileProgressItem> {
         return localDataSource.getItems()
             .filterIsInstance<ProfileProgressItem.ShowItem>()
+            .filter { it.show.isEnded == ended }
             .take(limit)
             .toImmutableList()
     }

@@ -12,6 +12,8 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.helpers.serializers.ImmutableListSerializer
 import tv.trakt.trakt.common.helpers.serializers.InstantSerializer
+import tv.trakt.trakt.common.model.MediaStatus.Canceled
+import tv.trakt.trakt.common.model.MediaStatus.Ended
 import tv.trakt.trakt.common.model.MediaStatus.Released
 import tv.trakt.trakt.common.model.Show.Companion
 import tv.trakt.trakt.common.networking.RecommendedShowDto
@@ -58,6 +60,9 @@ data class Show(
     val isReleased: Boolean
         get() = status == Released ||
             releasedAt?.let { !it.isAfter(nowUtcInstant()) } ?: false
+
+    val isEnded: Boolean
+        get() = status == Ended || status == Canceled
 
     @Composable
     fun rememberReleased(): Boolean {
