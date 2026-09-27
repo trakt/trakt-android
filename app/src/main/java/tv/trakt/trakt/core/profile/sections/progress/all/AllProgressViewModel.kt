@@ -50,6 +50,7 @@ import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Pr
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates.Source.Season
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates
 import tv.trakt.trakt.core.summary.shows.data.ShowDetailsUpdates.Source
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class AllProgressViewModel(
     private val getFilterUseCase: GetProgressFilterUseCase,
@@ -91,7 +92,7 @@ internal class AllProgressViewModel(
             episodeUpdates.observeUpdates(History),
         )
             .distinctUntilChanged()
-            .debounce(200)
+            .debounce(200.milliseconds)
             .onEach {
                 loadData(ignoreErrors = true)
             }.launchIn(viewModelScope)
@@ -125,13 +126,14 @@ internal class AllProgressViewModel(
                     }
                 }
 
-                val page = fetchData(
+                val (lastPage, result) = fetchFilledPage(
                     filter = filterState.value ?: UpToDate,
                     page = 1,
                 )
 
-                itemsState.update { page.items }
-                hasMoreData = page.fetched >= PROGRESS_PAGE_LIMIT
+                itemsState.update { result.items }
+                page = lastPage
+                hasMoreData = result.fetched >= PROGRESS_PAGE_LIMIT
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     if (!ignoreErrors) {
@@ -154,19 +156,20 @@ internal class AllProgressViewModel(
             try {
                 loadingMoreState.update { Loading }
 
-                val nextPage = page + 1
-                val filter = filterState.value ?: UpToDate
-                val newPage = fetchData(filter, page = nextPage)
+                val (lastPage, result) = fetchFilledPage(
+                    filter = filterState.value ?: UpToDate,
+                    page = page + 1,
+                )
 
                 itemsState.update { items ->
                     items
-                        ?.plus(newPage.items)
+                        ?.plus(result.items)
                         ?.distinctBy { it.key }
                         ?.toImmutableList()
                 }
 
-                page = nextPage
-                hasMoreData = newPage.fetched >= PROGRESS_PAGE_LIMIT
+                page = lastPage
+                hasMoreData = result.fetched >= PROGRESS_PAGE_LIMIT
             } catch (error: Exception) {
                 error.rethrowCancellation {
                     errorState.update { error }
@@ -187,30 +190,45 @@ internal class AllProgressViewModel(
         }
     }
 
+    private tailrec suspend fun fetchFilledPage(
+        filter: ProgressFilter,
+        page: Int,
+    ): Pair<Int, ProgressPage> {
+        val result = fetchData(filter, page)
+        if (result.items.isNotEmpty() || result.fetched < PROGRESS_PAGE_LIMIT) {
+            return page to result
+        }
+        return fetchFilledPage(filter, page + 1)
+    }
+
     private suspend fun fetchData(
         filter: ProgressFilter,
         page: Int,
     ): ProgressPage {
         return when (filter) {
-            UpToDate ->
+            UpToDate -> {
                 getCompletedUseCase
                     .getCompleted(page = page, limit = PROGRESS_PAGE_LIMIT)
                     .pageOfEnded(ended = false)
+            }
 
-            Ended ->
+            Ended -> {
                 getCompletedUseCase
                     .getCompleted(page = page, limit = PROGRESS_PAGE_LIMIT)
                     .pageOfEnded(ended = true)
+            }
 
-            InProgress ->
+            InProgress -> {
                 getWatchingUseCase
                     .getWatching(page = page, limit = PROGRESS_PAGE_LIMIT)
                     .asPage()
+            }
 
-            Dropped ->
+            Dropped -> {
                 getDroppedUseCase
                     .getDropped(page = page, limit = PROGRESS_PAGE_LIMIT)
                     .asPage()
+            }
         }
     }
 

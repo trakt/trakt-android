@@ -121,20 +121,26 @@ internal class ProfileProgressViewModel(
 
                 itemsState.update {
                     when (filter) {
-                        UpToDate ->
+                        UpToDate -> {
                             getCompletedUseCase
                                 .getCompleted(page = 1, limit = PROGRESS_SECTION_LIMIT)
                                 .pageOfEnded(ended = false)
                                 .items
+                        }
 
-                        Ended ->
+                        Ended -> {
                             getCompletedUseCase
                                 .getCompleted(page = 1, limit = PROGRESS_SECTION_LIMIT)
                                 .pageOfEnded(ended = true)
                                 .items
+                        }
 
-                        InProgress -> getWatchingUseCase.getWatching(page = 1, limit = PROGRESS_SECTION_LIMIT)
-                        Dropped -> getDroppedUseCase.getDropped(page = 1, limit = PROGRESS_SECTION_LIMIT)
+                        InProgress -> {
+                            getWatchingUseCase.getWatching(page = 1, limit = PROGRESS_SECTION_LIMIT)
+                        }
+                        Dropped -> {
+                            getDroppedUseCase.getDropped(page = 1, limit = PROGRESS_SECTION_LIMIT)
+                        }
                     }
                 }
             } catch (error: Exception) {
