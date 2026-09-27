@@ -77,7 +77,8 @@ private fun MovieSummaryContent(
 }
 ```
 
-- **Split `<Feature>Screen` (stateful) from `<Feature>Content` (stateless).** `Content` takes state and event lambdas only — easy to preview and snapshot-test.
+- **Split `<Feature>Screen` (stateful) from `<Feature>Content` (stateless).** `Content` takes state
+  and event lambdas only — easy to preview.
 - **No `@Preview` on stateful screen.** Preview `Content` variant.
 - **`when` over sealed `UiState` is exhaustive.** Add case to sealed type instead of `else ->` branch.
 
@@ -88,7 +89,7 @@ ViewModels expose a single `state` — declared last, untyped, built by the inde
 events flow through `SharedFlow(replay = 0)`.
 
 **Full ViewModel rules live in `viewmodel.md`** — declaration shape, state ownership, boundaries,
-events, concurrency, DI, size limits, testing. Read it before writing or editing a ViewModel.
+events, concurrency, DI, size limits. Read it before writing or editing a ViewModel.
 
 ## Domain Layer (Optional)
 
