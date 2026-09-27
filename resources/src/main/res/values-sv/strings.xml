@@ -119,6 +119,7 @@
   <string name="button_label_follow_requests">Följningsförfrågningar</string>
   <string name="button_label_followers">Följare</string>
   <string name="button_label_following">Följer</string>
+  <string name="button_label_get_started">Kom igång med Trakt</string>
   <string name="button_label_get_vip">Lås upp VIP-funktioner</string>
   <string name="button_label_go_to_calendar_day">Gå till %d</string>
   <string name="button_label_hide_recommendation">Dölj \"%s\" från rekommendationer</string>
@@ -309,6 +310,8 @@
   <string name="button_label_vip_claim_deal">Fortsätt med 2 år</string>
   <string name="button_label_vip_paypal_switch">Visa VIP-planer och byt till kreditkort</string>
   <string name="button_label_vip_upgrade">Uppgradera till VIP</string>
+  <string name="button_label_watch_fan_upload_on_youtube">Se en fanuppladdning gratis på YouTube</string>
+  <string name="button_label_watch_official_upload_on_youtube">Se den officiella uppladdningen gratis på YouTube</string>
   <string name="button_label_watch_on_service">Titta på %s</string>
   <string name="button_label_watch_until_here_anchor_end">Behandla det valda datumet som slutet på bingetittandet</string>
   <string name="button_label_watch_until_here_anchor_start">Behandla det valda datumet som starten på bingetittandet</string>
@@ -381,6 +384,7 @@
   <string name="button_text_follow_requests">Förfrågningar</string>
   <string name="button_text_followers">Följare</string>
   <string name="button_text_following">Följer</string>
+  <string name="button_text_get_started">Kom igång</string>
   <string name="button_text_get_vip">Skaffa</string>
   <string name="button_text_hide">Dölj</string>
   <string name="button_text_hide_description">Dölj beskrivning</string>
@@ -392,7 +396,6 @@
   <string name="button_text_import_selected">Importera valda</string>
   <string name="button_text_install">Installera</string>
   <string name="button_text_join_trakt">Gå med i Trakt</string>
-  <string name="button_text_join_trakt_for_free">Gå med i Trakt gratis</string>
   <string name="button_text_keep_newest_play">Nyaste</string>
   <string name="button_text_keep_oldest_play">Äldsta</string>
   <string name="button_text_keep_vip_prompt">Behåll mina premiumförmåner</string>
@@ -1265,6 +1268,7 @@
   <string name="preview_feature_description_scoped_favorites">Tidsavgränsa favoritlistor genom att visa favoriter från innevarande år på profiler och gruppera hela favoritlistan per år.</string>
   <string name="preview_feature_description_soundtrack">Lägger till en soundtrack-sektion på film- och seriesidor, med uppspelning där ett spår kan matchas.</string>
   <string name="preview_feature_description_up_next_smart_sort">Testa ett smartare sätt att sortera det du tittar på.</string>
+  <string name="preview_feature_description_youtube_specials">Lägger till gratis YouTube-uppladdningar av stand-up-specialare till Var man kan titta på filmsidor.</string>
   <string name="preview_feature_title_action_confirmations">Bekräftelser för åtgärder</string>
   <string name="preview_feature_title_edit_mode">Redigeringsläge</string>
   <string name="preview_feature_title_genre_picker">Genreval</string>
@@ -1275,6 +1279,7 @@
   <string name="preview_feature_title_scoped_favorites">Avgränsade favoriter</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_up_next_smart_sort">Smart sortering för Fortsätt titta</string>
+  <string name="preview_feature_title_youtube_specials">YouTube-specialare</string>
   <string name="reset_status_cleared">Bevakningslistan rensad.</string>
   <string name="row_label_loading_title">Laddar namn</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt använder dina Apple TV-språkinställningar. För att uppdatera dem, gå till:\n\nApple TV Inställningar &gt; Allmänt &gt; Apple TV-språk</string>
@@ -1314,6 +1319,7 @@
   <string name="tab_text_seasons_info">Info</string>
   <string name="tab_text_seasons_reviews">Recensioner</string>
   <string name="tab_text_simple_filters">Enkel</string>
+  <string name="tag_label_fan_upload">Fanuppladdning</string>
   <string name="tag_label_progress">Förlopp</string>
   <string name="tag_plex_syncing">Synkroniserar</string>
   <string name="tag_text_blocked_user">Blockerad</string>
@@ -1478,6 +1484,7 @@
   <string name="text_footer_category_community">Community</string>
   <string name="text_footer_category_legal">Juridiskt</string>
   <string name="text_footer_category_platform">Plattform</string>
+  <string name="text_free">Gratis</string>
   <string name="text_history_sync_filter">Synkroniserings-ID %d</string>
   <string name="text_history_sync_filter_with_source">Synkroniserings-ID %1$d (%2$s)</string>
   <string name="text_hours_watched">%d timmar</string>

@@ -119,6 +119,7 @@
   <string name="button_label_follow_requests">Pedidos para seguir</string>
   <string name="button_label_followers">Seguidores</string>
   <string name="button_label_following">A seguir</string>
+  <string name="button_label_get_started">Começar com o Trakt</string>
   <string name="button_label_get_vip">Desbloquear funcionalidades VIP</string>
   <string name="button_label_go_to_calendar_day">Ir para %d</string>
   <string name="button_label_hide_recommendation">Ocultar \"%s\" das recomendações</string>
@@ -309,6 +310,8 @@
   <string name="button_label_vip_claim_deal">Continuar com 2 anos</string>
   <string name="button_label_vip_paypal_switch">Ver os planos VIP e mudar para cartão de crédito</string>
   <string name="button_label_vip_upgrade">Atualizar para VIP</string>
+  <string name="button_label_watch_fan_upload_on_youtube">Ver gratuitamente uma versão de um fã no YouTube</string>
+  <string name="button_label_watch_official_upload_on_youtube">Ver gratuitamente o vídeo oficial no YouTube</string>
   <string name="button_label_watch_on_service">Ver em %s</string>
   <string name="button_label_watch_until_here_anchor_end">Considerar a data escolhida como o fim da maratona</string>
   <string name="button_label_watch_until_here_anchor_start">Considerar a data escolhida como o início da maratona</string>
@@ -381,6 +384,7 @@
   <string name="button_text_follow_requests">Pedidos</string>
   <string name="button_text_followers">Seguidores</string>
   <string name="button_text_following">A seguir</string>
+  <string name="button_text_get_started">Começar</string>
   <string name="button_text_get_vip">Obter</string>
   <string name="button_text_hide">Ocultar</string>
   <string name="button_text_hide_description">Ocultar descrição</string>
@@ -392,7 +396,6 @@
   <string name="button_text_import_selected">Importar selecionados</string>
   <string name="button_text_install">Instalar</string>
   <string name="button_text_join_trakt">Aderir ao Trakt</string>
-  <string name="button_text_join_trakt_for_free">Aderir ao Trakt gratuitamente</string>
   <string name="button_text_keep_newest_play">Mais recente</string>
   <string name="button_text_keep_oldest_play">Mais antiga</string>
   <string name="button_text_keep_vip_prompt">Manter os meus benefícios premium</string>
@@ -748,10 +751,10 @@
   <string name="header_import_fields">Campos</string>
   <string name="header_import_json_guidelines">Orientações para JSON</string>
   <string name="header_landing_discover">Explora</string>
-  <string name="header_landing_hero">Seu próximo favorito já está lá fora.</string>
+  <string name="header_landing_hero">O teu próximo favorito já está por aí.</string>
   <string name="header_landing_share">Partilha</string>
   <string name="header_landing_track">Regista</string>
-  <string name="header_landing_trending_now">Em alta agora</string>
+  <string name="header_landing_trending_now">Em destaque agora</string>
   <string name="header_language">Idiomas</string>
   <string name="header_leaderboard">Pantheon</string>
   <string name="header_manage_lists">Gerir listas</string>
@@ -1265,6 +1268,7 @@
   <string name="preview_feature_description_scoped_favorites">Organiza a lista de favoritos mostrando os do ano atual no perfil e agrupando a lista completa por ano.</string>
   <string name="preview_feature_description_soundtrack">Adiciona uma secção de banda sonora às páginas de filmes e séries, permitindo reproduzir as faixas que conseguirmos associar.</string>
   <string name="preview_feature_description_up_next_smart_sort">Experimenta uma forma mais inteligente de ordenar o Continuar a ver.</string>
+  <string name="preview_feature_description_youtube_specials">Adiciona vídeos gratuitos de especiais de stand-up no YouTube à secção Onde ver das páginas de filmes.</string>
   <string name="preview_feature_title_action_confirmations">Confirmações de ações</string>
   <string name="preview_feature_title_edit_mode">Modo de edição</string>
   <string name="preview_feature_title_genre_picker">Seletor de géneros</string>
@@ -1275,6 +1279,7 @@
   <string name="preview_feature_title_scoped_favorites">Favoritos por ano</string>
   <string name="preview_feature_title_soundtrack">Banda sonora</string>
   <string name="preview_feature_title_up_next_smart_sort">Ordenação inteligente do Continuar a ver</string>
+  <string name="preview_feature_title_youtube_specials">Especiais do YouTube</string>
   <string name="reset_status_cleared">Lista para ver limpa.</string>
   <string name="row_label_loading_title">A carregar nome</string>
   <string name="screen_account_settings_language_system_message_tvos">O Trakt utiliza o idioma definido na Apple TV. Para o alterares, vai a:\n\nDefinições &gt; Geral &gt; Idiomas da Apple TV</string>
@@ -1314,6 +1319,7 @@
   <string name="tab_text_seasons_info">Info.</string>
   <string name="tab_text_seasons_reviews">Críticas</string>
   <string name="tab_text_simple_filters">Simples</string>
+  <string name="tag_label_fan_upload">Carregado por um fã</string>
   <string name="tag_label_progress">Progresso</string>
   <string name="tag_plex_syncing">A sincronizar</string>
   <string name="tag_text_blocked_user">Bloqueado</string>
@@ -1478,6 +1484,7 @@
   <string name="text_footer_category_community">Comunidade</string>
   <string name="text_footer_category_legal">Legal</string>
   <string name="text_footer_category_platform">Plataforma</string>
+  <string name="text_free">Grátis</string>
   <string name="text_history_sync_filter">Sincronização %d</string>
   <string name="text_history_sync_filter_with_source">Sincronização %1$d (%2$s)</string>
   <string name="text_hours_watched">%d horas</string>
@@ -1518,16 +1525,16 @@
   <string name="text_info_younify_service_linked">O serviço de streaming foi associado.</string>
   <string name="text_info_younify_service_unlinked">O serviço de streaming foi desassociado.</string>
   <string name="text_landing_discover">filmes e séries de que vais gostar e onde os podes ver em streaming neste momento.</string>
-  <string name="text_landing_discover_eyebrow">Descubra</string>
-  <string name="text_landing_hero">Acompanhe o que você assistiu, encontre o que assistir a seguir e veja onde está sendo transmitido esta noite.</string>
+  <string name="text_landing_discover_eyebrow">Descobre</string>
+  <string name="text_landing_hero">Regista o que já viste, encontra o que ver a seguir e descobre onde está disponível em streaming esta noite.</string>
   <string name="text_landing_numbers_1">anos a ver juntos</string>
   <string name="text_landing_numbers_2">mil. fãs de filmes e séries</string>
   <string name="text_landing_numbers_3">mil. títulos registados por semana</string>
   <string name="text_landing_platforms">Grátis na web, iOS e Android</string>
   <string name="text_landing_share">opiniões, classificações e listas que outros vão adorar seguir.</string>
-  <string name="text_landing_share_eyebrow">Fale sobre</string>
+  <string name="text_landing_share_eyebrow">Partilha</string>
   <string name="text_landing_track">todos os filmes, episódios e temporadas que viste, tudo num só lugar.</string>
-  <string name="text_landing_track_eyebrow">Registre</string>
+  <string name="text_landing_track_eyebrow">Regista</string>
   <string name="text_language">Idioma</string>
   <string name="text_last_day">%s anterior</string>
   <string name="text_leaderboard_free_section">Membros gratuitos</string>

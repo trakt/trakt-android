@@ -119,6 +119,7 @@
   <string name="button_label_follow_requests">关注请求</string>
   <string name="button_label_followers">关注者</string>
   <string name="button_label_following">正在关注</string>
+  <string name="button_label_get_started">开始使用 Trakt</string>
   <string name="button_label_get_vip">解锁VIP功能</string>
   <string name="button_label_go_to_calendar_day">前往 %d</string>
   <string name="button_label_hide_recommendation">从推荐中隐藏“%s”</string>
@@ -309,6 +310,8 @@
   <string name="button_label_vip_claim_deal">继续购买两年</string>
   <string name="button_label_vip_paypal_switch">查看VIP套餐并切换到信用卡</string>
   <string name="button_label_vip_upgrade">升级到VIP</string>
+  <string name="button_label_watch_fan_upload_on_youtube">在YouTube上免费观看粉丝上传</string>
+  <string name="button_label_watch_official_upload_on_youtube">在YouTube上免费观看官方上传</string>
   <string name="button_label_watch_on_service">在 %s 上观看</string>
   <string name="button_label_watch_until_here_anchor_end">将所选日期视为狂欢结束</string>
   <string name="button_label_watch_until_here_anchor_start">将所选日期视为狂欢开始</string>
@@ -381,6 +384,7 @@
   <string name="button_text_follow_requests">请求</string>
   <string name="button_text_followers">关注者</string>
   <string name="button_text_following">正在关注</string>
+  <string name="button_text_get_started">开始</string>
   <string name="button_text_get_vip">获取</string>
   <string name="button_text_hide">隐藏</string>
   <string name="button_text_hide_description">隐藏描述</string>
@@ -392,7 +396,6 @@
   <string name="button_text_import_selected">导入所选</string>
   <string name="button_text_install">安装</string>
   <string name="button_text_join_trakt">加入Trakt</string>
-  <string name="button_text_join_trakt_for_free">免费加入Trakt</string>
   <string name="button_text_keep_newest_play">最新</string>
   <string name="button_text_keep_oldest_play">最旧</string>
   <string name="button_text_keep_vip_prompt">保留我的高级特权</string>
@@ -1265,6 +1268,7 @@
   <string name="preview_feature_description_scoped_favorites">通过在个人资料上显示当年的收藏以及按年份分组完整的收藏列表来限制收藏列表的时间范围。</string>
   <string name="preview_feature_description_soundtrack">为电影和节目页面添加原声带部分，并可在匹配到曲目时进行播放。</string>
   <string name="preview_feature_description_up_next_smart_sort">试用一种更智能的方式来对您的“继续观看”进行排序。</string>
+  <string name="preview_feature_description_youtube_specials">将免费的 YouTube 单口喜剧特辑添加到电影页面的“观看地点”中。</string>
   <string name="preview_feature_title_action_confirmations">操作确认</string>
   <string name="preview_feature_title_edit_mode">编辑模式</string>
   <string name="preview_feature_title_genre_picker">类型选择器</string>
@@ -1275,6 +1279,7 @@
   <string name="preview_feature_title_scoped_favorites">限定范围的收藏</string>
   <string name="preview_feature_title_soundtrack">原声带</string>
   <string name="preview_feature_title_up_next_smart_sort">继续观看智能排序</string>
+  <string name="preview_feature_title_youtube_specials">YouTube 特辑</string>
   <string name="reset_status_cleared">待看列表已清除。</string>
   <string name="row_label_loading_title">正在加载名称</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt 使用您的 Apple TV 语言设置。要更新，请前往：\n\nApple TV 设置 &gt; 通用 &gt; Apple TV 语言</string>
@@ -1314,6 +1319,7 @@
   <string name="tab_text_seasons_info">信息</string>
   <string name="tab_text_seasons_reviews">评论</string>
   <string name="tab_text_simple_filters">简单</string>
+  <string name="tag_label_fan_upload">粉丝上传</string>
   <string name="tag_label_progress">进度</string>
   <string name="tag_plex_syncing">正在同步</string>
   <string name="tag_text_blocked_user">已屏蔽</string>
@@ -1478,6 +1484,7 @@
   <string name="text_footer_category_community">社区</string>
   <string name="text_footer_category_legal">法律</string>
   <string name="text_footer_category_platform">平台</string>
+  <string name="text_free">免费</string>
   <string name="text_history_sync_filter">同步 ID %d</string>
   <string name="text_history_sync_filter_with_source">同步 ID %1$d (%2$s)</string>
   <string name="text_hours_watched">%d 小时</string>

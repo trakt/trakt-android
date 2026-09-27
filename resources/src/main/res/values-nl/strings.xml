@@ -119,6 +119,7 @@
   <string name="button_label_follow_requests">Volgverzoeken</string>
   <string name="button_label_followers">Volgers</string>
   <string name="button_label_following">Volgend</string>
+  <string name="button_label_get_started">Aan de slag met Trakt</string>
   <string name="button_label_get_vip">VIP-functies ontgrendelen</string>
   <string name="button_label_go_to_calendar_day">Ga naar %d</string>
   <string name="button_label_hide_recommendation">Verberg \"%s\" uit aanbevelingen</string>
@@ -309,6 +310,8 @@
   <string name="button_label_vip_claim_deal">Doorgaan met 2 jaar</string>
   <string name="button_label_vip_paypal_switch">Bekijk VIP-abonnementen en schakel over naar creditcard</string>
   <string name="button_label_vip_upgrade">Upgrade naar VIP</string>
+  <string name="button_label_watch_fan_upload_on_youtube">Bekijk een fan-upload gratis op YouTube</string>
+  <string name="button_label_watch_official_upload_on_youtube">Bekijk de officiële upload gratis op YouTube</string>
   <string name="button_label_watch_on_service">Bekijk op %s</string>
   <string name="button_label_watch_until_here_anchor_end">Behandel de gekozen datum als het einde van de bingewatchsessie</string>
   <string name="button_label_watch_until_here_anchor_start">Behandel de gekozen datum als de start van de bingewatchsessie</string>
@@ -381,6 +384,7 @@
   <string name="button_text_follow_requests">Verzoeken</string>
   <string name="button_text_followers">Volgers</string>
   <string name="button_text_following">Volgend</string>
+  <string name="button_text_get_started">Aan de slag</string>
   <string name="button_text_get_vip">Word</string>
   <string name="button_text_hide">Verbergen</string>
   <string name="button_text_hide_description">Verberg beschrijving</string>
@@ -392,7 +396,6 @@
   <string name="button_text_import_selected">Geselecteerde importeren</string>
   <string name="button_text_install">Installeren</string>
   <string name="button_text_join_trakt">Lid worden van Trakt</string>
-  <string name="button_text_join_trakt_for_free">Word gratis lid</string>
   <string name="button_text_keep_newest_play">Nieuwste</string>
   <string name="button_text_keep_oldest_play">Oudste</string>
   <string name="button_text_keep_vip_prompt">Mijn premiumvoordelen behouden</string>
@@ -1265,6 +1268,7 @@
   <string name="preview_feature_description_scoped_favorites">Beperk favorietenlijsten door favorieten van het huidige jaar op profielen weer te geven en de volledige favorietenlijst per jaar te groeperen.</string>
   <string name="preview_feature_description_soundtrack">Voegt een soundtracksectie toe aan film- en seriepagina\'s, met afspeelmogelijkheden wanneer een nummer kan worden gematcht.</string>
   <string name="preview_feature_description_up_next_smart_sort">Probeer een slimmere manier om je \'Verder kijken\' te sorteren.</string>
+  <string name="preview_feature_description_youtube_specials">Voegt gratis YouTube-uploads van stand-up specials toe aan \'Waar te bekijken\' op filmpagina\'s.</string>
   <string name="preview_feature_title_action_confirmations">Actiebevestigingen</string>
   <string name="preview_feature_title_edit_mode">Bewerkmodus</string>
   <string name="preview_feature_title_genre_picker">Genrekiezer</string>
@@ -1275,6 +1279,7 @@
   <string name="preview_feature_title_scoped_favorites">Gerichte favorieten</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_up_next_smart_sort">Verder kijken slim sorteren</string>
+  <string name="preview_feature_title_youtube_specials">YouTube specials</string>
   <string name="reset_status_cleared">Kijklijst gewist.</string>
   <string name="row_label_loading_title">Naam laden</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt gebruikt de taalinstellingen van uw Apple TV. Om deze bij te werken, gaat u naar:\n\nApple TV Instellingen &gt; Algemeen &gt; Apple TV Talen</string>
@@ -1314,6 +1319,7 @@
   <string name="tab_text_seasons_info">Info</string>
   <string name="tab_text_seasons_reviews">Recensies</string>
   <string name="tab_text_simple_filters">Eenvoudig</string>
+  <string name="tag_label_fan_upload">Fan-upload</string>
   <string name="tag_label_progress">Voortgang</string>
   <string name="tag_plex_syncing">Synchroniseert</string>
   <string name="tag_text_blocked_user">Geblokkeerd</string>
@@ -1478,6 +1484,7 @@
   <string name="text_footer_category_community">Community</string>
   <string name="text_footer_category_legal">Juridisch</string>
   <string name="text_footer_category_platform">Platform</string>
+  <string name="text_free">Gratis</string>
   <string name="text_history_sync_filter">Synchronisatie-ID %d</string>
   <string name="text_history_sync_filter_with_source">Sync ID %1$d (%2$s)</string>
   <string name="text_hours_watched">%d uur</string>

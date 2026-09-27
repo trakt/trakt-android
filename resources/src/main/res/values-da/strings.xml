@@ -119,6 +119,7 @@
   <string name="button_label_follow_requests">Følgeanmodninger</string>
   <string name="button_label_followers">Følgere</string>
   <string name="button_label_following">Følger</string>
+  <string name="button_label_get_started">Kom i gang med Trakt</string>
   <string name="button_label_get_vip">Lås op for VIP-funktioner</string>
   <string name="button_label_go_to_calendar_day">Gå til %d</string>
   <string name="button_label_hide_recommendation">Skjul \"%s\" fra anbefalinger</string>
@@ -309,6 +310,8 @@
   <string name="button_label_vip_claim_deal">Fortsæt med 2 år</string>
   <string name="button_label_vip_paypal_switch">Se VIP-planer og skift til kreditkort</string>
   <string name="button_label_vip_upgrade">Opgrader til VIP</string>
+  <string name="button_label_watch_fan_upload_on_youtube">Se en fan-upload gratis på YouTube</string>
+  <string name="button_label_watch_official_upload_on_youtube">Se den officielle upload gratis på YouTube</string>
   <string name="button_label_watch_on_service">Se på %s</string>
   <string name="button_label_watch_until_here_anchor_end">Betragt den valgte dato som slut på maratonkiggeriet</string>
   <string name="button_label_watch_until_here_anchor_start">Betragt den valgte dato som start på maratonkiggeriet</string>
@@ -381,6 +384,7 @@
   <string name="button_text_follow_requests">Anmodninger</string>
   <string name="button_text_followers">Følgere</string>
   <string name="button_text_following">Følger</string>
+  <string name="button_text_get_started">Kom i gang</string>
   <string name="button_text_get_vip">Få</string>
   <string name="button_text_hide">Skjul</string>
   <string name="button_text_hide_description">Skjul beskrivelse</string>
@@ -392,7 +396,6 @@
   <string name="button_text_import_selected">Importer valgte</string>
   <string name="button_text_install">Installer</string>
   <string name="button_text_join_trakt">Tilmeld dig Trakt</string>
-  <string name="button_text_join_trakt_for_free">Tilmeld dig Trakt gratis</string>
   <string name="button_text_keep_newest_play">Nyeste</string>
   <string name="button_text_keep_oldest_play">Ældste</string>
   <string name="button_text_keep_vip_prompt">Behold mine premiumfordele</string>
@@ -1265,6 +1268,7 @@
   <string name="preview_feature_description_scoped_favorites">Tidsbegræns favoritlister ved at vise indeværende års favoritter på profiler og gruppere den fulde favoritliste efter år.</string>
   <string name="preview_feature_description_soundtrack">Tilføjer en soundtrack-sektion til film- og seriesider, med afspilning hvor et nummer kan matches.</string>
   <string name="preview_feature_description_up_next_smart_sort">Test en smartere måde at sortere din \'Se videre\' på.</string>
+  <string name="preview_feature_description_youtube_specials">Tilføjer gratis YouTube-uploads af stand-up specials til Hvor kan du se på filmsider.</string>
   <string name="preview_feature_title_action_confirmations">Handlingsbekræftelser</string>
   <string name="preview_feature_title_edit_mode">Redigeringstilstand</string>
   <string name="preview_feature_title_genre_picker">Genre-vælger</string>
@@ -1275,6 +1279,7 @@
   <string name="preview_feature_title_scoped_favorites">Afgrænsede favoritter</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_up_next_smart_sort">Se videre Smart Sortering</string>
+  <string name="preview_feature_title_youtube_specials">YouTube-specials</string>
   <string name="reset_status_cleared">Huskeliste ryddet.</string>
   <string name="row_label_loading_title">Indlæser navn</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt bruger dine Apple TV-sprogindstillinger. For at opdatere, gå til:\n\nApple TV Indstillinger &gt; Generelt &gt; Apple TV Sprog</string>
@@ -1314,6 +1319,7 @@
   <string name="tab_text_seasons_info">Info</string>
   <string name="tab_text_seasons_reviews">Anmeldelser</string>
   <string name="tab_text_simple_filters">Simple</string>
+  <string name="tag_label_fan_upload">Fan-upload</string>
   <string name="tag_label_progress">Status</string>
   <string name="tag_plex_syncing">Synkroniserer</string>
   <string name="tag_text_blocked_user">Blokeret</string>
@@ -1478,6 +1484,7 @@
   <string name="text_footer_category_community">Fællesskab</string>
   <string name="text_footer_category_legal">Juridisk</string>
   <string name="text_footer_category_platform">Platform</string>
+  <string name="text_free">Gratis</string>
   <string name="text_history_sync_filter">Synkroniserings-ID %d</string>
   <string name="text_history_sync_filter_with_source">Synkroniserings-ID %1$d (%2$s)</string>
   <string name="text_hours_watched">%d timer</string>

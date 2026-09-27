@@ -119,6 +119,7 @@
   <string name="button_label_follow_requests">Prośby o obserwowanie</string>
   <string name="button_label_followers">Obserwujący</string>
   <string name="button_label_following">Obserwowani</string>
+  <string name="button_label_get_started">Zacznij z Trakt</string>
   <string name="button_label_get_vip">Odblokuj funkcje VIP</string>
   <string name="button_label_go_to_calendar_day">Idź do %d</string>
   <string name="button_label_hide_recommendation">Ukryj \"%s\" w rekomendacjach</string>
@@ -309,6 +310,8 @@
   <string name="button_label_vip_claim_deal">Kontynuuj z 2 latami</string>
   <string name="button_label_vip_paypal_switch">Wyświetl plany VIP i przełącz się na kartę kredytową</string>
   <string name="button_label_vip_upgrade">Zostań VIP</string>
+  <string name="button_label_watch_fan_upload_on_youtube">Obejrzyj materiał fanowski za darmo na YouTube</string>
+  <string name="button_label_watch_official_upload_on_youtube">Obejrzyj oficjalny materiał za darmo na YouTube</string>
   <string name="button_label_watch_on_service">Obejrzyj na %s</string>
   <string name="button_label_watch_until_here_anchor_end">Traktuj wybraną datę jako koniec maratonu</string>
   <string name="button_label_watch_until_here_anchor_start">Traktuj wybraną datę jako początek maratonu</string>
@@ -381,6 +384,7 @@
   <string name="button_text_follow_requests">Prośby</string>
   <string name="button_text_followers">Obserwujący</string>
   <string name="button_text_following">Obserwowani</string>
+  <string name="button_text_get_started">Zacznij</string>
   <string name="button_text_get_vip">Zostań</string>
   <string name="button_text_hide">Ukryj</string>
   <string name="button_text_hide_description">Ukryj opis</string>
@@ -392,7 +396,6 @@
   <string name="button_text_import_selected">Importuj wybrane</string>
   <string name="button_text_install">Zainstaluj</string>
   <string name="button_text_join_trakt">Dołącz do Trakt</string>
-  <string name="button_text_join_trakt_for_free">Dołącz do Trakt za darmo</string>
   <string name="button_text_keep_newest_play">Najnowsze</string>
   <string name="button_text_keep_oldest_play">Najstarsze</string>
   <string name="button_text_keep_vip_prompt">Zachowaj moje korzyści premium</string>
@@ -748,7 +751,7 @@
   <string name="header_import_fields">Pola</string>
   <string name="header_import_json_guidelines">Instrukcje JSON</string>
   <string name="header_landing_discover">Odkrywaj</string>
-  <string name="header_landing_hero">Twój następny ulubiony już na Ciebie czeka.</string>
+  <string name="header_landing_hero">Twój nowy ukochany serial już czeka.</string>
   <string name="header_landing_share">Udostępniaj</string>
   <string name="header_landing_track">Śledź</string>
   <string name="header_landing_trending_now">Popularne teraz</string>
@@ -1265,6 +1268,7 @@
   <string name="preview_feature_description_scoped_favorites">Ograniczaj listy ulubionych czasowo, pokazując ulubione z bieżącego roku w profilach i grupując pełną listę ulubionych według roku.</string>
   <string name="preview_feature_description_soundtrack">Dodaje sekcję ścieżek dźwiękowych do stron filmów i seriali, z możliwością odtwarzania, gdy utwór może zostać dopasowany.</string>
   <string name="preview_feature_description_up_next_smart_sort">Wypróbuj inteligentniejszy sposób sortowania pozycji Oglądaj dalej.</string>
+  <string name="preview_feature_description_youtube_specials">Dodaje bezpłatne stand-upy z YouTube do sekcji „Gdzie oglądać” na stronach filmów.</string>
   <string name="preview_feature_title_action_confirmations">Potwierdzenia akcji</string>
   <string name="preview_feature_title_edit_mode">Tryb edycji</string>
   <string name="preview_feature_title_genre_picker">Wybór Gatunków</string>
@@ -1275,6 +1279,7 @@
   <string name="preview_feature_title_scoped_favorites">Ulubione z podziałem</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>
   <string name="preview_feature_title_up_next_smart_sort">Oglądaj dalej: Inteligentne sortowanie</string>
+  <string name="preview_feature_title_youtube_specials">Specjale z YouTube</string>
   <string name="reset_status_cleared">Lista obserwowanych usunięta.</string>
   <string name="row_label_loading_title">Ładowanie nazwy</string>
   <string name="screen_account_settings_language_system_message_tvos">Trakt używa ustawień języka z Apple TV. Aby je zaktualizować, przejdź do:\n\nUstawienia Apple TV &gt; Ogólne &gt; Języki Apple TV</string>
@@ -1314,6 +1319,7 @@
   <string name="tab_text_seasons_info">Informacje</string>
   <string name="tab_text_seasons_reviews">Recenzje</string>
   <string name="tab_text_simple_filters">Proste</string>
+  <string name="tag_label_fan_upload">Materiał fanowski</string>
   <string name="tag_label_progress">Postęp</string>
   <string name="tag_plex_syncing">Synchronizuje</string>
   <string name="tag_text_blocked_user">Zablokowany</string>
@@ -1478,6 +1484,7 @@
   <string name="text_footer_category_community">Społeczność</string>
   <string name="text_footer_category_legal">Prawne</string>
   <string name="text_footer_category_platform">Platforma</string>
+  <string name="text_free">Darmowy</string>
   <string name="text_history_sync_filter">Identyfikator synchronizacji %d</string>
   <string name="text_history_sync_filter_with_source">Identyfikator synchronizacji %1$d (%2$s)</string>
   <string name="text_hours_watched">%d godzin</string>
@@ -1518,16 +1525,16 @@
   <string name="text_info_younify_service_linked">Serwis streamingowy został połączony.</string>
   <string name="text_info_younify_service_unlinked">Serwis streamingowy został odłączony.</string>
   <string name="text_landing_discover">filmy i seriale, które pokochasz oraz gdzie są w tej chwili transmitowane.</string>
-  <string name="text_landing_discover_eyebrow">Znajdź to</string>
-  <string name="text_landing_hero">Śledź to, co widziałeś, znajdź, co obejrzeć dalej, i sprawdź, gdzie streamuje dziś wieczorem.</string>
+  <string name="text_landing_discover_eyebrow">Znajdź</string>
+  <string name="text_landing_hero">Śledź to, co oglądasz i sprawdź, gdzie obejrzeć dzisiejszy nowy odcinek.</string>
   <string name="text_landing_numbers_1">lat wspólnego oglądania</string>
   <string name="text_landing_numbers_2">mil. miłośników seriali i filmów</string>
   <string name="text_landing_numbers_3">mil. tytułów śledzonych co tydzień</string>
-  <string name="text_landing_platforms">Darmowe na stronie, iOS i Androidzie</string>
+  <string name="text_landing_platforms">Sprawdź na wszystkich platformach</string>
   <string name="text_landing_share">opinie, oceny i listy, które inni będą śledzić z przyjemnością.</string>
-  <string name="text_landing_share_eyebrow">Porozmawiaj o tym</string>
+  <string name="text_landing_share_eyebrow">Udostępnij</string>
   <string name="text_landing_track">każdy film, odcinek i sezon, który obejrzałeś, wszystko w jednym miejscu.</string>
-  <string name="text_landing_track_eyebrow">Zapisz to</string>
+  <string name="text_landing_track_eyebrow">Zapisz</string>
   <string name="text_language">Język</string>
   <string name="text_last_day">ostatnio %s</string>
   <string name="text_leaderboard_free_section">Darmowi członkowie</string>

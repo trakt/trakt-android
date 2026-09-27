@@ -119,6 +119,7 @@
   <string name="button_label_follow_requests">Követési kérelmek</string>
   <string name="button_label_followers">Követők</string>
   <string name="button_label_following">Követettek</string>
+  <string name="button_label_get_started">Kezdés a Trakt-tal</string>
   <string name="button_label_get_vip">VIP funkciók feloldása</string>
   <string name="button_label_go_to_calendar_day">Ugrás ide: %d</string>
   <string name="button_label_hide_recommendation">\"%s\" elrejtése az ajánlások közül</string>
@@ -309,6 +310,8 @@
   <string name="button_label_vip_claim_deal">Folytatás 2 évvel</string>
   <string name="button_label_vip_paypal_switch">VIP csomagok megtekintése és váltás hitelkártyára</string>
   <string name="button_label_vip_upgrade">Válts VIP-re</string>
+  <string name="button_label_watch_fan_upload_on_youtube">Nézzen meg egy rajongói feltöltést ingyen a YouTube-on</string>
+  <string name="button_label_watch_official_upload_on_youtube">Nézze meg a hivatalos feltöltést ingyen a YouTube-on</string>
   <string name="button_label_watch_on_service">Megtekintés a(z) %s szolgáltatáson</string>
   <string name="button_label_watch_until_here_anchor_end">A kiválasztott dátum kezelése a sorozatnézés végeként</string>
   <string name="button_label_watch_until_here_anchor_start">A kiválasztott dátum kezelése a sorozatnézés kezdeteként</string>
@@ -381,6 +384,7 @@
   <string name="button_text_follow_requests">Kérelmek</string>
   <string name="button_text_followers">Követők</string>
   <string name="button_text_following">Követettek</string>
+  <string name="button_text_get_started">Kezdés</string>
   <string name="button_text_get_vip">Szerezd be</string>
   <string name="button_text_hide">Elrejtés</string>
   <string name="button_text_hide_description">Leírás elrejtése</string>
@@ -392,7 +396,6 @@
   <string name="button_text_import_selected">Kiválasztottak importálása</string>
   <string name="button_text_install">Telepítés</string>
   <string name="button_text_join_trakt">Csatlakozz a Trakt-hoz</string>
-  <string name="button_text_join_trakt_for_free">Csatlakozz a Trakt-hoz ingyen</string>
   <string name="button_text_keep_newest_play">Legújabb</string>
   <string name="button_text_keep_oldest_play">Legrégebbi</string>
   <string name="button_text_keep_vip_prompt">Prémium előnyök megtartása</string>
@@ -1265,6 +1268,7 @@
   <string name="preview_feature_description_scoped_favorites">Időkorlátozza a kedvenc listákat azáltal, hogy megjeleníti az aktuális év kedvenceit a profilokon, és csoportosítja a teljes kedvencek listáját év szerint.</string>
   <string name="preview_feature_description_soundtrack">Film- és műsoroldalakhoz ad hozzá filmzene szekciót, lejátszással ott, ahol egy szám párosítható.</string>
   <string name="preview_feature_description_up_next_smart_sort">Próbálja ki a Megtekintés folytatása rendezésének egy okosabb módját.</string>
+  <string name="preview_feature_description_youtube_specials">Hozzáadja a stand-up különkiadások ingyenes YouTube feltöltéseit a filmoldalakon található „Hol nézhető” részhez.</string>
   <string name="preview_feature_title_action_confirmations">Művelet-megerősítések</string>
   <string name="preview_feature_title_edit_mode">Szerkesztési mód</string>
   <string name="preview_feature_title_genre_picker">Műfajválasztó</string>
@@ -1275,6 +1279,7 @@
   <string name="preview_feature_title_scoped_favorites">Korlátozott Kedvencek</string>
   <string name="preview_feature_title_soundtrack">Filmzene</string>
   <string name="preview_feature_title_up_next_smart_sort">Megtekintés folytatása - Okos Rendezés</string>
+  <string name="preview_feature_title_youtube_specials">YouTube különkiadások</string>
   <string name="reset_status_cleared">Megnézendők listája kiürítve.</string>
   <string name="row_label_loading_title">Név betöltése</string>
   <string name="screen_account_settings_language_system_message_tvos">A Trakt az Apple TV nyelvi beállításait használja. A frissítéshez lépjen ide:\n\nApple TV Beállítások &gt; Általános &gt; Apple TV Nyelvek</string>
@@ -1314,6 +1319,7 @@
   <string name="tab_text_seasons_info">Infó</string>
   <string name="tab_text_seasons_reviews">Értékelések</string>
   <string name="tab_text_simple_filters">Egyszerű</string>
+  <string name="tag_label_fan_upload">Rajongói feltöltés</string>
   <string name="tag_label_progress">Folyamat</string>
   <string name="tag_plex_syncing">Szinkronizálás</string>
   <string name="tag_text_blocked_user">Blokkolva</string>
@@ -1478,6 +1484,7 @@
   <string name="text_footer_category_community">Közösség</string>
   <string name="text_footer_category_legal">Jogi</string>
   <string name="text_footer_category_platform">Platform</string>
+  <string name="text_free">Ingyenes</string>
   <string name="text_history_sync_filter">Szinkronizálási azonosító: %d</string>
   <string name="text_history_sync_filter_with_source">Szinkronizálási azonosító: %1$d (%2$s)</string>
   <string name="text_hours_watched">%d óra</string>
