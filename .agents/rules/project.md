@@ -132,3 +132,4 @@ chore(i18n): translations updates from CrowdIn
 - **OpenAPI regeneration**: `./gradlew openApiGenerate` rebuilds client from `openapi/openapi.json` — committed generated sources stay in step.
 - **i18n sync**: Crowdin → `resources/src/main/res/values-*/strings.xml` via `.github/workflows/i18n_sync.yml`.
 - **Releases**: Fastlane (`fastlane/`) — 7 lanes covering Firebase distribution + Play Store internal/beta/production tracks.
+- **GitHub / remote git**: always go through `gh`. Use `gh` for PRs, issues, releases and API calls. For remote git operations (`fetch`, `pull`, `push`, tags) authenticate via `gh` credentials over HTTPS instead of SSH: `git -c credential.helper='!gh auth git-credential' push https://github.com/trakt/trakt-android.git <ref>`.
