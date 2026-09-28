@@ -34,6 +34,8 @@ import tv.trakt.trakt.core.lists.features.all.navigation.allListsScreen
 import tv.trakt.trakt.core.lists.features.all.navigation.navigateToAllLists
 import tv.trakt.trakt.core.lists.features.details.navigation.listDetailsScreen
 import tv.trakt.trakt.core.lists.features.details.navigation.navigateToListDetails
+import tv.trakt.trakt.core.lists.features.reorder.lists.navigation.listsReorderScreen
+import tv.trakt.trakt.core.lists.features.reorder.lists.navigation.navigateToListsReorder
 import tv.trakt.trakt.core.lists.features.reorder.navigation.listReorderScreen
 import tv.trakt.trakt.core.lists.features.reorder.navigation.navigateToListReorder
 import tv.trakt.trakt.core.lists.features.smart.navigation.createSmartListScreen
@@ -519,6 +521,7 @@ internal fun NavGraphBuilder.listsScreens(
             },
             onNavigateToSmartList = { navigateToSmartListDetails(it) },
             onNavigateToCreateSmartList = { navigateToCreateSmartList() },
+            onNavigateToListsReorder = { navigateToListsReorder() },
             onNavigateBack = { popBackStack() },
             onNavigateToUser = {
                 navigateToUserProfile(
@@ -559,6 +562,9 @@ internal fun NavGraphBuilder.listsScreens(
             onNavigateToMovie = { navigateToMovie(it) },
         )
         listReorderScreen(
+            onNavigateBack = { popBackStack() },
+        )
+        listsReorderScreen(
             onNavigateBack = { popBackStack() },
         )
     }
