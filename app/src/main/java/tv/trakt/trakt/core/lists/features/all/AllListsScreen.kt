@@ -44,12 +44,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.Ids
+import tv.trakt.trakt.common.model.SlugId
+import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.model.lists.ListsItem
@@ -81,6 +86,7 @@ internal fun AllListsScreen(
     onNavigatePersonalList: (CustomList) -> Unit,
     onNavigateSmartList: (SmartList) -> Unit,
     onNavigateCreateSmartList: () -> Unit,
+    onNavigateListsReorder: () -> Unit,
     onNavigateBack: () -> Unit,
     onNavigateUser: (User) -> Unit,
 ) {
@@ -111,6 +117,7 @@ internal fun AllListsScreen(
         onListPersonalClick = onNavigatePersonalList,
         onSmartListClick = onNavigateSmartList,
         onCreateClick = { createListTypeSheet = true },
+        onReorderClick = onNavigateListsReorder,
         onListEditClick = { editListSheet = it },
         onSmartListDeleteClick = { smartListToDelete = it },
         onFilterClick = viewModel::setFilter,
@@ -163,6 +170,7 @@ private fun AllListsScreen(
     onListPersonalClick: (CustomList) -> Unit = {},
     onSmartListClick: (SmartList) -> Unit = {},
     onCreateClick: () -> Unit = {},
+    onReorderClick: () -> Unit = {},
     onListEditClick: (CustomList) -> Unit = {},
     onSmartListDeleteClick: (SmartList) -> Unit = {},
     onFilterClick: (PersonalListType) -> Unit = {},
@@ -230,7 +238,12 @@ private fun AllListsScreen(
         ) {
             item {
                 TitleBar(
+                    reorderVisible = state.filter == Personal &&
+                        state.user != null &&
+                        state.loading == Done &&
+                        (state.items?.size ?: 0) > 1,
                     onCreateClick = onCreateClick,
+                    onReorderClick = onReorderClick,
                     modifier = Modifier
                         .padding(contentHorizontalPadding)
                         .onClick(onClick = onBackClick)
@@ -365,7 +378,9 @@ private fun AllListsScreen(
 
 @Composable
 private fun TitleBar(
+    reorderVisible: Boolean,
     onCreateClick: () -> Unit,
+    onReorderClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -392,17 +407,33 @@ private fun TitleBar(
             )
         }
 
-        Icon(
-            painter = painterResource(R.drawable.ic_plus),
-            contentDescription = null,
-            tint = TraktTheme.colors.textPrimary,
-            modifier = Modifier
-                .graphicsLayer {
-                    translationX = 1.dp.toPx()
-                }
-                .size(22.dp)
-                .onClick(onClick = onCreateClick),
-        )
+        Row(
+            verticalAlignment = CenterVertically,
+            horizontalArrangement = spacedBy(20.dp),
+        ) {
+            if (reorderVisible) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_reorder),
+                    contentDescription = stringResource(R.string.button_text_reorder_lists),
+                    tint = TraktTheme.colors.textPrimary,
+                    modifier = Modifier
+                        .size(22.dp)
+                        .onClick(onClick = onReorderClick),
+                )
+            }
+
+            Icon(
+                painter = painterResource(R.drawable.ic_plus),
+                contentDescription = null,
+                tint = TraktTheme.colors.textPrimary,
+                modifier = Modifier
+                    .graphicsLayer {
+                        translationX = 1.dp.toPx()
+                    }
+                    .size(22.dp)
+                    .onClick(onClick = onCreateClick),
+            )
+        }
     }
 }
 
@@ -422,6 +453,28 @@ internal fun AllListsScreenPreview() {
     TraktTheme {
         AllListsScreen(
             state = AllListsState(),
+        )
+    }
+}
+
+@DevicePreview
+@Composable
+private fun AllListsScreenPersonalPreview() {
+    TraktTheme {
+        AllListsScreen(
+            state = AllListsState(
+                user = PreviewData.user1,
+                filter = Personal,
+                loading = Done,
+                items = persistentListOf(
+                    ListsItem.Custom(PreviewData.customList1),
+                    ListsItem.Custom(
+                        PreviewData.customList1.copy(
+                            ids = Ids(trakt = TraktId(2), slug = SlugId("second")),
+                        ),
+                    ),
+                ),
+            ),
         )
     }
 }

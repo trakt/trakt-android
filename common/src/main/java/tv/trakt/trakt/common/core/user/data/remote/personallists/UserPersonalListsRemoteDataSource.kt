@@ -14,6 +14,7 @@ interface UserPersonalListsRemoteDataSource {
     suspend fun getPersonalLists(
         pagination: Pagination,
         userId: String = "me",
+        sorting: Sorting? = null,
     ): List<ListDto>
 
     suspend fun getPersonalListsMinimal(): List<V3MinimalList>

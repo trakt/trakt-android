@@ -330,4 +330,14 @@ class ListsApiClient(
         )
         cacheMarker.invalidate()
     }
+
+    override suspend fun reorderLists(listsIds: List<TraktId>) {
+        listsApi.postUsersListsReorder(
+            id = "me",
+            postUsersListsReorderRequest = PostUsersListsReorderRequest(
+                rank = listsIds.map { it.value },
+            ),
+        )
+        cacheMarker.invalidate()
+    }
 }

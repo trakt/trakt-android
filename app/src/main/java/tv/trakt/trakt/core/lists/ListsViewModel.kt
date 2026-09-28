@@ -135,7 +135,6 @@ internal class ListsViewModel(
                         .sortedByDescending { it.updatedAt }
                         .map(ListsItem::Smart)
                     Personal -> getPersonalListsUseCase.getLocalLists(pagination)
-                        .sortedByDescending { it.updatedAt }
                         .map(ListsItem::Custom)
                     Collaborations -> getCollaborationsListsUseCase.getLocalLists()
                         .sortedByDescending { it.updatedAt }
@@ -171,7 +170,6 @@ internal class ListsViewModel(
                         .sortedByDescending { it.updatedAt }
                         .map(ListsItem::Smart)
                     Personal -> getPersonalListsUseCase.getLocalLists(pagination)
-                        .sortedByDescending { it.updatedAt }
                         .map(ListsItem::Custom)
                     Collaborations -> getCollaborationsListsUseCase.getLocalLists()
                         .sortedByDescending { it.updatedAt }
@@ -194,7 +192,6 @@ internal class ListsViewModel(
                         .sortedByDescending { it.updatedAt }
                         .map(ListsItem::Smart)
                     Personal -> getPersonalListsUseCase.getLists(pagination)
-                        .sortedByDescending { it.updatedAt }
                         .map(ListsItem::Custom)
                     Collaborations -> getCollaborationsListsUseCase.getLists()
                         .sortedByDescending { it.updatedAt }

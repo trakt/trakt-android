@@ -160,7 +160,6 @@ internal class AllListsViewModel(
                             .sortedByDescending { it.updatedAt }
                             .map(ListsItem::Smart)
                         Personal -> getPersonalListsUseCase.getLocalLists(pagination)
-                            .sortedByDescending { it.updatedAt }
                             .map(ListsItem::Custom)
                         Collaborations -> getCollaborationsListsUseCase.getLocalLists()
                             .sortedByDescending { it.updatedAt }
@@ -201,7 +200,6 @@ internal class AllListsViewModel(
                             .sortedByDescending { it.updatedAt }
                             .map(ListsItem::Smart)
                         Personal -> getPersonalListsUseCase.getLists(pagination, notify = reload)
-                            .sortedByDescending { it.updatedAt }
                             .map(ListsItem::Custom)
                         Collaborations -> getCollaborationsListsUseCase.getLists()
                             .sortedByDescending { it.updatedAt }
@@ -256,9 +254,7 @@ internal class AllListsViewModel(
                     itemsState.update { state ->
                         val lists = state?.plus(newItems)
                         when (filterState.value) {
-                            Personal -> lists?.sortedByDescending { it.updatedAt }
                             Collaborations -> lists?.sortedByDescending { it.updatedAt }
-                            Liked -> lists
                             else -> lists
                         }?.toImmutableList()
                     }

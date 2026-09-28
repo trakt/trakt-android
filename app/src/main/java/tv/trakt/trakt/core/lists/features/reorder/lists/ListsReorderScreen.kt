@@ -1,42 +1,48 @@
-package tv.trakt.trakt.core.lists.features.reorder
+package tv.trakt.trakt.core.lists.features.reorder.lists
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toImmutableList
-import tv.trakt.trakt.common.helpers.extensions.toLocal
-import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.core.lists.features.reorder.ui.ReorderActions
 import tv.trakt.trakt.core.lists.features.reorder.ui.ReorderItem
 import tv.trakt.trakt.core.lists.features.reorder.ui.ReorderLayout
 import tv.trakt.trakt.core.lists.features.reorder.ui.ReorderUiState
+import tv.trakt.trakt.resources.R
 
 @Composable
-internal fun ListReorderScreen(
+internal fun ListsReorderScreen(
     modifier: Modifier = Modifier,
-    viewModel: ListReorderViewModel,
+    viewModel: ListsReorderViewModel,
     onNavigateBack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    val uiState = remember(state) {
+    val resources = LocalResources.current
+    val title = stringResource(R.string.list_title_personal_lists)
+
+    val uiState = remember(state, title) {
         ReorderUiState(
-            title = state.list?.name.orEmpty(),
+            title = title,
             items = state.items
-                ?.map { item ->
+                ?.map { list ->
                     ReorderItem(
-                        key = item.key,
-                        title = item.title,
-                        subtitle = item.released?.toLocal()?.year?.toString().orEmpty(),
-                        posterUrl = item.images?.getPosterUrl(),
-                        backdropUrl = item.images?.getFanartUrl(Images.Size.THUMB),
+                        key = list.ids.trakt.value.toString(),
+                        title = list.name,
+                        subtitle = list.privacy
+                            ?.let { resources.getString(it.displayRes) }
+                            .orEmpty(),
+                        posterUrl = list.images?.getPostersUrl()?.firstOrNull(),
+                        backdropUrl = null,
                     )
                 }
                 ?.toImmutableList(),
             changed = state.items != null &&
-                state.items?.map { it.itemId } != state.initialItemsOrder,
+                state.items?.map { it.ids.trakt } != state.initialItemsOrder,
             loading = state.loading.isLoading,
             error = state.error,
             done = state.done,

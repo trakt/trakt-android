@@ -89,4 +89,6 @@ interface ListsRemoteDataSource {
         listId: TraktId,
         itemsIds: List<Int>,
     )
+
+    suspend fun reorderLists(listsIds: List<TraktId>)
 }

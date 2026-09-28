@@ -20,10 +20,13 @@ class UserPersonalListsApiClient(
     override suspend fun getPersonalLists(
         pagination: Pagination,
         userId: String,
+        sorting: Sorting?,
     ): List<ListDto> {
         val response = usersApi.getUsersListsPersonal(
             id = userId,
             extended = "cloud9,images",
+            sortBy = sorting?.type?.value,
+            sortHow = sorting?.order?.value,
             page = pagination.page,
             limit = pagination.limit,
         )
