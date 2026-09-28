@@ -44,6 +44,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
@@ -93,6 +94,7 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.model.MediaType.Episode
 import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.applinks.AppLinkEvent
 import tv.trakt.trakt.core.applinks.AppLinkViewModel
 import tv.trakt.trakt.core.applinks.model.AppLink
@@ -151,6 +153,7 @@ internal fun MainScreen(
     newIntent: MutableState<Intent?>? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val appLinkState by appLinkViewModel.state.collectAsStateWithLifecycle()
 
     val scope = rememberCoroutineScope()
     val localContext = LocalContext.current
@@ -304,6 +307,7 @@ internal fun MainScreen(
         searchState = searchState,
         navController = navController,
         currentDestination = currentDestination,
+        appLinkLoading = appLinkState.loading.isLoading,
         onDismissWelcome = viewModel::dismissWelcome,
         onDismissCheckIn = viewModel::dismissCheckIn,
     )
@@ -324,6 +328,11 @@ internal fun MainScreen(
 
         navController.popBackStack()
     }
+
+    BackHandler(
+        enabled = appLinkState.loading.isLoading,
+        onBack = appLinkViewModel::cancelAppLink,
+    )
 }
 
 @Composable
@@ -333,6 +342,7 @@ private fun MainScreenContent(
     searchState: MainSearchStateHolder,
     navController: NavHostController,
     currentDestination: State<NavBackStackEntry?>,
+    appLinkLoading: Boolean,
     onDismissWelcome: () -> Unit = {},
     onDismissCheckIn: () -> Unit = {},
 ) {
@@ -494,6 +504,14 @@ private fun MainScreenContent(
             }
         }
 
+        AnimatedVisibility(
+            visible = appLinkLoading,
+            enter = fadeIn(tween(150)),
+            exit = fadeOut(tween(150)),
+        ) {
+            AppLinkLoadingMask()
+        }
+
         var overlayVisible by remember {
             mutableStateOf(customThemeConfig?.overlayVisible == true)
         }
@@ -534,6 +552,25 @@ private fun MainScreenContent(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun AppLinkLoadingMask() {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(TraktTheme.colors.backgroundPrimary.copy(alpha = 0.85F))
+            .clickable(
+                onClick = {},
+                indication = null,
+                interactionSource = null,
+            ),
+    ) {
+        FilmProgressIndicator(
+            color = Color.White,
+        )
     }
 }
 
