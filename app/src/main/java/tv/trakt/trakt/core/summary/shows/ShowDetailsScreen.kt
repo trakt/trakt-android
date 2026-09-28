@@ -391,8 +391,8 @@ internal fun ShowDetailsScreen(
     DateSelectionSheet(
         active = dateSheet.first,
         title = state.show?.title ?: "",
-        onResult = {
-            viewModel.addToWatched(watchAgain = dateSheet.second)
+        onResult = { result ->
+            viewModel.addToWatched(watchAgain = dateSheet.second, customDate = result)
         },
         onDismiss = {
             dateSheet = false to false
