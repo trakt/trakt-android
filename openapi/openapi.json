@@ -10142,6 +10142,10 @@
                           "type": "string",
                           "nullable": true
                         },
+                        "email": {
+                          "type": "string",
+                          "nullable": true
+                        },
                         "vip": {
                           "type": "boolean"
                         },
