@@ -15,16 +15,9 @@
   <string name="action_open_system_settings_tvos">Buka Pengaturan</string>
   <string name="action_toast_action_change_list">Ubah daftar</string>
   <string name="action_toast_action_failed">Itu tidak berhasil. Silakan coba lagi.</string>
-  <string name="action_toast_added_to_favorites"><b>%s</b> telah ditambahkan ke favorit Anda</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> telah ditambahkan ke daftar tontonan Anda</string>
   <string name="action_toast_added_to_watchlist_generic">Ditambahkan ke daftar tontonan Anda</string>
   <string name="action_toast_label_change_list">Ubah daftar tempat %s berada</string>
-  <string name="action_toast_label_undo">Batalkan perubahan terakhir</string>
-  <string name="action_toast_removed_from_favorites"><b>%s</b> telah dihapus dari favorit Anda</string>
-  <string name="action_toast_removed_from_history"><b>%s</b> telah dihapus dari riwayat tontonan Anda</string>
-  <string name="action_toast_removed_from_history_generic">Dihapus dari riwayat tontonan Anda</string>
-  <string name="action_toast_removed_from_watchlist"><b>%s</b> telah dihapus dari daftar tontonan Anda</string>
-  <string name="action_toast_removed_from_watchlist_generic">Dihapus dari daftar tontonan Anda</string>
   <string name="advanced_filter_label_parental_guide">%1$s: %2$s hingga %3$s</string>
   <string name="advanced_filter_label_ratings">Rating %1$s hingga %2$s</string>
   <string name="advanced_filter_label_release_year">Dirilis pada tahun %1$d hingga %2$d</string>
@@ -1257,7 +1250,6 @@
   <string name="page_title_widget_background">Latar Belakang</string>
   <string name="page_title_year_in_review">%s dalam tinjauan</string>
   <string name="page_title_year_to_date">Tahun Berjalan</string>
-  <string name="preview_feature_description_action_confirmations">Tampilkan notifikasi konfirmasi dengan opsi batalkan cepat saat Anda menambahkan, menghapus, memberi peringkat, atau menandai sesuatu sebagai telah ditonton.</string>
   <string name="preview_feature_description_edit_mode">Aktifkan kontrol untuk menyembunyikan atau menampilkan bagian yang dapat dikonfigurasi di seluruh aplikasi.</string>
   <string name="preview_feature_description_genre_picker">Pilih genre favorit Anda dari kisi visual, bukan daftar tag.</string>
   <string name="preview_feature_description_leaderboard">Peringkat orang yang Anda ikuti berdasarkan waktu tonton dan lihat posisi Anda di antara mereka.</string>
@@ -1269,7 +1261,6 @@
   <string name="preview_feature_description_soundtrack">Menambahkan bagian soundtrack ke halaman film dan acara, dengan pemutaran di mana lagu dapat dicocokkan.</string>
   <string name="preview_feature_description_up_next_smart_sort">Coba cara yang lebih cerdas untuk mengurutkan Lanjutkan Menonton Anda.</string>
   <string name="preview_feature_description_youtube_specials">Menambahkan unggahan YouTube gratis dari spesial stand-up ke Di mana untuk menonton di halaman film.</string>
-  <string name="preview_feature_title_action_confirmations">Konfirmasi tindakan</string>
   <string name="preview_feature_title_edit_mode">Mode Edit</string>
   <string name="preview_feature_title_genre_picker">Pemilih Genre</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>

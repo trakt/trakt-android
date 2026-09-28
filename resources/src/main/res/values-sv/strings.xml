@@ -15,16 +15,9 @@
   <string name="action_open_system_settings_tvos">Öppna inställningar</string>
   <string name="action_toast_action_change_list">Ändra lista</string>
   <string name="action_toast_action_failed">Det fungerade inte. Försök igen.</string>
-  <string name="action_toast_added_to_favorites"><b>%s</b> lades till i dina favoriter</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> lades till i din bevakningslista</string>
   <string name="action_toast_added_to_watchlist_generic">Lades till i din bevakningslista</string>
   <string name="action_toast_label_change_list">Ändra listorna som %s tillhör</string>
-  <string name="action_toast_label_undo">Ångra den senaste ändringen</string>
-  <string name="action_toast_removed_from_favorites"><b>%s</b> togs bort från dina favoriter</string>
-  <string name="action_toast_removed_from_history"><b>%s</b> togs bort från din historik</string>
-  <string name="action_toast_removed_from_history_generic">Togs bort från din historik</string>
-  <string name="action_toast_removed_from_watchlist"><b>%s</b> togs bort från din bevakningslista</string>
-  <string name="action_toast_removed_from_watchlist_generic">Togs bort från din bevakningslista</string>
   <string name="advanced_filter_label_parental_guide">%1$s: %2$s till %3$s</string>
   <string name="advanced_filter_label_ratings">Betyg från %1$s till %2$s</string>
   <string name="advanced_filter_label_release_year">Släppt mellan %1$d och %2$d</string>
@@ -1257,7 +1250,6 @@
   <string name="page_title_widget_background">Bakgrund</string>
   <string name="page_title_year_in_review">Sammanfattning för %s</string>
   <string name="page_title_year_to_date">År hittills</string>
-  <string name="preview_feature_description_action_confirmations">Visa en bekräftelseruta med en snabb ångra-funktion när du lägger till, tar bort, betygsätter eller markerar något som sett.</string>
   <string name="preview_feature_description_edit_mode">Aktivera kontroller för att dölja eller visa konfigurerbara sektioner i hela appen.</string>
   <string name="preview_feature_description_genre_picker">Välj dina favoritgenrer från ett visuellt rutnät istället för en lista med taggar.</string>
   <string name="preview_feature_description_leaderboard">Rankar de personer du följer efter tittartid och se var du hamnar bland dem.</string>
@@ -1269,7 +1261,6 @@
   <string name="preview_feature_description_soundtrack">Lägger till en soundtrack-sektion på film- och seriesidor, med uppspelning där ett spår kan matchas.</string>
   <string name="preview_feature_description_up_next_smart_sort">Testa ett smartare sätt att sortera det du tittar på.</string>
   <string name="preview_feature_description_youtube_specials">Lägger till gratis YouTube-uppladdningar av stand-up-specialare till Var man kan titta på filmsidor.</string>
-  <string name="preview_feature_title_action_confirmations">Bekräftelser för åtgärder</string>
   <string name="preview_feature_title_edit_mode">Redigeringsläge</string>
   <string name="preview_feature_title_genre_picker">Genreval</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>

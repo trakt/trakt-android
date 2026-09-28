@@ -15,16 +15,9 @@
   <string name="action_open_system_settings_tvos">Άνοιγμα Ρυθμίσεων</string>
   <string name="action_toast_action_change_list">Αλλαγή λίστας</string>
   <string name="action_toast_action_failed">Αυτό δεν λειτούργησε. Παρακαλώ δοκιμάστε ξανά.</string>
-  <string name="action_toast_added_to_favorites">Το <b>%s</b> προστέθηκε στα αγαπημένα σας</string>
   <string name="action_toast_added_to_watchlist">Το <b>%s</b> προστέθηκε στη λίστα παρακολούθησής σας</string>
   <string name="action_toast_added_to_watchlist_generic">Προστέθηκε στη λίστα παρακολούθησής σας</string>
   <string name="action_toast_label_change_list">Αλλαγή των λιστών στις οποίες ανήκει το %s</string>
-  <string name="action_toast_label_undo">Αναίρεση της τελευταίας αλλαγής</string>
-  <string name="action_toast_removed_from_favorites">Το <b>%s</b> αφαιρέθηκε από τα αγαπημένα σας</string>
-  <string name="action_toast_removed_from_history">Το <b>%s</b> αφαιρέθηκε από το ιστορικό σας</string>
-  <string name="action_toast_removed_from_history_generic">Αφαιρέθηκε από το ιστορικό σας</string>
-  <string name="action_toast_removed_from_watchlist">Το <b>%s</b> αφαιρέθηκε από τη λίστα παρακολούθησής σας</string>
-  <string name="action_toast_removed_from_watchlist_generic">Αφαιρέθηκε από τη λίστα παρακολούθησής σας</string>
   <string name="advanced_filter_label_parental_guide">%1$s: από %2$s έως %3$s</string>
   <string name="advanced_filter_label_ratings">Βαθμολογία από %1$s έως %2$s</string>
   <string name="advanced_filter_label_release_year">Κυκλοφόρησε από %1$d έως %2$d</string>
@@ -1257,7 +1250,6 @@
   <string name="page_title_widget_background">Φόντο</string>
   <string name="page_title_year_in_review">Ανασκόπηση του %s</string>
   <string name="page_title_year_to_date">Έτος μέχρι σήμερα</string>
-  <string name="preview_feature_description_action_confirmations">Εμφάνιση αναδυόμενης ειδοποίησης επιβεβαίωσης με γρήγορη αναίρεση όταν προσθέτετε, αφαιρείτε, βαθμολογείτε ή επισημαίνετε κάτι ως παρακολουθημένο.</string>
   <string name="preview_feature_description_edit_mode">Ενεργοποιήστε τα χειριστήρια για απόκρυψη ή εμφάνιση διαμορφώσιμων ενοτήτων σε όλη την εφαρμογή.</string>
   <string name="preview_feature_description_genre_picker">Επιλέξτε τα αγαπημένα σας είδη από ένα οπτικό πλέγμα αντί για μια λίστα ετικετών.</string>
   <string name="preview_feature_description_leaderboard">Κατατάξτε τους ανθρώπους που ακολουθείτε με βάση τον χρόνο παρακολούθησης και δείτε πού βρίσκεστε ανάμεσά τους.</string>
@@ -1269,7 +1261,6 @@
   <string name="preview_feature_description_soundtrack">Προσθέτει μια ενότητα σάουντρακ στις σελίδες ταινιών και εκπομπών, με αναπαραγωγή όπου ένα κομμάτι μπορεί να αντιστοιχιστεί.</string>
   <string name="preview_feature_description_up_next_smart_sort">Δοκιμάστε έναν πιο έξυπνο τρόπο να ταξινομήσετε τη Συνέχιση Παρακολούθησης.</string>
   <string name="preview_feature_description_youtube_specials">Προσθέτει δωρεάν αναρτήσεις YouTube από ειδικές εκπομπές stand-up στην ενότητα \"Πού να παρακολουθήσετε\" στις σελίδες ταινιών.</string>
-  <string name="preview_feature_title_action_confirmations">Επιβεβαιώσεις ενέργειας</string>
   <string name="preview_feature_title_edit_mode">Λειτουργία επεξεργασίας</string>
   <string name="preview_feature_title_genre_picker">Επιλογέας Είδους</string>
   <string name="preview_feature_title_leaderboard">Πάνθεον</string>

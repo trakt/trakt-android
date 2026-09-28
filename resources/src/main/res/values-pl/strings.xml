@@ -15,16 +15,9 @@
   <string name="action_open_system_settings_tvos">Otwórz ustawienia</string>
   <string name="action_toast_action_change_list">Zmień listę</string>
   <string name="action_toast_action_failed">Nie powiodło się. Spróbuj ponownie.</string>
-  <string name="action_toast_added_to_favorites"><b>%s</b> został(a) dodany(a) do ulubionych</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> został(a) dodany(a) do obserwowanych</string>
   <string name="action_toast_added_to_watchlist_generic">Dodano do obserwowanych</string>
   <string name="action_toast_label_change_list">Zmień listy, do których należy %s</string>
-  <string name="action_toast_label_undo">Cofnij ostatnią zmianę</string>
-  <string name="action_toast_removed_from_favorites"><b>%s</b> został(a) usunięty(a) z ulubionych</string>
-  <string name="action_toast_removed_from_history"><b>%s</b> został(a) usunięty(a) z historii</string>
-  <string name="action_toast_removed_from_history_generic">Usunięto z historii</string>
-  <string name="action_toast_removed_from_watchlist"><b>%s</b> został(a) usunięty(a) z obserwowanych</string>
-  <string name="action_toast_removed_from_watchlist_generic">Usunięto z obserwowanych</string>
   <string name="advanced_filter_label_parental_guide">%1$s: od %2$s do %3$s</string>
   <string name="advanced_filter_label_ratings">Ocena od %1$s do %2$s</string>
   <string name="advanced_filter_label_release_year">Wydany w latach %1$d–%2$d</string>
@@ -1257,7 +1250,6 @@
   <string name="page_title_widget_background">Tło</string>
   <string name="page_title_year_in_review">Podsumowanie roku %s</string>
   <string name="page_title_year_to_date">Od początku roku</string>
-  <string name="preview_feature_description_action_confirmations">Pokaż wyskakujące powiadomienie z możliwością szybkiego cofnięcia, gdy dodasz, usuniesz, ocenisz lub oznaczysz coś jako obejrzane.</string>
   <string name="preview_feature_description_edit_mode">Włącz sterowanie ukrywaniem lub pokazywaniem konfigurowalnych sekcji w całej aplikacji.</string>
   <string name="preview_feature_description_genre_picker">Wybieraj ulubione gatunki z siatki wizualnej zamiast z listy tagów.</string>
   <string name="preview_feature_description_leaderboard">Oceniaj osoby, które obserwujesz, według czasu oglądania i sprawdź, gdzie znajdziesz się wśród nich.</string>
@@ -1269,7 +1261,6 @@
   <string name="preview_feature_description_soundtrack">Dodaje sekcję ścieżek dźwiękowych do stron filmów i seriali, z możliwością odtwarzania, gdy utwór może zostać dopasowany.</string>
   <string name="preview_feature_description_up_next_smart_sort">Wypróbuj inteligentniejszy sposób sortowania pozycji Oglądaj dalej.</string>
   <string name="preview_feature_description_youtube_specials">Dodaje bezpłatne stand-upy z YouTube do sekcji „Gdzie oglądać” na stronach filmów.</string>
-  <string name="preview_feature_title_action_confirmations">Potwierdzenia akcji</string>
   <string name="preview_feature_title_edit_mode">Tryb edycji</string>
   <string name="preview_feature_title_genre_picker">Wybór Gatunków</string>
   <string name="preview_feature_title_leaderboard">Panteon</string>

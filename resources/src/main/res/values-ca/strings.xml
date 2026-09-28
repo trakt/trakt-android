@@ -15,16 +15,9 @@
   <string name="action_open_system_settings_tvos">Obre els ajustos</string>
   <string name="action_toast_action_change_list">Canvia de llista</string>
   <string name="action_toast_action_failed">No ha funcionat. Torna-ho a provar.</string>
-  <string name="action_toast_added_to_favorites"><b>%s</b> s\'ha afegit als teus favorits</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> s\'ha afegit a la teva llista de seguiment</string>
   <string name="action_toast_added_to_watchlist_generic">Afegit a la teva llista de seguiment</string>
   <string name="action_toast_label_change_list">Canvia les llistes a què pertany <b>%s</b></string>
-  <string name="action_toast_label_undo">Desfés l\'últim canvi</string>
-  <string name="action_toast_removed_from_favorites"><b>%s</b> s\'ha eliminat dels teus favorits</string>
-  <string name="action_toast_removed_from_history"><b>%s</b> s\'ha eliminat del teu historial</string>
-  <string name="action_toast_removed_from_history_generic">Eliminat del teu historial</string>
-  <string name="action_toast_removed_from_watchlist"><b>%s</b> s\'ha eliminat de la teva llista de seguiment</string>
-  <string name="action_toast_removed_from_watchlist_generic">Eliminat de la teva llista de seguiment</string>
   <string name="advanced_filter_label_parental_guide">%1$s: de %2$s a %3$s</string>
   <string name="advanced_filter_label_ratings">Valoració de %1$s a %2$s</string>
   <string name="advanced_filter_label_release_year">Estrenat entre %1$d i %2$d</string>
@@ -1257,7 +1250,6 @@
   <string name="page_title_widget_background">Fons</string>
   <string name="page_title_year_in_review">%s en resum</string>
   <string name="page_title_year_to_date">Acumulat de l\'any</string>
-  <string name="preview_feature_description_action_confirmations">Mostra un missatge de confirmació amb una opció de desfer ràpida quan afegeixes, elimines, valores o marques alguna cosa com a vista.</string>
   <string name="preview_feature_description_edit_mode">Habilita els controls per amagar o mostrar seccions configurables a tota l\'aplicació.</string>
   <string name="preview_feature_description_genre_picker">Tria els teus gèneres preferits d\'una graella visual en lloc d\'una llista d\'etiquetes.</string>
   <string name="preview_feature_description_leaderboard">Classifica les persones que segueixes per temps de visionat i mira on quedes entre elles.</string>
@@ -1269,7 +1261,6 @@
   <string name="preview_feature_description_soundtrack">Afegeix una secció de banda sonora a les pàgines de pel·lícules i sèries, amb reproducció on es pugui trobar una pista.</string>
   <string name="preview_feature_description_up_next_smart_sort">Prova una manera més intel·ligent d\'ordenar el teu \'Continua veient\'.</string>
   <string name="preview_feature_description_youtube_specials">Afegeix pujades gratuïtes de YouTube d\'especials de monòlegs a \"On mirar\" a les pàgines de pel·lícules.</string>
-  <string name="preview_feature_title_action_confirmations">Confirmacions d\'acció</string>
   <string name="preview_feature_title_edit_mode">Mode d\'edició</string>
   <string name="preview_feature_title_genre_picker">Selector de gènere</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
