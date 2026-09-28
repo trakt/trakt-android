@@ -44050,6 +44050,28 @@
             }
           },
           {
+            "name": "sort_by",
+            "in": "query",
+            "description": "The field to sort by",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "sort_how",
+            "in": "query",
+            "description": "The direction to sort in",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "nullable": true
+            }
+          },
+          {
             "name": "page",
             "in": "query",
             "description": "The page number to retrieve",
