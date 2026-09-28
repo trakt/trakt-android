@@ -44,6 +44,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
@@ -93,6 +94,11 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.model.MediaType.Episode
 import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
+import tv.trakt.trakt.core.applinks.AppLinkEvent
+import tv.trakt.trakt.core.applinks.AppLinkViewModel
+import tv.trakt.trakt.core.applinks.model.AppLink
+import tv.trakt.trakt.core.applinks.model.parseAppLink
 import tv.trakt.trakt.core.auth.model.AuthorizationException
 import tv.trakt.trakt.core.billing.navigation.navigateToBilling
 import tv.trakt.trakt.core.calendar.navigation.navigateToCalendar
@@ -141,11 +147,13 @@ private val navigationBarShape = RoundedCornerShape(topStart = 24.dp, topEnd = 2
 @Composable
 internal fun MainScreen(
     viewModel: MainViewModel,
+    appLinkViewModel: AppLinkViewModel,
     modifier: Modifier = Modifier,
     intent: Intent? = null,
     newIntent: MutableState<Intent?>? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val appLinkState by appLinkViewModel.state.collectAsStateWithLifecycle()
 
     val scope = rememberCoroutineScope()
     val localContext = LocalContext.current
@@ -207,7 +215,25 @@ internal fun MainScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        appLinkViewModel.events.collect { event ->
+            when (event) {
+                is AppLinkEvent.OpenShow -> navController.navigateToShow(event.showId)
+                is AppLinkEvent.OpenMovie -> navController.navigateToMovie(event.movieId)
+                AppLinkEvent.Error -> localSnackbar.showSnackbar(
+                    message = localRes.getString(R.string.error_text_unexpected_error_short),
+                )
+            }
+        }
+    }
+
     LaunchedEffect(intent, newIntent?.value) {
+        val appLink = extractAppLink(newIntent?.value ?: intent)
+        if (appLink != null) {
+            appLinkViewModel.openAppLink(appLink)
+            return@LaunchedEffect
+        }
+
         val processTextQuery = extractProcessTextQuery(newIntent?.value ?: intent)
         if (processTextQuery != null) {
             // Defer applying the query until the search destination is active,
@@ -281,6 +307,7 @@ internal fun MainScreen(
         searchState = searchState,
         navController = navController,
         currentDestination = currentDestination,
+        appLinkLoading = appLinkState.loading.isLoading,
         onDismissWelcome = viewModel::dismissWelcome,
         onDismissCheckIn = viewModel::dismissCheckIn,
     )
@@ -301,6 +328,11 @@ internal fun MainScreen(
 
         navController.popBackStack()
     }
+
+    BackHandler(
+        enabled = appLinkState.loading.isLoading,
+        onBack = appLinkViewModel::cancelAppLink,
+    )
 }
 
 @Composable
@@ -310,6 +342,7 @@ private fun MainScreenContent(
     searchState: MainSearchStateHolder,
     navController: NavHostController,
     currentDestination: State<NavBackStackEntry?>,
+    appLinkLoading: Boolean,
     onDismissWelcome: () -> Unit = {},
     onDismissCheckIn: () -> Unit = {},
 ) {
@@ -471,6 +504,14 @@ private fun MainScreenContent(
             }
         }
 
+        AnimatedVisibility(
+            visible = appLinkLoading,
+            enter = fadeIn(tween(150)),
+            exit = fadeOut(tween(150)),
+        ) {
+            AppLinkLoadingMask()
+        }
+
         var overlayVisible by remember {
             mutableStateOf(customThemeConfig?.overlayVisible == true)
         }
@@ -511,6 +552,25 @@ private fun MainScreenContent(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun AppLinkLoadingMask() {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(TraktTheme.colors.backgroundPrimary.copy(alpha = 0.85F))
+            .clickable(
+                onClick = {},
+                indication = null,
+                interactionSource = null,
+            ),
+    ) {
+        FilmProgressIndicator(
+            color = Color.White,
+        )
     }
 }
 
@@ -650,6 +710,17 @@ private fun LaunchedInstallPrompt(state: MainState) {
                 }
         }
     }
+}
+
+private fun extractAppLink(intent: Intent?): AppLink? {
+    if (intent == null || intent.action != Intent.ACTION_VIEW) {
+        return null
+    }
+
+    val appLink = intent.data?.let(::parseAppLink) ?: return null
+    intent.data = null
+
+    return appLink
 }
 
 private fun extractProcessTextQuery(intent: Intent?): String? {

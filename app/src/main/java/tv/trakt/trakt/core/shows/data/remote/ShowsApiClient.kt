@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.shows.data.remote
 import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.ShowsApi
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
+import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.CalendarMediaDto
@@ -217,8 +218,16 @@ internal class ShowsApiClient(
     }
 
     override suspend fun getShowDetails(showId: TraktId): ShowCalendarsDto {
+        return getShowSummary(showId.value.toString())
+    }
+
+    override suspend fun getShowDetails(showSlug: SlugId): ShowCalendarsDto {
+        return getShowSummary(showSlug.value)
+    }
+
+    private suspend fun getShowSummary(id: String): ShowCalendarsDto {
         val response = showsApi.getShowsSummary(
-            id = showId.value.toString(),
+            id = id,
             extended = "full,streaming_ids,cloud9,colors",
         )
 

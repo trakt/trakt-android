@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.summary.movies.usecases
 
 import tv.trakt.trakt.common.core.movies.data.local.MovieLocalDataSource
 import tv.trakt.trakt.common.model.Movie
+import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.movies.data.remote.MoviesRemoteDataSource
@@ -14,8 +15,16 @@ internal class GetMovieDetailsUseCase(
         return localSource.getMovie(movieId)
     }
 
-    suspend fun getMovie(movieId: TraktId): Movie? {
+    suspend fun getMovie(movieId: TraktId): Movie {
         return remoteSource.getDetails(movieId)
+            .let { Movie.fromDto(it) }
+            .also {
+                localSource.upsertMovies(listOf(it))
+            }
+    }
+
+    suspend fun getMovie(movieSlug: SlugId): Movie {
+        return remoteSource.getDetails(movieSlug)
             .let { Movie.fromDto(it) }
             .also {
                 localSource.upsertMovies(listOf(it))

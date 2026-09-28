@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.movies.data.remote
 import org.openapitools.client.apis.CalendarsApi
 import org.openapitools.client.apis.MoviesApi
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
+import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.CalendarMediaDto
@@ -173,8 +174,16 @@ internal class MoviesApiClient(
     }
 
     override suspend fun getDetails(movieId: TraktId): MovieCalendarDto {
+        return getMovieSummary(movieId.value.toString())
+    }
+
+    override suspend fun getDetails(movieSlug: SlugId): MovieCalendarDto {
+        return getMovieSummary(movieSlug.value)
+    }
+
+    private suspend fun getMovieSummary(id: String): MovieCalendarDto {
         val response = moviesApi.getMoviesSummary(
-            id = movieId.value.toString(),
+            id = id,
             extended = "full,streaming_ids,cloud9,colors",
         )
 

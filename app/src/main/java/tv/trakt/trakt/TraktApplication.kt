@@ -35,6 +35,7 @@ import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider.State.BACKGR
 import tv.trakt.trakt.common.helpers.lifecycle.AppLifecycleProvider.State.FOREGROUND
 import tv.trakt.trakt.common.networking.di.networkingApiModule
 import tv.trakt.trakt.common.networking.di.networkingModule
+import tv.trakt.trakt.core.applinks.di.appLinksModule
 import tv.trakt.trakt.core.auth.di.authModule
 import tv.trakt.trakt.core.billing.di.billingDataModule
 import tv.trakt.trakt.core.billing.di.billingModule
@@ -150,6 +151,7 @@ internal class TraktApplication : Application() {
                 networkingApiModule,
                 coilModule,
                 mainModule,
+                appLinksModule,
                 authModule,
                 filtersModule,
                 tutorialsModule,
