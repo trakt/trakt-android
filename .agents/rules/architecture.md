@@ -80,6 +80,11 @@ private fun MovieSummaryContent(
 - **Split `<Feature>Screen` (stateful) from `<Feature>Content` (stateless).** `Content` takes state
   and event lambdas only — easy to preview.
 - **No `@Preview` on stateful screen.** Preview `Content` variant.
+- **Keep previews in step with the composable.** When modifying a composable, update its existing
+  `@Preview` (or add one if missing) so it exercises the new parameters, states and visual variants
+  introduced by the change. A new enum case, chip variant or conditional branch gets preview
+  coverage. Skip only for stateful screens and composables that cannot render without runtime
+  collaborators.
 - **`when` over sealed `UiState` is exhaustive.** Add case to sealed type instead of `else ->` branch.
 
 ## ViewModels

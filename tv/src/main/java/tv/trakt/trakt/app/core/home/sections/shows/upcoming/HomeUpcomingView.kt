@@ -21,10 +21,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.app.common.preview.StatusPreviewData
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
-import tv.trakt.trakt.app.common.ui.chips.FinaleChip
+import tv.trakt.trakt.app.common.ui.chips.EpisodeStatusChip
 import tv.trakt.trakt.app.common.ui.chips.InfoChip
-import tv.trakt.trakt.app.common.ui.chips.PremiereChip
+import tv.trakt.trakt.app.common.ui.chips.NewChip
 import tv.trakt.trakt.app.common.ui.mediacards.EpisodeSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
@@ -36,6 +37,7 @@ import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.rememberEpisodeStatus
 import tv.trakt.trakt.resources.R
 
 @Composable
@@ -196,10 +198,16 @@ private fun ContentListItem(
             Column(
                 verticalArrangement = spacedBy(2.dp),
             ) {
-                if (item is HomeUpcomingItem.EpisodeItem) {
-                    when {
-                        item.episode.isPremiere() -> PremiereChip()
-                        item.episode.isFinale() -> FinaleChip()
+                when (item) {
+                    is HomeUpcomingItem.EpisodeItem -> {
+                        item.episodes
+                            .rememberEpisodeStatus()
+                            ?.let { EpisodeStatusChip(status = it) }
+                    }
+                    is HomeUpcomingItem.MovieItem -> {
+                        if (item.movie.isNew) {
+                            NewChip()
+                        }
                     }
                 }
 
@@ -279,6 +287,23 @@ private fun Preview() {
     TraktTheme {
         HomeUpcomingContent(
             state = HomeUpcomingState(),
+        )
+    }
+}
+
+@Preview(
+    device = "id:tv_4k",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun StatusPreview() {
+    TraktTheme {
+        HomeUpcomingContent(
+            state = HomeUpcomingState(
+                items = StatusPreviewData.upcomingItems,
+                isLoading = false,
+            ),
         )
     }
 }

@@ -8,6 +8,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
+import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.serializers.ImmutableListSerializer
 import tv.trakt.trakt.common.helpers.serializers.LocalDateSerializer
 import tv.trakt.trakt.common.model.Movie.Companion
@@ -58,6 +59,14 @@ data class Movie(
                 return true
             }
             return released?.isTodayOrBefore() == true
+        }
+
+    val isNew: Boolean
+        get() {
+            val released = released ?: return false
+            val today = nowLocalDay()
+            if (released.isAfter(today)) return status == MediaStatus.Released
+            return !released.plusDays(NEW_RELEASE_WINDOW.toDays()).isBefore(today)
         }
 
     val yearString: String =

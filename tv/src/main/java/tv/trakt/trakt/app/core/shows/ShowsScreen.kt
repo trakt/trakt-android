@@ -36,11 +36,11 @@ import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import tv.trakt.trakt.app.common.preview.StatusPreviewData
 import tv.trakt.trakt.app.common.ui.GenericErrorView
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
-import tv.trakt.trakt.app.common.ui.chips.FinaleChip
+import tv.trakt.trakt.app.common.ui.chips.EpisodeStatusChip
 import tv.trakt.trakt.app.common.ui.chips.InfoChip
-import tv.trakt.trakt.app.common.ui.chips.PremiereChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalViewAllCard
@@ -64,6 +64,7 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.rememberEpisodeStatus
 import tv.trakt.trakt.resources.R
 
 private val sections = listOf(
@@ -393,10 +394,9 @@ private fun ReleasesShowsList(
                             Column(
                                 verticalArrangement = spacedBy(2.dp),
                             ) {
-                                when {
-                                    item.episode.isPremiere() -> PremiereChip()
-                                    item.episode.isFinale() -> FinaleChip()
-                                }
+                                item.episodes
+                                    .rememberEpisodeStatus()
+                                    ?.let { EpisodeStatusChip(status = it) }
 
                                 InfoChip(
                                     text = item.releaseAt?.toLocal()?.relativeDateTimeString() ?: "TBA",
@@ -654,6 +654,7 @@ private fun Preview() {
                         show = PreviewData.show2,
                     ),
                 ).toImmutableList(),
+                releasesShows = StatusPreviewData.upcomingEpisodes,
             ),
             onShowClick = {},
             onViewAllTrendingClick = {},

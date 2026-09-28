@@ -30,10 +30,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
+import tv.trakt.trakt.app.common.preview.StatusPreviewData
 import tv.trakt.trakt.app.common.ui.GenericErrorView
-import tv.trakt.trakt.app.common.ui.chips.FinaleChip
+import tv.trakt.trakt.app.common.ui.chips.EpisodeStatusChip
 import tv.trakt.trakt.app.common.ui.chips.InfoChip
-import tv.trakt.trakt.app.common.ui.chips.PremiereChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.home.sections.shows.upcoming.model.HomeUpcomingItem
@@ -43,6 +43,7 @@ import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.rememberEpisodeStatus
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 
@@ -136,10 +137,9 @@ private fun ShowsReleasesViewAllContent(
                             Column(
                                 verticalArrangement = spacedBy(2.dp),
                             ) {
-                                when {
-                                    item.episode.isPremiere() -> PremiereChip()
-                                    item.episode.isFinale() -> FinaleChip()
-                                }
+                                item.episodes
+                                    .rememberEpisodeStatus()
+                                    ?.let { EpisodeStatusChip(status = it) }
 
                                 InfoChip(
                                     text = item.releaseAt?.toLocal()?.relativeDateTimeString() ?: "TBA",
@@ -225,6 +225,24 @@ private fun Preview() {
         ShowsReleasesViewAllContent(
             state = ShowsReleasesViewAllState(
                 isLoading = true,
+            ),
+            onEpisodeClick = { _, _ -> },
+        )
+    }
+}
+
+@Preview(
+    device = "id:tv_4k",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+    heightDp = 1000,
+)
+@Composable
+private fun StatusPreview() {
+    TraktTheme {
+        ShowsReleasesViewAllContent(
+            state = ShowsReleasesViewAllState(
+                items = StatusPreviewData.upcomingEpisodes,
             ),
             onEpisodeClick = { _, _ -> },
         )

@@ -33,10 +33,10 @@ import androidx.lifecycle.Lifecycle.Event.ON_CREATE
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
+import tv.trakt.trakt.app.common.preview.StatusPreviewData
 import tv.trakt.trakt.app.common.ui.EpisodeProgressBar
 import tv.trakt.trakt.app.common.ui.GenericErrorView
-import tv.trakt.trakt.app.common.ui.chips.FinaleChip
-import tv.trakt.trakt.app.common.ui.chips.PremiereChip
+import tv.trakt.trakt.app.common.ui.chips.EpisodeStatusChip
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.core.details.ui.BackdropImage
 import tv.trakt.trakt.app.core.home.HomeConfig.HOME_NEXT_PAGE_OFFSET
@@ -52,6 +52,7 @@ import tv.trakt.trakt.common.model.Images.Size.FULL
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.rememberEpisodeStatus
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 
@@ -246,14 +247,9 @@ private fun UpNextViewAllContent(
                                 Column(
                                     verticalArrangement = spacedBy(3.dp),
                                 ) {
-                                    when {
-                                        item.progress.nextEpisode?.isPremiere(
-                                            item.progress.isLatestAired,
-                                        ) == true -> PremiereChip()
-                                        item.progress.nextEpisode?.isFinale(
-                                            item.progress.isLatestAired,
-                                        ) == true -> FinaleChip()
-                                    }
+                                    item.progress.nextEpisode
+                                        ?.rememberEpisodeStatus(item.progress.isLatestAired)
+                                        ?.let { EpisodeStatusChip(status = it) }
 
                                     val remainingEpisodes = remember(item.progress.completed, item.progress.aired) {
                                         item.progress.remainingEpisodes
@@ -360,6 +356,26 @@ private fun Preview() {
     TraktTheme {
         UpNextViewAllContent(
             state = UpNextViewAllState(),
+            onShowClick = { _, _ -> },
+            onMovieClick = {},
+            onLoadNextPage = {},
+        )
+    }
+}
+
+@Preview(
+    device = "id:tv_4k",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+    heightDp = 1000,
+)
+@Composable
+private fun StatusPreview() {
+    TraktTheme {
+        UpNextViewAllContent(
+            state = UpNextViewAllState(
+                items = StatusPreviewData.progressShows,
+            ),
             onShowClick = { _, _ -> },
             onMovieClick = {},
             onLoadNextPage = {},
