@@ -93,6 +93,10 @@ import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.model.MediaType.Episode
 import tv.trakt.trakt.common.model.MediaType.Movie
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.applinks.AppLinkEvent
+import tv.trakt.trakt.core.applinks.AppLinkViewModel
+import tv.trakt.trakt.core.applinks.model.AppLink
+import tv.trakt.trakt.core.applinks.model.parseAppLink
 import tv.trakt.trakt.core.auth.model.AuthorizationException
 import tv.trakt.trakt.core.billing.navigation.navigateToBilling
 import tv.trakt.trakt.core.calendar.navigation.navigateToCalendar
@@ -141,6 +145,7 @@ private val navigationBarShape = RoundedCornerShape(topStart = 24.dp, topEnd = 2
 @Composable
 internal fun MainScreen(
     viewModel: MainViewModel,
+    appLinkViewModel: AppLinkViewModel,
     modifier: Modifier = Modifier,
     intent: Intent? = null,
     newIntent: MutableState<Intent?>? = null,
@@ -207,7 +212,25 @@ internal fun MainScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        appLinkViewModel.events.collect { event ->
+            when (event) {
+                is AppLinkEvent.OpenShow -> navController.navigateToShow(event.showId)
+                is AppLinkEvent.OpenMovie -> navController.navigateToMovie(event.movieId)
+                AppLinkEvent.Error -> localSnackbar.showSnackbar(
+                    message = localRes.getString(R.string.error_text_unexpected_error_short),
+                )
+            }
+        }
+    }
+
     LaunchedEffect(intent, newIntent?.value) {
+        val appLink = extractAppLink(newIntent?.value ?: intent)
+        if (appLink != null) {
+            appLinkViewModel.openAppLink(appLink)
+            return@LaunchedEffect
+        }
+
         val processTextQuery = extractProcessTextQuery(newIntent?.value ?: intent)
         if (processTextQuery != null) {
             // Defer applying the query until the search destination is active,
@@ -650,6 +673,17 @@ private fun LaunchedInstallPrompt(state: MainState) {
                 }
         }
     }
+}
+
+private fun extractAppLink(intent: Intent?): AppLink? {
+    if (intent == null || intent.action != Intent.ACTION_VIEW) {
+        return null
+    }
+
+    val appLink = intent.data?.let(::parseAppLink) ?: return null
+    intent.data = null
+
+    return appLink
 }
 
 private fun extractProcessTextQuery(intent: Intent?): String? {

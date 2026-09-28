@@ -1,5 +1,6 @@
 package tv.trakt.trakt.core.shows.data.remote
 
+import tv.trakt.trakt.common.model.SlugId
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.globalfilter.GlobalFilter
 import tv.trakt.trakt.common.networking.CalendarMediaDto
@@ -62,6 +63,8 @@ internal interface ShowsRemoteDataSource {
     ): List<CalendarShowDto>
 
     suspend fun getShowDetails(showId: TraktId): ShowCalendarsDto
+
+    suspend fun getShowDetails(showSlug: SlugId): ShowCalendarsDto
 
     suspend fun getExternalRatings(showId: TraktId): ExternalShowRatingsDto
 

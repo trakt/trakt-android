@@ -190,6 +190,7 @@ internal class MainActivity : AppCompatActivity() {
                 ) {
                     MainScreen(
                         viewModel = koinViewModel(),
+                        appLinkViewModel = koinViewModel(),
                         intent = intent,
                         newIntent = newIntent,
                     )
