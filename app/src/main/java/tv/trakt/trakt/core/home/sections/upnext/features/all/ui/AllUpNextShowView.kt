@@ -15,17 +15,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import tv.trakt.trakt.common.core.home.model.Progress
 import tv.trakt.trakt.common.core.home.model.UpNextShow
+import tv.trakt.trakt.common.helpers.extensions.nowUtc
 import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
+import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.EpisodeType
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.rememberEpisodeStatus
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.EpisodeProgressBar
-import tv.trakt.trakt.ui.components.chips.FinaleChip
-import tv.trakt.trakt.ui.components.chips.PremiereChip
+import tv.trakt.trakt.ui.components.chips.EpisodeStatusChip
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -40,14 +45,13 @@ internal fun AllUpNextShowView(
     onShowClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isPremiere = item.progress.nextEpisode?.isPremiere(item.progress.isLatestAired) == true
-    val isFinale = item.progress.nextEpisode?.isFinale(item.progress.isLatestAired) == true
+    val status = item.progress.nextEpisode?.rememberEpisodeStatus(item.progress.isLatestAired)
 
     PanelMediaCard(
         enabled = enabled,
         title = item.show.title,
         titleOriginal = when {
-            isPremiere || isFinale -> null
+            status != null -> null
             else -> item.show.titleOriginal
         },
         subtitle = item.progress.nextEpisode?.seasonEpisodeString() ?: "N/A",
@@ -109,16 +113,9 @@ internal fun AllUpNextShowView(
                 Column(
                     verticalArrangement = Arrangement.Absolute.spacedBy(4.dp),
                 ) {
-                    when {
-                        isPremiere -> PremiereChip(
-                            contentTextStyle = TraktTheme.typography.meta.copy(
-                                fontSize = 10.sp,
-                            ),
-                            containerColor = TraktTheme.colors.chipContainer,
-                            modifier = Modifier
-                                .height(20.dp),
-                        )
-                        isFinale -> FinaleChip(
+                    status?.let {
+                        EpisodeStatusChip(
+                            status = it,
                             contentTextStyle = TraktTheme.typography.meta.copy(
                                 fontSize = 10.sp,
                             ),
@@ -167,4 +164,44 @@ internal fun AllUpNextShowView(
         modifier = modifier
             .padding(bottom = TraktTheme.spacing.mainListVerticalSpace),
     )
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    TraktTheme {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            listOf(
+                PreviewData.episode1 to false,
+                PreviewData.newPremiereEpisode to false,
+                PreviewData.newFinaleEpisode to false,
+                PreviewData.premiereEpisode to false,
+                PreviewData.finaleEpisode to false,
+                PreviewData.episode1.copy(type = EpisodeType.MID_SEASON_PREMIERE) to true,
+            ).forEach { (episode, isLatestAired) ->
+                AllUpNextShowView(
+                    item = UpNextShow(
+                        progress = Progress(
+                            lastWatchedAt = nowUtc(),
+                            aired = 12,
+                            completed = 4,
+                            stats = null,
+                            nextEpisode = episode,
+                            lastEpisode = null,
+                            isLatestAired = isLatestAired,
+                        ),
+                        show = PreviewData.show1,
+                    ),
+                    enabled = true,
+                    onClick = {},
+                    onLongClick = {},
+                    onCheckClick = {},
+                    onCheckLongClick = {},
+                    onShowClick = {},
+                )
+            }
+        }
+    }
 }

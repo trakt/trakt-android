@@ -22,20 +22,32 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import tv.trakt.trakt.common.model.EpisodeStatus
+import tv.trakt.trakt.common.ui.theme.colors.Blue500
 import tv.trakt.trakt.common.ui.theme.colors.Green600
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
-internal fun FinaleChip(
+internal fun EpisodeStatusChip(
+    status: EpisodeStatus,
     modifier: Modifier = Modifier,
     contentTextStyle: TextStyle = TraktTheme.typography.meta,
     containerColor: Color = TraktTheme.colors.chipContainerOnContent,
 ) {
+    val (textRes, dotColor) = when (status) {
+        EpisodeStatus.Premiere -> R.string.tag_text_premiere to Green600
+        EpisodeStatus.Finale -> R.string.tag_text_finale to Red500
+        EpisodeStatus.New -> R.string.tag_text_new to Blue500
+        EpisodeStatus.NewPremiere -> R.string.tag_text_new_premiere to Green600
+        EpisodeStatus.NewFinale -> R.string.tag_text_new_finale to Red500
+    }
+
     StatusChip(
-        text = stringResource(R.string.tag_text_finale),
-        dotColor = Red500,
+        text = stringResource(textRes),
+        dotColor = dotColor,
         contentTextStyle = contentTextStyle,
         containerColor = containerColor,
         modifier = modifier,
@@ -43,14 +55,13 @@ internal fun FinaleChip(
 }
 
 @Composable
-internal fun PremiereChip(
+internal fun NewChip(
     modifier: Modifier = Modifier,
     contentTextStyle: TextStyle = TraktTheme.typography.meta,
     containerColor: Color = TraktTheme.colors.chipContainerOnContent,
 ) {
-    StatusChip(
-        text = stringResource(R.string.tag_text_premiere),
-        dotColor = Green600,
+    EpisodeStatusChip(
+        status = EpisodeStatus.New,
         contentTextStyle = contentTextStyle,
         containerColor = containerColor,
         modifier = modifier,
@@ -107,12 +118,33 @@ private fun Preview() {
         Column(
             verticalArrangement = spacedBy(8.dp),
         ) {
-            FinaleChip(
-                modifier = Modifier.height(20.dp),
-            )
-            PremiereChip(
-                modifier = Modifier.height(20.dp),
-            )
+            EpisodeStatus.entries.forEach {
+                EpisodeStatusChip(
+                    status = it,
+                    modifier = Modifier.height(20.dp),
+                )
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun CompactPreview() {
+    TraktTheme {
+        Column(
+            verticalArrangement = spacedBy(8.dp),
+        ) {
+            EpisodeStatus.entries.forEach {
+                EpisodeStatusChip(
+                    status = it,
+                    contentTextStyle = TraktTheme.typography.meta.copy(
+                        fontSize = 10.sp,
+                    ),
+                    containerColor = TraktTheme.colors.chipContainer,
+                    modifier = Modifier.height(20.dp),
+                )
+            }
         }
     }
 }

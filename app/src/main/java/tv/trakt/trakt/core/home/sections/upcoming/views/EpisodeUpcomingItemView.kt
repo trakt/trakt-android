@@ -19,11 +19,11 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.rememberEpisodeStatus
 import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.chips.FinaleChip
+import tv.trakt.trakt.ui.components.chips.EpisodeStatusChip
 import tv.trakt.trakt.ui.components.chips.InfoChip
-import tv.trakt.trakt.ui.components.chips.PremiereChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -48,9 +48,11 @@ internal fun EpisodeUpcomingItemView(
                 verticalAlignment = CenterVertically,
             ) {
                 val shadowModifier = Modifier.shadow(2.dp, RoundedCornerShape(100))
-                when {
-                    item.episode.isPremiere(isLatestAired = midReleases) -> PremiereChip(modifier = shadowModifier)
-                    item.episode.isFinale(isLatestAired = midReleases) -> FinaleChip(modifier = shadowModifier)
+                item.episodes.rememberEpisodeStatus(isLatestAired = midReleases)?.let {
+                    EpisodeStatusChip(
+                        status = it,
+                        modifier = shadowModifier,
+                    )
                 }
 
                 InfoChip(
@@ -106,14 +108,27 @@ internal fun EpisodeUpcomingItemView(
 @Composable
 private fun Preview() {
     TraktTheme {
-        EpisodeUpcomingItemView(
-            item = CalendarItem.EpisodeItem(
-                show = PreviewData.show1,
-                episodes = persistentListOf(PreviewData.episode1),
-                watched = false,
-            ),
-            onClick = {},
-            onShowClick = {},
-        )
+        Column(
+            verticalArrangement = spacedBy(16.dp),
+        ) {
+            listOf(
+                PreviewData.episode1,
+                PreviewData.newEpisode,
+                PreviewData.newPremiereEpisode,
+                PreviewData.newFinaleEpisode,
+                PreviewData.premiereEpisode,
+                PreviewData.finaleEpisode,
+            ).forEach { episode ->
+                EpisodeUpcomingItemView(
+                    item = CalendarItem.EpisodeItem(
+                        watched = false,
+                        show = PreviewData.show1,
+                        episodes = persistentListOf(episode),
+                    ),
+                    onClick = {},
+                    onShowClick = {},
+                )
+            }
+        }
     }
 }

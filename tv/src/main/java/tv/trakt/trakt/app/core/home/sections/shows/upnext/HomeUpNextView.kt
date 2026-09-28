@@ -24,10 +24,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.material3.Text
 import kotlinx.collections.immutable.ImmutableList
 import org.koin.androidx.compose.koinViewModel
+import tv.trakt.trakt.app.common.preview.StatusPreviewData
 import tv.trakt.trakt.app.common.ui.EpisodeProgressBar
 import tv.trakt.trakt.app.common.ui.PositionFocusLazyRow
-import tv.trakt.trakt.app.common.ui.chips.FinaleChip
-import tv.trakt.trakt.app.common.ui.chips.PremiereChip
+import tv.trakt.trakt.app.common.ui.chips.EpisodeStatusChip
 import tv.trakt.trakt.app.common.ui.mediacards.EpisodeSkeletonCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.app.common.ui.mediacards.HorizontalViewAllCard
@@ -44,6 +44,7 @@ import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.rememberEpisodeStatus
 import tv.trakt.trakt.resources.R
 
 private val sections = listOf(
@@ -221,10 +222,9 @@ private fun ContentShowListItem(
             Column(
                 verticalArrangement = spacedBy(3.dp),
             ) {
-                when {
-                    item.progress.nextEpisode?.isPremiere(item.progress.isLatestAired) == true -> PremiereChip()
-                    item.progress.nextEpisode?.isFinale(item.progress.isLatestAired) == true -> FinaleChip()
-                }
+                item.progress.nextEpisode
+                    ?.rememberEpisodeStatus(item.progress.isLatestAired)
+                    ?.let { EpisodeStatusChip(status = it) }
 
                 val remainingEpisodes = remember(item.progress.completed, item.progress.aired) {
                     item.progress.remainingEpisodes
@@ -360,6 +360,23 @@ private fun Preview() {
     TraktTheme {
         HomeUpNextContent(
             state = HomeUpNextState(),
+        )
+    }
+}
+
+@Preview(
+    device = "id:tv_4k",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun StatusPreview() {
+    TraktTheme {
+        HomeUpNextContent(
+            state = HomeUpNextState(
+                items = StatusPreviewData.progressShows,
+                isLoading = false,
+            ),
         )
     }
 }

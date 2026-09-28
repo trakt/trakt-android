@@ -25,11 +25,6 @@ fun Episode.isNew(now: Instant = nowUtcInstant()): Boolean {
     return !released.plus(NEW_RELEASE_WINDOW).isBefore(now)
 }
 
-/**
- * Resolves the card status tag for a single episode or a same-day batch of episodes.
- * A premiere anywhere in the batch wins over a finale. Mid-season milestones only count
- * when [isLatestAired] is true.
- */
 fun List<Episode>.episodeStatus(
     isLatestAired: Boolean = false,
     now: Instant = nowUtcInstant(),

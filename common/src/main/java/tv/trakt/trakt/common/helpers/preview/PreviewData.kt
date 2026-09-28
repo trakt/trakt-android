@@ -5,6 +5,7 @@ import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.EpisodeType
 import tv.trakt.trakt.common.model.Ids
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.ImdbId
@@ -159,6 +160,39 @@ object PreviewData {
         firstAired = nowUtcInstant(),
         effectiveReleaseDate = nowUtcInstant(),
         updatedAt = nowUtcInstant(),
+    )
+
+    val newEpisode = episode1.copy(
+        ids = episode1.ids.copy(trakt = TraktId(2)),
+        firstAired = nowUtcInstant().minus(2, DAYS),
+        effectiveReleaseDate = nowUtcInstant().minus(2, DAYS),
+    )
+
+    val newPremiereEpisode = newEpisode.copy(
+        ids = episode1.ids.copy(trakt = TraktId(3)),
+        type = EpisodeType.SEASON_PREMIERE,
+    )
+
+    val newFinaleEpisode = newEpisode.copy(
+        ids = episode1.ids.copy(trakt = TraktId(4)),
+        type = EpisodeType.SEASON_FINALE,
+    )
+
+    val premiereEpisode = episode1.copy(
+        ids = episode1.ids.copy(trakt = TraktId(5)),
+        type = EpisodeType.SERIES_PREMIERE,
+        firstAired = nowUtcInstant().plus(3, DAYS),
+        effectiveReleaseDate = nowUtcInstant().plus(3, DAYS),
+    )
+
+    val finaleEpisode = premiereEpisode.copy(
+        ids = episode1.ids.copy(trakt = TraktId(6)),
+        type = EpisodeType.SERIES_FINALE,
+    )
+
+    val newMovie = movie1.copy(
+        ids = movie1.ids.copy(trakt = TraktId(3)),
+        released = nowLocalDay().minusDays(2),
     )
 
     val season1 = Season(

@@ -2,8 +2,10 @@ package tv.trakt.trakt.core.home.sections.upcoming.views
 
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -17,6 +19,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.InfoChip
+import tv.trakt.trakt.ui.components.chips.NewChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -32,11 +35,20 @@ internal fun MovieUpcomingItemView(
         containerImageUrl = item.movie.images?.getFanartUrl(),
         onClick = { onClick(item.movie.ids.trakt) },
         cardContent = {
-            InfoChip(
-                text = item.releasedAt?.toLocal()?.relativeDateTimeString() ?: "N/A",
-                iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
-                containerColor = TraktTheme.colors.chipContainerOnContent,
-            )
+            Row(
+                horizontalArrangement = spacedBy(3.dp),
+                verticalAlignment = CenterVertically,
+            ) {
+                if (item.movie.isNew) {
+                    NewChip()
+                }
+
+                InfoChip(
+                    text = item.releasedAt?.toLocal()?.relativeDateTimeString() ?: "N/A",
+                    iconPainter = painterResource(R.drawable.ic_calendar_upcoming),
+                    containerColor = TraktTheme.colors.chipContainerOnContent,
+                )
+            }
         },
         footerContent = {
             Column(
@@ -67,11 +79,20 @@ internal fun MovieUpcomingItemView(
 @Composable
 private fun Preview() {
     TraktTheme {
-        MovieUpcomingItemView(
-            item = CalendarItem.MovieItem(
-                movie = PreviewData.movie1,
-                watched = false,
-            ),
-        )
+        Column(
+            verticalArrangement = spacedBy(16.dp),
+        ) {
+            listOf(
+                PreviewData.newMovie,
+                PreviewData.movie1.copy(released = PreviewData.movie1.released?.minusDays(30)),
+            ).forEach { movie ->
+                MovieUpcomingItemView(
+                    item = CalendarItem.MovieItem(
+                        watched = false,
+                        movie = movie,
+                    ),
+                )
+            }
+        }
     }
 }

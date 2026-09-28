@@ -9,8 +9,6 @@ import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.helpers.serializers.InstantSerializer
-import tv.trakt.trakt.common.model.EpisodeType.MID_SEASON_FINALE
-import tv.trakt.trakt.common.model.EpisodeType.MID_SEASON_PREMIERE
 import tv.trakt.trakt.common.networking.EpisodeCalendarDto
 import tv.trakt.trakt.common.networking.EpisodeCalendarsDto
 import tv.trakt.trakt.common.networking.EpisodeDto
@@ -83,20 +81,6 @@ data class Episode(
             else -> string
         }
     }
-
-    @Composable
-    fun isPremiere(isLatestAired: Boolean = false): Boolean =
-        remember(type, isLatestAired) {
-            if (type?.isPremiere == true) return@remember true
-            type == MID_SEASON_PREMIERE && isLatestAired
-        }
-
-    @Composable
-    fun isFinale(isLatestAired: Boolean = false): Boolean =
-        remember(type, isLatestAired) {
-            if (type?.isFinale == true) return@remember true
-            type == MID_SEASON_FINALE && isLatestAired
-        }
 }
 
 fun Episode.Companion.fromDto(dto: EpisodeDto): Episode {

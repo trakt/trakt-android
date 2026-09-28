@@ -31,12 +31,12 @@ import tv.trakt.trakt.common.helpers.extensions.onClickCombined
 import tv.trakt.trakt.common.helpers.extensions.timeFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.rememberEpisodeStatus
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.chips.FinaleChip
+import tv.trakt.trakt.ui.components.chips.EpisodeStatusChip
 import tv.trakt.trakt.ui.components.chips.InfoChip
-import tv.trakt.trakt.ui.components.chips.PremiereChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.temporal.ChronoUnit.DAYS
@@ -72,9 +72,11 @@ internal fun CalendarEpisodeItemView(
                     item.releasedAt?.toLocal()?.format(timeFormat)?.capitalize()
                 }
 
-                when {
-                    item.episode.isPremiere(isLatestAired = midReleases) -> PremiereChip(modifier = shadowModifier)
-                    item.episode.isFinale(isLatestAired = midReleases) -> FinaleChip(modifier = shadowModifier)
+                item.episodes.rememberEpisodeStatus(isLatestAired = midReleases)?.let {
+                    EpisodeStatusChip(
+                        status = it,
+                        modifier = shadowModifier,
+                    )
                 }
 
                 timeString?.let {
@@ -200,47 +202,24 @@ private fun Preview() {
         Column(
             verticalArrangement = spacedBy(16.dp),
         ) {
-            CalendarEpisodeItemView(
-                item = CalendarItem.EpisodeItem(
-                    watched = false,
-                    show = PreviewData.show1,
-                    episodes = persistentListOf(
-                        PreviewData.episode1.copy(
-                            firstAired = nowUtcInstant().minus(3, DAYS),
-                        ),
+            listOf(
+                PreviewData.episode1,
+                PreviewData.newEpisode,
+                PreviewData.newPremiereEpisode,
+                PreviewData.newFinaleEpisode,
+                PreviewData.premiereEpisode,
+                PreviewData.finaleEpisode,
+            ).forEach { episode ->
+                CalendarEpisodeItemView(
+                    item = CalendarItem.EpisodeItem(
+                        watched = false,
+                        show = PreviewData.show1,
+                        episodes = persistentListOf(episode),
                     ),
-                ),
-                onClick = {},
-                onShowClick = {},
-            )
-
-            CalendarEpisodeItemView(
-                item = CalendarItem.EpisodeItem(
-                    watched = true,
-                    show = PreviewData.show1,
-                    episodes = persistentListOf(
-                        PreviewData.episode1.copy(
-                            firstAired = nowUtcInstant().minus(3, DAYS),
-                        ),
-                    ),
-                ),
-                onClick = {},
-                onShowClick = {},
-            )
-
-            CalendarEpisodeItemView(
-                item = CalendarItem.EpisodeItem(
-                    watched = false,
-                    show = PreviewData.show1,
-                    episodes = persistentListOf(
-                        PreviewData.episode1.copy(
-                            firstAired = nowUtcInstant().minus(3, DAYS),
-                        ),
-                    ),
-                ),
-                onClick = {},
-                onShowClick = {},
-            )
+                    onClick = {},
+                    onShowClick = {},
+                )
+            }
         }
     }
 }

@@ -35,6 +35,7 @@ import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.calendar.model.CalendarItem
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.InfoChip
+import tv.trakt.trakt.ui.components.chips.NewChip
 import tv.trakt.trakt.ui.components.mediacards.HorizontalMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
 
@@ -64,6 +65,10 @@ internal fun CalendarMovieItemView(
                 horizontalArrangement = spacedBy(3.dp),
                 verticalAlignment = CenterVertically,
             ) {
+                if (item.movie.isNew) {
+                    NewChip(modifier = shadowModifier)
+                }
+
                 val timeFormat = timeFormat()
                 val timeString = remember(item.releasedAt) {
                     item.releasedAt?.toLocal()?.format(timeFormat)?.capitalize()
@@ -177,11 +182,20 @@ internal fun CalendarMovieItemView(
 @Composable
 private fun Preview() {
     TraktTheme {
-        CalendarMovieItemView(
-            item = CalendarItem.MovieItem(
-                watched = true,
-                movie = PreviewData.movie1,
-            ),
-        )
+        Column(
+            verticalArrangement = spacedBy(16.dp),
+        ) {
+            listOf(
+                PreviewData.newMovie,
+                PreviewData.movie1.copy(released = PreviewData.movie1.released?.minusDays(30)),
+            ).forEach { movie ->
+                CalendarMovieItemView(
+                    item = CalendarItem.MovieItem(
+                        watched = true,
+                        movie = movie,
+                    ),
+                )
+            }
+        }
     }
 }
