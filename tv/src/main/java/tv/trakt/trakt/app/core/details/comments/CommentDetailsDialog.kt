@@ -64,6 +64,7 @@ import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
@@ -135,9 +136,14 @@ private fun CommentDetailsContent(
                 .focusable(),
         )
 
+        val linkColor = TraktTheme.colors.textPrimary
+        val markdownText = remember(comment.commentNoSpoilers, linkColor) {
+            comment.commentNoSpoilers.toMarkdownText(linkColor)
+        }
+
         if (comment.commentNoSpoilers.isNotBlank()) {
             Text(
-                text = comment.commentNoSpoilers,
+                text = markdownText,
                 style = TraktTheme.typography.paragraphSmall,
                 color = TraktTheme.colors.textSecondary,
                 maxLines = if (isExpanded) Int.MAX_VALUE else 3,

@@ -72,6 +72,7 @@ import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
@@ -395,9 +396,10 @@ private fun LazyListScope.userProfilePublicContent(
                     maxLines = 1,
                     overflow = Ellipsis,
                 )
+                val linkColor = TraktTheme.colors.textPrimary
                 Text(
-                    text = remember(state.user.about) {
-                        (state.user.about ?: "").ifEmpty { "-" }
+                    text = remember(state.user.about, linkColor) {
+                        (state.user.about ?: "").ifEmpty { "-" }.toMarkdownText(linkColor)
                     },
                     style = TraktTheme.typography.paragraphSmaller.copy(
                         fontSize = 13.sp,

@@ -50,6 +50,7 @@ import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
+import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CommentGif
@@ -102,9 +103,14 @@ private fun CommentCardContent(comment: Comment) {
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
+        val linkColor = TraktTheme.colors.textPrimary
+        val markdownText = remember(comment.commentNoSpoilers, linkColor) {
+            comment.commentNoSpoilers.toMarkdownText(linkColor)
+        }
+
         val body = @Composable { modifier: Modifier ->
             Text(
-                text = comment.commentNoSpoilers,
+                text = markdownText,
                 style = TraktTheme.typography.paragraphSmall,
                 color = TraktTheme.colors.textSecondary,
                 maxLines = 3,

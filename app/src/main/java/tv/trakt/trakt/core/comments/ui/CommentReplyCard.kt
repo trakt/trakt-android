@@ -56,11 +56,11 @@ import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.DevicePreviewRtl
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.googleTranslateActivityInfo
-import tv.trakt.trakt.common.helpers.extensions.highlightMentions
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openGoogleTranslate
 import tv.trakt.trakt.common.helpers.extensions.toLocal
+import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CommentGif
@@ -187,14 +187,17 @@ private fun CommentReplyCardContent(
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
-        val mentionsColor = TraktTheme.colors.textPrimary
-        val mentionsText = remember(comment) {
-            comment.commentNoSpoilers.highlightMentions(mentionsColor)
+        val highlightColor = TraktTheme.colors.textPrimary
+        val markdownText = remember(comment, highlightColor) {
+            comment.commentNoSpoilers.toMarkdownText(
+                linkColor = highlightColor,
+                mentionColor = highlightColor,
+            )
         }
 
         val spoilerBlurred = comment.hasSpoilers && !isUserReply && !showSpoilers
         CommentReplyBody(
-            text = mentionsText,
+            text = markdownText,
             blurred = spoilerBlurred,
             onRevealSpoiler = { showSpoilers = true },
         )

@@ -100,6 +100,8 @@ dependencies {
     implementation(libs.kotlin.immutable.collections)
     implementation(libs.timber)
 
+    testImplementation(libs.junit)
+
     api(libs.coil.compose)
     api(libs.coil.network)
     api(libs.coil.svg)

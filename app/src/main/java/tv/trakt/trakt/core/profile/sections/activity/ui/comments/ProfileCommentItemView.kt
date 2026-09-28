@@ -51,6 +51,7 @@ import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toLocal
+import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CommentGif
@@ -159,8 +160,11 @@ private fun CommentCardContent(
 
         val body = @Composable {
             if (item.comment.commentNoSpoilers.isNotBlank()) {
+                val linkColor = TraktTheme.colors.textPrimary
                 Text(
-                    text = item.comment.commentNoSpoilers,
+                    text = remember(item.comment.commentNoSpoilers, linkColor) {
+                        item.comment.commentNoSpoilers.toMarkdownText(linkColor)
+                    },
                     style = TraktTheme.typography.paragraphSmall.copy(
                         fontSize = 13.sp,
                         lineHeight = 1.3.em,

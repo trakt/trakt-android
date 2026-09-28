@@ -64,6 +64,7 @@ import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openGoogleTranslate
 import tv.trakt.trakt.common.helpers.extensions.toLocal
+import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CommentGif
@@ -231,10 +232,15 @@ private fun CommentContent(
             modifier = Modifier.padding(top = 5.dp),
         )
 
+        val linkColor = TraktTheme.colors.textPrimary
+        val markdownText = remember(comment.commentNoSpoilers, linkColor) {
+            comment.commentNoSpoilers.toMarkdownText(linkColor)
+        }
+
         if (comment.commentNoSpoilers.isNotBlank()) {
             SelectionContainer {
                 Text(
-                    text = comment.commentNoSpoilers,
+                    text = markdownText,
                     style = TraktTheme.typography.paragraphSmall.copy(lineHeight = 1.3.em),
                     color = TraktTheme.colors.textSecondary,
                     overflow = if (isCollapsed) TextOverflow.Ellipsis else TextOverflow.Clip,

@@ -56,6 +56,7 @@ import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.DevicePreviewRtl
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
+import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Images
 import tv.trakt.trakt.common.model.User
@@ -308,8 +309,11 @@ private fun CustomListHeader(
 
                 if (descriptionVisible) {
                     if (!list.description.isNullOrBlank()) {
+                        val linkColor = TraktTheme.colors.textPrimary
                         Text(
-                            text = list.description ?: "",
+                            text = remember(list.description, linkColor) {
+                                (list.description ?: "").toMarkdownText(linkColor)
+                            },
                             style = TraktTheme.typography.cardSubtitle.copy(fontSize = 12.sp),
                             color = TraktTheme.colors.textSecondary,
                             maxLines = 1,
