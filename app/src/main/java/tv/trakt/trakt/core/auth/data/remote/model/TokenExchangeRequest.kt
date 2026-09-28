@@ -15,8 +15,6 @@ internal data class TokenExchangeRequest(
     val code: String,
     @SerialName("client_id")
     val clientId: String,
-    @SerialName("client_secret")
-    val clientSecret: String,
     @SerialName("redirect_uri")
     val redirectUri: String,
     /**
@@ -25,7 +23,7 @@ internal data class TokenExchangeRequest(
      * and has no corresponding challenge to prove against.
      */
     @SerialName("code_verifier")
-    val codeVerifier: String?,
+    val codeVerifier: String,
     @SerialName("grant_type")
     val grantType: String,
 )

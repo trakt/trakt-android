@@ -25,7 +25,7 @@ internal class AuthorizeUserUseCase(
 ) {
     suspend fun authorizeByCode(
         code: String,
-        codeVerifier: String?,
+        codeVerifier: String,
     ) {
         val token = remoteSource.getAccessToken(code, codeVerifier)
         tokenProvider.saveToken(token)

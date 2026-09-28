@@ -190,7 +190,6 @@ internal fun HttpClientConfig<*>.applyAuthorizationConfig(
                                 TraktRefreshToken(
                                     refreshToken = currentTokens.refreshToken,
                                     clientId = BuildConfig.TRAKT_API_KEY,
-                                    clientSecret = BuildConfig.TRAKT_API_SECRET,
                                     type = "refresh_token",
                                 ),
                             )
