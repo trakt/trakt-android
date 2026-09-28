@@ -15,16 +15,9 @@
   <string name="action_open_system_settings_tvos">Open instellingen</string>
   <string name="action_toast_action_change_list">Lijst wijzigen</string>
   <string name="action_toast_action_failed">Dat is mislukt. Probeer het opnieuw.</string>
-  <string name="action_toast_added_to_favorites"><b>%s</b> is toegevoegd aan je favorieten</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> is toegevoegd aan je kijklijst</string>
   <string name="action_toast_added_to_watchlist_generic">Toegevoegd aan je kijklijst</string>
   <string name="action_toast_label_change_list">Wijzig de lijsten waartoe %s behoort</string>
-  <string name="action_toast_label_undo">Laatste wijziging ongedaan maken</string>
-  <string name="action_toast_removed_from_favorites"><b>%s</b> is verwijderd uit je favorieten</string>
-  <string name="action_toast_removed_from_history"><b>%s</b> is verwijderd uit je geschiedenis</string>
-  <string name="action_toast_removed_from_history_generic">Verwijderd uit je kijkgeschiedenis</string>
-  <string name="action_toast_removed_from_watchlist"><b>%s</b> is verwijderd van je kijklijst</string>
-  <string name="action_toast_removed_from_watchlist_generic">Verwijderd van je kijklijst</string>
   <string name="advanced_filter_label_parental_guide">%1$s: %2$s tot %3$s</string>
   <string name="advanced_filter_label_ratings">Beoordeling van %1$s tot %2$s</string>
   <string name="advanced_filter_label_release_year">Uitgebracht in %1$d tot %2$d</string>
@@ -1257,7 +1250,6 @@
   <string name="page_title_widget_background">Achtergrond</string>
   <string name="page_title_year_in_review">%s in overzicht</string>
   <string name="page_title_year_to_date">Jaar tot nu toe</string>
-  <string name="preview_feature_description_action_confirmations">Toon een bevestigingstoast met een snelle ongedaanmakingsoptie wanneer je iets toevoegt, verwijdert, beoordeelt of markeert als bekeken.</string>
   <string name="preview_feature_description_edit_mode">Schakel besturingselementen in voor het verbergen of weergeven van configureerbare secties in de app.</string>
   <string name="preview_feature_description_genre_picker">Kies je favoriete genres uit een visueel raster in plaats van een lijst met tags.</string>
   <string name="preview_feature_description_leaderboard">Rangschik de mensen die je volgt op kijktijd en zie waar jij eindigt.</string>
@@ -1269,7 +1261,6 @@
   <string name="preview_feature_description_soundtrack">Voegt een soundtracksectie toe aan film- en seriepagina\'s, met afspeelmogelijkheden wanneer een nummer kan worden gematcht.</string>
   <string name="preview_feature_description_up_next_smart_sort">Probeer een slimmere manier om je \'Verder kijken\' te sorteren.</string>
   <string name="preview_feature_description_youtube_specials">Voegt gratis YouTube-uploads van stand-up specials toe aan \'Waar te bekijken\' op filmpagina\'s.</string>
-  <string name="preview_feature_title_action_confirmations">Actiebevestigingen</string>
   <string name="preview_feature_title_edit_mode">Bewerkmodus</string>
   <string name="preview_feature_title_genre_picker">Genrekiezer</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>

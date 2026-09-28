@@ -15,16 +15,9 @@
   <string name="action_open_system_settings_tvos">Beállítások megnyitása</string>
   <string name="action_toast_action_change_list">Lista módosítása</string>
   <string name="action_toast_action_failed">Ez nem sikerült. Kérjük, próbálja újra.</string>
-  <string name="action_toast_added_to_favorites"><b>%s</b> hozzá lett adva a kedvencekhez</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> hozzá lett adva a Megnézendőkhöz</string>
   <string name="action_toast_added_to_watchlist_generic">Hozzáadva a Megnézendőkhöz</string>
   <string name="action_toast_label_change_list">Módosítja a listákat, amelyekhez a(z) %s tartozik</string>
-  <string name="action_toast_label_undo">Utolsó módosítás visszavonása</string>
-  <string name="action_toast_removed_from_favorites"><b>%s</b> el lett távolítva a kedvencekből</string>
-  <string name="action_toast_removed_from_history"><b>%s</b> el lett távolítva az előzményekből</string>
-  <string name="action_toast_removed_from_history_generic">Eltávolítva az előzményekből</string>
-  <string name="action_toast_removed_from_watchlist"><b>%s</b> el lett távolítva a Megnézendőkből</string>
-  <string name="action_toast_removed_from_watchlist_generic">Eltávolítva a Megnézendőkből</string>
   <string name="advanced_filter_label_parental_guide">%1$s: %2$s és %3$s között</string>
   <string name="advanced_filter_label_ratings">Értékelés: %1$s és %2$s között</string>
   <string name="advanced_filter_label_release_year">Megjelent %1$d és %2$d között</string>
@@ -1257,7 +1250,6 @@
   <string name="page_title_widget_background">Háttér</string>
   <string name="page_title_year_in_review">%s év áttekintése</string>
   <string name="page_title_year_to_date">Éves összesítés</string>
-  <string name="preview_feature_description_action_confirmations">Mutass megerősítő felugró üzenetet gyors visszavonási lehetőséggel, amikor hozzáadsz, eltávolítasz, értékelsz, vagy megjelölsz valamit megnézettként.</string>
   <string name="preview_feature_description_edit_mode">Engedélyezze a vezérlőket a konfigurálható szakaszok elrejtéséhez vagy megjelenítéséhez az alkalmazásban.</string>
   <string name="preview_feature_description_genre_picker">Válassza ki kedvenc műfajait egy vizuális rácsból, címkék listája helyett.</string>
   <string name="preview_feature_description_leaderboard">Rangsorold a követett embereket a nézési idő alapján, és nézd meg, hol helyezkedsz el közöttük.</string>
@@ -1269,7 +1261,6 @@
   <string name="preview_feature_description_soundtrack">Film- és műsoroldalakhoz ad hozzá filmzene szekciót, lejátszással ott, ahol egy szám párosítható.</string>
   <string name="preview_feature_description_up_next_smart_sort">Próbálja ki a Megtekintés folytatása rendezésének egy okosabb módját.</string>
   <string name="preview_feature_description_youtube_specials">Hozzáadja a stand-up különkiadások ingyenes YouTube feltöltéseit a filmoldalakon található „Hol nézhető” részhez.</string>
-  <string name="preview_feature_title_action_confirmations">Művelet-megerősítések</string>
   <string name="preview_feature_title_edit_mode">Szerkesztési mód</string>
   <string name="preview_feature_title_genre_picker">Műfajválasztó</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>

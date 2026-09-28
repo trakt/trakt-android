@@ -15,16 +15,9 @@
   <string name="action_open_system_settings_tvos">設定を開く</string>
   <string name="action_toast_action_change_list">リストを変更</string>
   <string name="action_toast_action_failed">失敗しました。もう一度お試しください。</string>
-  <string name="action_toast_added_to_favorites"><b>%s</b> がお気に入りに追加されました</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> がウォッチリストに追加されました</string>
   <string name="action_toast_added_to_watchlist_generic">ウォッチリストに追加されました</string>
   <string name="action_toast_label_change_list">%s が属するリストを変更</string>
-  <string name="action_toast_label_undo">最後の変更を元に戻す</string>
-  <string name="action_toast_removed_from_favorites"><b>%s</b> がお気に入りから削除されました</string>
-  <string name="action_toast_removed_from_history"><b>%s</b> が履歴から削除されました</string>
-  <string name="action_toast_removed_from_history_generic">履歴から削除されました</string>
-  <string name="action_toast_removed_from_watchlist"><b>%s</b> がウォッチリストから削除されました</string>
-  <string name="action_toast_removed_from_watchlist_generic">ウォッチリストから削除されました</string>
   <string name="advanced_filter_label_parental_guide">%1$s: %2$s～%3$s</string>
   <string name="advanced_filter_label_ratings">評価 %1$s～%2$s</string>
   <string name="advanced_filter_label_release_year">発売年 %1$d～%2$d</string>
@@ -1257,7 +1250,6 @@
   <string name="page_title_widget_background">背景</string>
   <string name="page_title_year_in_review">%s年のレビュー</string>
   <string name="page_title_year_to_date">今年これまでの統計</string>
-  <string name="preview_feature_description_action_confirmations">追加、削除、評価、または視聴済みマークをしたときに、元に戻す機能付きの確認トーストを表示します。</string>
   <string name="preview_feature_description_edit_mode">アプリ全体で設定可能なセクションの表示/非表示を制御する機能を有効にします。</string>
   <string name="preview_feature_description_genre_picker">タグのリストではなく、ビジュアルグリッドからお気に入りのジャンルを選びましょう。</string>
   <string name="preview_feature_description_leaderboard">フォローしている人の視聴時間でランキングを作成し、その中で自分がどこに位置するかを確認できます。</string>
@@ -1269,7 +1261,6 @@
   <string name="preview_feature_description_soundtrack">映画や番組のページにサウンドトラックセクションを追加し、一致するトラックがあれば再生できます。</string>
   <string name="preview_feature_description_up_next_smart_sort">続きを視聴のよりスマートな並べ替えをお試しください。</string>
   <string name="preview_feature_description_youtube_specials">映画ページの「視聴場所」に、スタンドアップスペシャルの無料YouTubeアップロードを追加します。</string>
-  <string name="preview_feature_title_action_confirmations">アクション確認</string>
   <string name="preview_feature_title_edit_mode">編集モード</string>
   <string name="preview_feature_title_genre_picker">ジャンルピッカー</string>
   <string name="preview_feature_title_leaderboard">パンテオン</string>

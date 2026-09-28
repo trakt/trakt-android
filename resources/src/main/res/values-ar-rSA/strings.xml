@@ -15,16 +15,9 @@
   <string name="action_open_system_settings_tvos">فتح الإعدادات</string>
   <string name="action_toast_action_change_list">تغيير القائمة</string>
   <string name="action_toast_action_failed">لم ينجح ذلك. الرجاء المحاولة مرة أخرى.</string>
-  <string name="action_toast_added_to_favorites">تمت إضافة \n<b>%s</b> إلى مفضلاتك</string>
   <string name="action_toast_added_to_watchlist">تمت إضافة \n<b>%s</b> إلى قائمة المشاهدة الخاصة بك</string>
   <string name="action_toast_added_to_watchlist_generic">تمت الإضافة إلى قائمة المشاهدة</string>
   <string name="action_toast_label_change_list">تغيير القوائم التي ينتمي إليها \n<b>%s</b></string>
-  <string name="action_toast_label_undo">التراجع عن التغيير الأخير</string>
-  <string name="action_toast_removed_from_favorites">تمت إزالة \n<b>%s</b> من مفضلاتك</string>
-  <string name="action_toast_removed_from_history">تمت إزالة \n<b>%s</b> من سجلك</string>
-  <string name="action_toast_removed_from_history_generic">تمت الإزالة من سجلك</string>
-  <string name="action_toast_removed_from_watchlist">تمت إزالة \n<b>%s</b> من قائمة المشاهدة الخاصة بك</string>
-  <string name="action_toast_removed_from_watchlist_generic">تمت الإزالة من قائمة المشاهدة</string>
   <string name="advanced_filter_label_parental_guide">%1$s من %2$s إلى %3$s</string>
   <string name="advanced_filter_label_ratings">تقييم من %1$s إلى %2$s</string>
   <string name="advanced_filter_label_release_year">صدر في %1$d إلى %2$d</string>
@@ -1257,7 +1250,6 @@
   <string name="page_title_widget_background">خلفية</string>
   <string name="page_title_year_in_review">ملخص %s</string>
   <string name="page_title_year_to_date">منذ بداية العام</string>
-  <string name="preview_feature_description_action_confirmations">اعرض إشعارًا تأكيديًا مع خيار تراجع سريع عند إضافة شيء أو إزالته أو تقييمه أو وضع علامة \"شوهد\" عليه.</string>
   <string name="preview_feature_description_edit_mode">تمكين عناصر التحكم لإخفاء الأقسام القابلة للتكوين أو إظهارها عبر التطبيق.</string>
   <string name="preview_feature_description_genre_picker">اختر أنواعك المفضلة من شبكة مرئية بدلاً من قائمة بالعلامات.</string>
   <string name="preview_feature_description_leaderboard">قم بتصنيف الأشخاص الذين تتابعهم حسب وقت المشاهدة وانظر إلى أين ستصل بينهم.</string>
@@ -1269,7 +1261,6 @@
   <string name="preview_feature_description_soundtrack">يضيف قسم الموسيقى التصويرية إلى صفحات الأفلام والعروض، مع إمكانية التشغيل حيث يمكن مطابقة المقطع.</string>
   <string name="preview_feature_description_up_next_smart_sort">اختبر طريقة أكثر ذكاءً لفرز متابعة المشاهدة.</string>
   <string name="preview_feature_description_youtube_specials">أين تشاهد</string>
-  <string name="preview_feature_title_action_confirmations">تأكيدات الإجراءات</string>
   <string name="preview_feature_title_edit_mode">تعديل الوضع</string>
   <string name="preview_feature_title_genre_picker">منتقي النوع</string>
   <string name="preview_feature_title_leaderboard">البانثيون</string>

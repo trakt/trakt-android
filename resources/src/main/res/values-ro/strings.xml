@@ -15,16 +15,9 @@
   <string name="action_open_system_settings_tvos">Deschide Setări</string>
   <string name="action_toast_action_change_list">Schimbă lista</string>
   <string name="action_toast_action_failed">Nu a funcționat. Te rog să încerci din nou.</string>
-  <string name="action_toast_added_to_favorites"><b>%s</b> a fost adăugat(ă) la favoritele tale</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> a fost adăugat(ă) la lista ta de vizionare</string>
   <string name="action_toast_added_to_watchlist_generic">Adăugat(ă) la lista ta de vizionare</string>
   <string name="action_toast_label_change_list">Schimbă listele din care face parte %s</string>
-  <string name="action_toast_label_undo">Anulează ultima modificare</string>
-  <string name="action_toast_removed_from_favorites"><b>%s</b> a fost eliminat(ă) din favoritele tale</string>
-  <string name="action_toast_removed_from_history"><b>%s</b> a fost eliminat(ă) din istoricul tău</string>
-  <string name="action_toast_removed_from_history_generic">Eliminat(ă) din istoricul tău</string>
-  <string name="action_toast_removed_from_watchlist"><b>%s</b> a fost eliminat(ă) din lista ta de vizionare</string>
-  <string name="action_toast_removed_from_watchlist_generic">Eliminat(ă) din lista ta de vizionare</string>
   <string name="advanced_filter_label_parental_guide">%1$s: de la %2$s la %3$s</string>
   <string name="advanced_filter_label_ratings">Evaluare de la %1$s la %2$s</string>
   <string name="advanced_filter_label_release_year">Lansat între %1$d și %2$d</string>
@@ -1257,7 +1250,6 @@
   <string name="page_title_widget_background">Fundal</string>
   <string name="page_title_year_in_review">Retrospectiva anului %s</string>
   <string name="page_title_year_to_date">Anul curent</string>
-  <string name="preview_feature_description_action_confirmations">Afișează o notificare de confirmare cu o opțiune rapidă de anulare când adaugi, elimini, evaluezi sau marchezi ceva ca vizionat.</string>
   <string name="preview_feature_description_edit_mode">Activează controale pentru ascunderea sau afișarea secțiunilor configurabile în întreaga aplicație.</string>
   <string name="preview_feature_description_genre_picker">Alege genurile tale preferate dintr-o grilă vizuală în loc de o listă de etichete.</string>
   <string name="preview_feature_description_leaderboard">Clasați persoanele pe care le urmăriți după timpul de vizionare și vedeți unde vă situați printre ele.</string>
@@ -1269,7 +1261,6 @@
   <string name="preview_feature_description_soundtrack">Adaugă o secțiune de coloană sonoră la paginile de filme și seriale, cu redare acolo unde o melodie poate fi potrivită.</string>
   <string name="preview_feature_description_up_next_smart_sort">Testează o modalitate mai inteligentă de a sorta elementele din Continuă vizionarea.</string>
   <string name="preview_feature_description_youtube_specials">Adaugă încărcări gratuite pe YouTube de speciale de stand-up în secțiunea Unde să vizionezi pe paginile filmelor.</string>
-  <string name="preview_feature_title_action_confirmations">Confirmări de acțiune</string>
   <string name="preview_feature_title_edit_mode">Mod editare</string>
   <string name="preview_feature_title_genre_picker">Selector de genuri</string>
   <string name="preview_feature_title_leaderboard">Panteon</string>

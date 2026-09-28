@@ -15,16 +15,9 @@
   <string name="action_open_system_settings_tvos">باز کردن تنظیمات</string>
   <string name="action_toast_action_change_list">تغییر لیست</string>
   <string name="action_toast_action_failed">این عمل انجام نشد. لطفاً دوباره تلاش کنید.</string>
-  <string name="action_toast_added_to_favorites"><b>%s</b> به موارد دلخواه شما اضافه شد</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> به لیست تماشای شما اضافه شد</string>
   <string name="action_toast_added_to_watchlist_generic">به لیست تماشای شما اضافه شد</string>
   <string name="action_toast_label_change_list">لیست‌هایی که %s به آنها تعلق دارد را تغییر دهید</string>
-  <string name="action_toast_label_undo">لغو آخرین تغییر</string>
-  <string name="action_toast_removed_from_favorites"><b>%s</b> از موارد دلخواه شما حذف شد</string>
-  <string name="action_toast_removed_from_history"><b>%s</b> از تاریخچه شما حذف شد</string>
-  <string name="action_toast_removed_from_history_generic">از تاریخچه شما حذف شد</string>
-  <string name="action_toast_removed_from_watchlist"><b>%s</b> از لیست تماشای شما حذف شد</string>
-  <string name="action_toast_removed_from_watchlist_generic">از لیست تماشای شما حذف شد</string>
   <string name="advanced_filter_label_parental_guide">%1$s: از %2$s تا %3$s</string>
   <string name="advanced_filter_label_ratings">امتیاز از %1$s تا %2$s</string>
   <string name="advanced_filter_label_release_year">منتشر شده در %1$d تا %2$d</string>
@@ -1257,7 +1250,6 @@
   <string name="page_title_widget_background">پس‌زمینه</string>
   <string name="page_title_year_in_review">مرور سال %s</string>
   <string name="page_title_year_to_date">سال تا به امروز</string>
-  <string name="preview_feature_description_action_confirmations">هنگامی که چیزی را اضافه، حذف، رتبه‌بندی یا به عنوان تماشا شده علامت‌گذاری می‌کنید، یک پیام تأیید با قابلیت لغو سریع نمایش داده شود.</string>
   <string name="preview_feature_description_edit_mode">کنترل‌هایی را برای پنهان کردن یا نمایش بخش‌های قابل تنظیم در سراسر برنامه فعال کنید.</string>
   <string name="preview_feature_description_genre_picker">ژانرهای مورد علاقه خود را از یک شبکه بصری انتخاب کنید، نه از یک لیست برچسب.</string>
   <string name="preview_feature_description_leaderboard">افرادی که دنبال می‌کنید را بر اساس زمان تماشا رتبه‌بندی کنید و ببینید در میان آن‌ها کجا قرار می‌گیرید.</string>
@@ -1269,7 +1261,6 @@
   <string name="preview_feature_description_soundtrack">بخش موسیقی متن را به صفحات فیلم و نمایش اضافه می‌کند، با قابلیت پخش در جایی که یک قطعه می‌تواند مطابقت داده شود.</string>
   <string name="preview_feature_description_up_next_smart_sort">راهی هوشمندانه‌تر برای مرتب\n\n\n\n‌سازی موارد در حال تماشای خود را آزمایش کنید.</string>
   <string name="preview_feature_description_youtube_specials">آپلودهای رایگان یوتیوب از برنامه‌های ویژه کمدی را به بخش «کجا تماشا کنیم» در صفحات فیلم اضافه می‌کند.</string>
-  <string name="preview_feature_title_action_confirmations">تأیید اقدامات</string>
   <string name="preview_feature_title_edit_mode">حالت ویرایش</string>
   <string name="preview_feature_title_genre_picker">انتخاب‌کننده ژانر</string>
   <string name="preview_feature_title_leaderboard">پانتئون</string>

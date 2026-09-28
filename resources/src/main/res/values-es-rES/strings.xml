@@ -15,16 +15,9 @@
   <string name="action_open_system_settings_tvos">Abrir Ajustes</string>
   <string name="action_toast_action_change_list">Cambiar lista</string>
   <string name="action_toast_action_failed">Eso no funcionó. Inténtalo de nuevo.</string>
-  <string name="action_toast_added_to_favorites"><b>%s</b> se añadió a tus favoritos</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> se añadió a tu lista de seguimiento</string>
   <string name="action_toast_added_to_watchlist_generic">Añadido a tu lista de seguimiento</string>
   <string name="action_toast_label_change_list">Cambiar las listas a las que pertenece %s</string>
-  <string name="action_toast_label_undo">Deshacer el último cambio</string>
-  <string name="action_toast_removed_from_favorites"><b>%s</b> se eliminó de tus favoritos</string>
-  <string name="action_toast_removed_from_history"><b>%s</b> se eliminó de tu historial</string>
-  <string name="action_toast_removed_from_history_generic">Eliminado de tu historial</string>
-  <string name="action_toast_removed_from_watchlist"><b>%s</b> se eliminó de tu lista de seguimiento</string>
-  <string name="action_toast_removed_from_watchlist_generic">Eliminado de tu lista de seguimiento</string>
   <string name="advanced_filter_label_parental_guide">%1$s: de %2$s a %3$s</string>
   <string name="advanced_filter_label_ratings">Calificación de %1$s a %2$s</string>
   <string name="advanced_filter_label_release_year">Estrenada entre %1$d y %2$d</string>
@@ -1257,7 +1250,6 @@
   <string name="page_title_widget_background">Fondo</string>
   <string name="page_title_year_in_review">%s en resumen</string>
   <string name="page_title_year_to_date">En lo que va del año</string>
-  <string name="preview_feature_description_action_confirmations">Mostrar una notificación de confirmación con deshacer rápido al añadir, eliminar, calificar o marcar algo como visto.</string>
   <string name="preview_feature_description_edit_mode">Habilita los controles para ocultar o mostrar secciones configurables en toda la aplicación.</string>
   <string name="preview_feature_description_genre_picker">Elige tus géneros favoritos de una cuadrícula visual en lugar de una lista de etiquetas.</string>
   <string name="preview_feature_description_leaderboard">Clasifica a las personas que sigues por tiempo de visualización y descubre tu posición entre ellas.</string>
@@ -1269,7 +1261,6 @@
   <string name="preview_feature_description_soundtrack">Añade una sección de banda sonora a las páginas de películas y series, con reproducción donde se pueda emparejar una pista.</string>
   <string name="preview_feature_description_up_next_smart_sort">Prueba una forma más inteligente de ordenar tu sección de Continuar viendo</string>
   <string name="preview_feature_description_youtube_specials">Añade subidas gratuitas de YouTube de especiales de stand-up a Dónde ver en las páginas de películas.</string>
-  <string name="preview_feature_title_action_confirmations">Confirmaciones de acción</string>
   <string name="preview_feature_title_edit_mode">Modo de edición</string>
   <string name="preview_feature_title_genre_picker">Selector de Géneros</string>
   <string name="preview_feature_title_leaderboard">Panteón</string>

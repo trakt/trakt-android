@@ -15,16 +15,9 @@
   <string name="action_open_system_settings_tvos">Открыть настройки</string>
   <string name="action_toast_action_change_list">Изменить список</string>
   <string name="action_toast_action_failed">Не удалось выполнить. Пожалуйста, попробуйте еще раз.</string>
-  <string name="action_toast_added_to_favorites"><b>%s</b> был добавлен в избранное</string>
   <string name="action_toast_added_to_watchlist"><b>%s</b> был добавлен в ваш список просмотра</string>
   <string name="action_toast_added_to_watchlist_generic">Добавлено в список просмотра</string>
   <string name="action_toast_label_change_list">Изменить списки, к которым принадлежит <b>%s</b></string>
-  <string name="action_toast_label_undo">Отменить последнее изменение</string>
-  <string name="action_toast_removed_from_favorites"><b>%s</b> был удален из избранного</string>
-  <string name="action_toast_removed_from_history"><b>%s</b> был удален из вашей истории просмотров</string>
-  <string name="action_toast_removed_from_history_generic">Удалено из истории просмотров</string>
-  <string name="action_toast_removed_from_watchlist"><b>%s</b> был удален из вашего списка просмотра</string>
-  <string name="action_toast_removed_from_watchlist_generic">Удалено из списка просмотра</string>
   <string name="advanced_filter_label_parental_guide">%1$s: от %2$s до %3$s</string>
   <string name="advanced_filter_label_ratings">Рейтинг от %1$s до %2$s</string>
   <string name="advanced_filter_label_release_year">Выпущен в %1$d — %2$d</string>
@@ -1257,7 +1250,6 @@
   <string name="page_title_widget_background">Фон</string>
   <string name="page_title_year_in_review">%s в обзоре</string>
   <string name="page_title_year_to_date">С начала года</string>
-  <string name="preview_feature_description_action_confirmations">Показывать всплывающее уведомление с быстрым отменой действия при добавлении, удалении, оценке или отметке чего-либо как просмотренного.</string>
   <string name="preview_feature_description_edit_mode">Включите элементы управления для скрытия или отображения настраиваемых разделов во всем приложении.</string>
   <string name="preview_feature_description_genre_picker">Выбирайте любимые жанры из визуальной сетки вместо списка тегов.</string>
   <string name="preview_feature_description_leaderboard">Оценивайте людей, на которых вы подписаны, по времени просмотра и смотрите, какое место вы занимаете среди них.</string>
@@ -1269,7 +1261,6 @@
   <string name="preview_feature_description_soundtrack">Добавляет раздел саундтреков на страницы фильмов и сериалов с возможностью воспроизведения, если трек может быть сопоставлен.</string>
   <string name="preview_feature_description_up_next_smart_sort">Попробуйте более умный способ сортировки раздела \"Смотреть дальше\".</string>
   <string name="preview_feature_description_youtube_specials">Добавляет бесплатные загрузки стендап-спецвыпусков с YouTube в раздел «Где смотреть» на страницах фильмов.</string>
-  <string name="preview_feature_title_action_confirmations">Подтверждения действий</string>
   <string name="preview_feature_title_edit_mode">Режим редактирования</string>
   <string name="preview_feature_title_genre_picker">Выбор жанра</string>
   <string name="preview_feature_title_leaderboard">Пантеон</string>
