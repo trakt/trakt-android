@@ -136,9 +136,8 @@ private fun CommentDetailsContent(
                 .focusable(),
         )
 
-        val linkColor = TraktTheme.colors.textPrimary
-        val markdownText = remember(comment.commentNoSpoilers, linkColor) {
-            comment.commentNoSpoilers.toMarkdownText(linkColor)
+        val markdownText = remember(comment.commentNoSpoilers) {
+            comment.commentNoSpoilers.toMarkdownText()
         }
 
         if (comment.commentNoSpoilers.isNotBlank()) {

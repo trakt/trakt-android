@@ -103,9 +103,8 @@ private fun CommentCardContent(comment: Comment) {
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
-        val linkColor = TraktTheme.colors.textPrimary
-        val markdownText = remember(comment.commentNoSpoilers, linkColor) {
-            comment.commentNoSpoilers.toMarkdownText(linkColor)
+        val markdownText = remember(comment.commentNoSpoilers) {
+            comment.commentNoSpoilers.toMarkdownText()
         }
 
         val body = @Composable { modifier: Modifier ->

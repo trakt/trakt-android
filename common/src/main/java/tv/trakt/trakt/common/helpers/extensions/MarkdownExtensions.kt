@@ -15,7 +15,7 @@ import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 
 private class MarkdownStyle(
-    val linkColor: Color,
+    val linkColor: Color?,
     val mentionColor: Color?,
 )
 
@@ -28,8 +28,8 @@ private val MENTION = Regex("@[a-zA-Z0-9_]+")
 private val INLINE = Regex(
     "\\\\(?<esc>[\\\\`*_~\\[\\]()#>+.!-])" +
         "|`(?<code>[^`]+)`" +
-        "|\\[(?<label>[^\\]]+)]\\((?<href>https?://[^\\s)]+)\\)" +
-        "|(?<url>https?://[^\\s<>()]*[^\\s<>().,;:!?])" +
+        "|\\[(?<label>[^\\]]+)]\\((?<href>https?://(?:[^\\s()]|\\([^\\s()]*\\))+)\\)" +
+        "|(?<url>https?://(?:[^\\s<>()]|\\([^\\s<>()]*\\))*(?:[^\\s<>().,;:!?]|\\([^\\s<>()]*\\)))" +
         "|\\*\\*(?<bold>.+?)\\*\\*" +
         "|__(?<bold2>.+?)__" +
         "|~~(?<strike>.+?)~~" +
@@ -37,9 +37,12 @@ private val INLINE = Regex(
         "|(?<![\\p{L}\\p{N}_])_(?<italic2>[^_\\s](?:.*?[^_\\s])?)_(?![\\p{L}\\p{N}_])",
 )
 
-/** Links are limited to http(s). Pass [mentionColor] to also highlight @mentions. */
+/**
+ * Links are limited to http(s) and are rendered as plain text when [linkColor] is null.
+ * Pass [mentionColor] to also highlight @mentions.
+ */
 fun String.toMarkdownText(
-    linkColor: Color,
+    linkColor: Color? = null,
     mentionColor: Color? = null,
 ): AnnotatedString {
     val style = MarkdownStyle(linkColor, mentionColor)
@@ -119,11 +122,12 @@ private fun AnnotatedString.Builder.appendLink(
     style: MarkdownStyle,
     linksEnabled: Boolean,
 ) {
-    if (!linksEnabled) {
+    val linkColor = style.linkColor
+    if (!linksEnabled || linkColor == null) {
         append(label)
         return
     }
-    val linkStyle = SpanStyle(color = style.linkColor, textDecoration = TextDecoration.Underline)
+    val linkStyle = SpanStyle(color = linkColor, textDecoration = TextDecoration.Underline)
     withLink(LinkAnnotation.Url(url, TextLinkStyles(style = linkStyle))) {
         appendInline(label, style, links = false)
     }

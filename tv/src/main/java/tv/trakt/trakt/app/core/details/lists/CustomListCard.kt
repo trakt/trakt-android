@@ -236,10 +236,9 @@ private fun CustomListHeader(
                 )
 
                 if (descriptionVisible && !list.description.isNullOrBlank()) {
-                    val linkColor = TraktTheme.colors.textPrimary
                     Text(
-                        text = remember(list.description, linkColor) {
-                            (list.description?.trim() ?: "").toMarkdownText(linkColor)
+                        text = remember(list.description) {
+                            (list.description?.trim() ?: "").toMarkdownText()
                         },
                         style = TraktTheme.typography.paragraphSmall,
                         color = TraktTheme.colors.textSecondary,

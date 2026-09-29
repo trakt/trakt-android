@@ -379,7 +379,7 @@ private fun TitleBar(
     onFiltersClick: () -> Unit,
 ) {
     val plainSubtitle = remember(subtitle) {
-        subtitle?.toMarkdownText(Color.Unspecified)?.text
+        subtitle?.toMarkdownText()?.text
     }
 
     Row(
