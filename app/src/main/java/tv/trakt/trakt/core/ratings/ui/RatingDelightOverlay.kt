@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.isUnspecified
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -57,6 +58,9 @@ private const val KERNEL_COUNT = 16
 private const val KERNEL_MAX_DELAY_MS = 520f
 private const val KERNEL_MAX_DURATION_MS = 1500f
 private const val POPCORN_TOTAL_MS = KERNEL_MAX_DELAY_MS + KERNEL_MAX_DURATION_MS
+
+private const val FAVORITE_GLOW_MS = 650f
+private const val FAVORITE_GLOW_RADIUS = 11.5f
 
 private const val TOMATO_LEAF_PATH =
     "M12 3.5l1.6 2.6 3-.6-1.9 2.4 2.6 1.3-3.4.2L12 12l-1.9-2.6-3.4-.2 2.6-1.3-1.9-2.4 3 .6z"
@@ -119,6 +123,7 @@ internal fun RatingDelightOverlay(
     val totalMs = when (delight) {
         RatingDelight.RottenTomato -> TOMATO_TOTAL_MS
         RatingDelight.Popcorn -> POPCORN_TOTAL_MS
+        RatingDelight.FavoriteGlow -> FAVORITE_GLOW_MS
     }
 
     val elapsed = remember(key) { Animatable(0f) }
@@ -164,6 +169,10 @@ internal fun RatingDelightOverlay(
                     origin = windowOrigin,
                     direction = direction,
                     kernels = kernels,
+                )
+                RatingDelight.FavoriteGlow -> drawFavoriteGlow(
+                    ms = ms,
+                    origin = windowOrigin,
                 )
             }
         }
@@ -269,6 +278,35 @@ private fun DrawScope.drawPopcorn(
             drawCircle(Yellow500, radius = 2.2f, center = Offset(10f, 14f), alpha = alpha)
         }
     }
+}
+
+private fun DrawScope.drawFavoriteGlow(
+    ms: Float,
+    origin: Offset,
+) {
+    val t = ms / FAVORITE_GLOW_MS
+    val expansion = EaseOut.transform(t)
+    val fade = 1f - t
+    val baseRadius = FAVORITE_GLOW_RADIUS * density
+
+    val glowRadius = baseRadius * lerp(0.8f, 2.2f, expansion)
+    drawCircle(
+        brush = Brush.radialGradient(
+            colors = listOf(Red500.copy(alpha = 0.5f * fade), Color.Transparent),
+            center = origin,
+            radius = glowRadius,
+        ),
+        radius = glowRadius,
+        center = origin,
+    )
+
+    drawCircle(
+        color = Red500,
+        alpha = fade,
+        radius = baseRadius * lerp(0.6f, 1.9f, expansion),
+        center = origin,
+        style = Stroke(width = lerp(3f, 0.5f, expansion) * density),
+    )
 }
 
 private fun keyframe(

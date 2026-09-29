@@ -99,6 +99,15 @@ internal fun UserRatingBar(
     val scaleAnimation = remember { Animatable(1f) }
     val lastClickedIndex = remember { mutableIntStateOf(-1) }
 
+    var favoriteDelightId by remember { mutableIntStateOf(0) }
+    var favoriteDelightPending by remember { mutableStateOf(false) }
+    // Plays only once a user-initiated add is confirmed, not when an existing favorite loads.
+    LaunchedEffect(favorite, favoriteDelightPending) {
+        if (!favorite || !favoriteDelightPending) return@LaunchedEffect
+        favoriteDelightPending = false
+        favoriteDelightId++
+    }
+
     val density = LocalDensity.current
     val starSizePx = with(density) { size.toPx() }
     val spacingPx = with(density) { 8.dp.toPx() }
@@ -408,35 +417,47 @@ internal fun UserRatingBar(
                     lastClickedIndex.intValue == -1 -> scaleAnimation.value
                     else -> 1f
                 }
-                Icon(
-                    painter = painterResource(
-                        when {
-                            favorite -> R.drawable.ic_heart_on
-                            else -> R.drawable.ic_heart_off
-                        },
-                    ),
-                    contentDescription = null,
-                    tint = if (favorite) Red500 else TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .size(size)
-                        .alpha(if (ratingAlphaMaskActive) ratingAlphaMask else animatedAlpha)
-                        .graphicsLayer {
-                            scaleX = scale
-                            scaleY = scale
-                        }
-                        .onClick {
-                            if (!favoriteLoading) {
-                                lastClickedIndex.intValue = -1
-
-                                onFavoriteClick()
-
-                                runScaleAnimation(
-                                    scope = scope,
-                                    animation = scaleAnimation,
-                                )
+                Box {
+                    Icon(
+                        painter = painterResource(
+                            when {
+                                favorite -> R.drawable.ic_heart_on
+                                else -> R.drawable.ic_heart_off
+                            },
+                        ),
+                        contentDescription = null,
+                        tint = if (favorite) Red500 else TraktTheme.colors.textPrimary,
+                        modifier = Modifier
+                            .size(size)
+                            .alpha(if (ratingAlphaMaskActive) ratingAlphaMask else animatedAlpha)
+                            .graphicsLayer {
+                                scaleX = scale
+                                scaleY = scale
                             }
-                        },
-                )
+                            .onClick {
+                                if (!favoriteLoading) {
+                                    lastClickedIndex.intValue = -1
+                                    favoriteDelightPending = !favorite
+
+                                    onFavoriteClick()
+
+                                    runScaleAnimation(
+                                        scope = scope,
+                                        animation = scaleAnimation,
+                                    )
+                                }
+                            },
+                    )
+
+                    if (favoriteDelightId > 0) {
+                        RatingDelightOverlay(
+                            delight = RatingDelight.FavoriteGlow,
+                            origin = Offset(starSizePx / 2, starSizePx / 2),
+                            key = favoriteDelightId,
+                            modifier = Modifier.matchParentSize(),
+                        )
+                    }
+                }
             }
         }
     }

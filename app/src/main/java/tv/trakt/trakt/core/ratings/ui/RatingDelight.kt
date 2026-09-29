@@ -3,6 +3,7 @@ package tv.trakt.trakt.core.ratings.ui
 internal enum class RatingDelight {
     RottenTomato,
     Popcorn,
+    FavoriteGlow,
 }
 
 private const val MAX_RATING = 10
