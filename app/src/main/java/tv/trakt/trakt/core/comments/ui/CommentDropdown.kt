@@ -32,7 +32,8 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun CommentDropdown(
     modifier: Modifier = Modifier,
     containerColor: Color = TraktTheme.colors.dialogContainer,
-    @StringRes deleteText: Int = R.string.button_text_delete_comment,
+    @StringRes deleteText: Int = R.string.button_text_delete_note,
+    onEditClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
 ) {
@@ -77,6 +78,29 @@ internal fun CommentDropdown(
                     },
                 )
             }
+            if (onEditClick != null) {
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = stringResource(R.string.button_text_edit_comment),
+                            style = TraktTheme.typography.buttonTertiary,
+                            color = TraktTheme.colors.textPrimary,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_edit),
+                            contentDescription = null,
+                            tint = TraktTheme.colors.textPrimary,
+                        )
+                    },
+                    onClick = {
+                        showMenu = false
+                        onEditClick()
+                    },
+                )
+            }
             if (onDeleteClick != null) {
                 DropdownMenuItem(
                     text = {
@@ -109,6 +133,7 @@ internal fun CommentDropdown(
 private fun CommentDropdownPreview() {
     TraktTheme {
         CommentDropdown(
+            onEditClick = {},
             onDeleteClick = {},
             onReportClick = {},
         )

@@ -63,6 +63,7 @@ internal fun LazyListScope.SeasonReviewsSection(
     onNewCommentClick: (() -> Unit)? = null,
     onReplyClick: ((Comment) -> Unit)? = null,
     onReplyUserClick: ((Comment, User) -> Unit)? = null,
+    onEditCommentClick: ((Comment) -> Unit)? = null,
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
 ) {
@@ -169,6 +170,7 @@ internal fun LazyListScope.SeasonReviewsSection(
                     onRepliesClick = { onRepliesClick(comment) },
                     onReplyClick = { onReplyClick?.invoke(it) },
                     onReplyUserClick = { target, user -> onReplyUserClick?.invoke(target, user) },
+                    onEditClick = { onEditCommentClick?.invoke(comment) },
                     onDeleteClick = { onDeleteCommentClick?.invoke(comment) },
                     onDeleteReplyClick = { onDeleteReplyClick?.invoke(it) },
                     modifier = Modifier

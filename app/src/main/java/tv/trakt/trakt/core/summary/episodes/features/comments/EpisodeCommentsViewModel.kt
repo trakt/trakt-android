@@ -364,6 +364,14 @@ internal class EpisodeCommentsViewModel(
         }
     }
 
+    fun updateComment(comment: Comment) {
+        itemsState.update {
+            it?.map { existing ->
+                if (existing.id == comment.id) comment else existing
+            }?.toImmutableList()
+        }
+    }
+
     fun deleteComment(commentId: TraktId) {
         itemsState.update {
             it?.filterNot { comment -> comment.id == commentId.value }?.toImmutableList()

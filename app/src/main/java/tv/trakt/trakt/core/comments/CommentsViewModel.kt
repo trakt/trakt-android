@@ -388,6 +388,15 @@ internal class CommentsViewModel(
         commentsUpdates.notifyUpdate(ALL_COMMENTS)
     }
 
+    fun updateComment(comment: Comment) {
+        commentsState.update {
+            it?.map { existing ->
+                if (existing.id == comment.id) comment else existing
+            }?.toImmutableList()
+        }
+        commentsUpdates.notifyUpdate(ALL_COMMENTS)
+    }
+
     fun deleteComment(commentId: TraktId) {
         commentsState.update {
             it?.filterNot { comment -> comment.id == commentId.value }?.toImmutableList()

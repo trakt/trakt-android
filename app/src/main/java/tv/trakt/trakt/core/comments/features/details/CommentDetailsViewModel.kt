@@ -122,6 +122,11 @@ internal class CommentDetailsViewModel(
         }
     }
 
+    fun updateComment(comment: Comment) {
+        commentState.update { comment }
+        commentsUpdates.notifyUpdate(COMMENT_DETAILS)
+    }
+
     fun addReply(comment: Comment) {
         commentReplies.update { current ->
             val mutable = current?.toMutableList() ?: mutableListOf()
