@@ -515,6 +515,7 @@ private fun Preview() {
                     reply = PreviewData.comment1.copy(
                         comment = "",
                         gif = CommentGif(
+                            slug = "funny-cat",
                             url = "https://example.com/gif.gif",
                             size = 320 to 180,
                         ),

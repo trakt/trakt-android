@@ -321,6 +321,7 @@ private fun Preview() {
                     state = EditCommentState(),
                     comment = PreviewData.comment1.copy(
                         gif = CommentGif(
+                            slug = "funny-cat",
                             url = "https://example.com/gif.gif",
                             size = 320 to 180,
                         ),

@@ -769,6 +769,7 @@ fun CommentPreview() {
                     user = PreviewData.user1,
                     comment = PreviewData.comment1.copy(
                         gif = CommentGif(
+                            slug = "funny-cat",
                             url = "https://example.com/gif.gif",
                             size = 320 to 180,
                         ),
@@ -781,6 +782,7 @@ fun CommentPreview() {
                     comment = PreviewData.comment1.copy(
                         comment = "Your go to comfort TV",
                         gif = CommentGif(
+                            slug = "funny-cat",
                             url = "https://example.com/gif.gif",
                             size = 320 to 240,
                         ),

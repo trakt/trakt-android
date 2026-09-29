@@ -39,7 +39,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -551,6 +550,7 @@ private fun Preview() {
                         user = PreviewData.user1,
                         comment = PreviewData.comment1.copy(
                             gif = CommentGif(
+                                slug = "funny-cat",
                                 url = "https://example.com/gif.gif",
                                 size = 480 to 270,
                             ),

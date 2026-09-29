@@ -3,7 +3,6 @@ package tv.trakt.trakt.app.core.comments.ui
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -370,6 +369,7 @@ fun CommentGifPreview() {
 }
 
 private val PreviewGif = CommentGif(
+    slug = "funny-cat",
     url = "https://example.com/preview.gif",
     size = 200 to 150,
 )

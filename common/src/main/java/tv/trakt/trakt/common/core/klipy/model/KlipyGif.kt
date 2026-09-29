@@ -17,14 +17,13 @@ data class KlipyGif(
         get() = renditions.sm?.animated ?: renditions.xs?.animated ?: renditions.md?.animated
 
     val fullMedia: KlipyGifMedia?
-        get() = renditions.md?.animated ?: renditions.hd?.animated ?: previewMedia
-
-    private val apiMedia: KlipyGifMedia?
-        get() = renditions.md?.gif ?: renditions.hd?.gif ?: renditions.sm?.gif ?: fullMedia
+        get() = renditions.md?.animated ?: renditions.hd?.animated ?: renditions.sm?.animated
 
     fun toCommentGif(): CommentGif? {
-        val media = apiMedia ?: return null
+        val sizes = listOfNotNull(renditions.md, renditions.hd, renditions.sm)
+        val media = sizes.firstNotNullOfOrNull { it.webp } ?: return null
         return CommentGif(
+            slug = slug,
             url = media.url,
             size = media.width to media.height,
         )
@@ -47,7 +46,6 @@ data class KlipyGifFormats(
     val mp4: KlipyGifMedia?,
     val webm: KlipyGifMedia?,
 ) {
-    /** WebP first - same animation at a fraction of the GIF payload. */
     val animated: KlipyGifMedia?
         get() = webp ?: gif
 }

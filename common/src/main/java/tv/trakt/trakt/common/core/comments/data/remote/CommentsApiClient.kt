@@ -233,6 +233,7 @@ class CommentsApiClient(
 
 private fun CommentGif.toRequest(): PostCommentsReplyRequestGif {
     return PostCommentsReplyRequestGif(
+        slug = slug,
         url = url,
         width = size.first.takeIf { it > 0 },
         height = size.second.takeIf { it > 0 },
