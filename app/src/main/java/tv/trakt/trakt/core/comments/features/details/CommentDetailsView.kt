@@ -74,6 +74,7 @@ import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade800
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
+import tv.trakt.trakt.core.comments.features.editcomment.EditCommentSheet
 import tv.trakt.trakt.core.comments.features.postreply.PostReplySheet
 import tv.trakt.trakt.core.comments.features.report.ReportCommentSheet
 import tv.trakt.trakt.core.comments.ui.CommentDropdown
@@ -95,6 +96,7 @@ internal fun CommentDetailsView(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var postReplySheet by remember { mutableStateOf<User?>(null) }
+    var editCommentSheet by remember { mutableStateOf<Comment?>(null) }
     var deleteCommentSheet by remember { mutableStateOf<Comment?>(null) }
     var deleteReplySheet by remember { mutableStateOf<Comment?>(null) }
     var reportCommentSheet by remember { mutableStateOf<Comment?>(null) }
@@ -110,6 +112,9 @@ internal fun CommentDetailsView(
         },
         onReplyClick = { user ->
             postReplySheet = user
+        },
+        onEditClick = { comment ->
+            editCommentSheet = comment
         },
         onDeleteClick = { comment ->
             deleteCommentSheet = comment
@@ -130,6 +135,15 @@ internal fun CommentDetailsView(
         onReplyPost = viewModel::addReply,
         onDismiss = {
             postReplySheet = null
+        },
+    )
+
+    EditCommentSheet(
+        comment = editCommentSheet,
+        gifQuery = gifQuery,
+        onCommentEdit = viewModel::updateComment,
+        onDismiss = {
+            editCommentSheet = null
         },
     )
 
@@ -173,6 +187,7 @@ private fun CommentDetailsViewContent(
     modifier: Modifier = Modifier,
     onReplyLoaded: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
+    onEditClick: ((Comment) -> Unit)? = null,
     onDeleteClick: ((Comment) -> Unit)? = null,
     onReplyClick: ((User) -> Unit)? = null,
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
@@ -194,6 +209,7 @@ private fun CommentDetailsViewContent(
                     onReplyLoaded = onReplyLoaded,
                     onReactionClick = onReactionClick,
                     onReplyClick = onReplyClick,
+                    onEditClick = { onEditClick?.invoke(comment) },
                     onDeleteClick = { onDeleteClick?.invoke(comment) },
                     onDeleteReplyClick = onDeleteReplyClick,
                     onReportClick = { onReportClick?.invoke(comment) },
@@ -232,6 +248,7 @@ private fun CommentContent(
     onReplyLoaded: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onReplyClick: ((User) -> Unit)? = null,
+    onEditClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
@@ -244,6 +261,7 @@ private fun CommentContent(
         CommentHeader(
             comment = comment,
             userComment = user?.ids?.trakt == comment.user.ids.trakt,
+            onEditClick = onEditClick,
             onDeleteClick = onDeleteClick,
             onReportClick = onReportClick,
             modifier = Modifier.padding(top = 5.dp),
@@ -324,6 +342,7 @@ private fun CommentHeader(
     comment: Comment,
     userComment: Boolean,
     modifier: Modifier = Modifier,
+    onEditClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
 ) {
@@ -410,11 +429,13 @@ private fun CommentHeader(
                 }
             }
 
+            val menuEditClick = onEditClick.takeIf { userComment }
             val menuDeleteClick = onDeleteClick.takeIf { userComment }
             val menuReportClick = onReportClick.takeIf { !userComment }
-            if (menuDeleteClick != null || menuReportClick != null) {
+            if (menuEditClick != null || menuDeleteClick != null || menuReportClick != null) {
                 CommentDropdown(
-                    deleteText = R.string.button_text_delete_comment,
+                    deleteText = R.string.button_text_delete_note,
+                    onEditClick = menuEditClick,
                     onDeleteClick = menuDeleteClick,
                     onReportClick = menuReportClick,
                 )

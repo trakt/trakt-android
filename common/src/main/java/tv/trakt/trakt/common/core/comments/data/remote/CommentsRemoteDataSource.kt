@@ -41,6 +41,13 @@ interface CommentsRemoteDataSource {
         gif: CommentGif?,
     ): CommentDto
 
+    suspend fun editComment(
+        commentId: TraktId,
+        text: String,
+        spoiler: Boolean,
+        gif: CommentGif?,
+    ): CommentDto
+
     suspend fun postReport(
         commentId: Int,
         reason: String,

@@ -15,6 +15,7 @@ import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
+import tv.trakt.trakt.core.comments.features.editcomment.EditCommentSheet
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.features.postreply.PostReplySheet
 import tv.trakt.trakt.core.klipy.toGifQuery
@@ -42,6 +43,7 @@ internal class AllShowSeasonsSheetState {
     var seasonDate by mutableStateOf(false)
     var postComment by mutableStateOf(false)
     var postReply by mutableStateOf<Pair<Comment, User?>?>(null)
+    var editComment by mutableStateOf<Comment?>(null)
     var deleteComment by mutableStateOf<Comment?>(null)
     var deleteReply by mutableStateOf<Comment?>(null)
 }
@@ -165,6 +167,13 @@ internal fun AllShowSeasonsSheets(
         gifQuery = MediaType.Season.toGifQuery(state.show?.title),
         onReplyPost = viewModel::addSeasonReply,
         onDismiss = { sheetState.postReply = null },
+    )
+
+    EditCommentSheet(
+        comment = sheetState.editComment,
+        gifQuery = MediaType.Season.toGifQuery(state.show?.title),
+        onCommentEdit = viewModel::updateSeasonComment,
+        onDismiss = { sheetState.editComment = null },
     )
 
     DeleteCommentSheet(

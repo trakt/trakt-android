@@ -27,12 +27,29 @@ internal fun SelectedGifPreview(
     enabled: Boolean = true,
     onRemoveClick: () -> Unit = {},
 ) {
-    Box(modifier = modifier) {
+    SelectedGifFrame(
+        enabled = enabled,
+        onRemoveClick = onRemoveClick,
+        modifier = modifier,
+    ) {
         GifCard(
             gif = gif,
             preview = false,
             shape = RoundedCornerShape(16.dp),
         )
+    }
+}
+
+/** Overlays the remove button on a selected GIF, whichever source renders it. */
+@Composable
+internal fun SelectedGifFrame(
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    onRemoveClick: () -> Unit = {},
+    content: @Composable () -> Unit,
+) {
+    Box(modifier = modifier) {
+        content()
 
         Icon(
             painter = painterResource(R.drawable.ic_close),

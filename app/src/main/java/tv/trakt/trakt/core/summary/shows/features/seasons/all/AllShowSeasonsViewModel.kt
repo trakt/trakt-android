@@ -471,6 +471,10 @@ internal class AllShowSeasonsViewModel(
         itemsState.update { it.addComment(comment) }
     }
 
+    fun updateSeasonComment(comment: Comment) {
+        itemsState.update { it.updateComment(comment) }
+    }
+
     fun deleteSeasonComment(commentId: TraktId) {
         itemsState.update { it.deleteComment(commentId) }
     }

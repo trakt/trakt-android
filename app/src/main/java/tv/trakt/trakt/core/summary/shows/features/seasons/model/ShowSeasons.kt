@@ -40,6 +40,14 @@ internal data class ShowSeasons(
             selectedSeasonComments = (listOf(comment) + selectedSeasonComments).toImmutableList(),
         )
 
+    /** Replaces the selected season's comment matching [comment] by id. */
+    fun updateComment(comment: Comment): ShowSeasons =
+        copy(
+            selectedSeasonComments = selectedSeasonComments
+                .map { if (it.id == comment.id) comment else it }
+                .toImmutableList(),
+        )
+
     /** Removes the comment identified by [commentId] from the selected season's comment list. */
     fun deleteComment(commentId: TraktId): ShowSeasons =
         copy(

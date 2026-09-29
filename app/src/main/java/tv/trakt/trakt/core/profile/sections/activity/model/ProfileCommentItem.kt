@@ -5,8 +5,10 @@ import androidx.compose.runtime.Immutable
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Images
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.core.klipy.toGifQuery
 import java.time.Instant
 
 @Immutable
@@ -56,4 +58,18 @@ internal sealed interface ProfileCommentItem {
 
     val commentedAt: Instant
         get() = comment.createdAt.toInstant()
+
+    val gifQuery: String?
+        get() = when (this) {
+            is ShowItem -> MediaType.Show.toGifQuery(show.title)
+            is MovieItem -> MediaType.Movie.toGifQuery(movie.title)
+            is EpisodeItem -> MediaType.Episode.toGifQuery(show.title)
+        }
+
+    fun withComment(comment: Comment): ProfileCommentItem =
+        when (this) {
+            is ShowItem -> copy(comment = comment)
+            is MovieItem -> copy(comment = comment)
+            is EpisodeItem -> copy(comment = comment)
+        }
 }

@@ -51,6 +51,7 @@ internal fun AllShowSeasonsScreen(
         onNewCommentClick = { sheetState.postComment = true },
         onCommentReplyClick = { sheetState.postReply = it to null },
         onCommentReplyUserClick = { comment, user -> sheetState.postReply = comment to user },
+        onCommentEditClick = { sheetState.editComment = it },
         onCommentDeleteClick = { sheetState.deleteComment = it },
         onCommentReplyDeleteClick = { sheetState.deleteReply = it },
         onPersonClick = { person, role -> state.show?.let { onPersonClick(it, person, role) } },

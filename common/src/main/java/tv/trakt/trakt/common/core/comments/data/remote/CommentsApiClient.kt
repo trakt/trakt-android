@@ -1,5 +1,13 @@
 package tv.trakt.trakt.common.core.comments.data.remote
 
+import io.ktor.client.call.body
+import io.ktor.client.request.put
+import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
+import kotlinx.serialization.json.JsonNull
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import org.openapitools.client.apis.CommentsApi
 import org.openapitools.client.models.GetCommentsReactionsSummary200Response
 import org.openapitools.client.models.PostCommentsPostRequest
@@ -8,6 +16,7 @@ import org.openapitools.client.models.PostCommentsPostRequestAllOfOneOfMovieIds
 import org.openapitools.client.models.PostCommentsReplyRequest
 import org.openapitools.client.models.PostCommentsReplyRequestGif
 import org.openapitools.client.models.PostCommentsReportRequest
+import tv.trakt.trakt.common.Config.API_BASE_URL
 import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.networking.CommentDto
@@ -129,6 +138,55 @@ class CommentsApiClient(
         cacheMarker.invalidate()
 
         return result.body()
+    }
+
+    override suspend fun editComment(
+        commentId: TraktId,
+        text: String,
+        spoiler: Boolean,
+        gif: CommentGif?,
+    ): CommentDto {
+        if (gif == null) {
+            return editCommentWithoutGif(
+                commentId = commentId,
+                text = text,
+                spoiler = spoiler,
+            )
+        }
+
+        val request = PostCommentsReplyRequest(
+            comment = text,
+            spoiler = spoiler,
+            gif = gif.toRequest(),
+        )
+
+        val result = authorizedApi.putCommentsEdit(
+            id = commentId.value.toString(),
+            postCommentsReplyRequest = request,
+        )
+        cacheMarker.invalidate()
+
+        return result.body()
+    }
+
+    private suspend fun editCommentWithoutGif(
+        commentId: TraktId,
+        text: String,
+        spoiler: Boolean,
+    ): CommentDto {
+        val body = buildJsonObject {
+            put("comment", text)
+            put("spoiler", spoiler)
+            put("gif", JsonNull)
+        }
+
+        val result: CommentDto = authorizedApi.client.put("${API_BASE_URL}comments/${commentId.value}") {
+            contentType(ContentType.Application.Json)
+            setBody(body)
+        }.body()
+        cacheMarker.invalidate()
+
+        return result
     }
 
     override suspend fun postReport(

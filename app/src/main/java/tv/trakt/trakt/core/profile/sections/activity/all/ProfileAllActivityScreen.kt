@@ -55,7 +55,10 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.features.details.CommentDetailsSheet
+import tv.trakt.trakt.core.comments.features.editcomment.EditCommentSheet
 import tv.trakt.trakt.core.profile.sections.activity.all.ui.ProfileAllActivityEpisodeItem
 import tv.trakt.trakt.core.profile.sections.activity.all.ui.ProfileAllActivityMovieItem
 import tv.trakt.trakt.core.profile.sections.activity.all.ui.ProfileAllActivitySeasonItem
@@ -90,6 +93,8 @@ internal fun ProfileAllActivityScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var commentSheet by remember { mutableStateOf<Comment?>(null) }
+    var editCommentSheet by remember { mutableStateOf<ProfileCommentItem?>(null) }
+    var deleteCommentSheet by remember { mutableStateOf<Comment?>(null) }
 
     LaunchedEffect(
         state.navigateShow,
@@ -116,6 +121,8 @@ internal fun ProfileAllActivityScreen(
         },
         onRatingShowClick = viewModel::navigateToShow,
         onCommentClick = { commentSheet = it.comment },
+        onEditCommentClick = { editCommentSheet = it },
+        onDeleteCommentClick = { deleteCommentSheet = it.comment },
         onCommentShowClick = viewModel::navigateToShow,
         onCommentMovieClick = viewModel::navigateToMovie,
         onCommentEpisodeClick = viewModel::navigateToEpisode,
@@ -133,6 +140,23 @@ internal fun ProfileAllActivityScreen(
             commentSheet = null
         },
     )
+    EditCommentSheet(
+        comment = editCommentSheet?.comment,
+        gifQuery = editCommentSheet?.gifQuery,
+        onCommentEdit = viewModel::updateComment,
+        onDismiss = {
+            editCommentSheet = null
+        },
+    )
+
+    DeleteCommentSheet(
+        active = deleteCommentSheet != null,
+        commentId = deleteCommentSheet?.id?.toTraktId(),
+        onDeleted = viewModel::deleteComment,
+        onDismiss = {
+            deleteCommentSheet = null
+        },
+    )
 }
 
 @Composable
@@ -143,6 +167,8 @@ internal fun ProfileAllActivityContent(
     onRatingClick: (ProfileRatingItem) -> Unit = {},
     onRatingShowClick: (Show) -> Unit = {},
     onCommentClick: (ProfileCommentItem) -> Unit = {},
+    onEditCommentClick: (ProfileCommentItem) -> Unit = {},
+    onDeleteCommentClick: (ProfileCommentItem) -> Unit = {},
     onCommentShowClick: (Show) -> Unit = {},
     onCommentMovieClick: (Movie) -> Unit = {},
     onCommentEpisodeClick: (Show, Episode) -> Unit = { _, _ -> },
@@ -195,6 +221,8 @@ internal fun ProfileAllActivityContent(
             onRatingClick = onRatingClick,
             onRatingShowClick = onRatingShowClick,
             onCommentClick = onCommentClick,
+            onEditCommentClick = onEditCommentClick,
+            onDeleteCommentClick = onDeleteCommentClick,
             onCommentShowClick = onCommentShowClick,
             onCommentMovieClick = onCommentMovieClick,
             onCommentEpisodeClick = onCommentEpisodeClick,
@@ -258,6 +286,8 @@ private fun ContentList(
     onRatingClick: (ProfileRatingItem) -> Unit,
     onRatingShowClick: (Show) -> Unit,
     onCommentClick: (ProfileCommentItem) -> Unit,
+    onEditCommentClick: (ProfileCommentItem) -> Unit,
+    onDeleteCommentClick: (ProfileCommentItem) -> Unit,
     onCommentShowClick: (Show) -> Unit,
     onCommentMovieClick: (Movie) -> Unit,
     onCommentEpisodeClick: (Show, Episode) -> Unit,
@@ -359,6 +389,8 @@ private fun ContentList(
                         reactions = reactions,
                         onClick = { onCommentClick(item) },
                         onRepliesClick = { onCommentClick(item) },
+                        onEditClick = { onEditCommentClick(item) },
+                        onDeleteClick = { onDeleteCommentClick(item) },
                         onShowClick = onCommentShowClick,
                         onMovieClick = onCommentMovieClick,
                         onEpisodeClick = onCommentEpisodeClick,

@@ -61,6 +61,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.core.comments.ui.CommentDropdown
 import tv.trakt.trakt.core.comments.ui.CommentGifLayout
 import tv.trakt.trakt.core.comments.ui.CommentGifLayout.Bottom
 import tv.trakt.trakt.core.comments.ui.CommentGifLayout.Side
@@ -94,6 +95,7 @@ internal fun ProfileCommentItemView(
     onEpisodeClick: ((Show, Episode) -> Unit)? = null,
     onRequestReactions: ((Comment) -> Unit)? = null,
     onRepliesClick: (() -> Unit)? = null,
+    onEditClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
 ) {
     LaunchedEffect(item.comment.id) {
@@ -124,6 +126,7 @@ internal fun ProfileCommentItemView(
                 onMovieClick = onMovieClick,
                 onEpisodeClick = onEpisodeClick,
                 onRepliesClick = onRepliesClick,
+                onEditClick = onEditClick,
                 onDeleteClick = onDeleteClick,
             )
         },
@@ -141,6 +144,7 @@ private fun CommentCardContent(
     onMovieClick: ((Movie) -> Unit)? = null,
     onEpisodeClick: ((Show, Episode) -> Unit)? = null,
     onRepliesClick: (() -> Unit)? = null,
+    onEditClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
 ) {
     Column(
@@ -154,6 +158,7 @@ private fun CommentCardContent(
             onShowClick = onShowClick,
             onMovieClick = onMovieClick,
             onEpisodeClick = onEpisodeClick,
+            onEditClick = onEditClick,
             onDeleteClick = onDeleteClick,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
@@ -262,6 +267,7 @@ private fun CommentHeader(
     onShowClick: ((Show) -> Unit)? = null,
     onMovieClick: ((Movie) -> Unit)? = null,
     onEpisodeClick: ((Show, Episode) -> Unit)? = null,
+    onEditClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
 ) {
     Row(
@@ -340,6 +346,17 @@ private fun CommentHeader(
                     .copy(alpha = 0.66f),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
+            )
+        }
+
+        // Profile activity only lists the signed-in user's own comments.
+        if (onEditClick != null || onDeleteClick != null) {
+            CommentDropdown(
+                containerColor = TraktTheme.colors.dialogOnContainer,
+                deleteText = R.string.button_text_delete_comment,
+                onEditClick = onEditClick,
+                onDeleteClick = onDeleteClick,
+                modifier = Modifier.padding(top = 2.dp),
             )
         }
     }
@@ -441,6 +458,8 @@ fun CommentPreview() {
                         show = PreviewData.show1,
                         comment = PreviewData.comment1.copy(userRating = 1, comment = "Lorem Ipsum"),
                     ),
+                    onEditClick = {},
+                    onDeleteClick = {},
                     modifier = Modifier
                         .height(TraktTheme.size.commentCardSize),
                 )

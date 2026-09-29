@@ -66,6 +66,7 @@ import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.features.details.CommentDetailsSheet
+import tv.trakt.trakt.core.comments.features.editcomment.EditCommentSheet
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.model.commentsLanguageDisplayName
@@ -96,6 +97,7 @@ internal fun ShowCommentsView(
 
     var commentSheet by remember { mutableStateOf<Comment?>(null) }
     var postCommentSheet by remember { mutableStateOf(false) }
+    var editCommentSheet by remember { mutableStateOf<Comment?>(null) }
     var deleteCommentSheet by remember { mutableStateOf<Comment?>(null) }
 
     ShowCommentsContent(
@@ -117,6 +119,9 @@ internal fun ShowCommentsView(
         },
         onAddCommentClick = {
             postCommentSheet = true
+        },
+        onEditCommentClick = {
+            editCommentSheet = it
         },
         onDeleteCommentClick = {
             deleteCommentSheet = it
@@ -152,6 +157,15 @@ internal fun ShowCommentsView(
         },
     )
 
+    EditCommentSheet(
+        comment = editCommentSheet,
+        gifQuery = MediaType.Show.toGifQuery(state.show?.title),
+        onCommentEdit = viewModel::updateComment,
+        onDismiss = {
+            editCommentSheet = null
+        },
+    )
+
     DeleteCommentSheet(
         active = deleteCommentSheet != null,
         commentId = deleteCommentSheet?.id?.toTraktId(),
@@ -175,6 +189,7 @@ private fun ShowCommentsContent(
     onFilterClick: ((CommentsFilter) -> Unit)? = null,
     onLanguageClick: ((String?) -> Unit)? = null,
     onAddCommentClick: (() -> Unit)? = null,
+    onEditCommentClick: ((Comment) -> Unit)? = null,
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onMoreClick: (() -> Unit)? = null,
     onCollapse: ((Boolean) -> Unit)? = null,
@@ -204,26 +219,12 @@ private fun ShowCommentsContent(
                     onCollapse?.invoke(!current)
                 },
                 extraIcon = {
-                    CommentsLanguageDropdown(
-                        language = state.language,
-                        enabled = state.loading == Done,
-                        onLanguageClick = onLanguageClick,
-                        modifier = Modifier.padding(
-                            start = 12.dp,
-                            end = if (state.user != null) 6.dp else 8.dp,
-                        ),
-                    )
-
                     if (state.user != null) {
                         Icon(
                             painter = painterResource(R.drawable.ic_comment_plus),
                             contentDescription = null,
                             tint = TraktTheme.colors.textPrimary,
                             modifier = Modifier
-                                .padding(
-                                    start = 4.dp,
-                                    end = 8.dp,
-                                )
                                 .size(18.dp)
                                 .onClick(enabled = state.loading == Done) {
                                     onAddCommentClick?.invoke()
@@ -233,6 +234,15 @@ private fun ShowCommentsContent(
                                 },
                         )
                     }
+                    CommentsLanguageDropdown(
+                        language = state.language,
+                        enabled = state.loading == Done,
+                        onLanguageClick = onLanguageClick,
+                        modifier = Modifier.padding(
+                            start = 12.dp,
+                            end = 10.dp,
+                        ),
+                    )
                 },
                 modifier = Modifier
                     .weight(1f)
@@ -300,6 +310,7 @@ private fun ShowCommentsContent(
                                     userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
                                     contentPadding = contentPadding,
                                     onCommentClick = onCommentClick,
+                                    onEditCommentClick = onEditCommentClick,
                                     onDeleteCommentClick = onDeleteCommentClick,
                                     onCommentLoaded = onCommentLoaded,
                                     onReactionClick = onReactionClick,
@@ -325,6 +336,7 @@ private fun ContentList(
     gifPaused: Boolean,
     onCommentLoaded: ((Comment) -> Unit)? = null,
     onCommentClick: ((Comment) -> Unit)? = null,
+    onEditCommentClick: ((Comment) -> Unit)? = null,
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onUserClick: ((User) -> Unit)? = null,
@@ -354,11 +366,11 @@ private fun ContentList(
                 comment = comment,
                 reactions = listReactions,
                 userReactions = userReactions,
-                deleteEnabled = false,
                 gifLayout = CommentGifLayout.Side,
                 gifPaused = gifPaused,
                 onClick = { onCommentClick?.invoke(comment) },
                 onRepliesClick = { onCommentClick?.invoke(comment) },
+                onEditClick = { onEditCommentClick?.invoke(comment) },
                 onDeleteClick = { onDeleteCommentClick?.invoke(comment) },
                 onRequestReactions = { onCommentLoaded?.invoke(comment) },
                 onReactionClick = onReactionClick,

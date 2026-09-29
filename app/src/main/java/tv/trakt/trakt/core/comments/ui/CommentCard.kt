@@ -103,7 +103,6 @@ internal fun CommentCard(
     replies: ImmutableList<Comment> = EmptyImmutableList,
     reactions: ImmutableMap<Int, ReactionsSummary> = EmptyReactionsSummary,
     userReactions: ImmutableMap<Int, Reaction?> = EmptyReactions,
-    deleteEnabled: Boolean = true,
     replyEnabled: Boolean = false,
     repliesButtonEnabled: Boolean = false,
     repliesCountEnabled: Boolean = true,
@@ -116,6 +115,7 @@ internal fun CommentCard(
     onRepliesClick: (() -> Unit)? = null,
     onReplyClick: ((Comment) -> Unit)? = null,
     onReplyUserClick: ((Comment, User) -> Unit)? = null,
+    onEditClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
     onUserClick: ((User) -> Unit)? = null,
@@ -135,7 +135,6 @@ internal fun CommentCard(
             replies = replies,
             reactions = reactions,
             userReactions = userReactions,
-            deleteEnabled = deleteEnabled,
             replyEnabled = replyEnabled,
             repliesButtonEnabled = repliesButtonEnabled,
             repliesCountEnabled = repliesCountEnabled,
@@ -147,6 +146,7 @@ internal fun CommentCard(
             onReplyClick = { onReplyClick?.invoke(comment) },
             onReplyUserClick = { onReplyUserClick?.invoke(comment, it) },
             onRepliesClick = onRepliesClick,
+            onEditClick = onEditClick,
             onDeleteClick = onDeleteClick,
             onDeleteReplyClick = onDeleteReplyClick,
             onReportClick = { reportActive = true },
@@ -207,7 +207,6 @@ private fun CommentCardContent(
     replies: ImmutableList<Comment>,
     reactions: ImmutableMap<Int, ReactionsSummary>,
     userReactions: ImmutableMap<Int, Reaction?>,
-    deleteEnabled: Boolean,
     replyEnabled: Boolean,
     repliesButtonEnabled: Boolean,
     repliesCountEnabled: Boolean,
@@ -220,6 +219,7 @@ private fun CommentCardContent(
     onReplyClick: (() -> Unit)? = null,
     onReplyUserClick: ((User) -> Unit)? = null,
     onRepliesClick: (() -> Unit)? = null,
+    onEditClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
@@ -240,8 +240,8 @@ private fun CommentCardContent(
         CommentHeader(
             comment = comment,
             userComment = isUserComment,
-            deleteEnabled = deleteEnabled,
             onUserClick = onUserClick,
+            onEditClick = onEditClick,
             onDeleteClick = onDeleteClick,
             onReportClick = onReportClick,
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -444,9 +444,9 @@ private fun CommentRepliesContent(
 private fun CommentHeader(
     comment: Comment,
     userComment: Boolean,
-    deleteEnabled: Boolean,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
+    onEditClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
 ) {
@@ -552,14 +552,16 @@ private fun CommentHeader(
                 }
             }
 
-            val menuDeleteClick = onDeleteClick.takeIf { userComment && deleteEnabled }
+            val menuEditClick = onEditClick.takeIf { userComment }
+            val menuDeleteClick = onDeleteClick.takeIf { userComment }
             val menuReportClick = onReportClick.takeIf { !userComment }
-            if (menuDeleteClick != null || menuReportClick != null) {
+            if (menuEditClick != null || menuDeleteClick != null || menuReportClick != null) {
                 Spacer(modifier = Modifier.width(12.dp))
 
                 CommentDropdown(
                     containerColor = TraktTheme.colors.dialogOnContainer,
-                    deleteText = R.string.button_text_delete_comment,
+                    deleteText = R.string.button_text_delete_note,
+                    onEditClick = menuEditClick,
                     onDeleteClick = menuDeleteClick,
                     onReportClick = menuReportClick,
                 )

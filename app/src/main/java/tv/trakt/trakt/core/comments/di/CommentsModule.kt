@@ -31,10 +31,12 @@ import tv.trakt.trakt.core.comments.data.CommentsUpdates
 import tv.trakt.trakt.core.comments.data.CommentsUpdatesStorage
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentViewModel
 import tv.trakt.trakt.core.comments.features.details.CommentDetailsViewModel
+import tv.trakt.trakt.core.comments.features.editcomment.EditCommentViewModel
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentViewModel
 import tv.trakt.trakt.core.comments.features.postreply.PostReplyViewModel
 import tv.trakt.trakt.core.comments.features.report.ReportCommentViewModel
 import tv.trakt.trakt.core.comments.usecases.DeleteCommentUseCase
+import tv.trakt.trakt.core.comments.usecases.EditCommentUseCase
 import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
 import tv.trakt.trakt.core.comments.usecases.GetCommentsLanguageUseCase
 import tv.trakt.trakt.core.comments.usecases.PostCommentUseCase
@@ -65,6 +67,7 @@ internal val commentsModule = module {
     factoryOf(::GetCommentRepliesUseCase)
     factoryOf(::GetCommentReactionsUseCase)
     factoryOf(::PostCommentUseCase)
+    factoryOf(::EditCommentUseCase)
     factoryOf(::PostReplyUseCase)
     factoryOf(::DeleteCommentUseCase)
     factoryOf(::ReportCommentUseCase)
@@ -118,6 +121,13 @@ internal val commentsModule = module {
             sessionManager = get(),
             postCommentUseCase = get(),
             analytics = get(),
+        )
+    }
+
+    viewModel { (comment: Comment) ->
+        EditCommentViewModel(
+            comment = comment,
+            editCommentUseCase = get(),
         )
     }
 

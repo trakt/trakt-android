@@ -64,6 +64,7 @@ import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
+import tv.trakt.trakt.core.comments.features.editcomment.EditCommentSheet
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.features.postreply.PostReplySheet
 import tv.trakt.trakt.core.comments.model.CommentsFilter
@@ -91,6 +92,7 @@ internal fun CommentsScreen(
 
     var postCommentSheet by remember { mutableStateOf(false) }
     var postReplySheet by remember { mutableStateOf<Pair<Comment, User?>?>(null) }
+    var editCommentSheet by remember { mutableStateOf<Comment?>(null) }
     var deleteCommentSheet by remember { mutableStateOf<Comment?>(null) }
     var deleteReplySheet by remember { mutableStateOf<Comment?>(null) }
 
@@ -109,6 +111,9 @@ internal fun CommentsScreen(
         },
         onNewCommentClick = {
             postCommentSheet = true
+        },
+        onEditCommentClick = {
+            editCommentSheet = it
         },
         onDeleteCommentClick = {
             deleteCommentSheet = it
@@ -151,6 +156,15 @@ internal fun CommentsScreen(
         },
     )
 
+    EditCommentSheet(
+        comment = editCommentSheet,
+        gifQuery = gifQuery,
+        onCommentEdit = viewModel::updateComment,
+        onDismiss = {
+            editCommentSheet = null
+        },
+    )
+
     DeleteCommentSheet(
         active = deleteCommentSheet != null,
         commentId = deleteCommentSheet?.id?.toTraktId(),
@@ -190,6 +204,7 @@ internal fun CommentsContent(
     onReplyUserClick: ((Comment, User) -> Unit)? = null,
     onRepliesClick: ((Comment) -> Unit)? = null,
     onNewCommentClick: (() -> Unit)? = null,
+    onEditCommentClick: ((Comment) -> Unit)? = null,
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
     onUserClick: ((User) -> Unit)? = null,
@@ -246,6 +261,7 @@ internal fun CommentsContent(
             onReplyClick = onReplyClick,
             onReplyUserClick = onReplyUserClick,
             onRepliesClick = onRepliesClick,
+            onEditCommentClick = onEditCommentClick,
             onDeleteCommentClick = onDeleteCommentClick,
             onDeleteReplyClick = onDeleteReplyClick,
             onUserClick = onUserClick,
@@ -306,6 +322,7 @@ private fun ContentList(
     user: User?,
     userReactions: ImmutableMap<Int, Reaction?>,
     onRequestReactions: ((Comment) -> Unit)? = null,
+    onEditCommentClick: ((Comment) -> Unit)? = null,
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
     onFilterClick: ((CommentsFilter) -> Unit)? = null,
@@ -382,6 +399,7 @@ private fun ContentList(
                     onReplyClick = { onReplyClick?.invoke(it) },
                     onReplyUserClick = onReplyUserClick,
                     onRepliesClick = { onRepliesClick?.invoke(comment) },
+                    onEditClick = { onEditCommentClick?.invoke(comment) },
                     onDeleteClick = { onDeleteCommentClick?.invoke(comment) },
                     onDeleteReplyClick = { onDeleteReplyClick?.invoke(it) },
                     onUserClick = { onUserClick?.invoke(it) },
