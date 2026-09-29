@@ -35,8 +35,10 @@ import tv.trakt.trakt.core.comments.features.editcomment.EditCommentViewModel
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentViewModel
 import tv.trakt.trakt.core.comments.features.postreply.PostReplyViewModel
 import tv.trakt.trakt.core.comments.features.report.ReportCommentViewModel
+import tv.trakt.trakt.core.comments.model.MentionSource
 import tv.trakt.trakt.core.comments.usecases.DeleteCommentUseCase
 import tv.trakt.trakt.core.comments.usecases.EditCommentUseCase
+import tv.trakt.trakt.core.comments.usecases.GetCommentMentionsUseCase
 import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
 import tv.trakt.trakt.core.comments.usecases.GetCommentsLanguageUseCase
 import tv.trakt.trakt.core.comments.usecases.PostCommentUseCase
@@ -68,6 +70,7 @@ internal val commentsModule = module {
     factoryOf(::GetCommentReactionsUseCase)
     factoryOf(::PostCommentUseCase)
     factoryOf(::EditCommentUseCase)
+    factoryOf(::GetCommentMentionsUseCase)
     factoryOf(::PostReplyUseCase)
     factoryOf(::DeleteCommentUseCase)
     factoryOf(::ReportCommentUseCase)
@@ -114,29 +117,35 @@ internal val commentsModule = module {
         )
     }
 
-    viewModel { (mediaId: TraktId, mediaType: MediaType) ->
+    viewModel { (mediaId: TraktId, mediaType: MediaType, mentionSource: MentionSource?) ->
         PostCommentViewModel(
             mediaId = mediaId,
             mediaType = mediaType,
             sessionManager = get(),
             postCommentUseCase = get(),
+            mentionSource = mentionSource,
+            getCommentMentionsUseCase = get(),
             analytics = get(),
         )
     }
 
-    viewModel { (comment: Comment) ->
+    viewModel { (comment: Comment, mentionSource: MentionSource?) ->
         EditCommentViewModel(
             comment = comment,
             editCommentUseCase = get(),
+            mentionSource = mentionSource,
+            getCommentMentionsUseCase = get(),
         )
     }
 
-    viewModel { (comment: Comment, user: User?) ->
+    viewModel { (comment: Comment, user: User?, mentionSource: MentionSource?) ->
         PostReplyViewModel(
             comment = comment,
             commentUser = user,
             sessionManager = get(),
             postReplyUseCase = get(),
+            mentionSource = mentionSource,
+            getCommentMentionsUseCase = get(),
             analytics = get(),
         )
     }

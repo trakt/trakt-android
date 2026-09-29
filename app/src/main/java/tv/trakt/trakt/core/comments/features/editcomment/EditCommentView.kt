@@ -11,7 +11,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement.spacedBy
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,13 +18,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.input.TextFieldLineLimits
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,12 +32,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -48,6 +46,7 @@ import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.LaunchedUpdateEffect
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -55,12 +54,16 @@ import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.common.ui.theme.colors.Red500
+import tv.trakt.trakt.core.comments.model.CommentMention
 import tv.trakt.trakt.core.comments.ui.CommentGifView
+import tv.trakt.trakt.core.comments.ui.richtext.RichTextEditor
+import tv.trakt.trakt.core.comments.ui.richtext.parseMarkdown
+import tv.trakt.trakt.core.comments.ui.richtext.rememberRichTextEditorState
+import tv.trakt.trakt.core.comments.ui.richtext.toMarkdown
 import tv.trakt.trakt.core.klipy.GifPickerSheet
 import tv.trakt.trakt.core.klipy.ui.SelectedGifFrame
 import tv.trakt.trakt.core.klipy.ui.SelectedGifWidth
 import tv.trakt.trakt.resources.R
-import tv.trakt.trakt.ui.components.InputField
 import tv.trakt.trakt.ui.components.buttons.PrimaryButton
 import tv.trakt.trakt.ui.components.switch.TraktSwitch
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -109,12 +112,19 @@ private fun ViewContent(
     onErrorClick: () -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
-    val inputState = rememberTextFieldState(initialText = comment.comment)
+    val editorState = rememberRichTextEditorState()
     val isLoading = state.loading.isLoading
 
     var isSpoiler by remember { mutableStateOf(comment.isSpoiler) }
     var isGifPickerVisible by remember { mutableStateOf(false) }
     var selectedGif by remember { mutableStateOf(comment.gif) }
+
+    // Compared against the editor output, so markdown written elsewhere does not count as a change.
+    val initialMarkdown = remember(comment.comment) { comment.comment.parseMarkdown().toMarkdown() }
+
+    LaunchedEffect(comment.comment) {
+        editorState.setMarkdown(comment.comment)
+    }
 
     // A GIF is content on its own, so the minimum word count applies to text-only comments.
     val isValid = remember {
@@ -122,21 +132,21 @@ private fun ViewContent(
         derivedStateOf {
             if (selectedGif != null) return@derivedStateOf true
 
-            val input = inputState.text.toString().trim()
+            val input = editorState.text.trim()
             input.isNotBlank() && input.split(spaceRegex).size >= 5
         }
     }
 
     val isNotEmpty = remember {
         derivedStateOf {
-            val input = inputState.text.toString().trim()
+            val input = editorState.text.trim()
             input.isNotBlank()
         }
     }
 
     val isChanged = remember {
         derivedStateOf {
-            inputState.text.toString().trim() != comment.comment.trim() ||
+            editorState.markdown != initialMarkdown ||
                 isSpoiler != comment.isSpoiler ||
                 selectedGif != comment.gif
         }
@@ -152,40 +162,35 @@ private fun ViewContent(
                 .fillMaxWidth()
                 .animateContentSize(),
         ) {
-            Box(
+            RichTextEditor(
+                state = editorState,
+                enabled = !isLoading,
+                placeholder = stringResource(R.string.textarea_placeholder_comment),
+                mentions = state.mentions,
+                borderColor = when {
+                    isNotEmpty.value && !isValid.value -> Red400
+                    else -> TraktTheme.colors.accent
+                },
                 modifier = Modifier.weight(1F),
-            ) {
-                InputField(
-                    state = inputState,
-                    enabled = !isLoading,
-                    placeholder = stringResource(R.string.textarea_placeholder_comment),
-                    containerColor = Color.Transparent,
-                    borderColor = when {
-                        isNotEmpty.value && !isValid.value -> Red400
-                        else -> TraktTheme.colors.accent
-                    },
-                    lineLimits = TextFieldLineLimits.MultiLine(
-                        minHeightInLines = 5,
-                        maxHeightInLines = 15,
-                    ),
-                    imeAction = ImeAction.Default,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-
-                Icon(
-                    painter = painterResource(R.drawable.ic_gif),
-                    contentDescription = stringResource(R.string.button_label_add_gif),
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .size(44.dp)
-                        .padding(10.dp)
-                        .onClick(enabled = !isLoading) {
-                            focusManager.clearFocus()
-                            isGifPickerVisible = true
-                        },
-                )
-            }
+                toolbarTrailing = {
+                    if (selectedGif == null) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_gif),
+                            contentDescription = stringResource(R.string.button_label_add_gif),
+                            tint = TraktTheme.colors.textPrimary,
+                            modifier = Modifier
+                                .graphicsLayer {
+                                    translationX = 4.dp.toPx()
+                                }
+                                .size(22.dp)
+                                .onClick(enabled = !isLoading) {
+                                    focusManager.clearFocus()
+                                    isGifPickerVisible = true
+                                },
+                        )
+                    }
+                },
+            )
 
             AnimatedContent(
                 targetState = selectedGif,
@@ -282,12 +287,8 @@ private fun ViewContent(
             enabled = !isLoading && isValid.value && isChanged.value,
             loading = isLoading,
             onClick = {
-                val input = inputState.text
-                    .toString()
-                    .trim()
-
                 onSubmitClick(
-                    input,
+                    editorState.markdown,
                     isSpoiler,
                     selectedGif,
                 )
@@ -312,8 +313,14 @@ private fun Preview() {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             Column(verticalArrangement = spacedBy(32.dp)) {
                 ViewContent(
-                    state = EditCommentState(),
-                    comment = PreviewData.comment1,
+                    state = EditCommentState(
+                        mentions = persistentListOf(
+                            CommentMention(name = "Steve Carell", href = "", detail = "Michael Scott"),
+                        ),
+                    ),
+                    comment = PreviewData.comment1.copy(
+                        comment = "**Great** movie with a *twist*.\n\n- [spoiler]He was dead[/spoiler]\n> Quote",
+                    ),
                     onSubmitClick = { _, _, _ -> },
                     onErrorClick = { },
                 )
