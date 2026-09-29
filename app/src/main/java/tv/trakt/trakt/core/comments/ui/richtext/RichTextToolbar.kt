@@ -1,6 +1,10 @@
 package tv.trakt.trakt.core.comments.ui.richtext
 
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -154,7 +158,11 @@ private fun FormattingRow(
             onClick = { onBlock(RichBlockType.Quote) },
         )
 
-        if (hasMentions) {
+        AnimatedVisibility(
+            visible = hasMentions,
+            enter = fadeIn(tween(durationMillis = 200)),
+            exit = fadeOut(tween(durationMillis = 200)),
+        ) {
             ToolbarButton(
                 icon = R.drawable.ic_mention,
                 label = when {
