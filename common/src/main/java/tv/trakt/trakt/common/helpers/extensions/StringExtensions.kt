@@ -208,3 +208,18 @@ fun String.replaceMarkdown(): String {
 fun String.capitalize(): String {
     return this.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
 }
+
+/**
+ * Normalizes a user-entered URL to https, adding the scheme when it is missing.
+ * Returns null for blank input.
+ */
+fun String.toHttpsUrl(): String? {
+    val url = trim()
+    if (url.isEmpty()) return null
+
+    return when {
+        url.startsWith("https://", ignoreCase = true) -> url
+        url.startsWith("http://", ignoreCase = true) -> "https://${url.substring("http://".length)}"
+        else -> "https://$url"
+    }
+}

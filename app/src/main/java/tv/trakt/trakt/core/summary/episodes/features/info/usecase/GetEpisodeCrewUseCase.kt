@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
-import tv.trakt.trakt.common.model.Person
+import tv.trakt.trakt.common.model.CrewPerson
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.episodes.data.remote.EpisodesRemoteDataSource
@@ -22,16 +22,14 @@ internal class GetEpisodeCrewUseCase(
         return remoteSource.getCastCrew(showId, season, episode).crew?.let { crew ->
             val directors = crew["directing"]
                 ?.filter { it.job.equals("director", ignoreCase = true) }
-                ?.take(5)
-                ?.map { Person.fromDto(it.person) }
+                ?.map { CrewPerson.fromDto(it) }
                 ?: EmptyImmutableList
 
             val writers = crew["writing"]
-                ?.take(5)
-                ?.map { Person.fromDto(it.person) }
+                ?.map { CrewPerson.fromDto(it) }
                 ?: EmptyImmutableList
 
-            peopleLocalSource.upsertPeople(directors + writers)
+            peopleLocalSource.upsertPeople((directors + writers).map { it.person })
 
             Result(
                 directors = directors.toImmutableList(),
@@ -42,7 +40,7 @@ internal class GetEpisodeCrewUseCase(
 
     @Immutable
     data class Result(
-        val directors: ImmutableList<Person> = EmptyImmutableList,
-        val writers: ImmutableList<Person> = EmptyImmutableList,
+        val directors: ImmutableList<CrewPerson> = EmptyImmutableList,
+        val writers: ImmutableList<CrewPerson> = EmptyImmutableList,
     )
 }

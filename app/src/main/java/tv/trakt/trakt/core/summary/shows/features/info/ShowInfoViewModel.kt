@@ -23,6 +23,7 @@ import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.networking.ShowStatsDto
 import tv.trakt.trakt.core.summary.shows.features.info.usecase.GetShowCrewUseCase
+import tv.trakt.trakt.core.summary.shows.features.info.usecase.GetShowNetworksUseCase
 import tv.trakt.trakt.core.summary.shows.features.info.usecase.GetShowStatsUseCase
 import tv.trakt.trakt.core.summary.shows.features.info.usecase.GetShowStudiosUseCase
 
@@ -30,6 +31,7 @@ internal class ShowInfoViewModel(
     private val show: Show,
     private val getStatsUseCase: GetShowStatsUseCase,
     private val getStudiosUseCase: GetShowStudiosUseCase,
+    private val getNetworksUseCase: GetShowNetworksUseCase,
     private val getCrewUseCase: GetShowCrewUseCase,
 ) : ViewModel() {
     private val initialState = ShowInfoState()
@@ -37,6 +39,7 @@ internal class ShowInfoViewModel(
     private val showState = MutableStateFlow(show)
     private val showStatsState = MutableStateFlow(initialState.showStats)
     private val showStudiosState = MutableStateFlow(initialState.showStudios)
+    private val showNetworksState = MutableStateFlow(initialState.showNetworks)
     private val showCrewState = MutableStateFlow(initialState.showCrew)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val errorState = MutableStateFlow(initialState.error)
@@ -54,6 +57,7 @@ internal class ShowInfoViewModel(
                     awaitAll(
                         async { loadStats() },
                         async { loadStudios() },
+                        async { loadNetworks() },
                         async { loadCrew() },
                     )
                 }
@@ -71,6 +75,18 @@ internal class ShowInfoViewModel(
         try {
             showStudiosState.update {
                 getStudiosUseCase.getStudios(show.ids.trakt)
+            }
+        } catch (error: Exception) {
+            error.rethrowCancellation {
+                Timber.recordError(error)
+            }
+        }
+    }
+
+    private suspend fun loadNetworks() {
+        try {
+            showNetworksState.update {
+                getNetworksUseCase.getNetworks(show)
             }
         } catch (error: Exception) {
             error.rethrowCancellation {
@@ -110,6 +126,7 @@ internal class ShowInfoViewModel(
         showCrewState,
         loadingState,
         errorState,
+        showNetworksState,
     ) { state ->
         ShowInfoState(
             show = state[0] as Show?,
@@ -118,6 +135,7 @@ internal class ShowInfoViewModel(
             showCrew = state[3] as GetShowCrewUseCase.Result?,
             loading = state[4] as LoadingState,
             error = state[5] as Exception?,
+            showNetworks = state[6] as ImmutableList<String>?,
         )
     }.stateIn(
         scope = viewModelScope,

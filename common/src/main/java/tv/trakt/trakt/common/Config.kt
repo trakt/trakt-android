@@ -57,6 +57,14 @@ object Config {
         return "https://www.imdb.com/title/$imdbId/"
     }
 
+    fun webTmdbMovieUrl(tmdbId: Int): String {
+        return "https://www.themoviedb.org/movie/$tmdbId"
+    }
+
+    fun webTmdbShowUrl(tmdbId: Int): String {
+        return "https://www.themoviedb.org/tv/$tmdbId"
+    }
+
     fun webInstagramPersonUrl(id: String): String {
         return "https://www.instagram.com/$id/"
     }

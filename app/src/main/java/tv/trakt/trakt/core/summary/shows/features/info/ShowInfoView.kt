@@ -4,10 +4,14 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -15,11 +19,16 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.CrewPerson
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
+import tv.trakt.trakt.common.model.SocialIds
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
 import tv.trakt.trakt.core.summary.ui.DetailsMetaInfo
+import tv.trakt.trakt.core.summary.ui.views.info.MediaLink
+import tv.trakt.trakt.core.summary.ui.views.info.MediaLinksView
 import tv.trakt.trakt.core.summary.ui.views.info.MetaView
+import tv.trakt.trakt.core.summary.ui.views.info.toMediaLinks
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktHeader
 import tv.trakt.trakt.ui.extensions.isAtLeastLarge
@@ -33,10 +42,12 @@ internal fun ShowInfoView(
     onPersonClick: (person: Person, role: PersonCreditsRole) -> Unit = { _, _ -> },
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val uriHandler = LocalUriHandler.current
 
     ShowInfoView(
         state = state,
         onPersonClick = onPersonClick,
+        onLinkClick = { uriHandler.openUri(it.url) },
         modifier = modifier,
     )
 }
@@ -46,10 +57,15 @@ private fun ShowInfoView(
     state: ShowInfoState,
     modifier: Modifier = Modifier,
     onPersonClick: (person: Person, role: PersonCreditsRole) -> Unit = { _, _ -> },
+    onLinkClick: (MediaLink) -> Unit = {},
 ) {
     Column(
         verticalArrangement = spacedBy(20.dp),
-        modifier = modifier,
+        modifier = modifier
+            .verticalScroll(
+                state = rememberScrollState(),
+                overscrollEffect = null,
+            ),
     ) {
         TraktHeader(
             title = stringResource(R.string.header_details),
@@ -57,7 +73,9 @@ private fun ShowInfoView(
             modifier = Modifier.padding(horizontal = 24.dp),
         )
 
-        state.show?.let {
+        state.show?.let { show ->
+            val links = remember(show) { show.toMediaLinks() }
+
             Column(
                 verticalArrangement = spacedBy(24.dp),
             ) {
@@ -67,18 +85,27 @@ private fun ShowInfoView(
                     lists = state.showStats?.lists ?: 0,
                     favorites = state.showStats?.favorited ?: 0,
                     loading = !state.loading.isDone,
-                    released = it.isReleased,
+                    released = show.isReleased,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 23.dp),
                 )
 
                 DetailsView(
-                    show = it,
+                    show = show,
                     showStudios = state.showStudios,
+                    showNetworks = state.showNetworks,
                     showCreators = state.showCrew?.creators,
                     showWriters = state.showCrew?.writers,
                     onPersonClick = onPersonClick,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
+                )
+
+                MediaLinksView(
+                    links = links,
+                    onLinkClick = onLinkClick,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp),
@@ -92,8 +119,9 @@ private fun ShowInfoView(
 private fun DetailsView(
     show: Show,
     showStudios: ImmutableList<String>?,
-    showCreators: ImmutableList<Person>?,
-    showWriters: ImmutableList<Person>?,
+    showNetworks: ImmutableList<String>?,
+    showCreators: ImmutableList<CrewPerson>?,
+    showWriters: ImmutableList<CrewPerson>?,
     onPersonClick: (person: Person, role: PersonCreditsRole) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -101,6 +129,7 @@ private fun DetailsView(
     DetailsMetaInfo(
         show = show,
         showStudios = showStudios,
+        showNetworks = showNetworks,
         showCreators = showCreators,
         showWriters = showWriters,
         onPersonClick = onPersonClick,
@@ -125,7 +154,15 @@ private fun Preview() {
     TraktTheme {
         ShowInfoView(
             state = ShowInfoState(
-                show = PreviewData.show1,
+                show = PreviewData.show1.copy(
+                    homepage = "https://trakt.tv",
+                    socialIds = SocialIds(
+                        twitter = "trakt",
+                        facebook = "trakt",
+                        instagram = "trakt",
+                        wikipedia = "Trakt",
+                    ),
+                ),
                 loading = LoadingState.Done,
             ),
         )
