@@ -138,6 +138,12 @@ internal class MainViewModel(
                         it.remove(authCodeKey)
                         it.remove(codeVerifierKey)
                     }
+                    if (codeVerifier == null) {
+                        val error = IllegalStateException("Missing PKCE code verifier")
+                        errorState.update { AuthorizationException(error) }
+                        Timber.recordError(error)
+                        return@collect
+                    }
                     authorizeUser(code, codeVerifier)
                 }
             }
@@ -325,7 +331,7 @@ internal class MainViewModel(
 
     private fun authorizeUser(
         code: String,
-        codeVerifier: String?,
+        codeVerifier: String,
     ) {
         viewModelScope.launch {
             try {

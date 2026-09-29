@@ -23,12 +23,11 @@ internal class AuthApiClient(
 
     override suspend fun getAccessToken(
         code: String,
-        codeVerifier: String?,
+        codeVerifier: String,
     ): TraktAccessToken {
         val request = TokenExchangeRequest(
             code = code,
             clientId = BuildConfig.TRAKT_API_KEY,
-            clientSecret = BuildConfig.TRAKT_API_SECRET,
             redirectUri = ConfigAuth.OAUTH_REDIRECT_URI,
             codeVerifier = codeVerifier,
             grantType = "authorization_code",

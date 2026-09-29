@@ -39,7 +39,6 @@
 3. Open `local.properties` and make sure they contain all required values like below:
 ```
 TRAKT_API_KEY = "PUT_YOUR_VALUE_HERE"
-TRAKT_API_SECRET = "PUT_YOUR_VALUE_HERE"
 YOUNIFY_API_KEY "PUT_YOUR_VALUE_HERE (Optional)"
 
 KEYSTORE_ALIAS = PUT_YOUR_VALUE_HERE

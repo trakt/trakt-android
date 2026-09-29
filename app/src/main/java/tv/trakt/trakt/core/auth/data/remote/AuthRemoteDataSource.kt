@@ -5,6 +5,6 @@ import tv.trakt.trakt.common.auth.model.TraktAccessToken
 internal interface AuthRemoteDataSource {
     suspend fun getAccessToken(
         code: String,
-        codeVerifier: String?,
+        codeVerifier: String,
     ): TraktAccessToken
 }

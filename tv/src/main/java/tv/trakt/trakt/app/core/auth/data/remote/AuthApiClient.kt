@@ -36,7 +36,6 @@ internal class AuthApiClient(
         val request = PostOauthDeviceTokenRequest(
             code = deviceCode,
             clientId = BuildConfig.TRAKT_API_KEY,
-            clientSecret = BuildConfig.TRAKT_API_SECRET,
         )
 
         try {
