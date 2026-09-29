@@ -62,6 +62,7 @@ internal fun CommentUserChips(
                 text = rating,
                 iconPainter = painterResource(R.drawable.ic_star_trakt_on),
                 iconPadding = 1.dp,
+                endPadding = 1.dp,
                 contentTextStyle = textStyle,
             )
         }
