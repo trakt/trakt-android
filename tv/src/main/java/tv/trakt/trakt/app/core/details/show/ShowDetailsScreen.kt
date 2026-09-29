@@ -83,6 +83,7 @@ import tv.trakt.trakt.common.model.Images.Size
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.lists.CustomList
 import tv.trakt.trakt.common.ui.theme.colors.Red400
 import tv.trakt.trakt.resources.R
@@ -328,6 +329,7 @@ private fun ShowDetailsScreenContent(
 
         CommentDetailsOverlay(
             selectedComment = selectedComment,
+            user = state.user,
             onExited = {
                 selectedComment = null
                 focusRequesters["comments"]?.requestFocus()
@@ -469,6 +471,7 @@ private fun MainContent(
             ShowCommentsList(
                 header = stringResource(R.string.list_title_comments),
                 comments = { state.showComments ?: emptyList<Comment>().toImmutableList() },
+                user = state.user,
                 onFocused = { onFocused("comments") },
                 onClick = onCommentClick,
                 modifier = Modifier
@@ -530,6 +533,7 @@ private fun MainContent(
 @Composable
 private fun CommentDetailsOverlay(
     selectedComment: Comment?,
+    user: User?,
     onExited: () -> Unit,
 ) {
     AnimatedVisibility(
@@ -551,6 +555,8 @@ private fun CommentDetailsOverlay(
             ) {
                 CommentDetailsDialog(
                     comment = selectedComment,
+                    user = user,
+                    progressEnabled = true,
                     modifier = Modifier
                         .padding(32.dp)
                         .width(400.dp)

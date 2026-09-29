@@ -140,6 +140,7 @@ internal fun ShowCommentsView(
     CommentDetailsSheet(
         comment = commentSheet,
         gifQuery = MediaType.Show.toGifQuery(state.show?.title),
+        progressEnabled = true,
         onDeleteComment = viewModel::deleteComment,
         onDismiss = {
             commentSheet = null
@@ -366,6 +367,7 @@ private fun ContentList(
                 comment = comment,
                 reactions = listReactions,
                 userReactions = userReactions,
+                progressEnabled = true,
                 gifLayout = CommentGifLayout.Side,
                 gifPaused = gifPaused,
                 onClick = { onCommentClick?.invoke(comment) },

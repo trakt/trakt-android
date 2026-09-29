@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.CommentUserStats
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.EpisodeType
 import tv.trakt.trakt.common.model.Ids
@@ -256,6 +257,11 @@ object PreviewData {
         replies = 23,
         likes = 12450,
         userRating = 2,
+        userStats = CommentUserStats(
+            playCount = 3,
+            completedCount = 1,
+            rating = 2,
+        ),
         language = null,
         user = user1,
         gif = null,

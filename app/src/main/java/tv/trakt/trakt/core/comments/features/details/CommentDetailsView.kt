@@ -81,6 +81,7 @@ import tv.trakt.trakt.core.comments.ui.CommentDropdown
 import tv.trakt.trakt.core.comments.ui.CommentGifView
 import tv.trakt.trakt.core.comments.ui.CommentReplyCard
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
+import tv.trakt.trakt.core.comments.ui.CommentUserChips
 import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
 import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
 import tv.trakt.trakt.resources.R
@@ -91,6 +92,7 @@ internal fun CommentDetailsView(
     viewModel: CommentDetailsViewModel,
     modifier: Modifier = Modifier,
     gifQuery: String? = null,
+    progressEnabled: Boolean = false,
     onDeleteComment: (commentId: TraktId) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -103,6 +105,7 @@ internal fun CommentDetailsView(
 
     CommentDetailsViewContent(
         state = state,
+        progressEnabled = progressEnabled,
         modifier = modifier,
         onReplyLoaded = {
             viewModel.loadReactions(it.id)
@@ -185,6 +188,7 @@ internal fun CommentDetailsView(
 private fun CommentDetailsViewContent(
     state: CommentDetailsState,
     modifier: Modifier = Modifier,
+    progressEnabled: Boolean = false,
     onReplyLoaded: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onEditClick: ((Comment) -> Unit)? = null,
@@ -206,6 +210,7 @@ private fun CommentDetailsViewContent(
                     commentReplies = state.replies,
                     listReactions = state.reactions,
                     userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
+                    progressEnabled = progressEnabled,
                     onReplyLoaded = onReplyLoaded,
                     onReactionClick = onReactionClick,
                     onReplyClick = onReplyClick,
@@ -245,6 +250,7 @@ private fun CommentContent(
     commentReplies: ImmutableList<Comment>?,
     listReactions: ImmutableMap<Int, ReactionsSummary>?,
     userReactions: ImmutableMap<Int, Reaction?>,
+    progressEnabled: Boolean,
     onReplyLoaded: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onReplyClick: ((User) -> Unit)? = null,
@@ -261,6 +267,7 @@ private fun CommentContent(
         CommentHeader(
             comment = comment,
             userComment = user?.ids?.trakt == comment.user.ids.trakt,
+            progressEnabled = progressEnabled,
             onEditClick = onEditClick,
             onDeleteClick = onDeleteClick,
             onReportClick = onReportClick,
@@ -324,6 +331,7 @@ private fun CommentContent(
                             reply = reply,
                             reactions = listReactions?.get(reply.id),
                             userReaction = userReactions[reply.id],
+                            progressEnabled = progressEnabled,
                             onRequestReactions = { onReplyLoaded?.invoke(reply) },
                             onReactionClick = { onReactionClick?.invoke(it, reply) },
                             onReplyClick = { onReplyClick?.invoke(reply.user) },
@@ -341,6 +349,7 @@ private fun CommentContent(
 private fun CommentHeader(
     comment: Comment,
     userComment: Boolean,
+    progressEnabled: Boolean,
     modifier: Modifier = Modifier,
     onEditClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
@@ -409,25 +418,10 @@ private fun CommentHeader(
             modifier = Modifier.fillMaxWidth(),
         ) {
             Spacer(modifier = Modifier.weight(1f))
-            comment.user5Rating?.let { rating ->
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = spacedBy(3.dp),
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_star_trakt_on),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier.size(15.dp),
-                    )
-                    Text(
-                        text = rating,
-                        style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
-                        color = TraktTheme.colors.textPrimary,
-                        maxLines = 1,
-                    )
-                }
-            }
+            CommentUserChips(
+                comment = comment,
+                progressVisible = progressEnabled && !userComment,
+            )
 
             val menuEditClick = onEditClick.takeIf { userComment }
             val menuDeleteClick = onDeleteClick.takeIf { userComment }
@@ -566,6 +560,17 @@ private fun Preview() {
                         ).toImmutableList(),
                         loading = Done,
                     ),
+                )
+
+                CommentDetailsViewContent(
+                    state = CommentDetailsState(
+                        comment = PreviewData.comment1,
+                        replies = listOf(
+                            PreviewData.comment1,
+                        ).toImmutableList(),
+                        loading = Done,
+                    ),
+                    progressEnabled = true,
                 )
             }
         }

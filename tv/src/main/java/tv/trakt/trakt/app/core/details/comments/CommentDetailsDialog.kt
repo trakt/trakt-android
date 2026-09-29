@@ -60,6 +60,7 @@ import kotlinx.collections.immutable.ImmutableList
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.app.core.comments.ui.CommentGifView
 import tv.trakt.trakt.app.core.comments.ui.CommentReplyCard
+import tv.trakt.trakt.app.core.comments.ui.CommentUserChips
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
@@ -67,6 +68,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
 
@@ -74,6 +76,8 @@ import tv.trakt.trakt.resources.R
 internal fun CommentDetailsDialog(
     comment: Comment,
     modifier: Modifier = Modifier,
+    user: User? = null,
+    progressEnabled: Boolean = false,
     viewModel: CommentDetailsViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -86,6 +90,8 @@ internal fun CommentDetailsDialog(
         modifier = modifier,
         comment = comment,
         state = state,
+        user = user,
+        progressEnabled = progressEnabled,
     )
 }
 
@@ -94,6 +100,8 @@ private fun CommentDetailsContent(
     modifier: Modifier,
     comment: Comment,
     state: CommentDetailsState,
+    user: User? = null,
+    progressEnabled: Boolean = false,
 ) {
     val focusRequester = remember { FocusRequester() }
 
@@ -130,6 +138,7 @@ private fun CommentDetailsContent(
 
         CommentHeader(
             comment = comment,
+            progressVisible = progressEnabled && comment.user.ids.trakt != user?.ids?.trakt,
             modifier = Modifier
                 .padding(top = 20.dp)
                 .focusRequester(focusRequester)
@@ -194,6 +203,8 @@ private fun CommentDetailsContent(
         if (!state.isLoading && state.commentReplies?.isNotEmpty() == true) {
             CommentRepliesContent(
                 comments = state.commentReplies,
+                user = user,
+                progressEnabled = progressEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 20.dp),
@@ -218,6 +229,7 @@ private fun CommentDetailsContent(
 @Composable
 private fun CommentHeader(
     comment: Comment,
+    progressVisible: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -274,27 +286,12 @@ private fun CommentHeader(
             )
         }
 
-        comment.user5Rating?.let {
+        if (progressVisible || comment.user5Rating != null) {
             Spacer(modifier = Modifier.weight(1F))
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_star_trakt_on),
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier
-                        .size(16.dp),
-                )
-                Text(
-                    text = it,
-                    style = TraktTheme.typography.paragraph.copy(fontWeight = W700),
-                    color = TraktTheme.colors.textPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
+            CommentUserChips(
+                comment = comment,
+                progressVisible = progressVisible,
+            )
         }
     }
 }
@@ -302,6 +299,8 @@ private fun CommentHeader(
 @Composable
 private fun CommentRepliesContent(
     comments: ImmutableList<Comment>,
+    user: User?,
+    progressEnabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -311,6 +310,8 @@ private fun CommentRepliesContent(
         comments.forEach { comment ->
             CommentReplyCard(
                 comment = comment,
+                user = user,
+                progressEnabled = progressEnabled,
             )
         }
     }
@@ -330,6 +331,7 @@ fun CommentDetailsPreview() {
             ) {
                 CommentDetailsContent(
                     comment = PreviewData.comment1,
+                    progressEnabled = true,
                     modifier = Modifier,
                     state = CommentDetailsState(
                         isLoading = false,

@@ -56,7 +56,7 @@ import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.DevicePreviewRtl
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.googleTranslateActivityInfo
-import tv.trakt.trakt.common.helpers.extensions.longDateTimeFormat
+import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openGoogleTranslate
 import tv.trakt.trakt.common.helpers.extensions.toLocal
@@ -81,6 +81,7 @@ internal fun CommentReplyCard(
     modifier: Modifier = Modifier,
     reactions: ReactionsSummary? = null,
     userReaction: Reaction? = null,
+    progressEnabled: Boolean = false,
     onClick: (() -> Unit)? = null,
     onUserClick: ((User) -> Unit)? = null,
     onRequestReactions: (() -> Unit)? = null,
@@ -111,6 +112,7 @@ internal fun CommentReplyCard(
             comment = reply,
             reactions = reactions,
             userReaction = userReaction,
+            progressEnabled = progressEnabled,
             onReactionClick = onReactionClick,
             onReplyClick = onReplyClick,
             onDeleteClick = onDeleteClick,
@@ -161,6 +163,7 @@ private fun CommentReplyCardContent(
     comment: Comment,
     reactions: ReactionsSummary?,
     userReaction: Reaction?,
+    progressEnabled: Boolean,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
@@ -181,6 +184,7 @@ private fun CommentReplyCardContent(
         CommentHeader(
             user = user,
             comment = comment,
+            progressEnabled = progressEnabled,
             onUserClick = onUserClick,
             onDeleteClick = onDeleteClick,
             onReportClick = onReportClick,
@@ -278,6 +282,7 @@ private fun CommentReplyBody(
 private fun CommentHeader(
     user: User?,
     comment: Comment,
+    progressEnabled: Boolean,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
@@ -348,7 +353,7 @@ private fun CommentHeader(
                     )
                 }
                 Text(
-                    text = comment.createdAt.toLocal().format(longDateTimeFormat()).capitalize(),
+                    text = comment.createdAt.toLocal().format(mediumDateFormat()).capitalize(),
                     style = TraktTheme.typography.meta,
                     color = TraktTheme.colors.textSecondary
                         .copy(alpha = 0.66f),
@@ -361,6 +366,12 @@ private fun CommentHeader(
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            CommentUserChips(
+                comment = comment,
+                progressVisible = progressEnabled && !isUserReply,
+                modifier = Modifier.padding(start = 12.dp),
+            )
+
             val menuDeleteClick = onDeleteClick.takeIf { isUserReply }
             val menuReportClick = onReportClick.takeIf { !isUserReply }
             if (menuDeleteClick != null || menuReportClick != null) {
@@ -495,6 +506,7 @@ private fun Preview() {
                     onClick = {},
                     user = null,
                     reply = PreviewData.comment1.copy(userRating = 7),
+                    progressEnabled = true,
                 )
 
                 CommentReplyCard(

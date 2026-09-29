@@ -51,13 +51,20 @@ import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CommentGif
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun CommentReplyCard(
     comment: Comment,
     modifier: Modifier = Modifier,
+    user: User? = null,
+    progressEnabled: Boolean = false,
 ) {
+    val progressVisible = remember(user, comment.user) {
+        progressEnabled && comment.user.ids.trakt != user?.ids?.trakt
+    }
+
     var spoilersHidden by remember { mutableStateOf(true) }
     var isExpanded by remember { mutableStateOf(false) }
 
@@ -89,6 +96,7 @@ internal fun CommentReplyCard(
                 comment = comment,
                 spoilersHidden = spoilersHidden,
                 isExpanded = isExpanded,
+                progressVisible = progressVisible,
             )
         },
     )
@@ -99,6 +107,7 @@ private fun CommentCardContent(
     comment: Comment,
     spoilersHidden: Boolean,
     isExpanded: Boolean,
+    progressVisible: Boolean,
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp, Alignment.Top),
@@ -106,7 +115,10 @@ private fun CommentCardContent(
             .fillMaxWidth()
             .padding(16.dp),
     ) {
-        CommentHeader(comment)
+        CommentHeader(
+            comment = comment,
+            progressVisible = progressVisible,
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -146,7 +158,10 @@ private fun CommentCardContent(
 }
 
 @Composable
-private fun CommentHeader(comment: Comment) {
+private fun CommentHeader(
+    comment: Comment,
+    progressVisible: Boolean,
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = spacedBy(8.dp),
@@ -203,27 +218,12 @@ private fun CommentHeader(comment: Comment) {
             )
         }
 
-        comment.user5Rating?.let {
+        if (progressVisible || comment.user5Rating != null) {
             Spacer(modifier = Modifier.weight(1F))
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(3.dp),
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_star_trakt_on),
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier
-                        .size(15.dp),
-                )
-                Text(
-                    text = it,
-                    style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
-                    color = TraktTheme.colors.textPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
+            CommentUserChips(
+                comment = comment,
+                progressVisible = progressVisible,
+            )
         }
     }
 }
@@ -238,6 +238,10 @@ fun CommentReplyPreview() {
         ) {
             CommentReplyCard(
                 comment = PreviewData.comment1,
+            )
+            CommentReplyCard(
+                comment = PreviewData.comment1.copy(userRating = 7),
+                progressEnabled = true,
             )
         }
     }

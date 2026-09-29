@@ -78,6 +78,20 @@ fun longDateTimeFormat(): DateTimeFormatter {
 }
 
 @Composable
+fun mediumDateTimeFormat(): DateTimeFormatter {
+    val configuration = LocalConfiguration.current
+    val appLocale = remember(configuration) {
+        AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
+    }
+
+    return remember(appLocale) {
+        DateTimeFormatter
+            .ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)
+            .withLocale(appLocale)
+    }
+}
+
+@Composable
 fun yearMonthFormat(): DateTimeFormatter {
     val configuration = LocalConfiguration.current
     val appLocale = remember(configuration) {

@@ -33,6 +33,7 @@ internal fun CommentDetailsSheet(
     ),
     comment: Comment?,
     gifQuery: String? = null,
+    progressEnabled: Boolean = false,
     onDeleteComment: (commentId: TraktId) -> Unit = {},
     onDismiss: () -> Unit,
 ) {
@@ -54,6 +55,7 @@ internal fun CommentDetailsSheet(
                     parameters = { parametersOf(comment) },
                 ),
                 gifQuery = gifQuery,
+                progressEnabled = progressEnabled,
                 onDeleteComment = {
                     onDeleteComment(it)
                     sheetScope.dismissWithAction(
