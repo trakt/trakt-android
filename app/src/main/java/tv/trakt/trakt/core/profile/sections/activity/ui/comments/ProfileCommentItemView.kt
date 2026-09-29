@@ -349,11 +349,10 @@ private fun CommentHeader(
             )
         }
 
-        // Profile activity only lists the signed-in user's own comments.
         if (onEditClick != null || onDeleteClick != null) {
             CommentDropdown(
                 containerColor = TraktTheme.colors.dialogOnContainer,
-                deleteText = R.string.button_text_delete_comment,
+                deleteText = R.string.button_text_delete_note,
                 onEditClick = onEditClick,
                 onDeleteClick = onDeleteClick,
                 modifier = Modifier.padding(top = 2.dp),
