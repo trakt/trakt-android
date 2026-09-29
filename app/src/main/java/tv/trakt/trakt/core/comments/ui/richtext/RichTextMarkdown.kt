@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.comments.ui.richtext
 
 private val escapedChars = setOf('\\', '*', '_', '[', ']', '`')
 private val blockStartChars = setOf('#', '>', '-', '+')
+private val orderedListMarker = Regex("""^(\d+)([.)])(?=\s|$)""")
 
 private sealed interface Mark {
     val open: String
@@ -48,10 +49,21 @@ private fun RichLine.toMarkdown(): String {
     return when (type) {
         RichBlockType.Bullet -> "- $inline"
         RichBlockType.Quote -> "> $inline"
-        RichBlockType.Paragraph -> when {
-            inline.firstOrNull() in blockStartChars -> "\\$inline"
-            else -> inline
-        }
+        RichBlockType.Paragraph -> inline.escapeBlockStart()
+    }
+}
+
+/**
+ * Keeps paragraph text from being read as a heading, quote or list. Ordered markers are escaped
+ * on the delimiter because a backslash before a digit is rendered literally.
+ */
+private fun String.escapeBlockStart(): String {
+    val content = trimStart()
+    val indent = substring(0, length - content.length)
+
+    return indent + when {
+        content.firstOrNull() in blockStartChars -> "\\$content"
+        else -> orderedListMarker.replace(content) { "${it.groupValues[1]}\\${it.groupValues[2]}" }
     }
 }
 
