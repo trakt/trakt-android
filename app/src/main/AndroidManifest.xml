@@ -89,6 +89,13 @@
         <data android:host="app.trakt.tv" />
         <data android:pathPrefix="/shows/" />
         <data android:pathPrefix="/movies/" />
+
+        <uri-relative-filter-group
+          android:allow="false"
+          tools:targetApi="35"
+          >
+          <data android:queryAdvancedPattern=".+" />
+        </uri-relative-filter-group>
       </intent-filter>
 
       <intent-filter android:label="@string/button_search_selection">
