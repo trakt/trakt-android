@@ -1255,7 +1255,6 @@
   <string name="preview_feature_description_leaderboard">Rangschik de mensen die je volgt op kijktijd en zie waar jij eindigt.</string>
   <string name="preview_feature_description_list_counts">Toont hoeveel items een lijst bevat en hoeveel lijsten een sectie heeft.</string>
   <string name="preview_feature_description_parental_guide">Toon risiconiveaus van de inhoud in het detailscherm voor films en series, en filter op ernst in geavanceerde filters.</string>
-  <string name="preview_feature_description_reviewer_stats">Toont hoeveel van een titel een recensent heeft bekeken naast hun beoordeling.</string>
   <string name="preview_feature_description_rewatch">Start nieuwe kijkbeurten voor series die je al hebt gezien, check in of markeer afleveringen als bekeken, direct vanuit het sessiepaneel.</string>
   <string name="preview_feature_description_scoped_favorites">Beperk favorietenlijsten door favorieten van het huidige jaar op profielen weer te geven en de volledige favorietenlijst per jaar te groeperen.</string>
   <string name="preview_feature_description_soundtrack">Voegt een soundtracksectie toe aan film- en seriepagina\'s, met afspeelmogelijkheden wanneer een nummer kan worden gematcht.</string>
@@ -1265,7 +1264,6 @@
   <string name="preview_feature_title_genre_picker">Genrekiezer</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_list_counts">Lijstaantallen</string>
-  <string name="preview_feature_title_reviewer_stats">Recensentstatistieken</string>
   <string name="preview_feature_title_rewatch">Opnieuw bekijken</string>
   <string name="preview_feature_title_scoped_favorites">Gerichte favorieten</string>
   <string name="preview_feature_title_soundtrack">Soundtrack</string>

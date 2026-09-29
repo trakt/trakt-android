@@ -1255,7 +1255,6 @@
   <string name="preview_feature_description_leaderboard">Classifique as pessoas que você segue por tempo de exibição e veja sua posição entre elas.</string>
   <string name="preview_feature_description_list_counts">Mostra quantos itens uma lista contém e quantas listas uma seção possui.</string>
   <string name="preview_feature_description_parental_guide">Mostrar níveis de risco de conteúdo na gaveta de detalhes para filmes e séries, e filtrar por gravidade nos filtros avançados.</string>
-  <string name="preview_feature_description_reviewer_stats">Mostra o quanto de um título um avaliador assistiu ao lado da sua classificação.</string>
   <string name="preview_feature_description_rewatch">Comece sessões de reassistência para séries que você já assistiu, faça check-in ou marque episódios como assistidos diretamente na gaveta da sessão.</string>
   <string name="preview_feature_description_scoped_favorites">Limite as listas de favoritos por tempo, mostrando os favoritos do ano atual nos perfis e agrupando a lista completa de favoritos por ano.</string>
   <string name="preview_feature_description_soundtrack">Adiciona uma seção de trilha sonora às páginas de filmes e séries, com reprodução onde uma faixa pode ser encontrada.</string>
@@ -1265,7 +1264,6 @@
   <string name="preview_feature_title_genre_picker">Seletor de Gênero</string>
   <string name="preview_feature_title_leaderboard">Pantheon</string>
   <string name="preview_feature_title_list_counts">Contagem de Listas</string>
-  <string name="preview_feature_title_reviewer_stats">Estatísticas do Avaliador</string>
   <string name="preview_feature_title_rewatch">Reassistir</string>
   <string name="preview_feature_title_scoped_favorites">Favoritos Restritos</string>
   <string name="preview_feature_title_soundtrack">Trilha Sonora</string>
