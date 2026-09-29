@@ -5,10 +5,6 @@ import tv.trakt.trakt.resources.R
 
 private val nonAlphanumeric = Regex("[^a-zA-Z0-9]")
 
-/**
- * Resolves an API crew job (for example "Second Unit Director") to its translated string.
- * Returns null for jobs without a translation.
- */
 @StringRes
 internal fun crewJobStringRes(job: String): Int? {
     return crewJobs[job.replace(nonAlphanumeric, "_").lowercase()]

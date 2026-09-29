@@ -25,6 +25,7 @@ import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
+import tv.trakt.trakt.common.helpers.extensions.timeFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.CrewPerson
@@ -40,11 +41,14 @@ import tv.trakt.trakt.core.summary.people.model.crewJobStringRes
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TextLineLoadingIndicator
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.time.Instant
 import java.time.LocalDate
+import java.time.format.TextStyle
 import java.util.Locale
 import kotlin.time.Duration
 
 private const val COLLAPSED_VALUES_COUNT = 2
+private const val EMPTY_VALUE = "-"
 private val VALUES_SPACING = 2.dp
 
 @Composable
@@ -52,6 +56,7 @@ internal fun DetailsMetaInfo(
     show: Show,
     modifier: Modifier = Modifier,
     showStudios: ImmutableList<String>? = null,
+    showNetworks: ImmutableList<String>? = null,
     showCreators: ImmutableList<CrewPerson>? = null,
     showWriters: ImmutableList<CrewPerson>? = null,
     onPersonClick: (person: Person, role: PersonCreditsRole) -> Unit = { _, _ -> },
@@ -68,11 +73,13 @@ internal fun DetailsMetaInfo(
         titleOriginal = show.titleOriginal,
         country = show.country,
         genres = show.genres,
-        network = show.network,
+        airs = rememberAirsText(show),
+        networks = showNetworks ?: listOfNotNull(show.network),
         studios = showStudios ?: EmptyImmutableList,
         creators = showCreators,
         writers = showWriters,
         episodesCount = show.airedEpisodes,
+        layout = DetailsLayout.Show,
         onPersonClick = onPersonClick,
     )
 }
@@ -94,7 +101,7 @@ internal fun DetailsMetaInfo(
         episodeType = episode.type,
         directors = episodeDirectors,
         writers = episodeWriters,
-        episodeRowsOnly = true,
+        layout = DetailsLayout.Episode,
         onPersonClick = onPersonClick,
     )
 }
@@ -132,7 +139,8 @@ private fun DetailsMetaInfo(
     totalRuntime: Duration? = null,
     status: MediaStatus? = null,
     country: String? = null,
-    network: String? = null,
+    airs: String? = null,
+    networks: List<String> = EmptyImmutableList,
     titleOriginal: String? = null,
     episodesCount: Int? = null,
     episodeType: EpisodeType? = null,
@@ -142,14 +150,14 @@ private fun DetailsMetaInfo(
     creators: ImmutableList<CrewPerson>? = null,
     directors: ImmutableList<CrewPerson>? = null,
     writers: ImmutableList<CrewPerson>? = null,
-    episodeRowsOnly: Boolean = false,
+    layout: DetailsLayout = DetailsLayout.Movie,
     onPersonClick: (person: Person, role: PersonCreditsRole) -> Unit = { _, _ -> },
 ) {
     val upcoming = remember(released) { released?.isTodayOrBefore() != true }
     val releasedTitle = stringResource(
         when {
-            episodeRowsOnly && upcoming -> R.string.header_airs
-            episodeRowsOnly -> R.string.header_aired
+            layout == DetailsLayout.Episode && upcoming -> R.string.header_airs
+            layout == DetailsLayout.Episode -> R.string.header_aired
             upcoming -> R.string.header_expected_premiere
             else -> R.string.header_premiered
         },
@@ -176,182 +184,172 @@ private fun DetailsMetaInfo(
         }
     }
 
+    val airsCell = MetaCell(stringResource(R.string.header_airs), listOf(airs ?: EMPTY_VALUE))
+    val releasedCell = MetaCell(releasedTitle, listOf(releasedValue))
+    val runtimeCell = MetaCell(
+        title = stringResource(R.string.header_runtime),
+        values = listOf(runtime?.let { runtimeString } ?: EMPTY_VALUE),
+    )
+    val totalRuntimeCell = totalRuntime?.let {
+        val episodes = stringResource(R.string.tag_text_number_of_episodes, episodesCount ?: 0)
+        MetaCell(stringResource(R.string.header_total_runtime), listOf("$totalRuntimeString ($episodes)"))
+    }
+    val networkCell = networks.takeIf { it.isNotEmpty() }?.let {
+        MetaCell(stringResource(R.string.header_network), it)
+    }
+    val episodeTypeCell = episodeType?.let {
+        MetaCell(stringResource(R.string.header_episode_type), listOf(stringResource(it.stringRes)))
+    }
+    val statusCell = MetaCell(
+        title = stringResource(R.string.header_status),
+        values = listOf(status?.let { stringResource(it.displayStringRes) } ?: EMPTY_VALUE),
+    )
+    val languageCell = MetaCell(
+        title = stringResource(R.string.header_language),
+        values = languagesStrings.ifEmpty { listOf(EMPTY_VALUE) },
+    )
+    val countryCell = MetaCell(
+        title = stringResource(R.string.header_country),
+        values = listOf(countryString ?: EMPTY_VALUE),
+    )
+    val originalTitleCell = MetaCell(
+        title = stringResource(R.string.header_original_title),
+        values = listOf(titleOriginal ?: EMPTY_VALUE),
+    )
+    val studioCell = MetaCell(
+        title = stringResource(R.string.header_studio),
+        values = studios?.ifEmpty { listOf(EMPTY_VALUE) } ?: EmptyImmutableList,
+        loading = studios == null,
+    )
+    val genreCell = MetaCell(
+        title = stringResource(R.string.header_genre),
+        values = genres
+            .map { stringResource(it.displayStringRes) }
+            .ifEmpty { listOf(EMPTY_VALUE) },
+    )
+
+    val people = remember(creators, directors) {
+        creators ?: directors ?: EmptyImmutableList
+    }
+    val peopleRole = when {
+        directors != null -> PersonCreditsRole.Directing
+        else -> PersonCreditsRole.CreatedBy
+    }
+    val peopleCell = MetaCell(
+        title = stringResource(
+            when {
+                directors != null -> R.string.header_director
+                else -> R.string.header_creator
+            },
+        ),
+        values = people
+            .map { crewLabel(it) }
+            .ifEmpty { listOf(EMPTY_VALUE) },
+        loading = creators == null && directors == null,
+        reservedLines = COLLAPSED_VALUES_COUNT,
+        onValueClick = { index ->
+            people
+                .getOrNull(index)
+                ?.let { onPersonClick(it.person, peopleRole) }
+        },
+    )
+
+    val writersList = writers ?: EmptyImmutableList
+    val writerCell = MetaCell(
+        title = stringResource(R.string.header_writer),
+        values = writersList
+            .map { crewLabel(it) }
+            .ifEmpty { listOf(EMPTY_VALUE) },
+        loading = writers == null,
+        reservedLines = COLLAPSED_VALUES_COUNT,
+        onValueClick = { index ->
+            writersList
+                .getOrNull(index)
+                ?.let { onPersonClick(it.person, PersonCreditsRole.Writing) }
+        },
+    )
+
+    val rows = when (layout) {
+        DetailsLayout.Movie -> listOf(
+            listOf(releasedCell, runtimeCell),
+            listOf(peopleCell, writerCell),
+            listOf(statusCell, languageCell),
+            listOf(countryCell, originalTitleCell),
+            listOf(studioCell, genreCell),
+        )
+        DetailsLayout.Show -> listOf(
+            listOf(airsCell, releasedCell),
+            listOf(statusCell, originalTitleCell),
+            listOf(runtimeCell, totalRuntimeCell),
+            listOf(peopleCell, writerCell),
+            listOf(countryCell, languageCell),
+            listOf(studioCell, genreCell),
+            listOf(networkCell),
+        )
+        DetailsLayout.Episode -> listOf(
+            listOf(releasedCell, runtimeCell),
+            listOf(episodeTypeCell),
+            listOf(peopleCell, writerCell),
+        )
+    }
+
     Column(
         verticalArrangement = spacedBy(18.dp),
         modifier = modifier,
     ) {
-        if (!network.isNullOrBlank() && totalRuntime != null) {
-            Row(
-                horizontalArrangement = spacedBy(16.dp),
-            ) {
-                DetailsMeta(
-                    title = releasedTitle,
-                    values = listOf(releasedValue),
-                    modifier = Modifier.weight(1F),
-                )
-                DetailsMeta(
-                    title = stringResource(R.string.header_network),
-                    values = listOf(network),
-                    modifier = Modifier.weight(1F),
-                )
-            }
+        for (row in rows) {
+            val cells = row.filterNotNull()
+            if (cells.isEmpty()) continue
 
             Row(
                 horizontalArrangement = spacedBy(16.dp),
             ) {
-                DetailsMeta(
-                    title = stringResource(R.string.header_runtime),
-                    values = listOf(runtimeString),
-                    modifier = Modifier.weight(1F),
-                )
-
-                val episodesCount = stringResource(R.string.tag_text_number_of_episodes, episodesCount ?: 0)
-                DetailsMeta(
-                    title = stringResource(R.string.header_total_runtime),
-                    values = listOf("$totalRuntimeString ($episodesCount)"),
-                    modifier = Modifier.weight(1F),
-                )
-            }
-        } else {
-            Row(
-                horizontalArrangement = spacedBy(16.dp),
-            ) {
-                DetailsMeta(
-                    title = releasedTitle,
-                    values = listOf(releasedValue),
-                    modifier = Modifier.weight(1F),
-                )
-                DetailsMeta(
-                    title = stringResource(R.string.header_runtime),
-                    values = listOf(runtimeString),
-                    modifier = Modifier.weight(1F),
-                )
-            }
-        }
-
-        if (episodeType != null) {
-            Row(
-                horizontalArrangement = spacedBy(16.dp),
-            ) {
-                DetailsMeta(
-                    title = stringResource(R.string.header_episode_type),
-                    values = listOf(stringResource(episodeType.stringRes)),
-                    modifier = Modifier.weight(1F),
-                )
-                Box(modifier = Modifier.weight(1F))
-            }
-        }
-
-        Row(
-            horizontalArrangement = spacedBy(16.dp),
-        ) {
-            val people = remember(creators, directors) {
-                when {
-                    creators != null -> creators
-                    directors != null -> directors
-                    else -> EmptyImmutableList
+                for (cell in cells) {
+                    DetailsMeta(
+                        title = cell.title,
+                        values = cell.values,
+                        loading = cell.loading,
+                        reservedLines = cell.reservedLines,
+                        onValueClick = cell.onValueClick,
+                        modifier = Modifier.weight(1F),
+                    )
                 }
-            }
-            val peopleRole = when {
-                directors != null -> PersonCreditsRole.Directing
-                else -> PersonCreditsRole.CreatedBy
-            }
-
-            DetailsMeta(
-                title = stringResource(
-                    when {
-                        directors != null -> R.string.header_director
-                        else -> R.string.header_creator
-                    },
-                ),
-                values = people
-                    .map { crewLabel(it) }
-                    .ifEmpty { listOf("N/A") },
-                loading = creators == null && directors == null,
-                reservedLines = COLLAPSED_VALUES_COUNT,
-                onValueClick = { index ->
-                    people
-                        .getOrNull(index)
-                        ?.let { onPersonClick(it.person, peopleRole) }
-                },
-                modifier = Modifier.weight(1F),
-            )
-
-            val writersList = writers ?: EmptyImmutableList
-            DetailsMeta(
-                title = stringResource(R.string.header_writer),
-                values = writersList
-                    .map { crewLabel(it) }
-                    .ifEmpty { listOf("N/A") },
-                loading = writers == null,
-                reservedLines = COLLAPSED_VALUES_COUNT,
-                onValueClick = { index ->
-                    writersList
-                        .getOrNull(index)
-                        ?.let { onPersonClick(it.person, PersonCreditsRole.Writing) }
-                },
-                modifier = Modifier.weight(1F),
-            )
-        }
-
-        if (!episodeRowsOnly) {
-            Row(
-                horizontalArrangement = spacedBy(16.dp),
-            ) {
-                DetailsMeta(
-                    title = stringResource(R.string.header_status),
-                    values = listOf(
-                        status?.let { stringResource(it.displayStringRes) } ?: "N/A",
-                    ),
-                    modifier = Modifier.weight(1F),
-                )
-                DetailsMeta(
-                    title = stringResource(R.string.header_language),
-                    values = languagesStrings.ifEmpty { listOf("N/A") },
-                    modifier = Modifier.weight(1F),
-                )
-            }
-        }
-
-        if (!episodeRowsOnly) {
-            Row(
-                horizontalArrangement = spacedBy(16.dp),
-            ) {
-                DetailsMeta(
-                    title = stringResource(R.string.header_country),
-                    values = listOf(countryString ?: "N/A"),
-                    modifier = Modifier.weight(1F),
-                )
-                DetailsMeta(
-                    title = stringResource(R.string.header_original_title),
-                    values = listOf(titleOriginal ?: "N/A"),
-                    modifier = Modifier.weight(1F),
-                )
-            }
-        }
-
-        if (!episodeRowsOnly) {
-            Row(
-                horizontalArrangement = spacedBy(16.dp),
-            ) {
-                DetailsMeta(
-                    loading = studios == null,
-                    title = stringResource(R.string.header_studio),
-                    values = studios
-                        ?.ifEmpty { listOf("N/A") } ?: EmptyImmutableList,
-                    modifier = Modifier.weight(1F),
-                )
-                DetailsMeta(
-                    title = stringResource(R.string.header_genre),
-                    values = genres
-                        .map { stringResource(it.displayStringRes) }
-                        .ifEmpty { listOf("N/A") },
-                    modifier = Modifier.weight(1F),
-                )
+                if (cells.size == 1) {
+                    Box(modifier = Modifier.weight(1F))
+                }
             }
         }
     }
 }
+
+@Composable
+private fun rememberAirsText(show: Show): String? {
+    val formatter = timeFormat()
+    val airing = remember(show.airs, formatter) {
+        show.airs
+            ?.takeIf { show.isAiring }
+            ?.toZonedDateTime()
+    } ?: return null
+
+    val day = remember(airing, formatter) {
+        airing.dayOfWeek.getDisplayName(TextStyle.FULL, formatter.locale)
+    }
+    return stringResource(R.string.text_airs_day_time, day, airing.format(formatter))
+}
+
+private enum class DetailsLayout {
+    Movie,
+    Show,
+    Episode,
+}
+
+private data class MetaCell(
+    val title: String,
+    val values: List<String>,
+    val loading: Boolean = false,
+    val reservedLines: Int = 1,
+    val onValueClick: ((index: Int) -> Unit)? = null,
+)
 
 @Composable
 private fun crewLabel(crew: CrewPerson): String {
@@ -398,7 +396,6 @@ private fun DetailsMeta(
         )
 
         Box {
-            // Reserve value lines so rows keep their height while values load.
             Column(
                 verticalArrangement = spacedBy(VALUES_SPACING),
             ) {
@@ -519,6 +516,25 @@ private fun PreviewCrew() {
                     jobs = persistentListOf("Story"),
                 ),
             ),
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewShowAiring() {
+    TraktTheme {
+        DetailsMetaInfo(
+            show = PreviewData.show1.copy(
+                status = MediaStatus.ReturningSeries,
+                releasedAt = Instant.parse("2020-01-01T00:00:00Z"),
+                airs = Show.Airs(
+                    day = "Thursday",
+                    time = "21:00",
+                    timezone = "America/New_York",
+                ),
+            ),
+            showNetworks = persistentListOf("AMC", "Netflix", "Hulu"),
         )
     }
 }

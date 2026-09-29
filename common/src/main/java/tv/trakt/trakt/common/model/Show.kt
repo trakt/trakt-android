@@ -9,6 +9,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
+import tv.trakt.trakt.common.helpers.extensions.toHttpsUrl
 import tv.trakt.trakt.common.helpers.extensions.toInstant
 import tv.trakt.trakt.common.helpers.serializers.ImmutableListSerializer
 import tv.trakt.trakt.common.helpers.serializers.InstantSerializer
@@ -17,9 +18,15 @@ import tv.trakt.trakt.common.model.MediaStatus.Ended
 import tv.trakt.trakt.common.model.MediaStatus.Released
 import tv.trakt.trakt.common.model.Show.Companion
 import tv.trakt.trakt.common.networking.RecommendedShowDto
+import tv.trakt.trakt.common.networking.ShowAirsDto
 import tv.trakt.trakt.common.networking.ShowCalendarsDto
 import tv.trakt.trakt.common.networking.ShowDto
+import java.time.DayOfWeek
 import java.time.Instant
+import java.time.LocalTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.temporal.TemporalAdjusters
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
@@ -48,6 +55,9 @@ data class Show(
     val languages: ImmutableList<String>,
     @Serializable(InstantSerializer::class)
     val releasedAt: Instant?,
+    val airs: Airs? = null,
+    val homepage: String? = null,
+    val socialIds: SocialIds? = null,
 ) {
     companion object
 
@@ -64,10 +74,49 @@ data class Show(
     val isEnded: Boolean
         get() = status == Ended || status == Canceled
 
+    val isAiring: Boolean
+        get() = !isEnded && releasedAt?.let { !it.isAfter(nowUtcInstant()) } == true
+
     @Composable
     fun rememberReleased(): Boolean {
         return remember(releasedAt, status) {
             isReleased
+        }
+    }
+
+    @Immutable
+    @Serializable
+    data class Airs(
+        val day: String,
+        val time: String,
+        val timezone: String,
+    ) {
+        fun toZonedDateTime(
+            zone: ZoneId = ZoneId.systemDefault(),
+            now: Instant = Instant.now(),
+        ): ZonedDateTime? {
+            val dayOfWeek = runCatching { DayOfWeek.valueOf(day.uppercase()) }.getOrNull() ?: return null
+            val localTime = runCatching { LocalTime.parse(time) }.getOrNull() ?: return null
+            val broadcastZone = runCatching { ZoneId.of(timezone) }.getOrNull() ?: return null
+
+            return now.atZone(broadcastZone)
+                .with(TemporalAdjusters.nextOrSame(dayOfWeek))
+                .with(localTime)
+                .withZoneSameInstant(zone)
+        }
+
+        companion object {
+            fun fromDto(dto: ShowAirsDto): Airs? {
+                val day = dto.day?.takeIf { it.isNotBlank() } ?: return null
+                val time = dto.time?.takeIf { it.isNotBlank() } ?: return null
+                val timezone = dto.timezone?.takeIf { it.isNotBlank() } ?: return null
+
+                return Airs(
+                    day = day,
+                    time = time,
+                    timezone = timezone,
+                )
+            }
         }
     }
 }
@@ -99,12 +148,19 @@ fun Companion.fromDto(dto: ShowDto): Show {
             votes = dto.votes ?: 0,
         ),
         runtime = dto.runtime?.minutes,
-        totalRuntime = dto.totalRuntime?.minutes,
+        totalRuntime = totalRuntimeOf(
+            totalRuntime = dto.totalRuntime,
+            runtime = dto.runtime,
+            airedEpisodes = dto.airedEpisodes,
+        ),
         trailer = dto.trailer,
         airedEpisodes = dto.airedEpisodes ?: 0,
         country = dto.country,
         network = dto.network,
         languages = (dto.languages ?: emptyList()).toImmutableList(),
+        airs = dto.airs?.let { Show.Airs.fromDto(it) },
+        homepage = dto.homepage?.toHttpsUrl(),
+        socialIds = dto.socialIds?.let { SocialIds.fromDto(it) },
     )
 }
 
@@ -134,13 +190,20 @@ fun Companion.fromDto(dto: RecommendedShowDto): Show {
             votes = dto.votes ?: 0,
         ),
         runtime = dto.runtime?.minutes,
-        totalRuntime = dto.totalRuntime?.minutes,
+        totalRuntime = totalRuntimeOf(
+            totalRuntime = dto.totalRuntime,
+            runtime = dto.runtime,
+            airedEpisodes = dto.airedEpisodes,
+        ),
         status = MediaStatus.fromSlug(dto.status),
         trailer = dto.trailer,
         airedEpisodes = dto.airedEpisodes ?: 0,
         country = dto.country,
         network = dto.network,
         languages = (dto.languages ?: emptyList()).toImmutableList(),
+        airs = dto.airs?.let { Show.Airs.fromDto(it) },
+        homepage = dto.homepage?.toHttpsUrl(),
+        socialIds = dto.socialIds?.let { SocialIds.fromDto(it) },
     )
 }
 
@@ -170,12 +233,28 @@ fun Companion.fromDto(dto: ShowCalendarsDto): Show {
             votes = dto.votes ?: 0,
         ),
         runtime = dto.runtime?.minutes,
-        totalRuntime = dto.totalRuntime?.minutes,
+        totalRuntime = totalRuntimeOf(
+            totalRuntime = dto.totalRuntime,
+            runtime = dto.runtime,
+            airedEpisodes = dto.airedEpisodes,
+        ),
         status = MediaStatus.fromSlug(dto.status),
         trailer = dto.trailer,
         airedEpisodes = dto.airedEpisodes ?: 0,
         country = dto.country,
         network = dto.network,
         languages = (dto.languages ?: emptyList()).toImmutableList(),
+        airs = dto.airs?.let { Show.Airs.fromDto(it) },
+        homepage = dto.homepage?.toHttpsUrl(),
+        socialIds = dto.socialIds?.let { SocialIds.fromDto(it) },
     )
+}
+
+private fun totalRuntimeOf(
+    totalRuntime: Int?,
+    runtime: Int?,
+    airedEpisodes: Int?,
+): Duration? {
+    val minutes = totalRuntime ?: runtime?.let { it * (airedEpisodes ?: 0) }
+    return minutes?.takeIf { it > 0 }?.minutes
 }

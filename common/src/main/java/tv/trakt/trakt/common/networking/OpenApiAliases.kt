@@ -12,6 +12,7 @@ import org.openapitools.client.models.GetCalendarsShows200ResponseInnerEpisode
 import org.openapitools.client.models.GetCalendarsShows200ResponseInnerEpisodeEpisodesInner
 import org.openapitools.client.models.GetCalendarsShows200ResponseInnerEpisodeIds
 import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShow
+import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowAirs
 import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowIds
 import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowImages
 import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowSocialIds
@@ -123,6 +124,7 @@ typealias SearchListDto = GetSearchQuery200ResponseInnerList
 typealias SeasonDto = GetShowsSeasons200ResponseInner
 typealias SeasonLikesDto = GetUsersLikes200ResponseInnerOneOfAllOfOneOf3Season
 typealias SeasonRatingDto = GetUsersRatingsMovies200ResponseInnerOneOf3Season
+typealias ShowAirsDto = GetCalendarsShows200ResponseInnerShowAirs
 typealias ShowCalendarsDto = GetCalendarsShows200ResponseInnerShow
 typealias ShowDto = GetCalendarsMedia200ResponseInnerShow
 typealias ShowIdsDto = GetCalendarsShows200ResponseInnerShowIds

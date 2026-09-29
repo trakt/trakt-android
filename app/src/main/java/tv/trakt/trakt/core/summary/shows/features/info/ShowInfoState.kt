@@ -13,6 +13,7 @@ internal data class ShowInfoState(
     val show: Show? = null,
     val showStats: ShowStatsDto? = null,
     val showStudios: ImmutableList<String>? = null,
+    val showNetworks: ImmutableList<String>? = null,
     val showCrew: GetShowCrewUseCase.Result? = null,
     val loading: LoadingState = Idle,
     val error: Exception? = null,

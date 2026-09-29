@@ -13,10 +13,6 @@ import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.ui.theme.TraktTheme
 
-/**
- * Loading indicator that occupies exactly one line of [style], so swapping it
- * for the loaded text does not shift the surrounding layout.
- */
 @Composable
 internal fun TextLineLoadingIndicator(
     style: TextStyle,

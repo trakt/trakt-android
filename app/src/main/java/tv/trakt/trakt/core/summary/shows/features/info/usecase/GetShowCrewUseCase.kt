@@ -17,6 +17,7 @@ internal class GetShowCrewUseCase(
     suspend fun getCrew(showId: TraktId): Result {
         return remoteSource.getCastCrew(showId).crew?.let { crew ->
             val creators = crew["created by"]
+                ?.filter { member -> member.jobs.any { it.equals("creator", ignoreCase = true) } }
                 ?.map { CrewPerson.fromDto(it) }
                 ?: EmptyImmutableList
 
