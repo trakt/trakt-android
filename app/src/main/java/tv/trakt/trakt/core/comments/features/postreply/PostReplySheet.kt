@@ -19,6 +19,7 @@ import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.comments.model.MentionSource
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
@@ -33,6 +34,7 @@ internal fun PostReplySheet(
     comment: Comment?,
     user: User? = null,
     gifQuery: String? = null,
+    mentionSource: MentionSource? = null,
     onReplyPost: (Comment) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -50,7 +52,7 @@ internal fun PostReplySheet(
                 viewModel = koinViewModel(
                     key = Random.nextInt().toString(),
                     parameters = {
-                        parametersOf(comment, user)
+                        parametersOf(comment, user, mentionSource)
                     },
                 ),
                 gifQuery = gifQuery,

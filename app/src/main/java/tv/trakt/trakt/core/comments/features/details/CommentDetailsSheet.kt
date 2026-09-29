@@ -21,6 +21,7 @@ import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.LocalSnackbarState
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.TraktId
+import tv.trakt.trakt.core.comments.model.MentionSource
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import tv.trakt.trakt.ui.snackbar.ShortSnackDuration
@@ -33,6 +34,7 @@ internal fun CommentDetailsSheet(
     ),
     comment: Comment?,
     gifQuery: String? = null,
+    mentionSource: MentionSource? = null,
     progressEnabled: Boolean = false,
     onDeleteComment: (commentId: TraktId) -> Unit = {},
     onDismiss: () -> Unit,
@@ -55,6 +57,7 @@ internal fun CommentDetailsSheet(
                     parameters = { parametersOf(comment) },
                 ),
                 gifQuery = gifQuery,
+                mentionSource = mentionSource,
                 progressEnabled = progressEnabled,
                 onDeleteComment = {
                     onDeleteComment(it)

@@ -18,6 +18,7 @@ import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.features.editcomment.EditCommentSheet
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.features.postreply.PostReplySheet
+import tv.trakt.trakt.core.comments.model.MentionSource
 import tv.trakt.trakt.core.klipy.toGifQuery
 import tv.trakt.trakt.core.summary.shows.features.context.episodes.EpisodeContextSheet
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.EpisodeItem
@@ -151,11 +152,14 @@ internal fun AllShowSeasonsSheets(
         onDismiss = { sheetState.seasonDate = false },
     )
 
+    val mentionSource = state.show?.ids?.trakt?.let { MentionSource.Show(it) }
+
     PostCommentSheet(
         active = sheetState.postComment,
         mediaId = state.items.selectedSeason?.ids?.trakt,
         mediaType = MediaType.Season,
         mediaTitle = state.show?.title,
+        mentionSource = mentionSource,
         onCommentPost = viewModel::addSeasonComment,
         onDismiss = { sheetState.postComment = false },
     )
@@ -164,6 +168,7 @@ internal fun AllShowSeasonsSheets(
         active = sheetState.postReply != null,
         comment = sheetState.postReply?.first,
         user = sheetState.postReply?.second,
+        mentionSource = mentionSource,
         gifQuery = MediaType.Season.toGifQuery(state.show?.title),
         onReplyPost = viewModel::addSeasonReply,
         onDismiss = { sheetState.postReply = null },

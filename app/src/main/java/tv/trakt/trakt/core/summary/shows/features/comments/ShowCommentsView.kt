@@ -69,6 +69,7 @@ import tv.trakt.trakt.core.comments.features.details.CommentDetailsSheet
 import tv.trakt.trakt.core.comments.features.editcomment.EditCommentSheet
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.model.CommentsFilter
+import tv.trakt.trakt.core.comments.model.MentionSource
 import tv.trakt.trakt.core.comments.model.commentsLanguageDisplayName
 import tv.trakt.trakt.core.comments.ui.CommentCard
 import tv.trakt.trakt.core.comments.ui.CommentGifLayout
@@ -137,10 +138,13 @@ internal fun ShowCommentsView(
         onUserClick = onUserClick,
     )
 
+    val mentionSource = state.show?.ids?.trakt?.let { MentionSource.Show(it) }
+
     CommentDetailsSheet(
         comment = commentSheet,
         gifQuery = MediaType.Show.toGifQuery(state.show?.title),
         progressEnabled = true,
+        mentionSource = mentionSource,
         onDeleteComment = viewModel::deleteComment,
         onDismiss = {
             commentSheet = null
@@ -152,6 +156,7 @@ internal fun ShowCommentsView(
         mediaId = state.show?.ids?.trakt,
         mediaType = MediaType.Show,
         mediaTitle = state.show?.title,
+        mentionSource = mentionSource,
         onCommentPost = viewModel::addComment,
         onDismiss = {
             postCommentSheet = false

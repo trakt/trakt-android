@@ -48,6 +48,7 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.comments.data.CommentsUpdates
 import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.ALL_COMMENTS
 import tv.trakt.trakt.core.comments.model.CommentsFilter
+import tv.trakt.trakt.core.comments.model.MentionSource
 import tv.trakt.trakt.core.comments.navigation.CommentsDestination
 import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
 import tv.trakt.trakt.core.comments.usecases.GetCommentsLanguageUseCase
@@ -86,6 +87,7 @@ internal class CommentsViewModel(
             id = destination.mediaId.toTraktId(),
             type = destination.mediaType,
             title = destination.mediaTitle,
+            mentionSource = destination.toMentionSource(),
         ),
     )
 
@@ -545,4 +547,20 @@ internal class CommentsViewModel(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = initialState,
     )
+}
+
+private fun CommentsDestination.toMentionSource(): MentionSource? {
+    return when (mediaType) {
+        MediaType.Movie -> MentionSource.Movie(mediaId.toTraktId())
+        MediaType.Show -> MentionSource.Show(mediaId.toTraktId())
+        MediaType.Episode -> mediaShowId?.let {
+            MentionSource.Episode(
+                showId = it.toTraktId(),
+                season = mediaSeason ?: return null,
+                episode = mediaEpisode ?: return null,
+            )
+        }
+
+        else -> null
+    }
 }

@@ -69,6 +69,7 @@ import tv.trakt.trakt.core.comments.features.details.CommentDetailsSheet
 import tv.trakt.trakt.core.comments.features.editcomment.EditCommentSheet
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.model.CommentsFilter
+import tv.trakt.trakt.core.comments.model.MentionSource
 import tv.trakt.trakt.core.comments.model.commentsLanguageDisplayName
 import tv.trakt.trakt.core.comments.ui.CommentCard
 import tv.trakt.trakt.core.comments.ui.CommentGifLayout
@@ -135,9 +136,18 @@ internal fun EpisodeCommentsView(
         onUserClick = onUserClick,
     )
 
+    val mentionSource = state.media?.let { (show, episode) ->
+        MentionSource.Episode(
+            showId = show.ids.trakt,
+            season = episode.season,
+            episode = episode.number,
+        )
+    }
+
     CommentDetailsSheet(
         comment = commentSheet,
         gifQuery = MediaType.Episode.toGifQuery(state.media?.first?.title),
+        mentionSource = mentionSource,
         onDeleteComment = viewModel::deleteComment,
         onDismiss = {
             commentSheet = null
@@ -149,6 +159,7 @@ internal fun EpisodeCommentsView(
         mediaId = state.media?.second?.ids?.trakt,
         mediaType = MediaType.Episode,
         mediaTitle = state.media?.first?.title,
+        mentionSource = mentionSource,
         onCommentPost = viewModel::addComment,
         onDismiss = {
             postCommentSheet = false

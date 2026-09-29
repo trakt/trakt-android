@@ -1,2 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+  <string name="button_label_format_bold">Bold</string>
+  <string name="button_label_format_bullet_list">Bullet list</string>
+  <string name="button_label_format_italic">Italic</string>
+  <string name="button_label_format_mention">Mention cast</string>
+  <string name="button_label_format_quote">Quote</string>
+  <string name="button_label_format_remove_mention">Remove mention</string>
+  <string name="button_label_format_spoiler">Hide as spoiler</string>
+  <string name="input_placeholder_mention_search">Search cast</string>
+  <string name="text_no_matching_cast">No matching cast</string>
+  <string name="toolbar_label_text_formatting">Text formatting</string>
+</resources>

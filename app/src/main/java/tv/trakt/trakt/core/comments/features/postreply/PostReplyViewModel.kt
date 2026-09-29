@@ -2,6 +2,7 @@ package tv.trakt.trakt.core.comments.features.postreply
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,14 +23,20 @@ import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CommentGif
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.comments.model.CommentMention
+import tv.trakt.trakt.core.comments.model.MentionSource
+import tv.trakt.trakt.core.comments.usecases.GetCommentMentionsUseCase
 import tv.trakt.trakt.core.comments.usecases.PostReplyUseCase
 import kotlin.time.Duration.Companion.seconds
 
+@Suppress("UNCHECKED_CAST")
 internal class PostReplyViewModel(
     private val comment: Comment,
     private val commentUser: User?,
     private val sessionManager: SessionManager,
     private val postReplyUseCase: PostReplyUseCase,
+    private val mentionSource: MentionSource?,
+    private val getCommentMentionsUseCase: GetCommentMentionsUseCase,
     private val analytics: Analytics,
 ) : ViewModel() {
     private val initialState = PostReplyState()
@@ -39,11 +46,13 @@ internal class PostReplyViewModel(
     private val commentUserState = MutableStateFlow(commentUser ?: comment.user)
     private val resultState = MutableStateFlow(initialState.result)
     private val errorState = MutableStateFlow(initialState.error)
+    private val mentionsState = MutableStateFlow(initialState.mentions)
 
     private var job: Job? = null
 
     init {
         loadUser()
+        loadMentions()
     }
 
     private fun loadUser() {
@@ -51,6 +60,21 @@ internal class PostReplyViewModel(
             try {
                 userState.update {
                     sessionManager.getProfile()
+                }
+            } catch (error: Exception) {
+                error.rethrowCancellation {
+                    Timber.recordError(error)
+                }
+            }
+        }
+    }
+
+    private fun loadMentions() {
+        val source = mentionSource ?: return
+        viewModelScope.launch {
+            try {
+                mentionsState.update {
+                    getCommentMentionsUseCase.getMentions(source)
                 }
             } catch (error: Exception) {
                 error.rethrowCancellation {
@@ -110,6 +134,7 @@ internal class PostReplyViewModel(
         commentUserState,
         resultState,
         errorState,
+        mentionsState,
     ) { state ->
         PostReplyState(
             loading = state[0] as LoadingState,
@@ -117,6 +142,7 @@ internal class PostReplyViewModel(
             commentUser = state[2] as User?,
             result = state[3] as Comment?,
             error = state[4] as Exception?,
+            mentions = state[5] as ImmutableList<CommentMention>,
         )
     }.stateIn(
         scope = viewModelScope,

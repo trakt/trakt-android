@@ -12,6 +12,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.comments.model.CommentsFilter
+import tv.trakt.trakt.core.comments.model.MentionSource
 
 @Immutable
 internal data class CommentsState(
@@ -32,5 +33,6 @@ internal data class CommentsState(
         val id: TraktId,
         val type: MediaType,
         val title: String?,
+        val mentionSource: MentionSource? = null,
     )
 }

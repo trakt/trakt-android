@@ -76,6 +76,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade800
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.features.editcomment.EditCommentSheet
 import tv.trakt.trakt.core.comments.features.postreply.PostReplySheet
+import tv.trakt.trakt.core.comments.model.MentionSource
 import tv.trakt.trakt.core.comments.features.report.ReportCommentSheet
 import tv.trakt.trakt.core.comments.ui.CommentDropdown
 import tv.trakt.trakt.core.comments.ui.CommentGifView
@@ -92,6 +93,7 @@ internal fun CommentDetailsView(
     viewModel: CommentDetailsViewModel,
     modifier: Modifier = Modifier,
     gifQuery: String? = null,
+    mentionSource: MentionSource? = null,
     progressEnabled: Boolean = false,
     onDeleteComment: (commentId: TraktId) -> Unit = {},
 ) {
@@ -135,6 +137,7 @@ internal fun CommentDetailsView(
         comment = state.comment,
         user = postReplySheet,
         gifQuery = gifQuery,
+        mentionSource = mentionSource,
         onReplyPost = viewModel::addReply,
         onDismiss = {
             postReplySheet = null

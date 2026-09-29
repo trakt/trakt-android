@@ -140,6 +140,7 @@ internal fun CommentsScreen(
         mediaId = state.media?.id,
         mediaType = state.media?.type,
         mediaTitle = state.media?.title,
+        mentionSource = state.media?.mentionSource,
         onCommentPost = viewModel::addComment,
         onDismiss = {
             postCommentSheet = false
@@ -150,6 +151,7 @@ internal fun CommentsScreen(
         active = postReplySheet != null,
         comment = postReplySheet?.first,
         user = postReplySheet?.second,
+        mentionSource = state.media?.mentionSource,
         gifQuery = gifQuery,
         onReplyPost = viewModel::addReply,
         onDismiss = {
