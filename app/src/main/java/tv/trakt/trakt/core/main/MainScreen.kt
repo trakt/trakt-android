@@ -299,7 +299,10 @@ internal fun MainScreen(
         onClearUpdate = viewModel::clearInAppUpdate,
     )
 
-    LaunchedInstallPrompt(state = state)
+    LaunchedInstallPrompt(
+        state = state,
+        onPrompted = viewModel::dismissInstallPrompt,
+    )
 
     MainScreenContent(
         modifier = modifier,
@@ -686,7 +689,10 @@ private fun NavigationBarShadow(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun LaunchedInstallPrompt(state: MainState) {
+private fun LaunchedInstallPrompt(
+    state: MainState,
+    onPrompted: () -> Unit,
+) {
     val localActivity = LocalActivity.current
 
     var hasPromptedInstall by rememberSaveable { mutableStateOf(false) }
@@ -703,6 +709,7 @@ private fun LaunchedInstallPrompt(state: MainState) {
             requestInstallationPromptFlow(CrossDevicePromptInstallationRequest.create())
                 .addOnSuccessListener { info ->
                     launchPromptFlow(activity, info)
+                    onPrompted()
                     Timber.d("Cross-device install prompt launched")
                 }
                 .addOnFailureListener { error ->

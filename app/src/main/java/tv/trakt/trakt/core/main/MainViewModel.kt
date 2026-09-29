@@ -416,6 +416,13 @@ internal class MainViewModel(
         }
     }
 
+    fun dismissInstallPrompt() {
+        installPromptState.update { false }
+        viewModelScope.launch {
+            installPromptUseCase.markInstallPrompted()
+        }
+    }
+
     fun dismissInAppReview() {
         reviewState.update { null }
     }
