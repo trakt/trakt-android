@@ -24,6 +24,7 @@ data class Person(
     val socialIds: SocialIds?,
     @Serializable(LocalDateSerializer::class)
     val death: LocalDate? = null,
+    val heightCm: Float? = null,
 ) {
     fun ageInYears(today: LocalDate): Int? {
         val birth = birthday ?: return null
@@ -71,6 +72,7 @@ fun Companion.fromDto(dto: PersonDto): Person {
         biography = dto.biography,
         birthday = dto.birthday?.let { LocalDate.parse(it) },
         death = dto.death?.let { LocalDate.parse(it) },
+        heightCm = dto.height?.takeIf { it > 0 },
         birthplace = dto.birthplace,
         knownForDepartment = dto.knownForDepartment,
         images = dto.images?.let {

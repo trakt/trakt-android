@@ -95694,6 +95694,11 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "height": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
                               "known_for_department": {
                                 "type": "string",
                                 "nullable": true
@@ -95847,6 +95852,11 @@
                                 },
                                 "gender": {
                                   "type": "string",
+                                  "nullable": true
+                                },
+                                "height": {
+                                  "type": "number",
+                                  "format": "float",
                                   "nullable": true
                                 },
                                 "known_for_department": {
@@ -105230,6 +105240,11 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "height": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
                               "known_for_department": {
                                 "type": "string",
                                 "nullable": true
@@ -105383,6 +105398,11 @@
                                 },
                                 "gender": {
                                   "type": "string",
+                                  "nullable": true
+                                },
+                                "height": {
+                                  "type": "number",
+                                  "format": "float",
                                   "nullable": true
                                 },
                                 "known_for_department": {
@@ -106814,6 +106834,11 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "height": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
                               "known_for_department": {
                                 "type": "string",
                                 "nullable": true
@@ -106967,6 +106992,11 @@
                                 },
                                 "gender": {
                                   "type": "string",
+                                  "nullable": true
+                                },
+                                "height": {
+                                  "type": "number",
+                                  "format": "float",
                                   "nullable": true
                                 },
                                 "known_for_department": {
@@ -110228,6 +110258,11 @@
                                 "type": "string",
                                 "nullable": true
                               },
+                              "height": {
+                                "type": "number",
+                                "format": "float",
+                                "nullable": true
+                              },
                               "known_for_department": {
                                 "type": "string",
                                 "nullable": true
@@ -110381,6 +110416,11 @@
                                 },
                                 "gender": {
                                   "type": "string",
+                                  "nullable": true
+                                },
+                                "height": {
+                                  "type": "number",
+                                  "format": "float",
                                   "nullable": true
                                 },
                                 "known_for_department": {
@@ -120367,6 +120407,11 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "height": {
+                            "type": "number",
+                            "format": "float",
+                            "nullable": true
+                          },
                           "known_for_department": {
                             "type": "string",
                             "nullable": true
@@ -120597,6 +120642,11 @@
                     },
                     "gender": {
                       "type": "string",
+                      "nullable": true
+                    },
+                    "height": {
+                      "type": "number",
+                      "format": "float",
                       "nullable": true
                     },
                     "known_for_department": {

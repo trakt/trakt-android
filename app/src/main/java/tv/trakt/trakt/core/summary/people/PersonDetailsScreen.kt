@@ -56,7 +56,7 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.extensions.capitalize
-import tv.trakt.trakt.common.helpers.extensions.longDateFormat
+import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -76,6 +76,7 @@ import tv.trakt.trakt.helpers.SimpleScrollConnection
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.skeletons.VerticalMediaSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.util.Locale
 
 @Composable
 internal fun PersonDetailsScreen(
@@ -211,7 +212,7 @@ internal fun PersonDetailsContent(
                 }
 
                 item {
-                    DetailsBirthday(
+                    DetailsRow(
                         person = person,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -316,11 +317,11 @@ internal fun PersonDetailsContent(
 }
 
 @Composable
-private fun DetailsBirthday(
+private fun DetailsRow(
     modifier: Modifier = Modifier,
     person: Person? = null,
 ) {
-    val dateFormat = longDateFormat()
+    val dateFormat = mediumDateFormat()
     val age = remember(person) { person?.ageInYears(nowLocalDay()) }
 
     val trailingFact = when (val death = person?.death) {
@@ -340,33 +341,50 @@ private fun DetailsBirthday(
         )
     }
 
-    Row(
-        modifier = modifier,
-        horizontalArrangement = spacedBy(24.dp, Alignment.CenterHorizontally),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        PersonFactColumn(
-            fact = PersonFact(
-                label = stringResource(R.string.header_birthday),
-                value = person?.birthday?.format(dateFormat)?.capitalize() ?: "N/A",
-            ),
-            horizontalAlignment = Alignment.End,
-            modifier = Modifier.weight(1f),
-        )
-
-        Spacer(
-            modifier = Modifier
-                .width(1.dp)
-                .height(42.dp)
-                .background(Shade900),
-        )
-
-        PersonFactColumn(
-            fact = trailingFact,
-            horizontalAlignment = Alignment.Start,
-            modifier = Modifier.weight(1f),
+    val heightFact = person?.heightCm?.let { heightCm ->
+        PersonFact(
+            label = stringResource(R.string.header_height),
+            value = formatHeight(heightCm),
         )
     }
+
+    val facts = listOfNotNull(
+        heightFact,
+        PersonFact(
+            label = stringResource(R.string.header_birthday),
+            value = person?.birthday?.format(dateFormat)?.capitalize() ?: "N/A",
+        ),
+        trailingFact,
+    )
+
+    Row(
+        modifier = modifier,
+        horizontalArrangement = spacedBy(
+            space = if (heightFact != null) 16.dp else 24.dp,
+            alignment = Alignment.CenterHorizontally,
+        ),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        facts.forEachIndexed { index, fact ->
+            if (index > 0) {
+                Spacer(
+                    modifier = Modifier
+                        .width(1.dp)
+                        .height(42.dp)
+                        .background(Shade900),
+                )
+            }
+
+            PersonFactColumn(
+                fact = fact,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            )
+        }
+    }
+}
+
+private fun formatHeight(heightCm: Float): String {
+    return String.format(Locale.US, "%.2f m", heightCm / 100)
 }
 
 @Composable
@@ -389,7 +407,9 @@ private fun PersonFactColumn(
             text = fact.value,
             style = TraktTheme.typography.paragraphSmall,
             color = TraktTheme.colors.textPrimary,
-            textAlign = TextAlign.Start,
+            textAlign = TextAlign.Center,
+            maxLines = 1,
+            overflow = Ellipsis,
         )
     }
 }
