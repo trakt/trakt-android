@@ -71,7 +71,7 @@ import tv.trakt.trakt.common.helpers.extensions.DevicePreviewRtl
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.googleTranslateActivityInfo
-import tv.trakt.trakt.common.helpers.extensions.longDateFormat
+import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.openGoogleTranslate
 import tv.trakt.trakt.common.helpers.extensions.toLocal
@@ -107,6 +107,7 @@ internal fun CommentCard(
     repliesButtonEnabled: Boolean = false,
     repliesCountEnabled: Boolean = true,
     repliesLoading: Boolean = false,
+    progressEnabled: Boolean = false,
     gifLayout: CommentGifLayout = CommentGifLayout.Bottom,
     gifPaused: Boolean = false,
     onClick: (() -> Unit)? = null,
@@ -139,6 +140,7 @@ internal fun CommentCard(
             repliesButtonEnabled = repliesButtonEnabled,
             repliesCountEnabled = repliesCountEnabled,
             repliesLoading = repliesLoading,
+            progressEnabled = progressEnabled,
             gifLayout = gifLayout,
             gifPaused = gifPaused,
             onRequestReactions = onRequestReactions,
@@ -211,6 +213,7 @@ private fun CommentCardContent(
     repliesButtonEnabled: Boolean,
     repliesCountEnabled: Boolean,
     repliesLoading: Boolean,
+    progressEnabled: Boolean,
     gifLayout: CommentGifLayout,
     gifPaused: Boolean,
     modifier: Modifier = Modifier,
@@ -240,6 +243,7 @@ private fun CommentCardContent(
         CommentHeader(
             comment = comment,
             userComment = isUserComment,
+            progressEnabled = progressEnabled,
             onUserClick = onUserClick,
             onEditClick = onEditClick,
             onDeleteClick = onDeleteClick,
@@ -351,6 +355,7 @@ private fun CommentCardContent(
                 replies = replies,
                 reactions = reactions,
                 userReactions = userReactions,
+                progressEnabled = progressEnabled,
                 onReactionClick = onReactionClick,
                 onUserClick = onUserClick,
                 onReplyClick = { onReplyUserClick?.invoke(it.user) },
@@ -410,6 +415,7 @@ private fun CommentRepliesContent(
     replies: ImmutableList<Comment>,
     reactions: ImmutableMap<Int, ReactionsSummary>,
     userReactions: ImmutableMap<Int, Reaction?>,
+    progressEnabled: Boolean,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
@@ -429,6 +435,7 @@ private fun CommentRepliesContent(
                 reply = reply,
                 reactions = reactions[reply.id],
                 userReaction = userReactions[reply.id],
+                progressEnabled = progressEnabled,
                 onUserClick = onUserClick,
                 onReactionClick = { onReactionClick?.invoke(it, reply) },
                 onRequestReactions = { onRequestReactions?.invoke(reply) },
@@ -444,6 +451,7 @@ private fun CommentRepliesContent(
 private fun CommentHeader(
     comment: Comment,
     userComment: Boolean,
+    progressEnabled: Boolean,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
     onEditClick: (() -> Unit)? = null,
@@ -512,7 +520,7 @@ private fun CommentHeader(
                 )
             }
 
-            val dateFormat = longDateFormat()
+            val dateFormat = mediumDateFormat()
             Text(
                 text = remember(comment.createdAt) {
                     comment.createdAt.toLocal().format(dateFormat).capitalize()
@@ -530,33 +538,17 @@ private fun CommentHeader(
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            comment.user5Rating?.let { rating ->
-                Spacer(modifier = Modifier.width(12.dp))
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_star_trakt_on),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier.size(15.dp),
-                    )
-                    Spacer(modifier = Modifier.width(3.dp))
-                    Text(
-                        text = rating,
-                        style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
-                        color = TraktTheme.colors.textPrimary,
-                        maxLines = 1,
-                    )
-                }
-            }
+            CommentUserChips(
+                comment = comment,
+                progressVisible = progressEnabled && !userComment,
+                modifier = Modifier.padding(start = 12.dp),
+            )
 
             val menuEditClick = onEditClick.takeIf { userComment }
             val menuDeleteClick = onDeleteClick.takeIf { userComment }
             val menuReportClick = onReportClick.takeIf { !userComment }
             if (menuEditClick != null || menuDeleteClick != null || menuReportClick != null) {
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(16.dp))
 
                 CommentDropdown(
                     containerColor = TraktTheme.colors.dialogOnContainer,
@@ -760,6 +752,15 @@ fun CommentPreview() {
                     user = PreviewData.user1,
                     comment = PreviewData.comment1.copy(userRating = 10, language = Locale.SIMPLIFIED_CHINESE),
                     replies = listOf(PreviewData.comment1).toImmutableList(),
+                    modifier = Modifier
+                        .height(400.dp),
+                )
+                CommentCard(
+                    onClick = {},
+                    user = null,
+                    comment = PreviewData.comment1.copy(userRating = 8),
+                    replies = listOf(PreviewData.comment1).toImmutableList(),
+                    progressEnabled = true,
                     modifier = Modifier
                         .height(400.dp),
                 )

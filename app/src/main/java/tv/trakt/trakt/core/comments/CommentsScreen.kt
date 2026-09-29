@@ -59,6 +59,7 @@ import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableSet
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
@@ -253,6 +254,7 @@ internal fun CommentsContent(
             userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
             contentPadding = contentPadding,
             loading = state.loading.isLoading,
+            progressEnabled = state.media?.type == MediaType.Show,
             user = state.user,
             onRequestReactions = onRequestReactions,
             onFilterClick = onFilterClick,
@@ -319,6 +321,7 @@ private fun ContentList(
     listFilter: CommentsFilter?,
     listLanguage: String?,
     loading: Boolean,
+    progressEnabled: Boolean,
     user: User?,
     userReactions: ImmutableMap<Int, Reaction?>,
     onRequestReactions: ((Comment) -> Unit)? = null,
@@ -395,6 +398,7 @@ private fun ContentList(
                     replyEnabled = user != null && !isUserComment,
                     repliesCountEnabled = false,
                     repliesButtonEnabled = true,
+                    progressEnabled = progressEnabled,
                     onReactionClick = onReactionClick,
                     onReplyClick = { onReplyClick?.invoke(it) },
                     onReplyUserClick = onReplyUserClick,

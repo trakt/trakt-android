@@ -48,20 +48,27 @@ import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.extensions.capitalize
-import tv.trakt.trakt.common.helpers.extensions.longDateFormat
+import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CommentGif
+import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun CommentCard(
     comment: Comment,
     modifier: Modifier = Modifier,
+    user: User? = null,
+    progressEnabled: Boolean = false,
     onClick: () -> Unit,
 ) {
+    val progressVisible = remember(user, comment.user) {
+        progressEnabled && comment.user.ids.trakt != user?.ids?.trakt
+    }
+
     Card(
         onClick = onClick,
         modifier = modifier,
@@ -85,13 +92,19 @@ internal fun CommentCard(
             focusedScale = 1.02f,
         ),
         content = {
-            CommentCardContent(comment)
+            CommentCardContent(
+                comment = comment,
+                progressVisible = progressVisible,
+            )
         },
     )
 }
 
 @Composable
-private fun CommentCardContent(comment: Comment) {
+private fun CommentCardContent(
+    comment: Comment,
+    progressVisible: Boolean,
+) {
     Column(
         verticalArrangement = spacedBy(0.dp, Alignment.CenterVertically),
         modifier = Modifier
@@ -100,6 +113,7 @@ private fun CommentCardContent(comment: Comment) {
     ) {
         CommentHeader(
             comment = comment,
+            progressVisible = progressVisible,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
@@ -175,6 +189,7 @@ private fun CommentCardContent(comment: Comment) {
 @Composable
 private fun CommentHeader(
     comment: Comment,
+    progressVisible: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -225,7 +240,7 @@ private fun CommentHeader(
                 )
             }
 
-            val dateFormat = longDateFormat()
+            val dateFormat = mediumDateFormat()
             Text(
                 text = remember(comment.createdAt) {
                     comment.createdAt.toLocal().format(dateFormat).capitalize()
@@ -237,27 +252,12 @@ private fun CommentHeader(
             )
         }
 
-        comment.user5Rating?.let {
+        if (progressVisible || comment.user5Rating != null) {
             Spacer(modifier = Modifier.weight(1F))
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(3.dp),
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_star_trakt_on),
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier
-                        .size(15.dp),
-                )
-                Text(
-                    text = it,
-                    style = TraktTheme.typography.paragraphSmall.copy(fontWeight = W700),
-                    color = TraktTheme.colors.textPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
+            CommentUserChips(
+                comment = comment,
+                progressVisible = progressVisible,
+            )
         }
     }
 }
@@ -321,6 +321,7 @@ fun CommentPreview() {
                 CommentCard(
                     onClick = {},
                     comment = PreviewData.comment1.copy(userRating = 7),
+                    progressEnabled = true,
                     modifier = Modifier
                         .height(TraktTheme.size.detailsCommentSize)
                         .aspectRatio(CardDefaults.HorizontalImageAspectRatio),

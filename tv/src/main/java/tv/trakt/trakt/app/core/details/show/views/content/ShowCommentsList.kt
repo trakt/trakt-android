@@ -20,11 +20,13 @@ import tv.trakt.trakt.app.core.comments.ui.CommentCard
 import tv.trakt.trakt.app.helpers.extensions.emptyFocusListItems
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.User
 
 @Composable
 internal fun ShowCommentsList(
     header: String,
     comments: () -> ImmutableList<Comment>,
+    user: User?,
     onFocused: () -> Unit,
     onClick: (Comment) -> Unit,
     modifier: Modifier = Modifier,
@@ -55,6 +57,8 @@ internal fun ShowCommentsList(
             ) { comment ->
                 CommentCard(
                     comment = comment,
+                    user = user,
+                    progressEnabled = true,
                     onClick = { onClick(comment) },
                     modifier = Modifier
                         .height(TraktTheme.size.detailsCommentSize)

@@ -22,6 +22,7 @@ data class Comment(
     val replies: Int,
     val likes: Int,
     val userRating: Int?,
+    val userStats: CommentUserStats,
     val user: User,
     val language: Locale?,
     val gif: CommentGif?,
@@ -80,6 +81,11 @@ data class Comment(
                 replies = dto.replies,
                 likes = dto.likes,
                 userRating = dto.userRating,
+                userStats = CommentUserStats(
+                    playCount = dto.userStats.playCount,
+                    completedCount = dto.userStats.completedCount,
+                    rating = dto.userStats.rating,
+                ),
                 user = User.fromDto(dto.user),
                 language = dto.language?.let {
                     runCatching { Locale.forLanguageTag(it) }.getOrNull()
