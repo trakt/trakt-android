@@ -34,7 +34,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -76,6 +75,8 @@ import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.theme.colors.Shade800
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.features.postreply.PostReplySheet
+import tv.trakt.trakt.core.comments.features.report.ReportCommentSheet
+import tv.trakt.trakt.core.comments.ui.CommentDropdown
 import tv.trakt.trakt.core.comments.ui.CommentGifView
 import tv.trakt.trakt.core.comments.ui.CommentReplyCard
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
@@ -96,6 +97,7 @@ internal fun CommentDetailsView(
     var postReplySheet by remember { mutableStateOf<User?>(null) }
     var deleteCommentSheet by remember { mutableStateOf<Comment?>(null) }
     var deleteReplySheet by remember { mutableStateOf<Comment?>(null) }
+    var reportCommentSheet by remember { mutableStateOf<Comment?>(null) }
 
     CommentDetailsViewContent(
         state = state,
@@ -114,6 +116,9 @@ internal fun CommentDetailsView(
         },
         onDeleteReplyClick = { reply ->
             deleteReplySheet = reply
+        },
+        onReportClick = { comment ->
+            reportCommentSheet = comment
         },
     )
 
@@ -152,6 +157,14 @@ internal fun CommentDetailsView(
             deleteReplySheet = null
         },
     )
+
+    ReportCommentSheet(
+        active = reportCommentSheet != null,
+        comment = reportCommentSheet,
+        onDismiss = {
+            reportCommentSheet = null
+        },
+    )
 }
 
 @Composable
@@ -163,6 +176,7 @@ private fun CommentDetailsViewContent(
     onDeleteClick: ((Comment) -> Unit)? = null,
     onReplyClick: ((User) -> Unit)? = null,
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
+    onReportClick: ((Comment) -> Unit)? = null,
 ) {
     LazyColumn(
         verticalArrangement = spacedBy(16.dp),
@@ -182,6 +196,7 @@ private fun CommentDetailsViewContent(
                     onReplyClick = onReplyClick,
                     onDeleteClick = { onDeleteClick?.invoke(comment) },
                     onDeleteReplyClick = onDeleteReplyClick,
+                    onReportClick = { onReportClick?.invoke(comment) },
                 )
             }
         }
@@ -219,6 +234,7 @@ private fun CommentContent(
     onReplyClick: ((User) -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
+    onReportClick: (() -> Unit)? = null,
 ) {
     var isCollapsed by remember { mutableStateOf(true) }
 
@@ -227,8 +243,9 @@ private fun CommentContent(
     ) {
         CommentHeader(
             comment = comment,
-            deleteEnabled = user?.ids?.trakt == comment.user.ids.trakt,
+            userComment = user?.ids?.trakt == comment.user.ids.trakt,
             onDeleteClick = onDeleteClick,
+            onReportClick = onReportClick,
             modifier = Modifier.padding(top = 5.dp),
         )
 
@@ -305,9 +322,10 @@ private fun CommentContent(
 @Composable
 private fun CommentHeader(
     comment: Comment,
-    deleteEnabled: Boolean,
+    userComment: Boolean,
     modifier: Modifier = Modifier,
     onDeleteClick: (() -> Unit)? = null,
+    onReportClick: (() -> Unit)? = null,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -392,20 +410,13 @@ private fun CommentHeader(
                 }
             }
 
-            if (deleteEnabled) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_trash),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .align(Alignment.Top)
-                        .size(20.dp)
-                        .graphicsLayer {
-                            translationY = (-1).dp.toPx()
-                        }
-                        .onClick {
-                            onDeleteClick?.invoke()
-                        },
+            val menuDeleteClick = onDeleteClick.takeIf { userComment }
+            val menuReportClick = onReportClick.takeIf { !userComment }
+            if (menuDeleteClick != null || menuReportClick != null) {
+                CommentDropdown(
+                    deleteText = R.string.button_text_delete_comment,
+                    onDeleteClick = menuDeleteClick,
+                    onReportClick = menuReportClick,
                 )
             }
         }

@@ -552,27 +552,18 @@ private fun CommentHeader(
                 }
             }
 
-            if (userComment && deleteEnabled) {
-                Spacer(modifier = Modifier.width(14.dp))
+            val menuDeleteClick = onDeleteClick.takeIf { userComment && deleteEnabled }
+            val menuReportClick = onReportClick.takeIf { !userComment }
+            if (menuDeleteClick != null || menuReportClick != null) {
+                Spacer(modifier = Modifier.width(12.dp))
 
-                Icon(
-                    painter = painterResource(R.drawable.ic_trash),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .size(20.dp)
-                        .onClick {
-                            onDeleteClick?.invoke()
-                        },
+                CommentDropdown(
+                    containerColor = TraktTheme.colors.dialogOnContainer,
+                    deleteText = R.string.button_text_delete_comment,
+                    onDeleteClick = menuDeleteClick,
+                    onReportClick = menuReportClick,
                 )
             }
-
-            Spacer(modifier = Modifier.width(12.dp))
-
-            CommentDropdown(
-                containerColor = TraktTheme.colors.dialogOnContainer,
-                onReportClick = onReportClick,
-            )
         }
     }
 }

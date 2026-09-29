@@ -2,6 +2,7 @@
 
 package tv.trakt.trakt.core.comments.ui
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -31,6 +32,8 @@ import tv.trakt.trakt.ui.theme.TraktTheme
 internal fun CommentDropdown(
     modifier: Modifier = Modifier,
     containerColor: Color = TraktTheme.colors.dialogContainer,
+    @StringRes deleteText: Int = R.string.button_text_delete_comment,
+    onDeleteClick: (() -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
 ) {
     val inspection = LocalInspectionMode.current
@@ -51,27 +54,52 @@ internal fun CommentDropdown(
             containerColor = containerColor,
             shape = RoundedCornerShape(16.dp),
         ) {
-            DropdownMenuItem(
-                text = {
-                    Text(
-                        text = stringResource(R.string.button_text_report_comment),
-                        style = TraktTheme.typography.buttonTertiary,
-                        color = TraktTheme.colors.textPrimary,
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                },
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_flag),
-                        contentDescription = null,
-                        tint = TraktTheme.colors.textPrimary,
-                    )
-                },
-                onClick = {
-                    showMenu = false
-                    onReportClick?.invoke()
-                },
-            )
+            if (onReportClick != null) {
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = stringResource(R.string.button_text_report_comment),
+                            style = TraktTheme.typography.buttonTertiary,
+                            color = TraktTheme.colors.textPrimary,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_flag),
+                            contentDescription = null,
+                            tint = TraktTheme.colors.textPrimary,
+                        )
+                    },
+                    onClick = {
+                        showMenu = false
+                        onReportClick()
+                    },
+                )
+            }
+            if (onDeleteClick != null) {
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = stringResource(deleteText),
+                            style = TraktTheme.typography.buttonTertiary,
+                            color = TraktTheme.colors.textPrimary,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_trash),
+                            contentDescription = null,
+                            tint = TraktTheme.colors.textPrimary,
+                        )
+                    },
+                    onClick = {
+                        showMenu = false
+                        onDeleteClick()
+                    },
+                )
+            }
         }
     }
 }
@@ -80,6 +108,9 @@ internal fun CommentDropdown(
 @Composable
 private fun CommentDropdownPreview() {
     TraktTheme {
-        CommentDropdown()
+        CommentDropdown(
+            onDeleteClick = {},
+            onReportClick = {},
+        )
     }
 }

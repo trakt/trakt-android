@@ -361,26 +361,17 @@ private fun CommentHeader(
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (isUserReply) {
+            val menuDeleteClick = onDeleteClick.takeIf { isUserReply }
+            val menuReportClick = onReportClick.takeIf { !isUserReply }
+            if (menuDeleteClick != null || menuReportClick != null) {
                 Spacer(modifier = Modifier.size(16.dp))
 
-                Icon(
-                    painter = painterResource(R.drawable.ic_trash),
-                    contentDescription = null,
-                    tint = TraktTheme.colors.textPrimary,
-                    modifier = Modifier
-                        .size(20.dp)
-                        .onClick {
-                            onDeleteClick?.invoke()
-                        },
+                CommentDropdown(
+                    deleteText = R.string.button_text_delete_reply,
+                    onDeleteClick = menuDeleteClick,
+                    onReportClick = menuReportClick,
                 )
             }
-
-            Spacer(modifier = Modifier.size(16.dp))
-
-            CommentDropdown(
-                onReportClick = onReportClick,
-            )
         }
     }
 }
