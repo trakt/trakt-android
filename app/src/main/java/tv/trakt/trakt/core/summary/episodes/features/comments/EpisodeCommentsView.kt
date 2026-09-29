@@ -169,6 +169,7 @@ internal fun EpisodeCommentsView(
     EditCommentSheet(
         comment = editCommentSheet,
         gifQuery = MediaType.Episode.toGifQuery(state.media?.first?.title),
+        mentionSource = mentionSource,
         onCommentEdit = viewModel::updateComment,
         onDismiss = {
             editCommentSheet = null

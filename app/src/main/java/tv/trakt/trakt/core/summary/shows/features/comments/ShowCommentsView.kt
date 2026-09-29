@@ -166,6 +166,7 @@ internal fun ShowCommentsView(
     EditCommentSheet(
         comment = editCommentSheet,
         gifQuery = MediaType.Show.toGifQuery(state.show?.title),
+        mentionSource = mentionSource,
         onCommentEdit = viewModel::updateComment,
         onDismiss = {
             editCommentSheet = null

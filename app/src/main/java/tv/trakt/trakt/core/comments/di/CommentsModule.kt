@@ -129,10 +129,12 @@ internal val commentsModule = module {
         )
     }
 
-    viewModel { (comment: Comment) ->
+    viewModel { (comment: Comment, mentionSource: MentionSource?) ->
         EditCommentViewModel(
             comment = comment,
             editCommentUseCase = get(),
+            mentionSource = mentionSource,
+            getCommentMentionsUseCase = get(),
         )
     }
 

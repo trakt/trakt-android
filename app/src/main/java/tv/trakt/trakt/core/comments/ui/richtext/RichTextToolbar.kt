@@ -39,14 +39,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.core.comments.model.CommentMention
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.InputField
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val MAX_MENTION_MATCHES = 20
 
-private val ToolbarButtonSize = 36.dp
-private val ToolbarIconSize = 20.dp
+private val ToolbarButtonSize = 30.dp
+private val ToolbarIconSize = 18.dp
 
 @Composable
 internal fun RichTextToolbar(
@@ -239,7 +240,7 @@ private fun ToolbarButton(
         modifier = Modifier
             .size(ToolbarButtonSize)
             .clip(RoundedCornerShape(8.dp))
-            .background(if (active) accent.copy(alpha = 0.15F) else Color.Transparent)
+            .background(if (active) accent.copy(alpha = 0.2F) else Color.Transparent)
             .onClick(enabled = enabled, throttle = false, indication = true, onClick = onClick)
             .semantics {
                 role = Role.Button
@@ -258,7 +259,7 @@ private fun ToolbarButton(
 @Preview(showBackground = true, backgroundColor = 0xFF212427)
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         FormattingRow(
             toolbar = RichToolbarState(bold = true, quote = true),
             hasMentions = true,

@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFontFamilyResolver
@@ -26,6 +27,7 @@ import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.ui.theme.colors.Purple50
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.comments.model.CommentMention
+import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 private const val MAX_SUGGESTIONS = 8
@@ -46,8 +48,8 @@ internal fun RichTextEditor(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     borderColor: Color = TraktTheme.colors.accent,
-    minLines: Int = 5,
-    maxLines: Int = 15,
+    minLines: Int = 6,
+    maxLines: Int = 20,
     toolbarTrailing: @Composable () -> Unit = {},
 ) {
     val suggestions = remember(mentions, state.mentionQuery) {
@@ -64,15 +66,13 @@ internal fun RichTextEditor(
                 color = if (state.isFocused) borderColor else TraktTheme.colors.chipContainer,
                 shape = RoundedCornerShape(16.dp),
             )
-            .padding(12.dp),
+            .padding(
+                start = 12.dp,
+                end = 12.dp,
+                top = 12.dp,
+                bottom = 6.dp,
+            ),
     ) {
-        RichTextToolbar(
-            state = state,
-            mentions = mentions,
-            enabled = enabled,
-            trailing = toolbarTrailing,
-        )
-
         EditorField(
             state = state,
             placeholder = placeholder,
@@ -87,6 +87,17 @@ internal fun RichTextEditor(
                 onPick = { state.insertMention(it, state.mentionQuery?.range) },
             )
         }
+
+        RichTextToolbar(
+            state = state,
+            mentions = mentions,
+            enabled = enabled,
+            trailing = toolbarTrailing,
+            modifier = Modifier
+                .graphicsLayer {
+                    translationX = -4.dp.toPx()
+                },
+        )
     }
 }
 
@@ -159,7 +170,7 @@ private fun EditorField(
 @Preview(showBackground = true, backgroundColor = 0xFF212427)
 @Composable
 private fun Preview() {
-    TraktTheme {
+    TraktThemeLightDark {
         RichTextEditor(
             state = rememberRichTextEditorState(),
             placeholder = "Add a review...",

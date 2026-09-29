@@ -168,6 +168,7 @@ internal fun MovieCommentsView(
     EditCommentSheet(
         comment = editCommentSheet,
         gifQuery = MediaType.Movie.toGifQuery(state.movie?.title),
+        mentionSource = mentionSource,
         onCommentEdit = viewModel::updateComment,
         onDismiss = {
             editCommentSheet = null

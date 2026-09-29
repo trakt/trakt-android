@@ -39,7 +39,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -76,8 +75,8 @@ import tv.trakt.trakt.common.ui.theme.colors.Shade800
 import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.features.editcomment.EditCommentSheet
 import tv.trakt.trakt.core.comments.features.postreply.PostReplySheet
-import tv.trakt.trakt.core.comments.model.MentionSource
 import tv.trakt.trakt.core.comments.features.report.ReportCommentSheet
+import tv.trakt.trakt.core.comments.model.MentionSource
 import tv.trakt.trakt.core.comments.ui.CommentDropdown
 import tv.trakt.trakt.core.comments.ui.CommentGifView
 import tv.trakt.trakt.core.comments.ui.CommentReplyCard
@@ -147,6 +146,7 @@ internal fun CommentDetailsView(
     EditCommentSheet(
         comment = editCommentSheet,
         gifQuery = gifQuery,
+        mentionSource = mentionSource,
         onCommentEdit = viewModel::updateComment,
         onDismiss = {
             editCommentSheet = null

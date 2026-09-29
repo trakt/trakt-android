@@ -11,7 +11,7 @@ import tv.trakt.trakt.core.comments.model.CommentMention
 @Stable
 internal class RichTextEditorState {
     private var view: RichTextEditText? = null
-    private var pendingText: String? = null
+    private var pending: ((RichTextEditText) -> Unit)? = null
 
     private var snapshot by mutableStateOf(
         RichTextSnapshot(
@@ -30,11 +30,11 @@ internal class RichTextEditorState {
     val isFocused: Boolean get() = snapshot.isFocused
 
     fun setText(value: String) {
-        val attached = view ?: run {
-            pendingText = value
-            return
-        }
-        attached.setPlainText(value)
+        withView { it.setPlainText(value) }
+    }
+
+    fun setMarkdown(value: String) {
+        withView { it.setRichLines(value.parseMarkdown()) }
     }
 
     fun toggleInline(style: RichInlineStyle) {
@@ -63,14 +63,22 @@ internal class RichTextEditorState {
     internal fun attach(editText: RichTextEditText) {
         view = editText
         editText.onSnapshot = { snapshot = it }
-        pendingText?.let { editText.setPlainText(it) }
-        pendingText = null
+        pending?.invoke(editText)
+        pending = null
     }
 
     internal fun detach(editText: RichTextEditText) {
         if (view != editText) return
         editText.onSnapshot = {}
         view = null
+    }
+
+    private fun withView(action: (RichTextEditText) -> Unit) {
+        val attached = view ?: run {
+            pending = action
+            return
+        }
+        action(attached)
     }
 }
 

@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.core.comments.model.MentionSource
 import tv.trakt.trakt.ui.components.TraktBottomSheet
 import kotlin.random.Random.Default.nextInt
 
@@ -28,6 +29,7 @@ internal fun EditCommentSheet(
     ),
     comment: Comment?,
     gifQuery: String? = null,
+    mentionSource: MentionSource? = null,
     onCommentEdit: (Comment) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -42,7 +44,7 @@ internal fun EditCommentSheet(
             EditCommentView(
                 viewModel = koinViewModel(
                     key = viewModelKey,
-                    parameters = { parametersOf(comment) },
+                    parameters = { parametersOf(comment, mentionSource) },
                 ),
                 comment = comment,
                 gifQuery = gifQuery,

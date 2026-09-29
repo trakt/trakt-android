@@ -11,14 +11,12 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement.spacedBy
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -160,17 +158,19 @@ private fun ViewContent(
                 },
                 modifier = Modifier.weight(1F),
                 toolbarTrailing = {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_gif),
-                        contentDescription = stringResource(R.string.button_label_add_gif),
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier
-                            .size(36.dp)
-                            .padding(8.dp)
-                            .onClick(enabled = !isLoading) {
-                                isGifPickerVisible = true
-                            },
-                    )
+                    if (selectedGif == null) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_gif),
+                            contentDescription = stringResource(R.string.button_label_add_gif),
+                            tint = TraktTheme.colors.textPrimary,
+                            modifier = Modifier
+                                .size(36.dp)
+                                .padding(8.dp)
+                                .onClick(enabled = !isLoading) {
+                                    isGifPickerVisible = true
+                                },
+                        )
+                    }
                 },
             )
 

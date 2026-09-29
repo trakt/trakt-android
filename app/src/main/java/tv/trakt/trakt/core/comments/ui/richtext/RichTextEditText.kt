@@ -127,6 +127,26 @@ internal class RichTextEditText(
         publish()
     }
 
+    fun setRichLines(lines: List<RichLine>) {
+        isApplying = true
+        setText(lines.joinToString("\n") { it.text })
+
+        val editable = text
+        if (editable != null) {
+            lines.fold(0) { lineStart, line ->
+                line.runs.fold(lineStart) { start, run ->
+                    editable.setRunStyle(run.style, start, start + run.text.length)
+                    start + run.text.length
+                } + 1
+            }
+            blockTypes = lines.map { it.type }.ifEmpty { listOf(Paragraph) }
+            editable.renderBlocks()
+            setSelection(editable.length)
+        }
+        isApplying = false
+        publish()
+    }
+
     fun toggleInline(style: RichInlineStyle) {
         val editable = text ?: return
         val start = selectionStart.coerceAtLeast(0)
@@ -364,6 +384,17 @@ internal class RichTextEditText(
     ): RichStyle {
         return pendingStyle?.takeIf { pendingAt == index }
             ?: inheritedStyle(editable, before = index - 1, after = index)
+    }
+
+    private fun Editable.setRunStyle(
+        style: RichStyle,
+        start: Int,
+        end: Int,
+    ) {
+        if (style.bold) setInline(start, end, RichInlineStyle.Bold, isApplied = true)
+        if (style.italic) setInline(start, end, RichInlineStyle.Italic, isApplied = true)
+        if (style.spoiler) setInline(start, end, RichInlineStyle.Spoiler, isApplied = true)
+        style.href?.let { setSpan(MentionSpan(it), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE) }
     }
 
     private fun Editable.setInline(

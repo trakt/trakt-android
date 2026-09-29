@@ -162,6 +162,7 @@ internal fun CommentsScreen(
     EditCommentSheet(
         comment = editCommentSheet,
         gifQuery = gifQuery,
+        mentionSource = state.media?.mentionSource,
         onCommentEdit = viewModel::updateComment,
         onDismiss = {
             editCommentSheet = null

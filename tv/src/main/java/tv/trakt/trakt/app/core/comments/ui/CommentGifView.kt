@@ -24,7 +24,7 @@ import tv.trakt.trakt.common.model.CommentGif
 private const val FALLBACK_ASPECT_RATIO = 1F
 private val SpoilerBlurRadius = 24.dp
 
-internal val SideGifMaxSize = DpSize(width = 120.dp, height = 60.dp)
+internal val SideGifMaxSize = DpSize(width = 110.dp, height = 60.dp)
 internal val GifShape = RoundedCornerShape(8.dp)
 
 @Composable

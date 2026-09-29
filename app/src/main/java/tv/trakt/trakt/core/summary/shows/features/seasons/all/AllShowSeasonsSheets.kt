@@ -177,6 +177,7 @@ internal fun AllShowSeasonsSheets(
     EditCommentSheet(
         comment = sheetState.editComment,
         gifQuery = MediaType.Season.toGifQuery(state.show?.title),
+        mentionSource = mentionSource,
         onCommentEdit = viewModel::updateSeasonComment,
         onDismiss = { sheetState.editComment = null },
     )
