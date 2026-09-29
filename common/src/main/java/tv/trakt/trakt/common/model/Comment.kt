@@ -11,6 +11,7 @@ import tv.trakt.trakt.common.helpers.extensions.toZonedDateTime
 import tv.trakt.trakt.common.networking.CommentDto
 import java.time.ZonedDateTime
 import java.util.Locale
+import kotlin.math.roundToInt
 
 @Immutable
 data class Comment(
@@ -97,3 +98,31 @@ data class Comment(
         }
     }
 }
+
+@Immutable
+data class CommentUserStats(
+    val playCount: Int,
+    val completedCount: Int,
+    val rating: Int?,
+) {
+    fun progress(totalEpisodes: Int?): CommentUserProgress? {
+        if (totalEpisodes == null || totalEpisodes <= 0) return null
+
+        val completed = completedCount.coerceAtMost(totalEpisodes)
+        if (completed <= 0) return null
+
+        val percent = (completed * 100F / totalEpisodes).roundToInt()
+        return CommentUserProgress(
+            completed = completed,
+            total = totalEpisodes,
+            percent = "$percent%",
+        )
+    }
+}
+
+@Immutable
+data class CommentUserProgress(
+    val completed: Int,
+    val total: Int,
+    val percent: String,
+)

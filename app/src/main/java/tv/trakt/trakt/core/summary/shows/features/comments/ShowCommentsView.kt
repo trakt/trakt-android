@@ -143,7 +143,7 @@ internal fun ShowCommentsView(
     CommentDetailsSheet(
         comment = commentSheet,
         gifQuery = MediaType.Show.toGifQuery(state.show?.title),
-        progressEnabled = true,
+        progressTotal = state.show?.airedEpisodes,
         mentionSource = mentionSource,
         onDeleteComment = viewModel::deleteComment,
         onDismiss = {
@@ -313,6 +313,7 @@ private fun ShowCommentsContent(
                                     listItems = (state.items ?: emptyList()).toImmutableList(),
                                     listReactions = (state.reactions ?: emptyMap()).toImmutableMap(),
                                     user = state.user,
+                                    progressTotal = state.show?.airedEpisodes,
                                     gifPaused = gifPaused,
                                     userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
                                     contentPadding = contentPadding,
@@ -339,6 +340,7 @@ private fun ContentList(
     listState: LazyListState = rememberLazyListState(),
     user: User?,
     userReactions: ImmutableMap<Int, Reaction?>,
+    progressTotal: Int?,
     contentPadding: PaddingValues,
     gifPaused: Boolean,
     onCommentLoaded: ((Comment) -> Unit)? = null,
@@ -373,7 +375,7 @@ private fun ContentList(
                 comment = comment,
                 reactions = listReactions,
                 userReactions = userReactions,
-                progressEnabled = true,
+                progressTotal = progressTotal,
                 gifLayout = CommentGifLayout.Side,
                 gifPaused = gifPaused,
                 onClick = { onCommentClick?.invoke(comment) },

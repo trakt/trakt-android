@@ -165,7 +165,7 @@ internal fun LazyListScope.SeasonReviewsSection(
                     replyEnabled = state.user != null && !isUserComment,
                     repliesButtonEnabled = true,
                     repliesCountEnabled = false,
-                    progressEnabled = true,
+                    progressTotal = state.items.selectedSeason?.episodeCount,
                     onRequestReactions = { onRequestReactions(it) },
                     onReactionClick = { reaction, target -> onReactionClick(reaction, target) },
                     onRepliesClick = { onRepliesClick(comment) },

@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.focusable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,13 +42,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.tv.material3.Icon
 import androidx.tv.material3.Text
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
@@ -68,6 +65,7 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.CommentUserProgress
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
@@ -77,7 +75,7 @@ internal fun CommentDetailsDialog(
     comment: Comment,
     modifier: Modifier = Modifier,
     user: User? = null,
-    progressEnabled: Boolean = false,
+    progressTotal: Int? = null,
     viewModel: CommentDetailsViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -91,7 +89,7 @@ internal fun CommentDetailsDialog(
         comment = comment,
         state = state,
         user = user,
-        progressEnabled = progressEnabled,
+        progressTotal = progressTotal,
     )
 }
 
@@ -101,7 +99,7 @@ private fun CommentDetailsContent(
     comment: Comment,
     state: CommentDetailsState,
     user: User? = null,
-    progressEnabled: Boolean = false,
+    progressTotal: Int? = null,
 ) {
     val focusRequester = remember { FocusRequester() }
 
@@ -138,7 +136,8 @@ private fun CommentDetailsContent(
 
         CommentHeader(
             comment = comment,
-            progressVisible = progressEnabled && comment.user.ids.trakt != user?.ids?.trakt,
+            progress = comment.userStats.progress(progressTotal)
+                .takeIf { comment.user.ids.trakt != user?.ids?.trakt },
             modifier = Modifier
                 .padding(top = 20.dp)
                 .focusRequester(focusRequester)
@@ -204,7 +203,7 @@ private fun CommentDetailsContent(
             CommentRepliesContent(
                 comments = state.commentReplies,
                 user = user,
-                progressEnabled = progressEnabled,
+                progressTotal = progressTotal,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 20.dp),
@@ -229,7 +228,7 @@ private fun CommentDetailsContent(
 @Composable
 private fun CommentHeader(
     comment: Comment,
-    progressVisible: Boolean,
+    progress: CommentUserProgress?,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -286,11 +285,11 @@ private fun CommentHeader(
             )
         }
 
-        if (progressVisible || comment.user5Rating != null) {
+        if (progress != null || comment.user5Rating != null) {
             Spacer(modifier = Modifier.weight(1F))
             CommentUserChips(
                 comment = comment,
-                progressVisible = progressVisible,
+                progress = progress,
             )
         }
     }
@@ -300,7 +299,7 @@ private fun CommentHeader(
 private fun CommentRepliesContent(
     comments: ImmutableList<Comment>,
     user: User?,
-    progressEnabled: Boolean,
+    progressTotal: Int?,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -311,7 +310,7 @@ private fun CommentRepliesContent(
             CommentReplyCard(
                 comment = comment,
                 user = user,
-                progressEnabled = progressEnabled,
+                progressTotal = progressTotal,
             )
         }
     }
@@ -331,7 +330,7 @@ fun CommentDetailsPreview() {
             ) {
                 CommentDetailsContent(
                     comment = PreviewData.comment1,
-                    progressEnabled = true,
+                    progressTotal = 10,
                     modifier = Modifier,
                     state = CommentDetailsState(
                         isLoading = false,

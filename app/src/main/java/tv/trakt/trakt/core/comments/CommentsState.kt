@@ -33,6 +33,7 @@ internal data class CommentsState(
         val id: TraktId,
         val type: MediaType,
         val title: String?,
+        val episodes: Int? = null,
         val mentionSource: MentionSource? = null,
     )
 }

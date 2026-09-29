@@ -228,6 +228,7 @@ internal fun NavGraphBuilder.showsScreens(
                     mediaImage = show.images?.getFanartUrl(),
                     mediaTitle = show.title,
                     filter = filter,
+                    mediaEpisodes = show.airedEpisodes,
                 )
             },
             onNavigateToList = { show, list ->

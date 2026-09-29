@@ -81,7 +81,7 @@ internal fun CommentReplyCard(
     modifier: Modifier = Modifier,
     reactions: ReactionsSummary? = null,
     userReaction: Reaction? = null,
-    progressEnabled: Boolean = false,
+    progressTotal: Int? = null,
     onClick: (() -> Unit)? = null,
     onUserClick: ((User) -> Unit)? = null,
     onRequestReactions: (() -> Unit)? = null,
@@ -112,7 +112,7 @@ internal fun CommentReplyCard(
             comment = reply,
             reactions = reactions,
             userReaction = userReaction,
-            progressEnabled = progressEnabled,
+            progressTotal = progressTotal,
             onReactionClick = onReactionClick,
             onReplyClick = onReplyClick,
             onDeleteClick = onDeleteClick,
@@ -163,7 +163,7 @@ private fun CommentReplyCardContent(
     comment: Comment,
     reactions: ReactionsSummary?,
     userReaction: Reaction?,
-    progressEnabled: Boolean,
+    progressTotal: Int?,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
     onReactionClick: ((Reaction) -> Unit)? = null,
@@ -184,7 +184,7 @@ private fun CommentReplyCardContent(
         CommentHeader(
             user = user,
             comment = comment,
-            progressEnabled = progressEnabled,
+            progressTotal = progressTotal,
             onUserClick = onUserClick,
             onDeleteClick = onDeleteClick,
             onReportClick = onReportClick,
@@ -282,7 +282,7 @@ private fun CommentReplyBody(
 private fun CommentHeader(
     user: User?,
     comment: Comment,
-    progressEnabled: Boolean,
+    progressTotal: Int?,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
@@ -368,7 +368,7 @@ private fun CommentHeader(
         ) {
             CommentUserChips(
                 comment = comment,
-                progressVisible = progressEnabled && !isUserReply,
+                progress = comment.userStats.progress(progressTotal).takeUnless { isUserReply },
                 modifier = Modifier.padding(start = 12.dp),
             )
 
@@ -506,7 +506,7 @@ private fun Preview() {
                     onClick = {},
                     user = null,
                     reply = PreviewData.comment1.copy(userRating = 7),
-                    progressEnabled = true,
+                    progressTotal = 10,
                 )
 
                 CommentReplyCard(

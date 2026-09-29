@@ -107,7 +107,7 @@ internal fun CommentCard(
     repliesButtonEnabled: Boolean = false,
     repliesCountEnabled: Boolean = true,
     repliesLoading: Boolean = false,
-    progressEnabled: Boolean = false,
+    progressTotal: Int? = null,
     gifLayout: CommentGifLayout = CommentGifLayout.Bottom,
     gifPaused: Boolean = false,
     onClick: (() -> Unit)? = null,
@@ -140,7 +140,7 @@ internal fun CommentCard(
             repliesButtonEnabled = repliesButtonEnabled,
             repliesCountEnabled = repliesCountEnabled,
             repliesLoading = repliesLoading,
-            progressEnabled = progressEnabled,
+            progressTotal = progressTotal,
             gifLayout = gifLayout,
             gifPaused = gifPaused,
             onRequestReactions = onRequestReactions,
@@ -213,7 +213,7 @@ private fun CommentCardContent(
     repliesButtonEnabled: Boolean,
     repliesCountEnabled: Boolean,
     repliesLoading: Boolean,
-    progressEnabled: Boolean,
+    progressTotal: Int?,
     gifLayout: CommentGifLayout,
     gifPaused: Boolean,
     modifier: Modifier = Modifier,
@@ -243,7 +243,7 @@ private fun CommentCardContent(
         CommentHeader(
             comment = comment,
             userComment = isUserComment,
-            progressEnabled = progressEnabled,
+            progressTotal = progressTotal,
             onUserClick = onUserClick,
             onEditClick = onEditClick,
             onDeleteClick = onDeleteClick,
@@ -355,7 +355,7 @@ private fun CommentCardContent(
                 replies = replies,
                 reactions = reactions,
                 userReactions = userReactions,
-                progressEnabled = progressEnabled,
+                progressTotal = progressTotal,
                 onReactionClick = onReactionClick,
                 onUserClick = onUserClick,
                 onReplyClick = { onReplyUserClick?.invoke(it.user) },
@@ -415,7 +415,7 @@ private fun CommentRepliesContent(
     replies: ImmutableList<Comment>,
     reactions: ImmutableMap<Int, ReactionsSummary>,
     userReactions: ImmutableMap<Int, Reaction?>,
-    progressEnabled: Boolean,
+    progressTotal: Int?,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
@@ -435,7 +435,7 @@ private fun CommentRepliesContent(
                 reply = reply,
                 reactions = reactions[reply.id],
                 userReaction = userReactions[reply.id],
-                progressEnabled = progressEnabled,
+                progressTotal = progressTotal,
                 onUserClick = onUserClick,
                 onReactionClick = { onReactionClick?.invoke(it, reply) },
                 onRequestReactions = { onRequestReactions?.invoke(reply) },
@@ -451,7 +451,7 @@ private fun CommentRepliesContent(
 private fun CommentHeader(
     comment: Comment,
     userComment: Boolean,
-    progressEnabled: Boolean,
+    progressTotal: Int?,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
     onEditClick: (() -> Unit)? = null,
@@ -540,7 +540,7 @@ private fun CommentHeader(
         ) {
             CommentUserChips(
                 comment = comment,
-                progressVisible = progressEnabled && !userComment,
+                progress = comment.userStats.progress(progressTotal).takeUnless { userComment },
                 modifier = Modifier.padding(start = 12.dp),
             )
 
@@ -760,7 +760,7 @@ fun CommentPreview() {
                     user = null,
                     comment = PreviewData.comment1.copy(userRating = 8),
                     replies = listOf(PreviewData.comment1).toImmutableList(),
-                    progressEnabled = true,
+                    progressTotal = 10,
                     modifier = Modifier
                         .height(400.dp),
                 )

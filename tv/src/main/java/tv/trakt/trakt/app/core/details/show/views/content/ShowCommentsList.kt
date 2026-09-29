@@ -27,6 +27,7 @@ internal fun ShowCommentsList(
     header: String,
     comments: () -> ImmutableList<Comment>,
     user: User?,
+    progressTotal: Int?,
     onFocused: () -> Unit,
     onClick: (Comment) -> Unit,
     modifier: Modifier = Modifier,
@@ -58,7 +59,7 @@ internal fun ShowCommentsList(
                 CommentCard(
                     comment = comment,
                     user = user,
-                    progressEnabled = true,
+                    progressTotal = progressTotal,
                     onClick = { onClick(comment) },
                     modifier = Modifier
                         .height(TraktTheme.size.detailsCommentSize)

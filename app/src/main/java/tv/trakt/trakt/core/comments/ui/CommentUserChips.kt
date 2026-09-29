@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
-import tv.trakt.trakt.common.model.CommentUserStats
+import tv.trakt.trakt.common.model.CommentUserProgress
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.chips.InfoChip
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -37,11 +37,11 @@ private val TooltipShape = RoundedCornerShape(8.dp)
 @Composable
 internal fun CommentUserChips(
     comment: Comment,
-    progressVisible: Boolean,
+    progress: CommentUserProgress?,
     modifier: Modifier = Modifier,
 ) {
     val rating = comment.user5Rating
-    if (!progressVisible && rating == null) return
+    if (progress == null && rating == null) return
 
     val textStyle = TraktTheme.typography.meta.copy(fontWeight = W700)
 
@@ -50,9 +50,9 @@ internal fun CommentUserChips(
         horizontalArrangement = spacedBy(4.dp),
         modifier = modifier,
     ) {
-        if (progressVisible) {
+        if (progress != null) {
             CommentProgressChip(
-                stats = comment.userStats,
+                progress = progress,
                 textStyle = textStyle,
             )
         }
@@ -71,7 +71,7 @@ internal fun CommentUserChips(
 
 @Composable
 private fun CommentProgressChip(
-    stats: CommentUserStats,
+    progress: CommentUserProgress,
     textStyle: TextStyle,
     modifier: Modifier = Modifier,
 ) {
@@ -87,8 +87,8 @@ private fun CommentProgressChip(
             Text(
                 text = stringResource(
                     R.string.tooltip_text_watched_episodes,
-                    stats.completedCount,
-                    stats.playCount,
+                    progress.completed,
+                    progress.total,
                 ),
                 style = TraktTheme.typography.meta,
                 color = TraktTheme.colors.tooltipContent,
@@ -103,7 +103,7 @@ private fun CommentProgressChip(
         modifier = modifier,
     ) {
         InfoChip(
-            text = stats.completedPercent,
+            text = progress.percent,
             iconPainter = painterResource(R.drawable.ic_eye),
             iconPadding = 2.dp,
             contentTextStyle = textStyle,
@@ -129,7 +129,7 @@ private fun Preview() {
     TraktTheme {
         CommentUserChips(
             comment = PreviewData.comment1.copy(userRating = 8),
-            progressVisible = true,
+            progress = PreviewData.comment1.userStats.progress(totalEpisodes = 10),
         )
     }
 }
@@ -143,7 +143,7 @@ private fun PreviewRatingOnly() {
     TraktTheme {
         CommentUserChips(
             comment = PreviewData.comment1.copy(userRating = 8),
-            progressVisible = false,
+            progress = null,
         )
     }
 }

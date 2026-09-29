@@ -48,6 +48,7 @@ import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CommentGif
+import tv.trakt.trakt.common.model.CommentUserProgress
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.resources.R
 
@@ -56,10 +57,11 @@ internal fun CommentReplyCard(
     comment: Comment,
     modifier: Modifier = Modifier,
     user: User? = null,
-    progressEnabled: Boolean = false,
+    progressTotal: Int? = null,
 ) {
-    val progressVisible = remember(user, comment.user) {
-        progressEnabled && comment.user.ids.trakt != user?.ids?.trakt
+    val progress = remember(user, comment, progressTotal) {
+        comment.userStats.progress(progressTotal)
+            .takeIf { comment.user.ids.trakt != user?.ids?.trakt }
     }
 
     var spoilersHidden by remember { mutableStateOf(true) }
@@ -93,7 +95,7 @@ internal fun CommentReplyCard(
                 comment = comment,
                 spoilersHidden = spoilersHidden,
                 isExpanded = isExpanded,
-                progressVisible = progressVisible,
+                progress = progress,
             )
         },
     )
@@ -104,7 +106,7 @@ private fun CommentCardContent(
     comment: Comment,
     spoilersHidden: Boolean,
     isExpanded: Boolean,
-    progressVisible: Boolean,
+    progress: CommentUserProgress?,
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp, Alignment.Top),
@@ -114,7 +116,7 @@ private fun CommentCardContent(
     ) {
         CommentHeader(
             comment = comment,
-            progressVisible = progressVisible,
+            progress = progress,
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -157,7 +159,7 @@ private fun CommentCardContent(
 @Composable
 private fun CommentHeader(
     comment: Comment,
-    progressVisible: Boolean,
+    progress: CommentUserProgress?,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -215,11 +217,11 @@ private fun CommentHeader(
             )
         }
 
-        if (progressVisible || comment.user5Rating != null) {
+        if (progress != null || comment.user5Rating != null) {
             Spacer(modifier = Modifier.weight(1F))
             CommentUserChips(
                 comment = comment,
-                progressVisible = progressVisible,
+                progress = progress,
             )
         }
     }
@@ -238,7 +240,7 @@ fun CommentReplyPreview() {
             )
             CommentReplyCard(
                 comment = PreviewData.comment1.copy(userRating = 7),
-                progressEnabled = true,
+                progressTotal = 10,
             )
         }
     }

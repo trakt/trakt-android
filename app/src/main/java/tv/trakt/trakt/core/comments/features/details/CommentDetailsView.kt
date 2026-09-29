@@ -93,7 +93,7 @@ internal fun CommentDetailsView(
     modifier: Modifier = Modifier,
     gifQuery: String? = null,
     mentionSource: MentionSource? = null,
-    progressEnabled: Boolean = false,
+    progressTotal: Int? = null,
     onDeleteComment: (commentId: TraktId) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -106,7 +106,7 @@ internal fun CommentDetailsView(
 
     CommentDetailsViewContent(
         state = state,
-        progressEnabled = progressEnabled,
+        progressTotal = progressTotal,
         modifier = modifier,
         onReplyLoaded = {
             viewModel.loadReactions(it.id)
@@ -191,7 +191,7 @@ internal fun CommentDetailsView(
 private fun CommentDetailsViewContent(
     state: CommentDetailsState,
     modifier: Modifier = Modifier,
-    progressEnabled: Boolean = false,
+    progressTotal: Int? = null,
     onReplyLoaded: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onEditClick: ((Comment) -> Unit)? = null,
@@ -213,7 +213,7 @@ private fun CommentDetailsViewContent(
                     commentReplies = state.replies,
                     listReactions = state.reactions,
                     userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
-                    progressEnabled = progressEnabled,
+                    progressTotal = progressTotal,
                     onReplyLoaded = onReplyLoaded,
                     onReactionClick = onReactionClick,
                     onReplyClick = onReplyClick,
@@ -253,7 +253,7 @@ private fun CommentContent(
     commentReplies: ImmutableList<Comment>?,
     listReactions: ImmutableMap<Int, ReactionsSummary>?,
     userReactions: ImmutableMap<Int, Reaction?>,
-    progressEnabled: Boolean,
+    progressTotal: Int?,
     onReplyLoaded: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onReplyClick: ((User) -> Unit)? = null,
@@ -270,7 +270,7 @@ private fun CommentContent(
         CommentHeader(
             comment = comment,
             userComment = user?.ids?.trakt == comment.user.ids.trakt,
-            progressEnabled = progressEnabled,
+            progressTotal = progressTotal,
             onEditClick = onEditClick,
             onDeleteClick = onDeleteClick,
             onReportClick = onReportClick,
@@ -334,7 +334,7 @@ private fun CommentContent(
                             reply = reply,
                             reactions = listReactions?.get(reply.id),
                             userReaction = userReactions[reply.id],
-                            progressEnabled = progressEnabled,
+                            progressTotal = progressTotal,
                             onRequestReactions = { onReplyLoaded?.invoke(reply) },
                             onReactionClick = { onReactionClick?.invoke(it, reply) },
                             onReplyClick = { onReplyClick?.invoke(reply.user) },
@@ -352,7 +352,7 @@ private fun CommentContent(
 private fun CommentHeader(
     comment: Comment,
     userComment: Boolean,
-    progressEnabled: Boolean,
+    progressTotal: Int?,
     modifier: Modifier = Modifier,
     onEditClick: (() -> Unit)? = null,
     onDeleteClick: (() -> Unit)? = null,
@@ -423,7 +423,7 @@ private fun CommentHeader(
             Spacer(modifier = Modifier.weight(1f))
             CommentUserChips(
                 comment = comment,
-                progressVisible = progressEnabled && !userComment,
+                progress = comment.userStats.progress(progressTotal).takeUnless { userComment },
             )
 
             val menuEditClick = onEditClick.takeIf { userComment }
@@ -574,7 +574,7 @@ private fun Preview() {
                         ).toImmutableList(),
                         loading = Done,
                     ),
-                    progressEnabled = true,
+                    progressTotal = 10,
                 )
             }
         }

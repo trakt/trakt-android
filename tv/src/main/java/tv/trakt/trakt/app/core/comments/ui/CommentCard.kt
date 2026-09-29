@@ -53,6 +53,7 @@ import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.CommentGif
+import tv.trakt.trakt.common.model.CommentUserProgress
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.resources.R
 
@@ -61,11 +62,12 @@ internal fun CommentCard(
     comment: Comment,
     modifier: Modifier = Modifier,
     user: User? = null,
-    progressEnabled: Boolean = false,
+    progressTotal: Int? = null,
     onClick: () -> Unit,
 ) {
-    val progressVisible = remember(user, comment.user) {
-        progressEnabled && comment.user.ids.trakt != user?.ids?.trakt
+    val progress = remember(user, comment, progressTotal) {
+        comment.userStats.progress(progressTotal)
+            .takeIf { comment.user.ids.trakt != user?.ids?.trakt }
     }
 
     Card(
@@ -93,7 +95,7 @@ internal fun CommentCard(
         content = {
             CommentCardContent(
                 comment = comment,
-                progressVisible = progressVisible,
+                progress = progress,
             )
         },
     )
@@ -102,7 +104,7 @@ internal fun CommentCard(
 @Composable
 private fun CommentCardContent(
     comment: Comment,
-    progressVisible: Boolean,
+    progress: CommentUserProgress?,
 ) {
     Column(
         verticalArrangement = spacedBy(0.dp, Alignment.CenterVertically),
@@ -112,7 +114,7 @@ private fun CommentCardContent(
     ) {
         CommentHeader(
             comment = comment,
-            progressVisible = progressVisible,
+            progress = progress,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
 
@@ -188,7 +190,7 @@ private fun CommentCardContent(
 @Composable
 private fun CommentHeader(
     comment: Comment,
-    progressVisible: Boolean,
+    progress: CommentUserProgress?,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -251,11 +253,11 @@ private fun CommentHeader(
             )
         }
 
-        if (progressVisible || comment.user5Rating != null) {
+        if (progress != null || comment.user5Rating != null) {
             Spacer(modifier = Modifier.weight(1F))
             CommentUserChips(
                 comment = comment,
-                progressVisible = progressVisible,
+                progress = progress,
             )
         }
     }
@@ -320,7 +322,7 @@ fun CommentPreview() {
                 CommentCard(
                     onClick = {},
                     comment = PreviewData.comment1.copy(userRating = 7),
-                    progressEnabled = true,
+                    progressTotal = 10,
                     modifier = Modifier
                         .height(TraktTheme.size.detailsCommentSize)
                         .aspectRatio(CardDefaults.HorizontalImageAspectRatio),

@@ -330,6 +330,7 @@ private fun ShowDetailsScreenContent(
         CommentDetailsOverlay(
             selectedComment = selectedComment,
             user = state.user,
+            progressTotal = state.showDetails?.airedEpisodes,
             onExited = {
                 selectedComment = null
                 focusRequesters["comments"]?.requestFocus()
@@ -472,6 +473,7 @@ private fun MainContent(
                 header = stringResource(R.string.list_title_comments),
                 comments = { state.showComments ?: emptyList<Comment>().toImmutableList() },
                 user = state.user,
+                progressTotal = state.showDetails?.airedEpisodes,
                 onFocused = { onFocused("comments") },
                 onClick = onCommentClick,
                 modifier = Modifier
@@ -534,6 +536,7 @@ private fun MainContent(
 private fun CommentDetailsOverlay(
     selectedComment: Comment?,
     user: User?,
+    progressTotal: Int?,
     onExited: () -> Unit,
 ) {
     AnimatedVisibility(
@@ -556,7 +559,7 @@ private fun CommentDetailsOverlay(
                 CommentDetailsDialog(
                     comment = selectedComment,
                     user = user,
-                    progressEnabled = true,
+                    progressTotal = progressTotal,
                     modifier = Modifier
                         .padding(32.dp)
                         .width(400.dp)

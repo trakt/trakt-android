@@ -35,7 +35,7 @@ internal fun CommentDetailsSheet(
     comment: Comment?,
     gifQuery: String? = null,
     mentionSource: MentionSource? = null,
-    progressEnabled: Boolean = false,
+    progressTotal: Int? = null,
     onDeleteComment: (commentId: TraktId) -> Unit = {},
     onDismiss: () -> Unit,
 ) {
@@ -58,7 +58,7 @@ internal fun CommentDetailsSheet(
                 ),
                 gifQuery = gifQuery,
                 mentionSource = mentionSource,
-                progressEnabled = progressEnabled,
+                progressTotal = progressTotal,
                 onDeleteComment = {
                     onDeleteComment(it)
                     sheetScope.dismissWithAction(

@@ -12,25 +12,26 @@ import tv.trakt.trakt.app.common.ui.chips.InfoChip
 import tv.trakt.trakt.app.ui.theme.TraktTheme
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Comment
+import tv.trakt.trakt.common.model.CommentUserProgress
 import tv.trakt.trakt.resources.R
 
 @Composable
 internal fun CommentUserChips(
     comment: Comment,
-    progressVisible: Boolean,
+    progress: CommentUserProgress?,
     modifier: Modifier = Modifier,
 ) {
     val rating = comment.user5Rating
-    if (!progressVisible && rating == null) return
+    if (progress == null && rating == null) return
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = spacedBy(6.dp),
         modifier = modifier,
     ) {
-        if (progressVisible) {
+        if (progress != null) {
             InfoChip(
-                text = comment.userStats.completedPercent,
+                text = progress.percent,
                 iconPainter = painterResource(R.drawable.ic_eye),
             )
         }
@@ -50,7 +51,7 @@ private fun Preview() {
     TraktTheme {
         CommentUserChips(
             comment = PreviewData.comment1.copy(userRating = 8),
-            progressVisible = true,
+            progress = PreviewData.comment1.userStats.progress(totalEpisodes = 10),
         )
     }
 }
@@ -61,7 +62,7 @@ private fun PreviewRatingOnly() {
     TraktTheme {
         CommentUserChips(
             comment = PreviewData.comment1.copy(userRating = 8),
-            progressVisible = false,
+            progress = null,
         )
     }
 }
