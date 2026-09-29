@@ -52,7 +52,10 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.common.model.toTraktId
+import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.features.details.CommentDetailsSheet
+import tv.trakt.trakt.core.comments.features.editcomment.EditCommentSheet
 import tv.trakt.trakt.core.comments.ui.CommentGifLayout
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter
@@ -90,6 +93,8 @@ internal fun ProfileActivityView(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var commentSheet by remember { mutableStateOf<Comment?>(null) }
+    var editCommentSheet by remember { mutableStateOf<ProfileCommentItem?>(null) }
+    var deleteCommentSheet by remember { mutableStateOf<Comment?>(null) }
 
     LaunchedEffect(
         state.navigateShow,
@@ -119,6 +124,12 @@ internal fun ProfileActivityView(
         onCommentClick = {
             commentSheet = it
         },
+        onEditCommentClick = {
+            editCommentSheet = it
+        },
+        onDeleteCommentClick = {
+            deleteCommentSheet = it
+        },
         onMoreClick = onMoreClick,
     )
 
@@ -129,6 +140,23 @@ internal fun ProfileActivityView(
         },
         onDismiss = {
             commentSheet = null
+        },
+    )
+    EditCommentSheet(
+        comment = editCommentSheet?.comment,
+        gifQuery = editCommentSheet?.gifQuery,
+        onCommentEdit = viewModel::updateComment,
+        onDismiss = {
+            editCommentSheet = null
+        },
+    )
+
+    DeleteCommentSheet(
+        active = deleteCommentSheet != null,
+        commentId = deleteCommentSheet?.id?.toTraktId(),
+        onDeleted = viewModel::deleteComment,
+        onDismiss = {
+            deleteCommentSheet = null
         },
     )
 }
@@ -147,6 +175,8 @@ internal fun ProfileActivityContent(
     onShowClick: (Show) -> Unit = {},
     onEpisodeClick: (Show, Episode) -> Unit = { _, _ -> },
     onCommentClick: (Comment) -> Unit = {},
+    onEditCommentClick: (ProfileCommentItem) -> Unit = {},
+    onDeleteCommentClick: (Comment) -> Unit = {},
     onMoreClick: () -> Unit = {},
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
@@ -246,6 +276,8 @@ internal fun ProfileActivityContent(
                                             onShowClick = onShowClick,
                                             onEpisodeClick = onEpisodeClick,
                                             onCommentClick = onCommentClick,
+                                            onEditCommentClick = onEditCommentClick,
+                                            onDeleteCommentClick = onDeleteCommentClick,
                                         )
                                     }
                                 }
@@ -409,6 +441,8 @@ private fun CommentsContentList(
     onShowClick: (Show) -> Unit,
     onEpisodeClick: (Show, Episode) -> Unit,
     onCommentClick: (Comment) -> Unit,
+    onEditCommentClick: (ProfileCommentItem) -> Unit,
+    onDeleteCommentClick: (Comment) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -442,7 +476,8 @@ private fun CommentsContentList(
                 onMovieClick = { onMovieClick(it) },
                 onEpisodeClick = { show, episode -> onEpisodeClick(show, episode) },
                 onRepliesClick = { onCommentClick(item.comment) },
-                onDeleteClick = { },
+                onEditClick = { onEditCommentClick(item) },
+                onDeleteClick = { onDeleteCommentClick(item.comment) },
                 onRequestReactions = onRequestReactions,
                 modifier = Modifier
                     .height(TraktTheme.size.commentCardSize)

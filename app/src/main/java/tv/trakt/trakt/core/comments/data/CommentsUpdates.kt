@@ -11,5 +11,7 @@ internal interface CommentsUpdates {
     enum class Source {
         ALL_COMMENTS,
         COMMENT_DETAILS,
+        PROFILE_ACTIVITY,
+        PROFILE_ALL_ACTIVITY,
     }
 }

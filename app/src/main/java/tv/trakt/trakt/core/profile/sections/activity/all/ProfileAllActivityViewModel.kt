@@ -32,6 +32,7 @@ import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
+import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Show
@@ -42,6 +43,8 @@ import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.comments.data.CommentsUpdates
 import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.ALL_COMMENTS
 import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.COMMENT_DETAILS
+import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.PROFILE_ACTIVITY
+import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.PROFILE_ALL_ACTIVITY
 import tv.trakt.trakt.core.lists.ListsConfig.ACTIVITY_PAGE_LIMIT
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter
 import tv.trakt.trakt.core.profile.sections.activity.model.ProfileActivityFilter.Comments
@@ -109,6 +112,7 @@ internal class ProfileAllActivityViewModel(
         merge(
             commentsUpdates.observeUpdates(ALL_COMMENTS),
             commentsUpdates.observeUpdates(COMMENT_DETAILS),
+            commentsUpdates.observeUpdates(PROFILE_ACTIVITY),
         )
             .distinctUntilChanged()
             .debounce(200.milliseconds)
@@ -262,6 +266,22 @@ internal class ProfileAllActivityViewModel(
                 }
             }
         }
+    }
+
+    fun updateComment(comment: Comment) {
+        commentItemsState.update { items ->
+            items?.map { item ->
+                if (item.comment.id == comment.id) item.withComment(comment) else item
+            }?.toImmutableList()
+        }
+        commentsUpdates.notifyUpdate(PROFILE_ALL_ACTIVITY)
+    }
+
+    fun deleteComment(commentId: TraktId) {
+        commentItemsState.update { items ->
+            items?.filterNot { it.comment.id == commentId.value }?.toImmutableList()
+        }
+        commentsUpdates.notifyUpdate(PROFILE_ALL_ACTIVITY)
     }
 
     fun setFilter(newFilter: ProfileActivityFilter) {
