@@ -222,26 +222,12 @@ private fun MovieCommentsContent(
                     onCollapse?.invoke(!current)
                 },
                 extraIcon = {
-                    CommentsLanguageDropdown(
-                        language = state.language,
-                        enabled = state.loading == Done,
-                        onLanguageClick = onLanguageClick,
-                        modifier = Modifier.padding(
-                            start = 12.dp,
-                            end = if (state.user != null) 6.dp else 8.dp,
-                        ),
-                    )
-
                     if (state.user != null) {
                         Icon(
                             painter = painterResource(R.drawable.ic_comment_plus),
                             contentDescription = null,
                             tint = TraktTheme.colors.textPrimary,
                             modifier = Modifier
-                                .padding(
-                                    start = 4.dp,
-                                    end = 8.dp,
-                                )
                                 .size(18.dp)
                                 .onClick(enabled = state.loading == Done) {
                                     onAddCommentClick?.invoke()
@@ -251,6 +237,15 @@ private fun MovieCommentsContent(
                                 },
                         )
                     }
+                    CommentsLanguageDropdown(
+                        language = state.language,
+                        enabled = state.loading == Done,
+                        onLanguageClick = onLanguageClick,
+                        modifier = Modifier.padding(
+                            start = 12.dp,
+                            end = 10.dp,
+                        ),
+                    )
                 },
                 modifier = Modifier
                     .weight(1f)
