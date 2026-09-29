@@ -44,9 +44,11 @@ import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.common.model.User
+import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.auth.model.AuthorizationException
 import tv.trakt.trakt.core.auth.usecase.AuthorizeUserUseCase
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
+import tv.trakt.trakt.core.auth.usecase.authRedirectUriKey
 import tv.trakt.trakt.core.auth.usecase.codeVerifierKey
 import tv.trakt.trakt.core.checkin.data.CheckInManager
 import tv.trakt.trakt.core.checkin.data.updates.CheckInUpdates.Source
@@ -134,17 +136,21 @@ internal class MainViewModel(
             authorizePreferences.data.collect { preferences ->
                 preferences[authCodeKey]?.let { code ->
                     val codeVerifier = preferences[codeVerifierKey]
+                    val redirectUri = preferences[authRedirectUriKey] ?: ConfigAuth.OAUTH_REDIRECT_URI
                     authorizePreferences.edit {
                         it.remove(authCodeKey)
                         it.remove(codeVerifierKey)
+                        it.remove(authRedirectUriKey)
                     }
+
                     if (codeVerifier == null) {
                         val error = IllegalStateException("Missing PKCE code verifier")
                         errorState.update { AuthorizationException(error) }
                         Timber.recordError(error)
                         return@collect
                     }
-                    authorizeUser(code, codeVerifier)
+
+                    authorizeUser(code, codeVerifier, redirectUri)
                 }
             }
         }
@@ -332,6 +338,7 @@ internal class MainViewModel(
     private fun authorizeUser(
         code: String,
         codeVerifier: String,
+        redirectUri: String,
     ) {
         viewModelScope.launch {
             try {
@@ -342,6 +349,7 @@ internal class MainViewModel(
                 authorizeUseCase.authorizeByCode(
                     code = code,
                     codeVerifier = codeVerifier,
+                    redirectUri = redirectUri,
                 )
                 getUserUseCase.loadUserProfile()?.let {
                     analytics.setUserId(it.ids.trakt.value.toString())

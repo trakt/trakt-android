@@ -9,7 +9,6 @@ import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import tv.trakt.trakt.common.BuildConfig
 import tv.trakt.trakt.common.auth.model.TraktAccessToken
-import tv.trakt.trakt.core.auth.ConfigAuth
 import tv.trakt.trakt.core.auth.data.remote.model.TokenExchangeRequest
 
 internal class AuthApiClient(
@@ -24,11 +23,12 @@ internal class AuthApiClient(
     override suspend fun getAccessToken(
         code: String,
         codeVerifier: String,
+        redirectUri: String,
     ): TraktAccessToken {
         val request = TokenExchangeRequest(
             code = code,
             clientId = BuildConfig.TRAKT_API_KEY,
-            redirectUri = ConfigAuth.OAUTH_REDIRECT_URI,
+            redirectUri = redirectUri,
             codeVerifier = codeVerifier,
             grantType = "authorization_code",
         )

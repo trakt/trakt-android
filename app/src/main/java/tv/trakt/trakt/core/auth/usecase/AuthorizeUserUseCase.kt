@@ -19,6 +19,11 @@ internal val codeVerifierKey = stringPreferencesKey("code_verifier")
  */
 internal val authCodeKey = stringPreferencesKey("auth_code")
 
+/**
+ * Redirect URI that delivered [authCodeKey]. The token exchange must send the same one.
+ */
+internal val authRedirectUriKey = stringPreferencesKey("auth_redirect_uri")
+
 internal class AuthorizeUserUseCase(
     private val remoteSource: AuthRemoteDataSource,
     private val tokenProvider: TokenProvider,
@@ -26,8 +31,9 @@ internal class AuthorizeUserUseCase(
     suspend fun authorizeByCode(
         code: String,
         codeVerifier: String,
+        redirectUri: String,
     ) {
-        val token = remoteSource.getAccessToken(code, codeVerifier)
+        val token = remoteSource.getAccessToken(code, codeVerifier, redirectUri)
         tokenProvider.saveToken(token)
 
         delay(500.milliseconds) // Small delay to ensure token is stored before proceeding.
