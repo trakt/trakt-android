@@ -58,7 +58,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import androidx.core.text.HtmlCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
@@ -73,8 +72,8 @@ import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberThousandsFormat
-import tv.trakt.trakt.common.helpers.extensions.toAnnotatedString
 import tv.trakt.trakt.common.helpers.extensions.toLocalDay
+import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.MediaMode
@@ -379,6 +378,10 @@ private fun TitleBar(
     onBackClick: () -> Unit,
     onFiltersClick: () -> Unit,
 ) {
+    val plainSubtitle = remember(subtitle) {
+        subtitle?.toMarkdownText()?.text
+    }
+
     Row(
         verticalAlignment = CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -412,7 +415,7 @@ private fun TitleBar(
                 TraktHeader(
                     title = title,
                     subtitle = when {
-                        subtitleVisible -> subtitle
+                        subtitleVisible -> plainSubtitle
                         else -> null
                     },
                     modifier = Modifier
@@ -507,10 +510,9 @@ private fun ContentList(
 
     var subtitleCollapsed by remember { mutableStateOf(true) }
 
-    val subtitleHtmlText = remember(subtitle) {
-        HtmlCompat
-            .fromHtml(subtitle ?: "", HtmlCompat.FROM_HTML_MODE_LEGACY)
-            .toAnnotatedString()
+    val linkColor = TraktTheme.colors.textPrimary
+    val subtitleMarkdownText = remember(subtitle, linkColor) {
+        (subtitle ?: "").toMarkdownText(linkColor)
     }
 
     val isScrolledToBottom by remember(listItems.size) {
@@ -569,7 +571,7 @@ private fun ContentList(
         if (!subtitleVisible) {
             item {
                 Text(
-                    text = subtitleHtmlText,
+                    text = subtitleMarkdownText,
                     color = TraktTheme.colors.textSecondary,
                     style = TraktTheme.typography.meta.copy(
                         fontWeight = W400,

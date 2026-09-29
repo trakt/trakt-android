@@ -20,7 +20,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import java.text.NumberFormat
@@ -122,37 +121,6 @@ fun rememberDurationFormat(
         when {
             spaces -> format
             else -> format.replace(" ", "")
-        }
-    }
-}
-
-/**
- * Highlights people mentions (e.g., @johnlegend) in the string with the specified color.
- * Returns an AnnotatedString with mentions styled in the given color.
- */
-fun String.highlightMentions(color: Color): AnnotatedString {
-    return buildAnnotatedString {
-        val mentionRegex = "@[a-zA-Z0-9_]+".toRegex()
-        val matches = mentionRegex.findAll(this@highlightMentions)
-
-        var lastIndex = 0
-
-        matches.forEach { match ->
-            // Add text before the mention
-            if (match.range.first > lastIndex) {
-                append(this@highlightMentions.substring(lastIndex, match.range.first))
-            }
-
-            // Add the highlighted mention
-            withStyle(style = SpanStyle(color = color, fontWeight = W500)) {
-                append(match.value)
-            }
-
-            lastIndex = match.range.last + 1
-        }
-
-        if (lastIndex < this@highlightMentions.length) {
-            append(this@highlightMentions.substring(lastIndex))
         }
     }
 }

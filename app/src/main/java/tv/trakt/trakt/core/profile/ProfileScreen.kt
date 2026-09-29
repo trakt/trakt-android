@@ -63,6 +63,7 @@ import timber.log.Timber
 import tv.trakt.trakt.common.Config.WEB_V3_BASE_URL
 import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.TraktId
@@ -269,8 +270,11 @@ private fun ProfileScreen(
                                 maxLines = 1,
                                 overflow = Ellipsis,
                             )
+                            val linkColor = TraktTheme.colors.textPrimary
                             Text(
-                                text = state.user.about ?: "",
+                                text = remember(state.user.about, linkColor) {
+                                    (state.user.about ?: "").toMarkdownText(linkColor)
+                                },
                                 style = TraktTheme.typography.paragraphSmaller.copy(
                                     fontSize = 13.sp,
                                 ),
