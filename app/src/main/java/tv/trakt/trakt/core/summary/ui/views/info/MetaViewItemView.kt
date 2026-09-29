@@ -20,8 +20,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.TextLineLoadingIndicator
 import tv.trakt.trakt.ui.theme.TraktTheme
 
 @Composable
@@ -74,12 +74,10 @@ internal fun MetaViewItemView(
         }
 
         if (loading) {
-            FilmProgressIndicator(
+            TextLineLoadingIndicator(
+                style = TraktTheme.typography.paragraphSmaller,
                 color = TraktTheme.colors.textSecondary,
-                modifier = Modifier
-                    .padding(top = 1.dp)
-                    .size(14.dp)
-                    .align(Alignment.Start),
+                size = 14.dp,
             )
         } else {
             Text(

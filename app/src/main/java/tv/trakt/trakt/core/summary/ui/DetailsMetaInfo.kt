@@ -7,7 +7,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -15,12 +19,15 @@ import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
+import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.longDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.CrewPerson
 import tv.trakt.trakt.common.model.Episode
 import tv.trakt.trakt.common.model.EpisodeType
 import tv.trakt.trakt.common.model.MediaGenre
@@ -28,21 +35,25 @@ import tv.trakt.trakt.common.model.MediaStatus
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
-import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
+import tv.trakt.trakt.core.summary.people.model.crewJobStringRes
 import tv.trakt.trakt.resources.R
+import tv.trakt.trakt.ui.components.TextLineLoadingIndicator
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.LocalDate
 import java.util.Locale
 import kotlin.time.Duration
+
+private const val COLLAPSED_VALUES_COUNT = 2
+private val VALUES_SPACING = 2.dp
 
 @Composable
 internal fun DetailsMetaInfo(
     show: Show,
     modifier: Modifier = Modifier,
     showStudios: ImmutableList<String>? = null,
-    showCreators: ImmutableList<Person>? = null,
-    showWriters: ImmutableList<Person>? = null,
+    showCreators: ImmutableList<CrewPerson>? = null,
+    showWriters: ImmutableList<CrewPerson>? = null,
     onPersonClick: (person: Person, role: PersonCreditsRole) -> Unit = { _, _ -> },
 ) {
     DetailsMetaInfo(
@@ -70,8 +81,8 @@ internal fun DetailsMetaInfo(
 internal fun DetailsMetaInfo(
     episode: Episode,
     modifier: Modifier = Modifier,
-    episodeDirectors: ImmutableList<Person>? = null,
-    episodeWriters: ImmutableList<Person>? = null,
+    episodeDirectors: ImmutableList<CrewPerson>? = null,
+    episodeWriters: ImmutableList<CrewPerson>? = null,
     onPersonClick: (person: Person, role: PersonCreditsRole) -> Unit = { _, _ -> },
 ) {
     DetailsMetaInfo(
@@ -93,8 +104,8 @@ internal fun DetailsMetaInfo(
     movie: Movie,
     modifier: Modifier = Modifier,
     movieStudios: ImmutableList<String>? = null,
-    movieDirectors: ImmutableList<Person>? = null,
-    movieWriters: ImmutableList<Person>? = null,
+    movieDirectors: ImmutableList<CrewPerson>? = null,
+    movieWriters: ImmutableList<CrewPerson>? = null,
     onPersonClick: (person: Person, role: PersonCreditsRole) -> Unit = { _, _ -> },
 ) {
     DetailsMetaInfo(
@@ -128,12 +139,23 @@ private fun DetailsMetaInfo(
     languages: ImmutableList<String> = EmptyImmutableList,
     genres: ImmutableList<MediaGenre> = EmptyImmutableList,
     studios: ImmutableList<String>? = null,
-    creators: ImmutableList<Person>? = null,
-    directors: ImmutableList<Person>? = null,
-    writers: ImmutableList<Person>? = null,
+    creators: ImmutableList<CrewPerson>? = null,
+    directors: ImmutableList<CrewPerson>? = null,
+    writers: ImmutableList<CrewPerson>? = null,
     episodeRowsOnly: Boolean = false,
     onPersonClick: (person: Person, role: PersonCreditsRole) -> Unit = { _, _ -> },
 ) {
+    val upcoming = remember(released) { released?.isTodayOrBefore() != true }
+    val releasedTitle = stringResource(
+        when {
+            episodeRowsOnly && upcoming -> R.string.header_airs
+            episodeRowsOnly -> R.string.header_aired
+            upcoming -> R.string.header_expected_premiere
+            else -> R.string.header_premiered
+        },
+    )
+    val releasedValue = released?.format(longDateFormat()) ?: stringResource(R.string.tag_text_tba)
+
     val runtimeString = rememberDurationFormat(runtime?.inWholeMinutes)
     val totalRuntimeString = rememberDurationFormat(totalRuntime?.inWholeMinutes)
 
@@ -142,7 +164,7 @@ private fun DetailsMetaInfo(
             runCatching {
                 Locale.forLanguageTag(it).displayLanguage
             }.getOrNull()
-        }.take(5)
+        }
     }
 
     @Suppress("DEPRECATION")
@@ -163,8 +185,8 @@ private fun DetailsMetaInfo(
                 horizontalArrangement = spacedBy(16.dp),
             ) {
                 DetailsMeta(
-                    title = stringResource(R.string.header_premiered),
-                    values = listOf(released?.format(longDateFormat()) ?: "N/A"),
+                    title = releasedTitle,
+                    values = listOf(releasedValue),
                     modifier = Modifier.weight(1F),
                 )
                 DetailsMeta(
@@ -195,8 +217,8 @@ private fun DetailsMetaInfo(
                 horizontalArrangement = spacedBy(16.dp),
             ) {
                 DetailsMeta(
-                    title = stringResource(R.string.header_premiered),
-                    values = listOf(released?.format(longDateFormat()) ?: "N/A"),
+                    title = releasedTitle,
+                    values = listOf(releasedValue),
                     modifier = Modifier.weight(1F),
                 )
                 DetailsMeta(
@@ -243,27 +265,30 @@ private fun DetailsMetaInfo(
                     },
                 ),
                 values = people
-                    .map { it.name }
+                    .map { crewLabel(it) }
                     .ifEmpty { listOf("N/A") },
                 loading = creators == null && directors == null,
-                onValueClick = { name ->
+                reservedLines = COLLAPSED_VALUES_COUNT,
+                onValueClick = { index ->
                     people
-                        .firstOrNull { it.name == name }
-                        ?.let { onPersonClick(it, peopleRole) }
+                        .getOrNull(index)
+                        ?.let { onPersonClick(it.person, peopleRole) }
                 },
                 modifier = Modifier.weight(1F),
             )
 
+            val writersList = writers ?: EmptyImmutableList
             DetailsMeta(
                 title = stringResource(R.string.header_writer),
-                values = (writers ?: EmptyImmutableList)
-                    .map { it.name }
+                values = writersList
+                    .map { crewLabel(it) }
                     .ifEmpty { listOf("N/A") },
                 loading = writers == null,
-                onValueClick = { name ->
-                    (writers ?: EmptyImmutableList)
-                        .firstOrNull { it.name == name }
-                        ?.let { onPersonClick(it, PersonCreditsRole.Writing) }
+                reservedLines = COLLAPSED_VALUES_COUNT,
+                onValueClick = { index ->
+                    writersList
+                        .getOrNull(index)
+                        ?.let { onPersonClick(it.person, PersonCreditsRole.Writing) }
                 },
                 modifier = Modifier.weight(1F),
             )
@@ -313,14 +338,12 @@ private fun DetailsMetaInfo(
                     loading = studios == null,
                     title = stringResource(R.string.header_studio),
                     values = studios
-                        ?.take(5)
                         ?.ifEmpty { listOf("N/A") } ?: EmptyImmutableList,
                     modifier = Modifier.weight(1F),
                 )
                 DetailsMeta(
                     title = stringResource(R.string.header_genre),
                     values = genres
-                        .take(5)
                         .map { stringResource(it.displayStringRes) }
                         .ifEmpty { listOf("N/A") },
                     modifier = Modifier.weight(1F),
@@ -331,17 +354,39 @@ private fun DetailsMetaInfo(
 }
 
 @Composable
+private fun crewLabel(crew: CrewPerson): String {
+    if (crew.jobs.isEmpty()) return crew.person.name
+
+    val jobs = crew.jobs
+        .map { job -> crewJobStringRes(job)?.let { stringResource(it) } ?: job }
+        .joinToString(", ")
+    return "${crew.person.name} ($jobs)"
+}
+
+@Composable
 private fun DetailsMeta(
     title: String,
     values: List<String>,
     modifier: Modifier = Modifier,
     loading: Boolean = false,
-    onValueClick: (value: String) -> Unit = {},
+    reservedLines: Int = 1,
+    onValueClick: ((index: Int) -> Unit)? = null,
 ) {
+    var expanded by rememberSaveable { mutableStateOf(false) }
+    val hiddenCount = values.size - COLLAPSED_VALUES_COUNT
+    val collapsed = !loading && !expanded && hiddenCount > 0
+    val visibleValues = when {
+        collapsed -> values.take(COLLAPSED_VALUES_COUNT)
+        else -> values
+    }
+
     Column(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = spacedBy(2.dp),
-        modifier = modifier,
+        modifier = modifier
+            .onClick(enabled = collapsed) {
+                expanded = true
+            },
     ) {
         Text(
             text = title.uppercase(),
@@ -351,28 +396,64 @@ private fun DetailsMeta(
             overflow = Ellipsis,
             modifier = Modifier.padding(bottom = 1.dp),
         )
-        if (loading) {
-            FilmProgressIndicator(
-                size = 12.dp,
-                color = TraktTheme.colors.textSecondary,
-                modifier = Modifier
-                    .align(Alignment.Start)
-                    .padding(vertical = 1.dp),
-            )
-        } else {
-            for (value in values) {
-                Text(
-                    text = value.replaceFirstChar {
-                        it.titlecase()
-                    },
-                    style = TraktTheme.typography.paragraphSmaller,
-                    color = TraktTheme.colors.textPrimary,
-                    maxLines = 1,
-                    overflow = Ellipsis,
-                    modifier = Modifier.onClick {
-                        onValueClick(value)
-                    },
-                )
+
+        Box {
+            // Reserve value lines so rows keep their height while values load.
+            Column(
+                verticalArrangement = spacedBy(VALUES_SPACING),
+            ) {
+                repeat(reservedLines) {
+                    Text(
+                        text = "",
+                        style = TraktTheme.typography.paragraphSmaller,
+                        maxLines = 1,
+                    )
+                }
+            }
+
+            Column(
+                verticalArrangement = spacedBy(VALUES_SPACING),
+            ) {
+                if (loading) {
+                    TextLineLoadingIndicator(
+                        style = TraktTheme.typography.paragraphSmaller,
+                        color = TraktTheme.colors.textSecondary,
+                    )
+                } else {
+                    for ((index, value) in visibleValues.withIndex()) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = spacedBy(6.dp),
+                        ) {
+                            Text(
+                                text = value.replaceFirstChar {
+                                    it.titlecase()
+                                },
+                                style = TraktTheme.typography.paragraphSmaller,
+                                color = TraktTheme.colors.textPrimary,
+                                maxLines = 1,
+                                overflow = Ellipsis,
+                                modifier = Modifier
+                                    .weight(1F, fill = false)
+                                    .then(
+                                        when (onValueClick) {
+                                            null -> Modifier
+                                            else -> Modifier.onClick { onValueClick(index) }
+                                        },
+                                    ),
+                            )
+
+                            if (collapsed && index == visibleValues.lastIndex) {
+                                Text(
+                                    text = "+${stringResource(R.string.button_text_more, hiddenCount)}",
+                                    style = TraktTheme.typography.meta,
+                                    color = TraktTheme.colors.textSecondary,
+                                    maxLines = 1,
+                                )
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -384,6 +465,60 @@ private fun Preview() {
     TraktTheme {
         DetailsMetaInfo(
             movie = PreviewData.movie1,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewUpcoming() {
+    TraktTheme {
+        DetailsMetaInfo(
+            movie = PreviewData.movie1.copy(
+                released = LocalDate.now().plusMonths(2),
+            ),
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewTba() {
+    TraktTheme {
+        DetailsMetaInfo(
+            movie = PreviewData.movie1.copy(
+                released = null,
+            ),
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewCrew() {
+    TraktTheme {
+        DetailsMetaInfo(
+            movie = PreviewData.movie1,
+            movieDirectors = persistentListOf(
+                CrewPerson(
+                    person = PreviewData.person1,
+                    jobs = persistentListOf("Director"),
+                ),
+            ),
+            movieWriters = persistentListOf(
+                CrewPerson(
+                    person = PreviewData.person1,
+                    jobs = persistentListOf("Screenplay", "Novel"),
+                ),
+                CrewPerson(
+                    person = PreviewData.person1.copy(name = "Unknown Job Writer"),
+                    jobs = persistentListOf("Some Untranslated Job"),
+                ),
+                CrewPerson(
+                    person = PreviewData.person1.copy(name = "Collapsed Writer"),
+                    jobs = persistentListOf("Story"),
+                ),
+            ),
         )
     }
 }

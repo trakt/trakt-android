@@ -14,8 +14,10 @@ import org.openapitools.client.models.GetCalendarsShows200ResponseInnerEpisodeId
 import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShow
 import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowIds
 import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowImages
+import org.openapitools.client.models.GetCalendarsShows200ResponseInnerShowSocialIds
 import org.openapitools.client.models.GetMoviesPeople200Response
 import org.openapitools.client.models.GetMoviesPeople200ResponseCastInnerPerson
+import org.openapitools.client.models.GetMoviesPeople200ResponseCrewValueInner
 import org.openapitools.client.models.GetMoviesRatings200Response
 import org.openapitools.client.models.GetMoviesRatings200ResponseTrakt
 import org.openapitools.client.models.GetMoviesStats200Response
@@ -79,6 +81,7 @@ typealias CalendarMediaDto = GetCalendarsMedia200ResponseInner
 typealias CalendarMovieDto = GetCalendarsMovies200ResponseInner
 typealias CalendarShowDto = GetCalendarsShows200ResponseInner
 typealias CreateSmartListRequestDto = PostUsersSmartListsCreateRequest
+typealias CrewMemberDto = GetMoviesPeople200ResponseCrewValueInner
 typealias CastCrewDto = GetMoviesPeople200Response
 typealias CommentAllDto = GetUsersComments200ResponseInner
 typealias CommentDto = GetUsersComments200ResponseInnerComment
@@ -128,6 +131,7 @@ typealias SmartListDto = GetUsersSmartListsPersonal200ResponseInner
 typealias SmartListFiltersDto = GetUsersSmartListsPersonal200ResponseInnerFilters
 typealias SmartListItemDto = GetSmartListsItems200ResponseInner
 typealias SocialActivityItemDto = GetUsersActivities200ResponseInner
+typealias SocialIdsDto = GetCalendarsShows200ResponseInnerShowSocialIds
 typealias StreamingDto = GetMoviesWatchnow200ResponseValue
 typealias StreamingServiceDto = GetMoviesWatchnow200ResponseValueCableInner
 typealias StreamingSourceDto = GetWatchnowSourcesAll200ResponseInnerValueInner

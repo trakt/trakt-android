@@ -15,6 +15,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import tv.trakt.trakt.common.helpers.LoadingState
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.CrewPerson
 import tv.trakt.trakt.common.model.Person
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.core.summary.people.model.PersonCreditsRole
@@ -92,8 +93,8 @@ private fun ShowInfoView(
 private fun DetailsView(
     show: Show,
     showStudios: ImmutableList<String>?,
-    showCreators: ImmutableList<Person>?,
-    showWriters: ImmutableList<Person>?,
+    showCreators: ImmutableList<CrewPerson>?,
+    showWriters: ImmutableList<CrewPerson>?,
     onPersonClick: (person: Person, role: PersonCreditsRole) -> Unit,
     modifier: Modifier = Modifier,
 ) {

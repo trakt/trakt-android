@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
-import tv.trakt.trakt.common.model.Person
+import tv.trakt.trakt.common.model.CrewPerson
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.fromDto
 import tv.trakt.trakt.core.people.data.local.PeopleLocalDataSource
@@ -17,16 +17,14 @@ internal class GetShowCrewUseCase(
     suspend fun getCrew(showId: TraktId): Result {
         return remoteSource.getCastCrew(showId).crew?.let { crew ->
             val creators = crew["created by"]
-                ?.take(5)
-                ?.map { Person.fromDto(it.person) }
+                ?.map { CrewPerson.fromDto(it) }
                 ?: EmptyImmutableList
 
             val writers = crew["writing"]
-                ?.take(5)
-                ?.map { Person.fromDto(it.person) }
+                ?.map { CrewPerson.fromDto(it) }
                 ?: EmptyImmutableList
 
-            peopleLocalSource.upsertPeople(creators + writers)
+            peopleLocalSource.upsertPeople((creators + writers).map { it.person })
 
             Result(
                 creators = creators.toImmutableList(),
@@ -37,7 +35,7 @@ internal class GetShowCrewUseCase(
 
     @Immutable
     data class Result(
-        val creators: ImmutableList<Person> = EmptyImmutableList,
-        val writers: ImmutableList<Person> = EmptyImmutableList,
+        val creators: ImmutableList<CrewPerson> = EmptyImmutableList,
+        val writers: ImmutableList<CrewPerson> = EmptyImmutableList,
     )
 }

@@ -49,15 +49,6 @@ data class Person(
             socialIds = null,
         )
     }
-
-    @Immutable
-    @Serializable
-    data class SocialIds(
-        val twitter: String?,
-        val facebook: String?,
-        val instagram: String?,
-        val wikipedia: String?,
-    )
 }
 
 fun Companion.fromDto(dto: PersonDto): Person {
@@ -80,14 +71,7 @@ fun Companion.fromDto(dto: PersonDto): Person {
                 headshot = it.headshot.toImmutableList(),
             )
         },
-        socialIds = dto.socialIds?.let {
-            Person.SocialIds(
-                twitter = it.twitter,
-                facebook = it.facebook,
-                instagram = it.instagram,
-                wikipedia = it.wikipedia,
-            )
-        },
+        socialIds = dto.socialIds?.let { SocialIds.fromDto(it) },
     )
 }
 
@@ -110,13 +94,6 @@ fun Companion.fromDto(dto: PersonSearchDto): Person {
                 headshot = it.headshot.toImmutableList(),
             )
         },
-        socialIds = dto.socialIds?.let {
-            Person.SocialIds(
-                twitter = it.twitter,
-                facebook = it.facebook,
-                instagram = it.instagram,
-                wikipedia = it.wikipedia,
-            )
-        },
+        socialIds = dto.socialIds?.let { SocialIds.fromDto(it) },
     )
 }

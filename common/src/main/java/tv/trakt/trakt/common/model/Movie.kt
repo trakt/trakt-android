@@ -9,6 +9,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.serialization.Serializable
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
 import tv.trakt.trakt.common.helpers.extensions.nowLocalDay
+import tv.trakt.trakt.common.helpers.extensions.toHttpsUrl
 import tv.trakt.trakt.common.helpers.serializers.ImmutableListSerializer
 import tv.trakt.trakt.common.helpers.serializers.LocalDateSerializer
 import tv.trakt.trakt.common.model.Movie.Companion
@@ -42,6 +43,8 @@ data class Movie(
     val country: String?,
     @Serializable(ImmutableListSerializer::class)
     val languages: ImmutableList<String>,
+    val homepage: String? = null,
+    val socialIds: SocialIds? = null,
 ) {
     companion object
 
@@ -108,6 +111,8 @@ fun Companion.fromDto(dto: MovieDto): Movie {
         },
         country = dto.country,
         languages = (dto.languages ?: emptyList()).toImmutableList(),
+        homepage = dto.homepage?.toHttpsUrl(),
+        socialIds = dto.socialIds?.let { SocialIds.fromDto(it) },
     )
 }
 
@@ -146,6 +151,8 @@ fun Companion.fromDto(dto: RecommendedMovieDto): Movie {
             dto.afterCredits == true || dto.duringCredits == true -> 1
             else -> null
         },
+        homepage = dto.homepage?.toHttpsUrl(),
+        socialIds = dto.socialIds?.let { SocialIds.fromDto(it) },
     )
 }
 
@@ -184,5 +191,7 @@ fun Companion.fromDto(dto: MovieCalendarDto): Movie {
             dto.afterCredits == true || dto.duringCredits == true -> 1
             else -> null
         },
+        homepage = dto.homepage?.toHttpsUrl(),
+        socialIds = dto.socialIds?.let { SocialIds.fromDto(it) },
     )
 }
