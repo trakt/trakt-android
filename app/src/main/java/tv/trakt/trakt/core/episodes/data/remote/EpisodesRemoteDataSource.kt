@@ -68,6 +68,7 @@ internal interface EpisodesRemoteDataSource {
      * @param season The season number.
      * @param limit The maximum number of comments to retrieve.
      * @param sort The sort order for comments (e.g., "likes", "newest").
+     * @param language The language code to filter comments by, or null for all languages.
      * @return A list of [CommentDto] objects representing the comments for the season.
      */
     suspend fun getSeasonComments(
@@ -75,6 +76,7 @@ internal interface EpisodesRemoteDataSource {
         season: Int,
         limit: Int = 20,
         sort: String = "likes",
+        language: String? = null,
     ): List<CommentDto>
 
     /**

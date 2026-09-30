@@ -24,6 +24,7 @@ internal data class AllShowSeasonsState(
     val mode: SeasonsMode = SeasonsMode.Episodes,
     val peopleMode: SeasonsPeopleMode = SeasonsPeopleMode.Cast,
     val commentsMode: CommentsFilter = CommentsFilter.Popular,
+    val commentsLanguage: String? = null,
     val commentReactions: ImmutableMap<Int, ReactionsSummary> = persistentMapOf(),
     val userReactions: ImmutableMap<Int, Reaction?> = persistentMapOf(),
     val seasonUserRating: UserRatingState = UserRatingState(),

@@ -68,6 +68,7 @@ internal fun AllShowSeasonsContent(
     onModeClick: ((SeasonsMode) -> Unit)? = null,
     onPeopleModeClick: ((SeasonsPeopleMode) -> Unit)? = null,
     onCommentsFilterClick: ((CommentsFilter) -> Unit)? = null,
+    onCommentsLanguageClick: ((String?) -> Unit)? = null,
     onCommentRepliesClick: ((Comment) -> Unit)? = null,
     onCommentReactionsRequest: ((Comment) -> Unit)? = null,
     onCommentReactionClick: ((Reaction, Comment) -> Unit)? = null,
@@ -227,6 +228,7 @@ internal fun AllShowSeasonsContent(
                         state = state,
                         contentPadding = contentPadding,
                         onFilterClick = { onCommentsFilterClick?.invoke(it) },
+                        onLanguageClick = { onCommentsLanguageClick?.invoke(it) },
                         onRepliesClick = { onCommentRepliesClick?.invoke(it) },
                         onRequestReactions = { onCommentReactionsRequest?.invoke(it) },
                         onReactionClick = { reaction, comment ->

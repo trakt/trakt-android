@@ -89,6 +89,7 @@ internal val showDetailsModule = module {
             getSeasonsUseCase = get(),
             getSeasonsPeopleUseCase = get(),
             getSeasonCommentsUseCase = get(),
+            getCommentsLanguageUseCase = get(),
             getCommentRepliesUseCase = get(),
             getCommentReactionsUseCase = get(),
             loadUserReactionsUseCase = get(),

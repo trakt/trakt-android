@@ -54,6 +54,7 @@ import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.comments.model.CommentsFilter
+import tv.trakt.trakt.core.comments.usecases.GetCommentsLanguageUseCase
 import tv.trakt.trakt.core.ratings.data.RatingsUpdates
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates
 import tv.trakt.trakt.core.summary.episodes.data.EpisodeDetailsUpdates
@@ -90,6 +91,7 @@ internal class AllShowSeasonsViewModel(
     private val getSeasonsUseCase: GetShowSeasonsUseCase,
     private val getSeasonsPeopleUseCase: GetSeasonPeopleUseCase,
     private val getSeasonCommentsUseCase: GetSeasonCommentsUseCase,
+    private val getCommentsLanguageUseCase: GetCommentsLanguageUseCase,
     private val getCommentRepliesUseCase: GetCommentRepliesUseCase,
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
@@ -115,6 +117,7 @@ internal class AllShowSeasonsViewModel(
     private val modeState = MutableStateFlow(initialState.mode)
     private val peopleModeState = MutableStateFlow(initialState.peopleMode)
     private val commentsFilterState = MutableStateFlow(initialState.commentsMode)
+    private val commentsLanguageState = MutableStateFlow(initialState.commentsLanguage)
     private val itemsState = MutableStateFlow(initialState.items)
     private val loadingState = MutableStateFlow(initialState.loading)
     private val loadingEpisodeState = MutableStateFlow(initialState.loadingEpisode)
@@ -378,6 +381,7 @@ internal class AllShowSeasonsViewModel(
                     season = season.number,
                     user = userState.value,
                     filter = commentsFilterState.value,
+                    language = loadCommentsLanguage(),
                 )
 
                 itemsState.update {
@@ -492,6 +496,29 @@ internal class AllShowSeasonsViewModel(
 
     fun setPeopleMode(peopleMode: SeasonsPeopleMode) {
         peopleModeState.update { peopleMode }
+    }
+
+    private suspend fun loadCommentsLanguage(): String? {
+        val language = getCommentsLanguageUseCase.getLanguage()
+        commentsLanguageState.update { language }
+        return language
+    }
+
+    fun setCommentsLanguage(language: String?) {
+        if (itemsState.value.isSeasonCommentsLoading || commentsLanguageState.value == language) {
+            return
+        }
+
+        viewModelScope.launch {
+            getCommentsLanguageUseCase.setLanguage(language)
+            commentsLanguageState.update { language }
+            itemsState.value.selectedSeason?.let {
+                loadSeasonComments(
+                    season = it,
+                    clear = true,
+                )
+            }
+        }
     }
 
     fun setCommentsFilter(filter: CommentsFilter) {
@@ -789,6 +816,7 @@ internal class AllShowSeasonsViewModel(
         reactions.commentReactions,
         reactions.userReactions,
         rating.rating,
+        commentsLanguageState,
     ) { state ->
         AllShowSeasonsState(
             show = state[0] as Show?,
@@ -807,6 +835,7 @@ internal class AllShowSeasonsViewModel(
             commentReactions = state[13] as ImmutableMap<Int, ReactionsSummary>,
             userReactions = state[14] as ImmutableMap<Int, Reaction?>,
             seasonUserRating = state[15] as AllShowSeasonsState.UserRatingState,
+            commentsLanguage = state[16] as String?,
         )
     }.stateIn(
         scope = viewModelScope,
