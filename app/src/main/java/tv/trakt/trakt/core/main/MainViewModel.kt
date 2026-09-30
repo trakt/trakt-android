@@ -452,10 +452,6 @@ internal class MainViewModel(
         loadingUserState.update { LoadingState.Idle }
     }
 
-    fun clearRatePrompt() {
-        ratePromptState.update { null }
-    }
-
     fun clearInAppUpdate() {
         updateState.update { null }
     }

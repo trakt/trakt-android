@@ -18,5 +18,18 @@ internal sealed interface AppLinkEvent {
         val movieId: TraktId,
     ) : AppLinkEvent
 
+    data class OpenEpisode(
+        val showId: TraktId,
+        val episodeId: TraktId,
+        val season: Int,
+        val number: Int,
+    ) : AppLinkEvent
+
+    data class OpenPerson(
+        val personId: TraktId,
+    ) : AppLinkEvent
+
+    data object NotFound : AppLinkEvent
+
     data object Error : AppLinkEvent
 }

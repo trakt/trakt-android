@@ -89,6 +89,7 @@ import tv.trakt.trakt.common.ui.theme.colors.Purple600
 import tv.trakt.trakt.common.ui.theme.colors.Red500
 import tv.trakt.trakt.core.notifications.model.DeliveryAdjustment
 import tv.trakt.trakt.core.settings.features.notifications.AdjustNotificationTimeSheet
+import tv.trakt.trakt.core.settings.ui.SettingsImdbLinksField
 import tv.trakt.trakt.core.settings.ui.SettingsSwitchField
 import tv.trakt.trakt.core.settings.ui.SettingsTextField
 import tv.trakt.trakt.core.settings.ui.SettingsValueField
@@ -567,6 +568,11 @@ private fun SettingsTracking(
             onClick = {
                 onEnableRatePrompts(!ratePrompts)
             },
+            modifier = Modifier.padding(top = SECTION_SPACING_DP.dp / 1.5F),
+        )
+
+        SettingsImdbLinksField(
+            enabled = !state.logoutLoading.isLoading,
             modifier = Modifier.padding(top = SECTION_SPACING_DP.dp / 1.5F),
         )
 
