@@ -63,7 +63,6 @@ import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -77,7 +76,6 @@ import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.android.play.core.review.testing.FakeReviewManager
 import com.jakewharton.processphoenix.ProcessPhoenix
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
 import timber.log.Timber
 import tv.trakt.trakt.LocalBottomBarVisibility
 import tv.trakt.trakt.LocalCheckInVisibility
@@ -90,28 +88,15 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.extensions.HTTP_ERROR_TRAKT_VIP_LIMIT
 import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.helpers.extensions.recordError
-import tv.trakt.trakt.common.model.MediaType.Episode
-import tv.trakt.trakt.common.model.MediaType.Movie
-import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
-import tv.trakt.trakt.core.applinks.AppLinkEvent
 import tv.trakt.trakt.core.applinks.AppLinkViewModel
-import tv.trakt.trakt.core.applinks.model.AppLink
-import tv.trakt.trakt.core.applinks.model.parseAppLink
 import tv.trakt.trakt.core.auth.model.AuthorizationException
 import tv.trakt.trakt.core.billing.navigation.navigateToBilling
-import tv.trakt.trakt.core.calendar.navigation.navigateToCalendar
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveEpisode
 import tv.trakt.trakt.core.checkin.model.CheckInState.ActiveMovie
-import tv.trakt.trakt.core.discover.navigation.navigateToDiscover
 import tv.trakt.trakt.core.home.navigation.HomeDestination
-import tv.trakt.trakt.core.home.sections.upnext.features.all.navigation.navigateToAllUpNext
 import tv.trakt.trakt.core.lists.navigation.ListsDestination
-import tv.trakt.trakt.core.lists.navigation.navigateToLists
 import tv.trakt.trakt.core.lists.sections.watchlist.features.all.navigation.navigateToWatchlist
-import tv.trakt.trakt.core.main.model.ImdbLink
-import tv.trakt.trakt.core.main.model.ImdbLinkTarget
 import tv.trakt.trakt.core.main.navigation.MainNavHost
 import tv.trakt.trakt.core.main.navigation.isMainDestination
 import tv.trakt.trakt.core.main.navigation.isStartDestination
@@ -119,27 +104,17 @@ import tv.trakt.trakt.core.main.navigation.navigateToMainDestination
 import tv.trakt.trakt.core.main.ui.checkin.MainCheckInView
 import tv.trakt.trakt.core.main.ui.menubar.TraktMenuBar
 import tv.trakt.trakt.core.main.ui.rateprompt.MainRatePromptView
-import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_EXTRAS
-import tv.trakt.trakt.core.notifications.data.work.INTENT_NOTIFICATION_TRIVIA_EXTRAS
-import tv.trakt.trakt.core.notifications.model.NotificationIntentExtras
 import tv.trakt.trakt.core.profile.navigation.ProfileDestination
-import tv.trakt.trakt.core.profile.navigation.navigateToProfile
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia.MovieMedia
 import tv.trakt.trakt.core.ratings.rateprompt.model.RatePromptMedia.ShowMedia
-import tv.trakt.trakt.core.search.navigation.SearchDestination
-import tv.trakt.trakt.core.search.navigation.navigateToSearch
 import tv.trakt.trakt.core.summary.episodes.navigation.navigateToEpisode
 import tv.trakt.trakt.core.summary.movies.navigation.navigateToMovie
-import tv.trakt.trakt.core.summary.people.navigation.navigateToPerson
 import tv.trakt.trakt.core.summary.shows.navigation.navigateToShow
-import tv.trakt.trakt.core.trivia.navigation.navigateToTrivia
 import tv.trakt.trakt.core.welcome.WelcomeScreen
 import tv.trakt.trakt.core.welcome.onboarding.OnboardingScreen
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.snackbar.MainSnackbarHost
 import tv.trakt.trakt.ui.theme.TraktTheme
-import tv.trakt.trakt.widgets.INTENT_WIDGET_TARGET_EXTRA
-import tv.trakt.trakt.widgets.WidgetIntentTarget
 
 private const val IN_APP_UPDATE_REQUEST_CODE = 4001
 private const val IN_APP_UPDATE_STALENESS_DAYS = 7
@@ -170,7 +145,6 @@ internal fun MainScreen(
         .collectAsStateWithLifecycle(initialValue = null)
 
     val searchState = rememberSearchState(currentDestination.value?.destination)
-    var pendingSearchQuery by remember { mutableStateOf<String?>(null) }
 
     LifecycleEventEffect(ON_RESUME) {
         viewModel.loadData()
@@ -218,114 +192,20 @@ internal fun MainScreen(
         }
     }
 
-    LaunchedEffect(Unit) {
-        appLinkViewModel.events.collect { event ->
-            when (event) {
-                is AppLinkEvent.OpenShow -> navController.navigateToShow(event.showId)
-                is AppLinkEvent.OpenMovie -> navController.navigateToMovie(event.movieId)
-                AppLinkEvent.Error -> localSnackbar.showSnackbar(
-                    message = localRes.getString(R.string.error_text_unexpected_error_short),
-                )
-            }
-        }
-    }
+    LaunchedAppLinkEvents(
+        events = appLinkViewModel.events,
+        welcomeActive = state.welcome.isActive,
+        navController = navController,
+    )
 
-    LaunchedEffect(intent, newIntent?.value) {
-        val imdbLinkUrl = extractImdbLinkUrl(newIntent?.value ?: intent)
-        if (imdbLinkUrl != null) {
-            viewModel.openImdbLink(imdbLinkUrl)
-            return@LaunchedEffect
-        }
-
-        val appLink = extractAppLink(newIntent?.value ?: intent)
-        if (appLink != null) {
-            appLinkViewModel.openAppLink(appLink)
-            return@LaunchedEffect
-        }
-
-        val processTextQuery = extractProcessTextQuery(newIntent?.value ?: intent)
-        if (processTextQuery != null) {
-            // Defer applying the query until the search destination is active,
-            // so rememberSearchState's non-search reset can't clobber it.
-            pendingSearchQuery = processTextQuery
-            navController.navigateToSearch()
-            return@LaunchedEffect
-        }
-
-        handleShortcutIntent(
-            intent = intent,
-            navController = navController,
-            onRequestFocus = searchState.onRequestFocus,
-        )
-
-        handleNotificationIntent(
-            intent = newIntent?.value ?: intent,
-            navController = navController,
-        )
-
-        handleWidgetIntent(
-            intent = newIntent?.value ?: intent,
-            navController = navController,
-        )
-    }
-
-    LaunchedEffect(state.imdbLinkTarget, state.welcome.isActive) {
-        val target = state.imdbLinkTarget
-        if (target == null || state.welcome.isActive) {
-            return@LaunchedEffect
-        }
-
-        viewModel.clearImdbLinkTarget()
-        when (target) {
-            is ImdbLinkTarget.Movie -> navController.navigateToMovie(
-                movieId = target.movieId,
-            )
-
-            is ImdbLinkTarget.Show -> navController.navigateToShow(
-                showId = target.showId,
-            )
-
-            is ImdbLinkTarget.Episode -> navController.navigateToEpisode(
-                showId = target.showId,
-                episodeId = target.episodeId,
-                episodeSeason = target.season,
-                episodeNumber = target.number,
-            )
-
-            is ImdbLinkTarget.Person -> navController.navigateToPerson(
-                personId = target.personId,
-                sourceMediaId = null,
-                backdropUrl = null,
-            )
-
-            ImdbLinkTarget.NotFound -> scope.launch {
-                localSnackbar.showSnackbar(
-                    message = localRes.getString(R.string.error_text_imdb_link_not_found),
-                    duration = SnackbarDuration.Short,
-                )
-            }
-
-            ImdbLinkTarget.Failed -> scope.launch {
-                localSnackbar.showSnackbar(
-                    message = localRes.getString(R.string.error_text_sync_load_failed),
-                    duration = SnackbarDuration.Short,
-                )
-            }
-        }
-    }
-
-    LaunchedEffect(currentDestination.value, pendingSearchQuery) {
-        val query = pendingSearchQuery ?: return@LaunchedEffect
-        val onSearch = currentDestination.value
-            ?.destination
-            ?.hasRoute(SearchDestination::class) == true
-
-        if (onSearch) {
-            searchState.onSearchQuery(query)
-            searchState.onRequestFocus()
-            pendingSearchQuery = null
-        }
-    }
+    LaunchedIntentHandler(
+        intent = intent,
+        newIntent = newIntent?.value,
+        navController = navController,
+        currentDestination = currentDestination.value,
+        searchState = searchState,
+        onAppLink = appLinkViewModel::openAppLink,
+    )
 
     LaunchedEffect(state.error) {
         val error = state.error ?: return@LaunchedEffect
@@ -769,202 +649,6 @@ private fun LaunchedInstallPrompt(
                 .addOnFailureListener { error ->
                     Timber.d("Cross-device install prompt not shown: %s", error.message)
                 }
-        }
-    }
-}
-
-private fun extractImdbLinkUrl(intent: Intent?): String? {
-    if (intent == null || intent.action != Intent.ACTION_VIEW) {
-        return null
-    }
-
-    val url = intent.dataString
-    if (ImdbLink.parse(url) == null) {
-        return null
-    }
-
-    intent.data = null
-    intent.action = null
-
-    return url
-}
-
-private fun extractAppLink(intent: Intent?): AppLink? {
-    if (intent == null || intent.action != Intent.ACTION_VIEW) {
-        return null
-    }
-
-    val appLink = intent.data?.let(::parseAppLink) ?: return null
-    intent.data = null
-
-    return appLink
-}
-
-private fun extractProcessTextQuery(intent: Intent?): String? {
-    if (intent == null || intent.action != Intent.ACTION_PROCESS_TEXT) {
-        return null
-    }
-
-    val text = intent
-        .getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)
-        ?.toString()
-        ?.trim()
-
-    if (text.isNullOrBlank()) {
-        return null
-    }
-
-    // Clear so recomposition / config change does not re-trigger the search.
-    intent.removeExtra(Intent.EXTRA_PROCESS_TEXT)
-    intent.action = null
-
-    return text
-}
-
-private fun handleShortcutIntent(
-    intent: Intent?,
-    navController: NavController,
-    onRequestFocus: () -> Unit = {},
-) {
-    Timber.d("Handling shortcut intent with extras: ${intent?.extras}")
-
-    if (intent == null) {
-        Timber.d("Intent is null, returning...")
-        return
-    }
-
-    with(intent.extras ?: return) {
-        when {
-            containsKey("shortcutSearchExtra") -> {
-                intent.removeExtra("shortcutSearchExtra")
-                navController.navigateToSearch()
-                onRequestFocus()
-            }
-
-            containsKey("shortcutDiscoverExtra") -> {
-                intent.removeExtra("shortcutDiscoverExtra")
-                navController.navigateToDiscover()
-            }
-
-            containsKey("shortcutListsExtra") -> {
-                intent.removeExtra("shortcutListsExtra")
-                navController.navigateToLists()
-            }
-
-            containsKey("shortcutProfileExtra") -> {
-                intent.removeExtra("shortcutProfileExtra")
-                navController.navigateToProfile()
-            }
-        }
-    }
-}
-
-private fun handleWidgetIntent(
-    intent: Intent?,
-    navController: NavController,
-) {
-    if (intent == null) {
-        return
-    }
-
-    val targetJson = intent.getStringExtra(INTENT_WIDGET_TARGET_EXTRA)
-    if (targetJson.isNullOrBlank()) {
-        return
-    }
-
-    intent.removeExtra(INTENT_WIDGET_TARGET_EXTRA)
-
-    val target = runCatching {
-        Json.decodeFromString<WidgetIntentTarget>(targetJson)
-    }.getOrElse { error ->
-        Timber.recordError(error)
-        return
-    }
-
-    when (target) {
-        is WidgetIntentTarget.Show -> navController.navigateToShow(
-            showId = target.showId.toTraktId(),
-        )
-
-        is WidgetIntentTarget.Episode -> navController.navigateToEpisode(
-            showId = target.showId.toTraktId(),
-            episodeId = target.episodeId.toTraktId(),
-            episodeSeason = target.season,
-            episodeNumber = target.number,
-        )
-
-        is WidgetIntentTarget.Movie -> navController.navigateToMovie(
-            movieId = target.movieId.toTraktId(),
-        )
-
-        is WidgetIntentTarget.Calendar -> navController.navigateToCalendar()
-
-        is WidgetIntentTarget.UpNext -> navController.navigateToAllUpNext()
-    }
-}
-
-@Suppress("IntroduceWhenSubject")
-private fun handleNotificationIntent(
-    intent: Intent?,
-    navController: NavController,
-) {
-    val extras = intent?.extras
-    Timber.d("Handling notification intent with extras: ${intent?.extras}")
-
-    if (intent == null) {
-        Timber.d("Intent is null, returning...")
-        return
-    }
-
-    if (extras?.containsKey(INTENT_NOTIFICATION_TRIVIA_EXTRAS) == true) {
-        val extrasJson = extras.getString(INTENT_NOTIFICATION_TRIVIA_EXTRAS)
-        if (extrasJson.isNullOrBlank()) {
-            return
-        }
-
-        val triviaExtras = Json.decodeFromString<NotificationIntentExtras>(extrasJson)
-        if (triviaExtras.mediaId == -1) {
-            return
-        }
-
-        navController.navigateToTrivia(
-            mediaId = triviaExtras.mediaId.toTraktId(),
-            mediaType = triviaExtras.mediaType,
-            mediaImage = triviaExtras.mediaImage,
-            mediaTitle = triviaExtras.mediaTitle,
-            navSource = "check_in_notif",
-        )
-        return
-    }
-
-    if (extras?.containsKey(INTENT_NOTIFICATION_EXTRAS) == true) {
-        val extrasJson = extras.getString(INTENT_NOTIFICATION_EXTRAS)
-        if (extrasJson.isNullOrBlank()) {
-            return
-        }
-
-        val extras = Json.decodeFromString<NotificationIntentExtras>(extrasJson)
-        if (extras.mediaId == -1) {
-            return
-        }
-
-        when {
-            extras.mediaType == Episode -> {
-                if (extras.extraId == null || extras.extraValue1 == null || extras.extraValue2 == null) {
-                    return
-                }
-                navController.navigateToEpisode(
-                    showId = extras.extraId.toTraktId(),
-                    episodeId = extras.mediaId.toTraktId(),
-                    episodeSeason = extras.extraValue1,
-                    episodeNumber = extras.extraValue2,
-                )
-            }
-            extras.mediaType == Movie -> {
-                navController.navigateToMovie(
-                    movieId = extras.mediaId.toTraktId(),
-                )
-            }
         }
     }
 }

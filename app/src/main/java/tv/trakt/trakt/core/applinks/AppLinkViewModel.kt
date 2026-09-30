@@ -20,6 +20,7 @@ import tv.trakt.trakt.common.helpers.extensions.getHttpCode
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.helpers.extensions.rethrowCancellation
 import tv.trakt.trakt.core.applinks.model.AppLink
+import tv.trakt.trakt.core.applinks.usecases.ResolveImdbLinkUseCase
 import tv.trakt.trakt.core.summary.movies.usecases.GetMovieDetailsUseCase
 import tv.trakt.trakt.core.summary.shows.usecases.GetShowDetailsUseCase
 import java.net.HttpURLConnection.HTTP_NOT_FOUND
@@ -28,6 +29,7 @@ import java.net.HttpURLConnection.HTTP_NOT_FOUND
 internal class AppLinkViewModel(
     private val getShowDetailsUseCase: GetShowDetailsUseCase,
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
+    private val resolveImdbLinkUseCase: ResolveImdbLinkUseCase,
 ) : ViewModel() {
     private val initialState = AppLinkState()
 
@@ -41,7 +43,7 @@ internal class AppLinkViewModel(
             try {
                 loadingState.update { Loading }
 
-                // Links carry slugs, while details destinations expect Trakt IDs.
+                // Links carry slugs or IMDb IDs, while details destinations expect Trakt IDs.
                 val event = when (link) {
                     is AppLink.Show -> AppLinkEvent.OpenShow(
                         showId = getShowDetailsUseCase.getShow(link.slug).ids.trakt,
@@ -49,6 +51,7 @@ internal class AppLinkViewModel(
                     is AppLink.Movie -> AppLinkEvent.OpenMovie(
                         movieId = getMovieDetailsUseCase.getMovie(link.slug).ids.trakt,
                     )
+                    is AppLink.Imdb -> resolveImdbLinkUseCase.resolve(link.imdbId)
                 }
                 loadingState.update { Done }
                 events.emit(event)
