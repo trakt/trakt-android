@@ -132,6 +132,8 @@
         <data android:pathPattern="/name/nm.*" />
         <data android:pathPattern="/../title/tt.*" />
         <data android:pathPattern="/../name/nm.*" />
+        <data android:pathPattern="/...../title/tt.*" />
+        <data android:pathPattern="/...../name/nm.*" />
       </intent-filter>
 
       <meta-data

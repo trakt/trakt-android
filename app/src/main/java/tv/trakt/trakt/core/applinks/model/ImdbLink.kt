@@ -1,7 +1,7 @@
 package tv.trakt.trakt.core.applinks.model
 
 private val IMDB_LINK = Regex(
-    "^https?://(?:www\\.|m\\.)?imdb\\.com/(?:[a-z]{2}/)?(?:title/(tt\\d+)|name/(nm\\d+))(?:[/?#].*)?$",
+    "^https?://(?:www\\.|m\\.)?imdb\\.com/(?:[a-z]{2}(?:-[a-z]{2})?/)?(?:title/(tt\\d+)|name/(nm\\d+))(?:[/?#].*)?$",
     RegexOption.IGNORE_CASE,
 )
 
