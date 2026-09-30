@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,8 +42,10 @@ import tv.trakt.trakt.common.model.Comment
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.core.comments.model.CommentsFilter
+import tv.trakt.trakt.core.comments.model.commentsLanguageDisplayName
 import tv.trakt.trakt.core.comments.ui.CommentCard
 import tv.trakt.trakt.core.comments.ui.CommentSkeletonCard
+import tv.trakt.trakt.core.comments.ui.CommentsLanguageDropdown
 import tv.trakt.trakt.core.summary.shows.features.seasons.all.AllShowSeasonsState
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.ShowSeasons
 import tv.trakt.trakt.resources.R
@@ -57,6 +60,7 @@ internal fun LazyListScope.SeasonReviewsSection(
     contentPadding: PaddingValues,
     state: AllShowSeasonsState,
     onFilterClick: ((CommentsFilter) -> Unit),
+    onLanguageClick: ((String?) -> Unit),
     onRepliesClick: ((Comment) -> Unit),
     onRequestReactions: ((Comment) -> Unit),
     onReactionClick: ((Reaction, Comment) -> Unit),
@@ -81,7 +85,7 @@ internal fun LazyListScope.SeasonReviewsSection(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = spacedBy(12.dp),
+                horizontalArrangement = spacedBy(20.dp),
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 TraktSectionHeader(
@@ -97,15 +101,25 @@ internal fun LazyListScope.SeasonReviewsSection(
                         contentDescription = stringResource(R.string.dialog_title_comment),
                         tint = TraktTheme.colors.textPrimary,
                         modifier = Modifier
-                            .size(20.dp)
+                            .size(21.dp)
                             .graphicsLayer {
-                                translationY = 2.dp.toPx()
+                                translationY = 2.5.dp.toPx()
                             }
                             .onClick {
                                 onNewCommentClick?.invoke()
                             },
                     )
                 }
+
+                CommentsLanguageDropdown(
+                    language = state.commentsLanguage,
+                    enabled = !state.items.isSeasonCommentsLoading,
+                    iconSize = 20.dp,
+                    onLanguageClick = onLanguageClick,
+                    modifier = Modifier.graphicsLayer {
+                        translationY = 2.dp.toPx()
+                    },
+                )
             }
             FilterChipGroup(
                 paddingVertical = PaddingValues(bottom = 3.dp),
@@ -185,7 +199,18 @@ internal fun LazyListScope.SeasonReviewsSection(
             }
         } else {
             item {
+                val languageName = remember(state.commentsLanguage) {
+                    commentsLanguageDisplayName(state.commentsLanguage)
+                }
+
                 EmptyListCard(
+                    text = when (languageName) {
+                        null -> stringResource(R.string.list_placeholder_comments)
+                        else -> stringResource(
+                            R.string.list_placeholder_comments_language,
+                            languageName,
+                        )
+                    },
                     modifier = Modifier
                         .height(EmptyVerticalPanelHeight)
                         .padding(contentPadding)
@@ -238,11 +263,50 @@ private fun PreviewSeasonReviewsSection() {
                         ),
                     ),
                     onFilterClick = {},
+                    onLanguageClick = {},
                     onRepliesClick = {},
                     onRequestReactions = {},
                     onReactionClick = { _, _ -> },
                 )
             }
+        }
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun PreviewSeasonReviewsSectionEmptyLanguage() {
+    TraktTheme {
+        val contentPadding = PaddingValues(
+            horizontal = TraktTheme.spacing.mainPageHorizontalSpace,
+        )
+
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(TraktTheme.colors.backgroundPrimary),
+        ) {
+            SeasonReviewsSection(
+                contentPadding = contentPadding,
+                state = AllShowSeasonsState(
+                    show = PreviewData.show1,
+                    user = PreviewData.user1,
+                    commentsMode = CommentsFilter.Popular,
+                    commentsLanguage = "de",
+                    items = ShowSeasons(
+                        selectedSeason = PreviewData.season1.copy(number = 1),
+                    ),
+                ),
+                onFilterClick = {},
+                onLanguageClick = {},
+                onRepliesClick = {},
+                onRequestReactions = {},
+                onReactionClick = { _, _ -> },
+            )
         }
     }
 }

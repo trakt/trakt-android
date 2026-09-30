@@ -39,6 +39,7 @@ internal fun AllShowSeasonsScreen(
         onModeClick = viewModel::setMode,
         onPeopleModeClick = viewModel::setPeopleMode,
         onCommentsFilterClick = viewModel::setCommentsFilter,
+        onCommentsLanguageClick = viewModel::setCommentsLanguage,
         onCommentRepliesClick = {
             viewModel.loadSeasonCommentReplies(it.id)
         },
