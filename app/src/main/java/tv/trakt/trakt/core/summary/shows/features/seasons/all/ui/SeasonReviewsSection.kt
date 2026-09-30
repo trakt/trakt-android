@@ -85,7 +85,7 @@ internal fun LazyListScope.SeasonReviewsSection(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = spacedBy(12.dp),
+                horizontalArrangement = spacedBy(20.dp),
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 TraktSectionHeader(
@@ -101,9 +101,9 @@ internal fun LazyListScope.SeasonReviewsSection(
                         contentDescription = stringResource(R.string.dialog_title_comment),
                         tint = TraktTheme.colors.textPrimary,
                         modifier = Modifier
-                            .size(20.dp)
+                            .size(21.dp)
                             .graphicsLayer {
-                                translationY = 2.dp.toPx()
+                                translationY = 2.5.dp.toPx()
                             }
                             .onClick {
                                 onNewCommentClick?.invoke()
