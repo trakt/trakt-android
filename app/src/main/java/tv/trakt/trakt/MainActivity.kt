@@ -258,11 +258,14 @@ internal class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun authRedirectUri(): String =
-        when {
+    private fun authRedirectUri(): String {
+        return when {
             Firebase.remoteConfig.getBoolean(MOBILE_HTTPS_AUTH_CALLBACK_ENABLED) -> OAUTH_HTTPS_REDIRECT_URI
             else -> OAUTH_REDIRECT_URI
+        }.also {
+            Timber.d("Using Trakt auth redirect URI: $it")
         }
+    }
 
     private fun handleTraktAuthorization(intent: Intent?) {
         val authData = intent?.data ?: return
