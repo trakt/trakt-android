@@ -31943,6 +31943,15 @@
               ],
               "nullable": true
             }
+          },
+          {
+            "name": "ignore_watched",
+            "in": "query",
+            "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            }
           }
         ],
         "responses": {
@@ -32419,6 +32428,15 @@
                 "notes",
                 "nonotes"
               ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watched",
+            "in": "query",
+            "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
               "nullable": true
             }
           }
@@ -32928,6 +32946,15 @@
                 "notes",
                 "nonotes"
               ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watched",
+            "in": "query",
+            "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
               "nullable": true
             }
           }
@@ -33726,6 +33753,15 @@
                 "notes",
                 "nonotes"
               ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "ignore_watched",
+            "in": "query",
+            "description": "Ignore watched items.",
+            "schema": {
+              "type": "boolean",
               "nullable": true
             }
           }

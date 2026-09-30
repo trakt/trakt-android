@@ -44,6 +44,7 @@ class UserWatchlistApiClient(
             runtimes = filters?.runtime?.let { "${it.first}-${it.second}" },
             countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
             certifications = filters?.certification?.joinToString(",") { it.slug },
+            ignoreWatched = filters?.hideWatched,
         )
 
         return response.body()
@@ -76,6 +77,7 @@ class UserWatchlistApiClient(
             runtimes = filters?.runtime?.let { "${it.first}-${it.second}" },
             countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
             certifications = filters?.certification?.joinToString(",") { it.slug },
+            ignoreWatched = filters?.hideWatched,
         )
 
         return response.body()
@@ -108,6 +110,7 @@ class UserWatchlistApiClient(
             runtimes = filters?.runtime?.let { "${it.first}-${it.second}" },
             countries = filters?.countries?.joinToString(",") ?: filters?.region?.slug,
             certifications = filters?.certification?.joinToString(",") { it.slug },
+            ignoreWatched = filters?.hideWatched,
         )
 
         return response.body()
