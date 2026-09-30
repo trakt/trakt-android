@@ -6,5 +6,6 @@ internal interface AuthRemoteDataSource {
     suspend fun getAccessToken(
         code: String,
         codeVerifier: String,
+        redirectUri: String,
     ): TraktAccessToken
 }

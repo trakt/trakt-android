@@ -272,9 +272,12 @@ internal class RichTextEditText(
             edit.typesBefore.drop(edit.line + removedLines + 1)
 
         when {
-            edit.isEnter && lineType != Paragraph && edit.lineWasBlank -> exitBlock(editable, edit)
-            edit.isBackspaceOverNewline && edit.typesBefore.getOrElse(edit.line + 1) { Paragraph } != Paragraph ->
+            edit.isEnter && lineType != Paragraph && edit.lineWasBlank -> {
+                exitBlock(editable, edit)
+            }
+            edit.isBackspaceOverNewline && edit.typesBefore.getOrElse(edit.line + 1) { Paragraph } != Paragraph -> {
                 liftBlock(editable, edit)
+            }
 
             else -> {
                 styleInserted(editable, edit, pendingStyle.takeIf { touchesPending })
@@ -471,10 +474,13 @@ internal class RichTextEditText(
             .fold(emptyList<IntRange>()) { merged, range ->
                 val last = merged.lastOrNull()
                 when {
-                    last != null && range.first <= last.last + 1 ->
+                    last != null && range.first <= last.last + 1 -> {
                         merged.dropLast(1) + listOf(last.first..maxOf(last.last, range.last))
+                    }
 
-                    else -> merged + listOf(range)
+                    else -> {
+                        merged + listOf(range)
+                    }
                 }
             }
 
@@ -540,9 +546,8 @@ internal class RichTextEditText(
             bold = style.bold,
             italic = style.italic,
             spoiler = style.spoiler,
-            mention = style.href != null || start == end && start > 0 && editable.spanAt<MentionSpan>(
-                start - 1,
-            ) != null,
+            mention = style.href != null ||
+                (start == end && start > 0 && editable.spanAt<MentionSpan>(start - 1) != null),
             bulletList = blocks.all { it == Bullet },
             quote = blocks.all { it == Quote },
         )

@@ -39,16 +39,19 @@ import org.koin.core.qualifier.named
 import timber.log.Timber
 import tv.trakt.trakt.app.TvSplashActivity
 import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_CUSTOM_THEME_ENABLED
+import tv.trakt.trakt.common.firebase.FirebaseConfig.RemoteKey.MOBILE_HTTPS_AUTH_CALLBACK_ENABLED
 import tv.trakt.trakt.common.helpers.extensions.isTelevision
 import tv.trakt.trakt.common.helpers.extensions.recordError
 import tv.trakt.trakt.common.ui.theme.colors.DarkColors
 import tv.trakt.trakt.common.ui.theme.colors.LightColors
 import tv.trakt.trakt.core.auth.ConfigAuth
+import tv.trakt.trakt.core.auth.ConfigAuth.OAUTH_HTTPS_REDIRECT_URI
 import tv.trakt.trakt.core.auth.ConfigAuth.OAUTH_REDIRECT_SCHEME
 import tv.trakt.trakt.core.auth.ConfigAuth.OAUTH_REDIRECT_URI
 import tv.trakt.trakt.core.auth.Pkce
 import tv.trakt.trakt.core.auth.di.AUTH_PREFERENCES
 import tv.trakt.trakt.core.auth.usecase.authCodeKey
+import tv.trakt.trakt.core.auth.usecase.authRedirectUriKey
 import tv.trakt.trakt.core.auth.usecase.codeVerifierKey
 import tv.trakt.trakt.core.main.MainScreen
 import tv.trakt.trakt.core.main.usecases.CustomThemeUseCase
@@ -161,7 +164,7 @@ internal class MainActivity : AppCompatActivity() {
                     scope.launch {
                         val codeVerifier = Pkce.generateCodeVerifier()
                         authPreferences.edit { it[codeVerifierKey] = codeVerifier }
-                        uriHandler.openUri(ConfigAuth.authCodeUrl(codeVerifier))
+                        uriHandler.openUri(ConfigAuth.authCodeUrl(codeVerifier, authRedirectUri()))
                     }
                     Unit
                 }
@@ -255,12 +258,25 @@ internal class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun authRedirectUri(): String {
+        return when {
+            Firebase.remoteConfig.getBoolean(MOBILE_HTTPS_AUTH_CALLBACK_ENABLED) -> OAUTH_HTTPS_REDIRECT_URI
+            else -> OAUTH_REDIRECT_URI
+        }.also {
+            Timber.d("Using Trakt auth redirect URI: $it")
+        }
+    }
+
     private fun handleTraktAuthorization(intent: Intent?) {
         val authData = intent?.data ?: return
-        if (authData.scheme != OAUTH_REDIRECT_SCHEME) return
+        val redirectUri = when {
+            ConfigAuth.isHttpsRedirect(authData) -> OAUTH_HTTPS_REDIRECT_URI
+            authData.scheme == OAUTH_REDIRECT_SCHEME -> OAUTH_REDIRECT_URI
+            else -> return
+        }
 
         Timber.d("Handling Trakt authorization with data: %s", authData)
-        if (!authData.toString().startsWith(OAUTH_REDIRECT_URI)) {
+        if (!authData.toString().startsWith(redirectUri)) {
             Timber.recordError(
                 IllegalArgumentException("Invalid Trakt authorization data: $authData"),
             )
@@ -280,6 +296,7 @@ internal class MainActivity : AppCompatActivity() {
         runBlocking {
             authPreferences.edit {
                 it[authCodeKey] = code
+                it[authRedirectUriKey] = redirectUri
             }
         }
     }
