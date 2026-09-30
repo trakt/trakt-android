@@ -1,22 +1,23 @@
 package tv.trakt.trakt.core.applinks.usecases
 
+import org.openapitools.client.models.GetSearchQuery200ResponseInner.Type
+import tv.trakt.trakt.common.core.search.data.remote.SearchRemoteDataSource
 import tv.trakt.trakt.common.model.toTraktId
-import tv.trakt.trakt.common.networking.api.imdb.ImdbLookupApi
-import tv.trakt.trakt.common.networking.api.imdb.model.ImdbLookupItemDto
+import tv.trakt.trakt.common.networking.SearchItemDto
 import tv.trakt.trakt.core.applinks.AppLinkEvent
 
-internal fun mapToAppLinkEvent(item: ImdbLookupItemDto): AppLinkEvent? {
+internal fun mapToAppLinkEvent(item: SearchItemDto): AppLinkEvent? {
     return when (item.type) {
-        "movie" -> {
+        Type.MOVIE -> {
             item.movie?.let { AppLinkEvent.OpenMovie(it.ids.trakt.toTraktId()) }
         }
-        "show" -> {
+        Type.SHOW -> {
             item.show?.let { AppLinkEvent.OpenShow(it.ids.trakt.toTraktId()) }
         }
-        "person" -> {
+        Type.PERSON -> {
             item.person?.let { AppLinkEvent.OpenPerson(it.ids.trakt.toTraktId()) }
         }
-        "episode" -> {
+        Type.EPISODE -> {
             val show = item.show ?: return null
             val episode = item.episode ?: return null
             AppLinkEvent.OpenEpisode(
@@ -26,18 +27,18 @@ internal fun mapToAppLinkEvent(item: ImdbLookupItemDto): AppLinkEvent? {
                 number = episode.number,
             )
         }
-        else -> {
+        Type.LIST -> {
             null
         }
     }
 }
 
 internal class ResolveImdbLinkUseCase(
-    private val imdbLookupApi: ImdbLookupApi,
+    private val remoteSource: SearchRemoteDataSource,
 ) {
     suspend fun resolve(imdbId: String): AppLinkEvent {
-        return imdbLookupApi
-            .getByImdbId(imdbId)
+        return remoteSource
+            .getImdbLookup(imdbId)
             .firstNotNullOfOrNull(::mapToAppLinkEvent)
             ?: AppLinkEvent.NotFound
     }

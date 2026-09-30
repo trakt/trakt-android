@@ -137,6 +137,13 @@ class SearchApiClient(
         return response.body()
     }
 
+    override suspend fun getImdbLookup(imdbId: String): List<SearchItemDto> {
+        return api.getSearchLookup(
+            idType = "imdb",
+            id = imdbId,
+        ).body()
+    }
+
     override suspend fun getPopularShows(limit: Int): List<TrendingSearchDto> {
         val response = api.getSearchTrending(
             type = "shows",

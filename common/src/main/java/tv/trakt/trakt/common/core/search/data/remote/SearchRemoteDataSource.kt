@@ -38,6 +38,8 @@ interface SearchRemoteDataSource {
         extended: String = "full,cloud9",
     ): List<SearchItemDto>
 
+    suspend fun getImdbLookup(imdbId: String): List<SearchItemDto>
+
     suspend fun getPopularShows(limit: Int): List<TrendingSearchDto>
 
     suspend fun getPopularMovies(limit: Int): List<TrendingSearchDto>
