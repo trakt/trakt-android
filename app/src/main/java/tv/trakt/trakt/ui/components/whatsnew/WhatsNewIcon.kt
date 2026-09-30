@@ -39,7 +39,7 @@ private const val ENTRANCE_DELAY = 400L
 @Composable
 internal fun WhatsNewIcon(
     modifier: Modifier = Modifier,
-    size: Dp = 22.dp,
+    size: Dp = 24.dp,
     onClick: () -> Unit,
 ) {
     var entranceDone by rememberSaveable { mutableStateOf(false) }
@@ -54,7 +54,7 @@ internal fun WhatsNewIcon(
         scale.animateTo(
             targetValue = 1F,
             animationSpec = spring(
-                dampingRatio = Spring.DampingRatioMediumBouncy,
+                dampingRatio = 0.33F,
                 stiffness = Spring.StiffnessMediumLow,
             ),
         )
@@ -64,9 +64,9 @@ internal fun WhatsNewIcon(
                 animationSpec = keyframes {
                     durationMillis = 700
                     0F at 0
-                    -18F at 100
+                    (-18F) at 100
                     16F at 250
-                    -12F at 400
+                    (-12F) at 400
                     8F at 550
                     0F at 700
                 },
@@ -108,7 +108,7 @@ internal fun WhatsNewIcon(
                 .align(Alignment.BottomEnd)
                 .graphicsLayer {
                     translationX = 1.dp.toPx()
-                    translationY = -1.5.dp.toPx()
+                    translationY = -2.dp.toPx()
                     scaleX = dotScale.value
                     scaleY = dotScale.value
                 }
