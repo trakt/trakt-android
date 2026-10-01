@@ -27,6 +27,7 @@ import tv.trakt.trakt.common.helpers.extensions.relativeDateTimeString
 import tv.trakt.trakt.common.helpers.extensions.rememberDurationFormat
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.preview.PreviewData
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Show
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.ui.composables.FilmProgressIndicator
@@ -35,6 +36,7 @@ import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.TraktTheme
 import java.time.temporal.ChronoUnit.DAYS
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.minutes
 
 private const val SEPARATOR = "  •  "
 
@@ -160,13 +162,13 @@ fun ShowMetaFooter(
                 Icon(
                     painter = painterResource(R.drawable.ic_star_trakt_on),
                     contentDescription = null,
-                    modifier = Modifier.size(14.dp),
+                    modifier = Modifier.size(15.dp),
                     tint = TraktTheme.colors.textPrimary,
                 )
                 Text(
                     text = userRating.rating5Scale,
                     color = TraktTheme.colors.textPrimary,
-                    style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
+                    style = TraktTheme.typography.meta.copy(fontSize = 13.sp),
                 )
             }
         }
@@ -285,6 +287,49 @@ private fun Preview5() {
             loading = true,
             mediaIcon = true,
             secondary = true,
+        )
+    }
+}
+
+private val PreviewShowUserRating = UserRating(
+    mediaId = PreviewData.show1.ids.trakt,
+    mediaType = MediaType.Show,
+    rating = 7,
+)
+
+@Preview(widthDp = 300, locale = "us")
+@Composable
+private fun PreviewUserRating() {
+    TraktTheme {
+        ShowMetaFooter(
+            show = PreviewData.show1,
+            userRating = PreviewShowUserRating,
+        )
+    }
+}
+
+@Preview(widthDp = 300, locale = "us")
+@Composable
+private fun PreviewUserRatingOnly() {
+    TraktTheme {
+        ShowMetaFooter(
+            show = PreviewData.show1,
+            rating = false,
+            userRating = PreviewShowUserRating,
+            mediaIcon = true,
+        )
+    }
+}
+
+@Preview(widthDp = 300, locale = "us")
+@Composable
+private fun PreviewUserRatingDuration() {
+    TraktTheme {
+        ShowMetaFooter(
+            show = PreviewData.show1,
+            rating = false,
+            userRating = PreviewShowUserRating,
+            duration = 45.minutes,
         )
     }
 }
