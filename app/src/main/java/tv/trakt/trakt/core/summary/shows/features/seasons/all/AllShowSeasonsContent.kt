@@ -78,6 +78,7 @@ internal fun AllShowSeasonsContent(
     onCommentEditClick: ((Comment) -> Unit)? = null,
     onCommentDeleteClick: ((Comment) -> Unit)? = null,
     onCommentReplyDeleteClick: ((Comment) -> Unit)? = null,
+    onCommentTranslateClick: ((Comment) -> Unit)? = null,
     onPersonClick: ((Person, PersonCreditsRole?) -> Unit)? = null,
     onSeasonRatingClick: ((Int) -> Unit)? = null,
     onSeasonRatingRemoveClick: (() -> Unit)? = null,
@@ -242,6 +243,7 @@ internal fun AllShowSeasonsContent(
                         onEditCommentClick = { onCommentEditClick?.invoke(it) },
                         onDeleteCommentClick = { onCommentDeleteClick?.invoke(it) },
                         onDeleteReplyClick = { onCommentReplyDeleteClick?.invoke(it) },
+                        onTranslateClick = { onCommentTranslateClick?.invoke(it) },
                     )
                 }
             }

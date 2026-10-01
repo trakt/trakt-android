@@ -11,6 +11,7 @@ import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.model.MentionSource
 
@@ -24,6 +25,7 @@ internal data class CommentsState(
     val language: String? = null,
     val reactions: ImmutableMap<Int, ReactionsSummary>? = null,
     val userReactions: ImmutableMap<Int, Reaction?>? = null,
+    val translations: CommentTranslations = CommentTranslations(),
     val user: User? = null,
     val loading: LoadingState = LoadingState.Idle,
     val loadingReplies: ImmutableSet<Int>? = null,

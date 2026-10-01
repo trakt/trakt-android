@@ -41,6 +41,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -68,6 +69,9 @@ import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.features.details.CommentDetailsSheet
 import tv.trakt.trakt.core.comments.features.editcomment.EditCommentSheet
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
+import tv.trakt.trakt.core.comments.features.translation.ui.openExternalTranslation
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.model.MentionSource
 import tv.trakt.trakt.core.comments.model.commentsLanguageDisplayName
@@ -95,6 +99,17 @@ internal fun ShowCommentsView(
     onUserClick: ((User) -> Unit)?,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { event ->
+            when (event) {
+                is CommentTranslationEvent.OpenExternalTranslation -> {
+                    context.openExternalTranslation(event.text)
+                }
+            }
+        }
+    }
 
     var commentSheet by remember { mutableStateOf<Comment?>(null) }
     var postCommentSheet by remember { mutableStateOf(false) }
@@ -136,6 +151,7 @@ internal fun ShowCommentsView(
         },
         onCollapse = viewModel::setCollapsed,
         onUserClick = onUserClick,
+        onTranslateClick = viewModel::toggleTranslation,
     )
 
     val mentionSource = state.show?.ids?.trakt?.let { MentionSource.Show(it) }
@@ -201,6 +217,7 @@ private fun ShowCommentsContent(
     onMoreClick: (() -> Unit)? = null,
     onCollapse: ((Boolean) -> Unit)? = null,
     onUserClick: ((User) -> Unit)? = null,
+    onTranslateClick: ((Comment) -> Unit)? = null,
 ) {
     var animateCollapse by rememberSaveable { mutableStateOf(false) }
 
@@ -316,6 +333,7 @@ private fun ShowCommentsContent(
                                     progressTotal = state.show?.airedEpisodes,
                                     gifPaused = gifPaused,
                                     userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
+                                    translations = state.translations,
                                     contentPadding = contentPadding,
                                     onCommentClick = onCommentClick,
                                     onEditCommentClick = onEditCommentClick,
@@ -323,6 +341,7 @@ private fun ShowCommentsContent(
                                     onCommentLoaded = onCommentLoaded,
                                     onReactionClick = onReactionClick,
                                     onUserClick = onUserClick,
+                                    onTranslateClick = onTranslateClick,
                                 )
                             }
                         }
@@ -340,6 +359,7 @@ private fun ContentList(
     listState: LazyListState = rememberLazyListState(),
     user: User?,
     userReactions: ImmutableMap<Int, Reaction?>,
+    translations: CommentTranslations,
     progressTotal: Int?,
     contentPadding: PaddingValues,
     gifPaused: Boolean,
@@ -349,6 +369,7 @@ private fun ContentList(
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onUserClick: ((User) -> Unit)? = null,
+    onTranslateClick: ((Comment) -> Unit)? = null,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -385,6 +406,8 @@ private fun ContentList(
                 onRequestReactions = { onCommentLoaded?.invoke(comment) },
                 onReactionClick = onReactionClick,
                 onUserClick = onUserClick,
+                translations = translations,
+                onTranslateClick = onTranslateClick,
                 modifier = Modifier
                     .height(TraktTheme.size.commentCardSize)
                     .aspectRatio(HorizontalImageAspectRatio)

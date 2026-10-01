@@ -9,6 +9,7 @@ import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 
 @Immutable
@@ -19,6 +20,7 @@ internal data class MovieCommentsState(
     val language: String? = null,
     val reactions: ImmutableMap<Int, ReactionsSummary>? = null,
     val userReactions: ImmutableMap<Int, Reaction?>? = null,
+    val translations: CommentTranslations = CommentTranslations(),
     val loading: LoadingState = LoadingState.Idle,
     val user: User? = null,
     val error: Exception? = null,

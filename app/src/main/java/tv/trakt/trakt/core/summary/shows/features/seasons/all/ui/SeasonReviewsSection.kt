@@ -70,6 +70,7 @@ internal fun LazyListScope.SeasonReviewsSection(
     onEditCommentClick: ((Comment) -> Unit)? = null,
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
+    onTranslateClick: ((Comment) -> Unit)? = null,
 ) {
     item(
         key = "season_reviews_header",
@@ -176,6 +177,7 @@ internal fun LazyListScope.SeasonReviewsSection(
                     repliesLoading = state.items.selectedSeasonRepliesLoading.contains(comment.id),
                     reactions = state.commentReactions,
                     userReactions = state.userReactions,
+                    translations = state.translations,
                     replyEnabled = state.user != null && !isUserComment,
                     repliesButtonEnabled = true,
                     repliesCountEnabled = false,
@@ -188,6 +190,7 @@ internal fun LazyListScope.SeasonReviewsSection(
                     onEditClick = { onEditCommentClick?.invoke(comment) },
                     onDeleteClick = { onDeleteCommentClick?.invoke(comment) },
                     onDeleteReplyClick = { onDeleteReplyClick?.invoke(it) },
+                    onTranslateClick = onTranslateClick,
                     modifier = Modifier
                         .padding(contentPadding)
                         .padding(bottom = 16.dp)

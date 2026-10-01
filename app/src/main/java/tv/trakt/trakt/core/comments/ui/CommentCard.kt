@@ -47,7 +47,6 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -70,10 +69,8 @@ import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.DevicePreviewRtl
 import tv.trakt.trakt.common.helpers.extensions.EmptyImmutableList
 import tv.trakt.trakt.common.helpers.extensions.capitalize
-import tv.trakt.trakt.common.helpers.extensions.googleTranslateActivityInfo
 import tv.trakt.trakt.common.helpers.extensions.mediumDateFormat
 import tv.trakt.trakt.common.helpers.extensions.onClick
-import tv.trakt.trakt.common.helpers.extensions.openGoogleTranslate
 import tv.trakt.trakt.common.helpers.extensions.toLocal
 import tv.trakt.trakt.common.helpers.extensions.toMarkdownText
 import tv.trakt.trakt.common.helpers.preview.PreviewData
@@ -84,6 +81,9 @@ import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.common.ui.theme.colors.Purple400
 import tv.trakt.trakt.core.comments.features.report.ReportCommentSheet
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslation
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
+import tv.trakt.trakt.core.comments.features.translation.ui.CommentTranslateButton
 import tv.trakt.trakt.core.reactions.ui.ReactionsSummaryChip
 import tv.trakt.trakt.core.reactions.ui.ReactionsToolTip
 import tv.trakt.trakt.resources.R
@@ -94,6 +94,7 @@ import java.util.Locale
 
 private val EmptyReactionsSummary = emptyMap<Int, ReactionsSummary>().toImmutableMap()
 private val EmptyReactions = emptyMap<Int, Reaction?>().toImmutableMap()
+private val EmptyTranslations = CommentTranslations()
 
 @Composable
 internal fun CommentCard(
@@ -103,6 +104,7 @@ internal fun CommentCard(
     replies: ImmutableList<Comment> = EmptyImmutableList,
     reactions: ImmutableMap<Int, ReactionsSummary> = EmptyReactionsSummary,
     userReactions: ImmutableMap<Int, Reaction?> = EmptyReactions,
+    translations: CommentTranslations = EmptyTranslations,
     replyEnabled: Boolean = false,
     repliesButtonEnabled: Boolean = false,
     repliesCountEnabled: Boolean = true,
@@ -120,6 +122,7 @@ internal fun CommentCard(
     onDeleteClick: (() -> Unit)? = null,
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
     onUserClick: ((User) -> Unit)? = null,
+    onTranslateClick: ((Comment) -> Unit)? = null,
 ) {
     LaunchedEffect(comment.id) {
         if (reactions[comment.id] == null) {
@@ -136,6 +139,7 @@ internal fun CommentCard(
             replies = replies,
             reactions = reactions,
             userReactions = userReactions,
+            translations = translations,
             replyEnabled = replyEnabled,
             repliesButtonEnabled = repliesButtonEnabled,
             repliesCountEnabled = repliesCountEnabled,
@@ -153,6 +157,7 @@ internal fun CommentCard(
             onDeleteReplyClick = onDeleteReplyClick,
             onReportClick = { reportActive = true },
             onUserClick = { onUserClick?.invoke(it) },
+            onTranslateClick = onTranslateClick,
         )
     }
 
@@ -209,6 +214,7 @@ private fun CommentCardContent(
     replies: ImmutableList<Comment>,
     reactions: ImmutableMap<Int, ReactionsSummary>,
     userReactions: ImmutableMap<Int, Reaction?>,
+    translations: CommentTranslations,
     replyEnabled: Boolean,
     repliesButtonEnabled: Boolean,
     repliesCountEnabled: Boolean,
@@ -227,6 +233,7 @@ private fun CommentCardContent(
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
     onReportClick: (() -> Unit)? = null,
     onRequestReactions: ((Comment) -> Unit)? = null,
+    onTranslateClick: ((Comment) -> Unit)? = null,
 ) {
     var isSpoilerRevealed by remember { mutableStateOf(false) }
 
@@ -254,7 +261,7 @@ private fun CommentCardContent(
         val spoilerBlurred = comment.hasSpoilers && !isUserComment && !isSpoilerRevealed
         val body = @Composable {
             CommentBody(
-                text = comment.commentNoSpoilers,
+                text = translations.displayText(comment),
                 blurred = spoilerBlurred,
                 onRevealSpoiler = { isSpoilerRevealed = true },
             )
@@ -338,9 +345,11 @@ private fun CommentCardContent(
             repliesCountEnabled = repliesCountEnabled,
             repliesButtonEnabled = repliesButtonEnabled,
             userReaction = userReactions[comment.id],
+            translations = translations,
             onReactionClick = onReactionClick,
             onReplyClick = onReplyClick,
             onRepliesClick = onRepliesClick,
+            onTranslateClick = onTranslateClick,
             replyEnabled = replyEnabled,
             modifier = Modifier
                 .padding(
@@ -355,9 +364,11 @@ private fun CommentCardContent(
                 replies = replies,
                 reactions = reactions,
                 userReactions = userReactions,
+                translations = translations,
                 progressTotal = progressTotal,
                 onReactionClick = onReactionClick,
                 onUserClick = onUserClick,
+                onTranslateClick = onTranslateClick,
                 onReplyClick = { onReplyUserClick?.invoke(it.user) },
                 onDeleteClick = onDeleteReplyClick,
                 onRequestReactions = onRequestReactions,
@@ -415,6 +426,7 @@ private fun CommentRepliesContent(
     replies: ImmutableList<Comment>,
     reactions: ImmutableMap<Int, ReactionsSummary>,
     userReactions: ImmutableMap<Int, Reaction?>,
+    translations: CommentTranslations,
     progressTotal: Int?,
     modifier: Modifier = Modifier,
     onUserClick: ((User) -> Unit)? = null,
@@ -422,6 +434,7 @@ private fun CommentRepliesContent(
     onRequestReactions: ((Comment) -> Unit)? = null,
     onReplyClick: ((Comment) -> Unit)? = null,
     onDeleteClick: ((Comment) -> Unit)? = null,
+    onTranslateClick: ((Comment) -> Unit)? = null,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -435,8 +448,10 @@ private fun CommentRepliesContent(
                 reply = reply,
                 reactions = reactions[reply.id],
                 userReaction = userReactions[reply.id],
+                translations = translations,
                 progressTotal = progressTotal,
                 onUserClick = onUserClick,
+                onTranslateClick = onTranslateClick,
                 onReactionClick = { onReactionClick?.invoke(it, reply) },
                 onRequestReactions = { onRequestReactions?.invoke(reply) },
                 onDeleteClick = { onDeleteClick?.invoke(reply) },
@@ -573,12 +588,13 @@ private fun CommentFooter(
     replyEnabled: Boolean,
     repliesLoading: Boolean,
     userReaction: Reaction?,
+    translations: CommentTranslations,
     modifier: Modifier = Modifier,
     onReactionClick: ((Reaction, Comment) -> Unit)? = null,
     onReplyClick: (() -> Unit)? = null,
     onRepliesClick: (() -> Unit)? = null,
+    onTranslateClick: ((Comment) -> Unit)? = null,
 ) {
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val tooltipState = rememberTooltipState(isPersistent = true)
 
@@ -667,24 +683,11 @@ private fun CommentFooter(
                 horizontalArrangement = spacedBy(20.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                if (comment.rememberTranslatable()) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_translate),
-                        contentDescription = "Replies",
-                        tint = TraktTheme.colors.textPrimary,
-                        modifier = Modifier
-                            .size(18.dp)
-                            .onClick {
-                                val activityInfo = context.googleTranslateActivityInfo()
-                                activityInfo?.let {
-                                    context.openGoogleTranslate(
-                                        activity = activityInfo,
-                                        text = comment.comment.trim(),
-                                    )
-                                }
-                            },
-                    )
-                }
+                CommentTranslateButton(
+                    comment = comment,
+                    translations = translations,
+                    onTranslateClick = onTranslateClick,
+                )
                 if (repliesCountEnabled && comment.replies > 0) {
                     Row(
                         horizontalArrangement = spacedBy(2.dp),
@@ -754,6 +757,20 @@ fun CommentPreview() {
                     replies = listOf(PreviewData.comment1).toImmutableList(),
                     modifier = Modifier
                         .height(400.dp),
+                )
+                CommentCard(
+                    onClick = {},
+                    user = PreviewData.user1,
+                    comment = PreviewData.comment1.copy(language = Locale.SIMPLIFIED_CHINESE),
+                    translations = CommentTranslations(
+                        onDevice = true,
+                        items = mapOf<Int, CommentTranslation>(
+                            PreviewData.comment1.id to CommentTranslation.Translated("Translated on device."),
+                        ).toImmutableMap(),
+                    ),
+                    onTranslateClick = {},
+                    modifier = Modifier
+                        .height(TraktTheme.size.commentCardSize),
                 )
                 CommentCard(
                     onClick = {},

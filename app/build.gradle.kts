@@ -158,6 +158,7 @@ dependencies {
     implementation(libs.timber)
     implementation(libs.phoenix)
     implementation(libs.younify)
+    implementation(libs.mlkit.genai.prompt)
 
     // Testing
 

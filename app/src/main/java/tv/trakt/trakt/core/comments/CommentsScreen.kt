@@ -33,6 +33,7 @@ import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,6 +45,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -67,6 +69,9 @@ import tv.trakt.trakt.core.comments.features.deletecomment.DeleteCommentSheet
 import tv.trakt.trakt.core.comments.features.editcomment.EditCommentSheet
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentSheet
 import tv.trakt.trakt.core.comments.features.postreply.PostReplySheet
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
+import tv.trakt.trakt.core.comments.features.translation.ui.openExternalTranslation
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.model.commentsLanguageDisplayName
 import tv.trakt.trakt.core.comments.ui.CommentCard
@@ -89,6 +94,17 @@ internal fun CommentsScreen(
     onNavigateToUser: (User) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { event ->
+            when (event) {
+                is CommentTranslationEvent.OpenExternalTranslation -> {
+                    context.openExternalTranslation(event.text)
+                }
+            }
+        }
+    }
 
     var postCommentSheet by remember { mutableStateOf(false) }
     var postReplySheet by remember { mutableStateOf<Pair<Comment, User?>?>(null) }
@@ -131,6 +147,7 @@ internal fun CommentsScreen(
             viewModel.loadReplies(it.id)
         },
         onUserClick = onNavigateToUser,
+        onTranslateClick = viewModel::toggleTranslation,
         onBackClick = onNavigateBack,
     )
 
@@ -211,6 +228,7 @@ internal fun CommentsContent(
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
     onDeleteReplyClick: ((Comment) -> Unit)? = null,
     onUserClick: ((User) -> Unit)? = null,
+    onTranslateClick: ((Comment) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     val listState = rememberLazyListState(
@@ -254,6 +272,7 @@ internal fun CommentsContent(
             listRepliesLoading = state.loadingReplies ?: EmptyImmutableSet,
             listReactions = (state.reactions ?: emptyMap()).toImmutableMap(),
             userReactions = (state.userReactions ?: emptyMap()).toImmutableMap(),
+            translations = state.translations,
             contentPadding = contentPadding,
             loading = state.loading.isLoading,
             progressTotal = state.media?.episodes,
@@ -269,6 +288,7 @@ internal fun CommentsContent(
             onDeleteCommentClick = onDeleteCommentClick,
             onDeleteReplyClick = onDeleteReplyClick,
             onUserClick = onUserClick,
+            onTranslateClick = onTranslateClick,
             onBackClick = onBackClick,
         )
 
@@ -326,6 +346,7 @@ private fun ContentList(
     progressTotal: Int?,
     user: User?,
     userReactions: ImmutableMap<Int, Reaction?>,
+    translations: CommentTranslations,
     onRequestReactions: ((Comment) -> Unit)? = null,
     onEditCommentClick: ((Comment) -> Unit)? = null,
     onDeleteCommentClick: ((Comment) -> Unit)? = null,
@@ -337,6 +358,7 @@ private fun ContentList(
     onReplyUserClick: ((Comment, User) -> Unit)? = null,
     onRepliesClick: ((Comment) -> Unit)? = null,
     onUserClick: ((User) -> Unit)? = null,
+    onTranslateClick: ((Comment) -> Unit)? = null,
     onBackClick: (() -> Unit)? = null,
 ) {
     LazyColumn(
@@ -396,6 +418,7 @@ private fun ContentList(
                     replies = listReplies[comment.id] ?: EmptyImmutableList,
                     repliesLoading = listRepliesLoading.contains(comment.id),
                     userReactions = userReactions,
+                    translations = translations,
                     onRequestReactions = onRequestReactions,
                     replyEnabled = user != null && !isUserComment,
                     repliesCountEnabled = false,
@@ -409,6 +432,7 @@ private fun ContentList(
                     onDeleteClick = { onDeleteCommentClick?.invoke(comment) },
                     onDeleteReplyClick = { onDeleteReplyClick?.invoke(it) },
                     onUserClick = { onUserClick?.invoke(it) },
+                    onTranslateClick = onTranslateClick,
                     modifier = Modifier
                         .padding(bottom = 16.dp)
                         .animateItem(

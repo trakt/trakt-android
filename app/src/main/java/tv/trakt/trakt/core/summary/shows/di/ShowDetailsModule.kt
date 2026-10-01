@@ -103,6 +103,7 @@ internal val showDetailsModule = module {
             episodeDetailsUpdates = get(),
             sessionManager = get(),
             analytics = get(),
+            translationsStore = get(),
         )
     }
     viewModelOf(::ShowActorsViewModel)
@@ -161,6 +162,7 @@ internal val showDetailsModule = module {
             sessionManager = get(),
             commentsUpdates = get(),
             collapsingManager = get(),
+            translationsStore = get(),
         )
     }
 }

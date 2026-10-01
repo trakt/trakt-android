@@ -12,6 +12,7 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonsMode
 import tv.trakt.trakt.core.summary.shows.features.seasons.model.SeasonsPeopleMode
@@ -27,6 +28,7 @@ internal data class AllShowSeasonsState(
     val commentsLanguage: String? = null,
     val commentReactions: ImmutableMap<Int, ReactionsSummary> = persistentMapOf(),
     val userReactions: ImmutableMap<Int, Reaction?> = persistentMapOf(),
+    val translations: CommentTranslations = CommentTranslations(),
     val seasonUserRating: UserRatingState = UserRatingState(),
     val backgroundUrl: String? = null,
     val items: ShowSeasons = ShowSeasons(),
