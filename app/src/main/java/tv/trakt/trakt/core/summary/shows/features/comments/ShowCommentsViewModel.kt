@@ -12,6 +12,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -41,6 +43,10 @@ import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.comments.data.CommentsUpdates
 import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.ALL_COMMENTS
 import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.COMMENT_DETAILS
+import tv.trakt.trakt.core.comments.features.translation.data.CommentTranslationsStore
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent.OpenExternalTranslation
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
 import tv.trakt.trakt.core.comments.model.CommentsFilter
 import tv.trakt.trakt.core.comments.usecases.GetCommentsFilterUseCase
 import tv.trakt.trakt.core.comments.usecases.GetCommentsLanguageUseCase
@@ -68,6 +74,7 @@ internal class ShowCommentsViewModel(
     private val reactionsUpdates: ReactionsUpdates,
     private val commentsUpdates: CommentsUpdates,
     private val collapsingManager: CollapsingManager,
+    private val translationsStore: CommentTranslationsStore,
 ) : ViewModel() {
     private val initialState = ShowCommentsState()
 
@@ -354,6 +361,14 @@ internal class ShowCommentsViewModel(
         )
     }
 
+    fun toggleTranslation(comment: Comment) {
+        viewModelScope.launch {
+            if (!translationsStore.toggle(comment)) {
+                events.emit(OpenExternalTranslation(comment.comment.trim()))
+            }
+        }
+    }
+
     fun addComment(comment: Comment) {
         itemsState.update {
             val mutable = it?.toMutableList() ?: mutableListOf()
@@ -393,6 +408,9 @@ internal class ShowCommentsViewModel(
         super.onCleared()
     }
 
+    val events: Flow<CommentTranslationEvent>
+        field = MutableSharedFlow<CommentTranslationEvent>(replay = 0)
+
     @Suppress("UNCHECKED_CAST")
     val state: StateFlow<ShowCommentsState> = combine(
         showState,
@@ -405,6 +423,7 @@ internal class ShowCommentsViewModel(
         userState,
         errorState,
         collapseState,
+        translationsStore.translations,
     ) { state ->
         ShowCommentsState(
             show = state[0] as Show?,
@@ -417,6 +436,7 @@ internal class ShowCommentsViewModel(
             user = state[7] as User?,
             error = state[8] as Exception?,
             collapsed = state[9] as Boolean,
+            translations = state[10] as CommentTranslations,
         )
     }.stateIn(
         scope = viewModelScope,

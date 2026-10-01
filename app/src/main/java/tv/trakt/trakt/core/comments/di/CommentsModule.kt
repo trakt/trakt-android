@@ -35,6 +35,9 @@ import tv.trakt.trakt.core.comments.features.editcomment.EditCommentViewModel
 import tv.trakt.trakt.core.comments.features.postcomment.PostCommentViewModel
 import tv.trakt.trakt.core.comments.features.postreply.PostReplyViewModel
 import tv.trakt.trakt.core.comments.features.report.ReportCommentViewModel
+import tv.trakt.trakt.core.comments.features.translation.data.CommentTranslationsStore
+import tv.trakt.trakt.core.comments.features.translation.data.CommentTranslator
+import tv.trakt.trakt.core.comments.features.translation.data.GeminiNanoCommentTranslator
 import tv.trakt.trakt.core.comments.model.MentionSource
 import tv.trakt.trakt.core.comments.usecases.DeleteCommentUseCase
 import tv.trakt.trakt.core.comments.usecases.EditCommentUseCase
@@ -63,6 +66,8 @@ internal val commentsDataModule = module {
     }
 
     singleOf(::CommentsUpdatesStorage) { bind<CommentsUpdates>() }
+    singleOf(::GeminiNanoCommentTranslator) { bind<CommentTranslator>() }
+    singleOf(::CommentTranslationsStore)
 }
 
 internal val commentsModule = module {
@@ -102,6 +107,7 @@ internal val commentsModule = module {
             loadUserReactionsUseCase = get(),
             reactionsUpdates = get(),
             commentsUpdates = get(),
+            translationsStore = get(),
         )
     }
 
@@ -114,6 +120,7 @@ internal val commentsModule = module {
             getCommentReactionsUseCase = get(),
             loadUserReactionsUseCase = get(),
             commentsUpdates = get(),
+            translationsStore = get(),
         )
     }
 

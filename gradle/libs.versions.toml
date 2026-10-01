@@ -47,6 +47,7 @@ workManager = "2.12.0"
 youtube-player = "13.0.0"
 younify = "1.0.3"
 glance = "1.3.0-alpha02"
+mlkitGenaiPrompt = "1.0.0-beta4"
 
 # Testing Libraries
 
@@ -127,6 +128,8 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 firebase-config = { group = "com.google.firebase", name = "firebase-config" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
+
+mlkit-genai-prompt = { group = "com.google.mlkit", name = "genai-prompt", version.ref = "mlkitGenaiPrompt" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 

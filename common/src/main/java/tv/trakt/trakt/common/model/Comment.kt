@@ -44,8 +44,12 @@ data class Comment(
             else -> "${userRating / 2F}".replace(".0", "")
         }
 
+    /**
+     * @param onDeviceAvailable true when the caller can translate on device, so the
+     * Google Translate app is not required.
+     */
     @Composable
-    fun rememberTranslatable(): Boolean {
+    fun rememberTranslatable(onDeviceAvailable: Boolean = false): Boolean {
         if (comment.isBlank()) return false
 
         val context = LocalContext.current
@@ -58,10 +62,10 @@ data class Comment(
             AppCompatDelegate.getApplicationLocales().get(0) ?: Locale.getDefault()
         }
 
-        return remember(appLocale) {
+        return remember(appLocale, onDeviceAvailable) {
             language?.language != null &&
                 language.language != appLocale.language &&
-                isGoogleTranslateInstalled
+                (onDeviceAvailable || isGoogleTranslateInstalled)
         }
     }
 

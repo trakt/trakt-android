@@ -13,6 +13,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -34,6 +36,10 @@ import tv.trakt.trakt.common.model.reactions.Reaction
 import tv.trakt.trakt.common.model.reactions.ReactionsSummary
 import tv.trakt.trakt.core.comments.data.CommentsUpdates
 import tv.trakt.trakt.core.comments.data.CommentsUpdates.Source.COMMENT_DETAILS
+import tv.trakt.trakt.core.comments.features.translation.data.CommentTranslationsStore
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslationEvent.OpenExternalTranslation
+import tv.trakt.trakt.core.comments.features.translation.model.CommentTranslations
 import tv.trakt.trakt.core.reactions.data.ReactionsUpdates.Source
 import tv.trakt.trakt.core.reactions.data.work.DeleteReactionWorker
 import tv.trakt.trakt.core.reactions.data.work.PostReactionWorker
@@ -49,6 +55,7 @@ internal class CommentDetailsViewModel(
     private val getCommentReactionsUseCase: GetCommentReactionsUseCase,
     private val loadUserReactionsUseCase: LoadUserReactionsUseCase,
     private val commentsUpdates: CommentsUpdates,
+    private val translationsStore: CommentTranslationsStore,
 ) : ViewModel() {
     private val initialState = CommentDetailsState()
 
@@ -125,6 +132,14 @@ internal class CommentDetailsViewModel(
     fun updateComment(comment: Comment) {
         commentState.update { comment }
         commentsUpdates.notifyUpdate(COMMENT_DETAILS)
+    }
+
+    fun toggleTranslation(comment: Comment) {
+        viewModelScope.launch {
+            if (!translationsStore.toggle(comment)) {
+                events.emit(OpenExternalTranslation(comment.comment.trim()))
+            }
+        }
     }
 
     fun addReply(comment: Comment) {
@@ -262,6 +277,9 @@ internal class CommentDetailsViewModel(
         )
     }
 
+    val events: Flow<CommentTranslationEvent>
+        field = MutableSharedFlow<CommentTranslationEvent>(replay = 0)
+
     val state = combine(
         commentState,
         commentReplies,
@@ -270,6 +288,7 @@ internal class CommentDetailsViewModel(
         userState,
         loadingState,
         errorState,
+        translationsStore.translations,
     ) { state ->
         CommentDetailsState(
             comment = state[0] as Comment?,
@@ -279,6 +298,7 @@ internal class CommentDetailsViewModel(
             user = state[4] as User?,
             loading = state[5] as LoadingState,
             error = state[6] as Exception?,
+            translations = state[7] as CommentTranslations,
         )
     }.stateIn(
         scope = viewModelScope,
