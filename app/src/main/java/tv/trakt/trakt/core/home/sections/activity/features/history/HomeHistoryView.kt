@@ -33,6 +33,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
 import org.koin.androidx.compose.koinViewModel
@@ -40,7 +42,9 @@ import tv.trakt.trakt.common.helpers.LoadingState.Done
 import tv.trakt.trakt.common.helpers.LoadingState.Idle
 import tv.trakt.trakt.common.helpers.LoadingState.Loading
 import tv.trakt.trakt.common.helpers.extensions.onClick
+import tv.trakt.trakt.common.helpers.preview.PreviewData
 import tv.trakt.trakt.common.model.Episode
+import tv.trakt.trakt.common.model.MediaType
 import tv.trakt.trakt.common.model.Movie
 import tv.trakt.trakt.common.model.TraktId
 import tv.trakt.trakt.common.model.ratings.UserRating
@@ -54,6 +58,7 @@ import tv.trakt.trakt.ui.components.EmptyListCard
 import tv.trakt.trakt.ui.components.TraktSectionHeader
 import tv.trakt.trakt.ui.components.mediacards.skeletons.EpisodeSkeletonCard
 import tv.trakt.trakt.ui.theme.TraktTheme
+import java.time.Instant
 
 @Composable
 internal fun HomeHistoryView(
@@ -113,6 +118,7 @@ internal fun HomeHistoryView(
         onMovieLongClick = {
             contextSheet = it
         },
+        onRateClick = viewModel::rateItem,
         onMoreClick = {
             if (state.loading.isLoading || state.items.isNullOrEmpty()) {
                 return@HomeHistoryContent
@@ -141,6 +147,7 @@ internal fun HomeHistoryContent(
     onEpisodeLongClick: (HomeActivityItem.EpisodeItem) -> Unit = {},
     onMovieClick: (Movie) -> Unit = { },
     onMovieLongClick: (HomeActivityItem.MovieItem) -> Unit = {},
+    onRateClick: (HomeActivityItem, Int?) -> Unit = { _, _ -> },
     onMoreClick: () -> Unit = {},
     onCollapse: (collapsed: Boolean) -> Unit = {},
 ) {
@@ -216,6 +223,7 @@ internal fun HomeHistoryContent(
                                     onEpisodeLongClick = onEpisodeLongClick,
                                     onMovieClick = onMovieClick,
                                     onMovieLongClick = onMovieLongClick,
+                                    onRateClick = onRateClick,
                                 )
                             }
                         }
@@ -255,6 +263,7 @@ private fun ContentList(
     onEpisodeLongClick: (HomeActivityItem.EpisodeItem) -> Unit,
     onMovieClick: (Movie) -> Unit,
     onMovieLongClick: (HomeActivityItem.MovieItem) -> Unit,
+    onRateClick: (HomeActivityItem, Int?) -> Unit,
 ) {
     val currentList = remember { mutableIntStateOf(listItems.hashCode()) }
 
@@ -283,6 +292,7 @@ private fun ContentList(
                         itemRating = listRatings[item.key],
                         onClick = { onMovieClick(item.movie) },
                         onLongClick = { onMovieLongClick(item) },
+                        onRateClick = { onRateClick(item, it) },
                         moreButton = true,
                         modifier = Modifier
                             .animateItem(
@@ -299,6 +309,7 @@ private fun ContentList(
                         onClick = { onEpisodeClick(item) },
                         onShowClick = { onShowClick(item) },
                         onLongClick = { onEpisodeLongClick(item) },
+                        onRateClick = { onRateClick(item, it) },
                         moreButton = true,
                         modifier = Modifier
                             .animateItem(
@@ -358,6 +369,48 @@ private fun Preview3() {
             state = HomeHistoryState(
                 loading = Done,
                 items = emptyList<HomeActivityItem>().toImmutableList(),
+            ),
+        )
+    }
+}
+
+@Preview(
+    device = "id:pixel_5",
+    showBackground = true,
+    backgroundColor = 0xFF131517,
+)
+@Composable
+private fun Preview4() {
+    TraktTheme {
+        HomeHistoryContent(
+            state = HomeHistoryState(
+                loading = Done,
+                items = persistentListOf(
+                    HomeActivityItem.EpisodeItem(
+                        id = 1,
+                        user = PreviewData.user1,
+                        userRating = null,
+                        activity = "watch",
+                        activityAt = Instant.now(),
+                        episode = PreviewData.episode1,
+                        show = PreviewData.show1,
+                    ),
+                    HomeActivityItem.MovieItem(
+                        id = 2,
+                        user = PreviewData.user1,
+                        userRating = null,
+                        activity = "watch",
+                        activityAt = Instant.now(),
+                        movie = PreviewData.movie1,
+                    ),
+                ),
+                itemsRatings = persistentMapOf(
+                    "${MediaType.Movie.value}-${PreviewData.movie1.ids.trakt.value}" to UserRating(
+                        mediaId = PreviewData.movie1.ids.trakt,
+                        mediaType = MediaType.Movie,
+                        rating = 8,
+                    ),
+                ),
             ),
         )
     }

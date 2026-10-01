@@ -29,7 +29,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.vector.PathParser
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInWindow
+import androidx.compose.ui.layout.positionOnScreen
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.IntOffset
@@ -139,10 +139,13 @@ internal fun RatingDelightOverlay(
     val kernels = remember(key) { kernels() }
     val leaf = remember { PathParser().parsePathString(TOMATO_LEAF_PATH).toPath() }
 
-    var anchorInWindow by remember { mutableStateOf(Offset.Unspecified) }
+    // Screen coordinates, as the anchor and the overlay can live in different windows
+    // (e.g. when the rating bar is itself hosted in a popup).
+    var anchorOnScreen by remember { mutableStateOf(Offset.Unspecified) }
+    var overlayOnScreen by remember { mutableStateOf(Offset.Unspecified) }
     Spacer(
         modifier = modifier.onGloballyPositioned {
-            anchorInWindow = it.positionInWindow()
+            anchorOnScreen = it.positionOnScreen()
         },
     )
 
@@ -150,11 +153,19 @@ internal fun RatingDelightOverlay(
         popupPositionProvider = FullWindowPositionProvider,
         properties = OverlayPopupProperties,
     ) {
-        Canvas(modifier = Modifier.fillMaxSize()) {
+        Canvas(
+            modifier = Modifier
+                .fillMaxSize()
+                .onGloballyPositioned {
+                    overlayOnScreen = it.positionOnScreen()
+                },
+        ) {
             val ms = elapsed.value
-            if (ms >= totalMs || anchorInWindow.isUnspecified) return@Canvas
+            if (ms >= totalMs || anchorOnScreen.isUnspecified || overlayOnScreen.isUnspecified) {
+                return@Canvas
+            }
 
-            val windowOrigin = anchorInWindow + origin
+            val windowOrigin = anchorOnScreen - overlayOnScreen + origin
             when (delight) {
                 RatingDelight.RottenTomato -> drawRottenTomato(
                     ms = ms,
