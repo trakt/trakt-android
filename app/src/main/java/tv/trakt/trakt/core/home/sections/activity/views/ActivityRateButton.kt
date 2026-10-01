@@ -33,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
@@ -80,6 +81,7 @@ internal fun ActivityRateButton(
     title: String,
     onRateClick: (Int?) -> Unit,
     modifier: Modifier = Modifier,
+    starSize: Dp = 14.dp,
 ) {
     var popupVisible by remember { mutableStateOf(false) }
     var commit by remember { mutableStateOf<RatingCommit?>(null) }
@@ -102,6 +104,7 @@ internal fun ActivityRateButton(
         when {
             rating != null -> ActivityItemRating(
                 rating = rating,
+                starSize = starSize,
                 modifier = buttonModifier.semantics {
                     contentDescription = changeRatingDescription
                 },
@@ -111,7 +114,7 @@ internal fun ActivityRateButton(
                 painter = painterResource(R.drawable.ic_star_trakt_off),
                 contentDescription = rateDescription,
                 tint = TraktTheme.colors.textPrimary,
-                modifier = buttonModifier.size(15.dp),
+                modifier = buttonModifier.size(starSize + 1.dp),
             )
         }
 
@@ -138,6 +141,7 @@ internal fun ActivityRateButton(
 internal fun ActivityItemRating(
     rating: UserRating,
     modifier: Modifier = Modifier,
+    starSize: Dp = 14.dp,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -147,7 +151,7 @@ internal fun ActivityItemRating(
         Icon(
             painter = painterResource(R.drawable.ic_star_trakt_on),
             contentDescription = null,
-            modifier = Modifier.size(14.dp),
+            modifier = Modifier.size(starSize),
             tint = TraktTheme.colors.textPrimary,
         )
         Text(

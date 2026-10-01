@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -21,7 +22,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import tv.trakt.trakt.common.helpers.extensions.isTraktUnknown
 import tv.trakt.trakt.common.helpers.extensions.nowUtcInstant
 import tv.trakt.trakt.common.helpers.extensions.relativePastDateString
@@ -33,6 +33,8 @@ import tv.trakt.trakt.common.model.User
 import tv.trakt.trakt.common.model.ratings.UserRating
 import tv.trakt.trakt.common.model.toTraktId
 import tv.trakt.trakt.core.home.sections.activity.model.HomeActivityItem
+import tv.trakt.trakt.core.home.sections.activity.views.ActivityItemRating
+import tv.trakt.trakt.core.home.sections.activity.views.ActivityRateButton
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.components.mediacards.PanelMediaCard
 import tv.trakt.trakt.ui.theme.TraktTheme
@@ -50,6 +52,7 @@ internal fun AllActivityMovieItem(
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null,
     onUserClick: ((User) -> Unit)? = null,
+    onRateClick: ((Int?) -> Unit)? = null,
 ) {
     val isPast = remember(item.activityAt) {
         !item.activityAt.isAfter(nowUtcInstant())
@@ -110,23 +113,21 @@ internal fun AllActivityMovieItem(
                     verticalArrangement = spacedBy(8.dp),
                     modifier = Modifier.padding(start = 12.dp),
                 ) {
-                    rating?.let {
-                        Row(
-                            verticalAlignment = CenterVertically,
-                            horizontalArrangement = spacedBy(2.dp),
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_star_trakt_on),
-                                contentDescription = null,
-                                modifier = Modifier.size(13.dp),
-                                tint = TraktTheme.colors.textPrimary,
-                            )
-                            Text(
-                                text = it.rating5Scale,
-                                color = TraktTheme.colors.textPrimary,
-                                style = TraktTheme.typography.meta.copy(fontSize = 12.sp),
-                            )
-                        }
+                    when {
+                        onRateClick != null -> ActivityRateButton(
+                            // The local ratings are the source of truth here, so removals show.
+                            rating = itemRating,
+                            title = item.movie.title,
+                            starSize = 15.dp,
+                            onRateClick = onRateClick,
+                            // Offsets the button touch padding to keep the content edges aligned.
+                            modifier = Modifier.offset(x = 4.dp, y = 4.dp),
+                        )
+
+                        rating != null -> ActivityItemRating(
+                            rating = rating,
+                            starSize = 15.dp,
+                        )
                     }
 
                     item.user?.let { user ->
@@ -144,26 +145,47 @@ internal fun AllActivityMovieItem(
     )
 }
 
+private val PreviewMovieItem = HomeActivityItem.MovieItem(
+    id = 1L,
+    activity = "watched",
+    activityAt = Instant.now(),
+    user = PreviewData.user1,
+    userRating = null,
+    movie = PreviewData.movie1,
+)
+
+private val PreviewMovieRating = UserRating(
+    mediaId = 1.toTraktId(),
+    mediaType = MediaType.Movie,
+    rating = 8,
+)
+
 @Preview(
     widthDp = 400,
 )
 @Composable
 private fun AllActivityMovieItemPreview() {
     TraktTheme {
-        AllActivityMovieItem(
-            item = HomeActivityItem.MovieItem(
-                id = 1L,
-                activity = "watched",
-                activityAt = Instant.now(),
-                user = PreviewData.user1,
-                userRating = UserRating(
-                    mediaId = 1.toTraktId(),
-                    mediaType = MediaType.Movie,
-                    rating = 8,
-                ),
-                movie = PreviewData.movie1,
-            ),
-            modifier = Modifier.fillMaxWidth(),
-        )
+        Column(verticalArrangement = spacedBy(16.dp)) {
+            // Rated, rating button disabled.
+            AllActivityMovieItem(
+                item = PreviewMovieItem,
+                itemRating = PreviewMovieRating,
+                modifier = Modifier.fillMaxWidth(),
+            )
+            // Unrated, rating button enabled.
+            AllActivityMovieItem(
+                item = PreviewMovieItem,
+                onRateClick = {},
+                modifier = Modifier.fillMaxWidth(),
+            )
+            // Rated, rating button enabled.
+            AllActivityMovieItem(
+                item = PreviewMovieItem,
+                itemRating = PreviewMovieRating,
+                onRateClick = {},
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
     }
 }
