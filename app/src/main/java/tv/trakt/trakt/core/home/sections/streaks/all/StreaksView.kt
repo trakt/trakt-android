@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.persistentSetOf
 import tv.trakt.trakt.common.helpers.extensions.capitalize
 import tv.trakt.trakt.common.helpers.extensions.yearMonthFormat
 import tv.trakt.trakt.common.model.MediaMode
@@ -228,6 +229,7 @@ private fun Preview() {
             mode = MediaMode.Movies,
             data = MonthlyStreakData(
                 activity = persistentMapOf(),
+                weekActiveDays = persistentSetOf(),
                 currentStreakTotal = 128,
                 previousStreakTotal = 45,
                 currentStreak = 1,

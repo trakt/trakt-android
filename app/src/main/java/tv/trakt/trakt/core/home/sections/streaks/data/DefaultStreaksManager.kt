@@ -1,6 +1,7 @@
 package tv.trakt.trakt.core.home.sections.streaks.data
 
 import kotlinx.collections.immutable.toImmutableMap
+import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +17,7 @@ import tv.trakt.trakt.common.model.MediaMode.Media
 import tv.trakt.trakt.common.model.MediaMode.Movies
 import tv.trakt.trakt.common.model.MediaMode.Shows
 import tv.trakt.trakt.core.home.sections.streaks.model.MonthlyStreakData
+import java.time.DayOfWeek
 import java.time.LocalDate
 
 internal class DefaultStreaksManager(
@@ -86,6 +88,12 @@ internal class DefaultStreaksManager(
                     )
                 }
 
+            // The week can start in the previous month, so it reads from all activity, not the month map.
+            val weekStart = localDay.with(DayOfWeek.MONDAY)
+            val weekActiveDays = allActivityDates
+                .filter { !it.isBefore(weekStart) && !it.isAfter(localDay) }
+                .toImmutableSet()
+
             val currentStreakTotal = computeCurrentStreak(allActivityDates, localDay)
             val previousStreakTotal = computePreviousStreak(allActivityDates, localDay, currentStreakTotal)
             val currentStreak = computeCurrentStreak(monthActivityMap.keys, localDay)
@@ -94,6 +102,7 @@ internal class DefaultStreaksManager(
 
             val streakData = MonthlyStreakData(
                 activity = monthActivityMap.toImmutableMap(),
+                weekActiveDays = weekActiveDays,
                 currentStreakTotal = currentStreakTotal,
                 previousStreakTotal = previousStreakTotal,
                 currentStreak = currentStreak,

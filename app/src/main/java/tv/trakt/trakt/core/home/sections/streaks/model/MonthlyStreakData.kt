@@ -1,10 +1,12 @@
 package tv.trakt.trakt.core.home.sections.streaks.model
 
 import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.ImmutableSet
 import java.time.LocalDate
 
 internal data class MonthlyStreakData(
     val activity: ImmutableMap<LocalDate, StreakDataPoint>,
+    val weekActiveDays: ImmutableSet<LocalDate>,
     val currentStreakTotal: Int,
     val previousStreakTotal: Int,
     val currentStreak: Int,

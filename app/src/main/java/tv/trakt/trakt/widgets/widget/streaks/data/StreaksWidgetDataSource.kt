@@ -52,7 +52,7 @@ internal class StreaksWidgetDataSource(
             .map { offset ->
                 val date = startOfWeek.plusDays(offset.toLong())
                 StreaksWidgetDay(
-                    active = (data.activity[date]?.total ?: 0) > 0,
+                    active = date in data.weekActiveDays,
                     today = date == today,
                     future = date.isAfter(today),
                 )

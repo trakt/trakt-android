@@ -32,8 +32,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.persistentSetOf
 import org.koin.androidx.compose.koinViewModel
 import tv.trakt.trakt.common.helpers.extensions.DevicePreview
 import tv.trakt.trakt.common.helpers.extensions.isTodayOrBefore
@@ -42,7 +43,6 @@ import tv.trakt.trakt.common.helpers.extensions.onClick
 import tv.trakt.trakt.common.ui.theme.colors.Purple500
 import tv.trakt.trakt.common.ui.theme.colors.Shade700
 import tv.trakt.trakt.core.home.sections.streaks.model.MonthlyStreakData
-import tv.trakt.trakt.core.home.sections.streaks.model.MonthlyStreakData.StreakDataPoint
 import tv.trakt.trakt.helpers.extensions.TraktThemeLightDark
 import tv.trakt.trakt.resources.R
 import tv.trakt.trakt.ui.theme.DefaultCardShape
@@ -151,7 +151,7 @@ private fun HomeStreaksContent(
                         verticalAlignment = CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(10.dp),
                     ) {
-                        WeekActivityPills(activity = data.activity)
+                        WeekActivityPills(activeDays = data.weekActiveDays)
                         Icon(
                             painter = painterResource(R.drawable.ic_chevron_right),
                             tint = TraktTheme.colors.textSecondary,
@@ -173,7 +173,7 @@ private fun HomeStreaksContent(
 
 @Composable
 private fun WeekActivityPills(
-    activity: ImmutableMap<LocalDate, StreakDataPoint>,
+    activeDays: ImmutableSet<LocalDate>,
     modifier: Modifier = Modifier,
 ) {
     val today = nowLocalDay()
@@ -186,18 +186,18 @@ private fun WeekActivityPills(
         modifier = modifier,
     ) {
         days.forEach { date ->
-            val count = activity[date]?.total ?: 0
+            val active = date in activeDays
 
             val background = when {
                 !date.isTodayOrBefore() -> Color.Transparent
-                date <= today && count > 0 -> Purple500
-                date < today && count == 0 -> Shade700
+                date <= today && active -> Purple500
+                date < today && !active -> Shade700
                 else -> Color.Transparent
             }
 
             val border = when {
                 !date.isTodayOrBefore() -> Shade700
-                count > 0 || today == date -> Purple500
+                active || today == date -> Purple500
                 else -> Color.Transparent
             }
 
@@ -262,6 +262,10 @@ private fun Preview() {
         HomeStreaksContent(
             data = MonthlyStreakData(
                 activity = persistentMapOf(),
+                weekActiveDays = persistentSetOf(
+                    nowLocalDay(),
+                    nowLocalDay().minusDays(1),
+                ),
                 currentStreakTotal = 365,
                 currentStreak = 33,
                 previousStreak = 2,
